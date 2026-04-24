@@ -1,0 +1,151 @@
+export const en = {
+  common: {
+    copy: "Copy",
+    copied: "Copied",
+    copySuccess: "Document copied to clipboard",
+    copyDocs: "Copy docs for AI use or via MCP server",
+  },
+  installation: "Installation",
+  examples: "Examples",
+  anatomy: "Anatomy",
+  docs: "Docs",
+  api: "API",
+  cssClasses: "CSS Classes",
+  usage: "Usage",
+  demo: "Demo",
+  gettingStarted: "Getting Started",
+  introduction: "Introduction",
+  componentsGroup: "Components",
+
+  components: {
+    button: "Button",
+    accordion: "Accordion",
+    anchor: "Anchor",
+    input: "Input",
+    checkbox: "Checkbox",
+    slider: "Slider",
+    textarea: "Textarea",
+    select: "Select",
+    loading: "Loading",
+    empty: "Empty",
+    skeleton: "Skeleton",
+    separator: "Separator",
+    theme: "Theme",
+    title: "Title",
+    text: "Text",
+    description: "Description",
+    field: "Field",
+    spin: "Spin",
+    img: "Image",
+    watermark: "Watermark",
+    show: "Show",
+    "input-group": "Input Group",
+    radio: "Radio",
+    label: "Label",
+    segment: "Segment",
+    form: "Form",
+    toggle: "Toggle",
+    search: "Search",
+    sidebar: "Sidebar",
+    paper: "Paper",
+    pagination: "Pagination",
+    transfer: "Transfer",
+    toast: "Toast",
+    overlay: "Overlay",
+    table: "Table",
+    sheet: "Sheet",
+    "dropdown-menu": "Dropdown Menu",
+    password: "Password",
+    "code-block": "Code Block",
+  },
+
+  accordion: {
+    title: "Accordion",
+    description: "Accordion component for collapsible content areas.",
+    basic: {
+      title: "Basic",
+      description: "Basic usage, only one item can be expanded by default",
+    },
+    multiple: {
+      title: "Multiple",
+      description: "Allow multiple items to be expanded",
+    },
+    controlled: {
+      title: "Controlled",
+      description: "Controlled mode, controlled by openKeys and onOpenChange",
+    },
+    anatomy: {
+      title: "Anatomy",
+      accordion: "Accordion",
+      item: "Item",
+      trigger: "Trigger",
+      titleLabel: "Title",
+      content: "Content",
+    },
+  },
+
+  anchor: {
+    title: "Anchor",
+    description: "Anchor navigation for quick page positioning.",
+    basic: {
+      title: "Basic",
+      description: "Basic usage",
+    },
+    withSections: {
+      title: "With Sections",
+      description: "Anchor with sections",
+    },
+    anatomy: {
+      anchor: "Anchor",
+      section: "Section",
+      item: "Item",
+      link: "Link",
+    },
+  },
+
+  checkbox: {
+    title: "Checkbox",
+    description: "Checkbox component for multi-select scenarios.",
+    basic: {
+      title: "Basic",
+      description: "Basic usage",
+    },
+    controlled: {
+      title: "Controlled",
+      description: "Controlled mode with value and onValueChange",
+    },
+    direction: {
+      title: "Direction",
+      description: "Icon position",
+    },
+  },
+
+  button: {
+    title: "Button",
+    description: "Button component for triggering actions.",
+    variants: {
+      title: "Variants",
+      description: "Different button variants",
+    },
+    disabled: {
+      title: "Disabled",
+      description: "Disabled state",
+    },
+    loading: {
+      title: "Loading",
+      description: "Loading state",
+    },
+    iconOnly: {
+      title: "Icon Only",
+      description: "Icon only button",
+    },
+    withIcons: {
+      title: "With Icons",
+      description: "Button with icons",
+    },
+    direction: {
+      title: "Direction",
+      description: "Icon position",
+    },
+  },
+};

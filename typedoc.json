@@ -1,0 +1,26 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/components", "src/hooks", "src/lib", "src/config", "src/pages"],
+  "out": "knowledge-sources/typescript",
+  "plugin": ["typedoc-plugin-markdown"],
+  "exclude": ["**/*.d.ts", "**/*.test.ts", "**/*.test.tsx", "**/__tests__/**"],
+  "tsconfig": "tsconfig.json",
+  "basePath": ".",
+  "name": "HIS Component Documentation",
+  "readme": "none",
+  "includeVersion": false,
+  "excludeNotDocumented": false,
+  "categorizeByGroup": true,
+  "groupOrder": ["Components", "*"],
+  "sort": ["source-order"],
+  "hideGenerator": true,
+  "theme": "default",
+  "markdownItOptions": {
+    "html": true,
+    "linkify": true,
+    "typographer": true
+  },
+  "entryFileName": "README.md",
+  "hideBreadcrumbs": false,
+  "useHTMLAnchors": true
+}

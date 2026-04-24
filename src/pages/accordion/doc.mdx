@@ -1,0 +1,33 @@
+## CSS Classes
+
+```css
+// Base
+base:"flex flex-col gap-2"
+
+// Item
+item:"border rounded-lg overflow-hidden"
+
+// Trigger
+trigger:"flex items-center justify-between w-full px-4 py-3 bg-muted/50 hover:bg-muted transition-colors text-left"
+
+// Content
+content:"p-4 border-t bg-background"
+```
+
+## API Reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| defaultOpenKeys | string[] | [] | 初始展开的 keys（非受控模式） |
+| openKeys | string[] | - | 当前展开的 keys（受控模式） |
+| onOpenChange | (keys: string[]) => void | - | 展开状态变化回调 |
+| allowMultiple | boolean | false | 是否允许同时展开多项 |
+| className | string | - | 自定义类名 |
+
+## Accordion.Item Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| value | string | - | 唯一标识符（必填） |
+| title | ReactNode | - | 标题内容（必填） |
+| children | ReactNode | - | 展开后的内容 |

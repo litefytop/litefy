@@ -1,0 +1,42 @@
+## CSS Classes
+
+```css
+// Anchor
+base:"space-y-2"
+
+// Item
+item:"block py-1 text-sm transition-colors indent-2"
+item-active:"text-primary font-medium"
+item-inactive:"text-muted-foreground hover:text-foreground"
+
+// Section
+section:"mb-4"
+section-title:"text-sm font-medium text-foreground mb-2 cursor-pointer hover:text-primary transition-colors"
+```
+
+## API Reference
+
+### Anchor Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| children | ReactNode | - | 子组件 |
+| className | string | - | 自定义类名 |
+
+### Anchor.Item Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| id | string | - | 锚点目标 ID（带 # 前缀） |
+| children | ReactNode | - | 链接文本 |
+| className | string | - | 自定义类名 |
+| onClick | () => void | - | 点击回调 |
+
+### Anchor.Section Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| id | string | - | 锚点目标 ID |
+| title | string | - | 章节标题 |
+| children | ReactNode | - | 子锚点项 |
+| className | string | - | 自定义类名 |

@@ -1,0 +1,36 @@
+## CSS Classes
+
+```css
+// Base
+base:"cursor-pointer outline-none inline-flex items-center justify-center shrink-0 user-select-none
+focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50"
+
+// Variant
+primary: "bg-primary text-primary-foreground hover:bg-primary/90"
+destructive: "bg-destructive text-white hover:bg-destructive/90"
+secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+outline: "border border-primary bg-transparent hover:bg-accent hover:text-accent-foreground"
+ghost: "hover:bg-muted hover:text-muted-foreground"
+link: "text-primary underline-offset-4 hover:underline"
+text: "text-primary hover:text-primary/80"
+
+// Direction
+horizontal: "h-9 min-w-9 px-3 py-1 gap-1 rounded-md"
+vertical: "flex-col gap-2 px-3 py-1"
+
+// Icon
+[&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0
+```
+
+## API Reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| variant | "primary" \| "secondary" \| "destructive" \| "outline" \| "ghost" \| "link" \| "text" | "primary" | 按钮样式变体 |
+| direction | "horizontal" \| "vertical" | "horizontal" | 内容排列方向 |
+| loading | { loading?: boolean; icon?: ReactNode } | - | 加载状态配置 |
+| disabled | boolean | false | 禁用状态 |
+| size | - | - | 继承自 ButtonPrimitive |
+| children | ReactNode | - | 按钮内容 |
+| onClick | () => void | - | 点击事件处理函数 |
+| ...ButtonPrimitiveProps | ButtonPrimitiveProps | - | 继承 ButtonPrimitive 的其他 props |
