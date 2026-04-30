@@ -1,3 +1,3 @@
-export { default as AccordionBasic } from "./AccordionBasic";
-export { default as AccordionMultiple } from "./AccordionMultiple";
-export { default as AccordionControlled } from "./AccordionControlled";
+export { default as AccordionBasic } from "./accordion-basic";
+export { default as AccordionMultiple } from "./accordion-multiple";
+export { default as AccordionControlled } from "./accordion-controlled";

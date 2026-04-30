@@ -1,2 +1,2 @@
-export { default as AnchorBasic } from "./AnchorBasic";
-export { default as AnchorWithSections } from "./AnchorWithSections";
+export { default as AnchorBasic } from "./anchor-basic";
+export { default as AnchorWithSections } from "./anchor-with-sections";

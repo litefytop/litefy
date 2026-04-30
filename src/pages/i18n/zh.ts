@@ -64,15 +64,12 @@ export const zh = {
     description: "手风琴组件，用于展示可折叠的内容区域。",
     basic: {
       title: "基础",
-      description: "基础用法，默认只能展开一个",
     },
     multiple: {
       title: "多个展开",
-      description: "支持多个展开",
     },
     controlled: {
       title: "受控",
-      description: "受控模式，通过 openKeys 和 onOpenChange 控制",
     },
     anatomy: {
       title: "结构",
@@ -89,11 +86,9 @@ export const zh = {
     description: "页面锚点导航组件。",
     basic: {
       title: "基础",
-      description: "基础用法",
     },
     withSections: {
       title: "分组",
-      description: "带分组的锚点",
     },
     anatomy: {
       anchor: "锚点",
@@ -108,15 +103,89 @@ export const zh = {
     description: "复选框组件，用于多选场景。",
     basic: {
       title: "基础",
-      description: "基础用法",
     },
     controlled: {
       title: "受控",
-      description: "受控模式，通过 value 和 onValueChange 控制",
     },
     direction: {
       title: "方向",
-      description: "排列方向",
+    },
+    disabled: {
+      title: "禁用",
+    },
+    variant: {
+      title: "变体",
+    },
+    anatomy: {
+      group: "组",
+      checkbox: "复选框",
+      indicator: "指示器",
+    },
+  },
+
+  description: {
+    title: "描述",
+    description: "辅助描述组件，用于提供额外的说明信息。",
+    basic: {
+      title: "基础用法",
+    },
+  },
+
+  input: {
+    title: "输入框",
+    description: "输入框组件，用于接收用户文本输入。",
+    basic: {
+      title: "基础",
+    },
+    prefixSuffix: {
+      title: "前缀/后缀",
+    },
+    error: {
+      title: "错误状态",
+    },
+    disabled: {
+      title: "禁用",
+    },
+    anatomy: {
+      group: "容器",
+      label: "标签",
+      input: "输入框",
+      leading: "前缀",
+      trailing: "后缀",
+      error: "错误信息",
+      description: "描述",
+    },
+  },
+
+  password: {
+    title: "密码输入框",
+    description: "带显示/隐藏密码功能的输入框。",
+    basic: {
+      title: "基础",
+    },
+    anatomy: {
+      root: "根元素",
+      input: "输入框",
+      toggle: "切换按钮",
+    },
+  },
+
+  "dropdown-menu": {
+    title: "下拉菜单",
+    description: "弹出式菜单组件，用于展示可切换的选项列表。",
+    basic: {
+      title: "基础",
+    },
+    align: {
+      title: "对齐方式",
+    },
+    side: {
+      title: "方向",
+    },
+    anatomy: {
+      root: "根元素",
+      trigger: "触发器",
+      content: "内容",
     },
   },
 
@@ -125,27 +194,21 @@ export const zh = {
     description: "按钮组件，用于触发操作。",
     variants: {
       title: "变体",
-      description: "不同的按钮样式",
     },
     disabled: {
       title: "禁用",
-      description: "禁用状态",
     },
     loading: {
       title: "加载中",
-      description: "加载状态",
     },
     iconOnly: {
       title: "仅图标",
-      description: "只有图标的按钮",
     },
     withIcons: {
       title: "带图标",
-      description: "带图标的按钮",
     },
     direction: {
       title: "方向",
-      description: "图标位置",
     },
   },
-};
+} as const;

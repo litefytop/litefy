@@ -112,7 +112,7 @@ export function Transfer({
           <span className={transferClass.headerTitle}>{titles[0]}</span>
           {showSearch && (
             <Input
-              variant="plain"
+              className="border-0 shadow-none"
               placeholder="搜索..."
               value={leftSearch}
               onChange={(e) => setLeftSearch(e.target.value)}
@@ -163,7 +163,7 @@ export function Transfer({
           <span className={transferClass.headerTitle}>{titles[1]}</span>
           {showSearch && (
             <Input
-              variant="plain"
+              className="border-0 shadow-none"
               placeholder="搜索..."
               value={rightSearch}
               onChange={(e) => setRightSearch(e.target.value)}

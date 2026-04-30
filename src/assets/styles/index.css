@@ -5,6 +5,11 @@
 @import "tw-animate-css";
 
 @layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
   * {
     @apply border-border outline-ring/50;
   }
@@ -15,9 +20,9 @@
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
   }
-  input[type="password"]::-ms-reveal{
+  input[type="password"]::-ms-reveal {
     display: none;
-}
+  }
 }
 
 ::-webkit-scrollbar {
@@ -38,10 +43,3 @@
   @apply bg-foreground/60;
 }
 
-
-@font-face {
-  font-family: 'SIMLI';
-  src: url('@/assets/font/SIMLI.TTF') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}

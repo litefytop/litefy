@@ -64,15 +64,12 @@ export const en = {
     description: "Accordion component for collapsible content areas.",
     basic: {
       title: "Basic",
-      description: "Basic usage, only one item can be expanded by default",
     },
     multiple: {
       title: "Multiple",
-      description: "Allow multiple items to be expanded",
     },
     controlled: {
       title: "Controlled",
-      description: "Controlled mode, controlled by openKeys and onOpenChange",
     },
     anatomy: {
       title: "Anatomy",
@@ -89,11 +86,9 @@ export const en = {
     description: "Anchor navigation for quick page positioning.",
     basic: {
       title: "Basic",
-      description: "Basic usage",
     },
     withSections: {
       title: "With Sections",
-      description: "Anchor with sections",
     },
     anatomy: {
       anchor: "Anchor",
@@ -108,15 +103,89 @@ export const en = {
     description: "Checkbox component for multi-select scenarios.",
     basic: {
       title: "Basic",
-      description: "Basic usage",
     },
     controlled: {
       title: "Controlled",
-      description: "Controlled mode with value and onValueChange",
     },
     direction: {
       title: "Direction",
-      description: "Icon position",
+    },
+    disabled: {
+      title: "Disabled",
+    },
+    variant: {
+      title: "Variant",
+    },
+    anatomy: {
+      group: "Group",
+      checkbox: "Checkbox",
+      indicator: "Indicator",
+    },
+  },
+
+  description: {
+    title: "Description",
+    description: "Auxiliary description component for providing additional information.",
+    basic: {
+      title: "Basic",
+    },
+  },
+
+  input: {
+    title: "Input",
+    description: "Input component for receiving user text input.",
+    basic: {
+      title: "Basic",
+    },
+    prefixSuffix: {
+      title: "Prefix/Suffix",
+    },
+    error: {
+      title: "Error State",
+    },
+    disabled: {
+      title: "Disabled",
+    },
+    anatomy: {
+      group: "Container",
+      label: "Label",
+      input: "Input",
+      leading: "Leading",
+      trailing: "Trailing",
+      error: "Error",
+      description: "Description",
+    },
+  },
+
+  password: {
+    title: "Password",
+    description: "Input component with show/hide password toggle.",
+    basic: {
+      title: "Basic",
+    },
+    anatomy: {
+      root: "Root",
+      input: "Input",
+      toggle: "Toggle Button",
+    },
+  },
+
+  "dropdown-menu": {
+    title: "Dropdown Menu",
+    description: "Popover menu component for displaying toggleable option lists.",
+    basic: {
+      title: "Basic",
+    },
+    align: {
+      title: "Alignment",
+    },
+    side: {
+      title: "Side",
+    },
+    anatomy: {
+      root: "Root",
+      trigger: "Trigger",
+      content: "Content",
     },
   },
 
@@ -125,27 +194,21 @@ export const en = {
     description: "Button component for triggering actions.",
     variants: {
       title: "Variants",
-      description: "Different button variants",
     },
     disabled: {
       title: "Disabled",
-      description: "Disabled state",
     },
     loading: {
       title: "Loading",
-      description: "Loading state",
     },
     iconOnly: {
       title: "Icon Only",
-      description: "Icon only button",
     },
     withIcons: {
       title: "With Icons",
-      description: "Button with icons",
     },
     direction: {
       title: "Direction",
-      description: "Icon position",
     },
   },
-};
+} as const;

@@ -13,27 +13,24 @@ export * from "./show";
 export * from "./button";
 export * from "./checkbox";
 export * from "./input";
-export * from "./input-group";
 export * from "./radio";
-export * from "./select";
+
 export * from "./slider";
 export * from "./label";
 export * from "./textarea";
 
-export * from "./form";
 
-export * from "./search";
+
 export * from "./sidebar";
 export * from "./paper";
 export * from "./pagination";
 export * from "./transfer";
 export * from "./toast";
 export * from "./overlay";
-export * from "./table";
+
 export * from "./dropdown-menu";
 export * from "./password";
 export * from "./theme";
-export * from "./code-block";
 export * from "./accordion";
 export * from "./icons";
 export * from "./anchor";

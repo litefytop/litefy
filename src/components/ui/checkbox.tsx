@@ -15,15 +15,20 @@ import {
 } from "react";
 
 const checkboxGroupClass = {
-  base: "w-full flex gap-2 inert:pointer-events-none inert:opacity-50",
   direction: {
     horizontal: "flex-wrap",
     vertical: "flex-col",
   },
 };
 
-const checkboxClass =
-  "inline-flex items-center justify-center gap-2 shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 px-3 cursor-pointer data-[state=checked]:text-primary-foreground";
+const checkboxClass = {
+    primary:
+      "data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground",
+    secondary:
+      "data-[state=checked]:bg-secondary data-[state=checked]:text-secondary-foreground",
+    outlined: "data-[state=checked]:outline data-[state=checked]:outline-primary",
+    text: "data-[state=checked]:text-primary",
+  }
 
 export type CheckboxContextProps = {
   checkedMap: Map<string, boolean>;
@@ -70,6 +75,7 @@ function CheckboxGroup<T extends string>({
   onValueChange,
   invalid,
   className,
+  disabled,
   direction = "horizontal",
   ...props
 }: CheckboxGroupProps<T>) {
@@ -85,21 +91,20 @@ function CheckboxGroup<T extends string>({
     }
     return map;
   });
-  const [focusValue, setFocusValue] = useState("");
   const setValue = (value: string, checked: boolean) => {
-    setFocusValue(value);
-
-    setCheckedMap((map) => {
-      if (checked) {
+    if (checked) {
+      setCheckedMap((map) => {
         map.set(value, true);
-      } else {
+        return map;
+      });
+    } else {
+      setCheckedMap((map) => {
         map.delete(value);
-      }
-      return map;
-    });
+        return map;
+      });
+    }
 
-    const arrayValue = Array.from(checkedMap.keys());
-    onValueChange?.(arrayValue as T[]);
+    onValueChange?.(Array.from(checkedMap.keys()) as T[]);
   };
 
   const register = (value: string) => {
@@ -128,8 +133,10 @@ function CheckboxGroup<T extends string>({
     const allValues = itemsRef.current;
     if (allValues.length === 0) return;
 
-    const currentIndex = focusValue
-      ? (indexMapRef.current.get(focusValue) ?? -1)
+    const currentFocusValue = (document.activeElement as HTMLButtonElement)
+      ?.value;
+    const currentIndex = currentFocusValue
+      ? (indexMapRef.current.get(currentFocusValue) ?? -1)
       : -1;
     let targetIndex: number;
 
@@ -148,13 +155,7 @@ function CheckboxGroup<T extends string>({
       case "End":
         targetIndex = allValues.length - 1;
         break;
-      case " ":
-        if (focusValue) {
-          e.preventDefault();
-          const isChecked = checkedMap.has(focusValue);
-          setValue(focusValue, !isChecked);
-        }
-        return;
+
       default:
         return;
     }
@@ -162,7 +163,7 @@ function CheckboxGroup<T extends string>({
     e.preventDefault();
     const nextValue = allValues[targetIndex];
     const nextElement = groupRef.current?.querySelector(
-      `[data-checkbox-value="${nextValue}"]`,
+      `[value="${nextValue}"]`,
     ) as HTMLElement;
     nextElement?.focus();
   };
@@ -174,9 +175,10 @@ function CheckboxGroup<T extends string>({
         role="group"
         aria-invalid={invalid}
         ref={groupRef}
+        inert={props.inert || disabled}
         onKeyDown={handleKeyDown}
         className={cn(
-          checkboxGroupClass.base,
+          "w-full flex inert:pointer-events-none inert:opacity-50",
           checkboxGroupClass.direction[direction],
           className,
         )}
@@ -193,6 +195,8 @@ function CheckboxGroup<T extends string>({
   );
 }
 
+export type CheckboxVariant = keyof typeof checkboxClass;
+
 export type CheckboxProps = Omit<
   ComponentProps<"button">,
   "value" | "onChange"
@@ -200,10 +204,13 @@ export type CheckboxProps = Omit<
   onCheckedChange?: (checked: boolean) => void;
   value: string;
   disabled?: boolean;
+  variant?: CheckboxVariant;
   indicator?: {
-    enable: boolean;
-    checked: ReactNode;
-    unchecked: ReactNode;
+    checked?: ReactNode;
+    unchecked?: ReactNode;
+    hidden?: boolean;
+    className?: ClassNameValue;
+    props?: ComponentProps<"span">;
   };
   toggle?: boolean;
   className?: ClassNameValue;
@@ -215,22 +222,21 @@ export const Checkbox = ({
   onCheckedChange,
   id: propsId,
   disabled: controlledDisable,
+  variant = "text",
   className,
-  indicator = {
-    checked: <CheckIcon />,
-    unchecked: <SquareIcon />,
-    enable: true,
-  },
+  indicator,
   ...props
 }: CheckboxProps) => {
+  const resolvedIndicator = {
+    checked: <CheckIcon />,
+    unchecked: <SquareIcon />,
+    hidden: false,
+    ...indicator,
+  };
   const id = useId();
   const { checkedMap, setValue, register, unregister } = useCheckboxContext();
 
   const [isChecked, setIsChecked] = useState(() => checkedMap.has(value));
-
-  useEffect(() => {
-    setIsChecked(checkedMap.has(value));
-  }, [checkedMap, value]);
 
   useEffect(() => {
     register(value);
@@ -244,26 +250,44 @@ export const Checkbox = ({
     const newChecked = !isChecked;
     setValue(value, newChecked);
     onCheckedChange?.(newChecked);
-    console.log(isChecked);
+    setIsChecked(newChecked);
+  };
 
+  const handleKeyDown: React.KeyboardEventHandler<HTMLButtonElement> = (e) => {
+    if (e.key === " ") {
+      e.preventDefault();
+      handleClick();
+    }
   };
 
   return (
     <button
       {...props}
       id={propsId ?? id}
-      data-checkbox-value={value}
-      data-state={isChecked ? "on" : "off"}
+      value={value}
+      data-state={isChecked ? "checked" : "unchecked"}
       type="button"
       role="checkbox"
       aria-checked={isChecked}
       tabIndex={0}
       disabled={disable}
       onClick={handleClick}
-      className={cn(checkboxClass, className)}
+      onKeyDown={handleKeyDown}
+      className={cn(
+        "inline-flex items-center justify-center gap-2 shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 px-3 cursor-pointer",
+        checkboxClass[variant],
+        className,
+      )}
     >
-      {isChecked && indicator.checked}
-      {isChecked == false && indicator.unchecked}
+      {!resolvedIndicator.hidden && (
+        <span
+          {...resolvedIndicator.props}
+          className={cn("data-[state=checked]:[&_svg]:fill-inherit data-[state=checked]:fill-primary data-[state=checked]:text-primary-foreground", resolvedIndicator.className)}
+          data-state={isChecked ? "checked" : "unchecked"}
+        >
+          {isChecked ? resolvedIndicator.checked : resolvedIndicator.unchecked}
+        </span>
+      )}
       {props.children}
     </button>
   );

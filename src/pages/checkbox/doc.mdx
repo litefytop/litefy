@@ -1,22 +1,3 @@
-## CSS Classes
-
-```css
-// CheckboxGroup Base
-base: "w-full flex gap-2"
-
-// Direction
-horizontal: "flex-wrap"
-vertical: "flex-col"
-
-// Checkbox Item
-item: "flex items-center h-9 px-2 gap-2 cursor-pointer 
-      focus-visible:[&_svg]:fill-ring 
-      aria-invalid:[&_svg]:stroke-destructive/20 
-      data-[state=on]:[&_svg]:fill-primary data-[state=on]:[&_svg]:stroke-primary-foreground 
-      disabled:opacity-50 disabled:text-muted-foreground 
-      disabled:[&_svg]:fill-muted disabled:[&_svg]:stroke-muted"
-```
-
 ## API Reference
 
 ### Checkbox.Group Props
@@ -28,12 +9,26 @@ item: "flex items-center h-9 px-2 gap-2 cursor-pointer
 | onValueChange | (value: T[]) => void | - | 值变化回调 |
 | direction | "horizontal" \| "vertical" | "horizontal" | 排列方向 |
 | disabled | boolean | false | 是否禁用整组 |
-| className | string | - | 自定义类名 |
+| className | ClassNameValue | - | 自定义类名 |
+| children | ReactNode | - | 子元素 |
 
 ### Checkbox Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | value | string | - | 唯一标识符（必填） |
-| disabled | boolean | false | 是否禁用 |
+| variant | "text" \| "primary" \| "secondary" \| "outlined" | "text" | 样式变体 |
+| disabled | boolean | false | 是否禁用单个 |
+| indicator | object | - | 指示器配置 |
 | children | ReactNode | - | 显示文本 |
+| className | ClassNameValue | - | 自定义类名 |
+
+### indicator 配置
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|---------|------|
+| checked | ReactNode | \<CheckIcon /\> | 选中时的指示器 |
+| unchecked | ReactNode | \<SquareIcon /\> | 未选中时的指示器 |
+| hidden | boolean | false | 是否隐藏指示器 |
+| className | ClassNameValue | - | 指示器自定义类名 |
+| props | React.ComponentProps<"span"> | - | 指示器元素属性透传 |

@@ -3,14 +3,15 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { CopyIcon, CheckIcon } from "@/components/ui/icons";
 import { toast } from "sonner";
-import { Anchor, Title, Description, CodeBlock } from "@/components";
+import { Anchor, Title, Description } from "@/components";
+import { CodeBlock } from "@/pages/component/code-block";
 import { ShikiCodeBlock } from "@/pages/component/shiki-code-block";
 import { Anatomy } from "@/pages/component/anatomy";
 import { AnchorBasic, AnchorWithSections } from "./examples";
 import { zh } from "@/pages/i18n";
 
-import AnchorBasicRaw from "./examples/AnchorBasic.tsx?raw";
-import AnchorWithSectionsRaw from "./examples/AnchorWithSections.tsx?raw";
+import AnchorBasicRaw from "./examples/anchor-basic.tsx?raw";
+import AnchorWithSectionsRaw from "./examples/anchor-with-sections.tsx?raw";
 import anchorDoc from "./doc.mdx?raw";
 import anchorSrc from "@/components/ui/anchor.tsx?raw";
 
@@ -19,13 +20,11 @@ const t = zh;
 function DemoSection({
   id,
   title,
-  description,
   children,
   code,
 }: {
   id: string;
   title: string;
-  description?: string;
   children: React.ReactNode;
   code: string;
 }) {
@@ -37,7 +36,6 @@ function DemoSection({
     >
       <div>
         <Title as="h3">{title}</Title>
-        {description && <Description>{description}</Description>}
       </div>
       <div className="border rounded-lg p-6 w-full overflow-x-auto">
         {children}
@@ -59,7 +57,7 @@ export default function AnchorPage() {
 
   return (
     <div className="flex">
-      <div className="flex-1 w-full max-w-2xl sm:max-w-3xl md:max-w-4xl lg:max-w-5xl xl:max-w-6xl xl:mr-64">
+      <div className="flex-1 w-full">
         <header className="pb-4 mb-4 border-b">
           <Title as="h1">{t.anchor.title}</Title>
           <Description>{t.anchor.description}</Description>
@@ -78,7 +76,6 @@ export default function AnchorPage() {
           <DemoSection
             id="basic"
             title={t.anchor.basic.title}
-            description={t.anchor.basic.description}
             code={AnchorBasicRaw}
           >
             <AnchorBasic />
@@ -87,7 +84,6 @@ export default function AnchorPage() {
           <DemoSection
             id="sections"
             title={t.anchor.withSections.title}
-            description={t.anchor.withSections.description}
             code={AnchorWithSectionsRaw}
           >
             <AnchorWithSections />
@@ -161,10 +157,8 @@ export default function AnchorPage() {
               <Anchor.Item id="#sections">{t.anchor.withSections.title}</Anchor.Item>
             </Anchor.Section>
             <Anchor.Section id="anatomy" title={t.anatomy} />
-            <Anchor.Section id="docs" title={t.docs}>
-              <Anchor.Item id="#css-classes">{t.cssClasses}</Anchor.Item>
-              <Anchor.Item id="#api">{t.api}</Anchor.Item>
-            </Anchor.Section>
+            <Anchor.Section id="docs" title={t.docs}/>
+
           </Anchor>
       </aside>
     </div>

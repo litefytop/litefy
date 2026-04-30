@@ -1,62 +1,52 @@
 "use client";
 
 import { useState } from "react";
-import { Input } from "./input";
+import { cn } from "@/lib/utils";
+import { EyeIcon, EyeOffIcon } from "./icons";
 
 export type PasswordProps = Omit<
-  React.ComponentPropsWithoutRef<typeof Input>,
-  "type"
->;
-
-export function Password({ ...props }: PasswordProps) {
-  const [showPassword, setShowPassword] = useState(false);
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
+  React.ComponentProps<"input">,
+  "type" | "className"
+> & {
+  className?: string;
+  itemProps?: {
+    root?: React.HTMLAttributes<HTMLDivElement>;
+    toggle?: React.ButtonHTMLAttributes<HTMLButtonElement>;
   };
+};
+
+export function Password({ className, itemProps, ...props }: PasswordProps) {
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
-    <div className="flex items-center">
-      <Input type={showPassword ? "text" : "password"} {...props} />
+    <div
+      {...itemProps?.root}
+      className={cn("relative", className, itemProps?.root?.className)}
+    >
+      <input
+        type={showPassword ? "text" : "password"}
+        className={cn(
+          "border-input bg-background w-full rounded-md border shadow-xs outline-none h-8 px-3 py-1 text-sm",
+          "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+          "placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground",
+          "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+        )}
+        {...props}
+      />
       <button
         type="button"
-        className="ml-1 p-1 hover:bg-muted rounded-md cursor-pointer"
-        onClick={togglePasswordVisibility}
+        {...itemProps?.toggle}
+        className={cn(
+          "absolute right-3 top-1/2 -translate-y-1/2 hover:bg-muted rounded-md cursor-pointer p-1 text-muted-foreground",
+          itemProps?.toggle?.className
+        )}
+        onClick={() => setShowPassword(!showPassword)}
         aria-label={showPassword ? "隐藏密码" : "显示密码"}
       >
         {showPassword ? (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="size-4"
-          >
-            <path d="m15 18-.722-3.25" />
-            <path d="M2 8a10.645 10.645 0 0 0 20 0" />
-            <path d="m20 15-1.726-2.05" />
-            <path d="m4 15 1.726-2.05" />
-            <path d="m9 18 .722-3.25" />
-          </svg>
+          <EyeOffIcon className="size-4" />
         ) : (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="size-4"
-          >
-            <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
-            <circle cx="12" cy="12" r="3" />
-          </svg>
+          <EyeIcon className="size-4" />
         )}
       </button>
     </div>

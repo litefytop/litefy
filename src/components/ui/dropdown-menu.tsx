@@ -2,13 +2,9 @@
 
 import * as React from "react";
 import { cn, type ClassNameValue } from "@/lib";
+import { Button, ButtonProps } from "./button";
 
-type DropdownMenuContextValue = {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-};
-
-const DropdownMenuContext = React.createContext<DropdownMenuContextValue | null>(null);
+const DropdownMenuContext = React.createContext<string | null>(null);
 
 function useDropdownMenu() {
   const context = React.useContext(DropdownMenuContext);
@@ -20,99 +16,140 @@ function useDropdownMenu() {
 
 export function DropdownMenu({
   children,
-  open,
-  onOpenChange,
   className,
-}: {
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> & {
   children?: React.ReactNode;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
   className?: ClassNameValue;
 }) {
-  const [internalOpen, setInternalOpen] = React.useState(false);
-  const isControlled = open !== undefined;
-  const currentOpen = isControlled ? open : internalOpen;
-  const setOpen = isControlled ? onOpenChange! : setInternalOpen;
+  const contentId = React.useId();
 
   return (
-    <DropdownMenuContext.Provider value={{ open: currentOpen, setOpen }}>
-      <div className={cn("relative inline-block", className)}>{children}</div>
+    <DropdownMenuContext.Provider value={contentId}>
+      <div className={cn("inline-flex", className)} {...props}>
+        {children}
+      </div>
     </DropdownMenuContext.Provider>
   );
 }
 
-DropdownMenu.Trigger = DropdownMenuTrigger;
-DropdownMenu.Content = DropdownMenuContent;
-
 export function DropdownMenuTrigger({
   children,
   className,
+  target: externalTarget,
   ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
-  const id = React.useId();
+}: ButtonProps & {
+  target?: string;
+}) {
+  const contextContentId = useDropdownMenu();
+  const contentId = externalTarget || contextContentId;
+  const anchorName = `--anchor-${contentId}`;
 
   return (
-    <button
-      type="button"
-      className={cn(className)}
-      {...{ popoverTarget: id, popoverTargetAction: "toggle" } as React.ButtonHTMLAttributes<HTMLButtonElement>}
+    <Button
+      popoverTarget={contentId}
+      popoverTargetAction="toggle"
+      aria-haspopup="menu"
+      className={className}
+      style={{ anchorName } as React.CSSProperties}
       {...props}
     >
       {children}
-    </button>
+    </Button>
   );
-}
-
-const dropdownMenuContentClass = {
-  base: "bg-popover text-popover-foreground z-50 min-w-32 rounded-md border p-1 shadow-md",
-  align: {
-    start: "left-0",
-    center: "left-1/2 -translate-x-1/2",
-    end: "right-0",
-  },
-};
-
-export function DropdownMenuContent({
+}export function DropdownMenuContent({
   children,
   className,
-  align = "start",
-}: React.HTMLAttributes<HTMLDivElement> & {
-  align?: "start" | "center" | "end";
+  x_axis = "center",
+  y_axis = "end",
+  popover = "auto",
+  id: externalId,
+  ...props
+}: React.HTMLAttributes<HTMLMenuElement> & {
+  x_axis?: "start" | "center" | "end";
+  y_axis?: "start" | "center" | "end";
+  popover?: "auto" | "manual"|"hint" ;
+  id?: string;
 }) {
-  const { open } = useDropdownMenu();
-  const id = React.useId();
-  const [mounted, setMounted] = React.useState(false);
+  const contextContentId = useDropdownMenu();
+  const contentId = externalId || contextContentId;
+  const anchorName = `--anchor-${contentId}`;
+  const menuRef = React.useRef<HTMLMenuElement>(null);
+
+
 
   React.useEffect(() => {
-    setMounted(true);
+    const menu = menuRef.current;
+    if (!menu) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        const items = menu.querySelectorAll<HTMLButtonElement>(
+          "li button:not([disabled])",
+        );
+        if (items.length === 0) return;
+
+        const currentIndex = Array.from(items).findIndex(
+          (item) => item === document.activeElement,
+        );
+
+        let nextIndex: number;
+        if (e.key === "ArrowDown") {
+          nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % items.length;
+        } else {
+          nextIndex = currentIndex <= 0 ? items.length - 1 : currentIndex - 1;
+        }
+
+        items[nextIndex]?.focus();
+      }
+    };
+
+    const handleToggle = () => {
+      // Use the popoverOpen property for reliable state detection
+      if (
+        menu.matches(":popover-open") ||
+        (menu as HTMLMenuElement & { popoverOpen?: boolean }).popoverOpen
+      ) {
+        const items = menu.querySelectorAll<HTMLButtonElement>(
+          "li button:not([disabled])",
+        );
+        setTimeout(() => items[0]?.focus(), 0);
+      }
+    };
+
+    menu.addEventListener("keydown", handleKeyDown);
+    menu.addEventListener("toggle", handleToggle);
+
+    return () => {
+      menu.removeEventListener("keydown", handleKeyDown);
+      menu.removeEventListener("toggle", handleToggle);
+    };
   }, []);
 
-  React.useEffect(() => {
-    if (!open && mounted) {
-      const el = document.getElementById(id);
-      el?.hidePopover();
-    }
-  }, [open, mounted, id]);
 
-  if (!mounted) return null;
 
   return (
-    <div
-      id={id}
-      {...{ popover: "manual" } as React.HTMLAttributes<HTMLDivElement>}
+    <menu
+      ref={menuRef}
+      id={contentId}
+      popover={popover}
       className={cn(
-        dropdownMenuContentClass.base,
-        dropdownMenuContentClass.align[align],
-        !open && "hidden",
-        className
+        "bg-popover text-popover-foreground min-w-32 rounded-md border p-1 shadow-md list-none m-0",
+        className,
       )}
+      style={
+        {
+          positionAnchor: anchorName,
+          positionArea: `${y_axis} ${x_axis}`,
+        } as React.CSSProperties
+      }
+      {...props}
     >
       {children}
-    </div>
+    </menu>
   );
 }
-
-const dropdownMenuItemClass = "relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-hidden transition-colors focus:bg-accent focus:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 hover:bg-accent hover:text-accent-foreground";
 
 export function DropdownMenuItem({
   children,
@@ -123,24 +160,29 @@ export function DropdownMenuItem({
 }: React.ButtonHTMLAttributes<HTMLButtonElement> & {
   disabled?: boolean;
 }) {
-  const { setOpen } = useDropdownMenu();
-
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (disabled) return;
     onClick?.(e);
-    setOpen(false);
   };
 
   return (
-    <button
-      type="button"
-      disabled={disabled}
-      onClick={handleClick}
-      className={cn(dropdownMenuItemClass, className)}
-      {...props}
-    >
-      {children}
-    </button>
+    <li className="m-0 p-0">
+      <button
+        type="button"
+        disabled={disabled}
+        onClick={handleClick}
+        className={cn(
+          "w-full text-start px-2 py-1.5 text-sm rounded-sm cursor-pointer",
+          "hover:bg-accent hover:text-accent-foreground",
+          "focus-visible:outline-none focus-visible:bg-accent focus-visible:text-accent-foreground",
+          "disabled:pointer-events-none disabled:opacity-50",
+          className,
+        )}
+        {...props}
+      >
+        {children}
+      </button>
+    </li>
   );
 }
 
@@ -150,7 +192,9 @@ export function DropdownMenuSeparator({
   className?: ClassNameValue;
 }) {
   return (
-    <div className={cn("-mx-1 my-1 h-px bg-muted", className)} />
+    <li className="m-0">
+      <div className={cn("-mx-1 my-1 h-px bg-muted", className)} />
+    </li>
   );
 }
 
@@ -162,8 +206,11 @@ export function DropdownMenuLabel({
   className?: ClassNameValue;
 }) {
   return (
-    <div className={cn("px-2 py-1.5 text-sm font-semibold", className)}>
+    <li className={cn("m-0 px-2 py-1.5 text-sm font-semibold", className)}>
       {children}
-    </div>
+    </li>
   );
 }
+
+DropdownMenu.Trigger = DropdownMenuTrigger;
+DropdownMenu.Content = DropdownMenuContent;

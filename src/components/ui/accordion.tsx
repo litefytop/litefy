@@ -27,35 +27,48 @@ type AccordionItemProps = Omit<React.ComponentProps<"div">, "className"> & {
   value: string;
   title: React.ReactNode;
   className?: ClassNameValue;
+  itemProps?: {
+    trigger?: React.ComponentProps<"button">;
+    title?: React.ComponentProps<"span">;
+    content?: React.ComponentProps<"div">;
+  };
 };
 
 function AccordionItem({
   value,
   title,
   className,
+  itemProps: itemLevelProps,
   children,
   ...props
 }: AccordionItemProps) {
-  const { openKeys, onToggle, itemProps } = useAccordionContext();
+  const { openKeys, onToggle, itemProps: contextItemProps } = useAccordionContext();
   const isOpen = openKeys.includes(value);
+
+  // 合并配置：item 级别覆盖 context 级别
+  const mergedItemProps = {
+    trigger: { ...contextItemProps?.trigger, ...itemLevelProps?.trigger },
+    title: { ...contextItemProps?.title, ...itemLevelProps?.title },
+    content: { ...contextItemProps?.content, ...itemLevelProps?.content },
+  };
 
   return (
     <div className={cn("border rounded-lg overflow-hidden", className)} {...props}>
       <button
-        {...itemProps?.trigger}
+        {...mergedItemProps.trigger}
         onClick={(e) => {
-          itemProps?.trigger?.onClick?.(e);
+          mergedItemProps.trigger?.onClick?.(e);
           onToggle(value);
         }}
-        className={cn("flex items-center justify-between w-full px-4 py-3 bg-muted/50 hover:bg-muted transition-colors text-left", itemProps?.trigger?.className)}
+        className={cn("flex items-center justify-between w-full px-4 py-3 bg-muted/50 hover:bg-muted transition-colors text-left", mergedItemProps.trigger?.className)}
       >
-        <span {...itemProps?.title} className={cn("flex items-center gap-2", itemProps?.title?.className)}>
+        <span {...mergedItemProps.title} className={cn("flex items-center gap-2", mergedItemProps.title?.className)}>
           {isOpen ? <CaretDownIcon /> : <CaretRightIcon />}
           {title}
         </span>
       </button>
       {isOpen && (
-        <div {...itemProps?.content} className={cn("p-4 border-t bg-background", itemProps?.content?.className)}>
+        <div {...mergedItemProps.content} className={cn("p-4 border-t bg-background", mergedItemProps.content?.className)}>
           {children}
         </div>
       )}

@@ -3,7 +3,7 @@ import { cn } from "@/lib";
 
 interface AnatomyContextValue {
   activePart: string | null;
-  setActivePart: (part: string | null) => void;
+  setActivePart: (part: string | null, partType?: 'id' | 'name') => void;
   containerRef: React.RefObject<HTMLDivElement | null>;
 }
 
@@ -21,7 +21,8 @@ interface AnatomyProps {
   title?: string;
   children: React.ReactNode;
   parts: {
-    id: string;
+    id?: string;
+    name?: string;
     label: string;
   }[];
   className?: string;
@@ -31,16 +32,20 @@ export function Anatomy({ title = "Anatomy", children, parts, className }: Anato
   const [activePart, setActivePart] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleSetActive = (part: string | null) => {
+  const handleSetActive = (part: string | null, partType: 'id' | 'name' = 'id') => {
     if (!containerRef.current) return;
 
     if (activePart) {
-      const prevEl = document.getElementById(activePart);
+      const prevEl = partType === 'id' 
+        ? document.getElementById(activePart)
+        : containerRef.current.querySelector(`[data-anatomy-name="${activePart}"]`);
       prevEl?.classList.remove('anatomy-highlight');
     }
 
     if (part) {
-      const newEl = document.getElementById(part);
+      const newEl = partType === 'id'
+        ? document.getElementById(part)
+        : containerRef.current.querySelector(`[data-anatomy-name="${part}"]`);
       newEl?.classList.add('anatomy-highlight');
     }
 
@@ -63,7 +68,12 @@ export function Anatomy({ title = "Anatomy", children, parts, className }: Anato
           <p className="text-sm font-medium text-muted-foreground">{title}</p>
           <div className="grid grid-cols-2 gap-2">
             {parts.map((part) => (
-              <AnatomyItem key={part.id} id={part.id} label={part.label} />
+              <AnatomyItem 
+                key={part.id || part.name} 
+                id={part.id} 
+                name={part.name} 
+                label={part.label} 
+              />
             ))}
           </div>
         </div>
@@ -72,13 +82,15 @@ export function Anatomy({ title = "Anatomy", children, parts, className }: Anato
   );
 }
 
-function AnatomyItem({ id, label }: { id: string; label: string }) {
+function AnatomyItem({ id, name, label }: { id?: string; name?: string; label: string }) {
   const { activePart, setActivePart } = useAnatomy();
-  const isActive = activePart === id;
+  const partKey = id || name;
+  const partType = id ? 'id' : 'name';
+  const isActive = activePart === partKey;
 
   return (
     <button
-      onClick={() => setActivePart(isActive ? null : id)}
+      onClick={() => setActivePart(isActive ? null : partKey!, partType)}
       className={cn(
         "w-full text-left px-3 py-2 text-sm rounded-md border transition-colors",
         isActive

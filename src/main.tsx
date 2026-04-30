@@ -5,42 +5,38 @@ import Home from "@/pages/Home";
 import Button from "@/pages/button";
 import Accordion from "@/pages/accordion";
 import Anchor from "@/pages/anchor";
-import InputDemo from "@/pages/InputDemo";
 import Checkbox from "@/pages/checkbox";
-import SliderDemo from "@/pages/SliderDemo";
-import TextareaDemo from "@/pages/TextareaDemo";
-import SelectDemo from "@/pages/SelectDemo";
-import LoadingDemo from "@/pages/LoadingDemo";
-import EmptyDemo from "@/pages/EmptyDemo";
-import SkeletonDemo from "@/pages/SkeletonDemo";
-import SeparatorDemo from "@/pages/SeparatorDemo";
-import ThemeDemo from "@/pages/ThemeDemo";
+import Description from "@/pages/description";
+import Input from "@/pages/input";
+import Password from "@/pages/password";
+import DropdownMenu from "@/pages/dropdown-menu";
+
 import { zh, en } from "@/pages/i18n";
-import ComingSoon from "@/pages/ComingSoon";
+import ComingSoon from "@/pages/component/coming-soon";
 
 const components = [
   { key: "button", Component: Button, href: "/components/button" },
   { key: "accordion", Component: Accordion, href: "/components/accordion" },
   { key: "anchor", Component: Anchor, href: "/components/anchor" },
-  { key: "input", Component: InputDemo, href: "/components/input" },
+  { key: "input", Component: Input, href: "/components/input" },
   { key: "checkbox", Component: Checkbox, href: "/components/checkbox" },
-  { key: "slider", Component: SliderDemo, href: "/components/slider" },
-  { key: "textarea", Component: TextareaDemo, href: "/components/textarea" },
-  { key: "select", Component: SelectDemo, href: "/components/select" },
-  { key: "loading", Component: LoadingDemo, href: "/components/loading" },
-  { key: "empty", Component: EmptyDemo, href: "/components/empty" },
-  { key: "skeleton", Component: SkeletonDemo, href: "/components/skeleton" },
-  { key: "separator", Component: SeparatorDemo, href: "/components/separator" },
-  { key: "theme", Component: ThemeDemo, href: "/components/theme" },
+  { key: "dropdown-menu", Component: DropdownMenu, href: "/components/dropdown-menu" },
+  { key: "slider", Component: ComingSoon, href: "/components/slider" },
+  { key: "textarea", Component: ComingSoon, href: "/components/textarea" },
+  { key: "select", Component: ComingSoon, href: "/components/select" },
+  { key: "loading", Component: ComingSoon, href: "/components/loading" },
+  { key: "empty", Component: ComingSoon, href: "/components/empty" },
+  { key: "skeleton", Component: ComingSoon, href: "/components/skeleton" },
+  { key: "separator", Component: ComingSoon, href: "/components/separator" },
+  { key: "theme", Component: ComingSoon, href: "/components/theme" },
   { key: "title", Component: ComingSoon, href: "/components/title" },
   { key: "text", Component: ComingSoon, href: "/components/text" },
-  { key: "description", Component: ComingSoon, href: "/components/description" },
+  { key: "description", Component: Description, href: "/components/description" },
   { key: "field", Component: ComingSoon, href: "/components/field" },
   { key: "spin", Component: ComingSoon, href: "/components/spin" },
   { key: "img", Component: ComingSoon, href: "/components/img" },
   { key: "watermark", Component: ComingSoon, href: "/components/watermark" },
   { key: "show", Component: ComingSoon, href: "/components/show" },
-  { key: "input-group", Component: ComingSoon, href: "/components/input-group" },
   { key: "radio", Component: ComingSoon, href: "/components/radio" },
   { key: "label", Component: ComingSoon, href: "/components/label" },
   { key: "form", Component: ComingSoon, href: "/components/form" },
@@ -53,9 +49,7 @@ const components = [
   { key: "overlay", Component: ComingSoon, href: "/components/overlay" },
   { key: "table", Component: ComingSoon, href: "/components/table" },
   { key: "sheet", Component: ComingSoon, href: "/components/sheet" },
-  { key: "dropdown-menu", Component: ComingSoon, href: "/components/dropdown-menu" },
-  { key: "password", Component: ComingSoon, href: "/components/password" },
-  { key: "code-block", Component: ComingSoon, href: "/components/code-block" },
+  { key: "password", Component: Password, href: "/components/password" },
 ];
 
 export function getNavItems(locale: "zh" | "en") {

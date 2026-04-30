@@ -15,22 +15,20 @@ import {
   AccordionControlled,
 } from "./examples";
 
-import AccordionBasicRaw from "./examples/AccordionBasic.tsx?raw";
-import AccordionMultipleRaw from "./examples/AccordionMultiple.tsx?raw";
-import AccordionControlledRaw from "./examples/AccordionControlled.tsx?raw";
+import AccordionBasicRaw from "./examples/accordion-basic.tsx?raw";
+import AccordionMultipleRaw from "./examples/accordion-multiple.tsx?raw";
+import AccordionControlledRaw from "./examples/accordion-controlled.tsx?raw";
 import accordionDoc from "./doc.mdx?raw";
 import accordionSrc from "@/components/ui/accordion.tsx?raw";
 
 function DemoSection({
   id,
   title,
-  description,
   children,
   code,
 }: {
   id: string;
   title: string;
-  description?: string;
   children: React.ReactNode;
   code: string;
 }) {
@@ -42,7 +40,6 @@ function DemoSection({
     >
       <div>
         <Title as="h3">{title}</Title>
-        {description && <Description>{description}</Description>}
       </div>
       <div className="border rounded-lg p-6 w-full overflow-x-auto">
         {children}
@@ -65,7 +62,7 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
 
   return (
     <div className="flex">
-      <div className="flex-1 w-full max-w-2xl sm:max-w-3xl md:max-w-4xl lg:max-w-5xl xl:max-w-6xl xl:mr-64">
+      <div className="flex-1 w-full">
         <header className="pb-4 mb-4 border-b">
           <Title as="h1">{lang.accordion.title}</Title>
           <Description>{lang.accordion.description}</Description>
@@ -83,7 +80,6 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
           <DemoSection
             id="basic"
             title={lang.accordion.basic.title}
-            description={lang.accordion.basic.description}
             code={AccordionBasicRaw}
           >
             <AccordionBasic />
@@ -92,7 +88,6 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
           <DemoSection
             id="multiple"
             title={lang.accordion.multiple.title}
-            description={lang.accordion.multiple.description}
             code={AccordionMultipleRaw}
           >
             <AccordionMultiple />
@@ -101,7 +96,6 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
           <DemoSection
             id="controlled"
             title={lang.accordion.controlled.title}
-            description={lang.accordion.controlled.description}
             code={AccordionControlledRaw}
           >
             <AccordionControlled />
@@ -145,24 +139,22 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
             </Accordion>
           </Anatomy>
         </section>
-        <section id="docs" data-anchor-id="docs" className="mt-12 scroll-mt-20">
-          <div className="space-y-2">
-            <Title as="h2">
-              {lang.docs}
-              <button
-                onClick={handleCopy}
-                className="p-1.5 rounded-md hover:bg-muted transition-colors"
-                aria-label={lang.common.copy}
-              >
-                {copied ? (
-                  <CheckIcon className="size-4 text-green-500" />
-                ) : (
-                  <CopyIcon className="size-4" />
-                )}
-              </button>
-            </Title>
-            <Description>{lang.common.copyDocs}</Description>
-          </div>
+        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-4 scroll-mt-20">
+          <Title as="h2" className="mb-4">
+            {lang.docs}
+            <button
+              onClick={handleCopy}
+              className="p-1.5 rounded-md hover:bg-muted transition-colors"
+              aria-label={lang.common.copy}
+            >
+              {copied ? (
+                <CheckIcon className="size-4 text-green-500" />
+              ) : (
+                <CopyIcon className="size-4" />
+              )}
+            </button>
+          </Title>
+          <Description>{lang.common.copyDocs}</Description>
 
           <section
             id="css-classes"
@@ -195,10 +187,8 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
             </Anchor.Item>
           </Anchor.Section>
           <Anchor.Section id="anatomy" title={lang.accordion.anatomy.title} />
-          <Anchor.Section id="docs" title={lang.docs}>
-            <Anchor.Item id="#css-classes">{lang.cssClasses}</Anchor.Item>
-            <Anchor.Item id="#api">{lang.api}</Anchor.Item>
-          </Anchor.Section>
+          <Anchor.Section id="docs" title={lang.docs}/>
+
         </Anchor>
       </aside>
     </div>

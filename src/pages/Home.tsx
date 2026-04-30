@@ -3,7 +3,6 @@ import { Input } from "@/components";
 import { Checkbox } from "@/components";
 import { Slider } from "@/components";
 import { Textarea } from "@/components";
-import { Select } from "@/components";
 import { Title } from "@/components";
 import { Loading } from "@/components";
 import { Empty } from "@/components";
@@ -41,7 +40,6 @@ function Home() {
           <Button variant="outline">Outline</Button>
           <Button variant="ghost">Ghost</Button>
           <Button variant="destructive">Destructive</Button>
-          <Button variant="link">Link</Button>
           <Button loading={{ loading: true }}>Loading</Button>
         </DemoGrid>
       </Section>
@@ -74,15 +72,7 @@ function Home() {
         </div>
       </Section>
 
-      <Section title="Select 选择器">
-        <div className="w-64">
-          <Select placeholder="Select...">
-            <Select.Option label="选项 A" value="a" />
-            <Select.Option label="选项 B" value="b" />
-            <Select.Option label="选项 C" value="c" />
-          </Select>
-        </div>
-      </Section>
+
 
       <Section title="Loading 加载">
         <Loading loading={true}>

@@ -19,9 +19,8 @@ const buttonClass = {
       hover:bg-accent hover:text-accent-foreground 
       dark:border-foreground/40 dark:text-foreground dark:hover:bg-accent dark:hover:text-accent-foreground`,
     ghost: "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50",
-    link: "text-primary underline-offset-4 hover:underline dark:text-primary-foreground",
-    text: "text-primary hover:text-primary/80 dark:text-primary-foreground dark:hover:text-primary-foreground/80"
-  },
+    text: "text-foreground hover:text-foreground/60"
+  }, 
   direction:{
     horizontal:"h-9 min-w-9 px-3 py-1 has-[>svg]:px-2 gap-1 rounded-md",
     vertical:"flex-col gap-2 px-3 py-1"

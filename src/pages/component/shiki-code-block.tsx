@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { createHighlighter } from "shiki";
-import { CodeBlock } from "@/components";
+import { CodeBlock } from "@/pages/component/code-block";
 import { useThemeStore } from "@/components/ui/theme";
 
 const highlighterPromise = createHighlighter({

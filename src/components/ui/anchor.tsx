@@ -62,19 +62,24 @@ type AnchorSectionProps = Omit<React.ComponentProps<"div">, "className"> & {
   id: string;
   title: string;
   className?: ClassNameValue;
+  itemProps?: {
+    title?: Omit<React.ComponentProps<"a">, "href" | "onClick">;
+    nav?: Omit<React.ComponentProps<"nav">, "aria-label">;
+  };
 };
 
 function AnchorSection({
   id,
   title,
   className,
+  itemProps,
   children,
   ...props
 }: AnchorSectionProps) {
   const { setActiveId, scrollToElement } = useAnchorContext();
   const targetId = id.replace(/^#/, "");
 
-  const handleClick = (e: React.MouseEvent<HTMLHeadingElement>) => {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     setActiveId(targetId);
     scrollToElement(targetId);
@@ -82,15 +87,20 @@ function AnchorSection({
 
   return (
     <div id={id} className={cn("mb-4", className)} {...props}>
-      <h4
+      <a
         className="text-sm font-medium text-foreground mb-2 cursor-pointer hover:text-primary transition-colors"
         onClick={handleClick}
+        {...itemProps?.title}
       >
         {title}
-      </h4>
-      <div className="space-y-1">
+      </a>
+      <nav 
+        className="space-y-1" 
+        aria-label="页面内导航"
+        {...itemProps?.nav}
+      >
         {children}
-      </div>
+      </nav>
     </div>
   );
 }
