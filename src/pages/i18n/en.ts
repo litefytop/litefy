@@ -123,6 +123,31 @@ export const en = {
     },
   },
 
+  radio: {
+    title: "Radio",
+    description: "Radio component for single selection scenarios.",
+    basic: {
+      title: "Basic",
+    },
+    controlled: {
+      title: "Controlled",
+    },
+    direction: {
+      title: "Direction",
+    },
+    disabled: {
+      title: "Disabled",
+    },
+    variant: {
+      title: "Variant",
+    },
+    anatomy: {
+      group: "Group",
+      radio: "Radio",
+      indicator: "Indicator",
+    },
+  },
+
   description: {
     title: "Description",
     description: "Auxiliary description component for providing additional information.",

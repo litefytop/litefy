@@ -14,11 +14,9 @@ import {
   useId,
 } from "react";
 
-const checkboxGroupClass = {
-  direction: {
-    horizontal: "flex-wrap",
-    vertical: "flex-col",
-  },
+const checkboxDirectionClass = {
+  horizontal: "flex-wrap",
+  vertical: "flex-col",
 };
 
 const checkboxClass = {
@@ -179,7 +177,7 @@ function CheckboxGroup<T extends string>({
         onKeyDown={handleKeyDown}
         className={cn(
           "w-full flex inert:pointer-events-none inert:opacity-50",
-          checkboxGroupClass.direction[direction],
+          checkboxDirectionClass[direction],
           className,
         )}
       >

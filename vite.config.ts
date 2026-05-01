@@ -33,9 +33,6 @@ export default defineConfig({
       ignored: ["**/src-tauri/**", "**/target/**"],
     },
   },
-  optimizeDeps: {
-    exclude: ["src-tauri", "@cornerstonejs/dicom-image-loader"],
-    include: ["dicom-parser"],
-  },
+
  
 });

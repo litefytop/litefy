@@ -123,6 +123,31 @@ export const zh = {
     },
   },
 
+  radio: {
+    title: "单选框",
+    description: "单选框组件，用于单选场景。",
+    basic: {
+      title: "基础",
+    },
+    controlled: {
+      title: "受控",
+    },
+    direction: {
+      title: "方向",
+    },
+    disabled: {
+      title: "禁用",
+    },
+    variant: {
+      title: "变体",
+    },
+    anatomy: {
+      group: "组",
+      radio: "单选框",
+      indicator: "指示器",
+    },
+  },
+
   description: {
     title: "描述",
     description: "辅助描述组件，用于提供额外的说明信息。",

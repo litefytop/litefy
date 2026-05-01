@@ -9,6 +9,7 @@ import Checkbox from "@/pages/checkbox";
 import Description from "@/pages/description";
 import Input from "@/pages/input";
 import Password from "@/pages/password";
+import Radio from "@/pages/radio";
 import DropdownMenu from "@/pages/dropdown-menu";
 
 import { zh, en } from "@/pages/i18n";
@@ -20,6 +21,7 @@ const components = [
   { key: "anchor", Component: Anchor, href: "/components/anchor" },
   { key: "input", Component: Input, href: "/components/input" },
   { key: "checkbox", Component: Checkbox, href: "/components/checkbox" },
+  { key: "radio", Component: Radio, href: "/components/radio" },
   { key: "dropdown-menu", Component: DropdownMenu, href: "/components/dropdown-menu" },
   { key: "slider", Component: ComingSoon, href: "/components/slider" },
   { key: "textarea", Component: ComingSoon, href: "/components/textarea" },
@@ -37,7 +39,6 @@ const components = [
   { key: "img", Component: ComingSoon, href: "/components/img" },
   { key: "watermark", Component: ComingSoon, href: "/components/watermark" },
   { key: "show", Component: ComingSoon, href: "/components/show" },
-  { key: "radio", Component: ComingSoon, href: "/components/radio" },
   { key: "label", Component: ComingSoon, href: "/components/label" },
   { key: "form", Component: ComingSoon, href: "/components/form" },
   { key: "search", Component: ComingSoon, href: "/components/search" },
