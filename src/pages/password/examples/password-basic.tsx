@@ -1,4 +1,4 @@
-import { Password } from "@/components";
+import { Password } from "@/component";
 
 export default function PasswordBasic() {
   return (

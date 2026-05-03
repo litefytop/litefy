@@ -1,3 +1,51 @@
+<div class="hidden">
+<!-- AI 专用：此区域内容页面不显示，但复制/AI 能完整获取 -->
+
+## 安装
+
+```bash
+npm install @your-org/ui
+```
+
+## 用法
+
+```tsx
+import { Input } from "@/component/ui/input";
+
+function App() {
+  return <Input placeholder="Enter text..." />;
+}
+```
+
+## 示例
+
+### 基础用法
+
+```tsx
+<Input placeholder="Enter text..." />
+```
+
+### 前缀后缀
+
+```tsx
+<Input prefix="https://" suffix=".com" />
+<Input prefix="$" suffix=".00" />
+```
+
+### 错误状态
+
+```tsx
+<Input invalid error="This field is required" />
+```
+
+### 禁用状态
+
+```tsx
+<Input disabled placeholder="Disabled input" />
+```
+
+</div>
+
 ## API Reference
 
 | Prop | Type | Default | Description |

@@ -3,7 +3,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "@/components";
+} from "@/component";
 
 export default function DropdownMenuAlign() {
   return (

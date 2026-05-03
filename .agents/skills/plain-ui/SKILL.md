@@ -64,7 +64,7 @@ src/
 
 ### Component Structure
 
-- **Export components from index.** All UI components should be exported from `@/components`.
+- **Export components from index.** All UI components should be exported from `@/component`.
 - **Use variants for different styles.** `variant="primary"`, `variant="outline"`, etc.
 - **Loading states use `loading` prop.** Not separate `Spinner` component.
 

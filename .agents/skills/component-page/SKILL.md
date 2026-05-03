@@ -14,14 +14,14 @@ This skill creates a new component documentation page following the anchor page 
 1. **安装** - 展示组件源码导入方式
 2. **示例** - 展示组件用法示例
 3. **结构** - 使用 Anatomy 组件展示组件内部元素
-4. **文档** - 从 doc.mdx 引入的 CSS 类和 API 文档
+4. **文档** - 从 doc.mdx 引入的样式和 API 文档（示例已隐藏）
 
 ## 目录结构
 
 ```
 src/pages/<component-name>/
 ├── page.tsx           # 主页面文件
-├── doc.mdx            # CSS Classes 和 API 文档
+├── doc.mdx            # 说明页 MD 格式（示例隐藏，只显示样式和 API）
 ├── index.ts           # 导出配置
 └── examples/          # 示例目录
     ├── index.ts       # 批量导出所有示例
@@ -33,14 +33,16 @@ src/pages/<component-name>/
 
 **必须遵守以下规则，否则会出现类型错误：**
 
-- `t` - i18n 工具函数，**不要直接使用**
-- `lang` - 完整的 i18n 对象，通过 `t(locale as "zh" | "en")` 获取，用于访问通用翻译
-  - 正确：`lang.installation`, `lang.examples`, `lang.anatomy`, `lang.docs`, `lang.common.copySuccess`
-- `l` - 当前组件的翻译，通过 `lang.componentName` 获取，用于访问组件特定翻译
-  - 正确：`l.title`, `l.description`, `l.basic.title`, `l.anatomy.root`
+- `t` - i18n 工具函数，**不要直接使用**（只能用于获取 lang 对象）
+- `lang` - 完整的 i18n 对象，通过 `const lang = t(locale as "zh" | "en")` 获取
+  - 必须在组件函数内部调用：`export default function Page({ locale = "zh" }: { locale?: string }) { const lang = t(locale as "zh" | "en"); }`
+  - 访问通用翻译：`lang.installation`, `lang.examples`, `lang.anatomy`, `lang.docs`, `lang.common.copyDocs`, `lang.common.copySuccess`
+- `l` - 当前组件的翻译，通过 `const l = lang.componentName` 获取
+  - 访问组件特定翻译：`l.title`, `l.description`, `l.basic.title`, `l.anatomy.root`
 
 **禁止：**
-- ❌ 禁止使用 `t.installation`、`t.examples` 等
+- ❌ 禁止使用 `t.installation`、`t.examples` 等（t 不是对象）
+- ❌ 禁止直接使用 `t.xxx`，必须先 `const lang = t(...)` 获取 lang 对象
 - ❌ 禁止使用 `lang.input.xxx`（应该用 `l.xxx`）
 - ❌ 禁止混用变量
 
@@ -54,19 +56,27 @@ src/pages/<component-name>/
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { CopyIcon, CheckIcon } from "@/components/ui/icons";
+import rehypeRaw from "rehype-raw";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CopyIcon,
+  CheckIcon,
+  Anchor,
+  Title,
+  Description,
+  ShikiCodeBlock,
+  Anatomy,
+  Button,
+} from "@/component";
 import { toast } from "sonner";
-import { Anchor, Title, Description, CodeBlock } from "@/components";
-import { Anatomy } from "@/pages/component/anatomy";
-import { Example1, Example2 } from "./examples";  // 从 examples 导入
-import { t } from "@/pages/i18n";
+import { t } from "@/pages";
 
-import Example1Raw from "./examples/Example1.tsx?raw";  // 源码
-import Example2Raw from "./examples/Example2.tsx?raw";  // 源码
-import componentDoc from "./doc.mdx?raw";  // 文档
-import componentSrc from "@/components/ui/component-name.tsx?raw";  // 组件源码
+import Example1Raw from "./examples/Example1.tsx?raw";
+import Example2Raw from "./examples/Example2.tsx?raw";
+import componentDoc from "./doc.mdx?raw";
+import componentSrc from "@/component/component-name.tsx?raw";
 
-// DemoSection 组件：用于包装每个示例
 function DemoSection({
   id,
   title,
@@ -90,34 +100,49 @@ function DemoSection({
       <div className="border rounded-lg p-6 w-full overflow-x-auto">
         {children}
       </div>
-      <CodeBlock>{code}</CodeBlock>
+      <ShikiCodeBlock>{code}</ShikiCodeBlock>
     </section>
   );
 }
 
-// 【关键】i18n 初始化，必须按这个顺序
 export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
-  const lang = t(locale as "zh" | "en");  // 通用翻译
-  const l = lang.componentName;              // 组件翻译
+  const lang = t(locale as "zh" | "en");
+  const l = lang.componentName;
   const [copied, setCopied] = React.useState(false);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(componentDoc);
     setCopied(true);
-    toast.success(lang.common.copySuccess);  // 用 lang.common
+    toast.success(lang.common.copySuccess);
     setTimeout(() => setCopied(false), 2000);
   };
 
   return (
     <div className="flex">
       <div className="flex-1 w-full">
-        {/* 1. 页面标题 - 用 l 获取组件翻译 */}
-        <header className="pb-4 mb-4 border-b">
-          <Title as="h1">{l.title}</Title>
+        <header className="pb-4 mb-4 border-b space-y-3">
+          <div className="flex items-center justify-between">
+            <Title as="h1">{l.title}</Title>
+            <div className="flex items-center gap-2">
+              <Button onClick={handleCopy} variant="ghost">
+                {copied ? (
+                  <CheckIcon className="size-4 text-green-500 mr-1" />
+                ) : (
+                  <CopyIcon className="size-4 mr-1" />
+                )}
+                {lang.common.copyDocs}
+              </Button>
+              <Button variant="ghost">
+                <ArrowLeftIcon className="size-4" />
+              </Button>
+              <Button variant="ghost">
+                <ArrowRightIcon className="size-4" />
+              </Button>
+            </div>
+          </div>
           <Description>{l.description}</Description>
         </header>
 
-        {/* 2. 安装章节 - 用 lang 获取通用翻译 */}
         <section id="installation" className="mb-8 scroll-mt-20">
           <Title as="h2" className="mb-4">
             {lang.installation}
@@ -125,7 +150,6 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
           <ShikiCodeBlock>{componentSrc}</ShikiCodeBlock>
         </section>
 
-        {/* 3. 示例章节 - 用 l 获取组件翻译 */}
         <section id="examples" className=" scroll-mt-20">
           <Title as="h2">{lang.examples}</Title>
 
@@ -146,7 +170,6 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
         </section>
 
-        {/* 4. 结构章节 - 用 l 获取组件翻译 */}
         <section id="anatomy" className="mt-8 space-y-4 scroll-mt-20">
           <Title as="h2">{lang.anatomy}</Title>
           <Anatomy
@@ -161,7 +184,6 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
           </Anatomy>
         </section>
 
-        {/* 5. 文档章节 - 用 lang 获取通用翻译 */}
         <section
           id="docs"
           data-anchor-id="docs"
@@ -169,31 +191,20 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
         >
           <Title as="h2" className="mb-4">
             {lang.docs}
-            <button
-              onClick={handleCopy}
-              className="p-1.5 rounded-md hover:bg-muted transition-colors"
-              aria-label={lang.common.copy}
-            >
-              {copied ? (
-                <CheckIcon className="size-4 text-green-500" />
-              ) : (
-                <CopyIcon className="size-4" />
-              )}
-            </button>
           </Title>
           <section
-            id="css-classes"
-            data-anchor-id="css-classes"
             className="space-y-4 scroll-mt-20 prose dark:prose-invert max-w-none"
           >
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeRaw]}
+            >
               {componentDoc}
             </ReactMarkdown>
           </section>
         </section>
       </div>
 
-      {/* 右侧锚点导航 - 用 lang 获取通用翻译 */}
       <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-[calc(100vh-3.5rem)] overflow-y-auto p-4">
         <Anchor>
           <Anchor.Section id="installation" title={lang.installation} />
@@ -213,8 +224,8 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
 ### 2. examples/index.ts - 批量导出示例
 
 ```ts
-export { default as Example1 } from "./Example1";
-export { default as Example2 } from "./Example2";
+export * from "./Example1";
+export * from "./Example2";
 ```
 
 ### 3. examples/Example1.tsx - 示例组件
@@ -231,24 +242,35 @@ export default function Example1() {
 
 ### 4. doc.mdx - 文档内容
 
-仅包含 API Reference，如果组件导出了 CSS 类（通过 `Component.class = ...`），则添加 CSS Classes 部分：
+支持两种内容：
+1. **可见内容** - 直接写在文件中，页面正常显示
+2. **隐藏内容** - 用 `<div class="hidden">` 包裹，页面不显示但复制/AI 能获取
 
 ```mdx
-## API Reference
+<!-- AI 专用：此区域内容页面不显示，但复制/AI 能完整获取 -->
+<div class="hidden">
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| variant | string | 'default' | 样式变体 |
+## 安装
+
+```bash
+npm install @your-org/ui
 ```
 
-如果组件导出了 CSS 类：
+## 用法
 
-```mdx
-## CSS Classes
-
-```css
-.component {}
+```tsx
+import { Component } from "@/component/ui/component";
 ```
+
+## 示例
+
+### 基础用法
+
+```tsx
+<Component>内容</Component>
+```
+
+</div>
 
 ## API Reference
 
@@ -267,6 +289,24 @@ export default ComponentName;
 ```
 
 ### 6. i18n 翻译配置 (zh.ts / en.ts)
+
+通用翻译 (common)：
+
+```ts
+// zh.ts
+common: {
+  copyDocs: "复制文档",
+  copySuccess: "复制成功",
+}
+
+// en.ts
+common: {
+  copyDocs: "Copy docs",
+  copySuccess: "Copied!",
+}
+```
+
+组件翻译：
 
 ```ts
 componentName: {
@@ -292,26 +332,37 @@ componentName: {
 | 安装 | `installation` | ShikiCodeBlock + 组件源码 |
 | 示例 | `examples` | examples 目录 |
 | 结构 | `anatomy` | Anatomy 组件 |
-| 文档 | `docs` + `css-classes` | doc.mdx 文件 |
+| 文档 | `docs` | doc.mdx 文件 |
 
 ## 重要注意事项
 
-1. **安装部分**：
+1. **Header 部分**：
+   - 使用 `<header className="pb-4 mb-4 border-b space-y-3">`
+   - 第一行：Title + 按钮组（flex justify-between）
+   - 第二行：Description 独占一行
+   - 按钮组使用 Button 组件，包含：复制文档、后退、前进图标按钮
+2. **安装部分**：
    - 使用 `id="installation"`
    - 使用 `ShikiCodeBlock` 展示组件源码
    - Title 使用 `as="h2"`
-2. **示例部分**：
+3. **示例部分**：
    - 使用 `<section id="examples">` 包裹
    - 章节标题 `<Title as="h2">示例</Title>`
    - 每个 DemoSection 内部使用 `<Title as="h3">` 作为三级标题
    - 描述使用 `<Description>` 组件
-3. **DemoSection**：
+4. **DemoSection**：
    - Title 使用 `as="h3"`（示例下的三级目录）
    - children 是渲染的组件
    - code 是源码（通过 `?raw` 导入）
-4. **结构部分**：Anatomy 组件需要在组件上添加对应 id，Title 使用 `as="h2"`
-5. **文档部分**：使用 ReactMarkdown 渲染 doc.mdx 内容
-6. **翻译规则**：
+5. **结构部分**：Anatomy 组件需要在组件上添加对应 id，Title 使用 `as="h2"`
+6. **文档部分**：
+   - 使用 ReactMarkdown 渲染 doc.mdx 内容
+   - 必须添加 `rehypePlugins={[rehypeRaw]}` 支持 HTML 标签
+7. **doc.mdx 隐藏内容**：
+   - 使用 `<div class="hidden">` 包裹不想在页面显示的内容
+   - 隐藏内容在复制/AI 时会完整获取
+   - 注释说明：`<!-- AI 专用：此区域内容页面不显示，但复制/AI 能完整获取 -->`
+8. **翻译规则**：
    - `lang` = 通用翻译对象
    - `l` = 组件翻译对象
    - 通用翻译用 `lang.xxx`（installation, examples, anatomy, docs, common）

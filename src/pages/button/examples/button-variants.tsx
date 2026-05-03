@@ -1,4 +1,4 @@
-import { Button } from "@/components";
+import { Button } from "@/component";
 
 export default function ButtonVariants() {
   return (

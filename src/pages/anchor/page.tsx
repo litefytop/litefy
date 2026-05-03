@@ -1,21 +1,30 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { CopyIcon, CheckIcon } from "@/components/ui/icons";
+import rehypeRaw from "rehype-raw";
+import { useNavigate } from "react-router-dom";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CopyIcon,
+  CheckIcon,
+  Anchor,
+  Title,
+  Description,
+  ShikiCodeBlock,
+  Anatomy,
+  Button,
+} from "@/component";
 import { toast } from "sonner";
-import { Anchor, Title, Description } from "@/components";
-import { CodeBlock } from "@/pages/component/code-block";
-import { ShikiCodeBlock } from "@/pages/component/shiki-code-block";
-import { Anatomy } from "@/pages/component/anatomy";
+import { t } from "@/pages";
+import { getComponentNav } from "@/pages/config/routes";
+
 import { AnchorBasic, AnchorWithSections } from "./examples";
-import { zh } from "@/pages/i18n";
 
 import AnchorBasicRaw from "./examples/anchor-basic.tsx?raw";
 import AnchorWithSectionsRaw from "./examples/anchor-with-sections.tsx?raw";
 import anchorDoc from "./doc.mdx?raw";
-import anchorSrc from "@/components/ui/anchor.tsx?raw";
-
-const t = zh;
+import anchorSrc from "@/component/ui/anchor.tsx?raw";
 
 function DemoSection({
   id,
@@ -40,42 +49,71 @@ function DemoSection({
       <div className="border rounded-lg p-6 w-full overflow-x-auto">
         {children}
       </div>
-      <CodeBlock>{code}</CodeBlock>
+      <ShikiCodeBlock>{code}</ShikiCodeBlock>
     </section>
   );
 }
 
-export default function AnchorPage() {
+export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = React.useState(false);
+  const navigate = useNavigate();
+  const lang = t(locale as "zh" | "en");
+  const nav = getComponentNav("/components/anchor", locale as "zh" | "en");
 
   const handleCopy = () => {
     navigator.clipboard.writeText(anchorDoc);
     setCopied(true);
-    toast.success(t.common.copySuccess);
+    toast.success(lang.common.copySuccess);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handlePrev = () => {
+    if (nav.prev) navigate(`/${locale}${nav.prev.href}`);
+  };
+
+  const handleNext = () => {
+    if (nav.next) navigate(`/${locale}${nav.next.href}`);
   };
 
   return (
     <div className="flex">
       <div className="flex-1 w-full">
-        <header className="pb-4 mb-4 border-b">
-          <Title as="h1">{t.anchor.title}</Title>
-          <Description>{t.anchor.description}</Description>
+        <header className="pb-4 mb-4 border-b space-y-3">
+          <div className="flex items-center justify-between">
+            <Title as="h1">{lang.anchor.title}</Title>
+            <div className="flex items-center gap-2">
+              <Button onClick={handleCopy} variant="ghost">
+                {copied ? (
+                  <CheckIcon className="size-4 text-green-500 mr-1" />
+                ) : (
+                  <CopyIcon className="size-4 mr-1" />
+                )}
+                {lang.common.copyDocs}
+              </Button>
+              <Button variant="ghost" onClick={handlePrev} disabled={!nav.prev}>
+                <ArrowLeftIcon className="size-4" />
+              </Button>
+              <Button variant="ghost" onClick={handleNext} disabled={!nav.next}>
+                <ArrowRightIcon className="size-4" />
+              </Button>
+            </div>
+          </div>
+          <Description>{lang.anchor.description}</Description>
         </header>
 
         <section id="installation" className="mb-8 scroll-mt-20">
           <Title as="h2" className="mb-4">
-            {t.installation}
+            {lang.installation}
           </Title>
           <ShikiCodeBlock>{anchorSrc}</ShikiCodeBlock>
         </section>
 
         <section id="examples" className=" scroll-mt-20">
-          <Title as="h2">{t.examples}</Title>
+          <Title as="h2">{lang.examples}</Title>
 
           <DemoSection
             id="basic"
-            title={t.anchor.basic.title}
+            title={lang.anchor.basic.title}
             code={AnchorBasicRaw}
           >
             <AnchorBasic />
@@ -83,7 +121,7 @@ export default function AnchorPage() {
 
           <DemoSection
             id="sections"
-            title={t.anchor.withSections.title}
+            title={lang.anchor.withSections.title}
             code={AnchorWithSectionsRaw}
           >
             <AnchorWithSections />
@@ -91,21 +129,21 @@ export default function AnchorPage() {
         </section>
 
         <section id="anatomy" className="mt-8 space-y-4 scroll-mt-20">
-          <Title as="h2">{t.anatomy}</Title>
+          <Title as="h2">{lang.anatomy}</Title>
           <Anatomy
             parts={[
-              { id: "anatomy-anchor", label: t.anchor.anatomy.anchor },
-              { id: "anatomy-section", label: t.anchor.anatomy.section },
-              { id: "anatomy-item", label: t.anchor.anatomy.item },
-              { id: "anatomy-link", label: t.anchor.anatomy.link },
+              { id: "anatomy-anchor", label: lang.anchor.anatomy.anchor },
+              { id: "anatomy-section", label: lang.anchor.anatomy.section },
+              { id: "anatomy-item", label: lang.anchor.anatomy.item },
+              { id: "anatomy-link", label: lang.anchor.anatomy.link },
             ]}
           >
             <Anchor className="max-w-xs" id="anatomy-anchor">
-              <Anchor.Section id="anatomy-section" title="Section 1">
-                <Anchor.Item id="anatomy-item" href="#section1">
+              <Anchor.Section href="#anatomy-section" title="Section 1">
+                <Anchor.Item href="#section1">
                   <span id="anatomy-link">Section 1.1</span>
                 </Anchor.Item>
-                <Anchor.Item id="anatomy-item-2" href="#section2">
+                <Anchor.Item href="#section2">
                   Section 1.2
                 </Anchor.Item>
               </Anchor.Section>
@@ -119,11 +157,11 @@ export default function AnchorPage() {
           className="mt-12 space-y-4 scroll-mt-20"
         >
           <Title as="h2" className="mb-4">
-            {t.docs}
+            {lang.docs}
             <button
               onClick={handleCopy}
               className="p-1.5 rounded-md hover:bg-muted transition-colors"
-              aria-label={t.common.copy}
+              aria-label={lang.common.copy}
             >
               {copied ? (
                 <CheckIcon className="size-4 text-green-500" />
@@ -137,7 +175,7 @@ export default function AnchorPage() {
             data-anchor-id="css-classes"
             className="space-y-4 scroll-mt-20 prose dark:prose-invert max-w-none"
           >
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
               {anchorDoc}
             </ReactMarkdown>
           </section>
@@ -151,13 +189,13 @@ export default function AnchorPage() {
 
       <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-[calc(100vh-3.5rem)] overflow-y-auto p-4">
           <Anchor>
-            <Anchor.Section id="installation" title={t.installation} />
-            <Anchor.Section id="examples" title={t.examples}>
-              <Anchor.Item id="#basic">{t.anchor.basic.title}</Anchor.Item>
-              <Anchor.Item id="#sections">{t.anchor.withSections.title}</Anchor.Item>
+            <Anchor.Section href="#installation" title={lang.installation} />
+            <Anchor.Section href="#examples" title={lang.examples}>
+              <Anchor.Item href="#basic">{lang.anchor.basic.title}</Anchor.Item>
+              <Anchor.Item href="#sections">{lang.anchor.withSections.title}</Anchor.Item>
             </Anchor.Section>
-            <Anchor.Section id="anatomy" title={t.anatomy} />
-            <Anchor.Section id="docs" title={t.docs}/>
+            <Anchor.Section href="#anatomy" title={lang.anatomy} />
+            <Anchor.Section href="#docs" title={lang.docs}/>
 
           </Anchor>
       </aside>

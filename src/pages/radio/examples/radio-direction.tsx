@@ -1,4 +1,4 @@
-import { Radio } from "@/components";
+import { Radio } from "@/component";
 
 export default function RadioDirection() {
   return (

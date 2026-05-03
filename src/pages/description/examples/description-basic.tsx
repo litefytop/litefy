@@ -1,4 +1,4 @@
-import { Description } from "@/components";
+import { Description } from "@/component";
 
 export default function DescriptionBasic() {
   return (

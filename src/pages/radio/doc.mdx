@@ -1,29 +1,114 @@
+<div class="hidden">
+<!-- AI 专用：此区域内容页面不显示，但复制/AI 能完整获取 -->
+
+## 安装
+
+```bash
+npm install @your-org/ui
+```
+
+## 用法
+
+```tsx
+import { Radio } from "@/component/ui/radio";
+
+function App() {
+  return (
+    <Radio.Group>
+      <Radio value="1">Option 1</Radio>
+      <Radio value="2">Option 2</Radio>
+    </Radio.Group>
+  );
+}
+```
+
+## 示例
+
+### 基础用法
+
+```tsx
+<Radio.Group>
+  <Radio value="1">Option 1</Radio>
+  <Radio value="2">Option 2</Radio>
+  <Radio value="3">Option 3</Radio>
+</Radio.Group>
+```
+
+### 受控模式
+
+```tsx
+const [value, setValue] = useState("1");
+<Radio.Group value={value} onValueChange={setValue}>
+  <Radio value="1">Option 1</Radio>
+  <Radio value="2">Option 2</Radio>
+</Radio.Group>
+```
+
+### 方向
+
+```tsx
+<Radio.Group direction="horizontal">
+  <Radio value="1">Option 1</Radio>
+  <Radio value="2">Option 2</Radio>
+</Radio.Group>
+
+<Radio.Group direction="vertical">
+  <Radio value="1">Option 1</Radio>
+  <Radio value="2">Option 2</Radio>
+</Radio.Group>
+```
+
+### 禁用状态
+
+```tsx
+<Radio disabled>Disabled</Radio>
+<Radio.Group disabled>
+  <Radio value="1">Disabled Group</Radio>
+</Radio.Group>
+```
+
+### 样式变体
+
+```tsx
+<Radio variant="text">Text</Radio>
+<Radio variant="primary">Primary</Radio>
+<Radio variant="secondary">Secondary</Radio>
+<Radio variant="outlined">Outlined</Radio>
+```
+
+</div>
+
 ## API Reference
 
-### Radio.Group
+### Radio.Group Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| defaultValue | T | - | Default value for uncontrolled mode |
-| value | T | - | Controlled value |
-| onValueChange | (value: T) => void | - | Callback when value changes |
-| direction | horizontal \| vertical | horizontal | Layout direction |
-| disabled | boolean | false | Disable the entire group |
-| invalid | boolean | false | Set invalid state |
-| className | ClassNameValue | - | Additional class name |
+| defaultValue | T | - | 初始选中的值（非受控模式） |
+| value | T | - | 当前选中的值（受控模式） |
+| onValueChange | (value: T) => void | - | 值变化回调 |
+| direction | "horizontal" \| "vertical" | "horizontal" | 排列方向 |
+| disabled | boolean | false | 是否禁用整组 |
+| invalid | boolean | false | 是否无效状态 |
+| className | ClassNameValue | - | 自定义类名 |
 
-### Radio
+### Radio Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| value | string | required | Radio value |
-| variant | primary \| secondary \| outlined \| text | text | Style variant |
-| disabled | boolean | false | Disable this radio item |
-| indicator | object | - | Custom indicator configuration |
-| indicator.checked | ReactNode | - | Custom checked indicator |
-| indicator.unchecked | ReactNode | - | Custom unchecked indicator |
-| indicator.hidden | boolean | false | Hide indicator |
-| indicator.className | ClassNameValue | - | Indicator class name |
-| indicator.props | ComponentProps\<span\> | - | Span props for indicator |
-| onValueChange | (value: string) => void | - | Callback when this radio is selected |
-| className | ClassNameValue | - | Additional class name |
+| value | string | - | 唯一标识符（必填） |
+| variant | "text" \| "primary" \| "secondary" \| "outlined" | "text" | 样式变体 |
+| disabled | boolean | false | 是否禁用单个 |
+| indicator | object | - | 指示器配置 |
+| children | ReactNode | - | 显示文本 |
+| className | ClassNameValue | - | 自定义类名 |
+
+### indicator 配置
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|---------|------|
+| checked | ReactNode | - | 选中时的指示器 |
+| unchecked | ReactNode | - | 未选中时的指示器 |
+| hidden | boolean | false | 是否隐藏指示器 |
+| className | ClassNameValue | - | 指示器自定义类名 |
+| props | React.ComponentProps<"span"> | - | 指示器元素属性透传 |

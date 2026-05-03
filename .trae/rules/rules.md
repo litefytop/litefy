@@ -1,17 +1,38 @@
 # 项目规则
 
+## 项目结构
+
+```
+src/
+├── assets/           # 静态资源
+│   ├── img/          # 图片
+│   ├── font/         # 字体
+│   └── style/        # 样式 CSS 文件
+├── component/        # 项目专用组件
+│   └── ui/           # 项目通用 UI 组件
+├── lib/              # 工具函数和第三方库封装
+└── pages/            # 页面（用户所看到的）
+    └── config/       # 路由和国际化配置
+```
+
 ## 文件命名
 
 - 文件命名始终使用 Kabab-Case
 
-## 代码结构
+## 代码结构与导入规范
 
 - 项目始终使用别名导出而不是相对路径
+- 禁止从子路径导入（如 `@/component/icons`、`@/component/theme`），必须使用 `@/component` 统一导入
+- 导入时禁止使用文件后缀（如 `.tsx`、`.ts`）
+
+## 懒加载规范
+
+- pages 下的页面组件必须使用 React.lazy 懒加载
+- 工具类组件（component 目录下的非页面组件）不使用懒加载
 
 ## 样式组织
 
-- 组件样式使用对象管理，需要选择的样式（variant/size等）放在对象中导出，不需要选择的样式（base）直接写在组件里
-- 示例：buttonClass = { base: "...", variant: {...}, size: {...} }，组件中使用 checkboxClass.variant[variant]
+- 组件样式使用对象管理，需要导出的样式（variant/size等，需要外部访问时）放在对象中导出，不需要导出的样式（base）直接写在组件里
 
 ## 组件属性组织
 

@@ -1,3 +1,79 @@
+<div class="hidden">
+<!-- AI 专用：此区域内容页面不显示，但复制/AI 能完整获取 -->
+
+## 安装
+
+```bash
+npm install @your-org/ui
+```
+
+## 用法
+
+```tsx
+import { Checkbox } from "@/component/ui/checkbox";
+
+function App() {
+  return (
+    <Checkbox.Group>
+      <Checkbox value="1">Option 1</Checkbox>
+      <Checkbox value="2">Option 2</Checkbox>
+    </Checkbox.Group>
+  );
+}
+```
+
+## 示例
+
+### 基础用法
+
+```tsx
+<Checkbox value="agree">I agree</Checkbox>
+```
+
+### 受控模式
+
+```tsx
+const [checked, setChecked] = useState(["1"]);
+<Checkbox.Group value={checked} onValueChange={setChecked}>
+  <Checkbox value="1">Option 1</Checkbox>
+  <Checkbox value="2">Option 2</Checkbox>
+</Checkbox.Group>
+```
+
+### 方向
+
+```tsx
+<Checkbox.Group direction="horizontal">
+  <Checkbox value="1">Option 1</Checkbox>
+  <Checkbox value="2">Option 2</Checkbox>
+</Checkbox.Group>
+
+<Checkbox.Group direction="vertical">
+  <Checkbox value="1">Option 1</Checkbox>
+  <Checkbox value="2">Option 2</Checkbox>
+</Checkbox.Group>
+```
+
+### 禁用状态
+
+```tsx
+<Checkbox disabled>Disabled</Checkbox>
+<Checkbox.Group disabled>
+  <Checkbox value="1">Disabled Group</Checkbox>
+</Checkbox.Group>
+```
+
+### 样式变体
+
+```tsx
+<Checkbox variant="text">Text</Checkbox>
+<Checkbox variant="primary">Primary</Checkbox>
+<Checkbox variant="secondary">Secondary</Checkbox>
+<Checkbox variant="outlined">Outlined</Checkbox>
+```
+
+</div>
+
 ## API Reference
 
 ### Checkbox.Group Props

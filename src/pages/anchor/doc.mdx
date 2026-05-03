@@ -1,3 +1,59 @@
+<div class="hidden">
+<!-- AI 专用：此区域内容页面不显示，但复制/AI 能完整获取 -->
+
+## 安装
+
+```bash
+npm install @your-org/ui
+```
+
+## 用法
+
+```tsx
+import { Anchor } from "@/component/ui/anchor";
+
+function App() {
+  return (
+    <Anchor>
+      <Anchor.Section href="#installation" title="安装" />
+      <Anchor.Section href="#usage" title="用法">
+        <Anchor.Item href="#basic">基础用法</Anchor.Item>
+        <Anchor.Item href="#with-sections">带章节</Anchor.Item>
+      </Anchor.Section>
+    </Anchor>
+  );
+}
+```
+
+## 示例
+
+### 基础用法
+
+```tsx
+<Anchor>
+  <Anchor.Section href="#section-1" title="第一节" />
+  <Anchor.Section href="#section-2" title="第二节">
+    <Anchor.Item href="#sub-1">子节一</Anchor.Item>
+    <Anchor.Item href="#sub-2">子节二</Anchor.Item>
+  </Anchor.Section>
+</Anchor>
+```
+
+### 带章节
+
+```tsx
+<Anchor>
+  <Anchor.Section href="#intro" title="介绍" />
+  <Anchor.Section href="#features" title="特性">
+    <Anchor.Item href="#fast">快速</Anchor.Item>
+    <Anchor.Item href="#flexible">灵活</Anchor.Item>
+  </Anchor.Section>
+  <Anchor.Section href="#pricing" title="定价" />
+</Anchor>
+```
+
+</div>
+
 ## API Reference
 
 ### Anchor Props
@@ -11,7 +67,7 @@
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| id | string | - | 锚点目标 ID（带 # 前缀） |
+| href | string | - | 锚点目标 ID（带 # 前缀） |
 | children | ReactNode | - | 链接文本 |
 | className | string | - | 自定义类名 |
 | onClick | () => void | - | 点击回调 |
@@ -20,15 +76,15 @@
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| id | string | - | 锚点目标 ID |
+| href | string | - | 锚点目标 ID（带 # 前缀，可选） |
 | title | string | - | 章节标题 |
 | children | ReactNode | - | 子锚点项 |
 | className | string | - | 自定义类名 |
-| itemProps | object | - | 子元素属性透传配置 |
+| itemProps | object | - | 内部封装属性透传 |
 
 ### itemProps 配置
 
 | 属性 | 类型 | 描述 |
 |------|------|------|
-| title | Omit<React.ComponentProps<"a">, "href" \| "onClick"> | 标题链接属性 |
-| nav | Omit<React.ComponentProps<"nav">, "aria-label"> | 导航容器属性 |
+| title | Omit<React.ComponentProps<"a">, "href" \| "onClick"> | 标题 `<a>` 标签属性 |
+| nav | Omit<React.ComponentProps<"nav">, "aria-label"> | 内部导航 `<nav>` 容器属性 |

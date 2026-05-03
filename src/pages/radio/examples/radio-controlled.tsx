@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Radio } from "@/components";
+import { Radio } from "@/component";
 
 export default function RadioControlled() {
   const [value, setValue] = useState<string>("option1");

@@ -1,5 +1,5 @@
-import { Button } from "@/components";
-import { PlusIcon, DownloadSimpleIcon, GearIcon, ArrowLeftIcon, TrashIcon } from "@/components/ui/icons";
+import { Button } from "@/component";
+import { PlusIcon, DownloadSimpleIcon, GearIcon, ArrowLeftIcon, TrashIcon } from "@/component";
 
 export default function ButtonIconOnly() {
   return (

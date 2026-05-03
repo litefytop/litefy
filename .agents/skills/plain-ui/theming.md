@@ -83,7 +83,7 @@ Dark mode is controlled by adding `.dark` class to the root element:
 Use `ThemeProvider` to manage theme state:
 
 ```tsx
-import { ThemeProvider, useTheme } from "@/components/ui/theme";
+import { ThemeProvider, useTheme } from "@/component/theme";
 
 function App() {
   return (

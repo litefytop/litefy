@@ -1,3 +1,83 @@
+<div class="hidden">
+<!-- AI 专用：此区域内容页面不显示，但复制/AI 能完整获取 -->
+
+## 安装
+
+```bash
+npm install @your-org/ui
+```
+
+## 用法
+
+```tsx
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/component/ui/dropdown-menu";
+import { Button } from "@/component/ui/button";
+
+function App() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <Button>Open Menu</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem>Item 1</DropdownMenuItem>
+        <DropdownMenuItem>Item 2</DropdownMenuItem>
+        <DropdownMenuItem>Item 3</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+```
+
+## 示例
+
+### 基础用法
+
+```tsx
+<DropdownMenu>
+  <DropdownMenuTrigger>
+    <Button>Open Menu</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuItem>Profile</DropdownMenuItem>
+    <DropdownMenuItem>Settings</DropdownMenuItem>
+    <DropdownMenuItem>Logout</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+### 对齐方式
+
+```tsx
+<DropdownMenuContent x_axis="start" y_axis="start">
+  <DropdownMenuItem>Left Top</DropdownMenuItem>
+</DropdownMenuContent>
+
+<DropdownMenuContent x_axis="center" y_axis="center">
+  <DropdownMenuItem>Center</DropdownMenuItem>
+</DropdownMenuContent>
+
+<DropdownMenuContent x_axis="end" y_axis="end">
+  <DropdownMenuItem>Right Bottom</DropdownMenuItem>
+</DropdownMenuContent>
+```
+
+### 菜单位置
+
+```tsx
+<DropdownMenu>
+  <DropdownMenuTrigger>
+    <Button>Side Menu</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent side="left" align="start">
+    <DropdownMenuItem>Left</DropdownMenuItem>
+    <DropdownMenuItem>Right</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+</div>
+
 ## API Reference
 
 ### DropdownMenu Props

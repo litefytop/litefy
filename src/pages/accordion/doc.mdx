@@ -1,27 +1,131 @@
+<div class="hidden">
+<!-- AI 专用：此区域内容页面不显示，但复制/AI 能完整获取 -->
+
+## 安装
+
+```bash
+npm install @your-org/ui
+```
+
+## 用法
+
+```tsx
+import { Accordion } from "@/component/ui/accordion";
+
+function App() {
+  return (
+    <Accordion>
+      <Accordion.Item value="item-1" title="第一项">
+        这是第一项的内容
+      </Accordion.Item>
+      <Accordion.Item value="item-2" title="第二项">
+        这是第二项的内容
+      </Accordion.Item>
+    </Accordion>
+  );
+}
+```
+
+## 示例
+
+### 基础用法
+
+一次只能展开一项，第一项默认不展开。
+
+```tsx
+<Accordion>
+  <Accordion.Item value="item-1" title="什么是 React?">
+    React 是一个用于构建用户界面的 JavaScript 库。
+  </Accordion.Item>
+  <Accordion.Item value="item-2" title="什么是 TypeScript?">
+    TypeScript 是 JavaScript 的超集，添加了类型系统。
+  </Accordion.Item>
+  <Accordion.Item value="item-3" title="什么是组件?">
+    组件是 UI 的可复用片段，可以接受输入并返回 React 元素。
+  </Accordion.Item>
+</Accordion>
+```
+
+### 多个展开
+
+使用 `allowMultiple` 属性允许同时展开多项。
+
+```tsx
+<Accordion allowMultiple>
+  <Accordion.Item value="item-1" title="什么是 React?">
+    React 是一个用于构建用户界面的 JavaScript 库。
+  </Accordion.Item>
+  <Accordion.Item value="item-2" title="什么是 TypeScript?">
+    TypeScript 是 JavaScript 的超集，添加了类型系统。
+  </Accordion.Item>
+</Accordion>
+```
+
+### 受控模式
+
+通过 `openKeys` 和 `onOpenChange` 实现受控模式。
+
+```tsx
+const [openKeys, setOpenKeys] = useState(["item-1"]);
+
+<Accordion openKeys={openKeys} onOpenChange={setOpenKeys}>
+  <Accordion.Item value="item-1" title="第一项">
+    内容
+  </Accordion.Item>
+  <Accordion.Item value="item-2" title="第二项">
+    内容
+  </Accordion.Item>
+</Accordion>;
+```
+
+### 自定义样式
+
+通过 `className` 自定义容器样式，通过 `itemProps` 自定义内部封装元素样式。
+
+```tsx
+<Accordion className="max-w-md">
+  <Accordion.Item
+    value="item-1"
+    title="自定义样式"
+    itemProps={{
+      trigger: { className: "bg-blue-50" },
+      content: { className: "bg-blue-50/50" },
+    }}
+  >
+    内容区域
+  </Accordion.Item>
+</Accordion>
+```
+
+</div>
+
 ## API Reference
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| defaultOpenKeys | string[] | [] | 初始展开的 keys（非受控模式） |
-| openKeys | string[] | - | 当前展开的 keys（受控模式） |
-| onOpenChange | (keys: string[]) => void | - | 展开状态变化回调 |
-| allowMultiple | boolean | false | 是否允许同时展开多项 |
-| className | string | - | 自定义类名 |
-| itemProps | object | - | 子元素属性透传配置 |
+### Accordion Props
 
-## Accordion.Item Props
+| Prop            | Type                     | Default | Description                   |
+| --------------- | ------------------------ | ------- | ----------------------------- |
+| defaultOpenKeys | string[]                 | []      | 初始展开的 keys（非受控模式） |
+| openKeys        | string[]                 | -       | 当前展开的 keys（受控模式）   |
+| onOpenChange    | (keys: string[]) => void | -       | 展开状态变化回调              |
+| allowMultiple   | boolean                  | false   | 是否允许同时展开多项          |
+| className       | ClassNameValue           | -       | 自定义类名                    |
+| itemProps       | object                   | -       | 内部封装属性透传配置            |
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| value | string | - | 唯一标识符（必填） |
-| title | ReactNode | - | 标题内容（必填） |
-| children | ReactNode | - | 展开后的内容 |
-| itemProps | object | - | 子元素属性透传配置（覆盖全局配置） |
+### Accordion.Item Props
 
-## itemProps 配置
+| Prop      | Type           | Default | Description                        |
+| --------- | -------------- | ------- | ---------------------------------- |
+| value     | string         | -       | 唯一标识符（必填）                 |
+| title     | ReactNode      | -       | 标题内容（必填）                   |
+| children  | ReactNode      | -       | 展开后的内容                       |
+| className | ClassNameValue | -       | 自定义类名                         |
+| itemProps | object         | -       | 内部封装属性透传配置 |
 
-| 属性 | 类型 | 描述 |
-|------|------|------|
+### itemProps 配置
+
+| 属性    | 类型                           | 描述           |
+| ------- | ------------------------------ | -------------- |
 | trigger | React.ComponentProps<"button"> | 触发器按钮属性 |
-| title | React.ComponentProps<"span"> | 标题元素属性 |
-| content | React.ComponentProps<"div"> | 内容区域属性 |
+| title   | React.ComponentProps<"span">   | 标题元素属性   |
+| content | React.ComponentProps<"div">    | 内容区域属性   |

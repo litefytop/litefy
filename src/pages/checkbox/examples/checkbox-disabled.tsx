@@ -1,4 +1,4 @@
-import { Checkbox } from "@/components";
+import { Checkbox } from "@/component";
 
 export default function CheckboxDisabled() {
   return (

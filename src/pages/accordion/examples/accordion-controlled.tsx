@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Accordion } from "@/components";
+import { Accordion } from "@/component";
 
 export default function AccordionControlled() {
   const [openKeys, setOpenKeys] = useState<string[]>(["item-1"]);

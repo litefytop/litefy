@@ -5,7 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-} from "@/components";
+} from "@/component";
 
 export default function DropdownMenuBasic() {
   return (

@@ -1,4 +1,4 @@
-import { Input } from "@/components";
+import { Input } from "@/component";
 
 export default function InputBasic() {
   return (

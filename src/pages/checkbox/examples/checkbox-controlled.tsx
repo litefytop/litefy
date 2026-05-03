@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Checkbox } from "@/components";
+import { Checkbox } from "@/component";
 
 export default function CheckboxControlled() {
   const [checked, setChecked] = useState<string[]>(["option1"]);

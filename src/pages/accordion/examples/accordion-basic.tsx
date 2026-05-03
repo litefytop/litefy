@@ -1,4 +1,4 @@
-import { Accordion } from "@/components";
+import { Accordion } from "@/component";
 
 export default function AccordionBasic() {
   return (

@@ -1,5 +1,5 @@
-import { Button } from "@/components";
-import { PlusIcon, CameraIcon } from "@/components/ui/icons";
+import { Button } from "@/component";
+import { PlusIcon, CameraIcon } from "@/component";
 
 export default function ButtonDirection() {
   return (

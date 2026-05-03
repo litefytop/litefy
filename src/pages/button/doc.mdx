@@ -1,3 +1,77 @@
+<div class="hidden">
+<!-- AI 专用：此区域内容页面不显示，但复制/AI 能完整获取 -->
+
+## 安装
+
+```bash
+npm install @your-org/ui
+```
+
+## 用法
+
+```tsx
+import { Button } from "@/component/ui/button";
+
+function App() {
+  return <Button>Click me</Button>;
+}
+```
+
+## 示例
+
+### 基础用法
+
+```tsx
+<Button>Primary</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="destructive">Destructive</Button>
+```
+
+### 禁用状态
+
+```tsx
+<Button disabled>Disabled</Button>
+```
+
+### 加载状态
+
+```tsx
+<Button loading={{ loading: true }}>Loading</Button>
+```
+
+### 图标按钮
+
+```tsx
+<Button variant="ghost">
+  <Icon className="size-4" />
+</Button>
+```
+
+### 带图标
+
+```tsx
+<Button>
+  <Icon className="size-4 mr-2" />
+  With Icon
+</Button>
+```
+
+### 方向
+
+```tsx
+<Button direction="horizontal">
+  <Icon className="size-4" />
+  <span>Horizontal</span>
+</Button>
+
+<Button direction="vertical">
+  <Icon className="size-4" />
+  <span>Vertical</span>
+</Button>
+```
+
+</div>
+
 ## CSS Classes
 
 ```css

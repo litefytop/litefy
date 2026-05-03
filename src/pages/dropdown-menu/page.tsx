@@ -1,19 +1,29 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { CopyIcon, CheckIcon } from "@/components/ui/icons";
+import rehypeRaw from "rehype-raw";
+import { useNavigate } from "react-router-dom";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CopyIcon,
+  CheckIcon,
+  Anchor,
+  Title,
+  Description,
+  ShikiCodeBlock,
+  Anatomy,
+  Button,
+} from "@/component";
 import { toast } from "sonner";
-import { Anchor, Title, Description } from "@/components";
-import { Anatomy } from "@/pages/component/anatomy";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuItem,
   DropdownMenuContent,
-} from "@/components";
-
-import { ShikiCodeBlock } from "@/pages/component/shiki-code-block";
-import { t } from "@/pages/i18n";
+} from "@/component";
+import { t } from "@/pages/config/i18n";
+import { getComponentNav } from "@/pages/config/routes";
 
 import DropdownMenuBasicRaw from "./examples/dropdown-menu-basic.tsx?raw";
 import DropdownMenuAlignRaw from "./examples/dropdown-menu-align.tsx?raw";
@@ -21,7 +31,7 @@ import DropdownMenuSideRaw from "./examples/dropdown-menu-side.tsx?raw";
 import DropdownMenuBasic from "./examples/dropdown-menu-basic";
 import DropdownMenuAlign from "./examples/dropdown-menu-align";
 import DropdownMenuSide from "./examples/dropdown-menu-side";
-import dropdownMenuSrc from "@/components/ui/dropdown-menu.tsx?raw";
+import dropdownMenuSrc from "@/component/ui/dropdown-menu.tsx?raw";
 import dropdownMenuDoc from "./doc.mdx?raw";
 
 function DemoSection({
@@ -58,7 +68,9 @@ export default function DropdownMenuPage({
   locale?: string;
 }) {
   const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
+  const nav = getComponentNav("/components/dropdown-menu", locale as "zh" | "en");
 
   const handleCopy = () => {
     navigator.clipboard.writeText(dropdownMenuSrc);
@@ -67,11 +79,37 @@ export default function DropdownMenuPage({
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handlePrev = () => {
+    if (nav.prev) navigate(`/${locale}${nav.prev.href}`);
+  };
+
+  const handleNext = () => {
+    if (nav.next) navigate(`/${locale}${nav.next.href}`);
+  };
+
   return (
     <div className="flex">
       <div className="flex-1 w-full">
-        <header className="pb-4 mb-4 border-b">
-          <Title as="h1">{lang["dropdown-menu"].title}</Title>
+        <header className="pb-4 mb-4 border-b space-y-3">
+          <div className="flex items-center justify-between">
+            <Title as="h1">{lang["dropdown-menu"].title}</Title>
+            <div className="flex items-center gap-2">
+              <Button onClick={handleCopy} variant="ghost">
+                {copied ? (
+                  <CheckIcon className="size-4 text-green-500 mr-1" />
+                ) : (
+                  <CopyIcon className="size-4 mr-1" />
+                )}
+                {lang.common.copyDocs}
+              </Button>
+              <Button variant="ghost" onClick={handlePrev} disabled={!nav.prev}>
+                <ArrowLeftIcon className="size-4" />
+              </Button>
+              <Button variant="ghost" onClick={handleNext} disabled={!nav.next}>
+                <ArrowRightIcon className="size-4" />
+              </Button>
+            </div>
+          </div>
           <Description>{lang["dropdown-menu"].description}</Description>
         </header>
 
@@ -161,7 +199,7 @@ export default function DropdownMenuPage({
             data-anchor-id="css-classes"
             className="space-y-4 scroll-mt-20 prose dark:prose-invert max-w-none"
           >
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
               {dropdownMenuDoc}
             </ReactMarkdown>
           </section>
@@ -170,17 +208,17 @@ export default function DropdownMenuPage({
 
       <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-[calc(100vh-3.5rem)] overflow-y-auto p-4">
         <Anchor>
-          <Anchor.Section id="installation" title={lang.installation} />
-          <Anchor.Section id="examples" title={lang.examples}>
-            <Anchor.Item id="#basic">
+          <Anchor.Section href="#installation" title={lang.installation} />
+          <Anchor.Section href="#examples" title={lang.examples}>
+            <Anchor.Item href="#basic">
               {lang["dropdown-menu"].basic.title}
             </Anchor.Item>
-            <Anchor.Item id="#align">
+            <Anchor.Item href="#align">
               {lang["dropdown-menu"].align.title}
             </Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section id="anatomy" title={lang.anatomy} />
-          <Anchor.Section id="docs" title={lang.docs} />
+          <Anchor.Section href="#anatomy" title={lang.anatomy} />
+          <Anchor.Section href="#docs" title={lang.docs} />
         </Anchor>
       </aside>
     </div>
