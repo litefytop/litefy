@@ -15,7 +15,7 @@ import {
   Anatomy,
   Button,
 } from "@/component";
-import { toast } from "sonner";
+import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages";
 import { getComponentNav } from "@/pages/config/routes";
 
@@ -63,7 +63,7 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
   const handleCopy = () => {
     navigator.clipboard.writeText(anchorDoc);
     setCopied(true);
-    toast.success(lang.common.copySuccess);
+    Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);
   };
 

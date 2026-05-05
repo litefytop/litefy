@@ -6,7 +6,7 @@ const buttonClass = {
   inline-flex items-center justify-center shrink-0 user-select:none
   [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0
   focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]
-  disabled:pointer-events-none disabled:opacity-50`,
+  disabled:pointer-events-none disabled:opacity-50 transition-colors`,
   variant: {
     primary:
       "bg-primary text-primary-foreground hover:bg-primary/90",
@@ -18,7 +18,7 @@ const buttonClass = {
     outline: `border border-primary bg-transparent 
       hover:bg-accent hover:text-accent-foreground 
       dark:border-foreground/40 dark:text-foreground dark:hover:bg-accent dark:hover:text-accent-foreground`,
-    ghost: "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50",
+    ghost: "hover:bg-accent hover:text-accent-foreground",
     text: "text-foreground hover:text-foreground/60"
   }, 
   direction:{

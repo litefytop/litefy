@@ -11,6 +11,7 @@ import Input from "../input";
 import Password from "../password";
 import Radio from "../radio";
 import DropdownMenu from "../dropdown-menu";
+import Toast from "../toast";
 import { ComingSoon, Layout } from "@/component";
 
 const introduction = { key: "introduction", path: "/", Component: Home };
@@ -19,6 +20,7 @@ const componentRouteConfig = [
   { key: "button", path: "/components/button", Component: Button },
   { key: "accordion", path: "/components/accordion", Component: Accordion },
   { key: "anchor", path: "/components/anchor", Component: Anchor },
+  { key: "toast", path: "/components/toast", Component: Toast },
   { key: "input", path: "/components/input", Component: Input },
   { key: "checkbox", path: "/components/checkbox", Component: Checkbox },
   { key: "radio", path: "/components/radio", Component: Radio },
@@ -47,7 +49,6 @@ const componentRouteConfig = [
   { key: "paper", path: "/components/paper", Component: ComingSoon },
   { key: "pagination", path: "/components/pagination", Component: ComingSoon },
   { key: "transfer", path: "/components/transfer", Component: ComingSoon },
-  { key: "toast", path: "/components/toast", Component: ComingSoon },
   { key: "overlay", path: "/components/overlay", Component: ComingSoon },
   { key: "table", path: "/components/table", Component: ComingSoon },
   { key: "sheet", path: "/components/sheet", Component: ComingSoon },

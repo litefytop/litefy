@@ -1,26 +1,35 @@
-import { NavLink, useLocation, useNavigate, Outlet, ScrollRestoration } from "react-router-dom";
+import {
+  NavLink,
+  useLocation,
+  useNavigate,
+  Outlet,
+  ScrollRestoration,
+} from "react-router-dom";
 import { getNavItems } from "@/pages/config/routes";
-import { Title, Img, MoonIcon, SunIcon, GitHubIcon, LanguageIcon } from "@/component";
+import { Toaster } from "@/component/ui/toast";
+import {
+  Title,
+  Img,
+  MoonIcon,
+  SunIcon,
+  GitHubIcon,
+  LanguageIcon,
+  Sidebar,
+  PanelLeft,
+  Button,
+} from "@/component";
 import { useTheme } from "@/component";
 import LOGO from "@/assets/LOGO.svg";
-
-
-
 
 function ThemeToggle() {
   const { colorScheme, toggleColorScheme } = useTheme();
 
   return (
-    <button
-      onClick={toggleColorScheme}
-      className="p-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
-      aria-label="Toggle color scheme"
-    >
+    <Button variant="ghost" onClick={toggleColorScheme} aria-label="Toggle color scheme">
       {colorScheme === "light" ? <MoonIcon size={20} /> : <SunIcon size={20} />}
-    </button>
+    </Button>
   );
 }
-
 
 function LanguageToggle({ locale }: { locale: string }) {
   const navigate = useNavigate();
@@ -33,13 +42,9 @@ function LanguageToggle({ locale }: { locale: string }) {
   };
 
   return (
-    <button
-      onClick={toggleLocale}
-      className="p-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
-      aria-label="Toggle language"
-    >
+    <Button variant="ghost" onClick={toggleLocale} aria-label="Toggle language">
       <LanguageIcon size={20} />
-    </button>
+    </Button>
   );
 }
 
@@ -47,58 +52,54 @@ function SidebarContent({ locale }: { locale: string }) {
   const navItems = getNavItems(locale as "zh" | "en");
 
   return (
-    <div className="flex flex-col h-full">
-      <nav className="flex-1 overflow-y-auto p-4">
-        {navItems.map((group) => (
-          <div key={group.title} className="mb-6">
+    <nav className="flex flex-col h-full overflow-y-auto p-4 gap-6">
+      {navItems.map((group) => (
+        <ul key={group.title} className="space-y-1">
+          <li>
             <Title className="text-xs uppercase text-muted-foreground mb-2">
               {group.title}
             </Title>
-            <ul className="space-y-1">
-              {group.items
-                .map((item) => (
-                  <li key={item.href}>
-                    <NavLink
-                      to={`/${locale}${item.href}`}
-                      end={item.href === "/"}
-                      className={({ isActive }) =>
-                        `block px-3 py-2 rounded-md text-sm transition-colors ${
-                          isActive
-                            ? "bg-accent text-accent-foreground"
-                            : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                        }`
-                      }
-                    >
-                      {item.title}
-                    </NavLink>
-                  </li>
-                ))}
-            </ul>
-          </div>
-        ))}
-      </nav>
-    </div>
+          </li>
+          {group.items.map((item) => (
+            <li key={item.href}>
+              <NavLink
+                to={`/${locale}${item.href}`}
+                end={item.href === "/"}
+                className={({ isActive }) =>
+                  `block px-3 py-2 rounded-md text-sm transition-colors ${
+                    isActive
+                      ? "bg-accent text-accent-foreground"
+                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                  }`
+                }
+              >
+                {item.title}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      ))}
+    </nav>
   );
 }
 
 function Header({ locale, className }: { locale: string; className?: string }) {
   return (
-    <header className={`h-14 border-b bg-card flex items-center justify-between px-4 ${className || ""}`}>
+    <header
+      className={`h-14 border-b bg-card flex items-center justify-between px-4 ${className || ""}`}
+    >
       <div className="flex items-center gap-2">
         <Img src={LOGO} className="size-8" alt="Logo" />
         <p className="whitespace-nowrap font-bold text-lg">Plain UI</p>
       </div>
       <div className="flex items-center gap-2">
+        <Sidebar.Trigger variant="ghost" aria-label="Toggle sidebar">
+          <PanelLeft />
+        </Sidebar.Trigger>
         <LanguageToggle locale={locale} />
-        <a
-          href="https://github.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="p-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
-          aria-label="GitHub"
-        >
+        <Button variant="ghost" aria-label="GitHub" onClick={() => window.open("https://github.com", "_blank")}>
           <GitHubIcon size={20} />
-        </a>
+        </Button>
         <ThemeToggle />
       </div>
     </header>
@@ -107,15 +108,20 @@ function Header({ locale, className }: { locale: string; className?: string }) {
 
 export function Layout({ locale = "zh" }: { locale?: string }) {
   return (
-    <div className="grid grid-cols-[16rem_1fr] grid-rows-[auto_1fr] min-h-screen bg-background text-foreground">
-      <ScrollRestoration  />
-      <Header locale={locale} className="col-span-2 sticky top-0 z-10" />
-      <aside className="border-r bg-card overflow-y-auto sticky top-14 h-[calc(100vh-3.5rem)]">
-        <SidebarContent locale={locale} />
-      </aside>
-      <main className="overflow-y-auto container mx-auto px-6 py-8 max-w-4xl">
-        <Outlet />
-      </main>
+    <div className="flex flex-col h-screen bg-background text-foreground">
+      <ScrollRestoration />
+      <Header locale={locale} className="shrink-0" />
+      <div className="flex flex-1 overflow-hidden">
+        <Sidebar className="w-3xs shrink-0 overflow-y-auto">
+          <SidebarContent locale={locale} />
+        </Sidebar>
+        <main className="flex-1 overflow-y-auto">
+          <div className="container mx-auto px-6 py-8 max-w-4xl">
+            <Outlet />
+          </div>
+        </main>
+      </div>
+      <Toaster />
     </div>
   );
 }

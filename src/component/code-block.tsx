@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { createHighlighter } from "shiki";
 import { CopyIcon, CheckIcon, CaretDownIcon, CaretRightIcon } from "@/component";
-import { useThemeStore } from "@/component";
+import { useTheme } from "@/component";
 
 const highlighterPromise = createHighlighter({
   themes: ["github-dark", "github-light"],
@@ -104,7 +104,7 @@ export function ShikiCodeBlock({
 }: ShikiCodeBlockProps) {
   const code = typeof children === "string" ? children : "";
   const [highlightedCode, setHighlightedCode] = useState("");
-  const { colorScheme } = useThemeStore();
+  const { colorScheme } = useTheme();
 
   useEffect(() => {
     if (!code) return;

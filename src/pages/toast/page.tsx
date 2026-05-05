@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
@@ -12,27 +12,32 @@ import {
   Title,
   Description,
   ShikiCodeBlock,
-  Anatomy,
   Button,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuItem,
-  DropdownMenuContent,
-} from "@/component";
 import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
+import {
+  ToastTypes,
+  ToastWithDescription,
+  ToastDuration,
+  ToastWithIcon,
+  ToastWithActions,
+  ToastPosition,
+  ToastDismiss,
+  ToastWithCallbacks,
+} from "./examples";
 
-import DropdownMenuBasicRaw from "./examples/dropdown-menu-basic.tsx?raw";
-import DropdownMenuAlignRaw from "./examples/dropdown-menu-align.tsx?raw";
-import DropdownMenuSideRaw from "./examples/dropdown-menu-side.tsx?raw";
-import DropdownMenuBasic from "./examples/dropdown-menu-basic";
-import DropdownMenuAlign from "./examples/dropdown-menu-align";
-import DropdownMenuSide from "./examples/dropdown-menu-side";
-import dropdownMenuSrc from "@/component/ui/dropdown-menu.tsx?raw";
-import dropdownMenuDoc from "./doc.mdx?raw";
+import ToastTypesRaw from "./examples/toast-types.tsx?raw";
+import ToastWithDescriptionRaw from "./examples/toast-description.tsx?raw";
+import ToastDurationRaw from "./examples/toast-duration.tsx?raw";
+import ToastWithIconRaw from "./examples/toast-icon.tsx?raw";
+import ToastWithActionsRaw from "./examples/toast-actions.tsx?raw";
+import ToastPositionRaw from "./examples/toast-position.tsx?raw";
+import ToastDismissRaw from "./examples/toast-dismiss.tsx?raw";
+import ToastWithCallbacksRaw from "./examples/toast-callbacks.tsx?raw";
+import toastDoc from "./doc.mdx?raw";
+import toastSrc from "@/component/ui/toast.tsx?raw";
 
 function DemoSection({
   id,
@@ -62,18 +67,15 @@ function DemoSection({
   );
 }
 
-export default function DropdownMenuPage({
-  locale = "zh",
-}: {
-  locale?: string;
-}) {
+export default function ToastPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
-  const nav = getComponentNav("/components/dropdown-menu", locale as "zh" | "en");
+  const l = lang.toast;
+  const nav = getComponentNav("/components/toast", locale as "zh" | "en");
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(dropdownMenuSrc);
+    navigator.clipboard.writeText(toastDoc);
     setCopied(true);
     Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);
@@ -92,7 +94,7 @@ export default function DropdownMenuPage({
       <div className="flex-1 w-full">
         <header className="pb-4 mb-4 border-b space-y-3">
           <div className="flex items-center justify-between">
-            <Title as="h1">{lang["dropdown-menu"].title}</Title>
+            <Title as="h1">{l.title}</Title>
             <div className="flex items-center gap-2">
               <Button onClick={handleCopy} variant="ghost">
                 {copied ? (
@@ -110,76 +112,85 @@ export default function DropdownMenuPage({
               </Button>
             </div>
           </div>
-          <Description>{lang["dropdown-menu"].description}</Description>
+          <Description>{l.description}</Description>
         </header>
 
         <section id="installation" className="mb-8 scroll-mt-20">
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
-          <ShikiCodeBlock>{dropdownMenuSrc}</ShikiCodeBlock>
+          <ShikiCodeBlock>{toastSrc}</ShikiCodeBlock>
         </section>
 
         <section id="examples" className="scroll-mt-20">
           <Title as="h2">{lang.examples}</Title>
 
           <DemoSection
-            id="basic"
-            title={lang["dropdown-menu"].basic.title}
-            code={DropdownMenuBasicRaw}
+            id="types"
+            title={l.types.title}
+            code={ToastTypesRaw}
           >
-            <DropdownMenuBasic />
+            <ToastTypes />
           </DemoSection>
 
           <DemoSection
-            id="align"
-            title={lang["dropdown-menu"].align.title}
-            code={DropdownMenuAlignRaw}
+            id="description"
+            title={l.descriptionText.title}
+            code={ToastWithDescriptionRaw}
           >
-            <DropdownMenuAlign />
+            <ToastWithDescription />
           </DemoSection>
 
           <DemoSection
-            id="side"
-            title={lang["dropdown-menu"].side.title}
-            code={DropdownMenuSideRaw}
+            id="duration"
+            title={l.duration.title}
+            code={ToastDurationRaw}
           >
-            <DropdownMenuSide />
+            <ToastDuration />
+          </DemoSection>
+
+          <DemoSection
+            id="icon"
+            title={l.icon.title}
+            code={ToastWithIconRaw}
+          >
+            <ToastWithIcon />
+          </DemoSection>
+
+          <DemoSection
+            id="actions"
+            title={l.actions.title}
+            code={ToastWithActionsRaw}
+          >
+            <ToastWithActions />
+          </DemoSection>
+
+          <DemoSection
+            id="position"
+            title={l.position.title}
+            code={ToastPositionRaw}
+          >
+            <ToastPosition />
+          </DemoSection>
+
+          <DemoSection
+            id="dismiss"
+            title={l.dismiss.title}
+            code={ToastDismissRaw}
+          >
+            <ToastDismiss />
+          </DemoSection>
+
+          <DemoSection
+            id="callbacks"
+            title={l.callbacks.title}
+            code={ToastWithCallbacksRaw}
+          >
+            <ToastWithCallbacks />
           </DemoSection>
         </section>
 
-        <section id="anatomy" className="mt-8 space-y-4 scroll-mt-20">
-          <Title as="h2">{lang.anatomy}</Title>
-          <Anatomy
-            className="h-32"
-            parts={[
-              { name: "root", label: lang["dropdown-menu"].anatomy.root },
-              {
-                name: "trigger",
-                label: lang["dropdown-menu"].anatomy.trigger,
-              },
-              {
-                name: "content",
-                label: lang["dropdown-menu"].anatomy.content,
-              },
-            ]}
-          >
-            <DropdownMenu data-anatomy-name="root">
-              <DropdownMenuTrigger data-anatomy-name="trigger" variant="ghost">
-                打开菜单
-              </DropdownMenuTrigger>
-              <DropdownMenuContent data-anatomy-name="content" popover="manual">
-                <DropdownMenuItem>选项</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </Anatomy>
-        </section>
-
-        <section
-          id="docs"
-          data-anchor-id="docs"
-          className="mt-12 space-y-4 scroll-mt-20"
-        >
+        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-4 scroll-mt-20">
           <Title as="h2" className="mb-4">
             {lang.docs}
             <button
@@ -195,12 +206,10 @@ export default function DropdownMenuPage({
             </button>
           </Title>
           <section
-            id="css-classes"
-            data-anchor-id="css-classes"
             className="space-y-4 scroll-mt-20 prose dark:prose-invert max-w-none"
           >
             <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-              {dropdownMenuDoc}
+              {toastDoc}
             </ReactMarkdown>
           </section>
         </section>
@@ -210,14 +219,15 @@ export default function DropdownMenuPage({
         <Anchor>
           <Anchor.Section href="#installation" title={lang.installation} />
           <Anchor.Section href="#examples" title={lang.examples}>
-            <Anchor.Item href="#basic">
-              {lang["dropdown-menu"].basic.title}
-            </Anchor.Item>
-            <Anchor.Item href="#align">
-              {lang["dropdown-menu"].align.title}
-            </Anchor.Item>
+            <Anchor.Item href="#types">{l.types.title}</Anchor.Item>
+            <Anchor.Item href="#description">{l.descriptionText.title}</Anchor.Item>
+            <Anchor.Item href="#duration">{l.duration.title}</Anchor.Item>
+            <Anchor.Item href="#icon">{l.icon.title}</Anchor.Item>
+            <Anchor.Item href="#actions">{l.actions.title}</Anchor.Item>
+            <Anchor.Item href="#position">{l.position.title}</Anchor.Item>
+            <Anchor.Item href="#dismiss">{l.dismiss.title}</Anchor.Item>
+            <Anchor.Item href="#callbacks">{l.callbacks.title}</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#anatomy" title={lang.anatomy} />
           <Anchor.Section href="#docs" title={lang.docs} />
         </Anchor>
       </aside>

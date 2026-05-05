@@ -1,0 +1,121 @@
+<div class="hidden">
+<!-- AI 专用：此区域内容页面不显示，但复制/AI 能完整获取 -->
+
+## 安装
+
+```bash
+npm install sonner
+```
+
+## 用法
+
+```tsx
+import { Toaster } from "@/component/ui/toast";
+```
+
+## 示例
+
+### 基础用法
+
+```tsx
+Toaster.success({ title: "操作成功" })
+Toaster.error({ title: "操作失败" })
+Toaster.warning({ title: "警告提示" })
+Toaster.info({ title: "信息提示" })
+Toaster.loading({ title: "加载中..." })
+```
+
+### 带描述
+
+```tsx
+Toaster.success({
+  title: "操作成功",
+  description: "您的操作已成功完成"
+})
+```
+
+### 自定义持续时间
+
+```tsx
+Toaster.success({ title: "5秒后消失", duration: 5000 })
+Toaster.success({ title: "不会自动消失", duration: Infinity })
+```
+
+### 自定义图标
+
+```tsx
+Toaster.success({
+  title: "自定义图标",
+  icon: <span>🎉</span>
+})
+```
+
+### 操作按钮
+
+```tsx
+Toaster.success({
+  title: "有操作按钮",
+  actions: [
+    {
+      children: "查看",
+      onClick: (dismiss) => { ... }
+    },
+    {
+      children: "取消",
+      variant: "ghost",
+      onClick: (dismiss) => { ... }
+    }
+  ]
+})
+```
+
+### 位置
+
+```tsx
+<Toaster position="top-right" />
+<Toaster position="top-left" />
+<Toaster position="top-center" />
+<Toaster position="bottom-right" />
+<Toaster position="bottom-left" />
+<Toaster position="bottom-center" />
+```
+
+### 手动关闭
+
+```tsx
+const id = Toaster.loading({ title: "加载中..." })
+Toaster.dismiss(id)
+Toaster.dismiss() // 关闭所有
+```
+
+### 回调函数
+
+```tsx
+Toaster.success({
+  title: "带回调",
+  onDismiss: (toast) => { console.log("dismissed", toast) },
+  onAutoClose: (toast) => { console.log("auto closed", toast) }
+})
+```
+
+</div>
+
+## API Reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| type | `success` \| `error` \| `warning` \| `info` \| `loading` | - | Toast 类型 |
+| title | `ReactNode` | - | 标题 |
+| description | `ReactNode` | - | 描述信息 |
+| icon | `ReactNode` | - | 自定义图标 |
+| duration | `number` | 3000 | 持续时间（毫秒），设为 Infinity 则不自动消失 |
+| onDismiss | `(toast: Toast) => void` | - | 关闭时回调 |
+| onAutoClose | `(toast: Toast) => void` | - | 自动关闭时回调 |
+| actions | `Array<ButtonProps & { onClick?: (dismiss: () => void) => void }>` | - | 操作按钮 |
+
+## Toaster 组件
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| position | `ToastPosition` | `top-right` | Toast 位置 |
+| visibleToasts | `number` | 3 | 最多显示的 Toast 数量 |

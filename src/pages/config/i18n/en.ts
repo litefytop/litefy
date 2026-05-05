@@ -26,6 +26,7 @@ export const en = {
     button: "Button",
     accordion: "Accordion",
     anchor: "Anchor",
+    toast: "Toast",
     input: "Input",
     checkbox: "Checkbox",
     slider: "Slider",
@@ -55,7 +56,6 @@ export const en = {
     paper: "Paper",
     pagination: "Pagination",
     transfer: "Transfer",
-    toast: "Toast",
     overlay: "Overlay",
     table: "Table",
     sheet: "Sheet",
@@ -166,6 +166,43 @@ export const en = {
       button: "Button",
       icon: "Icon",
       spinner: "Spinner",
+    },
+  },
+
+  toast: {
+    title: "Toast",
+    description: "Lightweight toast notification component.",
+    types: {
+      title: "Types",
+    },
+    descriptionText: {
+      title: "With Description",
+    },
+    duration: {
+      title: "Duration",
+    },
+    icon: {
+      title: "Custom Icon",
+    },
+    actions: {
+      title: "Actions",
+    },
+    position: {
+      title: "Position",
+    },
+    dismiss: {
+      title: "Dismiss",
+    },
+    callbacks: {
+      title: "Callbacks",
+    },
+    anatomy: {
+      root: "Root",
+      icon: "Icon",
+      content: "Content",
+      title: "Title",
+      description: "Description",
+      actions: "Actions",
     },
   },
 

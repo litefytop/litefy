@@ -18,16 +18,12 @@ export * from "./slider";
 export * from "./tabs";
 export * from "./label";
 export * from "./textarea";
-
-
-
 export * from "./sidebar";
 export * from "./paper";
 export * from "./pagination";
 export * from "./transfer";
 export * from "./toast";
 export * from "./overlay";
-
 export * from "./dropdown-menu";
 export * from "./password";
 export * from "./theme";

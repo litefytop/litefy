@@ -26,6 +26,7 @@ export const zh = {
     button: "按钮",
     accordion: "手风琴",
     anchor: "锚点",
+    toast: "消息提示",
     input: "输入框",
     checkbox: "复选框",
     slider: "滑块",
@@ -55,7 +56,6 @@ export const zh = {
     paper: "纸张",
     pagination: "分页",
     transfer: "穿梭框",
-    toast: "通知",
     overlay: "遮罩",
     table: "表格",
     sheet: "抽屉",
@@ -166,6 +166,43 @@ export const zh = {
       button: "Button",
       icon: "图标",
       spinner: "加载指示器",
+    },
+  },
+
+  toast: {
+    title: "Toast",
+    description: "轻量级消息提示组件。",
+    types: {
+      title: "类型",
+    },
+    descriptionText: {
+      title: "带描述信息",
+    },
+    duration: {
+      title: "持续时间",
+    },
+    icon: {
+      title: "自定义图标",
+    },
+    actions: {
+      title: "操作按钮",
+    },
+    position: {
+      title: "位置",
+    },
+    dismiss: {
+      title: "手动关闭",
+    },
+    callbacks: {
+      title: "回调函数",
+    },
+    anatomy: {
+      root: "根元素",
+      icon: "图标",
+      content: "内容",
+      title: "标题",
+      description: "描述",
+      actions: "操作按钮",
     },
   },
 
