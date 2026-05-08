@@ -1,7 +1,4 @@
-import React from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeftIcon,
@@ -15,6 +12,7 @@ import {
   ShikiCodeBlock,
   Anatomy,
   Button,
+  Docs,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
@@ -24,8 +22,6 @@ import { PasswordBasic } from "./examples";
 import PasswordBasicRaw from "./examples/password-basic.tsx?raw";
 import passwordDoc from "./doc.mdx?raw";
 import passwordSrc from "@/component/ui/password.tsx?raw";
-
-
 
 function DemoSection({
   id,
@@ -42,7 +38,7 @@ function DemoSection({
     <section
       id={id}
       data-anchor-id={id}
-      className="space-y-4 scroll-mt-20 py-4"
+      className="space-y-4 py-4"
     >
       <div>
         <Title as="h3">{title}</Title>
@@ -56,11 +52,88 @@ function DemoSection({
 }
 
 export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
+  const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
   const l = lang.password;
-  const [copied, setCopied] = React.useState(false);
-  const navigate = useNavigate();
   const nav = getComponentNav("/components/password", locale as "zh" | "en");
+
+  const passwordSections = [
+    {
+      title: l.api.sectionTitles.passwordProps,
+      columns: [
+        { key: "prop", header: l.api.headers.prop },
+        { key: "type", header: l.api.headers.type },
+        { key: "default", header: l.api.headers.default },
+        { key: "description", header: l.api.headers.description },
+      ],
+      data: [
+        {
+          props: "value",
+          type: "string",
+          default: "-",
+          description: l.api.props.value,
+        },
+        {
+          props: "defaultValue",
+          type: "string",
+          default: "-",
+          description: l.api.props.defaultValue,
+        },
+        {
+          props: "onChange",
+          type: "(value: string) => void",
+          default: "-",
+          description: l.api.props.onChange,
+        },
+        {
+          props: "placeholder",
+          type: "string",
+          default: "-",
+          description: l.api.props.placeholder,
+        },
+        {
+          props: "disabled",
+          type: "boolean",
+          default: "false",
+          description: l.api.props.disabled,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          default: "-",
+          description: l.api.props.className,
+        },
+        {
+          props: "itemProps",
+          type: "PasswordItemProps",
+          default: "-",
+          description: l.api.props.itemProps,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.itemPropsConfig,
+      columns: [
+        { key: "property", header: l.api.headers.property },
+        { key: "description", header: l.api.headers.description },
+      ],
+      data: [
+        {
+          props: "root",
+          description: l.api.itemPropsConfig.root,
+        },
+        {
+          props: "input",
+          description: l.api.itemPropsConfig.input,
+        },
+        {
+          props: "toggle",
+          description: l.api.itemPropsConfig.toggle,
+        },
+      ],
+    },
+  ];
 
   const handleCopy = () => {
     navigator.clipboard.writeText(passwordDoc);
@@ -110,7 +183,7 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
           <ShikiCodeBlock>{passwordSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" className="scroll-mt-20">
+        <section id="examples" className="">
           <Title as="h2">{lang.examples}</Title>
 
           <DemoSection
@@ -122,55 +195,32 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
         </section>
 
-        <section id="anatomy" className="mt-8 space-y-4 scroll-mt-20">
+        <section id="anatomy" className="mt-8 space-y-4">
           <Title as="h2">{lang.anatomy}</Title>
           <Anatomy
             className="h-32"
             parts={[
-              { id: "anatomy-root", label: l.anatomy.root },
-              { id: "anatomy-input", label: l.anatomy.input },
-              { id: "anatomy-toggle", label: l.anatomy.toggle },
+              { name: "root", label: l.anatomy.root },
+              { name: "input", label: l.anatomy.input },
+              { name: "toggle", label: l.anatomy.toggle },
             ]}
           >
             <Password
+            data-anatomy-name="input"
               placeholder="请输入密码"
-              id="anatomy-input"
               itemProps={{
-                root: { id: "anatomy-root" },
-                toggle: { id: "anatomy-toggle" },
+                root: { "data-anatomy-name": "root" },
+                toggle: { "data-anatomy-name": "toggle" },
               }}
             />
           </Anatomy>
         </section>
 
-        <section
-          id="docs"
-          data-anchor-id="docs"
-          className="mt-12 space-y-4 scroll-mt-20"
-        >
+        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
             {lang.docs}
-            <button
-              onClick={handleCopy}
-              className="p-1.5 rounded-md hover:bg-muted transition-colors"
-              aria-label={lang.common.copy}
-            >
-              {copied ? (
-                <CheckIcon className="size-4 text-green-500" />
-              ) : (
-                <CopyIcon className="size-4" />
-              )}
-            </button>
           </Title>
-          <section
-            id="css-classes"
-            data-anchor-id="css-classes"
-            className="space-y-4 scroll-mt-20 prose dark:prose-invert max-w-none"
-          >
-            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-              {passwordDoc}
-            </ReactMarkdown>
-          </section>
+          <Docs sections={passwordSections} />
         </section>
       </div>
 

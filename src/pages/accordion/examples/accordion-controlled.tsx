@@ -6,14 +6,14 @@ export default function AccordionControlled() {
 
   return (
     <Accordion openKeys={openKeys} onOpenChange={setOpenKeys}>
-      <Accordion.Item value="item-1" title="受控模式">
-        <p>当前打开的 keys: {openKeys.join(", ")}</p>
+      <Accordion.Item value="item-1" title="Controlled Mode">
+        <p>Currently open keys: {openKeys.join(", ")}</p>
       </Accordion.Item>
-      <Accordion.Item value="item-2" title="点击切换">
-        <p>通过 openKeys 和 onOpenChange 控制展开状态。</p>
+      <Accordion.Item value="item-2" title="Click to Toggle">
+        <p>Control the expanded state via openKeys and onOpenChange.</p>
       </Accordion.Item>
-      <Accordion.Item value="item-3" title="初始化">
-        <p>可以在 defaultOpenKeys 中设置初始展开的项。</p>
+      <Accordion.Item value="item-3" title="Initialization">
+        <p>You can set initial expanded items in defaultOpenKeys.</p>
       </Accordion.Item>
     </Accordion>
   );

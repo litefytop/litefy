@@ -1,13 +1,10 @@
-<div class="hidden">
-<!-- AI 专用：此区域内容页面不显示，但复制/AI 能完整获取 -->
-
-## 安装
+## Installation
 
 ```bash
 npm install @your-org/ui
 ```
 
-## 用法
+## Usage
 
 ```tsx
 import { Input } from "@/component/ui/input";
@@ -17,44 +14,42 @@ function App() {
 }
 ```
 
-## 示例
+## Examples
 
-### 基础用法
+### Basic
 
 ```tsx
 <Input placeholder="Enter text..." />
 ```
 
-### 前缀后缀
+### Prefix and Suffix
 
 ```tsx
 <Input prefix="https://" suffix=".com" />
 <Input prefix="$" suffix=".00" />
 ```
 
-### 错误状态
+### Invalid State
 
 ```tsx
 <Input invalid error="This field is required" />
 ```
 
-### 禁用状态
+### Disabled
 
 ```tsx
 <Input disabled placeholder="Disabled input" />
 ```
 
-</div>
-
 ## API Reference
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| invalid | boolean | - | 是否无效状态 |
-| label | ReactNode | - | 标签 |
-| description | ReactNode | - | 描述信息 |
-| error | ReactNode | - | 错误信息 |
-| prefix | ReactNode | - | 前缀内容 |
-| suffix | ReactNode | - | 后缀内容 |
-| itemProps | { label?, group?, prefix?, suffix?, error?, description? } | - | 各部分属性 |
-| ...HTMLInputElementProps | HTMLInputElementProps | - | 继承 input 元素的其他 props |
+| invalid | boolean | - | Invalid state |
+| label | ReactNode | - | Label |
+| description | ReactNode | - | Description |
+| error | ReactNode | - | Error message |
+| prefix | ReactNode | - | Prefix content |
+| suffix | ReactNode | - | Suffix content |
+| itemProps | { label?, group?, prefix?, suffix?, error?, description? } | - | Props for each part |
+| ...HTMLInputElementProps | HTMLInputElementProps | - | Other inherited input element props |

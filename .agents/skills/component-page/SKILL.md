@@ -14,37 +14,43 @@ This skill creates a new component documentation page following the anchor page 
 1. **安装** - 展示组件源码导入方式
 2. **示例** - 展示组件用法示例
 3. **结构** - 使用 Anatomy 组件展示组件内部元素
-4. **文档** - 从 doc.mdx 引入的样式和 API 文档（示例已隐藏）
+4. **文档** - 使用 Docs 组件展示 API 文档（多语言支持）
 
 ## 目录结构
 
 ```
 src/pages/<component-name>/
 ├── page.tsx           # 主页面文件
-├── doc.mdx            # 说明页 MD 格式（示例隐藏，只显示样式和 API）
+├── doc.mdx            # 说明页 MD 格式（仅用于复制，不渲染）
 ├── index.ts           # 导出配置
 └── examples/          # 示例目录
     ├── index.ts       # 批量导出所有示例
-    ├── Example1.tsx   # 示例1
-    └── Example2.tsx   # 示例2
+    ├── Example1.tsx   # 示例 1
+    └── Example2.tsx   # 示例 2
 ```
 
-## 重要：i18n 变量命名规则
+## 重要：i18n 变量使用规则
 
-**必须遵守以下规则，否则会出现类型错误：**
+**必须遵守以下规则：**
 
-- `t` - i18n 工具函数，**不要直接使用**（只能用于获取 lang 对象）
-- `lang` - 完整的 i18n 对象，通过 `const lang = t(locale as "zh" | "en")` 获取
-  - 必须在组件函数内部调用：`export default function Page({ locale = "zh" }: { locale?: string }) { const lang = t(locale as "zh" | "en"); }`
-  - 访问通用翻译：`lang.installation`, `lang.examples`, `lang.anatomy`, `lang.docs`, `lang.common.copyDocs`, `lang.common.copySuccess`
-- `l` - 当前组件的翻译，通过 `const l = lang.componentName` 获取
-  - 访问组件特定翻译：`l.title`, `l.description`, `l.basic.title`, `l.anatomy.root`
+1. 获取翻译对象：
+   ```tsx
+   const lang = t(locale as "zh" | "en");  // 获取完整 i18n 对象
+   const l = lang.componentName;           // 获取当前组件的翻译（如 lang.accordion）
+   ```
 
-**禁止：**
-- ❌ 禁止使用 `t.installation`、`t.examples` 等（t 不是对象）
-- ❌ 禁止直接使用 `t.xxx`，必须先 `const lang = t(...)` 获取 lang 对象
-- ❌ 禁止使用 `lang.input.xxx`（应该用 `l.xxx`）
-- ❌ 禁止混用变量
+2. 使用翻译：
+   - **通用翻译**：`lang.installation`, `lang.examples`, `lang.anatomy`, `lang.docs`, `lang.common.copySuccess`
+   - **组件翻译**：`l.title`, `l.description`, `l.basic.title`, `l.anatomy.root`, `l.api.props.*`
+
+3. **必须在组件函数内部调用**：
+   ```tsx
+   export default function Page({ locale = "zh" }: { locale?: string }) {
+     const lang = t(locale as "zh" | "en");
+     const l = lang.componentName;
+     // ... 使用 lang 和 l
+   }
+   ```
 
 ## 详细说明
 
@@ -54,9 +60,6 @@ src/pages/<component-name>/
 
 ```tsx
 import React from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -68,6 +71,7 @@ import {
   ShikiCodeBlock,
   Anatomy,
   Button,
+  Docs,
 } from "@/component";
 import { toast } from "sonner";
 import { t } from "@/pages";
@@ -92,7 +96,7 @@ function DemoSection({
     <section
       id={id}
       data-anchor-id={id}
-      className="space-y-4 scroll-mt-20 py-4"
+      className="space-y-4 py-4"
     >
       <div>
         <Title as="h3">{title}</Title>
@@ -116,6 +120,27 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
     toast.success(lang.common.copySuccess);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  // API 文档数据（从 i18n 获取翻译）
+  const sections = [
+    {
+      title: l.api.sectionTitles.componentProps,
+      columns: [
+        { key: "prop", header: l.api.headers.prop },
+        { key: "type", header: l.api.headers.type },
+        { key: "default", header: l.api.headers.default },
+        { key: "description", header: l.api.headers.description },
+      ],
+      data: [
+        {
+          props: "propName",
+          type: "string",
+          default: "-",
+          description: l.api.props.propName,
+        },
+      ],
+    },
+  ];
 
   return (
     <div className="flex">
@@ -143,14 +168,14 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 scroll-mt-20">
+        <section id="installation" className="mb-8 scroll-mt-30">
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{componentSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" className=" scroll-mt-20">
+        <section id="examples" className="">
           <Title as="h2">{lang.examples}</Title>
 
           <DemoSection
@@ -170,7 +195,7 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
         </section>
 
-        <section id="anatomy" className="mt-8 space-y-4 scroll-mt-20">
+        <section id="anatomy" className="mt-8 space-y-4">
           <Title as="h2">{lang.anatomy}</Title>
           <Anatomy
             parts={[
@@ -184,24 +209,11 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
           </Anatomy>
         </section>
 
-        <section
-          id="docs"
-          data-anchor-id="docs"
-          className="mt-12 space-y-4 scroll-mt-20"
-        >
+        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
-          <section
-            className="space-y-4 scroll-mt-20 prose dark:prose-invert max-w-none"
-          >
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeRaw]}
-            >
-              {componentDoc}
-            </ReactMarkdown>
-          </section>
+          <Docs sections={sections} />
         </section>
       </div>
 
@@ -240,45 +252,41 @@ export default function Example1() {
 }
 ```
 
-### 4. doc.mdx - 文档内容
+### 4. doc.mdx - 文档内容（仅用于复制）
 
-支持两种内容：
-1. **可见内容** - 直接写在文件中，页面正常显示
-2. **隐藏内容** - 用 `<div class="hidden">` 包裹，页面不显示但复制/AI 能获取
+**重要：** 
+- doc.mdx 文件不再在网页中渲染，唯一用途是提供复制文本供 AI 使用
+- **文档内容统一使用英语**
 
 ```mdx
-<!-- AI 专用：此区域内容页面不显示，但复制/AI 能完整获取 -->
-<div class="hidden">
-
-## 安装
+## Installation
 
 ```bash
 npm install @your-org/ui
 ```
 
-## 用法
+## Usage
 
 ```tsx
 import { Component } from "@/component/ui/component";
 ```
 
-## 示例
+## Examples
 
-### 基础用法
+### Basic
 
 ```tsx
-<Component>内容</Component>
+<Component>Content</Component>
 ```
-
-</div>
 
 ## API Reference
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| variant | string | 'default' | 样式变体 |
+| variant | string | 'default' | Style variant |
 ```
-```
+
+网页渲染使用 `Docs` 组件（在 page.tsx 中定义），支持多语言。
 
 ### 5. index.ts - 页面导出
 
@@ -322,6 +330,20 @@ componentName: {
     root: "根元素",
     child: "子元素",
   },
+  api: {
+    props: {
+      propName: "属性描述",
+    },
+    headers: {
+      prop: "Prop",
+      type: "Type",
+      default: "Default",
+      description: "描述",
+    },
+    sectionTitles: {
+      componentProps: "ComponentName Props",
+    },
+  },
 },
 ```
 
@@ -332,7 +354,7 @@ componentName: {
 | 安装 | `installation` | ShikiCodeBlock + 组件源码 |
 | 示例 | `examples` | examples 目录 |
 | 结构 | `anatomy` | Anatomy 组件 |
-| 文档 | `docs` | doc.mdx 文件 |
+| 文档 | `docs` | Docs 组件 + i18n 配置 |
 
 ## 重要注意事项
 
@@ -356,14 +378,23 @@ componentName: {
    - code 是源码（通过 `?raw` 导入）
 5. **结构部分**：Anatomy 组件需要在组件上添加对应 id，Title 使用 `as="h2"`
 6. **文档部分**：
-   - 使用 ReactMarkdown 渲染 doc.mdx 内容
-   - 必须添加 `rehypePlugins={[rehypeRaw]}` 支持 HTML 标签
-7. **doc.mdx 隐藏内容**：
-   - 使用 `<div class="hidden">` 包裹不想在页面显示的内容
-   - 隐藏内容在复制/AI 时会完整获取
-   - 注释说明：`<!-- AI 专用：此区域内容页面不显示，但复制/AI 能完整获取 -->`
+   - **不再使用 ReactMarkdown**
+   - 使用 `Docs` 组件展示 API 文档
+   - `sections` 数据从 i18n 配置获取翻译
+   - 支持多语言切换
+7. **doc.mdx**：
+   - 保持完整内容（包括 API Reference 表格）
+   - **仅用于复制和 AI 使用**
+   - 不在网页中渲染
 8. **翻译规则**：
-   - `lang` = 通用翻译对象
-   - `l` = 组件翻译对象
-   - 通用翻译用 `lang.xxx`（installation, examples, anatomy, docs, common）
-   - 组件翻译用 `l.xxx`（title, description, basic, advanced, anatomy）
+   - `lang` = 通用翻译对象（`lang.installation`, `lang.examples`, `lang.common.copySuccess` 等）
+   - `l` = 组件翻译对象（`l.title`, `l.description`, `l.basic.title`, `l.api.props.*` 等）
+   - 所有翻译必须从 i18n 配置获取，禁止硬编码
+
+## 工作流程
+
+1. 创建组件页面结构（page.tsx, doc.mdx, examples/）
+2. 在 i18n 配置文件中添加组件翻译（包括 api 部分）
+3. 在 page.tsx 中定义 sections 数组（从 i18n 获取翻译）
+4. 使用 `<Docs sections={sections} />` 渲染 API 文档
+5. 保持 doc.mdx 完整用于复制

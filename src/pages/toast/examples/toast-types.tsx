@@ -17,16 +17,16 @@ export default function ToastTypes() {
 
   return (
     <div className="flex flex-wrap gap-4">
-      <Button onClick={() => Toaster.success({ title: "操作成功" })}>
+      <Button onClick={() => Toaster.success({ title: "Success" })}>
         Success
       </Button>
-      <Button onClick={() => Toaster.error({ title: "操作失败" })}>
+      <Button onClick={() => Toaster.error({ title: "Error" })}>
         Error
       </Button>
-      <Button onClick={() => Toaster.warning({ title: "警告提示" })}>
+      <Button onClick={() => Toaster.warning({ title: "Warning" })}>
         Warning
       </Button>
-      <Button onClick={() => Toaster.info({ title: "信息提示" })}>
+      <Button onClick={() => Toaster.info({ title: "Info" })}>
         Info
       </Button>
       <Button onClick={handlePromise}>Promise</Button>

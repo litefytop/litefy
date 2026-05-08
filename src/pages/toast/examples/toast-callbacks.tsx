@@ -6,12 +6,15 @@ export default function ToastWithCallbacks() {
       <Button
         onClick={() =>
           Toaster.success({
-            title: "带回调",
-            onDismiss: (toast) => {
-              console.log("dismissed", toast);
-            },
-            onAutoClose: (toast) => {
-              console.log("auto closed", toast);
+            title: "Check callbacks in console",
+            onClose: (event) => {
+              if (event.type === "auto") {
+                console.log("⏰ Auto closed");
+              } else if (event.type === "manual") {
+                console.log("👆 Manually closed");
+              } else if (event.type === "complete") {
+                console.log("✅ Close complete");
+              }
             },
           })
         }

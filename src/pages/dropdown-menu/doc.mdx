@@ -1,13 +1,10 @@
-<div class="hidden">
-<!-- AI 专用：此区域内容页面不显示，但复制/AI 能完整获取 -->
-
-## 安装
+## Installation
 
 ```bash
 npm install @your-org/ui
 ```
 
-## 用法
+## Usage
 
 ```tsx
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/component/ui/dropdown-menu";
@@ -29,9 +26,9 @@ function App() {
 }
 ```
 
-## 示例
+## Examples
 
-### 基础用法
+### Basic
 
 ```tsx
 <DropdownMenu>
@@ -46,7 +43,7 @@ function App() {
 </DropdownMenu>
 ```
 
-### 对齐方式
+### Alignment
 
 ```tsx
 <DropdownMenuContent x_axis="start" y_axis="start">
@@ -62,7 +59,7 @@ function App() {
 </DropdownMenuContent>
 ```
 
-### 菜单位置
+### Menu Position
 
 ```tsx
 <DropdownMenu>
@@ -76,38 +73,36 @@ function App() {
 </DropdownMenu>
 ```
 
-</div>
-
 ## API Reference
 
 ### DropdownMenu Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| className | ClassNameValue | - | 根元素类名 |
-| ...divProps | React.HTMLAttributes<HTMLDivElement> | - | 继承 div 元素属性 |
+| className | ClassNameValue | - | Root element class name |
+| ...divProps | React.HTMLAttributes<HTMLDivElement> | - | Inherited div element props |
 
 ### DropdownMenuTrigger Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| target | string | - | 目标菜单 ID（可选，默认使用上下文 ID） |
-| ...buttonProps | ButtonProps | - | 继承 button 组件 props |
+| target | string | - | Target menu ID (optional, uses context ID by default) |
+| ...buttonProps | ButtonProps | - | Inherited button component props |
 
 ### DropdownMenuContent Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| x_axis | "start" \| "center" \| "end" | "center" | X 轴对齐方式 |
-| y_axis | "start" \| "center" \| "end" | "end" | Y 轴对齐方式 |
-| popover | "auto" \| "manual" \| "hint" | "auto" | Popover 行为模式 |
-| id | string | - | 内容容器 ID（可选，默认使用上下文 ID） |
-| ...menuProps | React.HTMLAttributes<HTMLMenuElement> | - | 继承 menu 元素属性 |
+| x_axis | "start" \| "center" \| "end" | "center" | X-axis alignment |
+| y_axis | "start" \| "center" \| "end" | "end" | Y-axis alignment |
+| popover | "auto" \| "manual" \| "hint" | "auto" | Popover behavior mode |
+| id | string | - | Content container ID (optional, uses context ID by default) |
+| ...menuProps | React.HTMLAttributes<HTMLMenuElement> | - | Inherited menu element props |
 
 ### DropdownMenuItem Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| disabled | boolean | false | 是否禁用 |
-| onClick | React.MouseEventHandler<HTMLButtonElement> | - | 点击回调 |
-| ...buttonProps | React.ButtonHTMLAttributes<HTMLButtonElement> | - | 继承 button 元素属性 |
+| disabled | boolean | false | Whether disabled |
+| onClick | React.MouseEventHandler<HTMLButtonElement> | - | Click handler |
+| ...buttonProps | React.ButtonHTMLAttributes<HTMLButtonElement> | - | Inherited button element props |

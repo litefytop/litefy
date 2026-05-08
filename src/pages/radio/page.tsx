@@ -1,7 +1,4 @@
 import { useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeftIcon,
@@ -15,6 +12,7 @@ import {
   ShikiCodeBlock,
   Anatomy,
   Button,
+  Docs,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
@@ -50,7 +48,7 @@ function DemoSection({
     <section
       id={id}
       data-anchor-id={id}
-      className="space-y-4 scroll-mt-20 py-4"
+      className="space-y-4 py-4"
     >
       <div>
         <Title as="h3">{title}</Title>
@@ -69,6 +67,112 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
   const lang = t(locale as "zh" | "en");
   const l = lang.radio;
   const nav = getComponentNav("/components/radio", locale as "zh" | "en");
+
+  const radioSections = [
+    {
+      title: l.api.sectionTitles.radioGroupProps,
+      columns: [
+        { key: "prop", header: l.api.headers.prop },
+        { key: "type", header: l.api.headers.type },
+        { key: "default", header: l.api.headers.default },
+        { key: "description", header: l.api.headers.description },
+      ],
+      data: [
+        {
+          props: "value",
+          type: "string",
+          default: "-",
+          description: l.api.radioGroupProps.value,
+        },
+        {
+          props: "defaultValue",
+          type: "string",
+          default: "-",
+          description: l.api.radioGroupProps.defaultValue,
+        },
+        {
+          props: "onChange",
+          type: "(value: string) => void",
+          default: "-",
+          description: l.api.radioGroupProps.onChange,
+        },
+        {
+          props: "disabled",
+          type: "boolean",
+          default: "false",
+          description: l.api.radioGroupProps.disabled,
+        },
+        {
+          props: "direction",
+          type: '"horizontal" | "vertical"',
+          default: '"horizontal"',
+          description: l.api.radioGroupProps.direction,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          default: "-",
+          description: l.api.radioGroupProps.className,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.radioProps,
+      columns: [
+        { key: "prop", header: l.api.headers.prop },
+        { key: "type", header: l.api.headers.type },
+        { key: "default", header: l.api.headers.default },
+        { key: "description", header: l.api.headers.description },
+      ],
+      data: [
+        {
+          props: "value",
+          type: "string",
+          default: "-",
+          description: l.api.radioProps.value,
+        },
+        {
+          props: "disabled",
+          type: "boolean",
+          default: "false",
+          description: l.api.radioProps.disabled,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          default: "-",
+          description: l.api.radioProps.className,
+        },
+        {
+          props: "indicator",
+          type: "RadioIndicatorConfig",
+          default: "-",
+          description: l.api.radioProps.indicator,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.itemPropsConfig,
+      columns: [
+        { key: "property", header: l.api.headers.property },
+        { key: "description", header: l.api.headers.description },
+      ],
+      data: [
+        {
+          props: "group",
+          description: l.api.itemPropsConfig.group,
+        },
+        {
+          props: "radio",
+          description: l.api.itemPropsConfig.radio,
+        },
+        {
+          props: "indicator",
+          description: l.api.itemPropsConfig.indicator,
+        },
+      ],
+    },
+  ];
 
   const handleCopy = () => {
     navigator.clipboard.writeText(radioDoc);
@@ -118,7 +222,7 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
           <ShikiCodeBlock>{radioSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" className="scroll-mt-20">
+        <section id="examples" className="">
           <Title as="h2">{lang.examples}</Title>
 
           <DemoSection
@@ -162,21 +266,21 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
         </section>
 
-        <section id="anatomy" className="mt-8 space-y-4 scroll-mt-20">
+        <section id="anatomy" className="mt-8 space-y-4">
           <Title as="h2">{lang.anatomy}</Title>
           <Anatomy
             className="h-32"
             parts={[
-              { id: "anatomy-group", label: l.anatomy.group },
-              { id: "anatomy-radio", label: l.anatomy.radio },
-              { id: "anatomy-indicator", label: l.anatomy.indicator },
+              { name: "group", label: l.anatomy.group },
+              { name: "radio", label: l.anatomy.radio },
+              { name: "indicator", label: l.anatomy.indicator },
             ]}
           >
             <Radio.Group className="flex gap-4" id="anatomy-group">
               <Radio
                 value="item1"
                 id="anatomy-radio"
-                indicator={{ props: { id: "anatomy-indicator" } }}
+                indicator={{ props: { id: "anatomy-indicator" as string } }}
               >
                 Item 1
               </Radio>
@@ -184,34 +288,11 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
           </Anatomy>
         </section>
 
-        <section
-          id="docs"
-          data-anchor-id="docs"
-          className="mt-12 space-y-4 scroll-mt-20"
-        >
+        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
             {lang.docs}
-            <button
-              onClick={handleCopy}
-              className="p-1.5 rounded-md hover:bg-muted transition-colors"
-              aria-label={lang.common.copy}
-            >
-              {copied ? (
-                <CheckIcon className="size-4 text-green-500" />
-              ) : (
-                <CopyIcon className="size-4" />
-              )}
-            </button>
           </Title>
-          <section
-            id="css-classes"
-            data-anchor-id="css-classes"
-            className="space-y-4 scroll-mt-20 prose dark:prose-invert max-w-none"
-          >
-            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-              {radioDoc}
-            </ReactMarkdown>
-          </section>
+          <Docs sections={radioSections} />
         </section>
       </div>
 

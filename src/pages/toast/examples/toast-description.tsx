@@ -6,8 +6,8 @@ export default function ToastWithDescription() {
       <Button
         onClick={() =>
           Toaster.success({
-            title: "操作成功",
-            description: "您的操作已成功完成",
+            title: "Success",
+            description: "Your action has been completed successfully",
           })
         }
       >

@@ -1,7 +1,4 @@
 import { useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeftIcon,
@@ -14,6 +11,7 @@ import {
   ShikiCodeBlock,
   Anatomy,
   Button,
+  Docs,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
 import {
@@ -49,7 +47,7 @@ function DemoSection({
     <section
       id={id}
       data-anchor-id={id}
-      className="space-y-4 scroll-mt-20 py-4"
+      className="space-y-4 py-4"
     >
       <div>
         <Title as="h3">{title}</Title>
@@ -70,10 +68,165 @@ export default function DropdownMenuPage({
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
+  const l = lang["dropdown-menu"];
   const nav = getComponentNav("/components/dropdown-menu", locale as "zh" | "en");
 
+  const dropdownMenuSections = [
+    {
+      title: l.api.sectionTitles.dropdownMenuProps,
+      columns: [
+        { key: "prop", header: l.api.headers.prop },
+        { key: "type", header: l.api.headers.type },
+        { key: "default", header: l.api.headers.default },
+        { key: "description", header: l.api.headers.description },
+      ],
+      data: [
+        {
+          props: "children",
+          type: "ReactNode",
+          default: "-",
+          description: l.api.dropdownMenuProps.children,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          default: "-",
+          description: l.api.dropdownMenuProps.className,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.dropdownMenuTriggerProps,
+      columns: [
+        { key: "prop", header: l.api.headers.prop },
+        { key: "type", header: l.api.headers.type },
+        { key: "default", header: l.api.headers.default },
+        { key: "description", header: l.api.headers.description },
+      ],
+      data: [
+        {
+          props: "children",
+          type: "ReactNode",
+          default: "-",
+          description: l.api.triggerProps.children,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          default: "-",
+          description: l.api.triggerProps.className,
+        },
+        {
+          props: "disabled",
+          type: "boolean",
+          default: "false",
+          description: l.api.triggerProps.disabled,
+        },
+        {
+          props: "variant",
+          type: '"primary" | "secondary" | "ghost" | "link"',
+          default: '"primary"',
+          description: l.api.triggerProps.variant,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.dropdownMenuContentProps,
+      columns: [
+        { key: "prop", header: l.api.headers.prop },
+        { key: "type", header: l.api.headers.type },
+        { key: "default", header: l.api.headers.default },
+        { key: "description", header: l.api.headers.description },
+      ],
+      data: [
+        {
+          props: "children",
+          type: "ReactNode",
+          default: "-",
+          description: l.api.contentProps.children,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          default: "-",
+          description: l.api.contentProps.className,
+        },
+        {
+          props: "popover",
+          type: '"auto" | "manual"',
+          default: '"auto"',
+          description: l.api.contentProps.popover,
+        },
+        {
+          props: "side",
+          type: '"top" | "bottom" | "left" | "right"',
+          default: '"bottom"',
+          description: l.api.contentProps.side,
+        },
+        {
+          props: "align",
+          type: '"start" | "center" | "end"',
+          default: '"center"',
+          description: l.api.contentProps.align,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.dropdownMenuItemProps,
+      columns: [
+        { key: "prop", header: l.api.headers.prop },
+        { key: "type", header: l.api.headers.type },
+        { key: "default", header: l.api.headers.default },
+        { key: "description", header: l.api.headers.description },
+      ],
+      data: [
+        {
+          props: "children",
+          type: "ReactNode",
+          default: "-",
+          description: l.api.itemProps.children,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          default: "-",
+          description: l.api.itemProps.className,
+        },
+        {
+          props: "onClick",
+          type: "() => void",
+          default: "-",
+          description: l.api.itemProps.onClick,
+        },
+        {
+          props: "disabled",
+          type: "boolean",
+          default: "false",
+          description: l.api.itemProps.disabled,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.dropdownMenuSeparatorProps,
+      columns: [
+        { key: "prop", header: l.api.headers.prop },
+        { key: "type", header: l.api.headers.type },
+        { key: "default", header: l.api.headers.default },
+        { key: "description", header: l.api.headers.description },
+      ],
+      data: [
+        {
+          props: "className",
+          type: "ClassNameValue",
+          default: "-",
+          description: l.api.separatorProps.className,
+        },
+      ],
+    },
+  ];
+
   const handleCopy = () => {
-    navigator.clipboard.writeText(dropdownMenuSrc);
+    navigator.clipboard.writeText(dropdownMenuDoc);
     setCopied(true);
     Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);
@@ -92,7 +245,7 @@ export default function DropdownMenuPage({
       <div className="flex-1 w-full">
         <header className="pb-4 mb-4 border-b space-y-3">
           <div className="flex items-center justify-between">
-            <Title as="h1">{lang["dropdown-menu"].title}</Title>
+            <Title as="h1">{l.title}</Title>
             <div className="flex items-center gap-2">
               <Button onClick={handleCopy} variant="ghost">
                 {copied ? (
@@ -110,7 +263,7 @@ export default function DropdownMenuPage({
               </Button>
             </div>
           </div>
-          <Description>{lang["dropdown-menu"].description}</Description>
+          <Description>{l.description}</Description>
         </header>
 
         <section id="installation" className="mb-8 scroll-mt-20">
@@ -120,12 +273,12 @@ export default function DropdownMenuPage({
           <ShikiCodeBlock>{dropdownMenuSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" className="scroll-mt-20">
+        <section id="examples" className="">
           <Title as="h2">{lang.examples}</Title>
 
           <DemoSection
             id="basic"
-            title={lang["dropdown-menu"].basic.title}
+            title={l.basic.title}
             code={DropdownMenuBasicRaw}
           >
             <DropdownMenuBasic />
@@ -133,7 +286,7 @@ export default function DropdownMenuPage({
 
           <DemoSection
             id="align"
-            title={lang["dropdown-menu"].align.title}
+            title={l.align.title}
             code={DropdownMenuAlignRaw}
           >
             <DropdownMenuAlign />
@@ -141,26 +294,26 @@ export default function DropdownMenuPage({
 
           <DemoSection
             id="side"
-            title={lang["dropdown-menu"].side.title}
+            title={l.side.title}
             code={DropdownMenuSideRaw}
           >
             <DropdownMenuSide />
           </DemoSection>
         </section>
 
-        <section id="anatomy" className="mt-8 space-y-4 scroll-mt-20">
+        <section id="anatomy" className="mt-8 space-y-4">
           <Title as="h2">{lang.anatomy}</Title>
           <Anatomy
             className="h-32"
             parts={[
-              { name: "root", label: lang["dropdown-menu"].anatomy.root },
+              { name: "root", label: l.anatomy.root },
               {
                 name: "trigger",
-                label: lang["dropdown-menu"].anatomy.trigger,
+                label: l.anatomy.trigger,
               },
               {
                 name: "content",
-                label: lang["dropdown-menu"].anatomy.content,
+                label: l.anatomy.content,
               },
             ]}
           >
@@ -175,34 +328,11 @@ export default function DropdownMenuPage({
           </Anatomy>
         </section>
 
-        <section
-          id="docs"
-          data-anchor-id="docs"
-          className="mt-12 space-y-4 scroll-mt-20"
-        >
+        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8 scroll-mt-20">
           <Title as="h2" className="mb-4">
             {lang.docs}
-            <button
-              onClick={handleCopy}
-              className="p-1.5 rounded-md hover:bg-muted transition-colors"
-              aria-label={lang.common.copy}
-            >
-              {copied ? (
-                <CheckIcon className="size-4 text-green-500" />
-              ) : (
-                <CopyIcon className="size-4" />
-              )}
-            </button>
           </Title>
-          <section
-            id="css-classes"
-            data-anchor-id="css-classes"
-            className="space-y-4 scroll-mt-20 prose dark:prose-invert max-w-none"
-          >
-            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-              {dropdownMenuDoc}
-            </ReactMarkdown>
-          </section>
+          <Docs sections={dropdownMenuSections} />
         </section>
       </div>
 
@@ -211,10 +341,13 @@ export default function DropdownMenuPage({
           <Anchor.Section href="#installation" title={lang.installation} />
           <Anchor.Section href="#examples" title={lang.examples}>
             <Anchor.Item href="#basic">
-              {lang["dropdown-menu"].basic.title}
+              {l.basic.title}
             </Anchor.Item>
             <Anchor.Item href="#align">
-              {lang["dropdown-menu"].align.title}
+              {l.align.title}
+            </Anchor.Item>
+            <Anchor.Item href="#side">
+              {l.side.title}
             </Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#anatomy" title={lang.anatomy} />

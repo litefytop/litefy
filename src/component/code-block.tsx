@@ -1,12 +1,29 @@
 import { useState, useEffect } from "react";
-import { createHighlighter } from "shiki";
+import { createHighlighter, Highlighter } from "shiki";
 import { CopyIcon, CheckIcon, CaretDownIcon, CaretRightIcon } from "@/component";
 import { useTheme } from "@/component";
 
-const highlighterPromise = createHighlighter({
-  themes: ["github-dark", "github-light"],
-  langs: ["tsx", "typescript", "javascript", "css", "json", "html", "bash"],
-});
+// 单例 highlighter
+let highlighterInstance: Highlighter | null = null;
+let highlighterPromise: Promise<Highlighter> | null = null;
+
+function getHighlighter(): Promise<Highlighter> {
+  if (highlighterInstance) {
+    return Promise.resolve(highlighterInstance);
+  }
+  
+  if (!highlighterPromise) {
+    highlighterPromise = createHighlighter({
+      themes: ["github-dark", "github-light"],
+      langs: ["tsx", "typescript", "javascript", "css", "json", "html", "bash"],
+    }).then((highlighter) => {
+      highlighterInstance = highlighter;
+      return highlighter;
+    });
+  }
+  
+  return highlighterPromise;
+}
 
 interface CodeBlockProps {
   children?: React.ReactNode;
@@ -14,6 +31,7 @@ interface CodeBlockProps {
   isOpen?: boolean;
   onToggle?: () => void;
   code?: string;
+  maxHeight?: number | string;
 }
 
 export function CodeBlock({
@@ -22,6 +40,7 @@ export function CodeBlock({
   isOpen,
   onToggle,
   code: codeProp,
+  maxHeight = "600px",
 }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
   const [internalOpen, setInternalOpen] = useState(false);
@@ -79,7 +98,10 @@ export function CodeBlock({
       {isExpanded && (
         <div className="bg-muted/20 border-t">
           {children || (
-            <pre className="p-4 text-sm font-mono overflow-x-auto">
+            <pre 
+              className="p-4 text-sm font-mono overflow-auto"
+              style={{ maxHeight }}
+            >
               <code>{codeString}</code>
             </pre>
           )}
@@ -94,6 +116,7 @@ interface ShikiCodeBlockProps {
   title?: string;
   isOpen?: boolean;
   onToggle?: () => void;
+  maxHeight?: number | string;
 }
 
 export function ShikiCodeBlock({
@@ -101,6 +124,7 @@ export function ShikiCodeBlock({
   title,
   isOpen,
   onToggle,
+  maxHeight = "600px",
 }: ShikiCodeBlockProps) {
   const code = typeof children === "string" ? children : "";
   const [highlightedCode, setHighlightedCode] = useState("");
@@ -111,7 +135,7 @@ export function ShikiCodeBlock({
 
     const theme = colorScheme === "dark" ? "github-dark" : "github-light";
 
-    highlighterPromise.then((highlighter) => {
+    getHighlighter().then((highlighter) => {
       const html = highlighter.codeToHtml(code, {
         lang: "tsx",
         theme,
@@ -130,10 +154,12 @@ export function ShikiCodeBlock({
       isOpen={isOpen}
       onToggle={onToggle}
       code={code}
+      maxHeight={maxHeight}
     >
       {highlightedCode && (
         <div
-          className="overflow-x-auto"
+          className="overflow-auto"
+          style={{ maxHeight }}
           dangerouslySetInnerHTML={{ __html: highlightedCode }}
         />
       )}

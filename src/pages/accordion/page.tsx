@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeftIcon,
@@ -15,6 +12,7 @@ import {
   Anatomy,
   Accordion,
   Button,
+  Docs,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages";
@@ -46,7 +44,7 @@ function DemoSection({
     <section
       id={id}
       data-anchor-id={id}
-      className="space-y-4 scroll-mt-20 py-4"
+      className="space-y-4 py-4"
     >
       <div>
         <Title as="h3">{title}</Title>
@@ -63,6 +61,127 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
+  const l = lang.accordion;
+
+  const accordionSections = [
+    {
+      title: l.api.sectionTitles.accordionProps,
+      columns: [
+        { key: "prop", header: l.api.headers.prop },
+        { key: "type", header: l.api.headers.type },
+        { key: "default", header: l.api.headers.default },
+        { key: "description", header: l.api.headers.description },
+      ] ,
+      data: [
+        {
+          props: "defaultOpenKeys",
+          type: "string[]",
+          default: "[]",
+          description: l.api.props.defaultOpenKeys,
+        },
+        {
+          props: "openKeys",
+          type: "string[]",
+          default: "-",
+          description: l.api.props.openKeys,
+        },
+        {
+          props: "onOpenChange",
+          type: "(keys: string[]) => void",
+          default: "-",
+          description: l.api.props.onOpenChange,
+        },
+        {
+          props: "allowMultiple",
+          type: "boolean",
+          default: "false",
+          description: l.api.props.allowMultiple,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          default: "-",
+          description: l.api.props.className,
+        },
+        {
+          props: "itemProps",
+          type: "object",
+          default: "-",
+          description: l.api.props.itemProps,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.accordionItemProps,
+      columns: [
+        { key: "prop", header: l.api.headers.prop },
+        { key: "type", header: l.api.headers.type },
+        { key: "default", header: l.api.headers.default },
+        { key: "description", header: l.api.headers.description },
+      ] ,
+      data: [
+        {
+          props: "value",
+          type: "string",
+          default: "-",
+          description: l.api.itemProps.value,
+        },
+        {
+          props: "title",
+          type: "ReactNode",
+          default: "-",
+          description: l.api.itemProps.title,
+        },
+        {
+          props: "children",
+          type: "ReactNode",
+          default: "-",
+          description: l.api.itemProps.children,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          default: "-",
+          description: l.api.itemProps.className,
+        },
+        {
+          props: "itemProps",
+          type: "object",
+          default: "-",
+          description: l.api.itemProps.itemProps,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.itemPropsConfig,
+      columns: [
+        { key: "property", header: l.api.headers.property },
+        { key: "type", header: l.api.headers.type },
+        { key: "description", header: l.api.headers.description },
+      ] ,
+      data: [
+        {
+          props: "trigger",
+          type: 'React.ComponentProps<"button">',
+          default: "-",
+          description: l.api.itemPropsConfig.trigger,
+        },
+        {
+          props: "title",
+          type: 'React.ComponentProps<"span">',
+          default: "-",
+          description: l.api.itemPropsConfig.title,
+        },
+        {
+          props: "content",
+          type: 'React.ComponentProps<"div">',
+          default: "-",
+          description: l.api.itemPropsConfig.content,
+        },
+      ],
+    },
+  ];
+
   const nav = getComponentNav("/components/accordion", locale as "zh" | "en");
 
   const handleCopy = () => {
@@ -106,14 +225,14 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
           <Description>{lang.accordion.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 scroll-mt-20">
+        <section id="installation" className="mb-8 scroll-mt-30">
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{accordionSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" className=" scroll-mt-20">
+        <section id="examples" className="">
           <Title as="h2">{lang.examples}</Title>
           <DemoSection
             id="basic"
@@ -139,7 +258,7 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
             <AccordionControlled />
           </DemoSection>
         </section>
-        <section id="anatomy" className="mt-8 space-y-4 scroll-mt-20">
+        <section id="anatomy" className="mt-8 space-y-4">
           <Title as="h2">{lang.accordion.anatomy.title}</Title>
           <Anatomy
             className="h-32"
@@ -180,31 +299,13 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
         <section
           id="docs"
           data-anchor-id="docs"
-          className="mt-12 space-y-4 scroll-mt-20"
+          className="mt-12 space-y-4"
         >
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
-          <Description>{lang.common.copyDocs}</Description>
 
-          <section
-            id="css-classes"
-            data-anchor-id="css-classes"
-            className="mt-12 space-y-4 scroll-mt-20 prose dark:prose-invert max-w-none"
-          >
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeRaw]}
-            >
-              {accordionDoc}
-            </ReactMarkdown>
-          </section>
-
-          <section
-            id="api"
-            data-anchor-id="api"
-            className="mt-12 space-y-4 scroll-mt-20 prose dark:prose-invert max-w-none"
-          ></section>
+          <Docs sections={accordionSections} />
         </section>
       </div>
 

@@ -1,7 +1,4 @@
 import { useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeftIcon,
@@ -13,6 +10,7 @@ import {
   Description,
   ShikiCodeBlock,
   Button,
+  Docs,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
@@ -38,7 +36,7 @@ function DemoSection({
     <section
       id={id}
       data-anchor-id={id}
-      className="space-y-4 scroll-mt-20 py-4"
+      className="space-y-4 py-4"
     >
       <div>
         <Title as="h3">{title}</Title>
@@ -55,7 +53,40 @@ export default function DescriptionPage({ locale = "zh" }: { locale?: string }) 
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
+  const l = lang.description;
   const nav = getComponentNav("/components/description", locale as "zh" | "en");
+
+  const descriptionSections = [
+    {
+      title: l.api.sectionTitles.descriptionProps,
+      columns: [
+        { key: "prop", header: l.api.headers.prop },
+        { key: "type", header: l.api.headers.type },
+        { key: "default", header: l.api.headers.default },
+        { key: "description", header: l.api.headers.description },
+      ],
+      data: [
+        {
+          props: "as",
+          type: '"h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span" | "div"',
+          default: '"p"',
+          description: l.api.props.as,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          default: "-",
+          description: l.api.props.className,
+        },
+        {
+          props: "children",
+          type: "ReactNode",
+          default: "-",
+          description: l.api.props.children,
+        },
+      ],
+    },
+  ];
 
   const handleCopy = () => {
     navigator.clipboard.writeText(descriptionDoc);
@@ -77,7 +108,7 @@ export default function DescriptionPage({ locale = "zh" }: { locale?: string }) 
       <div className="flex-1 w-full">
         <header className="pb-4 mb-4 border-b space-y-3">
           <div className="flex items-center justify-between">
-            <Title as="h1">{lang.description.title}</Title>
+            <Title as="h1">{l.title}</Title>
             <div className="flex items-center gap-2">
               <Button onClick={handleCopy} variant="ghost">
                 {copied ? (
@@ -95,7 +126,7 @@ export default function DescriptionPage({ locale = "zh" }: { locale?: string }) 
               </Button>
             </div>
           </div>
-          <Description>{lang.description.description}</Description>
+          <Description>{l.description}</Description>
         </header>
 
         <section id="installation" className="mb-8 scroll-mt-20">
@@ -105,12 +136,12 @@ export default function DescriptionPage({ locale = "zh" }: { locale?: string }) 
           <ShikiCodeBlock>{descriptionSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" className="scroll-mt-20">
+        <section id="examples" className="">
           <Title as="h2">{lang.examples}</Title>
 
           <DemoSection
             id="basic"
-            title={lang.description.basic.title}
+            title={l.basic.title}
             code={DescriptionBasicRaw}
           >
             <DescriptionBasic />
@@ -118,30 +149,11 @@ export default function DescriptionPage({ locale = "zh" }: { locale?: string }) 
 
         </section>
 
-        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-4 scroll-mt-20">
+        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
             {lang.docs}
-            <button
-              onClick={handleCopy}
-              className="p-1.5 rounded-md hover:bg-muted transition-colors"
-              aria-label={lang.common.copy}
-            >
-              {copied ? (
-                <CheckIcon className="size-4 text-green-500" />
-              ) : (
-                <CopyIcon className="size-4" />
-              )}
-            </button>
           </Title>
-          <section
-            id="css-classes"
-            data-anchor-id="css-classes"
-            className="space-y-4 scroll-mt-20 prose dark:prose-invert max-w-none"
-          >
-            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-              {descriptionDoc}
-            </ReactMarkdown>
-          </section>
+          <Docs sections={descriptionSections} />
         </section>
       </div>
 
@@ -149,10 +161,9 @@ export default function DescriptionPage({ locale = "zh" }: { locale?: string }) 
         <Anchor>
           <Anchor.Section href="#installation" title={lang.installation} />
           <Anchor.Section href="#examples" title={lang.examples}>
-            <Anchor.Item href="#basic">{lang.description.basic.title}</Anchor.Item>
+            <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#docs" title={lang.docs}/>
-
+          <Anchor.Section href="#docs" title={lang.docs} />
         </Anchor>
       </aside>
     </div>

@@ -1,5 +1,5 @@
 import { ClassNameValue, cn } from "@/lib";
-import { Spin } from "./spin";
+import { SpinIcon } from "./icons";
 
 const buttonClass = {
   base: `cursor-pointer outline-none
@@ -49,7 +49,7 @@ function Button({
 }: ButtonProps) {
   const isLoading = loading?.loading;
 
-  const loadingIcon = loading?.icon || (isLoading && <Spin />);
+  const loadingIcon = loading?.icon || (isLoading && <SpinIcon className="animate-spin" />);
 
   return (
     <button

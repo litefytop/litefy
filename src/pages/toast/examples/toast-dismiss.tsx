@@ -2,7 +2,7 @@ import { Button, Toaster } from "@/component";
 
 export default function ToastDismiss() {
   const handleDismiss = () => {
-    Toaster.success({ title: "操作成功" });
+    Toaster.success({ title: "Success" });
     setTimeout(() => {
       Toaster.dismiss();
     }, 1000);

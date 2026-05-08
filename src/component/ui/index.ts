@@ -3,7 +3,6 @@ export * from "./text";
 export * from "./description";
 export * from "./field";
 export * from "./loading";
-export * from "./spin";
 export * from "./img";
 export * from "./watermark";
 export * from "./separator";
@@ -30,4 +29,4 @@ export * from "./theme";
 export * from "./accordion";
 export * from "./icons";
 export * from "./anchor";
-
+export * from "./toast"

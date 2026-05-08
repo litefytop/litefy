@@ -6,7 +6,7 @@ export default function ToastWithIcon() {
       <Button
         onClick={() =>
           Toaster.success({
-            title: "自定义图标",
+            title: "Custom Icon",
             icon: <span>🎉</span>,
           })
         }

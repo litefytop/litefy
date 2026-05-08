@@ -1,13 +1,10 @@
-<div class="hidden">
-<!-- AI 专用：此区域内容页面不显示，但复制/AI 能完整获取 -->
-
-## 安装
+## Installation
 
 ```bash
 npm install @your-org/ui
 ```
 
-## 用法
+## Usage
 
 ```tsx
 import { Password } from "@/component/ui/password";
@@ -17,36 +14,34 @@ function App() {
 }
 ```
 
-## 示例
+## Examples
 
-### 基础用法
+### Basic
 
 ```tsx
 <Password placeholder="Enter password..." />
 ```
 
-### 带标签
+### With Label
 
 ```tsx
 <Password label="Password" placeholder="Enter password..." />
 ```
 
-### 带描述
+### With Description
 
 ```tsx
 <Password label="Password" description="Must be at least 8 characters" placeholder="Enter password..." />
 ```
 
-### 错误状态
+### Error State
 
 ```tsx
 <Password label="Password" error="Password is required" placeholder="Enter password..." />
 ```
 
-</div>
-
 ## API Reference
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| ...HTMLInputElementProps | HTMLInputElementProps | - | 继承 input 元素的其他 props |
+| ...HTMLInputElementProps | HTMLInputElementProps | - | Other inherited input element props |

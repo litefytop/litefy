@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeftIcon,
@@ -13,6 +10,7 @@ import {
   Description,
   ShikiCodeBlock,
   Button,
+  Docs,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
@@ -50,7 +48,7 @@ function DemoSection({
     <section
       id={id}
       data-anchor-id={id}
-      className="space-y-4 scroll-mt-20 py-4"
+      className="space-y-4 py-4"
     >
       <div>
         <Title as="h3">{title}</Title>
@@ -67,7 +65,86 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
+  const l = lang.button;
   const nav = getComponentNav("/components/button", locale as "zh" | "en");
+
+  const buttonSections = [
+    {
+      title: l.api.sectionTitles.buttonProps,
+      columns: [
+        { key: "prop", header: l.api.headers.prop },
+        { key: "type", header: l.api.headers.type },
+        { key: "default", header: l.api.headers.default },
+        { key: "description", header: l.api.headers.description },
+      ],
+      data: [
+        {
+          props: "variant",
+          type: '"primary" | "secondary" | "ghost" | "link"',
+          default: '"primary"',
+          description: l.api.props.variant,
+        },
+        {
+          props: "size",
+          type: '"sm" | "md" | "lg"',
+          default: '"md"',
+          description: l.api.props.size,
+        },
+        {
+          props: "disabled",
+          type: "boolean",
+          default: "false",
+          description: l.api.props.disabled,
+        },
+        {
+          props: "loading",
+          type: "boolean",
+          default: "false",
+          description: l.api.props.loading,
+        },
+        {
+          props: "children",
+          type: "ReactNode",
+          default: "-",
+          description: l.api.props.children,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          default: "-",
+          description: l.api.props.className,
+        },
+        {
+          props: "itemProps",
+          type: "object",
+          default: "-",
+          description: l.api.props.itemProps,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.itemPropsConfig,
+      columns: [
+        { key: "property", header: l.api.headers.property },
+        { key: "type", header: l.api.headers.type },
+        { key: "description", header: l.api.headers.description },
+      ],
+      data: [
+        {
+          props: "icon",
+          type: 'Omit<React.ComponentProps<"span">, "children">',
+          default: "-",
+          description: l.api.itemPropsConfig.icon,
+        },
+        {
+          props: "spinner",
+          type: 'Omit<React.ComponentProps<"span">, "children">',
+          default: "-",
+          description: l.api.itemPropsConfig.spinner,
+        },
+      ],
+    },
+  ];
 
   const handleCopy = () => {
     navigator.clipboard.writeText(buttonDoc);
@@ -89,7 +166,7 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
       <div className="flex-1 w-full">
         <header className="pb-4 mb-4 border-b space-y-3">
           <div className="flex items-center justify-between">
-            <Title as="h1">{lang.button.title}</Title>
+            <Title as="h1">{l.title}</Title>
             <div className="flex items-center gap-2">
               <Button onClick={handleCopy} variant="ghost">
                 {copied ? (
@@ -107,7 +184,7 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
               </Button>
             </div>
           </div>
-          <Description>{lang.button.description}</Description>
+          <Description>{l.description}</Description>
         </header>
 
         <section id="installation" className="mb-8 scroll-mt-20">
@@ -117,12 +194,12 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
           <ShikiCodeBlock>{buttonSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" className="scroll-mt-20">
+        <section id="examples" className="">
           <Title as="h2">{lang.examples}</Title>
 
           <DemoSection
             id="variants"
-            title={lang.button.variants.title}
+            title={l.variants.title}
             code={ButtonVariantsRaw}
           >
             <ButtonVariants />
@@ -130,7 +207,7 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
 
           <DemoSection
             id="disabled"
-            title={lang.button.disabled.title}
+            title={l.disabled.title}
             code={ButtonDisabledRaw}
           >
             <ButtonDisabled />
@@ -138,7 +215,7 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
 
           <DemoSection
             id="loading"
-            title={lang.button.loading.title}
+            title={l.loading.title}
             code={ButtonLoadingRaw}
           >
             <ButtonLoading />
@@ -146,7 +223,7 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
 
           <DemoSection
             id="icon-only"
-            title={lang.button.iconOnly.title}
+            title={l.iconOnly.title}
             code={ButtonIconOnlyRaw}
           >
             <ButtonIconOnly />
@@ -154,7 +231,7 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
 
           <DemoSection
             id="with-icons"
-            title={lang.button.withIcons.title}
+            title={l.withIcons.title}
             code={ButtonWithIconsRaw}
           >
             <ButtonWithIcons />
@@ -162,42 +239,18 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
 
           <DemoSection
             id="direction"
-            title={lang.button.direction.title}
+            title={l.direction.title}
             code={ButtonDirectionRaw}
           >
             <ButtonDirection />
           </DemoSection>
         </section>
 
-        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-4 scroll-mt-20">
+        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
             {lang.docs}
-            <button
-              onClick={handleCopy}
-              className="p-1.5 rounded-md hover:bg-muted transition-colors"
-              aria-label={lang.common.copy}
-            >
-              {copied ? (
-                <CheckIcon className="size-4 text-green-500" />
-              ) : (
-                <CopyIcon className="size-4" />
-              )}
-            </button>
           </Title>
-          <section
-            id="css-classes"
-            data-anchor-id="css-classes"
-            className="space-y-4 scroll-mt-20 prose dark:prose-invert max-w-none"
-          >
-            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-              {buttonDoc}
-            </ReactMarkdown>
-          </section>
-          <section
-            id="api"
-            data-anchor-id="api"
-            className="space-y-4 scroll-mt-20 prose dark:prose-invert max-w-none"
-          ></section>
+          <Docs sections={buttonSections} />
         </section>
       </div>
 
@@ -205,20 +258,16 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
         <Anchor>
           <Anchor.Section href="#installation" title={lang.installation} />
           <Anchor.Section href="#examples" title={lang.examples}>
-            <Anchor.Item href="#variants">{lang.button.variants.title}</Anchor.Item>
-            <Anchor.Item href="#disabled">{lang.button.disabled.title}</Anchor.Item>
-            <Anchor.Item href="#loading">{lang.button.loading.title}</Anchor.Item>
-            <Anchor.Item href="#icon-only">{lang.button.iconOnly.title}</Anchor.Item>
-            <Anchor.Item href="#with-icons">{lang.button.withIcons.title}</Anchor.Item>
-            <Anchor.Item href="#direction">{lang.button.direction.title}</Anchor.Item>
+            <Anchor.Item href="#variants">{l.variants.title}</Anchor.Item>
+            <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
+            <Anchor.Item href="#loading">{l.loading.title}</Anchor.Item>
+            <Anchor.Item href="#icon-only">{l.iconOnly.title}</Anchor.Item>
+            <Anchor.Item href="#with-icons">{l.withIcons.title}</Anchor.Item>
+            <Anchor.Item href="#direction">{l.direction.title}</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#docs" title={lang.docs}>
-            <Anchor.Item href="#css-classes">{lang.cssClasses}</Anchor.Item>
-            <Anchor.Item href="#api">{lang.api}</Anchor.Item>
-          </Anchor.Section>
+          <Anchor.Section href="#docs" title={lang.docs} />
         </Anchor>
       </aside>
     </div>
   );
 }
-

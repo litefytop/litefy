@@ -1,7 +1,4 @@
 import React from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeftIcon,
@@ -14,6 +11,7 @@ import {
   ShikiCodeBlock,
   Anatomy,
   Button,
+  Docs,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages";
@@ -41,7 +39,7 @@ function DemoSection({
     <section
       id={id}
       data-anchor-id={id}
-      className="space-y-4 scroll-mt-20 py-4"
+      className="space-y-4 py-4"
     >
       <div>
         <Title as="h3">{title}</Title>
@@ -58,7 +56,132 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = React.useState(false);
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
+  const l = lang.anchor;
   const nav = getComponentNav("/components/anchor", locale as "zh" | "en");
+
+  const anchorSections = [
+    {
+      title: l.api.sectionTitles.anchorProps,
+      columns: [
+        { key: "prop", header: l.api.headers.prop },
+        { key: "type", header: l.api.headers.type },
+        { key: "default", header: l.api.headers.default },
+        { key: "description", header: l.api.headers.description },
+      ],
+      data: [
+        {
+          props: "className",
+          type: "ClassNameValue",
+          default: "-",
+          description: l.api.props.className,
+        },
+        {
+          props: "children",
+          type: "ReactNode",
+          default: "-",
+          description: l.api.props.children,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.anchorSectionProps,
+      columns: [
+        { key: "prop", header: l.api.headers.prop },
+        { key: "type", header: l.api.headers.type },
+        { key: "default", header: l.api.headers.default },
+        { key: "description", header: l.api.headers.description },
+      ],
+      data: [
+        {
+          props: "href",
+          type: "string",
+          default: "-",
+          description: l.api.sectionProps.href,
+        },
+        {
+          props: "title",
+          type: "string",
+          default: "-",
+          description: l.api.sectionProps.title,
+        },
+        {
+          props: "children",
+          type: "ReactNode",
+          default: "-",
+          description: l.api.sectionProps.children,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          default: "-",
+          description: l.api.sectionProps.className,
+        },
+        {
+          props: "itemProps",
+          type: "object",
+          default: "-",
+          description: l.api.sectionProps.itemProps,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.anchorItemProps,
+      columns: [
+        { key: "prop", header: l.api.headers.prop },
+        { key: "type", header: l.api.headers.type },
+        { key: "default", header: l.api.headers.default },
+        { key: "description", header: l.api.headers.description },
+      ],
+      data: [
+        {
+          props: "href",
+          type: "string",
+          default: "-",
+          description: l.api.itemProps.href,
+        },
+        {
+          props: "children",
+          type: "ReactNode",
+          default: "-",
+          description: l.api.itemProps.children,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          default: "-",
+          description: l.api.itemProps.className,
+        },
+        {
+          props: "onClick",
+          type: "() => void",
+          default: "-",
+          description: l.api.itemProps.onClick,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.itemPropsConfig,
+      columns: [
+        { key: "property", header: l.api.headers.property },
+        { key: "type", header: l.api.headers.type },
+        { key: "description", header: l.api.headers.description },
+      ],
+      data: [
+        {
+          props: "title",
+          type: 'Omit<React.ComponentProps<"a">, "href" | "onClick">',
+          default: "-",
+          description: l.api.itemPropsConfig.title,
+        },
+        {
+          props: "nav",
+          type: 'Omit<React.ComponentProps<"nav">, "aria-label">',
+          default: "-",
+          description: l.api.itemPropsConfig.nav,
+        },
+      ],
+    },
+  ];
 
   const handleCopy = () => {
     navigator.clipboard.writeText(anchorDoc);
@@ -80,7 +203,7 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
       <div className="flex-1 w-full">
         <header className="pb-4 mb-4 border-b space-y-3">
           <div className="flex items-center justify-between">
-            <Title as="h1">{lang.anchor.title}</Title>
+            <Title as="h1">{l.title}</Title>
             <div className="flex items-center gap-2">
               <Button onClick={handleCopy} variant="ghost">
                 {copied ? (
@@ -98,22 +221,37 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
               </Button>
             </div>
           </div>
-          <Description>{lang.anchor.description}</Description>
+          <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 scroll-mt-20">
+        <section id="installation" className="mb-8 scroll-mt-30">
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{anchorSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" className=" scroll-mt-20">
+        <section id="scroll-behavior" className="mb-8">
+          <Title as="h2">{l.scrollBehavior.title}</Title>
+          <div className="space-y-4 text-sm">
+            <p>
+              {l.scrollBehavior.description}
+            </p>
+            <ShikiCodeBlock>{`<section id="installation" className="scroll-mt-[80px]">
+  {/* Adjust the value based on your header height */}
+</section>`}</ShikiCodeBlock>
+            <p className="text-muted-foreground">
+              {l.scrollBehavior.note}
+            </p>
+          </div>
+        </section>
+
+        <section id="examples" className="">
           <Title as="h2">{lang.examples}</Title>
 
           <DemoSection
             id="basic"
-            title={lang.anchor.basic.title}
+            title={l.basic.title}
             code={AnchorBasicRaw}
           >
             <AnchorBasic />
@@ -121,21 +259,21 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
 
           <DemoSection
             id="sections"
-            title={lang.anchor.withSections.title}
+            title={l.withSections.title}
             code={AnchorWithSectionsRaw}
           >
             <AnchorWithSections />
           </DemoSection>
         </section>
 
-        <section id="anatomy" className="mt-8 space-y-4 scroll-mt-20">
+        <section id="anatomy" className="mt-8 space-y-4">
           <Title as="h2">{lang.anatomy}</Title>
           <Anatomy
             parts={[
-              { id: "anatomy-anchor", label: lang.anchor.anatomy.anchor },
-              { id: "anatomy-section", label: lang.anchor.anatomy.section },
-              { id: "anatomy-item", label: lang.anchor.anatomy.item },
-              { id: "anatomy-link", label: lang.anchor.anatomy.link },
+              { id: "anatomy-anchor", label: l.anatomy.anchor },
+              { id: "anatomy-section", label: l.anatomy.section },
+              { id: "anatomy-item", label: l.anatomy.item },
+              { id: "anatomy-link", label: l.anatomy.link },
             ]}
           >
             <Anchor className="max-w-xs" id="anatomy-anchor">
@@ -151,52 +289,24 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
           </Anatomy>
         </section>
 
-        <section
-          id="docs"
-          data-anchor-id="docs"
-          className="mt-12 space-y-4 scroll-mt-20"
-        >
+        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
             {lang.docs}
-            <button
-              onClick={handleCopy}
-              className="p-1.5 rounded-md hover:bg-muted transition-colors"
-              aria-label={lang.common.copy}
-            >
-              {copied ? (
-                <CheckIcon className="size-4 text-green-500" />
-              ) : (
-                <CopyIcon className="size-4" />
-              )}
-            </button>
           </Title>
-          <section
-            id="css-classes"
-            data-anchor-id="css-classes"
-            className="space-y-4 scroll-mt-20 prose dark:prose-invert max-w-none"
-          >
-            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-              {anchorDoc}
-            </ReactMarkdown>
-          </section>
-          <section
-            id="api"
-            data-anchor-id="api"
-            className="space-y-4 scroll-mt-20 prose dark:prose-invert max-w-none"
-          ></section>
+          <Docs sections={anchorSections} />
         </section>
       </div>
 
       <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-[calc(100vh-3.5rem)] overflow-y-auto p-4">
           <Anchor>
             <Anchor.Section href="#installation" title={lang.installation} />
+            <Anchor.Section href="#scroll-behavior" title={l.scrollBehavior.title} />
             <Anchor.Section href="#examples" title={lang.examples}>
-              <Anchor.Item href="#basic">{lang.anchor.basic.title}</Anchor.Item>
-              <Anchor.Item href="#sections">{lang.anchor.withSections.title}</Anchor.Item>
+              <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
+              <Anchor.Item href="#sections">{l.withSections.title}</Anchor.Item>
             </Anchor.Section>
             <Anchor.Section href="#anatomy" title={lang.anatomy} />
             <Anchor.Section href="#docs" title={lang.docs}/>
-
           </Anchor>
       </aside>
     </div>

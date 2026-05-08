@@ -1,67 +1,64 @@
-<div class="hidden">
-<!-- AI 专用：此区域内容页面不显示，但复制/AI 能完整获取 -->
-
-## 安装
+## Installation
 
 ```bash
 npm install sonner
 ```
 
-## 用法
+## Usage
 
 ```tsx
 import { Toaster } from "@/component/ui/toast";
 ```
 
-## 示例
+## Examples
 
-### 基础用法
+### Basic
 
 ```tsx
-Toaster.success({ title: "操作成功" })
-Toaster.error({ title: "操作失败" })
-Toaster.warning({ title: "警告提示" })
-Toaster.info({ title: "信息提示" })
-Toaster.loading({ title: "加载中..." })
+Toaster.success({ title: "Success" });
+Toaster.error({ title: "Error" });
+Toaster.warning({ title: "Warning" });
+Toaster.info({ title: "Info" });
+Toaster.loading({ title: "Loading..." });
 ```
 
-### 带描述
+### With Description
 
 ```tsx
 Toaster.success({
-  title: "操作成功",
-  description: "您的操作已成功完成"
-})
+  title: "Success",
+  description: "Your action has been completed",
+});
 ```
 
-### 自定义持续时间
+### Custom Duration
 
 ```tsx
-Toaster.success({ title: "5秒后消失", duration: 5000 })
-Toaster.success({ title: "不会自动消失", duration: Infinity })
+Toaster.success({ title: "Disappear after 5s", duration: 5000 });
+Toaster.success({ title: "Never auto-dismiss", duration: Infinity });
 ```
 
-### 自定义图标
-
-```tsx
-Toaster.success({
-  title: "自定义图标",
-  icon: <span>🎉</span>
-})
-```
-
-### 操作按钮
+### Custom Icon
 
 ```tsx
 Toaster.success({
-  title: "有操作按钮",
+  title: "Custom Icon",
+  icon: <span>🎉</span>,
+});
+```
+
+### Actions
+
+```tsx
+Toaster.success({
+  title: "With Actions",
   actions: [
     {
-      children: "查看",
+      children: "View",
       onClick: (dismiss) => { ... }
     },
     {
-      children: "取消",
+      children: "Cancel",
       variant: "ghost",
       onClick: (dismiss) => { ... }
     }
@@ -69,7 +66,7 @@ Toaster.success({
 })
 ```
 
-### 位置
+### Position
 
 ```tsx
 <Toaster position="top-right" />
@@ -80,42 +77,66 @@ Toaster.success({
 <Toaster position="bottom-center" />
 ```
 
-### 手动关闭
+### Manual Dismiss
 
 ```tsx
-const id = Toaster.loading({ title: "加载中..." })
-Toaster.dismiss(id)
-Toaster.dismiss() // 关闭所有
+const id = Toaster.loading({ title: "Loading..." });
+Toaster.dismiss(id);
+Toaster.dismiss(); // Dismiss all
 ```
 
-### 回调函数
+### Callbacks
 
 ```tsx
 Toaster.success({
-  title: "带回调",
-  onDismiss: (toast) => { console.log("dismissed", toast) },
-  onAutoClose: (toast) => { console.log("auto closed", toast) }
-})
+  title: "With Callbacks",
+  onDismiss: (toast) => {
+    console.log("dismissed", toast);
+  },
+  onAutoClose: (toast) => {
+    console.log("auto closed", toast);
+  },
+});
 ```
 
-</div>
+## Initialize Toaster
+
+Add the `Toaster` component once in your app's root component:
+
+```tsx
+import { Toaster } from "@/component";
+
+function App() {
+  return (
+    <div>
+      {/* Other content */}
+      <Toaster position="top-center" />
+    </div>
+  );
+}
+```
+
+- The `Toaster` component only needs to be initialized **once** in the root component to take effect globally
+- `position` is a global configuration, **do not** declare different positions in multiple places
+- For example: declaring both `<Toaster position="top-center" />` and `<Toaster position="top-right" />` will cause each toast to appear twice
+- Design philosophy: Fix toast position to avoid distracting users with toasts appearing in different locations
 
 ## API Reference
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| type | `success` \| `error` \| `warning` \| `info` \| `loading` | - | Toast 类型 |
-| title | `ReactNode` | - | 标题 |
-| description | `ReactNode` | - | 描述信息 |
-| icon | `ReactNode` | - | 自定义图标 |
-| duration | `number` | 3000 | 持续时间（毫秒），设为 Infinity 则不自动消失 |
-| onDismiss | `(toast: Toast) => void` | - | 关闭时回调 |
-| onAutoClose | `(toast: Toast) => void` | - | 自动关闭时回调 |
-| actions | `Array<ButtonProps & { onClick?: (dismiss: () => void) => void }>` | - | 操作按钮 |
+| Prop        | Type                                                               | Default | Description                                  |
+| ----------- | ------------------------------------------------------------------ | ------- | -------------------------------------------- |
+| type        | `success` \| `error` \| `warning` \| `info` \| `loading`           | -       | Toast type                                   |
+| title       | `ReactNode`                                                        | -       | Title                                        |
+| description | `ReactNode`                                                        | -       | Description                                  |
+| icon        | `ReactNode`                                                        | -       | Custom icon                                  |
+| duration    | `number`                                                           | 3000    | Duration in milliseconds, set to Infinity to never auto-dismiss |
+| onDismiss   | `(toast: Toast) => void`                                           | -       | Callback when dismissed                      |
+| onAutoClose | `(toast: Toast) => void`                                           | -       | Callback when auto-closed                    |
+| actions     | `Array<ButtonProps & { onClick?: (dismiss: () => void) => void }>` | -       | Action buttons                               |
 
-## Toaster 组件
+## Toaster Component
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| position | `ToastPosition` | `top-right` | Toast 位置 |
-| visibleToasts | `number` | 3 | 最多显示的 Toast 数量 |
+| Prop          | Type            | Default     | Description                    |
+| ------------- | --------------- | ----------- | ------------------------------ |
+| position      | `ToastPosition` | `top-right` | Toast position                 |
+| visibleToasts | `number`        | 3           | Maximum number of toasts to show |

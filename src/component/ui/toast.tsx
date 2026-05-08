@@ -7,24 +7,28 @@ import React, {
   useSyncExternalStore,
 } from "react";
 import { ClassNameValue, cn } from "@/lib";
-import { Button, ButtonProps } from "./button";
-import { Spin } from "./spin";
 import {
   CircleCheckIcon,
   CircleInfoIcon,
   TriangleAlertIcon,
   XIcon,
+  SpinIcon,
 } from "./icons";
 
 export type ToastType = "success" | "error" | "warning" | "info" | "loading";
 
 export type ToastPosition =
   | "top-left"
-  | "top-right"
   | "top-center"
+  | "top-right"
   | "bottom-left"
   | "bottom-right"
   | "bottom-center";
+
+export type CloseEvent = {
+  type: "auto" | "manual" | "complete";
+  id?: string | number;
+};
 
 export type ToastItemProps = React.ComponentProps<"div"> & {
   id?: string | number;
@@ -33,24 +37,19 @@ export type ToastItemProps = React.ComponentProps<"div"> & {
   description?: React.ReactNode;
   icon?: React.ReactNode;
   duration?: number;
-  onDismiss?: (toast: ToastItemProps) => void;
-  onAutoClose?: (toast: ToastItemProps) => void;
-  actions?: Array<
-    Omit<ButtonProps, "onClick"> & {
-      onClick?: (dismiss: () => void) => void;
-    }
-  >;
-  index?: number;
+  onClose?: (event: CloseEvent) => void;
+  actions?: Array<{
+    children: React.ReactNode;
+    onClick?: (dismiss: () => void) => void;
+    className?: ClassNameValue;
+  }>;
   isExpanded?: boolean;
-  yPosition?: "top" | "bottom";
-  onRemove?: (id: string | number) => void;
   itemProps?: {
     leading?: React.ComponentProps<"div">;
     content?: React.ComponentProps<"div">;
     actions?: React.ComponentProps<"div">;
   };
 };
-
 
 let toastsCounter = 1;
 
@@ -102,102 +101,117 @@ const toastIcons: Record<ToastType, React.ReactNode> = {
   error: <XIcon className="size-4 text-destructive" />,
   warning: <TriangleAlertIcon className="size-4 text-amber-400" />,
   info: <CircleInfoIcon className="size-4" />,
-  loading: <Spin className="size-4 animate-spin" />,
+  loading: <SpinIcon className="size-4 animate-spin" />,
 };
 
-function ToastItem(props: ToastItemProps) {
-  const {
-    index = 0,
-    isExpanded = false,
-    yPosition = "bottom",
-    onRemove,
-  } = props;
+function ToastItem({
+  isExpanded = false,
+  id,
+  type,
+  duration,
+  onClose,
+  icon: customIcon,
+  title,
+  description,
+  actions,
+  itemProps,
+  className,
+  ...restProps
+}: ToastItemProps) {
   const [isExiting, setIsExiting] = useState(false);
-  const [exitIndex, setExitIndex] = useState(index);
+  const isInitialMount = React.useRef(true);
 
-  const toastsAfter = isExiting ? exitIndex : index;
-  const lift = yPosition === "top" ? 1 : -1;
+  const handleDismiss = useCallback(
+    (closeType: "auto" | "manual" = "manual") => {
+      setIsExiting(true);
+      onClose?.({ type: closeType, id });
 
-  const handleDismiss = useCallback(() => {
-    setExitIndex(index);
-    setIsExiting(true);
-    setTimeout(() => {
-      onRemove?.(props.id!);
-    }, 300);
-  }, [onRemove, props.id, index]);
+      setTimeout(() => {
+        onClose?.({ type: "complete", id });
+        toastObserver.removeToast(id!);
+      }, 300);
+    },
+    [id, onClose],
+  );
 
   useEffect(() => {
-    const duration = props.duration ?? 3000;
-    if (props.type === "loading" || duration === Infinity || isExpanded) {
+    const d = duration ?? 3000;
+    if (type === "loading" || d === Infinity || isExpanded) {
       return;
     }
 
+    const timerDuration = isInitialMount.current ? d : 1000;
+    isInitialMount.current = false;
+
     const timer = setTimeout(() => {
-      handleDismiss();
-      props.onAutoClose?.(props);
-    }, duration);
+      handleDismiss("auto");
+    }, timerDuration);
 
     return () => clearTimeout(timer);
-  }, [handleDismiss, props, isExpanded]);
+  }, [handleDismiss, isExpanded, type, duration]);
 
-  const icon = props.icon ?? toastIcons[props.type||"success"];
+  const icon = customIcon ?? toastIcons[type || "success"];
 
   return (
     <div
-      {...props}
-      style={{
-        zIndex: 1000 + index,
-        transform: `translateY(${toastsAfter * (isExpanded ? 80 : 10) * lift}px) scale(${isExpanded ? 1 : Math.max(1 - toastsAfter * 0.02, 0.8)})`,
-        transition: "transform 400ms",
-        ...props.style,
-      }}
+      {...restProps}
+      data-expanded={isExpanded}
+      data-exiting={isExiting}
       className={cn(
-        "pointer-events-auto absolute left-0 right-0 flex w-full items-center justify-between gap-3 rounded-lg border p-4 shadow-lg text-popover-foreground bg-popover mb-2",
-        isExiting && "animate-out slide-out-to-top duration-300",
-        props.className,
+        "pointer-events-auto flex w-full items-center justify-between gap-3 rounded-lg border p-4 shadow-lg text-popover-foreground bg-popover",
+        "data-[expanded=true]:scale-100",
+        "data-[exiting=true]:animate-out data-[exiting=true]:slide-out-to-top data-[exiting=true]:duration-300",
+        "transition-all duration-400",
+        className,
       )}
     >
-      
-        {icon && (
-            <div
-              {...props.itemProps?.leading}
-              className={cn("shrink-0", props.itemProps?.leading?.className)}
-            >
-              {icon}
-            </div>
-          )}
+      {icon && (
+        <div
+          {...itemProps?.leading}
+          className={cn("shrink-0", itemProps?.leading?.className)}
+        >
+          {icon}
+        </div>
+      )}
 
-          <div
-            {...props.itemProps?.content}
-            className={cn("flex-1 min-w-0", props.itemProps?.content?.className)}
-          >
-            <div className="font-medium">{props.title}</div>
-            {props.description && (
-              <div className="text-sm text-muted-foreground mt-1">
-                {props.description}
-              </div>
-            )}
+      <div
+        {...itemProps?.content}
+        className={cn("flex-1 min-w-0", itemProps?.content?.className)}
+      >
+        <div className="font-medium">{title}</div>
+        {description && (
+          <div className="text-sm text-muted-foreground mt-1">
+            {description}
           </div>
-          {props.actions?.length && (
-            <div
-              {...props.itemProps?.actions}
-              className={cn("flex gap-2 mt-2", props.itemProps?.actions?.className)}
+        )}
+      </div>
+      {actions && (
+        <div
+          {...itemProps?.actions}
+          className={cn("flex gap-2", itemProps?.actions?.className)}
+        >
+          {actions.map((action, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                action.onClick?.(handleDismiss);
+              }}
+              className={cn(
+                "inline-flex items-center justify-center rounded-md text-sm font-medium",
+                "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                "disabled:pointer-events-none disabled:opacity-50",
+                "h-8 px-3 py-1",
+                "hover:bg-accent hover:text-accent-foreground",
+                action.className,
+              )}
             >
-              {props.actions.map((action, idx) => (
-                <Button
-                  key={idx}
-                  variant={action.variant ?? "text"}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    action.onClick?.(handleDismiss);
-                  }}
-                >
-                  {action.children}
-                </Button>
-              ))}
-            </div>
-          )}
-        
+              {action.children}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -228,7 +242,9 @@ function ToastContainer({
 }: ToastContainerProps) {
   const toasts = useToastStore();
   const [isExpanded, setIsExpanded] = useState(false);
-  const [expandedTimeout, setExpandedTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [expandedTimeout, setExpandedTimeout] = useState<NodeJS.Timeout | null>(
+    null,
+  );
 
   const filteredToasts = toasts.slice(-visibleToasts);
   const yPosition = position.startsWith("top") ? "top" : "bottom";
@@ -248,21 +264,28 @@ function ToastContainer({
     setExpandedTimeout(timeout);
   };
 
-  const handleDismiss = (id: string | number) => {
-    const toast = toasts.find((t) => t.id === id);
-    if (toast?.onDismiss) {
-      toast.onDismiss(toast);
-    }
-    toastObserver.removeToast(id);
-  };
+  if (filteredToasts.length === 0) {
+    return null;
+  }
 
   return (
     <div
       {...props}
+      data-expanded={isExpanded}
+      data-y-position={yPosition}
       className={cn(
-        "fixed z-100 flex flex-col w-full max-w-[420px] pointer-events-none",
+        "fixed z-100 w-full max-w-[420px]",
         positionClasses[position],
-        "text-popover-foreground bg-popover",
+        !isExpanded && "*:absolute *:left-0 *:right-0",
+        isExpanded && "flex flex-col gap-4",
+        "data-[expanded=false]:[&>*:nth-child(1)]:translate-y-0",
+        "data-[expanded=false]:[&>*:nth-child(2)]:translate-y-2",
+        "data-[expanded=false]:[&>*:nth-child(3)]:translate-y-4",
+        "data-[expanded=false]:[&>*:nth-child(n+4)]:translate-y-6",
+        "data-[expanded=false]:[&>*:nth-child(1)]:scale-80",
+        "data-[expanded=false]:[&>*:nth-child(2)]:scale-85",
+        "data-[expanded=false]:[&>*:nth-child(3)]:scale-90",
+        "data-[expanded=false]:[&>*:nth-child(n+4)]:scale-100",
         className,
       )}
       role="region"
@@ -270,22 +293,47 @@ function ToastContainer({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {filteredToasts.map((toast, index) => {
-        return (
-          <ToastItem
-            key={toast.id}
-            {...toast}
-            index={index}
-            isExpanded={isExpanded}
-            yPosition={yPosition}
-            onRemove={handleDismiss}
-          />
-        );
-      })}
+      {filteredToasts.map((toast) => (
+        <ToastItem key={toast.id} {...toast} isExpanded={isExpanded} />
+      ))}
     </div>
   );
 }
 
+/**
+ * Toaster static methods
+ * 
+ * @example
+ * // 1. Initialize in root component (once)
+ * ```tsx
+ * import { Toaster } from "@/component";
+ * 
+ * function App() {
+ *   return (
+ *     <div>
+ *       <Toaster position="top-center" />
+ *     </div>
+ *   );
+ * }
+ * ```
+ * 
+ * @example
+ * // 2. Use in any component
+ * ```tsx
+ * Toaster.success({ title: "Success" });
+ * Toaster.error({ title: "Error" });
+ * Toaster.warning({ title: "Warning" });
+ * Toaster.info({ title: "Info" });
+ * Toaster.loading({ title: "Loading..." });
+ * ```
+ * 
+ * @remarks
+ * **Important:**
+ * - `Toaster` component should be initialized only **once** in the root component
+ * - `position` is a global configuration, **do not** declare multiple positions
+ * - Example: Declaring both `<Toaster position="top-center" />` and `<Toaster position="top-right" />` will cause each toast to appear twice
+ * - Design philosophy: Fixed toast position to avoid distracting users
+ */
 const Toaster = Object.assign(ToastContainer, {
   success: (options: ToastItemProps) => {
     return toastObserver.addToast({ ...options, type: "success" });
@@ -305,10 +353,20 @@ const Toaster = Object.assign(ToastContainer, {
 
   dismiss: (id?: string) => {
     if (id !== undefined) {
+      const toasts = toastObserver.getToasts();
+      const toast = toasts.find((t) => String(t.id) === String(id));
+      if (toast?.onClose) {
+        toast.onClose({ type: "manual", id });
+      }
       toastObserver.removeToast(id);
     } else {
       const toasts = toastObserver.getToasts();
-      toasts.forEach((t) => toastObserver.removeToast(t.id!));
+      toasts.forEach((t) => {
+        if (t?.onClose) {
+          t.onClose({ type: "manual", id: t.id });
+        }
+        toastObserver.removeToast(t.id!);
+      });
     }
   },
 
@@ -321,22 +379,32 @@ type PromiseData<T> = {
   error: React.ReactNode | ((error: unknown) => React.ReactNode);
 };
 
-function promise<T>(
-  promise: () => Promise<T>,
-  data: PromiseData<T>
-) {
-  const loadingId = toastObserver.addToast({ title: data.loading, type: "loading" } as ToastItemProps);
+function promise<T>(promise: () => Promise<T>, data: PromiseData<T>) {
+  const loadingId = toastObserver.addToast({
+    title: data.loading,
+    type: "loading",
+  } as ToastItemProps);
 
   promise()
     .then((response) => {
       toastObserver.removeToast(loadingId);
-      const message = typeof data.success === "function" ? data.success(response) : data.success;
-      toastObserver.addToast({ title: message, type: "success" } as ToastItemProps);
+      const message =
+        typeof data.success === "function"
+          ? data.success(response)
+          : data.success;
+      toastObserver.addToast({
+        title: message,
+        type: "success",
+      } as ToastItemProps);
     })
     .catch((error) => {
       toastObserver.removeToast(loadingId);
-      const message = typeof data.error === "function" ? data.error(error) : data.error;
-      toastObserver.addToast({ title: message, type: "error" } as ToastItemProps);
+      const message =
+        typeof data.error === "function" ? data.error(error) : data.error;
+      toastObserver.addToast({
+        title: message,
+        type: "error",
+      } as ToastItemProps);
     });
 }
 

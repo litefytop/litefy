@@ -4,14 +4,19 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { EyeIcon, EyeOffIcon } from "./icons";
 
+// 支持 data-* 属性的类型工具
+type WithDataAttributes<T> = T & {
+  [key: `data-${string}`]: string | number | boolean | null | undefined;
+};
+
 export type PasswordProps = Omit<
   React.ComponentProps<"input">,
   "type" | "className"
 > & {
   className?: string;
   itemProps?: {
-    root?: React.HTMLAttributes<HTMLDivElement>;
-    toggle?: React.ButtonHTMLAttributes<HTMLButtonElement>;
+    root?: WithDataAttributes<React.ComponentProps<"div">>;
+    toggle?: WithDataAttributes<React.ComponentProps<"button">>;
   };
 };
 

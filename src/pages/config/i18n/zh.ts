@@ -88,6 +88,48 @@ export const zh = {
       item: "项",
       separator: "分割线",
     },
+    api: {
+      headers: {
+        prop: "Prop",
+        type: "Type",
+        default: "Default",
+        description: "描述",
+        property: "属性",
+      },
+      sectionTitles: {
+        dropdownMenuProps: "DropdownMenu Props",
+        dropdownMenuTriggerProps: "DropdownMenuTrigger Props",
+        dropdownMenuContentProps: "DropdownMenuContent Props",
+        dropdownMenuItemProps: "DropdownMenuItem Props",
+        dropdownMenuSeparatorProps: "DropdownMenuSeparator Props",
+      },
+      dropdownMenuProps: {
+        children: "子组件",
+        className: "自定义类名",
+      },
+      triggerProps: {
+        children: "触发器内容",
+        className: "自定义类名",
+        disabled: "是否禁用",
+        variant: "按钮样式变体",
+      },
+      contentProps: {
+        children: "菜单内容",
+        className: "自定义类名",
+        popover: "弹出模式",
+        side: "弹出位置",
+        align: "对齐方式",
+      },
+      itemProps: {
+        children: "菜单项内容",
+        className: "自定义类名",
+        onClick: "点击回调",
+        disabled: "是否禁用",
+      },
+      separatorProps: {
+        className: "自定义类名",
+      },
+    },
   },
 
   accordion: {
@@ -110,6 +152,40 @@ export const zh = {
       titleLabel: "标题",
       content: "内容",
     },
+    api: {
+      props: {
+        defaultOpenKeys: "初始展开的 keys（非受控模式）",
+        openKeys: "当前展开的 keys（受控模式）",
+        onOpenChange: "展开状态变化回调",
+        allowMultiple: "是否允许同时展开多项",
+        className: "自定义类名",
+        itemProps: "内部封装属性透传配置",
+      },
+      itemProps: {
+        value: "唯一标识符（必填）",
+        title: "标题内容（必填）",
+        children: "展开后的内容",
+        className: "自定义类名",
+        itemProps: "内部封装属性透传配置",
+      },
+      itemPropsConfig: {
+        trigger: "触发器按钮属性",
+        title: "标题元素属性",
+        content: "内容区域属性",
+      },
+      headers: {
+        prop: "Prop",
+        type: "Type",
+        default: "Default",
+        description: "描述",
+        property: "属性",
+      },
+      sectionTitles: {
+        accordionProps: "Accordion Props",
+        accordionItemProps: "Accordion.Item Props",
+        itemPropsConfig: "itemProps 配置",
+      },
+    },
   },
 
   anchor: {
@@ -121,11 +197,52 @@ export const zh = {
     withSections: {
       title: "分组",
     },
+    scrollBehavior: {
+      title: "滚动行为",
+      description: "锚点组件使用 CSS scroll-margin-top 实现正确的滚动定位。使用锚点导航时，需要给目标元素添加 scroll-margin-top 样式：",
+      note: "根据 Header 高度调整该值，确保点击锚点链接时目标内容不会被 Header 遮挡。",
+    },
     anatomy: {
       anchor: "锚点",
       section: "分组",
       item: "项",
       link: "链接",
+    },
+    api: {
+      headers: {
+        prop: "Prop",
+        type: "Type",
+        default: "Default",
+        description: "描述",
+        property: "属性",
+      },
+      sectionTitles: {
+        anchorProps: "Anchor Props",
+        anchorSectionProps: "Anchor.Section Props",
+        anchorItemProps: "Anchor.Item Props",
+        itemPropsConfig: "itemProps 配置",
+      },
+      props: {
+        className: "自定义类名",
+        children: "子组件",
+      },
+      sectionProps: {
+        href: "锚点目标 ID（带 # 前缀，可选）",
+        title: "章节标题",
+        children: "子锚点项",
+        className: "自定义类名",
+        itemProps: "内部封装属性透传",
+      },
+      itemProps: {
+        href: "锚点目标 ID（带 # 前缀）",
+        children: "链接文本",
+        className: "自定义类名",
+        onClick: "点击回调",
+      },
+      itemPropsConfig: {
+        title: "标题 `<a>` 标签属性",
+        nav: "内部导航 `<nav>` 容器属性",
+      },
     },
   },
 
@@ -166,6 +283,32 @@ export const zh = {
       button: "Button",
       icon: "图标",
       spinner: "加载指示器",
+    },
+    api: {
+      headers: {
+        prop: "Prop",
+        type: "Type",
+        default: "Default",
+        description: "描述",
+        property: "属性",
+      },
+      sectionTitles: {
+        buttonProps: "Button Props",
+        itemPropsConfig: "itemProps 配置",
+      },
+      props: {
+        variant: "按钮样式变体",
+        size: "按钮尺寸",
+        disabled: "是否禁用",
+        loading: "是否显示加载状态",
+        children: "按钮内容",
+        className: "自定义类名",
+        itemProps: "内部封装属性透传",
+      },
+      itemPropsConfig: {
+        icon: "图标元素属性",
+        spinner: "加载指示器元素属性",
+      },
     },
   },
 
@@ -233,6 +376,44 @@ export const zh = {
       checkbox: "Checkbox",
       indicator: "指示器",
     },
+    api: {
+      headers: {
+        prop: "Prop",
+        type: "Type",
+        default: "Default",
+        description: "描述",
+        property: "属性",
+      },
+      sectionTitles: {
+        checkboxGroupProps: "Checkbox.Group Props",
+        checkboxProps: "Checkbox Props",
+        itemPropsConfig: "itemProps 配置",
+      },
+      groupProps: {
+        className: "自定义类名",
+        children: "子组件",
+        value: "选中的值（受控模式）",
+        defaultValue: "初始选中的值（非受控模式）",
+        onValueChange: "值变化回调",
+        disabled: "是否禁用整个组",
+      },
+      props: {
+        value: "复选框的值（必填）",
+        checked: "是否选中（受控模式）",
+        defaultChecked: "初始是否选中（非受控模式）",
+        onCheckedChange: "选中状态变化回调",
+        disabled: "是否禁用",
+        variant: "样式变体",
+        className: "自定义类名",
+        indicator: "指示器配置",
+        children: "复选框文本",
+        itemProps: "内部封装属性透传",
+      },
+      itemPropsConfig: {
+        indicator: "指示器元素属性",
+        label: "标签元素属性",
+      },
+    },
   },
 
   description: {
@@ -245,6 +426,23 @@ export const zh = {
       description: "Description",
       title: "标题",
       content: "内容",
+    },
+    api: {
+      headers: {
+        prop: "Prop",
+        type: "Type",
+        default: "Default",
+        description: "描述",
+        property: "属性",
+      },
+      sectionTitles: {
+        descriptionProps: "Description Props",
+      },
+      props: {
+        as: "渲染的 HTML 标签",
+        className: "自定义类名",
+        children: "子组件",
+      },
     },
   },
 
@@ -271,6 +469,41 @@ export const zh = {
       trailing: "尾随",
       description: "描述",
     },
+    api: {
+      headers: {
+        prop: "Prop",
+        type: "Type",
+        default: "Default",
+        description: "描述",
+        property: "属性",
+      },
+      sectionTitles: {
+        inputProps: "Input Props",
+        itemPropsConfig: "itemProps 配置",
+      },
+      props: {
+        value: "输入值（受控模式）",
+        defaultValue: "初始输入值（非受控模式）",
+        onChange: "值变化回调",
+        placeholder: "占位符",
+        disabled: "是否禁用",
+        error: "是否显示错误状态",
+        label: "标签文本",
+        description: "描述文本",
+        leading: "前导内容",
+        trailing: "尾随内容",
+        className: "自定义类名",
+        itemProps: "内部封装属性透传",
+      },
+      itemPropsConfig: {
+        group: "组容器 `<div>` 属性",
+        label: "标签 `<label>` 属性",
+        input: "输入框 `<input>` 属性",
+        leading: "前导容器 `<span>` 属性",
+        trailing: "尾随容器 `<span>` 属性",
+        description: "描述 `<p>` 属性",
+      },
+    },
   },
 
   password: {
@@ -283,6 +516,33 @@ export const zh = {
       root: "根元素",
       input: "输入框",
       toggle: "切换按钮",
+    },
+    api: {
+      headers: {
+        prop: "Prop",
+        type: "Type",
+        default: "Default",
+        description: "描述",
+        property: "属性",
+      },
+      sectionTitles: {
+        passwordProps: "Password Props",
+        itemPropsConfig: "itemProps 配置",
+      },
+      props: {
+        value: "输入值（受控模式）",
+        defaultValue: "初始输入值（非受控模式）",
+        onChange: "值变化回调",
+        placeholder: "占位符",
+        disabled: "是否禁用",
+        className: "自定义类名",
+        itemProps: "内部封装属性透传",
+      },
+      itemPropsConfig: {
+        root: "根容器 `<div>` 属性",
+        input: "输入框 `<input>` 属性",
+        toggle: "切换按钮 `<button>` 属性",
+      },
     },
   },
 
@@ -312,6 +572,39 @@ export const zh = {
       radio: "Radio",
       group: "RadioGroup",
       indicator: "指示器",
+    },
+    api: {
+      headers: {
+        prop: "Prop",
+        type: "Type",
+        default: "Default",
+        description: "描述",
+        property: "属性",
+      },
+      sectionTitles: {
+        radioGroupProps: "RadioGroup Props",
+        radioProps: "Radio Props",
+        itemPropsConfig: "itemProps 配置",
+      },
+      radioGroupProps: {
+        value: "选中值（受控模式）",
+        defaultValue: "初始选中值（非受控模式）",
+        onChange: "值变化回调",
+        disabled: "是否禁用",
+        direction: "排列方向",
+        className: "自定义类名",
+      },
+      radioProps: {
+        value: "选项值",
+        disabled: "是否禁用",
+        className: "自定义类名",
+        indicator: "指示器配置",
+      },
+      itemPropsConfig: {
+        group: "组容器 `<div>` 属性",
+        radio: "单选框 `<label>` 属性",
+        indicator: "指示器 `<span>` 属性",
+      },
     },
   },
 };

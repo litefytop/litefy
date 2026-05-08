@@ -1,13 +1,10 @@
-<div class="hidden">
-<!-- AI 专用：此区域内容页面不显示，但复制/AI 能完整获取 -->
-
-## 安装
+## Installation
 
 ```bash
 npm install @your-org/ui
 ```
 
-## 用法
+## Usage
 
 ```tsx
 import { Accordion } from "@/component/ui/accordion";
@@ -15,117 +12,115 @@ import { Accordion } from "@/component/ui/accordion";
 function App() {
   return (
     <Accordion>
-      <Accordion.Item value="item-1" title="第一项">
-        这是第一项的内容
+      <Accordion.Item value="item-1" title="First Item">
+        This is the content of the first item
       </Accordion.Item>
-      <Accordion.Item value="item-2" title="第二项">
-        这是第二项的内容
+      <Accordion.Item value="item-2" title="Second Item">
+        This is the content of the second item
       </Accordion.Item>
     </Accordion>
   );
 }
 ```
 
-## 示例
+## Examples
 
-### 基础用法
+### Basic Usage
 
-一次只能展开一项，第一项默认不展开。
+Only one item can be expanded at a time. The first item is not expanded by default.
 
 ```tsx
 <Accordion>
-  <Accordion.Item value="item-1" title="什么是 React?">
-    React 是一个用于构建用户界面的 JavaScript 库。
+  <Accordion.Item value="item-1" title="What is React?">
+    React is a JavaScript library for building user interfaces.
   </Accordion.Item>
-  <Accordion.Item value="item-2" title="什么是 TypeScript?">
-    TypeScript 是 JavaScript 的超集，添加了类型系统。
+  <Accordion.Item value="item-2" title="What is TypeScript?">
+    TypeScript is a superset of JavaScript that adds a type system.
   </Accordion.Item>
-  <Accordion.Item value="item-3" title="什么是组件?">
-    组件是 UI 的可复用片段，可以接受输入并返回 React 元素。
+  <Accordion.Item value="item-3" title="What is a Component?">
+    A component is a reusable UI snippet that can accept inputs and return React elements.
   </Accordion.Item>
 </Accordion>
 ```
 
-### 多个展开
+### Multiple Expansion
 
-使用 `allowMultiple` 属性允许同时展开多项。
+Use the `allowMultiple` prop to allow multiple items to be expanded simultaneously.
 
 ```tsx
 <Accordion allowMultiple>
-  <Accordion.Item value="item-1" title="什么是 React?">
-    React 是一个用于构建用户界面的 JavaScript 库。
+  <Accordion.Item value="item-1" title="What is React?">
+    React is a JavaScript library for building user interfaces.
   </Accordion.Item>
-  <Accordion.Item value="item-2" title="什么是 TypeScript?">
-    TypeScript 是 JavaScript 的超集，添加了类型系统。
+  <Accordion.Item value="item-2" title="What is TypeScript?">
+    TypeScript is a superset of JavaScript that adds a type system.
   </Accordion.Item>
 </Accordion>
 ```
 
-### 受控模式
+### Controlled Mode
 
-通过 `openKeys` 和 `onOpenChange` 实现受控模式。
+Implement controlled mode through `openKeys` and `onOpenChange`.
 
 ```tsx
 const [openKeys, setOpenKeys] = useState(["item-1"]);
 
 <Accordion openKeys={openKeys} onOpenChange={setOpenKeys}>
-  <Accordion.Item value="item-1" title="第一项">
-    内容
+  <Accordion.Item value="item-1" title="First Item">
+    Content
   </Accordion.Item>
-  <Accordion.Item value="item-2" title="第二项">
-    内容
+  <Accordion.Item value="item-2" title="Second Item">
+    Content
   </Accordion.Item>
 </Accordion>;
 ```
 
-### 自定义样式
+### Custom Styling
 
-通过 `className` 自定义容器样式，通过 `itemProps` 自定义内部封装元素样式。
+Customize container styling through `className`, and customize internal wrapped element styling through `itemProps`.
 
 ```tsx
 <Accordion className="max-w-md">
   <Accordion.Item
     value="item-1"
-    title="自定义样式"
+    title="Custom Styling"
     itemProps={{
       trigger: { className: "bg-blue-50" },
       content: { className: "bg-blue-50/50" },
     }}
   >
-    内容区域
+    Content Area
   </Accordion.Item>
 </Accordion>
 ```
-
-</div>
 
 ## API Reference
 
 ### Accordion Props
 
-| Prop            | Type                     | Default | Description                   |
-| --------------- | ------------------------ | ------- | ----------------------------- |
-| defaultOpenKeys | string[]                 | []      | 初始展开的 keys（非受控模式） |
-| openKeys        | string[]                 | -       | 当前展开的 keys（受控模式）   |
-| onOpenChange    | (keys: string[]) => void | -       | 展开状态变化回调              |
-| allowMultiple   | boolean                  | false   | 是否允许同时展开多项          |
-| className       | ClassNameValue           | -       | 自定义类名                    |
-| itemProps       | object                   | -       | 内部封装属性透传配置            |
+| Prop            | Type                     | Default | Description                              |
+| --------------- | ------------------------ | ------- | ---------------------------------------- |
+| defaultOpenKeys | string[]                 | []      | Initially expanded keys (uncontrolled)   |
+| openKeys        | string[]                 | -       | Currently expanded keys (controlled)     |
+| onOpenChange    | (keys: string[]) => void | -       | Callback when expansion state changes    |
+| allowMultiple   | boolean                  | false   | Whether to allow multiple expansions     |
+| className       | ClassNameValue           | -       | Custom class name                        |
+| itemProps       | object                   | -       | Internal wrapped props pass-through config |
 
 ### Accordion.Item Props
 
-| Prop      | Type           | Default | Description                        |
-| --------- | -------------- | ------- | ---------------------------------- |
-| value     | string         | -       | 唯一标识符（必填）                 |
-| title     | ReactNode      | -       | 标题内容（必填）                   |
-| children  | ReactNode      | -       | 展开后的内容                       |
-| className | ClassNameValue | -       | 自定义类名                         |
-| itemProps | object         | -       | 内部封装属性透传配置 |
+| Prop      | Type           | Default | Description                 |
+| --------- | -------------- | ------- | --------------------------- |
+| value     | string         | -       | Unique identifier (required)|
+| title     | ReactNode      | -       | Title content (required)    |
+| children  | ReactNode      | -       | Content after expansion     |
+| className | ClassNameValue | -       | Custom class name           |
+| itemProps | object         | -       | Internal wrapped props pass-through config |
 
-### itemProps 配置
+### itemProps Config
 
-| 属性    | 类型                           | 描述           |
-| ------- | ------------------------------ | -------------- |
-| trigger | React.ComponentProps<"button"> | 触发器按钮属性 |
-| title   | React.ComponentProps<"span">   | 标题元素属性   |
-| content | React.ComponentProps<"div">    | 内容区域属性   |
+| Property | Type                           | Description         |
+| -------- | ------------------------------ | ------------------- |
+| trigger  | React.ComponentProps<"button"> | Trigger button props|
+| title    | React.ComponentProps<"span">   | Title element props |
+| content  | React.ComponentProps<"div">    | Content area props  |

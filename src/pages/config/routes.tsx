@@ -1,20 +1,23 @@
-import React from "react";
+
 import { createBrowserRouter } from "react-router-dom";
 import { zh, en } from "./i18n";
-import Home from "../Home";
-import Button from "../button";
-import Accordion from "../accordion";
-import Anchor from "../anchor";
-import Checkbox from "../checkbox";
-import Description from "../description";
-import Input from "../input";
-import Password from "../password";
-import Radio from "../radio";
-import DropdownMenu from "../dropdown-menu";
-import Toast from "../toast";
-import { ComingSoon, Layout } from "@/component";
+import {
+  Introduction,
+  Button,
+  Accordion,
+  Anchor,
+  Checkbox,
+  Description,
+  Input,
+  Password,
+  Radio,
+  DropdownMenu,
+  Toast,
+  App,
+} from "@/pages";
+import { ComingSoon } from "@/component";
 
-const introduction = { key: "introduction", path: "/", Component: Home };
+const introduction = { key: "introduction", path: "/", Component: Introduction };
 
 const componentRouteConfig = [
   { key: "button", path: "/components/button", Component: Button },
@@ -118,15 +121,15 @@ export function createRouter() {
       },
     },
     ...locales.map((locale) => ({
-      element: <Layout locale={locale} />,
+      element: <App locale={locale} />,
       children: [
         {
           path: `/${locale}/`,
-          Component: introduction.Component,
+          element: <introduction.Component locale={locale} />,
         },
         ...components.map((c) => ({
           path: `/${locale}${c.href}`,
-          Component: c.Component as React.ComponentType<{ locale?: string }>,
+          element: <c.Component locale={locale} />,
         })),
       ],
     })),

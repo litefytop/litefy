@@ -7,12 +7,12 @@ export default function CheckboxControlled() {
   return (
     <div className="space-y-4">
       <Checkbox.Group value={checked} onValueChange={setChecked}>
-        <Checkbox value="option1">选项一</Checkbox>
-        <Checkbox value="option2">选项二</Checkbox>
-        <Checkbox value="option3">选项三</Checkbox>
+        <Checkbox value="option1">Option 1</Checkbox>
+        <Checkbox value="option2">Option 2</Checkbox>
+        <Checkbox value="option3">Option 3</Checkbox>
       </Checkbox.Group>
       <p className="text-sm text-muted-foreground">
-        当前选中: {checked.join(", ")}
+        Currently selected: {checked.join(", ")}
       </p>
     </div>
   );

@@ -13,8 +13,8 @@ import {
   Description,
   ShikiCodeBlock,
   Button,
+  Toaster
 } from "@/component";
-import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
 import {
@@ -23,7 +23,6 @@ import {
   ToastDuration,
   ToastWithIcon,
   ToastWithActions,
-  ToastPosition,
   ToastDismiss,
   ToastWithCallbacks,
 } from "./examples";
@@ -33,7 +32,6 @@ import ToastWithDescriptionRaw from "./examples/toast-description.tsx?raw";
 import ToastDurationRaw from "./examples/toast-duration.tsx?raw";
 import ToastWithIconRaw from "./examples/toast-icon.tsx?raw";
 import ToastWithActionsRaw from "./examples/toast-actions.tsx?raw";
-import ToastPositionRaw from "./examples/toast-position.tsx?raw";
 import ToastDismissRaw from "./examples/toast-dismiss.tsx?raw";
 import ToastWithCallbacksRaw from "./examples/toast-callbacks.tsx?raw";
 import toastDoc from "./doc.mdx?raw";
@@ -54,7 +52,7 @@ function DemoSection({
     <section
       id={id}
       data-anchor-id={id}
-      className="space-y-4 scroll-mt-20 py-4"
+      className="space-y-4 py-4"
     >
       <div>
         <Title as="h3">{title}</Title>
@@ -122,7 +120,7 @@ export default function ToastPage({ locale = "zh" }: { locale?: string }) {
           <ShikiCodeBlock>{toastSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" className="scroll-mt-20">
+        <section id="examples" className="">
           <Title as="h2">{lang.examples}</Title>
 
           <DemoSection
@@ -166,14 +164,6 @@ export default function ToastPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
 
           <DemoSection
-            id="position"
-            title={l.position.title}
-            code={ToastPositionRaw}
-          >
-            <ToastPosition />
-          </DemoSection>
-
-          <DemoSection
             id="dismiss"
             title={l.dismiss.title}
             code={ToastDismissRaw}
@@ -190,7 +180,7 @@ export default function ToastPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
         </section>
 
-        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-4 scroll-mt-20">
+        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-4">
           <Title as="h2" className="mb-4">
             {lang.docs}
             <button

@@ -88,11 +88,53 @@ export const en = {
       item: "Item",
       separator: "Separator",
     },
+    api: {
+      headers: {
+        prop: "Prop",
+        type: "Type",
+        default: "Default",
+        description: "Description",
+        property: "Property",
+      },
+      sectionTitles: {
+        dropdownMenuProps: "DropdownMenu Props",
+        dropdownMenuTriggerProps: "DropdownMenuTrigger Props",
+        dropdownMenuContentProps: "DropdownMenuContent Props",
+        dropdownMenuItemProps: "DropdownMenuItem Props",
+        dropdownMenuSeparatorProps: "DropdownMenuSeparator Props",
+      },
+      dropdownMenuProps: {
+        children: "Child components",
+        className: "Custom class name",
+      },
+      triggerProps: {
+        children: "Trigger content",
+        className: "Custom class name",
+        disabled: "Whether disabled",
+        variant: "Button style variant",
+      },
+      contentProps: {
+        children: "Menu content",
+        className: "Custom class name",
+        popover: "Popover mode",
+        side: "Popup side",
+        align: "Alignment",
+      },
+      itemProps: {
+        children: "Menu item content",
+        className: "Custom class name",
+        onClick: "Click callback",
+        disabled: "Whether disabled",
+      },
+      separatorProps: {
+        className: "Custom class name",
+      },
+    },
   },
 
   accordion: {
     title: "Accordion",
-    description: "Accordion component for collapsible content areas.",
+    description: "Accordion component for displaying collapsible content areas.",
     basic: {
       title: "Basic",
     },
@@ -107,8 +149,42 @@ export const en = {
       accordion: "Accordion",
       item: "Item",
       trigger: "Trigger",
-      titleLabel: "Title",
+      titleLabel: "Title Label",
       content: "Content",
+    },
+    api: {
+      props: {
+        defaultOpenKeys: "Initially expanded keys (uncontrolled)",
+        openKeys: "Currently expanded keys (controlled)",
+        onOpenChange: "Callback when expansion state changes",
+        allowMultiple: "Whether to allow multiple expansions",
+        className: "Custom class name",
+        itemProps: "Internal wrapped props pass-through config",
+      },
+      itemProps: {
+        value: "Unique identifier (required)",
+        title: "Title content (required)",
+        children: "Content after expansion",
+        className: "Custom class name",
+        itemProps: "Internal wrapped props pass-through config",
+      },
+      itemPropsConfig: {
+        trigger: "Trigger button props",
+        title: "Title element props",
+        content: "Content area props",
+      },
+      headers: {
+        prop: "Prop",
+        type: "Type",
+        default: "Default",
+        description: "Description",
+        property: "Property",
+      },
+      sectionTitles: {
+        accordionProps: "Accordion Props",
+        accordionItemProps: "Accordion.Item Props",
+        itemPropsConfig: "itemProps Config",
+      },
     },
   },
 
@@ -121,11 +197,52 @@ export const en = {
     withSections: {
       title: "With Sections",
     },
+    scrollBehavior: {
+      title: "Scroll Behavior",
+      description: "The Anchor component uses CSS scroll-margin-top for proper scroll positioning. When using anchor navigation, you need to add scroll-margin-top style to your target elements:",
+      note: "Adjust the value based on your header height to ensure the target content won't be covered when clicking anchor links.",
+    },
     anatomy: {
       anchor: "Anchor",
       section: "Section",
       item: "Item",
       link: "Link",
+    },
+    api: {
+      headers: {
+        prop: "Prop",
+        type: "Type",
+        default: "Default",
+        description: "Description",
+        property: "Property",
+      },
+      sectionTitles: {
+        anchorProps: "Anchor Props",
+        anchorSectionProps: "Anchor.Section Props",
+        anchorItemProps: "Anchor.Item Props",
+        itemPropsConfig: "itemProps Config",
+      },
+      props: {
+        className: "Custom class name",
+        children: "Child components",
+      },
+      sectionProps: {
+        href: "Anchor target ID (with # prefix, optional)",
+        title: "Section title",
+        children: "Child anchor items",
+        className: "Custom class name",
+        itemProps: "Internal wrapped props pass-through",
+      },
+      itemProps: {
+        href: "Anchor target ID (with # prefix)",
+        children: "Link text",
+        className: "Custom class name",
+        onClick: "Click callback",
+      },
+      itemPropsConfig: {
+        title: "Title `<a>` tag props",
+        nav: "Internal navigation `<nav>` container props",
+      },
     },
   },
 
@@ -166,6 +283,32 @@ export const en = {
       button: "Button",
       icon: "Icon",
       spinner: "Spinner",
+    },
+    api: {
+      headers: {
+        prop: "Prop",
+        type: "Type",
+        default: "Default",
+        description: "Description",
+        property: "Property",
+      },
+      sectionTitles: {
+        buttonProps: "Button Props",
+        itemPropsConfig: "itemProps Config",
+      },
+      props: {
+        variant: "Button style variant",
+        size: "Button size",
+        disabled: "Whether disabled",
+        loading: "Whether to show loading state",
+        children: "Button content",
+        className: "Custom class name",
+        itemProps: "Internal wrapped props pass-through",
+      },
+      itemPropsConfig: {
+        icon: "Icon element props",
+        spinner: "Loading spinner element props",
+      },
     },
   },
 
@@ -233,6 +376,44 @@ export const en = {
       checkbox: "Checkbox",
       indicator: "Indicator",
     },
+    api: {
+      headers: {
+        prop: "Prop",
+        type: "Type",
+        default: "Default",
+        description: "Description",
+        property: "Property",
+      },
+      sectionTitles: {
+        checkboxGroupProps: "Checkbox.Group Props",
+        checkboxProps: "Checkbox Props",
+        itemPropsConfig: "itemProps Config",
+      },
+      groupProps: {
+        className: "Custom class name",
+        children: "Child components",
+        value: "Selected values (controlled mode)",
+        defaultValue: "Initial selected values (uncontrolled mode)",
+        onValueChange: "Value change callback",
+        disabled: "Whether to disable entire group",
+      },
+      props: {
+        value: "Checkbox value (required)",
+        checked: "Whether checked (controlled mode)",
+        defaultChecked: "Initially checked (uncontrolled mode)",
+        onCheckedChange: "Checked state change callback",
+        disabled: "Whether disabled",
+        variant: "Style variant",
+        className: "Custom class name",
+        indicator: "Indicator config",
+        children: "Checkbox text",
+        itemProps: "Internal wrapped props pass-through",
+      },
+      itemPropsConfig: {
+        indicator: "Indicator element props",
+        label: "Label element props",
+      },
+    },
   },
 
   description: {
@@ -245,6 +426,23 @@ export const en = {
       description: "Description",
       title: "Title",
       content: "Content",
+    },
+    api: {
+      headers: {
+        prop: "Prop",
+        type: "Type",
+        default: "Default",
+        description: "Description",
+        property: "Property",
+      },
+      sectionTitles: {
+        descriptionProps: "Description Props",
+      },
+      props: {
+        as: "HTML tag to render",
+        className: "Custom class name",
+        children: "Child components",
+      },
     },
   },
 
@@ -271,6 +469,41 @@ export const en = {
       trailing: "Trailing",
       description: "Description",
     },
+    api: {
+      headers: {
+        prop: "Prop",
+        type: "Type",
+        default: "Default",
+        description: "Description",
+        property: "Property",
+      },
+      sectionTitles: {
+        inputProps: "Input Props",
+        itemPropsConfig: "itemProps Config",
+      },
+      props: {
+        value: "Input value (controlled mode)",
+        defaultValue: "Initial input value (uncontrolled mode)",
+        onChange: "Value change callback",
+        placeholder: "Placeholder",
+        disabled: "Whether disabled",
+        error: "Whether to show error state",
+        label: "Label text",
+        description: "Description text",
+        leading: "Leading content",
+        trailing: "Trailing content",
+        className: "Custom class name",
+        itemProps: "Internal wrapped property passthrough",
+      },
+      itemPropsConfig: {
+        group: "Group container `<div>` props",
+        label: "Label `<label>` props",
+        input: "Input `<input>` props",
+        leading: "Leading container `<span>` props",
+        trailing: "Trailing container `<span>` props",
+        description: "Description `<p>` props",
+      },
+    },
   },
 
   password: {
@@ -283,6 +516,33 @@ export const en = {
       root: "Root",
       input: "Input",
       toggle: "Toggle Button",
+    },
+    api: {
+      headers: {
+        prop: "Prop",
+        type: "Type",
+        default: "Default",
+        description: "Description",
+        property: "Property",
+      },
+      sectionTitles: {
+        passwordProps: "Password Props",
+        itemPropsConfig: "itemProps Config",
+      },
+      props: {
+        value: "Input value (controlled mode)",
+        defaultValue: "Initial input value (uncontrolled mode)",
+        onChange: "Value change callback",
+        placeholder: "Placeholder",
+        disabled: "Whether disabled",
+        className: "Custom class name",
+        itemProps: "Internal wrapped property passthrough",
+      },
+      itemPropsConfig: {
+        root: "Root container `<div>` props",
+        input: "Input `<input>` props",
+        toggle: "Toggle button `<button>` props",
+      },
     },
   },
 
@@ -312,6 +572,39 @@ export const en = {
       radio: "Radio",
       group: "RadioGroup",
       indicator: "Indicator",
+    },
+    api: {
+      headers: {
+        prop: "Prop",
+        type: "Type",
+        default: "Default",
+        description: "Description",
+        property: "Property",
+      },
+      sectionTitles: {
+        radioGroupProps: "RadioGroup Props",
+        radioProps: "Radio Props",
+        itemPropsConfig: "itemProps Config",
+      },
+      radioGroupProps: {
+        value: "Selected value (controlled mode)",
+        defaultValue: "Initial selected value (uncontrolled mode)",
+        onChange: "Value change callback",
+        disabled: "Whether disabled",
+        direction: "Arrangement direction",
+        className: "Custom class name",
+      },
+      radioProps: {
+        value: "Option value",
+        disabled: "Whether disabled",
+        className: "Custom class name",
+        indicator: "Indicator config",
+      },
+      itemPropsConfig: {
+        group: "Group container `<div>` props",
+        radio: "Radio `<label>` props",
+        indicator: "Indicator `<span>` props",
+      },
     },
   },
 };

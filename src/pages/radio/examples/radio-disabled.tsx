@@ -4,7 +4,7 @@ export default function RadioDisabled() {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-sm text-muted-foreground mb-2">Group disabled</p>
+        <p className="text-sm text-muted-foreground mb-2">Group Disabled</p>
         <Radio.Group disabled>
           <Radio value="apple">Apple</Radio>
           <Radio value="banana">Banana</Radio>
@@ -12,7 +12,7 @@ export default function RadioDisabled() {
         </Radio.Group>
       </div>
       <div>
-        <p className="text-sm text-muted-foreground mb-2">Item disabled</p>
+        <p className="text-sm text-muted-foreground mb-2">Item Disabled</p>
         <Radio.Group>
           <Radio value="apple">Apple</Radio>
           <Radio value="banana" disabled>Banana</Radio>

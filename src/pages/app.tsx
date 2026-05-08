@@ -3,10 +3,9 @@ import {
   useLocation,
   useNavigate,
   Outlet,
-  ScrollRestoration,
 } from "react-router-dom";
+import { useEffect } from "react";
 import { getNavItems } from "@/pages/config/routes";
-import { Toaster } from "@/component/ui/toast";
 import {
   Title,
   Img,
@@ -17,6 +16,7 @@ import {
   Sidebar,
   PanelLeft,
   Button,
+  Toaster,
 } from "@/component";
 import { useTheme } from "@/component";
 import LOGO from "@/assets/LOGO.svg";
@@ -25,10 +25,28 @@ function ThemeToggle() {
   const { colorScheme, toggleColorScheme } = useTheme();
 
   return (
-    <Button variant="ghost" onClick={toggleColorScheme} aria-label="Toggle color scheme">
+    <Button
+      variant="ghost"
+      onClick={toggleColorScheme}
+      aria-label="Toggle color scheme"
+    >
       {colorScheme === "light" ? <MoonIcon size={20} /> : <SunIcon size={20} />}
     </Button>
   );
+}
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    // 路由切换时滚动到顶部
+    const main = document.querySelector("main");
+    if (main) {
+      main.scrollTop = 0;
+    }
+  }, [pathname]);
+
+  return null;
 }
 
 function LanguageToggle({ locale }: { locale: string }) {
@@ -97,7 +115,11 @@ function Header({ locale, className }: { locale: string; className?: string }) {
           <PanelLeft />
         </Sidebar.Trigger>
         <LanguageToggle locale={locale} />
-        <Button variant="ghost" aria-label="GitHub" onClick={() => window.open("https://github.com", "_blank")}>
+        <Button
+          variant="ghost"
+          aria-label="GitHub"
+          onClick={() => window.open("https://github.com", "_blank")}
+        >
           <GitHubIcon size={20} />
         </Button>
         <ThemeToggle />
@@ -106,22 +128,23 @@ function Header({ locale, className }: { locale: string; className?: string }) {
   );
 }
 
-export function Layout({ locale = "zh" }: { locale?: string }) {
+export function App({ locale = "zh" }: { locale?: string }) {
   return (
     <div className="flex flex-col h-screen bg-background text-foreground">
-      <ScrollRestoration />
       <Header locale={locale} className="shrink-0" />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar className="w-3xs shrink-0 overflow-y-auto">
           <SidebarContent locale={locale} />
         </Sidebar>
         <main className="flex-1 overflow-y-auto">
+          <ScrollToTop />
+
           <div className="container mx-auto px-6 py-8 max-w-4xl">
             <Outlet />
           </div>
         </main>
       </div>
-      <Toaster />
+      <Toaster position="top-right" />
     </div>
   );
 }

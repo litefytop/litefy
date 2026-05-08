@@ -9,21 +9,21 @@ export default function DropdownMenuAlign() {
   return (
     <div className="flex gap-4">
       <DropdownMenu>
-        <DropdownMenuTrigger>左对齐</DropdownMenuTrigger>
+        <DropdownMenuTrigger>Left Align</DropdownMenuTrigger>
         <DropdownMenuContent x_axis="start">
-          <DropdownMenuItem>左对齐内容</DropdownMenuItem>
+          <DropdownMenuItem>Left Aligned Content</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <DropdownMenu>
-        <DropdownMenuTrigger>居中</DropdownMenuTrigger>
+        <DropdownMenuTrigger>Center</DropdownMenuTrigger>
         <DropdownMenuContent x_axis="center">
-          <DropdownMenuItem>居中内容</DropdownMenuItem>
+          <DropdownMenuItem>Centered Content</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <DropdownMenu>
-        <DropdownMenuTrigger>右对齐</DropdownMenuTrigger>
+        <DropdownMenuTrigger>Right Align</DropdownMenuTrigger>
         <DropdownMenuContent x_axis="end">
-          <DropdownMenuItem>右对齐内容</DropdownMenuItem>
+          <DropdownMenuItem>Right Aligned Content</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

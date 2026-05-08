@@ -6,17 +6,16 @@ export default function ToastWithActions() {
       <Button
         onClick={() =>
           Toaster.success({
-            title: "有操作按钮",
+            title: "Toast with Actions",
             actions: [
               {
-                children: "查看",
+                children: "View",
                 onClick: (dismiss) => {
                   dismiss();
                 },
               },
               {
-                children: "取消",
-                variant: "ghost",
+                children: "Cancel",
                 onClick: (dismiss) => {
                   dismiss();
                 },

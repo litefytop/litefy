@@ -33,7 +33,7 @@ function useObserveActiveId(targetId: string) {
           }
         }
       },
-      { rootMargin: "0px 0px -80% 0px", threshold: 0 }
+      { rootMargin: "0px 0px -90% 0px", threshold: 0 }
     );
 
     observer.observe(element);
@@ -144,8 +144,15 @@ export function Anchor({ className, children, ...props }: AnchorProps) {
     return "";
   });
 
+
+  const handleSetActive = (id: string) => {
+    if (id) {
+      setActiveId(id);
+    }
+  };
+
   return (
-    <AnchorContext.Provider value={{ activeId, setActiveId }}>
+    <AnchorContext.Provider value={{ activeId, setActiveId: handleSetActive }}>
       <div className={cn("flex flex-col gap-2", className)} {...props}>
         {children}
       </div>

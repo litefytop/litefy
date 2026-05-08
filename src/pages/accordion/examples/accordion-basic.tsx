@@ -3,14 +3,14 @@ import { Accordion } from "@/component";
 export default function AccordionBasic() {
   return (
     <Accordion>
-      <Accordion.Item value="item-1" title="什么是 React?">
-        <p>React 是一个用于构建用户界面的 JavaScript 库。</p>
+      <Accordion.Item value="item-1" title="What is React?">
+        <p>React is a JavaScript library for building user interfaces.</p>
       </Accordion.Item>
-      <Accordion.Item value="item-2" title="为什么使用 React?">
-        <p>React 采用组件化开发，数据驱动视图，生态丰富。</p>
+      <Accordion.Item value="item-2" title="Why Use React?">
+        <p>React uses component-based development, data-driven views, and has a rich ecosystem.</p>
       </Accordion.Item>
-      <Accordion.Item value="item-3" title="如何开始?">
-        <p>使用 Create React App 或 Vite 可以快速搭建项目。</p>
+      <Accordion.Item value="item-3" title="How to Get Started?">
+        <p>Create React App or Vite can quickly set up your project.</p>
       </Accordion.Item>
     </Accordion>
   );

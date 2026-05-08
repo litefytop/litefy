@@ -10,14 +10,14 @@ import {
 export default function DropdownMenuBasic() {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>打开菜单</DropdownMenuTrigger>
+      <DropdownMenuTrigger>Open Menu</DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>我的账户</DropdownMenuLabel>
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>个人资料</DropdownMenuItem>
-        <DropdownMenuItem>设置</DropdownMenuItem>
+        <DropdownMenuItem>Profile</DropdownMenuItem>
+        <DropdownMenuItem>Settings</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>退出登录</DropdownMenuItem>
+        <DropdownMenuItem>Logout</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

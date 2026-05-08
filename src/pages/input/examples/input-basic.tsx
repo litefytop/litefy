@@ -2,6 +2,6 @@ import { Input } from "@/component";
 
 export default function InputBasic() {
   return (
-    <Input placeholder="请输入内容" />
+    <Input placeholder="Enter content" />
   );
 }

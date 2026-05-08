@@ -13,8 +13,9 @@
   * {
     @apply border-border outline-ring/50;
   }
-  html {
-    @apply overscroll-y-none scroll-smooth;
+  html,
+  main {
+    scroll-behavior: smooth;
   }
   body {
     font-synthesis-weight: none;
@@ -42,4 +43,3 @@
 ::-webkit-scrollbar-thumb:active {
   @apply bg-foreground/60;
 }
-
