@@ -20,14 +20,12 @@ import { getComponentNav } from "@/pages/config/routes";
 import {
   CheckboxBasic,
   CheckboxControlled,
-  CheckboxDirection,
   CheckboxDisabled,
   CheckboxVariant,
 } from "./examples";
 
 import CheckboxBasicRaw from "./examples/checkbox-basic.tsx?raw";
 import CheckboxControlledRaw from "./examples/checkbox-controlled.tsx?raw";
-import CheckboxDirectionRaw from "./examples/checkbox-direction.tsx?raw";
 import CheckboxDisabledRaw from "./examples/checkbox-disabled.tsx?raw";
 import CheckboxVariantRaw from "./examples/checkbox-variant.tsx?raw";
 import checkboxDoc from "./doc.mdx?raw";
@@ -53,7 +51,7 @@ function DemoSection({
       <div>
         <Title as="h3">{title}</Title>
       </div>
-      <div className="border rounded-lg p-6 w-full overflow-x-auto">
+      <div className="border rounded-lg p-6 w-full overflow-x-auto flex flex-col justify-center min-h-32 items-center">
         {children}
       </div>
       <ShikiCodeBlock>{code}</ShikiCodeBlock>
@@ -78,18 +76,8 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
         { key: "description", header: l.api.headers.description },
       ],
       data: [
-        {
-          props: "className",
-          type: "ClassNameValue",
-          default: "-",
-          description: l.api.groupProps.className,
-        },
-        {
-          props: "children",
-          type: "ReactNode",
-          default: "-",
-          description: l.api.groupProps.children,
-        },
+
+
         {
           props: "value",
           type: "string[]",
@@ -161,24 +149,14 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
           default: '"default"',
           description: l.api.props.variant,
         },
-        {
-          props: "className",
-          type: "ClassNameValue",
-          default: "-",
-          description: l.api.props.className,
-        },
+  
         {
           props: "indicator",
           type: "object",
           default: "-",
           description: l.api.props.indicator,
         },
-        {
-          props: "children",
-          type: "ReactNode",
-          default: "-",
-          description: l.api.props.children,
-        },
+
         {
           props: "itemProps",
           type: "object",
@@ -278,13 +256,7 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
             <CheckboxControlled />
           </DemoSection>
 
-          <DemoSection
-            id="direction"
-            title={l.direction.title}
-            code={CheckboxDirectionRaw}
-          >
-            <CheckboxDirection />
-          </DemoSection>
+
 
           <DemoSection
             id="disabled"
@@ -301,6 +273,7 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
           >
             <CheckboxVariant />
           </DemoSection>
+          <Description>{l.variants.description}</Description>
         </section>
 
         <section id="anatomy" className="mt-8 space-y-4">
@@ -335,16 +308,15 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
 
       <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-[calc(100vh-3.5rem)] overflow-y-auto p-4">
         <Anchor>
-          <Anchor.Section href="#installation" title={lang.installation} />
-          <Anchor.Section href="#examples" title={lang.examples}>
+          <Anchor.Section href="#installation" linkText={lang.installation} />
+          <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
             <Anchor.Item href="#controlled">{l.controlled.title}</Anchor.Item>
-            <Anchor.Item href="#direction">{l.direction.title}</Anchor.Item>
             <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
             <Anchor.Item href="#variant">{l.variants.title}</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#anatomy" title={lang.anatomy} />
-          <Anchor.Section href="#docs" title={lang.docs} />
+          <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
+          <Anchor.Section href="#docs" linkText={lang.docs} />
         </Anchor>
       </aside>
     </div>

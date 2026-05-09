@@ -58,7 +58,7 @@ export function DocsTableSection({
             {data.map((row, index) => (
               <tr
                 key={index}
-                className="border-b hover:bg-muted/50 transition-colors"
+                className="border-b hover:bg-muted/50 "
               >
                 {isSimple ? (
                   <>

@@ -45,11 +45,7 @@ function DemoSection({
   code: string;
 }) {
   return (
-    <section
-      id={id}
-      data-anchor-id={id}
-      className="space-y-4 py-4"
-    >
+    <section id={id} data-anchor-id={id} className="space-y-4 py-4">
       <div>
         <Title as="h3">{title}</Title>
       </div>
@@ -80,67 +76,39 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
       data: [
         {
           props: "variant",
-          type: '"primary" | "secondary" | "ghost" | "link"',
-          default: '"primary"',
+          type: Object.keys(Button.class.variant).join(" | "),
+          default: "primary",
           description: l.api.props.variant,
         },
-        {
-          props: "size",
-          type: '"sm" | "md" | "lg"',
-          default: '"md"',
-          description: l.api.props.size,
-        },
-        {
-          props: "disabled",
-          type: "boolean",
-          default: "false",
-          description: l.api.props.disabled,
-        },
+
         {
           props: "loading",
-          type: "boolean",
-          default: "false",
+          type: "ButtonLoadingConfig",
+          default: "-",
           description: l.api.props.loading,
-        },
-        {
-          props: "children",
-          type: "ReactNode",
-          default: "-",
-          description: l.api.props.children,
-        },
-        {
-          props: "className",
-          type: "ClassNameValue",
-          default: "-",
-          description: l.api.props.className,
-        },
-        {
-          props: "itemProps",
-          type: "object",
-          default: "-",
-          description: l.api.props.itemProps,
         },
       ],
     },
     {
-      title: l.api.sectionTitles.itemPropsConfig,
+      title: l.api.sectionTitles.loadingConfig,
       columns: [
         { key: "property", header: l.api.headers.property },
         { key: "type", header: l.api.headers.type },
+        { key: "default", header: l.api.headers.default },
         { key: "description", header: l.api.headers.description },
       ],
       data: [
         {
           props: "icon",
-          type: 'Omit<React.ComponentProps<"span">, "children">',
+          type: "React.ReactNode",
           default: "-",
-          description: l.api.itemPropsConfig.icon,
+          description: l.api.loadingConfig.icon,
         },
         {
-          props: "spinner",
-          type: 'Omit<React.ComponentProps<"span">, "children">',
-          default: "-",
-          description: l.api.itemPropsConfig.spinner,
+          props: "loading",
+          type: "boolean",
+          default: "false",
+          description: l.api.loadingConfig.loading,
         },
       ],
     },
@@ -256,8 +224,8 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
 
       <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-[calc(100vh-3.5rem)] overflow-y-auto p-4">
         <Anchor>
-          <Anchor.Section href="#installation" title={lang.installation} />
-          <Anchor.Section href="#examples" title={lang.examples}>
+          <Anchor.Section href="#installation" linkText={lang.installation} />
+          <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#variants">{l.variants.title}</Anchor.Item>
             <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
             <Anchor.Item href="#loading">{l.loading.title}</Anchor.Item>
@@ -265,7 +233,7 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
             <Anchor.Item href="#with-icons">{l.withIcons.title}</Anchor.Item>
             <Anchor.Item href="#direction">{l.direction.title}</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#docs" title={lang.docs} />
+          <Anchor.Section href="#docs" linkText={lang.docs} />
         </Anchor>
       </aside>
     </div>

@@ -17,10 +17,7 @@ export type ClassNameValue =
   | string
   | null
   | undefined
-  | 0
-  | 0n
   | boolean
-  | false
   | Record<string, string | string[]>;
 type ClassNameArray = ClassNameValue[];
 export const twArray = (...classLists: ClassNameValue[]): string[] => {

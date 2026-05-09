@@ -1,9 +1,10 @@
-import { useState, createContext, useContext, useEffect } from "react";
+import { useState, createContext, useContext, useEffect, useMemo } from "react";
 import { ClassNameValue, cn } from "@/lib";
 
 interface AnchorContextValue {
   activeId: string;
   setActiveId: (id: string) => void;
+  observer: IntersectionObserver;
 }
 
 const AnchorContext = createContext<AnchorContextValue | null>(null);
@@ -16,59 +17,119 @@ function useAnchorContext() {
   return context;
 }
 
-function useObserveActiveId(targetId: string) {
-  const { setActiveId } = useAnchorContext();
+function useObserveAnchor(targetId: string) {
+  const { observer } = useAnchorContext();
 
   useEffect(() => {
     if (!targetId) return;
-    const element = document.getElementById(targetId);
-    if (!element) return;
+    const el = document.getElementById(targetId);
+    if (!el) {
+      return;
+    }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActiveId(targetId);
-            break;
-          }
-        }
-      },
-      { rootMargin: "0px 0px -90% 0px", threshold: 0 }
-    );
-
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [targetId, setActiveId]);
+    observer.observe(el);
+    return () => {
+      observer.unobserve(el);
+    };
+  }, [targetId, observer]);
 }
 
+type AnchorProps = Omit<React.ComponentProps<"div">, "className"> & {
+  className?: ClassNameValue;
+  rootMargin?: string;
+  root?: Element | Document | null | React.RefObject<Element | Document | null>;
+};
+
+export function Anchor({
+  className,
+  children,
+  root,
+  rootMargin,
+  ...props
+}: AnchorProps) {
+  const [activeId, setActiveId] = useState(() => {
+    if (typeof window !== "undefined") return window.location.hash.slice(1);
+    return "";
+  });
+
+  const observer = useMemo(() => {
+    if (typeof window === "undefined") return null;
+
+    const rootElement = root && "current" in root ? root.current : root;
+
+    const isInIframe = window.self !== window.top;
+    const fallbackRoot = isInIframe ? document.documentElement : null;
+
+     return new IntersectionObserver(
+      (entries) => {
+        let best: IntersectionObserverEntry | null = null;
+
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+
+          const rect = entry.boundingClientRect;
+
+          if (!best) {
+            best = entry;
+          } else {
+            const bestRect = best.boundingClientRect;
+
+            const isBetter =
+              rect.top >= 0 &&
+              (rect.top < bestRect.top ||
+                (rect.top >= bestRect.top && rect.bottom < bestRect.bottom));
+
+            if (isBetter) {
+              best = entry;
+            }
+          }
+        }
+
+        if (best) {
+          setActiveId(best.target.id);
+        }
+      },
+      {
+        root: rootElement ?? fallbackRoot,
+        rootMargin: rootMargin || "0px 0px -90% 0px",
+        threshold: 0,
+      }
+    );
+  }, [rootMargin, root]);
+
+  if (!observer) return null;
+
+  return (
+    <AnchorContext.Provider value={{ activeId, setActiveId, observer }}>
+      <div className={cn("flex flex-col gap-2", className)} {...props}>
+        {children}
+      </div>
+    </AnchorContext.Provider>
+  );
+}
 type AnchorItemProps = Omit<React.ComponentProps<"a">, "className"> & {
   href: string;
   className?: ClassNameValue;
 };
 
 function AnchorItem({ href, className, children, ...props }: AnchorItemProps) {
-  const { activeId, setActiveId } = useAnchorContext();
+  const { activeId,setActiveId } = useAnchorContext();
   const targetId = href.replace(/^#/, "");
   const isActive = activeId === targetId;
 
-  useObserveActiveId(targetId);
-
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    setActiveId(targetId);
-    props.onClick?.(e);
-  };
+  useObserveAnchor(targetId);
 
   return (
     <a
       href={href}
       className={cn(
-        "block py-1 text-sm transition-colors indent-2",
+        "block py-1 text-sm  indent-2",
         isActive
-          ? "text-primary font-medium"
+          ? "text-primary font-medium underline underline-offset-4"
           : "text-muted-foreground hover:text-foreground",
-        className
+        className,
       )}
-      onClick={handleClick}
+      onClick={() => setActiveId(targetId)}
       {...props}
     >
       {children}
@@ -78,85 +139,51 @@ function AnchorItem({ href, className, children, ...props }: AnchorItemProps) {
 
 type AnchorSectionProps = Omit<React.ComponentProps<"div">, "className"> & {
   href?: string;
-  title: string;
+  linkText?: string;
   className?: ClassNameValue;
   itemProps?: {
-    title?: Omit<React.ComponentProps<"a">, "href">;
+    link?: Omit<React.ComponentProps<"a">, "href">;
     nav?: Omit<React.ComponentProps<"nav">, "aria-label">;
   };
 };
 
 function AnchorSection({
   href,
-  title,
+  linkText,
   className,
   itemProps,
   children,
   ...props
 }: AnchorSectionProps) {
-  const { activeId, setActiveId } = useAnchorContext();
+  const { activeId } = useAnchorContext();
   const targetId = href?.replace(/^#/, "") || "";
   const isActive = href && activeId === targetId;
 
-  useObserveActiveId(targetId);
-
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (href) {
-      setActiveId(targetId);
-    }
-    itemProps?.title?.onClick?.(e);
-  };
+  useObserveAnchor(targetId);
 
   return (
     <div className={cn(className)} {...props}>
       <a
         className={cn(
-          "text-sm font-medium mb-2 transition-colors",
-          isActive
-            ? "text-primary"
-            : "text-foreground hover:text-primary",
-          !href && "pointer-events-none"
+          "text-sm font-medium mb-2 ",
+          isActive ? "text-primary  underline underline-offset-4" : "text-foreground hover:text-primary",
+          !href && "pointer-events-none",
         )}
         href={href}
-        onClick={handleClick}
-        {...itemProps?.title}
+        {...itemProps?.link}
       >
-        {title}
+        {linkText}
       </a>
       {children && (
-        <nav className="space-y-1" aria-label="页面内导航" {...itemProps?.nav}>
+        <nav
+          className="space-y-1"
+          aria-label="In-page navigation"
+          {...itemProps?.nav}
+        >
           {children}
         </nav>
       )}
     </div>
-  );
-}
-
-type AnchorProps = Omit<React.ComponentProps<"div">, "className"> & {
-  className?: ClassNameValue;
-};
-
-export function Anchor({ className, children, ...props }: AnchorProps) {
-  const [activeId, setActiveId] = useState(() => {
-    if (typeof window !== "undefined") {
-      return window.location.hash.slice(1) || "";
-    }
-    return "";
-  });
-
-
-  const handleSetActive = (id: string) => {
-    if (id) {
-      setActiveId(id);
-    }
-  };
-
-  return (
-    <AnchorContext.Provider value={{ activeId, setActiveId: handleSetActive }}>
-      <div className={cn("flex flex-col gap-2", className)} {...props}>
-        {children}
-      </div>
-    </AnchorContext.Provider>
   );
 }
 

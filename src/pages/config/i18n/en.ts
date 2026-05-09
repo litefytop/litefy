@@ -7,8 +7,10 @@ export const en = {
   },
   home: {
     title: "Plain UI",
-    description: "Plain is a lightweight, highly reusable, low-intrusion foundational UI component library. It features minimalist preset styles while preserving native layout characteristics, balancing generality and customization flexibility.",
-    subDescription: "No redundant style nesting, lightweight volume, supports on-demand import and style overrides, adapts to mobile/medium-backend scenarios, can quickly integrate with Tailwind and custom theme extensions, meeting rapid business iteration and personalized visual transformation needs.",
+    description:
+      "Plain is a lightweight, highly reusable, low-intrusion foundational UI component library. It features minimalist preset styles while preserving native layout characteristics, balancing generality and customization flexibility.",
+    subDescription:
+      "No redundant style nesting, lightweight volume, supports on-demand import and style overrides, adapts to mobile/medium-backend scenarios, can quickly integrate with Tailwind and custom theme extensions, meeting rapid business iteration and personalized visual transformation needs.",
   },
   installation: "Installation",
   examples: "Examples",
@@ -27,6 +29,7 @@ export const en = {
     accordion: "Accordion",
     anchor: "Anchor",
     toast: "Toast",
+    dialog: "Dialog",
     input: "Input",
     checkbox: "Checkbox",
     slider: "Slider",
@@ -105,36 +108,33 @@ export const en = {
       },
       dropdownMenuProps: {
         children: "Child components",
-        className: "Custom class name",
       },
       triggerProps: {
         children: "Trigger content",
-        className: "Custom class name",
         disabled: "Whether disabled",
         variant: "Button style variant",
       },
       contentProps: {
         children: "Menu content",
-        className: "Custom class name",
+
         popover: "Popover mode",
         side: "Popup side",
         align: "Alignment",
       },
       itemProps: {
         children: "Menu item content",
-        className: "Custom class name",
+
         onClick: "Click callback",
         disabled: "Whether disabled",
       },
-      separatorProps: {
-        className: "Custom class name",
-      },
+      separatorProps: {},
     },
   },
 
   accordion: {
     title: "Accordion",
-    description: "Accordion component for displaying collapsible content areas.",
+    description:
+      "Accordion component for displaying collapsible content areas.",
     basic: {
       title: "Basic",
     },
@@ -158,19 +158,16 @@ export const en = {
         openKeys: "Currently expanded keys (controlled)",
         onOpenChange: "Callback when expansion state changes",
         allowMultiple: "Whether to allow multiple expansions",
-        className: "Custom class name",
         itemProps: "Internal wrapped props pass-through config",
       },
       itemProps: {
         value: "Unique identifier (required)",
-        title: "Title content (required)",
-        children: "Content after expansion",
-        className: "Custom class name",
+        label: "Label content (required)",
         itemProps: "Internal wrapped props pass-through config",
       },
       itemPropsConfig: {
         trigger: "Trigger button props",
-        title: "Title element props",
+        label: "Label element props",
         content: "Content area props",
       },
       headers: {
@@ -191,15 +188,14 @@ export const en = {
   anchor: {
     title: "Anchor",
     description: "Anchor navigation for quick page positioning.",
-    basic: {
-      title: "Basic",
-    },
-    withSections: {
-      title: "With Sections",
+    examples: {
+      description:
+        "By default, the scroll listener monitors the top 20% area of the viewport. Since the example content is an iframe page, to ensure the listener triggers properly, the rootMargin is set to `0px 0px -50% 0px`. Please adjust according to your specific scenario in actual use.",
     },
     scrollBehavior: {
       title: "Scroll Behavior",
-      description: "The Anchor component uses CSS scroll-margin-top for proper scroll positioning. When using anchor navigation, you need to add scroll-margin-top style to your target elements:",
+      description:
+        "By default, the Anchor component listens to the root element. Since the example uses an iframe container, you need to manually specify the root property.",
       note: "Adjust the value based on your header height to ensure the target content won't be covered when clicking anchor links.",
     },
     anatomy: {
@@ -223,24 +219,22 @@ export const en = {
         itemPropsConfig: "itemProps Config",
       },
       props: {
-        className: "Custom class name",
-        children: "Child components",
+        rootMargin: "Root margin for IntersectionObserver (top right bottom left)",
+        root: "Root element for IntersectionObserver. In iframe, defaults to document.documentElement to fix viewport offset bug",
       },
       sectionProps: {
         href: "Anchor target ID (with # prefix, optional)",
-        title: "Section title",
-        children: "Child anchor items",
-        className: "Custom class name",
+        linkText: "Link text",
         itemProps: "Internal wrapped props pass-through",
       },
       itemProps: {
         href: "Anchor target ID (with # prefix)",
         children: "Link text",
-        className: "Custom class name",
+
         onClick: "Click callback",
       },
       itemPropsConfig: {
-        title: "Title `<a>` tag props",
+        link: "Link `<a>` tag props",
         nav: "Internal navigation `<nav>` container props",
       },
     },
@@ -294,20 +288,15 @@ export const en = {
       },
       sectionTitles: {
         buttonProps: "Button Props",
-        itemPropsConfig: "itemProps Config",
+        loadingConfig: "Loading state Config",
       },
       props: {
         variant: "Button style variant",
-        size: "Button size",
-        disabled: "Whether disabled",
-        loading: "Whether to show loading state",
-        children: "Button content",
-        className: "Custom class name",
-        itemProps: "Internal wrapped props pass-through",
+        loading: "Loading state config",
       },
-      itemPropsConfig: {
+      loadingConfig: {
         icon: "Icon element props",
-        spinner: "Loading spinner element props",
+        loading: "Loading state",
       },
     },
   },
@@ -361,15 +350,10 @@ export const en = {
     disabled: {
       title: "Disabled",
     },
-    direction: {
-      title: "Direction",
-      horizontal: "Horizontal",
-      vertical: "Vertical",
-    },
+
     variants: {
       title: "Variants",
-      default: "Default",
-      squared: "Squared",
+      description: "Checkbox and Toggle have the same logic. You can switch between them by using the variants prop. When using text variant, Checkbox is displayed, otherwise Toggle is displayed."
     },
     anatomy: {
       group: "Group",
@@ -390,8 +374,6 @@ export const en = {
         itemPropsConfig: "itemProps Config",
       },
       groupProps: {
-        className: "Custom class name",
-        children: "Child components",
         value: "Selected values (controlled mode)",
         defaultValue: "Initial selected values (uncontrolled mode)",
         onValueChange: "Value change callback",
@@ -404,9 +386,7 @@ export const en = {
         onCheckedChange: "Checked state change callback",
         disabled: "Whether disabled",
         variant: "Style variant",
-        className: "Custom class name",
         indicator: "Indicator config",
-        children: "Checkbox text",
         itemProps: "Internal wrapped props pass-through",
       },
       itemPropsConfig: {
@@ -440,7 +420,6 @@ export const en = {
       },
       props: {
         as: "HTML tag to render",
-        className: "Custom class name",
         children: "Child components",
       },
     },
@@ -492,7 +471,6 @@ export const en = {
         description: "Description text",
         leading: "Leading content",
         trailing: "Trailing content",
-        className: "Custom class name",
         itemProps: "Internal wrapped property passthrough",
       },
       itemPropsConfig: {
@@ -535,7 +513,6 @@ export const en = {
         onChange: "Value change callback",
         placeholder: "Placeholder",
         disabled: "Whether disabled",
-        className: "Custom class name",
         itemProps: "Internal wrapped property passthrough",
       },
       itemPropsConfig: {
@@ -592,18 +569,54 @@ export const en = {
         onChange: "Value change callback",
         disabled: "Whether disabled",
         direction: "Arrangement direction",
-        className: "Custom class name",
       },
       radioProps: {
         value: "Option value",
         disabled: "Whether disabled",
-        className: "Custom class name",
         indicator: "Indicator config",
       },
       itemPropsConfig: {
         group: "Group container `<div>` props",
         radio: "Radio `<label>` props",
         indicator: "Indicator `<span>` props",
+      },
+    },
+  },
+
+  dialog: {
+    title: "Dialog",
+    description: "Dialog component for displaying modal content.",
+    basic: {
+      title: "Basic",
+    },
+    withTrigger: {
+      title: "Custom Trigger",
+    },
+    withClose: {
+      title: "Close Button",
+    },
+    anatomy: {
+      dialog: "Dialog",
+      content: "Content",
+      close: "Close Button",
+    },
+    api: {
+      headers: {
+        prop: "Prop",
+        type: "Type",
+        default: "Default",
+        description: "Description",
+        property: "Property",
+      },
+      sectionTitles: {
+        dialogProps: "Dialog Props",
+        contentProps: "Dialog.Content Props",
+        triggerProps: "Dialog.Trigger Props",
+        closeProps: "Dialog.Close Props",
+      },
+      props: {
+        children: "Child components",
+        showCloseButton: "Show close button",
       },
     },
   },

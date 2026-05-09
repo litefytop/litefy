@@ -35,8 +35,8 @@
 
 /* ========== Zinc 主题（浅色模式） ========== */
 [data-theme="zinc"] {
-  --primary: oklch(0.705 0.015 286.067);
-  --primary-foreground: oklch(0.98 0 0);
+  --primary: oklch(0.442 0.017 285.786);
+  --primary-foreground: oklch(0.145 0 0);
   --accent: oklch(0.552 0.016 285.938);
   --accent-foreground: oklch(0.98 0 0);
   --ring: oklch(0.442 0.017 285.786);
@@ -44,7 +44,7 @@
 
 /* ========== Slate 主题（浅色模式） ========== */
 [data-theme="slate"] {
-  --primary: oklch(0.704 0.04 256.788);
+  --primary: oklch(0.446 0.043 257.281);
   --primary-foreground: oklch(0.98 0 0);
   --accent: oklch(0.554 0.046 257.417);
   --accent-foreground: oklch(0.98 0 0);
@@ -53,7 +53,7 @@
 
 /* ========== Stone 主题（浅色模式） ========== */
 [data-theme="stone"] {
-  --primary: oklch(0.709 0.01 56.259);
+  --primary: oklch(0.444 0.011 73.639);
   --primary-foreground: oklch(0.98 0 0);
   --accent: oklch(0.553 0.013 58.071);
   --accent-foreground: oklch(0.98 0 0);
@@ -62,7 +62,7 @@
 
 /* ========== Gray 主题（浅色模式） ========== */
 [data-theme="gray"] {
-  --primary: oklch(0.707 0.022 261.325);
+  --primary: oklch(0.446 0.03 256.802);
   --primary-foreground: oklch(0.98 0 0);
   --accent: oklch(0.551 0.027 264.364);
   --accent-foreground: oklch(0.98 0 0);
@@ -71,7 +71,7 @@
 
 /* ========== Neutral 主题（浅色模式） ========== */
 [data-theme="neutral"] {
-  --primary: oklch(0.708 0 0);
+  --primary: oklch(0.439 0 0);
   --primary-foreground: oklch(0.98 0 0);
   --accent: oklch(0.556 0 0);
   --accent-foreground: oklch(0.98 0 0);
@@ -80,7 +80,7 @@
 
 /* ========== Red 主题（浅色模式） ========== */
 [data-theme="red"] {
-  --primary: oklch(0.704 0.191 22.216);
+  --primary: oklch(0.577 0.245 27.325);
   --primary-foreground: oklch(0.98 0 0);
   --accent: oklch(0.637 0.237 25.331);
   --accent-foreground: oklch(0.98 0 0);
@@ -90,7 +90,7 @@
 
 /* ========== Rose 主题（浅色模式） ========== */
 [data-theme="rose"] {
-  --primary: oklch(0.712 0.194 13.428);
+  --primary: oklch(0.586 0.253 17.585);
   --primary-foreground: oklch(0.98 0 0);
   --accent: oklch(0.645 0.246 16.439);
   --accent-foreground: oklch(0.98 0 0);
@@ -100,7 +100,7 @@
 
 /* ========== Orange 主题（浅色模式） ========== */
 [data-theme="orange"] {
-  --primary: oklch(0.75 0.183 55.934);
+  --primary: oklch(0.646 0.222 41.116);
   --primary-foreground: oklch(0.98 0 0);
   --accent: oklch(0.705 0.213 47.604);
   --accent-foreground: oklch(0.98 0 0);
@@ -110,7 +110,7 @@
 
 /* ========== Green 主题（浅色模式） ========== */
 [data-theme="green"] {
-  --primary: oklch(0.792 0.209 151.711);
+  --primary: oklch(0.627 0.194 149.214);
   --primary-foreground: oklch(0.21 0 0);
   --accent: oklch(0.723 0.219 149.579);
   --accent-foreground: oklch(0.21 0 0);
@@ -120,7 +120,7 @@
 
 /* ========== Blue 主题（浅色模式） ========== */
 [data-theme="blue"] {
-  --primary: oklch(0.707 0.165 254.624);
+  --primary: oklch(0.546 0.245 262.881);
   --primary-foreground: oklch(0.98 0 0);
   --accent: oklch(0.623 0.214 259.815);
   --accent-foreground: oklch(0.98 0 0);
@@ -130,7 +130,7 @@
 
 /* ========== Yellow 主题（浅色模式） ========== */
 [data-theme="yellow"] {
-  --primary: oklch(0.852 0.199 91.936);
+  --primary: oklch(0.681 0.162 75.834);
   --primary-foreground: oklch(0.21 0 0);
   --accent: oklch(0.795 0.184 86.047);
   --accent-foreground: oklch(0.21 0 0);
@@ -140,7 +140,7 @@
 
 /* ========== Violet 主题（浅色模式） ========== */
 [data-theme="violet"] {
-  --primary: oklch(0.702 0.183 293.541);
+  --primary: oklch(0.541 0.281 293.009);
   --primary-foreground: oklch(0.98 0 0);
   --accent: oklch(0.606 0.25 292.717);
   --accent-foreground: oklch(0.98 0 0);
@@ -181,9 +181,9 @@
 
 /* ========== Zinc 主题（深色模式） ========== */
 .dark[data-theme="zinc"] {
-  --primary: oklch(0.442 0.017 285.786);
-  --primary-foreground: oklch(0.98 0 0);
-  --accent: oklch(0.705 0.015 286.067);
+  --primary: oklch(0.705 0.015 286.067);
+  --primary-foreground: oklch(0.145 0 0);
+  --accent: oklch(0.442 0.017 285.786);
   --accent-foreground: oklch(0.98 0 0);
   --ring: oklch(0.705 0.015 286.067);
   --sidebar-primary: oklch(0.98 0 0);
@@ -194,9 +194,9 @@
 
 /* ========== Slate 主题（深色模式） ========== */
 .dark[data-theme="slate"] {
-  --primary: oklch(0.446 0.043 257.281);
-  --primary-foreground: oklch(0.98 0 0);
-  --accent: oklch(0.704 0.04 256.788);
+  --primary: oklch(0.704 0.04 256.788);
+  --primary-foreground: oklch(0.145 0 0);
+  --accent: oklch(0.446 0.043 257.281);
   --accent-foreground: oklch(0.98 0 0);
   --ring: oklch(0.704 0.04 256.788);
   --sidebar-primary: oklch(0.98 0 0);
@@ -207,9 +207,9 @@
 
 /* ========== Stone 主题（深色模式） ========== */
 .dark[data-theme="stone"] {
-  --primary: oklch(0.444 0.011 73.639);
-  --primary-foreground: oklch(0.98 0 0);
-  --accent: oklch(0.709 0.01 56.259);
+  --primary: oklch(0.709 0.01 56.259);
+  --primary-foreground: oklch(0.145 0 0);
+  --accent: oklch(0.444 0.011 73.639);
   --accent-foreground: oklch(0.98 0 0);
   --ring: oklch(0.709 0.01 56.259);
   --sidebar-primary: oklch(0.98 0 0);
@@ -220,9 +220,9 @@
 
 /* ========== Gray 主题（深色模式） ========== */
 .dark[data-theme="gray"] {
-  --primary: oklch(0.446 0.03 256.802);
-  --primary-foreground: oklch(0.98 0 0);
-  --accent: oklch(0.707 0.022 261.325);
+  --primary: oklch(0.707 0.022 261.325);
+  --primary-foreground: oklch(0.145 0 0);
+  --accent: oklch(0.446 0.03 256.802);
   --accent-foreground: oklch(0.98 0 0);
   --ring: oklch(0.707 0.022 261.325);
   --sidebar-primary: oklch(0.98 0 0);
@@ -233,9 +233,9 @@
 
 /* ========== Neutral 主题（深色模式） ========== */
 .dark[data-theme="neutral"] {
-  --primary: oklch(0.439 0 0);
-  --primary-foreground: oklch(0.98 0 0);
-  --accent: oklch(0.708 0 0);
+  --primary: oklch(0.708 0 0);
+  --primary-foreground: oklch(0.145 0 0);
+  --accent: oklch(0.439 0 0);
   --accent-foreground: oklch(0.98 0 0);
   --ring: oklch(0.708 0 0);
   --sidebar-primary: oklch(0.98 0 0);
@@ -246,9 +246,9 @@
 
 /* ========== Red 主题（深色模式） ========== */
 .dark[data-theme="red"] {
-  --primary: oklch(0.577 0.245 27.325);
-  --primary-foreground: oklch(0.98 0 0);
-  --accent: oklch(0.704 0.191 22.216);
+  --primary: oklch(0.704 0.191 22.216);
+  --primary-foreground: oklch(0.145 0 0);
+  --accent: oklch(0.577 0.245 27.325);
   --accent-foreground: oklch(0.98 0 0);
   --ring: oklch(0.704 0.191 22.216);
   --destructive: oklch(0.704 0.191 22.216);
@@ -260,9 +260,9 @@
 
 /* ========== Rose 主题（深色模式） ========== */
 .dark[data-theme="rose"] {
-  --primary: oklch(0.586 0.253 17.585);
-  --primary-foreground: oklch(0.98 0 0);
-  --accent: oklch(0.712 0.194 13.428);
+  --primary: oklch(0.712 0.194 13.428);
+  --primary-foreground: oklch(0.145 0 0);
+  --accent: oklch(0.586 0.253 17.585);
   --accent-foreground: oklch(0.98 0 0);
   --ring: oklch(0.712 0.194 13.428);
   --destructive: oklch(0.704 0.191 22.216);
@@ -274,9 +274,9 @@
 
 /* ========== Orange 主题（深色模式） ========== */
 .dark[data-theme="orange"] {
-  --primary: oklch(0.646 0.222 41.116);
-  --primary-foreground: oklch(0.98 0 0);
-  --accent: oklch(0.75 0.183 55.934);
+  --primary: oklch(0.75 0.183 55.934);
+  --primary-foreground: oklch(0.145 0 0);
+  --accent: oklch(0.646 0.222 41.116);
   --accent-foreground: oklch(0.98 0 0);
   --ring: oklch(0.75 0.183 55.934);
   --destructive: oklch(0.704 0.191 22.216);
@@ -288,9 +288,9 @@
 
 /* ========== Green 主题（深色模式） ========== */
 .dark[data-theme="green"] {
-  --primary: oklch(0.627 0.194 149.214);
-  --primary-foreground: oklch(0.21 0 0);
-  --accent: oklch(0.792 0.209 151.711);
+  --primary: oklch(0.792 0.209 151.711);
+  --primary-foreground: oklch(0.145 0 0);
+  --accent: oklch(0.627 0.194 149.214);
   --accent-foreground: oklch(0.21 0 0);
   --ring: oklch(0.792 0.209 151.711);
   --destructive: oklch(0.704 0.191 22.216);
@@ -302,9 +302,9 @@
 
 /* ========== Blue 主题（深色模式） ========== */
 .dark[data-theme="blue"] {
-  --primary: oklch(0.546 0.245 262.881);
-  --primary-foreground: oklch(0.98 0 0);
-  --accent: oklch(0.707 0.165 254.624);
+  --primary: oklch(0.707 0.165 254.624);
+  --primary-foreground: oklch(0.145 0 0);
+  --accent: oklch(0.546 0.245 262.881);
   --accent-foreground: oklch(0.98 0 0);
   --ring: oklch(0.707 0.165 254.624);
   --destructive: oklch(0.704 0.191 22.216);
@@ -316,9 +316,9 @@
 
 /* ========== Yellow 主题（深色模式） ========== */
 .dark[data-theme="yellow"] {
-  --primary: oklch(0.681 0.162 75.834);
-  --primary-foreground: oklch(0.21 0 0);
-  --accent: oklch(0.852 0.199 91.936);
+  --primary: oklch(0.852 0.199 91.936);
+  --primary-foreground: oklch(0.145 0 0);
+  --accent: oklch(0.681 0.162 75.834);
   --accent-foreground: oklch(0.21 0 0);
   --ring: oklch(0.852 0.199 91.936);
   --destructive: oklch(0.704 0.191 22.216);
@@ -331,7 +331,7 @@
 /* ========== Violet 主题（深色模式） ========== */
 .dark[data-theme="violet"] {
   --primary: oklch(0.541 0.281 293.009);
-  --primary-foreground: oklch(0.98 0 0);
+  --primary-foreground: oklch(0.145 0 0);
   --accent: oklch(0.702 0.183 293.541);
   --accent-foreground: oklch(0.98 0 0);
   --ring: oklch(0.702 0.183 293.541);
@@ -345,7 +345,6 @@
 /* ========== 主题映射 ========== */
 @theme inline {
   --breakpoint-3xl: 1920px;
-
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -403,4 +402,3 @@
   --tw-prose-td-borders: oklch(0.35 0 0);
   --tw-prose-lists: oklch(0.75 0 0);
 }
-

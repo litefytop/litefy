@@ -41,11 +41,7 @@ function DemoSection({
   code: string;
 }) {
   return (
-    <section
-      id={id}
-      data-anchor-id={id}
-      className="space-y-4 py-4"
-    >
+    <section id={id} data-anchor-id={id} className="space-y-4 py-4">
       <div>
         <Title as="h3">{title}</Title>
       </div>
@@ -71,7 +67,7 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
         { key: "type", header: l.api.headers.type },
         { key: "default", header: l.api.headers.default },
         { key: "description", header: l.api.headers.description },
-      ] ,
+      ],
       data: [
         {
           props: "defaultOpenKeys",
@@ -97,18 +93,7 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
           default: "false",
           description: l.api.props.allowMultiple,
         },
-        {
-          props: "className",
-          type: "ClassNameValue",
-          default: "-",
-          description: l.api.props.className,
-        },
-        {
-          props: "itemProps",
-          type: "object",
-          default: "-",
-          description: l.api.props.itemProps,
-        },
+
       ],
     },
     {
@@ -118,7 +103,7 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
         { key: "type", header: l.api.headers.type },
         { key: "default", header: l.api.headers.default },
         { key: "description", header: l.api.headers.description },
-      ] ,
+      ],
       data: [
         {
           props: "value",
@@ -127,22 +112,10 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.itemProps.value,
         },
         {
-          props: "title",
+          props: "label",
           type: "ReactNode",
           default: "-",
-          description: l.api.itemProps.title,
-        },
-        {
-          props: "children",
-          type: "ReactNode",
-          default: "-",
-          description: l.api.itemProps.children,
-        },
-        {
-          props: "className",
-          type: "ClassNameValue",
-          default: "-",
-          description: l.api.itemProps.className,
+          description: l.api.itemProps.label,
         },
         {
           props: "itemProps",
@@ -158,7 +131,7 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
         { key: "property", header: l.api.headers.property },
         { key: "type", header: l.api.headers.type },
         { key: "description", header: l.api.headers.description },
-      ] ,
+      ],
       data: [
         {
           props: "trigger",
@@ -167,10 +140,10 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.itemPropsConfig.trigger,
         },
         {
-          props: "title",
+          props: "label",
           type: 'React.ComponentProps<"span">',
           default: "-",
-          description: l.api.itemPropsConfig.title,
+          description: l.api.itemPropsConfig.label,
         },
         {
           props: "content",
@@ -277,30 +250,26 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
               defaultOpenKeys={["item1"]}
               id="anatomy-accordion"
               className="max-w-sm"
-              itemProps={{
-                trigger: { id: "anatomy-trigger" },
-                title: { id: "anatomy-title" },
-                content: { id: "anatomy-content" },
-              }}
             >
               <Accordion.Item
                 value="item1"
-                title={lang.accordion.basic.title}
+                label={lang.accordion.basic.title}
                 id="anatomy-item"
+                itemProps={{
+                  trigger: { id: "anatomy-trigger" },
+                  label: { id: "anatomy-title" },
+                  content: { id: "anatomy-content" },
+                }}
               >
                 {lang.accordion.anatomy.content}
               </Accordion.Item>
-              <Accordion.Item value="item2" title={lang.accordion.basic.title}>
+              <Accordion.Item value="item2" label={lang.accordion.basic.title}>
                 {lang.accordion.anatomy.content}
               </Accordion.Item>
             </Accordion>
           </Anatomy>
         </section>
-        <section
-          id="docs"
-          data-anchor-id="docs"
-          className="mt-12 space-y-4"
-        >
+        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-4">
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
@@ -311,9 +280,11 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
 
       <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-[calc(100vh-3.5rem)] overflow-y-auto p-4">
         <Anchor>
-          <Anchor.Section href="#installation" title={lang.installation} />
-          <Anchor.Section href="#examples" title={lang.examples}>
-            <Anchor.Item href="#basic">{lang.accordion.basic.title}</Anchor.Item>
+          <Anchor.Section href="#installation" linkText={lang.installation} />
+          <Anchor.Section href="#examples" linkText={lang.examples}>
+            <Anchor.Item href="#basic">
+              {lang.accordion.basic.title}
+            </Anchor.Item>
             <Anchor.Item href="#multiple">
               {lang.accordion.multiple.title}
             </Anchor.Item>
@@ -321,8 +292,11 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
               {lang.accordion.controlled.title}
             </Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#anatomy" title={lang.accordion.anatomy.title} />
-          <Anchor.Section href="#docs" title={lang.docs} />
+          <Anchor.Section
+            href="#anatomy"
+            linkText={lang.accordion.anatomy.title}
+          />
+          <Anchor.Section href="#docs" linkText={lang.docs} />
         </Anchor>
       </aside>
     </div>

@@ -70,7 +70,7 @@ export function CodeBlock({
         onClick={handleToggle}
         onKeyDown={(e) => e.key === "Enter" && handleToggle()}
         tabIndex={0}
-        className="flex items-center justify-between w-full px-4 py-2 bg-muted/50 hover:bg-muted transition-colors cursor-pointer"
+        className="flex items-center justify-between w-full px-4 py-2 bg-muted/50 hover:bg-muted  cursor-pointer"
       >
         <span className="text-sm text-muted-foreground flex items-center gap-2">
           {isExpanded ? (
@@ -85,7 +85,7 @@ export function CodeBlock({
             e.stopPropagation();
             handleCopy();
           }}
-          className="p-1.5 rounded-md hover:bg-muted transition-colors"
+          className="p-1.5 rounded-md hover:bg-muted "
           aria-label="Copy code"
         >
           {copied ? (

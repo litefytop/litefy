@@ -6,11 +6,6 @@ interface AccordionContextValue {
   openKeys: string[];
   allowMultiple: boolean;
   onToggle: (key: string) => void;
-  itemProps?: {
-    trigger?: React.ComponentProps<"button">;
-    title?: React.ComponentProps<"span">;
-    content?: React.ComponentProps<"div">;
-  };
 }
 
 const AccordionContext = createContext<AccordionContextValue | null>(null);
@@ -25,50 +20,43 @@ function useAccordionContext() {
 
 type AccordionItemProps = Omit<React.ComponentProps<"div">, "className"> & {
   value: string;
-  title: React.ReactNode;
+  label: React.ReactNode;
   className?: ClassNameValue;
   itemProps?: {
     trigger?: React.ComponentProps<"button">;
-    title?: React.ComponentProps<"span">;
+    label?: React.ComponentProps<"span">;
     content?: React.ComponentProps<"div">;
   };
 };
 
 function AccordionItem({
   value,
-  title,
+  label,
   className,
-  itemProps: itemLevelProps,
+  itemProps,
   children,
   ...props
 }: AccordionItemProps) {
-  const { openKeys, onToggle, itemProps: contextItemProps } = useAccordionContext();
+  const { openKeys, onToggle } = useAccordionContext();
   const isOpen = openKeys.includes(value);
-
-  // 合并配置：item 级别覆盖 context 级别
-  const mergedItemProps = {
-    trigger: { ...contextItemProps?.trigger, ...itemLevelProps?.trigger },
-    title: { ...contextItemProps?.title, ...itemLevelProps?.title },
-    content: { ...contextItemProps?.content, ...itemLevelProps?.content },
-  };
 
   return (
     <div className={cn("border rounded-lg overflow-hidden", className)} {...props}>
       <button
-        {...mergedItemProps.trigger}
+        {...itemProps?.trigger}
         onClick={(e) => {
-          mergedItemProps.trigger?.onClick?.(e);
+          itemProps?.trigger?.onClick?.(e);
           onToggle(value);
         }}
-        className={cn("flex items-center justify-between w-full px-4 py-3 bg-muted/50 hover:bg-muted transition-colors text-left", mergedItemProps.trigger?.className)}
+        className={cn("flex items-center justify-between w-full px-4 py-3 bg-muted/50 hover:bg-muted  text-left", itemProps?.trigger?.className)}
       >
-        <span {...mergedItemProps.title} className={cn("flex items-center gap-2", mergedItemProps.title?.className)}>
+        <span {...itemProps?.label} className={cn("flex items-center gap-2", itemProps?.label?.className)}>
           {isOpen ? <CaretDownIcon /> : <CaretRightIcon />}
-          {title}
+          {label}
         </span>
       </button>
       {isOpen && (
-        <div {...mergedItemProps.content} className={cn("p-4 border-t bg-background", mergedItemProps.content?.className)}>
+        <div {...itemProps?.content} className={cn("p-4 border-t bg-background", itemProps?.content?.className)}>
           {children}
         </div>
       )}
@@ -83,11 +71,7 @@ type AccordionProps = Omit<React.ComponentProps<"div">, "className"> & {
   allowMultiple?: boolean;
   className?: ClassNameValue;
   children?: React.ReactNode;
-  itemProps?: {
-    trigger?: React.ComponentProps<"button">;
-    title?: React.ComponentProps<"span">;
-    content?: React.ComponentProps<"div">;
-  };
+
 };
 
 export function Accordion({
@@ -97,7 +81,6 @@ export function Accordion({
   allowMultiple = false,
   className,
   children,
-  itemProps,
   ...props
 }: AccordionProps) {
   const [internalOpenKeys, setInternalOpenKeys] = useState<string[]>(defaultOpenKeys);
@@ -125,7 +108,7 @@ export function Accordion({
   };
 
   return (
-    <AccordionContext.Provider value={{ openKeys: currentOpenKeys, allowMultiple, onToggle: handleToggle, itemProps }}>
+    <AccordionContext.Provider value={{ openKeys: currentOpenKeys, allowMultiple, onToggle: handleToggle }}>
       <div className={cn("flex flex-col gap-2", className)} {...props}>
         {children}
       </div>

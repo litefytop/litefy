@@ -56,7 +56,8 @@ function App() {
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | children | ReactNode | - | Child components |
-| className | string | - | Custom class name |
+| rootMargin | string | `"0px 0px -80% 0px"` | Root margin for IntersectionObserver (top right bottom left) |
+| root | `Element \| Document \| null \| RefObject<Element \| Document \| null>` | `null` | Root element for IntersectionObserver. In iframe, defaults to `document.documentElement` to fix viewport offset bug |
 
 ### Anchor.Item Props
 
@@ -81,8 +82,8 @@ function App() {
 
 | Property | Type | Description |
 |------|------|------|
-| title | Omit<React.ComponentProps<"a">, "href" \| "onClick"> | Title `<a>` tag props |
-| nav | Omit<React.ComponentProps<"nav">, "aria-label"> | Internal navigation `<nav>` container props |
+| title | `Omit<React.ComponentProps<"a">, "href" \| "onClick">` | Title `<a>` tag props |
+| nav | `Omit<React.ComponentProps<"nav">, "aria-label">` | Internal navigation `<nav>` container props |
 
 ## Notes
 
@@ -100,3 +101,40 @@ When using Anchor component for page navigation, ensure target elements have pro
 - Add `scroll-mt-30` (120px) to all anchor target elements
 - Ensure `main` container has `scroll-behavior: smooth` in CSS
 - The Anchor component handles smooth scrolling automatically
+
+### Root Margin
+
+The `rootMargin` prop controls when sections become active:
+
+```tsx
+<Anchor rootMargin="0px 0px -80% 0px">
+  {/* Sections become active when they're in the top 20% of the viewport */}
+</Anchor>
+```
+
+**Format:** `"top right bottom left"` (same as CSS margin)
+
+**Common values:**
+- `"0px 0px -80% 0px"` - Activate when section is in top 20% (default)
+- `"0px 0px -50% 0px"` - Activate when section is in top 50%
+- `"0px"` - Activate when section enters viewport
+
+### Root Element
+
+The `root` prop specifies the scroll container for IntersectionObserver:
+
+```tsx
+// Use custom scroll container
+const containerRef = useRef<HTMLElement>(null);
+<Anchor root={containerRef}>
+  {/* Monitors container instead of viewport */}
+</Anchor>
+
+// In iframe, automatically uses document.documentElement
+// to fix viewport offset bug
+<Anchor>
+  {/* Works correctly in iframe without manual root */}
+</Anchor>
+```
+
+**Important for iframes:** The component automatically detects if it's running in an iframe and uses `document.documentElement` as root to fix the IntersectionObserver viewport offset bug.

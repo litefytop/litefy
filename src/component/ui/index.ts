@@ -27,6 +27,7 @@ export * from "./dropdown-menu";
 export * from "./password";
 export * from "./theme";
 export * from "./accordion";
+export * from "./dialog";
 export * from "./icons";
 export * from "./anchor";
 export * from "./toast"

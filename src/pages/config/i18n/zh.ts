@@ -7,8 +7,10 @@ export const zh = {
   },
   home: {
     title: "Plain UI",
-    description: "Plain 是一套轻量化、高复用、低侵入的基础UI原子组件，主打简约无过多预设样式，保留原生布局特性，兼顾通用性与定制灵活性。",
-    subDescription: "无冗余样式嵌套、体积轻量，支持按需引入与样式覆写，适配移动端/中后台多场景，可快速结合Tailwind、自定义主题扩展，满足业务快速迭代与个性化视觉改造需求。",
+    description:
+      "Plain 是一套轻量化、高复用、低侵入的基础UI原子组件，主打简约无过多预设样式，保留原生布局特性，兼顾通用性与定制灵活性。",
+    subDescription:
+      "无冗余样式嵌套、体积轻量，支持按需引入与样式覆写，适配移动端/中后台多场景，可快速结合Tailwind、自定义主题扩展，满足业务快速迭代与个性化视觉改造需求。",
   },
   installation: "安装",
   examples: "示例",
@@ -27,6 +29,7 @@ export const zh = {
     accordion: "手风琴",
     anchor: "锚点",
     toast: "消息提示",
+    dialog: "对话框",
     input: "输入框",
     checkbox: "复选框",
     slider: "滑块",
@@ -65,7 +68,7 @@ export const zh = {
   },
 
   "dropdown-menu": {
-    title: "Dropdown Menu",
+    title: "下拉菜单",
     description: "下拉菜单组件，用于展示操作列表。",
     basic: {
       title: "基础",
@@ -105,35 +108,29 @@ export const zh = {
       },
       dropdownMenuProps: {
         children: "子组件",
-        className: "自定义类名",
       },
       triggerProps: {
         children: "触发器内容",
-        className: "自定义类名",
         disabled: "是否禁用",
         variant: "按钮样式变体",
       },
       contentProps: {
         children: "菜单内容",
-        className: "自定义类名",
         popover: "弹出模式",
         side: "弹出位置",
         align: "对齐方式",
       },
       itemProps: {
         children: "菜单项内容",
-        className: "自定义类名",
         onClick: "点击回调",
         disabled: "是否禁用",
       },
-      separatorProps: {
-        className: "自定义类名",
-      },
+      separatorProps: {},
     },
   },
 
   accordion: {
-    title: "Accordion",
+    title: "手风琴",
     description: "手风琴组件，用于展示可折叠的内容区域。",
     basic: {
       title: "基础",
@@ -158,19 +155,16 @@ export const zh = {
         openKeys: "当前展开的 keys（受控模式）",
         onOpenChange: "展开状态变化回调",
         allowMultiple: "是否允许同时展开多项",
-        className: "自定义类名",
         itemProps: "内部封装属性透传配置",
       },
       itemProps: {
         value: "唯一标识符（必填）",
-        title: "标题内容（必填）",
-        children: "展开后的内容",
-        className: "自定义类名",
+        label: "标题内容（必填）",
         itemProps: "内部封装属性透传配置",
       },
       itemPropsConfig: {
         trigger: "触发器按钮属性",
-        title: "标题元素属性",
+        label: "标题元素属性",
         content: "内容区域属性",
       },
       headers: {
@@ -191,15 +185,14 @@ export const zh = {
   anchor: {
     title: "锚点",
     description: "页面锚点导航组件。",
-    basic: {
-      title: "基础",
-    },
-    withSections: {
-      title: "分组",
+    examples: {
+      description:
+        "默认监听根元素，由于示例使用 iframe 容器，因此需要手动指定 root 属性。",
     },
     scrollBehavior: {
       title: "滚动行为",
-      description: "锚点组件使用 CSS scroll-margin-top 实现正确的滚动定位。使用锚点导航时，需要给目标元素添加 scroll-margin-top 样式：",
+      description:
+        "锚点组件使用 CSS scroll-margin-top 实现正确的滚动定位。使用锚点导航时，需要给目标元素添加 scroll-margin-top 样式：",
       note: "根据 Header 高度调整该值，确保点击锚点链接时目标内容不会被 Header 遮挡。",
     },
     anatomy: {
@@ -223,31 +216,28 @@ export const zh = {
         itemPropsConfig: "itemProps 配置",
       },
       props: {
-        className: "自定义类名",
-        children: "子组件",
+        rootMargin: "IntersectionObserver 的根边距（上 右 下 左）",
+        root: "IntersectionObserver 的根元素。在 iframe 中默认为 document.documentElement 以修复视口偏移 bug",
       },
       sectionProps: {
         href: "锚点目标 ID（带 # 前缀，可选）",
-        title: "章节标题",
-        children: "子锚点项",
-        className: "自定义类名",
+        linkText: "链接文本",
         itemProps: "内部封装属性透传",
       },
       itemProps: {
         href: "锚点目标 ID（带 # 前缀）",
         children: "链接文本",
-        className: "自定义类名",
         onClick: "点击回调",
       },
       itemPropsConfig: {
-        title: "标题 `<a>` 标签属性",
+        link: "链接 `<a>` 标签属性",
         nav: "内部导航 `<nav>` 容器属性",
       },
     },
   },
 
   button: {
-    title: "Button",
+    title: "按钮",
     description: "按钮组件，用于触发操作。",
     variants: {
       title: "样式",
@@ -286,34 +276,30 @@ export const zh = {
     },
     api: {
       headers: {
-        prop: "Prop",
-        type: "Type",
-        default: "Default",
+        prop: "属性",
+        type: "类型",
+        default: "默认值",
         description: "描述",
         property: "属性",
       },
       sectionTitles: {
         buttonProps: "Button Props",
-        itemPropsConfig: "itemProps 配置",
+        loadingConfig: "ButtonLoadingConfig",
       },
       props: {
         variant: "按钮样式变体",
-        size: "按钮尺寸",
-        disabled: "是否禁用",
-        loading: "是否显示加载状态",
-        children: "按钮内容",
-        className: "自定义类名",
-        itemProps: "内部封装属性透传",
+        loading: "加载状态配置",
+
       },
-      itemPropsConfig: {
+      loadingConfig: {
         icon: "图标元素属性",
-        spinner: "加载指示器元素属性",
+        loading: "加载状态",
       },
     },
   },
 
   toast: {
-    title: "Toast",
+    title: "消息提示",
     description: "轻量级消息提示组件。",
     types: {
       title: "类型",
@@ -350,7 +336,7 @@ export const zh = {
   },
 
   checkbox: {
-    title: "Checkbox",
+    title: "复选框",
     description: "复选框组件，用于多选。",
     basic: {
       title: "基础",
@@ -361,15 +347,10 @@ export const zh = {
     disabled: {
       title: "禁用",
     },
-    direction: {
-      title: "方向",
-      horizontal: "水平",
-      vertical: "垂直",
-    },
+
     variants: {
-      title: "样式",
-      default: "默认",
-      squared: "方形",
+      title: "变体",
+      description: "Checkbox 与 Toggle 逻辑高度一致，可通过 variants 属性灵活切换：使用 text 变体时为 Checkbox，使用其他变体时则为 Toggle。"
     },
     anatomy: {
       group: "组",
@@ -390,8 +371,6 @@ export const zh = {
         itemPropsConfig: "itemProps 配置",
       },
       groupProps: {
-        className: "自定义类名",
-        children: "子组件",
         value: "选中的值（受控模式）",
         defaultValue: "初始选中的值（非受控模式）",
         onValueChange: "值变化回调",
@@ -404,9 +383,7 @@ export const zh = {
         onCheckedChange: "选中状态变化回调",
         disabled: "是否禁用",
         variant: "样式变体",
-        className: "自定义类名",
         indicator: "指示器配置",
-        children: "复选框文本",
         itemProps: "内部封装属性透传",
       },
       itemPropsConfig: {
@@ -417,7 +394,7 @@ export const zh = {
   },
 
   description: {
-    title: "Description",
+    title: "描述",
     description: "描述组件，用于展示文本描述。",
     basic: {
       title: "基础",
@@ -440,14 +417,13 @@ export const zh = {
       },
       props: {
         as: "渲染的 HTML 标签",
-        className: "自定义类名",
         children: "子组件",
       },
     },
   },
 
   input: {
-    title: "Input",
+    title: "输入框",
     description: "输入框组件，用于收集用户输入。",
     basic: {
       title: "基础",
@@ -492,7 +468,6 @@ export const zh = {
         description: "描述文本",
         leading: "前导内容",
         trailing: "尾随内容",
-        className: "自定义类名",
         itemProps: "内部封装属性透传",
       },
       itemPropsConfig: {
@@ -507,7 +482,7 @@ export const zh = {
   },
 
   password: {
-    title: "Password",
+    title: "密码",
     description: "密码输入框组件。",
     basic: {
       title: "基础",
@@ -535,7 +510,6 @@ export const zh = {
         onChange: "值变化回调",
         placeholder: "占位符",
         disabled: "是否禁用",
-        className: "自定义类名",
         itemProps: "内部封装属性透传",
       },
       itemPropsConfig: {
@@ -547,7 +521,7 @@ export const zh = {
   },
 
   radio: {
-    title: "Radio",
+    title: "单选框",
     description: "单选框组件，用于单选。",
     basic: {
       title: "基础",
@@ -592,18 +566,54 @@ export const zh = {
         onChange: "值变化回调",
         disabled: "是否禁用",
         direction: "排列方向",
-        className: "自定义类名",
       },
       radioProps: {
         value: "选项值",
         disabled: "是否禁用",
-        className: "自定义类名",
         indicator: "指示器配置",
       },
       itemPropsConfig: {
         group: "组容器 `<div>` 属性",
         radio: "单选框 `<label>` 属性",
         indicator: "指示器 `<span>` 属性",
+      },
+    },
+  },
+
+  dialog: {
+    title: "对话框",
+    description: "对话框组件，用于展示模态内容。",
+    basic: {
+      title: "基础",
+    },
+    withTrigger: {
+      title: "自定义触发器",
+    },
+    withClose: {
+      title: "关闭按钮",
+    },
+    anatomy: {
+      dialog: "对话框",
+      content: "内容区",
+      close: "关闭按钮",
+    },
+    api: {
+      headers: {
+        prop: "Prop",
+        type: "Type",
+        default: "Default",
+        description: "描述",
+        property: "属性",
+      },
+      sectionTitles: {
+        dialogProps: "Dialog Props",
+        contentProps: "Dialog.Content Props",
+        triggerProps: "Dialog.Trigger Props",
+        closeProps: "Dialog.Close Props",
+      },
+      props: {
+        children: "子组件",
+        showCloseButton: "是否显示关闭按钮",
       },
     },
   },

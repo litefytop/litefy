@@ -92,7 +92,7 @@ function AnatomyItem({ id, name, label }: { id?: string; name?: string; label: s
     <button
       onClick={() => setActivePart(isActive ? null : partKey!, partType)}
       className={cn(
-        "w-full text-left px-3 py-2 text-sm rounded-md border transition-colors",
+        "w-full text-left px-3 py-2 text-sm rounded-md border ",
         isActive
           ? "bg-primary text-primary-foreground border-primary"
           : "hover:bg-muted border-border"

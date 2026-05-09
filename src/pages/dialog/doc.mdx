@@ -1,0 +1,62 @@
+## Installation
+
+```tsx
+import { Dialog } from "@/component/ui/dialog";
+```
+
+## Usage
+
+### Basic Dialog
+
+```tsx
+<Dialog>
+  <Dialog.Trigger>Open Dialog</Dialog.Trigger>
+  <Dialog.Content>
+    <h2>Dialog Title</h2>
+    <p>Dialog content goes here</p>
+  </Dialog.Content>
+</Dialog>
+```
+
+### With Custom Close Button
+
+```tsx
+<Dialog>
+  <Dialog.Trigger>Open</Dialog.Trigger>
+  <Dialog.Content>
+    <h2>Title</h2>
+    <p>Content</p>
+    <Dialog.Close>Close</Dialog.Close>
+  </Dialog.Content>
+</Dialog>
+```
+
+## API Reference
+
+### Dialog Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| children | React.ReactNode | - | Child components |
+
+### Dialog.Content Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| className | string | - | Custom class name |
+| children | React.ReactNode | - | Dialog content |
+| showCloseButton | boolean | true | Show close button in top-right corner |
+
+### Dialog.Trigger Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| className | string | - | Custom class name |
+| children | React.ReactNode | - | Trigger button content |
+
+### Dialog.Close Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| className | string | - | Custom class name |
+| children | React.ReactNode | - | Close button content |

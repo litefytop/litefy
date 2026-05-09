@@ -185,7 +185,7 @@ export default function ToastPage({ locale = "zh" }: { locale?: string }) {
             {lang.docs}
             <button
               onClick={handleCopy}
-              className="p-1.5 rounded-md hover:bg-muted transition-colors"
+              className="p-1.5 rounded-md hover:bg-muted "
               aria-label={lang.common.copy}
             >
               {copied ? (
@@ -207,8 +207,8 @@ export default function ToastPage({ locale = "zh" }: { locale?: string }) {
 
       <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-[calc(100vh-3.5rem)] overflow-y-auto p-4">
         <Anchor>
-          <Anchor.Section href="#installation" title={lang.installation} />
-          <Anchor.Section href="#examples" title={lang.examples}>
+          <Anchor.Section href="#installation" linkText={lang.installation} />
+          <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#types">{l.types.title}</Anchor.Item>
             <Anchor.Item href="#description">{l.descriptionText.title}</Anchor.Item>
             <Anchor.Item href="#duration">{l.duration.title}</Anchor.Item>
@@ -218,7 +218,7 @@ export default function ToastPage({ locale = "zh" }: { locale?: string }) {
             <Anchor.Item href="#dismiss">{l.dismiss.title}</Anchor.Item>
             <Anchor.Item href="#callbacks">{l.callbacks.title}</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#docs" title={lang.docs} />
+          <Anchor.Section href="#docs" linkText={lang.docs} />
         </Anchor>
       </aside>
     </div>

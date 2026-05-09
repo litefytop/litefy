@@ -87,12 +87,7 @@ export default function DropdownMenuPage({
           default: "-",
           description: l.api.dropdownMenuProps.children,
         },
-        {
-          props: "className",
-          type: "ClassNameValue",
-          default: "-",
-          description: l.api.dropdownMenuProps.className,
-        },
+
       ],
     },
     {
@@ -110,12 +105,7 @@ export default function DropdownMenuPage({
           default: "-",
           description: l.api.triggerProps.children,
         },
-        {
-          props: "className",
-          type: "ClassNameValue",
-          default: "-",
-          description: l.api.triggerProps.className,
-        },
+
         {
           props: "disabled",
           type: "boolean",
@@ -145,12 +135,7 @@ export default function DropdownMenuPage({
           default: "-",
           description: l.api.contentProps.children,
         },
-        {
-          props: "className",
-          type: "ClassNameValue",
-          default: "-",
-          description: l.api.contentProps.className,
-        },
+   
         {
           props: "popover",
           type: '"auto" | "manual"',
@@ -186,12 +171,7 @@ export default function DropdownMenuPage({
           default: "-",
           description: l.api.itemProps.children,
         },
-        {
-          props: "className",
-          type: "ClassNameValue",
-          default: "-",
-          description: l.api.itemProps.className,
-        },
+
         {
           props: "onClick",
           type: "() => void",
@@ -215,12 +195,7 @@ export default function DropdownMenuPage({
         { key: "description", header: l.api.headers.description },
       ],
       data: [
-        {
-          props: "className",
-          type: "ClassNameValue",
-          default: "-",
-          description: l.api.separatorProps.className,
-        },
+
       ],
     },
   ];
@@ -338,8 +313,8 @@ export default function DropdownMenuPage({
 
       <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-[calc(100vh-3.5rem)] overflow-y-auto p-4">
         <Anchor>
-          <Anchor.Section href="#installation" title={lang.installation} />
-          <Anchor.Section href="#examples" title={lang.examples}>
+          <Anchor.Section href="#installation" linkText={lang.installation} />
+          <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">
               {l.basic.title}
             </Anchor.Item>
@@ -350,8 +325,8 @@ export default function DropdownMenuPage({
               {l.side.title}
             </Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#anatomy" title={lang.anatomy} />
-          <Anchor.Section href="#docs" title={lang.docs} />
+          <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
+          <Anchor.Section href="#docs" linkText={lang.docs} />
         </Anchor>
       </aside>
     </div>

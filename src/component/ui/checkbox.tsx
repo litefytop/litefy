@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 
 import { cn, ClassNameValue } from "@/lib";
 
-import { CheckIcon, SquareIcon } from "./icons";
+import { CheckIcon } from "./icons";
 import { Dispatch, SetStateAction } from "react";
 import {
   createContext,
@@ -14,19 +14,11 @@ import {
   useId,
 } from "react";
 
-const checkboxDirectionClass = {
-  horizontal: "flex-wrap",
-  vertical: "flex-col",
-};
-
 const checkboxClass = {
-    primary:
-      "data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground",
-    secondary:
-      "data-[state=checked]:bg-secondary data-[state=checked]:text-secondary-foreground",
-    outlined: "data-[state=checked]:outline data-[state=checked]:outline-primary",
-    text: "data-[state=checked]:text-primary",
-  }
+  toggle:
+    "data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground border-y border-r first:border-l",
+  checkbox: "data-[state=checked]:text-foreground/80",
+};
 
 export type CheckboxContextProps = {
   checkedMap: Map<string, boolean>;
@@ -60,7 +52,6 @@ export type CheckboxGroupProps<T extends string> = {
   onValueChange?: (
     value: T[],
   ) => (void | Promise<void>) | Dispatch<SetStateAction<T>>;
-  direction?: "horizontal" | "vertical";
   disabled?: boolean;
   className?: ClassNameValue;
   children?: ReactNode;
@@ -74,7 +65,6 @@ function CheckboxGroup<T extends string>({
   invalid,
   className,
   disabled,
-  direction = "horizontal",
   ...props
 }: CheckboxGroupProps<T>) {
   const groupRef = useRef<HTMLDivElement>(null);
@@ -176,8 +166,7 @@ function CheckboxGroup<T extends string>({
         inert={props.inert || disabled}
         onKeyDown={handleKeyDown}
         className={cn(
-          "w-full flex inert:pointer-events-none inert:opacity-50",
-          checkboxDirectionClass[direction],
+          "flex inert:pointer-events-none inert:opacity-50",
           className,
         )}
       >
@@ -220,14 +209,14 @@ export const Checkbox = ({
   onCheckedChange,
   id: propsId,
   disabled: controlledDisable,
-  variant = "text",
+  variant = "checkbox",
   className,
   indicator,
   ...props
 }: CheckboxProps) => {
   const resolvedIndicator = {
     checked: <CheckIcon />,
-    unchecked: <SquareIcon />,
+    unchecked: null,
     hidden: false,
     ...indicator,
   };
@@ -272,7 +261,7 @@ export const Checkbox = ({
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       className={cn(
-        "inline-flex items-center justify-center gap-2 shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 px-3 cursor-pointer",
+        "inline-flex items-center justify-center gap-2 shrink-0  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-8 min-w-8 px-2 cursor-pointer",
         checkboxClass[variant],
         className,
       )}
@@ -280,7 +269,10 @@ export const Checkbox = ({
       {!resolvedIndicator.hidden && (
         <span
           {...resolvedIndicator.props}
-          className={cn("data-[state=checked]:[&_svg]:fill-inherit data-[state=checked]:fill-primary data-[state=checked]:text-primary-foreground", resolvedIndicator.className)}
+          className={cn(
+            " data-[state=checked]:bg-primary data-[state=checked]:border-primary-foreground data-[state=checked]:text-primary-foreground flex items-center justify-center size-4 rounded-md border border-foreground",
+            resolvedIndicator.className,
+          )}
           data-state={isChecked ? "checked" : "unchecked"}
         >
           {isChecked ? resolvedIndicator.checked : resolvedIndicator.unchecked}

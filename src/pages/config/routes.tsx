@@ -6,6 +6,7 @@ import {
   Button,
   Accordion,
   Anchor,
+  AnchorDemo,
   Checkbox,
   Description,
   Input,
@@ -13,6 +14,7 @@ import {
   Radio,
   DropdownMenu,
   Toast,
+  Dialog,
   App,
 } from "@/pages";
 import { ComingSoon } from "@/component";
@@ -24,6 +26,7 @@ const componentRouteConfig = [
   { key: "accordion", path: "/components/accordion", Component: Accordion },
   { key: "anchor", path: "/components/anchor", Component: Anchor },
   { key: "toast", path: "/components/toast", Component: Toast },
+  { key: "dialog", path: "/components/dialog", Component: Dialog },
   { key: "input", path: "/components/input", Component: Input },
   { key: "checkbox", path: "/components/checkbox", Component: Checkbox },
   { key: "radio", path: "/components/radio", Component: Radio },
@@ -133,6 +136,10 @@ export function createRouter() {
         })),
       ],
     })),
+    {
+      path: "/components/anchor/demo",
+      element: <AnchorDemo />,
+    }
   ]);
 }
 

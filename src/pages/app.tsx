@@ -84,7 +84,7 @@ function SidebarContent({ locale }: { locale: string }) {
                 to={`/${locale}${item.href}`}
                 end={item.href === "/"}
                 className={({ isActive }) =>
-                  `block px-3 py-2 rounded-md text-sm transition-colors ${
+                  `block px-3 py-2 rounded-md text-sm  ${
                     isActive
                       ? "bg-accent text-accent-foreground"
                       : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"

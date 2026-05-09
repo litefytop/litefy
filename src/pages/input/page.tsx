@@ -136,12 +136,7 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
           default: "-",
           description: l.api.props.trailing,
         },
-        {
-          props: "className",
-          type: "ClassNameValue",
-          default: "-",
-          description: l.api.props.className,
-        },
+
         {
           props: "itemProps",
           type: "InputItemProps",
@@ -310,15 +305,15 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
 
       <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-[calc(100vh-3.5rem)] overflow-y-auto p-4">
         <Anchor>
-          <Anchor.Section href="#installation" title={lang.installation} />
-          <Anchor.Section href="#examples" title={lang.examples}>
+          <Anchor.Section href="#installation" linkText={lang.installation} />
+          <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
             <Anchor.Item href="#prefix-suffix">{l.prefixSuffix.title}</Anchor.Item>
             <Anchor.Item href="#error">{l.error.title}</Anchor.Item>
             <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#anatomy" title={lang.anatomy} />
-          <Anchor.Section href="#docs" title={lang.docs}/>
+          <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
+          <Anchor.Section href="#docs" linkText={lang.docs}/>
      
         </Anchor>
       </aside>

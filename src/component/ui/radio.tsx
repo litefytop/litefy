@@ -20,7 +20,7 @@ const radioDirectionClass = {
 };
 
 const radioClass = {
-  base: "inline-flex items-center justify-center gap-2 shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 px-3 cursor-pointer",
+  base: "inline-flex items-center justify-center gap-2 shrink-0  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 px-3 cursor-pointer",
   variant: {
     primary:
       "data-[state=on]:bg-primary data-[state=on]:text-primary-foreground",

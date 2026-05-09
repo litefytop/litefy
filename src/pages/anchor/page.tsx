@@ -17,47 +17,28 @@ import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages";
 import { getComponentNav } from "@/pages/config/routes";
 
-import { AnchorBasic, AnchorWithSections } from "./examples";
-
 import AnchorBasicRaw from "./examples/anchor-basic.tsx?raw";
-import AnchorWithSectionsRaw from "./examples/anchor-with-sections.tsx?raw";
 import anchorDoc from "./doc.mdx?raw";
 import anchorSrc from "@/component/ui/anchor.tsx?raw";
-
-function DemoSection({
-  id,
-  title,
-  children,
-  code,
-}: {
-  id: string;
-  title: string;
-  children: React.ReactNode;
-  code: string;
-}) {
-  return (
-    <section
-      id={id}
-      data-anchor-id={id}
-      className="space-y-4 py-4"
-    >
-      <div>
-        <Title as="h3">{title}</Title>
-      </div>
-      <div className="border rounded-lg p-6 w-full overflow-x-auto">
-        {children}
-      </div>
-      <ShikiCodeBlock>{code}</ShikiCodeBlock>
-    </section>
-  );
-}
+import { useTheme } from "@/component";
 
 export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = React.useState(false);
+  const { colorScheme } = useTheme();
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
   const l = lang.anchor;
   const nav = getComponentNav("/components/anchor", locale as "zh" | "en");
+  const iframeRef = React.useRef<HTMLIFrameElement>(null);
+
+  React.useEffect(() => {
+    if (iframeRef.current?.contentWindow) {
+      iframeRef.current.contentWindow.postMessage(
+        { type: "theme-change", colorScheme },
+        window.location.origin
+      );
+    }
+  }, [colorScheme]);
 
   const anchorSections = [
     {
@@ -69,17 +50,18 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
         { key: "description", header: l.api.headers.description },
       ],
       data: [
+
         {
-          props: "className",
-          type: "ClassNameValue",
-          default: "-",
-          description: l.api.props.className,
+          props: "rootMargin",
+          type: "string",
+          default: '"0px 0px -80% 0px"',
+          description: l.api.props.rootMargin,
         },
         {
-          props: "children",
-          type: "ReactNode",
-          default: "-",
-          description: l.api.props.children,
+          props: "root",
+          type: "Element | Document | null | RefObject<Element | Document | null>",
+          default: "null",
+          description: l.api.props.root,
         },
       ],
     },
@@ -99,23 +81,13 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.sectionProps.href,
         },
         {
-          props: "title",
+          props: "linkText",
           type: "string",
           default: "-",
-          description: l.api.sectionProps.title,
+          description: l.api.sectionProps.linkText,
         },
-        {
-          props: "children",
-          type: "ReactNode",
-          default: "-",
-          description: l.api.sectionProps.children,
-        },
-        {
-          props: "className",
-          type: "ClassNameValue",
-          default: "-",
-          description: l.api.sectionProps.className,
-        },
+
+
         {
           props: "itemProps",
           type: "object",
@@ -145,12 +117,7 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
           default: "-",
           description: l.api.itemProps.children,
         },
-        {
-          props: "className",
-          type: "ClassNameValue",
-          default: "-",
-          description: l.api.itemProps.className,
-        },
+
         {
           props: "onClick",
           type: "() => void",
@@ -168,10 +135,10 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
       ],
       data: [
         {
-          props: "title",
+          props: "linkText",
           type: 'Omit<React.ComponentProps<"a">, "href" | "onClick">',
           default: "-",
-          description: l.api.itemPropsConfig.title,
+          description: l.api.itemPropsConfig.link,
         },
         {
           props: "nav",
@@ -234,40 +201,36 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
         <section id="scroll-behavior" className="mb-8">
           <Title as="h2">{l.scrollBehavior.title}</Title>
           <div className="space-y-4 text-sm">
-            <p>
-              {l.scrollBehavior.description}
-            </p>
+            <p>{l.scrollBehavior.description}</p>
             <ShikiCodeBlock>{`<section id="installation" className="scroll-mt-[80px]">
   {/* Adjust the value based on your header height */}
 </section>`}</ShikiCodeBlock>
-            <p className="text-muted-foreground">
-              {l.scrollBehavior.note}
-            </p>
+            <p className="text-muted-foreground">{l.scrollBehavior.note}</p>
           </div>
         </section>
-
-        <section id="examples" className="">
-          <Title as="h2">{lang.examples}</Title>
-
-          <DemoSection
-            id="basic"
-            title={l.basic.title}
-            code={AnchorBasicRaw}
-          >
-            <AnchorBasic />
-          </DemoSection>
-
-          <DemoSection
-            id="sections"
-            title={l.withSections.title}
-            code={AnchorWithSectionsRaw}
-          >
-            <AnchorWithSections />
-          </DemoSection>
+        <section
+          id="examples"
+          data-anchor-id="examples"
+          className="space-y-4 py-4"
+        >
+          <div>
+            <Title as="h2">{lang.examples}</Title>
+          </div>
+          <div className="border rounded-lg p-6 w-full overflow-x-auto">
+            <iframe
+              ref={iframeRef}
+              src="/components/anchor/demo"
+              title="Anchor 锚点演示"
+              className="w-full border border-gray-200 rounded-lg overflow-hidden h-[400px]"
+            />
+          </div>
+          <ShikiCodeBlock>{AnchorBasicRaw}</ShikiCodeBlock>
+          <Description>{l.examples.description}</Description>
         </section>
 
         <section id="anatomy" className="mt-8 space-y-4">
           <Title as="h2">{lang.anatomy}</Title>
+
           <Anatomy
             parts={[
               { id: "anatomy-anchor", label: l.anatomy.anchor },
@@ -277,13 +240,11 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
             ]}
           >
             <Anchor className="max-w-xs" id="anatomy-anchor">
-              <Anchor.Section href="#anatomy-section" title="Section 1">
+              <Anchor.Section href="#anatomy-section" linkText="Section 1">
                 <Anchor.Item href="#section1">
                   <span id="anatomy-link">Section 1.1</span>
                 </Anchor.Item>
-                <Anchor.Item href="#section2">
-                  Section 1.2
-                </Anchor.Item>
+                <Anchor.Item href="#section2">Section 1.2</Anchor.Item>
               </Anchor.Section>
             </Anchor>
           </Anatomy>
@@ -298,16 +259,16 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
       </div>
 
       <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-[calc(100vh-3.5rem)] overflow-y-auto p-4">
-          <Anchor>
-            <Anchor.Section href="#installation" title={lang.installation} />
-            <Anchor.Section href="#scroll-behavior" title={l.scrollBehavior.title} />
-            <Anchor.Section href="#examples" title={lang.examples}>
-              <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
-              <Anchor.Item href="#sections">{l.withSections.title}</Anchor.Item>
-            </Anchor.Section>
-            <Anchor.Section href="#anatomy" title={lang.anatomy} />
-            <Anchor.Section href="#docs" title={lang.docs}/>
-          </Anchor>
+        <Anchor>
+          <Anchor.Section href="#installation" linkText={lang.installation} />
+          <Anchor.Section
+            href="#scroll-behavior"
+            linkText={l.scrollBehavior.title}
+          />
+          <Anchor.Section href="#examples" linkText={lang.examples} />
+          <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
+          <Anchor.Section href="#docs" linkText={lang.docs} />
+        </Anchor>
       </aside>
     </div>
   );
