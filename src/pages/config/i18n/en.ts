@@ -4,6 +4,7 @@ export const en = {
     copied: "Copied",
     copySuccess: "Document copied to clipboard",
     copyDocs: "Copy docs",
+    className: "Supports string | string[] | boolean | null | undefined | Record<string,string | string[]>",
   },
   home: {
     title: "Plain UI",
@@ -92,13 +93,7 @@ export const en = {
       separator: "Separator",
     },
     api: {
-      headers: {
-        prop: "Prop",
-        type: "Type",
-        default: "Default",
-        description: "Description",
-        property: "Property",
-      },
+
       sectionTitles: {
         dropdownMenuProps: "DropdownMenu Props",
         dropdownMenuTriggerProps: "DropdownMenuTrigger Props",
@@ -170,13 +165,7 @@ export const en = {
         label: "Label element props",
         content: "Content area props",
       },
-      headers: {
-        prop: "Prop",
-        type: "Type",
-        default: "Default",
-        description: "Description",
-        property: "Property",
-      },
+
       sectionTitles: {
         accordionProps: "Accordion Props",
         accordionItemProps: "Accordion.Item Props",
@@ -202,16 +191,10 @@ export const en = {
       anchor: "Anchor",
       section: "Section",
       item: "Item",
-      link: "Link",
+      link: "Link Text",
     },
     api: {
-      headers: {
-        prop: "Prop",
-        type: "Type",
-        default: "Default",
-        description: "Description",
-        property: "Property",
-      },
+
       sectionTitles: {
         anchorProps: "Anchor Props",
         anchorSectionProps: "Anchor.Section Props",
@@ -220,7 +203,7 @@ export const en = {
       },
       props: {
         rootMargin: "Root margin for IntersectionObserver (top right bottom left)",
-        root: "Root element for IntersectionObserver. In iframe, defaults to document.documentElement to fix viewport offset bug",
+        root: "Root element for IntersectionObserver. In iframe, defaults to document.documentElement to fix viewport offset issue",
       },
       sectionProps: {
         href: "Anchor target ID (with # prefix, optional)",
@@ -229,9 +212,6 @@ export const en = {
       },
       itemProps: {
         href: "Anchor target ID (with # prefix)",
-        children: "Link text",
-
-        onClick: "Click callback",
       },
       itemPropsConfig: {
         link: "Link `<a>` tag props",
@@ -279,13 +259,7 @@ export const en = {
       spinner: "Spinner",
     },
     api: {
-      headers: {
-        prop: "Prop",
-        type: "Type",
-        default: "Default",
-        description: "Description",
-        property: "Property",
-      },
+
       sectionTitles: {
         buttonProps: "Button Props",
         loadingConfig: "Loading state Config",
@@ -361,13 +335,7 @@ export const en = {
       indicator: "Indicator",
     },
     api: {
-      headers: {
-        prop: "Prop",
-        type: "Type",
-        default: "Default",
-        description: "Description",
-        property: "Property",
-      },
+
       sectionTitles: {
         checkboxGroupProps: "Checkbox.Group Props",
         checkboxProps: "Checkbox Props",
@@ -378,15 +346,16 @@ export const en = {
         defaultValue: "Initial selected values (uncontrolled mode)",
         onValueChange: "Value change callback",
         disabled: "Whether to disable entire group",
+        invalid: "Mark group as invalid",
+        name: "Form field name",
       },
       props: {
         value: "Checkbox value (required)",
-        checked: "Whether checked (controlled mode)",
-        defaultChecked: "Initially checked (uncontrolled mode)",
         onCheckedChange: "Checked state change callback",
         disabled: "Whether disabled",
         variant: "Style variant",
         indicator: "Indicator config",
+        toggle: "Toggle mode",
         itemProps: "Internal wrapped props pass-through",
       },
       itemPropsConfig: {
@@ -408,13 +377,7 @@ export const en = {
       content: "Content",
     },
     api: {
-      headers: {
-        prop: "Prop",
-        type: "Type",
-        default: "Default",
-        description: "Description",
-        property: "Property",
-      },
+
       sectionTitles: {
         descriptionProps: "Description Props",
       },
@@ -449,13 +412,7 @@ export const en = {
       description: "Description",
     },
     api: {
-      headers: {
-        prop: "Prop",
-        type: "Type",
-        default: "Default",
-        description: "Description",
-        property: "Property",
-      },
+
       sectionTitles: {
         inputProps: "Input Props",
         itemPropsConfig: "itemProps Config",
@@ -496,13 +453,7 @@ export const en = {
       toggle: "Toggle Button",
     },
     api: {
-      headers: {
-        prop: "Prop",
-        type: "Type",
-        default: "Default",
-        description: "Description",
-        property: "Property",
-      },
+
       sectionTitles: {
         passwordProps: "Password Props",
         itemPropsConfig: "itemProps Config",
@@ -551,13 +502,7 @@ export const en = {
       indicator: "Indicator",
     },
     api: {
-      headers: {
-        prop: "Prop",
-        type: "Type",
-        default: "Default",
-        description: "Description",
-        property: "Property",
-      },
+
       sectionTitles: {
         radioGroupProps: "RadioGroup Props",
         radioProps: "Radio Props",
@@ -601,13 +546,7 @@ export const en = {
       close: "Close Button",
     },
     api: {
-      headers: {
-        prop: "Prop",
-        type: "Type",
-        default: "Default",
-        description: "Description",
-        property: "Property",
-      },
+
       sectionTitles: {
         dialogProps: "Dialog Props",
         contentProps: "Dialog.Content Props",

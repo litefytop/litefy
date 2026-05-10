@@ -69,26 +69,19 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
   const checkboxSections = [
     {
       title: l.api.sectionTitles.checkboxGroupProps,
-      columns: [
-        { key: "prop", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
-
-
-        {
-          props: "value",
-          type: "string[]",
-          default: "-",
-          description: l.api.groupProps.value,
-        },
         {
           props: "defaultValue",
           type: "string[]",
           default: "-",
           description: l.api.groupProps.defaultValue,
+        },
+        {
+          props: "value",
+          type: "string[]",
+          default: "-",
+          description: l.api.groupProps.value,
         },
         {
           props: "onValueChange",
@@ -102,34 +95,29 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
           default: "false",
           description: l.api.groupProps.disabled,
         },
+        {
+          props: "invalid",
+          type: "boolean",
+          default: "-",
+          description: l.api.groupProps.invalid,
+        },
+        {
+          props: "name",
+          type: "string",
+          default: "-",
+          description: l.api.groupProps.name,
+        },
       ],
     },
     {
       title: l.api.sectionTitles.checkboxProps,
-      columns: [
-        { key: "prop", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
         {
           props: "value",
           type: "string",
           default: "-",
           description: l.api.props.value,
-        },
-        {
-          props: "checked",
-          type: "boolean",
-          default: "-",
-          description: l.api.props.checked,
-        },
-        {
-          props: "defaultChecked",
-          type: "boolean",
-          default: "-",
-          description: l.api.props.defaultChecked,
         },
         {
           props: "onCheckedChange",
@@ -145,18 +133,22 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
         },
         {
           props: "variant",
-          type: '"default" | "squared"',
-          default: '"default"',
+          type: "'checkbox' | 'toggle'",
+          default: "checkbox",
           description: l.api.props.variant,
         },
-  
         {
           props: "indicator",
           type: "object",
           default: "-",
           description: l.api.props.indicator,
         },
-
+        {
+          props: "toggle",
+          type: "boolean",
+          default: "-",
+          description: l.api.props.toggle,
+        },
         {
           props: "itemProps",
           type: "object",
@@ -167,11 +159,7 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
     },
     {
       title: l.api.sectionTitles.itemPropsConfig,
-      columns: [
-        { key: "property", header: l.api.headers.property },
-        { key: "type", header: l.api.headers.type },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
         {
           props: "indicator",

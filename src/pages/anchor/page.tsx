@@ -43,14 +43,14 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
   const anchorSections = [
     {
       title: l.api.sectionTitles.anchorProps,
-      columns: [
-        { key: "prop", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
-      data: [
 
+      data: [
+        {
+          props: "className",
+          type: "ClassNameValue",
+          default: "-",
+          description: lang.common.className,
+        },
         {
           props: "rootMargin",
           type: "string",
@@ -67,12 +67,7 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
     },
     {
       title: l.api.sectionTitles.anchorSectionProps,
-      columns: [
-        { key: "prop", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
         {
           props: "href",
@@ -86,8 +81,6 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
           default: "-",
           description: l.api.sectionProps.linkText,
         },
-
-
         {
           props: "itemProps",
           type: "object",
@@ -98,12 +91,7 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
     },
     {
       title: l.api.sectionTitles.anchorItemProps,
-      columns: [
-        { key: "prop", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
         {
           props: "href",
@@ -112,30 +100,19 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.itemProps.href,
         },
         {
-          props: "children",
-          type: "ReactNode",
+          props: "className",
+          type: "ClassNameValue",
           default: "-",
-          description: l.api.itemProps.children,
-        },
-
-        {
-          props: "onClick",
-          type: "() => void",
-          default: "-",
-          description: l.api.itemProps.onClick,
+          description: lang.common.className,
         },
       ],
     },
     {
       title: l.api.sectionTitles.itemPropsConfig,
-      columns: [
-        { key: "property", header: l.api.headers.property },
-        { key: "type", header: l.api.headers.type },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
         {
-          props: "linkText",
+          props: "link",
           type: 'Omit<React.ComponentProps<"a">, "href" | "onClick">',
           default: "-",
           description: l.api.itemPropsConfig.link,
@@ -240,11 +217,11 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
             ]}
           >
             <Anchor className="max-w-xs" id="anatomy-anchor">
-              <Anchor.Section href="#anatomy-section" linkText="Section 1">
-                <Anchor.Item href="#section1">
-                  <span id="anatomy-link">Section 1.1</span>
+              <Anchor.Section linkText="section" id="anatomy-section" className="m-1 p-1">
+                <Anchor.Item href="#section1" id="anatomy-item">
+                  <span id="anatomy-link">section 1.1</span>
                 </Anchor.Item>
-                <Anchor.Item href="#section2">Section 1.2</Anchor.Item>
+                <Anchor.Item href="#section2">section 1.2</Anchor.Item>
               </Anchor.Section>
             </Anchor>
           </Anatomy>

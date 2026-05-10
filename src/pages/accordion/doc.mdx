@@ -99,22 +99,22 @@ Customize container styling through `className`, and customize internal wrapped 
 
 ### Accordion Props
 
-| Prop            | Type                     | Default | Description                                              |
-| --------------- | ------------------------ | ------- | -------------------------------------------------------- |
-| defaultOpenKeys | string[]                 | []      | Initially expanded keys (uncontrolled)                   |
-| openKeys        | string[]                 | -       | Currently expanded keys (controlled)                     |
-| onOpenChange    | (keys: string[]) => void | -       | Callback when expansion state changes                    |
-| allowMultiple   | boolean                  | false   | Whether to allow multiple expansions                     |
-| className       | ClassNameValue           | -       | string,string[],boolean ,Record<string, string,string[]> |
+| Prop            | Type                     | Default | Description                                                  |
+| --------------- | ------------------------ | ------- | ------------------------------------------------------------ |
+| defaultOpenKeys | Record<string, boolean>   | {}      | Initially expanded keys (uncontrolled)                       |
+| openKeys        | Record<string, boolean>   | -       | Currently expanded keys (controlled)                         |
+| onOpenChange    | (keys: Record<string, boolean>) => void | -       | Callback when expansion state changes                        |
+| allowMultiple   | boolean                  | false   | Whether to allow multiple expansions                         |
+| className       | ClassNameValue           | -       | `string\|string[]\|boolean\|null\|undefined\|Record<string,string\|string[]>` |
 
 ### Accordion.Item Props
 
-| Prop      | Type           | Default | Description                                              |
-| --------- | -------------- | ------- | -------------------------------------------------------- |
-| value     | string         | -       | Unique identifier (required)                             |
-| label     | ReactNode      | -       | Label content (required)                                 |
-| className | ClassNameValue | -       | string,string[],boolean ,Record<string, string,string[]> |
-| itemProps | object         | -       | Internal wrapped props pass-through config               |
+| Prop      | Type           | Default | Description                                                  |
+| --------- | -------------- | ------- | ------------------------------------------------------------ |
+| value     | string         | -       | Unique identifier (required)                                 |
+| label     | ReactNode      | -       | Label content (required)                                     |
+| className | ClassNameValue | -       | `string\|string[]\|boolean\|null\|undefined\|Record<string,string\|string[]>` |
+| itemProps | object         | -       | Internal wrapped props pass-through config                   |
 
 ### itemProps Config
 

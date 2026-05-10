@@ -95,11 +95,13 @@ vertical: "flex-col gap-2 px-3 py-1"
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| variant | "primary" \| "secondary" \| "destructive" \| "outline" \| "ghost" \| "link" \| "text" | "primary" | Button style variant |
-| direction | "horizontal" \| "vertical" | "horizontal" | Content direction |
-| loading | { loading?: boolean; icon?: ReactNode } | - | Loading state config |
-| disabled | boolean | false | Disabled state |
-| size | - | - | Inherited from ButtonPrimitive |
-| children | ReactNode | - | Button content |
-| onClick | () => void | - | Click handler |
-| ...ButtonPrimitiveProps | ButtonPrimitiveProps | - | Other props from ButtonPrimitive |
+| variant | "primary" \| "secondary" \| "destructive" \| "outline" \| "ghost" \| "text" | "primary" | Button style variant |
+| className | ClassNameValue | - | `string\|string[]\|boolean\|null\|undefined\|Record<string,string\|string[]>` |
+
+### loadingConfig
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| loading | boolean | false | Show loading state |
+| icon | ReactNode | - | Custom loading icon |
+

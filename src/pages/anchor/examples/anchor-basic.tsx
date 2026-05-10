@@ -114,12 +114,12 @@ export default function AnchorDemoPage() {
         <Anchor root={mainRef}>
           <Anchor.Section href="#overview" linkText="Overview" />
           <Anchor.Section href="#installation" linkText="Installation" />
-          <Anchor.Section href="#usage" linkText="Usage">
+          <Anchor.Section  linkText="Usage">
             <Anchor.Item href="#basic-usage">Basic Usage</Anchor.Item>
             <Anchor.Item href="#sections-api">Sections API</Anchor.Item>
             <Anchor.Item href="#customization">Customization</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#api-reference" linkText="API Reference">
+          <Anchor.Section linkText="API Reference">
             <Anchor.Item href="#anchor-props">Anchor Props</Anchor.Item>
             <Anchor.Item href="#section-props">Section Props</Anchor.Item>
           </Anchor.Section>

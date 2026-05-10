@@ -12,8 +12,8 @@ import {
   Anatomy,
   Button,
   Docs,
+  Toaster
 } from "@/component";
-import { Toaster } from "@/component/ui/toast";
 import {
   DropdownMenu,
   DropdownMenuTrigger,

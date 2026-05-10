@@ -1,16 +1,5 @@
 # 代码规则
 
-## 代码结构与导入规范
-
-- 项目始终使用别名导出而不是相对路径
-- 禁止从子路径导入（如 `@/component/icons`、`@/component/theme`），必须使用 `@/component` 统一导入
-- 导入时禁止使用文件后缀（如 `.tsx`、`.ts`）
-
-## 懒加载规范
-
-- pages 下的页面组件必须使用 React.lazy 懒加载
-- 工具类组件（component 目录下的非页面组件）不使用懒加载
-
 ## 样式组织
 
 - 组件样式使用对象管理，只有存在多种选择的变体（如 variant/size）才用变量存储，避免每次组件渲染重新生成对象
@@ -33,5 +22,5 @@
 
 ## 文档规范
 
-- **`className` 属性不需要在 API 文档中重复说明**：所有组件都支持 `className` 属性，统一在样式说明部分单独描述
-- API 表格中只列出组件特有的属性，排除通用的 `className`
+- 演示代码（examples）和组件文档（doc.mdx）统一使用纯英文
+- **className 属性**: 所有组件统一使用 `ClassNameValue` 类型,描述 `string | string[] | boolean | null | undefined | Record<string,string | string[] >`

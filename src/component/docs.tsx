@@ -1,5 +1,5 @@
-
-import { Title } from "./ui/title";
+import { ReactNode } from "react";
+import { Title } from "@/component";
 
 export interface DocsTableColumn {
   key: string;
@@ -10,40 +10,36 @@ export interface DocsTableItem {
   props: string;
   type: string;
   default: string;
-  description: string;
+  description: ReactNode;
 }
 
-export interface DocsTableItemSimple {
-  props: string;
-  description: string;
-}
-
-export interface DocsSectionData {
+export interface DocsTableProps {
   title: string;
-  columns: DocsTableColumn[];
-  data: DocsTableItem[] | DocsTableItemSimple[];
+  columns?: DocsTableColumn[];
+  data: DocsTableItem[];
 }
 
-export interface DocsTableSectionProps {
-  title: string;
-  columns: DocsTableColumn[];
-  data: DocsTableItem[] | DocsTableItemSimple[];
-}
+const defaultColumns: DocsTableColumn[] = [
+  { key: "prop", header: "Prop" },
+  { key: "type", header: "Type" },
+  { key: "default", header: "Default" },
+  { key: "description", header: "Description" },
+];
 
-export function DocsTableSection({
+export function DocsTable({
   title,
-  columns,
+  columns = defaultColumns,
   data,
-}: DocsTableSectionProps) {
-  const isSimple = data.length > 0 && !("type" in data[0]);
-
+}: DocsTableProps) {
   return (
     <div className="space-y-4">
-      <Title as="h3">{title}</Title>
+      <Title as="h4" className="py-2 px-3">
+        {title}
+      </Title>
       <div className="overflow-x-auto">
         <table className="w-full border-collapse text-sm">
           <thead>
-            <tr className="border-b">
+            <tr className="border-b bg-muted ">
               {columns.map((column) => (
                 <th
                   key={column.key}
@@ -56,35 +52,19 @@ export function DocsTableSection({
           </thead>
           <tbody>
             {data.map((row, index) => (
-              <tr
-                key={index}
-                className="border-b hover:bg-muted/50 "
-              >
-                {isSimple ? (
-                  <>
-                    <td className="py-3 px-4 border-r last:border-r-0">
-                      {(row as DocsTableItemSimple).props}
-                    </td>
-                    <td className="py-3 px-4 last:border-r-0" colSpan={columns.length - 1}>
-                      {(row as DocsTableItemSimple).description}
-                    </td>
-                  </>
-                ) : (
-                  <>
-                    <td className="py-3 px-4 border-r last:border-r-0">
-                      {(row as DocsTableItem).props}
-                    </td>
-                    <td className="py-3 px-4 border-r last:border-r-0">
-                      {(row as DocsTableItem).type}
-                    </td>
-                    <td className="py-3 px-4 border-r last:border-r-0">
-                      {(row as DocsTableItem).default}
-                    </td>
-                    <td className="py-3 px-4 last:border-r-0">
-                      {(row as DocsTableItem).description}
-                    </td>
-                  </>
-                )}
+              <tr key={index} className="border-b hover:bg-muted/50 ">
+                <td className="py-3 px-4 border-r last:border-r-0">
+                  <code>{row.props}</code>
+                </td>
+                <td className="py-3 px-4 border-r last:border-r-0">
+                  <code>{row.type}</code>
+                </td>
+                <td className="py-3 px-4 border-r last:border-r-0">
+                  <code>{row.default}</code>
+                </td>
+                <td className="py-3 px-4 last:border-r-0">
+                  <code>{row.description}</code>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -95,7 +75,7 @@ export function DocsTableSection({
 }
 
 export interface DocsProps {
-  sections: DocsSectionData[];
+  sections: DocsTableProps[];
 }
 
 export function Docs({ sections }: DocsProps) {
@@ -103,7 +83,7 @@ export function Docs({ sections }: DocsProps) {
     <div className="space-y-8">
       <section id="api" data-anchor-id="api" className="space-y-8">
         {sections.map((section, index) => (
-          <DocsTableSection
+          <DocsTable
             key={index}
             title={section.title}
             columns={section.columns}

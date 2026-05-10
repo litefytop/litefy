@@ -62,28 +62,22 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
   const accordionSections = [
     {
       title: l.api.sectionTitles.accordionProps,
-      columns: [
-        { key: "prop", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
       data: [
         {
           props: "defaultOpenKeys",
-          type: "string[]",
-          default: "[]",
+          type: "Record<string, boolean>",
+          default: "{}",
           description: l.api.props.defaultOpenKeys,
         },
         {
           props: "openKeys",
-          type: "string[]",
+          type: "Record<string, boolean>",
           default: "-",
           description: l.api.props.openKeys,
         },
         {
           props: "onOpenChange",
-          type: "(keys: string[]) => void",
+          type: "(keys: Record<string, boolean>) => void",
           default: "-",
           description: l.api.props.onOpenChange,
         },
@@ -93,17 +87,17 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
           default: "false",
           description: l.api.props.allowMultiple,
         },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          default: "-",
+          description: lang.common.className,
+        },
 
       ],
     },
     {
       title: l.api.sectionTitles.accordionItemProps,
-      columns: [
-        { key: "prop", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
       data: [
         {
           props: "value",
@@ -123,15 +117,16 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
           default: "-",
           description: l.api.itemProps.itemProps,
         },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          default: "-",
+          description: lang.common.className,
+        },
       ],
     },
     {
       title: l.api.sectionTitles.itemPropsConfig,
-      columns: [
-        { key: "property", header: l.api.headers.property },
-        { key: "type", header: l.api.headers.type },
-        { key: "description", header: l.api.headers.description },
-      ],
       data: [
         {
           props: "trigger",
@@ -247,7 +242,7 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
             ]}
           >
             <Accordion
-              defaultOpenKeys={["item1"]}
+              defaultOpenKeys={{"item1":true}}
               id="anatomy-accordion"
               className="max-w-sm"
             >

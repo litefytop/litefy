@@ -1,36 +1,42 @@
-
 import { createBrowserRouter } from "react-router-dom";
+import { lazy } from "react";
 import { zh, en } from "./i18n";
-import {
-  Introduction,
-  Button,
-  Accordion,
-  Anchor,
-  AnchorDemo,
-  Checkbox,
-  Description,
-  Input,
-  Password,
-  Radio,
-  DropdownMenu,
-  Toast,
-  Dialog,
-  App,
-} from "@/pages";
-import { ComingSoon } from "@/component";
+import { App, Introduction } from "@/pages";
+import {  ComingSoon } from "@/component";
 
-const introduction = { key: "introduction", path: "/", Component: Introduction };
+const Accordion = lazy(() => import("@/pages/accordion"));
+const Anchor = lazy(() => import("@/pages/anchor"));
+const AnchorDemo = lazy(() => import("@/pages/anchor/examples/anchor-basic"));
+const Button = lazy(() => import("@/pages/button"));
+const Checkbox = lazy(() => import("@/pages/checkbox"));
+const Description = lazy(() => import("@/pages/description"));
+const DropdownMenu = lazy(() => import("@/pages/dropdown-menu"));
+const Input = lazy(() => import("@/pages/input"));
+const Password = lazy(() => import("@/pages/password"));
+const Radio = lazy(() => import("@/pages/radio"));
+const Toast = lazy(() => import("@/pages/toast"));
+const Dialog = lazy(() => import("@/pages/dialog"));
+
+const introduction = {
+  key: "introduction",
+  path: "/",
+  Component: Introduction,
+};
 
 const componentRouteConfig = [
-  { key: "button", path: "/components/button", Component: Button },
   { key: "accordion", path: "/components/accordion", Component: Accordion },
   { key: "anchor", path: "/components/anchor", Component: Anchor },
+  { key: "button", path: "/components/button", Component: Button },
   { key: "toast", path: "/components/toast", Component: Toast },
   { key: "dialog", path: "/components/dialog", Component: Dialog },
   { key: "input", path: "/components/input", Component: Input },
   { key: "checkbox", path: "/components/checkbox", Component: Checkbox },
   { key: "radio", path: "/components/radio", Component: Radio },
-  { key: "dropdown-menu", path: "/components/dropdown-menu", Component: DropdownMenu },
+  {
+    key: "dropdown-menu",
+    path: "/components/dropdown-menu",
+    Component: DropdownMenu,
+  },
   { key: "password", path: "/components/password", Component: Password },
   { key: "slider", path: "/components/slider", Component: ComingSoon },
   { key: "textarea", path: "/components/textarea", Component: ComingSoon },
@@ -42,7 +48,11 @@ const componentRouteConfig = [
   { key: "theme", path: "/components/theme", Component: ComingSoon },
   { key: "title", path: "/components/title", Component: ComingSoon },
   { key: "text", path: "/components/text", Component: ComingSoon },
-  { key: "description", path: "/components/description", Component: Description },
+  {
+    key: "description",
+    path: "/components/description",
+    Component: Description,
+  },
   { key: "field", path: "/components/field", Component: ComingSoon },
   { key: "spin", path: "/components/spin", Component: ComingSoon },
   { key: "img", path: "/components/img", Component: ComingSoon },
@@ -66,11 +76,16 @@ function getLabel(t: typeof zh, key: string): string {
 
 const navConfig = {
   zh: {
-    introduction: { key: "introduction", path: "/", href: "/", title: zh.introduction },
+    introduction: {
+      key: "introduction",
+      path: "/",
+      href: "/",
+      title: zh.introduction,
+    },
     components: componentRouteConfig
       .slice()
       .sort((a, b) => (a.key || "").localeCompare(b.key || ""))
-      .map(item => ({
+      .map((item) => ({
         key: item.key,
         path: item.path,
         href: item.path,
@@ -78,11 +93,16 @@ const navConfig = {
       })),
   },
   en: {
-    introduction: { key: "introduction", path: "/", href: "/", title: en.introduction },
+    introduction: {
+      key: "introduction",
+      path: "/",
+      href: "/",
+      title: en.introduction,
+    },
     components: componentRouteConfig
       .slice()
       .sort((a, b) => (a.key || "").localeCompare(b.key || ""))
-      .map(item => ({
+      .map((item) => ({
         key: item.key,
         path: item.path,
         href: item.path,
@@ -91,11 +111,13 @@ const navConfig = {
   },
 };
 
-export const components = componentRouteConfig.map(({ key, path, Component }) => ({
-  key,
-  href: path,
-  Component,
-}));
+export const components = componentRouteConfig.map(
+  ({ key, path, Component }) => ({
+    key,
+    href: path,
+    Component,
+  }),
+);
 
 export function getNavItems(locale: "zh" | "en") {
   const t = locale === "zh" ? zh : en;
@@ -139,13 +161,16 @@ export function createRouter() {
     {
       path: "/components/anchor/demo",
       element: <AnchorDemo />,
-    }
+    },
   ]);
 }
 
-export function getComponentNav(currentHref: string, locale: "zh" | "en" = "zh") {
+export function getComponentNav(
+  currentHref: string,
+  locale: "zh" | "en" = "zh",
+) {
   const items = navConfig[locale].components;
-  const index = items.findIndex(item => item.path === currentHref);
+  const index = items.findIndex((item) => item.path === currentHref);
   if (index === -1) return { prev: null, next: null, current: null };
 
   return {

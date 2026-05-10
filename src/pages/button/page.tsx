@@ -67,12 +67,7 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
   const buttonSections = [
     {
       title: l.api.sectionTitles.buttonProps,
-      columns: [
-        { key: "prop", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
         {
           props: "variant",
@@ -91,12 +86,7 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
     },
     {
       title: l.api.sectionTitles.loadingConfig,
-      columns: [
-        { key: "property", header: l.api.headers.property },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
         {
           props: "icon",

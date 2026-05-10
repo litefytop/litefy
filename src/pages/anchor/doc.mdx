@@ -12,8 +12,8 @@ import { Anchor } from "@/component/ui/anchor";
 function App() {
   return (
     <Anchor>
-      <Anchor.Section href="#installation" title="Installation" />
-      <Anchor.Section href="#usage" title="Usage">
+      <Anchor.Section href="#installation" label="Installation" />
+      <Anchor.Section href="#usage" label="Usage">
         <Anchor.Item href="#basic">Basic</Anchor.Item>
         <Anchor.Item href="#with-sections">With Sections</Anchor.Item>
       </Anchor.Section>
@@ -28,8 +28,8 @@ function App() {
 
 ```tsx
 <Anchor>
-  <Anchor.Section href="#section-1" title="Section 1" />
-  <Anchor.Section href="#section-2" title="Section 2">
+  <Anchor.Section href="#section-1" label="Section 1" />
+  <Anchor.Section href="#section-2" label="Section 2">
     <Anchor.Item href="#sub-1">Subsection 1</Anchor.Item>
     <Anchor.Item href="#sub-2">Subsection 2</Anchor.Item>
   </Anchor.Section>
@@ -40,12 +40,12 @@ function App() {
 
 ```tsx
 <Anchor>
-  <Anchor.Section href="#intro" title="Introduction" />
-  <Anchor.Section href="#features" title="Features">
+  <Anchor.Section href="#intro" label="Introduction" />
+  <Anchor.Section href="#features" label="Features">
     <Anchor.Item href="#fast">Fast</Anchor.Item>
     <Anchor.Item href="#flexible">Flexible</Anchor.Item>
   </Anchor.Section>
-  <Anchor.Section href="#pricing" title="Pricing" />
+  <Anchor.Section href="#pricing" label="Pricing" />
 </Anchor>
 ```
 
@@ -55,34 +55,32 @@ function App() {
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| children | ReactNode | - | Child components |
+| className | ClassNameValue | - | `string\|string[]\|boolean\|null\|undefined\|Record<string,string\|string[]>` |
 | rootMargin | string | `"0px 0px -80% 0px"` | Root margin for IntersectionObserver (top right bottom left) |
 | root | `Element \| Document \| null \| RefObject<Element \| Document \| null>` | `null` | Root element for IntersectionObserver. In iframe, defaults to `document.documentElement` to fix viewport offset bug |
-
-### Anchor.Item Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| href | string | - | Anchor target ID (with # prefix) |
-| children | ReactNode | - | Link text |
-| className | string | - | Custom class name |
-| onClick | () => void | - | Click callback |
 
 ### Anchor.Section Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | href | string | - | Anchor target ID (with # prefix, optional) |
-| title | string | - | Section title |
-| children | ReactNode | - | Child anchor items |
-| className | string | - | Custom class name |
+| linkText | string | - | Section label |
 | itemProps | object | - | Internal wrapped props pass-through |
+
+### Anchor.Item Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| href | string | - | Anchor target ID (with # prefix) |
+| className | ClassNameValue | - | `string\|string[]\|boolean\|null\|undefined\|Record<string,string\|string[]>` |
+
+
 
 ### itemProps Config
 
 | Property | Type | Description |
 |------|------|------|
-| title | `Omit<React.ComponentProps<"a">, "href" \| "onClick">` | Title `<a>` tag props |
+| link | `Omit<React.ComponentProps<"a">, "href" \| "onClick">` | Link `<a>` tag props |
 | nav | `Omit<React.ComponentProps<"nav">, "aria-label">` | Internal navigation `<nav>` container props |
 
 ## Notes
@@ -98,7 +96,7 @@ When using Anchor component for page navigation, ensure target elements have pro
 ```
 
 **Key points:**
-- Add `scroll-mt-30` (120px) to all anchor target elements
+- Add scroll offset class (e.g., `scroll-mt-30`) to all anchor target elements based on your header height
 - Ensure `main` container has `scroll-behavior: smooth` in CSS
 - The Anchor component handles smooth scrolling automatically
 

@@ -44,7 +44,6 @@ const useCheckboxContext = () => {
 };
 
 export type CheckboxGroupProps<T extends string> = {
-  disable?: boolean;
   name?: string;
   invalid?: boolean;
   defaultValue?: T[];
@@ -196,10 +195,10 @@ export type CheckboxProps = Omit<
     checked?: ReactNode;
     unchecked?: ReactNode;
     hidden?: boolean;
-    className?: ClassNameValue;
-    props?: ComponentProps<"span">;
+    props?: Omit<ComponentProps<"span">,"className">&{
+      className?:ClassNameValue
+    };
   };
-  toggle?: boolean;
   className?: ClassNameValue;
   children?: ReactNode;
 };
@@ -271,7 +270,7 @@ export const Checkbox = ({
           {...resolvedIndicator.props}
           className={cn(
             " data-[state=checked]:bg-primary data-[state=checked]:border-primary-foreground data-[state=checked]:text-primary-foreground flex items-center justify-center size-4 rounded-md border border-foreground",
-            resolvedIndicator.className,
+            resolvedIndicator?.props?.className,
           )}
           data-state={isChecked ? "checked" : "unchecked"}
         >

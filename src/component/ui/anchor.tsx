@@ -4,7 +4,7 @@ import { ClassNameValue, cn } from "@/lib";
 interface AnchorContextValue {
   activeId: string;
   setActiveId: (id: string) => void;
-  observer: IntersectionObserver;
+  observer: IntersectionObserver | null;
 }
 
 const AnchorContext = createContext<AnchorContextValue | null>(null);
@@ -27,9 +27,9 @@ function useObserveAnchor(targetId: string) {
       return;
     }
 
-    observer.observe(el);
+    observer?.observe(el);
     return () => {
-      observer.unobserve(el);
+      observer?.unobserve(el);
     };
   }, [targetId, observer]);
 }
@@ -60,7 +60,7 @@ export function Anchor({
     const isInIframe = window.self !== window.top;
     const fallbackRoot = isInIframe ? document.documentElement : null;
 
-     return new IntersectionObserver(
+    return new IntersectionObserver(
       (entries) => {
         let best: IntersectionObserverEntry | null = null;
 
@@ -93,47 +93,31 @@ export function Anchor({
         root: rootElement ?? fallbackRoot,
         rootMargin: rootMargin || "0px 0px -90% 0px",
         threshold: 0,
-      }
+      },
     );
   }, [rootMargin, root]);
 
-  if (!observer) return null;
+  useEffect(() => {
+    if (!observer) return;
+    return () => {
+      observer.disconnect();
+    };
+  }, [observer]);
 
+  const contextValue = useMemo(
+    () => ({
+      activeId,
+      setActiveId,
+      observer,
+    }),
+    [activeId, observer],
+  );
   return (
-    <AnchorContext.Provider value={{ activeId, setActiveId, observer }}>
+    <AnchorContext.Provider value={contextValue}>
       <div className={cn("flex flex-col gap-2", className)} {...props}>
         {children}
       </div>
     </AnchorContext.Provider>
-  );
-}
-type AnchorItemProps = Omit<React.ComponentProps<"a">, "className"> & {
-  href: string;
-  className?: ClassNameValue;
-};
-
-function AnchorItem({ href, className, children, ...props }: AnchorItemProps) {
-  const { activeId,setActiveId } = useAnchorContext();
-  const targetId = href.replace(/^#/, "");
-  const isActive = activeId === targetId;
-
-  useObserveAnchor(targetId);
-
-  return (
-    <a
-      href={href}
-      className={cn(
-        "block py-1 text-sm  indent-2",
-        isActive
-          ? "text-primary font-medium underline underline-offset-4"
-          : "text-muted-foreground hover:text-foreground",
-        className,
-      )}
-      onClick={() => setActiveId(targetId)}
-      {...props}
-    >
-      {children}
-    </a>
   );
 }
 
@@ -165,8 +149,10 @@ function AnchorSection({
     <div className={cn(className)} {...props}>
       <a
         className={cn(
-          "text-sm font-medium mb-2 ",
-          isActive ? "text-primary  underline underline-offset-4" : "text-foreground hover:text-primary",
+          "text-sm font-medium",
+          isActive
+            ? "text-primary  underline underline-offset-4"
+            : "text-foreground hover:text-primary",
           !href && "pointer-events-none",
         )}
         href={href}
@@ -176,7 +162,7 @@ function AnchorSection({
       </a>
       {children && (
         <nav
-          className="space-y-1"
+          className="flex flex-col gap-2 mt-2"
           aria-label="In-page navigation"
           {...itemProps?.nav}
         >
@@ -184,6 +170,36 @@ function AnchorSection({
         </nav>
       )}
     </div>
+  );
+}
+
+type AnchorItemProps = Omit<React.ComponentProps<"a">, "className"> & {
+  href: string;
+  className?: ClassNameValue;
+};
+
+function AnchorItem({ href, className, children, ...props }: AnchorItemProps) {
+  const { activeId, setActiveId } = useAnchorContext();
+  const targetId = href.replace(/^#/, "");
+  const isActive = activeId === targetId;
+
+  useObserveAnchor(targetId);
+
+  return (
+    <a
+      href={href}
+      className={cn(
+        "block text-sm  indent-2",
+        isActive
+          ? "text-primary font-medium underline underline-offset-4"
+          : "text-muted-foreground hover:text-foreground",
+        className,
+      )}
+      onClick={() => setActiveId(targetId)}
+      {...props}
+    >
+      {children}
+    </a>
   );
 }
 

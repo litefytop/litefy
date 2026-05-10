@@ -1,3 +1,8 @@
+# page.tsx 结构说明
+
+## 组件模板
+
+```tsx
 import React from "react";
 import {
   ArrowLeftIcon,
@@ -8,19 +13,16 @@ import {
   Title,
   Description,
   ShikiCodeBlock,
+  Anatomy,
   Button,
   Docs,
-  Toaster
 } from "@/component";
+import { toast } from "sonner";
 import { t } from "@/pages";
 
-import BasicRaw from "./examples/dialog-basic.tsx?raw";
-import WithTriggerRaw from "./examples/dialog-with-trigger.tsx?raw";
-import WithCloseRaw from "./examples/dialog-with-close.tsx?raw";
+import Example1Raw from "./examples/Example1.tsx?raw";
 import componentDoc from "./doc.mdx?raw";
-import componentSrc from "@/component/ui/dialog.tsx?raw";
-
-import { DialogBasic, DialogWithTrigger, DialogWithClose } from "./examples";
+import componentSrc from "@/component/ui/component-name.tsx?raw";
 
 function DemoSection({
   id,
@@ -50,93 +52,28 @@ function DemoSection({
   );
 }
 
-export default function DialogPage({ locale = "zh" }: { locale?: string }) {
+export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
   const lang = t(locale as "zh" | "en");
-  const l = lang.dialog;
+  const l = lang.componentName;
   const [copied, setCopied] = React.useState(false);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(componentDoc);
     setCopied(true);
-    Toaster.success({ title: lang.common.copySuccess });
+    toast.success(lang.common.copySuccess);
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // API 文档数据（从 i18n 获取翻译）
   const sections = [
     {
-      title: l.api.sectionTitles.dialogProps,
-      columns: [
-        { key: "prop", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
+      title: l.api.sectionTitles.componentProps,
       data: [
         {
-          props: "children",
-          type: "React.ReactNode",
+          props: "propName",
+          type: "string",
           default: "-",
-          description: l.api.props.children,
-        },
-      ],
-    },
-    {
-      title: l.api.sectionTitles.contentProps,
-      columns: [
-        { key: "props", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
-      data: [
-
-        {
-          props: "children",
-          type: "React.ReactNode",
-          default: "-",
-          description: l.api.props.children,
-        },
-        {
-          props: "showCloseButton",
-          type: "boolean",
-          default: "true",
-          description: l.api.props.showCloseButton,
-        },
-      ],
-    },
-    {
-      title: l.api.sectionTitles.triggerProps,
-      columns: [
-        { key: "props", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
-      data: [
-
-        {
-          props: "children",
-          type: "React.ReactNode",
-          default: "-",
-          description: l.api.props.children,
-        },
-      ],
-    },
-    {
-      title: l.api.sectionTitles.closeProps,
-      columns: [
-        { key: "props", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
-      data: [
-
-        {
-          props: "children",
-          type: "React.ReactNode",
-          default: "-",
-          description: l.api.props.children,
+          description: l.api.props.propName,
         },
       ],
     },
@@ -181,28 +118,27 @@ export default function DialogPage({ locale = "zh" }: { locale?: string }) {
           <DemoSection
             id="basic"
             title={l.basic.title}
-            code={BasicRaw}
+            code={Example1Raw}
           >
-            <DialogBasic />
+            <Example1 />
           </DemoSection>
 
-          <DemoSection
-            id="with-trigger"
-            title={l.withTrigger.title}
-            code={WithTriggerRaw}
-          >
-            <DialogWithTrigger />
-          </DemoSection>
-
-          <DemoSection
-            id="with-close"
-            title={l.withClose.title}
-            code={WithCloseRaw}
-          >
-            <DialogWithClose />
-          </DemoSection>
+          {/* 更多示例... */}
         </section>
 
+        <section id="anatomy" className="mt-8 space-y-4">
+          <Title as="h2">{lang.anatomy}</Title>
+          <Anatomy
+            parts={[
+              { id: "anatomy-root", label: l.anatomy.root },
+              { id: "anatomy-child", label: l.anatomy.child },
+            ]}
+          >
+            <ComponentName id="anatomy-root">
+              <ChildComponent id="anatomy-child" />
+            </ComponentName>
+          </Anatomy>
+        </section>
 
         <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
@@ -217,12 +153,48 @@ export default function DialogPage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
-            <Anchor.Item href="#with-trigger">{l.withTrigger.title}</Anchor.Item>
-            <Anchor.Item href="#with-close">{l.withClose.title}</Anchor.Item>
+            {/* 更多锚点项... */}
           </Anchor.Section>
+          <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
           <Anchor.Section href="#docs" linkText={lang.docs} />
         </Anchor>
       </aside>
     </div>
   );
 }
+```
+
+## 注意事项
+
+1. **Header 部分**：
+   - 使用 `<header className="pb-4 mb-4 border-b space-y-3">`
+   - 第一行：Title + 按钮组（flex justify-between）
+   - 第二行：Description 独占一行
+   - 按钮组使用 Button 组件，包含：复制文档、后退、前进图标按钮
+
+2. **安装部分**：
+   - 使用 `id="installation"`
+   - 使用 `ShikiCodeBlock` 展示组件源码
+   - Title 使用 `as="h2"`
+
+3. **示例部分**：
+   - 使用 `<section id="examples">` 包裹
+   - 章节标题 `<Title as="h2">示例</Title>`
+   - 每个 DemoSection 内部使用 `<Title as="h3">` 作为三级标题
+
+4. **DemoSection**：
+   - Title 使用 `as="h3"`（示例下的三级目录）
+   - children 是渲染的组件
+   - code 是源码（通过 `?raw` 导入）
+
+5. **结构部分**：
+   - Anatomy 组件需要在组件上添加对应 id
+   - Title 使用 `as="h2"`
+
+6. **文档部分**：
+   - 使用 `Docs` 组件展示 API 文档
+   - `sections` 数据从 i18n 配置获取翻译
+
+7. **侧边栏 Anchor**：
+   - 使用 `href` 属性（带 # 前缀）
+   - 使用 `linkText` 属性作为链接文本

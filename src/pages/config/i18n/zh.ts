@@ -4,6 +4,7 @@ export const zh = {
     copied: "已复制",
     copySuccess: "文档已复制到剪贴板",
     copyDocs: "复制文档",
+    className: "支持 string | string[] | boolean | null | undefined | Record<string,string | string[]>",
   },
   home: {
     title: "Plain UI",
@@ -92,13 +93,6 @@ export const zh = {
       separator: "分割线",
     },
     api: {
-      headers: {
-        prop: "Prop",
-        type: "Type",
-        default: "Default",
-        description: "描述",
-        property: "属性",
-      },
       sectionTitles: {
         dropdownMenuProps: "DropdownMenu Props",
         dropdownMenuTriggerProps: "DropdownMenuTrigger Props",
@@ -167,13 +161,7 @@ export const zh = {
         label: "标题元素属性",
         content: "内容区域属性",
       },
-      headers: {
-        prop: "Prop",
-        type: "Type",
-        default: "Default",
-        description: "描述",
-        property: "属性",
-      },
+
       sectionTitles: {
         accordionProps: "Accordion Props",
         accordionItemProps: "Accordion.Item Props",
@@ -199,16 +187,9 @@ export const zh = {
       anchor: "锚点",
       section: "分组",
       item: "项",
-      link: "链接",
+      link: "链接文本",
     },
     api: {
-      headers: {
-        prop: "Prop",
-        type: "Type",
-        default: "Default",
-        description: "描述",
-        property: "属性",
-      },
       sectionTitles: {
         anchorProps: "Anchor Props",
         anchorSectionProps: "Anchor.Section Props",
@@ -217,7 +198,7 @@ export const zh = {
       },
       props: {
         rootMargin: "IntersectionObserver 的根边距（上 右 下 左）",
-        root: "IntersectionObserver 的根元素。在 iframe 中默认为 document.documentElement 以修复视口偏移 bug",
+        root: "IntersectionObserver 的根元素。在 iframe 中默认为 document.documentElement 以修复视口偏移问题",
       },
       sectionProps: {
         href: "锚点目标 ID（带 # 前缀，可选）",
@@ -226,8 +207,6 @@ export const zh = {
       },
       itemProps: {
         href: "锚点目标 ID（带 # 前缀）",
-        children: "链接文本",
-        onClick: "点击回调",
       },
       itemPropsConfig: {
         link: "链接 `<a>` 标签属性",
@@ -275,13 +254,6 @@ export const zh = {
       spinner: "加载指示器",
     },
     api: {
-      headers: {
-        prop: "属性",
-        type: "类型",
-        default: "默认值",
-        description: "描述",
-        property: "属性",
-      },
       sectionTitles: {
         buttonProps: "Button Props",
         loadingConfig: "ButtonLoadingConfig",
@@ -289,7 +261,6 @@ export const zh = {
       props: {
         variant: "按钮样式变体",
         loading: "加载状态配置",
-
       },
       loadingConfig: {
         icon: "图标元素属性",
@@ -350,7 +321,8 @@ export const zh = {
 
     variants: {
       title: "变体",
-      description: "Checkbox 与 Toggle 逻辑高度一致，可通过 variants 属性灵活切换：使用 text 变体时为 Checkbox，使用其他变体时则为 Toggle。"
+      description:
+        "Checkbox 与 Toggle 逻辑高度一致，可通过 variants 属性灵活切换：使用 text 变体时为 Checkbox，使用其他变体时则为 Toggle。",
     },
     anatomy: {
       group: "组",
@@ -358,13 +330,6 @@ export const zh = {
       indicator: "指示器",
     },
     api: {
-      headers: {
-        prop: "Prop",
-        type: "Type",
-        default: "Default",
-        description: "描述",
-        property: "属性",
-      },
       sectionTitles: {
         checkboxGroupProps: "Checkbox.Group Props",
         checkboxProps: "Checkbox Props",
@@ -375,15 +340,16 @@ export const zh = {
         defaultValue: "初始选中的值（非受控模式）",
         onValueChange: "值变化回调",
         disabled: "是否禁用整个组",
+        invalid: "标记组是否为无效状态",
+        name: "表单字段名称",
       },
       props: {
         value: "复选框的值（必填）",
-        checked: "是否选中（受控模式）",
-        defaultChecked: "初始是否选中（非受控模式）",
         onCheckedChange: "选中状态变化回调",
         disabled: "是否禁用",
         variant: "样式变体",
         indicator: "指示器配置",
+        toggle: "切换模式",
         itemProps: "内部封装属性透传",
       },
       itemPropsConfig: {
@@ -405,13 +371,6 @@ export const zh = {
       content: "内容",
     },
     api: {
-      headers: {
-        prop: "Prop",
-        type: "Type",
-        default: "Default",
-        description: "描述",
-        property: "属性",
-      },
       sectionTitles: {
         descriptionProps: "Description Props",
       },
@@ -446,13 +405,6 @@ export const zh = {
       description: "描述",
     },
     api: {
-      headers: {
-        prop: "Prop",
-        type: "Type",
-        default: "Default",
-        description: "描述",
-        property: "属性",
-      },
       sectionTitles: {
         inputProps: "Input Props",
         itemPropsConfig: "itemProps 配置",
@@ -493,13 +445,6 @@ export const zh = {
       toggle: "切换按钮",
     },
     api: {
-      headers: {
-        prop: "Prop",
-        type: "Type",
-        default: "Default",
-        description: "描述",
-        property: "属性",
-      },
       sectionTitles: {
         passwordProps: "Password Props",
         itemPropsConfig: "itemProps 配置",
@@ -548,13 +493,6 @@ export const zh = {
       indicator: "指示器",
     },
     api: {
-      headers: {
-        prop: "Prop",
-        type: "Type",
-        default: "Default",
-        description: "描述",
-        property: "属性",
-      },
       sectionTitles: {
         radioGroupProps: "RadioGroup Props",
         radioProps: "Radio Props",
@@ -598,13 +536,6 @@ export const zh = {
       close: "关闭按钮",
     },
     api: {
-      headers: {
-        prop: "Prop",
-        type: "Type",
-        default: "Default",
-        description: "描述",
-        property: "属性",
-      },
       sectionTitles: {
         dialogProps: "Dialog Props",
         contentProps: "Dialog.Content Props",
