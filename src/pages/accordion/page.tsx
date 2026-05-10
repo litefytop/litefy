@@ -72,13 +72,13 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "openKeys",
           type: "Record<string, boolean>",
-          default: "-",
+          
           description: l.api.props.openKeys,
         },
         {
           props: "onOpenChange",
           type: "(keys: Record<string, boolean>) => void",
-          default: "-",
+          
           description: l.api.props.onOpenChange,
         },
         {
@@ -90,7 +90,7 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "className",
           type: "ClassNameValue",
-          default: "-",
+          
           description: lang.common.className,
         },
 
@@ -102,25 +102,25 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "value",
           type: "string",
-          default: "-",
+          
           description: l.api.itemProps.value,
         },
         {
           props: "label",
           type: "ReactNode",
-          default: "-",
+          
           description: l.api.itemProps.label,
         },
         {
           props: "itemProps",
           type: "object",
-          default: "-",
+          
           description: l.api.itemProps.itemProps,
         },
         {
           props: "className",
           type: "ClassNameValue",
-          default: "-",
+          
           description: lang.common.className,
         },
       ],
@@ -131,19 +131,19 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "trigger",
           type: 'React.ComponentProps<"button">',
-          default: "-",
+          
           description: l.api.itemPropsConfig.trigger,
         },
         {
           props: "label",
           type: 'React.ComponentProps<"span">',
-          default: "-",
+          
           description: l.api.itemPropsConfig.label,
         },
         {
           props: "content",
           type: 'React.ComponentProps<"div">',
-          default: "-",
+          
           description: l.api.itemPropsConfig.content,
         },
       ],

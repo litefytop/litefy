@@ -12,7 +12,7 @@ import {
   Anatomy,
   Button,
   Docs,
-  Toaster
+  Toaster,
 } from "@/component";
 import {
   DropdownMenu,
@@ -44,11 +44,7 @@ function DemoSection({
   code: string;
 }) {
   return (
-    <section
-      id={id}
-      data-anchor-id={id}
-      className="space-y-4 py-4"
-    >
+    <section id={id} data-anchor-id={id} className="space-y-4 py-4">
       <div>
         <Title as="h3">{title}</Title>
       </div>
@@ -69,40 +65,32 @@ export default function DropdownMenuPage({
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
   const l = lang["dropdown-menu"];
-  const nav = getComponentNav("/components/dropdown-menu", locale as "zh" | "en");
+  const nav = getComponentNav(
+    "/components/dropdown-menu",
+    locale as "zh" | "en",
+  );
 
   const dropdownMenuSections = [
     {
       title: l.api.sectionTitles.dropdownMenuProps,
-      columns: [
-        { key: "prop", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
         {
           props: "children",
           type: "ReactNode",
-          default: "-",
+          
           description: l.api.dropdownMenuProps.children,
         },
-
       ],
     },
     {
       title: l.api.sectionTitles.dropdownMenuTriggerProps,
-      columns: [
-        { key: "prop", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
         {
           props: "children",
           type: "ReactNode",
-          default: "-",
+          
           description: l.api.triggerProps.children,
         },
 
@@ -122,20 +110,15 @@ export default function DropdownMenuPage({
     },
     {
       title: l.api.sectionTitles.dropdownMenuContentProps,
-      columns: [
-        { key: "prop", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
         {
           props: "children",
           type: "ReactNode",
-          default: "-",
+          
           description: l.api.contentProps.children,
         },
-   
+
         {
           props: "popover",
           type: '"auto" | "manual"',
@@ -158,24 +141,19 @@ export default function DropdownMenuPage({
     },
     {
       title: l.api.sectionTitles.dropdownMenuItemProps,
-      columns: [
-        { key: "prop", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
         {
           props: "children",
           type: "ReactNode",
-          default: "-",
+          
           description: l.api.itemProps.children,
         },
 
         {
           props: "onClick",
           type: "() => void",
-          default: "-",
+          
           description: l.api.itemProps.onClick,
         },
         {
@@ -188,15 +166,8 @@ export default function DropdownMenuPage({
     },
     {
       title: l.api.sectionTitles.dropdownMenuSeparatorProps,
-      columns: [
-        { key: "prop", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
-      data: [
 
-      ],
+      data: [],
     },
   ];
 
@@ -303,7 +274,11 @@ export default function DropdownMenuPage({
           </Anatomy>
         </section>
 
-        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8 scroll-mt-20">
+        <section
+          id="docs"
+          data-anchor-id="docs"
+          className="mt-12 space-y-8 scroll-mt-20"
+        >
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
@@ -315,15 +290,9 @@ export default function DropdownMenuPage({
         <Anchor>
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>
-            <Anchor.Item href="#basic">
-              {l.basic.title}
-            </Anchor.Item>
-            <Anchor.Item href="#align">
-              {l.align.title}
-            </Anchor.Item>
-            <Anchor.Item href="#side">
-              {l.side.title}
-            </Anchor.Item>
+            <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
+            <Anchor.Item href="#align">{l.align.title}</Anchor.Item>
+            <Anchor.Item href="#side">{l.side.title}</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
           <Anchor.Section href="#docs" linkText={lang.docs} />

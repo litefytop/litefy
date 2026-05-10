@@ -76,7 +76,7 @@ export default function DescriptionPage({ locale = "zh" }: { locale?: string }) 
         {
           props: "children",
           type: "ReactNode",
-          default: "-",
+          
           description: l.api.props.children,
         },
       ],

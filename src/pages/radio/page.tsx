@@ -71,29 +71,24 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
   const radioSections = [
     {
       title: l.api.sectionTitles.radioGroupProps,
-      columns: [
-        { key: "prop", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
         {
           props: "value",
           type: "string",
-          default: "-",
+          
           description: l.api.radioGroupProps.value,
         },
         {
           props: "defaultValue",
           type: "string",
-          default: "-",
+          
           description: l.api.radioGroupProps.defaultValue,
         },
         {
           props: "onChange",
           type: "(value: string) => void",
-          default: "-",
+          
           description: l.api.radioGroupProps.onChange,
         },
         {
@@ -113,17 +108,12 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
     },
     {
       title: l.api.sectionTitles.radioProps,
-      columns: [
-        { key: "prop", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
         {
           props: "value",
           type: "string",
-          default: "-",
+          
           description: l.api.radioProps.value,
         },
         {
@@ -136,27 +126,27 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "indicator",
           type: "RadioIndicatorConfig",
-          default: "-",
+          
           description: l.api.radioProps.indicator,
         },
       ],
     },
     {
       title: l.api.sectionTitles.itemPropsConfig,
-      columns: [
-        { key: "property", header: l.api.headers.property },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
         {
           props: "group",
+          type: `React.ComponentProps<"div">`,
           description: l.api.itemPropsConfig.group,
         },
         {
           props: "radio",
+          type: `React.ComponentProps<"input">`,
           description: l.api.itemPropsConfig.radio,
         },
         {
+          type: `React.ComponentProps<"span">`,
           props: "indicator",
           description: l.api.itemPropsConfig.indicator,
         },

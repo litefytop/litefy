@@ -35,11 +35,7 @@ function DemoSection({
   code: string;
 }) {
   return (
-    <section
-      id={id}
-      data-anchor-id={id}
-      className="space-y-4 py-4"
-    >
+    <section id={id} data-anchor-id={id} className="space-y-4 py-4">
       <div>
         <Title as="h3">{title}</Title>
       </div>
@@ -61,35 +57,30 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
   const passwordSections = [
     {
       title: l.api.sectionTitles.passwordProps,
-      columns: [
-        { key: "prop", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
         {
           props: "value",
           type: "string",
-          default: "-",
+
           description: l.api.props.value,
         },
         {
           props: "defaultValue",
           type: "string",
-          default: "-",
+
           description: l.api.props.defaultValue,
         },
         {
           props: "onChange",
           type: "(value: string) => void",
-          default: "-",
+
           description: l.api.props.onChange,
         },
         {
           props: "placeholder",
           type: "string",
-          default: "-",
+
           description: l.api.props.placeholder,
         },
         {
@@ -102,27 +93,23 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "itemProps",
           type: "PasswordItemProps",
-          default: "-",
+
           description: l.api.props.itemProps,
         },
       ],
     },
     {
       title: l.api.sectionTitles.itemPropsConfig,
-      columns: [
-        { key: "property", header: l.api.headers.property },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
         {
           props: "root",
+          type: `React.ComponentProps<"div">`,
           description: l.api.itemPropsConfig.root,
         },
+
         {
-          props: "input",
-          description: l.api.itemPropsConfig.input,
-        },
-        {
+          type: `React.ComponentProps<"button">`,
           props: "toggle",
           description: l.api.itemPropsConfig.toggle,
         },
@@ -181,11 +168,7 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
         <section id="examples" className="">
           <Title as="h2">{lang.examples}</Title>
 
-          <DemoSection
-            id="basic"
-            title={l.basic.title}
-            code={PasswordBasicRaw}
-          >
+          <DemoSection id="basic" title={l.basic.title} code={PasswordBasicRaw}>
             <PasswordBasic />
           </DemoSection>
         </section>
@@ -201,7 +184,7 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
             ]}
           >
             <Password
-            data-anatomy-name="input"
+              data-anatomy-name="input"
               placeholder="请输入密码"
               itemProps={{
                 root: { "data-anatomy-name": "root" },

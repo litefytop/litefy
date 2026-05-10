@@ -79,7 +79,7 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "loading",
           type: "ButtonLoadingConfig",
-          default: "-",
+          
           description: l.api.props.loading,
         },
       ],
@@ -91,7 +91,7 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "icon",
           type: "React.ReactNode",
-          default: "-",
+          
           description: l.api.loadingConfig.icon,
         },
         {

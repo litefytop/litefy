@@ -9,7 +9,7 @@ export interface DocsTableColumn {
 export interface DocsTableItem {
   props: string;
   type: string;
-  default: string;
+  default?: string;
   description: ReactNode;
 }
 
@@ -60,7 +60,7 @@ export function DocsTable({
                   <code>{row.type}</code>
                 </td>
                 <td className="py-3 px-4 border-r last:border-r-0">
-                  <code>{row.default}</code>
+                  <code>{row.default || "-"}</code>
                 </td>
                 <td className="py-3 px-4 last:border-r-0">
                   <code>{row.description}</code>

@@ -48,7 +48,7 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "className",
           type: "ClassNameValue",
-          default: "-",
+          
           description: lang.common.className,
         },
         {
@@ -72,19 +72,19 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "href",
           type: "string",
-          default: "-",
+          
           description: l.api.sectionProps.href,
         },
         {
           props: "linkText",
           type: "string",
-          default: "-",
+          
           description: l.api.sectionProps.linkText,
         },
         {
           props: "itemProps",
           type: "object",
-          default: "-",
+          
           description: l.api.sectionProps.itemProps,
         },
       ],
@@ -96,13 +96,13 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "href",
           type: "string",
-          default: "-",
+          
           description: l.api.itemProps.href,
         },
         {
           props: "className",
           type: "ClassNameValue",
-          default: "-",
+          
           description: lang.common.className,
         },
       ],
@@ -114,13 +114,13 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "link",
           type: 'Omit<React.ComponentProps<"a">, "href" | "onClick">',
-          default: "-",
+          
           description: l.api.itemPropsConfig.link,
         },
         {
           props: "nav",
           type: 'Omit<React.ComponentProps<"nav">, "aria-label">',
-          default: "-",
+          
           description: l.api.itemPropsConfig.nav,
         },
       ],

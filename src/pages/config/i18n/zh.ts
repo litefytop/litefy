@@ -425,7 +425,7 @@ export const zh = {
       itemPropsConfig: {
         group: "组容器 `<div>` 属性",
         label: "标签 `<label>` 属性",
-        input: "输入框 `<input>` 属性",
+        error: "错误 `<div>` 属性",
         leading: "前导容器 `<span>` 属性",
         trailing: "尾随容器 `<span>` 属性",
         description: "描述 `<p>` 属性",

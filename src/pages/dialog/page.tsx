@@ -65,35 +65,25 @@ export default function DialogPage({ locale = "zh" }: { locale?: string }) {
   const sections = [
     {
       title: l.api.sectionTitles.dialogProps,
-      columns: [
-        { key: "prop", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
         {
           props: "children",
           type: "React.ReactNode",
-          default: "-",
+          
           description: l.api.props.children,
         },
       ],
     },
     {
       title: l.api.sectionTitles.contentProps,
-      columns: [
-        { key: "props", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
 
         {
           props: "children",
           type: "React.ReactNode",
-          default: "-",
+          
           description: l.api.props.children,
         },
         {
@@ -106,36 +96,26 @@ export default function DialogPage({ locale = "zh" }: { locale?: string }) {
     },
     {
       title: l.api.sectionTitles.triggerProps,
-      columns: [
-        { key: "props", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
 
         {
           props: "children",
           type: "React.ReactNode",
-          default: "-",
+          
           description: l.api.props.children,
         },
       ],
     },
     {
       title: l.api.sectionTitles.closeProps,
-      columns: [
-        { key: "props", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
 
         {
           props: "children",
           type: "React.ReactNode",
-          default: "-",
+          
           description: l.api.props.children,
         },
       ],

@@ -69,35 +69,30 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
   const inputSections = [
     {
       title: l.api.sectionTitles.inputProps,
-      columns: [
-        { key: "prop", header: l.api.headers.prop },
-        { key: "type", header: l.api.headers.type },
-        { key: "default", header: l.api.headers.default },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
         {
           props: "value",
           type: "string",
-          default: "-",
+          
           description: l.api.props.value,
         },
         {
           props: "defaultValue",
           type: "string",
-          default: "-",
+          
           description: l.api.props.defaultValue,
         },
         {
           props: "onChange",
           type: "(value: string) => void",
-          default: "-",
+          
           description: l.api.props.onChange,
         },
         {
           props: "placeholder",
           type: "string",
-          default: "-",
+          
           description: l.api.props.placeholder,
         },
         {
@@ -115,65 +110,68 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "label",
           type: "string",
-          default: "-",
+          
           description: l.api.props.label,
         },
         {
           props: "description",
           type: "string",
-          default: "-",
+          
           description: l.api.props.description,
         },
         {
           props: "leading",
           type: "ReactNode",
-          default: "-",
+          
           description: l.api.props.leading,
         },
         {
           props: "trailing",
           type: "ReactNode",
-          default: "-",
+          
           description: l.api.props.trailing,
         },
 
         {
           props: "itemProps",
           type: "InputItemProps",
-          default: "-",
+          
           description: l.api.props.itemProps,
         },
       ],
     },
     {
       title: l.api.sectionTitles.itemPropsConfig,
-      columns: [
-        { key: "property", header: l.api.headers.property },
-        { key: "description", header: l.api.headers.description },
-      ],
+
       data: [
         {
           props: "group",
+          type: `React.ComponentProps<"div">`,
           description: l.api.itemPropsConfig.group,
         },
         {
           props: "label",
+          type: `React.ComponentProps<"label">`,
           description: l.api.itemPropsConfig.label,
         },
         {
-          props: "input",
-          description: l.api.itemPropsConfig.input,
+          props: "error",
+          type: `React.ComponentProps<"div">`,
+          description: l.api.itemPropsConfig.error,
         },
         {
           props: "leading",
+          type: `React.ComponentProps<"span">`,
           description: l.api.itemPropsConfig.leading,
         },
         {
           props: "trailing",
+          type: `React.ComponentProps<"span">`,
           description: l.api.itemPropsConfig.trailing,
         },
         {
           props: "description",
+          type: `React.ComponentProps<"small">`,
           description: l.api.itemPropsConfig.description,
         },
       ],

@@ -72,7 +72,7 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "propName",
           type: "string",
-          default: "-",
+          
           description: l.api.props.propName,
         },
       ],

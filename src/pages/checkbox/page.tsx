@@ -74,19 +74,19 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "defaultValue",
           type: "string[]",
-          default: "-",
+          
           description: l.api.groupProps.defaultValue,
         },
         {
           props: "value",
           type: "string[]",
-          default: "-",
+          
           description: l.api.groupProps.value,
         },
         {
           props: "onValueChange",
           type: "(value: string[]) => void",
-          default: "-",
+          
           description: l.api.groupProps.onValueChange,
         },
         {
@@ -98,13 +98,13 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "invalid",
           type: "boolean",
-          default: "-",
+          
           description: l.api.groupProps.invalid,
         },
         {
           props: "name",
           type: "string",
-          default: "-",
+          
           description: l.api.groupProps.name,
         },
       ],
@@ -116,13 +116,13 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "value",
           type: "string",
-          default: "-",
+          
           description: l.api.props.value,
         },
         {
           props: "onCheckedChange",
           type: "(checked: boolean) => void",
-          default: "-",
+          
           description: l.api.props.onCheckedChange,
         },
         {
@@ -140,19 +140,19 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "indicator",
           type: "object",
-          default: "-",
+          
           description: l.api.props.indicator,
         },
         {
           props: "toggle",
           type: "boolean",
-          default: "-",
+          
           description: l.api.props.toggle,
         },
         {
           props: "itemProps",
           type: "object",
-          default: "-",
+          
           description: l.api.props.itemProps,
         },
       ],
@@ -164,13 +164,13 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "indicator",
           type: 'Omit<React.ComponentProps<"span">, "children">',
-          default: "-",
+          
           description: l.api.itemPropsConfig.indicator,
         },
         {
           props: "label",
           type: 'Omit<React.ComponentProps<"label">, "children">',
-          default: "-",
+          
           description: l.api.itemPropsConfig.label,
         },
       ],

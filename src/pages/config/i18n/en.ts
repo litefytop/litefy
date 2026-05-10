@@ -433,7 +433,7 @@ export const en = {
       itemPropsConfig: {
         group: "Group container `<div>` props",
         label: "Label `<label>` props",
-        input: "Input `<input>` props",
+        error: "Error `<div>` props",
         leading: "Leading container `<span>` props",
         trailing: "Trailing container `<span>` props",
         description: "Description `<p>` props",
