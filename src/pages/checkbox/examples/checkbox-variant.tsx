@@ -1,34 +1,34 @@
 import { Checkbox } from "@/component";
+import { cn } from "@/lib";
 
 export default function CheckboxVariant() {
+  const items = [
+    { value: "a", label: "toggle A" },
+    { value: "b", label: "toggle B" },
+    { value: "c", label: "toggle C" },
+  ];
+
   return (
-
-      <Checkbox.Group defaultValue={["a"]} className="gap-0 w-full items-center justify-center">
+    <Checkbox.Group
+      defaultValue={["a"]}
+      className="gap-0 w-full items-center justify-center"
+    >
+      {items.map((item, index) => (
         <Checkbox
-          value="a"
+          key={item.value}
+          value={item.value}
           variant="toggle"
           indicator={{ hidden: true }}
-          className="rounded-l-full rounded-tr-none rounded-br-none"
+          className={cn(
+            index === 0 && "rounded-l-full rounded-tr-none rounded-br-none",
+            index === items.length - 1 &&
+              "rounded-r-full rounded-tl-none rounded-bl-none",
+            index > 0 && index < items.length - 1 && "rounded-none"
+          )}
         >
-          toggle A
+          {item.label}
         </Checkbox>
-        <Checkbox
-          value="b"
-          variant="toggle"
-          indicator={{ hidden: true }}
-          className="rounded-none"
-        >
-          toggle B
-        </Checkbox>
-        <Checkbox
-          value="c"
-          variant="toggle"
-          indicator={{ hidden: true }}
-          className="rounded-r-full rounded-tl-none rounded-bl-none"
-        >
-          toggle C
-        </Checkbox>
-      </Checkbox.Group>
-
+      ))}
+    </Checkbox.Group>
   );
 }

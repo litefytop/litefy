@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeftIcon,
@@ -9,17 +9,19 @@ import {
   Title,
   Description,
   ShikiCodeBlock,
+
   Button,
   Docs,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
-import { t } from "@/pages/config/i18n";
+import { t } from "@/pages";
 import { getComponentNav } from "@/pages/config/routes";
-import { DescriptionBasic } from "./examples";
 
-import DescriptionBasicRaw from "./examples/description-basic.tsx?raw";
-import descriptionDoc from "./doc.mdx?raw";
-import descriptionSrc from "@/component/ui/description.tsx?raw";
+import { DrawerBasic } from "./examples";
+
+import BasicRaw from "./examples/drawer-basic.tsx?raw";
+import componentDoc from "./doc.mdx?raw";
+import componentSrc from "@/component/ui/drawer.tsx?raw";
 
 function DemoSection({
   id,
@@ -33,11 +35,7 @@ function DemoSection({
   code: string;
 }) {
   return (
-    <section
-      id={id}
-      data-anchor-id={id}
-      className="space-y-4 py-4"
-    >
+    <section id={id} data-anchor-id={id} className="space-y-4 py-4">
       <div>
         <Title as="h3">{title}</Title>
       </div>
@@ -49,29 +47,15 @@ function DemoSection({
   );
 }
 
-export default function DescriptionPage({ locale = "zh" }: { locale?: string }) {
-  const [copied, setCopied] = useState(false);
+export default function DrawerPage({ locale = "zh" }: { locale?: string }) {
   const navigate = useNavigate();
+  const [copied, setCopied] = useState(false);
   const lang = t(locale as "zh" | "en");
-  const l = lang.description;
-  const nav = getComponentNav("/components/description", locale as "zh" | "en");
-
-  const descriptionSections = [
-    {
-      title: l.api.sectionTitles.descriptionProps,
-
-      data: [
-        {
-          props: "className",
-          type: "ClassNameValue",
-          description: lang.common.className,
-        },
-      ],
-    },
-  ];
+  const l = lang.drawer;
+  const nav = getComponentNav("/components/drawer", locale as "zh" | "en");
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(descriptionDoc);
+    navigator.clipboard.writeText(componentDoc);
     setCopied(true);
     Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);
@@ -84,6 +68,41 @@ export default function DescriptionPage({ locale = "zh" }: { locale?: string }) 
   const handleNext = () => {
     if (nav.next) navigate(`/${locale}${nav.next.href}`);
   };
+
+  const sections = [
+    {
+      title: l.api.sectionTitles.drawerRef,
+      data: [
+        {
+          props: "show",
+          type: "() => void",
+          description: l.api.props.show,
+        },
+        {
+          props: "close",
+          type: "() => void",
+          description: l.api.props.close,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.drawerProps,
+
+      data: [
+        {
+          props: "placement",
+          type: '"left" | "right" | "top" | "bottom"',
+          default: '"right"',
+          description: l.api.props.placement,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          description: lang.common.className,
+        },
+      ],
+    },
+  ];
 
   return (
     <div className="flex">
@@ -115,7 +134,7 @@ export default function DescriptionPage({ locale = "zh" }: { locale?: string }) 
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
-          <ShikiCodeBlock>{descriptionSrc}</ShikiCodeBlock>
+          <ShikiCodeBlock>{componentSrc}</ShikiCodeBlock>
         </section>
 
         <section id="examples" className="">
@@ -124,18 +143,17 @@ export default function DescriptionPage({ locale = "zh" }: { locale?: string }) 
           <DemoSection
             id="basic"
             title={l.basic.title}
-            code={DescriptionBasicRaw}
+            code={BasicRaw}
           >
-            <DescriptionBasic />
+            <DrawerBasic />
           </DemoSection>
-
         </section>
 
         <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
-          <Docs sections={descriptionSections} />
+          <Docs sections={sections} />
         </section>
       </div>
 

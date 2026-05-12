@@ -7,7 +7,7 @@ type DialogProps = Omit<React.ComponentProps<"dialog">, "className"> & {
   className?: ClassNameValue;
 };
 
-function Dialog({ className, children, ref, ...props }: DialogProps) {
+function Dialog({ className, children, ...props }: DialogProps) {
   const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
     if (e.target === e.currentTarget) {
       e.currentTarget.close();
@@ -16,7 +16,6 @@ function Dialog({ className, children, ref, ...props }: DialogProps) {
 
   return (
     <dialog
-      ref={ref}
       onClick={handleBackdropClick}
       className={cn(
         "fixed inset-0 m-auto w-full max-w-md rounded-lg border bg-background p-6 shadow-lg text-foreground",

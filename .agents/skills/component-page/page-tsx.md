@@ -3,7 +3,8 @@
 ## 组件模板
 
 ```tsx
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -14,11 +15,15 @@ import {
   Description,
   ShikiCodeBlock,
   Anatomy,
+  ComponentName,
   Button,
   Docs,
 } from "@/component";
-import { toast } from "sonner";
+import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages";
+import { getComponentNav } from "@/pages/config/routes";
+
+import { Example1 } from "./examples";
 
 import Example1Raw from "./examples/Example1.tsx?raw";
 import componentDoc from "./doc.mdx?raw";
@@ -53,18 +58,27 @@ function DemoSection({
 }
 
 export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
+  const navigate = useNavigate();
+  const [copied, setCopied] = useState(false);
   const lang = t(locale as "zh" | "en");
   const l = lang.componentName;
-  const [copied, setCopied] = React.useState(false);
+  const nav = getComponentNav("/components/component-name", locale as "zh" | "en");
 
   const handleCopy = () => {
     navigator.clipboard.writeText(componentDoc);
     setCopied(true);
-    toast.success(lang.common.copySuccess);
+    Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // API 文档数据（从 i18n 获取翻译）
+  const handlePrev = () => {
+    if (nav.prev) navigate(`/${locale}${nav.prev.href}`);
+  };
+
+  const handleNext = () => {
+    if (nav.next) navigate(`/${locale}${nav.next.href}`);
+  };
+
   const sections = [
     {
       title: l.api.sectionTitles.componentProps,
@@ -72,7 +86,6 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "propName",
           type: "string",
-          
           description: l.api.props.propName,
         },
       ],
@@ -94,10 +107,10 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
                 )}
                 {lang.common.copyDocs}
               </Button>
-              <Button variant="ghost">
+              <Button variant="ghost" onClick={handlePrev} disabled={!nav.prev}>
                 <ArrowLeftIcon className="size-4" />
               </Button>
-              <Button variant="ghost">
+              <Button variant="ghost" onClick={handleNext} disabled={!nav.next}>
                 <ArrowRightIcon className="size-4" />
               </Button>
             </div>
@@ -105,7 +118,7 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 scroll-mt-30">
+        <section id="installation" className="mb-8 scroll-mt-20">
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
@@ -122,20 +135,20 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
           >
             <Example1 />
           </DemoSection>
-
-          {/* 更多示例... */}
         </section>
 
         <section id="anatomy" className="mt-8 space-y-4">
           <Title as="h2">{lang.anatomy}</Title>
           <Anatomy
+            className="h-32"
             parts={[
-              { id: "anatomy-root", label: l.anatomy.root },
-              { id: "anatomy-child", label: l.anatomy.child },
+              { id: "anatomy-component", label: l.anatomy.component },
             ]}
           >
-            <ComponentName id="anatomy-root">
-              <ChildComponent id="anatomy-child" />
+            <ComponentName>
+              <div id="anatomy-component" className="w-64">
+                <h2 className="text-lg font-semibold mb-2">Component</h2>
+              </div>
             </ComponentName>
           </Anatomy>
         </section>
@@ -153,7 +166,6 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
-            {/* 更多锚点项... */}
           </Anchor.Section>
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
           <Anchor.Section href="#docs" linkText={lang.docs} />
@@ -163,38 +175,3 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
   );
 }
 ```
-
-## 注意事项
-
-1. **Header 部分**：
-   - 使用 `<header className="pb-4 mb-4 border-b space-y-3">`
-   - 第一行：Title + 按钮组（flex justify-between）
-   - 第二行：Description 独占一行
-   - 按钮组使用 Button 组件，包含：复制文档、后退、前进图标按钮
-
-2. **安装部分**：
-   - 使用 `id="installation"`
-   - 使用 `ShikiCodeBlock` 展示组件源码
-   - Title 使用 `as="h2"`
-
-3. **示例部分**：
-   - 使用 `<section id="examples">` 包裹
-   - 章节标题 `<Title as="h2">示例</Title>`
-   - 每个 DemoSection 内部使用 `<Title as="h3">` 作为三级标题
-
-4. **DemoSection**：
-   - Title 使用 `as="h3"`（示例下的三级目录）
-   - children 是渲染的组件
-   - code 是源码（通过 `?raw` 导入）
-
-5. **结构部分**：
-   - Anatomy 组件需要在组件上添加对应 id
-   - Title 使用 `as="h2"`
-
-6. **文档部分**：
-   - 使用 `Docs` 组件展示 API 文档
-   - `sections` 数据从 i18n 配置获取翻译
-
-7. **侧边栏 Anchor**：
-   - 使用 `href` 属性（带 # 前缀）
-   - 使用 `linkText` 属性作为链接文本

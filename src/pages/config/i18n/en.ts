@@ -4,7 +4,8 @@ export const en = {
     copied: "Copied",
     copySuccess: "Document copied to clipboard",
     copyDocs: "Copy docs",
-    className: "Supports string | string[] | boolean | null | undefined | Record<string,string | string[]>",
+    className:
+      "Supports string | string[] | boolean | null | undefined | Record<string,string | string[]>",
   },
   home: {
     title: "Plain UI",
@@ -31,6 +32,7 @@ export const en = {
     anchor: "Anchor",
     toast: "Toast",
     dialog: "Dialog",
+    drawer: "Drawer",
     input: "Input",
     checkbox: "Checkbox",
     slider: "Slider",
@@ -93,7 +95,6 @@ export const en = {
       separator: "Separator",
     },
     api: {
-
       sectionTitles: {
         dropdownMenuProps: "DropdownMenu Props",
         dropdownMenuTriggerProps: "DropdownMenuTrigger Props",
@@ -194,7 +195,6 @@ export const en = {
       link: "Link Text",
     },
     api: {
-
       sectionTitles: {
         anchorProps: "Anchor Props",
         anchorSectionProps: "Anchor.Section Props",
@@ -202,7 +202,8 @@ export const en = {
         itemPropsConfig: "itemProps Config",
       },
       props: {
-        rootMargin: "Root margin for IntersectionObserver (top right bottom left)",
+        rootMargin:
+          "Root margin for IntersectionObserver (top right bottom left)",
         root: "Root element for IntersectionObserver. In iframe, defaults to document.documentElement to fix viewport offset issue",
       },
       sectionProps: {
@@ -259,7 +260,6 @@ export const en = {
       spinner: "Spinner",
     },
     api: {
-
       sectionTitles: {
         buttonProps: "Button Props",
         loadingConfig: "Loading state Config",
@@ -327,7 +327,9 @@ export const en = {
 
     variants: {
       title: "Variants",
-      description: "Checkbox and Toggle have the same logic. You can switch between them by using the variants prop. When using text variant, Checkbox is displayed, otherwise Toggle is displayed."
+    },
+    invalid: {
+      title: "Invalid State",
     },
     anatomy: {
       group: "Group",
@@ -335,10 +337,10 @@ export const en = {
       indicator: "Indicator",
     },
     api: {
-
       sectionTitles: {
         checkboxGroupProps: "Checkbox.Group Props",
         checkboxProps: "Checkbox Props",
+        indicatorConfig: "indicator Config",
         itemPropsConfig: "itemProps Config",
       },
       groupProps: {
@@ -347,7 +349,7 @@ export const en = {
         onValueChange: "Value change callback",
         disabled: "Whether to disable entire group",
         invalid: "Mark group as invalid",
-        name: "Form field name",
+        name: "Form field name, submits comma-separated string (e.g. a,b,c) when present",
       },
       props: {
         value: "Checkbox value (required)",
@@ -355,8 +357,12 @@ export const en = {
         disabled: "Whether disabled",
         variant: "Style variant",
         indicator: "Indicator config",
-        toggle: "Toggle mode",
-        itemProps: "Internal wrapped props pass-through",
+      },
+      indicator: {
+        checked: "Indicator when checked",
+        unchecked: "Indicator when unchecked",
+        hidden: "Hide indicator",
+        props: "Indicator element props",
       },
       itemPropsConfig: {
         indicator: "Indicator element props",
@@ -371,20 +377,11 @@ export const en = {
     basic: {
       title: "Basic",
     },
-    anatomy: {
-      description: "Description",
-      title: "Title",
-      content: "Content",
-    },
     api: {
-
       sectionTitles: {
         descriptionProps: "Description Props",
       },
-      props: {
-        as: "HTML tag to render",
-        children: "Child components",
-      },
+
     },
   },
 
@@ -412,7 +409,6 @@ export const en = {
       description: "Description",
     },
     api: {
-
       sectionTitles: {
         inputProps: "Input Props",
         itemPropsConfig: "itemProps Config",
@@ -453,7 +449,6 @@ export const en = {
       toggle: "Toggle Button",
     },
     api: {
-
       sectionTitles: {
         passwordProps: "Password Props",
         itemPropsConfig: "itemProps Config",
@@ -502,7 +497,6 @@ export const en = {
       indicator: "Indicator",
     },
     api: {
-
       sectionTitles: {
         radioGroupProps: "RadioGroup Props",
         radioProps: "Radio Props",
@@ -534,28 +528,28 @@ export const en = {
     basic: {
       title: "Basic",
     },
-    withTrigger: {
-      title: "Custom Trigger",
-    },
-    withClose: {
-      title: "Close Button",
-    },
-    anatomy: {
-      dialog: "Dialog",
-      content: "Content",
-      close: "Close Button",
-    },
     api: {
-
       sectionTitles: {
         dialogProps: "Dialog Props",
-        contentProps: "Dialog.Content Props",
-        triggerProps: "Dialog.Trigger Props",
-        closeProps: "Dialog.Close Props",
+      },
+    },
+  },
+
+  drawer: {
+    title: "Drawer",
+    description: "Drawer component for displaying slide-in content.",
+    basic: {
+      title: "Basic",
+    },
+    api: {
+      sectionTitles: {
+        drawerRef: "DrawerRef",
+        drawerProps: "Drawer Props",
       },
       props: {
-        children: "Child components",
-        showCloseButton: "Show close button",
+        show: "Open the drawer",
+        close: "Close the drawer",
+        placement: "Drawer placement",
       },
     },
   },

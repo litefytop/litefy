@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -8,19 +9,19 @@ import {
   Title,
   Description,
   ShikiCodeBlock,
+
   Button,
   Docs,
-  Toaster
 } from "@/component";
+import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages";
+import { getComponentNav } from "@/pages/config/routes";
+
+import { DialogBasic } from "./examples";
 
 import BasicRaw from "./examples/dialog-basic.tsx?raw";
-import WithTriggerRaw from "./examples/dialog-with-trigger.tsx?raw";
-import WithCloseRaw from "./examples/dialog-with-close.tsx?raw";
 import componentDoc from "./doc.mdx?raw";
 import componentSrc from "@/component/ui/dialog.tsx?raw";
-
-import { DialogBasic, DialogWithTrigger, DialogWithClose } from "./examples";
 
 function DemoSection({
   id,
@@ -34,11 +35,7 @@ function DemoSection({
   code: string;
 }) {
   return (
-    <section
-      id={id}
-      data-anchor-id={id}
-      className="space-y-4 py-4"
-    >
+    <section id={id} data-anchor-id={id} className="space-y-4 py-4">
       <div>
         <Title as="h3">{title}</Title>
       </div>
@@ -51,9 +48,11 @@ function DemoSection({
 }
 
 export default function DialogPage({ locale = "zh" }: { locale?: string }) {
+  const navigate = useNavigate();
+  const [copied, setCopied] = useState(false);
   const lang = t(locale as "zh" | "en");
   const l = lang.dialog;
-  const [copied, setCopied] = React.useState(false);
+  const nav = getComponentNav("/components/dialog", locale as "zh" | "en");
 
   const handleCopy = () => {
     navigator.clipboard.writeText(componentDoc);
@@ -62,61 +61,23 @@ export default function DialogPage({ locale = "zh" }: { locale?: string }) {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handlePrev = () => {
+    if (nav.prev) navigate(`/${locale}${nav.prev.href}`);
+  };
+
+  const handleNext = () => {
+    if (nav.next) navigate(`/${locale}${nav.next.href}`);
+  };
+
   const sections = [
     {
       title: l.api.sectionTitles.dialogProps,
 
       data: [
         {
-          props: "children",
-          type: "React.ReactNode",
-          
-          description: l.api.props.children,
-        },
-      ],
-    },
-    {
-      title: l.api.sectionTitles.contentProps,
-
-      data: [
-
-        {
-          props: "children",
-          type: "React.ReactNode",
-          
-          description: l.api.props.children,
-        },
-        {
-          props: "showCloseButton",
-          type: "boolean",
-          default: "true",
-          description: l.api.props.showCloseButton,
-        },
-      ],
-    },
-    {
-      title: l.api.sectionTitles.triggerProps,
-
-      data: [
-
-        {
-          props: "children",
-          type: "React.ReactNode",
-          
-          description: l.api.props.children,
-        },
-      ],
-    },
-    {
-      title: l.api.sectionTitles.closeProps,
-
-      data: [
-
-        {
-          props: "children",
-          type: "React.ReactNode",
-          
-          description: l.api.props.children,
+          props: "className",
+          type: "ClassNameValue",
+          description: lang.common.className,
         },
       ],
     },
@@ -137,10 +98,10 @@ export default function DialogPage({ locale = "zh" }: { locale?: string }) {
                 )}
                 {lang.common.copyDocs}
               </Button>
-              <Button variant="ghost">
+              <Button variant="ghost" onClick={handlePrev} disabled={!nav.prev}>
                 <ArrowLeftIcon className="size-4" />
               </Button>
-              <Button variant="ghost">
+              <Button variant="ghost" onClick={handleNext} disabled={!nav.next}>
                 <ArrowRightIcon className="size-4" />
               </Button>
             </div>
@@ -148,7 +109,7 @@ export default function DialogPage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 scroll-mt-30">
+        <section id="installation" className="mb-8 scroll-mt-20">
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
@@ -165,24 +126,7 @@ export default function DialogPage({ locale = "zh" }: { locale?: string }) {
           >
             <DialogBasic />
           </DemoSection>
-
-          <DemoSection
-            id="with-trigger"
-            title={l.withTrigger.title}
-            code={WithTriggerRaw}
-          >
-            <DialogWithTrigger />
-          </DemoSection>
-
-          <DemoSection
-            id="with-close"
-            title={l.withClose.title}
-            code={WithCloseRaw}
-          >
-            <DialogWithClose />
-          </DemoSection>
         </section>
-
 
         <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
@@ -197,8 +141,6 @@ export default function DialogPage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
-            <Anchor.Item href="#with-trigger">{l.withTrigger.title}</Anchor.Item>
-            <Anchor.Item href="#with-close">{l.withClose.title}</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#docs" linkText={lang.docs} />
         </Anchor>

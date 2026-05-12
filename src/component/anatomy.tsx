@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, useRef } from "react";
+import { useState, createContext, useContext, useRef, useMemo, useCallback } from "react";
 import { cn } from "@/lib";
 
 interface AnatomyContextValue {
@@ -29,10 +29,10 @@ interface AnatomyProps {
 }
 
 export function Anatomy({ title = "Anatomy", children, parts, className }: AnatomyProps) {
-  const [activePart, setActivePart] = useState<string | null>(null);
+  const [activePart, setActivePartState] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleSetActive = (part: string | null, partType: 'id' | 'name' = 'id') => {
+  const setActivePart = useCallback((part: string | null, partType: 'id' | 'name' = 'id') => {
     if (!containerRef.current) return;
 
     if (activePart) {
@@ -49,11 +49,19 @@ export function Anatomy({ title = "Anatomy", children, parts, className }: Anato
       newEl?.classList.add('anatomy-highlight');
     }
 
-    setActivePart(part);
-  };
+    setActivePartState(part);
+  }, [activePart]);
 
+  const contextValue = useMemo(
+    () => ({
+      activePart,
+      setActivePart,
+      containerRef,
+    }),
+    [activePart, setActivePart],
+  );
   return (
-    <AnatomyContext.Provider value={{ activePart, setActivePart: handleSetActive, containerRef }}>
+    <AnatomyContext.Provider value={contextValue}>
       <style>{`
         .anatomy-highlight {
           border: 2px solid var(--primary);

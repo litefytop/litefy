@@ -16,6 +16,7 @@ const Password = lazy(() => import("@/pages/password"));
 const Radio = lazy(() => import("@/pages/radio"));
 const Toast = lazy(() => import("@/pages/toast"));
 const Dialog = lazy(() => import("@/pages/dialog"));
+const Drawer = lazy(() => import("@/pages/drawer"));
 
 const introduction = {
   key: "introduction",
@@ -29,6 +30,7 @@ const componentRouteConfig = [
   { key: "button", path: "/components/button", Component: Button },
   { key: "toast", path: "/components/toast", Component: Toast },
   { key: "dialog", path: "/components/dialog", Component: Dialog },
+  { key: "drawer", path: "/components/drawer", Component: Drawer },
   { key: "input", path: "/components/input", Component: Input },
   { key: "checkbox", path: "/components/checkbox", Component: Checkbox },
   { key: "radio", path: "/components/radio", Component: Radio },

@@ -2,25 +2,20 @@
 import { ClassNameValue, cn } from "@/lib";
 import { Button, ButtonProps } from "@/component";
 
-// store.ts
 import { useState, useEffect } from "react";
 
-// 1. 全局状态（组件外面！）
 let isOpen = true;
 const listeners = new Set<() => void>();
 
-// 2. 改状态 + 通知所有组件
 function toggle() {
   isOpen = !isOpen;
   listeners.forEach((fn) => fn());
 }
 
-// 3. 给组件用的 Hook
 function useSidebarStore() {
   const [open, setOpen] = useState(isOpen);
 
   useEffect(() => {
-    // 订阅
     const update = () => setOpen(isOpen);
     listeners.add(update);
     return () => {

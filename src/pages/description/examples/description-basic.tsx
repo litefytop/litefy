@@ -4,7 +4,7 @@ export default function DescriptionBasic() {
   return (
     <div className="flex flex-col gap-4">
       <h2 className="text-lg font-semibold">Account Information</h2>
-      <Description>Description: Please complete your account information so we can provide you with better service</Description>
+      <Description> Please complete your account information so we can provide you with better service</Description>
       <div className="flex flex-col gap-1.5">
         <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 py-1 indent-2">
           Username
@@ -16,7 +16,7 @@ export default function DescriptionBasic() {
           />
         </div>
         <Description className="py-1 indent-2">
-          Description: Username is used for login, 4-16 characters
+          Username is used for login, 4-16 characters
         </Description>
       </div>
     </div>

@@ -75,11 +75,14 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
           default: "primary",
           description: l.api.props.variant,
         },
-
         {
-          props: "loading",
+          props: "className",
+          type: "ClassNameValue",
+          description: lang.common.className,
+        },
+        {
+          props: "loadingConfig",
           type: "ButtonLoadingConfig",
-          
           description: l.api.props.loading,
         },
       ],
@@ -91,7 +94,6 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "icon",
           type: "React.ReactNode",
-          
           description: l.api.loadingConfig.icon,
         },
         {
@@ -99,6 +101,11 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
           type: "boolean",
           default: "false",
           description: l.api.loadingConfig.loading,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          description: lang.common.className,
         },
       ],
     },

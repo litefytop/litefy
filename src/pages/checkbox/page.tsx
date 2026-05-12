@@ -22,12 +22,14 @@ import {
   CheckboxControlled,
   CheckboxDisabled,
   CheckboxVariant,
+  CheckboxInvalid,
 } from "./examples";
 
 import CheckboxBasicRaw from "./examples/checkbox-basic.tsx?raw";
 import CheckboxControlledRaw from "./examples/checkbox-controlled.tsx?raw";
 import CheckboxDisabledRaw from "./examples/checkbox-disabled.tsx?raw";
 import CheckboxVariantRaw from "./examples/checkbox-variant.tsx?raw";
+import CheckboxInvalidRaw from "./examples/checkbox-invalid.tsx?raw";
 import checkboxDoc from "./doc.mdx?raw";
 import checkboxSrc from "@/component/ui/checkbox.tsx?raw";
 
@@ -74,19 +76,16 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "defaultValue",
           type: "string[]",
-          
           description: l.api.groupProps.defaultValue,
         },
         {
           props: "value",
           type: "string[]",
-          
           description: l.api.groupProps.value,
         },
         {
           props: "onValueChange",
-          type: "(value: string[]) => void",
-          
+          type: "(value: string[]) => void | Promise<void>",
           description: l.api.groupProps.onValueChange,
         },
         {
@@ -98,14 +97,17 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "invalid",
           type: "boolean",
-          
           description: l.api.groupProps.invalid,
         },
         {
           props: "name",
           type: "string",
-          
           description: l.api.groupProps.name,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          description: lang.common.className,
         },
       ],
     },
@@ -116,13 +118,11 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "value",
           type: "string",
-          
           description: l.api.props.value,
         },
         {
           props: "onCheckedChange",
           type: "(checked: boolean) => void",
-          
           description: l.api.props.onCheckedChange,
         },
         {
@@ -140,38 +140,40 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "indicator",
           type: "object",
-          
           description: l.api.props.indicator,
         },
         {
-          props: "toggle",
-          type: "boolean",
-          
-          description: l.api.props.toggle,
-        },
-        {
-          props: "itemProps",
-          type: "object",
-          
-          description: l.api.props.itemProps,
+          props: "className",
+          type: "ClassNameValue",
+          description: lang.common.className,
         },
       ],
     },
     {
-      title: l.api.sectionTitles.itemPropsConfig,
+      title: l.api.sectionTitles.indicatorConfig,
 
       data: [
         {
-          props: "indicator",
-          type: 'Omit<React.ComponentProps<"span">, "children">',
-          
-          description: l.api.itemPropsConfig.indicator,
+          props: "checked",
+          type: "ReactNode",
+          default: "<CheckIcon />",
+          description: l.api.indicator.checked,
         },
         {
-          props: "label",
-          type: 'Omit<React.ComponentProps<"label">, "children">',
-          
-          description: l.api.itemPropsConfig.label,
+          props: "unchecked",
+          type: "ReactNode",
+          description: l.api.indicator.unchecked,
+        },
+        {
+          props: "hidden",
+          type: "boolean",
+          default: "false",
+          description: l.api.indicator.hidden,
+        },
+        {
+          props: "props",
+          type: 'Omit<ComponentProps<"span">, "className"> & { className?: ClassNameValue }',
+          description: l.api.indicator.props,
         },
       ],
     },
@@ -261,7 +263,14 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
           >
             <CheckboxVariant />
           </DemoSection>
-          <Description>{l.variants.description}</Description>
+
+          <DemoSection
+            id="invalid"
+            title={l.invalid.title}
+            code={CheckboxInvalidRaw}
+          >
+            <CheckboxInvalid />
+          </DemoSection>
         </section>
 
         <section id="anatomy" className="mt-8 space-y-4">

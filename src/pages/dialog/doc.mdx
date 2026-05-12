@@ -9,26 +9,25 @@ import { Dialog } from "@/component/ui/dialog";
 ### Basic Dialog
 
 ```tsx
-<Dialog>
-  <Dialog.Trigger>Open Dialog</Dialog.Trigger>
-  <Dialog.Content>
-    <h2>Dialog Title</h2>
-    <p>Dialog content goes here</p>
-  </Dialog.Content>
-</Dialog>
-```
+import { Button, Dialog } from "@/component";
 
-### With Custom Close Button
+function App() {
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
-```tsx
-<Dialog>
-  <Dialog.Trigger>Open</Dialog.Trigger>
-  <Dialog.Content>
-    <h2>Title</h2>
-    <p>Content</p>
-    <Dialog.Close>Close</Dialog.Close>
-  </Dialog.Content>
-</Dialog>
+  return (
+    <>
+      <Button variant="outline" onClick={() => dialogRef.current?.showModal()}>
+        Open Dialog
+      </Button>
+      <Dialog ref={dialogRef}>
+        <h2 className="text-lg font-semibold mb-2">Dialog Title</h2>
+        <p className="text-sm text-muted-foreground">
+          Dialog content goes here
+        </p>
+      </Dialog>
+    </>
+  );
+}
 ```
 
 ## API Reference
@@ -37,26 +36,14 @@ import { Dialog } from "@/component/ui/dialog";
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| children | React.ReactNode | - | Child components |
-
-### Dialog.Content Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| className | string | - | Custom class name |
 | children | React.ReactNode | - | Dialog content |
-| showCloseButton | boolean | true | Show close button in top-right corner |
+| className | ClassNameValue | - | Custom class name (string \| string[] \| boolean \| null \| undefined \| Record<string, string \| string[]>) |
 
-### Dialog.Trigger Props
+### Inherited Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| className | string | - | Custom class name |
-| children | React.ReactNode | - | Trigger button content |
+Also supports all native `<dialog>` element props:
 
-### Dialog.Close Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| className | string | - | Custom class name |
-| children | React.ReactNode | - | Close button content |
+- `open` - Controls dialog visibility
+- `onClose` - Dialog close event handler
+- `onCancel` - Dialog cancel event handler
+- etc.

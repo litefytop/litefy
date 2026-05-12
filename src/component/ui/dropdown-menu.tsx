@@ -106,7 +106,7 @@ export function DropdownMenuTrigger({
     };
 
     const handleToggle = () => {
-      // Use the popoverOpen property for reliable state detection
+
       if (
         menu.matches(":popover-open") ||
         (menu as HTMLMenuElement & { popoverOpen?: boolean }).popoverOpen

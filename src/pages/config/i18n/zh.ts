@@ -4,7 +4,8 @@ export const zh = {
     copied: "已复制",
     copySuccess: "文档已复制到剪贴板",
     copyDocs: "复制文档",
-    className: "支持 string | string[] | boolean | null | undefined | Record<string,string | string[]>",
+    className:
+      "支持 string | string[] | boolean | null | undefined | Record<string,string | string[]>",
   },
   home: {
     title: "Plain UI",
@@ -31,6 +32,7 @@ export const zh = {
     anchor: "锚点",
     toast: "消息提示",
     dialog: "对话框",
+    drawer: "抽屉",
     input: "输入框",
     checkbox: "复选框",
     slider: "滑块",
@@ -321,8 +323,9 @@ export const zh = {
 
     variants: {
       title: "变体",
-      description:
-        "Checkbox 与 Toggle 逻辑高度一致，可通过 variants 属性灵活切换：使用 text 变体时为 Checkbox，使用其他变体时则为 Toggle。",
+    },
+    invalid: {
+      title: "无效状态",
     },
     anatomy: {
       group: "组",
@@ -333,6 +336,7 @@ export const zh = {
       sectionTitles: {
         checkboxGroupProps: "Checkbox.Group Props",
         checkboxProps: "Checkbox Props",
+        indicatorConfig: "indicator 配置",
         itemPropsConfig: "itemProps 配置",
       },
       groupProps: {
@@ -341,7 +345,7 @@ export const zh = {
         onValueChange: "值变化回调",
         disabled: "是否禁用整个组",
         invalid: "标记组是否为无效状态",
-        name: "表单字段名称",
+        name: "表单字段名称，提交时返回逗号分隔字符串（如 a,b,c）",
       },
       props: {
         value: "复选框的值（必填）",
@@ -349,8 +353,12 @@ export const zh = {
         disabled: "是否禁用",
         variant: "样式变体",
         indicator: "指示器配置",
-        toggle: "切换模式",
-        itemProps: "内部封装属性透传",
+      },
+      indicator: {
+        checked: "选中时的指示器",
+        unchecked: "未选中时的指示器",
+        hidden: "隐藏指示器",
+        props: "指示器元素属性",
       },
       itemPropsConfig: {
         indicator: "指示器元素属性",
@@ -365,19 +373,11 @@ export const zh = {
     basic: {
       title: "基础",
     },
-    anatomy: {
-      description: "Description",
-      title: "标题",
-      content: "内容",
-    },
     api: {
       sectionTitles: {
         descriptionProps: "Description Props",
       },
-      props: {
-        as: "渲染的 HTML 标签",
-        children: "子组件",
-      },
+
     },
   },
 
@@ -524,27 +524,28 @@ export const zh = {
     basic: {
       title: "基础",
     },
-    withTrigger: {
-      title: "自定义触发器",
-    },
-    withClose: {
-      title: "关闭按钮",
-    },
-    anatomy: {
-      dialog: "对话框",
-      content: "内容区",
-      close: "关闭按钮",
-    },
     api: {
       sectionTitles: {
         dialogProps: "Dialog Props",
-        contentProps: "Dialog.Content Props",
-        triggerProps: "Dialog.Trigger Props",
-        closeProps: "Dialog.Close Props",
+      },
+    },
+  },
+
+  drawer: {
+    title: "抽屉",
+    description: "抽屉组件，用于从侧边滑入展示内容。",
+    basic: {
+      title: "基础",
+    },
+    api: {
+      sectionTitles: {
+        drawerRef: "DrawerRef",
+        drawerProps: "Drawer Props",
       },
       props: {
-        children: "子组件",
-        showCloseButton: "是否显示关闭按钮",
+        show: "打开抽屉",
+        close: "关闭抽屉",
+        placement: "抽屉位置",
       },
     },
   },

@@ -42,3 +42,4 @@ import { Component } from "@/component/ui/component";
 - 仅用于复制和 AI 使用
 - 不在网页中渲染
 - 网页渲染使用 `Docs` 组件（在 page.tsx 中定义）
+- **原生 HTML 属性不需要重复**（如 `children`、`ref` 等）- 继承自原生元素，不需要额外文档

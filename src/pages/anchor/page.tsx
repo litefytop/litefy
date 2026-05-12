@@ -197,7 +197,7 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
             <iframe
               ref={iframeRef}
               src="/components/anchor/demo"
-              title="Anchor 锚点演示"
+              title="Anchor Demo"
               className="w-full border border-gray-200 rounded-lg overflow-hidden h-[400px]"
             />
           </div>

@@ -31,3 +31,4 @@ export * from "./dialog";
 export * from "./icons";
 export * from "./anchor";
 export * from "./toast"
+export * from "./drawer"
