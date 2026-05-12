@@ -1,30 +1,31 @@
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/component";
+import { DropdownMenu, Button } from "@/component";
 
 export default function DropdownMenuAlign() {
   return (
     <div className="flex gap-4">
       <DropdownMenu>
-        <DropdownMenuTrigger>Left Align</DropdownMenuTrigger>
-        <DropdownMenuContent x_axis="start">
-          <DropdownMenuItem>Left Aligned Content</DropdownMenuItem>
-        </DropdownMenuContent>
+        <DropdownMenu.Trigger className={Button.class.variant.ghost}>
+          Left Align
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content x_axis="start">
+          <DropdownMenu.Item>Left Aligned Content</DropdownMenu.Item>
+        </DropdownMenu.Content>
       </DropdownMenu>
       <DropdownMenu>
-        <DropdownMenuTrigger>Center</DropdownMenuTrigger>
-        <DropdownMenuContent x_axis="center">
-          <DropdownMenuItem>Centered Content</DropdownMenuItem>
-        </DropdownMenuContent>
+        <DropdownMenu.Trigger className={Button.class.variant.ghost}>
+          Center
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content x_axis="center">
+          <DropdownMenu.Item>Centered Content</DropdownMenu.Item>
+        </DropdownMenu.Content>
       </DropdownMenu>
       <DropdownMenu>
-        <DropdownMenuTrigger>Right Align</DropdownMenuTrigger>
-        <DropdownMenuContent x_axis="end">
-          <DropdownMenuItem>Right Aligned Content</DropdownMenuItem>
-        </DropdownMenuContent>
+        <DropdownMenu.Trigger className={Button.class.variant.ghost}>
+          Right Align
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content x_axis="end">
+          <DropdownMenu.Item>Right Aligned Content</DropdownMenu.Item>
+        </DropdownMenu.Content>
       </DropdownMenu>
     </div>
   );

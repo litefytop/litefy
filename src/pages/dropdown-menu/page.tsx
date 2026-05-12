@@ -13,12 +13,7 @@ import {
   Button,
   Docs,
   Toaster,
-} from "@/component";
-import {
   DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuItem,
-  DropdownMenuContent,
 } from "@/component";
 import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
@@ -72,39 +67,14 @@ export default function DropdownMenuPage({
 
   const dropdownMenuSections = [
     {
-      title: l.api.sectionTitles.dropdownMenuProps,
-
-      data: [
-        {
-          props: "children",
-          type: "ReactNode",
-          
-          description: l.api.dropdownMenuProps.children,
-        },
-      ],
-    },
-    {
       title: l.api.sectionTitles.dropdownMenuTriggerProps,
 
       data: [
-        {
-          props: "children",
-          type: "ReactNode",
-          
-          description: l.api.triggerProps.children,
-        },
-
         {
           props: "disabled",
           type: "boolean",
           default: "false",
           description: l.api.triggerProps.disabled,
-        },
-        {
-          props: "variant",
-          type: '"primary" | "secondary" | "ghost" | "link"',
-          default: '"primary"',
-          description: l.api.triggerProps.variant,
         },
       ],
     },
@@ -112,13 +82,6 @@ export default function DropdownMenuPage({
       title: l.api.sectionTitles.dropdownMenuContentProps,
 
       data: [
-        {
-          props: "children",
-          type: "ReactNode",
-          
-          description: l.api.contentProps.children,
-        },
-
         {
           props: "popover",
           type: '"auto" | "manual"',
@@ -144,13 +107,6 @@ export default function DropdownMenuPage({
 
       data: [
         {
-          props: "children",
-          type: "ReactNode",
-          
-          description: l.api.itemProps.children,
-        },
-
-        {
           props: "onClick",
           type: "() => void",
           
@@ -163,11 +119,6 @@ export default function DropdownMenuPage({
           description: l.api.itemProps.disabled,
         },
       ],
-    },
-    {
-      title: l.api.sectionTitles.dropdownMenuSeparatorProps,
-
-      data: [],
     },
   ];
 
@@ -264,12 +215,15 @@ export default function DropdownMenuPage({
             ]}
           >
             <DropdownMenu data-anatomy-name="root">
-              <DropdownMenuTrigger data-anatomy-name="trigger" variant="ghost">
-                打开菜单
-              </DropdownMenuTrigger>
-              <DropdownMenuContent data-anatomy-name="content" popover="manual">
-                <DropdownMenuItem>选项</DropdownMenuItem>
-              </DropdownMenuContent>
+              <DropdownMenu.Trigger 
+                data-anatomy-name="trigger"
+                className="hover:bg-accent hover:text-accent-foreground"
+              >
+                Open Menu
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Content data-anatomy-name="content" popover="manual">
+                <DropdownMenu.Item>Option</DropdownMenu.Item>
+              </DropdownMenu.Content>
             </DropdownMenu>
           </Anatomy>
         </section>

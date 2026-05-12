@@ -12,8 +12,8 @@ import { createContext, useContext, ComponentProps } from "react";
 
 const checkboxClass = {
   toggle:
-    "data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground bg-secondary text-secondary-foreground border-y border-r first:border-l",
-  checkbox: "data-[state=checked]:text-foreground/80 p-1",
+    "data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground bg-secondary text-secondary-foreground border-y border-r first:border-l group-data-[invalid=true]:data-[state=checked]:bg-destructive",
+  checkbox: "data-[state=checked]:text-foreground/80 group-data-[invalid=true]:data-[state=checked]:text-destructive",
 };
 
 export type CheckboxContextProps = {
@@ -238,7 +238,7 @@ export const Checkbox = ({
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       className={cn(
-        "inline-flex items-center justify-center gap-2 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-8 min-w-8 px-2 cursor-pointer group-data-[invalid=true]:text-destructive",
+        "inline-flex items-center justify-center gap-2 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-8 min-w-8 px-3 py-1 cursor-pointer group-data-[invalid=true]:text-destructive",
         checkboxClass[variant],
         className,
       )}
@@ -249,7 +249,7 @@ export const Checkbox = ({
           data-state={isChecked ? "checked" : "unchecked"}
           data-invalid={disabled}
           className={cn(
-            "flex items-center justify-center size-4 rounded-md border border-foreground data-[state=checked]:bg-primary data-[state=checked]:border-primary-foreground data-[state=checked]:text-primary-foreground group-data-[invalid=true]:border-destructive",
+            "flex items-center justify-center size-4 rounded-md border border-foreground data-[state=checked]:bg-primary data-[state=checked]:border-primary-foreground data-[state=checked]:text-primary-foreground group-data-[invalid=true]:border-destructive group-data-[invalid=true]:data-[state=checked]:bg-destructive",
             indicator?.props?.className,
           )}
         >

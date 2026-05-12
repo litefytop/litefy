@@ -56,9 +56,8 @@ const Drawer = React.forwardRef<DrawerRef, DrawerProps>(
         <div
           {...props}
           className={cn(
-            "fixed transform transition-transform duration-300 ease-in-out bg-background p-6 overflow-auto",
+            "fixed transform transition-transform duration-300 ease-in-out bg-background p-6 overflow-auto translate-x-0 translate-y-0",
             drawerClass[placement],
-            "translate-x-0 translate-y-0",
             className,
           )}
         >

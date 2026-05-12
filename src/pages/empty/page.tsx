@@ -15,21 +15,12 @@ import {
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
-import {
-  ButtonVariants,
-  ButtonDisabled,
-  ButtonLoading,
-  ButtonIconOnly,
-  ButtonWithIcons,
-} from "./examples";
 
-import ButtonVariantsRaw from "./examples/button-variants.tsx?raw";
-import ButtonDisabledRaw from "./examples/button-disabled.tsx?raw";
-import ButtonLoadingRaw from "./examples/button-loading.tsx?raw";
-import ButtonIconOnlyRaw from "./examples/button-icon-only.tsx?raw";
-import ButtonWithIconsRaw from "./examples/button-with-icons.tsx?raw";
-import buttonDoc from "./doc.mdx?raw";
-import buttonSrc from "@/component/ui/button.tsx?raw";
+import { EmptyBasic, EmptyCustom } from "./examples";
+import EmptyBasicRaw from "./examples/empty-basic.tsx?raw";
+import EmptyCustomRaw from "./examples/empty-custom.tsx?raw";
+import emptyDoc from "./doc.mdx?raw";
+import emptySrc from "@/component/ui/empty.tsx?raw";
 
 function DemoSection({
   id,
@@ -55,62 +46,41 @@ function DemoSection({
   );
 }
 
-export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
+export default function EmptyPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
-  const l = lang.button;
-  const nav = getComponentNav("/components/button", locale as "zh" | "en");
+  const l = lang.empty;
+  const nav = getComponentNav("/components/empty", locale as "zh" | "en");
 
-  const buttonSections = [
+  const emptySections = [
     {
-      title: l.api.sectionTitles.buttonProps,
-
-      data: [
-        {
-          props: "variant",
-          type: Object.keys(Button.class.variant).join(" | "),
-          default: "primary",
-          description: l.api.props.variant,
-        },
-        {
-          props: "className",
-          type: "ClassNameValue",
-          description: lang.common.className,
-        },
-        {
-          props: "loadingConfig",
-          type: "ButtonLoadingConfig",
-          description: l.api.props.loading,
-        },
+      title: l.api.sectionTitles.emptyProps,
+      columns: [
+        { key: "prop", header: lang.common.prop },
+        { key: "type", header: lang.common.type },
+        { key: "default", header: lang.common.default },
+        { key: "description", header: lang.common.description },
       ],
-    },
-    {
-      title: l.api.sectionTitles.loadingConfig,
-
       data: [
-        {
-          props: "icon",
-          type: "React.ReactNode",
-          description: l.api.loadingConfig.icon,
-        },
-        {
-          props: "loading",
-          type: "boolean",
-          default: "false",
-          description: l.api.loadingConfig.loading,
-        },
         {
           props: "className",
           type: "ClassNameValue",
-          description: lang.common.className,
+          default: "-",
+          description: l.api.props.className,
+        },
+        {
+          props: "children",
+          type: "React.ReactNode",
+          default: "-",
+          description: l.api.props.children,
         },
       ],
     },
   ];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(buttonDoc);
+    navigator.clipboard.writeText(emptyDoc);
     setCopied(true);
     Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);
@@ -154,60 +124,34 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
-          <ShikiCodeBlock>{buttonSrc}</ShikiCodeBlock>
+          <ShikiCodeBlock>{emptySrc}</ShikiCodeBlock>
         </section>
 
         <section id="examples" className="">
           <Title as="h2">{lang.examples}</Title>
 
           <DemoSection
-            id="variants"
-            title={l.variants.title}
-            code={ButtonVariantsRaw}
+            id="basic"
+            title={l.basic.title}
+            code={EmptyBasicRaw}
           >
-            <ButtonVariants />
+            <EmptyBasic />
           </DemoSection>
 
           <DemoSection
-            id="disabled"
-            title={l.disabled.title}
-            code={ButtonDisabledRaw}
+            id="custom"
+            title={l.custom.title}
+            code={EmptyCustomRaw}
           >
-            <ButtonDisabled />
+            <EmptyCustom />
           </DemoSection>
-
-          <DemoSection
-            id="loading"
-            title={l.loading.title}
-            code={ButtonLoadingRaw}
-          >
-            <ButtonLoading />
-          </DemoSection>
-
-          <DemoSection
-            id="icon-only"
-            title={l.iconOnly.title}
-            code={ButtonIconOnlyRaw}
-          >
-            <ButtonIconOnly />
-          </DemoSection>
-
-          <DemoSection
-            id="with-icons"
-            title={l.withIcons.title}
-            code={ButtonWithIconsRaw}
-          >
-            <ButtonWithIcons />
-          </DemoSection>
-
-  
         </section>
 
         <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
-          <Docs sections={buttonSections} />
+          <Docs sections={emptySections} />
         </section>
       </div>
 
@@ -215,12 +159,8 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
         <Anchor>
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>
-            <Anchor.Item href="#variants">{l.variants.title}</Anchor.Item>
-            <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
-            <Anchor.Item href="#loading">{l.loading.title}</Anchor.Item>
-            <Anchor.Item href="#icon-only">{l.iconOnly.title}</Anchor.Item>
-            <Anchor.Item href="#with-icons">{l.withIcons.title}</Anchor.Item>
-          
+            <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
+            <Anchor.Item href="#custom">{l.custom.title}</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#docs" linkText={lang.docs} />
         </Anchor>

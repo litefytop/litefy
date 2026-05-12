@@ -6,6 +6,10 @@ export const en = {
     copyDocs: "Copy docs",
     className:
       "Supports string | string[] | boolean | null | undefined | Record<string,string | string[]>",
+    prop: "Property",
+    type: "Type",
+    default: "Default",
+    description: "Description",
   },
   home: {
     title: "Plain UI",
@@ -246,11 +250,7 @@ export const en = {
     iconOnly: {
       title: "Icon Only",
     },
-    direction: {
-      title: "Direction",
-      ltr: "Left to Right",
-      rtl: "Right to Left",
-    },
+
     withIcons: {
       title: "With Icons",
     },
@@ -382,6 +382,26 @@ export const en = {
         descriptionProps: "Description Props",
       },
 
+    },
+  },
+
+  empty: {
+    title: "Empty",
+    description: "Empty component for displaying empty state prompts.",
+    basic: {
+      title: "Basic",
+    },
+    custom: {
+      title: "Custom",
+    },
+    api: {
+      sectionTitles: {
+        emptyProps: "Empty Props",
+      },
+      props: {
+        className: "Custom CSS class name",
+        children: "Custom content (optional)",
+      },
     },
   },
 

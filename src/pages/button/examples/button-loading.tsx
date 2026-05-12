@@ -11,7 +11,7 @@ export default function ButtonLoading() {
 
   return (
     <div className="flex flex-wrap gap-3">
-      <Button onClick={handleClick} loading={{ loading: isLoading }}>
+      <Button onClick={handleClick} loadingConfig={{ loading: isLoading }}>
         {isLoading ? "Loading..." : "Click to Load"}
       </Button>
     </div>

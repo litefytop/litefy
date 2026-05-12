@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { cn, type ClassNameValue } from "@/lib";
-import { Button, ButtonProps } from "./button";
 
 const DropdownMenuContext = React.createContext<string | null>(null);
 
@@ -33,12 +32,12 @@ export function DropdownMenu({
   );
 }
 
-export function DropdownMenuTrigger({
+ function DropdownMenuTrigger({
   children,
   className,
   target: externalTarget,
   ...props
-}: ButtonProps & {
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
   target?: string;
 }) {
   const contextContentId = useDropdownMenu();
@@ -46,18 +45,23 @@ export function DropdownMenuTrigger({
   const anchorName = `--anchor-${contentId}`;
 
   return (
-    <Button
+    <button
       popoverTarget={contentId}
       popoverTargetAction="toggle"
       aria-haspopup="menu"
-      className={className}
+      type="button"
+      className={cn(
+        "cursor-pointer outline-none inline-flex items-center justify-center shrink-0 user-select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 h-9 min-w-9 px-3 py-1 has-[>svg]:px-2 gap-1 rounded-md",
+        className,
+      )}
       style={{ anchorName } as React.CSSProperties}
       {...props}
     >
       {children}
-    </Button>
+    </button>
   );
-}export function DropdownMenuContent({
+}
+ function DropdownMenuContent({
   children,
   className,
   x_axis = "center",
@@ -68,15 +72,13 @@ export function DropdownMenuTrigger({
 }: React.HTMLAttributes<HTMLMenuElement> & {
   x_axis?: "start" | "center" | "end";
   y_axis?: "start" | "center" | "end";
-  popover?: "auto" | "manual"|"hint" ;
+  popover?: "auto" | "manual" | "hint";
   id?: string;
 }) {
   const contextContentId = useDropdownMenu();
   const contentId = externalId || contextContentId;
   const anchorName = `--anchor-${contentId}`;
   const menuRef = React.useRef<HTMLMenuElement>(null);
-
-
 
   React.useEffect(() => {
     const menu = menuRef.current;
@@ -106,7 +108,6 @@ export function DropdownMenuTrigger({
     };
 
     const handleToggle = () => {
-
       if (
         menu.matches(":popover-open") ||
         (menu as HTMLMenuElement & { popoverOpen?: boolean }).popoverOpen
@@ -126,8 +127,6 @@ export function DropdownMenuTrigger({
       menu.removeEventListener("toggle", handleToggle);
     };
   }, []);
-
-
 
   return (
     <menu
@@ -151,7 +150,7 @@ export function DropdownMenuTrigger({
   );
 }
 
-export function DropdownMenuItem({
+ function DropdownMenuItem({
   children,
   className,
   disabled = false,
@@ -186,7 +185,7 @@ export function DropdownMenuItem({
   );
 }
 
-export function DropdownMenuSeparator({
+ function DropdownMenuSeparator({
   className,
 }: {
   className?: ClassNameValue;
@@ -198,7 +197,7 @@ export function DropdownMenuSeparator({
   );
 }
 
-export function DropdownMenuLabel({
+ function DropdownMenuLabel({
   children,
   className,
 }: {
@@ -214,3 +213,6 @@ export function DropdownMenuLabel({
 
 DropdownMenu.Trigger = DropdownMenuTrigger;
 DropdownMenu.Content = DropdownMenuContent;
+DropdownMenu.Item = DropdownMenuItem;
+DropdownMenu.Separator = DropdownMenuSeparator;
+DropdownMenu.Label = DropdownMenuLabel;

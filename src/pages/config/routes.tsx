@@ -11,6 +11,7 @@ const Button = lazy(() => import("@/pages/button"));
 const Checkbox = lazy(() => import("@/pages/checkbox"));
 const Description = lazy(() => import("@/pages/description"));
 const DropdownMenu = lazy(() => import("@/pages/dropdown-menu"));
+const Empty = lazy(() => import("@/pages/empty/page"));
 const Input = lazy(() => import("@/pages/input"));
 const Password = lazy(() => import("@/pages/password"));
 const Radio = lazy(() => import("@/pages/radio"));
@@ -44,7 +45,7 @@ const componentRouteConfig = [
   { key: "textarea", path: "/components/textarea", Component: ComingSoon },
   { key: "select", path: "/components/select", Component: ComingSoon },
   { key: "loading", path: "/components/loading", Component: ComingSoon },
-  { key: "empty", path: "/components/empty", Component: ComingSoon },
+  { key: "empty", path: "/components/empty", Component: Empty },
   { key: "skeleton", path: "/components/skeleton", Component: ComingSoon },
   { key: "separator", path: "/components/separator", Component: ComingSoon },
   { key: "theme", path: "/components/theme", Component: ComingSoon },

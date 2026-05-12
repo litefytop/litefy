@@ -1,24 +1,19 @@
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-} from "@/component";
+import { DropdownMenu, Button } from "@/component";
 
 export default function DropdownMenuBasic() {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>Open Menu</DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuItem>Settings</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>Logout</DropdownMenuItem>
-      </DropdownMenuContent>
+      <DropdownMenu.Trigger className={Button.class.variant.ghost}>
+        Open Menu
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content>
+        <DropdownMenu.Label>My Account</DropdownMenu.Label>
+        <DropdownMenu.Separator />
+        <DropdownMenu.Item>Profile</DropdownMenu.Item>
+        <DropdownMenu.Item>Settings</DropdownMenu.Item>
+        <DropdownMenu.Separator />
+        <DropdownMenu.Item>Logout</DropdownMenu.Item>
+      </DropdownMenu.Content>
     </DropdownMenu>
   );
 }

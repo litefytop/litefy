@@ -6,6 +6,10 @@ export const zh = {
     copyDocs: "复制文档",
     className:
       "支持 string | string[] | boolean | null | undefined | Record<string,string | string[]>",
+    prop: "属性",
+    type: "类型",
+    default: "默认值",
+    description: "描述",
   },
   home: {
     title: "Plain UI",
@@ -242,11 +246,7 @@ export const zh = {
     iconOnly: {
       title: "仅图标",
     },
-    direction: {
-      title: "方向",
-      ltr: "从左到右",
-      rtl: "从右到左",
-    },
+
     withIcons: {
       title: "带图标",
     },
@@ -378,6 +378,26 @@ export const zh = {
         descriptionProps: "Description Props",
       },
 
+    },
+  },
+
+  empty: {
+    title: "空状态",
+    description: "空状态组件，用于展示无数据时的提示。",
+    basic: {
+      title: "基础",
+    },
+    custom: {
+      title: "自定义",
+    },
+    api: {
+      sectionTitles: {
+        emptyProps: "Empty Props",
+      },
+      props: {
+        className: "自定义样式类名",
+        children: "自定义内容（可选）",
+      },
     },
   },
 

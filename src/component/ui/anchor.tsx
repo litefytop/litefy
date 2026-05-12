@@ -148,12 +148,14 @@ function AnchorSection({
   return (
     <div className={cn(className)} {...props}>
       <a
+        data-active={isActive}
+        data-link={!href}
         className={cn(
           "text-sm font-medium",
-          isActive
-            ? "text-primary  underline underline-offset-4"
-            : "text-foreground hover:text-primary",
-          !href && "pointer-events-none",
+          "data-[active=true]:text-primary data-[active=true]:underline data-[active=true]:underline-offset-4",
+          "data-[active=false]:text-foreground data-[active=false]:hover:text-primary",
+          "data-[link=false]:pointer-events-none",
+          className,
         )}
         href={href}
         {...itemProps?.link}
@@ -188,11 +190,11 @@ function AnchorItem({ href, className, children, ...props }: AnchorItemProps) {
   return (
     <a
       href={href}
+      data-active={isActive}
       className={cn(
-        "block text-sm  indent-2",
-        isActive
-          ? "text-primary font-medium underline underline-offset-4"
-          : "text-muted-foreground hover:text-foreground",
+        "block text-sm indent-2",
+        "data-[active=true]:text-primary data-[active=true]:font-medium data-[active=true]:underline data-[active=true]:underline-offset-4",
+        "data-[active=false]:text-muted-foreground data-[active=false]:hover:text-foreground",
         className,
       )}
       onClick={() => setActiveId(targetId)}
