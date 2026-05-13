@@ -10,7 +10,7 @@ const AnchorDemo = lazy(() => import("@/pages/anchor/examples/anchor-basic"));
 const Button = lazy(() => import("@/pages/button"));
 const Checkbox = lazy(() => import("@/pages/checkbox"));
 const Description = lazy(() => import("@/pages/description"));
-const DropdownMenu = lazy(() => import("@/pages/dropdown-menu"));
+const Dropdown = lazy(() => import("@/pages/dropdown"));
 const Empty = lazy(() => import("@/pages/empty/page"));
 const Input = lazy(() => import("@/pages/input"));
 const Password = lazy(() => import("@/pages/password"));
@@ -36,9 +36,9 @@ const componentRouteConfig = [
   { key: "checkbox", path: "/components/checkbox", Component: Checkbox },
   { key: "radio", path: "/components/radio", Component: Radio },
   {
-    key: "dropdown-menu",
-    path: "/components/dropdown-menu",
-    Component: DropdownMenu,
+    key: "dropdown",
+    path: "/components/dropdown",
+    Component: Dropdown,
   },
   { key: "password", path: "/components/password", Component: Password },
   { key: "slider", path: "/components/slider", Component: ComingSoon },
@@ -56,9 +56,8 @@ const componentRouteConfig = [
     path: "/components/description",
     Component: Description,
   },
-  { key: "field", path: "/components/field", Component: ComingSoon },
   { key: "spin", path: "/components/spin", Component: ComingSoon },
-  { key: "img", path: "/components/img", Component: ComingSoon },
+  { key: "image", path: "/components/image", Component: ComingSoon },
   { key: "watermark", path: "/components/watermark", Component: ComingSoon },
   { key: "show", path: "/components/show", Component: ComingSoon },
   { key: "label", path: "/components/label", Component: ComingSoon },
@@ -74,7 +73,7 @@ const componentRouteConfig = [
 ];
 
 function getLabel(t: typeof zh, key: string): string {
-  return t.components[key as keyof typeof t.components] || key;
+  return t.components[key as keyof typeof t.components] ;
 }
 
 const navConfig = {

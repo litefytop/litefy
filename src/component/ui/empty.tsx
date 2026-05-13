@@ -5,16 +5,31 @@ import { CopyIcon } from "@/component";
 
 export type EmptyProps = React.ComponentProps<"div"> & {
   className?: ClassNameValue;
-  children?: React.ReactNode;
+  defaultIcon?: React.ReactNode;
+  defaultText?: React.ReactNode;
 };
 
-function Empty({ className, children, ...props }: EmptyProps) {
+function Empty({
+  className,
+  defaultIcon,
+  defaultText,
+  children,
+  ...props
+}: EmptyProps) {
   return (
-    <div className={cn("flex flex-col items-center justify-center w-full h-full text-center", className)} {...props}>
+    <div
+      className={cn(
+        "flex flex-col items-center justify-center w-full h-full text-center gap-2",
+        className
+      )}
+      {...props}
+    >
       {children ?? (
         <>
-          <CopyIcon className="size-12 text-muted-foreground/50" />
-          <span className="text-sm text-muted-foreground">No Content</span>
+          {defaultIcon ?? <CopyIcon className="size-12 text-muted-foreground/50" />}
+          <span className="text-sm text-muted-foreground">
+            {defaultText ?? "No Content"}
+          </span>
         </>
       )}
     </div>

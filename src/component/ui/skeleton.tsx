@@ -12,7 +12,6 @@ export type SkeletonProps = React.ComponentProps<"div"> & {
 function Skeleton({ className, ...props }: SkeletonProps) {
   return (
     <div
-      data-slot="skeleton"
       className={cn(skeletonclass, className)}
       {...props}
     />

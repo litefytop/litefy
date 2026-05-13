@@ -71,7 +71,6 @@ function Input({
           </span>
         )}
         <input
-          data-slot="input"
           className={cn(
             "appearance-none outline-none w-full h-8 px-2 py-1 text-sm flex-1 min-w-0",
             "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground",

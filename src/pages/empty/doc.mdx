@@ -22,6 +22,18 @@ function App() {
 <Empty />
 ```
 
+### Custom Icon
+
+```tsx
+<Empty defaultIcon={<div className="text-4xl">📦</div>} />
+```
+
+### Custom Text
+
+```tsx
+<Empty defaultText="No Data" />
+```
+
 ### Custom Content
 
 ```tsx
@@ -37,3 +49,13 @@ function App() {
   </div>
 </Empty>
 ```
+
+## API Reference
+
+### Empty Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| defaultIcon | React.ReactNode | CopyIcon | Custom icon |
+| defaultText | React.ReactNode | "No Content" | Custom text |
+| className | ClassNameValue | - | Custom class name |

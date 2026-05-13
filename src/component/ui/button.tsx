@@ -2,7 +2,7 @@ import { ClassNameValue, cn } from "@/lib";
 import { SpinIcon } from "./icons";
 
 const buttonClass = {
-  base: "cursor-pointer outline-none inline-flex items-center justify-center shrink-0 user-select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50  h-9 min-w-9 px-3 py-1 has-[>svg]:px-2 gap-1 rounded-md",
+  base: "cursor-pointer inline-flex items-center justify-center shrink-0 user-select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50  h-9 min-w-9 px-3 py-1 has-[>svg]:px-2 gap-1 rounded-md",
   variant: {
     primary: "bg-primary text-primary-foreground hover:bg-primary/90",
     destructive: `bg-destructive text-white 

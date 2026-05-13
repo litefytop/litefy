@@ -3,44 +3,43 @@
 import * as React from "react";
 import { cn, type ClassNameValue } from "@/lib";
 
-const DropdownMenuContext = React.createContext<string | null>(null);
+const DropdownContext = React.createContext<string | null>(null);
 
-function useDropdownMenu() {
-  const context = React.useContext(DropdownMenuContext);
+function useDropdown() {
+  const context = React.useContext(DropdownContext);
   if (!context) {
-    throw new Error("DropdownMenu components must be used within DropdownMenu");
+    throw new Error("Dropdown components must be used within Dropdown");
   }
   return context;
 }
 
-export function DropdownMenu({
+export function Dropdown({
   children,
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement> & {
-  children?: React.ReactNode;
+}:Omit< React.ComponentProps<"div">,"className">&{
   className?: ClassNameValue;
 }) {
   const contentId = React.useId();
 
   return (
-    <DropdownMenuContext.Provider value={contentId}>
+    <DropdownContext.Provider value={contentId}>
       <div className={cn("inline-flex", className)} {...props}>
         {children}
       </div>
-    </DropdownMenuContext.Provider>
+    </DropdownContext.Provider>
   );
 }
 
- function DropdownMenuTrigger({
+ function DropdownTrigger({
   children,
   className,
   target: externalTarget,
   ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
+}: React.ComponentProps<"button">&{
   target?: string;
 }) {
-  const contextContentId = useDropdownMenu();
+  const contextContentId = useDropdown();
   const contentId = externalTarget || contextContentId;
   const anchorName = `--anchor-${contentId}`;
 
@@ -61,21 +60,21 @@ export function DropdownMenu({
     </button>
   );
 }
- function DropdownMenuContent({
+ function DropdownContent({
   children,
   className,
-  x_axis = "center",
-  y_axis = "end",
+  alignX = "center",
+  alignY = "end",
   popover = "auto",
   id: externalId,
   ...props
-}: React.HTMLAttributes<HTMLMenuElement> & {
-  x_axis?: "start" | "center" | "end";
-  y_axis?: "start" | "center" | "end";
+}: React.ComponentProps<"menu"> & {
+  alignX?: "start" | "center" | "end";
+  alignY?: "start" | "center" | "end";
   popover?: "auto" | "manual" | "hint";
   id?: string;
 }) {
-  const contextContentId = useDropdownMenu();
+  const contextContentId = useDropdown();
   const contentId = externalId || contextContentId;
   const anchorName = `--anchor-${contentId}`;
   const menuRef = React.useRef<HTMLMenuElement>(null);
@@ -140,7 +139,7 @@ export function DropdownMenu({
       style={
         {
           positionAnchor: anchorName,
-          positionArea: `${y_axis} ${x_axis}`,
+          positionArea: `${alignY} ${alignX}`,
         } as React.CSSProperties
       }
       {...props}
@@ -150,15 +149,13 @@ export function DropdownMenu({
   );
 }
 
- function DropdownMenuItem({
+ function DropdownItem({
   children,
   className,
   disabled = false,
   onClick,
   ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  disabled?: boolean;
-}) {
+}: React.ComponentProps<"button">) {
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (disabled) return;
     onClick?.(e);
@@ -185,34 +182,31 @@ export function DropdownMenu({
   );
 }
 
- function DropdownMenuSeparator({
+ function DropdownSeparator({
   className,
-}: {
-  className?: ClassNameValue;
-}) {
+  ...props
+}: React.ComponentProps<"div">) {
   return (
     <li className="m-0">
-      <div className={cn("-mx-1 my-1 h-px bg-muted", className)} />
+      <div className={cn("-mx-1 my-1 h-px bg-muted", className)} {...props} />
     </li>
   );
 }
 
- function DropdownMenuLabel({
+ function DropdownLabel({
   children,
   className,
-}: {
-  children?: React.ReactNode;
-  className?: ClassNameValue;
-}) {
+  ...props
+}: React.ComponentProps<"li">) {
   return (
-    <li className={cn("m-0 px-2 py-1.5 text-sm font-semibold", className)}>
+    <li className={cn("m-0 px-2 py-1.5 text-sm font-semibold", className)} {...props}>
       {children}
     </li>
   );
 }
 
-DropdownMenu.Trigger = DropdownMenuTrigger;
-DropdownMenu.Content = DropdownMenuContent;
-DropdownMenu.Item = DropdownMenuItem;
-DropdownMenu.Separator = DropdownMenuSeparator;
-DropdownMenu.Label = DropdownMenuLabel;
+Dropdown.Trigger = DropdownTrigger;
+Dropdown.Content = DropdownContent;
+Dropdown.Item = DropdownItem;
+Dropdown.Separator = DropdownSeparator;
+Dropdown.Label = DropdownLabel;

@@ -4,10 +4,10 @@ import * as React from "react";
 import { ClassNameValue, cn } from "@/lib";
 
 const drawerClass = {
-  left: "left-0 top-0 h-full w-80 -translate-x-full",
-  right: "right-0 top-0 h-full w-80 translate-x-full",
-  top: "left-0 top-0 w-full h-80 -translate-y-full",
-  bottom: "left-0 bottom-0 w-full h-80 translate-y-full",
+  left: "left-0 top-0 h-full w-80",
+  right: "right-0 top-0 h-full w-80",
+  top: "left-0 top-0 w-full h-80",
+  bottom: "left-0 bottom-0 w-full h-80",
 };
 
 export type DrawerRef = {
@@ -44,9 +44,8 @@ const Drawer = React.forwardRef<DrawerRef, DrawerProps>(
       };
     }, [open]);
 
-    const handleBackdropClick = () => {
-      setOpen(false);
-    };
+    const handleBackdropClick = () => setOpen(false);
+    const handleContentClick = (e: React.MouseEvent) => e.stopPropagation();
 
     if (!open) return null;
 
@@ -55,10 +54,12 @@ const Drawer = React.forwardRef<DrawerRef, DrawerProps>(
         <div className="absolute inset-0 bg-black/50" />
         <div
           {...props}
+          data-state="open"
+          onClick={handleContentClick}
           className={cn(
-            "fixed transform transition-transform duration-300 ease-in-out bg-background p-6 overflow-auto translate-x-0 translate-y-0",
             drawerClass[placement],
-            className,
+            "fixed bg-background p-6 overflow-auto",
+            className
           )}
         >
           {children}
@@ -68,6 +69,5 @@ const Drawer = React.forwardRef<DrawerRef, DrawerProps>(
   },
 );
 
-Drawer.displayName = "Drawer";
 
 export { Drawer };

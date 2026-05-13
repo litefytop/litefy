@@ -6,13 +6,13 @@ import { Show } from "@/component";
 import { useEffect, useState } from "react";
 
 
-export type ImgProps = React.ComponentProps<"img"> & {
+export type ImageProps = React.ComponentProps<"img"> & {
   className?: ClassNameValue;
   area?: string;
   fallback?: React.ReactNode;
 };
 
-function Img({ src = "", alt = "", className, area, fallback, ...props }: ImgProps) {
+function Image({ src = "", alt = "", className, area, fallback, ...props }: ImageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [failure, setFailure] = useState(false);
 
@@ -40,7 +40,6 @@ function Img({ src = "", alt = "", className, area, fallback, ...props }: ImgPro
   return (
     <Show loading={isLoading} failure={failure} fallback={fallback}>
       <img
-        data-slot="img"
         src={src}
         alt={alt}
         {...props}
@@ -52,4 +51,4 @@ function Img({ src = "", alt = "", className, area, fallback, ...props }: ImgPro
 }
 
 
-export { Img };
+export { Image };

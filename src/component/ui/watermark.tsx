@@ -57,13 +57,12 @@ function Watermark({
   }, [text, fontSize, rotate, gap, opacity]);
 
   return (
-    <div data-slot="watermark" className={cn("relative", className)}>
+    <div className={cn("relative", className)}>
       <div
-        data-slot="watermark-overlay"
         className="absolute inset-0 pointer-events-none z-10"
         style={watermarkStyle}
       />
-      <div data-slot="watermark-content">{children}</div>
+      <div>{children}</div>
     </div>
   );
 }

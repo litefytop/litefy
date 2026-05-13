@@ -50,16 +50,12 @@ export const en = {
     title: "Title",
     text: "Text",
     description: "Description",
-    field: "Field",
     spin: "Spin",
-    img: "Image",
+    image: "Image",
     watermark: "Watermark",
     show: "Show",
-    "input-group": "Input Group",
     radio: "Radio",
     label: "Label",
-    segment: "Segment",
-    form: "Form",
     toggle: "Toggle",
     search: "Search",
     sidebar: "Sidebar",
@@ -69,12 +65,11 @@ export const en = {
     overlay: "Overlay",
     table: "Table",
     sheet: "Sheet",
-    "dropdown-menu": "Dropdown Menu",
+    dropdown: "Dropdown",
     password: "Password",
-    "code-block": "Code Block",
   },
 
-  "dropdown-menu": {
+  "dropdown": {
     title: "Dropdown Menu",
     description: "Dropdown menu component for displaying action lists.",
     basic: {
@@ -97,37 +92,36 @@ export const en = {
       content: "Content",
       item: "Item",
       separator: "Separator",
+      label: "Label",
     },
     api: {
       sectionTitles: {
-        dropdownMenuProps: "DropdownMenu Props",
-        dropdownMenuTriggerProps: "DropdownMenuTrigger Props",
-        dropdownMenuContentProps: "DropdownMenuContent Props",
-        dropdownMenuItemProps: "DropdownMenuItem Props",
-        dropdownMenuSeparatorProps: "DropdownMenuSeparator Props",
+        dropdownProps: "dropdown Props",
+        dropdownTriggerProps: "dropdownTrigger Props",
+        dropdownContentProps: "dropdownContent Props",
+        dropdownItemProps: "dropdownItem Props",
+        dropdownSeparatorProps: "dropdownSeparator Props",
+        dropdownLabelProps: "dropdownLabel Props",
       },
-      dropdownMenuProps: {
+      dropdownProps: {
         children: "Child components",
       },
       triggerProps: {
         children: "Trigger content",
-        disabled: "Whether disabled",
-        variant: "Button style variant",
+        target: "Associated Content ID",
       },
       contentProps: {
         children: "Menu content",
-
         popover: "Popover mode",
-        side: "Popup side",
-        align: "Alignment",
+        alignX: "Horizontal alignment",
+        alignY: "Vertical alignment",
       },
       itemProps: {
         children: "Menu item content",
-
         onClick: "Click callback",
-        disabled: "Whether disabled",
       },
       separatorProps: {},
+      labelProps: {},
     },
   },
 
@@ -381,7 +375,6 @@ export const en = {
       sectionTitles: {
         descriptionProps: "Description Props",
       },
-
     },
   },
 
@@ -399,8 +392,9 @@ export const en = {
         emptyProps: "Empty Props",
       },
       props: {
+        defaultIcon: "Default icon",
+        defaultText: "Default text",
         className: "Custom CSS class name",
-        children: "Custom content (optional)",
       },
     },
   },

@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { getNavItems } from "@/pages/config/routes";
 import {
   Title,
-  Img,
+  Image,
   MoonIcon,
   SunIcon,
   GitHubIcon,
@@ -107,7 +107,7 @@ function Header({ locale, className }: { locale: string; className?: string }) {
       className={`h-14 border-b bg-card flex items-center justify-between px-4 ${className || ""}`}
     >
       <div className="flex items-center gap-2">
-        <Img src={LOGO} className="size-8" alt="Logo" />
+        <Image src={LOGO} className="size-8" alt="Logo" />
         <p className="whitespace-nowrap font-bold text-lg">Plain UI</p>
       </div>
       <div className="flex items-center gap-2">

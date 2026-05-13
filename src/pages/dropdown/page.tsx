@@ -13,19 +13,19 @@ import {
   Button,
   Docs,
   Toaster,
-  DropdownMenu,
+  Dropdown,
 } from "@/component";
 import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
 
-import DropdownMenuBasicRaw from "./examples/dropdown-menu-basic.tsx?raw";
-import DropdownMenuAlignRaw from "./examples/dropdown-menu-align.tsx?raw";
-import DropdownMenuSideRaw from "./examples/dropdown-menu-side.tsx?raw";
-import DropdownMenuBasic from "./examples/dropdown-menu-basic";
-import DropdownMenuAlign from "./examples/dropdown-menu-align";
-import DropdownMenuSide from "./examples/dropdown-menu-side";
-import dropdownMenuSrc from "@/component/ui/dropdown-menu.tsx?raw";
-import dropdownMenuDoc from "./doc.mdx?raw";
+import DropdownBasicRaw from "./examples/dropdown-basic.tsx?raw";
+import DropdownAlignRaw from "./examples/dropdown-align.tsx?raw";
+import DropdownSideRaw from "./examples/dropdown-side.tsx?raw";
+import DropdownBasic from "./examples/dropdown-basic";
+import DropdownAlign from "./examples/dropdown-align";
+import DropdownSide from "./examples/dropdown-side";
+import DropdownSrc from "@/component/ui/dropdown.tsx?raw";
+import DropdownDoc from "./doc.mdx?raw";
 
 function DemoSection({
   id,
@@ -51,7 +51,7 @@ function DemoSection({
   );
 }
 
-export default function DropdownMenuPage({
+export default function DropdownPage({
   locale = "zh",
 }: {
   locale?: string;
@@ -59,71 +59,101 @@ export default function DropdownMenuPage({
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
-  const l = lang["dropdown-menu"];
+  const l = lang["dropdown"];
   const nav = getComponentNav(
-    "/components/dropdown-menu",
+    "/components/dropdown",
     locale as "zh" | "en",
   );
 
-  const dropdownMenuSections = [
+  const dropdownSections = [
     {
-      title: l.api.sectionTitles.dropdownMenuTriggerProps,
+      title: l.api.sectionTitles.dropdownTriggerProps,
 
       data: [
         {
-          props: "disabled",
-          type: "boolean",
-          default: "false",
-          description: l.api.triggerProps.disabled,
+          props: "target",
+          type: "string",
+          description: l.api.triggerProps.target,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          description: lang.common.className,
         },
       ],
     },
     {
-      title: l.api.sectionTitles.dropdownMenuContentProps,
+      title: l.api.sectionTitles.dropdownContentProps,
 
       data: [
         {
+          props: "alignX",
+          type: '"start" | "center" | "end"',
+          default: '"center"',
+          description: l.api.contentProps.alignX,
+        },
+        {
+          props: "alignY",
+          type: '"start" | "center" | "end"',
+          default: '"end"',
+          description: l.api.contentProps.alignY,
+        },
+        {
           props: "popover",
-          type: '"auto" | "manual"',
+          type: '"auto" | "manual" | "hint"',
           default: '"auto"',
           description: l.api.contentProps.popover,
         },
         {
-          props: "side",
-          type: '"top" | "bottom" | "left" | "right"',
-          default: '"bottom"',
-          description: l.api.contentProps.side,
-        },
-        {
-          props: "align",
-          type: '"start" | "center" | "end"',
-          default: '"center"',
-          description: l.api.contentProps.align,
+          props: "className",
+          type: "ClassNameValue",
+          description: lang.common.className,
         },
       ],
     },
     {
-      title: l.api.sectionTitles.dropdownMenuItemProps,
+      title: l.api.sectionTitles.dropdownItemProps,
 
       data: [
         {
           props: "onClick",
           type: "() => void",
-          
+
           description: l.api.itemProps.onClick,
         },
         {
-          props: "disabled",
-          type: "boolean",
-          default: "false",
-          description: l.api.itemProps.disabled,
+          props: "className",
+          type: "ClassNameValue",
+          description: lang.common.className,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.dropdownSeparatorProps,
+
+      data: [
+        {
+          props: "className",
+          type: "ClassNameValue",
+          description: lang.common.className,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.dropdownLabelProps,
+
+      data: [
+        {
+          props: "className",
+          type: "ClassNameValue",
+          description: lang.common.className,
         },
       ],
     },
   ];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(dropdownMenuDoc);
+    navigator.clipboard.writeText(DropdownDoc);
     setCopied(true);
     Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);
@@ -167,7 +197,7 @@ export default function DropdownMenuPage({
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
-          <ShikiCodeBlock>{dropdownMenuSrc}</ShikiCodeBlock>
+          <ShikiCodeBlock>{DropdownSrc}</ShikiCodeBlock>
         </section>
 
         <section id="examples" className="">
@@ -176,25 +206,25 @@ export default function DropdownMenuPage({
           <DemoSection
             id="basic"
             title={l.basic.title}
-            code={DropdownMenuBasicRaw}
+            code={DropdownBasicRaw}
           >
-            <DropdownMenuBasic />
+            <DropdownBasic />
           </DemoSection>
 
           <DemoSection
             id="align"
             title={l.align.title}
-            code={DropdownMenuAlignRaw}
+            code={DropdownAlignRaw}
           >
-            <DropdownMenuAlign />
+            <DropdownAlign />
           </DemoSection>
 
           <DemoSection
             id="side"
             title={l.side.title}
-            code={DropdownMenuSideRaw}
+            code={DropdownSideRaw}
           >
-            <DropdownMenuSide />
+            <DropdownSide />
           </DemoSection>
         </section>
 
@@ -212,19 +242,38 @@ export default function DropdownMenuPage({
                 name: "content",
                 label: l.anatomy.content,
               },
+              {
+                name: "label",
+                label: l.anatomy.label,
+              },
+              {
+                name: "separator",
+                label: l.anatomy.separator,
+              },
+              {
+                name: "item",
+                label: l.anatomy.item,
+              },
             ]}
           >
-            <DropdownMenu data-anatomy-name="root">
-              <DropdownMenu.Trigger 
+            <Dropdown data-anatomy-name="root">
+              <Dropdown.Trigger
                 data-anatomy-name="trigger"
                 className="hover:bg-accent hover:text-accent-foreground"
               >
                 Open Menu
-              </DropdownMenu.Trigger>
-              <DropdownMenu.Content data-anatomy-name="content" popover="manual">
-                <DropdownMenu.Item>Option</DropdownMenu.Item>
-              </DropdownMenu.Content>
-            </DropdownMenu>
+              </Dropdown.Trigger>
+              <Dropdown.Content
+                data-anatomy-name="content"
+                popover="manual"
+              >
+                <Dropdown.Label data-anatomy-name="label">My Account</Dropdown.Label>
+                <Dropdown.Separator data-anatomy-name="separator" />
+                <Dropdown.Item data-anatomy-name="item">Profile</Dropdown.Item>
+                <Dropdown.Item>Settings</Dropdown.Item>
+                <Dropdown.Item>Logout</Dropdown.Item>
+              </Dropdown.Content>
+            </Dropdown>
           </Anatomy>
         </section>
 
@@ -236,7 +285,7 @@ export default function DropdownMenuPage({
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
-          <Docs sections={dropdownMenuSections} />
+          <Docs sections={dropdownSections} />
         </section>
       </div>
 

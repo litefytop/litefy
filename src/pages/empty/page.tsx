@@ -64,16 +64,22 @@ export default function EmptyPage({ locale = "zh" }: { locale?: string }) {
       ],
       data: [
         {
+          props: "defaultIcon",
+          type: "React.ReactNode",
+          default: "CopyIcon",
+          description: l.api.props.defaultIcon,
+        },
+        {
+          props: "defaultText",
+          type: "React.ReactNode",
+          default: '"No Content"',
+          description: l.api.props.defaultText,
+        },
+        {
           props: "className",
           type: "ClassNameValue",
           default: "-",
           description: l.api.props.className,
-        },
-        {
-          props: "children",
-          type: "React.ReactNode",
-          default: "-",
-          description: l.api.props.children,
         },
       ],
     },

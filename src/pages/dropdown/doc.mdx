@@ -46,15 +46,15 @@ function App() {
 ### Alignment
 
 ```tsx
-<DropdownMenuContent x_axis="start" y_axis="start">
+<DropdownMenuContent alignX="start" alignY="start">
   <DropdownMenuItem>Left Top</DropdownMenuItem>
 </DropdownMenuContent>
 
-<DropdownMenuContent x_axis="center" y_axis="center">
+<DropdownMenuContent alignX="center" alignY="center">
   <DropdownMenuItem>Center</DropdownMenuItem>
 </DropdownMenuContent>
 
-<DropdownMenuContent x_axis="end" y_axis="end">
+<DropdownMenuContent alignX="end" alignY="end">
   <DropdownMenuItem>Right Bottom</DropdownMenuItem>
 </DropdownMenuContent>
 ```
@@ -93,8 +93,8 @@ function App() {
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| x_axis | "start" \| "center" \| "end" | "center" | X-axis alignment |
-| y_axis | "start" \| "center" \| "end" | "end" | Y-axis alignment |
+| alignX | "start" \| "center" \| "end" | "center" | Horizontal alignment |
+| alignY | "start" \| "center" \| "end" | "end" | Vertical alignment |
 | popover | "auto" \| "manual" \| "hint" | "auto" | Popover behavior mode |
 | id | string | - | Content container ID (optional, uses context ID by default) |
 | ...menuProps | React.HTMLAttributes<HTMLMenuElement> | - | Inherited menu element props |
