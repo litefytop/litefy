@@ -62,12 +62,7 @@ export function Anatomy({ title = "Anatomy", children, parts, className }: Anato
   );
   return (
     <AnatomyContext.Provider value={contextValue}>
-      <style>{`
-        .anatomy-highlight {
-          border: 2px solid var(--primary);
-          border-radius: 4px;
-        }
-      `}</style>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div ref={containerRef} className={cn("border rounded-lg p-6 min-h-[200px] flex items-center justify-center bg-muted/20", className)}>
           {children}

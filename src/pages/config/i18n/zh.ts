@@ -320,30 +320,37 @@ export const zh = {
     variants: {
       title: "变体",
     },
-    invalid: {
-      title: "无效状态",
+    validation: {
+      title: "校验",
     },
     anatomy: {
       group: "组",
-      checkbox: "Checkbox",
+      label: "标签",
+      description: "描述",
+      item: "项",
       indicator: "指示器",
     },
     api: {
       sectionTitles: {
-        checkboxGroupProps: "Checkbox.Group Props",
         checkboxProps: "Checkbox Props",
+        checkboxItemProps: "Checkbox.Item Props",
         indicatorConfig: "indicator 配置",
         itemPropsConfig: "itemProps 配置",
-      },
-      groupProps: {
-        value: "选中的值（受控模式）",
-        defaultValue: "初始选中的值（非受控模式）",
-        onValueChange: "值变化回调",
-        disabled: "是否禁用整个组",
-        invalid: "标记组是否为无效状态",
-        name: "表单字段名称，提交时返回逗号分隔字符串（如 a,b,c）",
+        itemProps: "itemProps 配置",
       },
       props: {
+        value: "选中的值（受控模式）",
+        defaultValue: "初始选中的值（非受控模式）",
+        onValueChange: "值变化回调，可返回 { invalid?: string } 触发无效状态",
+        invalid: "无效状态，支持 boolean 或 string 类型",
+        disabled: "是否禁用整个组",
+        name: "表单字段名称，提交时返回逗号分隔字符串（如 a,b,c）",
+        label: "标签文本",
+        description: "描述文本",
+        itemProps: "内部元素属性透传配置",
+        options: "选项数组，用于渲染多个复选框",
+      },
+      item: {
         value: "复选框的值（必填）",
         onCheckedChange: "选中状态变化回调",
         disabled: "是否禁用",
@@ -356,9 +363,13 @@ export const zh = {
         hidden: "隐藏指示器",
         props: "指示器元素属性",
       },
-      itemPropsConfig: {
-        indicator: "指示器元素属性",
-        label: "标签元素属性",
+      itemProps: {
+        root: "根容器 `<div>` 元素属性",
+        content: "内容容器 `<div>` 元素属性",
+        label: "标签 `<label>` 元素属性",
+        description: "描述 `<small>` 元素属性",
+        invalid: "无效文本 `<span>` 元素属性",
+        options: "选项项 `<button>` 元素属性",
       },
     },
   },
@@ -407,8 +418,8 @@ export const zh = {
     disabled: {
       title: "禁用",
     },
-    error: {
-      title: "错误",
+    validation: {
+      title: "校验",
     },
     prefixSuffix: {
       title: "前后缀",
@@ -429,10 +440,10 @@ export const zh = {
       props: {
         value: "输入值（受控模式）",
         defaultValue: "初始输入值（非受控模式）",
-        onChange: "值变化回调",
+        onChange: "值变化回调，可返回 { invalid?: string } 触发无效状态",
         placeholder: "占位符",
         disabled: "是否禁用",
-        error: "是否显示错误状态",
+        invalid: "无效信息",
         label: "标签文本",
         description: "描述文本",
         leading: "前导内容",
@@ -442,10 +453,10 @@ export const zh = {
       itemPropsConfig: {
         group: "组容器 `<div>` 属性",
         label: "标签 `<label>` 属性",
-        error: "错误 `<div>` 属性",
+        invalid: "无效 `<div>` 属性",
         leading: "前导容器 `<span>` 属性",
         trailing: "尾随容器 `<span>` 属性",
-        description: "描述 `<p>` 属性",
+        description: "描述 `<small>` 属性",
       },
     },
   },
@@ -455,6 +466,9 @@ export const zh = {
     description: "密码输入框组件。",
     basic: {
       title: "基础",
+    },
+    validation: {
+      title: "校验",
     },
     anatomy: {
       root: "根元素",
@@ -469,14 +483,24 @@ export const zh = {
       props: {
         value: "输入值（受控模式）",
         defaultValue: "初始输入值（非受控模式）",
-        onChange: "值变化回调",
+        onChange: "值变化回调，可返回 { invalid?: string } 触发无效状态",
+        label: "标签文本",
+        description: "描述文本",
+        invalid: "无效信息",
+        leading: "前缀内容",
+        trailing: "后缀内容",
         placeholder: "占位符",
         disabled: "是否禁用",
         itemProps: "内部封装属性透传",
       },
       itemPropsConfig: {
         root: "根容器 `<div>` 属性",
-        input: "输入框 `<input>` 属性",
+        label: "标签 `<label>` 属性",
+        group: "输入框组 `<div>` 属性",
+        leading: "前缀 `<span>` 属性",
+        trailing: "后缀 `<span>` 属性",
+        invalid: "无效 `<div>` 属性",
+        description: "描述 `<small>` 属性",
         toggle: "切换按钮 `<button>` 属性",
       },
     },
@@ -494,43 +518,52 @@ export const zh = {
     disabled: {
       title: "禁用",
     },
-    direction: {
-      title: "方向",
-      horizontal: "水平",
-      vertical: "垂直",
+    variant: {
+      title: "变体",
     },
-    variants: {
-      title: "样式",
-      default: "默认",
-      filled: "填充",
+    validation: {
+      title: "校验",
     },
     anatomy: {
-      radio: "Radio",
-      group: "RadioGroup",
+      group: "组",
+      label: "标签",
+      description: "描述",
+      item: "项",
       indicator: "指示器",
     },
     api: {
       sectionTitles: {
-        radioGroupProps: "RadioGroup Props",
         radioProps: "Radio Props",
+        radioItemProps: "Radio.Item Props",
         itemPropsConfig: "itemProps 配置",
+        itemProps: "itemProps 配置",
       },
-      radioGroupProps: {
+      props: {
         value: "选中值（受控模式）",
         defaultValue: "初始选中值（非受控模式）",
-        onChange: "值变化回调",
+        onValueChange: "值变化回调，可返回 { invalid?: string } 触发无效状态",
+        invalid: "无效状态，支持 boolean 或 string 类型",
         disabled: "是否禁用",
-        direction: "排列方向",
+        name: "表单字段名称",
+        label: "标签文本",
+        description: "描述文本",
+        itemProps: "内部元素属性透传配置",
+        options: "选项数组，用于渲染多个单选框",
       },
-      radioProps: {
+      item: {
         value: "选项值",
+        onCheckedChange: "选中状态变化回调",
         disabled: "是否禁用",
+        variant: "样式变体 (radio | segment)",
         indicator: "指示器配置",
       },
-      itemPropsConfig: {
-        group: "组容器 `<div>` 属性",
-        radio: "单选框 `<label>` 属性",
-        indicator: "指示器 `<span>` 属性",
+      itemProps: {
+        root: "根容器 `<div>` 元素属性",
+        content: "内容容器 `<div>` 元素属性",
+        label: "标签 `<label>` 元素属性",
+        description: "描述 `<small>` 元素属性",
+        invalid: "无效文本 `<span>` 元素属性",
+        options: "选项项 `<button>` 元素属性",
       },
     },
   },

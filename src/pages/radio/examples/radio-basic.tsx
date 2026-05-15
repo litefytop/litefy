@@ -2,10 +2,22 @@ import { Radio } from "@/component";
 
 export default function RadioBasic() {
   return (
-    <Radio.Group>
-      <Radio value="apple">Apple</Radio>
-      <Radio value="banana">Banana</Radio>
-      <Radio value="orange">Orange</Radio>
-    </Radio.Group>
+    <Radio.Group
+      label="Basic Radio Group"
+      options={[
+        {
+          value: "apple",
+          label: "Apple",
+        },
+        {
+          value: "banana",
+          label: "Banana",
+        },
+        {
+          value: "orange",
+          label: "Orange",
+        },
+      ]}
+    />
   );
 }

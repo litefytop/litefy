@@ -5,19 +5,43 @@ export default function RadioDisabled() {
     <div className="space-y-6">
       <div>
         <p className="text-sm text-muted-foreground mb-2">Group Disabled</p>
-        <Radio.Group disabled>
-          <Radio value="apple">Apple</Radio>
-          <Radio value="banana">Banana</Radio>
-          <Radio value="orange">Orange</Radio>
-        </Radio.Group>
+        <Radio.Group
+          disabled
+          options={[
+            {
+              value: "apple",
+              label: "Apple",
+            },
+            {
+              value: "banana",
+              label: "Banana",
+            },
+            {
+              value: "orange",
+              label: "Orange",
+            },
+          ]}
+        />
       </div>
       <div>
         <p className="text-sm text-muted-foreground mb-2">Item Disabled</p>
-        <Radio.Group>
-          <Radio value="apple">Apple</Radio>
-          <Radio value="banana" disabled>Banana</Radio>
-          <Radio value="orange">Orange</Radio>
-        </Radio.Group>
+        <Radio.Group
+          options={[
+            {
+              value: "apple",
+              label: "Apple",
+            },
+            {
+              value: "banana",
+              label: "Banana",
+              disabled: true,
+            },
+            {
+              value: "orange",
+              label: "Orange",
+            },
+          ]}
+        />
       </div>
     </div>
   );

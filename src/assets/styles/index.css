@@ -43,3 +43,8 @@
 ::-webkit-scrollbar-thumb:active {
   @apply bg-foreground/60;
 }
+
+.anatomy-highlight {
+  border: 2px solid var(--primary);
+  border-radius: 4px;
+}

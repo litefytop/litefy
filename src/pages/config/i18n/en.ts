@@ -322,30 +322,37 @@ export const en = {
     variants: {
       title: "Variants",
     },
-    invalid: {
-      title: "Invalid State",
+    validation: {
+      title: "Validation",
     },
     anatomy: {
       group: "Group",
-      checkbox: "Checkbox",
+      label: "Label",
+      description: "Description",
+      item: "Item",
       indicator: "Indicator",
     },
     api: {
       sectionTitles: {
-        checkboxGroupProps: "Checkbox.Group Props",
         checkboxProps: "Checkbox Props",
+        checkboxItemProps: "Checkbox.Item Props",
         indicatorConfig: "indicator Config",
         itemPropsConfig: "itemProps Config",
-      },
-      groupProps: {
-        value: "Selected values (controlled mode)",
-        defaultValue: "Initial selected values (uncontrolled mode)",
-        onValueChange: "Value change callback",
-        disabled: "Whether to disable entire group",
-        invalid: "Mark group as invalid",
-        name: "Form field name, submits comma-separated string (e.g. a,b,c) when present",
+        itemProps: "itemProps Config",
       },
       props: {
+        value: "Selected values (controlled mode)",
+        defaultValue: "Initial selected values (uncontrolled mode)",
+        onValueChange: "Value change callback, can return { invalid?: string } to trigger invalid state",
+        invalid: "Invalid state, supports boolean or string type",
+        disabled: "Whether to disable entire group",
+        name: "Form field name, submits comma-separated string (e.g. a,b,c) when present",
+        label: "Label text",
+        description: "Description text",
+        itemProps: "Internal element props passthrough config",
+        options: "Options array for rendering multiple checkboxes",
+      },
+      item: {
         value: "Checkbox value (required)",
         onCheckedChange: "Checked state change callback",
         disabled: "Whether disabled",
@@ -358,9 +365,13 @@ export const en = {
         hidden: "Hide indicator",
         props: "Indicator element props",
       },
-      itemPropsConfig: {
-        indicator: "Indicator element props",
-        label: "Label element props",
+      itemProps: {
+        root: "Root container `<div>` element props",
+        content: "Content container `<div>` element props",
+        label: "Label `<label>` element props",
+        description: "Description `<small>` element props",
+        invalid: "Invalid text `<span>` element props",
+        options: "Option item `<button>` element props",
       },
     },
   },
@@ -408,8 +419,8 @@ export const en = {
     disabled: {
       title: "Disabled",
     },
-    error: {
-      title: "Error",
+    validation: {
+      title: "Validation",
     },
     prefixSuffix: {
       title: "Prefix/Suffix",
@@ -430,10 +441,10 @@ export const en = {
       props: {
         value: "Input value (controlled mode)",
         defaultValue: "Initial input value (uncontrolled mode)",
-        onChange: "Value change callback",
+        onChange: "Value change callback, can return { invalid?: string } to trigger invalid state",
         placeholder: "Placeholder",
         disabled: "Whether disabled",
-        error: "Whether to show error state",
+        invalid: "Invalid message",
         label: "Label text",
         description: "Description text",
         leading: "Leading content",
@@ -443,10 +454,10 @@ export const en = {
       itemPropsConfig: {
         group: "Group container `<div>` props",
         label: "Label `<label>` props",
-        error: "Error `<div>` props",
+        invalid: "Invalid `<div>` props",
         leading: "Leading container `<span>` props",
         trailing: "Trailing container `<span>` props",
-        description: "Description `<p>` props",
+        description: "Description `<small>` props",
       },
     },
   },
@@ -456,6 +467,9 @@ export const en = {
     description: "Password input component.",
     basic: {
       title: "Basic",
+    },
+    validation: {
+      title: "Validation",
     },
     anatomy: {
       root: "Root",
@@ -470,14 +484,24 @@ export const en = {
       props: {
         value: "Input value (controlled mode)",
         defaultValue: "Initial input value (uncontrolled mode)",
-        onChange: "Value change callback",
+        onChange: "Value change callback, can return { invalid?: string } to trigger invalid state",
+        label: "Label text",
+        description: "Description text",
+        invalid: "Invalid message",
+        leading: "Leading content",
+        trailing: "Trailing content",
         placeholder: "Placeholder",
         disabled: "Whether disabled",
         itemProps: "Internal wrapped property passthrough",
       },
       itemPropsConfig: {
         root: "Root container `<div>` props",
-        input: "Input `<input>` props",
+        label: "Label `<label>` props",
+        group: "Input group `<div>` props",
+        leading: "Leading `<span>` props",
+        trailing: "Trailing `<span>` props",
+        invalid: "Invalid `<div>` props",
+        description: "Description `<small>` props",
         toggle: "Toggle button `<button>` props",
       },
     },
@@ -495,43 +519,52 @@ export const en = {
     disabled: {
       title: "Disabled",
     },
-    direction: {
-      title: "Direction",
-      horizontal: "Horizontal",
-      vertical: "Vertical",
+    variant: {
+      title: "Variant",
     },
-    variants: {
-      title: "Variants",
-      default: "Default",
-      filled: "Filled",
+    validation: {
+      title: "Validation",
     },
     anatomy: {
-      radio: "Radio",
-      group: "RadioGroup",
+      group: "Group",
+      label: "Label",
+      description: "Description",
+      item: "Item",
       indicator: "Indicator",
     },
     api: {
       sectionTitles: {
-        radioGroupProps: "RadioGroup Props",
         radioProps: "Radio Props",
+        radioItemProps: "Radio.Item Props",
         itemPropsConfig: "itemProps Config",
+        itemProps: "itemProps Config",
       },
-      radioGroupProps: {
+      props: {
         value: "Selected value (controlled mode)",
         defaultValue: "Initial selected value (uncontrolled mode)",
-        onChange: "Value change callback",
+        onValueChange: "Value change callback, can return { invalid?: string } to trigger invalid state",
+        invalid: "Invalid state, supports boolean or string type",
         disabled: "Whether disabled",
-        direction: "Arrangement direction",
+        name: "Form field name",
+        label: "Label text",
+        description: "Description text",
+        itemProps: "Internal element props passthrough config",
+        options: "Options array for rendering multiple radio buttons",
       },
-      radioProps: {
+      item: {
         value: "Option value",
+        onCheckedChange: "Checked state change callback",
         disabled: "Whether disabled",
+        variant: "Style variant (radio | segment)",
         indicator: "Indicator config",
       },
-      itemPropsConfig: {
-        group: "Group container `<div>` props",
-        radio: "Radio `<label>` props",
-        indicator: "Indicator `<span>` props",
+      itemProps: {
+        root: "Root container `<div>` element props",
+        content: "Content container `<div>` element props",
+        label: "Label `<label>` element props",
+        description: "Description `<small>` element props",
+        invalid: "Invalid text `<span>` element props",
+        options: "Option item `<button>` element props",
       },
     },
   },

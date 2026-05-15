@@ -17,9 +17,10 @@ import {
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
-import { PasswordBasic } from "./examples";
+import { PasswordBasic, PasswordValidation } from "./examples";
 
 import PasswordBasicRaw from "./examples/password-basic.tsx?raw";
+import PasswordValidationRaw from "./examples/password-validation.tsx?raw";
 import passwordDoc from "./doc.mdx?raw";
 import passwordSrc from "@/component/ui/password.tsx?raw";
 
@@ -62,25 +63,46 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "value",
           type: "string",
-
           description: l.api.props.value,
         },
         {
           props: "defaultValue",
           type: "string",
-
           description: l.api.props.defaultValue,
         },
         {
           props: "onChange",
-          type: "(value: string) => void",
-
+          type: "(e: React.ChangeEvent<HTMLInputElement>) => void | { invalid?: string }",
           description: l.api.props.onChange,
+        },
+        {
+          props: "label",
+          type: "ReactNode",
+          description: l.api.props.label,
+        },
+        {
+          props: "description",
+          type: "ReactNode",
+          description: l.api.props.description,
+        },
+        {
+          props: "invalid",
+          type: "ReactNode",
+          description: l.api.props.invalid,
+        },
+        {
+          props: "leading",
+          type: "ReactNode",
+          description: l.api.props.leading,
+        },
+        {
+          props: "trailing",
+          type: "ReactNode",
+          description: l.api.props.trailing,
         },
         {
           props: "placeholder",
           type: "string",
-
           description: l.api.props.placeholder,
         },
         {
@@ -89,11 +111,9 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
           default: "false",
           description: l.api.props.disabled,
         },
-
         {
           props: "itemProps",
-          type: "PasswordItemProps",
-
+          type: "object",
           description: l.api.props.itemProps,
         },
       ],
@@ -104,13 +124,42 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
       data: [
         {
           props: "root",
-          type: `React.ComponentProps<"div">`,
+          type: 'ComponentProps<"div">',
           description: l.api.itemPropsConfig.root,
         },
-
         {
-          type: `React.ComponentProps<"button">`,
+          props: "label",
+          type: 'ComponentProps<"label">',
+          description: l.api.itemPropsConfig.label,
+        },
+        {
+          props: "group",
+          type: 'ComponentProps<"div">',
+          description: l.api.itemPropsConfig.group,
+        },
+        {
+          props: "leading",
+          type: 'ComponentProps<"span">',
+          description: l.api.itemPropsConfig.leading,
+        },
+        {
+          props: "trailing",
+          type: 'ComponentProps<"span">',
+          description: l.api.itemPropsConfig.trailing,
+        },
+        {
+          props: "invalid",
+          type: 'ComponentProps<"div">',
+          description: l.api.itemPropsConfig.invalid,
+        },
+        {
+          props: "description",
+          type: 'ComponentProps<"small">',
+          description: l.api.itemPropsConfig.description,
+        },
+        {
           props: "toggle",
+          type: 'ComponentProps<"button">',
           description: l.api.itemPropsConfig.toggle,
         },
       ],
@@ -171,6 +220,14 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
           <DemoSection id="basic" title={l.basic.title} code={PasswordBasicRaw}>
             <PasswordBasic />
           </DemoSection>
+
+          <DemoSection
+            id="validation"
+            title={l.validation.title}
+            code={PasswordValidationRaw}
+          >
+            <PasswordValidation />
+          </DemoSection>
         </section>
 
         <section id="anatomy" className="mt-8 space-y-4">
@@ -202,7 +259,7 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
         </section>
       </div>
 
-      <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-[calc(100vh-3.5rem)] overflow-y-auto p-4">
+      <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-full overflow-y-auto p-4">
         <Anchor>
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>

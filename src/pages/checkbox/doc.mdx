@@ -37,20 +37,6 @@ const [checked, setChecked] = useState(["1"]);
 </Checkbox.Group>;
 ```
 
-### Direction
-
-```tsx
-<Checkbox.Group direction="horizontal">
-  <Checkbox value="1">Option 1</Checkbox>
-  <Checkbox value="2">Option 2</Checkbox>
-</Checkbox.Group>
-
-<Checkbox.Group direction="vertical">
-  <Checkbox value="1">Option 1</Checkbox>
-  <Checkbox value="2">Option 2</Checkbox>
-</Checkbox.Group>
-```
-
 ### Disabled
 
 ```tsx
@@ -71,15 +57,16 @@ const [checked, setChecked] = useState(["1"]);
 
 ### Checkbox.Group Props
 
-| Prop          | Type                                    | Default | Description                                                                                                    |
-| ------------- | --------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------- |
-| defaultValue  | T[]                                     | -       | Initial selected values (uncontrolled)                                                                         |
-| value         | T[]                                     | -       | Current selected values                                                                                        |
-| onValueChange | (value: T[]) => void \| Promise\<void\> | -       | Value change callback, returns string array                                                                    |
-| disabled      | boolean                                 | false   | Disable entire group                                                                                           |
-| invalid       | boolean                                 | -       | Mark group as invalid                                                                                          |
-| name          | string                                  | -       | Form input name. When used, form will submit a comma-separated string (e.g., "a,b,c")                          |
-| className     | ClassNameValue                          | -       | Custom class name (string \| string[] \| boolean \| null \| undefined \| Record\<string, string \| string[]\>) |
+| Prop          | Type                                                    | Default | Description                                                                                                    |
+| ------------- | ------------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------- |
+| defaultValue  | T[]                                                     | -       | Initial selected values (uncontrolled)                                                                         |
+| value         | T[]                                                     | -       | Current selected values                                                                                        |
+| onValueChange | (value: T[]) => void \| { error?: string \| undefined } | -       | Value change callback, can return { error?: string } to trigger error state                                    |
+| error         | boolean \| string                                       | -       | Error state, supports boolean or string type                                                                   |
+| disabled      | boolean                                                 | false   | Disable entire group                                                                                           |
+| name          | string                                                  | -       | Form input name. When used, form will submit a comma-separated string (e.g., "a,b,c")                          |
+| className     | ClassNameValue                                          | -       | Custom class name (string \| string[] \| boolean \| null \| undefined \| Record\<string, string \| string[]\>) |
+| itemProps     | object                                                  | -       | Internal element props passthrough config                                                                      |
 
 ### Checkbox Props
 
@@ -101,3 +88,11 @@ const [checked, setChecked] = useState(["1"]);
 | hidden    | boolean                                                                        | false           | Hide indicator                                                                                                           |
 | className | ClassNameValue                                                                 | -               | Custom indicator class name (string \| string[] \| boolean \| null \| undefined \| Record\<string, string \| string[]\>) |
 | props     | Omit\<ComponentProps\<"span"\>, "className"\> & { className?: ClassNameValue } | -               | Indicator element props pass-through                                                                                     |
+
+### itemProps Config
+
+| Property | Type                  | Description                        |
+| -------- | --------------------- | ---------------------------------- |
+| root     | ComponentProps\<"div"> | Root container `<div>` element props |
+| content  | ComponentProps\<"div"> | Content container `<div>` element props |
+| error    | ComponentProps\<"span"> | Error text `<span>` element props |

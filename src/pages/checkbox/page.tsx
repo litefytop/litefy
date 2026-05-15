@@ -22,14 +22,14 @@ import {
   CheckboxControlled,
   CheckboxDisabled,
   CheckboxVariant,
-  CheckboxInvalid,
+  CheckboxValidation,
 } from "./examples";
 
 import CheckboxBasicRaw from "./examples/checkbox-basic.tsx?raw";
 import CheckboxControlledRaw from "./examples/checkbox-controlled.tsx?raw";
 import CheckboxDisabledRaw from "./examples/checkbox-disabled.tsx?raw";
 import CheckboxVariantRaw from "./examples/checkbox-variant.tsx?raw";
-import CheckboxInvalidRaw from "./examples/checkbox-invalid.tsx?raw";
+import CheckboxValidationRaw from "./examples/checkbox-validation.tsx?raw";
 import checkboxDoc from "./doc.mdx?raw";
 import checkboxSrc from "@/component/ui/checkbox.tsx?raw";
 
@@ -45,21 +45,18 @@ function DemoSection({
   code: string;
 }) {
   return (
-    <section
-      id={id}
-      data-anchor-id={id}
-      className="space-y-4 py-4"
-    >
+    <section id={id} data-anchor-id={id} className="space-y-4 py-4">
       <div>
         <Title as="h3">{title}</Title>
       </div>
-      <div className="border rounded-lg p-6 w-full overflow-x-auto flex flex-col justify-center min-h-32 items-center">
+      <div className="border rounded-lg p-6 w-full overflow-x-auto overflow-y-hidden">
         {children}
       </div>
       <ShikiCodeBlock>{code}</ShikiCodeBlock>
     </section>
   );
 }
+
 
 export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = useState(false);
@@ -70,60 +67,28 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
 
   const checkboxSections = [
     {
-      title: l.api.sectionTitles.checkboxGroupProps,
+      title: l.api.sectionTitles.checkboxProps,
 
       data: [
         {
           props: "defaultValue",
           type: "string[]",
-          description: l.api.groupProps.defaultValue,
+          description: l.api.props.defaultValue,
         },
         {
           props: "value",
           type: "string[]",
-          description: l.api.groupProps.value,
-        },
-        {
-          props: "onValueChange",
-          type: "(value: string[]) => void | Promise<void>",
-          description: l.api.groupProps.onValueChange,
-        },
-        {
-          props: "disabled",
-          type: "boolean",
-          default: "false",
-          description: l.api.groupProps.disabled,
-        },
-        {
-          props: "invalid",
-          type: "boolean",
-          description: l.api.groupProps.invalid,
-        },
-        {
-          props: "name",
-          type: "string",
-          description: l.api.groupProps.name,
-        },
-        {
-          props: "className",
-          type: "ClassNameValue",
-          description: lang.common.className,
-        },
-      ],
-    },
-    {
-      title: l.api.sectionTitles.checkboxProps,
-
-      data: [
-        {
-          props: "value",
-          type: "string",
           description: l.api.props.value,
         },
         {
-          props: "onCheckedChange",
-          type: "(checked: boolean) => void",
-          description: l.api.props.onCheckedChange,
+          props: "onValueChange",
+          type: "(value: string[]) => void | { invalid?: string }",
+          description: l.api.props.onValueChange,
+        },
+        {
+          props: "invalid",
+          type: "boolean | string",
+          description: l.api.props.invalid,
         },
         {
           props: "disabled",
@@ -132,15 +97,67 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.props.disabled,
         },
         {
+          props: "name",
+          type: "string",
+          description: l.api.props.name,
+        },
+        {
+          props: "label",
+          type: "ReactNode",
+          description: l.api.props.label,
+        },
+        {
+          props: "description",
+          type: "ReactNode",
+          description: l.api.props.description,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          description: lang.common.className,
+        },
+        {
+          props: "itemProps",
+          type: "object",
+          description: l.api.props.itemProps,
+        },
+        {
+          props: "options",
+          type: "Omit<CheckboxItemProps, 'checked'>[]",
+          description: l.api.props.options,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.checkboxItemProps,
+
+      data: [
+        {
+          props: "value",
+          type: "string",
+          description: l.api.item.value,
+        },
+        {
+          props: "onCheckedChange",
+          type: "(checked: boolean) => void",
+          description: l.api.item.onCheckedChange,
+        },
+        {
+          props: "disabled",
+          type: "boolean",
+          default: "false",
+          description: l.api.item.disabled,
+        },
+        {
           props: "variant",
           type: "'checkbox' | 'toggle'",
           default: "checkbox",
-          description: l.api.props.variant,
+          description: l.api.item.variant,
         },
         {
           props: "indicator",
           type: "object",
-          description: l.api.props.indicator,
+          description: l.api.item.indicator,
         },
         {
           props: "className",
@@ -172,8 +189,44 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
         },
         {
           props: "props",
-          type: 'Omit<ComponentProps<"span">, "className"> & { className?: ClassNameValue }',
+          type: 'ComponentProps<"span">',
           description: l.api.indicator.props,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.itemProps,
+
+      data: [
+        {
+          props: "root",
+          type: 'ComponentProps<"div">',
+          description: l.api.itemProps.root,
+        },
+        {
+          props: "content",
+          type: 'ComponentProps<"div">',
+          description: l.api.itemProps.content,
+        },
+        {
+          props: "label",
+          type: 'ComponentProps<"label">',
+          description: l.api.itemProps.label,
+        },
+        {
+          props: "description",
+          type: 'ComponentProps<"small">',
+          description: l.api.itemProps.description,
+        },
+        {
+          props: "invalid",
+          type: 'ComponentProps<"span">',
+          description: l.api.itemProps.invalid,
+        },
+        {
+          props: "options",
+          type: 'Omit<CheckboxItemProps, "checked" | "value" | "label">',
+          description: l.api.itemProps.options,
         },
       ],
     },
@@ -230,11 +283,7 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
         <section id="examples" className="">
           <Title as="h2">{lang.examples}</Title>
 
-          <DemoSection
-            id="basic"
-            title={l.basic.title}
-            code={CheckboxBasicRaw}
-          >
+          <DemoSection id="basic" title={l.basic.title} code={CheckboxBasicRaw}>
             <CheckboxBasic />
           </DemoSection>
 
@@ -245,8 +294,6 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
           >
             <CheckboxControlled />
           </DemoSection>
-
-
 
           <DemoSection
             id="disabled"
@@ -265,33 +312,53 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
 
           <DemoSection
-            id="invalid"
-            title={l.invalid.title}
-            code={CheckboxInvalidRaw}
+            id="validation"
+            title={l.validation.title}
+            code={CheckboxValidationRaw}
           >
-            <CheckboxInvalid />
+            <CheckboxValidation />
           </DemoSection>
         </section>
 
         <section id="anatomy" className="mt-8 space-y-4">
           <Title as="h2">{lang.anatomy}</Title>
           <Anatomy
-            className="h-32"
             parts={[
               { id: "anatomy-group", label: l.anatomy.group },
-              { id: "anatomy-checkbox", label: l.anatomy.checkbox },
+              { id: "anatomy-label", label: l.anatomy.label },
+              { id: "anatomy-description", label: l.anatomy.description },
+              { id: "anatomy-item", label: l.anatomy.item },
               { id: "anatomy-indicator", label: l.anatomy.indicator },
             ]}
           >
-            <Checkbox.Group className="flex gap-4" id="anatomy-group">
-              <Checkbox
-                value="item1"
-                id="anatomy-checkbox"
-                indicator={{ props: { id: "anatomy-indicator" } }}
-              >
-                Item 1
-              </Checkbox>
-            </Checkbox.Group>
+            <Checkbox
+              className="flex flex-col gap-2"
+              options={[
+                {
+                  value: "item1",
+                  label: "Item 1",
+                  id: "anatomy-item",
+                  indicator: {
+                    props: { id: "anatomy-indicator" },
+                  },
+                },
+               
+              ]}
+              label="Checkbox"
+              description="This is a description"
+              itemProps={{
+                root:{
+                  id: "anatomy-group",
+                },
+                label: {
+                  id: "anatomy-label",
+                },
+                description: {
+                  id: "anatomy-description",
+                },
+              }}
+            />
+             
           </Anatomy>
         </section>
 
@@ -303,7 +370,7 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
         </section>
       </div>
 
-      <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-[calc(100vh-3.5rem)] overflow-y-auto p-4">
+      <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-full overflow-y-auto p-4">
         <Anchor>
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>

@@ -1,267 +1,271 @@
-import { ReactNode } from "react";
-
+import { ReactNode, useCallback, useRef, useState } from "react";
 import { cn, ClassNameValue } from "@/lib";
-
-import { CircleIcon, CircleCheckIcon } from "./icons";
-import { Dispatch, SetStateAction } from "react";
-import {
-  createContext,
-  useContext,
-  ComponentProps,
-  useRef,
-  useState,
-  useEffect,
-  useId,
-} from "react";
-
-const radioDirectionClass = {
-  horizontal: "flex-wrap",
-  vertical: "flex-col",
-};
+import { CheckIcon } from "./icons";
+import { ComponentProps } from "react";
 
 const radioClass = {
-  base: "inline-flex items-center justify-center gap-2 shrink-0  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 px-3 cursor-pointer",
-  variant: {
-    primary:
-      "data-[state=on]:bg-primary data-[state=on]:text-primary-foreground",
-    secondary:
-      "data-[state=on]:bg-secondary data-[state=on]:text-secondary-foreground",
-    outlined: "data-[state=on]:outline data-[state=on]:outline-primary",
-    text: "data-[state=on]:text-primary",
-  },
+  segment:
+    "aria-checked:bg-primary aria-checked:text-primary-foreground bg-secondary text-secondary-foreground border-y border-r first:border-l group-data-[invalid=true]:aria-checked:bg-destructive",
+  radio:
+    "aria-checked:text-foreground/80 group-data-[invalid=true]:aria-checked:text-destructive",
 };
 
-export type RadioContextProps = {
-  value: string | undefined;
-  setValue: (value: string) => void;
-  register: (value: string) => void;
-  unregister: (value: string) => void;
-};
-
-const RadioContext = createContext<RadioContextProps | undefined>(undefined);
-
-const useRadioContext = () => {
-  const context = useContext(RadioContext);
-
-  if (!context) {
-    throw new Error("useRadioContext must be used within a RadioGroup component");
-  }
-
-  return context;
-};
-
-export type RadioGroupProps<T extends string> = {
-  disable?: boolean;
-  name?: string;
-  invalid?: boolean;
+export type RadioProps<T extends string> = {
+  invalid?: boolean | string;
   defaultValue?: T;
   value?: T;
-  onValueChange?: (
-    value: T,
-  ) => (void | Promise<void>) | Dispatch<SetStateAction<T>>;
-  direction?: "horizontal" | "vertical";
-  disabled?: boolean;
+  label?: ReactNode;
+  description?: ReactNode;
+  onValueChange?: (value: T) => void | { invalid?: string };
   className?: ClassNameValue;
-  children?: ReactNode;
-} & ComponentProps<"div">;
+  itemProps?: {
+    root?: ComponentProps<"div">;
+    content?: ComponentProps<"div">;
+    label?: ComponentProps<"label">;
+    description?: ComponentProps<"small">;
+    invalid?: ComponentProps<"span">;
+    options?: Omit<RadioItemProps, "checked" | "value" | "label">;
+  };
+  options: Omit<RadioItemProps, "checked">[];
+} & Omit<
+  ComponentProps<"input">,
+  "value" | "onChange" | "checked" | "children"
+>;
 
-function RadioGroup<T extends string>({
+export function Radio<T extends string>({
   defaultValue,
-  value: controlledValue,
-  children,
+  value: controlledValues,
   onValueChange,
-  invalid,
+  invalid: externalInvalid,
+  label,
+  description,
   className,
   disabled,
-  direction = "horizontal",
+  name,
+  onBlur,
+  itemProps,
+  style,
+  options,
   ...props
-}: RadioGroupProps<T>) {
+}: RadioProps<T>) {
   const groupRef = useRef<HTMLDivElement>(null);
-  const itemsRef = useRef<string[]>([]);
-  const indexMapRef = useRef<Map<string, number>>(new Map());
-  const [value, setValueState] = useState<string | undefined>(() => {
-    if (controlledValue !== undefined) {
-      return controlledValue;
+  const [internalValue, setInternalValue] = useState<T | undefined>(defaultValue);
+  const [internalInvalid, setInternalInvalid] = useState<string | undefined>();
+
+  const selectedValue = controlledValues ?? internalValue;
+  const finalInvalid = externalInvalid ?? internalInvalid;
+  const isInvalid = Boolean(finalInvalid);
+
+  const setValue = (value: string) => {
+    const val = value as T;
+
+    if (controlledValues == undefined) {
+      setInternalValue(val);
     }
-    return defaultValue;
-  });
 
-  const setValue = (newValue: string) => {
-    setValueState(newValue);
-    onValueChange?.(newValue as T);
+    const result = onValueChange?.(val);
+    setInternalInvalid(result?.invalid);
   };
 
-  const register = (value: string) => {
-    itemsRef.current.push(value);
-    indexMapRef.current.set(value, itemsRef.current.length - 1);
-  };
-
-  const unregister = (value: string) => {
-    const index = indexMapRef.current.get(value);
-    if (index !== undefined) {
-      itemsRef.current.splice(index, 1);
-      indexMapRef.current.clear();
-      itemsRef.current.forEach((v, i) => indexMapRef.current.set(v, i));
-    }
-  };
-
-  const contextValue = {
-    value,
-    setValue,
-    register,
-    unregister,
-  };
-
-  const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const allowedKeys = [
+      "ArrowRight",
+      "ArrowDown",
+      "ArrowLeft",
+      "ArrowUp",
+      "Home",
+      "End",
+    ];
+    if (!allowedKeys.includes(e.key)) return;
     if (!groupRef.current?.contains(document.activeElement)) return;
-    const allValues = itemsRef.current;
-    if (allValues.length === 0) return;
 
-    const currentFocusValue = (document.activeElement as HTMLButtonElement)
-      ?.value;
-    const currentIndex = currentFocusValue
-      ? (indexMapRef.current.get(currentFocusValue) ?? -1)
-      : -1;
+    const buttons = Array.from(
+      groupRef.current.querySelectorAll<HTMLButtonElement>(
+        'button[role="radio"]:not(:disabled)',
+      ),
+    );
+    if (!buttons.length) return;
+
+    const currentIndex = buttons.findIndex(
+      (btn) => btn === document.activeElement,
+    );
+    if (currentIndex === -1) return;
+
     let targetIndex: number;
+    const len = buttons.length;
 
     switch (e.key) {
       case "ArrowRight":
       case "ArrowDown":
-        targetIndex = (currentIndex + 1) % allValues.length;
+        targetIndex = (currentIndex + 1) % len;
         break;
       case "ArrowLeft":
       case "ArrowUp":
-        targetIndex = (currentIndex - 1 + allValues.length) % allValues.length;
+        targetIndex = (currentIndex - 1 + len) % len;
         break;
       case "Home":
         targetIndex = 0;
         break;
       case "End":
-        targetIndex = allValues.length - 1;
+        targetIndex = len - 1;
         break;
-
       default:
         return;
     }
 
     e.preventDefault();
-    const nextValue = allValues[targetIndex];
-    setValue(nextValue);
+    buttons[targetIndex]?.focus();
   };
 
   return (
-    <RadioContext.Provider value={contextValue}>
+    <div
+      {...itemProps?.root}
+      className={cn("flex flex-col", itemProps?.root?.className)}
+    >
+      {label && (
+        <label
+          {...itemProps?.label}
+          className={cn(
+            "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 py-1 indent-2",
+            itemProps?.label?.className,
+          )}
+        >
+          {label}
+        </label>
+      )}
+
       <div
-        {...props}
-        role="group"
-        aria-invalid={invalid}
+        {...itemProps?.content}
+        role="radiogroup"
+        aria-invalid={isInvalid}
+        data-invalid={isInvalid}
         ref={groupRef}
-        inert={props.inert || disabled}
+        inert={disabled}
         onKeyDown={handleKeyDown}
         className={cn(
-          "w-full flex inert:pointer-events-none inert:opacity-50",
-          radioDirectionClass[direction],
+          "flex inert:pointer-events-none inert:opacity-50 group my-1",
           className,
         )}
+        style={style}
       >
-        <input
-          type="hidden"
-          tabIndex={-1}
-          readOnly
-          value={value ?? ""}
-        />
-        {children}
+        {options.map((option) => (
+          <RadioItem
+            {...itemProps?.options}
+            {...option}
+            checked={selectedValue === option.value}
+            key={option.value}
+            onValueChange={setValue}
+          />
+        ))}
       </div>
-    </RadioContext.Provider>
+      <input
+        {...props}
+        type="hidden"
+        name={name}
+        value={selectedValue}
+        disabled={disabled}
+        onBlur={onBlur}
+      />
+      <small
+        data-invalid={isInvalid}
+        {...(isInvalid ? itemProps?.invalid : itemProps?.description)}
+        className={cn(
+          "text-sm indent-2 h-5 text-muted-foreground data-[invalid=true]:text-destructive",
+          (isInvalid ? itemProps?.invalid : itemProps?.description)?.className,
+        )}
+        role={isInvalid ? "alert" : undefined}
+      >
+        {isInvalid ? finalInvalid : description}
+      </small>
+    </div>
   );
 }
 
-export type RadioVariant = keyof typeof radioClass.variant;
-
-export type RadioProps = Omit<
+type RadioItemProps = Omit<
   ComponentProps<"button">,
-  "value" | "onChange"
+  "value" | "onChange" | "checked" | "children"
 > & {
-  onValueChange?: (value: string) => void;
+  checked: boolean;
+  onCheckedChange?: (checked: boolean) => void;
   value: string;
+  onValueChange?: (value: string) => void;
   disabled?: boolean;
-  variant?: RadioVariant;
+  variant?: keyof typeof radioClass;
   indicator?: {
     checked?: ReactNode;
     unchecked?: ReactNode;
     hidden?: boolean;
-    className?: ClassNameValue;
-    props?: ComponentProps<"span">;
+    props?: Omit<ComponentProps<"span">, "className"> & {
+      className?: ClassNameValue;
+    };
   };
   className?: ClassNameValue;
-  children?: ReactNode;
+  label?: ReactNode;
 };
 
-export const Radio = ({
+const RadioItem = ({
   value,
-  onValueChange,
-  id: propsId,
+  onCheckedChange,
   disabled: controlledDisable,
-  variant = "text",
+  variant = "radio",
   className,
   indicator,
+  onValueChange,
+  checked,
   ...props
-}: RadioProps) => {
-  const resolvedIndicator = {
-    checked: <CircleCheckIcon />,
-    unchecked: <CircleIcon />,
-    hidden: false,
-    ...indicator,
-  };
-  const id = useId();
-  const { value: contextValue, setValue, register, unregister } = useRadioContext();
+}: RadioItemProps) => {
+  const disabled = controlledDisable;
 
-  const isChecked = contextValue === value;
-
-  useEffect(() => {
-    register(value);
-    return () => unregister(value);
-  }, [value, register, unregister]);
-
-  const disable = controlledDisable;
-
-  const handleClick = () => {
-    if (disable) return;
-    setValue(value);
+  const handleClick = useCallback(() => {
+    if (disabled || checked) return;
     onValueChange?.(value);
-  };
+    onCheckedChange?.(true);
+  }, [disabled, value, onValueChange, onCheckedChange, checked]);
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === " " || e.key === "Enter") {
+        e.preventDefault();
+        handleClick();
+      }
+    },
+    [handleClick],
+  );
 
   return (
     <button
       {...props}
-      id={propsId ?? id}
       value={value}
-      data-state={isChecked ? "on" : "off"}
       type="button"
       role="radio"
-      aria-checked={isChecked}
-      tabIndex={isChecked ? 0 : -1}
-      disabled={disable}
+      aria-checked={checked}
+      tabIndex={0}
+      disabled={disabled}
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
       className={cn(
-        radioClass.base,
-        radioClass.variant[variant],
+        "inline-flex items-center justify-center gap-2 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-8 min-w-8 px-3 py-1 cursor-pointer group-data-[invalid=true]:text-destructive",
+        radioClass[variant],
         className,
       )}
     >
-      {!resolvedIndicator.hidden && (
+      {!indicator?.hidden && (
         <span
-          {...resolvedIndicator.props}
-           className={cn("data-[state=checked]:[&_svg]:fill-inherit data-[state=checked]:fill-primary data-[state=checked]:text-primary-foreground", resolvedIndicator.className)}
-
-          data-state={isChecked ? "on" : "off"}
+          {...indicator?.props}
+          data-checked={checked}
+          className={cn(
+            "flex items-center justify-center size-4 rounded-full border border-foreground data-[checked=true]:bg-primary data-[checked=true]:border-primary-foreground data-[checked=true]:text-primary-foreground group-data-[invalid=true]:border-destructive group-data-[invalid=true]:data-[checked=true]:bg-destructive",
+            indicator?.props?.className,
+          )}
         >
-          {isChecked ? resolvedIndicator.checked : resolvedIndicator.unchecked}
+          {checked
+            ? (indicator?.checked ?? <CheckIcon />)
+            : indicator?.unchecked}
         </span>
       )}
-      {props.children}
+      {props.label}
     </button>
   );
-};
+}
 
-Radio.Group = RadioGroup;
+

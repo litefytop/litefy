@@ -53,20 +53,6 @@ function App() {
 </Button>
 ```
 
-### Direction
-
-```tsx
-<Button direction="horizontal">
-  <Icon className="size-4" />
-  <span>Horizontal</span>
-</Button>
-
-<Button direction="vertical">
-  <Icon className="size-4" />
-  <span>Vertical</span>
-</Button>
-```
-
 ## CSS Classes
 
 ```css
@@ -82,10 +68,6 @@ outline: "border border-primary bg-transparent hover:bg-accent hover:text-accent
 ghost: "hover:bg-muted hover:text-muted-foreground"
 link: "text-primary underline-offset-4 hover:underline"
 text: "text-primary hover:text-primary/80"
-
-// Direction
-horizontal: "h-9 min-w-9 px-3 py-1 gap-1 rounded-md"
-vertical: "flex-col gap-2 px-3 py-1"
 
 // Icon
 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0

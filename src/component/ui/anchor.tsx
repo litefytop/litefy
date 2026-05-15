@@ -149,12 +149,9 @@ function AnchorSection({
     <div className={cn(className)} {...props}>
       <a
         data-active={isActive}
-        data-link={!href}
+        data-link={Boolean(href)}
         className={cn(
-          "text-sm font-medium",
-          "data-[active=true]:text-primary data-[active=true]:underline data-[active=true]:underline-offset-4",
-          "data-[active=false]:text-foreground data-[active=false]:hover:text-primary",
-          "data-[link=false]:pointer-events-none",
+          "text-sm font-medium data-[active=true]:text-primary data-[active=true]:underline data-[active=true]:underline-offset-4 data-[active=false]:text-foreground data-[active=false]:hover:text-primary data-[link=false]:pointer-events-none",
           className,
         )}
         href={href}

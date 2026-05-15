@@ -1,9 +1,4 @@
-import {
-  NavLink,
-  useLocation,
-  useNavigate,
-  Outlet,
-} from "react-router-dom";
+import { NavLink, useLocation, useNavigate, Outlet } from "react-router-dom";
 import { useEffect } from "react";
 import { getNavItems } from "@/pages/config/routes";
 import {
@@ -130,20 +125,18 @@ function Header({ locale, className }: { locale: string; className?: string }) {
 
 export function App({ locale = "zh" }: { locale?: string }) {
   return (
-    <div className="flex flex-col h-screen bg-background text-foreground">
+    <div className="flex flex-col h-screen bg-background text-foreground overflow-hidden">
       <Header locale={locale} className="shrink-0" />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar className="w-3xs shrink-0 overflow-y-auto">
           <SidebarContent locale={locale} />
         </Sidebar>
-        <main className="flex-1 overflow-y-auto">
-          <ScrollToTop />
-
-          <div className="container mx-auto px-6 py-8 max-w-4xl">
+        <main className="flex-1 overflow-y-auto *:container *:mx-auto *:px-6 *:py-8 *:max-w-4xl">
             <Outlet />
-          </div>
+       
         </main>
       </div>
+      <ScrollToTop />
       <Toaster position="top-right" />
     </div>
   );

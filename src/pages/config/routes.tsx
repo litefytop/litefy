@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { lazy } from "react";
 import { zh, en } from "./i18n";
 import { App, Introduction } from "@/pages";
-import {  ComingSoon } from "@/component";
+import { ComingSoon } from "@/component";
 
 const Accordion = lazy(() => import("@/pages/accordion"));
 const Anchor = lazy(() => import("@/pages/anchor"));
@@ -56,24 +56,21 @@ const componentRouteConfig = [
     path: "/components/description",
     Component: Description,
   },
-  { key: "spin", path: "/components/spin", Component: ComingSoon },
   { key: "image", path: "/components/image", Component: ComingSoon },
   { key: "watermark", path: "/components/watermark", Component: ComingSoon },
   { key: "show", path: "/components/show", Component: ComingSoon },
-  { key: "label", path: "/components/label", Component: ComingSoon },
   { key: "form", path: "/components/form", Component: ComingSoon },
   { key: "search", path: "/components/search", Component: ComingSoon },
   { key: "sidebar", path: "/components/sidebar", Component: ComingSoon },
   { key: "paper", path: "/components/paper", Component: ComingSoon },
   { key: "pagination", path: "/components/pagination", Component: ComingSoon },
   { key: "transfer", path: "/components/transfer", Component: ComingSoon },
-  { key: "overlay", path: "/components/overlay", Component: ComingSoon },
   { key: "table", path: "/components/table", Component: ComingSoon },
   { key: "sheet", path: "/components/sheet", Component: ComingSoon },
 ];
 
 function getLabel(t: typeof zh, key: string): string {
-  return t.components[key as keyof typeof t.components] ;
+  return t.components[key as keyof typeof t.components];
 }
 
 const navConfig = {

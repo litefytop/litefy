@@ -1,95 +1,73 @@
-import {
-  ReactNode,
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-  useId,
-} from "react";
+import { ReactNode, useCallback, useRef, useState } from "react";
 import { cn, ClassNameValue } from "@/lib";
 import { CheckIcon } from "./icons";
-import { createContext, useContext, ComponentProps } from "react";
+import { ComponentProps } from "react";
 
 const checkboxClass = {
   toggle:
-    "data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground bg-secondary text-secondary-foreground border-y border-r first:border-l group-data-[invalid=true]:data-[state=checked]:bg-destructive",
-  checkbox: "data-[state=checked]:text-foreground/80 group-data-[invalid=true]:data-[state=checked]:text-destructive",
+    "aria-checked:bg-primary aria-checked:text-primary-foreground bg-secondary text-secondary-foreground border-y border-r first:border-l group-data-[invalid=true]:aria-checked:bg-destructive",
+  checkbox:
+    "aria-checked:text-foreground/80 group-data-[invalid=true]:aria-checked:text-destructive",
 };
 
-export type CheckboxContextProps = {
-  value: string[];
-  setValue: (value: string, checked: boolean) => void;
-};
-
-const CheckboxContext = createContext<CheckboxContextProps | undefined>(
-  undefined,
-);
-
-const useCheckboxContext = () => {
-  const context = useContext(CheckboxContext);
-  if (!context) {
-    throw new Error(
-      "useCheckboxContext must be used within a CheckboxGroup component",
-    );
-  }
-  return context;
-};
-
-export type CheckboxGroupProps<T extends string> = {
-  name?: string;
-  invalid?: boolean;
+export type CheckboxProps<T extends string> = {
+  invalid?: boolean | string;
   defaultValue?: T[];
   value?: T[];
-  onValueChange?: (value: T[]) => void | Promise<void>;
-  disabled?: boolean;
+  label?: ReactNode;
+  description?: ReactNode;
+  onValueChange?: (value: T[]) => void | { invalid?: string };
   className?: ClassNameValue;
-  children?: ReactNode;
-} & ComponentProps<"div">;
+  itemProps?: {
+    root?: ComponentProps<"div">;
+    content?: ComponentProps<"div">;
+    label?: ComponentProps<"label">;
+    description?: ComponentProps<"small">;
+    invalid?: ComponentProps<"span">;
+    options?: Omit<CheckboxItemProps, "checked" | "value" | "label">;
+  };
+  options: Omit<CheckboxItemProps, "checked">[];
+} & Omit<
+  ComponentProps<"input">,
+  "value" | "onChange" | "checked" | "children"
+>;
 
-function CheckboxGroup<T extends string>({
+export function Checkbox<T extends string>({
   defaultValue = [],
   value: controlledValues,
-  children,
   onValueChange,
-  invalid,
+  invalid: externalInvalid,
+  label,
+  description,
   className,
   disabled,
   name,
+  onBlur,
+  itemProps,
+  style,
+  options,
   ...props
-}: CheckboxGroupProps<T>) {
+}: CheckboxProps<T>) {
   const groupRef = useRef<HTMLDivElement>(null);
-  const isControlled = controlledValues !== undefined;
-
   const [internalValues, setInternalValues] = useState<T[]>(defaultValue);
+  const [internalInvalid, setInternalInvalid] = useState<string | undefined>();
 
   const selectedValues = controlledValues ?? internalValues;
+  const finalInvalid = externalInvalid ?? internalInvalid;
+  const isInvalid = Boolean(finalInvalid);
 
-  const setValue = useCallback(
-    (value: string, checked: boolean) => {
-      let newValues: T[];
+  const setValue = (value: string) => {
+    const newValues = selectedValues.includes(value as T)
+      ? selectedValues.filter((v) => v !== value)
+      : [...selectedValues, value as T];
 
-      if (checked) {
-        newValues = [...selectedValues, value as T];
-      } else {
-        newValues = selectedValues.filter((v) => v !== value);
-      }
+    if (controlledValues == undefined) {
+      setInternalValues(newValues);
+    }
 
-      if (!isControlled) {
-        setInternalValues(newValues);
-      }
-
-      onValueChange?.(newValues);
-    },
-    [selectedValues, isControlled, onValueChange],
-  );
-
-  const contextValue = useMemo(
-    () => ({
-      value: selectedValues,
-      setValue,
-    }),
-    [selectedValues, setValue],
-  );
+    const result = onValueChange?.(newValues);
+    setInternalInvalid(result?.invalid);
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     const allowedKeys = [
@@ -142,44 +120,79 @@ function CheckboxGroup<T extends string>({
   };
 
   return (
-    <CheckboxContext.Provider value={contextValue}>
+    <div
+      {...itemProps?.root}
+      className={cn("flex flex-col", itemProps?.root?.className)}
+    >
+      {label && (
+        <label
+          {...itemProps?.label}
+          className={cn(
+            "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 py-1 indent-2",
+            itemProps?.label?.className,
+          )}
+        >
+          {label}
+        </label>
+      )}
+
       <div
-        {...props}
+        {...itemProps?.content}
         role="group"
-        aria-invalid={invalid}
-        data-invalid={invalid}
+        aria-invalid={isInvalid}
+        data-invalid={isInvalid}
         ref={groupRef}
         inert={disabled}
         onKeyDown={handleKeyDown}
         className={cn(
-          "flex inert:pointer-events-none inert:opacity-50 group",
+          "flex inert:pointer-events-none inert:opacity-50 group my-1",
           className,
         )}
+        style={style}
       >
-        {name && (
-          <input
-            type="hidden"
-            name={name}
-            value={selectedValues}
-            disabled={disabled}
+        {options.map((option) => (
+          <CheckboxItem
+            {...itemProps?.options}
+            {...option}
+            checked={selectedValues.includes(option.value as T)}
+            key={option.value}
+            onValueChange={setValue}
           />
-        )}
-        {children}
+        ))}
       </div>
-    </CheckboxContext.Provider>
+      <input
+        {...props}
+        type="hidden"
+        name={name}
+        value={selectedValues}
+        disabled={disabled}
+        onBlur={onBlur}
+      />
+      <small
+        data-invalid={isInvalid}
+        {...(isInvalid ? itemProps?.invalid : itemProps?.description)}
+        className={cn(
+          "text-sm indent-2 h-5 text-muted-foreground data-[invalid=true]:text-destructive",
+          (isInvalid ? itemProps?.invalid : itemProps?.description)?.className,
+        )}
+        role={isInvalid ? "alert" : undefined}
+      >
+        {isInvalid ? finalInvalid : description}
+      </small>
+    </div>
   );
 }
 
-export type CheckboxVariant = keyof typeof checkboxClass;
-
-export type CheckboxProps = Omit<
+type CheckboxItemProps = Omit<
   ComponentProps<"button">,
-  "value" | "onChange"
+  "value" | "onChange" | "checked" | "children"
 > & {
+  checked: boolean;
   onCheckedChange?: (checked: boolean) => void;
   value: string;
+  onValueChange?: (value: string) => void;
   disabled?: boolean;
-  variant?: CheckboxVariant;
+  variant?: keyof typeof checkboxClass;
   indicator?: {
     checked?: ReactNode;
     unchecked?: ReactNode;
@@ -189,30 +202,27 @@ export type CheckboxProps = Omit<
     };
   };
   className?: ClassNameValue;
-  children?: ReactNode;
+  label?: ReactNode;
 };
 
-export const Checkbox = ({
+const CheckboxItem = ({
   value,
   onCheckedChange,
-  id: propsId,
   disabled: controlledDisable,
   variant = "checkbox",
   className,
   indicator,
+  onValueChange,
+  checked,
   ...props
-}: CheckboxProps) => {
-  const { value: selectedValues, setValue } = useCheckboxContext();
-  const id = useId();
+}: CheckboxItemProps) => {
   const disabled = controlledDisable;
-
-  const isChecked = selectedValues.includes(value);
 
   const handleClick = useCallback(() => {
     if (disabled) return;
-    setValue(value, !isChecked);
-    onCheckedChange?.(!isChecked);
-  }, [disabled, value, isChecked, setValue, onCheckedChange]);
+    onValueChange?.(value);
+    onCheckedChange?.(!checked);
+  }, [disabled, value, onValueChange, onCheckedChange, checked]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -227,12 +237,10 @@ export const Checkbox = ({
   return (
     <button
       {...props}
-      id={propsId ?? id}
       value={value}
-      data-state={isChecked ? "checked" : "unchecked"}
       type="button"
       role="checkbox"
-      aria-checked={isChecked}
+      aria-checked={checked}
       tabIndex={0}
       disabled={disabled}
       onClick={handleClick}
@@ -246,21 +254,18 @@ export const Checkbox = ({
       {!indicator?.hidden && (
         <span
           {...indicator?.props}
-          data-state={isChecked ? "checked" : "unchecked"}
-          data-invalid={disabled}
+          data-checked={checked}
           className={cn(
-            "flex items-center justify-center size-4 rounded-md border border-foreground data-[state=checked]:bg-primary data-[state=checked]:border-primary-foreground data-[state=checked]:text-primary-foreground group-data-[invalid=true]:border-destructive group-data-[invalid=true]:data-[state=checked]:bg-destructive",
+            "flex items-center justify-center size-4 rounded-md border border-foreground data-[checked=true]:bg-primary data-[checked=true]:border-primary-foreground data-[checked=true]:text-primary-foreground group-data-[invalid=true]:border-destructive group-data-[invalid=true]:data-[checked=true]:bg-destructive",
             indicator?.props?.className,
           )}
         >
-          {isChecked
+          {checked
             ? (indicator?.checked ?? <CheckIcon />)
             : indicator?.unchecked}
         </span>
       )}
-      {props.children}
+      {props.label}
     </button>
   );
-};
-
-Checkbox.Group = CheckboxGroup;
+}

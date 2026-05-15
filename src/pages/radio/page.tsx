@@ -20,16 +20,16 @@ import { getComponentNav } from "@/pages/config/routes";
 import {
   RadioBasic,
   RadioControlled,
-  RadioDirection,
   RadioDisabled,
   RadioVariant,
+  RadioValidation,
 } from "./examples";
 
 import RadioBasicRaw from "./examples/radio-basic.tsx?raw";
 import RadioControlledRaw from "./examples/radio-controlled.tsx?raw";
-import RadioDirectionRaw from "./examples/radio-direction.tsx?raw";
 import RadioDisabledRaw from "./examples/radio-disabled.tsx?raw";
 import RadioVariantRaw from "./examples/radio-variant.tsx?raw";
+import RadioValidationRaw from "./examples/radio-validation.tsx?raw";
 import radioDoc from "./doc.mdx?raw";
 import radioSrc from "@/component/ui/radio.tsx?raw";
 
@@ -53,7 +53,7 @@ function DemoSection({
       <div>
         <Title as="h3">{title}</Title>
       </div>
-      <div className="border rounded-lg p-6 w-full overflow-x-auto">
+      <div className="border rounded-lg p-6 w-full overflow-x-auto flex flex-col justify-center min-h-32 items-center">
         {children}
       </div>
       <ShikiCodeBlock>{code}</ShikiCodeBlock>
@@ -70,85 +70,138 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
 
   const radioSections = [
     {
-      title: l.api.sectionTitles.radioGroupProps,
-
-      data: [
-        {
-          props: "value",
-          type: "string",
-          
-          description: l.api.radioGroupProps.value,
-        },
-        {
-          props: "defaultValue",
-          type: "string",
-          
-          description: l.api.radioGroupProps.defaultValue,
-        },
-        {
-          props: "onChange",
-          type: "(value: string) => void",
-          
-          description: l.api.radioGroupProps.onChange,
-        },
-        {
-          props: "disabled",
-          type: "boolean",
-          default: "false",
-          description: l.api.radioGroupProps.disabled,
-        },
-        {
-          props: "direction",
-          type: '"horizontal" | "vertical"',
-          default: '"horizontal"',
-          description: l.api.radioGroupProps.direction,
-        },
-
-      ],
-    },
-    {
       title: l.api.sectionTitles.radioProps,
 
       data: [
         {
+          props: "defaultValue",
+          type: "string",
+          description: l.api.props.defaultValue,
+        },
+        {
           props: "value",
           type: "string",
-          
-          description: l.api.radioProps.value,
+          description: l.api.props.value,
+        },
+        {
+          props: "onValueChange",
+          type: "(value: string) => void | { invalid?: string }",
+          description: l.api.props.onValueChange,
+        },
+        {
+          props: "invalid",
+          type: "boolean | string",
+          description: l.api.props.invalid,
         },
         {
           props: "disabled",
           type: "boolean",
           default: "false",
-          description: l.api.radioProps.disabled,
+          description: l.api.props.disabled,
         },
-
         {
-          props: "indicator",
-          type: "RadioIndicatorConfig",
-          
-          description: l.api.radioProps.indicator,
+          props: "name",
+          type: "string",
+          description: l.api.props.name,
+        },
+        {
+          props: "label",
+          type: "ReactNode",
+          description: l.api.props.label,
+        },
+        {
+          props: "description",
+          type: "ReactNode",
+          description: l.api.props.description,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          description: lang.common.className,
+        },
+        {
+          props: "itemProps",
+          type: "object",
+          description: l.api.props.itemProps,
+        },
+        {
+          props: "options",
+          type: "Omit<RadioItemProps, 'checked'>[]",
+          description: l.api.props.options,
         },
       ],
     },
     {
-      title: l.api.sectionTitles.itemPropsConfig,
+      title: l.api.sectionTitles.radioItemProps,
 
       data: [
         {
-          props: "group",
-          type: `React.ComponentProps<"div">`,
-          description: l.api.itemPropsConfig.group,
+          props: "value",
+          type: "string",
+          description: l.api.item.value,
         },
         {
-          props: "radio",
-          type: `React.ComponentProps<"input">`,
-          description: l.api.itemPropsConfig.radio,
+          props: "onCheckedChange",
+          type: "(checked: boolean) => void",
+          description: l.api.item.onCheckedChange,
         },
         {
-          type: `React.ComponentProps<"span">`,
+          props: "disabled",
+          type: "boolean",
+          default: "false",
+          description: l.api.item.disabled,
+        },
+        {
+          props: "variant",
+          type: "'radio' | 'segment'",
+          default: "radio",
+          description: l.api.item.variant,
+        },
+        {
           props: "indicator",
-          description: l.api.itemPropsConfig.indicator,
+          type: "RadioIndicatorConfig",
+          description: l.api.item.indicator,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          description: lang.common.className,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.itemProps,
+
+      data: [
+        {
+          props: "root",
+          type: 'ComponentProps<"div">',
+          description: l.api.itemProps.root,
+        },
+        {
+          props: "content",
+          type: 'ComponentProps<"div">',
+          description: l.api.itemProps.content,
+        },
+        {
+          props: "label",
+          type: 'ComponentProps<"label">',
+          description: l.api.itemProps.label,
+        },
+        {
+          props: "description",
+          type: 'ComponentProps<"small">',
+          description: l.api.itemProps.description,
+        },
+        {
+          props: "invalid",
+          type: 'ComponentProps<"span">',
+          description: l.api.itemProps.invalid,
+        },
+        {
+          props: "options",
+          type: 'Omit<RadioItemProps, "checked" | "value" | "label">',
+          description: l.api.itemProps.options,
         },
       ],
     },
@@ -222,14 +275,6 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
 
           <DemoSection
-            id="direction"
-            title={l.direction.title}
-            code={RadioDirectionRaw}
-          >
-            <RadioDirection />
-          </DemoSection>
-
-          <DemoSection
             id="disabled"
             title={l.disabled?.title || "Disabled"}
             code={RadioDisabledRaw}
@@ -239,32 +284,57 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
 
           <DemoSection
             id="variant"
-            title={l.variants?.title || "Variants"}
+            title={l.variant.title}
             code={RadioVariantRaw}
           >
             <RadioVariant />
+          </DemoSection>
+
+          <DemoSection
+            id="validation"
+            title={l.validation.title}
+            code={RadioValidationRaw}
+          >
+            <RadioValidation />
           </DemoSection>
         </section>
 
         <section id="anatomy" className="mt-8 space-y-4">
           <Title as="h2">{lang.anatomy}</Title>
           <Anatomy
-            className="h-32"
+            className="h-40"
             parts={[
-              { name: "group", label: l.anatomy.group },
-              { name: "radio", label: l.anatomy.radio },
-              { name: "indicator", label: l.anatomy.indicator },
+              { id: "anatomy-group", label: l.anatomy.group },
+              { id: "anatomy-label", label: l.anatomy.label },
+              { id: "anatomy-description", label: l.anatomy.description },
+              { id: "anatomy-item", label: l.anatomy.item },
+              { id: "anatomy-indicator", label: l.anatomy.indicator },
             ]}
           >
-            <Radio.Group className="flex gap-4" id="anatomy-group">
-              <Radio
-                value="item1"
-                id="anatomy-radio"
-                indicator={{ props: { id: "anatomy-indicator" as string } }}
-              >
-                Item 1
-              </Radio>
-            </Radio.Group>
+            <Radio 
+              className="flex flex-col gap-2" 
+              label="Radio Group"
+              description="This is a description"
+              itemProps={{
+                root:{
+                  id: "anatomy-group",
+                },
+                label: {
+                  id: "anatomy-label",
+                },
+                description: {
+                  id: "anatomy-description",
+                },
+              }}
+              options={[
+                {
+                  value: "item1",
+                  label: "Item 1",
+                  id: "anatomy-item",
+                  indicator: { props: { id: "anatomy-indicator" } },
+                },
+              ]}
+            />
           </Anatomy>
         </section>
 
@@ -276,15 +346,15 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
         </section>
       </div>
 
-      <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-[calc(100vh-3.5rem)] overflow-y-auto p-4">
+      <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-full overflow-y-auto p-4">
         <Anchor>
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
             <Anchor.Item href="#controlled">{l.controlled.title}</Anchor.Item>
-            <Anchor.Item href="#direction">{l.direction.title}</Anchor.Item>
-            <Anchor.Item href="#disabled">{l.disabled?.title}</Anchor.Item>
-            <Anchor.Item href="#variant">{l.variants?.title}</Anchor.Item>
+            <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
+            <Anchor.Item href="#variant">{l.variant.title}</Anchor.Item>
+            <Anchor.Item href="#validation">{l.validation.title}</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
           <Anchor.Section href="#docs" linkText={lang.docs} />

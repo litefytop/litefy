@@ -5,15 +5,24 @@ export default function CheckboxControlled() {
   const [checked, setChecked] = useState<string[]>(["option1"]);
 
   return (
-    <div className="flex flex-col justify-center min-h-32 items-center gap-4">
-      <Checkbox.Group value={checked} onValueChange={setChecked}>
-        <Checkbox value="option1">Option 1</Checkbox>
-        <Checkbox value="option2">Option 2</Checkbox>
-        <Checkbox value="option3">Option 3</Checkbox>
-      </Checkbox.Group>
-      <p className="text-sm text-muted-foreground">
-        Currently selected: {checked.join(", ")}
-      </p>
-    </div>
+    <Checkbox
+      label="Controlled Checkbox"
+      value={checked}
+      onValueChange={setChecked}
+      options={[
+        {
+          value: "option1",
+          label: "Option 1",
+        },
+        {
+          value: "option2",
+          label: "Option 2",
+        },
+        {
+          value: "option3",
+          label: "Option 3",
+        },
+      ]}
+    />
   );
 }

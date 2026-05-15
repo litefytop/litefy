@@ -20,13 +20,13 @@ import { getComponentNav } from "@/pages/config/routes";
 import {
   InputBasic,
   InputPrefixSuffix,
-  InputError,
+  InputValidation,
   InputDisabled,
 } from "./examples";
 
 import InputBasicRaw from "./examples/input-basic.tsx?raw";
 import InputPrefixSuffixRaw from "./examples/input-prefix-suffix.tsx?raw";
-import InputErrorRaw from "./examples/input-error.tsx?raw";
+import InputValidationRaw from "./examples/input-validation.tsx?raw";
 import InputDisabledRaw from "./examples/input-disabled.tsx?raw";
 import inputDoc from "./doc.mdx?raw";
 import inputSrc from "@/component/ui/input.tsx?raw";
@@ -102,10 +102,9 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.props.disabled,
         },
         {
-          props: "error",
-          type: "boolean",
-          default: "false",
-          description: l.api.props.error,
+          props: "invalid",
+          type: "string",
+          description: l.api.props.invalid,
         },
         {
           props: "label",
@@ -155,9 +154,9 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.itemPropsConfig.label,
         },
         {
-          props: "error",
+          props: "invalid",
           type: `React.ComponentProps<"div">`,
-          description: l.api.itemPropsConfig.error,
+          description: l.api.itemPropsConfig.invalid,
         },
         {
           props: "leading",
@@ -246,11 +245,11 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
 
           <DemoSection
-            id="error"
-            title={l.error.title}
-            code={InputErrorRaw}
+            id="validation"
+            title={l.validation.title}
+            code={InputValidationRaw}
           >
-            <InputError />
+            <InputValidation />
           </DemoSection>
 
           <DemoSection
@@ -301,13 +300,13 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
         </section>
       </div>
 
-      <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-[calc(100vh-3.5rem)] overflow-y-auto p-4">
+      <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-full overflow-y-auto p-4">
         <Anchor>
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
             <Anchor.Item href="#prefix-suffix">{l.prefixSuffix.title}</Anchor.Item>
-            <Anchor.Item href="#error">{l.error.title}</Anchor.Item>
+            <Anchor.Item href="#validation">{l.validation.title}</Anchor.Item>
             <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
