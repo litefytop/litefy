@@ -29,3 +29,4 @@ export * from "./icons";
 export * from "./anchor";
 export * from "./toast"
 export * from "./drawer"
+export * from "./select"

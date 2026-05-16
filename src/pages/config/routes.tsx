@@ -15,6 +15,7 @@ const Empty = lazy(() => import("@/pages/empty/page"));
 const Input = lazy(() => import("@/pages/input"));
 const Password = lazy(() => import("@/pages/password"));
 const Radio = lazy(() => import("@/pages/radio"));
+const Select = lazy(() => import("@/pages/select"));
 const Toast = lazy(() => import("@/pages/toast"));
 const Dialog = lazy(() => import("@/pages/dialog"));
 const Drawer = lazy(() => import("@/pages/drawer"));
@@ -35,15 +36,11 @@ const componentRouteConfig = [
   { key: "input", path: "/components/input", Component: Input },
   { key: "checkbox", path: "/components/checkbox", Component: Checkbox },
   { key: "radio", path: "/components/radio", Component: Radio },
-  {
-    key: "dropdown",
-    path: "/components/dropdown",
-    Component: Dropdown,
-  },
+  { key: "dropdown", path: "/components/dropdown", Component: Dropdown },
+  { key: "select", path: "/components/select", Component: Select },
   { key: "password", path: "/components/password", Component: Password },
   { key: "slider", path: "/components/slider", Component: ComingSoon },
   { key: "textarea", path: "/components/textarea", Component: ComingSoon },
-  { key: "select", path: "/components/select", Component: ComingSoon },
   { key: "loading", path: "/components/loading", Component: ComingSoon },
   { key: "empty", path: "/components/empty", Component: Empty },
   { key: "skeleton", path: "/components/skeleton", Component: ComingSoon },
@@ -51,15 +48,11 @@ const componentRouteConfig = [
   { key: "theme", path: "/components/theme", Component: ComingSoon },
   { key: "title", path: "/components/title", Component: ComingSoon },
   { key: "text", path: "/components/text", Component: ComingSoon },
-  {
-    key: "description",
-    path: "/components/description",
-    Component: Description,
-  },
-  { key: "image", path: "/components/image", Component: ComingSoon },
+  { key: "description", path: "/components/description", Component: Description },
+  { key: "img", path: "/components/img", Component: ComingSoon },
   { key: "watermark", path: "/components/watermark", Component: ComingSoon },
   { key: "show", path: "/components/show", Component: ComingSoon },
-  { key: "form", path: "/components/form", Component: ComingSoon },
+  { key: "toggle", path: "/components/toggle", Component: ComingSoon },
   { key: "search", path: "/components/search", Component: ComingSoon },
   { key: "sidebar", path: "/components/sidebar", Component: ComingSoon },
   { key: "paper", path: "/components/paper", Component: ComingSoon },

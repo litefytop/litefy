@@ -120,17 +120,17 @@ function Input({
           {finalInvalid}
         </div>
       )}
-      {description && !finalInvalid && (
-        <small
-          {...itemProps?.description}
-          className={cn(
-            "text-sm text-muted-foreground py-1 indent-2",
-            itemProps?.description?.className,
-          )}
-        >
-          {description}
-        </small>
-      )}
+      <small
+        data-invalid={isInvalid}
+        {...(isInvalid ? itemProps?.invalid : itemProps?.description)}
+        className={cn(
+          "text-sm indent-2 h-5 text-muted-foreground data-[invalid=true]:text-destructive",
+          (isInvalid ? itemProps?.invalid : itemProps?.description)?.className,
+        )}
+        role={isInvalid ? "alert" : undefined}
+      >
+        {isInvalid ? finalInvalid : description}
+      </small>
     </div>
   );
 }

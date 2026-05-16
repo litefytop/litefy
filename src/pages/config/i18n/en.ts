@@ -507,6 +507,68 @@ export const en = {
     },
   },
 
+  select: {
+    title: "Select",
+    description: "Select component for selecting from options.",
+    basic: {
+      title: "Basic",
+    },
+    controlled: {
+      title: "Controlled",
+    },
+    validation: {
+      title: "Validation",
+    },
+    disabled: {
+      title: "Disabled",
+    },
+    group: {
+      title: "Group",
+    },
+    multiple: {
+      title: "Multiple",
+    },
+    anatomy: {
+      root: "Root",
+      label: "Label",
+      group: "Select Group",
+      select: "Select",
+      leading: "Leading",
+      trailing: "Trailing",
+      invalid: "Invalid",
+      description: "Description",
+    },
+    api: {
+      sectionTitles: {
+        selectProps: "Select Props",
+        itemPropsConfig: "itemProps Config",
+      },
+      props: {
+        value: "Selected value (controlled mode)",
+        defaultValue: "Initial selected value (uncontrolled mode)",
+        onChange: "Value change callback",
+        options: "Options list (supports flat or grouped)",
+        placeholder: "Placeholder",
+        disabled: "Whether disabled",
+        multiple: "Whether multiple",
+        invalid: "Invalid message",
+        label: "Label text",
+        description: "Description text",
+        leading: "Leading content",
+        trailing: "Trailing content",
+        itemProps: "Internal wrapped property passthrough",
+      },
+      itemPropsConfig: {
+        group: "Select group `<div>` props",
+        label: "Label `<label>` props",
+        invalid: "Invalid message `<div>` props",
+        description: "Description `<small>` props",
+        leading: "Leading `<span>` props",
+        trailing: "Trailing `<span>` props",
+      },
+    },
+  },
+
   radio: {
     title: "Radio",
     description: "Radio component for single selection.",

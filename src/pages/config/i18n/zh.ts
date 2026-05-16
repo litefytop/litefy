@@ -506,6 +506,68 @@ export const zh = {
     },
   },
 
+  select: {
+    title: "选择器",
+    description: "选择器组件，用于从选项列表中选择。",
+    basic: {
+      title: "基础",
+    },
+    controlled: {
+      title: "受控",
+    },
+    validation: {
+      title: "校验",
+    },
+    disabled: {
+      title: "禁用",
+    },
+    group: {
+      title: "分组",
+    },
+    multiple: {
+      title: "多选",
+    },
+    anatomy: {
+      root: "根元素",
+      label: "标签",
+      group: "选择器组",
+      select: "选择器",
+      leading: "前缀",
+      trailing: "后缀",
+      invalid: "无效信息",
+      description: "描述",
+    },
+    api: {
+      sectionTitles: {
+        selectProps: "Select Props",
+        itemPropsConfig: "itemProps 配置",
+      },
+      props: {
+        value: "选中的值（受控模式）",
+        defaultValue: "初始选中的值（非受控模式）",
+        onChange: "值变化回调",
+        options: "选项列表（支持单层或分组）",
+        placeholder: "占位符",
+        disabled: "是否禁用",
+        multiple: "是否多选",
+        invalid: "无效信息",
+        label: "标签文本",
+        description: "描述文本",
+        leading: "前缀内容",
+        trailing: "后缀内容",
+        itemProps: "内部封装属性透传",
+      },
+      itemPropsConfig: {
+        group: "选择器组 `<div>` 属性",
+        label: "标签 `<label>` 属性",
+        invalid: "无效信息 `<div>` 属性",
+        description: "描述 `<small>` 属性",
+        leading: "前缀 `<span>` 属性",
+        trailing: "后缀 `<span>` 属性",
+      },
+    },
+  },
+
   radio: {
     title: "单选框",
     description: "单选框组件，用于单选。",

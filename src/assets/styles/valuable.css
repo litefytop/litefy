@@ -342,7 +342,6 @@
   --sidebar-accent-foreground: oklch(0.98 0 0);
 }
 
-/* ========== 主题映射 ========== */
 @theme inline {
   --breakpoint-3xl: 1920px;
   --color-background: var(--background);
