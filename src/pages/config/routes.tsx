@@ -13,6 +13,7 @@ const Description = lazy(() => import("@/pages/description"));
 const Dropdown = lazy(() => import("@/pages/dropdown"));
 const Empty = lazy(() => import("@/pages/empty/page"));
 const Input = lazy(() => import("@/pages/input"));
+const NumberField = lazy(() => import("@/pages/number-field"));
 const Password = lazy(() => import("@/pages/password"));
 const Radio = lazy(() => import("@/pages/radio"));
 const Select = lazy(() => import("@/pages/select"));
@@ -34,6 +35,7 @@ const componentRouteConfig = [
   { key: "dialog", path: "/components/dialog", Component: Dialog },
   { key: "drawer", path: "/components/drawer", Component: Drawer },
   { key: "input", path: "/components/input", Component: Input },
+  { key: "number-field", path: "/components/number-field", Component: NumberField },
   { key: "checkbox", path: "/components/checkbox", Component: Checkbox },
   { key: "radio", path: "/components/radio", Component: Radio },
   { key: "dropdown", path: "/components/dropdown", Component: Dropdown },

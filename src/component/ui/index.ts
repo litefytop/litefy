@@ -30,3 +30,4 @@ export * from "./anchor";
 export * from "./toast"
 export * from "./drawer"
 export * from "./select"
+export * from "./number-field" 

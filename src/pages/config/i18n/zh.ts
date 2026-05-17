@@ -67,6 +67,7 @@ export const zh = {
     sheet: "Sheet 抽屉",
     dropdown: "Dropdown 下拉菜单",
     password: "Password 密码",
+    "number-field": "NumberField 数字输入框",
   },
 
   "dropdown": {
@@ -664,6 +665,64 @@ export const zh = {
         show: "打开抽屉",
         close: "关闭抽屉",
         placement: "抽屉位置",
+      },
+    },
+  },
+
+  "number-field": {
+    title: "数字输入框",
+    description: "数字输入框组件，用于输入带增减按钮的数值。",
+    basic: {
+      title: "基础",
+    },
+    controlled: {
+      title: "受控",
+    },
+    minMax: {
+      title: "范围限制",
+    },
+    step: {
+      title: "步长",
+    },
+    disabled: {
+      title: "禁用",
+    },
+    validation: {
+      title: "校验",
+    },
+    anatomy: {
+      root: "根元素",
+      label: "标签",
+      group: "输入框组",
+      btn: "按钮",
+      input: "输入框",
+      desc: "描述",
+    },
+    api: {
+      sectionTitles: {
+        numberFieldProps: "NumberField Props",
+        itemPropsConfig: "itemProps 配置",
+      },
+      props: {
+        value: "输入值（受控模式）",
+        defaultValue: "初始输入值（非受控模式）",
+        onValueChange: "值变化回调，可返回 { invalid?: string } 触发无效状态",
+        label: "标签文本",
+        description: "描述文本",
+        invalid: "无效信息",
+        min: "最小值",
+        max: "最大值",
+        step: "步长",
+        disabled: "是否禁用",
+        itemProps: "内部封装属性透传",
+      },
+      itemPropsConfig: {
+        root: "根容器 `<div>` 属性",
+        label: "标签 `<label>` 属性",
+        group: "输入框组 `<div>` 属性",
+        btn: "按钮 `<button>` 属性",
+        desc: "描述 `<small>` 属性",
+        error: "错误信息 `<small>` 属性",
       },
     },
   },

@@ -67,6 +67,7 @@ export const en = {
     sheet: "Sheet",
     dropdown: "Dropdown",
     password: "Password",
+    "number-field": "NumberField",
   },
 
   "dropdown": {
@@ -665,6 +666,64 @@ export const en = {
         show: "Open the drawer",
         close: "Close the drawer",
         placement: "Drawer placement",
+      },
+    },
+  },
+
+  "number-field": {
+    title: "NumberField",
+    description: "Number input component with increment/decrement buttons.",
+    basic: {
+      title: "Basic",
+    },
+    controlled: {
+      title: "Controlled",
+    },
+    minMax: {
+      title: "Min/Max",
+    },
+    step: {
+      title: "Step",
+    },
+    disabled: {
+      title: "Disabled",
+    },
+    validation: {
+      title: "Validation",
+    },
+    anatomy: {
+      root: "Root",
+      label: "Label",
+      group: "Group",
+      btn: "Button",
+      input: "Input",
+      desc: "Description",
+    },
+    api: {
+      sectionTitles: {
+        numberFieldProps: "NumberField Props",
+        itemPropsConfig: "itemProps Config",
+      },
+      props: {
+        value: "Input value (controlled mode)",
+        defaultValue: "Initial input value (uncontrolled mode)",
+        onValueChange: "Value change callback, can return { invalid?: string } to trigger invalid state",
+        label: "Label text",
+        description: "Description text",
+        invalid: "Invalid message",
+        min: "Minimum value",
+        max: "Maximum value",
+        step: "Step increment",
+        disabled: "Whether disabled",
+        itemProps: "Internal wrapped props pass-through",
+      },
+      itemPropsConfig: {
+        root: "Root container `<div>` props",
+        label: "Label `<label>` props",
+        group: "Input group `<div>` props",
+        btn: "Button `<button>` props",
+        desc: "Description `<small>` props",
+        error: "Error message `<small>` props",
       },
     },
   },
