@@ -7,16 +7,7 @@ npm install @your-org/ui
 ## Usage
 
 ```tsx
-import { Checkbox } from "@/component/ui/checkbox";
-
-function App() {
-  return (
-    <Checkbox.Group>
-      <Checkbox value="1">Option 1</Checkbox>
-      <Checkbox value="2">Option 2</Checkbox>
-    </Checkbox.Group>
-  );
-}
+import { Checkbox } from "@/component";
 ```
 
 ## Examples
@@ -24,75 +15,103 @@ function App() {
 ### Basic
 
 ```tsx
-<Checkbox value="agree">I agree</Checkbox>
+<Checkbox
+  label="Basic Checkbox"
+  options={[
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ]}
+/>
 ```
 
 ### Controlled
 
 ```tsx
-const [checked, setChecked] = useState(["1"]);
-<Checkbox.Group value={checked} onValueChange={setChecked}>
-  <Checkbox value="1">Option 1</Checkbox>
-  <Checkbox value="2">Option 2</Checkbox>
-</Checkbox.Group>;
+const [value, setValue] = useState(["a"]);
+<Checkbox
+  label="Controlled Checkbox"
+  value={value}
+  onValueChange={setValue}
+  options={[
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ]}
+/>
 ```
 
 ### Disabled
 
 ```tsx
-<Checkbox disabled>Disabled</Checkbox>
-<Checkbox.Group disabled>
-  <Checkbox value="1">Disabled Group</Checkbox>
-</Checkbox.Group>
+<Checkbox
+  label="Disabled Checkbox"
+  disabled
+  options={[
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ]}
+/>
 ```
 
 ### Variants
 
 ```tsx
-<Checkbox variant="checkbox">Checkbox</Checkbox>
-<Checkbox variant="toggle">Toggle</Checkbox>
+<Checkbox
+  label="Toggle Variant"
+  options={[
+    { value: "a", label: "Toggle A", indicator: { hidden: true } },
+    { value: "b", label: "Toggle B", indicator: { hidden: true } },
+  ]}
+  itemProps={{
+    options: {
+      variant: "toggle",
+    },
+  }}
+/>
 ```
 
 ## API Reference
 
-### Checkbox.Group Props
-
-| Prop          | Type                                                    | Default | Description                                                                                                    |
-| ------------- | ------------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------- |
-| defaultValue  | T[]                                                     | -       | Initial selected values (uncontrolled)                                                                         |
-| value         | T[]                                                     | -       | Current selected values                                                                                        |
-| onValueChange | (value: T[]) => void \| { error?: string \| undefined } | -       | Value change callback, can return { error?: string } to trigger error state                                    |
-| error         | boolean \| string                                       | -       | Error state, supports boolean or string type                                                                   |
-| disabled      | boolean                                                 | false   | Disable entire group                                                                                           |
-| name          | string                                                  | -       | Form input name. When used, form will submit a comma-separated string (e.g., "a,b,c")                          |
-| className     | ClassNameValue                                          | -       | Custom class name (string \| string[] \| boolean \| null \| undefined \| Record\<string, string \| string[]\>) |
-| itemProps     | object                                                  | -       | Internal element props passthrough config                                                                      |
-
 ### Checkbox Props
 
-| Prop            | Type                       | Default    | Description                                                                                                    |
-| --------------- | -------------------------- | ---------- | -------------------------------------------------------------------------------------------------------------- |
-| value           | string                     | -          | Unique identifier (required)                                                                                   |
-| onCheckedChange | (checked: boolean) => void | -          | Check state change callback                                                                                    |
-| variant         | "toggle" \| "checkbox"     | "checkbox" | Style variant                                                                                                  |
-| disabled        | boolean                    | false      | Disable individual checkbox                                                                                    |
-| indicator       | object                     | -          | Indicator config                                                                                               |
-| className       | ClassNameValue             | -          | Custom class name (string \| string[] \| boolean \| null \| undefined \| Record\<string, string \| string[]\>) |
+| Prop           | Type                                        | Default   | Description                                                                              |
+| ---------------|---------------------------------------------|-----------|------------------------------------------------------------------------------------------|
+| defaultValue   | T[]                                         | []        | Initial selected values (uncontrolled)                                                   |
+| value          | T[]                                         | -         | Current selected values (controlled)                                                     |
+| onValueChange  | (value: T[]) => void \| { invalid?: string } | -         | Value change callback, can return { invalid?: string } to trigger error state          |
+| invalid        | boolean \| string                           | -         | Error state, supports boolean or string type                                            |
+| label          | ReactNode                                   | -         | Label text                                                                              |
+| description    | ReactNode                                   | -         | Description text                                                                        |
+| disabled       | boolean                                     | false     | Disable entire checkbox group                                                          |
+| name           | string                                      | -         | Form input name                                                                         |
+| options        | CheckboxItemProps[]                         | -         | Checkbox options array                                                                 |
+
+### CheckboxItemProps
+
+| Prop            | Type                       | Default    | Description                                                     |
+| ----------------|----------------------------|------------|-----------------------------------------------------------------|
+| value           | string                     | -          | Unique identifier                                              |
+| label           | ReactNode                  | -          | Display text                                                   |
+| disabled        | boolean                    | false      | Disable individual checkbox                                    |
+| variant         | "toggle" \| "checkbox"     | "checkbox" | Style variant                                                  |
+| indicator       | object                     | -          | Indicator config                                               |
 
 ### indicator Config
 
-| Property  | Type                                                                           | Default         | Description                                                                                                              |
-| --------- | ------------------------------------------------------------------------------ | --------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| checked   | ReactNode                                                                      | \<CheckIcon /\> | Indicator when checked                                                                                                   |
-| unchecked | ReactNode                                                                      | -               | Indicator when unchecked                                                                                                 |
-| hidden    | boolean                                                                        | false           | Hide indicator                                                                                                           |
-| className | ClassNameValue                                                                 | -               | Custom indicator class name (string \| string[] \| boolean \| null \| undefined \| Record\<string, string \| string[]\>) |
-| props     | Omit\<ComponentProps\<"span"\>, "className"\> & { className?: ClassNameValue } | -               | Indicator element props pass-through                                                                                     |
+| Property  | Type                                                                         | Default         | Description                                                                                    |
+| --------- | ---------------------------------------------------------------------------- | --------------- | ---------------------------------------------------------------------------------------------- |
+| checked   | ReactNode                                                                    | \<CheckIcon /\> | Indicator when checked                                                                         |
+| unchecked | ReactNode                                                                    | -               | Indicator when unchecked                                                                       |
+| hidden    | boolean                                                                      | false           | Hide indicator                                                                                 |
+| className | ClassNameValue                                                               | -               | Custom indicator class name                                                                    |
+| props     | Omit\<ComponentProps\<"span"\>, "className"\> & { className?: ClassNameValue } | -               | Indicator element props pass-through                                                            |
 
 ### itemProps Config
 
-| Property | Type                  | Description                        |
-| -------- | --------------------- | ---------------------------------- |
-| root     | ComponentProps\<"div"> | Root container `<div>` element props |
-| content  | ComponentProps\<"div"> | Content container `<div>` element props |
-| error    | ComponentProps\<"span"> | Error text `<span>` element props |
+| Property    | Type                              | Description                              |
+| ------------|-----------------------------------|------------------------------------------|
+| root        | ComponentProps\<"div">            | Root container `<div>` element props     |
+| content     | ComponentProps\<"div">            | Content container `<div>` element props |
+| label       | ComponentProps\<"label">          | Label `<label>` element props            |
+| description | ComponentProps\<"small">          | Description `<small>` element props      |
+| invalid     | ComponentProps\<"span">           | Error text `<span>` element props        |
+| options     | Omit\<CheckboxItemProps, "checked" \| "value" \| "label"> | Checkbox item element props |

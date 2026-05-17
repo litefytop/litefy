@@ -5,7 +5,7 @@ export default function RadioDisabled() {
     <div className="space-y-6">
       <div>
         <p className="text-sm text-muted-foreground mb-2">Group Disabled</p>
-        <Radio.Group
+        <Radio
           disabled
           options={[
             {
@@ -25,7 +25,7 @@ export default function RadioDisabled() {
       </div>
       <div>
         <p className="text-sm text-muted-foreground mb-2">Item Disabled</p>
-        <Radio.Group
+        <Radio
           options={[
             {
               value: "apple",

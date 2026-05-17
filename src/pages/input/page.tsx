@@ -22,12 +22,14 @@ import {
   InputPrefixSuffix,
   InputValidation,
   InputDisabled,
+  InputControlled,
 } from "./examples";
 
 import InputBasicRaw from "./examples/input-basic.tsx?raw";
 import InputPrefixSuffixRaw from "./examples/input-prefix-suffix.tsx?raw";
 import InputValidationRaw from "./examples/input-validation.tsx?raw";
 import InputDisabledRaw from "./examples/input-disabled.tsx?raw";
+import InputControlledRaw from "./examples/input-controlled.tsx?raw";
 import inputDoc from "./doc.mdx?raw";
 import inputSrc from "@/component/ui/input.tsx?raw";
 
@@ -237,6 +239,14 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
 
           <DemoSection
+            id="controlled"
+            title={l.controlled.title}
+            code={InputControlledRaw}
+          >
+            <InputControlled />
+          </DemoSection>
+
+          <DemoSection
             id="prefix-suffix"
             title={l.prefixSuffix.title}
             code={InputPrefixSuffixRaw}
@@ -305,6 +315,7 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
+            <Anchor.Item href="#controlled">{l.controlled.title}</Anchor.Item>
             <Anchor.Item href="#prefix-suffix">{l.prefixSuffix.title}</Anchor.Item>
             <Anchor.Item href="#validation">{l.validation.title}</Anchor.Item>
             <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>

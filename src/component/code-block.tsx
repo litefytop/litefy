@@ -3,7 +3,7 @@ import { createHighlighter, Highlighter } from "shiki";
 import { CopyIcon, CheckIcon, CaretDownIcon, CaretRightIcon } from "@/component";
 import { useTheme } from "@/component";
 
-// 单例 highlighter
+
 let highlighterInstance: Highlighter | null = null;
 let highlighterPromise: Promise<Highlighter> | null = null;
 

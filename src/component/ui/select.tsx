@@ -1,9 +1,10 @@
 import { ClassNameValue, cn } from "@/lib/utils";
 import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type WithDataAttributes<T> = T & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;
+    className?: ClassNameValue;
 };
 
 type SelectOption = {
@@ -16,9 +17,9 @@ type SelectOptionGroup = {
   options: SelectOption[];
 };
 
-export type SelectProps = Omit<
+type BaseSelectProps = Omit<
   React.ComponentProps<"select">,
-  "className" | "onChange"
+  "className" | "onChange" | "value" | "defaultValue"
 > & {
   className?: ClassNameValue;
   label?: ReactNode;
@@ -36,13 +37,30 @@ export type SelectProps = Omit<
   ) => void | { invalid?: string };
 };
 
+type SingleSelectProps = BaseSelectProps & {
+  multiple?: false;
+  value?: string;
+  defaultValue?: string;
+};
+
+type MultipleSelectProps = BaseSelectProps & {
+  multiple: true;
+  value?: string[];
+  defaultValue?: string[];
+};
+
+export type SelectProps = SingleSelectProps | MultipleSelectProps;
+
+const optionClass =
+  "my-0.5 px-3 py-1.5 rounded-md text-foreground focus:bg-accent focus:text-accent-foreground";
+
 const selectPickerStyle = `
 select,
 ::picker(select) {
   appearance: base-select;
 }
 ::picker(select) {
-  background: var(--background);
+  background: var(--muted);
   border-radius: calc(var(--radius) - 2px);
   padding: 4px;
   margin-block: 4px;
@@ -66,7 +84,13 @@ select:open::picker-icon {
   }
 }
 `;
-
+const styleId = "select-picker-custom-style";
+if (typeof document !== "undefined" && !document.getElementById(styleId)) {
+  const style = document.createElement("style");
+  style.id = styleId;
+  style.textContent = selectPickerStyle;
+  document.head.appendChild(style);
+}
 export function Select({
   className,
   label,
@@ -75,8 +99,8 @@ export function Select({
   options,
   placeholder,
   itemProps,
-  value="",
   onChange,
+  multiple,
   ...props
 }: SelectProps) {
   const [internalInvalid, setInternalInvalid] = useState<string | undefined>();
@@ -88,15 +112,6 @@ export function Select({
     const res = onChange?.(e);
     setInternalInvalid(res?.invalid);
   };
-
-  useEffect(() => {
-    const styleId = "select-picker-custom-style";
-    if (document.getElementById(styleId)) return;
-    const style = document.createElement("style");
-    style.id = styleId;
-    style.textContent = selectPickerStyle;
-    document.head.appendChild(style);
-  }, []);
 
   return (
     <div className={cn("flex flex-col gap-1", className)}>
@@ -114,17 +129,21 @@ export function Select({
 
       <select
         {...props}
-        value={value}
+        multiple={multiple}
         onChange={handleChange}
         className={cn(
-          "border rounded-full w-3xs py-2 px-3 text-sm flex-1  disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] [[multiple]]:rounded-xl data-[invalid=true]:border-destructive data-[invalid=true]:text-destructive",
+          "border rounded-full w-3xs py-2 px-3 text-sm flex-1  bg-input truncate",
+          "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 ",
+          "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] ",
+          "[[multiple]]:rounded-xl [[multiple]]:overflow-y-auto",
+          "data-[invalid=true]:border-destructive data-[invalid=true]:text-destructive",
         )}
         autoComplete="off"
         aria-invalid={isInvalid}
         data-invalid={isInvalid}
       >
         {placeholder && (
-          <option value="" disabled hidden>
+          <option className={optionClass} hidden>
             {placeholder}
           </option>
         )}
@@ -135,13 +154,13 @@ export function Select({
               <optgroup
                 key={`group-${index}`}
                 label={item.group}
-                className="my-2 [&::label]:bg-muted [&::label]:text-foreground [&::label]:px-2 [&::label]:py-1 [&::label]:font-medium"
+                className="my-2 text-foreground"
               >
                 {item.options.map((opt) => (
                   <option
                     key={opt.value}
                     value={opt.value}
-                    className="my-0.5 px-3 py-1.5 w-full truncate rounded-md hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground selected:bg-primary selected:text-primary-foreground"
+                    className={cn(optionClass)}
                   >
                     {opt.label}
                   </option>
@@ -150,11 +169,7 @@ export function Select({
             );
           }
           return (
-            <option
-              key={item.value}
-              value={item.value}
-              className="my-0.5 px-3 py-1.5 rounded-md hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground selected:bg-primary selected:text-primary-foreground"
-            >
+            <option key={item.value} value={item.value} className={optionClass}>
               {item.label}
             </option>
           );

@@ -416,6 +416,9 @@ export const en = {
     basic: {
       title: "Basic",
     },
+    controlled: {
+      title: "Controlled",
+    },
     disabled: {
       title: "Disabled",
     },
@@ -467,6 +470,9 @@ export const en = {
     description: "Password input component.",
     basic: {
       title: "Basic",
+    },
+    controlled: {
+      title: "Controlled",
     },
     validation: {
       title: "Validation",

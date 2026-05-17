@@ -34,7 +34,7 @@ function useObserveAnchor(targetId: string) {
   }, [targetId, observer]);
 }
 
-type AnchorProps = Omit<React.ComponentProps<"div">, "className"> & {
+type AnchorProps = React.ComponentProps<"div"> & {
   className?: ClassNameValue;
   rootMargin?: string;
   root?: Element | Document | null | React.RefObject<Element | Document | null>;

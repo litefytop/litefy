@@ -8,11 +8,10 @@ import { useEffect, useState } from "react";
 
 export type ImageProps = React.ComponentProps<"img"> & {
   className?: ClassNameValue;
-  area?: string;
   fallback?: React.ReactNode;
 };
 
-function Image({ src = "", alt = "", className, area, fallback, ...props }: ImageProps) {
+function Image({ src = "", alt = "", className, fallback, ...props }: ImageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [failure, setFailure] = useState(false);
 
@@ -43,7 +42,6 @@ function Image({ src = "", alt = "", className, area, fallback, ...props }: Imag
         src={src}
         alt={alt}
         {...props}
-        style={{ ...props.style, gridArea: area }}
         className={cn("object-cover", className)}
       />
     </Show>

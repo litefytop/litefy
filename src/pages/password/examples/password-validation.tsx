@@ -5,8 +5,8 @@ export default function PasswordValidation() {
   const [value, setValue] = useState("");
 
   return (
-    <div className="space-y-4 w-80">
       <Password
+        className="w-100"
         value={value}
         onChange={(e) => {
           setValue(e.target.value);
@@ -24,6 +24,6 @@ export default function PasswordValidation() {
         description="Must be at least 8 characters with uppercase and number"
         placeholder="Enter your password"
       />
-    </div>
+  
   );
 }

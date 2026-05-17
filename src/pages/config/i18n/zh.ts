@@ -415,6 +415,9 @@ export const zh = {
     basic: {
       title: "基础",
     },
+    controlled: {
+      title: "受控",
+    },
     disabled: {
       title: "禁用",
     },
@@ -466,6 +469,9 @@ export const zh = {
     description: "密码输入框组件。",
     basic: {
       title: "基础",
+    },
+    controlled: {
+      title: "受控",
     },
     validation: {
       title: "校验",

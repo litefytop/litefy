@@ -8,7 +8,7 @@ export default function RadioValidation() {
     <div className="flex flex-col gap-4">
       <div className="flex flex-col items-center gap-2">
         <p className="text-sm text-muted-foreground">Controlled (Valid/Invalid options)</p>
-        <Radio.Group
+        <Radio
           value={controlledValue}
           onValueChange={(value) => {
             setControlledValue(value);
@@ -31,7 +31,7 @@ export default function RadioValidation() {
 
       <div className="flex flex-col items-center gap-2">
         <p className="text-sm text-muted-foreground">Uncontrolled (Valid/Invalid options)</p>
-        <Radio.Group
+        <Radio
           onValueChange={(value) => {
             if (value === "invalid") {
               return { invalid: "This option is not allowed" };

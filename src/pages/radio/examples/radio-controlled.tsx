@@ -5,7 +5,7 @@ export default function RadioControlled() {
   const [value, setValue] = useState<string>("option1");
 
   return (
-    <Radio.Group
+    <Radio
       label="Controlled Radio Group"
       value={value}
       onValueChange={setValue}

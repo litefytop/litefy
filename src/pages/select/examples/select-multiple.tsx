@@ -2,11 +2,27 @@ import { useState } from "react";
 import { Select } from "@/component";
 
 const options = [
-  { label: "Option 1", value: "1" },
-  { label: "Option 2", value: "2" },
-  { label: "Option 3", value: "3" },
-  { label: "Option 4", value: "4" },
-  { label: "Option 5", value: "5" },
+  {
+    group: "Group A",
+    options: [
+      { label: "Option A1", value: "a1" },
+      { label: "Option A2", value: "a2" },
+    ],
+  },
+  {
+    group: "Group B",
+    options: [
+      { label: "Option B1", value: "b1" },
+      { label: "Option B2", value: "b2" },
+    ],
+  },
+  {
+    group: "Group C",
+    options: [
+      { label: "Option C1", value: "c1" },
+      { label: "Option C2", value: "c2" },
+    ],
+  },
 ];
 
 export default function SelectMultiple() {

@@ -26,7 +26,7 @@ function useAccordionContext() {
   return context;
 }
 
-type AccordionProps = Omit<React.ComponentProps<"div">, "className"> & {
+type AccordionProps = React.ComponentProps<"div"> & {
   defaultOpenKeys?: Record<string, boolean>;
   openKeys?: Record<string, boolean>;
   onOpenChange?: (keys: Record<string, boolean>) => void;

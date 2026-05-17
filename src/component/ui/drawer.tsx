@@ -15,7 +15,7 @@ export type DrawerRef = {
   close: () => void;
 };
 
-export type DrawerProps = Omit<React.ComponentProps<"div">, "className"> & {
+export type DrawerProps = React.ComponentProps<"div"> & {
   className?: ClassNameValue;
   placement?: "left" | "right" | "top" | "bottom";
 };

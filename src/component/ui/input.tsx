@@ -4,11 +4,12 @@ import { useRef, useState } from "react";
 
 type WithDataAttributes<T> = T & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;
+    className?: ClassNameValue;
 };
 
 export type InputProps = Omit<
   React.ComponentProps<"input">,
-  "className" | "value" | "onChange"
+  "value" | "onChange"
 > & {
   value?: string;
   className?: ClassNameValue;
@@ -70,7 +71,10 @@ function Input({
         {...itemProps?.group}
         data-invalid={isInvalid}
         className={cn(
-          "border-input bg-background flex w-full items-center rounded-md border shadow-xs outline-none has-[>input:disabled]:pointer-events-none has-[>input:disabled]:cursor-not-allowed has-[>input:disabled]:opacity-50 data-[invalid=true]:ring-destructive/20 data-[invalid=true]:border-destructive",
+          "border-input bg-background flex  px-2 items-center rounded-full border shadow-xs outline-none",
+          "has-[>input:disabled]:pointer-events-none has-[>input:disabled]:cursor-not-allowed has-[>input:disabled]:opacity-50",
+          "has-focus:border-primary has-focus:ring-2 has-focus:ring-primary/20",
+          "data-[invalid=true]:border-destructive data-[invalid=true]:ring-destructive/20",
           itemProps?.group?.className,
         )}
       >
@@ -91,7 +95,10 @@ function Input({
           value={value}
           onChange={handleChange}
           className={cn(
-            "appearance-none outline-none w-full h-8 px-2 py-1 text-sm flex-1 min-w-0 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground data-[invalid=false]:focus-visible:border-ring data-[invalid=false]:focus-visible:ring-ring/50 data-[invalid=false]:focus-visible:ring-[3px]",
+            "appearance-none outline-none border-0 bg-transparent  h-8 px-2 py-1 text-sm flex-1 min-w-0",
+            "disabled:cursor-not-allowed disabled:opacity-50",
+            "placeholder:text-muted-foreground",
+            "selection:bg-primary selection:text-primary-foreground",
           )}
           autoComplete="off"
           aria-invalid={isInvalid}
@@ -109,17 +116,7 @@ function Input({
           </span>
         )}
       </div>
-      {finalInvalid && (
-        <div
-          {...itemProps?.invalid}
-          className={cn(
-            "text-sm font-medium text-destructive py-1 indent-2",
-            itemProps?.invalid?.className,
-          )}
-        >
-          {finalInvalid}
-        </div>
-      )}
+
       <small
         data-invalid={isInvalid}
         {...(isInvalid ? itemProps?.invalid : itemProps?.description)}

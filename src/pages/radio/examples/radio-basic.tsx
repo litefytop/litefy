@@ -2,7 +2,7 @@ import { Radio } from "@/component";
 
 export default function RadioBasic() {
   return (
-    <Radio.Group
+    <Radio
       label="Basic Radio Group"
       options={[
         {

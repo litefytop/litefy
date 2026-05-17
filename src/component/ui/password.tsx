@@ -7,11 +7,12 @@ import type { ReactNode } from "react";
 
 type WithDataAttributes<T> = T & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;
+  className?: ClassNameValue;
 };
 
 export type PasswordProps = Omit<
   React.ComponentProps<"input">,
-  "type" | "className" | "value" | "onChange"
+  "type" | "value" | "onChange"
 > & {
   value?: string;
   className?: ClassNameValue;
@@ -44,7 +45,6 @@ export function Password({
   trailing,
   itemProps,
   onChange,
-  value,
   ...props
 }: PasswordProps) {
   const innerRef = useRef<HTMLInputElement>(null);
@@ -77,7 +77,7 @@ export function Password({
         {...itemProps?.group}
         data-invalid={isInvalid}
         className={cn(
-          "relative flex w-full items-center rounded-md border border-input bg-background shadow-xs transition-colors",
+          "relative flex w-full items-center rounded-full border border-input bg-background shadow-xs transition-colors px-2",
           "has-focus:border-primary has-focus:ring-2 has-focus:ring-primary/20",
           "data-[invalid=true]:border-destructive data-[invalid=true]:ring-destructive/20",
           "has-disabled:pointer-events-none has-disabled:opacity-50",
@@ -100,7 +100,6 @@ export function Password({
           {...props}
           ref={innerRef}
           type={showPassword ? "text" : "password"}
-          value={value}
           onChange={handleChange}
           className={cn(
             "appearance-none border-0 bg-transparent outline-none h-8 px-3 py-1 text-sm flex-1 min-w-0",
@@ -129,7 +128,7 @@ export function Password({
           type="button"
           {...itemProps?.toggle}
           className={cn(
-            "hover:bg-muted rounded-md p-1 text-muted-foreground transition-colors mr-2",
+            "hover:text-foreground/80 rounded-md p-1 text-muted-foreground transition-colors mr-2",
             itemProps?.toggle?.className
           )}
           onClick={() => setShowPassword(!showPassword)}
@@ -143,28 +142,18 @@ export function Password({
         </button>
       </div>
 
-      {finalInvalid && (
-        <div
-          {...itemProps?.invalid}
-          className={cn(
-            "text-sm font-medium text-destructive py-1 indent-2",
-            itemProps?.invalid?.className,
-          )}
-        >
-          {finalInvalid}
-        </div>
-      )}
-      {description && !finalInvalid && (
-        <small
-          {...itemProps?.description}
-          className={cn(
-            "text-sm text-muted-foreground py-1 indent-2",
-            itemProps?.description?.className,
-          )}
-        >
-          {description}
-        </small>
-      )}
+
+      <small
+        data-invalid={isInvalid}
+        {...(isInvalid ? itemProps?.invalid : itemProps?.description)}
+        className={cn(
+          "text-sm indent-2 h-5 text-muted-foreground data-[invalid=true]:text-destructive",
+          (isInvalid ? itemProps?.invalid : itemProps?.description)?.className,
+        )}
+        role={isInvalid ? "alert" : undefined}
+      >
+        {isInvalid ? finalInvalid : description}
+      </small>
     </div>
   );
 }

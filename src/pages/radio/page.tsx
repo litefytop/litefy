@@ -115,11 +115,6 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.props.description,
         },
         {
-          props: "className",
-          type: "ClassNameValue",
-          description: lang.common.className,
-        },
-        {
           props: "itemProps",
           type: "object",
           description: l.api.props.itemProps,
@@ -161,11 +156,6 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
           props: "indicator",
           type: "RadioIndicatorConfig",
           description: l.api.item.indicator,
-        },
-        {
-          props: "className",
-          type: "ClassNameValue",
-          description: lang.common.className,
         },
       ],
     },
@@ -312,7 +302,6 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
             ]}
           >
             <Radio 
-              className="flex flex-col gap-2" 
               label="Radio Group"
               description="This is a description"
               itemProps={{
@@ -324,6 +313,9 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
                 },
                 description: {
                   id: "anatomy-description",
+                },
+                content: {
+                  className: "flex flex-col gap-2",
                 },
               }}
               options={[

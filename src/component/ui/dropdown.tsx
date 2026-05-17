@@ -17,7 +17,7 @@ export function Dropdown({
   children,
   className,
   ...props
-}:Omit< React.ComponentProps<"div">,"className">&{
+}: React.ComponentProps<"div">&{
   className?: ClassNameValue;
 }) {
   const contentId = React.useId();
@@ -50,7 +50,7 @@ export function Dropdown({
       aria-haspopup="menu"
       type="button"
       className={cn(
-        "cursor-pointer outline-none inline-flex items-center justify-center shrink-0 user-select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 h-9 min-w-9 px-3 py-1 has-[>svg]:px-2 gap-1 rounded-md",
+        "cursor-pointer outline-none inline-flex items-center justify-center shrink-0 user-select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 h-9 min-w-9 px-3 py-1 has-[>svg]:px-2 gap-1 rounded-full",
         className,
       )}
       style={{ anchorName } as React.CSSProperties}

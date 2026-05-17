@@ -5,7 +5,7 @@ export default function RadioVariant() {
     <div className="space-y-6">
       <div>
         <p className="text-sm text-muted-foreground mb-2">radio (default)</p>
-        <Radio.Group
+        <Radio
           defaultValue="a"
           options={[
             {
@@ -25,9 +25,8 @@ export default function RadioVariant() {
       </div>
       <div>
         <p className="text-sm text-muted-foreground mb-2">segment</p>
-        <Radio.Group
+        <Radio
           defaultValue="a"
-          className="gap-0"
           options={[
             {
               value: "a",

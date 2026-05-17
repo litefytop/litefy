@@ -112,11 +112,6 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.props.description,
         },
         {
-          props: "className",
-          type: "ClassNameValue",
-          description: lang.common.className,
-        },
-        {
           props: "itemProps",
           type: "object",
           description: l.api.props.itemProps,
@@ -158,11 +153,6 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
           props: "indicator",
           type: "object",
           description: l.api.item.indicator,
-        },
-        {
-          props: "className",
-          type: "ClassNameValue",
-          description: lang.common.className,
         },
       ],
     },
@@ -332,7 +322,6 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
             ]}
           >
             <Checkbox
-              className="flex flex-col gap-2"
               options={[
                 {
                   value: "item1",
@@ -355,6 +344,9 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
                 },
                 description: {
                   id: "anatomy-description",
+                },
+                content: {
+                  className: "flex flex-col gap-2",
                 },
               }}
             />

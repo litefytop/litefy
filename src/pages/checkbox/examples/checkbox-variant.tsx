@@ -12,10 +12,12 @@ export default function CheckboxVariant() {
       label="Checkbox Variant"
       options={items}
       defaultValue={["a"]}
-      className="gap-0 *:first:rounded-l-full *:last:rounded-r-full "
       itemProps={{
         options: {
           variant: "toggle",
+        },
+        content: {
+          className: "gap-0 *:first:rounded-l-full *:last:rounded-r-full",
         },
       }}
     />

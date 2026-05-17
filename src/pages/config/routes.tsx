@@ -49,7 +49,7 @@ const componentRouteConfig = [
   { key: "title", path: "/components/title", Component: ComingSoon },
   { key: "text", path: "/components/text", Component: ComingSoon },
   { key: "description", path: "/components/description", Component: Description },
-  { key: "img", path: "/components/img", Component: ComingSoon },
+  { key: "image", path: "/components/image", Component: ComingSoon },
   { key: "watermark", path: "/components/watermark", Component: ComingSoon },
   { key: "show", path: "/components/show", Component: ComingSoon },
   { key: "toggle", path: "/components/toggle", Component: ComingSoon },
@@ -58,8 +58,7 @@ const componentRouteConfig = [
   { key: "paper", path: "/components/paper", Component: ComingSoon },
   { key: "pagination", path: "/components/pagination", Component: ComingSoon },
   { key: "transfer", path: "/components/transfer", Component: ComingSoon },
-  { key: "table", path: "/components/table", Component: ComingSoon },
-  { key: "sheet", path: "/components/sheet", Component: ComingSoon },
+
 ];
 
 function getLabel(t: typeof zh, key: string): string {

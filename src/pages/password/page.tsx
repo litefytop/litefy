@@ -17,10 +17,11 @@ import {
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
-import { PasswordBasic, PasswordValidation } from "./examples";
+import { PasswordBasic, PasswordValidation, PasswordControlled } from "./examples";
 
 import PasswordBasicRaw from "./examples/password-basic.tsx?raw";
 import PasswordValidationRaw from "./examples/password-validation.tsx?raw";
+import PasswordControlledRaw from "./examples/password-controlled.tsx?raw";
 import passwordDoc from "./doc.mdx?raw";
 import passwordSrc from "@/component/ui/password.tsx?raw";
 
@@ -222,6 +223,14 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
 
           <DemoSection
+            id="controlled"
+            title={l.controlled.title}
+            code={PasswordControlledRaw}
+          >
+            <PasswordControlled />
+          </DemoSection>
+
+          <DemoSection
             id="validation"
             title={l.validation.title}
             code={PasswordValidationRaw}
@@ -264,6 +273,8 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
+            <Anchor.Item href="#controlled">{l.controlled.title}</Anchor.Item>
+            <Anchor.Item href="#validation">{l.validation.title}</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
           <Anchor.Section href="#docs" linkText={lang.docs} />

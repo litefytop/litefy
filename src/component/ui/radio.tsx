@@ -3,6 +3,11 @@ import { cn, ClassNameValue } from "@/lib";
 import { CheckIcon } from "./icons";
 import { ComponentProps } from "react";
 
+type WithDataAttributes<T> = T & {
+  [key: `data-${string}`]: string | number | boolean | null | undefined;
+  className?: ClassNameValue;
+};
+
 const radioClass = {
   segment:
     "aria-checked:bg-primary aria-checked:text-primary-foreground bg-secondary text-secondary-foreground border-y border-r first:border-l group-data-[invalid=true]:aria-checked:bg-destructive",
@@ -17,19 +22,18 @@ export type RadioProps<T extends string> = {
   label?: ReactNode;
   description?: ReactNode;
   onValueChange?: (value: T) => void | { invalid?: string };
-  className?: ClassNameValue;
   itemProps?: {
-    root?: ComponentProps<"div">;
-    content?: ComponentProps<"div">;
-    label?: ComponentProps<"label">;
-    description?: ComponentProps<"small">;
-    invalid?: ComponentProps<"span">;
+    root?: WithDataAttributes<ComponentProps<"div">>;
+    content?: WithDataAttributes<Omit<ComponentProps<"div">, "children">>;
+    label?: WithDataAttributes<ComponentProps<"label">>;
+    description?: WithDataAttributes<ComponentProps<"small">>;
+    invalid?: WithDataAttributes<ComponentProps<"span">>;
     options?: Omit<RadioItemProps, "checked" | "value" | "label">;
   };
   options: Omit<RadioItemProps, "checked">[];
 } & Omit<
   ComponentProps<"input">,
-  "value" | "onChange" | "checked" | "children"
+  "value" | "onChange" | "checked" | "children" | "className" | "type" | "style"
 >;
 
 export function Radio<T extends string>({
@@ -39,17 +43,17 @@ export function Radio<T extends string>({
   invalid: externalInvalid,
   label,
   description,
-  className,
   disabled,
   name,
   onBlur,
   itemProps,
-  style,
   options,
   ...props
 }: RadioProps<T>) {
   const groupRef = useRef<HTMLDivElement>(null);
-  const [internalValue, setInternalValue] = useState<T | undefined>(defaultValue);
+  const [internalValue, setInternalValue] = useState<T | undefined>(
+    defaultValue,
+  );
   const [internalInvalid, setInternalInvalid] = useState<string | undefined>();
 
   const selectedValue = controlledValues ?? internalValue;
@@ -79,20 +83,16 @@ export function Radio<T extends string>({
     if (!allowedKeys.includes(e.key)) return;
     if (!groupRef.current?.contains(document.activeElement)) return;
 
-    const buttons = Array.from(
-      groupRef.current.querySelectorAll<HTMLButtonElement>(
-        'button[role="radio"]:not(:disabled)',
-      ),
-    );
-    if (!buttons.length) return;
+    const enabledOptions = options.filter((opt) => !opt.disabled);
+    if (!enabledOptions.length) return;
 
-    const currentIndex = buttons.findIndex(
-      (btn) => btn === document.activeElement,
+    const currentIndex = enabledOptions.findIndex(
+      (option) => option.value === selectedValue,
     );
     if (currentIndex === -1) return;
 
     let targetIndex: number;
-    const len = buttons.length;
+    const len = enabledOptions.length;
 
     switch (e.key) {
       case "ArrowRight":
@@ -114,7 +114,16 @@ export function Radio<T extends string>({
     }
 
     e.preventDefault();
-    buttons[targetIndex]?.focus();
+    const targetOption = enabledOptions[targetIndex];
+    if (targetOption) {
+      setValue(targetOption.value);
+      const targetIndexInOriginal = options.indexOf(targetOption);
+      (
+        groupRef.current?.querySelector(
+          `button[data-index="${targetIndexInOriginal}"]`,
+        ) as HTMLButtonElement | null
+      )?.focus();
+    }
   };
 
   return (
@@ -144,14 +153,14 @@ export function Radio<T extends string>({
         onKeyDown={handleKeyDown}
         className={cn(
           "flex inert:pointer-events-none inert:opacity-50 group my-1",
-          className,
+          itemProps?.content?.className,
         )}
-        style={style}
       >
-        {options.map((option) => (
+        {options.map((option, index) => (
           <RadioItem
             {...itemProps?.options}
             {...option}
+            data-index={index}
             checked={selectedValue === option.value}
             key={option.value}
             onValueChange={setValue}
@@ -162,7 +171,7 @@ export function Radio<T extends string>({
         {...props}
         type="hidden"
         name={name}
-        value={selectedValue}
+        value={selectedValue ?? ""}
         disabled={disabled}
         onBlur={onBlur}
       />
@@ -254,7 +263,7 @@ const RadioItem = ({
           {...indicator?.props}
           data-checked={checked}
           className={cn(
-            "flex items-center justify-center size-4 rounded-full border border-foreground data-[checked=true]:bg-primary data-[checked=true]:border-primary-foreground data-[checked=true]:text-primary-foreground group-data-[invalid=true]:border-destructive group-data-[invalid=true]:data-[checked=true]:bg-destructive",
+            "flex items-center justify-center size-4 rounded-full outline border  data-[checked=true]:bg-primary data-[checked=true]:border-primary-foreground data-[checked=true]:text-primary-foreground group-data-[invalid=true]:border-destructive group-data-[invalid=true]:data-[checked=true]:bg-destructive",
             indicator?.props?.className,
           )}
         >
@@ -266,6 +275,4 @@ const RadioItem = ({
       {props.label}
     </button>
   );
-}
-
-
+};

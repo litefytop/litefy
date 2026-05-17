@@ -3,6 +3,11 @@ import { cn, ClassNameValue } from "@/lib";
 import { CheckIcon } from "./icons";
 import { ComponentProps } from "react";
 
+type WithDataAttributes<T> = T & {
+  [key: `data-${string}`]: string | number | boolean | null | undefined;
+    className?: ClassNameValue;
+};
+
 const checkboxClass = {
   toggle:
     "aria-checked:bg-primary aria-checked:text-primary-foreground bg-secondary text-secondary-foreground border-y border-r first:border-l group-data-[invalid=true]:aria-checked:bg-destructive",
@@ -17,19 +22,18 @@ export type CheckboxProps<T extends string> = {
   label?: ReactNode;
   description?: ReactNode;
   onValueChange?: (value: T[]) => void | { invalid?: string };
-  className?: ClassNameValue;
   itemProps?: {
-    root?: ComponentProps<"div">;
-    content?: ComponentProps<"div">;
-    label?: ComponentProps<"label">;
-    description?: ComponentProps<"small">;
-    invalid?: ComponentProps<"span">;
+    root?: WithDataAttributes<ComponentProps<"div">>;
+    content?: Omit<ComponentProps<"div">, "children">;
+    label?: WithDataAttributes<ComponentProps<"label">>;
+    description?: WithDataAttributes<ComponentProps<"small">>;
+    invalid?: WithDataAttributes<ComponentProps<"span">>;
     options?: Omit<CheckboxItemProps, "checked" | "value" | "label">;
   };
   options: Omit<CheckboxItemProps, "checked">[];
 } & Omit<
   ComponentProps<"input">,
-  "value" | "onChange" | "checked" | "children"
+  "value" | "onChange" | "checked" | "children" | "className" | "type" | "style"
 >;
 
 export function Checkbox<T extends string>({
@@ -39,12 +43,10 @@ export function Checkbox<T extends string>({
   invalid: externalInvalid,
   label,
   description,
-  className,
   disabled,
   name,
   onBlur,
   itemProps,
-  style,
   options,
   ...props
 }: CheckboxProps<T>) {
@@ -81,20 +83,20 @@ export function Checkbox<T extends string>({
     if (!allowedKeys.includes(e.key)) return;
     if (!groupRef.current?.contains(document.activeElement)) return;
 
-    const buttons = Array.from(
-      groupRef.current.querySelectorAll<HTMLButtonElement>(
-        'button[role="checkbox"]:not(:disabled)',
-      ),
-    );
-    if (!buttons.length) return;
+    const enabledOptions = options.filter((opt) => !opt.disabled);
+    if (!enabledOptions.length) return;
 
-    const currentIndex = buttons.findIndex(
-      (btn) => btn === document.activeElement,
+    const activeOption = enabledOptions.find(
+      (opt) =>
+        groupRef.current?.querySelector(
+          `button[data-index="${options.indexOf(opt)}"]`,
+        ) === document.activeElement,
     );
-    if (currentIndex === -1) return;
+    if (!activeOption) return;
 
+    const currentIndex = enabledOptions.indexOf(activeOption);
     let targetIndex: number;
-    const len = buttons.length;
+    const len = enabledOptions.length;
 
     switch (e.key) {
       case "ArrowRight":
@@ -116,7 +118,13 @@ export function Checkbox<T extends string>({
     }
 
     e.preventDefault();
-    buttons[targetIndex]?.focus();
+    const targetOption = enabledOptions[targetIndex];
+    const targetIndexInOriginal = options.indexOf(targetOption);
+    (
+      groupRef.current?.querySelector(
+        `button[data-index="${targetIndexInOriginal}"]`,
+      ) as HTMLButtonElement | null
+    )?.focus();
   };
 
   return (
@@ -146,14 +154,14 @@ export function Checkbox<T extends string>({
         onKeyDown={handleKeyDown}
         className={cn(
           "flex inert:pointer-events-none inert:opacity-50 group my-1",
-          className,
+          itemProps?.content?.className,
         )}
-        style={style}
       >
-        {options.map((option) => (
+        {options.map((option, index) => (
           <CheckboxItem
             {...itemProps?.options}
             {...option}
+            data-index={index}
             checked={selectedValues.includes(option.value as T)}
             key={option.value}
             onValueChange={setValue}
@@ -162,11 +170,12 @@ export function Checkbox<T extends string>({
       </div>
       <input
         {...props}
-        type="hidden"
+        type="checkbox"
         name={name}
         value={selectedValues}
         disabled={disabled}
         onBlur={onBlur}
+        className="hidden"
       />
       <small
         data-invalid={isInvalid}
@@ -256,7 +265,7 @@ const CheckboxItem = ({
           {...indicator?.props}
           data-checked={checked}
           className={cn(
-            "flex items-center justify-center size-4 rounded-md border border-foreground data-[checked=true]:bg-primary data-[checked=true]:border-primary-foreground data-[checked=true]:text-primary-foreground group-data-[invalid=true]:border-destructive group-data-[invalid=true]:data-[checked=true]:bg-destructive",
+            "flex items-center justify-center size-4 border outline rounded-md data-[checked=true]:bg-primary data-[checked=true]:border-primary-foreground data-[checked=true]:text-primary-foreground group-data-[invalid=true]:border-destructive group-data-[invalid=true]:data-[checked=true]:bg-destructive",
             indicator?.props?.className,
           )}
         >
@@ -268,4 +277,4 @@ const CheckboxItem = ({
       {props.label}
     </button>
   );
-}
+};

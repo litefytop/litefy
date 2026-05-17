@@ -3,7 +3,7 @@
 import * as React from "react";
 import { ClassNameValue, cn } from "@/lib";
 
-type DialogProps = Omit<React.ComponentProps<"dialog">, "className"> & {
+type DialogProps = React.ComponentProps<"dialog"> & {
   className?: ClassNameValue;
 };
 

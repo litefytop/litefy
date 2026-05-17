@@ -301,7 +301,6 @@ export default function SelectPage({ locale = "zh" }: { locale?: string }) {
               ]}
               data-anatomy-name="root"
               itemProps={{
-                group: { "data-anatomy-name": "group" },
                 label: { "data-anatomy-name": "label" },
                 invalid: { "data-anatomy-name": "invalid" },
                 description: { "data-anatomy-name": "description" },
