@@ -8,7 +8,7 @@ import {
   Anchor,
   Title,
   Description,
-  Input,
+  Textarea,
   ShikiCodeBlock,
   Anatomy,
   Button,
@@ -18,20 +18,17 @@ import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
 import {
-  InputBasic,
-  InputPrefixSuffix,
-  InputValidation,
-  InputDisabled,
-  InputControlled,
+  TextareaBasic,
+  TextareaControlled,
+  TextareaValidation,
+  TextareaDisabled,
 } from "./examples";
 
-import InputBasicRaw from "./examples/input-basic.tsx?raw";
-import InputPrefixSuffixRaw from "./examples/input-prefix-suffix.tsx?raw";
-import InputValidationRaw from "./examples/input-validation.tsx?raw";
-import InputDisabledRaw from "./examples/input-disabled.tsx?raw";
-import InputControlledRaw from "./examples/input-controlled.tsx?raw";
-import inputDoc from "./doc.mdx?raw";
-import inputSrc from "@/component/ui/input.tsx?raw";
+import TextareaBasicRaw from "./examples/textarea-basic.tsx?raw";
+import TextareaControlledRaw from "./examples/textarea-controlled.tsx?raw";
+import TextareaValidationRaw from "./examples/textarea-validation.tsx?raw";
+import TextareaDisabledRaw from "./examples/textarea-disabled.tsx?raw";
+import textareaSrc from "@/component/ui/text-area.tsx?raw";
 
 function DemoSection({
   id,
@@ -61,82 +58,62 @@ function DemoSection({
   );
 }
 
-export default function InputPage({ locale = "zh" }: { locale?: string }) {
+export default function TextareaPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
-  const l = lang.input;
-  const nav = getComponentNav("/components/input", locale as "zh" | "en");
+  const l = lang.textarea;
+  const nav = getComponentNav("/components/textarea", locale as "zh" | "en");
 
-  const inputSections = [
+  const textareaSections = [
     {
-      title: l.api.sectionTitles.inputProps,
+      title: l.api.sectionTitles.textareaProps,
 
       data: [
         {
           props: "value",
           type: "string",
-          
           description: l.api.props.value,
         },
         {
           props: "defaultValue",
           type: "string",
-          
           description: l.api.props.defaultValue,
         },
         {
           props: "onChange",
-          type: "(value: string) => void",
-          
+          type: "(e: ChangeEvent<HTMLTextAreaElement>) => void | { invalid?: string }",
           description: l.api.props.onChange,
         },
         {
           props: "placeholder",
           type: "string",
-          
           description: l.api.props.placeholder,
         },
         {
-          props: "type",
-          type: "text|email|url|number|tel|search",
-          default: "text",
-          description: l.api.props.type,
+          props: "disabled",
+          type: "boolean",
+          default: "false",
+          description: l.api.props.disabled,
         },
         {
           props: "invalid",
-          type: "string",
+          type: "ReactNode",
           description: l.api.props.invalid,
         },
         {
           props: "label",
-          type: "string",
-          
+          type: "ReactNode",
           description: l.api.props.label,
         },
         {
           props: "description",
-          type: "string",
-          
+          type: "ReactNode",
           description: l.api.props.description,
         },
         {
-          props: "leading",
-          type: "ReactNode",
-          
-          description: l.api.props.leading,
-        },
-        {
-          props: "trailing",
-          type: "ReactNode",
-          
-          description: l.api.props.trailing,
-        },
-
-        {
           props: "itemProps",
-          type: "InputItemProps",
-          
+          type: "TextareaItemProps",
           description: l.api.props.itemProps,
         },
       ],
@@ -146,9 +123,9 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
 
       data: [
         {
-          props: "group",
+          props: "root",
           type: `React.ComponentProps<"div">`,
-          description: l.api.itemPropsConfig.group,
+          description: l.api.itemPropsConfig.root,
         },
         {
           props: "label",
@@ -157,18 +134,8 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
         },
         {
           props: "invalid",
-          type: `React.ComponentProps<"div">`,
+          type: `React.ComponentProps<"small">`,
           description: l.api.itemPropsConfig.invalid,
-        },
-        {
-          props: "leading",
-          type: `React.ComponentProps<"span">`,
-          description: l.api.itemPropsConfig.leading,
-        },
-        {
-          props: "trailing",
-          type: `React.ComponentProps<"span">`,
-          description: l.api.itemPropsConfig.trailing,
         },
         {
           props: "description",
@@ -180,7 +147,7 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
   ];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(inputDoc);
+    navigator.clipboard.writeText(textareaSrc);
     setCopied(true);
     Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);
@@ -224,7 +191,7 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
-          <ShikiCodeBlock>{inputSrc}</ShikiCodeBlock>
+          <ShikiCodeBlock>{textareaSrc}</ShikiCodeBlock>
         </section>
 
         <section id="examples" className="">
@@ -233,41 +200,33 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
           <DemoSection
             id="basic"
             title={l.basic.title}
-            code={InputBasicRaw}
+            code={TextareaBasicRaw}
           >
-            <InputBasic />
+            <TextareaBasic />
           </DemoSection>
 
           <DemoSection
             id="controlled"
             title={l.controlled.title}
-            code={InputControlledRaw}
+            code={TextareaControlledRaw}
           >
-            <InputControlled />
-          </DemoSection>
-
-          <DemoSection
-            id="prefix-suffix"
-            title={l.prefixSuffix.title}
-            code={InputPrefixSuffixRaw}
-          >
-            <InputPrefixSuffix />
+            <TextareaControlled />
           </DemoSection>
 
           <DemoSection
             id="validation"
             title={l.validation.title}
-            code={InputValidationRaw}
+            code={TextareaValidationRaw}
           >
-            <InputValidation />
+            <TextareaValidation />
           </DemoSection>
 
           <DemoSection
             id="disabled"
             title={l.disabled.title}
-            code={InputDisabledRaw}
+            code={TextareaDisabledRaw}
           >
-            <InputDisabled />
+            <TextareaDisabled />
           </DemoSection>
         </section>
 
@@ -276,26 +235,20 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
           <Anatomy
             className="h-48"
             parts={[
-              { name: "group", label: l.anatomy.group },
+              { name: "root", label: l.anatomy.root },
               { name: "label", label: l.anatomy.label },
-              { name: "input", label: l.anatomy.input },
-              { name: "leading", label: l.anatomy.leading },
-              { name: "trailing", label: l.anatomy.trailing },
+              { name: "textarea", label: l.anatomy.textarea },
               { name: "description", label: l.anatomy.description },
             ]}
           >
-            <Input
-              label="域名"
-              leading="https://"
-              trailing=".com"
-              description="用于登记域名"
-              placeholder="请输入域名"
-              data-anatomy-name="input"
+            <Textarea
+              label="反馈内容"
+              description="用于收集用户反馈"
+              placeholder="请输入内容"
+              data-anatomy-name="textarea"
               itemProps={{
-                group: { "data-anatomy-name": "group" },
+                root: { "data-anatomy-name": "root" },
                 label: { "data-anatomy-name": "label" },
-                leading: { "data-anatomy-name": "leading" },
-                trailing: { "data-anatomy-name": "trailing" },
                 description: { "data-anatomy-name": "description" },
               }}
             />
@@ -306,7 +259,7 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
-          <Docs sections={inputSections} />
+          <Docs sections={textareaSections} />
         </section>
       </div>
 
@@ -316,13 +269,11 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
             <Anchor.Item href="#controlled">{l.controlled.title}</Anchor.Item>
-            <Anchor.Item href="#prefix-suffix">{l.prefixSuffix.title}</Anchor.Item>
             <Anchor.Item href="#validation">{l.validation.title}</Anchor.Item>
             <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
           <Anchor.Section href="#docs" linkText={lang.docs}/>
-     
         </Anchor>
       </aside>
     </div>

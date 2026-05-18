@@ -14,7 +14,7 @@ export * from "./input";
 export * from "./radio";
 export * from "./slider";
 export * from "./tabs";
-export * from "./textarea";
+export * from "./text-area";
 export * from "./sidebar";
 export * from "./paper";
 export * from "./pagination";

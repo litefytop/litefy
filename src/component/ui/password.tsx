@@ -25,7 +25,7 @@ export type PasswordProps = Omit<
     root?: WithDataAttributes<React.ComponentProps<"div">>;
     label?: WithDataAttributes<React.ComponentProps<"label">>;
     group?: WithDataAttributes<React.ComponentProps<"div">>;
-    invalid?: WithDataAttributes<React.ComponentProps<"div">>;
+    invalid?: WithDataAttributes<React.ComponentProps<"small">>;
     description?: WithDataAttributes<React.ComponentProps<"small">>;
     toggle?: WithDataAttributes<React.ComponentProps<"button">>;
   };

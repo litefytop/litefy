@@ -448,7 +448,7 @@ export const zh = {
         defaultValue: "初始输入值（非受控模式）",
         onChange: "值变化回调，可返回 { invalid?: string } 触发无效状态",
         placeholder: "占位符",
-        disabled: "是否禁用",
+        type: "输入类型",
         invalid: "无效信息",
         label: "标签文本",
         description: "描述文本",
@@ -543,6 +543,52 @@ export const zh = {
     },
   },
 
+  textarea: {
+    title: "文本域",
+    description: "多行文本输入组件，用于收集用户输入。",
+    basic: {
+      title: "基础",
+    },
+    controlled: {
+      title: "受控",
+    },
+    validation: {
+      title: "校验",
+    },
+    disabled: {
+      title: "禁用",
+    },
+    anatomy: {
+      root: "根元素",
+      label: "标签",
+      textarea: "文本域",
+      description: "描述",
+    },
+    api: {
+      sectionTitles: {
+        textareaProps: "Textarea Props",
+        itemPropsConfig: "itemProps 配置",
+      },
+      props: {
+        value: "输入值（受控模式）",
+        defaultValue: "初始输入值（非受控模式）",
+        onChange: "值变化回调，可返回 { invalid?: string } 触发无效状态",
+        placeholder: "占位符",
+        disabled: "是否禁用",
+        invalid: "无效信息",
+        label: "标签文本",
+        description: "描述文本",
+        itemProps: "内部封装属性透传",
+      },
+      itemPropsConfig: {
+        root: "根容器 `<div>` 属性",
+        label: "标签 `<label>` 属性",
+        invalid: "无效 `<small>` 属性",
+        description: "描述 `<small>` 属性",
+      },
+    },
+  },
+
   upload: {
     title: "上传",
     description: "文件上传组件，支持自定义校验逻辑。",
@@ -628,14 +674,8 @@ export const zh = {
         invalid: "无效信息 `<small>` 属性",
       },
     },
-    valueNote: "Value",
-    valueFormats: {
-      date: "YYYY-MM-DD",
-      time: "HH:mm",
-      "datetime-local": "YYYY-MM-DDTHH:mm",
-      month: "YYYY-MM",
-      week: "YYYY-Wxx",
-    },
+    valueNote: "值映射",
+
   },
 
   select: {

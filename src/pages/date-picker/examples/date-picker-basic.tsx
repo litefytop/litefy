@@ -5,6 +5,7 @@ export function DatePickerBasic() {
     <DatePicker
       label="Select Date"
       description="Choose a date"
+      className="w-3xs"
     />
   );
 }

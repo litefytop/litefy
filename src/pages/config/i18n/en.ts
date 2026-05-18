@@ -449,7 +449,7 @@ export const en = {
         defaultValue: "Initial input value (uncontrolled mode)",
         onChange: "Value change callback, can return { invalid?: string } to trigger invalid state",
         placeholder: "Placeholder",
-        disabled: "Whether disabled",
+        type: "Input type",
         invalid: "Invalid message",
         label: "Label text",
         description: "Description text",
@@ -544,6 +544,52 @@ export const en = {
     },
   },
 
+  textarea: {
+    title: "Textarea",
+    description: "Multi-line text input component for collecting user input.",
+    basic: {
+      title: "Basic",
+    },
+    controlled: {
+      title: "Controlled",
+    },
+    validation: {
+      title: "Validation",
+    },
+    disabled: {
+      title: "Disabled",
+    },
+    anatomy: {
+      root: "Root",
+      label: "Label",
+      textarea: "Textarea",
+      description: "Description",
+    },
+    api: {
+      sectionTitles: {
+        textareaProps: "Textarea Props",
+        itemPropsConfig: "itemProps Config",
+      },
+      props: {
+        value: "Input value (controlled mode)",
+        defaultValue: "Initial input value (uncontrolled mode)",
+        onChange: "Value change callback, can return { invalid?: string } to trigger invalid state",
+        placeholder: "Placeholder text",
+        disabled: "Whether disabled",
+        invalid: "Invalid message",
+        label: "Label text",
+        description: "Description text",
+        itemProps: "Internal props passthrough",
+      },
+      itemPropsConfig: {
+        root: "Root container `<div>` props",
+        label: "Label `<label>` props",
+        invalid: "Invalid `<small>` props",
+        description: "Description `<small>` props",
+      },
+    },
+  },
+
   upload: {
     title: "Upload",
     description: "File upload component with custom validation support.",
@@ -629,14 +675,8 @@ export const en = {
         invalid: "Invalid `<small>` props",
       },
     },
-    valueNote: "Value",
-    valueFormats: {
-      date: "YYYY-MM-DD",
-      time: "HH:mm",
-      "datetime-local": "YYYY-MM-DDTHH:mm",
-      month: "YYYY-MM",
-      week: "YYYY-Wxx",
-    },
+    valueNote: "Value Mapping",
+
   },
 
   select: {

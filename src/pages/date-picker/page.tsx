@@ -243,7 +243,7 @@ export default function DatePickerPage({ locale = "zh" }: { locale?: string }) {
         </section>
 
         <section id="value-format" className="mt-8 space-y-4">
-          <Title as="h2">{l.valueNote}</Title>
+          <Title as="h4" className="px-3">{l.valueNote}</Title>
           <div className="border rounded-lg p-4">
             <table className="w-full text-sm">
               <thead>
@@ -255,23 +255,23 @@ export default function DatePickerPage({ locale = "zh" }: { locale?: string }) {
               <tbody>
                 <tr className="border-b">
                   <td className="py-2 pr-4 font-mono text-muted-foreground">date</td>
-                  <td className="py-2 font-mono">{l.valueFormats.date}</td>
+                  <td className="py-2 font-mono">YYYY-MM-DD</td>
                 </tr>
                 <tr className="border-b">
                   <td className="py-2 pr-4 font-mono text-muted-foreground">time</td>
-                  <td className="py-2 font-mono">{l.valueFormats.time}</td>
+                  <td className="py-2 font-mono">HH:mm</td>
                 </tr>
                 <tr className="border-b">
                   <td className="py-2 pr-4 font-mono text-muted-foreground">datetime-local</td>
-                  <td className="py-2 font-mono">{l.valueFormats["datetime-local"]}</td>
+                  <td className="py-2 font-mono">YYYY-MM-DDTHH:mm</td>
                 </tr>
                 <tr className="border-b">
                   <td className="py-2 pr-4 font-mono text-muted-foreground">month</td>
-                  <td className="py-2 font-mono">{l.valueFormats.month}</td>
+                  <td className="py-2 font-mono">YYYY-MM</td>
                 </tr>
                 <tr>
                   <td className="py-2 pr-4 font-mono text-muted-foreground">week</td>
-                  <td className="py-2 font-mono">{l.valueFormats.week}</td>
+                  <td className="py-2 font-mono">YYYY-Wxx</td>
                 </tr>
               </tbody>
             </table>

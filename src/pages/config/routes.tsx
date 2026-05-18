@@ -23,6 +23,7 @@ const Drawer = lazy(() => import("@/pages/drawer"));
 const Slider = lazy(() => import("@/pages/slider"));
 const Upload = lazy(() => import("@/pages/upload"));
 const DatePicker = lazy(() => import("@/pages/date-picker"));
+const Textarea = lazy(() => import("@/pages/text-area"));
 
 const introduction = {
   key: "introduction",
@@ -47,7 +48,7 @@ const componentRouteConfig = [
   { key: "slider", path: "/components/slider", Component: Slider },
   { key: "upload", path: "/components/upload", Component: Upload },
   { key: "date-picker", path: "/components/date-picker", Component: DatePicker },
-  { key: "textarea", path: "/components/textarea", Component: ComingSoon },
+  { key: "textarea", path: "/components/textarea", Component: Textarea },
   { key: "loading", path: "/components/loading", Component: ComingSoon },
   { key: "empty", path: "/components/empty", Component: Empty },
   { key: "skeleton", path: "/components/skeleton", Component: ComingSoon },

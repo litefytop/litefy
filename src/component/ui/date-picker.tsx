@@ -7,10 +7,8 @@ type WithDataAttributes<T> = T & {
   className?: ClassNameValue;
 };
 
-export type DatePickerProps = Omit<
-  ComponentProps<"input">,
-  "type" | "className"
-> & {
+export type DatePickerProps = Omit<ComponentProps<"input">, "type"> & {
+  className?: ClassNameValue;
   label?: React.ReactNode;
   description?: React.ReactNode;
   invalid?: string;
@@ -33,10 +31,11 @@ export function DatePicker({
   itemProps,
   onChange,
   value,
+  className,
   type = "date",
   ...props
 }: DatePickerProps) {
-  const isInvalid = !!invalid;
+  const isInvalid = Boolean(invalid);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
@@ -54,13 +53,18 @@ export function DatePicker({
   };
 
   return (
-    <div {...itemProps?.root} className={cn("flex flex-col gap-1")}>
+    <div
+      {...itemProps?.root}
+      className={cn("flex flex-col gap-1", itemProps?.root?.className)}
+    >
       {label && (
         <label
           {...itemProps?.label}
+          data-disabled={disabled}
           className={cn(
-            "text-sm font-medium leading-none py-1 indent-2",
-            itemProps?.label?.className
+            "text-sm font-medium leading-none",
+            "data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-70 indent-2",
+            itemProps?.label?.className,
           )}
         >
           {label}
@@ -68,39 +72,38 @@ export function DatePicker({
       )}
 
       <input
+        {...props}
         ref={inputRef}
         type={type}
         disabled={disabled}
         value={value}
         onChange={handleChange}
         data-placeholder={placeholder}
-        {...props}
+        data-invalid={isInvalid}
         className={cn(
-          "h-10 w-full rounded-md border border-input bg-background px-3 text-sm relative",
+          "h-9 w-full rounded-md border border-input bg-background px-3 text-sm relative",
           "focus:outline-none focus:ring-2 focus:ring-ring",
-          disabled && "opacity-50 pointer-events-none",
-          isInvalid && "border-destructive",
-
-          // 全浏览器原生占位隐藏
+          "disabled:opacity-50 disabled:pointer-events-none",
+          "data-[invalid=true]:border-destructive",
           "[&:not([value])::-webkit-datetime-edit]:opacity-0",
           "[&[value]]::-webkit-datetime-edit]:opacity-100",
           "[&:not([value])]:color-transparent",
-          "[[value]]:text-inherit",
-
-          // 自定义 placeholder
           "before:content-[attr(data-placeholder)]",
           "before:absolute before:left-3 before:top-1/2 before:-translate-y-1/2",
           "before:text-muted-foreground before:pointer-events-none",
           "[[value]]:before:content-['']",
+          className,
         )}
       />
 
       <small
         data-invalid={isInvalid}
         {...(isInvalid ? itemProps?.invalid : itemProps?.description)}
+        data-disabled={disabled}
         className={cn(
-          "text-sm indent-2 h-5 text-muted-foreground data-[invalid=true]:text-destructive",
-          (isInvalid ? itemProps?.invalid : itemProps?.description)?.className
+          "text-sm indent-2 h-5 text-muted-foreground ",
+          "data-[invalid=true]:text-destructive data-[disabled=true]:opacity-70",
+          (isInvalid ? itemProps?.invalid : itemProps?.description)?.className,
         )}
         role={isInvalid ? "alert" : undefined}
       >
