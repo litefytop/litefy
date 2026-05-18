@@ -8,7 +8,7 @@ import {
   Anchor,
   Title,
   Description,
-  NumberField,
+  Upload,
   ShikiCodeBlock,
   Anatomy,
   Button,
@@ -18,19 +18,17 @@ import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
 import {
-  NumberFieldBasic,
-  NumberFieldControlled,
-  NumberFieldStep,
-  NumberFieldDisabled,
-  NumberFieldValidation,
+  UploadBasic,
+  UploadValidation,
+  UploadMultiple,
+  UploadDisabled,
 } from "./examples";
 
-import NumberFieldBasicRaw from "./examples/number-field-basic.tsx?raw";
-import NumberFieldControlledRaw from "./examples/number-field-controlled.tsx?raw";
-import NumberFieldStepRaw from "./examples/number-field-step.tsx?raw";
-import NumberFieldDisabledRaw from "./examples/number-field-disabled.tsx?raw";
-import NumberFieldValidationRaw from "./examples/number-field-validation.tsx?raw";
-import numberFieldSrc from "@/component/ui/number-field.tsx?raw";
+import UploadBasicRaw from "./examples/upload-basic.tsx?raw";
+import UploadValidationRaw from "./examples/upload-validation.tsx?raw";
+import UploadMultipleRaw from "./examples/upload-multiple.tsx?raw";
+import UploadDisabledRaw from "./examples/upload-disabled.tsx?raw";
+import uploadSrc from "@/component/ui/upload.tsx?raw";
 
 function DemoSection({
   id,
@@ -60,46 +58,26 @@ function DemoSection({
   );
 }
 
-export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) {
+export default function UploadPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
-  const l = lang["number-field"];
-  const nav = getComponentNav("/components/number-field", locale as "zh" | "en");
+  const l = lang["upload"];
+  const nav = getComponentNav("/components/upload", locale as "zh" | "en");
 
-  const numberFieldSections = [
+  const uploadSections = [
     {
-      title: l.api.sectionTitles.numberFieldProps,
+      title: l.api.sectionTitles.uploadProps,
 
       data: [
         {
-          props: "value",
-          type: "number",
-          
-          description: l.api.props.value,
-        },
-        {
-          props: "defaultValue",
-          type: "number",
-          default: "0",
-          description: l.api.props.defaultValue,
-        },
-        {
-          props: "onValueChange",
-          type: "(val: number) => void | { invalid?: string }",
-          
-          description: l.api.props.onValueChange,
-        },
-        {
           props: "label",
           type: "ReactNode",
-          
           description: l.api.props.label,
         },
         {
           props: "description",
           type: "ReactNode",
-          
           description: l.api.props.description,
         },
         {
@@ -108,33 +86,24 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
           description: l.api.props.invalid,
         },
         {
-          props: "min",
-          type: "number",
-          default: "-Infinity",
-          description: l.api.props.min,
-        },
-        {
-          props: "max",
-          type: "number",
-          default: "Infinity",
-          description: l.api.props.max,
-        },
-        {
-          props: "step",
-          type: "number",
-          default: "1",
-          description: l.api.props.step,
-        },
-        {
           props: "disabled",
           type: "boolean",
           default: "false",
           description: l.api.props.disabled,
         },
         {
+          props: "accept",
+          type: "string",
+          description: l.api.props.accept,
+        },
+        {
+          props: "onChange",
+          type: "(e: ChangeEvent<HTMLInputElement>) => void | { invalid?: string }",
+          description: l.api.props.onChange,
+        },
+        {
           props: "itemProps",
-          type: "NumberFieldItemProps",
-          
+          type: "UploadItemProps",
           description: l.api.props.itemProps,
         },
       ],
@@ -154,31 +123,21 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
           description: l.api.itemPropsConfig.label,
         },
         {
-          props: "group",
-          type: `React.ComponentProps<"div">`,
-          description: l.api.itemPropsConfig.group,
-        },
-        {
-          props: "btn",
-          type: `React.ComponentProps<"button">`,
-          description: l.api.itemPropsConfig.btn,
-        },
-        {
-          props: "desc",
+          props: "description",
           type: `React.ComponentProps<"small">`,
-          description: l.api.itemPropsConfig.desc,
+          description: l.api.itemPropsConfig.description,
         },
         {
-          props: "error",
+          props: "invalid",
           type: `React.ComponentProps<"small">`,
-          description: l.api.itemPropsConfig.error,
+          description: l.api.itemPropsConfig.invalid,
         },
       ],
     },
   ];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(numberFieldSrc);
+    navigator.clipboard.writeText(uploadSrc);
     setCopied(true);
     Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);
@@ -222,7 +181,7 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
-          <ShikiCodeBlock>{numberFieldSrc}</ShikiCodeBlock>
+          <ShikiCodeBlock>{uploadSrc}</ShikiCodeBlock>
         </section>
 
         <section id="examples" className="">
@@ -231,41 +190,33 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
           <DemoSection
             id="basic"
             title={l.basic.title}
-            code={NumberFieldBasicRaw}
+            code={UploadBasicRaw}
           >
-            <NumberFieldBasic />
-          </DemoSection>
-
-          <DemoSection
-            id="controlled"
-            title={l.controlled.title}
-            code={NumberFieldControlledRaw}
-          >
-            <NumberFieldControlled />
-          </DemoSection>
-
-          <DemoSection
-            id="step"
-            title={l.step.title}
-            code={NumberFieldStepRaw}
-          >
-            <NumberFieldStep />
-          </DemoSection>
-
-          <DemoSection
-            id="disabled"
-            title={l.disabled.title}
-            code={NumberFieldDisabledRaw}
-          >
-            <NumberFieldDisabled />
+            <UploadBasic />
           </DemoSection>
 
           <DemoSection
             id="validation"
             title={l.validation.title}
-            code={NumberFieldValidationRaw}
+            code={UploadValidationRaw}
           >
-            <NumberFieldValidation />
+            <UploadValidation />
+          </DemoSection>
+
+          <DemoSection
+            id="multiple"
+            title={l.multiple.title}
+            code={UploadMultipleRaw}
+          >
+            <UploadMultiple />
+          </DemoSection>
+
+          <DemoSection
+            id="disabled"
+            title={l.disabled.title}
+            code={UploadDisabledRaw}
+          >
+            <UploadDisabled />
           </DemoSection>
         </section>
 
@@ -276,22 +227,18 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
             parts={[
               { name: "root", label: l.anatomy.root },
               { name: "label", label: l.anatomy.label },
-              { name: "group", label: l.anatomy.group },
-              { name: "btn", label: l.anatomy.btn },
               { name: "input", label: l.anatomy.input },
-              { name: "desc", label: l.anatomy.desc },
+              { name: "description", label: l.anatomy.description },
             ]}
           >
-            <NumberField
-              label="数量"
-              description="请选择数量"
+            <Upload
+              label="Upload"
+              description="Description"
               data-anatomy-name="input"
               itemProps={{
                 root: { "data-anatomy-name": "root" },
                 label: { "data-anatomy-name": "label" },
-                group: { "data-anatomy-name": "group" },
-                btn: { "data-anatomy-name": "btn" },
-                desc: { "data-anatomy-name": "desc" },
+                description: { "data-anatomy-name": "description" },
               }}
             />
           </Anatomy>
@@ -301,7 +248,7 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
-          <Docs sections={numberFieldSections} />
+          <Docs sections={uploadSections} />
         </section>
       </div>
 
@@ -310,15 +257,12 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
-            <Anchor.Item href="#controlled">{l.controlled.title}</Anchor.Item>
-            <Anchor.Item href="#min-max">{l.minMax.title}</Anchor.Item>
-            <Anchor.Item href="#step">{l.step.title}</Anchor.Item>
-            <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
             <Anchor.Item href="#validation">{l.validation.title}</Anchor.Item>
+            <Anchor.Item href="#multiple">{l.multiple.title}</Anchor.Item>
+            <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
           <Anchor.Section href="#docs" linkText={lang.docs}/>
-     
         </Anchor>
       </aside>
     </div>

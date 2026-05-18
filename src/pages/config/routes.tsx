@@ -20,6 +20,9 @@ const Select = lazy(() => import("@/pages/select"));
 const Toast = lazy(() => import("@/pages/toast"));
 const Dialog = lazy(() => import("@/pages/dialog"));
 const Drawer = lazy(() => import("@/pages/drawer"));
+const Slider = lazy(() => import("@/pages/slider"));
+const Upload = lazy(() => import("@/pages/upload"));
+const DatePicker = lazy(() => import("@/pages/date-picker"));
 
 const introduction = {
   key: "introduction",
@@ -41,7 +44,9 @@ const componentRouteConfig = [
   { key: "dropdown", path: "/components/dropdown", Component: Dropdown },
   { key: "select", path: "/components/select", Component: Select },
   { key: "password", path: "/components/password", Component: Password },
-  { key: "slider", path: "/components/slider", Component: ComingSoon },
+  { key: "slider", path: "/components/slider", Component: Slider },
+  { key: "upload", path: "/components/upload", Component: Upload },
+  { key: "date-picker", path: "/components/date-picker", Component: DatePicker },
   { key: "textarea", path: "/components/textarea", Component: ComingSoon },
   { key: "loading", path: "/components/loading", Component: ComingSoon },
   { key: "empty", path: "/components/empty", Component: Empty },

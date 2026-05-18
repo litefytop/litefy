@@ -25,8 +25,6 @@ export type PasswordProps = Omit<
     root?: WithDataAttributes<React.ComponentProps<"div">>;
     label?: WithDataAttributes<React.ComponentProps<"label">>;
     group?: WithDataAttributes<React.ComponentProps<"div">>;
-    leading?: WithDataAttributes<React.ComponentProps<"span">>;
-    trailing?: WithDataAttributes<React.ComponentProps<"span">>;
     invalid?: WithDataAttributes<React.ComponentProps<"div">>;
     description?: WithDataAttributes<React.ComponentProps<"small">>;
     toggle?: WithDataAttributes<React.ComponentProps<"button">>;
@@ -41,8 +39,6 @@ export function Password({
   label,
   description,
   invalid: externalInvalid,
-  leading,
-  trailing,
   itemProps,
   onChange,
   ...props
@@ -77,24 +73,14 @@ export function Password({
         {...itemProps?.group}
         data-invalid={isInvalid}
         className={cn(
-          "relative flex w-full items-center rounded-full border border-input bg-background shadow-xs transition-colors px-2",
+          "flex w-full items-center rounded-full border border-input bg-background shadow-xs transition-colors px-2",
           "has-focus:border-primary has-focus:ring-2 has-focus:ring-primary/20",
           "data-[invalid=true]:border-destructive data-[invalid=true]:ring-destructive/20",
           "has-disabled:pointer-events-none has-disabled:opacity-50",
           itemProps?.group?.className,
         )}
       >
-        {leading && (
-          <span
-            {...itemProps?.leading}
-            className={cn(
-              "shrink-0 text-muted-foreground [&>svg]:w-4 [&>svg]:h-4 [&>svg]:shrink-0 px-2",
-              itemProps?.leading?.className,
-            )}
-          >
-            {leading}
-          </span>
-        )}
+ 
 
         <input
           {...props}
@@ -112,17 +98,6 @@ export function Password({
           data-invalid={isInvalid}
         />
 
-        {trailing && (
-          <span
-            {...itemProps?.trailing}
-            className={cn(
-              "shrink-0 text-muted-foreground [&>svg]:w-4 [&>svg]:h-4 [&>svg]:shrink-0 px-2",
-              itemProps?.trailing?.className,
-            )}
-          >
-            {trailing}
-          </span>
-        )}
 
         <button
           type="button"

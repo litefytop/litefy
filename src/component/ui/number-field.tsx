@@ -53,10 +53,16 @@ export function NumberField({
   const isInvalid = !!finalInvalid;
 
   const updateValue = (val: number) => {
+    let invalidMsg: string | undefined;
+    if (val < min) {
+      invalidMsg = `Value must be at least ${min}`;
+    } else if (val > max) {
+      invalidMsg = `Value must be at most ${max}`;
+    }
     const clampedVal = Math.max(min, Math.min(max, val));
     if (controlledValue === undefined) setInternalValue(clampedVal);
     const res = onValueChange?.(clampedVal);
-    setInternalInvalid(res?.invalid);
+    setInternalInvalid(invalidMsg ?? res?.invalid);
   };
 
   const handleMinus = () => updateValue(finalValue - step);

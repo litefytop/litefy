@@ -8,7 +8,7 @@ import {
   Anchor,
   Title,
   Description,
-  NumberField,
+  DatePicker,
   ShikiCodeBlock,
   Anatomy,
   Button,
@@ -18,19 +18,15 @@ import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
 import {
-  NumberFieldBasic,
-  NumberFieldControlled,
-  NumberFieldStep,
-  NumberFieldDisabled,
-  NumberFieldValidation,
+  DatePickerBasic,
+  DatePickerType,
+  DatePickerDisabled,
 } from "./examples";
 
-import NumberFieldBasicRaw from "./examples/number-field-basic.tsx?raw";
-import NumberFieldControlledRaw from "./examples/number-field-controlled.tsx?raw";
-import NumberFieldStepRaw from "./examples/number-field-step.tsx?raw";
-import NumberFieldDisabledRaw from "./examples/number-field-disabled.tsx?raw";
-import NumberFieldValidationRaw from "./examples/number-field-validation.tsx?raw";
-import numberFieldSrc from "@/component/ui/number-field.tsx?raw";
+import DatePickerBasicRaw from "./examples/date-picker-basic.tsx?raw";
+import DatePickerTypeRaw from "./examples/date-picker-type.tsx?raw";
+import DatePickerDisabledRaw from "./examples/date-picker-disabled.tsx?raw";
+import datePickerSrc from "@/component/ui/date-picker.tsx?raw";
 
 function DemoSection({
   id,
@@ -60,46 +56,26 @@ function DemoSection({
   );
 }
 
-export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) {
+export default function DatePickerPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
-  const l = lang["number-field"];
-  const nav = getComponentNav("/components/number-field", locale as "zh" | "en");
+  const l = lang["date-picker"];
+  const nav = getComponentNav("/components/date-picker", locale as "zh" | "en");
 
-  const numberFieldSections = [
+  const datePickerSections = [
     {
-      title: l.api.sectionTitles.numberFieldProps,
+      title: l.api.sectionTitles.datePickerProps,
 
       data: [
         {
-          props: "value",
-          type: "number",
-          
-          description: l.api.props.value,
-        },
-        {
-          props: "defaultValue",
-          type: "number",
-          default: "0",
-          description: l.api.props.defaultValue,
-        },
-        {
-          props: "onValueChange",
-          type: "(val: number) => void | { invalid?: string }",
-          
-          description: l.api.props.onValueChange,
-        },
-        {
           props: "label",
           type: "ReactNode",
-          
           description: l.api.props.label,
         },
         {
           props: "description",
           type: "ReactNode",
-          
           description: l.api.props.description,
         },
         {
@@ -108,22 +84,10 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
           description: l.api.props.invalid,
         },
         {
-          props: "min",
-          type: "number",
-          default: "-Infinity",
-          description: l.api.props.min,
-        },
-        {
-          props: "max",
-          type: "number",
-          default: "Infinity",
-          description: l.api.props.max,
-        },
-        {
-          props: "step",
-          type: "number",
-          default: "1",
-          description: l.api.props.step,
+          props: "placeholder",
+          type: "string",
+          default: '"Select date"',
+          description: l.api.props.placeholder,
         },
         {
           props: "disabled",
@@ -132,9 +96,13 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
           description: l.api.props.disabled,
         },
         {
+          props: "onChange",
+          type: "(e: ChangeEvent<HTMLInputElement>) => void | { invalid?: string }",
+          description: l.api.props.onChange,
+        },
+        {
           props: "itemProps",
-          type: "NumberFieldItemProps",
-          
+          type: "DateInputItemProps",
           description: l.api.props.itemProps,
         },
       ],
@@ -154,31 +122,21 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
           description: l.api.itemPropsConfig.label,
         },
         {
-          props: "group",
-          type: `React.ComponentProps<"div">`,
-          description: l.api.itemPropsConfig.group,
-        },
-        {
-          props: "btn",
-          type: `React.ComponentProps<"button">`,
-          description: l.api.itemPropsConfig.btn,
-        },
-        {
-          props: "desc",
+          props: "description",
           type: `React.ComponentProps<"small">`,
-          description: l.api.itemPropsConfig.desc,
+          description: l.api.itemPropsConfig.description,
         },
         {
-          props: "error",
+          props: "invalid",
           type: `React.ComponentProps<"small">`,
-          description: l.api.itemPropsConfig.error,
+          description: l.api.itemPropsConfig.invalid,
         },
       ],
     },
   ];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(numberFieldSrc);
+    navigator.clipboard.writeText(datePickerSrc);
     setCopied(true);
     Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);
@@ -222,7 +180,7 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
-          <ShikiCodeBlock>{numberFieldSrc}</ShikiCodeBlock>
+          <ShikiCodeBlock>{datePickerSrc}</ShikiCodeBlock>
         </section>
 
         <section id="examples" className="">
@@ -231,41 +189,25 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
           <DemoSection
             id="basic"
             title={l.basic.title}
-            code={NumberFieldBasicRaw}
+            code={DatePickerBasicRaw}
           >
-            <NumberFieldBasic />
+            <DatePickerBasic />
           </DemoSection>
 
           <DemoSection
-            id="controlled"
-            title={l.controlled.title}
-            code={NumberFieldControlledRaw}
+            id="type"
+            title={l.type.title}
+            code={DatePickerTypeRaw}
           >
-            <NumberFieldControlled />
-          </DemoSection>
-
-          <DemoSection
-            id="step"
-            title={l.step.title}
-            code={NumberFieldStepRaw}
-          >
-            <NumberFieldStep />
+            <DatePickerType />
           </DemoSection>
 
           <DemoSection
             id="disabled"
             title={l.disabled.title}
-            code={NumberFieldDisabledRaw}
+            code={DatePickerDisabledRaw}
           >
-            <NumberFieldDisabled />
-          </DemoSection>
-
-          <DemoSection
-            id="validation"
-            title={l.validation.title}
-            code={NumberFieldValidationRaw}
-          >
-            <NumberFieldValidation />
+            <DatePickerDisabled />
           </DemoSection>
         </section>
 
@@ -276,22 +218,18 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
             parts={[
               { name: "root", label: l.anatomy.root },
               { name: "label", label: l.anatomy.label },
-              { name: "group", label: l.anatomy.group },
-              { name: "btn", label: l.anatomy.btn },
               { name: "input", label: l.anatomy.input },
-              { name: "desc", label: l.anatomy.desc },
+              { name: "description", label: l.anatomy.description },
             ]}
           >
-            <NumberField
-              label="数量"
-              description="请选择数量"
+            <DatePicker
+              label="Date"
+              description="Description"
               data-anatomy-name="input"
               itemProps={{
                 root: { "data-anatomy-name": "root" },
                 label: { "data-anatomy-name": "label" },
-                group: { "data-anatomy-name": "group" },
-                btn: { "data-anatomy-name": "btn" },
-                desc: { "data-anatomy-name": "desc" },
+                description: { "data-anatomy-name": "description" },
               }}
             />
           </Anatomy>
@@ -301,7 +239,43 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
-          <Docs sections={numberFieldSections} />
+          <Docs sections={datePickerSections} />
+        </section>
+
+        <section id="value-format" className="mt-8 space-y-4">
+          <Title as="h2">{l.valueNote}</Title>
+          <div className="border rounded-lg p-4">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b">
+                  <th className="text-left py-2 pr-4">type</th>
+                  <th className="text-left py-2">value format</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b">
+                  <td className="py-2 pr-4 font-mono text-muted-foreground">date</td>
+                  <td className="py-2 font-mono">{l.valueFormats.date}</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-2 pr-4 font-mono text-muted-foreground">time</td>
+                  <td className="py-2 font-mono">{l.valueFormats.time}</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-2 pr-4 font-mono text-muted-foreground">datetime-local</td>
+                  <td className="py-2 font-mono">{l.valueFormats["datetime-local"]}</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-2 pr-4 font-mono text-muted-foreground">month</td>
+                  <td className="py-2 font-mono">{l.valueFormats.month}</td>
+                </tr>
+                <tr>
+                  <td className="py-2 pr-4 font-mono text-muted-foreground">week</td>
+                  <td className="py-2 font-mono">{l.valueFormats.week}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </section>
       </div>
 
@@ -310,15 +284,11 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
-            <Anchor.Item href="#controlled">{l.controlled.title}</Anchor.Item>
-            <Anchor.Item href="#min-max">{l.minMax.title}</Anchor.Item>
-            <Anchor.Item href="#step">{l.step.title}</Anchor.Item>
+            <Anchor.Item href="#type">{l.type.title}</Anchor.Item>
             <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
-            <Anchor.Item href="#validation">{l.validation.title}</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
           <Anchor.Section href="#docs" linkText={lang.docs}/>
-     
         </Anchor>
       </aside>
     </div>

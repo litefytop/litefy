@@ -6,8 +6,8 @@ export function NumberFieldControlled() {
 
   return (
     <NumberField
-      label="受控模式"
-      description={`当前值：${value}`}
+      label="Controlled Mode"
+      description={`Current value: ${value}`}
       value={value}
       onValueChange={setValue}
     />

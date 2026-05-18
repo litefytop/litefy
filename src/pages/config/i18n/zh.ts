@@ -41,6 +41,8 @@ export const zh = {
     checkbox: "Checkbox 复选框",
     slider: "Slider 滑块",
     textarea: "Textarea 文本域",
+    upload: "Upload 上传",
+    "date-picker": "DatePicker 日期选择",
     select: "Select 选择器",
     loading: "Loading 加载",
     empty: "Empty 空状态",
@@ -510,6 +512,129 @@ export const zh = {
         description: "描述 `<small>` 属性",
         toggle: "切换按钮 `<button>` 属性",
       },
+    },
+  },
+
+  slider: {
+    title: "滑块",
+    description: "滑块组件，用于选择范围内的数值。",
+    basic: {
+      title: "基础",
+    },
+    controlled: {
+      title: "受控",
+    },
+    orientation: {
+      title: "方向",
+    },
+    anatomy: {
+      input: "滑块",
+    },
+    api: {
+      sectionTitles: {
+        sliderProps: "Slider Props",
+      },
+      props: {
+        value: "当前值（受控模式）",
+        defaultValue: "初始值（非受控模式）",
+        orientation: "方向：horizontal 或 vertical",
+        disabled: "是否禁用",
+      },
+    },
+  },
+
+  upload: {
+    title: "上传",
+    description: "文件上传组件，支持自定义校验逻辑。",
+    basic: {
+      title: "基础",
+    },
+    validation: {
+      title: "校验",
+    },
+    multiple: {
+      title: "多选",
+    },
+    disabled: {
+      title: "禁用",
+    },
+    anatomy: {
+      root: "根元素",
+      label: "标签",
+      input: "输入框",
+      description: "描述",
+    },
+    api: {
+      sectionTitles: {
+        uploadProps: "Upload Props",
+        itemPropsConfig: "itemProps 配置",
+      },
+      props: {
+        label: "标签文本",
+        description: "描述文本",
+        invalid: "无效信息",
+        disabled: "是否禁用",
+        multiple: "是否多选",
+        accept: "接受的文件类型",
+        onChange: "值变化回调，可返回 { invalid?: string } 触发无效状态",
+        itemProps: "内部封装属性透传",
+      },
+      itemPropsConfig: {
+        root: "根容器 `<div>` 属性",
+        label: "标签 `<label>` 属性",
+        description: "描述 `<small>` 属性",
+        invalid: "无效信息 `<small>` 属性",
+      },
+    },
+  },
+
+  "date-picker": {
+    title: "日期选择",
+    description: "日期选择输入组件。",
+    basic: {
+      title: "基础",
+    },
+    type: {
+      title: "类型",
+    },
+    disabled: {
+      title: "禁用",
+    },
+    anatomy: {
+      root: "根元素",
+      label: "标签",
+      input: "输入框",
+      description: "描述",
+    },
+    api: {
+      sectionTitles: {
+        datePickerProps: "DatePicker Props",
+        itemPropsConfig: "itemProps 配置",
+      },
+      props: {
+        label: "标签文本",
+        description: "描述文本",
+        invalid: "无效信息",
+        placeholder: "占位符",
+        type: "输入类型：date | time | datetime-local | month | week",
+        disabled: "是否禁用",
+        onChange: "值变化回调，可返回 { invalid?: string } 触发无效状态",
+        itemProps: "内部封装属性透传",
+      },
+      itemPropsConfig: {
+        root: "根容器 `<div>` 属性",
+        label: "标签 `<label>` 属性",
+        description: "描述 `<small>` 属性",
+        invalid: "无效信息 `<small>` 属性",
+      },
+    },
+    valueNote: "Value",
+    valueFormats: {
+      date: "YYYY-MM-DD",
+      time: "HH:mm",
+      "datetime-local": "YYYY-MM-DDTHH:mm",
+      month: "YYYY-MM",
+      week: "YYYY-Wxx",
     },
   },
 

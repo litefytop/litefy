@@ -67,6 +67,8 @@ export const en = {
     sheet: "Sheet",
     dropdown: "Dropdown",
     password: "Password",
+    upload: "Upload",
+    "date-picker": "DatePicker",
     "number-field": "NumberField",
   },
 
@@ -511,6 +513,129 @@ export const en = {
         description: "Description `<small>` props",
         toggle: "Toggle button `<button>` props",
       },
+    },
+  },
+
+  slider: {
+    title: "Slider",
+    description: "Slider component for selecting a value within a range.",
+    basic: {
+      title: "Basic",
+    },
+    controlled: {
+      title: "Controlled",
+    },
+    orientation: {
+      title: "Orientation",
+    },
+    anatomy: {
+      input: "Slider",
+    },
+    api: {
+      sectionTitles: {
+        sliderProps: "Slider Props",
+      },
+      props: {
+        value: "Current value (controlled mode)",
+        defaultValue: "Initial value (uncontrolled mode)",
+        orientation: "Orientation: horizontal or vertical",
+        disabled: "Whether disabled",
+      },
+    },
+  },
+
+  upload: {
+    title: "Upload",
+    description: "File upload component with custom validation support.",
+    basic: {
+      title: "Basic",
+    },
+    validation: {
+      title: "Validation",
+    },
+    multiple: {
+      title: "Multiple",
+    },
+    disabled: {
+      title: "Disabled",
+    },
+    anatomy: {
+      root: "Root",
+      label: "Label",
+      input: "Input",
+      description: "Description",
+    },
+    api: {
+      sectionTitles: {
+        uploadProps: "Upload Props",
+        itemPropsConfig: "itemProps Config",
+      },
+      props: {
+        label: "Label text",
+        description: "Description text",
+        invalid: "Invalid message",
+        disabled: "Whether disabled",
+        multiple: "Whether multiple files allowed",
+        accept: "Accepted file types",
+        onChange: "Value change callback, can return { invalid?: string } to trigger invalid state",
+        itemProps: "Internal wrapped property passthrough",
+      },
+      itemPropsConfig: {
+        root: "Root container `<div>` props",
+        label: "Label `<label>` props",
+        description: "Description `<small>` props",
+        invalid: "Invalid `<small>` props",
+      },
+    },
+  },
+
+  "date-picker": {
+    title: "Date Picker",
+    description: "Date input component.",
+    basic: {
+      title: "Basic",
+    },
+    type: {
+      title: "Type",
+    },
+    disabled: {
+      title: "Disabled",
+    },
+    anatomy: {
+      root: "Root",
+      label: "Label",
+      input: "Input",
+      description: "Description",
+    },
+    api: {
+      sectionTitles: {
+        datePickerProps: "DatePicker Props",
+        itemPropsConfig: "itemProps Config",
+      },
+      props: {
+        label: "Label text",
+        description: "Description text",
+        invalid: "Invalid message",
+        placeholder: "Placeholder",
+        type: "Input type: date | time | datetime-local | month | week",
+        disabled: "Whether disabled",
+        onChange: "Value change callback, can return { invalid?: string } to trigger invalid state",
+        itemProps: "Internal wrapped property passthrough",
+      },
+      itemPropsConfig: {
+        root: "Root container `<div>` props",
+        label: "Label `<label>` props",
+        description: "Description `<small>` props",
+        invalid: "Invalid `<small>` props",
+      },
+    },
+    valueNote: "Value",
+    valueFormats: {
+      date: "YYYY-MM-DD",
+      time: "HH:mm",
+      "datetime-local": "YYYY-MM-DDTHH:mm",
+      month: "YYYY-MM",
+      week: "YYYY-Wxx",
     },
   },
 
