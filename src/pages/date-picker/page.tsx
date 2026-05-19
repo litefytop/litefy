@@ -90,10 +90,10 @@ export default function DatePickerPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.props.placeholder,
         },
         {
-          props: "disabled",
-          type: "boolean",
-          default: "false",
-          description: l.api.props.disabled,
+          props: "type",
+          type: "date | time | datetime-local | month | week",
+          default: "date",
+          description: l.api.props.type,
         },
         {
           props: "onChange",
@@ -243,7 +243,7 @@ export default function DatePickerPage({ locale = "zh" }: { locale?: string }) {
         </section>
 
         <section id="value-format" className="mt-8 space-y-4">
-          <Title as="h4" className="px-3">{l.valueNote}</Title>
+          <Title as="h4" className="px-2">{l.valueNote}</Title>
           <div className="border rounded-lg p-4">
             <table className="w-full text-sm">
               <thead>

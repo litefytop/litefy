@@ -33,10 +33,13 @@ export default function CheckboxValidation() {
 
       <Checkbox
         label="Toggle Validation"
+        itemProps={{
+          options: { variant: "toggle" },
+        }}
         description="Here you can select multiple toggles"
         onValueChange={(values) => {
           if (!values.length) {
-            return { invalid: "Please select at least one option" };
+            return { invalid: true };
           }
         }}
         options={[

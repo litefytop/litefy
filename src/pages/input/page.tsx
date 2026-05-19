@@ -99,7 +99,7 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
         },
         {
           props: "type",
-          type: "text|email|url|number|tel|search",
+          type: "text | email | url | number | tel | search",
           default: "text",
           description: l.api.props.type,
         },
@@ -157,7 +157,7 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
         },
         {
           props: "invalid",
-          type: `React.ComponentProps<"div">`,
+          type: `React.ComponentProps<"small">`,
           description: l.api.itemPropsConfig.invalid,
         },
         {

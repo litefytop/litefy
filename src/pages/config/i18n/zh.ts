@@ -459,7 +459,7 @@ export const zh = {
       itemPropsConfig: {
         group: "组容器 `<div>` 属性",
         label: "标签 `<label>` 属性",
-        invalid: "无效 `<div>` 属性",
+        invalid: "无效信息 `<small>` 属性",
         leading: "前导容器 `<span>` 属性",
         trailing: "尾随容器 `<span>` 属性",
         description: "描述 `<small>` 属性",
@@ -662,8 +662,7 @@ export const zh = {
         description: "描述文本",
         invalid: "无效信息",
         placeholder: "占位符",
-        type: "输入类型：date | time | datetime-local | month | week",
-        disabled: "是否禁用",
+        type: "输入类型",
         onChange: "值变化回调，可返回 { invalid?: string } 触发无效状态",
         itemProps: "内部封装属性透传",
       },

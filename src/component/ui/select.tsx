@@ -52,7 +52,7 @@ type MultipleSelectProps = BaseSelectProps & {
 export type SelectProps = SingleSelectProps | MultipleSelectProps;
 
 const optionClass =
-  "my-0.5 px-3 py-1.5 rounded-md text-foreground focus:bg-accent focus:text-accent-foreground";
+  "my-0.5 px-2 py-2.5 rounded-md text-foreground focus:bg-accent focus:text-accent-foreground";
 
 const selectPickerStyle = `
 select,
@@ -106,7 +106,7 @@ export function Select({
         <label
           {...itemProps?.label}
           className={cn(
-            "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 py-1 indent-2",
+            "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 py-2 indent-2",
             itemProps?.label?.className,
           )}
         >
@@ -119,7 +119,7 @@ export function Select({
         multiple={multiple}
         onChange={handleChange}
         className={cn(
-          "border rounded-full w-3xs py-2 px-3 text-sm flex-1  bg-input truncate",
+          "border rounded-full w-3xs py-2 px-2 text-sm flex-1  bg-input truncate",
           "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 ",
           "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] ",
           "[[multiple]]:rounded-xl [[multiple]]:overflow-y-auto",

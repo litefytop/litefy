@@ -67,8 +67,8 @@ function Input({
           data-disabled={props.disabled}
           htmlFor={id}
           className={cn(
-            "text-sm font-medium leading-none",
-            "data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-70 indent-2 py-1",
+            "text-sm font-medium leading-none ",
+            "data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-70",
             itemProps?.label?.className,
           )}
         >

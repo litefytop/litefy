@@ -58,7 +58,7 @@ export function Textarea({
         <label
           {...itemProps?.label}
           className={cn(
-            "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 py-1 indent-2",
+            "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 py-2 indent-2",
             itemProps?.label?.className,
           )}
         >
@@ -73,7 +73,7 @@ export function Textarea({
         aria-invalid={isInvalid}
         data-invalid={isInvalid}
         className={cn(
-          "flex w-full rounded-lg border border-input bg-background shadow-xs transition-colors px-3 py-2 text-sm",
+          "flex w-full rounded-lg border border-input bg-background shadow-xs transition-colors px-2 py-2 text-sm",
           "min-h-[80px] resize-y",
           "focus:border-primary focus:ring-2 focus:ring-primary/20",
           "data-[invalid=true]:border-destructive data-[invalid=true]:ring-destructive/20",

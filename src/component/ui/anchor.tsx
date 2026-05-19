@@ -151,7 +151,8 @@ function AnchorSection({
         data-active={isActive}
         data-link={Boolean(href)}
         className={cn(
-          "text-sm font-medium data-[active=true]:text-primary data-[active=true]:underline data-[active=true]:underline-offset-4 data-[active=false]:text-foreground data-[active=false]:hover:text-primary data-[link=false]:pointer-events-none",
+          "text-sm font-medium text-foreground hover:text-primary pointer-events-none",
+          "data-[active=true]:text-primary data-[active=true]:underline data-[active=true]:underline-offset-4",
           className,
         )}
         href={href}
@@ -189,9 +190,8 @@ function AnchorItem({ href, className, children, ...props }: AnchorItemProps) {
       href={href}
       data-active={isActive}
       className={cn(
-        "block text-sm indent-2",
+        "block text-sm indent-2 text-muted-foreground hover:text-foreground",
         "data-[active=true]:text-primary data-[active=true]:font-medium data-[active=true]:underline data-[active=true]:underline-offset-4",
-        "data-[active=false]:text-muted-foreground data-[active=false]:hover:text-foreground",
         className,
       )}
       onClick={() => setActiveId(targetId)}

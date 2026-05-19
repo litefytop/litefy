@@ -5,12 +5,12 @@ import { ComponentProps } from "react";
 
 type WithDataAttributes<T> = T & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;
-    className?: ClassNameValue;
+  className?: ClassNameValue;
 };
 
 const checkboxClass = {
   toggle:
-    "aria-checked:bg-primary aria-checked:text-primary-foreground bg-secondary text-secondary-foreground border-y border-r first:border-l group-data-[invalid=true]:aria-checked:bg-destructive",
+    "bg-secondary text-secondary-foreground border-y border-r first:border-l group-data-[invalid=true]:aria-checked:bg-destructive aria-checked:bg-primary aria-checked:text-primary-foreground",
   checkbox:
     "aria-checked:text-foreground/80 group-data-[invalid=true]:aria-checked:text-destructive",
 };
@@ -21,7 +21,7 @@ export type CheckboxProps<T extends string> = {
   value?: T[];
   label?: ReactNode;
   description?: ReactNode;
-  onValueChange?: (value: T[]) => void | { invalid?: string };
+  onValueChange?: (value: T[]) => void | { invalid?: string | boolean };
   itemProps?: {
     root?: WithDataAttributes<ComponentProps<"div">>;
     content?: Omit<ComponentProps<"div">, "children">;
@@ -52,7 +52,7 @@ export function Checkbox<T extends string>({
 }: CheckboxProps<T>) {
   const groupRef = useRef<HTMLDivElement>(null);
   const [internalValues, setInternalValues] = useState<T[]>(defaultValue);
-  const [internalInvalid, setInternalInvalid] = useState<string | undefined>();
+  const [internalInvalid, setInternalInvalid] = useState<boolean | string | undefined>();
 
   const selectedValues = controlledValues ?? internalValues;
   const finalInvalid = externalInvalid ?? internalInvalid;
@@ -130,13 +130,15 @@ export function Checkbox<T extends string>({
   return (
     <div
       {...itemProps?.root}
-      className={cn("flex flex-col", itemProps?.root?.className)}
+      className={cn("flex flex-col gap-1", itemProps?.root?.className)}
     >
       {label && (
         <label
           {...itemProps?.label}
+          data-disabled={disabled}
           className={cn(
-            "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 py-1 indent-2",
+            "text-sm font-medium leading-none indent-2 py-1",
+            "data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-70",
             itemProps?.label?.className,
           )}
         >
@@ -153,7 +155,7 @@ export function Checkbox<T extends string>({
         inert={disabled}
         onKeyDown={handleKeyDown}
         className={cn(
-          "flex inert:pointer-events-none inert:opacity-50 group my-1",
+          "flex group inert:pointer-events-none inert:opacity-50",
           itemProps?.content?.className,
         )}
       >
@@ -161,6 +163,7 @@ export function Checkbox<T extends string>({
           <CheckboxItem
             {...itemProps?.options}
             {...option}
+            disabled={disabled}
             data-index={index}
             checked={selectedValues.includes(option.value as T)}
             key={option.value}
@@ -181,7 +184,8 @@ export function Checkbox<T extends string>({
         data-invalid={isInvalid}
         {...(isInvalid ? itemProps?.invalid : itemProps?.description)}
         className={cn(
-          "text-sm indent-2 h-5 text-muted-foreground data-[invalid=true]:text-destructive",
+          "text-sm indent-2 h-5 text-muted-foreground",
+          "data-[invalid=true]:text-destructive",
           (isInvalid ? itemProps?.invalid : itemProps?.description)?.className,
         )}
         role={isInvalid ? "alert" : undefined}
@@ -194,7 +198,7 @@ export function Checkbox<T extends string>({
 
 type CheckboxItemProps = Omit<
   ComponentProps<"button">,
-  "value" | "onChange" | "checked" | "children"
+  "onChange" | "children"
 > & {
   checked: boolean;
   onCheckedChange?: (checked: boolean) => void;
@@ -206,7 +210,7 @@ type CheckboxItemProps = Omit<
     checked?: ReactNode;
     unchecked?: ReactNode;
     hidden?: boolean;
-    props?: Omit<ComponentProps<"span">, "className"> & {
+    props?: ComponentProps<"span"> & {
       className?: ClassNameValue;
     };
   };
@@ -217,7 +221,6 @@ type CheckboxItemProps = Omit<
 const CheckboxItem = ({
   value,
   onCheckedChange,
-  disabled: controlledDisable,
   variant = "checkbox",
   className,
   indicator,
@@ -225,23 +228,10 @@ const CheckboxItem = ({
   checked,
   ...props
 }: CheckboxItemProps) => {
-  const disabled = controlledDisable;
-
   const handleClick = useCallback(() => {
-    if (disabled) return;
     onValueChange?.(value);
     onCheckedChange?.(!checked);
-  }, [disabled, value, onValueChange, onCheckedChange, checked]);
-
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.key === " ") {
-        e.preventDefault();
-        handleClick();
-      }
-    },
-    [handleClick],
-  );
+  }, [value, onValueChange, onCheckedChange, checked]);
 
   return (
     <button
@@ -251,11 +241,11 @@ const CheckboxItem = ({
       role="checkbox"
       aria-checked={checked}
       tabIndex={0}
-      disabled={disabled}
       onClick={handleClick}
-      onKeyDown={handleKeyDown}
       className={cn(
-        "inline-flex items-center justify-center gap-2 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-8 min-w-8 px-3 py-1 cursor-pointer group-data-[invalid=true]:text-destructive",
+        "inline-flex items-center justify-center gap-2 shrink-0 h-9 min-w-9 px-3 py-1 cursor-pointer",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        "disabled:pointer-events-none disabled:opacity-50 group-data-[invalid=true]:text-destructive",
         checkboxClass[variant],
         className,
       )}
@@ -265,7 +255,9 @@ const CheckboxItem = ({
           {...indicator?.props}
           data-checked={checked}
           className={cn(
-            "flex items-center justify-center size-4 border outline rounded-md data-[checked=true]:bg-primary data-[checked=true]:border-primary-foreground data-[checked=true]:text-primary-foreground group-data-[invalid=true]:border-destructive group-data-[invalid=true]:data-[checked=true]:bg-destructive",
+            "flex items-center justify-center size-4 border outline rounded-md",
+            "data-[checked=true]:bg-primary data-[checked=true]:border-primary-foreground data-[checked=true]:text-primary-foreground",
+            "group-data-[invalid=true]:border-destructive group-data-[invalid=true]:outline-destructive group-data-[invalid=true]:data-[checked=true]:bg-destructive",
             indicator?.props?.className,
           )}
         >

@@ -460,7 +460,7 @@ export const en = {
       itemPropsConfig: {
         group: "Group container `<div>` props",
         label: "Label `<label>` props",
-        invalid: "Invalid `<div>` props",
+        invalid: "Invalid `<small>` props",
         leading: "Leading container `<span>` props",
         trailing: "Trailing container `<span>` props",
         description: "Description `<small>` props",
@@ -663,8 +663,7 @@ export const en = {
         description: "Description text",
         invalid: "Invalid message",
         placeholder: "Placeholder",
-        type: "Input type: date | time | datetime-local | month | week",
-        disabled: "Whether disabled",
+        type: "Input type",
         onChange: "Value change callback, can return { invalid?: string } to trigger invalid state",
         itemProps: "Internal wrapped property passthrough",
       },

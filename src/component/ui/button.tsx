@@ -2,17 +2,15 @@ import { ClassNameValue, cn } from "@/lib";
 import { SpinIcon } from "./icons";
 
 const buttonClass = {
-  base: "cursor-pointer inline-flex items-center justify-center shrink-0 user-select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50  h-9 min-w-9 px-3 py-1 has-[>svg]:px-2 gap-1 rounded-full",
+  base: "h-9 min-w-9 px-2 py-1 gap-1 whitespace-nowrap rounded-full cursor-pointer inline-flex items-center justify-center shrink-0 select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50",
   variant: {
     primary: "bg-primary text-primary-foreground hover:bg-primary/90",
     destructive: `bg-destructive text-white 
       hover:bg-destructive/90
       focus-visible:ring-destructive/20`,
     secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-    outline: `border-2 border-primary bg-transparent 
-      hover:bg-accent hover:text-accent-foreground 
-      dark:border-foreground/40 dark:text-foreground dark:hover:bg-accent dark:hover:text-accent-foreground`,
-    ghost: "hover:bg-accent hover:text-accent-foreground",
+    outline: `border-2 border-primary bg-transparent hover:bg-primary hover:text-primary-foreground`,
+    ghost: "hover:bg-muted hover:text-muted-foreground",
     text: "text-foreground hover:text-foreground/60",
   },
 };
@@ -43,13 +41,13 @@ function Button({
 
   return (
     <button
+      {...props}
       className={cn(
         Button.class.base,
         Button.class.variant[variant],
         className,
       )}
       disabled={isLoading || props.disabled}
-      {...props}
     >
       {isLoading && loadingIcon}
       {children}

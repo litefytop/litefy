@@ -3,17 +3,15 @@ import {
   createContext,
   useContext,
   useCallback,
-  useEffect,
   useMemo,
+  useId,
 } from "react";
 import { ClassNameValue, cn } from "@/lib";
 import { CaretDownIcon, CaretRightIcon } from "./icons";
 
 interface AccordionContextValue {
-  openKeys: Record<string, boolean>;
+  openKeys: string[];
   onToggle: (key: string) => void;
-  register: (key: string) => void;
-  unregister: (key: string) => void;
 }
 
 const AccordionContext = createContext<AccordionContextValue | null>(null);
@@ -27,16 +25,16 @@ function useAccordionContext() {
 }
 
 type AccordionProps = React.ComponentProps<"div"> & {
-  defaultOpenKeys?: Record<string, boolean>;
-  openKeys?: Record<string, boolean>;
-  onOpenChange?: (keys: Record<string, boolean>) => void;
+  defaultOpenKeys?: string[];
+  openKeys?: string[];
+  onOpenChange?: (keys: string[]) => void;
   allowMultiple?: boolean;
   className?: ClassNameValue;
   children?: React.ReactNode;
 };
 
 export function Accordion({
-  defaultOpenKeys = {},
+  defaultOpenKeys = [],
   openKeys,
   onOpenChange,
   allowMultiple = false,
@@ -44,47 +42,22 @@ export function Accordion({
   children,
   ...props
 }: AccordionProps) {
-  const [internalOpenKeys, setInternalOpenKeys] = useState<
-    Record<string, boolean>
-  >({
-    ...defaultOpenKeys,
-  });
-
+  const [internalOpenKeys, setInternalOpenKeys] =
+    useState<string[]>(allowMultiple ? defaultOpenKeys:[defaultOpenKeys[0]]);
   const isControlled = openKeys !== undefined;
-
   const currentOpenKeys = isControlled ? openKeys : internalOpenKeys;
-
-  const register = useCallback(
-    (key: string) => {
-      if (isControlled) return;
-      setInternalOpenKeys((prev) => ({
-        ...prev,
-        [key]: prev[key] ?? false,
-      }));
-    },
-    [isControlled],
-  );
-
-  const unregister = useCallback(
-    (key: string) => {
-      if (isControlled) return;
-      setInternalOpenKeys((prev) => {
-        const next = { ...prev };
-        delete next[key];
-        return next;
-      });
-    },
-    [isControlled],
-  );
 
   const onToggle = useCallback(
     (key: string) => {
-      let next: Record<string, boolean>;
+      let next: string[];
+      const isOpened = currentOpenKeys.includes(key);
 
       if (allowMultiple) {
-        next = { ...currentOpenKeys, [key]: !currentOpenKeys[key] };
+        next = isOpened
+          ? currentOpenKeys.filter((k) => k !== key)
+          : [...currentOpenKeys, key];
       } else {
-        next = currentOpenKeys[key] ? {} : { [key]: true };
+        next = isOpened ? [] : [key];
       }
 
       if (isControlled) {
@@ -95,15 +68,15 @@ export function Accordion({
     },
     [currentOpenKeys, allowMultiple, isControlled, onOpenChange],
   );
+
   const contextValue = useMemo(
     () => ({
       openKeys: currentOpenKeys,
       onToggle,
-      register,
-      unregister,
     }),
-    [currentOpenKeys, onToggle, register, unregister],
+    [currentOpenKeys, onToggle],
   );
+
   return (
     <AccordionContext.Provider value={contextValue}>
       <div className={cn("flex flex-col gap-2", className)} {...props}>
@@ -112,6 +85,7 @@ export function Accordion({
     </AccordionContext.Provider>
   );
 }
+
 type AccordionItemProps = Omit<React.ComponentProps<"div">, "className"> & {
   value: string;
   label: React.ReactNode;
@@ -131,17 +105,15 @@ function AccordionItem({
   children,
   ...props
 }: AccordionItemProps) {
-  const { openKeys, onToggle, register, unregister } = useAccordionContext();
-
-  useEffect(() => {
-    register(value);
-    return () => unregister(value);
-  }, [value, register, unregister]);
-
-  const open = openKeys[value];
+  const { openKeys, onToggle } = useAccordionContext();
+  const open = openKeys.includes(value);
+  const id = useId();
+  const panelId = id || itemProps?.content?.id;
 
   return (
     <div
+      aria-expanded={open}
+      aria-controls={panelId}
       className={cn("border rounded-lg overflow-hidden", className)}
       {...props}
     >
@@ -178,4 +150,5 @@ function AccordionItem({
     </div>
   );
 }
+
 Accordion.Item = AccordionItem;

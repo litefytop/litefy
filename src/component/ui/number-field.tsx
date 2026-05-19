@@ -12,7 +12,7 @@ export type NumberFieldProps = Omit<
   "className" | "value" | "onChange" | "type"
 > & {
   defaultValue?: number;
-  value?: number;
+  value?: number | undefined;
   className?: ClassNameValue;
   label?: ReactNode;
   description?: ReactNode;
@@ -28,11 +28,11 @@ export type NumberFieldProps = Omit<
     desc?: WithDataAttributes<ComponentProps<"small">>;
     error?: WithDataAttributes<ComponentProps<"small">>;
   };
-  onValueChange?: (val: number) => void | { invalid?: string };
+  onValueChange?: (val: number | undefined) => void | { invalid?: string };
 };
 
 export function NumberField({
-  defaultValue = 0,
+  defaultValue,
   value: controlledValue,
   label,
   description,
@@ -45,28 +45,47 @@ export function NumberField({
   onValueChange,
   ...props
 }: NumberFieldProps) {
-  const [internalValue, setInternalValue] = useState(defaultValue);
+  const [internalValue, setInternalValue] = useState<number | undefined>(defaultValue);
   const [internalInvalid, setInternalInvalid] = useState<string>();
 
-  const finalValue = controlledValue ?? internalValue;
+  const finalValue = controlledValue !== undefined ? controlledValue : internalValue;
   const finalInvalid = externalInvalid ?? internalInvalid;
   const isInvalid = !!finalInvalid;
 
-  const updateValue = (val: number) => {
+  const updateValue = (val: number | undefined) => {
     let invalidMsg: string | undefined;
-    if (val < min) {
-      invalidMsg = `Value must be at least ${min}`;
-    } else if (val > max) {
-      invalidMsg = `Value must be at most ${max}`;
+
+    if (val !== undefined) {
+      if (val < min) invalidMsg = `Value must be at least ${min}`;
+      if (val > max) invalidMsg = `Value must be at most ${max}`;
     }
-    const clampedVal = Math.max(min, Math.min(max, val));
-    if (controlledValue === undefined) setInternalValue(clampedVal);
+
+    const clampedVal = val === undefined ? undefined : Math.max(min, Math.min(max, val));
+
+    if (controlledValue === undefined) {
+      setInternalValue(clampedVal);
+    }
+
     const res = onValueChange?.(clampedVal);
     setInternalInvalid(invalidMsg ?? res?.invalid);
   };
 
-  const handleMinus = () => updateValue(finalValue - step);
-  const handlePlus = () => updateValue(finalValue + step);
+  const handleMinus = () => updateValue((finalValue ?? 0) - step);
+  const handlePlus = () => updateValue((finalValue ?? 0) + step);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    if (value === "") {
+      updateValue(undefined);
+      return;
+    }
+
+    const num = parseFloat(value);
+    if (!isNaN(num)) {
+      updateValue(num);
+    }
+  };
 
   return (
     <div {...itemProps?.root} className={cn("flex flex-col gap-1", itemProps?.root?.className)}>
@@ -74,7 +93,8 @@ export function NumberField({
         <label
           {...itemProps?.label}
           className={cn(
-            "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 py-1 indent-2",
+            "text-sm font-medium leading-none py-2 indent-2",
+            "peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
             itemProps?.label?.className
           )}
         >
@@ -87,16 +107,17 @@ export function NumberField({
         data-invalid={isInvalid}
         className={cn(
           "border-input bg-background flex w-3xs items-center rounded-full border shadow-xs outline-none",
-          disabled && "pointer-events-none opacity-50",
+          "disabled:pointer-events-none disabled:opacity-50",
           "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
-          "data-[invalid=true]:border-destructive data-[invalid=true]:ring-destructive/20",
+          "data-[invalid=true]:border-destructive has-invalid:border-destructive",
           itemProps?.group?.className
         )}
       >
         <button
           {...itemProps?.btn}
           type="button"
-          disabled={disabled || finalValue <= min}
+          aria-label="Decrease"
+          disabled={disabled}
           onClick={handleMinus}
           className={cn(
             "h-8 w-10 flex items-center justify-center text-muted-foreground hover:text-primary rounded-l-full border-r border-input",
@@ -111,25 +132,26 @@ export function NumberField({
           {...props}
           type="text"
           inputMode="numeric"
+          role="spinbutton"
           disabled={disabled}
-          value={finalValue}
-          onChange={(e) => {
-            const val = parseFloat(e.target.value.replace(/[^\d.-]/g, ""));
-            if (!isNaN(val)) updateValue(val);
-          }}
-          onWheel={(e) => e.preventDefault()}
+          value={finalValue ?? ""}
+          onChange={handleChange}
           className={cn(
-            "outline-none border-0 bg-transparent w-full h-8 px-3 text-sm flex-1 text-center",
+            "outline-none border-0 bg-transparent w-full h-8 px-2 text-sm flex-1 text-center",
             "placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground"
           )}
           aria-invalid={isInvalid}
+          aria-valuemin={min}
+          aria-valuemax={max}
+          aria-valuenow={finalValue}
           data-invalid={isInvalid}
         />
 
         <button
           {...itemProps?.btn}
           type="button"
-          disabled={disabled || finalValue >= max}
+          aria-label="Increase"
+          disabled={disabled}
           onClick={handlePlus}
           className={cn(
             "h-8 w-10 flex items-center justify-center text-muted-foreground hover:text-primary rounded-r-full border-l border-input",

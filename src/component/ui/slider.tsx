@@ -35,7 +35,7 @@ export function Slider({
   return (
     <div className={cn("flex flex-col gap-1", className)}>
       {label && (
-        <label {...itemProps?.label} className={cn("text-sm font-medium leading-none py-1 indent-2", itemProps?.label?.className)}>
+        <label {...itemProps?.label} className={cn("text-sm font-medium leading-none py-2 indent-2", itemProps?.label?.className)}>
           {label}
         </label>
       )}

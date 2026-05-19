@@ -10,7 +10,7 @@ const paginationClass = {
 };
 
 const buttonClass = {
-  base: `cursor-pointer outline-none inline-flex items-center justify-center shrink-0 user-select-none
+  base: `cursor-pointer outline-none inline-flex items-center justify-center shrink-0 select-none
     focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]
     disabled:pointer-events-none disabled:opacity-50
     [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0`,

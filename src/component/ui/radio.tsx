@@ -135,7 +135,7 @@ export function Radio<T extends string>({
         <label
           {...itemProps?.label}
           className={cn(
-            "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 py-1 indent-2",
+            "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 py-2 indent-2",
             itemProps?.label?.className,
           )}
         >
@@ -253,7 +253,7 @@ const RadioItem = ({
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       className={cn(
-        "inline-flex items-center justify-center gap-2 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-8 min-w-8 px-3 py-1 cursor-pointer group-data-[invalid=true]:text-destructive",
+        "inline-flex items-center justify-center gap-2 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-8 min-w-8 px-2 py-2 cursor-pointer group-data-[invalid=true]:text-destructive",
         radioClass[variant],
         className,
       )}

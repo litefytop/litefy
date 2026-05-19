@@ -242,7 +242,7 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
             ]}
           >
             <Accordion
-              defaultOpenKeys={{"item1":true}}
+              defaultOpenKeys={["item1"]}
               id="anatomy-accordion"
               className="max-w-sm"
             >

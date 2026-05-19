@@ -11,7 +11,7 @@ export type DatePickerProps = Omit<ComponentProps<"input">, "type"> & {
   className?: ClassNameValue;
   label?: React.ReactNode;
   description?: React.ReactNode;
-  invalid?: string;
+  invalid?: string | boolean;
   placeholder?: string;
   type?: "date" | "time" | "datetime-local" | "month" | "week";
   itemProps?: {
@@ -63,7 +63,7 @@ export function DatePicker({
           data-disabled={disabled}
           className={cn(
             "text-sm font-medium leading-none",
-            "data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-70 indent-2",
+            "data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-70 indent-2 py-1",
             itemProps?.label?.className,
           )}
         >
@@ -81,7 +81,7 @@ export function DatePicker({
         data-placeholder={placeholder}
         data-invalid={isInvalid}
         className={cn(
-          "h-9 w-full rounded-md border border-input bg-background px-3 text-sm relative",
+          "h-9 w-full rounded-md border border-input bg-background px-3 relative",
           "focus:outline-none focus:ring-2 focus:ring-ring",
           "disabled:opacity-50 disabled:pointer-events-none",
           "data-[invalid=true]:border-destructive",

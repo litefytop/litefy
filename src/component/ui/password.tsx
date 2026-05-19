@@ -61,7 +61,7 @@ export function Password({
         <label
           {...itemProps?.label}
           className={cn(
-            "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 py-1 indent-2",
+            "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 py-2 indent-2",
             itemProps?.label?.className,
           )}
         >
@@ -88,7 +88,7 @@ export function Password({
           type={showPassword ? "text" : "password"}
           onChange={handleChange}
           className={cn(
-            "appearance-none border-0 bg-transparent outline-none h-8 px-3 py-1 text-sm flex-1 min-w-0",
+            "appearance-none border-0 bg-transparent outline-none h-8 px-2 py-2 text-sm flex-1 min-w-0",
             "disabled:cursor-not-allowed disabled:opacity-50",
             "placeholder:text-muted-foreground",
             "selection:bg-primary selection:text-primary-foreground",
