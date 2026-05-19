@@ -3,7 +3,6 @@ import { ClassNameValue, cn } from "@/lib";
 
 interface AnchorContextValue {
   activeId: string;
-  setActiveId: (id: string) => void;
   observer: IntersectionObserver | null;
 }
 
@@ -77,7 +76,7 @@ export function Anchor({
             const isBetter =
               rect.top >= 0 &&
               (rect.top < bestRect.top ||
-                (rect.top >= bestRect.top && rect.bottom < bestRect.bottom));
+                (rect.top === bestRect.top && rect.bottom < bestRect.bottom));
 
             if (isBetter) {
               best = entry;
@@ -91,7 +90,7 @@ export function Anchor({
       },
       {
         root: rootElement ?? fallbackRoot,
-        rootMargin: rootMargin || "0px 0px -90% 0px",
+        rootMargin: rootMargin || "0px 0px -80% 0px",
         threshold: 0,
       },
     );
@@ -107,7 +106,6 @@ export function Anchor({
   const contextValue = useMemo(
     () => ({
       activeId,
-      setActiveId,
       observer,
     }),
     [activeId, observer],
@@ -149,10 +147,12 @@ function AnchorSection({
     <div className={cn(className)} {...props}>
       <a
         data-active={isActive}
+        aria-current={isActive ? "location" : undefined}
         data-link={Boolean(href)}
         className={cn(
-          "text-sm font-medium text-foreground hover:text-primary pointer-events-none",
+          "text-sm font-medium text-foreground hover:text-primary",
           "data-[active=true]:text-primary data-[active=true]:underline data-[active=true]:underline-offset-4",
+          "focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
           className,
         )}
         href={href}
@@ -179,7 +179,7 @@ type AnchorItemProps = Omit<React.ComponentProps<"a">, "className"> & {
 };
 
 function AnchorItem({ href, className, children, ...props }: AnchorItemProps) {
-  const { activeId, setActiveId } = useAnchorContext();
+  const { activeId } = useAnchorContext();
   const targetId = href.replace(/^#/, "");
   const isActive = activeId === targetId;
 
@@ -189,12 +189,13 @@ function AnchorItem({ href, className, children, ...props }: AnchorItemProps) {
     <a
       href={href}
       data-active={isActive}
+      aria-current={isActive ? "location" : undefined}
       className={cn(
         "block text-sm indent-2 text-muted-foreground hover:text-foreground",
         "data-[active=true]:text-primary data-[active=true]:font-medium data-[active=true]:underline data-[active=true]:underline-offset-4",
+        "focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
         className,
       )}
-      onClick={() => setActiveId(targetId)}
       {...props}
     >
       {children}
@@ -204,3 +205,4 @@ function AnchorItem({ href, className, children, ...props }: AnchorItemProps) {
 
 Anchor.Section = AnchorSection;
 Anchor.Item = AnchorItem;
+export type { AnchorProps, AnchorSectionProps, AnchorItemProps };

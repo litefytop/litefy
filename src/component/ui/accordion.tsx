@@ -42,8 +42,12 @@ export function Accordion({
   children,
   ...props
 }: AccordionProps) {
-  const [internalOpenKeys, setInternalOpenKeys] =
-    useState<string[]>(allowMultiple ? defaultOpenKeys:[defaultOpenKeys[0]]);
+  const [internalOpenKeys, setInternalOpenKeys] = useState<string[]>(() => {
+    if (!allowMultiple && defaultOpenKeys.length > 0) {
+      return [defaultOpenKeys[0]];
+    }
+    return allowMultiple ? defaultOpenKeys : [];
+  });
   const isControlled = openKeys !== undefined;
   const currentOpenKeys = isControlled ? openKeys : internalOpenKeys;
 
@@ -86,12 +90,12 @@ export function Accordion({
   );
 }
 
-type AccordionItemProps = Omit<React.ComponentProps<"div">, "className"> & {
+type AccordionItemProps = React.ComponentProps<"button"> & {
   value: string;
   label: React.ReactNode;
   className?: ClassNameValue;
   itemProps?: {
-    trigger?: React.ComponentProps<"button">;
+    root?: React.ComponentProps<"div">;
     label?: React.ComponentProps<"span">;
     content?: React.ComponentProps<"div">;
   };
@@ -103,29 +107,37 @@ function AccordionItem({
   className,
   itemProps,
   children,
+  onClick,
+  id,
   ...props
 }: AccordionItemProps) {
   const { openKeys, onToggle } = useAccordionContext();
   const open = openKeys.includes(value);
-  const id = useId();
-  const panelId = id || itemProps?.content?.id;
+  const internalId = useId();
 
+  const panelId = itemProps?.content?.id ?? `${internalId}-panel`;
+  const buttonId = id ?? `${internalId}-button`;
   return (
     <div
-      aria-expanded={open}
-      aria-controls={panelId}
-      className={cn("border rounded-lg overflow-hidden", className)}
-      {...props}
+      {...itemProps?.root}
+      className={cn(
+        "border rounded-lg overflow-hidden",
+        itemProps?.root?.className,
+      )}
     >
       <button
-        {...itemProps?.trigger}
+        {...props}
+        id={buttonId}
+        aria-expanded={open}
+        aria-controls={panelId}
         onClick={(e) => {
-          itemProps?.trigger?.onClick?.(e);
+          onClick?.(e);
           onToggle(value);
         }}
         className={cn(
           "flex items-center justify-between w-full px-4 py-3 bg-muted/50 hover:bg-muted text-left",
-          itemProps?.trigger?.className,
+          "disabled:opacity-50 disabled:cursor-not-allowed",
+          className,
         )}
       >
         <span
@@ -139,6 +151,9 @@ function AccordionItem({
       {open && (
         <div
           {...itemProps?.content}
+          id={panelId}
+          role="region"
+          aria-labelledby={buttonId}
           className={cn(
             "p-4 border-t bg-background",
             itemProps?.content?.className,
