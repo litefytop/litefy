@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CopyIcon,
-  CheckIcon,
   Anchor,
   Title,
   Description,
@@ -22,6 +18,7 @@ import {
   DatePickerType,
   DatePickerDisabled,
 } from "./examples";
+import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
 import DatePickerBasicRaw from "./examples/date-picker-basic.tsx?raw";
 import DatePickerTypeRaw from "./examples/date-picker-type.tsx?raw";

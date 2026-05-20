@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { createHighlighter, Highlighter } from "shiki";
-import { CopyIcon, CheckIcon, CaretDownIcon, CaretRightIcon } from "@/component";
 import { useTheme } from "@/component";
+import { CheckIcon, CopyIcon,ChevronRightIcon } from "lucide-react";
 
 
 let highlighterInstance: Highlighter | null = null;
@@ -74,9 +74,9 @@ export function CodeBlock({
       >
         <span className="text-sm text-muted-foreground flex items-center gap-2">
           {isExpanded ? (
-            <CaretDownIcon className="size-4" />
+            <ChevronRightIcon className="size-4" />
           ) : (
-            <CaretRightIcon className="size-4" />
+            <ChevronRightIcon className="size-4" />
           )}
           {title || "查看代码"}
         </span>

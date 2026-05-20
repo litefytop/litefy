@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CopyIcon,
-  CheckIcon,
   Anchor,
   Title,
   Description,
@@ -18,6 +14,7 @@ import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
 import { PasswordBasic, PasswordValidation, PasswordControlled } from "./examples";
+import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
 import PasswordBasicRaw from "./examples/password-basic.tsx?raw";
 import PasswordValidationRaw from "./examples/password-validation.tsx?raw";

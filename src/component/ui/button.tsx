@@ -1,5 +1,5 @@
 import { ClassNameValue, cn } from "@/lib";
-import { SpinIcon } from "./icons";
+import { Loader2 } from "lucide-react";
 
 const buttonClass = {
   base: "h-9 min-w-9 px-2 py-1 gap-1 whitespace-nowrap rounded-full cursor-pointer inline-flex items-center justify-center shrink-0 select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50",
@@ -36,7 +36,7 @@ function Button({
   const { loading: isLoading, icon: customLoadingIcon } = loadingConfig || {};
 
   const loadingIcon = customLoadingIcon || (
-    <SpinIcon className="animate-spin" />
+    <Loader2 className="animate-spin" />
   );
 
   return (

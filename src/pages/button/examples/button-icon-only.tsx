@@ -1,5 +1,5 @@
 import { Button } from "@/component";
-import { PlusIcon, DownloadSimpleIcon, GearIcon, ArrowLeftIcon, TrashIcon } from "@/component";
+import { PlusIcon, ArrowLeftIcon, TrashIcon, DownloadIcon, SettingsIcon } from "lucide-react";
 
 export default function ButtonIconOnly() {
   return (
@@ -8,10 +8,10 @@ export default function ButtonIconOnly() {
         <PlusIcon />
       </Button>
       <Button variant="secondary" aria-label="Download">
-        <DownloadSimpleIcon />
+        <DownloadIcon />
       </Button>
       <Button variant="outline" aria-label="Settings">
-        <GearIcon />
+        <SettingsIcon />
       </Button>
       <Button variant="ghost" aria-label="Back">
         <ArrowLeftIcon />

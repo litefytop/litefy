@@ -37,11 +37,7 @@ export default function CheckboxValidation() {
           options: { variant: "toggle" },
         }}
         description="Here you can select multiple toggles"
-        onValueChange={(values) => {
-          if (!values.length) {
-            return { invalid: true };
-          }
-        }}
+        required
         options={[
           {
             value: "a",

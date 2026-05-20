@@ -86,11 +86,38 @@ Customize container styling through `className`, and customize internal wrapped 
     value="item-1"
     label="Custom Styling"
     itemProps={{
-      trigger: { className: "bg-blue-50" },
+      root: { className: "bg-blue-50" },
       content: { className: "bg-blue-50/50" },
     }}
   >
     Content Area
+  </Accordion.Item>
+</Accordion>
+```
+
+### Custom Icon
+
+Customize the expand/collapse icon through the `icon` prop. It supports both static nodes and function forms.
+
+```tsx
+import { Plus } from "lucide-react";
+
+<Accordion icon={<Plus className="w-4 h-4" />}>
+  <Accordion.Item value="item-1" label="What is React?">
+    <p>React is a JavaScript library for building user interfaces.</p>
+  </Accordion.Item>
+  <Accordion.Item value="item-2" label="Why Use React?">
+    <p>React uses component-based development, data-driven views, and has a rich ecosystem.</p>
+  </Accordion.Item>
+</Accordion>
+```
+
+**Using function form (different icons for open/close state):**
+
+```tsx
+<Accordion icon={(open) => open ? <Minus /> : <Plus />}>
+  <Accordion.Item value="item-1" label="First Item">
+    Content
   </Accordion.Item>
 </Accordion>
 ```
@@ -101,11 +128,12 @@ Customize container styling through `className`, and customize internal wrapped 
 
 | Prop            | Type                     | Default | Description                                                  |
 | --------------- | ------------------------ | ------- | ------------------------------------------------------------ |
-| defaultOpenKeys | Record<string, boolean>   | {}      | Initially expanded keys (uncontrolled)                       |
-| openKeys        | Record<string, boolean>   | -       | Currently expanded keys (controlled)                         |
-| onOpenChange    | (keys: Record<string, boolean>) => void | -       | Callback when expansion state changes                        |
+| defaultOpenKeys | string[]                 | []      | Initially expanded keys (uncontrolled)                       |
+| openKeys        | string[]                 | -       | Currently expanded keys (controlled)                         |
+| onOpenChange    | (keys: string[]) => void | -       | Callback when expansion state changes                        |
 | allowMultiple   | boolean                  | false   | Whether to allow multiple expansions                         |
 | className       | ClassNameValue           | -       | `string\|string[]\|boolean\|null\|undefined\|Record<string,string\|string[]>` |
+| icon            | ReactNode \| ((open: boolean) => ReactNode) | -       | Custom expand/collapse icon                                  |
 
 ### Accordion.Item Props
 
@@ -115,11 +143,12 @@ Customize container styling through `className`, and customize internal wrapped 
 | label     | ReactNode      | -       | Label content (required)                                     |
 | className | ClassNameValue | -       | `string\|string[]\|boolean\|null\|undefined\|Record<string,string\|string[]>` |
 | itemProps | object         | -       | Internal wrapped props pass-through config                   |
+| icon      | ReactNode \| ((open: boolean) => ReactNode) | -       | Custom icon for this item (overrides Accordion icon)        |
 
 ### itemProps Config
 
 | Property | Type                           | Description          |
 | -------- | ------------------------------ | -------------------- |
-| trigger  | React.ComponentProps<"button"> | Trigger button props |
+| root     | React.ComponentProps<"div">    | Root element props   |
 | label    | React.ComponentProps<"span">   | Label element props  |
-| content  | React.ComponentProps<"div">    | Content area props   |
+| content  | React.ComponentProps<"div">    | Content area props  |

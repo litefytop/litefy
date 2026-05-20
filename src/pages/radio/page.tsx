@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CopyIcon,
-  CheckIcon,
   Anchor,
   Title,
   Description,
@@ -24,6 +20,7 @@ import {
   RadioVariant,
   RadioValidation,
 } from "./examples";
+import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
 import RadioBasicRaw from "./examples/radio-basic.tsx?raw";
 import RadioControlledRaw from "./examples/radio-controlled.tsx?raw";

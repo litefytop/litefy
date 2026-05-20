@@ -12,9 +12,9 @@ export const zh = {
     description: "描述",
   },
   home: {
-    title: "Plain UI",
+    title: "Litefy UI",
     description:
-      "Plain 是一套轻量化、高复用、低侵入的基础UI原子组件，主打简约无过多预设样式，保留原生布局特性，兼顾通用性与定制灵活性。",
+      "Litefy 是一套轻量化、高复用、低侵入的基础UI原子组件，主打简约无过多预设样式，保留原生布局特性，兼顾通用性与定制灵活性。",
     subDescription:
       "无冗余样式嵌套、体积轻量，支持按需引入与样式覆写，适配移动端/中后台多场景，可快速结合Tailwind、自定义主题扩展，满足业务快速迭代与个性化视觉改造需求。",
   },
@@ -140,11 +140,14 @@ export const zh = {
     controlled: {
       title: "受控",
     },
+    icon: {
+      title: "自定义图标",
+    },
     anatomy: {
       title: "结构",
       accordion: "Accordion",
-      item: "项",
-      trigger: "触发器",
+      item: "Accordion.Item",
+      root: "根元素",
       titleLabel: "标题",
       content: "内容",
     },
@@ -155,14 +158,16 @@ export const zh = {
         onOpenChange: "展开状态变化回调",
         allowMultiple: "是否允许同时展开多项",
         itemProps: "内部封装属性透传配置",
+        icon: "自定义展开/收起图标",
       },
       itemProps: {
         value: "唯一标识符（必填）",
         label: "标题内容（必填）",
         itemProps: "内部封装属性透传配置",
+        icon: "自定义图标（覆盖 Accordion 的 icon）",
       },
       itemPropsConfig: {
-        trigger: "触发器按钮属性",
+        root: "根元素属性",
         label: "标题元素属性",
         content: "内容区域属性",
       },

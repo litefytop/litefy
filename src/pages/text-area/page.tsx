@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CopyIcon,
-  CheckIcon,
   Anchor,
   Title,
   Description,
@@ -23,6 +19,7 @@ import {
   TextareaValidation,
   TextareaDisabled,
 } from "./examples";
+import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
 import TextareaBasicRaw from "./examples/textarea-basic.tsx?raw";
 import TextareaControlledRaw from "./examples/textarea-controlled.tsx?raw";

@@ -1,21 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CopyIcon,
-  CheckIcon,
   Anchor,
   Title,
   Description,
   ShikiCodeBlock,
-
   Button,
   Docs,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages";
 import { getComponentNav } from "@/pages/config/routes";
+import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
 import { DrawerBasic } from "./examples";
 

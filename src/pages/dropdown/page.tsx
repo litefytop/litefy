@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CopyIcon,
-  CheckIcon,
   Anchor,
   Title,
   Description,
@@ -17,6 +13,7 @@ import {
 } from "@/component";
 import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
+import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
 import DropdownBasicRaw from "./examples/dropdown-basic.tsx?raw";
 import DropdownAlignRaw from "./examples/dropdown-align.tsx?raw";

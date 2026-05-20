@@ -121,7 +121,7 @@ export function Anchor({
 
 type AnchorSectionProps = Omit<React.ComponentProps<"div">, "className"> & {
   href?: string;
-  linkText?: string;
+  linkText: string;
   className?: ClassNameValue;
   itemProps?: {
     link?: Omit<React.ComponentProps<"a">, "href">;

@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useRef, useState } from "react";
 import { cn, ClassNameValue } from "@/lib";
-import { CheckIcon } from "./icons";
+import { Check } from "lucide-react";
 import { ComponentProps } from "react";
 
 type WithDataAttributes<T> = T & {
@@ -268,7 +268,7 @@ const RadioItem = ({
           )}
         >
           {checked
-            ? (indicator?.checked ?? <CheckIcon />)
+            ? (indicator?.checked ?? <Check />)
             : indicator?.unchecked}
         </span>
       )}

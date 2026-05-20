@@ -5,13 +5,15 @@ import {
   useCallback,
   useMemo,
   useId,
+  useRef,
 } from "react";
 import { ClassNameValue, cn } from "@/lib";
-import { CaretDownIcon, CaretRightIcon } from "./icons";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 interface AccordionContextValue {
   openKeys: string[];
-  onToggle: (key: string) => void;
+  onToggle: (key: string, currentOpenKeys: string[]) => void;
+  icon?: (open: boolean) => React.ReactNode;
 }
 
 const AccordionContext = createContext<AccordionContextValue | null>(null);
@@ -31,6 +33,7 @@ type AccordionProps = React.ComponentProps<"div"> & {
   allowMultiple?: boolean;
   className?: ClassNameValue;
   children?: React.ReactNode;
+  icon?: React.ReactNode | ((open: boolean) => React.ReactNode);
 };
 
 export function Accordion({
@@ -40,6 +43,7 @@ export function Accordion({
   allowMultiple = false,
   className,
   children,
+  icon,
   ...props
 }: AccordionProps) {
   const [internalOpenKeys, setInternalOpenKeys] = useState<string[]>(() => {
@@ -50,9 +54,14 @@ export function Accordion({
   });
   const isControlled = openKeys !== undefined;
   const currentOpenKeys = isControlled ? openKeys : internalOpenKeys;
-
+  const iconRef = useRef(icon);
+  const getIcon = useCallback((open: boolean) => {
+    const currentIcon = iconRef.current;
+    if (typeof currentIcon === "function") return currentIcon(open);
+    return currentIcon;
+  }, []);
   const onToggle = useCallback(
-    (key: string) => {
+    (key: string, currentOpenKeys: string[]) => {
       let next: string[];
       const isOpened = currentOpenKeys.includes(key);
 
@@ -70,15 +79,16 @@ export function Accordion({
         setInternalOpenKeys(next);
       }
     },
-    [currentOpenKeys, allowMultiple, isControlled, onOpenChange],
+    [allowMultiple, isControlled, onOpenChange],
   );
 
   const contextValue = useMemo(
     () => ({
       openKeys: currentOpenKeys,
       onToggle,
+      icon: getIcon,
     }),
-    [currentOpenKeys, onToggle],
+    [currentOpenKeys, onToggle, getIcon],
   );
 
   return (
@@ -99,6 +109,7 @@ type AccordionItemProps = React.ComponentProps<"button"> & {
     label?: React.ComponentProps<"span">;
     content?: React.ComponentProps<"div">;
   };
+  icon?: React.ReactNode | ((open: boolean) => React.ReactNode);
 };
 
 function AccordionItem({
@@ -109,12 +120,20 @@ function AccordionItem({
   children,
   onClick,
   id,
+  icon: itemIcon,
   ...props
 }: AccordionItemProps) {
-  const { openKeys, onToggle } = useAccordionContext();
+  const { openKeys, onToggle, icon: contextIcon } = useAccordionContext();
   const open = openKeys.includes(value);
   const internalId = useId();
-
+  const getIcon = () => {
+    if (typeof itemIcon === "function") return itemIcon(open);
+    return (
+      itemIcon ||
+      contextIcon?.(open) ||
+      (open ? <ChevronDown aria-hidden="true" /> : <ChevronRight aria-hidden="true" />)
+    );
+  };
   const panelId = itemProps?.content?.id ?? `${internalId}-panel`;
   const buttonId = id ?? `${internalId}-button`;
   return (
@@ -132,7 +151,7 @@ function AccordionItem({
         aria-controls={panelId}
         onClick={(e) => {
           onClick?.(e);
-          onToggle(value);
+          onToggle(value, openKeys);
         }}
         className={cn(
           "flex items-center justify-between w-full px-4 py-3 bg-muted/50 hover:bg-muted text-left",
@@ -144,7 +163,7 @@ function AccordionItem({
           {...itemProps?.label}
           className={cn("flex items-center gap-2", itemProps?.label?.className)}
         >
-          {open ? <CaretDownIcon /> : <CaretRightIcon />}
+          {getIcon()}
           {label}
         </span>
       </button>

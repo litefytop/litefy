@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CopyIcon,
-  CheckIcon,
+
   Anchor,
   Title,
   Description,
@@ -27,6 +24,7 @@ import SliderBasicRaw from "./examples/slider-basic.tsx?raw";
 import SliderControlledRaw from "./examples/slider-controlled.tsx?raw";
 import SliderOrientationRaw from "./examples/slider-orientation.tsx?raw";
 import sliderSrc from "@/component/ui/slider.tsx?raw";
+import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, CopyIcon } from "lucide-react";
 
 function DemoSection({
   id,

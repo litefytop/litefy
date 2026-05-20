@@ -1,6 +1,6 @@
-import { ReactNode, useCallback, useRef, useState } from "react";
+import { ReactNode, useId, useRef, useState } from "react";
 import { cn, ClassNameValue } from "@/lib";
-import { CheckIcon } from "./icons";
+import { Check } from "lucide-react";
 import { ComponentProps } from "react";
 
 type WithDataAttributes<T> = T & {
@@ -28,12 +28,15 @@ export type CheckboxProps<T extends string> = {
     label?: WithDataAttributes<ComponentProps<"label">>;
     description?: WithDataAttributes<ComponentProps<"small">>;
     invalid?: WithDataAttributes<ComponentProps<"span">>;
-    options?: Omit<CheckboxItemProps, "checked" | "value" | "label">;
+    options?: Omit<
+      CheckboxItemProps,
+      "checked" | "value" | "label" | "onValueChange"
+    >;
   };
-  options: Omit<CheckboxItemProps, "checked">[];
+  options: Omit<CheckboxItemProps, "checked" | "onValueChange">[];
 } & Omit<
   ComponentProps<"input">,
-  "value" | "onChange" | "checked" | "children" | "className" | "type" | "style"
+  "value"  | "checked" | "children" | "className" | "type" | "style"
 >;
 
 export function Checkbox<T extends string>({
@@ -48,16 +51,21 @@ export function Checkbox<T extends string>({
   onBlur,
   itemProps,
   options,
+  onChange,
   ...props
 }: CheckboxProps<T>) {
   const groupRef = useRef<HTMLDivElement>(null);
   const [internalValues, setInternalValues] = useState<T[]>(defaultValue);
-  const [internalInvalid, setInternalInvalid] = useState<boolean | string | undefined>();
-
+  const [internalInvalid, setInternalInvalid] = useState<
+    boolean | string | undefined
+  >();
+  const internalId = useId();
+  const labelId = itemProps?.label?.id || internalId;
   const selectedValues = controlledValues ?? internalValues;
   const finalInvalid = externalInvalid ?? internalInvalid;
   const isInvalid = Boolean(finalInvalid);
-
+  const hasInvalidContent = typeof finalInvalid === "string";
+  
   const setValue = (value: string) => {
     const newValues = selectedValues.includes(value as T)
       ? selectedValues.filter((v) => v !== value)
@@ -89,7 +97,7 @@ export function Checkbox<T extends string>({
     const activeOption = enabledOptions.find(
       (opt) =>
         groupRef.current?.querySelector(
-          `button[data-index="${options.indexOf(opt)}"]`,
+          `button[value="${CSS.escape(opt.value)}"]`,
         ) === document.activeElement,
     );
     if (!activeOption) return;
@@ -119,10 +127,9 @@ export function Checkbox<T extends string>({
 
     e.preventDefault();
     const targetOption = enabledOptions[targetIndex];
-    const targetIndexInOriginal = options.indexOf(targetOption);
     (
       groupRef.current?.querySelector(
-        `button[data-index="${targetIndexInOriginal}"]`,
+        `button[value="${CSS.escape(targetOption.value)}"]`,
       ) as HTMLButtonElement | null
     )?.focus();
   };
@@ -135,6 +142,7 @@ export function Checkbox<T extends string>({
       {label && (
         <label
           {...itemProps?.label}
+          id={labelId}
           data-disabled={disabled}
           className={cn(
             "text-sm font-medium leading-none indent-2 py-1",
@@ -151,46 +159,50 @@ export function Checkbox<T extends string>({
         role="group"
         aria-invalid={isInvalid}
         data-invalid={isInvalid}
+        aria-labelledby={labelId}
         ref={groupRef}
         inert={disabled}
         onKeyDown={handleKeyDown}
         className={cn(
           "flex group inert:pointer-events-none inert:opacity-50",
+          "has-invalid:[&_span]:border-destructive has-invalid:[&_span]:data-[checked=true]:bg-destructive has-invalid:[&_button]:text-destructive",
           itemProps?.content?.className,
         )}
       >
-        {options.map((option, index) => (
+        <input
+          {...props}
+          type="checkbox"
+          name={name}
+          value={selectedValues}
+          checked={selectedValues.length > 0}
+          onChange={(e) => onChange?.(e)}
+          disabled={disabled}
+          onBlur={onBlur}
+          className="hidden"
+        />
+        {options.map((option) => (
           <CheckboxItem
             {...itemProps?.options}
             {...option}
             disabled={disabled}
-            data-index={index}
             checked={selectedValues.includes(option.value as T)}
             key={option.value}
             onValueChange={setValue}
           />
         ))}
       </div>
-      <input
-        {...props}
-        type="checkbox"
-        name={name}
-        value={selectedValues}
-        disabled={disabled}
-        onBlur={onBlur}
-        className="hidden"
-      />
+
       <small
+        {...(hasInvalidContent ? itemProps?.invalid : itemProps?.description)}
         data-invalid={isInvalid}
-        {...(isInvalid ? itemProps?.invalid : itemProps?.description)}
         className={cn(
           "text-sm indent-2 h-5 text-muted-foreground",
           "data-[invalid=true]:text-destructive",
-          (isInvalid ? itemProps?.invalid : itemProps?.description)?.className,
+          (hasInvalidContent ? itemProps?.invalid : itemProps?.description)?.className,
         )}
-        role={isInvalid ? "alert" : undefined}
+        role={hasInvalidContent ? "alert" : undefined}
       >
-        {isInvalid ? finalInvalid : description}
+        {hasInvalidContent ? finalInvalid : description}
       </small>
     </div>
   );
@@ -215,7 +227,7 @@ type CheckboxItemProps = Omit<
     };
   };
   className?: ClassNameValue;
-  label?: ReactNode;
+  label: ReactNode;
 };
 
 const CheckboxItem = ({
@@ -228,10 +240,10 @@ const CheckboxItem = ({
   checked,
   ...props
 }: CheckboxItemProps) => {
-  const handleClick = useCallback(() => {
+  const handleClick = () => {
     onValueChange?.(value);
     onCheckedChange?.(!checked);
-  }, [value, onValueChange, onCheckedChange, checked]);
+  };
 
   return (
     <button
@@ -261,9 +273,7 @@ const CheckboxItem = ({
             indicator?.props?.className,
           )}
         >
-          {checked
-            ? (indicator?.checked ?? <CheckIcon />)
-            : indicator?.unchecked}
+          {checked ? (indicator?.checked ?? <Check />) : indicator?.unchecked}
         </span>
       )}
       {props.label}

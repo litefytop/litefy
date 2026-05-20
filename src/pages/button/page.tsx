@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CopyIcon,
-  CheckIcon,
   Anchor,
   Title,
   Description,
@@ -22,6 +18,12 @@ import {
   ButtonIconOnly,
   ButtonWithIcons,
 } from "./examples";
+import {
+  CheckIcon,
+  CopyIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+} from "lucide-react";
 
 import ButtonVariantsRaw from "./examples/button-variants.tsx?raw";
 import ButtonDisabledRaw from "./examples/button-disabled.tsx?raw";
@@ -199,8 +201,6 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
           >
             <ButtonWithIcons />
           </DemoSection>
-
-  
         </section>
 
         <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
@@ -220,7 +220,6 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
             <Anchor.Item href="#loading">{l.loading.title}</Anchor.Item>
             <Anchor.Item href="#icon-only">{l.iconOnly.title}</Anchor.Item>
             <Anchor.Item href="#with-icons">{l.withIcons.title}</Anchor.Item>
-          
           </Anchor.Section>
           <Anchor.Section href="#docs" linkText={lang.docs} />
         </Anchor>

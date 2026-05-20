@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CopyIcon,
-  CheckIcon,
   Anchor,
   Title,
   Description,
@@ -23,6 +19,7 @@ import {
   UploadMultiple,
   UploadDisabled,
 } from "./examples";
+import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
 import UploadBasicRaw from "./examples/upload-basic.tsx?raw";
 import UploadValidationRaw from "./examples/upload-validation.tsx?raw";

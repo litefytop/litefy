@@ -12,9 +12,9 @@ export const en = {
     description: "Description",
   },
   home: {
-    title: "Plain UI",
+    title: "Litefy UI",
     description:
-      "Plain is a lightweight, highly reusable, low-intrusion foundational UI component library. It features minimalist preset styles while preserving native layout characteristics, balancing generality and customization flexibility.",
+      "Litefy is a lightweight, highly reusable, low-intrusion foundational UI component library. It features minimalist preset styles while preserving native layout characteristics, balancing generality and customization flexibility.",
     subDescription:
       "No redundant style nesting, lightweight volume, supports on-demand import and style overrides, adapts to mobile/medium-backend scenarios, can quickly integrate with Tailwind and custom theme extensions, meeting rapid business iteration and personalized visual transformation needs.",
   },
@@ -141,11 +141,14 @@ export const en = {
     controlled: {
       title: "Controlled",
     },
+    icon: {
+      title: "Custom Icon",
+    },
     anatomy: {
       title: "Anatomy",
       accordion: "Accordion",
-      item: "Item",
-      trigger: "Trigger",
+      item: "Accordion.Item",
+      root: "Root",
       titleLabel: "Title Label",
       content: "Content",
     },
@@ -156,14 +159,16 @@ export const en = {
         onOpenChange: "Callback when expansion state changes",
         allowMultiple: "Whether to allow multiple expansions",
         itemProps: "Internal wrapped props pass-through config",
+        icon: "Custom expand/collapse icon",
       },
       itemProps: {
         value: "Unique identifier (required)",
         label: "Label content (required)",
         itemProps: "Internal wrapped props pass-through config",
+        icon: "Custom icon (overrides Accordion icon)",
       },
       itemPropsConfig: {
-        trigger: "Trigger button props",
+        root: "Root element props",
         label: "Label element props",
         content: "Content area props",
       },

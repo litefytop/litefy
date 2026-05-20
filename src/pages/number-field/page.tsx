@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CopyIcon,
-  CheckIcon,
   Anchor,
   Title,
   Description,
@@ -31,6 +27,7 @@ import NumberFieldStepRaw from "./examples/number-field-step.tsx?raw";
 import NumberFieldDisabledRaw from "./examples/number-field-disabled.tsx?raw";
 import NumberFieldValidationRaw from "./examples/number-field-validation.tsx?raw";
 import numberFieldSrc from "@/component/ui/number-field.tsx?raw";
+import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
 function DemoSection({
   id,

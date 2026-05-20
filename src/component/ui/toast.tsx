@@ -8,12 +8,12 @@ import React, {
 } from "react";
 import { ClassNameValue, cn } from "@/lib";
 import {
-  CircleCheckIcon,
-  CircleInfoIcon,
-  TriangleAlertIcon,
-  XIcon,
-  SpinIcon,
-} from "./icons";
+  CircleCheck,
+  CircleHelp,
+  TriangleAlert,
+  X,
+  Loader2,
+} from "lucide-react";
 
 export type ToastType = "success" | "error" | "warning" | "info" | "loading";
 
@@ -97,11 +97,11 @@ const useToastStore = () => {
 };
 
 const toastIcons: Record<ToastType, React.ReactNode> = {
-  success: <CircleCheckIcon className="size-4 text-green-500" />,
-  error: <XIcon className="size-4 text-destructive" />,
-  warning: <TriangleAlertIcon className="size-4 text-amber-400" />,
-  info: <CircleInfoIcon className="size-4" />,
-  loading: <SpinIcon className="size-4 animate-spin" />,
+  success: <CircleCheck className="size-4 text-green-500" />,
+  error: <X className="size-4 text-destructive" />,
+  warning: <TriangleAlert className="size-4 text-amber-400" />,
+  info: <CircleHelp className="size-4" />,
+  loading: <Loader2 className="size-4 animate-spin" />,
 };
 
 function ToastItem({

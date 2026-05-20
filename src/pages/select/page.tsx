@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CopyIcon,
-  CheckIcon,
   Anchor,
   Title,
   Description,
@@ -25,6 +21,7 @@ import {
   SelectGroup,
   SelectMultiple,
 } from "./examples";
+import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
 import SelectBasicRaw from "./examples/select-basic.tsx?raw";
 import SelectControlledRaw from "./examples/select-controlled.tsx?raw";

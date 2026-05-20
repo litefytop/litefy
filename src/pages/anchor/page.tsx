@@ -1,10 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CopyIcon,
-  CheckIcon,
   Anchor,
   Title,
   Description,
@@ -16,6 +12,12 @@ import {
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages";
 import { getComponentNav } from "@/pages/config/routes";
+import {
+  CheckIcon,
+  CopyIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+} from "lucide-react";
 
 import AnchorBasicRaw from "./examples/anchor-basic.tsx?raw";
 import anchorDoc from "./doc.mdx?raw";
@@ -35,7 +37,7 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
     if (iframeRef.current?.contentWindow) {
       iframeRef.current.contentWindow.postMessage(
         { type: "theme-change", colorScheme },
-        window.location.origin
+        window.location.origin,
       );
     }
   }, [colorScheme]);
@@ -48,7 +50,7 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "className",
           type: "ClassNameValue",
-          
+
           description: lang.common.className,
         },
         {
@@ -72,19 +74,19 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "href",
           type: "string",
-          
+
           description: l.api.sectionProps.href,
         },
         {
           props: "linkText",
           type: "string",
-          
+
           description: l.api.sectionProps.linkText,
         },
         {
           props: "itemProps",
           type: "object",
-          
+
           description: l.api.sectionProps.itemProps,
         },
       ],
@@ -96,13 +98,13 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "href",
           type: "string",
-          
+
           description: l.api.itemProps.href,
         },
         {
           props: "className",
           type: "ClassNameValue",
-          
+
           description: lang.common.className,
         },
       ],
@@ -114,13 +116,13 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "link",
           type: 'Omit<React.ComponentProps<"a">, "href" | "onClick">',
-          
+
           description: l.api.itemPropsConfig.link,
         },
         {
           props: "nav",
           type: 'Omit<React.ComponentProps<"nav">, "aria-label">',
-          
+
           description: l.api.itemPropsConfig.nav,
         },
       ],
@@ -217,7 +219,11 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
             ]}
           >
             <Anchor className="max-w-xs" id="anatomy-anchor">
-              <Anchor.Section linkText="section" id="anatomy-section" className="m-1 p-1">
+              <Anchor.Section
+                linkText="section"
+                id="anatomy-section"
+                className="m-1 p-1"
+              >
                 <Anchor.Item href="#section1" id="anatomy-item">
                   <span id="anatomy-link">section 1.1</span>
                 </Anchor.Item>

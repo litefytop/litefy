@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CopyIcon,
-  CheckIcon,
   Anchor,
   Title,
   Description,
@@ -24,6 +20,7 @@ import {
   CheckboxVariant,
   CheckboxValidation,
 } from "./examples";
+import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
 import CheckboxBasicRaw from "./examples/checkbox-basic.tsx?raw";
 import CheckboxControlledRaw from "./examples/checkbox-controlled.tsx?raw";

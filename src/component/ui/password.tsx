@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { cn, ClassNameValue } from "@/lib/utils";
-import { EyeIcon, EyeOffIcon } from "./icons";
+import { Eye, EyeOff } from "lucide-react";
 import type { ReactNode } from "react";
 
 type WithDataAttributes<T> = T & {
@@ -110,9 +110,9 @@ export function Password({
           aria-label={showPassword ? "Hide password" : "Show password"}
         >
           {showPassword ? (
-            <EyeOffIcon className="size-4" />
+            <EyeOff className="size-4" />
           ) : (
-            <EyeIcon className="size-4" />
+            <Eye className="size-4" />
           )}
         </button>
       </div>

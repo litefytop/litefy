@@ -23,9 +23,11 @@ export * from "./overlay";
 export * from "./dropdown";
 export * from "./password";
 export * from "./theme";
-export * from "./accordion";
+/* export * from "./accordion"; */
+export * from "./summary";
+
 export * from "./dialog";
-export * from "./icons";
+
 export * from "./anchor";
 export * from "./toast"
 export * from "./drawer"

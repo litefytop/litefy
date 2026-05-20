@@ -4,10 +4,6 @@ import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CopyIcon,
-  CheckIcon,
   Anchor,
   Title,
   Description,
@@ -26,6 +22,7 @@ import {
   ToastDismiss,
   ToastWithCallbacks,
 } from "./examples";
+import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
 import ToastTypesRaw from "./examples/toast-types.tsx?raw";
 import ToastWithDescriptionRaw from "./examples/toast-description.tsx?raw";
