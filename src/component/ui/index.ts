@@ -23,8 +23,8 @@ export * from "./overlay";
 export * from "./dropdown";
 export * from "./password";
 export * from "./theme";
-/* export * from "./accordion"; */
-export * from "./summary";
+export * from "./accordion";
+export * from "./accordion-controlled";
 
 export * from "./dialog";
 

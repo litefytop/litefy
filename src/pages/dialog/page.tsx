@@ -73,7 +73,37 @@ export default function DialogPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "className",
           type: "ClassNameValue",
-          description: lang.common.className,
+          description: l.api.props.className,
+        },
+        {
+          props: "open",
+          type: "boolean",
+          description: l.api.props.open,
+        },
+        {
+          props: "onClose",
+          type: "() => void",
+          description: l.api.props.onClose,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.refMethods,
+      data: [
+        {
+          props: "show()",
+          type: "() => void",
+          description: l.api.refMethods.show,
+        },
+        {
+          props: "showModal()",
+          type: "() => void",
+          description: l.api.refMethods.showModal,
+        },
+        {
+          props: "close()",
+          type: "() => void",
+          description: l.api.refMethods.close,
         },
       ],
     },

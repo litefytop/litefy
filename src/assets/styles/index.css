@@ -40,6 +40,6 @@
 }
 
 .anatomy-highlight {
-  border: 2px solid var(--primary);
-  border-radius: 4px;
+  outline: 3px solid var(--primary);
+  outline-offset: -3px;
 }

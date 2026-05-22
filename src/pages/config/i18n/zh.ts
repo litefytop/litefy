@@ -33,6 +33,7 @@ export const zh = {
   components: {
     button: "Button 按钮",
     accordion: "Accordion 手风琴",
+    "accordion-controlled": "Accordion 手风琴（受控）",
     anchor: "Anchor 锚点",
     toast: "Toast 消息提示",
     dialog: "Dialog 对话框",
@@ -41,6 +42,7 @@ export const zh = {
     checkbox: "Checkbox 复选框",
     slider: "Slider 滑块",
     textarea: "Textarea 文本域",
+    tabs: "Tabs 标签页",
     upload: "Upload 上传",
     "date-picker": "DatePicker 日期选择",
     select: "Select 选择器",
@@ -143,21 +145,20 @@ export const zh = {
     icon: {
       title: "自定义图标",
     },
+    disabled: {
+      title: "禁用",
+    },
     anatomy: {
       title: "结构",
-      accordion: "Accordion",
-      item: "Accordion.Item",
-      root: "根元素",
-      titleLabel: "标题",
+      accordion: "手风琴",
+      item: "子组件",
+      summary:"摘要",
       content: "内容",
     },
     api: {
       props: {
-        defaultOpenKeys: "初始展开的 keys（非受控模式）",
-        openKeys: "当前展开的 keys（受控模式）",
-        onOpenChange: "展开状态变化回调",
-        allowMultiple: "是否允许同时展开多项",
-        itemProps: "内部封装属性透传配置",
+
+ 
         icon: "自定义展开/收起图标",
       },
       itemProps: {
@@ -167,14 +168,65 @@ export const zh = {
         icon: "自定义图标（覆盖 Accordion 的 icon）",
       },
       itemPropsConfig: {
-        root: "根元素属性",
-        label: "标题元素属性",
+        summary: "摘要元素属性",
         content: "内容区域属性",
       },
 
       sectionTitles: {
         accordionProps: "Accordion Props",
         accordionItemProps: "Accordion.Item Props",
+        itemPropsConfig: "itemProps 配置",
+      },
+    },
+  },
+
+  accordionControlled: {
+    title: "手风琴（受控）",
+    description: "受控模式的手风琴组件，支持通过状态管理精确控制展开/收起行为。",
+    basic: {
+      title: "基础",
+    },
+    controlled: {
+      title: "受控模式",
+    },
+    multiple: {
+      title: "多选模式",
+    },
+    icon: {
+      title: "自定义图标",
+    },
+    disabled: {
+      title: "禁用",
+    },
+    anatomy: {
+      title: "结构",
+      accordion: "手风琴",
+      item: "子组件",
+      label: "标题",
+      content: "内容",
+    },
+    api: {
+      props: {
+        defaultOpenKeys: "默认展开的键数组",
+        openKeys: "受控的展开键数组",
+        onOpenChange: "展开状态变化时的回调",
+        allowMultiple: "是否允许多选",
+        icon: "自定义展开/收起图标",
+      },
+      itemProps: {
+        value: "唯一标识符（必填）",
+        label: "标题内容（必填）",
+        itemProps: "内部封装属性透传配置",
+        icon: "自定义图标（覆盖 AccordionControlled 的 icon）",
+      },
+      itemPropsConfig: {
+        root: "根元素属性",
+        label: "标签元素属性",
+        content: "内容区域属性",
+      },
+      sectionTitles: {
+        accordionProps: "AccordionControlled Props",
+        accordionItemProps: "AccordionControlled.Item Props",
         itemPropsConfig: "itemProps 配置",
       },
     },
@@ -255,7 +307,7 @@ export const zh = {
       title: "带图标",
     },
     anatomy: {
-      button: "Button",
+      button: "按钮",
       icon: "图标",
       spinner: "加载指示器",
     },
@@ -332,17 +384,16 @@ export const zh = {
       title: "校验",
     },
     anatomy: {
-      group: "组",
+      checkbox: "复选框",
       label: "标签",
       description: "描述",
-      item: "项",
-      indicator: "指示器",
+      content: "内容",
+      item: "标签及指示器",
     },
     api: {
       sectionTitles: {
         checkboxProps: "Checkbox Props",
         checkboxItemProps: "Checkbox.Item Props",
-        indicatorConfig: "indicator 配置",
         itemPropsConfig: "itemProps 配置",
         itemProps: "itemProps 配置",
       },
@@ -352,7 +403,7 @@ export const zh = {
         onValueChange: "值变化回调，可返回 { invalid?: string } 触发无效状态",
         invalid: "无效状态，支持 boolean 或 string 类型",
         disabled: "是否禁用整个组",
-        name: "表单字段名称，提交时返回逗号分隔字符串（如 a,b,c）",
+        name: "表单字段名称",
         label: "标签文本",
         description: "描述文本",
         itemProps: "内部元素属性透传配置",
@@ -364,17 +415,13 @@ export const zh = {
         disabled: "是否禁用",
         variant: "样式变体",
         indicator: "指示器配置",
+        itemProps:"内部元素属性透传配置"
       },
-      indicator: {
-        checked: "选中时的指示器",
-        unchecked: "未选中时的指示器",
-        hidden: "隐藏指示器",
-        props: "指示器元素属性",
-      },
+
       itemProps: {
-        root: "根容器 `<div>` 元素属性",
+
         content: "内容容器 `<div>` 元素属性",
-        label: "标签 `<label>` 元素属性",
+        label: "标签 `<span>` 元素属性",
         description: "描述 `<small>` 元素属性",
         invalid: "无效文本 `<span>` 元素属性",
         options: "选项项 `<button>` 元素属性",
@@ -591,6 +638,63 @@ export const zh = {
         invalid: "无效 `<small>` 属性",
         description: "描述 `<small>` 属性",
       },
+    },
+  },
+
+  tabs: {
+    title: "标签页",
+    description: "标签页组件，用于在多个内容面板之间切换。",
+    basic: {
+      title: "基础",
+    },
+    controlled: {
+      title: "受控",
+    },
+    vertical: {
+      title: "垂直方向",
+    },
+    disabled: {
+      title: "禁用",
+    },
+    styled: {
+      title: "自定义样式",
+    },
+    anatomy: {
+      root: "根元素",
+      list: "列表容器",
+      trigger: "触发器",
+      content: "内容面板",
+    },
+    api: {
+      sectionTitles: {
+        tabsProps: "Tabs Props",
+        itemPropsConfig: "itemProps 配置",
+      },
+      props: {
+        options: "标签选项配置数组",
+        defaultValue: "默认选中的标签值（非受控）",
+        value: "选中的标签值（受控）",
+        onValueChange: "标签切换回调",
+        orientation: "方向：horizontal 或 vertical",
+        activationMode: "激活模式：automatic 或 manual",
+        itemProps: "内部封装属性透传",
+      },
+      itemPropsConfig: {
+        list: "列表容器 `<div>` 属性",
+        trigger: "触发器 `<button>` 属性",
+        content: "内容面板 `<div>` 属性",
+      },
+    },
+    docs: {
+      introduction: "Tabs 组件用于在多个相关内容的面板之间进行切换。它支持受控和非受控模式，并提供水平和垂直两种布局方向。",
+      features: [
+        "支持受控和非受控两种模式",
+        "提供水平和垂直两种布局方向",
+        "支持键盘导航，符合 WAI-ARIA 标准",
+        "支持自动和手动两种激活模式",
+        "可通过 itemProps 透传内部元素属性",
+      ],
+      usage: "使用 Tabs 组件时，需要传入 options 数组配置所有标签选项。每个选项包含 value、label、children 和可选的 disabled 属性。",
     },
   },
 
@@ -815,6 +919,17 @@ export const zh = {
     api: {
       sectionTitles: {
         dialogProps: "Dialog Props",
+        refMethods: "Ref Methods",
+      },
+      props: {
+        className: "自定义类名",
+        open: "控制对话框是否打开（受控模式）",
+        onClose: "对话框关闭时的回调函数",
+      },
+      refMethods: {
+        show: "打开对话框（非模态）",
+        showModal: "打开对话框（模态）",
+        close: "关闭对话框",
       },
     },
   },

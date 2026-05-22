@@ -20,7 +20,12 @@ import {
   CheckboxVariant,
   CheckboxValidation,
 } from "./examples";
-import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
+import {
+  CheckIcon,
+  CopyIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+} from "lucide-react";
 
 import CheckboxBasicRaw from "./examples/checkbox-basic.tsx?raw";
 import CheckboxControlledRaw from "./examples/checkbox-controlled.tsx?raw";
@@ -54,7 +59,6 @@ function DemoSection({
   );
 }
 
-
 export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
@@ -79,7 +83,7 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
         },
         {
           props: "onValueChange",
-          type: "(value: string[]) => void | { invalid?: string }",
+          type: "(value: string[]) => void | { invalid?: string | boolean }",
           description: l.api.props.onValueChange,
         },
         {
@@ -147,49 +151,23 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.item.variant,
         },
         {
+          props: "itemProps",
+          type: "{label: ComponentProps<'label'>}",
+          description: l.api.item.itemProps,
+        },
+        {
           props: "indicator",
-          type: "object",
+          type: "(checked: boolean) => ReactNode",
           description: l.api.item.indicator,
         },
       ],
     },
-    {
-      title: l.api.sectionTitles.indicatorConfig,
 
-      data: [
-        {
-          props: "checked",
-          type: "ReactNode",
-          default: "<CheckIcon />",
-          description: l.api.indicator.checked,
-        },
-        {
-          props: "unchecked",
-          type: "ReactNode",
-          description: l.api.indicator.unchecked,
-        },
-        {
-          props: "hidden",
-          type: "boolean",
-          default: "false",
-          description: l.api.indicator.hidden,
-        },
-        {
-          props: "props",
-          type: 'ComponentProps<"span">',
-          description: l.api.indicator.props,
-        },
-      ],
-    },
     {
       title: l.api.sectionTitles.itemProps,
 
       data: [
-        {
-          props: "root",
-          type: 'ComponentProps<"div">',
-          description: l.api.itemProps.root,
-        },
+   
         {
           props: "content",
           type: 'ComponentProps<"div">',
@@ -197,7 +175,7 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
         },
         {
           props: "label",
-          type: 'ComponentProps<"label">',
+          type: 'ComponentProps<"span">',
           description: l.api.itemProps.label,
         },
         {
@@ -311,31 +289,34 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
           <Title as="h2">{lang.anatomy}</Title>
           <Anatomy
             parts={[
-              { id: "anatomy-group", label: l.anatomy.group },
+              { id: "anatomy-checkbox", label: l.anatomy.checkbox },
               { id: "anatomy-label", label: l.anatomy.label },
               { id: "anatomy-description", label: l.anatomy.description },
+              { id: "anatomy-content", label: l.anatomy.content },
               { id: "anatomy-item", label: l.anatomy.item },
-              { id: "anatomy-indicator", label: l.anatomy.indicator },
+    
             ]}
           >
             <Checkbox
+              id="anatomy-checkbox"
               options={[
                 {
                   value: "item1",
                   label: "Item 1",
-                  id: "anatomy-item",
-                  indicator: {
-                    props: { id: "anatomy-indicator" },
+                  itemProps: {
+                    label: {
+                      id: "anatomy-item",
+                    },
                   },
                 },
-               
+                {
+                  value: "item2",
+                  label: "Item 2",
+                },
               ]}
               label="Checkbox"
               description="This is a description"
               itemProps={{
-                root:{
-                  id: "anatomy-group",
-                },
                 label: {
                   id: "anatomy-label",
                 },
@@ -343,11 +324,12 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
                   id: "anatomy-description",
                 },
                 content: {
+                  id: "anatomy-content",
                   className: "flex flex-col gap-2",
                 },
+          
               }}
             />
-             
           </Anatomy>
         </section>
 

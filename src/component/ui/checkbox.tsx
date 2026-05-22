@@ -1,18 +1,17 @@
 import { ReactNode, useId, useRef, useState } from "react";
 import { cn, ClassNameValue } from "@/lib";
-import { Check } from "lucide-react";
 import { ComponentProps } from "react";
 
 type WithDataAttributes<T> = T & {
-  [key: `data-${string}`]: string | number | boolean | null | undefined;
+  [key: `data-${string}`]: string | number | true | null | undefined;
   className?: ClassNameValue;
 };
 
 const checkboxClass = {
   toggle:
-    "bg-secondary text-secondary-foreground border-y border-r first:border-l group-data-[invalid=true]:aria-checked:bg-destructive aria-checked:bg-primary aria-checked:text-primary-foreground",
+    "bg-secondary text-secondary-foreground border-y border-r first:border-l has-focus:ring-2 has-focus:ring-accent has-focus:ring-inset  has-checked:bg-primary has-checked:text-primary-foreground  group-data-invalid:text-destructive group-data-invalid:has-checked:bg-destructive group-data-invalid:accent-destructive group-data-invalid:ring-destructive",
   checkbox:
-    "aria-checked:text-foreground/80 group-data-[invalid=true]:aria-checked:text-destructive",
+    "group-data-invalid:text-destructive group-data-invalid:accent-destructive",
 };
 
 export type CheckboxProps<T extends string> = {
@@ -23,20 +22,23 @@ export type CheckboxProps<T extends string> = {
   description?: ReactNode;
   onValueChange?: (value: T[]) => void | { invalid?: string | boolean };
   itemProps?: {
-    root?: WithDataAttributes<ComponentProps<"div">>;
     content?: Omit<ComponentProps<"div">, "children">;
-    label?: WithDataAttributes<ComponentProps<"label">>;
+    label?: WithDataAttributes<ComponentProps<"span">>;
     description?: WithDataAttributes<ComponentProps<"small">>;
     invalid?: WithDataAttributes<ComponentProps<"span">>;
     options?: Omit<
       CheckboxItemProps,
-      "checked" | "value" | "label" | "onValueChange"
+      "checked" | "value" | "span" | "onValueChange"
     >;
   };
   options: Omit<CheckboxItemProps, "checked" | "onValueChange">[];
+  className?: ClassNameValue;
+  name?: string;
+  required?: boolean;
+  disabled?: boolean;
 } & Omit<
-  ComponentProps<"input">,
-  "value"  | "checked" | "children" | "className" | "type" | "style"
+  ComponentProps<"div">,
+  "value" | "checked" | "children" | "className" | "type" | "style"
 >;
 
 export function Checkbox<T extends string>({
@@ -48,10 +50,11 @@ export function Checkbox<T extends string>({
   description,
   disabled,
   name,
+  required,
   onBlur,
   itemProps,
   options,
-  onChange,
+  className,
   ...props
 }: CheckboxProps<T>) {
   const groupRef = useRef<HTMLDivElement>(null);
@@ -61,22 +64,27 @@ export function Checkbox<T extends string>({
   >();
   const internalId = useId();
   const labelId = itemProps?.label?.id || internalId;
+
   const selectedValues = controlledValues ?? internalValues;
   const finalInvalid = externalInvalid ?? internalInvalid;
   const isInvalid = Boolean(finalInvalid);
   const hasInvalidContent = typeof finalInvalid === "string";
-  
+
   const setValue = (value: string) => {
     const newValues = selectedValues.includes(value as T)
       ? selectedValues.filter((v) => v !== value)
       : [...selectedValues, value as T];
 
-    if (controlledValues == undefined) {
+    if (controlledValues === undefined) {
       setInternalValues(newValues);
     }
-
     const result = onValueChange?.(newValues);
-    setInternalInvalid(result?.invalid);
+
+    if (required && newValues.length === 0) {
+      setInternalInvalid(true);
+    } else {
+      setInternalInvalid(result?.invalid);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -97,7 +105,7 @@ export function Checkbox<T extends string>({
     const activeOption = enabledOptions.find(
       (opt) =>
         groupRef.current?.querySelector(
-          `button[value="${CSS.escape(opt.value)}"]`,
+          `input[type="checkbox"][value="${CSS.escape(opt.value)}"]`,
         ) === document.activeElement,
     );
     if (!activeOption) return;
@@ -129,57 +137,44 @@ export function Checkbox<T extends string>({
     const targetOption = enabledOptions[targetIndex];
     (
       groupRef.current?.querySelector(
-        `button[value="${CSS.escape(targetOption.value)}"]`,
-      ) as HTMLButtonElement | null
+        `input[type="checkbox"][value="${CSS.escape(targetOption.value)}"]`,
+      ) as HTMLInputElement | null
     )?.focus();
   };
 
   return (
     <div
-      {...itemProps?.root}
-      className={cn("flex flex-col gap-1", itemProps?.root?.className)}
+      {...props}
+      inert={disabled || props.inert}
+      data-invalid={isInvalid ? true : undefined}
+      className={cn(
+        "flex flex-col gap-1 group inert:pointer-events-none inert:opacity-50",
+        className,
+      )}
     >
       {label && (
-        <label
+        <span
           {...itemProps?.label}
           id={labelId}
-          data-disabled={disabled}
           className={cn(
             "text-sm font-medium leading-none indent-2 py-1",
-            "data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-70",
             itemProps?.label?.className,
           )}
         >
           {label}
-        </label>
+        </span>
       )}
 
       <div
         {...itemProps?.content}
         role="group"
         aria-invalid={isInvalid}
-        data-invalid={isInvalid}
         aria-labelledby={labelId}
         ref={groupRef}
         inert={disabled}
         onKeyDown={handleKeyDown}
-        className={cn(
-          "flex group inert:pointer-events-none inert:opacity-50",
-          "has-invalid:[&_span]:border-destructive has-invalid:[&_span]:data-[checked=true]:bg-destructive has-invalid:[&_button]:text-destructive",
-          itemProps?.content?.className,
-        )}
+        className={cn("flex", itemProps?.content?.className)}
       >
-        <input
-          {...props}
-          type="checkbox"
-          name={name}
-          value={selectedValues}
-          checked={selectedValues.length > 0}
-          onChange={(e) => onChange?.(e)}
-          disabled={disabled}
-          onBlur={onBlur}
-          className="hidden"
-        />
         {options.map((option) => (
           <CheckboxItem
             {...itemProps?.options}
@@ -188,17 +183,19 @@ export function Checkbox<T extends string>({
             checked={selectedValues.includes(option.value as T)}
             key={option.value}
             onValueChange={setValue}
+            name={name}
+            onBlur={onBlur}
           />
         ))}
       </div>
 
       <small
         {...(hasInvalidContent ? itemProps?.invalid : itemProps?.description)}
-        data-invalid={isInvalid}
         className={cn(
           "text-sm indent-2 h-5 text-muted-foreground",
-          "data-[invalid=true]:text-destructive",
-          (hasInvalidContent ? itemProps?.invalid : itemProps?.description)?.className,
+          "group-data-invalid:text-destructive",
+          (hasInvalidContent ? itemProps?.invalid : itemProps?.description)
+            ?.className,
         )}
         role={hasInvalidContent ? "alert" : undefined}
       >
@@ -208,75 +205,65 @@ export function Checkbox<T extends string>({
   );
 }
 
-type CheckboxItemProps = Omit<
-  ComponentProps<"button">,
-  "onChange" | "children"
-> & {
+export type CheckboxItemProps = {
   checked: boolean;
-  onCheckedChange?: (checked: boolean) => void;
   value: string;
+  label: ReactNode;
   onValueChange?: (value: string) => void;
   disabled?: boolean;
   variant?: keyof typeof checkboxClass;
-  indicator?: {
-    checked?: ReactNode;
-    unchecked?: ReactNode;
-    hidden?: boolean;
-    props?: ComponentProps<"span"> & {
-      className?: ClassNameValue;
-    };
+  indicator?: (checked: boolean) => ReactNode;
+  name?: string;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  itemProps?: {
+    label?: Omit<ComponentProps<"label">, "children">;
   };
-  className?: ClassNameValue;
-  label: ReactNode;
-};
+} & Omit<ComponentProps<"input">, "children" | "className">;
 
 const CheckboxItem = ({
   value,
-  onCheckedChange,
   variant = "checkbox",
-  className,
   indicator,
   onValueChange,
   checked,
+  disabled,
+  name,
+  onBlur,
+  label,
+  itemProps,
   ...props
 }: CheckboxItemProps) => {
-  const handleClick = () => {
-    onValueChange?.(value);
-    onCheckedChange?.(!checked);
-  };
+  const handleChange = () => onValueChange?.(value);
+  const inputId = useId();
 
   return (
-    <button
-      {...props}
-      value={value}
-      type="button"
-      role="checkbox"
-      aria-checked={checked}
-      tabIndex={0}
-      onClick={handleClick}
+    <label
+      {...itemProps?.label}
+      htmlFor={inputId}
       className={cn(
-        "inline-flex items-center justify-center gap-2 shrink-0 h-9 min-w-9 px-3 py-1 cursor-pointer",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        "disabled:pointer-events-none disabled:opacity-50 group-data-[invalid=true]:text-destructive",
+        "inline-flex items-center justify-center gap-2 shrink-0 h-9 min-w-9 px-3 py-1 cursor-pointer select-none relative",
         checkboxClass[variant],
-        className,
+        itemProps?.label?.className,
       )}
     >
-      {!indicator?.hidden && (
-        <span
-          {...indicator?.props}
-          data-checked={checked}
-          className={cn(
-            "flex items-center justify-center size-4 border outline rounded-md",
-            "data-[checked=true]:bg-primary data-[checked=true]:border-primary-foreground data-[checked=true]:text-primary-foreground",
-            "group-data-[invalid=true]:border-destructive group-data-[invalid=true]:outline-destructive group-data-[invalid=true]:data-[checked=true]:bg-destructive",
-            indicator?.props?.className,
-          )}
-        >
-          {checked ? (indicator?.checked ?? <Check />) : indicator?.unchecked}
-        </span>
-      )}
-      {props.label}
-    </button>
+      <input
+        {...props}
+        type="checkbox"
+        id={inputId}
+        value={value}
+        name={name}
+        checked={checked}
+        disabled={disabled}
+        onChange={handleChange}
+        onBlur={onBlur}
+        data-hidden={indicator?.(checked) === undefined ? undefined : true}
+        className={cn(
+          "accent-accent group-data-invalid:accent-destructive data-hidden:sr-only invalid:accent-destructive",
+        )}
+      />
+
+      {indicator?.(checked)}
+      {label}
+    </label>
   );
 };

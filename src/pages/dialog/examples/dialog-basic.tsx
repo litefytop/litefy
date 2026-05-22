@@ -14,7 +14,7 @@ export default function DialogBasic() {
           You can click the button or the curtain or press the Esc key to close.
         </p>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={() => dialogRef.current?.close()}>
+          <Button variant="primary" onClick={() => dialogRef.current?.close()}>
             Cancel
           </Button>
         </div>

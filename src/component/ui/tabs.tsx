@@ -1,162 +1,171 @@
-import { ReactNode } from "react";
+import { cn } from "@/lib";
+import React, { useState, useCallback, useRef, KeyboardEvent } from "react";
 
-import { cn, ClassNameValue } from "@/lib";
+export interface TabsProps<T extends string = string> {
+  options: Array<{
+    value: T;
+    label: React.ReactNode;
+    children: React.ReactNode;
+    disabled?: boolean;
+  }>;
+  defaultValue?: T;
+  value?: T;
+  onValueChange?: (value: T) => void;
+  orientation?: "horizontal" | "vertical";
+  variant?: "button" | "line";
+  className?: string;
+  itemProps?: {
+    list?: React.ComponentProps<"div">;
+    trigger?: React.ComponentProps<"button">;
+    content?: React.ComponentProps<"div">;
+  };
+}
 
-import {
-  createContext,
-  useContext,
-  ComponentProps,
-  useState,
-  useId,
-} from "react";
-
-const tabsClass = {
-  base: "flex flex-col",
-  list: "inline-flex items-center justify-center gap-1 p-1 bg-muted/10 rounded-md",
-  trigger: "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
+const tabClass = {
+  button:
+    "rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 data-[selected=true]:bg-primary data-[selected=true]:text-primary-foreground data-[selected=true]:shadow-sm",
+  line: "bg-transparent text-muted-foreground hover:text-foreground group-data-[orientation=horizontal]:border-b-2 group-data-[orientation=vertical]:border-r-2 border-muted data-[selected=true]:text-primary data-[selected=true]:border-primary group-data-[orientation=vertical]:w-full",
 };
 
-export type TabsContextProps = {
-  value: string | undefined;
-  setValue: (value: string) => void;
-};
-
-const TabsContext = createContext<TabsContextProps | undefined>(undefined);
-
-const useTabsContext = () => {
-  const context = useContext(TabsContext);
-
-  if (!context) {
-    throw new Error("useTabsContext must be used within a Tabs component");
-  }
-
-  return context;
-};
-
-export type TabsProps = {
-  defaultValue?: string;
-  value?: string;
-  onValueChange?: (value: string) => void;
-  className?: ClassNameValue;
-  children?: ReactNode;
-};
-
-export function Tabs({
+export function Tabs<T extends string>({
+  options,
   defaultValue,
   value: controlledValue,
-  children,
   onValueChange,
+  orientation = "horizontal",
+  variant = "line",
   className,
-}: TabsProps) {
-  const [value, setValueState] = useState<string | undefined>(() => {
-    if (controlledValue !== undefined) {
-      return controlledValue;
+  itemProps,
+}: TabsProps<T>) {
+  const isControlled = controlledValue !== undefined;
+  const [uncontrolledValue, setUncontrolledValue] = useState(
+    defaultValue ?? options[0]?.value,
+  );
+  const selectedValue = isControlled
+    ? controlledValue
+    : (uncontrolledValue ?? options[0]?.value);
+
+  const handleSelect = useCallback(
+    (newValue: T) => {
+      if (!isControlled) setUncontrolledValue(newValue);
+      onValueChange?.(newValue);
+    },
+    [isControlled, onValueChange],
+  );
+
+  const listRef = useRef<HTMLDivElement>(null);
+  const { children: listExtraChildren, ...listProps } = itemProps?.list ?? {};
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    if (target.getAttribute("role") !== "tab") return;
+
+    const triggers = Array.from(
+      listRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]') ??
+        [],
+    ).filter((btn) => !btn.disabled);
+    if (!triggers.length) return;
+
+    const currentIndex = triggers.indexOf(target as HTMLButtonElement);
+    let nextIndex: number | null = null;
+
+    if (e.key === "ArrowLeft" || e.key === "ArrowUp")
+      nextIndex = currentIndex - 1;
+    if (e.key === "ArrowRight" || e.key === "ArrowDown")
+      nextIndex = currentIndex + 1;
+    if (e.key === "Home") nextIndex = 0;
+    if (e.key === "End") nextIndex = triggers.length - 1;
+
+    if (nextIndex !== null) {
+      e.preventDefault();
+      nextIndex = (nextIndex + triggers.length) % triggers.length;
+      triggers[nextIndex].focus();
+      return;
     }
-    return defaultValue;
-  });
 
-  const setValue = (newValue: string) => {
-    setValueState(newValue);
-    onValueChange?.(newValue);
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      const value = target.getAttribute("data-value") as T;
+      if (value) handleSelect(value);
+    }
   };
-
-  const contextValue = {
-    value,
-    setValue,
-  };
-
-  return (
-    <TabsContext.Provider value={contextValue}>
-      <div className={cn(tabsClass.base, className)}>{children}</div>
-    </TabsContext.Provider>
-  );
-}
-
-export type TabsListProps = {
-  className?: ClassNameValue;
-  children?: ReactNode;
-} & ComponentProps<"div">;
-
-function TabsList({ className, children, ...props }: TabsListProps) {
-  return (
-    <div {...props} className={cn(tabsClass.list, className)} role="tablist">
-      {children}
-    </div>
-  );
-}
-
-export type TabsTriggerProps = {
-  value: string;
-  disabled?: boolean;
-  className?: ClassNameValue;
-  children?: ReactNode;
-} & ComponentProps<"button">;
-
-function TabsTrigger({
-  value,
-  disabled,
-  className,
-  children,
-  ...props
-}: TabsTriggerProps) {
-  const id = useId();
-  const { value: contextValue, setValue } = useTabsContext();
-  const isActive = contextValue === value;
-
-  const handleClick = () => {
-    if (disabled) return;
-    setValue(value);
-  };
-
-  return (
-    <button
-      {...props}
-      id={props.id ?? id}
-      role="tab"
-      aria-selected={isActive}
-      aria-controls={`panel-${value}`}
-      tabIndex={isActive ? 0 : -1}
-      disabled={disabled}
-      onClick={handleClick}
-      className={cn(tabsClass.trigger, className)}
-      data-state={isActive ? "active" : "inactive"}
-    >
-      {children}
-    </button>
-  );
-}
-
-export type TabsContentProps = {
-  value: string;
-  className?: ClassNameValue;
-  children?: ReactNode;
-} & ComponentProps<"div">;
-
-function TabsContent({
-  value,
-  className,
-  children,
-  ...props
-}: TabsContentProps) {
-  const { value: contextValue } = useTabsContext();
-  const isActive = contextValue === value;
-
-  if (!isActive) return null;
 
   return (
     <div
-      {...props}
-      id={`panel-${value}`}
-      role="tabpanel"
-      tabIndex={0}
-      className={cn("mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2", className)}
-      data-state={isActive ? "active" : "inactive"}
+      className={cn(
+        "w-full font-sans flex gap-4 group",
+        "data-[orientation=horizontal]:flex-col",
+        "data-[orientation=vertical]:flex-row",
+        className,
+      )}
+      data-orientation={orientation}
     >
-      {children}
+      <div
+        ref={listRef}
+        {...listProps}
+        role="tablist"
+        onKeyDown={handleKeyDown}
+        className={cn(
+          "flex items-center gap-2",
+          "group-data-[orientation=horizontal]:border-b group-data-[orientation=horizontal]:border-border",
+          "group-data-[orientation=vertical]:flex-col group-data-[orientation=vertical]:border-r group-data-[orientation=vertical]:border-border",
+          listProps.className,
+        )}
+      >
+        {options.map((opt) => {
+          const isSelected = selectedValue === opt.value;
+          const triggerId = `tab-trigger-${opt.value}`;
+          const panelId = `tab-panel-${opt.value}`;
+
+          return (
+            <button
+              key={opt.value}
+              {...itemProps?.trigger}
+              id={triggerId}
+              role="tab"
+              aria-selected={isSelected}
+              aria-controls={panelId}
+              data-value={opt.value}
+              data-selected={isSelected}
+              disabled={opt.disabled}
+              onClick={() => !opt.disabled && handleSelect(opt.value)}
+              className={cn(
+                "px-4 py-2 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed",
+                tabClass[variant],
+                itemProps?.trigger?.className,
+              )}
+              type="button"
+              tabIndex={isSelected ? 0 : -1}
+            >
+              {opt.label}
+            </button>
+          );
+        })}
+        {listExtraChildren}
+      </div>
+
+      {options.map((opt) => {
+        const isSelected = selectedValue === opt.value;
+        const panelId = `tab-panel-${opt.value}`;
+        const triggerId = `tab-trigger-${opt.value}`;
+
+        return (
+          <div
+            key={opt.value}
+            {...itemProps?.content}
+            id={panelId}
+            role="tabpanel"
+            aria-labelledby={triggerId}
+            data-selected={isSelected}
+            className={cn(
+              "p-4 rounded-md bg-background data-[selected=false]:hidden",
+              itemProps?.content?.className,
+            )}
+          >
+            {opt.children}
+          </div>
+        );
+      })}
     </div>
   );
 }
-
-Tabs.List = TabsList;
-Tabs.Trigger = TabsTrigger;
-Tabs.Content = TabsContent;

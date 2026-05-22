@@ -3,11 +3,14 @@ import { cn, ClassNameValue } from "@/lib";
 import { ComponentProps } from "react";
 
 type WithDataAttributes<T> = T & {
-  [key: `data-${string}`]: string | number | null | undefined;
+  [key: `data-${string}`]: string | number | null | undefined | true;
   className?: ClassNameValue;
 };
 
-export type DatePickerProps = Omit<ComponentProps<"input">, "type"> & {
+export type DatePickerProps = Omit<
+  ComponentProps<"input">,
+  "type" | "onChange"
+> & {
   className?: ClassNameValue;
   label?: React.ReactNode;
   description?: React.ReactNode;
@@ -20,24 +23,33 @@ export type DatePickerProps = Omit<ComponentProps<"input">, "type"> & {
     description?: WithDataAttributes<ComponentProps<"small">>;
     invalid?: WithDataAttributes<ComponentProps<"small">>;
   };
+  onChange?: (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => void | { invalid: string | boolean };
 };
 
 export function DatePicker({
   label,
   description,
-  invalid,
-  placeholder = "Select",
+  placeholder,
   disabled,
   itemProps,
   onChange,
   value,
   className,
   type = "date",
+  invalid: externalInvalid,
   ...props
 }: DatePickerProps) {
-  const isInvalid = Boolean(invalid);
   const inputRef = React.useRef<HTMLInputElement>(null);
-
+  const [internalInvalid, setInternalInvalid] = React.useState<
+    boolean | string | undefined
+  >();
+  const finalInvalid = externalInvalid ?? internalInvalid;
+  const isInvalid = Boolean(finalInvalid);
+  const hasInvalidContent = typeof finalInvalid === "string";
+  const internalId = React.useId();
+  const inputId = props?.id || internalId;
   React.useEffect(() => {
     const el = inputRef.current;
     if (!el) return;
@@ -46,8 +58,10 @@ export function DatePicker({
   }, [value]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange?.(e);
+    const result = onChange?.(e);
+    setInternalInvalid(result?.invalid);
     const val = e.target.value;
+
     if (val) e.target.setAttribute("value", val);
     else e.target.removeAttribute("value");
   };
@@ -55,15 +69,19 @@ export function DatePicker({
   return (
     <div
       {...itemProps?.root}
-      className={cn("flex flex-col gap-1", itemProps?.root?.className)}
+      inert={disabled}
+      data-invalid={isInvalid ? true : undefined}
+      className={cn(
+        "flex flex-col gap-1 group inert:cursor-not-allowed inert:opacity-50",
+        itemProps?.root?.className,
+      )}
     >
       {label && (
         <label
           {...itemProps?.label}
-          data-disabled={disabled}
+          htmlFor={inputId}
           className={cn(
-            "text-sm font-medium leading-none",
-            "data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-70 indent-2 py-1",
+            "text-sm font-medium leading-none indent-2 py-1 select-none",
             itemProps?.label?.className,
           )}
         >
@@ -73,41 +91,38 @@ export function DatePicker({
 
       <input
         {...props}
+        id={inputId}
         ref={inputRef}
         type={type}
         disabled={disabled}
         value={value}
         onChange={handleChange}
         data-placeholder={placeholder}
-        data-invalid={isInvalid}
         className={cn(
           "h-9 w-full rounded-md border border-input bg-background px-3 relative",
-          "focus:outline-none focus:ring-2 focus:ring-ring",
+          "focus:outline-none focus:ring-1 focus:ring-ring",
           "disabled:opacity-50 disabled:pointer-events-none",
-          "data-[invalid=true]:border-destructive",
-          "[&:not([value])::-webkit-datetime-edit]:opacity-0",
-          "[&[value]]::-webkit-datetime-edit]:opacity-100",
-          "[&:not([value])]:color-transparent",
-          "before:content-[attr(data-placeholder)]",
-          "before:absolute before:left-3 before:top-1/2 before:-translate-y-1/2",
-          "before:text-muted-foreground before:pointer-events-none",
-          "[[value]]:before:content-['']",
+          "group-data-invalid:border-destructive",
+          "invalid:border-destructive invalid:focus:ring-destructive",
+          "[&:not([value])::-webkit-datetime-edit]:opacity-0 invalid:[&:not([value])::-webkit-datetime-edit]:opacity-100",
+          "[[value]::-webkit-datetime-edit]:opacity-100",
+          "before:absolute before:left-3 before:top-1/2 before:-translate-y-1/2 before:text-muted-foreground before:pointer-events-none",
+          "before:content-[attr(data-placeholder)] [[value]]:before:content-[''] invalid:before:content-['']",
           className,
         )}
       />
 
       <small
-        data-invalid={isInvalid}
-        {...(isInvalid ? itemProps?.invalid : itemProps?.description)}
-        data-disabled={disabled}
+        {...(hasInvalidContent ? itemProps?.invalid : itemProps?.description)}
         className={cn(
-          "text-sm indent-2 h-5 text-muted-foreground ",
-          "data-[invalid=true]:text-destructive data-[disabled=true]:opacity-70",
-          (isInvalid ? itemProps?.invalid : itemProps?.description)?.className,
+          "text-sm indent-2 h-5 text-muted-foreground",
+          "group-data-invalid:text-destructive",
+          (hasInvalidContent ? itemProps?.invalid : itemProps?.description)
+            ?.className,
         )}
-        role={isInvalid ? "alert" : undefined}
+        role={hasInvalidContent ? "alert" : undefined}
       >
-        {isInvalid ? invalid : description}
+        {hasInvalidContent ? finalInvalid : description}
       </small>
     </div>
   );

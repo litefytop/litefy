@@ -8,11 +8,12 @@ export default function CheckboxValidation() {
     <div className="flex flex-col gap-4">
       <Checkbox
         label="Checkbox Validation"
+        description="Please select at least one option"
         value={values}
         onValueChange={(values) => {
           setValues(values);
           if (!values.length) {
-            return { invalid: "Please select at least one option" };
+            return { invalid: true };
           }
         }}
         options={[

@@ -33,6 +33,7 @@ export const en = {
   components: {
     button: "Button",
     accordion: "Accordion",
+    "accordion-controlled": "Accordion (Controlled)",
     anchor: "Anchor",
     toast: "Toast",
     dialog: "Dialog",
@@ -41,6 +42,7 @@ export const en = {
     checkbox: "Checkbox",
     slider: "Slider",
     textarea: "Textarea",
+    tabs: "Tabs",
     select: "Select",
     loading: "Loading",
     empty: "Empty",
@@ -144,21 +146,20 @@ export const en = {
     icon: {
       title: "Custom Icon",
     },
+    disabled: {
+      title: "Disabled",
+    },
     anatomy: {
       title: "Anatomy",
       accordion: "Accordion",
       item: "Accordion.Item",
-      root: "Root",
-      titleLabel: "Title Label",
+      summary:"Summary",
       content: "Content",
     },
     api: {
       props: {
-        defaultOpenKeys: "Initially expanded keys (uncontrolled)",
-        openKeys: "Currently expanded keys (controlled)",
-        onOpenChange: "Callback when expansion state changes",
-        allowMultiple: "Whether to allow multiple expansions",
-        itemProps: "Internal wrapped props pass-through config",
+
+    
         icon: "Custom expand/collapse icon",
       },
       itemProps: {
@@ -168,14 +169,65 @@ export const en = {
         icon: "Custom icon (overrides Accordion icon)",
       },
       itemPropsConfig: {
-        root: "Root element props",
-        label: "Label element props",
+        summary: "Summary element props",
         content: "Content area props",
       },
 
       sectionTitles: {
         accordionProps: "Accordion Props",
         accordionItemProps: "Accordion.Item Props",
+        itemPropsConfig: "itemProps Config",
+      },
+    },
+  },
+
+  accordionControlled: {
+    title: "Accordion (Controlled)",
+    description: "Controlled accordion component with state management for precise expand/collapse behavior.",
+    basic: {
+      title: "Basic",
+    },
+    controlled: {
+      title: "Controlled Mode",
+    },
+    multiple: {
+      title: "Multiple",
+    },
+    icon: {
+      title: "Custom Icon",
+    },
+    disabled: {
+      title: "Disabled",
+    },
+    anatomy: {
+      title: "Anatomy",
+      accordion: "AccordionControlled",
+      item: "AccordionControlled.Item",
+      label: "Label",
+      content: "Content",
+    },
+    api: {
+      props: {
+        defaultOpenKeys: "Default expanded keys array",
+        openKeys: "Controlled expanded keys array",
+        onOpenChange: "Callback when expanded state changes",
+        allowMultiple: "Allow multiple selection",
+        icon: "Custom expand/collapse icon",
+      },
+      itemProps: {
+        value: "Unique identifier (required)",
+        label: "Label content (required)",
+        itemProps: "Internal wrapped props pass-through config",
+        icon: "Custom icon (overrides AccordionControlled icon)",
+      },
+      itemPropsConfig: {
+        root: "Root element props",
+        label: "Label element props",
+        content: "Content area props",
+      },
+      sectionTitles: {
+        accordionProps: "AccordionControlled Props",
+        accordionItemProps: "AccordionControlled.Item Props",
         itemPropsConfig: "itemProps Config",
       },
     },
@@ -334,17 +386,16 @@ export const en = {
       title: "Validation",
     },
     anatomy: {
-      group: "Group",
+      checkbox: "Checkbox",
       label: "Label",
       description: "Description",
-      item: "Item",
-      indicator: "Indicator",
+      content: "Content",
+      item: "Label and Indicator",
     },
     api: {
       sectionTitles: {
         checkboxProps: "Checkbox Props",
         checkboxItemProps: "Checkbox.Item Props",
-        indicatorConfig: "indicator Config",
         itemPropsConfig: "itemProps Config",
         itemProps: "itemProps Config",
       },
@@ -354,7 +405,7 @@ export const en = {
         onValueChange: "Value change callback, can return { invalid?: string } to trigger invalid state",
         invalid: "Invalid state, supports boolean or string type",
         disabled: "Whether to disable entire group",
-        name: "Form field name, submits comma-separated string (e.g. a,b,c) when present",
+        name: "Form field name",
         label: "Label text",
         description: "Description text",
         itemProps: "Internal element props passthrough config",
@@ -366,17 +417,13 @@ export const en = {
         disabled: "Whether disabled",
         variant: "Style variant",
         indicator: "Indicator config",
+        itemProps:"Internal element props passthrough config"
       },
-      indicator: {
-        checked: "Indicator when checked",
-        unchecked: "Indicator when unchecked",
-        hidden: "Hide indicator",
-        props: "Indicator element props",
-      },
+ 
       itemProps: {
-        root: "Root container `<div>` element props",
+
         content: "Content container `<div>` element props",
-        label: "Label `<label>` element props",
+        label: "Label `<span>` element props",
         description: "Description `<small>` element props",
         invalid: "Invalid text `<span>` element props",
         options: "Option item `<button>` element props",
@@ -592,6 +639,63 @@ export const en = {
         invalid: "Invalid `<small>` props",
         description: "Description `<small>` props",
       },
+    },
+  },
+
+  tabs: {
+    title: "Tabs",
+    description: "Tabs component for switching between multiple content panels.",
+    basic: {
+      title: "Basic",
+    },
+    controlled: {
+      title: "Controlled",
+    },
+    vertical: {
+      title: "Vertical",
+    },
+    disabled: {
+      title: "Disabled",
+    },
+    styled: {
+      title: "Custom Styling",
+    },
+    anatomy: {
+      root: "Root",
+      list: "List Container",
+      trigger: "Trigger",
+      content: "Content Panel",
+    },
+    api: {
+      sectionTitles: {
+        tabsProps: "Tabs Props",
+        itemPropsConfig: "itemProps Config",
+      },
+      props: {
+        options: "Tab options configuration array",
+        defaultValue: "Default selected tab value (uncontrolled)",
+        value: "Selected tab value (controlled)",
+        onValueChange: "Tab change callback",
+        orientation: "Orientation: horizontal or vertical",
+        activationMode: "Activation mode: automatic or manual",
+        itemProps: "Internal props passthrough",
+      },
+      itemPropsConfig: {
+        list: "List container `<div>` props",
+        trigger: "Trigger `<button>` props",
+        content: "Content panel `<div>` props",
+      },
+    },
+    docs: {
+      introduction: "The Tabs component allows switching between multiple related content panels. It supports both controlled and uncontrolled modes, and provides horizontal and vertical layout orientations.",
+      features: [
+        "Supports both controlled and uncontrolled modes",
+        "Provides horizontal and vertical layout orientations",
+        "Supports keyboard navigation following WAI-ARIA standards",
+        "Supports automatic and manual activation modes",
+        "Allows internal element props passthrough via itemProps",
+      ],
+      usage: "When using the Tabs component, you need to pass an options array to configure all tab options. Each option includes value, label, children, and an optional disabled property.",
     },
   },
 
@@ -816,6 +920,17 @@ export const en = {
     api: {
       sectionTitles: {
         dialogProps: "Dialog Props",
+        refMethods: "Ref Methods",
+      },
+      props: {
+        className: "Custom class name",
+        open: "Control whether dialog is open (controlled mode)",
+        onClose: "Callback function when dialog closes",
+      },
+      refMethods: {
+        show: "Open dialog (non-modal)",
+        showModal: "Open dialog (modal)",
+        close: "Close dialog",
       },
     },
   },

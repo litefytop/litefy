@@ -94,11 +94,12 @@ function AnatomyItem({ id, name, label }: { id?: string; name?: string; label: s
   return (
     <button
       onClick={() => setActivePart(isActive ? null : partKey!, partType)}
+      data-active={isActive}
       className={cn(
-        "w-full text-left px-3 py-2 text-sm rounded-md border ",
-        isActive
-          ? "bg-primary text-primary-foreground border-primary"
-          : "hover:bg-muted border-border"
+        "w-full text-left px-3 py-2 text-sm rounded-md border border-border",
+        "transition-all duration-200",
+        "hover:bg-muted",
+        "data-[active=true]:bg-primary data-[active=true]:text-primary-foreground"
       )}
     >
       {label}

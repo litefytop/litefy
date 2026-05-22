@@ -8,26 +8,26 @@ import {
   Anatomy,
   Button,
   Docs,
-  Accordion
+  AccordionControlled,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages";
 import { getComponentNav } from "@/pages/config/routes";
 import {
-  AccordionBasic,
-  AccordionMultiple,
-  AccordionIcon,
-  AccordionDisabled,
+  AccordionControlledBasic,
+  AccordionControlledUsage,
+  AccordionControlledMultiple,
+  AccordionControlledIcon,
+  AccordionControlledDisabled,
 } from "./examples";
-import AccordionBasicRaw from "./examples/accordion-basic.tsx?raw";
-import AccordionMultipleRaw from "./examples/accordion-multiple.tsx?raw";
-import AccordionIconRaw from "./examples/accordion-icon.tsx?raw";
-import AccordionDisabledRaw from "./examples/accordion-disabled.tsx?raw";
-import accordionDoc from "./doc.mdx?raw";
-import accordionSrc from "@/component/ui/accordion.tsx?raw";
+import AccordionControlledBasicRaw from "./examples/accordion-controlled-basic.tsx?raw";
+import AccordionControlledUsageRaw from "./examples/accordion-controlled-usage.tsx?raw";
+import AccordionControlledMultipleRaw from "./examples/accordion-controlled-multiple.tsx?raw";
+import AccordionControlledIconRaw from "./examples/accordion-controlled-icon.tsx?raw";
+import AccordionControlledDisabledRaw from "./examples/accordion-controlled-disabled.tsx?raw";
+import accordionControlledDoc from "./doc.mdx?raw";
+import accordionControlledSrc from "@/component/ui/accordion-controlled.tsx?raw";
 import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, CopyIcon } from "lucide-react";
-
-
 
 function DemoSection({
   id,
@@ -53,30 +53,48 @@ function DemoSection({
   );
 }
 
-export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
+export default function AccordionControlledPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
-  const l = lang.accordion;
+  const l = lang.accordionControlled;
 
-  const accordionSections = [
+  const accordionControlledSections = [
     {
       title: l.api.sectionTitles.accordionProps,
       data: [
-       
+        {
+          props: "defaultOpenKeys",
+          type: "string[]",
+          default: "[]",
+          description: l.api.props.defaultOpenKeys,
+        },
+        {
+          props: "openKeys",
+          type: "string[]",
+          description: l.api.props.openKeys,
+        },
+        {
+          props: "onOpenChange",
+          type: "(keys: string[]) => void",
+          description: l.api.props.onOpenChange,
+        },
+        {
+          props: "allowMultiple",
+          type: "boolean",
+          default: "false",
+          description: l.api.props.allowMultiple,
+        },
         {
           props: "className",
           type: "ClassNameValue",
-          
           description: lang.common.className,
         },
         {
           props: "icon",
           type: "ReactNode | ((open: boolean) => ReactNode)",
-          
           description: l.api.props.icon,
         },
-
       ],
     },
     {
@@ -85,31 +103,26 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "value",
           type: "string",
-          
           description: l.api.itemProps.value,
         },
         {
           props: "label",
           type: "ReactNode",
-          
           description: l.api.itemProps.label,
         },
         {
           props: "itemProps",
           type: "object",
-          
           description: l.api.itemProps.itemProps,
         },
         {
           props: "className",
           type: "ClassNameValue",
-          
           description: lang.common.className,
         },
         {
           props: "icon",
           type: "ReactNode | ((open: boolean) => ReactNode)",
-          
           description: l.api.itemProps.icon,
         },
       ],
@@ -117,27 +130,29 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
     {
       title: l.api.sectionTitles.itemPropsConfig,
       data: [
-  
         {
-          props: "summary",
-          type: 'React.ComponentProps<"summary">',
-          
-          description: l.api.itemPropsConfig.summary,
+          props: "root",
+          type: 'React.ComponentProps<"div">',
+          description: l.api.itemPropsConfig.root,
+        },
+        {
+          props: "label",
+          type: 'React.ComponentProps<"span">',
+          description: l.api.itemPropsConfig.label,
         },
         {
           props: "content",
           type: 'React.ComponentProps<"div">',
-          
           description: l.api.itemPropsConfig.content,
         },
       ],
     },
   ];
 
-  const nav = getComponentNav("/components/accordion", locale as "zh" | "en");
+  const nav = getComponentNav("/components/accordion-controlled", locale as "zh" | "en");
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(accordionDoc);
+    navigator.clipboard.writeText(accordionControlledDoc);
     setCopied(true);
     Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);
@@ -156,7 +171,7 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
       <div className="flex-1 w-full">
         <header className="pb-4 mb-4 border-b space-y-3">
           <div className="flex items-center justify-between">
-            <Title as="h1">{lang.accordion.title}</Title>
+            <Title as="h1">{lang.accordionControlled.title}</Title>
             <div className="flex items-center gap-2">
               <Button onClick={handleCopy} variant="ghost">
                 {copied ? (
@@ -174,93 +189,98 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
               </Button>
             </div>
           </div>
-          <Description>{lang.accordion.description}</Description>
+          <Description>{lang.accordionControlled.description}</Description>
         </header>
 
         <section id="installation" className="mb-8 scroll-mt-30">
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
-          <ShikiCodeBlock>{accordionSrc}</ShikiCodeBlock>
+          <ShikiCodeBlock>{accordionControlledSrc}</ShikiCodeBlock>
         </section>
 
         <section id="examples" className="">
           <Title as="h2">{lang.examples}</Title>
           <DemoSection
             id="basic"
-            title={lang.accordion.basic.title}
-            code={AccordionBasicRaw}
+            title={lang.accordionControlled.basic.title}
+            code={AccordionControlledBasicRaw}
           >
-            <AccordionBasic />
+            <AccordionControlledBasic />
+          </DemoSection>
+
+          <DemoSection
+            id="controlled"
+            title={lang.accordionControlled.controlled.title}
+            code={AccordionControlledUsageRaw}
+          >
+            <AccordionControlledUsage />
           </DemoSection>
 
           <DemoSection
             id="multiple"
-            title={lang.accordion.multiple.title}
-            code={AccordionMultipleRaw}
+            title={lang.accordionControlled.multiple.title}
+            code={AccordionControlledMultipleRaw}
           >
-            <AccordionMultiple />
+            <AccordionControlledMultiple />
           </DemoSection>
-
 
           <DemoSection
             id="icon"
-            title={lang.accordion.icon.title}
-            code={AccordionIconRaw}
+            title={lang.accordionControlled.icon.title}
+            code={AccordionControlledIconRaw}
           >
-            <AccordionIcon />
+            <AccordionControlledIcon />
           </DemoSection>
 
           <DemoSection
             id="disabled"
-            title={lang.accordion.disabled.title}
-            code={AccordionDisabledRaw}
+            title={lang.accordionControlled.disabled.title}
+            code={AccordionControlledDisabledRaw}
           >
-            <AccordionDisabled />
+            <AccordionControlledDisabled />
           </DemoSection>
         </section>
+
         <section id="anatomy" className="mt-8 space-y-4">
-          <Title as="h2">{lang.accordion.anatomy.title}</Title>
+          <Title as="h2">{lang.accordionControlled.anatomy.title}</Title>
           <Anatomy
             className="h-32"
             parts={[
               {
                 id: "anatomy-accordion",
-                label: lang.accordion.anatomy.accordion,
+                label: lang.accordionControlled.anatomy.accordion,
               },
-
-              { id: "anatomy-item", label: lang.accordion.anatomy.item },
-              { id: "anatomy-summary", label: lang.accordion.anatomy.summary },
-
-              { id: "anatomy-content", label: lang.accordion.anatomy.content },
+              { id: "anatomy-item", label: lang.accordionControlled.anatomy.item },
+              { id: "anatomy-label", label: lang.accordionControlled.anatomy.label },
+              { id: "anatomy-content", label: lang.accordionControlled.anatomy.content },
             ]}
           >
-            <Accordion
+            <AccordionControlled
               id="anatomy-accordion"
               className="max-w-sm"
+              openKeys={["item-1"]}
             >
-              <Accordion.Item
-                label={lang.accordion.basic.title}
+              <AccordionControlled.Item
+                value="item-1"
+                label={lang.accordionControlled.basic.title}
                 id="anatomy-item"
                 itemProps={{
-                  summary: { id: "anatomy-summary" },
+                  label: { id: "anatomy-label" },
                   content: { id: "anatomy-content" },
                 }}
               >
-                {lang.accordion.anatomy.content}
-              </Accordion.Item>
-              <Accordion.Item  label={lang.accordion.basic.title}>
-                {lang.accordion.anatomy.content}
-              </Accordion.Item>
-            </Accordion>
+                {lang.accordionControlled.anatomy.content}
+              </AccordionControlled.Item>
+            </AccordionControlled>
           </Anatomy>
         </section>
+
         <section id="docs" data-anchor-id="docs" className="mt-12 space-y-4">
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
-
-          <Docs sections={accordionSections} />
+          <Docs sections={accordionControlledSections} />
         </section>
       </div>
 
@@ -269,21 +289,21 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">
-              {lang.accordion.basic.title}
-            </Anchor.Item>
-            <Anchor.Item href="#multiple">
-              {lang.accordion.multiple.title}
+              {lang.accordionControlled.basic.title}
             </Anchor.Item>
             <Anchor.Item href="#controlled">
-              {lang.accordion.controlled.title}
+              {lang.accordionControlled.controlled.title}
+            </Anchor.Item>
+            <Anchor.Item href="#multiple">
+              {lang.accordionControlled.multiple.title}
             </Anchor.Item>
             <Anchor.Item href="#icon">
-              {lang.accordion.icon.title}
+              {lang.accordionControlled.icon.title}
             </Anchor.Item>
           </Anchor.Section>
           <Anchor.Section
             href="#anatomy"
-            linkText={lang.accordion.anatomy.title}
+            linkText={lang.accordionControlled.anatomy.title}
           />
           <Anchor.Section href="#docs" linkText={lang.docs} />
         </Anchor>

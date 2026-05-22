@@ -2,9 +2,10 @@ import { createBrowserRouter } from "react-router-dom";
 import { lazy } from "react";
 import { zh, en } from "./i18n";
 import { App, Introduction } from "@/pages";
-import { ComingSoon } from "@/component";
+import { ComingSoon, FallbackErrorPage } from "@/component";
 
 const Accordion = lazy(() => import("@/pages/accordion"));
+const AccordionControlled = lazy(() => import("@/pages/accordion-controlled"));
 const Anchor = lazy(() => import("@/pages/anchor"));
 const AnchorDemo = lazy(() => import("@/pages/anchor/examples/anchor-basic"));
 const Button = lazy(() => import("@/pages/button"));
@@ -24,6 +25,7 @@ const Slider = lazy(() => import("@/pages/slider"));
 const Upload = lazy(() => import("@/pages/upload"));
 const DatePicker = lazy(() => import("@/pages/date-picker"));
 const Textarea = lazy(() => import("@/pages/text-area"));
+const Tabs = lazy(() => import("@/pages/tabs"));
 
 const introduction = {
   key: "introduction",
@@ -33,6 +35,7 @@ const introduction = {
 
 const componentRouteConfig = [
   { key: "accordion", path: "/components/accordion", Component: Accordion },
+  { key: "accordion-controlled", path: "/components/accordion-controlled", Component: AccordionControlled },
   { key: "anchor", path: "/components/anchor", Component: Anchor },
   { key: "button", path: "/components/button", Component: Button },
   { key: "toast", path: "/components/toast", Component: Toast },
@@ -49,6 +52,7 @@ const componentRouteConfig = [
   { key: "upload", path: "/components/upload", Component: Upload },
   { key: "date-picker", path: "/components/date-picker", Component: DatePicker },
   { key: "textarea", path: "/components/textarea", Component: Textarea },
+  { key: "tabs", path: "/components/tabs", Component: Tabs },
   { key: "loading", path: "/components/loading", Component: ComingSoon },
   { key: "empty", path: "/components/empty", Component: Empty },
   { key: "skeleton", path: "/components/skeleton", Component: ComingSoon },
@@ -143,9 +147,11 @@ export function createRouter() {
           headers: { Location: "/zh/" },
         });
       },
+      errorElement: <FallbackErrorPage />,
     },
     ...locales.map((locale) => ({
       element: <App locale={locale} />,
+      errorElement: <FallbackErrorPage />,
       children: [
         {
           path: `/${locale}/`,
