@@ -10,6 +10,11 @@ export const en = {
     type: "Type",
     default: "Default",
     description: "Description",
+    theme: {
+      light: "Light",
+      dark: "Dark",
+      system: "System",
+    },
   },
   home: {
     title: "Litefy UI",
@@ -461,7 +466,6 @@ export const en = {
         icon: "Icon, mutually exclusive with children",
         text: "Text, mutually exclusive with children",
         children: "Children, mutually exclusive with icon and text",
-        className: "Custom CSS class name",
       },
     },
   },
@@ -856,11 +860,14 @@ export const en = {
     basic: {
       title: "Basic",
     },
-    loading: {
-      title: "Custom Loading",
+    skeleton: {
+      title: "Custom Skeleton",
     },
     failure: {
       title: "Custom Failure",
+    },
+    progressive: {
+      title: "Progressive Loading",
     },
     api: {
       sectionTitles: {
@@ -869,9 +876,10 @@ export const en = {
       props: {
         src: "Image source URL (required)",
         alt: "Image alternative text",
-        className: "Custom CSS class name",
-        loading: "Loading placeholder content",
-        failure: "Failure placeholder content",
+        skeleton: "Skeleton content displayed during loading",
+        fallback: "Content displayed when loading fails",
+        placeholderSrc: "Placeholder source for progressive image loading",
+        delay: "Delay time for loading (milliseconds)",
       },
     },
   },
@@ -950,7 +958,6 @@ export const en = {
         refMethods: "Ref Methods",
       },
       props: {
-        className: "Custom class name",
         open: "Control whether dialog is open (controlled mode)",
         onClose: "Callback function when dialog closes",
       },

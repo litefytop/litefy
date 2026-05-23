@@ -10,6 +10,11 @@ export const zh = {
     type: "类型",
     default: "默认值",
     description: "描述",
+    theme: {
+      light: "浅色",
+      dark: "深色",
+      system: "跟随系统",
+    },
   },
   home: {
     title: "Litefy UI",
@@ -460,7 +465,6 @@ export const zh = {
         icon: "图标，与子组件互斥",
         text: "文字，与子组件互斥",
         children:"子组件，与文字图标互斥",
-        className: "自定义样式类名",
       },
     },
   },
@@ -855,11 +859,14 @@ export const zh = {
     basic: {
       title: "基础",
     },
-    loading: {
-      title: "自定义加载",
+    skeleton: {
+      title: "自定义骨架屏",
     },
     failure: {
       title: "自定义错误",
+    },
+    progressive: {
+      title: "渐进式加载",
     },
     api: {
       sectionTitles: {
@@ -868,9 +875,10 @@ export const zh = {
       props: {
         src: "图片地址（必填）",
         alt: "图片描述",
-        className: "自定义样式类名",
-        loading: "加载中占位内容",
-        failure: "加载失败占位内容",
+        skeleton: "加载时显示的骨架屏内容",
+        fallback: "加载失败时显示的内容",
+        placeholderSrc: "渐进式图片加载的占位图源",
+        delay: "延迟加载时间（毫秒）",
       },
     },
   },
@@ -949,7 +957,6 @@ export const zh = {
         refMethods: "Ref Methods",
       },
       props: {
-        className: "自定义类名",
         open: "控制对话框是否打开（受控模式）",
         onClose: "对话框关闭时的回调函数",
       },

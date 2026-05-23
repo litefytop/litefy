@@ -82,7 +82,7 @@ export default function EmptyPage({ locale = "zh" }: { locale?: string }) {
           props: "className",
           type: "ClassNameValue",
           default: "-",
-          description: l.api.props.className,
+          description: lang.common.className,
         },
       ],
     },

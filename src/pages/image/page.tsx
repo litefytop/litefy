@@ -78,19 +78,31 @@ export default function ImagePage({ locale = "zh" }: { locale?: string }) {
           props: "className",
           type: "ClassNameValue",
           default: "-",
-          description: l.api.props.className,
+          description: lang.common.className,
         },
         {
-          props: "loading",
+          props: "skeleton",
           type: "ReactNode",
           default: "Skeleton",
-          description: l.api.props.loading,
+          description: l.api.props.skeleton,
         },
         {
-          props: "failure",
+          props: "fallback",
           type: "ReactNode",
-          default: '"加载失败"',
-          description: l.api.props.failure,
+          default: '"load failed"',
+          description: l.api.props.fallback,
+        },
+        {
+          props: "placeholderSrc",
+          type: "string",
+          default: "-",
+          description: l.api.props.placeholderSrc,
+        },
+        {
+          props: "delay",
+          type: "number",
+          default: "0",
+          description: l.api.props.delay,
         },
       ],
     },
@@ -157,7 +169,7 @@ export default function ImagePage({ locale = "zh" }: { locale?: string }) {
 
           <DemoSection
             id="loading"
-            title={l.loading.title}
+            title={l.skeleton.title}
             code={ImageSkeletonRaw}
           >
             <ImageSkeleton />
@@ -193,7 +205,7 @@ export default function ImagePage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
-            <Anchor.Item href="#loading">{l.loading.title}</Anchor.Item>
+            <Anchor.Item href="#loading">{l.skeleton.title}</Anchor.Item>
             <Anchor.Item href="#failure">{l.failure.title}</Anchor.Item>
             <Anchor.Item href="#progressive">渐进式加载</Anchor.Item>
           </Anchor.Section>

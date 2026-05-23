@@ -2,7 +2,7 @@
 
 import  { useState, useEffect } from "react";
 
-export type ColorScheme = "light" | "dark";
+export type ColorScheme = "light" | "dark" | "system";
 
 interface ThemeState {
   theme: string;
@@ -46,10 +46,18 @@ function notifyColorScheme(): void {
   colorSchemeListeners.forEach((fn) => fn());
 }
 
+function getSystemColorScheme(): "light" | "dark" {
+  if (typeof window === "undefined") return "light";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
 function applyTheme(): void {
   const root = document.documentElement;
   root.setAttribute("data-theme", theme);
-  if (colorScheme === "dark") {
+  
+  const effectiveColorScheme = colorScheme === "system" ? getSystemColorScheme() : colorScheme;
+  
+  if (effectiveColorScheme === "dark") {
     root.classList.add("dark");
   } else {
     root.classList.remove("dark");
@@ -58,6 +66,16 @@ function applyTheme(): void {
 
 loadFromStorage();
 applyTheme();
+
+if (typeof window !== "undefined") {
+  const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  mediaQuery.addEventListener("change", () => {
+    if (colorScheme === "system") {
+      applyTheme();
+      notifyColorScheme();
+    }
+  });
+}
 
 export function useTheme(): ThemeState {
   const [themeState, setThemeState] = useState(theme);

@@ -73,7 +73,7 @@ export default function DialogPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "className",
           type: "ClassNameValue",
-          description: l.api.props.className,
+          description: lang.common.className,
         },
         {
           props: "open",
