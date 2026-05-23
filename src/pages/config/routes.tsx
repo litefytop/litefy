@@ -26,6 +26,7 @@ const Upload = lazy(() => import("@/pages/upload"));
 const DatePicker = lazy(() => import("@/pages/date-picker"));
 const Textarea = lazy(() => import("@/pages/text-area"));
 const Tabs = lazy(() => import("@/pages/tabs"));
+const Image = lazy(() => import("@/pages/image"));
 
 const introduction = {
   key: "introduction",
@@ -61,7 +62,7 @@ const componentRouteConfig = [
   { key: "title", path: "/components/title", Component: ComingSoon },
   { key: "text", path: "/components/text", Component: ComingSoon },
   { key: "description", path: "/components/description", Component: Description },
-  { key: "image", path: "/components/image", Component: ComingSoon },
+  { key: "image", path: "/components/image", Component: Image },
   { key: "watermark", path: "/components/watermark", Component: ComingSoon },
   { key: "show", path: "/components/show", Component: ComingSoon },
   { key: "toggle", path: "/components/toggle", Component: ComingSoon },

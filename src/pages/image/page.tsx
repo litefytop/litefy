@@ -13,11 +13,13 @@ import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
 import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
-import { EmptyBasic, EmptyCustom } from "./examples";
-import EmptyBasicRaw from "./examples/empty-basic.tsx?raw";
-import EmptyCustomRaw from "./examples/empty-custom.tsx?raw";
-import emptyDoc from "./doc.mdx?raw";
-import emptySrc from "@/component/ui/empty.tsx?raw";
+import { ImageBasic, ImageSkeleton, ImageFailure, ImageProgressive } from "./examples";
+import ImageBasicRaw from "./examples/image-basic.tsx?raw";
+import ImageSkeletonRaw from "./examples/image-skeleton.tsx?raw";
+import ImageFailureRaw from "./examples/image-failure.tsx?raw";
+import ImageProgressiveRaw from "./examples/image-progressive.tsx?raw";
+import imageDoc from "./doc.mdx?raw";
+import imageSrc from "@/component/ui/image.tsx?raw";
 
 function DemoSection({
   id,
@@ -43,16 +45,16 @@ function DemoSection({
   );
 }
 
-export default function EmptyPage({ locale = "zh" }: { locale?: string }) {
+export default function ImagePage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
-  const l = lang.empty;
-  const nav = getComponentNav("/components/empty", locale as "zh" | "en");
+  const l = lang.image;
+  const nav = getComponentNav("/components/image", locale as "zh" | "en");
 
-  const emptySections = [
+  const imageSections = [
     {
-      title: l.api.sectionTitles.emptyProps,
+      title: l.api.sectionTitles.imageProps,
       columns: [
         { key: "prop", header: lang.common.prop },
         { key: "type", header: lang.common.type },
@@ -61,22 +63,16 @@ export default function EmptyPage({ locale = "zh" }: { locale?: string }) {
       ],
       data: [
         {
-          props: "icon",
-          type: "React.ReactNode",
-          default: "CopyIcon",
-          description: l.api.props.icon,
-        },
-        {
-          props: "text",
-          type: "React.ReactNode",
-          default: '"No Content"',
-          description: l.api.props.text,
-        },
-        {
-          props: "children",
-          type: "React.ReactNode",
+          props: "src",
+          type: "string",
           default: "-",
-          description: l.api.props.children,
+          description: l.api.props.src,
+        },
+        {
+          props: "alt",
+          type: "string",
+          default: '""',
+          description: l.api.props.alt,
         },
         {
           props: "className",
@@ -84,12 +80,24 @@ export default function EmptyPage({ locale = "zh" }: { locale?: string }) {
           default: "-",
           description: l.api.props.className,
         },
+        {
+          props: "loading",
+          type: "ReactNode",
+          default: "Skeleton",
+          description: l.api.props.loading,
+        },
+        {
+          props: "failure",
+          type: "ReactNode",
+          default: '"加载失败"',
+          description: l.api.props.failure,
+        },
       ],
     },
   ];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(emptyDoc);
+    navigator.clipboard.writeText(imageDoc);
     setCopied(true);
     Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);
@@ -133,7 +141,7 @@ export default function EmptyPage({ locale = "zh" }: { locale?: string }) {
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
-          <ShikiCodeBlock>{emptySrc}</ShikiCodeBlock>
+          <ShikiCodeBlock>{imageSrc}</ShikiCodeBlock>
         </section>
 
         <section id="examples" className="">
@@ -142,17 +150,33 @@ export default function EmptyPage({ locale = "zh" }: { locale?: string }) {
           <DemoSection
             id="basic"
             title={l.basic.title}
-            code={EmptyBasicRaw}
+            code={ImageBasicRaw}
           >
-            <EmptyBasic />
+            <ImageBasic />
           </DemoSection>
 
           <DemoSection
-            id="custom"
-            title={l.custom.title}
-            code={EmptyCustomRaw}
+            id="loading"
+            title={l.loading.title}
+            code={ImageSkeletonRaw}
           >
-            <EmptyCustom />
+            <ImageSkeleton />
+          </DemoSection>
+
+          <DemoSection
+            id="failure"
+            title={l.failure.title}
+            code={ImageFailureRaw}
+          >
+            <ImageFailure />
+          </DemoSection>
+
+          <DemoSection
+            id="progressive"
+            title="渐进式加载"
+            code={ImageProgressiveRaw}
+          >
+            <ImageProgressive />
           </DemoSection>
         </section>
 
@@ -160,7 +184,7 @@ export default function EmptyPage({ locale = "zh" }: { locale?: string }) {
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
-          <Docs sections={emptySections} />
+          <Docs sections={imageSections} />
         </section>
       </div>
 
@@ -169,7 +193,9 @@ export default function EmptyPage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
-            <Anchor.Item href="#custom">{l.custom.title}</Anchor.Item>
+            <Anchor.Item href="#loading">{l.loading.title}</Anchor.Item>
+            <Anchor.Item href="#failure">{l.failure.title}</Anchor.Item>
+            <Anchor.Item href="#progressive">渐进式加载</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#docs" linkText={lang.docs} />
         </Anchor>

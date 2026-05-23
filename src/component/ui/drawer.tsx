@@ -4,10 +4,10 @@ import * as React from "react";
 import { ClassNameValue, cn } from "@/lib";
 
 const drawerClass = {
-  left: "left-0 top-0 h-full w-80",
-  right: "right-0 top-0 h-full w-80",
-  top: "left-0 top-0 w-full h-80",
-  bottom: "left-0 bottom-0 w-full h-80",
+  left: "left-0 top-0 h-full w-3xs",
+  right: "right-0 top-0 h-full w-3xs",
+  top: "left-0 top-0 w-full h-3xs",
+  bottom: "left-0 bottom-0 w-full h-3xs",
 };
 
 export type DrawerRef = {
@@ -18,47 +18,141 @@ export type DrawerRef = {
 export type DrawerProps = React.ComponentProps<"div"> & {
   className?: ClassNameValue;
   placement?: "left" | "right" | "top" | "bottom";
+  onClose?: () => void;
+  onOpen?: () => void;
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
 };
 
 const Drawer = React.forwardRef<DrawerRef, DrawerProps>(
-  ({ className, placement = "right", children, ...props }, ref) => {
+  (
+    {
+      className,
+      placement = "right",
+      children,
+      onClose,
+      onOpen,
+      "aria-label": ariaLabel,
+      "aria-labelledby": ariaLabelledby,
+      ...props
+    },
+    ref
+  ) => {
     const [open, setOpen] = React.useState(false);
+    const drawerRef = React.useRef<HTMLDivElement>(null);
+    const previousFocusRef = React.useRef<HTMLElement | null>(null);
+
+    // 获取抽屉内所有可聚焦元素
+    const getFocusableElements = () => {
+      if (!drawerRef.current) return [];
+      const focusableSelectors = [
+        'a[href]',
+        'button:not([disabled])',
+        'input:not([disabled])',
+        'textarea:not([disabled])',
+        'select:not([disabled])',
+        '[tabindex]:not([tabindex="-1"])',
+      ];
+      return Array.from(
+        drawerRef.current.querySelectorAll<HTMLElement>(focusableSelectors.join(','))
+      ).filter(el => el.offsetParent !== null); // 过滤隐藏元素
+    };
+
+    // 焦点陷阱：Tab 键循环
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+      if (e.key !== 'Tab') return;
+      const focusable = getFocusableElements();
+      if (focusable.length === 0) {
+        e.preventDefault();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+
+      if (e.shiftKey) {
+        // Shift + Tab: 如果焦点在第一个，则移到最后一个
+        if (active === first || !drawerRef.current?.contains(active as Node)) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        // Tab: 如果焦点在最后一个，则移到第一个
+        if (active === last || !drawerRef.current?.contains(active as Node)) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
 
     React.useImperativeHandle(ref, () => ({
-      show: () => setOpen(true),
-      close: () => setOpen(false),
+      show: () => {
+        setOpen(true);
+        onOpen?.();
+      },
+      close: () => {
+        setOpen(false);
+        onClose?.();
+      },
     }));
 
+    // 打开时保存原焦点，并聚焦到第一个可聚焦元素；关闭时恢复
     React.useEffect(() => {
+      if (open) {
+        previousFocusRef.current = document.activeElement as HTMLElement;
+        // 延迟确保 DOM 已渲染
+        const timer = setTimeout(() => {
+          const focusable = getFocusableElements();
+          if (focusable.length > 0) {
+            focusable[0].focus();
+          } else {
+            drawerRef.current?.focus();
+          }
+        }, 0);
+        return () => clearTimeout(timer);
+      } else if (previousFocusRef.current) {
+        previousFocusRef.current.focus();
+        previousFocusRef.current = null;
+      }
+    }, [open]);
+
+    // ESC 关闭
+    React.useEffect(() => {
+      if (!open) return;
       const handleEsc = (e: KeyboardEvent) => {
-        if (e.key === "Escape") setOpen(false);
+        if (e.key === "Escape") {
+          setOpen(false);
+          onClose?.();
+        }
       };
       window.addEventListener("keydown", handleEsc);
       return () => window.removeEventListener("keydown", handleEsc);
-    }, []);
+    }, [open, onClose]);
 
-    React.useEffect(() => {
-      document.body.style.overflow = open ? "hidden" : "";
-      return () => {
-        document.body.style.overflow = "";
-      };
-    }, [open]);
-
-    const handleBackdropClick = () => setOpen(false);
+    const handleBackdropClick = () => {
+      setOpen(false);
+      onClose?.();
+    };
     const handleContentClick = (e: React.MouseEvent) => e.stopPropagation();
 
     if (!open) return null;
 
     return (
       <div className="fixed inset-0 z-50" onClick={handleBackdropClick}>
-        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-muted/50" />
         <div
           {...props}
-          data-state="open"
+          ref={drawerRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledby}
+          tabIndex={-1}
           onClick={handleContentClick}
+          onKeyDown={handleKeyDown} // 焦点陷阱
           className={cn(
             drawerClass[placement],
-            "fixed bg-background p-6 overflow-auto",
+            "fixed bg-background p-6 overflow-auto focus:outline-none",
             className
           )}
         >
@@ -66,8 +160,9 @@ const Drawer = React.forwardRef<DrawerRef, DrawerProps>(
         </div>
       </div>
     );
-  },
+  }
 );
 
+Drawer.displayName = "Drawer";
 
 export { Drawer };

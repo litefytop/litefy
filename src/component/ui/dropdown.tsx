@@ -17,11 +17,10 @@ export function Dropdown({
   children,
   className,
   ...props
-}: React.ComponentProps<"div">&{
+}: React.ComponentProps<"div"> & {
   className?: ClassNameValue;
 }) {
   const contentId = React.useId();
-
   return (
     <DropdownContext.Provider value={contentId}>
       <div className={cn("inline-flex", className)} {...props}>
@@ -31,27 +30,40 @@ export function Dropdown({
   );
 }
 
- function DropdownTrigger({
+function DropdownTrigger({
   children,
   className,
   target: externalTarget,
   ...props
-}: React.ComponentProps<"button">&{
+}: React.ComponentProps<"button"> & {
   target?: string;
 }) {
   const contextContentId = useDropdown();
   const contentId = externalTarget || contextContentId;
   const anchorName = `--anchor-${contentId}`;
+  const [open, setOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    const content = document.getElementById(contentId) as HTMLElement & { matches?: (s: string) => boolean };
+    if (!content) return;
+    const handleToggle = (e: Event) => {
+      const popoverOpen = (e as ToggleEvent).newState === "open";
+      setOpen(popoverOpen);
+    };
+    content.addEventListener("toggle", handleToggle);
+    return () => content.removeEventListener("toggle", handleToggle);
+  }, [contentId]);
 
   return (
     <button
       popoverTarget={contentId}
       popoverTargetAction="toggle"
       aria-haspopup="menu"
+      aria-expanded={open}
       type="button"
       className={cn(
         "cursor-pointer outline-none inline-flex items-center justify-center shrink-0 select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 h-9 min-w-9 px-3 py-1 has-[>svg]:px-2 gap-1 rounded-full",
-        className,
+        className
       )}
       style={{ anchorName } as React.CSSProperties}
       {...props}
@@ -60,7 +72,8 @@ export function Dropdown({
     </button>
   );
 }
- function DropdownContent({
+
+function DropdownContent({
   children,
   className,
   alignX = "center",
@@ -78,43 +91,59 @@ export function Dropdown({
   const contentId = externalId || contextContentId;
   const anchorName = `--anchor-${contentId}`;
   const menuRef = React.useRef<HTMLMenuElement>(null);
+  const triggerRef = React.useRef<HTMLElement | null>(null);
+
+  React.useEffect(() => {
+    const trigger = document.querySelector(`[popoverTarget="${contentId}"]`) as HTMLElement;
+    if (trigger) triggerRef.current = trigger;
+  }, [contentId]);
 
   React.useEffect(() => {
     const menu = menuRef.current;
     if (!menu) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "Home" || e.key === "End") {
         e.preventDefault();
-        const items = menu.querySelectorAll<HTMLButtonElement>(
-          "li button:not([disabled])",
-        );
+        const items = menu.querySelectorAll<HTMLButtonElement>("li button:not([disabled])");
         if (items.length === 0) return;
 
-        const currentIndex = Array.from(items).findIndex(
-          (item) => item === document.activeElement,
-        );
-
+        const currentIndex = Array.from(items).findIndex((item) => item === document.activeElement);
         let nextIndex: number;
-        if (e.key === "ArrowDown") {
-          nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % items.length;
-        } else {
-          nextIndex = currentIndex <= 0 ? items.length - 1 : currentIndex - 1;
+        switch (e.key) {
+          case "ArrowDown":
+            nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % items.length;
+            break;
+          case "ArrowUp":
+            nextIndex = currentIndex <= 0 ? items.length - 1 : currentIndex - 1;
+            break;
+          case "Home":
+            nextIndex = 0;
+            break;
+          case "End":
+            nextIndex = items.length - 1;
+            break;
+          default:
+            return;
         }
-
         items[nextIndex]?.focus();
+      } else if (e.key === "Escape") {
+        const trigger = triggerRef.current;
+        if (trigger) {
+          e.preventDefault();
+          trigger.focus();
+        }
       }
     };
 
-    const handleToggle = () => {
-      if (
-        menu.matches(":popover-open") ||
-        (menu as HTMLMenuElement & { popoverOpen?: boolean }).popoverOpen
-      ) {
-        const items = menu.querySelectorAll<HTMLButtonElement>(
-          "li button:not([disabled])",
-        );
-        setTimeout(() => items[0]?.focus(), 0);
+    const handleToggle = (e: Event) => {
+      const popoverOpen = (e as ToggleEvent).newState === "open";
+      if (popoverOpen) {
+        const items = menu.querySelectorAll<HTMLButtonElement>("li button:not([disabled])");
+        requestAnimationFrame(() => items[0]?.focus());
+      } else {
+        const trigger = triggerRef.current;
+        if (trigger) trigger.focus();
       }
     };
 
@@ -125,7 +154,7 @@ export function Dropdown({
       menu.removeEventListener("keydown", handleKeyDown);
       menu.removeEventListener("toggle", handleToggle);
     };
-  }, []);
+  }, [contentId]);
 
   return (
     <menu
@@ -134,7 +163,7 @@ export function Dropdown({
       popover={popover}
       className={cn(
         "bg-popover text-popover-foreground min-w-32 rounded-md border p-1 shadow-md list-none m-0",
-        className,
+        className
       )}
       style={
         {
@@ -149,7 +178,7 @@ export function Dropdown({
   );
 }
 
- function DropdownItem({
+function DropdownItem({
   children,
   className,
   disabled = false,
@@ -162,9 +191,10 @@ export function Dropdown({
   };
 
   return (
-    <li className="m-0 p-0">
+    <li className="m-0 p-0" role="none">
       <button
         type="button"
+        role="menuitem"
         disabled={disabled}
         onClick={handleClick}
         className={cn(
@@ -172,7 +202,7 @@ export function Dropdown({
           "hover:bg-accent hover:text-accent-foreground",
           "focus-visible:outline-none focus-visible:bg-accent focus-visible:text-accent-foreground",
           "disabled:pointer-events-none disabled:opacity-50",
-          className,
+          className
         )}
         {...props}
       >
@@ -182,24 +212,17 @@ export function Dropdown({
   );
 }
 
- function DropdownSeparator({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+function DropdownSeparator({ className, ...props }: React.ComponentProps<"hr">) {
   return (
-    <li className="m-0">
-      <div className={cn("-mx-1 my-1 h-px bg-muted", className)} {...props} />
+    <li className="m-0" role="separator">
+      <hr {...props} className={cn("my-1 h-px bg-muted", className)} />
     </li>
   );
 }
 
- function DropdownLabel({
-  children,
-  className,
-  ...props
-}: React.ComponentProps<"li">) {
+function DropdownLabel({ children, className, ...props }: React.ComponentProps<"li">) {
   return (
-    <li className={cn("m-0 px-2 py-1.5 text-sm font-semibold", className)} {...props}>
+    <li className={cn("m-0 px-2 py-1.5 text-sm font-semibold", className)} role="presentation" {...props}>
       {children}
     </li>
   );
@@ -210,3 +233,4 @@ Dropdown.Content = DropdownContent;
 Dropdown.Item = DropdownItem;
 Dropdown.Separator = DropdownSeparator;
 Dropdown.Label = DropdownLabel;
+

@@ -3,7 +3,7 @@
 
 import { cn, ClassNameValue } from "@/lib";
 
-const skeletonclass = "bg-muted animate-pulse rounded";
+
 
 export type SkeletonProps = React.ComponentProps<"div"> & {
   className?: ClassNameValue;
@@ -12,12 +12,12 @@ export type SkeletonProps = React.ComponentProps<"div"> & {
 function Skeleton({ className, ...props }: SkeletonProps) {
   return (
     <div
-      className={cn(skeletonclass, className)}
+      className={cn("bg-muted animate-pulse rounded", className)}
       {...props}
     />
   );
 }
 
-Skeleton.class = skeletonclass;
+
 
 export { Skeleton };

@@ -457,8 +457,9 @@ export const zh = {
         emptyProps: "Empty Props",
       },
       props: {
-        defaultIcon: "默认图标",
-        defaultText: "默认文字",
+        icon: "图标，与子组件互斥",
+        text: "文字，与子组件互斥",
+        children:"子组件，与文字图标互斥",
         className: "自定义样式类名",
       },
     },
@@ -844,6 +845,32 @@ export const zh = {
         description: "描述 `<small>` 属性",
         leading: "前缀 `<span>` 属性",
         trailing: "后缀 `<span>` 属性",
+      },
+    },
+  },
+
+  image: {
+    title: "图片",
+    description: "图片组件，支持加载状态和错误处理。",
+    basic: {
+      title: "基础",
+    },
+    loading: {
+      title: "自定义加载",
+    },
+    failure: {
+      title: "自定义错误",
+    },
+    api: {
+      sectionTitles: {
+        imageProps: "Image Props",
+      },
+      props: {
+        src: "图片地址（必填）",
+        alt: "图片描述",
+        className: "自定义样式类名",
+        loading: "加载中占位内容",
+        failure: "加载失败占位内容",
       },
     },
   },

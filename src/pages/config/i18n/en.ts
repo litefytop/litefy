@@ -458,8 +458,9 @@ export const en = {
         emptyProps: "Empty Props",
       },
       props: {
-        defaultIcon: "Default icon",
-        defaultText: "Default text",
+        icon: "Icon, mutually exclusive with children",
+        text: "Text, mutually exclusive with children",
+        children: "Children, mutually exclusive with icon and text",
         className: "Custom CSS class name",
       },
     },
@@ -845,6 +846,32 @@ export const en = {
         description: "Description `<small>` props",
         leading: "Leading `<span>` props",
         trailing: "Trailing `<span>` props",
+      },
+    },
+  },
+
+  image: {
+    title: "Image",
+    description: "Image component with loading state and error handling.",
+    basic: {
+      title: "Basic",
+    },
+    loading: {
+      title: "Custom Loading",
+    },
+    failure: {
+      title: "Custom Failure",
+    },
+    api: {
+      sectionTitles: {
+        imageProps: "Image Props",
+      },
+      props: {
+        src: "Image source URL (required)",
+        alt: "Image alternative text",
+        className: "Custom CSS class name",
+        loading: "Loading placeholder content",
+        failure: "Failure placeholder content",
       },
     },
   },

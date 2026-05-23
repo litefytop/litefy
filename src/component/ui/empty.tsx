@@ -3,32 +3,35 @@
 import { ClassNameValue, cn } from "@/lib";
 import { CopyIcon } from "lucide-react";
 
-export type EmptyProps = React.ComponentProps<"div"> & {
+export type EmptyProps = Omit<React.ComponentProps<"div">, "children"> & {
   className?: ClassNameValue;
-  defaultIcon?: React.ReactNode;
-  defaultText?: React.ReactNode;
-};
+} & (
+    | {
+        children: React.ReactNode;
+        icon?: never;
+        text?: never;
+      }
+    | {
+        children?: never;
+        icon?: React.ReactNode;
+        text?: React.ReactNode;
+      }
+  );
 
-function Empty({
-  className,
-  defaultIcon,
-  defaultText,
-  children,
-  ...props
-}: EmptyProps) {
+function Empty({ className, children, text, icon, ...props }: EmptyProps) {
   return (
     <div
       className={cn(
         "flex flex-col items-center justify-center w-full h-full text-center gap-2",
-        className
+        className,
       )}
       {...props}
     >
       {children ?? (
         <>
-          {defaultIcon ?? <CopyIcon className="size-12 text-muted-foreground/50" />}
+          {icon ?? <CopyIcon className="size-12 text-muted-foreground/50" />}
           <span className="text-sm text-muted-foreground">
-            {defaultText ?? "No Content"}
+            {text ?? "No Content"}
           </span>
         </>
       )}
