@@ -27,6 +27,7 @@ const DatePicker = lazy(() => import("@/pages/date-picker"));
 const Textarea = lazy(() => import("@/pages/text-area"));
 const Tabs = lazy(() => import("@/pages/tabs"));
 const Image = lazy(() => import("@/pages/image"));
+const Loading = lazy(() => import("@/pages/loading"));
 
 const introduction = {
   key: "introduction",
@@ -54,7 +55,7 @@ const componentRouteConfig = [
   { key: "date-picker", path: "/components/date-picker", Component: DatePicker },
   { key: "textarea", path: "/components/textarea", Component: Textarea },
   { key: "tabs", path: "/components/tabs", Component: Tabs },
-  { key: "loading", path: "/components/loading", Component: ComingSoon },
+  { key: "loading", path: "/components/loading", Component: Loading },
   { key: "empty", path: "/components/empty", Component: Empty },
   { key: "skeleton", path: "/components/skeleton", Component: ComingSoon },
   { key: "separator", path: "/components/separator", Component: ComingSoon },

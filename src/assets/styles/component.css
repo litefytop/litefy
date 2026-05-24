@@ -1,0 +1,14 @@
+.anatomy-highlight {
+  outline: 3px solid var(--primary);
+  outline-offset: -3px;
+}
+
+.skeleton {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  background-color: hsl(var(--muted));
+  border-radius: calc(var(--radius) - 2px);
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}

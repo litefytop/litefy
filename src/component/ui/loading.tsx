@@ -1,39 +1,72 @@
 "use client";
 
 import { cn, ClassNameValue } from "@/lib";
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useLayoutEffect, useRef } from "react";
 import { LoaderCircle } from "lucide-react";
+import React from "react";
 
-
-export type LoadingProps = {
+export type LoadingProps = React.ComponentProps<"div"> & {
   loading?: boolean;
   children: ReactNode;
   className?: ClassNameValue;
-  delay?: number;
-  icon?: ReactNode;
+  fallback?: ReactNode;
+  skeleton?: ReactNode;
 };
 
 function Loading({
   loading = false,
   children,
   className,
-  delay = 300,
-  icon,
+  fallback,
+  skeleton,
+  ...props
 }: LoadingProps) {
-  const [show, setShow] = useState(false);
+  const prevLoadingRef = useRef<boolean | null>(null);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setShow(loading), delay);
-    return () => clearTimeout(timer);
-  }, [loading, delay]);
+  const rootRef = useRef<HTMLDivElement>(null);
 
+  useLayoutEffect(() => {
+    if (!rootRef.current) return;
+    if (prevLoadingRef.current === null && loading === false) return;
+    if (prevLoadingRef.current === loading) return;
+
+    if (loading) {
+      if (prevLoadingRef.current === null) {
+        rootRef.current.dataset.loading = "initial";
+      } else {
+        rootRef.current.dataset.loading = "true";
+      }
+    } else {
+      rootRef.current.dataset.loading = "false";
+    }
+
+    prevLoadingRef.current = loading;
+  }, [loading]);
   return (
-    <div className={cn("relative", className)}>
+    <div
+      {...props}
+      className={cn("relative size-full group", className)}
+      ref={rootRef}
+    >
       {children}
-      {show && (icon || <LoaderCircle className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-8 animate-spin" />)}
+      <div
+        className={cn(
+          "absolute inset-0 bg-muted size-full hidden",
+          "group-data-[loading=initial]:block ",
+        )}
+      >
+        {skeleton}
+      </div>
+      <div
+        className={cn(
+          "absolute inset-0 flex items-center justify-center size-full opacity-0 pointer-events-none bg-muted/50 z-50",
+          "group-data-[loading=true]:pointer-events-auto group-data-[loading=true]:opacity-100",
+        )}
+      >
+        {fallback ?? <LoaderCircle className="size-8 animate-spin" />}
+      </div>
     </div>
   );
 }
-
 
 export { Loading };

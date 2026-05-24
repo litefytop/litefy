@@ -854,6 +854,29 @@ export const en = {
     },
   },
 
+  loading: {
+    title: "Loading",
+    description: "Loading component for displaying content loading state.",
+    basic: {
+      title: "Basic",
+    },
+    custom: {
+      title: "Custom",
+    },
+    api: {
+      sectionTitles: {
+        loadingProps: "Loading Props",
+      },
+      props: {
+        loading: "Whether to show loading state",
+        children: "Child component",
+        fallback: "Placeholder to show when loading",
+        skeleton: "Skeleton content",
+        className: "Custom className",
+      },
+    },
+  },
+
   image: {
     title: "Image",
     description: "Image component with loading state and error handling.",

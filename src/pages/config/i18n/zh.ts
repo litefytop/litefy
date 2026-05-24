@@ -853,6 +853,29 @@ export const zh = {
     },
   },
 
+  loading: {
+    title: "加载",
+    description: "加载组件，用于展示内容加载状态。",
+    basic: {
+      title: "基础",
+    },
+    custom: {
+      title: "自定义",
+    },
+    api: {
+      sectionTitles: {
+        loadingProps: "Loading Props",
+      },
+      props: {
+        loading: "是否显示加载状态",
+        children: "子组件",
+        fallback: "加载时显示的占位符",
+        skeleton: "骨架屏内容",
+        className: "自定义类名",
+      },
+    },
+  },
+
   image: {
     title: "图片",
     description: "图片组件，支持加载状态和错误处理。",
