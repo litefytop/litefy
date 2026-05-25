@@ -62,10 +62,8 @@ export const zh = {
     spin: "Spin 旋转",
     image: "Image 图片",
     watermark: "Watermark 水印",
-    show: "Show 显示",
     radio: "Radio 单选框",
     label: "Label 标签",
-    toggle: "Toggle 切换",
     search: "Search 搜索",
     sidebar: "Sidebar 侧边栏",
     paper: "Paper 纸张",
@@ -366,6 +364,26 @@ export const zh = {
       title: "标题",
       description: "描述",
       actions: "操作按钮",
+    },
+    api: {
+      sectionTitles: {
+        toastOptions: "Toast Options",
+        toasterProps: "Toaster Props",
+      },
+      toastOptions: {
+        type: "消息类型",
+        title: "标题",
+        description: "描述信息",
+        icon: "自定义图标",
+        duration: "显示时长（毫秒），设为 Infinity 则不自动关闭",
+        onDismiss: "关闭时的回调",
+        onAutoClose: "自动关闭时的回调",
+        actions: "操作按钮数组",
+      },
+      toasterProps: {
+        position: "消息位置",
+        visibleToasts: "最大显示数量",
+      },
     },
   },
 
@@ -1065,6 +1083,53 @@ export const zh = {
         desc: "描述 `<small>` 属性",
         error: "错误信息 `<small>` 属性",
       },
+    },
+  },
+
+  pagination: {
+    title: "分页",
+    description: "分页组件，用于展示数据列表的分页导航。",
+    basic: {
+      title: "基础",
+    },
+    customPageSize: {
+      title: "自定义每页条数",
+    },
+    customText: {
+      title: "自定义文本",
+    },
+    customIcons: {
+      title: "自定义图标",
+    },
+    withActions: {
+      title: "带操作按钮",
+    },
+    api: {
+      sectionTitles: {
+        paginationProps: "Pagination Props",
+        description: "Pagination.Description",
+        sizer: "Pagination.Sizer",
+        controls: "Pagination.Controls",
+        use: "Pagination.use",
+      },
+      props: {
+        current: "当前页码",
+        pageSize: "每页条数",
+        total: "总数据条数",
+        onChange: "页码或每页条数变化时的回调",
+        children: "子元素",
+      },
+      description: {
+        format: "自定义分页文字格式",
+      },
+      sizer: {
+        options: "每页条数选项数组",
+        format: "自定义每页条数选项文字",
+      },
+      controls: {
+        children: "控制按钮子元素",
+      },
+      use: "获取分页上下文，用于自定义分页按钮",
     },
   },
 };

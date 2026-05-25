@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
 import { useNavigate } from "react-router-dom";
 import {
   Anchor,
@@ -9,10 +6,13 @@ import {
   Description,
   ShikiCodeBlock,
   Button,
-  Toaster
+  Docs,
 } from "@/component";
+import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
+import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
+
 import {
   ToastTypes,
   ToastWithDescription,
@@ -22,8 +22,6 @@ import {
   ToastDismiss,
   ToastWithCallbacks,
 } from "./examples";
-import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
-
 import ToastTypesRaw from "./examples/toast-types.tsx?raw";
 import ToastWithDescriptionRaw from "./examples/toast-description.tsx?raw";
 import ToastDurationRaw from "./examples/toast-duration.tsx?raw";
@@ -46,11 +44,7 @@ function DemoSection({
   code: string;
 }) {
   return (
-    <section
-      id={id}
-      data-anchor-id={id}
-      className="space-y-4 py-4"
-    >
+    <section id={id} data-anchor-id={id} className="space-y-4 py-4">
       <div>
         <Title as="h3">{title}</Title>
       </div>
@@ -68,6 +62,91 @@ export default function ToastPage({ locale = "zh" }: { locale?: string }) {
   const lang = t(locale as "zh" | "en");
   const l = lang.toast;
   const nav = getComponentNav("/components/toast", locale as "zh" | "en");
+
+  const toastSections = [
+    {
+      title: l.api.sectionTitles.toastOptions,
+      columns: [
+        { key: "prop", header: lang.common.prop },
+        { key: "type", header: lang.common.type },
+        { key: "default", header: lang.common.default },
+        { key: "description", header: lang.common.description },
+      ],
+      data: [
+        {
+          props: "type",
+          type: `'success' | 'error' | 'warning' | 'info' | 'loading'`,
+          default: "-",
+          description: l.api.toastOptions.type,
+        },
+        {
+          props: "title",
+          type: "ReactNode",
+          default: "-",
+          description: l.api.toastOptions.title,
+        },
+        {
+          props: "description",
+          type: "ReactNode",
+          default: "-",
+          description: l.api.toastOptions.description,
+        },
+        {
+          props: "icon",
+          type: "ReactNode",
+          default: "-",
+          description: l.api.toastOptions.icon,
+        },
+        {
+          props: "duration",
+          type: "number",
+          default: "3000",
+          description: l.api.toastOptions.duration,
+        },
+        {
+          props: "onDismiss",
+          type: "(toast: Toast) => void",
+          default: "-",
+          description: l.api.toastOptions.onDismiss,
+        },
+        {
+          props: "onAutoClose",
+          type: "(toast: Toast) => void",
+          default: "-",
+          description: l.api.toastOptions.onAutoClose,
+        },
+        {
+          props: "actions",
+          type: "Array<ButtonProps & { onClick?: (dismiss: () => void) => void }>",
+          default: "-",
+          description: l.api.toastOptions.actions,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.toasterProps,
+      columns: [
+        { key: "prop", header: lang.common.prop },
+        { key: "type", header: lang.common.type },
+        { key: "default", header: lang.common.default },
+        { key: "description", header: lang.common.description },
+      ],
+      data: [
+        {
+          props: "position",
+          type: `"top-right" | "top-left" | "top-center" | "bottom-right" | "bottom-left" | "bottom-center"`,
+          default: '"top-right"',
+          description: l.api.toasterProps.position,
+        },
+        {
+          props: "visibleToasts",
+          type: "number",
+          default: "3",
+          description: l.api.toasterProps.visibleToasts,
+        },
+      ],
+    },
+  ];
 
   const handleCopy = () => {
     navigator.clipboard.writeText(toastDoc);
@@ -177,28 +256,11 @@ export default function ToastPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
         </section>
 
-        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-4">
+        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
             {lang.docs}
-            <button
-              onClick={handleCopy}
-              className="p-1.5 rounded-md hover:bg-muted "
-              aria-label={lang.common.copy}
-            >
-              {copied ? (
-                <CheckIcon className="size-4 text-green-500" />
-              ) : (
-                <CopyIcon className="size-4" />
-              )}
-            </button>
           </Title>
-          <section
-            className="space-y-4 scroll-mt-20 prose dark:prose-invert max-w-none"
-          >
-            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-              {toastDoc}
-            </ReactMarkdown>
-          </section>
+          <Docs sections={toastSections} />
         </section>
       </div>
 
@@ -211,7 +273,6 @@ export default function ToastPage({ locale = "zh" }: { locale?: string }) {
             <Anchor.Item href="#duration">{l.duration.title}</Anchor.Item>
             <Anchor.Item href="#icon">{l.icon.title}</Anchor.Item>
             <Anchor.Item href="#actions">{l.actions.title}</Anchor.Item>
-            <Anchor.Item href="#position">{l.position.title}</Anchor.Item>
             <Anchor.Item href="#dismiss">{l.dismiss.title}</Anchor.Item>
             <Anchor.Item href="#callbacks">{l.callbacks.title}</Anchor.Item>
           </Anchor.Section>

@@ -15,12 +15,10 @@ export type PasswordProps = Omit<
   "type" | "value" | "onChange"
 > & {
   value?: string;
-  className?: ClassNameValue;
   label?: ReactNode;
   description?: ReactNode;
   invalid?: ReactNode;
-  leading?: ReactNode;
-  trailing?: ReactNode;
+  direction?: "vertical" | "horizontal";
   itemProps?: {
     root?: WithDataAttributes<React.ComponentProps<"div">>;
     label?: WithDataAttributes<React.ComponentProps<"label">>;
@@ -39,8 +37,10 @@ export function Password({
   label,
   description,
   invalid: externalInvalid,
+  direction = "vertical",
   itemProps,
   onChange,
+  disabled,
   ...props
 }: PasswordProps) {
   const innerRef = useRef<HTMLInputElement>(null);
@@ -49,19 +49,32 @@ export function Password({
 
   const finalInvalid = externalInvalid ?? internalInvalid;
   const isInvalid = Boolean(finalInvalid);
-
+  const hasInvalidContent = typeof finalInvalid === "string";
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const res = onChange?.(e);
     setInternalInvalid(res?.invalid);
   };
 
   return (
-    <div className={cn("flex flex-col gap-1", className)}>
+    <div
+      {...itemProps?.root}
+      inert={disabled}
+      data-invalid={isInvalid ? true : undefined}
+      data-direction={direction}
+      className={cn(
+        "grid gap-1 group inert:cursor-not-allowed inert:opacity-50 items-center",
+        "data-[direction=vertical]:grid-cols-1",
+        "data-[direction=horizontal]:grid-cols-[128px_1fr]",
+        itemProps?.root?.className,
+      )}
+    >
       {label && (
         <label
           {...itemProps?.label}
+          htmlFor={props.id}
           className={cn(
-            "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 py-2 indent-2",
+            "text-sm font-medium leading-none indent-2 py-1 select-none",
+            "group-data-[direction=horizontal]:text-end",
             itemProps?.label?.className,
           )}
         >
@@ -73,61 +86,52 @@ export function Password({
         {...itemProps?.group}
         data-invalid={isInvalid}
         className={cn(
-          "flex w-full items-center rounded-full border border-input bg-background shadow-xs transition-colors px-2",
+          "flex w-sm items-center rounded-md border border-input bg-background shadow-xs transition-colors px-2 h-9",
           "has-focus:border-primary has-focus:ring-2 has-focus:ring-primary/20",
           "data-[invalid=true]:border-destructive data-[invalid=true]:ring-destructive/20",
-          "has-disabled:pointer-events-none has-disabled:opacity-50",
           itemProps?.group?.className,
         )}
       >
- 
-
         <input
           {...props}
           ref={innerRef}
           type={showPassword ? "text" : "password"}
           onChange={handleChange}
           className={cn(
-            "appearance-none border-0 bg-transparent outline-none h-8 px-2 py-2 text-sm flex-1 min-w-0",
-            "disabled:cursor-not-allowed disabled:opacity-50",
+            "appearance-none border-0 bg-transparent outline-none px-2 py-1 text-sm flex-1 min-w-0",
             "placeholder:text-muted-foreground",
             "selection:bg-primary selection:text-primary-foreground",
+            className,
           )}
           autoComplete="off"
           aria-invalid={isInvalid}
-          data-invalid={isInvalid}
         />
-
 
         <button
           type="button"
           {...itemProps?.toggle}
           className={cn(
-            "hover:text-foreground/80 rounded-md p-1 text-muted-foreground transition-colors mr-2",
+            "hover:text-foreground/80 rounded-md p-1 text-muted-foreground transition-colors",
             itemProps?.toggle?.className
           )}
           onClick={() => setShowPassword(!showPassword)}
-          aria-label={showPassword ? "Hide password" : "Show password"}
         >
-          {showPassword ? (
-            <EyeOff className="size-4" />
-          ) : (
-            <Eye className="size-4" />
-          )}
+          {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
         </button>
       </div>
 
-
       <small
-        data-invalid={isInvalid}
-        {...(isInvalid ? itemProps?.invalid : itemProps?.description)}
+        {...(hasInvalidContent ? itemProps?.invalid : itemProps?.description)}
         className={cn(
-          "text-sm indent-2 h-5 text-muted-foreground data-[invalid=true]:text-destructive",
-          (isInvalid ? itemProps?.invalid : itemProps?.description)?.className,
+          "text-sm indent-2 h-5 text-muted-foreground",
+          "group-data-invalid:text-destructive",
+          "group-data-[direction=horizontal]:col-start-2",
+          (hasInvalidContent ? itemProps?.invalid : itemProps?.description)
+            ?.className,
         )}
-        role={isInvalid ? "alert" : undefined}
+        role={hasInvalidContent ? "alert" : undefined}
       >
-        {isInvalid ? finalInvalid : description}
+        {hasInvalidContent ? finalInvalid : description}
       </small>
     </div>
   );

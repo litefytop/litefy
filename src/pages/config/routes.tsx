@@ -28,6 +28,7 @@ const Textarea = lazy(() => import("@/pages/text-area"));
 const Tabs = lazy(() => import("@/pages/tabs"));
 const Image = lazy(() => import("@/pages/image"));
 const Loading = lazy(() => import("@/pages/loading"));
+const Pagination = lazy(() => import("@/pages/pagination"));
 
 const introduction = {
   key: "introduction",
@@ -65,12 +66,10 @@ const componentRouteConfig = [
   { key: "description", path: "/components/description", Component: Description },
   { key: "image", path: "/components/image", Component: Image },
   { key: "watermark", path: "/components/watermark", Component: ComingSoon },
-  { key: "show", path: "/components/show", Component: ComingSoon },
-  { key: "toggle", path: "/components/toggle", Component: ComingSoon },
   { key: "search", path: "/components/search", Component: ComingSoon },
   { key: "sidebar", path: "/components/sidebar", Component: ComingSoon },
   { key: "paper", path: "/components/paper", Component: ComingSoon },
-  { key: "pagination", path: "/components/pagination", Component: ComingSoon },
+  { key: "pagination", path: "/components/pagination", Component: Pagination },
   { key: "transfer", path: "/components/transfer", Component: ComingSoon },
 
 ];

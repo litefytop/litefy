@@ -58,8 +58,8 @@ export function Upload({
         data-invalid={isInvalid}
         {...props}
         className={cn(
-          "appearance-none outline-none h-8 font-medium text-sm border rounded-full",
-          "file:bg-primary file:text-primary-foreground file:h-full  file:rounded-l-full file:px-2",
+          "appearance-none outline-none h-9 font-medium text-sm border rounded-md",
+          "file:bg-primary file:text-primary-foreground file:h-full  file:rounded-l-md file:px-3",
           "disabled:opacity-50 disabled:pointer-events-none",
           "data-[invalid=true]:border-destructive data-[invalid=true]:file:bg-destructive",
           className

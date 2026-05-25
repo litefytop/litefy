@@ -60,10 +60,8 @@ export const en = {
     spin: "Spin",
     image: "Image",
     watermark: "Watermark",
-    show: "Show",
     radio: "Radio",
     label: "Label",
-    toggle: "Toggle",
     search: "Search",
     sidebar: "Sidebar",
     paper: "Paper",
@@ -368,6 +366,26 @@ export const en = {
       title: "Title",
       description: "Description",
       actions: "Actions",
+    },
+    api: {
+      sectionTitles: {
+        toastOptions: "Toast Options",
+        toasterProps: "Toaster Props",
+      },
+      toastOptions: {
+        type: "Toast type",
+        title: "Title",
+        description: "Description",
+        icon: "Custom icon",
+        duration: "Duration in milliseconds, set to Infinity to never auto-dismiss",
+        onDismiss: "Callback when dismissed",
+        onAutoClose: "Callback when auto-closed",
+        actions: "Action buttons array",
+      },
+      toasterProps: {
+        position: "Toast position",
+        visibleToasts: "Maximum number of toasts to show",
+      },
     },
   },
 
@@ -1066,6 +1084,53 @@ export const en = {
         desc: "Description `<small>` props",
         error: "Error message `<small>` props",
       },
+    },
+  },
+
+  pagination: {
+    title: "Pagination",
+    description: "Pagination component for navigating through paginated data.",
+    basic: {
+      title: "Basic",
+    },
+    customPageSize: {
+      title: "Custom Page Size",
+    },
+    customText: {
+      title: "Custom Text",
+    },
+    customIcons: {
+      title: "Custom Icons",
+    },
+    withActions: {
+      title: "With Actions",
+    },
+    api: {
+      sectionTitles: {
+        paginationProps: "Pagination Props",
+        description: "Pagination.Description",
+        sizer: "Pagination.Sizer",
+        controls: "Pagination.Controls",
+        use: "Pagination.use",
+      },
+      props: {
+        current: "Current page number",
+        pageSize: "Number of items per page",
+        total: "Total number of items",
+        onChange: "Callback when page or page size changes",
+        children: "Child elements",
+      },
+      description: {
+        format: "Custom function to format pagination text",
+      },
+      sizer: {
+        options: "Page size options array",
+        format: "Custom function to format page size option text",
+      },
+      controls: {
+        children: "Control button child elements",
+      },
+      use: "Get pagination context for custom pagination buttons",
     },
   },
 };

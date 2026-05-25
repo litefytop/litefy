@@ -119,7 +119,7 @@ export function Select({
         multiple={multiple}
         onChange={handleChange}
         className={cn(
-          "border rounded-full w-3xs py-2 px-2 text-sm flex-1  bg-input truncate",
+          "border rounded-full w-3xs py-2 px-3 text-sm flex-1  bg-input truncate",
           "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 ",
           "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] ",
           "[[multiple]]:rounded-xl [[multiple]]:overflow-y-auto",

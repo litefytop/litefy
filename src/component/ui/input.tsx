@@ -18,6 +18,7 @@ export type InputProps = Omit<
   invalid?: ReactNode;
   leading?: ReactNode;
   trailing?: ReactNode;
+    direction?: "vertical" | "horizontal";
   itemProps?: {
     root?: WithDataAttributes<React.ComponentProps<"div">>;
     label?: WithDataAttributes<React.ComponentProps<"label">>;
@@ -37,6 +38,7 @@ function Input({
   label,
   description,
   invalid: externalInvalid,
+   direction = "vertical",
   leading,
   trailing,
   itemProps,
@@ -62,8 +64,11 @@ function Input({
       {...itemProps?.root}
       inert={disabled}
       data-invalid={isInvalid ? true : undefined}
+      data-direction={direction}
       className={cn(
-        "flex flex-col gap-1 group inert:cursor-not-allowed inert:opacity-50",
+        "grid gap-1 group inert:cursor-not-allowed inert:opacity-50 items-center",
+        "data-[direction=vertical]:grid-cols-1",
+        "data-[direction=horizontal]:grid-cols-[128px_1fr]",
         itemProps?.root?.className,
       )}
     >
@@ -73,16 +78,17 @@ function Input({
           htmlFor={inputId}
           className={cn(
             "text-sm font-medium leading-none indent-2 py-1 select-none",
+            "group-data-[direction=horizontal]:text-end",
             itemProps?.label?.className,
           )}
         >
           {label}
         </label>
       )}
-      <div
+        <div
         {...itemProps?.group}
         className={cn(
-          "flex px-2 h-9 items-center border shadow-xs outline-none border-input bg-background rounded-full",
+          "flex px-2 h-9 items-center border shadow-xs outline-none border-input bg-background rounded-md w-sm",
           "has-focus:border-primary has-focus:ring-2 has-focus:ring-primary/20",
           "group-data-invalid:border-destructive/20",
           itemProps?.group?.className,
@@ -132,6 +138,7 @@ function Input({
         className={cn(
           "text-sm indent-2 h-5 text-muted-foreground",
           "group-data-invalid:text-destructive",
+          "group-data-[direction=horizontal]:col-start-2",
           (hasInvalidContent ? itemProps?.invalid : itemProps?.description)
             ?.className,
         )}
