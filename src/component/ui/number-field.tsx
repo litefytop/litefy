@@ -1,9 +1,9 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useId, useState, useRef, useEffect } from "react";
 import { cn, ClassNameValue } from "@/lib";
 import { ComponentProps } from "react";
 
 type WithDataAttributes<T> = T & {
-  [key: `data-${string}`]: string | number | boolean | null | undefined;
+  [key: `data-${string}`]: string | number | true | null | undefined;
   className?: ClassNameValue;
 };
 
@@ -25,8 +25,8 @@ export type NumberFieldProps = Omit<
     label?: WithDataAttributes<ComponentProps<"label">>;
     group?: WithDataAttributes<ComponentProps<"div">>;
     btn?: WithDataAttributes<ComponentProps<"button">>;
-    desc?: WithDataAttributes<ComponentProps<"small">>;
-    error?: WithDataAttributes<ComponentProps<"small">>;
+    description?: WithDataAttributes<ComponentProps<"small">>;
+    invalid?: WithDataAttributes<React.ComponentProps<"small">>;
   };
   onValueChange?: (val: number | undefined) => void | { invalid?: string };
 };
@@ -45,57 +45,123 @@ export function NumberField({
   onValueChange,
   ...props
 }: NumberFieldProps) {
-  const [internalValue, setInternalValue] = useState<number | undefined>(defaultValue);
   const [internalInvalid, setInternalInvalid] = useState<string>();
-
-  const finalValue = controlledValue !== undefined ? controlledValue : internalValue;
+  const internalId = useId();
+  const inputId = props?.id || internalId;
   const finalInvalid = externalInvalid ?? internalInvalid;
   const isInvalid = !!finalInvalid;
+  const hasInvalidContent = typeof finalInvalid === "string";
 
-  const updateValue = (val: number | undefined) => {
-    let invalidMsg: string | undefined;
+  const [inputValue, setInputValue] = useState<string>(() =>
+    defaultValue !== undefined ? String(defaultValue) : ""
+  );
+  const lastValidNumberRef = useRef<number | undefined>(defaultValue);
+  const isControlled = controlledValue !== undefined;
+  const isFocusedRef = useRef(false);
 
-    if (val !== undefined) {
-      if (val < min) invalidMsg = `Value must be at least ${min}`;
-      if (val > max) invalidMsg = `Value must be at most ${max}`;
+  useEffect(() => {
+    if (isControlled && !isFocusedRef.current) {
+      const newStr = controlledValue !== undefined ? String(controlledValue) : "";
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setInputValue(newStr);
+      lastValidNumberRef.current = controlledValue;
     }
+  }, [controlledValue, isControlled]);
 
-    const clampedVal = val === undefined ? undefined : Math.max(min, Math.min(max, val));
-
-    if (controlledValue === undefined) {
-      setInternalValue(clampedVal);
-    }
-
-    const res = onValueChange?.(clampedVal);
-    setInternalInvalid(invalidMsg ?? res?.invalid);
-  };
-
-  const handleMinus = () => updateValue((finalValue ?? 0) - step);
-  const handlePlus = () => updateValue((finalValue ?? 0) + step);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-
-    if (value === "") {
-      updateValue(undefined);
+  const commitValue = (str: string) => {
+    if (str === "") {
+      if (isControlled) {
+        onValueChange?.(undefined);
+        setInternalInvalid(undefined);
+      } else {
+        setInputValue("");
+        onValueChange?.(undefined);
+        setInternalInvalid(undefined);
+      }
+      lastValidNumberRef.current = undefined;
       return;
     }
 
-    const num = parseFloat(value);
-    if (!isNaN(num)) {
-      updateValue(num);
+    let num = parseFloat(str);
+    if (isNaN(num)) {
+      const rollbackStr = lastValidNumberRef.current !== undefined ? String(lastValidNumberRef.current) : "";
+      setInputValue(rollbackStr);
+      return;
+    }
+
+    let invalidMsg: string | undefined;
+    if (num < min) invalidMsg = `Value must be at least ${min}`;
+    if (num > max) invalidMsg = `Value must be at most ${max}`;
+    const clampedVal = Math.max(min, Math.min(max, num));
+    if (clampedVal !== num) {
+      num = clampedVal;
+    }
+
+    const res = onValueChange?.(num);
+    const error = invalidMsg ?? (res && typeof res === "object" ? res.invalid : undefined);
+    setInternalInvalid(error);
+
+    if (!isControlled) {
+      setInputValue(String(num));
+      lastValidNumberRef.current = num;
+    } else {
+      lastValidNumberRef.current = num;
     }
   };
 
+  const stepDelta = (delta: number) => {
+    const currentNum = parseFloat(inputValue);
+    if (isNaN(currentNum)) {
+      const base = lastValidNumberRef.current ?? 0;
+      commitValue(String(base + delta));
+    } else {
+      commitValue(String(currentNum + delta));
+    }
+  };
+
+  const handleMinus = () => stepDelta(-step);
+  const handlePlus = () => stepDelta(step);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value;
+    if (!/^-?[0-9]*\.?[0-9]*$/.test(raw)) return;
+    setInputValue(raw);
+  };
+
+  const handleBlur = () => {
+    isFocusedRef.current = false;
+    commitValue(inputValue);
+  };
+
+  const handleFocus = () => {
+    isFocusedRef.current = true;
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      commitValue(inputValue);
+    }
+  };
+
+  const displayValue = inputValue;
+
   return (
-    <div {...itemProps?.root} className={cn("flex flex-col gap-1", itemProps?.root?.className)}>
+    <div
+      {...itemProps?.root}
+      inert={disabled}
+      data-invalid={isInvalid ? true : undefined}
+      className={cn(
+        "flex flex-col gap-1 group inert:cursor-not-allowed inert:opacity-50",
+        itemProps?.root?.className,
+      )}
+    >
       {label && (
         <label
           {...itemProps?.label}
+          htmlFor={inputId}
           className={cn(
-            "text-sm font-medium leading-none py-2 indent-2",
-            "peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-            itemProps?.label?.className
+            "text-sm font-medium leading-none indent-2 py-1 select-none",
+            itemProps?.label?.className,
           )}
         >
           {label}
@@ -104,13 +170,11 @@ export function NumberField({
 
       <div
         {...itemProps?.group}
-        data-invalid={isInvalid}
         className={cn(
           "border-input bg-background flex w-3xs items-center rounded-full border shadow-xs outline-none",
-          "disabled:pointer-events-none disabled:opacity-50",
           "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
-          "data-[invalid=true]:border-destructive has-invalid:border-destructive",
-          itemProps?.group?.className
+          "group-data-invalid:border-destructive",
+          itemProps?.group?.className,
         )}
       >
         <button
@@ -121,8 +185,7 @@ export function NumberField({
           onClick={handleMinus}
           className={cn(
             "h-8 w-10 flex items-center justify-center text-muted-foreground hover:text-primary rounded-l-full border-r border-input",
-            "disabled:opacity-50 disabled:pointer-events-none",
-            itemProps?.btn?.className
+            itemProps?.btn?.className,
           )}
         >
           −
@@ -130,21 +193,25 @@ export function NumberField({
 
         <input
           {...props}
+          id={inputId}
           type="text"
-          inputMode="numeric"
+          inputMode="decimal"
+          pattern="-?[0-9]*(\.[0-9]+)?"
           role="spinbutton"
           disabled={disabled}
-          value={finalValue ?? ""}
+          value={displayValue}
           onChange={handleChange}
+          onBlur={handleBlur}
+          onFocus={handleFocus}
+          onKeyDown={handleKeyDown}
           className={cn(
             "outline-none border-0 bg-transparent w-full h-8 px-2 text-sm flex-1 text-center",
-            "placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground"
+            "placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground",
           )}
           aria-invalid={isInvalid}
           aria-valuemin={min}
           aria-valuemax={max}
-          aria-valuenow={finalValue}
-          data-invalid={isInvalid}
+          aria-valuenow={parseFloat(displayValue) || undefined}
         />
 
         <button
@@ -155,8 +222,7 @@ export function NumberField({
           onClick={handlePlus}
           className={cn(
             "h-8 w-10 flex items-center justify-center text-muted-foreground hover:text-primary rounded-r-full border-l border-input",
-            "disabled:opacity-50 disabled:pointer-events-none",
-            itemProps?.btn?.className
+            itemProps?.btn?.className,
           )}
         >
           +
@@ -164,15 +230,16 @@ export function NumberField({
       </div>
 
       <small
-        data-invalid={isInvalid}
-        {...(isInvalid ? itemProps?.error : itemProps?.desc)}
+        {...(hasInvalidContent ? itemProps?.invalid : itemProps?.description)}
         className={cn(
-          "text-sm indent-2 h-5 text-muted-foreground data-[invalid=true]:text-destructive",
-          (isInvalid ? itemProps?.error : itemProps?.desc)?.className
+          "text-sm indent-2 h-5 text-muted-foreground",
+          "group-data-invalid:text-destructive",
+          (hasInvalidContent ? itemProps?.invalid : itemProps?.description)
+            ?.className,
         )}
-        role={isInvalid ? "alert" : undefined}
+        role={hasInvalidContent ? "alert" : undefined}
       >
-        {isInvalid ? finalInvalid : description}
+        {hasInvalidContent ? finalInvalid : description}
       </small>
     </div>
   );
