@@ -29,6 +29,7 @@ const Tabs = lazy(() => import("@/pages/tabs"));
 const Image = lazy(() => import("@/pages/image"));
 const Loading = lazy(() => import("@/pages/loading"));
 const Pagination = lazy(() => import("@/pages/pagination"));
+const Sidebar = lazy(() => import("@/pages/sidebar"));
 
 const introduction = {
   key: "introduction",
@@ -67,7 +68,7 @@ const componentRouteConfig = [
   { key: "image", path: "/components/image", Component: Image },
   { key: "watermark", path: "/components/watermark", Component: ComingSoon },
   { key: "search", path: "/components/search", Component: ComingSoon },
-  { key: "sidebar", path: "/components/sidebar", Component: ComingSoon },
+  { key: "sidebar", path: "/components/sidebar", Component: Sidebar },
   { key: "paper", path: "/components/paper", Component: ComingSoon },
   { key: "pagination", path: "/components/pagination", Component: Pagination },
   { key: "transfer", path: "/components/transfer", Component: ComingSoon },

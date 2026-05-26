@@ -28,7 +28,7 @@ export type NumberFieldProps = Omit<
     description?: WithDataAttributes<ComponentProps<"small">>;
     invalid?: WithDataAttributes<React.ComponentProps<"small">>;
   };
-  onValueChange?: (val: number | undefined) => void | { invalid?: string };
+  onValueChange?: (val: string | undefined) => void | { invalid?: string };
 };
 
 export function NumberField({
@@ -74,21 +74,21 @@ export function NumberField({
     if (currentNum < min) {
     
        if (onValueChange) {
-        onValueChange(String(min) as unknown as number);
+        onValueChange(String(min));
       } else {
         setUncontrolledValue(String(min));
       }
       setInternalInvalid("Value below minimum");
     } else if (currentNum > max) {
         if (onValueChange) {
-        onValueChange(String(max) as unknown as number);
+        onValueChange(String(max));
       } else {
         setUncontrolledValue(String(max));
       }
       setInternalInvalid("Value above maximum");
     } else {
       if (onValueChange) {
-        onValueChange(str as unknown as number);
+        onValueChange(str);
       } else {
         setUncontrolledValue(str);
       }

@@ -1132,4 +1132,29 @@ export const zh = {
       use: "获取分页上下文，用于自定义分页按钮",
     },
   },
+
+  sidebar: {
+    title: "侧边栏",
+    description: "可折叠的侧边栏组件，支持通过 ref 控制展开收起。",
+    basic: {
+      title: "基础",
+    },
+    api: {
+      sectionTitles: {
+        sidebarProps: "Sidebar Props",
+        sidebarHandle: "SidebarHandle",
+      },
+      props: {
+        defaultOpen: "默认是否展开",
+        children: "侧边栏内容",
+        ref: "用于控制侧边栏的 ref",
+      },
+      handle: {
+        toggle: "切换展开收起状态",
+        open: "展开侧边栏",
+        close: "收起侧边栏",
+        isOpen: "当前展开状态",
+      },
+    },
+  },
 };

@@ -1,0 +1,190 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Anchor,
+  Title,
+  Description,
+  ShikiCodeBlock,
+  Button,
+  Docs,
+} from "@/component";
+import { Toaster } from "@/component/ui/toast";
+import { t } from "@/pages/config/i18n";
+import { getComponentNav } from "@/pages/config/routes";
+import { SidebarBasic } from "./examples";
+import {
+  CheckIcon,
+  CopyIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+} from "lucide-react";
+
+import SidebarBasicRaw from "./examples/sidebar-basic.tsx?raw";
+import sidebarDoc from "./doc.mdx?raw";
+import sidebarSrc from "@/component/ui/sidebar.tsx?raw";
+
+function DemoSection({
+  id,
+  title,
+  children,
+  code,
+}: {
+  id: string;
+  title: string;
+  children: React.ReactNode;
+  code: string;
+}) {
+  return (
+    <section id={id} data-anchor-id={id} className="space-y-4 py-4">
+      <div>
+        <Title as="h3">{title}</Title>
+      </div>
+      <div className="border rounded-lg p-6 w-full overflow-x-auto">
+        {children}
+      </div>
+      <ShikiCodeBlock>{code}</ShikiCodeBlock>
+    </section>
+  );
+}
+
+export default function SidebarPage({ locale = "zh" }: { locale?: string }) {
+  const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
+  const lang = t(locale as "zh" | "en");
+  const l = lang.sidebar;
+  const nav = getComponentNav("/components/sidebar", locale as "zh" | "en");
+
+  const sidebarSections = [
+    {
+      title: l.api.sectionTitles.sidebarProps,
+      data: [
+        {
+          props: "defaultOpen",
+          type: "boolean",
+          default: "true",
+          description: l.api.props.defaultOpen,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          description: lang.common.className,
+        },
+        {
+          props: "children",
+          type: "ReactNode",
+          description: l.api.props.children,
+        },
+        {
+          props: "ref",
+          type: "Ref<SidebarHandle>",
+          description: l.api.props.ref,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.sidebarHandle,
+      data: [
+        {
+          props: "toggle",
+          type: "() => void",
+          description: l.api.handle.toggle,
+        },
+        {
+          props: "open",
+          type: "() => void",
+          description: l.api.handle.open,
+        },
+        {
+          props: "close",
+          type: "() => void",
+          description: l.api.handle.close,
+        },
+        {
+          props: "isOpen",
+          type: "boolean",
+          description: l.api.handle.isOpen,
+        },
+      ],
+    },
+  ];
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(sidebarDoc);
+    setCopied(true);
+    Toaster.success({ title: lang.common.copySuccess });
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handlePrev = () => {
+    if (nav.prev) navigate(`/${locale}${nav.prev.href}`);
+  };
+
+  const handleNext = () => {
+    if (nav.next) navigate(`/${locale}${nav.next.href}`);
+  };
+
+  return (
+    <div className="flex">
+      <div className="flex-1 w-full">
+        <header className="pb-4 mb-4 border-b space-y-3">
+          <div className="flex items-center justify-between">
+            <Title as="h1">{l.title}</Title>
+            <div className="flex items-center gap-2">
+              <Button onClick={handleCopy} variant="ghost">
+                {copied ? (
+                  <CheckIcon className="size-4 text-green-500 mr-1" />
+                ) : (
+                  <CopyIcon className="size-4 mr-1" />
+                )}
+                {lang.common.copyDocs}
+              </Button>
+              <Button variant="ghost" onClick={handlePrev} disabled={!nav.prev}>
+                <ArrowLeftIcon className="size-4" />
+              </Button>
+              <Button variant="ghost" onClick={handleNext} disabled={!nav.next}>
+                <ArrowRightIcon className="size-4" />
+              </Button>
+            </div>
+          </div>
+          <Description>{l.description}</Description>
+        </header>
+
+        <section id="installation" className="mb-8 scroll-mt-20">
+          <Title as="h2" className="mb-4">
+            {lang.installation}
+          </Title>
+          <ShikiCodeBlock>{sidebarSrc}</ShikiCodeBlock>
+        </section>
+
+        <section id="examples" className="">
+          <Title as="h2">{lang.examples}</Title>
+
+          <DemoSection
+            id="basic"
+            title={l.basic.title}
+            code={SidebarBasicRaw}
+          >
+            <SidebarBasic />
+          </DemoSection>
+        </section>
+
+        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
+          <Title as="h2" className="mb-4">
+            {lang.docs}
+          </Title>
+          <Docs sections={sidebarSections} />
+        </section>
+      </div>
+
+      <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-full overflow-y-auto p-4">
+        <Anchor>
+          <Anchor.Section href="#installation" linkText={lang.installation} />
+          <Anchor.Section href="#examples" linkText={lang.examples}>
+            <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
+          </Anchor.Section>
+          <Anchor.Section href="#docs" linkText={lang.docs} />
+        </Anchor>
+      </aside>
+    </div>
+  );
+}

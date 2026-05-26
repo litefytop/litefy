@@ -1,73 +1,46 @@
+import { useState, useImperativeHandle, forwardRef } from "react";
+import { cn, ClassNameValue } from "@/lib";
 
-import { ClassNameValue, cn } from "@/lib";
-import { Button, ButtonProps } from "@/component";
-
-import { useState, useEffect } from "react";
-
-let isOpen = true;
-const listeners = new Set<() => void>();
-
-function toggle() {
-  isOpen = !isOpen;
-  listeners.forEach((fn) => fn());
-}
-
-function useSidebarStore() {
-  const [open, setOpen] = useState(isOpen);
-
-  useEffect(() => {
-    const update = () => setOpen(isOpen);
-    listeners.add(update);
-    return () => {
-      listeners.delete(update);
-    };
-  }, []);
-
-  return {
-    open,
-    toggle,
-  };
-}
-
-export type SidebarProps = Omit<React.ComponentProps<"aside">, "className"> & {
-  className?: ClassNameValue;
+export type SidebarHandle = {
+  toggle: () => void;
+  open: () => void;
+  close: () => void;
+  isOpen: boolean;
 };
 
-function Sidebar({ children, className, ...props }: SidebarProps) {
-  const { open } = useSidebarStore();
+export type SidebarProps = Omit<
+  React.ComponentProps<"aside">,
+  "className" | "ref"
+> & {
+  className?: ClassNameValue;
+  defaultOpen?: boolean;
+};
+
+const Sidebar = forwardRef<SidebarHandle, SidebarProps>(function Sidebar(
+  { children, className, defaultOpen = true, ...props },
+  ref,
+) {
+  const [open, setOpen] = useState(defaultOpen);
+
+  useImperativeHandle(ref, () => ({
+    toggle: () => setOpen((prev) => !prev),
+    open: () => setOpen(true),
+    close: () => setOpen(false),
+    isOpen: open,
+  }));
+
   return (
     <aside
       {...props}
-      className={cn(className, !open && "w-0 overflow-hidden")}
+      data-close={!open ? true : undefined}
+      className={cn(
+        className,
+        "data-close:w-0 data-close:p-0 data-close:m-0 data-close:overflow-hidden",
+      )}
     >
       {children}
     </aside>
   );
-}
-
-
-
-
-export function SidebarTrigger({ onClick,children, ...props }: ButtonProps) {
-  const { toggle } = useSidebarStore();
-
-  return (
-    <Button
-      onClick={(
-        event: React.MouseEvent<HTMLAnchorElement, MouseEvent> &
-          React.MouseEvent<HTMLButtonElement, MouseEvent>,
-      ) => {
-        onClick?.(event);
-        toggle();
-      }}
-      {...props}
-    >
-      {children}
-    </Button>
-  );
-}
-
-
-Sidebar.Trigger = SidebarTrigger;
+});
 
 export { Sidebar };

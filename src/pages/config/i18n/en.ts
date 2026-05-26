@@ -1133,4 +1133,29 @@ export const en = {
       use: "Get pagination context for custom pagination buttons",
     },
   },
+
+  sidebar: {
+    title: "Sidebar",
+    description: "Collapsible sidebar component with ref-based control.",
+    basic: {
+      title: "Basic",
+    },
+    api: {
+      sectionTitles: {
+        sidebarProps: "Sidebar Props",
+        sidebarHandle: "SidebarHandle",
+      },
+      props: {
+        defaultOpen: "Default open state",
+        children: "Sidebar content",
+        ref: "Ref for controlling sidebar",
+      },
+      handle: {
+        toggle: "Toggle sidebar state",
+        open: "Open sidebar",
+        close: "Close sidebar",
+        isOpen: "Current open state",
+      },
+    },
+  },
 };

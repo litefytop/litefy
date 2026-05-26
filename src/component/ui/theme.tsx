@@ -1,6 +1,6 @@
 "use client";
 
-import  { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
 
 export type ColorScheme = "light" | "dark" | "system";
 
@@ -10,40 +10,43 @@ interface ThemeState {
   setTheme: (theme: string) => void;
   setColorScheme: (colorScheme: ColorScheme) => void;
   toggleColorScheme: () => void;
+
 }
 
 const STORAGE_KEY = "theme-storage";
+const DEFAULT_THEME = "blue";
+const DEFAULT_COLOR_SCHEME: ColorScheme = "light";
 
-let theme = "blue";
-let colorScheme: ColorScheme = "light";
+let theme = DEFAULT_THEME;
+let colorScheme: ColorScheme = DEFAULT_COLOR_SCHEME;
 const themeListeners = new Set<() => void>();
 const colorSchemeListeners = new Set<() => void>();
 
-function loadFromStorage(): void {
+function loadFromStorage() {
   if (typeof window === "undefined") return;
- 
+
+  try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       const parsed = JSON.parse(stored);
-      theme = parsed.theme || "blue";
-      colorScheme = parsed.colorScheme || "light";
+      theme = parsed.theme ?? DEFAULT_THEME;
+      colorScheme = parsed.colorScheme ?? DEFAULT_COLOR_SCHEME;
     }
-
+  } catch (e) {
+    console.error("Error loading theme from storage:", e);
+  }
 }
 
-function saveToStorage(): void {
+function saveToStorage() {
   if (typeof window === "undefined") return;
-
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ theme, colorScheme }));
-
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ theme, colorScheme }));
 }
 
-function notifyTheme(): void {
-  themeListeners.forEach((fn) => fn());
+function notifyTheme() {
+  themeListeners.forEach(fn => fn());
 }
-
-function notifyColorScheme(): void {
-  colorSchemeListeners.forEach((fn) => fn());
+function notifyColorScheme() {
+  colorSchemeListeners.forEach(fn => fn());
 }
 
 function getSystemColorScheme(): "light" | "dark" {
@@ -51,69 +54,94 @@ function getSystemColorScheme(): "light" | "dark" {
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
-function applyTheme(): void {
+function applyTheme() {
+  if (typeof document === "undefined") return;
   const root = document.documentElement;
   root.setAttribute("data-theme", theme);
-  
-  const effectiveColorScheme = colorScheme === "system" ? getSystemColorScheme() : colorScheme;
-  
-  if (effectiveColorScheme === "dark") {
-    root.classList.add("dark");
-  } else {
-    root.classList.remove("dark");
-  }
+  const mode = colorScheme === "system" ? getSystemColorScheme() : colorScheme;
+  root.classList.toggle("dark", mode === "dark");
 }
 
-loadFromStorage();
-applyTheme();
-
 if (typeof window !== "undefined") {
+  loadFromStorage();
+  applyTheme();
+
   const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-  mediaQuery.addEventListener("change", () => {
+  const handleSystemChange = () => {
     if (colorScheme === "system") {
       applyTheme();
       notifyColorScheme();
     }
-  });
+  };
+  mediaQuery.addEventListener("change", handleSystemChange);
+}
+
+function subscribeTheme(onStoreChange: () => void) {
+  themeListeners.add(onStoreChange);
+  return () => themeListeners.delete(onStoreChange);
+}
+function subscribeColorScheme(onStoreChange: () => void) {
+  colorSchemeListeners.add(onStoreChange);
+  return () => colorSchemeListeners.delete(onStoreChange);
+}
+
+function getThemeSnapshot() {
+  return theme;
+}
+function getColorSchemeSnapshot() {
+  return colorScheme;
+}
+function getThemeServerSnapshot() {
+  return DEFAULT_THEME;
+}
+function getColorSchemeServerSnapshot() {
+  return DEFAULT_COLOR_SCHEME;
 }
 
 export function useTheme(): ThemeState {
-  const [themeState, setThemeState] = useState(theme);
-  const [colorSchemeState, setColorSchemeState] = useState(colorScheme);
+  const currentTheme = useSyncExternalStore(
+    subscribeTheme,
+    getThemeSnapshot,
+    getThemeServerSnapshot
+  );
+  const currentColorScheme = useSyncExternalStore(
+    subscribeColorScheme,
+    getColorSchemeSnapshot,
+    getColorSchemeServerSnapshot
+  );
 
-  useEffect(() => {
-    const updateTheme = () => setThemeState(theme);
-    const updateColorScheme = () => setColorSchemeState(colorScheme);
 
-    themeListeners.add(updateTheme);
-    colorSchemeListeners.add(updateColorScheme);
+  const setTheme = (newTheme: string) => {
+    theme = newTheme;
+    saveToStorage();
+    applyTheme();
+    notifyTheme();
+  };
 
-    return () => {
-      themeListeners.delete(updateTheme);
-      colorSchemeListeners.delete(updateColorScheme);
-    };
-  }, []);
+  const setColorScheme = (newScheme: ColorScheme) => {
+    colorScheme = newScheme;
+    saveToStorage();
+    applyTheme();
+    notifyColorScheme();
+  };
+
+  const toggleColorScheme = () => {
+    if (colorScheme === "system") {
+      const system = getSystemColorScheme();
+      colorScheme = system === "dark" ? "light" : "dark";
+    } else {
+      colorScheme = colorScheme === "light" ? "dark" : "light";
+    }
+    saveToStorage();
+    applyTheme();
+    notifyColorScheme();
+  };
 
   return {
-    theme: themeState,
-    colorScheme: colorSchemeState,
-    setTheme: (newTheme: string) => {
-      theme = newTheme;
-      saveToStorage();
-      applyTheme();
-      notifyTheme();
-    },
-    setColorScheme: (newColorScheme: ColorScheme) => {
-      colorScheme = newColorScheme;
-      saveToStorage();
-      applyTheme();
-      notifyColorScheme();
-    },
-    toggleColorScheme: () => {
-      colorScheme = colorScheme === "light" ? "dark" : "light";
-      saveToStorage();
-      applyTheme();
-      notifyColorScheme();
-    },
+    theme: currentTheme,
+    colorScheme: currentColorScheme,
+    setTheme,
+    setColorScheme,
+    toggleColorScheme,
   };
 }
