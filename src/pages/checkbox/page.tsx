@@ -18,7 +18,6 @@ import {
   CheckboxControlled,
   CheckboxDisabled,
   CheckboxVariant,
-  CheckboxValidation,
 } from "./examples";
 import {
   CheckIcon,
@@ -31,7 +30,7 @@ import CheckboxBasicRaw from "./examples/checkbox-basic.tsx?raw";
 import CheckboxControlledRaw from "./examples/checkbox-controlled.tsx?raw";
 import CheckboxDisabledRaw from "./examples/checkbox-disabled.tsx?raw";
 import CheckboxVariantRaw from "./examples/checkbox-variant.tsx?raw";
-import CheckboxValidationRaw from "./examples/checkbox-validation.tsx?raw";
+
 import checkboxDoc from "./doc.mdx?raw";
 import checkboxSrc from "@/component/ui/checkbox.tsx?raw";
 
@@ -88,7 +87,7 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
         },
         {
           props: "invalid",
-          type: "boolean | string",
+          type: "boolean",
           description: l.api.props.invalid,
         },
         {
@@ -101,16 +100,6 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
           props: "name",
           type: "string",
           description: l.api.props.name,
-        },
-        {
-          props: "label",
-          type: "ReactNode",
-          description: l.api.props.label,
-        },
-        {
-          props: "description",
-          type: "ReactNode",
-          description: l.api.props.description,
         },
         {
           props: "itemProps",
@@ -167,27 +156,6 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
       title: l.api.sectionTitles.itemProps,
 
       data: [
-   
-        {
-          props: "content",
-          type: 'ComponentProps<"div">',
-          description: l.api.itemProps.content,
-        },
-        {
-          props: "label",
-          type: 'ComponentProps<"span">',
-          description: l.api.itemProps.label,
-        },
-        {
-          props: "description",
-          type: 'ComponentProps<"small">',
-          description: l.api.itemProps.description,
-        },
-        {
-          props: "invalid",
-          type: 'ComponentProps<"span">',
-          description: l.api.itemProps.invalid,
-        },
         {
           props: "options",
           type: 'Omit<CheckboxItemProps, "checked" | "value" | "label">',
@@ -276,13 +244,7 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
             <CheckboxVariant />
           </DemoSection>
 
-          <DemoSection
-            id="validation"
-            title={l.validation.title}
-            code={CheckboxValidationRaw}
-          >
-            <CheckboxValidation />
-          </DemoSection>
+
         </section>
 
         <section id="anatomy" className="mt-8 space-y-4">
@@ -290,9 +252,6 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
           <Anatomy
             parts={[
               { id: "anatomy-checkbox", label: l.anatomy.checkbox },
-              { id: "anatomy-label", label: l.anatomy.label },
-              { id: "anatomy-description", label: l.anatomy.description },
-              { id: "anatomy-content", label: l.anatomy.content },
               { id: "anatomy-item", label: l.anatomy.item },
     
             ]}
@@ -314,21 +273,8 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
                   label: "Item 2",
                 },
               ]}
-              label="Checkbox"
-              description="This is a description"
-              itemProps={{
-                label: {
-                  id: "anatomy-label",
-                },
-                description: {
-                  id: "anatomy-description",
-                },
-                content: {
-                  id: "anatomy-content",
-                  className: "flex flex-col gap-2",
-                },
-          
-              }}
+      
+             
             />
           </Anatomy>
         </section>
@@ -339,8 +285,33 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
           </Title>
           <Docs sections={checkboxSections} />
         </section>
+
+        
+        <footer className="py-8 border-t mt-8">
+          <div className="flex justify-between">
+            <Button
+              variant="ghost"
+              onClick={handlePrev}
+              disabled={!nav.prev}
+              className={nav.prev ? "" : "invisible"}
+            >
+              <ArrowLeftIcon className="size-4 mr-2" />
+              {nav.prev?.title}
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={handleNext}
+              disabled={!nav.next}
+              className={nav.next ? "" : "invisible"}
+            >
+              {nav.next?.title}
+              <ArrowRightIcon className="size-4 ml-2" />
+            </Button>
+          </div>
+        </footer>
       </div>
 
+  
       <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-full overflow-y-auto p-4">
         <Anchor>
           <Anchor.Section href="#installation" linkText={lang.installation} />

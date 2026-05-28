@@ -16,15 +16,20 @@ import { getComponentNav } from "@/pages/config/routes";
 import {
   InputBasic,
   InputPrefixSuffix,
-  InputValidation,
+
   InputDisabled,
   InputControlled,
 } from "./examples";
-import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
+import {
+  CheckIcon,
+  CopyIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+} from "lucide-react";
 
 import InputBasicRaw from "./examples/input-basic.tsx?raw";
 import InputPrefixSuffixRaw from "./examples/input-prefix-suffix.tsx?raw";
-import InputValidationRaw from "./examples/input-validation.tsx?raw";
+
 import InputDisabledRaw from "./examples/input-disabled.tsx?raw";
 import InputControlledRaw from "./examples/input-controlled.tsx?raw";
 import inputDoc from "./doc.mdx?raw";
@@ -42,11 +47,7 @@ function DemoSection({
   code: string;
 }) {
   return (
-    <section
-      id={id}
-      data-anchor-id={id}
-      className="space-y-4 py-4"
-    >
+    <section id={id} data-anchor-id={id} className="space-y-4 py-4">
       <div>
         <Title as="h3">{title}</Title>
       </div>
@@ -73,25 +74,25 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "value",
           type: "string",
-          
+
           description: l.api.props.value,
         },
         {
           props: "defaultValue",
           type: "string",
-          
+
           description: l.api.props.defaultValue,
         },
         {
           props: "onChange",
           type: "(value: string) => void",
-          
+
           description: l.api.props.onChange,
         },
         {
           props: "placeholder",
           type: "string",
-          
+
           description: l.api.props.placeholder,
         },
         {
@@ -108,32 +109,32 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "label",
           type: "string",
-          
+
           description: l.api.props.label,
         },
         {
           props: "description",
           type: "string",
-          
+
           description: l.api.props.description,
         },
         {
           props: "leading",
           type: "ReactNode",
-          
+
           description: l.api.props.leading,
         },
         {
           props: "trailing",
           type: "ReactNode",
-          
+
           description: l.api.props.trailing,
         },
 
         {
           props: "itemProps",
           type: "InputItemProps",
-          
+
           description: l.api.props.itemProps,
         },
       ],
@@ -147,16 +148,7 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
           type: `React.ComponentProps<"div">`,
           description: l.api.itemPropsConfig.group,
         },
-        {
-          props: "label",
-          type: `React.ComponentProps<"label">`,
-          description: l.api.itemPropsConfig.label,
-        },
-        {
-          props: "invalid",
-          type: `React.ComponentProps<"small">`,
-          description: l.api.itemPropsConfig.invalid,
-        },
+
         {
           props: "leading",
           type: `React.ComponentProps<"span">`,
@@ -167,11 +159,7 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
           type: `React.ComponentProps<"span">`,
           description: l.api.itemPropsConfig.trailing,
         },
-        {
-          props: "description",
-          type: `React.ComponentProps<"small">`,
-          description: l.api.itemPropsConfig.description,
-        },
+
       ],
     },
   ];
@@ -227,11 +215,7 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
         <section id="examples" className="">
           <Title as="h2">{lang.examples}</Title>
 
-          <DemoSection
-            id="basic"
-            title={l.basic.title}
-            code={InputBasicRaw}
-          >
+          <DemoSection id="basic" title={l.basic.title} code={InputBasicRaw}>
             <InputBasic />
           </DemoSection>
 
@@ -251,13 +235,6 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
             <InputPrefixSuffix />
           </DemoSection>
 
-          <DemoSection
-            id="validation"
-            title={l.validation.title}
-            code={InputValidationRaw}
-          >
-            <InputValidation />
-          </DemoSection>
 
           <DemoSection
             id="disabled"
@@ -274,26 +251,21 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
             className="h-48"
             parts={[
               { name: "group", label: l.anatomy.group },
-              { name: "label", label: l.anatomy.label },
               { name: "input", label: l.anatomy.input },
               { name: "leading", label: l.anatomy.leading },
               { name: "trailing", label: l.anatomy.trailing },
-              { name: "description", label: l.anatomy.description },
             ]}
           >
             <Input
-              label="域名"
               leading="https://"
               trailing=".com"
-              description="用于登记域名"
               placeholder="请输入域名"
               data-anatomy-name="input"
               itemProps={{
                 group: { "data-anatomy-name": "group" },
-                label: { "data-anatomy-name": "label" },
+
                 leading: { "data-anatomy-name": "leading" },
                 trailing: { "data-anatomy-name": "trailing" },
-                description: { "data-anatomy-name": "description" },
               }}
             />
           </Anatomy>
@@ -313,13 +285,13 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
             <Anchor.Item href="#controlled">{l.controlled.title}</Anchor.Item>
-            <Anchor.Item href="#prefix-suffix">{l.prefixSuffix.title}</Anchor.Item>
-            <Anchor.Item href="#validation">{l.validation.title}</Anchor.Item>
+            <Anchor.Item href="#prefix-suffix">
+              {l.prefixSuffix.title}
+            </Anchor.Item>
             <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
-          <Anchor.Section href="#docs" linkText={lang.docs}/>
-     
+          <Anchor.Section href="#docs" linkText={lang.docs} />
         </Anchor>
       </aside>
     </div>

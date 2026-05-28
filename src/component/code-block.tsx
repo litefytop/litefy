@@ -133,7 +133,16 @@ export function ShikiCodeBlock({
   useEffect(() => {
     if (!code) return;
 
-    const theme = colorScheme === "dark" ? "github-dark" : "github-light";
+    const getTheme = () => {
+      if (colorScheme === "system") {
+        return window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "github-dark"
+          : "github-light";
+      }
+      return colorScheme === "dark" ? "github-dark" : "github-light";
+    };
+
+    const theme = getTheme();
 
     getHighlighter().then((highlighter) => {
       const html = highlighter.codeToHtml(code, {

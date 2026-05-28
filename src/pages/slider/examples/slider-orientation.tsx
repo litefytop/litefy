@@ -5,9 +5,9 @@ export function SliderOrientation() {
     <div className="flex gap-8 items-center h-56">
  
     
-        <Slider defaultValue={50} orientation="horizontal"  label="Horizontal" />
+        <Slider defaultValue={50} orientation="horizontal"   />
      
-        <Slider defaultValue={50} orientation="vertical" label="Vertical" />
+        <Slider defaultValue={50} orientation="vertical"  />
       
     </div>
   );

@@ -4,9 +4,7 @@ import {
   Anchor,
   Title,
   Description,
-  Upload,
   ShikiCodeBlock,
-  Anatomy,
   Button,
   Docs,
 } from "@/component";
@@ -15,14 +13,13 @@ import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
 import {
   UploadBasic,
-  UploadValidation,
+
   UploadMultiple,
   UploadDisabled,
 } from "./examples";
 import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
 import UploadBasicRaw from "./examples/upload-basic.tsx?raw";
-import UploadValidationRaw from "./examples/upload-validation.tsx?raw";
 import UploadMultipleRaw from "./examples/upload-multiple.tsx?raw";
 import UploadDisabledRaw from "./examples/upload-disabled.tsx?raw";
 import uploadSrc from "@/component/ui/upload.tsx?raw";
@@ -192,13 +189,7 @@ export default function UploadPage({ locale = "zh" }: { locale?: string }) {
             <UploadBasic />
           </DemoSection>
 
-          <DemoSection
-            id="validation"
-            title={l.validation.title}
-            code={UploadValidationRaw}
-          >
-            <UploadValidation />
-          </DemoSection>
+
 
           <DemoSection
             id="multiple"
@@ -217,29 +208,6 @@ export default function UploadPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
         </section>
 
-        <section id="anatomy" className="mt-8 space-y-4">
-          <Title as="h2">{lang.anatomy}</Title>
-          <Anatomy
-            className="h-48"
-            parts={[
-              { name: "root", label: l.anatomy.root },
-              { name: "label", label: l.anatomy.label },
-              { name: "input", label: l.anatomy.input },
-              { name: "description", label: l.anatomy.description },
-            ]}
-          >
-            <Upload
-              label="Upload"
-              description="Description"
-              data-anatomy-name="input"
-              itemProps={{
-                root: { "data-anatomy-name": "root" },
-                label: { "data-anatomy-name": "label" },
-                description: { "data-anatomy-name": "description" },
-              }}
-            />
-          </Anatomy>
-        </section>
 
         <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
@@ -254,7 +222,6 @@ export default function UploadPage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
-            <Anchor.Item href="#validation">{l.validation.title}</Anchor.Item>
             <Anchor.Item href="#multiple">{l.multiple.title}</Anchor.Item>
             <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
           </Anchor.Section>

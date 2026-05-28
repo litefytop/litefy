@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { cn, ClassNameValue } from "@/lib/utils";
 import { Eye, EyeOff } from "lucide-react";
-import type { ReactNode } from "react";
 
 type WithDataAttributes<T> = T & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;
@@ -15,124 +14,61 @@ export type PasswordProps = Omit<
   "type" | "value" | "onChange"
 > & {
   value?: string;
-  label?: ReactNode;
-  description?: ReactNode;
-  invalid?: ReactNode;
+  invalid?: boolean;
   direction?: "vertical" | "horizontal";
   itemProps?: {
-    root?: WithDataAttributes<React.ComponentProps<"div">>;
-    label?: WithDataAttributes<React.ComponentProps<"label">>;
     group?: WithDataAttributes<React.ComponentProps<"div">>;
-    invalid?: WithDataAttributes<React.ComponentProps<"small">>;
-    description?: WithDataAttributes<React.ComponentProps<"small">>;
     toggle?: WithDataAttributes<React.ComponentProps<"button">>;
   };
-  onChange?: (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => void | { invalid?: string };
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export function Password({
   className,
-  label,
-  description,
-  invalid: externalInvalid,
-  direction = "vertical",
+  invalid,
   itemProps,
-  onChange,
-  disabled,
   ...props
 }: PasswordProps) {
-  const innerRef = useRef<HTMLInputElement>(null);
   const [showPassword, setShowPassword] = useState(false);
-  const [internalInvalid, setInternalInvalid] = useState<string | undefined>();
-
-  const finalInvalid = externalInvalid ?? internalInvalid;
-  const isInvalid = Boolean(finalInvalid);
-  const hasInvalidContent = typeof finalInvalid === "string";
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const res = onChange?.(e);
-    setInternalInvalid(res?.invalid);
-  };
 
   return (
     <div
-      {...itemProps?.root}
-      inert={disabled}
-      data-invalid={isInvalid ? true : undefined}
-      data-direction={direction}
+      {...itemProps?.group}
+      data-invalid={invalid ? true : undefined}
+      aria-invalid={invalid}
       className={cn(
-        "grid gap-1 group inert:cursor-not-allowed inert:opacity-50 items-center",
-        "data-[direction=vertical]:grid-cols-1",
-        "data-[direction=horizontal]:grid-cols-[128px_1fr]",
-        itemProps?.root?.className,
+        "flex w-sm items-center rounded-md border border-input bg-background shadow-xs transition-colors px-2 h-9",
+        "has-focus:border-primary has-focus:ring-2 has-focus:ring-primary/20",
+        "data-[invalid=true]:border-destructive data-[invalid=true]:ring-destructive/20",
+        itemProps?.group?.className,
       )}
     >
-      {label && (
-        <label
-          {...itemProps?.label}
-          htmlFor={props.id}
-          className={cn(
-            "text-sm font-medium leading-none indent-2 py-1 select-none",
-            "group-data-[direction=horizontal]:text-end",
-            itemProps?.label?.className,
-          )}
-        >
-          {label}
-        </label>
-      )}
-
-      <div
-        {...itemProps?.group}
-        data-invalid={isInvalid}
+      <input
+        {...props}
+        type={showPassword ? "text" : "password"}
         className={cn(
-          "flex w-sm items-center rounded-md border border-input bg-background shadow-xs transition-colors px-2 h-9",
-          "has-focus:border-primary has-focus:ring-2 has-focus:ring-primary/20",
-          "data-[invalid=true]:border-destructive data-[invalid=true]:ring-destructive/20",
-          itemProps?.group?.className,
+          "appearance-none border-0 bg-transparent outline-none px-2 py-1 text-sm flex-1 min-w-0",
+          "placeholder:text-muted-foreground",
+          "selection:bg-primary selection:text-primary-foreground",
+          className,
         )}
-      >
-        <input
-          {...props}
-          ref={innerRef}
-          type={showPassword ? "text" : "password"}
-          onChange={handleChange}
-          className={cn(
-            "appearance-none border-0 bg-transparent outline-none px-2 py-1 text-sm flex-1 min-w-0",
-            "placeholder:text-muted-foreground",
-            "selection:bg-primary selection:text-primary-foreground",
-            className,
-          )}
-          autoComplete="off"
-          aria-invalid={isInvalid}
-        />
+      />
 
-        <button
-          type="button"
-          {...itemProps?.toggle}
-          className={cn(
-            "hover:text-foreground/80 rounded-md p-1 text-muted-foreground transition-colors",
-            itemProps?.toggle?.className
-          )}
-          onClick={() => setShowPassword(!showPassword)}
-        >
-          {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-        </button>
-      </div>
-
-      <small
-        {...(hasInvalidContent ? itemProps?.invalid : itemProps?.description)}
+      <button
+        type="button"
+        {...itemProps?.toggle}
         className={cn(
-          "text-sm indent-2 h-5 text-muted-foreground",
-          "group-data-invalid:text-destructive",
-          "group-data-[direction=horizontal]:col-start-2",
-          (hasInvalidContent ? itemProps?.invalid : itemProps?.description)
-            ?.className,
+          "hover:text-foreground/80 rounded-md p-1 text-muted-foreground transition-colors",
+          itemProps?.toggle?.className,
         )}
-        role={hasInvalidContent ? "alert" : undefined}
+        onClick={() => setShowPassword(!showPassword)}
       >
-        {hasInvalidContent ? finalInvalid : description}
-      </small>
+        {showPassword ? (
+          <EyeOff className="size-4" />
+        ) : (
+          <Eye className="size-4" />
+        )}
+      </button>
     </div>
   );
 }

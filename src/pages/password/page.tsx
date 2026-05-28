@@ -13,11 +13,20 @@ import {
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
-import { PasswordBasic, PasswordValidation, PasswordControlled } from "./examples";
-import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
+import {
+  PasswordBasic,
+
+  PasswordControlled,
+} from "./examples";
+import {
+  CheckIcon,
+  CopyIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+} from "lucide-react";
 
 import PasswordBasicRaw from "./examples/password-basic.tsx?raw";
-import PasswordValidationRaw from "./examples/password-validation.tsx?raw";
+
 import PasswordControlledRaw from "./examples/password-controlled.tsx?raw";
 import passwordDoc from "./doc.mdx?raw";
 import passwordSrc from "@/component/ui/password.tsx?raw";
@@ -121,40 +130,11 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
 
       data: [
         {
-          props: "root",
-          type: 'ComponentProps<"div">',
-          description: l.api.itemPropsConfig.root,
-        },
-        {
-          props: "label",
-          type: 'ComponentProps<"label">',
-          description: l.api.itemPropsConfig.label,
-        },
-        {
           props: "group",
           type: 'ComponentProps<"div">',
           description: l.api.itemPropsConfig.group,
         },
-        {
-          props: "leading",
-          type: 'ComponentProps<"span">',
-          description: l.api.itemPropsConfig.leading,
-        },
-        {
-          props: "trailing",
-          type: 'ComponentProps<"span">',
-          description: l.api.itemPropsConfig.trailing,
-        },
-        {
-          props: "invalid",
-          type: 'ComponentProps<"div">',
-          description: l.api.itemPropsConfig.invalid,
-        },
-        {
-          props: "description",
-          type: 'ComponentProps<"small">',
-          description: l.api.itemPropsConfig.description,
-        },
+
         {
           props: "toggle",
           type: 'ComponentProps<"button">',
@@ -227,13 +207,7 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
             <PasswordControlled />
           </DemoSection>
 
-          <DemoSection
-            id="validation"
-            title={l.validation.title}
-            code={PasswordValidationRaw}
-          >
-            <PasswordValidation />
-          </DemoSection>
+
         </section>
 
         <section id="anatomy" className="mt-8 space-y-4">
@@ -241,7 +215,7 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
           <Anatomy
             className="h-32"
             parts={[
-              { name: "root", label: l.anatomy.root },
+              { name: "group", label: l.anatomy.group },
               { name: "input", label: l.anatomy.input },
               { name: "toggle", label: l.anatomy.toggle },
             ]}
@@ -250,8 +224,8 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
               data-anatomy-name="input"
               placeholder="请输入密码"
               itemProps={{
-                root: { "data-anatomy-name": "root" },
                 toggle: { "data-anatomy-name": "toggle" },
+                group: { "data-anatomy-name": "group" },
               }}
             />
           </Anatomy>
@@ -271,7 +245,6 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
             <Anchor.Item href="#controlled">{l.controlled.title}</Anchor.Item>
-            <Anchor.Item href="#validation">{l.validation.title}</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
           <Anchor.Section href="#docs" linkText={lang.docs} />

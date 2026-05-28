@@ -36,6 +36,7 @@ export const zh = {
   componentsGroup: "组件",
 
   components: {
+    form: "Form 表单",
     button: "Button 按钮",
     accordion: "Accordion 手风琴",
     "accordion-controlled": "Accordion 手风琴（受控）",
@@ -403,14 +404,10 @@ export const zh = {
     variants: {
       title: "变体",
     },
-    validation: {
-      title: "校验",
-    },
+
     anatomy: {
       checkbox: "复选框",
-      label: "标签",
-      description: "描述",
-      content: "内容",
+
       item: "标签及指示器",
     },
     api: {
@@ -424,11 +421,9 @@ export const zh = {
         value: "选中的值（受控模式）",
         defaultValue: "初始选中的值（非受控模式）",
         onValueChange: "值变化回调，可返回 { invalid?: string } 触发无效状态",
-        invalid: "无效状态，支持 boolean 或 string 类型",
+        invalid: "无效状态",
         disabled: "是否禁用整个组",
         name: "表单字段名称",
-        label: "标签文本",
-        description: "描述文本",
         itemProps: "内部元素属性透传配置",
         options: "选项数组，用于渲染多个复选框",
       },
@@ -443,10 +438,7 @@ export const zh = {
 
       itemProps: {
 
-        content: "内容容器 `<div>` 元素属性",
-        label: "标签 `<span>` 元素属性",
-        description: "描述 `<small>` 元素属性",
-        invalid: "无效文本 `<span>` 元素属性",
+
         options: "选项项 `<button>` 元素属性",
       },
     },
@@ -499,19 +491,17 @@ export const zh = {
     disabled: {
       title: "禁用",
     },
-    validation: {
-      title: "校验",
-    },
+
     prefixSuffix: {
       title: "前后缀",
     },
     anatomy: {
       group: "组",
-      label: "标签",
+
       input: "输入框",
       leading: "前导",
       trailing: "尾随",
-      description: "描述",
+
     },
     api: {
       sectionTitles: {
@@ -533,11 +523,11 @@ export const zh = {
       },
       itemPropsConfig: {
         group: "组容器 `<div>` 属性",
-        label: "标签 `<label>` 属性",
-        invalid: "无效信息 `<small>` 属性",
+
+   
         leading: "前导容器 `<span>` 属性",
         trailing: "尾随容器 `<span>` 属性",
-        description: "描述 `<small>` 属性",
+   
       },
     },
   },
@@ -551,11 +541,10 @@ export const zh = {
     controlled: {
       title: "受控",
     },
-    validation: {
-      title: "校验",
-    },
+
     anatomy: {
-      root: "根元素",
+      group: "组",
+
       input: "输入框",
       toggle: "切换按钮",
     },
@@ -578,13 +567,10 @@ export const zh = {
         itemProps: "内部封装属性透传",
       },
       itemPropsConfig: {
-        root: "根容器 `<div>` 属性",
-        label: "标签 `<label>` 属性",
+
         group: "输入框组 `<div>` 属性",
-        leading: "前缀 `<span>` 属性",
-        trailing: "后缀 `<span>` 属性",
-        invalid: "无效 `<div>` 属性",
-        description: "描述 `<small>` 属性",
+
+  
         toggle: "切换按钮 `<button>` 属性",
       },
     },
@@ -602,9 +588,7 @@ export const zh = {
     orientation: {
       title: "方向",
     },
-    anatomy: {
-      input: "滑块",
-    },
+
     api: {
       sectionTitles: {
         sliderProps: "Slider Props",
@@ -627,18 +611,11 @@ export const zh = {
     controlled: {
       title: "受控",
     },
-    validation: {
-      title: "校验",
-    },
+
     disabled: {
       title: "禁用",
     },
-    anatomy: {
-      root: "根元素",
-      label: "标签",
-      textarea: "文本域",
-      description: "描述",
-    },
+
     api: {
       sectionTitles: {
         textareaProps: "Textarea Props",
@@ -727,21 +704,14 @@ export const zh = {
     basic: {
       title: "基础",
     },
-    validation: {
-      title: "校验",
-    },
+
     multiple: {
       title: "多选",
     },
     disabled: {
       title: "禁用",
     },
-    anatomy: {
-      root: "根元素",
-      label: "标签",
-      input: "输入框",
-      description: "描述",
-    },
+
     api: {
       sectionTitles: {
         uploadProps: "Upload Props",
@@ -778,32 +748,21 @@ export const zh = {
     disabled: {
       title: "禁用",
     },
-    anatomy: {
-      root: "根元素",
-      label: "标签",
-      input: "输入框",
-      description: "描述",
-    },
+
     api: {
       sectionTitles: {
         datePickerProps: "DatePicker Props",
-        itemPropsConfig: "itemProps 配置",
+ 
       },
       props: {
-        label: "标签文本",
-        description: "描述文本",
+
         invalid: "无效信息",
         placeholder: "占位符",
         type: "输入类型",
-        onChange: "值变化回调，可返回 { invalid?: string } 触发无效状态",
-        itemProps: "内部封装属性透传",
+        onChange: "值变化回调",
+
       },
-      itemPropsConfig: {
-        root: "根容器 `<div>` 属性",
-        label: "标签 `<label>` 属性",
-        description: "描述 `<small>` 属性",
-        invalid: "无效信息 `<small>` 属性",
-      },
+
     },
     valueNote: "值映射",
 
@@ -894,6 +853,31 @@ export const zh = {
     },
   },
 
+  form: {
+    title: "表单",
+    description: "表单组件，支持数据收集和验证。",
+    basic: {
+      title: "基础",
+    },
+    api: {
+      sectionTitles: {
+        formProps: "Form Props",
+        formFieldProps: "Form.Field Props",
+        formSubmitProps: "Form.Submit Props",
+      },
+      props: {
+        onSubmit: "表单提交处理函数",
+        label: "字段标签",
+        name: "字段名称（必填）",
+        description: "字段描述",
+        invalid: "无效提示信息",
+        disabled: "是否禁用",
+        direction: "布局方向",
+        loading: "加载状态",
+      },
+    },
+  },
+
   image: {
     title: "图片",
     description: "图片组件，支持加载状态和错误处理。",
@@ -939,9 +923,7 @@ export const zh = {
     variant: {
       title: "变体",
     },
-    validation: {
-      title: "校验",
-    },
+
     anatomy: {
       group: "组",
       label: "标签",
@@ -963,8 +945,7 @@ export const zh = {
         invalid: "无效状态，支持 boolean 或 string 类型",
         disabled: "是否禁用",
         name: "表单字段名称",
-        label: "标签文本",
-        description: "描述文本",
+
         itemProps: "内部元素属性透传配置",
         options: "选项数组，用于渲染多个单选框",
       },
@@ -976,11 +957,9 @@ export const zh = {
         indicator: "指示器配置",
       },
       itemProps: {
-        root: "根容器 `<div>` 元素属性",
+ 
         content: "内容容器 `<div>` 元素属性",
-        label: "标签 `<label>` 元素属性",
-        description: "描述 `<small>` 元素属性",
-        invalid: "无效文本 `<span>` 元素属性",
+
         options: "选项项 `<button>` 元素属性",
       },
     },
@@ -1037,25 +1016,18 @@ export const zh = {
     controlled: {
       title: "受控",
     },
-    minMax: {
-      title: "范围限制",
-    },
-    step: {
-      title: "步长",
-    },
+
+
     disabled: {
       title: "禁用",
     },
-    validation: {
-      title: "校验",
-    },
+
     anatomy: {
-      root: "根元素",
-      label: "标签",
+
       group: "输入框组",
       btn: "按钮",
       input: "输入框",
-      desc: "描述",
+  
     },
     api: {
       sectionTitles: {
@@ -1066,8 +1038,7 @@ export const zh = {
         value: "输入值（受控模式）",
         defaultValue: "初始输入值（非受控模式）",
         onValueChange: "值变化回调，可返回 { invalid?: string } 触发无效状态",
-        label: "标签文本",
-        description: "描述文本",
+
         invalid: "无效信息",
         min: "最小值",
         max: "最大值",
@@ -1076,12 +1047,11 @@ export const zh = {
         itemProps: "内部封装属性透传",
       },
       itemPropsConfig: {
-        root: "根容器 `<div>` 属性",
-        label: "标签 `<label>` 属性",
+
         group: "输入框组 `<div>` 属性",
         btn: "按钮 `<button>` 属性",
         desc: "描述 `<small>` 属性",
-        error: "错误信息 `<small>` 属性",
+
       },
     },
   },

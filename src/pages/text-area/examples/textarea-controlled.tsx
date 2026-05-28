@@ -6,10 +6,10 @@ export function TextareaControlled() {
 
   return (
     <Textarea
-      label="受控文本域"
+
       value={value}
       onChange={(e) => setValue(e.target.value)}
-      description={`当前字符数：${value.length}`}
+
     />
   );
 }

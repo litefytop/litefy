@@ -6,8 +6,6 @@ export default function InputControlled() {
 
   return (
     <Input
-      label="Controlled Input"
-      description={`Value: ${value || "empty"}`}
       value={value}
       onChange={(e) => setValue(e.target.value)}
       className="w-64"

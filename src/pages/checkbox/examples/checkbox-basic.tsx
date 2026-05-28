@@ -3,7 +3,6 @@ import { Checkbox } from "@/component";
 export default function CheckboxBasic() {
   return (
     <Checkbox
-      label="Basic Checkbox"
       options={[
         {
           value: "remember",

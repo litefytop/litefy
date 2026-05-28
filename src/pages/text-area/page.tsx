@@ -4,9 +4,9 @@ import {
   Anchor,
   Title,
   Description,
-  Textarea,
+
   ShikiCodeBlock,
-  Anatomy,
+
   Button,
   Docs,
 } from "@/component";
@@ -16,14 +16,14 @@ import { getComponentNav } from "@/pages/config/routes";
 import {
   TextareaBasic,
   TextareaControlled,
-  TextareaValidation,
+
   TextareaDisabled,
 } from "./examples";
 import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
 import TextareaBasicRaw from "./examples/textarea-basic.tsx?raw";
 import TextareaControlledRaw from "./examples/textarea-controlled.tsx?raw";
-import TextareaValidationRaw from "./examples/textarea-validation.tsx?raw";
+
 import TextareaDisabledRaw from "./examples/textarea-disabled.tsx?raw";
 import textareaSrc from "@/component/ui/text-area.tsx?raw";
 
@@ -210,13 +210,7 @@ export default function TextareaPage({ locale = "zh" }: { locale?: string }) {
             <TextareaControlled />
           </DemoSection>
 
-          <DemoSection
-            id="validation"
-            title={l.validation.title}
-            code={TextareaValidationRaw}
-          >
-            <TextareaValidation />
-          </DemoSection>
+
 
           <DemoSection
             id="disabled"
@@ -227,30 +221,7 @@ export default function TextareaPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
         </section>
 
-        <section id="anatomy" className="mt-8 space-y-4">
-          <Title as="h2">{lang.anatomy}</Title>
-          <Anatomy
-            className="h-48"
-            parts={[
-              { name: "root", label: l.anatomy.root },
-              { name: "label", label: l.anatomy.label },
-              { name: "textarea", label: l.anatomy.textarea },
-              { name: "description", label: l.anatomy.description },
-            ]}
-          >
-            <Textarea
-              label="反馈内容"
-              description="用于收集用户反馈"
-              placeholder="请输入内容"
-              data-anatomy-name="textarea"
-              itemProps={{
-                root: { "data-anatomy-name": "root" },
-                label: { "data-anatomy-name": "label" },
-                description: { "data-anatomy-name": "description" },
-              }}
-            />
-          </Anatomy>
-        </section>
+  
 
         <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
@@ -266,7 +237,6 @@ export default function TextareaPage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
             <Anchor.Item href="#controlled">{l.controlled.title}</Anchor.Item>
-            <Anchor.Item href="#validation">{l.validation.title}</Anchor.Item>
             <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />

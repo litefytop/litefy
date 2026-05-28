@@ -6,7 +6,6 @@ export default function CheckboxControlled() {
 
   return (
     <Checkbox
-      label="Controlled Checkbox"
       value={checked}
       onValueChange={setChecked}
       options={[

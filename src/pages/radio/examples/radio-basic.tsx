@@ -3,7 +3,6 @@ import { Radio } from "@/component";
 export default function RadioBasic() {
   return (
     <Radio
-      label="Basic Radio Group"
       options={[
         {
           value: "apple",

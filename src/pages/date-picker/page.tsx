@@ -4,9 +4,8 @@ import {
   Anchor,
   Title,
   Description,
-  DatePicker,
   ShikiCodeBlock,
-  Anatomy,
+
   Button,
   Docs,
 } from "@/component";
@@ -18,7 +17,12 @@ import {
   DatePickerType,
   DatePickerDisabled,
 } from "./examples";
-import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
+import {
+  CheckIcon,
+  CopyIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+} from "lucide-react";
 
 import DatePickerBasicRaw from "./examples/date-picker-basic.tsx?raw";
 import DatePickerTypeRaw from "./examples/date-picker-type.tsx?raw";
@@ -37,11 +41,7 @@ function DemoSection({
   code: string;
 }) {
   return (
-    <section
-      id={id}
-      data-anchor-id={id}
-      className="space-y-4 py-4"
-    >
+    <section id={id} data-anchor-id={id} className="space-y-4 py-4">
       <div>
         <Title as="h3">{title}</Title>
       </div>
@@ -66,18 +66,8 @@ export default function DatePickerPage({ locale = "zh" }: { locale?: string }) {
 
       data: [
         {
-          props: "label",
-          type: "ReactNode",
-          description: l.api.props.label,
-        },
-        {
-          props: "description",
-          type: "ReactNode",
-          description: l.api.props.description,
-        },
-        {
           props: "invalid",
-          type: "string",
+          type: "boolean",
           description: l.api.props.invalid,
         },
         {
@@ -94,39 +84,8 @@ export default function DatePickerPage({ locale = "zh" }: { locale?: string }) {
         },
         {
           props: "onChange",
-          type: "(e: ChangeEvent<HTMLInputElement>) => void | { invalid?: string }",
+          type: "(e: ChangeEvent<HTMLInputElement>) => void ",
           description: l.api.props.onChange,
-        },
-        {
-          props: "itemProps",
-          type: "DateInputItemProps",
-          description: l.api.props.itemProps,
-        },
-      ],
-    },
-    {
-      title: l.api.sectionTitles.itemPropsConfig,
-
-      data: [
-        {
-          props: "root",
-          type: `React.ComponentProps<"div">`,
-          description: l.api.itemPropsConfig.root,
-        },
-        {
-          props: "label",
-          type: `React.ComponentProps<"label">`,
-          description: l.api.itemPropsConfig.label,
-        },
-        {
-          props: "description",
-          type: `React.ComponentProps<"small">`,
-          description: l.api.itemPropsConfig.description,
-        },
-        {
-          props: "invalid",
-          type: `React.ComponentProps<"small">`,
-          description: l.api.itemPropsConfig.invalid,
         },
       ],
     },
@@ -191,11 +150,7 @@ export default function DatePickerPage({ locale = "zh" }: { locale?: string }) {
             <DatePickerBasic />
           </DemoSection>
 
-          <DemoSection
-            id="type"
-            title={l.type.title}
-            code={DatePickerTypeRaw}
-          >
+          <DemoSection id="type" title={l.type.title} code={DatePickerTypeRaw}>
             <DatePickerType />
           </DemoSection>
 
@@ -208,29 +163,7 @@ export default function DatePickerPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
         </section>
 
-        <section id="anatomy" className="mt-8 space-y-4">
-          <Title as="h2">{lang.anatomy}</Title>
-          <Anatomy
-            className="h-48"
-            parts={[
-              { name: "root", label: l.anatomy.root },
-              { name: "label", label: l.anatomy.label },
-              { name: "input", label: l.anatomy.input },
-              { name: "description", label: l.anatomy.description },
-            ]}
-          >
-            <DatePicker
-              label="Date"
-              description="Description"
-              data-anatomy-name="input"
-              itemProps={{
-                root: { "data-anatomy-name": "root" },
-                label: { "data-anatomy-name": "label" },
-                description: { "data-anatomy-name": "description" },
-              }}
-            />
-          </Anatomy>
-        </section>
+
 
         <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
@@ -240,7 +173,9 @@ export default function DatePickerPage({ locale = "zh" }: { locale?: string }) {
         </section>
 
         <section id="value-format" className="mt-8 space-y-4">
-          <Title as="h4" className="px-2">{l.valueNote}</Title>
+          <Title as="h4" className="px-2">
+            {l.valueNote}
+          </Title>
           <div className="border rounded-lg p-4">
             <table className="w-full text-sm">
               <thead>
@@ -251,29 +186,62 @@ export default function DatePickerPage({ locale = "zh" }: { locale?: string }) {
               </thead>
               <tbody>
                 <tr className="border-b">
-                  <td className="py-2 pr-4 font-mono text-muted-foreground">date</td>
+                  <td className="py-2 pr-4 font-mono text-muted-foreground">
+                    date
+                  </td>
                   <td className="py-2 font-mono">YYYY-MM-DD</td>
                 </tr>
                 <tr className="border-b">
-                  <td className="py-2 pr-4 font-mono text-muted-foreground">time</td>
+                  <td className="py-2 pr-4 font-mono text-muted-foreground">
+                    time
+                  </td>
                   <td className="py-2 font-mono">HH:mm</td>
                 </tr>
                 <tr className="border-b">
-                  <td className="py-2 pr-4 font-mono text-muted-foreground">datetime-local</td>
+                  <td className="py-2 pr-4 font-mono text-muted-foreground">
+                    datetime-local
+                  </td>
                   <td className="py-2 font-mono">YYYY-MM-DDTHH:mm</td>
                 </tr>
                 <tr className="border-b">
-                  <td className="py-2 pr-4 font-mono text-muted-foreground">month</td>
+                  <td className="py-2 pr-4 font-mono text-muted-foreground">
+                    month
+                  </td>
                   <td className="py-2 font-mono">YYYY-MM</td>
                 </tr>
                 <tr>
-                  <td className="py-2 pr-4 font-mono text-muted-foreground">week</td>
+                  <td className="py-2 pr-4 font-mono text-muted-foreground">
+                    week
+                  </td>
                   <td className="py-2 font-mono">YYYY-Wxx</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </section>
+
+        <footer className="py-8 border-t mt-8">
+          <div className="flex justify-between">
+            <Button
+              variant="ghost"
+              onClick={handlePrev}
+              disabled={!nav.prev}
+              className={nav.prev ? "" : "invisible"}
+            >
+              <ArrowLeftIcon className="size-4 mr-2" />
+              {nav.prev?.title}
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={handleNext}
+              disabled={!nav.next}
+              className={nav.next ? "" : "invisible"}
+            >
+              {nav.next?.title}
+              <ArrowRightIcon className="size-4 ml-2" />
+            </Button>
+          </div>
+        </footer>
       </div>
 
       <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-full overflow-y-auto p-4">
@@ -285,7 +253,7 @@ export default function DatePickerPage({ locale = "zh" }: { locale?: string }) {
             <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
-          <Anchor.Section href="#docs" linkText={lang.docs}/>
+          <Anchor.Section href="#docs" linkText={lang.docs} />
         </Anchor>
       </aside>
     </div>

@@ -6,8 +6,6 @@ export default function PasswordControlled() {
 
   return (
     <Password
-      label="Controlled password"
-      description={`Value: ${value || "empty"}`}
       value={value}
       onChange={(e) => setValue(e.target.value)}
       placeholder="Controlled password"

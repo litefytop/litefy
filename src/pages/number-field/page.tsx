@@ -16,18 +16,19 @@ import { getComponentNav } from "@/pages/config/routes";
 import {
   NumberFieldBasic,
   NumberFieldControlled,
-  NumberFieldStep,
   NumberFieldDisabled,
-  NumberFieldValidation,
 } from "./examples";
 
 import NumberFieldBasicRaw from "./examples/number-field-basic.tsx?raw";
 import NumberFieldControlledRaw from "./examples/number-field-controlled.tsx?raw";
-import NumberFieldStepRaw from "./examples/number-field-step.tsx?raw";
 import NumberFieldDisabledRaw from "./examples/number-field-disabled.tsx?raw";
-import NumberFieldValidationRaw from "./examples/number-field-validation.tsx?raw";
 import numberFieldSrc from "@/component/ui/number-field.tsx?raw";
-import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
+import {
+  CheckIcon,
+  CopyIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+} from "lucide-react";
 
 function DemoSection({
   id,
@@ -41,11 +42,7 @@ function DemoSection({
   code: string;
 }) {
   return (
-    <section
-      id={id}
-      data-anchor-id={id}
-      className="space-y-4 py-4"
-    >
+    <section id={id} data-anchor-id={id} className="space-y-4 py-4">
       <div>
         <Title as="h3">{title}</Title>
       </div>
@@ -57,12 +54,19 @@ function DemoSection({
   );
 }
 
-export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) {
+export default function NumberFieldPage({
+  locale = "zh",
+}: {
+  locale?: string;
+}) {
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
   const l = lang["number-field"];
-  const nav = getComponentNav("/components/number-field", locale as "zh" | "en");
+  const nav = getComponentNav(
+    "/components/number-field",
+    locale as "zh" | "en",
+  );
 
   const numberFieldSections = [
     {
@@ -71,34 +75,21 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
       data: [
         {
           props: "value",
-          type: "number",
-          
+          type: "string",
           description: l.api.props.value,
         },
         {
           props: "defaultValue",
-          type: "number",
+          type: "string|number",
           default: "0",
           description: l.api.props.defaultValue,
         },
         {
           props: "onValueChange",
-          type: "(val: number) => void | { invalid?: string }",
-          
+          type: "(val: string) => void ",
           description: l.api.props.onValueChange,
         },
-        {
-          props: "label",
-          type: "ReactNode",
-          
-          description: l.api.props.label,
-        },
-        {
-          props: "description",
-          type: "ReactNode",
-          
-          description: l.api.props.description,
-        },
+
         {
           props: "invalid",
           type: "string",
@@ -131,7 +122,7 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
         {
           props: "itemProps",
           type: "NumberFieldItemProps",
-          
+
           description: l.api.props.itemProps,
         },
       ],
@@ -140,16 +131,6 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
       title: l.api.sectionTitles.itemPropsConfig,
 
       data: [
-        {
-          props: "root",
-          type: `React.ComponentProps<"div">`,
-          description: l.api.itemPropsConfig.root,
-        },
-        {
-          props: "label",
-          type: `React.ComponentProps<"label">`,
-          description: l.api.itemPropsConfig.label,
-        },
         {
           props: "group",
           type: `React.ComponentProps<"div">`,
@@ -164,11 +145,6 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
           props: "desc",
           type: `React.ComponentProps<"small">`,
           description: l.api.itemPropsConfig.desc,
-        },
-        {
-          props: "error",
-          type: `React.ComponentProps<"small">`,
-          description: l.api.itemPropsConfig.error,
         },
       ],
     },
@@ -242,27 +218,11 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
           </DemoSection>
 
           <DemoSection
-            id="step"
-            title={l.step.title}
-            code={NumberFieldStepRaw}
-          >
-            <NumberFieldStep />
-          </DemoSection>
-
-          <DemoSection
             id="disabled"
             title={l.disabled.title}
             code={NumberFieldDisabledRaw}
           >
             <NumberFieldDisabled />
-          </DemoSection>
-
-          <DemoSection
-            id="validation"
-            title={l.validation.title}
-            code={NumberFieldValidationRaw}
-          >
-            <NumberFieldValidation />
           </DemoSection>
         </section>
 
@@ -271,24 +231,16 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
           <Anatomy
             className="h-48"
             parts={[
-              { name: "root", label: l.anatomy.root },
-              { name: "label", label: l.anatomy.label },
               { name: "group", label: l.anatomy.group },
               { name: "btn", label: l.anatomy.btn },
               { name: "input", label: l.anatomy.input },
-              { name: "desc", label: l.anatomy.desc },
             ]}
           >
             <NumberField
-              label="数量"
-              description="请选择数量"
               data-anatomy-name="input"
               itemProps={{
-                root: { "data-anatomy-name": "root" },
-                label: { "data-anatomy-name": "label" },
                 group: { "data-anatomy-name": "group" },
                 btn: { "data-anatomy-name": "btn" },
-                desc: { "data-anatomy-name": "desc" },
               }}
             />
           </Anatomy>
@@ -308,14 +260,10 @@ export default function NumberFieldPage({ locale = "zh" }: { locale?: string }) 
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
             <Anchor.Item href="#controlled">{l.controlled.title}</Anchor.Item>
-            <Anchor.Item href="#min-max">{l.minMax.title}</Anchor.Item>
-            <Anchor.Item href="#step">{l.step.title}</Anchor.Item>
             <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
-            <Anchor.Item href="#validation">{l.validation.title}</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
-          <Anchor.Section href="#docs" linkText={lang.docs}/>
-     
+          <Anchor.Section href="#docs" linkText={lang.docs} />
         </Anchor>
       </aside>
     </div>

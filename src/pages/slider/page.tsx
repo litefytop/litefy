@@ -1,13 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-
   Anchor,
   Title,
   Description,
-  Slider,
   ShikiCodeBlock,
-  Anatomy,
   Button,
   Docs,
 } from "@/component";
@@ -169,17 +166,7 @@ export default function SliderPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
         </section>
 
-        <section id="anatomy" className="mt-8 space-y-4">
-          <Title as="h2">{lang.anatomy}</Title>
-          <Anatomy
-            className="h-48"
-            parts={[
-              { name: "input", label: l.anatomy.input },
-            ]}
-          >
-            <Slider data-anatomy-name="input" defaultValue={50} />
-          </Anatomy>
-        </section>
+
 
         <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">

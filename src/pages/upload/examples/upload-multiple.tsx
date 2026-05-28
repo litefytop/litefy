@@ -16,8 +16,6 @@ export function UploadMultiple() {
     <div className="space-y-2">
       <Upload
         className="w-3xs"
-        label="Upload Multiple Files"
-        description="Select multiple files"
         onChange={handleChange}
         multiple
       />

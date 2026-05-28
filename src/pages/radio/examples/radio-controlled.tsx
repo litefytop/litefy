@@ -6,7 +6,6 @@ export default function RadioControlled() {
 
   return (
     <Radio
-      label="Controlled Radio Group"
       value={value}
       onValueChange={setValue}
       options={[

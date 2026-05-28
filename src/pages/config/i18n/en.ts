@@ -36,6 +36,7 @@ export const en = {
   componentsGroup: "Components",
 
   components: {
+    form: "Form",
     button: "Button",
     accordion: "Accordion",
     "accordion-controlled": "Accordion (Controlled)",
@@ -77,7 +78,7 @@ export const en = {
     "number-field": "NumberField",
   },
 
-  "dropdown": {
+  dropdown: {
     title: "Dropdown Menu",
     description: "Dropdown menu component for displaying action lists.",
     basic: {
@@ -156,13 +157,11 @@ export const en = {
       title: "Anatomy",
       accordion: "Accordion",
       item: "Accordion.Item",
-      summary:"Summary",
+      summary: "Summary",
       content: "Content",
     },
     api: {
       props: {
-
-    
         icon: "Custom expand/collapse icon",
       },
       itemProps: {
@@ -186,7 +185,8 @@ export const en = {
 
   accordionControlled: {
     title: "Accordion (Controlled)",
-    description: "Controlled accordion component with state management for precise expand/collapse behavior.",
+    description:
+      "Controlled accordion component with state management for precise expand/collapse behavior.",
     basic: {
       title: "Basic",
     },
@@ -377,7 +377,8 @@ export const en = {
         title: "Title",
         description: "Description",
         icon: "Custom icon",
-        duration: "Duration in milliseconds, set to Infinity to never auto-dismiss",
+        duration:
+          "Duration in milliseconds, set to Infinity to never auto-dismiss",
         onDismiss: "Callback when dismissed",
         onAutoClose: "Callback when auto-closed",
         actions: "Action buttons array",
@@ -405,14 +406,10 @@ export const en = {
     variants: {
       title: "Variants",
     },
-    validation: {
-      title: "Validation",
-    },
+
     anatomy: {
       checkbox: "Checkbox",
-      label: "Label",
-      description: "Description",
-      content: "Content",
+
       item: "Label and Indicator",
     },
     api: {
@@ -425,12 +422,11 @@ export const en = {
       props: {
         value: "Selected values (controlled mode)",
         defaultValue: "Initial selected values (uncontrolled mode)",
-        onValueChange: "Value change callback, can return { invalid?: string } to trigger invalid state",
-        invalid: "Invalid state, supports boolean or string type",
+        onValueChange:
+          "Value change callback, can return { invalid?: string } to trigger invalid state",
+        invalid: "Invalid state",
         disabled: "Whether to disable entire group",
         name: "Form field name",
-        label: "Label text",
-        description: "Description text",
         itemProps: "Internal element props passthrough config",
         options: "Options array for rendering multiple checkboxes",
       },
@@ -440,15 +436,10 @@ export const en = {
         disabled: "Whether disabled",
         variant: "Style variant",
         indicator: "Indicator config",
-        itemProps:"Internal element props passthrough config"
+        itemProps: "Internal element props passthrough config",
       },
- 
-      itemProps: {
 
-        content: "Content container `<div>` element props",
-        label: "Label `<span>` element props",
-        description: "Description `<small>` element props",
-        invalid: "Invalid text `<span>` element props",
+      itemProps: {
         options: "Option item `<button>` element props",
       },
     },
@@ -500,19 +491,16 @@ export const en = {
     disabled: {
       title: "Disabled",
     },
-    validation: {
-      title: "Validation",
-    },
+
     prefixSuffix: {
       title: "Prefix/Suffix",
     },
     anatomy: {
       group: "Group",
-      label: "Label",
+
       input: "Input",
       leading: "Leading",
       trailing: "Trailing",
-      description: "Description",
     },
     api: {
       sectionTitles: {
@@ -522,7 +510,8 @@ export const en = {
       props: {
         value: "Input value (controlled mode)",
         defaultValue: "Initial input value (uncontrolled mode)",
-        onChange: "Value change callback, can return { invalid?: string } to trigger invalid state",
+        onChange:
+          "Value change callback, can return { invalid?: string } to trigger invalid state",
         placeholder: "Placeholder",
         type: "Input type",
         invalid: "Invalid message",
@@ -534,11 +523,8 @@ export const en = {
       },
       itemPropsConfig: {
         group: "Group container `<div>` props",
-        label: "Label `<label>` props",
-        invalid: "Invalid `<small>` props",
         leading: "Leading container `<span>` props",
         trailing: "Trailing container `<span>` props",
-        description: "Description `<small>` props",
       },
     },
   },
@@ -552,11 +538,9 @@ export const en = {
     controlled: {
       title: "Controlled",
     },
-    validation: {
-      title: "Validation",
-    },
+
     anatomy: {
-      root: "Root",
+      group: "Group",
       input: "Input",
       toggle: "Toggle Button",
     },
@@ -568,7 +552,8 @@ export const en = {
       props: {
         value: "Input value (controlled mode)",
         defaultValue: "Initial input value (uncontrolled mode)",
-        onChange: "Value change callback, can return { invalid?: string } to trigger invalid state",
+        onChange:
+          "Value change callback, can return { invalid?: string } to trigger invalid state",
         label: "Label text",
         description: "Description text",
         invalid: "Invalid message",
@@ -579,13 +564,10 @@ export const en = {
         itemProps: "Internal wrapped property passthrough",
       },
       itemPropsConfig: {
-        root: "Root container `<div>` props",
-        label: "Label `<label>` props",
         group: "Input group `<div>` props",
-        leading: "Leading `<span>` props",
-        trailing: "Trailing `<span>` props",
-        invalid: "Invalid `<div>` props",
-        description: "Description `<small>` props",
+
+
+
         toggle: "Toggle button `<button>` props",
       },
     },
@@ -603,9 +585,7 @@ export const en = {
     orientation: {
       title: "Orientation",
     },
-    anatomy: {
-      input: "Slider",
-    },
+
     api: {
       sectionTitles: {
         sliderProps: "Slider Props",
@@ -628,18 +608,11 @@ export const en = {
     controlled: {
       title: "Controlled",
     },
-    validation: {
-      title: "Validation",
-    },
+
     disabled: {
       title: "Disabled",
     },
-    anatomy: {
-      root: "Root",
-      label: "Label",
-      textarea: "Textarea",
-      description: "Description",
-    },
+
     api: {
       sectionTitles: {
         textareaProps: "Textarea Props",
@@ -648,7 +621,8 @@ export const en = {
       props: {
         value: "Input value (controlled mode)",
         defaultValue: "Initial input value (uncontrolled mode)",
-        onChange: "Value change callback, can return { invalid?: string } to trigger invalid state",
+        onChange:
+          "Value change callback, can return { invalid?: string } to trigger invalid state",
         placeholder: "Placeholder text",
         disabled: "Whether disabled",
         invalid: "Invalid message",
@@ -667,7 +641,8 @@ export const en = {
 
   tabs: {
     title: "Tabs",
-    description: "Tabs component for switching between multiple content panels.",
+    description:
+      "Tabs component for switching between multiple content panels.",
     basic: {
       title: "Basic",
     },
@@ -710,7 +685,8 @@ export const en = {
       },
     },
     docs: {
-      introduction: "The Tabs component allows switching between multiple related content panels. It supports both controlled and uncontrolled modes, and provides horizontal and vertical layout orientations.",
+      introduction:
+        "The Tabs component allows switching between multiple related content panels. It supports both controlled and uncontrolled modes, and provides horizontal and vertical layout orientations.",
       features: [
         "Supports both controlled and uncontrolled modes",
         "Provides horizontal and vertical layout orientations",
@@ -718,7 +694,8 @@ export const en = {
         "Supports automatic and manual activation modes",
         "Allows internal element props passthrough via itemProps",
       ],
-      usage: "When using the Tabs component, you need to pass an options array to configure all tab options. Each option includes value, label, children, and an optional disabled property.",
+      usage:
+        "When using the Tabs component, you need to pass an options array to configure all tab options. Each option includes value, label, children, and an optional disabled property.",
     },
   },
 
@@ -728,21 +705,14 @@ export const en = {
     basic: {
       title: "Basic",
     },
-    validation: {
-      title: "Validation",
-    },
+
     multiple: {
       title: "Multiple",
     },
     disabled: {
       title: "Disabled",
     },
-    anatomy: {
-      root: "Root",
-      label: "Label",
-      input: "Input",
-      description: "Description",
-    },
+
     api: {
       sectionTitles: {
         uploadProps: "Upload Props",
@@ -755,7 +725,8 @@ export const en = {
         disabled: "Whether disabled",
         multiple: "Whether multiple files allowed",
         accept: "Accepted file types",
-        onChange: "Value change callback, can return { invalid?: string } to trigger invalid state",
+        onChange:
+          "Value change callback, can return { invalid?: string } to trigger invalid state",
         itemProps: "Internal wrapped property passthrough",
       },
       itemPropsConfig: {
@@ -779,35 +750,19 @@ export const en = {
     disabled: {
       title: "Disabled",
     },
-    anatomy: {
-      root: "Root",
-      label: "Label",
-      input: "Input",
-      description: "Description",
-    },
+
     api: {
       sectionTitles: {
         datePickerProps: "DatePicker Props",
-        itemPropsConfig: "itemProps Config",
       },
       props: {
-        label: "Label text",
-        description: "Description text",
-        invalid: "Invalid message",
+        invalid: "Invalid state",
         placeholder: "Placeholder",
         type: "Input type",
-        onChange: "Value change callback, can return { invalid?: string } to trigger invalid state",
-        itemProps: "Internal wrapped property passthrough",
-      },
-      itemPropsConfig: {
-        root: "Root container `<div>` props",
-        label: "Label `<label>` props",
-        description: "Description `<small>` props",
-        invalid: "Invalid `<small>` props",
+        onChange: "Value change callback",
       },
     },
     valueNote: "Value Mapping",
-
   },
 
   select: {
@@ -895,6 +850,31 @@ export const en = {
     },
   },
 
+  form: {
+    title: "Form",
+    description: "Form component for data collection and validation.",
+    basic: {
+      title: "Basic",
+    },
+    api: {
+      sectionTitles: {
+        formProps: "Form Props",
+        formFieldProps: "Form.Field Props",
+        formSubmitProps: "Form.Submit Props",
+      },
+      props: {
+        onSubmit: "Form submit handler function",
+        label: "Field label",
+        name: "Field name (required)",
+        description: "Field description",
+        invalid: "Invalid message",
+        disabled: "Whether disabled",
+        direction: "Layout direction",
+        loading: "Loading state",
+      },
+    },
+  },
+
   image: {
     title: "Image",
     description: "Image component with loading state and error handling.",
@@ -940,9 +920,7 @@ export const en = {
     variant: {
       title: "Variant",
     },
-    validation: {
-      title: "Validation",
-    },
+
     anatomy: {
       group: "Group",
       label: "Label",
@@ -960,12 +938,12 @@ export const en = {
       props: {
         value: "Selected value (controlled mode)",
         defaultValue: "Initial selected value (uncontrolled mode)",
-        onValueChange: "Value change callback, can return { invalid?: string } to trigger invalid state",
+        onValueChange:
+          "Value change callback, can return { invalid?: string } to trigger invalid state",
         invalid: "Invalid state, supports boolean or string type",
         disabled: "Whether disabled",
         name: "Form field name",
-        label: "Label text",
-        description: "Description text",
+
         itemProps: "Internal element props passthrough config",
         options: "Options array for rendering multiple radio buttons",
       },
@@ -977,11 +955,9 @@ export const en = {
         indicator: "Indicator config",
       },
       itemProps: {
-        root: "Root container `<div>` element props",
+
         content: "Content container `<div>` element props",
-        label: "Label `<label>` element props",
-        description: "Description `<small>` element props",
-        invalid: "Invalid text `<span>` element props",
+
         options: "Option item `<button>` element props",
       },
     },
@@ -1038,25 +1014,15 @@ export const en = {
     controlled: {
       title: "Controlled",
     },
-    minMax: {
-      title: "Min/Max",
-    },
-    step: {
-      title: "Step",
-    },
+
     disabled: {
       title: "Disabled",
     },
-    validation: {
-      title: "Validation",
-    },
+
     anatomy: {
-      root: "Root",
-      label: "Label",
       group: "Group",
       btn: "Button",
       input: "Input",
-      desc: "Description",
     },
     api: {
       sectionTitles: {
@@ -1066,9 +1032,9 @@ export const en = {
       props: {
         value: "Input value (controlled mode)",
         defaultValue: "Initial input value (uncontrolled mode)",
-        onValueChange: "Value change callback, can return { invalid?: string } to trigger invalid state",
-        label: "Label text",
-        description: "Description text",
+        onValueChange:
+          "Value change callback, can return { invalid?: string } to trigger invalid state",
+
         invalid: "Invalid message",
         min: "Minimum value",
         max: "Maximum value",
@@ -1077,12 +1043,9 @@ export const en = {
         itemProps: "Internal wrapped props pass-through",
       },
       itemPropsConfig: {
-        root: "Root container `<div>` props",
-        label: "Label `<label>` props",
         group: "Input group `<div>` props",
         btn: "Button `<button>` props",
         desc: "Description `<small>` props",
-        error: "Error message `<small>` props",
       },
     },
   },

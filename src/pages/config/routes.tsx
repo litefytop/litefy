@@ -12,7 +12,7 @@ const Button = lazy(() => import("@/pages/button"));
 const Checkbox = lazy(() => import("@/pages/checkbox"));
 const Description = lazy(() => import("@/pages/description"));
 const Dropdown = lazy(() => import("@/pages/dropdown"));
-const Empty = lazy(() => import("@/pages/empty/page"));
+const Empty = lazy(() => import("@/pages/empty"));
 const Input = lazy(() => import("@/pages/input"));
 const NumberField = lazy(() => import("@/pages/number-field"));
 const Password = lazy(() => import("@/pages/password"));
@@ -27,6 +27,7 @@ const DatePicker = lazy(() => import("@/pages/date-picker"));
 const Textarea = lazy(() => import("@/pages/text-area"));
 const Tabs = lazy(() => import("@/pages/tabs"));
 const Image = lazy(() => import("@/pages/image"));
+const Form = lazy(() => import("@/pages/form"));
 const Loading = lazy(() => import("@/pages/loading"));
 const Pagination = lazy(() => import("@/pages/pagination"));
 const Sidebar = lazy(() => import("@/pages/sidebar"));
@@ -57,6 +58,7 @@ const componentRouteConfig = [
   { key: "date-picker", path: "/components/date-picker", Component: DatePicker },
   { key: "textarea", path: "/components/textarea", Component: Textarea },
   { key: "tabs", path: "/components/tabs", Component: Tabs },
+  { key: "form", path: "/components/form", Component: Form },
   { key: "loading", path: "/components/loading", Component: Loading },
   { key: "empty", path: "/components/empty", Component: Empty },
   { key: "skeleton", path: "/components/skeleton", Component: ComingSoon },

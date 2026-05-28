@@ -18,7 +18,7 @@ import {
   RadioControlled,
   RadioDisabled,
   RadioVariant,
-  RadioValidation,
+
 } from "./examples";
 import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
@@ -26,7 +26,6 @@ import RadioBasicRaw from "./examples/radio-basic.tsx?raw";
 import RadioControlledRaw from "./examples/radio-controlled.tsx?raw";
 import RadioDisabledRaw from "./examples/radio-disabled.tsx?raw";
 import RadioVariantRaw from "./examples/radio-variant.tsx?raw";
-import RadioValidationRaw from "./examples/radio-validation.tsx?raw";
 import radioDoc from "./doc.mdx?raw";
 import radioSrc from "@/component/ui/radio.tsx?raw";
 
@@ -87,7 +86,7 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
         },
         {
           props: "invalid",
-          type: "boolean | string",
+          type: "boolean ",
           description: l.api.props.invalid,
         },
         {
@@ -101,16 +100,7 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
           type: "string",
           description: l.api.props.name,
         },
-        {
-          props: "label",
-          type: "ReactNode",
-          description: l.api.props.label,
-        },
-        {
-          props: "description",
-          type: "ReactNode",
-          description: l.api.props.description,
-        },
+
         {
           props: "itemProps",
           type: "object",
@@ -160,31 +150,13 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
       title: l.api.sectionTitles.itemProps,
 
       data: [
-        {
-          props: "root",
-          type: 'ComponentProps<"div">',
-          description: l.api.itemProps.root,
-        },
+  
         {
           props: "content",
           type: 'ComponentProps<"div">',
           description: l.api.itemProps.content,
         },
-        {
-          props: "label",
-          type: 'ComponentProps<"label">',
-          description: l.api.itemProps.label,
-        },
-        {
-          props: "description",
-          type: 'ComponentProps<"small">',
-          description: l.api.itemProps.description,
-        },
-        {
-          props: "invalid",
-          type: 'ComponentProps<"span">',
-          description: l.api.itemProps.invalid,
-        },
+       
         {
           props: "options",
           type: 'Omit<RadioItemProps, "checked" | "value" | "label">',
@@ -277,13 +249,7 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
             <RadioVariant />
           </DemoSection>
 
-          <DemoSection
-            id="validation"
-            title={l.validation.title}
-            code={RadioValidationRaw}
-          >
-            <RadioValidation />
-          </DemoSection>
+ 
         </section>
 
         <section id="anatomy" className="mt-8 space-y-4">
@@ -299,18 +265,11 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
             ]}
           >
             <Radio 
-              label="Radio Group"
-              description="This is a description"
+    
               itemProps={{
-                root:{
-                  id: "anatomy-group",
-                },
-                label: {
-                  id: "anatomy-label",
-                },
-                description: {
-                  id: "anatomy-description",
-                },
+   
+          
+          
                 content: {
                   className: "flex flex-col gap-2",
                 },
@@ -343,7 +302,6 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
             <Anchor.Item href="#controlled">{l.controlled.title}</Anchor.Item>
             <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
             <Anchor.Item href="#variant">{l.variant.title}</Anchor.Item>
-            <Anchor.Item href="#validation">{l.validation.title}</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
           <Anchor.Section href="#docs" linkText={lang.docs} />

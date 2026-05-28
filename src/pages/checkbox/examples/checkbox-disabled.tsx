@@ -27,10 +27,11 @@ export default function CheckboxDisabled() {
         <label className="text-sm font-medium text-foreground">
           Checkbox Item Disabled
         </label>
-        <Checkbox disabled options={[
+        <Checkbox  options={[
           {
             value: "apple",
             label: "Apple",
+            disabled: true,
           },
           {
             value: "banana",

@@ -1,11 +1,5 @@
 import { ClassNameValue, cn } from "@/lib/utils";
-import type { ReactNode } from "react";
-import { useState } from "react";
-
-type WithDataAttributes<T> = T & {
-  [key: `data-${string}`]: string | number | boolean | null | undefined;
-    className?: ClassNameValue;
-};
+import { useEffect, useRef } from "react";
 
 type SelectOption = {
   label: string;
@@ -19,22 +13,12 @@ type SelectOptionGroup = {
 
 type BaseSelectProps = Omit<
   React.ComponentProps<"select">,
-  "className" | "onChange" | "value" | "defaultValue"
+  "className" | "value" | "defaultValue"
 > & {
   className?: ClassNameValue;
-  label?: ReactNode;
-  description?: ReactNode;
-  invalid?: ReactNode;
+  invalid?: boolean;
   options: (SelectOption | SelectOptionGroup)[];
   placeholder?: string;
-  itemProps?: {
-    label?: WithDataAttributes<React.ComponentProps<"label">>;
-    invalid?: WithDataAttributes<React.ComponentProps<"small">>;
-    description?: WithDataAttributes<React.ComponentProps<"small">>;
-  };
-  onChange?: (
-    e: React.ChangeEvent<HTMLSelectElement>,
-  ) => void | { invalid?: string };
 };
 
 type SingleSelectProps = BaseSelectProps & {
@@ -54,126 +38,149 @@ export type SelectProps = SingleSelectProps | MultipleSelectProps;
 const optionClass =
   "my-0.5 px-2 py-2.5 rounded-md text-foreground focus:bg-accent focus:text-accent-foreground";
 
-const selectPickerStyle = `
-select,
-::picker(select) {
-  appearance: base-select;
-}
-::picker(select) {
-  background: var(--muted);
-  border-radius: calc(var(--radius) - 2px);
-  padding: 4px;
-  margin-block: 4px;
-  border: 1px solid var(--border);
-}
-select:open::picker-icon {
-  rotate: 180deg;
-}
-}
-`;
-const styleId = "select-picker-custom-style";
-if (typeof document !== "undefined" && !document.getElementById(styleId)) {
-  const style = document.createElement("style");
-  style.id = styleId;
-  style.textContent = selectPickerStyle;
-  document.head.appendChild(style);
-}
 export function Select({
   className,
-  label,
-  description,
-  invalid: externalInvalid,
+  invalid,
   options,
   placeholder,
-  itemProps,
-  onChange,
   multiple,
+  onChange,
   ...props
 }: SelectProps) {
-  const [internalInvalid, setInternalInvalid] = useState<string | undefined>();
+  const selectRef = useRef<HTMLSelectElement>(null);
 
-  const finalInvalid = externalInvalid ?? internalInvalid;
-  const isInvalid = Boolean(finalInvalid);
+  useEffect(() => {
+    if (!multiple || !selectRef.current) return;
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const res = onChange?.(e);
-    setInternalInvalid(res?.invalid);
+    const valueArray = (props.value as string[]) ?? [];
+    const optionElements = Array.from(selectRef.current.options);
+    for (const opt of optionElements) {
+      opt.selected = valueArray.includes(opt.value);
+    }
+  }, [multiple, props.value]);
+
+  const wrapEvent = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (multiple) {
+      const selectedValues = Array.from(e.target.selectedOptions).map(
+        (opt) => opt.value,
+      );
+      const jsonValue = JSON.stringify(selectedValues);
+      Object.defineProperty(e.target, "value", {
+        value: jsonValue,
+        writable: true,
+        configurable: true,
+      });
+    }
+    return e;
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const event = wrapEvent(e);
+    onChange?.(event);
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLSelectElement>) => {
+    if (multiple) {
+      const selectedValues = Array.from(e.target.selectedOptions).map(
+        (opt) => opt.value,
+      );
+      Object.defineProperty(e.target, "value", {
+        value: JSON.stringify(selectedValues),
+        writable: true,
+        configurable: true,
+      });
+    }
+    props.onBlur?.(e);
+  };
+
+  const handleInput = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (multiple) {
+      const selectedValues = Array.from(e.target.selectedOptions).map(
+        (opt) => opt.value,
+      );
+      Object.defineProperty(e.target, "value", {
+        value: JSON.stringify(selectedValues),
+        writable: true,
+        configurable: true,
+      });
+    }
+    props.onInput?.(e);
+  };
+
+  const defaultSelected = multiple
+    ? (props.defaultValue as string[] | undefined)
+    : undefined;
+
   return (
-    <div className={cn("flex flex-col gap-1", className)}>
-      {label && (
-        <label
-          {...itemProps?.label}
-          className={cn(
-            "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 py-2 indent-2",
-            itemProps?.label?.className,
-          )}
-        >
-          {label}
-        </label>
+    <select
+      {...props}
+      ref={selectRef}
+      multiple={multiple}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      onInput={handleInput}
+      className={cn(
+        "border rounded-full w-sm h-9 py-1 px-3 text-sm flex-1 bg-input items-center",
+        "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+        "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+        "[[multiple]]:rounded-xl [[multiple]]:overflow-y-auto [[multiple]]:h-fit [[multiple]]:max-h-1/2",
+        "data-[invalid=true]:border-destructive data-[invalid=true]:text-destructive",
+        className,
+      )}
+      aria-invalid={invalid}
+      data-invalid={invalid ? true : undefined}
+    >
+      {placeholder && (
+        <option className={optionClass} hidden disabled>
+          {placeholder}
+        </option>
       )}
 
-      <select
-        {...props}
-        multiple={multiple}
-        onChange={handleChange}
-        className={cn(
-          "border rounded-full w-3xs py-2 px-3 text-sm flex-1  bg-input truncate",
-          "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 ",
-          "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] ",
-          "[[multiple]]:rounded-xl [[multiple]]:overflow-y-auto",
-          "data-[invalid=true]:border-destructive data-[invalid=true]:text-destructive",
-        )}
-        autoComplete="off"
-        aria-invalid={isInvalid}
-        data-invalid={isInvalid}
-      >
-        {placeholder && (
-          <option className={optionClass} hidden>
-            {placeholder}
-          </option>
-        )}
-
-        {options.map((item, index) => {
-          if ("group" in item) {
-            return (
-              <optgroup
-                key={`group-${index}`}
-                label={item.group}
-                className="my-2 text-foreground"
-              >
-                {item.options.map((opt) => (
-                  <option
-                    key={opt.value}
-                    value={opt.value}
-                    className={cn(optionClass)}
-                  >
-                    {opt.label}
-                  </option>
-                ))}
-              </optgroup>
-            );
-          }
+      {options.map((item, index) => {
+        if ("group" in item) {
           return (
-            <option key={item.value} value={item.value} className={optionClass}>
-              {item.label}
-            </option>
+            <optgroup
+              key={`group-${index}`}
+              label={item.group}
+              className="my-2 text-foreground"
+            >
+              {item.options.map((opt) => (
+                <option
+                  key={opt.value}
+                  value={opt.value}
+                  className={cn(optionClass)}
+                
+                  selected={
+                    multiple &&
+                    defaultSelected &&
+                    defaultSelected.includes(opt.value)
+                      ? true
+                      : undefined
+                  }
+                >
+                  {opt.label}
+                </option>
+              ))}
+            </optgroup>
           );
-        })}
-      </select>
-
-      <small
-        data-invalid={isInvalid}
-        {...(isInvalid ? itemProps?.invalid : itemProps?.description)}
-        className={cn(
-          "text-sm indent-2 h-5 text-muted-foreground data-[invalid=true]:text-destructive",
-          (isInvalid ? itemProps?.invalid : itemProps?.description)?.className,
-        )}
-        role={isInvalid ? "alert" : undefined}
-      >
-        {isInvalid ? finalInvalid : description}
-      </small>
-    </div>
+        }
+        return (
+          <option
+            key={item.value}
+            value={item.value}
+            className={optionClass}
+            selected={
+              multiple &&
+              defaultSelected &&
+              defaultSelected.includes(item.value)
+                ? true
+                : undefined
+            }
+          >
+            {item.label}
+          </option>
+        );
+      })}
+    </select>
   );
 }

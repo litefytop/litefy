@@ -16,18 +16,12 @@ const radioClass = {
 };
 
 export type RadioProps<T extends string> = {
-  invalid?: boolean | string;
+  invalid?: boolean ;
   defaultValue?: T;
   value?: T;
-  label?: ReactNode;
-  description?: ReactNode;
-  onValueChange?: (value: T) => void | { invalid?: string };
+  onValueChange?: (value: T) => void;
   itemProps?: {
-    root?: WithDataAttributes<ComponentProps<"div">>;
     content?: WithDataAttributes<Omit<ComponentProps<"div">, "children">>;
-    label?: WithDataAttributes<ComponentProps<"label">>;
-    description?: WithDataAttributes<ComponentProps<"small">>;
-    invalid?: WithDataAttributes<ComponentProps<"span">>;
     options?: Omit<RadioItemProps, "checked" | "value" | "label">;
   };
   options: Omit<RadioItemProps, "checked">[];
@@ -40,9 +34,8 @@ export function Radio<T extends string>({
   defaultValue,
   value: controlledValues,
   onValueChange,
-  invalid: externalInvalid,
-  label,
-  description,
+  invalid,
+
   disabled,
   name,
   onBlur,
@@ -54,21 +47,15 @@ export function Radio<T extends string>({
   const [internalValue, setInternalValue] = useState<T | undefined>(
     defaultValue,
   );
-  const [internalInvalid, setInternalInvalid] = useState<string | undefined>();
 
   const selectedValue = controlledValues ?? internalValue;
-  const finalInvalid = externalInvalid ?? internalInvalid;
-  const isInvalid = Boolean(finalInvalid);
 
   const setValue = (value: string) => {
     const val = value as T;
-
+    onValueChange?.(val);
     if (controlledValues == undefined) {
       setInternalValue(val);
     }
-
-    const result = onValueChange?.(val);
-    setInternalInvalid(result?.invalid);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -128,45 +115,18 @@ export function Radio<T extends string>({
 
   return (
     <div
-      {...itemProps?.root}
-      className={cn("flex flex-col", itemProps?.root?.className)}
-    >
-      {label && (
-        <label
-          {...itemProps?.label}
-          className={cn(
-            "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 py-2 indent-2",
-            itemProps?.label?.className,
-          )}
-        >
-          {label}
-        </label>
+      {...itemProps?.content}
+      role="radiogroup"
+      aria-invalid={invalid}
+      data-invalid={invalid ? true : undefined}
+      ref={groupRef}
+      inert={disabled}
+      onKeyDown={handleKeyDown}
+      className={cn(
+        "flex inert:pointer-events-none inert:opacity-50 group my-1",
+        itemProps?.content?.className,
       )}
-
-      <div
-        {...itemProps?.content}
-        role="radiogroup"
-        aria-invalid={isInvalid}
-        data-invalid={isInvalid}
-        ref={groupRef}
-        inert={disabled}
-        onKeyDown={handleKeyDown}
-        className={cn(
-          "flex inert:pointer-events-none inert:opacity-50 group my-1",
-          itemProps?.content?.className,
-        )}
-      >
-        {options.map((option, index) => (
-          <RadioItem
-            {...itemProps?.options}
-            {...option}
-            data-index={index}
-            checked={selectedValue === option.value}
-            key={option.value}
-            onValueChange={setValue}
-          />
-        ))}
-      </div>
+    >
       <input
         {...props}
         type="hidden"
@@ -175,17 +135,16 @@ export function Radio<T extends string>({
         disabled={disabled}
         onBlur={onBlur}
       />
-      <small
-        data-invalid={isInvalid}
-        {...(isInvalid ? itemProps?.invalid : itemProps?.description)}
-        className={cn(
-          "text-sm indent-2 h-5 text-muted-foreground data-[invalid=true]:text-destructive",
-          (isInvalid ? itemProps?.invalid : itemProps?.description)?.className,
-        )}
-        role={isInvalid ? "alert" : undefined}
-      >
-        {isInvalid ? finalInvalid : description}
-      </small>
+      {options.map((option, index) => (
+        <RadioItem
+          {...itemProps?.options}
+          {...option}
+          data-index={index}
+          checked={selectedValue === option.value}
+          key={option.value}
+          onValueChange={setValue}
+        />
+      ))}
     </div>
   );
 }
@@ -253,7 +212,7 @@ const RadioItem = ({
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       className={cn(
-        "inline-flex items-center justify-center gap-2 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-8 min-w-8 px-2 py-2 cursor-pointer group-data-[invalid=true]:text-destructive",
+        "inline-flex items-center justify-center gap-2 shrink-0 disabled:pointer-events-none disabled:opacity-50 h-8 min-w-8 px-2 py-2 cursor-pointer group-data-[invalid=true]:text-destructive",
         radioClass[variant],
         className,
       )}
@@ -267,9 +226,7 @@ const RadioItem = ({
             indicator?.props?.className,
           )}
         >
-          {checked
-            ? (indicator?.checked ?? <Check />)
-            : indicator?.unchecked}
+          {checked ? (indicator?.checked ?? <Check />) : indicator?.unchecked}
         </span>
       )}
       {props.label}
