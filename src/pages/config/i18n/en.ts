@@ -64,7 +64,7 @@ export const en = {
     watermark: "Watermark",
     radio: "Radio",
     label: "Label",
-    search: "Search",
+    combobox: "Combobox",
     sidebar: "Sidebar",
     paper: "Paper",
     pagination: "Pagination",
@@ -442,6 +442,84 @@ export const en = {
 
       itemProps: {
         options: "Option item `<button>` element props",
+      },
+    },
+  },
+
+  paper: {
+    title: "Paper",
+    description: "Paper component for creating printable document pages.",
+    basic: {
+      title: "Basic",
+    },
+    variants: {
+      title: "Variants",
+    },
+    multiple: {
+      title: "Multiple Pages",
+    },
+    print: {
+      title: "Print",
+    },
+    api: {
+      sectionTitles: {
+        paperProviderProps: "PaperProvider Props",
+        paperProps: "Paper Props",
+      },
+      props: {
+        children: "Children",
+        totalPages: "Total number of pages",
+        variant: "Paper size variant",
+        orientation: "Page orientation",
+        countable: "Whether to include in page indexing",
+      },
+    },
+  },
+
+  combobox: {
+    title: "Combobox",
+    description: "Combobox component with search and async loading support.",
+    basic: {
+      title: "Basic",
+    },
+    async: {
+      title: "Async Search",
+    },
+    withForm: {
+      title: "With Form",
+    },
+    disabled: {
+      title: "Disabled & Invalid",
+    },
+    clearable: {
+      title: "Clearable",
+    },
+    api: {
+      sectionTitles: {
+        comboboxProps: "Combobox Props",
+        itemProps: "itemProps Config",
+      },
+      props: {
+        value: "Controlled mode value",
+        defaultValue: "Uncontrolled mode initial value",
+        onChange: "Value change callback",
+        onSelect: "Option selection callback",
+        options: "Static options array",
+        fetchOptions: "Async function to fetch options",
+        placeholder: "Placeholder text",
+        disabled: "Whether disabled",
+        invalid: "Whether invalid state",
+        clearable: "Whether show clear button",
+        debounceMs: "Debounce delay in milliseconds",
+        maxHeight: "Dropdown max height in pixels",
+      },
+      itemProps: {
+        container: "Container props",
+        input: "Input props",
+        list: "List props",
+        option: "Option props",
+        clearButton: "Clear button props",
+        triggerButton: "Trigger button props",
       },
     },
   },

@@ -66,7 +66,7 @@ export const zh = {
     watermark: "Watermark 水印",
     radio: "Radio 单选框",
     label: "Label 标签",
-    search: "Search 搜索",
+    combobox: "Combobox 下拉选择器",
     sidebar: "Sidebar 侧边栏",
     paper: "Paper 纸张",
     pagination: "Pagination 分页",
@@ -441,6 +441,84 @@ export const zh = {
 
 
         options: "选项项 `<button>` 元素属性",
+      },
+    },
+  },
+
+  paper: {
+    title: "纸张",
+    description: "纸张组件，用于创建可打印的文档页面。",
+    basic: {
+      title: "基础",
+    },
+    variants: {
+      title: "变体",
+    },
+    multiple: {
+      title: "多页",
+    },
+    print: {
+      title: "打印",
+    },
+    api: {
+      sectionTitles: {
+        paperProviderProps: "PaperProvider Props",
+        paperProps: "Paper Props",
+      },
+      props: {
+        children: "子组件",
+        totalPages: "总页数",
+        variant: "纸张尺寸变体",
+        orientation: "页面方向",
+        countable: "是否计入页面索引",
+      },
+    },
+  },
+
+  combobox: {
+    title: "组合框",
+    description: "组合框组件，支持搜索和异步加载。",
+    basic: {
+      title: "基础",
+    },
+    async: {
+      title: "异步搜索",
+    },
+    withForm: {
+      title: "表单集成",
+    },
+    disabled: {
+      title: "禁用与无效",
+    },
+    clearable: {
+      title: "可清除",
+    },
+    api: {
+      sectionTitles: {
+        comboboxProps: "Combobox Props",
+        itemProps: "itemProps 配置",
+      },
+      props: {
+        value: "受控模式的值",
+        defaultValue: "非受控模式的初始值",
+        onChange: "值变化回调",
+        onSelect: "选择选项回调",
+        options: "静态选项数组",
+        fetchOptions: "异步获取选项函数",
+        placeholder: "占位文本",
+        disabled: "是否禁用",
+        invalid: "是否无效状态",
+        clearable: "是否显示清除按钮",
+        debounceMs: "防抖延迟（毫秒）",
+        maxHeight: "下拉列表最大高度（px）",
+      },
+      itemProps: {
+        container: "容器属性",
+        input: "输入框属性",
+        list: "列表属性",
+        option: "选项属性",
+        clearButton: "清除按钮属性",
+        triggerButton: "下拉按钮属性",
       },
     },
   },

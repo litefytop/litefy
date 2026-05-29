@@ -2,9 +2,8 @@
 
 import { cn, ClassNameValue } from "@/lib";
 
-import { useRef, useCallback, forwardRef, useImperativeHandle } from "react";
+import { useRef, useCallback } from "react";
 import { createContext, useContext, RefObject } from "react";
-import { useReactToPrint } from "react-to-print";
 
 export interface PaperContextType {
   pageIndexRef: RefObject<number>;
@@ -24,42 +23,27 @@ export type PaperProviderProps = React.ComponentProps<"div"> & {
   totalPages?: number;
 };
 
-export type PaperProviderHandle = {
-  print: () => void;
-};
+export function PaperProvider({ children, totalPages, ...props }: PaperProviderProps) {
+  const pageIndexRef = useRef(0);
+  const contentRef = useRef<HTMLDivElement>(null);
 
-export const PaperProvider = forwardRef<PaperProviderHandle, PaperProviderProps>(
-  function PaperProvider({ children, totalPages, ...props }, ref) {
-    const pageIndexRef = useRef(0);
-    const contentRef = useRef<HTMLDivElement>(null);
+  const registerPage = useCallback(() => {
+    const currentPage = pageIndexRef.current;
+    pageIndexRef.current += 1;
+    return currentPage;
+  }, []);
 
-    const registerPage = useCallback(() => {
-      const currentPage = pageIndexRef.current;
-      pageIndexRef.current += 1;
-      return currentPage;
-    }, []);
-
-    const handlePrint = useReactToPrint({
-      contentRef,
-      documentTitle: "Print Document",
-    });
-
-    useImperativeHandle(ref, () => ({
-      print: () => handlePrint(),
-    }));
-
-    return (
-      <PaperContext.Provider value={{ pageIndexRef, registerPage, totalPages, contentRef }}>
-        <div {...props} ref={contentRef}>
-          {children}
-        </div>
-      </PaperContext.Provider>
-    );
-  }
-);
+  return (
+    <PaperContext.Provider value={{ pageIndexRef, registerPage, totalPages, contentRef }}>
+      <div {...props} ref={contentRef}>
+        {children}
+      </div>
+    </PaperContext.Provider>
+  );
+}
 
 const paperclass = {
-  base: "mx-auto print:bg-white shadow-lg border-t print:shadow-none print:border-0 print:mx-0 print:p-0",
+  base: "mx-auto print:bg-white shadow-lg border-t print:shadow-none print:border-0 print:mx-0 print:p-0 bg-card text-card-foreground",
   variant: {
     a4: {
       portrait:

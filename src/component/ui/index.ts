@@ -32,3 +32,4 @@ export * from "./number-field";
 export * from "./upload";
 export * from "./date-picker";
 export * from "./form";
+export * from "./combobox";
