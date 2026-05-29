@@ -8,10 +8,10 @@ type WithDataAttributes<T> = T & {
   className?: ClassNameValue;
 };
 
-export type CarouselProps = {
+export type PaginatedViewProps = {
   children: React.ReactNode;
   activeIndex: number;
-  performanceThreshold?: number; // 自动切换阈值
+  performanceThreshold?: number;
   className?: ClassNameValue;
   itemProps?: {
     root?: WithDataAttributes<React.ComponentProps<"div">>;
@@ -19,13 +19,13 @@ export type CarouselProps = {
   };
 };
 
-export function Carousel({
+export function PaginatedView({
   children,
   activeIndex,
-  performanceThreshold = 100, // 默认100页自动切性能模式
+  performanceThreshold = 100,
   className,
   itemProps,
-}: CarouselProps) {
+}: PaginatedViewProps) {
   const slides = Children.toArray(children).filter(isValidElement);
   const totalSlides = slides.length;
 
@@ -34,18 +34,21 @@ export function Carousel({
   const safeIndex = Math.max(0, Math.min(activeIndex, totalSlides - 1));
   const enableAnimation = totalSlides <= performanceThreshold;
 
-  // 高性能模式：只渲染当前页
+  const slideWrapperProps = {
+    ...itemProps?.slide,
+    className: cn("w-full shrink-0", itemProps?.slide?.className),
+  };
+
   if (!enableAnimation) {
     return (
       <div {...itemProps?.root} className={cn(className, itemProps?.root?.className)}>
         <div className="relative overflow-hidden">
-          {slides[safeIndex]}
+          <div {...slideWrapperProps}>{slides[safeIndex]}</div>
         </div>
       </div>
     );
   }
 
-  // 动画模式：全量渲染 + 平滑滑动
   return (
     <div {...itemProps?.root} className={cn(className, itemProps?.root?.className)}>
       <div className="relative overflow-hidden">
@@ -54,7 +57,7 @@ export function Carousel({
           style={{ transform: `translateX(-${safeIndex * 100}%)` }}
         >
           {slides.map((child, i) => (
-            <div key={i} className="w-full shrink-0">
+            <div key={i} {...slideWrapperProps}>
               {child}
             </div>
           ))}

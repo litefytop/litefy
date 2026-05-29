@@ -209,3 +209,5 @@ const CheckboxItem = ({
     </label>
   );
 };
+
+Checkbox.IndicatorClass = "peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:outline-none peer-focus-visible:ring-offset-2";

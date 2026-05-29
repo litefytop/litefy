@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pagination, Button } from "@/component";
+import { Pagination, Button, usePagination } from "@/component";
 import { 
   RefreshCw, 
   Download,
@@ -13,7 +13,7 @@ const buttonStyles =
   "cursor-pointer outline-none inline-flex items-center justify-center shrink-0 select-none size-8 rounded-md border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50";
 
 function PaginationButtons() {
-  const { current, totalPages, goFirst, goPrev, goNext, goLast } = Pagination.use();
+  const { current, totalPages, goFirst, goPrev, goNext, goLast } = usePagination();
 
   return (
     <>
@@ -58,10 +58,8 @@ export default function PaginationWithActions() {
       current={current}
       pageSize={pageSize}
       total={100}
-      onChange={(page, size) => {
-        setCurrent(page);
-        setPageSize(size);
-      }}
+      onPageChange={setCurrent}
+      onPageSizeChange={setPageSize}
     >
       <Pagination.Description />
       <Pagination.Controls>

@@ -16,7 +16,6 @@ import { getComponentNav } from "@/pages/config/routes";
 import {
   SelectBasic,
   SelectControlled,
-  SelectValidation,
   SelectDisabled,
   SelectGroup,
   SelectMultiple,
@@ -25,7 +24,6 @@ import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react
 
 import SelectBasicRaw from "./examples/select-basic.tsx?raw";
 import SelectControlledRaw from "./examples/select-controlled.tsx?raw";
-import SelectValidationRaw from "./examples/select-validation.tsx?raw";
 import SelectDisabledRaw from "./examples/select-disabled.tsx?raw";
 import SelectGroupRaw from "./examples/select-group.tsx?raw";
 import SelectMultipleRaw from "./examples/select-multiple.tsx?raw";
@@ -240,13 +238,7 @@ export default function SelectPage({ locale = "zh" }: { locale?: string }) {
             <SelectControlled />
           </DemoSection>
 
-          <DemoSection
-            id="validation"
-            title={l.validation.title}
-            code={SelectValidationRaw}
-          >
-            <SelectValidation />
-          </DemoSection>
+
 
           <DemoSection
             id="disabled"
@@ -289,19 +281,15 @@ export default function SelectPage({ locale = "zh" }: { locale?: string }) {
             ]}
           >
             <Select
-              label="Select Label"
+   
               placeholder="Select an option"
-              description="This is a description"
+       
               options={[
                 { label: "Option 1", value: "1" },
                 { label: "Option 2", value: "2" },
               ]}
               data-anatomy-name="root"
-              itemProps={{
-                label: { "data-anatomy-name": "label" },
-                invalid: { "data-anatomy-name": "invalid" },
-                description: { "data-anatomy-name": "description" },
-              }}
+  
             />
           </Anatomy>
         </section>
@@ -320,7 +308,6 @@ export default function SelectPage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
             <Anchor.Item href="#controlled">{l.controlled.title}</Anchor.Item>
-            <Anchor.Item href="#validation">{l.validation.title}</Anchor.Item>
             <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
             <Anchor.Item href="#group">{l.group.title}</Anchor.Item>
             <Anchor.Item href="#multiple">{l.multiple.title}</Anchor.Item>

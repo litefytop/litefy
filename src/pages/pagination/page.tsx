@@ -13,8 +13,6 @@ import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
 import {
   PaginationBasic,
-  PaginationCustomPageSize,
-  PaginationCustomText,
   PaginationCustomIcons,
   PaginationWithActions,
 } from "./examples";
@@ -26,8 +24,7 @@ import {
 } from "lucide-react";
 
 import PaginationBasicRaw from "./examples/pagination-basic.tsx?raw";
-import PaginationCustomPageSizeRaw from "./examples/pagination-custom-page-size.tsx?raw";
-import PaginationCustomTextRaw from "./examples/pagination-custom-text.tsx?raw";
+
 import PaginationCustomIconsRaw from "./examples/pagination-custom-icons.tsx?raw";
 import PaginationWithActionsRaw from "./examples/pagination-with-actions.tsx?raw";
 import paginationDoc from "./doc.mdx?raw";
@@ -210,21 +207,7 @@ export default function PaginationPage({ locale = "zh" }: { locale?: string }) {
             <PaginationBasic />
           </DemoSection>
 
-          <DemoSection
-            id="custom-page-size"
-            title={l.customPageSize.title}
-            code={PaginationCustomPageSizeRaw}
-          >
-            <PaginationCustomPageSize />
-          </DemoSection>
 
-          <DemoSection
-            id="custom-text"
-            title={l.customText.title}
-            code={PaginationCustomTextRaw}
-          >
-            <PaginationCustomText />
-          </DemoSection>
 
           <DemoSection
             id="custom-icons"
@@ -256,8 +239,6 @@ export default function PaginationPage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
-            <Anchor.Item href="#custom-page-size">{l.customPageSize.title}</Anchor.Item>
-            <Anchor.Item href="#custom-text">{l.customText.title}</Anchor.Item>
             <Anchor.Item href="#custom-icons">{l.customIcons.title}</Anchor.Item>
             <Anchor.Item href="#with-actions">{l.withActions.title}</Anchor.Item>
           </Anchor.Section>

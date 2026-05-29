@@ -30,6 +30,7 @@ const Image = lazy(() => import("@/pages/image"));
 const Form = lazy(() => import("@/pages/form"));
 const Loading = lazy(() => import("@/pages/loading"));
 const Pagination = lazy(() => import("@/pages/pagination"));
+const PaginatedView = lazy(() => import("@/pages/paginated-view"));
 const Sidebar = lazy(() => import("@/pages/sidebar"));
 
 const introduction = {
@@ -72,6 +73,7 @@ const componentRouteConfig = [
   { key: "search", path: "/components/search", Component: ComingSoon },
   { key: "sidebar", path: "/components/sidebar", Component: Sidebar },
   { key: "paper", path: "/components/paper", Component: ComingSoon },
+  { key: "paginated-view", path: "/components/paginated-view", Component: PaginatedView },
   { key: "pagination", path: "/components/pagination", Component: Pagination },
   { key: "transfer", path: "/components/transfer", Component: ComingSoon },
 

@@ -6,7 +6,6 @@ import {
   useMemo,
   ComponentProps,
   ReactNode,
-  useCallback,
 } from "react";
 import { ClassNameValue, cn } from "@/lib";
 
@@ -25,17 +24,18 @@ type PaginationContextValue = {
 
 const PaginationContext = createContext<PaginationContextValue | null>(null);
 
-Pagination.use = function usePaginationContext() {
+export function usePagination() {
   const ctx = useContext(PaginationContext);
   if (!ctx) throw new Error("usePagination must be used within Pagination");
   return ctx;
-};
+}
 
 export type PaginationProps = {
   current: number;
   pageSize: number;
   total: number;
-  onChange: (current: number, pageSize: number) => void;
+  onPageChange?: (page: number) => void;
+  onPageSizeChange?: (size: number) => void;
   className?: ClassNameValue;
   children?: ReactNode;
 } & Omit<ComponentProps<"div">, "onChange">;
@@ -44,17 +44,16 @@ export function Pagination({
   current,
   pageSize,
   total,
-  onChange,
+  onPageChange,
+  onPageSizeChange,
   className,
   children,
   ...props
 }: PaginationProps) {
-  const totalPages = useMemo(() => Math.ceil(total / pageSize), [total, pageSize]);
-
-  const goTo = useCallback((page: number) => {
-    const p = Math.max(1, Math.min(page, totalPages));
-    onChange(p, pageSize);
-  }, [totalPages, pageSize, onChange]);
+  const totalPages = useMemo(
+    () => Math.ceil(total / pageSize),
+    [total, pageSize],
+  );
 
   const value = useMemo<PaginationContextValue>(
     () => ({
@@ -62,14 +61,30 @@ export function Pagination({
       pageSize,
       total,
       totalPages,
-      goTo,
-      goPrev: () => goTo(current - 1),
-      goNext: () => goTo(current + 1),
-      goFirst: () => goTo(1),
-      goLast: () => goTo(totalPages),
-      setPageSize: (size) => onChange(1, size),
+      goTo: (page: number) => {
+        const p = Math.max(1, Math.min(page, totalPages));
+        onPageChange?.(p);
+      },
+      goPrev: () => {
+        const p = Math.max(1, Math.min(current - 1, totalPages));
+        onPageChange?.(p);
+      },
+      goNext: () => {
+        const p = Math.max(1, Math.min(current + 1, totalPages));
+        onPageChange?.(p);
+      },
+      goFirst: () => {
+        onPageChange?.(1);
+      },
+      goLast: () => {
+        onPageChange?.(totalPages);
+      },
+      setPageSize: (size: number) => {
+        onPageSizeChange?.(size);
+        onPageChange?.(1);
+      },
     }),
-    [current, pageSize, total, totalPages, goTo, onChange]
+    [current, onPageChange, onPageSizeChange, pageSize, total, totalPages],
   );
 
   return (
@@ -93,16 +108,13 @@ Pagination.Description = function PaginationDescription({
   className,
   ...props
 }: PaginationDescriptionProps) {
-  const { total, current, totalPages } = Pagination.use();
+  const { total, current, totalPages } = usePagination();
   const text = format
     ? format(total, current, totalPages)
     : `Total ${total} records · Page ${current} of ${totalPages}`;
 
   return (
-    <span
-      {...props}
-      className={cn("text-sm text-muted-foreground", className)}
-    >
+    <span {...props} className={cn("text-sm text-muted-foreground", className)}>
       {text}
     </span>
   );
@@ -119,7 +131,7 @@ Pagination.Sizer = function PaginationSizer({
   className,
   ...props
 }: PaginationSizerProps) {
-  const { pageSize, setPageSize } = Pagination.use();
+  const { pageSize, setPageSize } = usePagination();
 
   return (
     <select
@@ -127,8 +139,9 @@ Pagination.Sizer = function PaginationSizer({
       value={pageSize}
       onChange={(e) => setPageSize(Number(e.target.value))}
       className={cn(
-        "h-9 w-28 rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:opacity-50",
-        className
+        "appearance-none h-9 w-28 rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs outline-none items-center",
+        "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:opacity-50",
+        className,
       )}
     >
       {options.map((opt) => (
@@ -145,10 +158,37 @@ Pagination.Controls = function PaginationControls({
   ...props
 }: ComponentProps<"span">) {
   return (
-    <span
-      {...props}
-      className={cn("flex items-center gap-2", className)}
-    />
+    <span {...props} className={cn("flex items-center gap-2", className)} />
   );
 };
 
+export type PaginationJumperProps = {
+  format?: (page: number) => string;
+} & Omit<ComponentProps<"select">, "value" | "onChange">;
+
+Pagination.Jumper = function PaginationJumper({
+  format,
+  className,
+  ...props
+}: PaginationJumperProps) {
+  const { current, totalPages, goTo } = usePagination();
+
+  return (
+    <select
+      {...props}
+      value={current}
+      onChange={(e) => goTo(Number(e.target.value))}
+      className={cn(
+        "appearance-none h-9 w-28 rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs outline-none items-center",
+        "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:opacity-50",
+        className,
+      )}
+    >
+      {Array.from({ length: totalPages }, (_, i) => (
+        <option key={i + 1} value={i + 1}>
+          {format ? format(i + 1) : `Page ${i + 1}`}
+        </option>
+      ))}
+    </select>
+  );
+};

@@ -23,14 +23,17 @@ const FormContext = createContext<FormContextType>({
   isPending: false,
   register: () => {},
 });
+export type FormRef = {
+  setValue: (name: string, value: string | number) => void;
+  setValues: (values: Record<string, string | number>) => void;
+  reset: () => void;
+  submit: () => void;
+};
 
-type FormProps = Omit<React.ComponentProps<"form">, "onSubmit"> & {
+type FormProps = Omit<React.ComponentProps<"form">, "onSubmit"|"ref"> & {
   onSubmit: (formData: FormData) => Promise<boolean>;
   autoReset?: boolean;
-  ref?: React.Ref<{
-    setValue: (name: string, value: string | number) => void;
-    setValues: (values: Record<string, string | number>) => void;
-  }>;
+  ref?: React.Ref<FormRef>;
 };
 
 export function Form({
@@ -72,10 +75,22 @@ export function Form({
     },
     [setValue],
   );
+    const reset = useCallback(() => {
+      internalRef.current?.reset();
+      elementsRef.current.forEach((el) => {
+        el.value = "";
+      });
+    }, []);
 
-  useImperativeHandle(externalRef, () => ({ setValue, setValues }), [
+    const submit = useCallback(() => {
+      internalRef.current?.requestSubmit();
+    }, []);
+
+  useImperativeHandle(externalRef, () => ({ setValue, setValues, reset, submit }), [
     setValue,
     setValues,
+    reset,
+    submit,
   ]);
 
   const action = async (prevCount: number, formData: FormData) => {

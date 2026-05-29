@@ -36,6 +36,7 @@ export const en = {
   componentsGroup: "Components",
 
   components: {
+    "paginated-view":"PaginatedView",
     form: "Form",
     button: "Button",
     accordion: "Accordion",
@@ -774,9 +775,7 @@ export const en = {
     controlled: {
       title: "Controlled",
     },
-    validation: {
-      title: "Validation",
-    },
+
     disabled: {
       title: "Disabled",
     },
@@ -856,14 +855,21 @@ export const en = {
     basic: {
       title: "Basic",
     },
+    refExample: {
+      title: "Using Ref",
+    },
     api: {
       sectionTitles: {
         formProps: "Form Props",
         formFieldProps: "Form.Field Props",
+        formFieldsetProps: "Form.Fieldset Props",
         formSubmitProps: "Form.Submit Props",
+        formRef: "FormRef",
       },
       props: {
         onSubmit: "Form submit handler function",
+        autoReset: "Whether to auto-reset form after submit",
+        ref: "Form ref for programmatic form operations",
         label: "Field label",
         name: "Field name (required)",
         description: "Field description",
@@ -871,6 +877,10 @@ export const en = {
         disabled: "Whether disabled",
         direction: "Layout direction",
         loading: "Loading state",
+        setValue: "Set single field value",
+        setValues: "Batch set field values",
+        reset: "Reset form",
+        submit: "Submit form",
       },
     },
   },
@@ -1056,12 +1066,6 @@ export const en = {
     basic: {
       title: "Basic",
     },
-    customPageSize: {
-      title: "Custom Page Size",
-    },
-    customText: {
-      title: "Custom Text",
-    },
     customIcons: {
       title: "Custom Icons",
     },
@@ -1094,6 +1098,28 @@ export const en = {
         children: "Control button child elements",
       },
       use: "Get pagination context for custom pagination buttons",
+    },
+  },
+
+  paginatedView: {
+    title: "Paginated View",
+    description: "A view component that displays one slide at a time with smooth transitions.",
+    basic: {
+      title: "Basic",
+    },
+    performance: {
+      title: "Performance (100 pages)",
+    },
+    api: {
+      sectionTitles: {
+        paginatedViewProps: "PaginatedView Props",
+      },
+      props: {
+        activeIndex: "Current active slide index",
+        performanceThreshold: "Maximum slides before disabling animation",
+        itemPropsRoot: "Root element props",
+        itemPropsSlide: "Slide element props",
+      },
     },
   },
 

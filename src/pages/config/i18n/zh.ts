@@ -36,6 +36,7 @@ export const zh = {
   componentsGroup: "组件",
 
   components: {
+    "paginated-view":"PaginatedView 分页视图",
     form: "Form 表单",
     button: "Button 按钮",
     accordion: "Accordion 手风琴",
@@ -777,9 +778,7 @@ export const zh = {
     controlled: {
       title: "受控",
     },
-    validation: {
-      title: "校验",
-    },
+
     disabled: {
       title: "禁用",
     },
@@ -859,14 +858,21 @@ export const zh = {
     basic: {
       title: "基础",
     },
+    refExample: {
+      title: "使用 Ref",
+    },
     api: {
       sectionTitles: {
         formProps: "Form Props",
         formFieldProps: "Form.Field Props",
+        formFieldsetProps: "Form.Fieldset Props",
         formSubmitProps: "Form.Submit Props",
+        formRef: "FormRef",
       },
       props: {
         onSubmit: "表单提交处理函数",
+        autoReset: "提交后是否自动重置表单",
+        ref: "表单引用，用于编程式操作表单",
         label: "字段标签",
         name: "字段名称（必填）",
         description: "字段描述",
@@ -874,6 +880,10 @@ export const zh = {
         disabled: "是否禁用",
         direction: "布局方向",
         loading: "加载状态",
+        setValue: "设置单个字段的值",
+        setValues: "批量设置字段值",
+        reset: "重置表单",
+        submit: "提交表单",
       },
     },
   },
@@ -1062,12 +1072,6 @@ export const zh = {
     basic: {
       title: "基础",
     },
-    customPageSize: {
-      title: "自定义每页条数",
-    },
-    customText: {
-      title: "自定义文本",
-    },
     customIcons: {
       title: "自定义图标",
     },
@@ -1100,6 +1104,28 @@ export const zh = {
         children: "控制按钮子元素",
       },
       use: "获取分页上下文，用于自定义分页按钮",
+    },
+  },
+
+  paginatedView: {
+    title: "分页视图",
+    description: "一次只显示一个幻灯片的视图组件，支持平滑过渡动画。",
+    basic: {
+      title: "基础",
+    },
+    performance: {
+      title: "高性能 (100页)",
+    },
+    api: {
+      sectionTitles: {
+        paginatedViewProps: "PaginatedView Props",
+      },
+      props: {
+        activeIndex: "当前显示的幻灯片索引",
+        performanceThreshold: "启用动画的最大幻灯片数量，超过则禁用动画",
+        itemPropsRoot: "根元素属性",
+        itemPropsSlide: "幻灯片元素属性",
+      },
     },
   },
 

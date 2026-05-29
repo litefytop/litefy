@@ -2,39 +2,61 @@
 
 import { cn, ClassNameValue } from "@/lib";
 
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, forwardRef, useImperativeHandle } from "react";
 import { createContext, useContext, RefObject } from "react";
+import { useReactToPrint } from "react-to-print";
 
 export interface PaperContextType {
   pageIndexRef: RefObject<number>;
   registerPage: () => number;
+  totalPages?: number;
+  contentRef: RefObject<HTMLDivElement | null>;
 }
 
 const PaperContext = createContext<PaperContextType | null>(null);
 
-function usePaperContext() {
+export function usePaper() {
   return useContext(PaperContext);
 }
 
 export type PaperProviderProps = React.ComponentProps<"div"> & {
   children: React.ReactNode;
+  totalPages?: number;
 };
 
-export function PaperProvider({ children, ...props }: PaperProviderProps) {
-  const pageIndexRef = useRef(0);
+export type PaperProviderHandle = {
+  print: () => void;
+};
 
-  const registerPage = useCallback(() => {
-    const currentPage = pageIndexRef.current;
-    pageIndexRef.current += 1;
-    return currentPage;
-  }, []);
+export const PaperProvider = forwardRef<PaperProviderHandle, PaperProviderProps>(
+  function PaperProvider({ children, totalPages, ...props }, ref) {
+    const pageIndexRef = useRef(0);
+    const contentRef = useRef<HTMLDivElement>(null);
 
-  return (
-    <PaperContext.Provider value={{ pageIndexRef, registerPage }}>
-      <div {...props}>{children}</div>
-    </PaperContext.Provider>
-  );
-}
+    const registerPage = useCallback(() => {
+      const currentPage = pageIndexRef.current;
+      pageIndexRef.current += 1;
+      return currentPage;
+    }, []);
+
+    const handlePrint = useReactToPrint({
+      contentRef,
+      documentTitle: "Print Document",
+    });
+
+    useImperativeHandle(ref, () => ({
+      print: () => handlePrint(),
+    }));
+
+    return (
+      <PaperContext.Provider value={{ pageIndexRef, registerPage, totalPages, contentRef }}>
+        <div {...props} ref={contentRef}>
+          {children}
+        </div>
+      </PaperContext.Provider>
+    );
+  }
+);
 
 const paperclass = {
   base: "mx-auto print:bg-white shadow-lg border-t print:shadow-none print:border-0 print:mx-0 print:p-0",
@@ -79,7 +101,7 @@ function Paper({
   countable = true,
   ...props
 }: PaperProps) {
-  const context = usePaperContext();
+  const context = usePaper();
   let pageIndex: number | undefined;
 
   if (countable && context) {
@@ -95,6 +117,7 @@ function Paper({
         className,
       )}
       data-page-index={pageIndex}
+      data-total-pages={context?.totalPages}
     >
       {children}
     </div>

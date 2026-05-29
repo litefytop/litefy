@@ -36,7 +36,7 @@ type MultipleSelectProps = BaseSelectProps & {
 export type SelectProps = SingleSelectProps | MultipleSelectProps;
 
 const optionClass =
-  "my-0.5 px-2 py-2.5 rounded-md text-foreground focus:bg-accent focus:text-accent-foreground";
+  "my-0.5 px-2 py-2.5 rounded-md";
 
 export function Select({
   className,
@@ -120,9 +120,8 @@ export function Select({
       onBlur={handleBlur}
       onInput={handleInput}
       className={cn(
-        "border rounded-full w-sm h-9 py-1 px-3 text-sm flex-1 bg-input items-center",
+        "select-enhanced appearance-none border bg-background/75 rounded-md w-sm h-9 py-1 px-3 text-sm flex-1 items-center",
         "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
-        "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
         "[[multiple]]:rounded-xl [[multiple]]:overflow-y-auto [[multiple]]:h-fit [[multiple]]:max-h-1/2",
         "data-[invalid=true]:border-destructive data-[invalid=true]:text-destructive",
         className,
@@ -142,7 +141,7 @@ export function Select({
             <optgroup
               key={`group-${index}`}
               label={item.group}
-              className="my-2 text-foreground"
+              className="my-2 "
             >
               {item.options.map((opt) => (
                 <option

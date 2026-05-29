@@ -18,28 +18,19 @@
   }
 }
 
-select,
-::picker(select) {
+.select-enhanced,
+.select-enhanced::picker(select) {
   appearance: base-select;
 }
 
-::picker(select) {
-  background: var(--muted);
+.select-enhanced::picker(select) {
+
   border-radius: calc(var(--radius) - 2px);
   padding: 4px;
   margin-block: 4px;
   border: 1px solid var(--border);
 }
 
-select:open::picker-icon {
+.select-enhanced:open::picker-icon {
   rotate: 180deg;
-}
-
-.peer:focus-visible + .indicator {
-  outline: none;
-  --tw-ring-offset-color: #fff;
-  --tw-ring-color: #3b82f6;
-  box-shadow:
-    0 0 0 2px var(--tw-ring-offset-color),
-    0 0 0 4px var(--tw-ring-color);
 }

@@ -5,9 +5,7 @@ export * from "./loading";
 export * from "./image";
 export * from "./watermark";
 export * from "./separator";
-
 export * from "./empty";
-
 export * from "./button";
 export * from "./checkbox";
 export * from "./input";
@@ -19,15 +17,13 @@ export * from "./sidebar";
 export * from "./paper";
 export * from "./pagination";
 export * from "./toast";
-
+export * from "./paginated-view";
 export * from "./dropdown";
 export * from "./password";
 export * from "./theme";
 export * from "./accordion";
 export * from "./accordion-controlled";
-
 export * from "./dialog";
-
 export * from "./anchor";
 export * from "./toast";
 export * from "./drawer";

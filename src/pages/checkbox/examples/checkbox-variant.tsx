@@ -31,10 +31,10 @@ export default function CheckboxVariant() {
               checked ? (
                 <CheckIcon
                   size={16}
-                  className="bg-primary text-primary-foreground indicator"
+                  className={`bg-primary text-primary-foreground  ${Checkbox.IndicatorClass}`}
                 />
               ) : (
-                <Square size={16} className="text-secondary-foreground indicator" />
+                <Square size={16} className={`text-secondary-foreground  ${Checkbox.IndicatorClass}`} />
               ),
           },
         }}

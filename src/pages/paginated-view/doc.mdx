@@ -1,0 +1,31 @@
+# PaginatedView
+
+A view component that displays one slide at a time with smooth transitions.
+
+## Installation
+
+```tsx
+import { PaginatedView } from "@/component";
+```
+
+## Usage
+
+### Basic Usage
+
+```tsx
+<PaginatedView activeIndex={0}>
+  <div>Slide 1</div>
+  <div>Slide 2</div>
+  <div>Slide 3</div>
+</PaginatedView>
+```
+
+## API Reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| activeIndex | number | - | Current active slide index |
+| performanceThreshold | number | 100 | Maximum number of slides before disabling animation |
+| className | ClassNameValue | - | Container className |
+| itemProps.root | DivProps | - | Root element props |
+| itemProps.slide | DivProps | - | Slide element props |

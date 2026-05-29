@@ -1,43 +1,24 @@
 import { useState } from "react";
-import { Pagination } from "@/component";
+import { Pagination, Button, usePagination } from "@/component";
 import { ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight } from "lucide-react";
 
-const buttonStyles = 
-  "cursor-pointer outline-none inline-flex items-center justify-center shrink-0 select-none size-8 rounded-md border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50";
-
 function PaginationButtons() {
-  const { current, totalPages, goFirst, goPrev, goNext, goLast } = Pagination.use();
+  const { current, totalPages, goFirst, goPrev, goNext, goLast } = usePagination();
 
   return (
     <>
-      <button
-        onClick={goFirst}
-        disabled={current === 1}
-        className={buttonStyles}
-      >
+      <Button variant="ghost" onClick={goFirst} disabled={current === 1} iconOnly>
         <ChevronsLeft className="size-4" />
-      </button>
-      <button
-        onClick={goPrev}
-        disabled={current === 1}
-        className={buttonStyles}
-      >
+      </Button>
+      <Button variant="ghost" onClick={goPrev} disabled={current === 1} iconOnly>
         <ChevronLeft className="size-4" />
-      </button>
-      <button
-        onClick={goNext}
-        disabled={current === totalPages}
-        className={buttonStyles}
-      >
+      </Button>
+      <Button variant="ghost" onClick={goNext} disabled={current === totalPages} iconOnly>
         <ChevronRight className="size-4" />
-      </button>
-      <button
-        onClick={goLast}
-        disabled={current === totalPages}
-        className={buttonStyles}
-      >
+      </Button>
+      <Button variant="ghost" onClick={goLast} disabled={current === totalPages} iconOnly>
         <ChevronsRight className="size-4" />
-      </button>
+      </Button>
     </>
   );
 }
@@ -51,8 +32,10 @@ export default function PaginationBasic() {
       current={current}
       pageSize={pageSize}
       total={100}
-      onChange={(page, size) => {
+      onPageChange={(page) => {
         setCurrent(page);
+      }}
+      onPageSizeChange={(size) => {
         setPageSize(size);
       }}
     >
