@@ -14,7 +14,6 @@ import { getComponentNav } from "@/pages/config/routes";
 import {
   PaperBasic,
   PaperVariants,
-  PaperMultiple,
   PaperPrint,
 } from "./examples";
 import {
@@ -26,8 +25,7 @@ import {
 
 import PaperBasicRaw from "./examples/paper-basic.tsx?raw";
 import PaperVariantsRaw from "./examples/paper-variants.tsx?raw";
-import PaperMultipleRaw from "./examples/paper-multiple.tsx?raw";
-import PaperPrintRaw from "./examples/paper-uncountable.tsx?raw";
+import PaperPrintRaw from "./examples/paper-print.tsx?raw";
 import paperDoc from "./doc.mdx?raw";
 import paperSrc from "@/component/ui/paper.tsx?raw";
 
@@ -190,13 +188,7 @@ export default function PaperPage({ locale = "zh" }: { locale?: string }) {
             <PaperVariants />
           </DemoSection>
 
-          <DemoSection
-            id="multiple"
-            title={l.multiple.title}
-            code={PaperMultipleRaw}
-          >
-            <PaperMultiple />
-          </DemoSection>
+
 
           <DemoSection
             id="print"
@@ -244,7 +236,6 @@ export default function PaperPage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
             <Anchor.Item href="#variants">{l.variants.title}</Anchor.Item>
-            <Anchor.Item href="#multiple">{l.multiple.title}</Anchor.Item>
             <Anchor.Item href="#print">{l.print.title}</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#docs" linkText={lang.docs} />

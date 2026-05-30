@@ -17,11 +17,12 @@ import {
   ArrowRightIcon,
 } from "lucide-react";
 
-import { PaginatedViewBasic } from "./examples/index";
-import PaginatedViewBasicRaw from "./examples/paginated-view-basic.tsx?raw";
-
-import paginatedViewDoc from "./doc.mdx?raw";
-import paginatedViewSrc from "@/component/ui/paginated-view.tsx?raw";
+import { SeparatorBasic, SeparatorVertical, SeparatorWithText } from "./examples/index";
+import SeparatorBasicRaw from "./examples/separator-basic.tsx?raw";
+import SeparatorVerticalRaw from "./examples/separator-vertical.tsx?raw";
+import SeparatorTextRaw from "./examples/separator-text.tsx?raw";
+import separatorDoc from "./doc.mdx?raw";
+import separatorSrc from "@/component/ui/separator.tsx?raw";
 
 function DemoSection({
   id,
@@ -47,28 +48,28 @@ function DemoSection({
   );
 }
 
-export default function PaginatedViewPage({ locale = "zh" }: { locale?: string }) {
+export default function SeparatorPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
-  const l = lang.paginatedView;
-  const nav = getComponentNav("/components/paginated-view", locale as "zh" | "en");
+  const l = lang.separator;
+  const nav = getComponentNav("/components/separator", locale as "zh" | "en");
 
-  const paginatedViewSections = [
+  const separatorSections = [
     {
-      title: l.api.sectionTitles.paginatedViewProps,
+      title: l.api.sectionTitles.separatorProps,
       data: [
         {
-          props: "activeIndex",
-          type: "number",
-          default: "-",
-          description: l.api.props.activeIndex,
+          props: "orientation",
+          type: '"horizontal" | "vertical"',
+          default: '"horizontal"',
+          description: l.api.props.orientation,
         },
         {
-          props: "performanceThreshold",
-          type: "number",
-          default: "100",
-          description: l.api.props.performanceThreshold,
+          props: "children",
+          type: "ReactNode",
+          default: "-",
+          description: l.api.props.children,
         },
         {
           props: "className",
@@ -77,23 +78,17 @@ export default function PaginatedViewPage({ locale = "zh" }: { locale?: string }
           description: lang.common.className,
         },
         {
-          props: "itemProps.root",
-          type: "DivProps",
+          props: "lineClassName",
+          type: "ClassNameValue",
           default: "-",
-          description: l.api.props.itemPropsRoot,
-        },
-        {
-          props: "itemProps.slide",
-          type: "DivProps",
-          default: "-",
-          description: l.api.props.itemPropsSlide,
+          description: l.api.props.lineClassName,
         },
       ],
     },
   ];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(paginatedViewDoc);
+    navigator.clipboard.writeText(separatorDoc);
     setCopied(true);
     Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);
@@ -137,7 +132,7 @@ export default function PaginatedViewPage({ locale = "zh" }: { locale?: string }
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
-          <ShikiCodeBlock>{paginatedViewSrc}</ShikiCodeBlock>
+          <ShikiCodeBlock>{separatorSrc}</ShikiCodeBlock>
         </section>
 
         <section id="examples">
@@ -146,15 +141,29 @@ export default function PaginatedViewPage({ locale = "zh" }: { locale?: string }
           <DemoSection
             id="basic"
             title={l.basic.title}
-            code={PaginatedViewBasicRaw}
+            code={SeparatorBasicRaw}
           >
-            <PaginatedViewBasic />
+            <SeparatorBasic />
           </DemoSection>
 
-      
+          <DemoSection
+            id="vertical"
+            title={l.vertical.title}
+            code={SeparatorVerticalRaw}
+          >
+            <SeparatorVertical />
+          </DemoSection>
+
+          <DemoSection
+            id="with-text"
+            title={l.withText.title}
+            code={SeparatorTextRaw}
+          >
+            <SeparatorWithText />
+          </DemoSection>
         </section>
 
-        <Docs sections={paginatedViewSections} />
+        <Docs sections={separatorSections} />
       </div>
     </div>
   );

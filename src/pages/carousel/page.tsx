@@ -17,11 +17,12 @@ import {
   ArrowRightIcon,
 } from "lucide-react";
 
-import { PaginatedViewBasic } from "./examples/index";
-import PaginatedViewBasicRaw from "./examples/paginated-view-basic.tsx?raw";
-
-import paginatedViewDoc from "./doc.mdx?raw";
-import paginatedViewSrc from "@/component/ui/paginated-view.tsx?raw";
+import { CarouselBasic, CarouselAutoPlay, CarouselLoop } from "./examples/index";
+import CarouselBasicRaw from "./examples/carousel-basic.tsx?raw";
+import CarouselAutoPlayRaw from "./examples/carousel-autoplay.tsx?raw";
+import CarouselLoopRaw from "./examples/carousel-loop.tsx?raw";
+import carouselDoc from "./doc.mdx?raw";
+import carouselSrc from "@/component/ui/carousel.tsx?raw";
 
 function DemoSection({
   id,
@@ -47,16 +48,16 @@ function DemoSection({
   );
 }
 
-export default function PaginatedViewPage({ locale = "zh" }: { locale?: string }) {
+export default function CarouselPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
-  const l = lang.paginatedView;
-  const nav = getComponentNav("/components/paginated-view", locale as "zh" | "en");
+  const l = lang.carousel;
+  const nav = getComponentNav("/components/carousel", locale as "zh" | "en");
 
-  const paginatedViewSections = [
+  const carouselSections = [
     {
-      title: l.api.sectionTitles.paginatedViewProps,
+      title: l.api.sectionTitles.carouselProps,
       data: [
         {
           props: "activeIndex",
@@ -65,22 +66,28 @@ export default function PaginatedViewPage({ locale = "zh" }: { locale?: string }
           description: l.api.props.activeIndex,
         },
         {
-          props: "performanceThreshold",
+          props: "autoPlay",
+          type: "boolean",
+          default: "false",
+          description: l.api.props.autoPlay,
+        },
+        {
+          props: "autoPlayInterval",
           type: "number",
-          default: "100",
-          description: l.api.props.performanceThreshold,
+          default: "3000",
+          description: l.api.props.autoPlayInterval,
         },
         {
-          props: "className",
-          type: "ClassNameValue",
-          default: "-",
-          description: lang.common.className,
+          props: "loop",
+          type: "boolean",
+          default: "false",
+          description: l.api.props.loop,
         },
         {
-          props: "itemProps.root",
-          type: "DivProps",
+          props: "onChange",
+          type: "(index: number) => void",
           default: "-",
-          description: l.api.props.itemPropsRoot,
+          description: l.api.props.onChange,
         },
         {
           props: "itemProps.slide",
@@ -93,7 +100,7 @@ export default function PaginatedViewPage({ locale = "zh" }: { locale?: string }
   ];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(paginatedViewDoc);
+    navigator.clipboard.writeText(carouselDoc);
     setCopied(true);
     Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);
@@ -137,7 +144,7 @@ export default function PaginatedViewPage({ locale = "zh" }: { locale?: string }
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
-          <ShikiCodeBlock>{paginatedViewSrc}</ShikiCodeBlock>
+          <ShikiCodeBlock>{carouselSrc}</ShikiCodeBlock>
         </section>
 
         <section id="examples">
@@ -146,15 +153,29 @@ export default function PaginatedViewPage({ locale = "zh" }: { locale?: string }
           <DemoSection
             id="basic"
             title={l.basic.title}
-            code={PaginatedViewBasicRaw}
+            code={CarouselBasicRaw}
           >
-            <PaginatedViewBasic />
+            <CarouselBasic />
           </DemoSection>
 
-      
+          <DemoSection
+            id="autoplay"
+            title={l.autoPlay.title}
+            code={CarouselAutoPlayRaw}
+          >
+            <CarouselAutoPlay />
+          </DemoSection>
+
+          <DemoSection
+            id="loop"
+            title={l.loop.title}
+            code={CarouselLoopRaw}
+          >
+            <CarouselLoop />
+          </DemoSection>
         </section>
 
-        <Docs sections={paginatedViewSections} />
+        <Docs sections={carouselSections} />
       </div>
     </div>
   );

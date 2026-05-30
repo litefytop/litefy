@@ -1,83 +1,94 @@
-import { useState, useRef } from "react";
-import { PaginatedView, Paper, PaperProvider, Pagination, Button } from "@/component";
-import { ChevronLeft, ChevronRight, Printer } from "lucide-react";
-import { useReactToPrint } from "react-to-print";
+import { useState } from "react";
+import {
+  PaginatedView,
+  Paper,
+  PaperProvider,
+  Pagination,
+  Button,
+  usePagination,
+} from "@/component";
+import {
+  ChevronsLeft,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsRight,
+} from "lucide-react";
 
-function PaperContent({ title, description }: { title: string; description: string }) {
+const PAGE_COUNT = 100;
+
+function PaginationControls() {
+  const { current, totalPages, goFirst, goPrev, goNext, goLast } = usePagination();
+
   return (
-    <div className="flex flex-col items-center justify-center h-full relative">
-      <h2 className="text-3xl font-bold">{title}</h2>
-      <p className="text-muted-foreground mt-2">{description}</p>
-      <p 
-        className="absolute bottom-4 right-4 text-sm text-muted-foreground print:hidden"
-        data-page-number
+    <div className="flex items-center gap-1">
+      <Button
+        variant="ghost"
+        onClick={goFirst}
+        disabled={current === 1}
+        iconOnly
+      >
+        <ChevronsLeft className="size-4" />
+      </Button>
+      <Button
+        variant="ghost"
+        onClick={goPrev}
+        disabled={current === 1}
+        iconOnly
+      >
+        <ChevronLeft className="size-4" />
+      </Button>
+      <Pagination.Jumper
+      
+        format={(page) => `Page ${page}`}
       />
+      <Button
+        variant="ghost"
+        onClick={goNext}
+        disabled={current === totalPages}
+        iconOnly
+      >
+        <ChevronRight className="size-4" />
+      </Button>
+      <Button
+        variant="ghost"
+        onClick={goLast}
+        disabled={current === totalPages}
+        iconOnly
+      >
+        <ChevronsRight className="size-4" />
+      </Button>
     </div>
   );
 }
 
-export default function PaginatedViewWithPaper() {
+export default function PaginatedViewBasic() {
   const [current, setCurrent] = useState(1);
-  const totalPages = 3;
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  const printFn = useReactToPrint({
-    contentRef,
-    documentTitle: "My Document",
-  });
+  const totalPages = PAGE_COUNT;
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-end print:hidden">
-        <Button variant="ghost" onClick={() => printFn()}>
-          <Printer className="size-4 mr-2" />
-          Print All
-        </Button>
-      </div>
-
-      <PaperProvider totalPages={totalPages}>
-        <PaginatedView activeIndex={current - 1} itemProps={{ root: { ref: contentRef } }}>
-          <Paper variant="a5" orientation="portrait" countable>
-            <PaperContent title="Welcome" description="This is the first page" />
-          </Paper>
-          <Paper variant="a5" orientation="portrait" countable>
-            <PaperContent title="Features" description="This is the second page" />
-          </Paper>
-          <Paper variant="a5" orientation="portrait" countable>
-            <PaperContent title="Contact" description="This is the third page" />
-          </Paper>
+      <PaperProvider>
+        <PaginatedView activeIndex={current - 1}>
+          {Array.from({ length: PAGE_COUNT }, (_, i) => (
+            <Paper variant="a5" key={i}>
+              <div className="h-40 flex items-center justify-center">
+                <h2 className="text-2xl font-bold">Page {i + 1}</h2>
+              </div>
+            </Paper>
+          ))}
         </PaginatedView>
+        <Pagination
+          current={current}
+          pageSize={1}
+          total={totalPages}
+          onPageChange={setCurrent}
+        >
+          <Pagination.Description />
+          <Pagination.Controls>
+            <PaginationControls />
+          </Pagination.Controls>
+        </Pagination>
       </PaperProvider>
-
-      <Pagination
-        current={current}
-        pageSize={1}
-        total={totalPages}
-        onPageChange={(page) => setCurrent(page)}
-      >
-        <Pagination.Description />
-        <Pagination.Controls>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              onClick={() => setCurrent((c) => Math.max(1, c - 1))}
-              disabled={current === 1}
-            >
-              <ChevronLeft className="size-4" />
-            </Button>
-            <span className="text-sm font-medium">
-              {current} / {totalPages}
-            </span>
-            <Button
-              variant="ghost"
-              onClick={() => setCurrent((c) => Math.min(totalPages, c + 1))}
-              disabled={current === totalPages}
-            >
-              <ChevronRight className="size-4" />
-            </Button>
-          </div>
-        </Pagination.Controls>
-      </Pagination>
     </div>
   );
 }

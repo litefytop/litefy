@@ -24,6 +24,7 @@ type PaginationContextValue = {
 
 const PaginationContext = createContext<PaginationContextValue | null>(null);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function usePagination() {
   const ctx = useContext(PaginationContext);
   if (!ctx) throw new Error("usePagination must be used within Pagination");

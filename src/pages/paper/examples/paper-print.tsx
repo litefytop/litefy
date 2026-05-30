@@ -1,7 +1,35 @@
 import { useRef } from "react";
-import { PaperProvider, Paper, Button } from "@/component";
+import { PaperProvider, Paper, Button, usePaper } from "@/component";
 import { Printer } from "lucide-react";
 import { useReactToPrint } from "react-to-print";
+
+function AutoCompletePages() {
+  const { totalPages }  = usePaper();
+  const currentCount = totalPages;
+  const remainder = currentCount % 4;
+  const needPages = remainder === 0 ? 0 : 4 - remainder;
+
+  if (needPages === 0) return null;
+
+  return (
+    <>
+      {Array.from({ length: needPages }).map((_, idx) => (
+        <Paper key={`auto-${idx}`} variant="a4" orientation="portrait">
+          <div className="flex flex-col items-center justify-center h-full relative">
+            <h1 className="text-3xl font-bold mb-4 text-gray-300">Blank Page</h1>
+            <p className="text-muted-foreground text-center max-w-md">
+              Auto-completed blank page (page {currentCount + idx + 1})
+            </p>
+            <div
+              className="absolute bottom-4 right-4 text-sm text-muted-foreground print:block"
+              data-page-number
+            />
+          </div>
+        </Paper>
+      ))}
+    </>
+  );
+}
 
 export default function PaperPrint() {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -20,120 +48,81 @@ export default function PaperPrint() {
         </Button>
       </div>
 
-      <PaperProvider totalPages={8}>
+      <PaperProvider>
         <div ref={contentRef} className="space-y-8">
-          {/* 5 content pages */}
-          <Paper variant="a4" orientation="portrait" countable>
+          <Paper variant="a4" orientation="portrait">
             <div className="flex flex-col items-center justify-center h-full relative">
               <h1 className="text-3xl font-bold mb-4">Welcome</h1>
               <p className="text-muted-foreground text-center max-w-md">
                 This is the first page of our document. Welcome to the printing demo.
               </p>
-              <div 
+              <div
                 className="absolute bottom-4 right-4 text-sm text-muted-foreground print:block"
                 data-page-number
               />
             </div>
           </Paper>
 
-          <Paper variant="a4" orientation="portrait" countable>
+          <Paper variant="a4" orientation="portrait">
             <div className="flex flex-col items-center justify-center h-full relative">
               <h1 className="text-3xl font-bold mb-4">Features</h1>
               <p className="text-muted-foreground text-center max-w-md">
                 Our paper component supports automatic page numbering and booklet printing.
               </p>
-              <div 
+              <div
                 className="absolute bottom-4 right-4 text-sm text-muted-foreground print:block"
                 data-page-number
               />
             </div>
           </Paper>
 
-          <Paper variant="a4" orientation="portrait" countable>
+          <Paper variant="a4" orientation="portrait">
             <div className="flex flex-col items-center justify-center h-full relative">
               <h1 className="text-3xl font-bold mb-4">Documentation</h1>
               <p className="text-muted-foreground text-center max-w-md">
                 Complete documentation with examples and API reference.
               </p>
-              <div 
+              <div
                 className="absolute bottom-4 right-4 text-sm text-muted-foreground print:block"
                 data-page-number
               />
             </div>
           </Paper>
 
-          <Paper variant="a4" orientation="portrait" countable>
+          <Paper variant="a4" orientation="portrait">
             <div className="flex flex-col items-center justify-center h-full relative">
               <h1 className="text-3xl font-bold mb-4">Examples</h1>
               <p className="text-muted-foreground text-center max-w-md">
                 Multiple examples showing different use cases and configurations.
               </p>
-              <div 
+              <div
                 className="absolute bottom-4 right-4 text-sm text-muted-foreground print:block"
                 data-page-number
               />
             </div>
           </Paper>
 
-          <Paper variant="a4" orientation="portrait" countable>
+          <Paper variant="a4" orientation="portrait">
             <div className="flex flex-col items-center justify-center h-full relative">
               <h1 className="text-3xl font-bold mb-4">Conclusion</h1>
               <p className="text-muted-foreground text-center max-w-md">
-                This is the fifth page. The remaining pages will be auto-completed.
+                This is the fifth page. Auto-complete will add blank pages to reach 8.
               </p>
-              <div 
+              <div
                 className="absolute bottom-4 right-4 text-sm text-muted-foreground print:block"
                 data-page-number
               />
             </div>
           </Paper>
 
-          {/* 3 auto-completed pages to reach 8 total */}
-          <Paper variant="a4" orientation="portrait" countable={false}>
-            <div className="flex flex-col items-center justify-center h-full relative">
-              <h1 className="text-3xl font-bold mb-4 text-gray-300">Blank Page</h1>
-              <p className="text-muted-foreground text-center max-w-md">
-                This is an auto-completed blank page (page 6).
-              </p>
-              <div 
-                className="absolute bottom-4 right-4 text-sm text-muted-foreground print:block"
-                data-page-number
-              />
-            </div>
-          </Paper>
-
-          <Paper variant="a4" orientation="portrait" countable={false}>
-            <div className="flex flex-col items-center justify-center h-full relative">
-              <h1 className="text-3xl font-bold mb-4 text-gray-300">Blank Page</h1>
-              <p className="text-muted-foreground text-center max-w-md">
-                This is an auto-completed blank page (page 7).
-              </p>
-              <div 
-                className="absolute bottom-4 right-4 text-sm text-muted-foreground print:block"
-                data-page-number
-              />
-            </div>
-          </Paper>
-
-          <Paper variant="a4" orientation="portrait" countable={false}>
-            <div className="flex flex-col items-center justify-center h-full relative">
-              <h1 className="text-3xl font-bold mb-4 text-gray-300">End</h1>
-              <p className="text-muted-foreground text-center max-w-md">
-                This is the final page (page 8). Ready for booklet printing.
-              </p>
-              <div 
-                className="absolute bottom-4 right-4 text-sm text-muted-foreground print:block"
-                data-page-number
-              />
-            </div>
-          </Paper>
+          <AutoCompletePages />
         </div>
       </PaperProvider>
 
       <div className="p-4 bg-muted rounded-lg print:hidden">
         <h3 className="font-semibold mb-2">Print Instructions:</h3>
         <ul className="text-sm text-muted-foreground space-y-1">
-          <li>• Total pages: 8 (5 content + 3 auto-completed)</li>
+          <li>• Total pages: auto-completed to multiple of 4 (8 pages as needed)</li>
           <li>• Paper size: A4 portrait</li>
           <li>• Printer feature: Booklet printing (2 sheets of A3 = 8 pages)</li>
           <li>• Page numbers are displayed using CSS with data-page-number</li>

@@ -42,6 +42,7 @@ export const en = {
     accordion: "Accordion",
     "accordion-controlled": "Accordion (Controlled)",
     anchor: "Anchor",
+    carousel: "Carousel",
     toast: "Toast",
     dialog: "Dialog",
     drawer: "Drawer",
@@ -53,7 +54,6 @@ export const en = {
     select: "Select",
     loading: "Loading",
     empty: "Empty",
-    skeleton: "Skeleton",
     separator: "Separator",
     theme: "Theme",
     title: "Title",
@@ -455,9 +455,7 @@ export const en = {
     variants: {
       title: "Variants",
     },
-    multiple: {
-      title: "Multiple Pages",
-    },
+
     print: {
       title: "Print",
     },
@@ -1185,9 +1183,7 @@ export const en = {
     basic: {
       title: "Basic",
     },
-    performance: {
-      title: "Performance (100 pages)",
-    },
+
     api: {
       sectionTitles: {
         paginatedViewProps: "PaginatedView Props",
@@ -1196,6 +1192,58 @@ export const en = {
         activeIndex: "Current active slide index",
         performanceThreshold: "Maximum slides before disabling animation",
         itemPropsRoot: "Root element props",
+        itemPropsSlide: "Slide element props",
+      },
+    },
+  },
+
+  separator: {
+    title: "Separator",
+    description: "A visual divider component for separating content.",
+    basic: {
+      title: "Basic",
+    },
+    vertical: {
+      title: "Vertical",
+    },
+    withText: {
+      title: "With Text",
+    },
+    api: {
+      sectionTitles: {
+        separatorProps: "Separator Props",
+      },
+      props: {
+        orientation: "Separator orientation",
+        children: "Text content to display in the center",
+        className: "Container className",
+        lineClassName: "Line element className",
+      },
+    },
+  },
+
+  carousel: {
+    title: "Carousel",
+    description: "A carousel component for cycling through slides.",
+    basic: {
+      title: "Basic",
+    },
+    autoPlay: {
+      title: "Auto Play",
+    },
+    loop: {
+      title: "Loop",
+    },
+    api: {
+      sectionTitles: {
+        carouselProps: "Carousel Props",
+      },
+      props: {
+        activeIndex: "Current active slide index",
+        autoPlay: "Enable auto play",
+        autoPlayInterval: "Auto play interval in ms",
+        loop: "Enable loop mode",
+        onChange: "Callback when index changes",
         itemPropsSlide: "Slide element props",
       },
     },

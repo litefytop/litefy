@@ -32,8 +32,10 @@ const Loading = lazy(() => import("@/pages/loading"));
 const Pagination = lazy(() => import("@/pages/pagination"));
 const PaginatedView = lazy(() => import("@/pages/paginated-view"));
 const Sidebar = lazy(() => import("@/pages/sidebar"));
+const Separator = lazy(() => import("@/pages/separator"));
 const Paper = lazy(() => import("@/pages/paper"));
 const Combobox = lazy(() => import("@/pages/combobox"));
+const Carousel = lazy(() => import("@/pages/carousel"));
 
 const introduction = {
   key: "introduction",
@@ -64,17 +66,17 @@ const componentRouteConfig = [
   { key: "form", path: "/components/form", Component: Form },
   { key: "loading", path: "/components/loading", Component: Loading },
   { key: "empty", path: "/components/empty", Component: Empty },
-  { key: "skeleton", path: "/components/skeleton", Component: ComingSoon },
-  { key: "separator", path: "/components/separator", Component: ComingSoon },
   { key: "theme", path: "/components/theme", Component: ComingSoon },
   { key: "title", path: "/components/title", Component: ComingSoon },
   { key: "text", path: "/components/text", Component: ComingSoon },
   { key: "description", path: "/components/description", Component: Description },
   { key: "image", path: "/components/image", Component: Image },
   { key: "watermark", path: "/components/watermark", Component: ComingSoon },
+  { key: "separator", path: "/components/separator", Component: Separator },
   { key: "sidebar", path: "/components/sidebar", Component: Sidebar },
   { key: "paper", path: "/components/paper", Component: Paper },
   { key: "combobox", path: "/components/combobox", Component: Combobox },
+  { key: "carousel", path: "/components/carousel", Component: Carousel },
   { key: "paginated-view", path: "/components/paginated-view", Component: PaginatedView },
   { key: "pagination", path: "/components/pagination", Component: Pagination },
   { key: "transfer", path: "/components/transfer", Component: ComingSoon },

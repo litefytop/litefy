@@ -8,13 +8,10 @@ type WithDataAttributes<T> = T & {
   className?: ClassNameValue;
 };
 
-export type PaginatedViewProps = {
+export type PaginatedViewProps = React.ComponentProps<"div"> & {
   children: React.ReactNode;
   activeIndex: number;
-  performanceThreshold?: number;
-  className?: ClassNameValue;
   itemProps?: {
-    root?: WithDataAttributes<React.ComponentProps<"div">>;
     slide?: WithDataAttributes<React.ComponentProps<"div">>;
   };
 };
@@ -22,46 +19,24 @@ export type PaginatedViewProps = {
 export function PaginatedView({
   children,
   activeIndex,
-  performanceThreshold = 100,
-  className,
   itemProps,
+  className,
+  ...props
 }: PaginatedViewProps) {
   const slides = Children.toArray(children).filter(isValidElement);
   const totalSlides = slides.length;
-
-  if (totalSlides <= 1) return <>{children}</>;
-
   const safeIndex = Math.max(0, Math.min(activeIndex, totalSlides - 1));
-  const enableAnimation = totalSlides <= performanceThreshold;
 
+  const slide = itemProps?.slide ?? {};
   const slideWrapperProps = {
-    ...itemProps?.slide,
-    className: cn("w-full shrink-0", itemProps?.slide?.className),
+    ...slide,
+    className: cn("w-full", slide.className),
   };
 
-  if (!enableAnimation) {
-    return (
-      <div {...itemProps?.root} className={cn(className, itemProps?.root?.className)}>
-        <div className="relative overflow-hidden">
-          <div {...slideWrapperProps}>{slides[safeIndex]}</div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div {...itemProps?.root} className={cn(className, itemProps?.root?.className)}>
+    <div {...props} className={cn(className)}>
       <div className="relative overflow-hidden">
-        <div
-          className="flex transition-transform duration-300 ease-out"
-          style={{ transform: `translateX(-${safeIndex * 100}%)` }}
-        >
-          {slides.map((child, i) => (
-            <div key={i} {...slideWrapperProps}>
-              {child}
-            </div>
-          ))}
-        </div>
+        <div {...slideWrapperProps}>{slides[safeIndex]}</div>
       </div>
     </div>
   );

@@ -42,6 +42,7 @@ export const zh = {
     accordion: "Accordion 手风琴",
     "accordion-controlled": "Accordion 手风琴（受控）",
     anchor: "Anchor 锚点",
+    carousel: "Carousel 轮播图",
     toast: "Toast 消息提示",
     dialog: "Dialog 对话框",
     drawer: "Drawer 抽屉",
@@ -55,7 +56,6 @@ export const zh = {
     select: "Select 选择器",
     loading: "Loading 加载",
     empty: "Empty 空状态",
-    skeleton: "Skeleton 骨架屏",
     separator: "Separator 分割线",
     theme: "Theme 主题",
     title: "Title 标题",
@@ -454,9 +454,7 @@ export const zh = {
     variants: {
       title: "变体",
     },
-    multiple: {
-      title: "多页",
-    },
+  
     print: {
       title: "打印",
     },
@@ -1191,9 +1189,7 @@ export const zh = {
     basic: {
       title: "基础",
     },
-    performance: {
-      title: "高性能 (100页)",
-    },
+
     api: {
       sectionTitles: {
         paginatedViewProps: "PaginatedView Props",
@@ -1202,6 +1198,58 @@ export const zh = {
         activeIndex: "当前显示的幻灯片索引",
         performanceThreshold: "启用动画的最大幻灯片数量，超过则禁用动画",
         itemPropsRoot: "根元素属性",
+        itemPropsSlide: "幻灯片元素属性",
+      },
+    },
+  },
+
+  separator: {
+    title: "分割线",
+    description: "用于分隔内容的视觉组件。",
+    basic: {
+      title: "基础",
+    },
+    vertical: {
+      title: "垂直",
+    },
+    withText: {
+      title: "带文本",
+    },
+    api: {
+      sectionTitles: {
+        separatorProps: "Separator Props",
+      },
+      props: {
+        orientation: "分割线方向",
+        children: "中间显示的文本内容",
+        className: "容器类名",
+        lineClassName: "线条元素类名",
+      },
+    },
+  },
+
+  carousel: {
+    title: "轮播图",
+    description: "用于循环播放内容的轮播组件。",
+    basic: {
+      title: "基础",
+    },
+    autoPlay: {
+      title: "自动播放",
+    },
+    loop: {
+      title: "循环",
+    },
+    api: {
+      sectionTitles: {
+        carouselProps: "Carousel Props",
+      },
+      props: {
+        activeIndex: "当前激活的幻灯片索引",
+        autoPlay: "是否自动播放",
+        autoPlayInterval: "自动播放间隔时间（毫秒）",
+        loop: "是否循环播放",
+        onChange: "索引变化时的回调",
         itemPropsSlide: "幻灯片元素属性",
       },
     },
