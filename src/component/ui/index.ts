@@ -1,5 +1,4 @@
-export * from "./title";
-export * from "./text";
+export * from "./title"; 
 export * from "./description";
 export * from "./loading";
 export * from "./image";

@@ -1,6 +1,6 @@
 import { cn, ClassNameValue } from "@/lib";
 
-type TitleVariant = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "legend" | "dt" | "caption" | "figcaption";
+type TitleVariant = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
 const titleClass = {
   h1: "scroll-m-20 text-4xl font-extrabold tracking-tight",
@@ -9,10 +9,6 @@ const titleClass = {
   h4: "scroll-m-20 text-xl font-semibold tracking-tight",
   h5: "scroll-m-20 text-lg font-semibold tracking-tight",
   h6: "scroll-m-20 text-base font-semibold tracking-tight",
-  legend: "mb-3 font-medium text-base",
-  dt: "mb-3 font-medium text-base",
-  caption: "mb-3 font-medium text-base",
-  figcaption: "mb-3 font-medium text-base",
 };
 
 export type TitleProps = {

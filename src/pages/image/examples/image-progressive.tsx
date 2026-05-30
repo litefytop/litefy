@@ -14,10 +14,10 @@ export function ImageProgressive() {
     <div className="flex flex-row items-end gap-4">
       <Image
         key={reloadKey}
-        src="/logo-hd.png"
-        placeholderSrc="/logo-thumb.png"
+        src="https://picsum.photos/seed/3/800/400"
+        placeholderSrc="https://picsum.photos/seed/3/100/100"
         delay={1000}
-        alt="Logo"
+        alt="Random"
         className="w-40 h-40"
       />
       <Button onClick={handleReload} variant="outline" >

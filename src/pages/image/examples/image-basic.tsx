@@ -2,6 +2,6 @@ import { Image } from "@/component/ui/image";
 
 export function ImageBasic() {
   return (
-    <Image src="/logo.svg" alt="Logo" className="w-20 h-20" />
+    <Image src="https://picsum.photos/seed/1/800/400" alt="Random" className="w-20 h-20" />
   );
 }

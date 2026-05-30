@@ -27,12 +27,14 @@ const DatePicker = lazy(() => import("@/pages/date-picker"));
 const Textarea = lazy(() => import("@/pages/text-area"));
 const Tabs = lazy(() => import("@/pages/tabs"));
 const Image = lazy(() => import("@/pages/image"));
+const Watermark = lazy(() => import("@/pages/watermark"));
 const Form = lazy(() => import("@/pages/form"));
 const Loading = lazy(() => import("@/pages/loading"));
 const Pagination = lazy(() => import("@/pages/pagination"));
 const PaginatedView = lazy(() => import("@/pages/paginated-view"));
-const Sidebar = lazy(() => import("@/pages/sidebar"));
 const Separator = lazy(() => import("@/pages/separator"));
+const Sidebar = lazy(() => import("@/pages/sidebar"));
+const Title = lazy(() => import("@/pages/title"));
 const Paper = lazy(() => import("@/pages/paper"));
 const Combobox = lazy(() => import("@/pages/combobox"));
 const Carousel = lazy(() => import("@/pages/carousel"));
@@ -67,13 +69,12 @@ const componentRouteConfig = [
   { key: "loading", path: "/components/loading", Component: Loading },
   { key: "empty", path: "/components/empty", Component: Empty },
   { key: "theme", path: "/components/theme", Component: ComingSoon },
-  { key: "title", path: "/components/title", Component: ComingSoon },
-  { key: "text", path: "/components/text", Component: ComingSoon },
   { key: "description", path: "/components/description", Component: Description },
   { key: "image", path: "/components/image", Component: Image },
-  { key: "watermark", path: "/components/watermark", Component: ComingSoon },
+  { key: "watermark", path: "/components/watermark", Component: Watermark },
   { key: "separator", path: "/components/separator", Component: Separator },
   { key: "sidebar", path: "/components/sidebar", Component: Sidebar },
+  { key: "title", path: "/components/title", Component: Title },
   { key: "paper", path: "/components/paper", Component: Paper },
   { key: "combobox", path: "/components/combobox", Component: Combobox },
   { key: "carousel", path: "/components/carousel", Component: Carousel },

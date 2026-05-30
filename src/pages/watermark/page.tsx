@@ -1,23 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  Anchor,
   Title,
   Description,
-  Password,
   ShikiCodeBlock,
-  Anatomy,
   Button,
   Docs,
+  Anchor,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
-import {
-  PasswordBasic,
-
-  PasswordControlled,
-} from "./examples";
 import {
   CheckIcon,
   CopyIcon,
@@ -25,11 +18,11 @@ import {
   ArrowRightIcon,
 } from "lucide-react";
 
-import PasswordBasicRaw from "./examples/password-basic.tsx?raw";
-
-import PasswordControlledRaw from "./examples/password-controlled.tsx?raw";
-import passwordDoc from "./doc.mdx?raw";
-import passwordSrc from "@/component/ui/password.tsx?raw";
+import { WatermarkBasic, WatermarkCustom } from "./examples/index";
+import WatermarkBasicRaw from "./examples/watermark-basic.tsx?raw";
+import WatermarkCustomRaw from "./examples/watermark-custom.tsx?raw";
+import watermarkDoc from "./doc.mdx?raw";
+import watermarkSrc from "@/component/ui/watermark.tsx?raw";
 
 function DemoSection({
   id,
@@ -55,97 +48,81 @@ function DemoSection({
   );
 }
 
-export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
+export default function WatermarkPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
-  const l = lang.password;
-  const nav = getComponentNav("/components/password", locale as "zh" | "en");
+  const l = lang.watermark;
+  const nav = getComponentNav("/components/watermark", locale as "zh" | "en");
 
-  const passwordSections = [
+  const watermarkSections = [
     {
-      title: l.api.sectionTitles.passwordProps,
-
+      title: l.api.sectionTitles.watermarkProps,
       data: [
         {
-          props: "value",
+          props: "text",
           type: "string",
-          description: l.api.props.value,
+          description: l.api.props.text,
         },
         {
-          props: "defaultValue",
+          props: "fontSize",
+          type: "number",
+          default: "16",
+          description: l.api.props.fontSize,
+        },
+        {
+          props: "color",
           type: "string",
-          description: l.api.props.defaultValue,
+          default: "rgba(0, 0, 0, 0.3)",
+          description: l.api.props.color,
         },
         {
-          props: "onChange",
-          type: "(e: React.ChangeEvent<HTMLInputElement>) => void | { invalid?: string }",
-          description: l.api.props.onChange,
-        },
-        {
-          props: "label",
-          type: "ReactNode",
-          description: l.api.props.label,
-        },
-        {
-          props: "description",
-          type: "ReactNode",
-          description: l.api.props.description,
-        },
-        {
-          props: "invalid",
-          type: "ReactNode",
-          description: l.api.props.invalid,
-        },
-        {
-          props: "leading",
-          type: "ReactNode",
-          description: l.api.props.leading,
-        },
-        {
-          props: "trailing",
-          type: "ReactNode",
-          description: l.api.props.trailing,
-        },
-        {
-          props: "placeholder",
+          props: "fontFamily",
           type: "string",
-          description: l.api.props.placeholder,
+          default: "sans-serif",
+          description: l.api.props.fontFamily,
         },
         {
-          props: "disabled",
-          type: "boolean",
-          default: "false",
-          description: l.api.props.disabled,
+          props: "rotate",
+          type: "number",
+          default: "-30",
+          description: l.api.props.rotate,
         },
         {
-          props: "itemProps",
-          type: "object",
-          description: l.api.props.itemProps,
+          props: "gap",
+          type: "number",
+          default: "100",
+          description: l.api.props.gap,
         },
-      ],
-    },
-    {
-      title: l.api.sectionTitles.itemPropsConfig,
-
-      data: [
         {
-          props: "group",
-          type: 'ComponentProps<"div">',
-          description: l.api.itemPropsConfig.group,
+          props: "opacity",
+          type: "number",
+          default: "0.3",
+          description: l.api.props.opacity,
         },
-
         {
-          props: "toggle",
-          type: 'ComponentProps<"button">',
-          description: l.api.itemPropsConfig.toggle,
+          props: "zIndex",
+          type: "number",
+          default: "10",
+          description: l.api.props.zIndex,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          default: "-",
+          description: lang.common.className,
+        },
+        {
+          props: "children",
+          type: "ReactNode",
+          description: l.api.props.children,
         },
       ],
     },
   ];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(passwordDoc);
+    navigator.clipboard.writeText(watermarkDoc);
     setCopied(true);
     Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);
@@ -189,53 +166,34 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
-          <ShikiCodeBlock>{passwordSrc}</ShikiCodeBlock>
+          <ShikiCodeBlock>{watermarkSrc}</ShikiCodeBlock>
         </section>
 
         <section id="examples" className="">
           <Title as="h2">{lang.examples}</Title>
 
-          <DemoSection id="basic" title={l.basic.title} code={PasswordBasicRaw}>
-            <PasswordBasic />
+          <DemoSection
+            id="basic"
+            title={l.basic.title}
+            code={WatermarkBasicRaw}
+          >
+            <WatermarkBasic />
           </DemoSection>
 
           <DemoSection
-            id="controlled"
-            title={l.controlled.title}
-            code={PasswordControlledRaw}
+            id="custom"
+            title={l.custom.title}
+            code={WatermarkCustomRaw}
           >
-            <PasswordControlled />
+            <WatermarkCustom />
           </DemoSection>
-
-
-        </section>
-
-        <section id="anatomy" className="mt-8 space-y-4">
-          <Title as="h2">{lang.anatomy}</Title>
-          <Anatomy
-            className="h-32"
-            parts={[
-              { name: "group", label: l.anatomy.group },
-              { name: "input", label: l.anatomy.input },
-              { name: "toggle", label: l.anatomy.toggle },
-            ]}
-          >
-            <Password
-              data-anatomy-name="input"
-              placeholder="请输入密码"
-              itemProps={{
-                toggle: { "data-anatomy-name": "toggle" },
-                group: { "data-anatomy-name": "group" },
-              }}
-            />
-          </Anatomy>
         </section>
 
         <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
-          <Docs sections={passwordSections} />
+          <Docs sections={watermarkSections} />
         </section>
         
         <footer className="py-8 border-t mt-8">
@@ -267,9 +225,8 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
-            <Anchor.Item href="#controlled">{l.controlled.title}</Anchor.Item>
+            <Anchor.Item href="#custom">{l.custom.title}</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
           <Anchor.Section href="#docs" linkText={lang.docs} />
         </Anchor>
       </aside>

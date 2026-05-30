@@ -12,8 +12,8 @@ export function ImageSkeleton() {
       <figure>
         <Image
           key={reloadKey}
-          src="/logo.svg"
-          alt="Logo"
+          src="https://picsum.photos/seed/2/800/400"
+          alt="Random"
           className="w-20 h-20 p-1"
           delay={1000}
         />
@@ -31,8 +31,8 @@ export function ImageSkeleton() {
         <Image
           delay={1000}
           key={reloadKey1}
-          src="/logo.svg"
-          alt="Logo"
+          src="https://picsum.photos/seed/2/800/400"
+          alt="Random"
           skeleton={
             <div className="size-20 animate-pulse bg-muted flex items-center justify-center text-xs">
               Loading...

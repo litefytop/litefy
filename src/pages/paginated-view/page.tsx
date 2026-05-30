@@ -154,7 +154,35 @@ export default function PaginatedViewPage({ locale = "zh" }: { locale?: string }
       
         </section>
 
-        <Docs sections={paginatedViewSections} />
+        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
+          <Title as="h2" className="mb-4">
+            {lang.docs}
+          </Title>
+          <Docs sections={paginatedViewSections} />
+        </section>
+        
+        <footer className="py-8 border-t mt-8">
+          <div className="flex justify-between">
+            <Button
+              variant="ghost"
+              onClick={handlePrev}
+              disabled={!nav.prev}
+              className={nav.prev ? "" : "invisible"}
+            >
+              <ArrowLeftIcon className="size-4 mr-2" />
+              {nav.prev?.title}
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={handleNext}
+              disabled={!nav.next}
+              className={nav.next ? "" : "invisible"}
+            >
+              {nav.next?.title}
+              <ArrowRightIcon className="size-4 ml-2" />
+            </Button>
+          </div>
+        </footer>
       </div>
     </div>
   );

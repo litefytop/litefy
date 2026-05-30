@@ -59,7 +59,6 @@ export const zh = {
     separator: "Separator 分割线",
     theme: "Theme 主题",
     title: "Title 标题",
-    text: "Text 文本",
     description: "Description 描述",
     spin: "Spin 旋转",
     image: "Image 图片",
@@ -994,6 +993,33 @@ export const zh = {
     },
   },
 
+  watermark: {
+    title: "水印",
+    description: "用于在内容上叠加半透明文本图案的水印组件。",
+    basic: {
+      title: "基础",
+    },
+    custom: {
+      title: "自定义",
+    },
+    api: {
+      sectionTitles: {
+        watermarkProps: "Watermark Props",
+      },
+      props: {
+        text: "水印文本内容",
+        fontSize: "水印文本字体大小",
+        color: "水印文本颜色",
+        fontFamily: "水印文本字体族",
+        rotate: "旋转角度（度）",
+        gap: "水印之间的间距",
+        opacity: "水印透明度",
+        zIndex: "水印层叠顺序",
+        children: "要添加水印的内容",
+      },
+    },
+  },
+
   radio: {
     title: "单选框",
     description: "单选框组件，用于单选。",
@@ -1199,6 +1225,22 @@ export const zh = {
         performanceThreshold: "启用动画的最大幻灯片数量，超过则禁用动画",
         itemPropsRoot: "根元素属性",
         itemPropsSlide: "幻灯片元素属性",
+      },
+    },
+  },
+
+  title: {
+    title: "标题",
+    description: "用于渲染语义化标题元素的组件。",
+    basic: {
+      title: "基础",
+    },
+    api: {
+      sectionTitles: {
+        titleProps: "Title Props",
+      },
+      props: {
+        as: "要渲染的 HTML 元素",
       },
     },
   },

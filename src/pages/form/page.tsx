@@ -267,19 +267,47 @@ export default function FormPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
         </section>
 
-        <Docs sections={formSections} />
-
-        <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-full overflow-y-auto p-4">
-          <Anchor>
-            <Anchor.Section href="#installation" linkText={lang.installation} />
-            <Anchor.Section href="#examples" linkText={lang.examples}>
-              <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
-              <Anchor.Item href="#ref-example">{l.refExample.title}</Anchor.Item>
-            </Anchor.Section>
-            <Anchor.Section href="#docs" linkText={lang.docs} />
-          </Anchor>
-        </aside>
+        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
+          <Title as="h2" className="mb-4">
+            {lang.docs}
+          </Title>
+          <Docs sections={formSections} />
+        </section>
+        
+        <footer className="py-8 border-t mt-8">
+          <div className="flex justify-between">
+            <Button
+              variant="ghost"
+              onClick={handlePrev}
+              disabled={!nav.prev}
+              className={nav.prev ? "" : "invisible"}
+            >
+              <ArrowLeftIcon className="size-4 mr-2" />
+              {nav.prev?.title}
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={handleNext}
+              disabled={!nav.next}
+              className={nav.next ? "" : "invisible"}
+            >
+              {nav.next?.title}
+              <ArrowRightIcon className="size-4 ml-2" />
+            </Button>
+          </div>
+        </footer>
       </div>
+
+      <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-full overflow-y-auto p-4">
+        <Anchor>
+          <Anchor.Section href="#installation" linkText={lang.installation} />
+          <Anchor.Section href="#examples" linkText={lang.examples}>
+            <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
+            <Anchor.Item href="#ref-example">{l.refExample.title}</Anchor.Item>
+          </Anchor.Section>
+          <Anchor.Section href="#docs" linkText={lang.docs} />
+        </Anchor>
+      </aside>
     </div>
   );
 }

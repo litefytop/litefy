@@ -57,7 +57,6 @@ export const en = {
     separator: "Separator",
     theme: "Theme",
     title: "Title",
-    text: "Text",
     description: "Description",
     spin: "Spin",
     image: "Image",
@@ -991,6 +990,33 @@ export const en = {
     },
   },
 
+  watermark: {
+    title: "Watermark",
+    description: "A watermark component that overlays semi-transparent text patterns on content.",
+    basic: {
+      title: "Basic",
+    },
+    custom: {
+      title: "Custom",
+    },
+    api: {
+      sectionTitles: {
+        watermarkProps: "Watermark Props",
+      },
+      props: {
+        text: "Watermark text content",
+        fontSize: "Font size of watermark text",
+        color: "Color of watermark text",
+        fontFamily: "Font family of watermark text",
+        rotate: "Rotation angle in degrees",
+        gap: "Spacing between watermarks",
+        opacity: "Opacity of watermark",
+        zIndex: "Z-index of watermark layer",
+        children: "Content to be watermarked",
+      },
+    },
+  },
+
   radio: {
     title: "Radio",
     description: "Radio component for single selection.",
@@ -1193,6 +1219,22 @@ export const en = {
         performanceThreshold: "Maximum slides before disabling animation",
         itemPropsRoot: "Root element props",
         itemPropsSlide: "Slide element props",
+      },
+    },
+  },
+
+  title: {
+    title: "Title",
+    description: "Renders a semantic heading element with consistent styling.",
+    basic: {
+      title: "Basic",
+    },
+    api: {
+      sectionTitles: {
+        titleProps: "Title Props",
+      },
+      props: {
+        as: "The HTML element to render",
       },
     },
   },
