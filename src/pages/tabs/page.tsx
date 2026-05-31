@@ -42,7 +42,7 @@ function DemoSection({
   code: string;
 }) {
   return (
-    <section id={id} data-anchor-id={id} className="space-y-4 py-4">
+    <section id={id} className="space-y-4 py-4">
       <div>
         <Title as="h3">{title}</Title>
       </div>
@@ -174,14 +174,14 @@ export default function TabsPage({ locale = "zh" }: { locale?: string }) {
           <Description>{lang.tabs.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 scroll-mt-30">
+        <section id="installation" className="mb-8 ">
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{tabsSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" className="">
+        <section id="examples" >
           <Title as="h2">{lang.examples}</Title>
           <DemoSection
             id="basic"
@@ -224,7 +224,7 @@ export default function TabsPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
         </section>
 
-        <section id="anatomy" className="scroll-mt-30 py-4">
+        <section id="anatomy" className=" py-4">
           <Title as="h2" className="mb-4">
             {lang.anatomy}
           </Title>
@@ -254,7 +254,7 @@ export default function TabsPage({ locale = "zh" }: { locale?: string }) {
           </Anatomy>
         </section>
 
-        <section id="api" className="scroll-mt-30 py-4">
+        <section id="api" className=" py-4">
           <Title as="h2" className="mb-4">
             {lang.api}
           </Title>

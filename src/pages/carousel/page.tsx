@@ -37,7 +37,7 @@ function DemoSection({
   code: string;
 }) {
   return (
-    <section id={id} data-anchor-id={id} className="space-y-4 py-4">
+    <section id={id} className="space-y-4 py-4">
       <div>
         <Title as="h3">{title}</Title>
       </div>
@@ -141,7 +141,7 @@ export default function CarouselPage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 scroll-mt-20">
+        <section id="installation" className="mb-8 ">
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
@@ -176,7 +176,7 @@ export default function CarouselPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
         </section>
 
-        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
+        <section id="docs" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>

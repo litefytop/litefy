@@ -46,7 +46,7 @@ function DemoSection({
   code: string;
 }) {
   return (
-    <section id={id} data-anchor-id={id} className="space-y-4 py-4">
+    <section id={id} className="space-y-4 py-4">
       <div>
         <Title as="h3">{title}</Title>
       </div>
@@ -155,10 +155,7 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
     },
   ];
 
-  const nav = getComponentNav(
-    "/components/accordion",
-    locale as "zh" | "en",
-  );
+  const nav = getComponentNav("/components/accordion", locale as "zh" | "en");
 
   const handleCopy = () => {
     navigator.clipboard.writeText(accordionDoc);
@@ -201,14 +198,14 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
           <Description>{lang.accordion.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 scroll-mt-30">
+        <section id="installation" className="mb-8 ">
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{accordionSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" className="">
+        <section id="examples" >
           <Title as="h2">{lang.examples}</Title>
           <DemoSection
             id="basic"
@@ -261,23 +258,23 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
               { id: "anatomy-content", label: lang.accordion.anatomy.content },
             ]}
           >
-            <Accordion className="max-w-sm" openKeys={["item-1"]}>
+            <Accordion className="w-3xs" openKeys={["item-1"]}>
               <Accordion.Item
                 value="item-1"
                 label={lang.accordion.basic.title}
                 slotProps={{
-                  wrapper: { id: "anatomy-wrapper", className:"p-1" },
-                  content: { id: "anatomy-content", className:"p-1" },
-                  trigger: { id: "anatomy-trigger", className:"p-1" },
+                  wrapper: { id: "anatomy-wrapper", className: "p-1" },
+                  content: { id: "anatomy-content", },
+                  trigger: { id: "anatomy-trigger", },
                 }}
               >
-                {lang.accordion.anatomy.content}
+               <p> {lang.accordion.anatomy.content}</p>
               </Accordion.Item>
             </Accordion>
           </Anatomy>
         </section>
 
-        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-4">
+        <section id="docs" className="mt-12 space-y-4">
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
@@ -322,7 +319,9 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
               {lang.accordion.multiple.title}
             </Anchor.Item>
             <Anchor.Item href="#icon">{lang.accordion.icon.title}</Anchor.Item>
-            <Anchor.Item href="#disabled">{lang.accordion.disabled.title}</Anchor.Item>
+            <Anchor.Item href="#disabled">
+              {lang.accordion.disabled.title}
+            </Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
           <Anchor.Section href="#docs" linkText={lang.docs} />

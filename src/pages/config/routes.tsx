@@ -145,6 +145,27 @@ export function getNavItems(locale: "zh" | "en") {
   ];
 }
 
+export function getPageTitle(pathname: string, locale: "zh" | "en"): string {
+  const normalizedPath = pathname.replace(/\/$/, "") || "/";
+  
+  if (normalizedPath === `/${locale}` || normalizedPath === `/${locale}/`) {
+    return locale === "zh" ? zh.introduction : en.introduction;
+  }
+  
+  const pathWithoutLocale = normalizedPath.replace(`/${locale}`, "");
+  
+  const navItems = getNavItems(locale);
+  for (const group of navItems) {
+    for (const item of group.items) {
+      if (item.href === pathWithoutLocale || item.path === pathWithoutLocale) {
+        return item.title;
+      }
+    }
+  }
+  
+  return "Litefy UI";
+}
+
 export function createRouter() {
   const locales = ["zh", "en"] as const;
   return createBrowserRouter([

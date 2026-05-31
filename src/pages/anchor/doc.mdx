@@ -90,13 +90,13 @@ function App() {
 When using Anchor component for page navigation, ensure target elements have proper scroll offset to avoid being covered by the fixed header:
 
 ```tsx
-<section id="installation" className="scroll-mt-30">
-  {/* scroll-mt-30 = 120px offset for header */}
+<section id="installation" >
+  {/*  = 120px offset for header */}
 </section>
 ```
 
 **Key points:**
-- Add scroll offset class (e.g., `scroll-mt-30`) to all anchor target elements based on your header height
+- Add scroll offset class (e.g., ``) to all anchor target elements based on your header height
 - Ensure `main` container has `scroll-behavior: smooth` in CSS
 - The Anchor component handles smooth scrolling automatically
 

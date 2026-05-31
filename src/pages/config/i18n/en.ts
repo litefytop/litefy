@@ -191,16 +191,8 @@ export const en = {
   anchor: {
     title: "Anchor",
     description: "Anchor navigation for quick page positioning.",
-    examples: {
-      description:
-        "The component uses the browser viewport as the default observer root. Since this example runs inside an iframe, we specify a custom container via root. The page content is positioned lower, so rootMargin is changed from the default 0px 0px -80% 0px to 0px 0px -60% 0px to expand the effective detection area and activate anchors earlier.",
-    },
-    scrollBehavior: {
-      title: "Scroll Behavior",
-      description:
-        "By default, the Anchor component listens to the root element. Since the example uses an iframe container, you need to manually specify the root property.",
-      note: "Adjust the value based on your header height to ensure the target content won't be covered when clicking anchor links.",
-    },
+
+
     anatomy: {
      
       section: {
@@ -218,24 +210,32 @@ export const en = {
         anchorProps: "Anchor Props",
         anchorSectionProps: "Anchor.Section Props",
         anchorItemProps: "Anchor.Item Props",
-        slotPropsConfig: "slotProps Config",
+        sectionSlotPropsConfig: "Section slotProps Config",
+        itemSlotPropsConfig: "Item slotProps Config",
       },
       props: {
         rootMargin:
           "Root margin for IntersectionObserver (top right bottom left)",
-        root: "Root element for IntersectionObserver. In iframe, defaults to document.documentElement to fix viewport offset issue",
+        root: "Root element for IntersectionObserver.",
       },
       sectionProps: {
         href: "Anchor target ID (with # prefix, optional)",
         linkText: "Link text",
-        slotProps: "Internal wrapped props pass-through",
+        children: "Section content",
+        slotProps: "Internal wrapped props pass-through config",
       },
-      slotProps: {
+      itemProps: {
+        children:"Item content",
         href: "Anchor target ID (with # prefix)",
       },
-      slotPropsConfig: {
+      sectionSlotPropsConfig: {
+        wrapper: "Section wrapper `<li>` element props",
         link: "Link `<a>` tag props",
-        nav: "Internal navigation `<nav>` container props",
+        subList: "Section sub-list `<ul>` container props",
+      },
+      itemSlotPropsConfig: {
+        wrapper: "Item wrapper `<li>` element props",
+        link: "Link `<a>` tag props",
       },
     },
   },

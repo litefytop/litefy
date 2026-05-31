@@ -18,29 +18,18 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
 } from "lucide-react";
-
+import { AnchorBasic } from "./examples";
 import AnchorBasicRaw from "./examples/anchor-basic.tsx?raw";
 import anchorDoc from "./doc.mdx?raw";
 import anchorSrc from "@/component/ui/anchor.tsx?raw";
-import { useTheme } from "@/component";
 
 export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = React.useState(false);
-  const { colorScheme } = useTheme();
+
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
   const l = lang.anchor;
   const nav = getComponentNav("/components/anchor", locale as "zh" | "en");
-  const iframeRef = React.useRef<HTMLIFrameElement>(null);
-
-  React.useEffect(() => {
-    if (iframeRef.current?.contentWindow) {
-      iframeRef.current.contentWindow.postMessage(
-        { type: "theme-change", colorScheme },
-        window.location.origin,
-      );
-    }
-  }, [colorScheme]);
 
   const anchorSections = [
     {
@@ -56,7 +45,7 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "rootMargin",
           type: "string",
-          default: '"0px 0px -80% 0px"',
+          default: '"0px 0px -90% 0px"',
           description: l.api.props.rootMargin,
         },
         {
@@ -84,10 +73,37 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.sectionProps.linkText,
         },
         {
+          props: "children",
+          type: "ReactNode",
+          description: l.api.sectionProps.children,
+        },
+        {
           props: "slotProps",
           type: "object",
-
           description: l.api.sectionProps.slotProps,
+        },
+      ],
+    },
+     {
+      title: l.api.sectionTitles.sectionSlotPropsConfig,
+
+      data: [
+        {
+          props: "wrapper",
+          type: 'React.ComponentProps<"li">',
+          description: l.api.sectionSlotPropsConfig.wrapper,
+        },
+        {
+          props: "link",
+          type: 'React.ComponentProps<"a">, "href" | "children"',
+
+          description: l.api.sectionSlotPropsConfig.link,
+        },
+        {
+          props: "subList",
+          type: 'React.ComponentProps<"ul">',
+
+          description: l.api.sectionSlotPropsConfig.subList,
         },
       ],
     },
@@ -99,31 +115,31 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
           props: "href",
           type: "string",
 
-          description: l.api.slotProps.href,
+          description: l.api.itemProps.href,
         },
         {
-          props: "className",
-          type: "ClassNameValue",
+          props: "children",
+          type: "ReactNode",
 
-          description: lang.common.className,
+          description: l.api.itemProps.children,
         },
       ],
     },
     {
-      title: l.api.sectionTitles.slotPropsConfig,
+      title: l.api.sectionTitles.itemSlotPropsConfig,
 
       data: [
         {
           props: "link",
-          type: 'Omit<React.ComponentProps<"a">, "href" | "onClick">',
+          type: 'Omit<React.ComponentProps<"a">, "href" | "children">',
 
-          description: l.api.slotPropsConfig.link,
+          description: l.api.itemSlotPropsConfig.link,
         },
         {
-          props: "nav",
-          type: 'Omit<React.ComponentProps<"nav">, "aria-label">',
+          props: "wrapper",
+          type: 'React.ComponentProps<"li">',
 
-          description: l.api.slotPropsConfig.nav,
+          description: l.api.itemSlotPropsConfig.wrapper,
         },
       ],
     },
@@ -170,41 +186,21 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 scroll-mt-30">
+        <section id="installation" className="mb-8">
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{anchorSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="scroll-behavior" className="mb-8">
-          <Title as="h2">{l.scrollBehavior.title}</Title>
-          <div className="space-y-4 text-sm">
-            <p>{l.scrollBehavior.description}</p>
-            <ShikiCodeBlock>{`<section id="installation" className="scroll-mt-[80px]">
-  {/* Adjust the value based on your header height */}
-</section>`}</ShikiCodeBlock>
-            <p className="text-muted-foreground">{l.scrollBehavior.note}</p>
-          </div>
-        </section>
-        <section
-          id="examples"
-          data-anchor-id="examples"
-          className="space-y-4 py-4"
-        >
-          <div>
-            <Title as="h2">{lang.examples}</Title>
-          </div>
-          <div className="border rounded-lg p-6 w-full overflow-x-auto">
-            <iframe
-              ref={iframeRef}
-              src="/components/anchor/demo"
-              title="Anchor Demo"
-              className="w-full border border-gray-200 rounded-lg overflow-hidden h-[400px]"
-            />
-          </div>
-          <ShikiCodeBlock>{AnchorBasicRaw}</ShikiCodeBlock>
-          <Description>{l.examples.description}</Description>
+        <section id="examples">
+          <Title as="h2">{lang.examples}</Title>
+          <section id="controlled" className="space-y-4 py-4">
+            <div className="border rounded-lg p-6 w-full overflow-x-auto h-[600px]">
+              <AnchorBasic />
+            </div>
+            <ShikiCodeBlock>{AnchorBasicRaw}</ShikiCodeBlock>
+          </section>
         </section>
 
         <section id="anatomy" className="mt-8 space-y-4">
@@ -270,7 +266,7 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
           </Anatomy>
         </section>
 
-        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
+        <section id="docs" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
@@ -304,10 +300,7 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
       <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-full overflow-y-auto p-4">
         <Anchor>
           <Anchor.Section href="#installation" linkText={lang.installation} />
-          <Anchor.Section
-            href="#scroll-behavior"
-            linkText={l.scrollBehavior.title}
-          />
+
           <Anchor.Section href="#examples" linkText={lang.examples} />
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
           <Anchor.Section href="#docs" linkText={lang.docs} />

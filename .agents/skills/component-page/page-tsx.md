@@ -117,14 +117,14 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 scroll-mt-20">
+        <section id="installation" className="mb-8 ">
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{componentSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" className="">
+        <section id="examples" >
           <Title as="h2">{lang.examples}</Title>
 
           <DemoSection id="basic" title={l.basic.title} code={Example1Raw}>

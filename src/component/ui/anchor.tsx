@@ -8,7 +8,7 @@ import {
 } from "react";
 import { ClassNameValue, cn } from "@/lib";
 
-type HTMLAttrs<T> = Omit<T, "className"> & {
+type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;
   className?: ClassNameValue;
 };
@@ -49,9 +49,10 @@ function useObserveAnchor(targetId: string) {
   }, [targetId, observer]);
 }
 
-type AnchorProps = HTMLAttrs<React.ComponentProps<"nav">> & {
+type AnchorProps = Omit<React.ComponentProps<"nav">, "className"> & {
   rootMargin?: string;
   root?: Element | Document | null | React.RefObject<Element | Document | null>;
+  className?: ClassNameValue;
 };
 
 export function Anchor({
@@ -107,7 +108,7 @@ export function Anchor({
       },
       {
         root: rootElement,
-        rootMargin: rootMargin || "0px 0px -80% 0px",
+        rootMargin: rootMargin || "0px 0px -90% 0px",
         threshold: 0,
       },
     );

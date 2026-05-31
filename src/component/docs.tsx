@@ -81,7 +81,7 @@ export interface DocsProps {
 export function Docs({ sections }: DocsProps) {
   return (
     <div className="space-y-8">
-      <section id="api" data-anchor-id="api" className="space-y-8">
+      <section id="api" className="space-y-8">
         {sections.map((section, index) => (
           <DocsTable
             key={index}

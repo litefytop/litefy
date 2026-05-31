@@ -38,7 +38,6 @@ function DemoSection({
   return (
     <section
       id={id}
-      data-anchor-id={id}
       className="space-y-4 py-4"
     >
       <div>
@@ -171,14 +170,14 @@ export default function UploadPage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 scroll-mt-20">
+        <section id="installation" className="mb-8 ">
           <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{uploadSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" className="">
+        <section id="examples" >
           <Title as="h2">{lang.examples}</Title>
 
           <DemoSection
@@ -209,7 +208,7 @@ export default function UploadPage({ locale = "zh" }: { locale?: string }) {
         </section>
 
 
-        <section id="docs" data-anchor-id="docs" className="mt-12 space-y-8">
+        <section id="docs" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>

@@ -192,16 +192,8 @@ export const zh = {
   anchor: {
     title: "锚点",
     description: "页面锚点导航组件。",
-    examples: {
-      description:
-        "组件默认以浏览器视口作为监听根容器。当前示例运行在 iframe 内，因此通过 root 指定专属监听容器。页面内容整体偏下，故将 rootMargin 由默认值 0px 0px -80% 0px 调整为 0px 0px -60% 0px，扩大有效判定区域，提前触发锚点激活。",
-    },
-    scrollBehavior: {
-      title: "滚动行为",
-      description:
-        "锚点组件使用 CSS scroll-margin-top 实现正确的滚动定位。使用锚点导航时，需要给目标元素添加 scroll-margin-top 样式：",
-      note: "根据 Header 高度调整该值，确保点击锚点链接时目标内容不会被 Header 遮挡。",
-    },
+
+
     anatomy: {
       section: {
         wrapper: "分组容器",
@@ -219,23 +211,31 @@ export const zh = {
         anchorProps: "Anchor Props",
         anchorSectionProps: "Anchor.Section Props",
         anchorItemProps: "Anchor.Item Props",
-        slotPropsConfig: "slotProps 配置",
+        sectionSlotPropsConfig: "Section slotProps 配置",
+        itemSlotPropsConfig: "Item slotProps 配置",
       },
       props: {
         rootMargin: "IntersectionObserver 的根边距（上 右 下 左）",
-        root: "IntersectionObserver 的根元素。在 iframe 中默认为 document.documentElement 以修复视口偏移问题",
+        root: "IntersectionObserver 的根元素。",
       },
       sectionProps: {
         href: "锚点目标 ID（带 # 前缀，可选）",
         linkText: "链接文本",
-        slotProps: "内部封装属性透传",
+        children: "分组内容",
+        slotProps: "内部封装属性透传配置",
       },
-      slotProps: {
+      itemProps: {
+        children: "项内容",
         href: "锚点目标 ID（带 # 前缀）",
       },
-      slotPropsConfig: {
+      sectionSlotPropsConfig: {
+        wrapper: "分组容器 `<li>` 元素属性",
         link: "链接 `<a>` 标签属性",
-        nav: "内部导航 `<nav>` 容器属性",
+        subList: "分组子列表 `<ul>` 容器属性",
+      },
+      itemSlotPropsConfig: {
+        wrapper: "项容器 `<li>` 元素属性",
+        link: "链接 `<a>` 标签属性",
       },
     },
   },

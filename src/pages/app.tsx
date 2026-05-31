@@ -1,6 +1,6 @@
 import { NavLink, useLocation, useNavigate, Outlet } from "react-router-dom";
 import { useEffect, useRef } from "react";
-import { getNavItems } from "@/pages/config/routes";
+import { getNavItems, getPageTitle } from "@/pages/config/routes";
 import { Title, Image, Sidebar, Button, Toaster, Dropdown } from "@/component";
 import { useTheme } from "@/component";
 import { t } from "@/pages/config/i18n";
@@ -49,6 +49,17 @@ function ScrollToTop() {
       main.scrollTop = 0;
     }
   }, [pathname]);
+
+  return null;
+}
+
+function UpdateTitle({ locale }: { locale: string }) {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const title = getPageTitle(pathname, locale as "zh" | "en");
+    document.title = `${title} - Litefy UI`;
+  }, [pathname, locale]);
 
   return null;
 }
@@ -159,6 +170,7 @@ export function App({ locale = "zh" }: { locale?: string }) {
           <Outlet />
         </main>
       </div>
+      <UpdateTitle locale={locale} />
       <ScrollToTop />
       <Toaster position="top-right" />
     </div>

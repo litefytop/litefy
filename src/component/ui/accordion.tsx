@@ -9,7 +9,7 @@ import {
 import { ClassNameValue, cn } from "@/lib";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
-type HTMLAttrs<T> = Omit<T, "className"> & {
+type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;
   className?: ClassNameValue;
 };
@@ -78,7 +78,7 @@ export function Accordion({
         setInternalOpenKeys(next);
       }
     },
-    [allowMultiple, isControlled, onOpenChange]
+    [allowMultiple, isControlled, onOpenChange],
   );
 
   const contextValue = useMemo(
@@ -86,7 +86,7 @@ export function Accordion({
       openKeys: currentOpenKeys,
       onToggle,
     }),
-    [currentOpenKeys, onToggle]
+    [currentOpenKeys, onToggle],
   );
 
   return (
@@ -95,7 +95,7 @@ export function Accordion({
         {...props}
         className={cn(
           "flex flex-col gap-2 inert:cursor-not-allowed inert:opacity-50",
-          className
+          className,
         )}
         inert={disabled || props.inert}
       >
@@ -110,14 +110,12 @@ type AccordionItemProps = {
   slotProps?: {
     wrapper?: HTMLAttrs<React.ComponentProps<"div">>;
     content?: HTMLAttrs<React.ComponentProps<"div">>;
-    trigger?: HTMLAttrs<
-      Omit<React.ComponentProps<"button">, "children">
-    >;
+    trigger?: HTMLAttrs<Omit<React.ComponentProps<"button">, "children">>;
   };
   disabled?: boolean;
   children?: React.ReactNode;
- icon?: React.ReactNode | ((open: boolean) => React.ReactNode);
-    label: React.ReactNode | ((open: boolean) => React.ReactNode);
+  icon?: React.ReactNode | ((open: boolean) => React.ReactNode);
+  label: React.ReactNode | ((open: boolean) => React.ReactNode);
 };
 
 function AccordionItem({
@@ -138,7 +136,11 @@ function AccordionItem({
   const renderIcon = () => {
     if (typeof icon === "function") return icon(open);
     if (icon) return icon;
-    return open ? <ChevronUp /> : <ChevronDown />;
+    return open ? (
+      <ChevronUp className="size-4" />
+    ) : (
+      <ChevronDown className="size-4" />
+    );
   };
 
   const renderLabel = () => {
@@ -151,9 +153,9 @@ function AccordionItem({
       {...slotProps?.wrapper}
       inert={disabled || slotProps?.wrapper?.inert}
       className={cn(
-        "border rounded-lg overflow-hidden",
+        "overflow-hidden",
         "inert:cursor-not-allowed inert:opacity-50",
-        slotProps?.wrapper?.className
+        slotProps?.wrapper?.className,
       )}
     >
       <button
@@ -167,28 +169,29 @@ function AccordionItem({
         }}
         disabled={disabled}
         className={cn(
-          "flex items-center justify-start gap-2 w-full px-4 py-3 bg-muted/50 hover:bg-muted text-left",
+          "flex items-center justify-start gap-2 w-full px-4 py-3  hover:bg-muted text-left",
           "disabled:opacity-50 disabled:cursor-not-allowed",
-          slotProps?.trigger?.className
+          slotProps?.trigger?.className,
         )}
       >
         {renderIcon()}
         {renderLabel()}
       </button>
-      {open && (
-        <div
-          {...slotProps?.content}
-          id={panelId}
-          role="region"
-          aria-labelledby={buttonId}
-          className={cn(
-            "p-4 border-t bg-background",
-            slotProps?.content?.className
-          )}
-        >
-          {children}
-        </div>
-      )}
+
+      <div
+        data-open={open ? "true" : undefined}
+        {...slotProps?.content}
+        id={panelId}
+        role="region"
+        aria-labelledby={buttonId}
+        className={cn(
+          "p-0 border-t bg-background h-0",
+          "data-open:h-fit data-open:px-4",
+          slotProps?.content?.className,
+        )}
+      >
+        {children}
+      </div>
     </div>
   );
 }
