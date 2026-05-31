@@ -1,7 +1,7 @@
 import { ComponentProps, useState, useCallback } from "react";
 import { cn, ClassNameValue } from "@/lib";
 
-type WithDataAttributes<T> = T & {
+type HTMLAttrs<T> = T & {
   [key: `data-${string}`]: string | number | true | null | undefined;
   className?: ClassNameValue;
 };
@@ -18,9 +18,9 @@ export type NumberFieldProps = Omit<
   max?: number;
   step?: number;
   integer?: boolean;
-  itemProps?: {
-    group?: WithDataAttributes<ComponentProps<"div">>;
-    btn?: WithDataAttributes<ComponentProps<"button">>;
+  slotProps?: {
+    group?: HTMLAttrs<ComponentProps<"div">>;
+    btn?: HTMLAttrs<ComponentProps<"button">>;
   };
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
@@ -36,7 +36,7 @@ export function NumberField({
   integer = false,
   disabled,
   inert,
-  itemProps,
+  slotProps,
   onChange,
   onBlur,
   ...props
@@ -116,7 +116,7 @@ export function NumberField({
 
   return (
     <div
-      {...itemProps?.group}
+      {...slotProps?.group}
       data-invalid={invalid ? true : undefined}
       aria-invalid={invalid}
       inert={disabled || inert}
@@ -124,11 +124,11 @@ export function NumberField({
         "group border-input bg-background flex w-3xs items-center rounded-full border shadow-xs outline-none",
         "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
         "data-invalid:border-destructive/70",
-        itemProps?.group?.className
+        slotProps?.group?.className
       )}
     >
       <button
-        {...itemProps?.btn}
+        {...slotProps?.btn}
         type="button"
         aria-label="Decrease"
         disabled={disabled}
@@ -136,7 +136,7 @@ export function NumberField({
         className={cn(
           "size-9 flex items-center justify-center text-muted-foreground hover:text-primary rounded-l-full border-r border-input",
           "group-data-invalid:border-destructive/70",
-          itemProps?.btn?.className
+          slotProps?.btn?.className
         )}
       >
         −
@@ -163,7 +163,7 @@ export function NumberField({
       />
 
       <button
-        {...itemProps?.btn}
+        {...slotProps?.btn}
         type="button"
         aria-label="Increase"
         disabled={disabled}
@@ -171,7 +171,7 @@ export function NumberField({
         className={cn(
           "size-9 flex items-center justify-center text-muted-foreground hover:text-primary rounded-r-full border-l border-input",
           "group-data-invalid:border-destructive/70",
-          itemProps?.btn?.className
+          slotProps?.btn?.className
         )}
       >
         +

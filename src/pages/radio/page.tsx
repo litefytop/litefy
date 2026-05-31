@@ -102,9 +102,9 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
         },
 
         {
-          props: "itemProps",
+          props: "slotProps",
           type: "object",
-          description: l.api.props.itemProps,
+          description: l.api.props.slotProps,
         },
         {
           props: "options",
@@ -147,20 +147,20 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
       ],
     },
     {
-      title: l.api.sectionTitles.itemProps,
+      title: l.api.sectionTitles.slotProps,
 
       data: [
   
         {
           props: "content",
           type: 'ComponentProps<"div">',
-          description: l.api.itemProps.content,
+          description: l.api.slotProps.content,
         },
        
         {
           props: "options",
           type: 'Omit<RadioItemProps, "checked" | "value" | "label">',
-          description: l.api.itemProps.options,
+          description: l.api.slotProps.options,
         },
       ],
     },
@@ -266,7 +266,7 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
           >
             <Radio 
     
-              itemProps={{
+              slotProps={{
    
           
           

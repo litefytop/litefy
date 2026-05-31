@@ -119,26 +119,26 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.props.disabled,
         },
         {
-          props: "itemProps",
+          props: "slotProps",
           type: "object",
-          description: l.api.props.itemProps,
+          description: l.api.props.slotProps,
         },
       ],
     },
     {
-      title: l.api.sectionTitles.itemPropsConfig,
+      title: l.api.sectionTitles.slotPropsConfig,
 
       data: [
         {
           props: "group",
           type: 'ComponentProps<"div">',
-          description: l.api.itemPropsConfig.group,
+          description: l.api.slotPropsConfig.group,
         },
 
         {
           props: "toggle",
           type: 'ComponentProps<"button">',
-          description: l.api.itemPropsConfig.toggle,
+          description: l.api.slotPropsConfig.toggle,
         },
       ],
     },
@@ -223,7 +223,7 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
             <Password
               data-anatomy-name="input"
               placeholder="请输入密码"
-              itemProps={{
+              slotProps={{
                 toggle: { "data-anatomy-name": "toggle" },
                 group: { "data-anatomy-name": "group" },
               }}

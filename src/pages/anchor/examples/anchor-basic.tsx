@@ -94,7 +94,7 @@ export default function AnchorDemoPage() {
               🟣 Section Props
             </h3>
             <p className="text-xs text-indigo-900">
-              href, title, itemProps
+              href, title, slotProps
             </p>
           </div>
         </section>
@@ -121,7 +121,7 @@ export default function AnchorDemoPage() {
       </main>
 
       <aside className="hidden sm:block w-56 border-l bg-card fixed right-0 h-full overflow-y-auto p-3">
-        <Anchor root={mainRef}>
+        <Anchor root={mainRef} rootMargin="0px 0px -60% 0px">
           <Anchor.Section href="#overview" linkText="🔴 Overview" />
           <Anchor.Section href="#installation" linkText="🟠 Installation" />
           <Anchor.Section linkText="🟡 Usage">

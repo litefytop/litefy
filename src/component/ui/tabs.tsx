@@ -14,7 +14,7 @@ export interface TabsProps<T extends string = string> {
   orientation?: "horizontal" | "vertical";
   variant?: "button" | "line";
   className?: string;
-  itemProps?: {
+  slotProps?: {
     list?: React.ComponentProps<"div">;
     trigger?: React.ComponentProps<"button">;
     content?: React.ComponentProps<"div">;
@@ -35,7 +35,7 @@ export function Tabs<T extends string>({
   orientation = "horizontal",
   variant = "line",
   className,
-  itemProps,
+  slotProps,
 }: TabsProps<T>) {
   const isControlled = controlledValue !== undefined;
   const [uncontrolledValue, setUncontrolledValue] = useState(
@@ -54,7 +54,7 @@ export function Tabs<T extends string>({
   );
 
   const listRef = useRef<HTMLDivElement>(null);
-  const { children: listExtraChildren, ...listProps } = itemProps?.list ?? {};
+  const { children: listExtraChildren, ...listProps } = slotProps?.list ?? {};
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;
@@ -120,7 +120,7 @@ export function Tabs<T extends string>({
           return (
             <button
               key={opt.value}
-              {...itemProps?.trigger}
+              {...slotProps?.trigger}
               id={triggerId}
               role="tab"
               aria-selected={isSelected}
@@ -132,7 +132,7 @@ export function Tabs<T extends string>({
               className={cn(
                 "px-4 py-2 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed",
                 tabClass[variant],
-                itemProps?.trigger?.className,
+                slotProps?.trigger?.className,
               )}
               type="button"
               tabIndex={isSelected ? 0 : -1}
@@ -152,14 +152,14 @@ export function Tabs<T extends string>({
         return (
           <div
             key={opt.value}
-            {...itemProps?.content}
+            {...slotProps?.content}
             id={panelId}
             role="tabpanel"
             aria-labelledby={triggerId}
             data-selected={isSelected}
             className={cn(
               "p-4 rounded-md bg-background data-[selected=false]:hidden",
-              itemProps?.content?.className,
+              slotProps?.content?.className,
             )}
           >
             {opt.children}

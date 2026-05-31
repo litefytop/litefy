@@ -23,7 +23,7 @@ export type ComboboxProps = {
   className?: ClassNameValue;
   debounceMs?: number;
   maxHeight?: number;
-  itemProps?: {
+  slotProps?: {
     container?: React.HTMLAttributes<HTMLDivElement>;
     input?: React.InputHTMLAttributes<HTMLInputElement>;
     list?: React.HTMLAttributes<HTMLUListElement>;
@@ -48,7 +48,7 @@ export function Combobox({
   className,
   debounceMs = 300,
   maxHeight = 256,
-  itemProps,
+  slotProps,
 }: ComboboxProps) {
   const [internalValue, setInternalValue] = useState(defaultValue);
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -182,7 +182,7 @@ export function Combobox({
       ref={containerRef}
       className={cn("relative w-full", className)}
       data-invalid={invalid}
-      {...itemProps?.container}
+      {...slotProps?.container}
     >
       <div
         className={cn(
@@ -205,12 +205,12 @@ export function Combobox({
             "w-full bg-transparent py-1 text-sm outline-none",
             "placeholder:text-muted-foreground",
             "disabled:cursor-not-allowed",
-            itemProps?.input?.className
+            slotProps?.input?.className
           )}
           aria-autocomplete="list"
           aria-expanded={isOpen}
           aria-controls="combobox-list"
-          {...itemProps?.input}
+          {...slotProps?.input}
         />
         {showClear && (
           <button
@@ -218,11 +218,11 @@ export function Combobox({
             onClick={handleClear}
             className={cn(
               "shrink-0 rounded-sm p-0.5 text-muted-foreground hover:text-foreground",
-              itemProps?.clearButton?.className
+              slotProps?.clearButton?.className
             )}
             aria-label="Clear"
             tabIndex={-1}
-            {...itemProps?.clearButton}
+            {...slotProps?.clearButton}
           >
             <X className="size-4" />
           </button>
@@ -234,11 +234,11 @@ export function Combobox({
           className={cn(
             "shrink-0 rounded-sm p-0.5 text-muted-foreground hover:text-foreground",
             "disabled:cursor-not-allowed",
-            itemProps?.triggerButton?.className
+            slotProps?.triggerButton?.className
           )}
           aria-label="Toggle dropdown"
           tabIndex={-1}
-          {...itemProps?.triggerButton}
+          {...slotProps?.triggerButton}
         >
           <ChevronDown className="size-4 transition-transform" data-open={isOpen} />
         </button>
@@ -251,10 +251,10 @@ export function Combobox({
           className={cn(
             "absolute z-50 mt-1 w-full rounded-md border border-input bg-background shadow-lg",
             "max-h-64 overflow-auto",
-            itemProps?.list?.className
+            slotProps?.list?.className
           )}
           style={{ maxHeight }}
-          {...itemProps?.list}
+          {...slotProps?.list}
         >
           {isLoading ? (
             <li className="px-3 py-2 text-sm text-muted-foreground">Loading...</li>
@@ -269,9 +269,9 @@ export function Combobox({
                   "cursor-pointer px-3 py-2 text-sm transition-colors",
                   "hover:bg-accent hover:text-accent-foreground",
                   idx === highlightIndex && "bg-accent text-accent-foreground",
-                  itemProps?.option?.className
+                  slotProps?.option?.className
                 )}
-                {...itemProps?.option}
+                {...slotProps?.option}
               >
                 {option}
               </li>

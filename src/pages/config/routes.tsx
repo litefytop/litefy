@@ -5,7 +5,6 @@ import { App, Introduction } from "@/pages";
 import { ComingSoon, FallbackErrorPage } from "@/component";
 
 const Accordion = lazy(() => import("@/pages/accordion"));
-const AccordionControlled = lazy(() => import("@/pages/accordion-controlled"));
 const Anchor = lazy(() => import("@/pages/anchor"));
 const AnchorDemo = lazy(() => import("@/pages/anchor/examples/anchor-basic"));
 const Button = lazy(() => import("@/pages/button"));
@@ -47,7 +46,6 @@ const introduction = {
 
 const componentRouteConfig = [
   { key: "accordion", path: "/components/accordion", Component: Accordion },
-  { key: "accordion-controlled", path: "/components/accordion-controlled", Component: AccordionControlled },
   { key: "anchor", path: "/components/anchor", Component: Anchor },
   { key: "button", path: "/components/button", Component: Button },
   { key: "toast", path: "/components/toast", Component: Toast },

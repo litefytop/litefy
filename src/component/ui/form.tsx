@@ -151,7 +151,7 @@ function FormSubmit({
 
 Form.Submit = FormSubmit;
 
-type WithDataAttributes<T> = T & {
+type HTMLAttrs<T> = T & {
   [key: `data-${string}`]: string | number | null | undefined | true;
   className?: ClassNameValue;
 };
@@ -176,10 +176,10 @@ export type FormFieldProps<T  > = Omit<
   invalid?: ReactNode;
   disabled?: boolean;
   direction?: "vertical" | "horizontal";
-  itemProps?: {
-    label?: WithDataAttributes<React.ComponentProps<"label">>;
-    invalid?: WithDataAttributes<React.ComponentProps<"small">>;
-    description?: WithDataAttributes<React.ComponentProps<"small">>;
+  slotProps?: {
+    label?: HTMLAttrs<React.ComponentProps<"label">>;
+    invalid?: HTMLAttrs<React.ComponentProps<"small">>;
+    description?: HTMLAttrs<React.ComponentProps<"small">>;
   };
   inputId?: string;
   name: string;
@@ -197,7 +197,7 @@ function FormField<T>({
   description,
   invalid: externalInvalid,
   direction = "vertical",
-  itemProps,
+  slotProps,
   disabled,
   children,
   validConfig,
@@ -215,8 +215,8 @@ function FormField<T>({
   const internalId = useId();
   const id = inputId ?? internalId;
   const baseId = useId();
-  const { id: descId, ...descriptionProps } = itemProps?.description ?? {};
-  const { id: invId, ...invalidProps } = itemProps?.invalid ?? {};;
+  const { id: descId, ...descriptionProps } = slotProps?.description ?? {};
+  const { id: invId, ...invalidProps } = slotProps?.invalid ?? {};;
 
   const descriptionId = descId ?? `${baseId}-desc`;
   const invalidId = invId ?? `${baseId}-error`;
@@ -274,12 +274,12 @@ function FormField<T>({
     >
       {label && (
         <label
-          {...itemProps?.label}
+          {...slotProps?.label}
           htmlFor={id}
           className={cn(
             "text-sm font-medium leading-none indent-2 py-1 select-none min-w-16",
             "group-data-[direction=horizontal]:text-end",
-            itemProps?.label?.className,
+            slotProps?.label?.className,
           )}
         >
           {label}
@@ -328,10 +328,10 @@ type FormFieldsetProps = {
   disabled?: boolean;
   direction?: "vertical" | "horizontal";
   className?: string;
-  itemProps?: {
-    label?: WithDataAttributes<React.ComponentProps<"legend">>;
-    invalid?: WithDataAttributes<React.ComponentProps<"small">>;
-    description?: WithDataAttributes<React.ComponentProps<"small">>;
+  slotProps?: {
+    label?: HTMLAttrs<React.ComponentProps<"legend">>;
+    invalid?: HTMLAttrs<React.ComponentProps<"small">>;
+    description?: HTMLAttrs<React.ComponentProps<"small">>;
   };
   children: (arg: FormFieldsetArg) => ReactNode;
 };
@@ -344,7 +344,7 @@ function FormFieldset({
   disabled,
   direction = "vertical",
   className,
-  itemProps,
+  slotProps,
   children,
   ...rest
 }: FormFieldsetProps) {
@@ -353,8 +353,8 @@ function FormFieldset({
   const hasInvalidContent = typeof invalid !== "boolean" && isInvalid;
 
   const baseId = useId();
-  const { id: descId, ...descriptionProps } = itemProps?.description ?? {};
-  const { id: invId, ...invalidProps } = itemProps?.invalid ?? {};
+  const { id: descId, ...descriptionProps } = slotProps?.description ?? {};
+  const { id: invId, ...invalidProps } = slotProps?.invalid ?? {};
 
   const descriptionId = descId ?? `${baseId}-desc`;
   const invalidId = invId ?? `${baseId}-error`;
@@ -377,11 +377,11 @@ function FormFieldset({
     >
       {label && (
         <legend
-          {...itemProps?.label}
+          {...slotProps?.label}
           className={cn(
             "text-sm font-medium leading-none indent-2 py-1 select-none min-w-16",
             "group-data-[direction=horizontal]:text-end",
-            itemProps?.label?.className,
+            slotProps?.label?.className,
           )}
         >
           {label}

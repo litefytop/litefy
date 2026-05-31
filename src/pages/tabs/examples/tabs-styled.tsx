@@ -4,7 +4,7 @@ export default function TabsStyled() {
   return (
     <Tabs
       className="max-w-lg"
-      itemProps={{
+      slotProps={{
         list: { className: "bg-muted/30 p-1 rounded-lg" },
         trigger: { className: "data-[selected=true]:bg-primary data-[selected=true]:text-primary-foreground" },
         content: { className: "bg-card rounded-md shadow-sm mt-2" },

@@ -120,31 +120,31 @@ export default function NumberFieldPage({
           description: l.api.props.disabled,
         },
         {
-          props: "itemProps",
+          props: "slotProps",
           type: "NumberFieldItemProps",
 
-          description: l.api.props.itemProps,
+          description: l.api.props.slotProps,
         },
       ],
     },
     {
-      title: l.api.sectionTitles.itemPropsConfig,
+      title: l.api.sectionTitles.slotPropsConfig,
 
       data: [
         {
           props: "group",
           type: `React.ComponentProps<"div">`,
-          description: l.api.itemPropsConfig.group,
+          description: l.api.slotPropsConfig.group,
         },
         {
           props: "btn",
           type: `React.ComponentProps<"button">`,
-          description: l.api.itemPropsConfig.btn,
+          description: l.api.slotPropsConfig.btn,
         },
         {
           props: "desc",
           type: `React.ComponentProps<"small">`,
-          description: l.api.itemPropsConfig.desc,
+          description: l.api.slotPropsConfig.desc,
         },
       ],
     },
@@ -238,7 +238,7 @@ export default function NumberFieldPage({
           >
             <NumberField
               data-anatomy-name="input"
-              itemProps={{
+              slotProps={{
                 group: { "data-anatomy-name": "group" },
                 btn: { "data-anatomy-name": "btn" },
               }}

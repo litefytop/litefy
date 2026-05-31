@@ -61,7 +61,7 @@ const [value, setValue] = useState(["a"]);
     { value: "a", label: "Toggle A", indicator: { hidden: true } },
     { value: "b", label: "Toggle B", indicator: { hidden: true } },
   ]}
-  itemProps={{
+  slotProps={{
     options: {
       variant: "toggle",
     },
@@ -105,7 +105,7 @@ const [value, setValue] = useState(["a"]);
 | className | ClassNameValue                                                               | -               | Custom indicator class name                                                                    |
 | props     | Omit\<ComponentProps\<"span"\>, "className"\> & { className?: ClassNameValue } | -               | Indicator element props pass-through                                                            |
 
-### itemProps Config
+### slotProps Config
 
 | Property    | Type                              | Description                              |
 | ------------|-----------------------------------|------------------------------------------|

@@ -102,12 +102,12 @@ Some tabs can be disabled to prevent selection.
 
 ### Custom Styling
 
-Customize the appearance using className and itemProps.
+Customize the appearance using className and slotProps.
 
 ```tsx
 <Tabs
   className="max-w-lg"
-  itemProps={{
+  slotProps={{
     list: { className: "bg-muted/30 p-1 rounded-lg" },
     trigger: { className: "data-[selected=true]:bg-primary data-[selected=true]:text-primary-foreground" },
     content: { className: "bg-card rounded-md shadow-sm" },
@@ -132,9 +132,9 @@ Customize the appearance using className and itemProps.
 | orientation | `"horizontal"` \| `"vertical"` | `"horizontal"` | Tab list orientation |
 | activationMode | `"automatic"` \| `"manual"` | `"automatic"` | How tabs are activated |
 | className | `ClassNameValue` | - | Root container className |
-| itemProps | `{ list?: DivProps, trigger?: ButtonProps, content?: DivProps }` | - | Internal element props |
+| slotProps | `{ list?: DivProps, trigger?: ButtonProps, content?: DivProps }` | - | Internal element props |
 
-### itemProps
+### slotProps
 
 | Prop | Type | Description |
 |------|------|-------------|

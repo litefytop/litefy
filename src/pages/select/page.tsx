@@ -128,44 +128,44 @@ export default function SelectPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.props.trailing,
         },
         {
-          props: "itemProps",
+          props: "slotProps",
           type: "SelectItemProps",
-          description: l.api.props.itemProps,
+          description: l.api.props.slotProps,
         },
       ],
     },
     {
-      title: l.api.sectionTitles.itemPropsConfig,
+      title: l.api.sectionTitles.slotPropsConfig,
       data: [
         {
           props: "group",
           type: `React.ComponentProps<"div">`,
-          description: l.api.itemPropsConfig.group,
+          description: l.api.slotPropsConfig.group,
         },
         {
           props: "label",
           type: `React.ComponentProps<"label">`,
-          description: l.api.itemPropsConfig.label,
+          description: l.api.slotPropsConfig.label,
         },
         {
           props: "invalid",
           type: `React.ComponentProps<"div">`,
-          description: l.api.itemPropsConfig.invalid,
+          description: l.api.slotPropsConfig.invalid,
         },
         {
           props: "description",
           type: `React.ComponentProps<"small">`,
-          description: l.api.itemPropsConfig.description,
+          description: l.api.slotPropsConfig.description,
         },
         {
           props: "leading",
           type: `React.ComponentProps<"span">`,
-          description: l.api.itemPropsConfig.leading,
+          description: l.api.slotPropsConfig.leading,
         },
         {
           props: "trailing",
           type: `React.ComponentProps<"span">`,
-          description: l.api.itemPropsConfig.trailing,
+          description: l.api.slotPropsConfig.trailing,
         },
       ],
     },

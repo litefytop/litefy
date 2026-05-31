@@ -102,9 +102,9 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.props.name,
         },
         {
-          props: "itemProps",
+          props: "slotProps",
           type: "object",
-          description: l.api.props.itemProps,
+          description: l.api.props.slotProps,
         },
         {
           props: "options",
@@ -140,9 +140,9 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.item.variant,
         },
         {
-          props: "itemProps",
+          props: "slotProps",
           type: "{label: ComponentProps<'label'>}",
-          description: l.api.item.itemProps,
+          description: l.api.item.slotProps,
         },
         {
           props: "indicator",
@@ -153,13 +153,13 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
     },
 
     {
-      title: l.api.sectionTitles.itemProps,
+      title: l.api.sectionTitles.slotProps,
 
       data: [
         {
           props: "options",
           type: 'Omit<CheckboxItemProps, "checked" | "value" | "label">',
-          description: l.api.itemProps.options,
+          description: l.api.slotProps.options,
         },
       ],
     },
@@ -262,7 +262,7 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
                 {
                   value: "item1",
                   label: "Item 1",
-                  itemProps: {
+                  slotProps: {
                     label: {
                       id: "anatomy-item",
                     },

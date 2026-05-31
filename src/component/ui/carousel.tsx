@@ -3,7 +3,7 @@
 import { Children, isValidElement, useEffect, useRef, useCallback } from "react";
 import { cn, ClassNameValue } from "@/lib";
 
-type WithDataAttributes<T> = T & {
+type HTMLAttrs<T> = T & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;
   className?: ClassNameValue;
 };
@@ -11,8 +11,8 @@ type WithDataAttributes<T> = T & {
 export type CarouselProps = Omit<React.ComponentProps<"div">, "onChange"> & {
   children: React.ReactNode;
   activeIndex: number;
-  itemProps?: {
-    slide?: WithDataAttributes<React.ComponentProps<"div">>;
+  slotProps?: {
+    slide?: HTMLAttrs<React.ComponentProps<"div">>;
   };
   autoPlay?: boolean;
   autoPlayInterval?: number;
@@ -23,7 +23,7 @@ export type CarouselProps = Omit<React.ComponentProps<"div">, "onChange"> & {
 export function Carousel({
   children,
   activeIndex,
-  itemProps,
+  slotProps,
   autoPlay = false,
   autoPlayInterval = 3000,
   loop = false,
@@ -39,7 +39,7 @@ export function Carousel({
 
 
   const safeIndex = Math.max(0, Math.min(activeIndex, totalSlides - 1));
-  const slide = itemProps?.slide ?? {};
+  const slide = slotProps?.slide ?? {};
   const slideWrapperProps = {
     ...slide,
     className: cn("w-full shrink-0", slide.className),

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { cn, ClassNameValue } from "@/lib/utils";
 import { Eye, EyeOff } from "lucide-react";
 
-type WithDataAttributes<T> = T & {
+type HTMLAttrs<T> = T & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;
   className?: ClassNameValue;
 };
@@ -16,9 +16,9 @@ export type PasswordProps = Omit<
   value?: string;
   invalid?: boolean;
   direction?: "vertical" | "horizontal";
-  itemProps?: {
-    group?: WithDataAttributes<React.ComponentProps<"div">>;
-    toggle?: WithDataAttributes<React.ComponentProps<"button">>;
+  slotProps?: {
+    group?: HTMLAttrs<React.ComponentProps<"div">>;
+    toggle?: HTMLAttrs<React.ComponentProps<"button">>;
   };
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
@@ -26,21 +26,21 @@ export type PasswordProps = Omit<
 export function Password({
   className,
   invalid,
-  itemProps,
+  slotProps,
   ...props
 }: PasswordProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div
-      {...itemProps?.group}
+      {...slotProps?.group}
       data-invalid={invalid ? true : undefined}
       aria-invalid={invalid}
       className={cn(
         "flex w-sm items-center rounded-md border border-input bg-background shadow-xs transition-colors px-2 h-9",
         "has-focus:border-primary has-focus:ring-2 has-focus:ring-primary/20",
         "data-[invalid=true]:border-destructive data-[invalid=true]:ring-destructive/20",
-        itemProps?.group?.className,
+        slotProps?.group?.className,
       )}
     >
       <input
@@ -56,10 +56,10 @@ export function Password({
 
       <button
         type="button"
-        {...itemProps?.toggle}
+        {...slotProps?.toggle}
         className={cn(
           "hover:text-foreground/80 rounded-md p-1 text-muted-foreground transition-colors",
-          itemProps?.toggle?.className,
+          slotProps?.toggle?.className,
         )}
         onClick={() => setShowPassword(!showPassword)}
       >

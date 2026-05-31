@@ -40,7 +40,6 @@ export const en = {
     form: "Form",
     button: "Button",
     accordion: "Accordion",
-    "accordion-controlled": "Accordion (Controlled)",
     anchor: "Anchor",
     carousel: "Carousel",
     toast: "Toast",
@@ -125,7 +124,7 @@ export const en = {
         alignX: "Horizontal alignment",
         alignY: "Vertical alignment",
       },
-      itemProps: {
+      slotProps: {
         children: "Menu item content",
         onClick: "Click callback",
       },
@@ -134,57 +133,10 @@ export const en = {
     },
   },
 
+
+
   accordion: {
     title: "Accordion",
-    description:
-      "Accordion component for displaying collapsible content areas.",
-    basic: {
-      title: "Basic",
-    },
-    multiple: {
-      title: "Multiple",
-    },
-    controlled: {
-      title: "Controlled",
-    },
-    icon: {
-      title: "Custom Icon",
-    },
-    disabled: {
-      title: "Disabled",
-    },
-    anatomy: {
-      title: "Anatomy",
-      accordion: "Accordion",
-      item: "Accordion.Item",
-      summary: "Summary",
-      content: "Content",
-    },
-    api: {
-      props: {
-        icon: "Custom expand/collapse icon",
-      },
-      itemProps: {
-        value: "Unique identifier (required)",
-        label: "Label content (required)",
-        itemProps: "Internal wrapped props pass-through config",
-        icon: "Custom icon (overrides Accordion icon)",
-      },
-      itemPropsConfig: {
-        summary: "Summary element props",
-        content: "Content area props",
-      },
-
-      sectionTitles: {
-        accordionProps: "Accordion Props",
-        accordionItemProps: "Accordion.Item Props",
-        itemPropsConfig: "itemProps Config",
-      },
-    },
-  },
-
-  accordionControlled: {
-    title: "Accordion (Controlled)",
     description:
       "Controlled accordion component with state management for precise expand/collapse behavior.",
     basic: {
@@ -203,10 +155,8 @@ export const en = {
       title: "Disabled",
     },
     anatomy: {
-      title: "Anatomy",
-      accordion: "AccordionControlled",
-      item: "AccordionControlled.Item",
-      label: "Label",
+      wrapper: "Wrapper",
+      trigger: "Trigger",
       content: "Content",
     },
     api: {
@@ -219,19 +169,21 @@ export const en = {
       },
       itemProps: {
         value: "Unique identifier (required)",
-        label: "Label content (required)",
-        itemProps: "Internal wrapped props pass-through config",
-        icon: "Custom icon (overrides AccordionControlled icon)",
+        label: "Label text",
+        icon: "Custom expand/collapse icon",
+        slotProps: "Internal wrapped props pass-through config",
+        disabled: "Is disabled",
+       children: "Content area",
       },
-      itemPropsConfig: {
-        root: "Root element props",
-        label: "Label element props",
+      slotPropsConfig: {
+        wrapper: "Wrapper element props",
+        trigger: "Trigger element props",
         content: "Content area props",
       },
       sectionTitles: {
-        accordionProps: "AccordionControlled Props",
-        accordionItemProps: "AccordionControlled.Item Props",
-        itemPropsConfig: "itemProps Config",
+        accordionProps: "Accordion Props",
+        accordionItemProps: "Accordion.Item Props",
+        slotPropsConfig: "slotProps Config",
       },
     },
   },
@@ -241,7 +193,7 @@ export const en = {
     description: "Anchor navigation for quick page positioning.",
     examples: {
       description:
-        "By default, the scroll listener monitors the top 20% area of the viewport. Since the example content is an iframe page, to ensure the listener triggers properly, the rootMargin is set to `0px 0px -50% 0px`. Please adjust according to your specific scenario in actual use.",
+        "The component uses the browser viewport as the default observer root. Since this example runs inside an iframe, we specify a custom container via root. The page content is positioned lower, so rootMargin is changed from the default 0px 0px -80% 0px to 0px 0px -60% 0px to expand the effective detection area and activate anchors earlier.",
     },
     scrollBehavior: {
       title: "Scroll Behavior",
@@ -250,17 +202,23 @@ export const en = {
       note: "Adjust the value based on your header height to ensure the target content won't be covered when clicking anchor links.",
     },
     anatomy: {
-      anchor: "Anchor",
-      section: "Section",
-      item: "Item",
-      link: "Link Text",
+     
+      section: {
+        wrapper: "Section Wrapper",
+        link:"Section link",
+        subList:"Section sub-list",
+      },
+      item: {
+        wrapper: "Item Wrapper",
+        link: "Item link",
+      },
     },
     api: {
       sectionTitles: {
         anchorProps: "Anchor Props",
         anchorSectionProps: "Anchor.Section Props",
         anchorItemProps: "Anchor.Item Props",
-        itemPropsConfig: "itemProps Config",
+        slotPropsConfig: "slotProps Config",
       },
       props: {
         rootMargin:
@@ -270,12 +228,12 @@ export const en = {
       sectionProps: {
         href: "Anchor target ID (with # prefix, optional)",
         linkText: "Link text",
-        itemProps: "Internal wrapped props pass-through",
+        slotProps: "Internal wrapped props pass-through",
       },
-      itemProps: {
+      slotProps: {
         href: "Anchor target ID (with # prefix)",
       },
-      itemPropsConfig: {
+      slotPropsConfig: {
         link: "Link `<a>` tag props",
         nav: "Internal navigation `<nav>` container props",
       },
@@ -416,8 +374,8 @@ export const en = {
       sectionTitles: {
         checkboxProps: "Checkbox Props",
         checkboxItemProps: "Checkbox.Item Props",
-        itemPropsConfig: "itemProps Config",
-        itemProps: "itemProps Config",
+        slotPropsConfig: "slotProps Config",
+        slotProps: "slotProps Config",
       },
       props: {
         value: "Selected values (controlled mode)",
@@ -427,7 +385,7 @@ export const en = {
         invalid: "Invalid state",
         disabled: "Whether to disable entire group",
         name: "Form field name",
-        itemProps: "Internal element props passthrough config",
+        slotProps: "Internal element props passthrough config",
         options: "Options array for rendering multiple checkboxes",
       },
       item: {
@@ -436,10 +394,10 @@ export const en = {
         disabled: "Whether disabled",
         variant: "Style variant",
         indicator: "Indicator config",
-        itemProps: "Internal element props passthrough config",
+        slotProps: "Internal element props passthrough config",
       },
 
-      itemProps: {
+      slotProps: {
         options: "Option item `<button>` element props",
       },
     },
@@ -494,7 +452,7 @@ export const en = {
     api: {
       sectionTitles: {
         comboboxProps: "Combobox Props",
-        itemProps: "itemProps Config",
+        slotProps: "slotProps Config",
       },
       props: {
         value: "Controlled mode value",
@@ -510,7 +468,7 @@ export const en = {
         debounceMs: "Debounce delay in milliseconds",
         maxHeight: "Dropdown max height in pixels",
       },
-      itemProps: {
+      slotProps: {
         container: "Container props",
         input: "Input props",
         list: "List props",
@@ -581,7 +539,7 @@ export const en = {
     api: {
       sectionTitles: {
         inputProps: "Input Props",
-        itemPropsConfig: "itemProps Config",
+        slotPropsConfig: "slotProps Config",
       },
       props: {
         value: "Input value (controlled mode)",
@@ -595,9 +553,9 @@ export const en = {
         description: "Description text",
         leading: "Leading content",
         trailing: "Trailing content",
-        itemProps: "Internal wrapped property passthrough",
+        slotProps: "Internal wrapped property passthrough",
       },
-      itemPropsConfig: {
+      slotPropsConfig: {
         group: "Group container `<div>` props",
         leading: "Leading container `<span>` props",
         trailing: "Trailing container `<span>` props",
@@ -623,7 +581,7 @@ export const en = {
     api: {
       sectionTitles: {
         passwordProps: "Password Props",
-        itemPropsConfig: "itemProps Config",
+        slotPropsConfig: "slotProps Config",
       },
       props: {
         value: "Input value (controlled mode)",
@@ -637,9 +595,9 @@ export const en = {
         trailing: "Trailing content",
         placeholder: "Placeholder",
         disabled: "Whether disabled",
-        itemProps: "Internal wrapped property passthrough",
+        slotProps: "Internal wrapped property passthrough",
       },
-      itemPropsConfig: {
+      slotPropsConfig: {
         group: "Input group `<div>` props",
 
 
@@ -692,7 +650,7 @@ export const en = {
     api: {
       sectionTitles: {
         textareaProps: "Textarea Props",
-        itemPropsConfig: "itemProps Config",
+        slotPropsConfig: "slotProps Config",
       },
       props: {
         value: "Input value (controlled mode)",
@@ -704,9 +662,9 @@ export const en = {
         invalid: "Invalid message",
         label: "Label text",
         description: "Description text",
-        itemProps: "Internal props passthrough",
+        slotProps: "Internal props passthrough",
       },
-      itemPropsConfig: {
+      slotPropsConfig: {
         root: "Root container `<div>` props",
         label: "Label `<label>` props",
         invalid: "Invalid `<small>` props",
@@ -743,7 +701,7 @@ export const en = {
     api: {
       sectionTitles: {
         tabsProps: "Tabs Props",
-        itemPropsConfig: "itemProps Config",
+        slotPropsConfig: "slotProps Config",
       },
       props: {
         options: "Tab options configuration array",
@@ -752,9 +710,9 @@ export const en = {
         onValueChange: "Tab change callback",
         orientation: "Orientation: horizontal or vertical",
         activationMode: "Activation mode: automatic or manual",
-        itemProps: "Internal props passthrough",
+        slotProps: "Internal props passthrough",
       },
-      itemPropsConfig: {
+      slotPropsConfig: {
         list: "List container `<div>` props",
         trigger: "Trigger `<button>` props",
         content: "Content panel `<div>` props",
@@ -768,7 +726,7 @@ export const en = {
         "Provides horizontal and vertical layout orientations",
         "Supports keyboard navigation following WAI-ARIA standards",
         "Supports automatic and manual activation modes",
-        "Allows internal element props passthrough via itemProps",
+        "Allows internal element props passthrough via slotProps",
       ],
       usage:
         "When using the Tabs component, you need to pass an options array to configure all tab options. Each option includes value, label, children, and an optional disabled property.",
@@ -792,7 +750,7 @@ export const en = {
     api: {
       sectionTitles: {
         uploadProps: "Upload Props",
-        itemPropsConfig: "itemProps Config",
+        slotPropsConfig: "slotProps Config",
       },
       props: {
         label: "Label text",
@@ -803,9 +761,9 @@ export const en = {
         accept: "Accepted file types",
         onChange:
           "Value change callback, can return { invalid?: string } to trigger invalid state",
-        itemProps: "Internal wrapped property passthrough",
+        slotProps: "Internal wrapped property passthrough",
       },
-      itemPropsConfig: {
+      slotPropsConfig: {
         root: "Root container `<div>` props",
         label: "Label `<label>` props",
         description: "Description `<small>` props",
@@ -873,7 +831,7 @@ export const en = {
     api: {
       sectionTitles: {
         selectProps: "Select Props",
-        itemPropsConfig: "itemProps Config",
+        slotPropsConfig: "slotProps Config",
       },
       props: {
         value: "Selected value (controlled mode)",
@@ -888,9 +846,9 @@ export const en = {
         description: "Description text",
         leading: "Leading content",
         trailing: "Trailing content",
-        itemProps: "Internal wrapped property passthrough",
+        slotProps: "Internal wrapped property passthrough",
       },
-      itemPropsConfig: {
+      slotPropsConfig: {
         group: "Select group `<div>` props",
         label: "Label `<label>` props",
         invalid: "Invalid message `<div>` props",
@@ -1044,8 +1002,8 @@ export const en = {
       sectionTitles: {
         radioProps: "Radio Props",
         radioItemProps: "Radio.Item Props",
-        itemPropsConfig: "itemProps Config",
-        itemProps: "itemProps Config",
+        slotPropsConfig: "slotProps Config",
+        slotProps: "slotProps Config",
       },
       props: {
         value: "Selected value (controlled mode)",
@@ -1056,7 +1014,7 @@ export const en = {
         disabled: "Whether disabled",
         name: "Form field name",
 
-        itemProps: "Internal element props passthrough config",
+        slotProps: "Internal element props passthrough config",
         options: "Options array for rendering multiple radio buttons",
       },
       item: {
@@ -1066,7 +1024,7 @@ export const en = {
         variant: "Style variant (radio | segment)",
         indicator: "Indicator config",
       },
-      itemProps: {
+      slotProps: {
 
         content: "Content container `<div>` element props",
 
@@ -1139,7 +1097,7 @@ export const en = {
     api: {
       sectionTitles: {
         numberFieldProps: "NumberField Props",
-        itemPropsConfig: "itemProps Config",
+        slotPropsConfig: "slotProps Config",
       },
       props: {
         value: "Input value (controlled mode)",
@@ -1152,9 +1110,9 @@ export const en = {
         max: "Maximum value",
         step: "Step increment",
         disabled: "Whether disabled",
-        itemProps: "Internal wrapped props pass-through",
+        slotProps: "Internal wrapped props pass-through",
       },
-      itemPropsConfig: {
+      slotPropsConfig: {
         group: "Input group `<div>` props",
         btn: "Button `<button>` props",
         desc: "Description `<small>` props",
@@ -1217,8 +1175,8 @@ export const en = {
       props: {
         activeIndex: "Current active slide index",
         performanceThreshold: "Maximum slides before disabling animation",
-        itemPropsRoot: "Root element props",
-        itemPropsSlide: "Slide element props",
+        slotPropsRoot: "Root element props",
+        slotPropsSlide: "Slide element props",
       },
     },
   },
@@ -1286,7 +1244,7 @@ export const en = {
         autoPlayInterval: "Auto play interval in ms",
         loop: "Enable loop mode",
         onChange: "Callback when index changes",
-        itemPropsSlide: "Slide element props",
+        slotPropsSlide: "Slide element props",
       },
     },
   },

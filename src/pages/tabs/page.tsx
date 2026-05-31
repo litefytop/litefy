@@ -103,29 +103,29 @@ export default function TabsPage({ locale = "zh" }: { locale?: string }) {
           description: lang.common.className,
         },
         {
-          props: "itemProps",
+          props: "slotProps",
           type: "{ list?: DivProps, trigger?: ButtonProps, content?: DivProps }",
-          description: l.api.props.itemProps,
+          description: l.api.props.slotProps,
         },
       ],
     },
     {
-      title: l.api.sectionTitles.itemPropsConfig,
+      title: l.api.sectionTitles.slotPropsConfig,
       data: [
         {
           props: "list",
           type: 'React.ComponentProps<"div">',
-          description: l.api.itemPropsConfig.list,
+          description: l.api.slotPropsConfig.list,
         },
         {
           props: "trigger",
           type: 'React.ComponentProps<"button">',
-          description: l.api.itemPropsConfig.trigger,
+          description: l.api.slotPropsConfig.trigger,
         },
         {
           props: "content",
           type: 'React.ComponentProps<"div">',
-          description: l.api.itemPropsConfig.content,
+          description: l.api.slotPropsConfig.content,
         },
       ],
     },
@@ -240,7 +240,7 @@ export default function TabsPage({ locale = "zh" }: { locale?: string }) {
             <div id="anatomy-tabs-root" className="w-full">
               <Tabs
                 className="max-w-sm"
-                itemProps={{
+                slotProps={{
                   list: { id: "anatomy-tabs-list" },
                   trigger: { id: "anatomy-tabs-trigger" },
                   content: { id: "anatomy-tabs-content" },

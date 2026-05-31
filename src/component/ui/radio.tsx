@@ -3,7 +3,7 @@ import { cn, ClassNameValue } from "@/lib";
 import { Check } from "lucide-react";
 import { ComponentProps } from "react";
 
-type WithDataAttributes<T> = T & {
+type HTMLAttrs<T> = T & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;
   className?: ClassNameValue;
 };
@@ -20,8 +20,8 @@ export type RadioProps<T extends string> = {
   defaultValue?: T;
   value?: T;
   onValueChange?: (value: T) => void;
-  itemProps?: {
-    content?: WithDataAttributes<Omit<ComponentProps<"div">, "children">>;
+  slotProps?: {
+    content?: HTMLAttrs<Omit<ComponentProps<"div">, "children">>;
     options?: Omit<RadioItemProps, "checked" | "value" | "label">;
   };
   options: Omit<RadioItemProps, "checked">[];
@@ -39,7 +39,7 @@ export function Radio<T extends string>({
   disabled,
   name,
   onBlur,
-  itemProps,
+  slotProps,
   options,
   ...props
 }: RadioProps<T>) {
@@ -115,7 +115,7 @@ export function Radio<T extends string>({
 
   return (
     <div
-      {...itemProps?.content}
+      {...slotProps?.content}
       role="radiogroup"
       aria-invalid={invalid}
       data-invalid={invalid ? true : undefined}
@@ -124,7 +124,7 @@ export function Radio<T extends string>({
       onKeyDown={handleKeyDown}
       className={cn(
         "flex inert:pointer-events-none inert:opacity-50 group my-1",
-        itemProps?.content?.className,
+        slotProps?.content?.className,
       )}
     >
       <input
@@ -137,7 +137,7 @@ export function Radio<T extends string>({
       />
       {options.map((option, index) => (
         <RadioItem
-          {...itemProps?.options}
+          {...slotProps?.options}
           {...option}
           data-index={index}
           checked={selectedValue === option.value}

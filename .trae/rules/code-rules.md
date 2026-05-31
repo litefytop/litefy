@@ -7,9 +7,9 @@
 
 ## 组件属性组织
 
-- 组件需要支持子元素属性透传时，必须使用统一的 itemProps 对象结构
-- itemProps 必须是对象类型，包含所有需要透传的子元素属性
-- 示例：itemProps = { trigger: {...}, title: {...}, content: {...}, nav: {...} }
+- 组件需要支持子元素属性透传时，必须使用统一的 slotProps 对象结构
+- slotProps 必须是对象类型，包含所有需要透传的子元素属性
+- 示例：slotProps = { trigger: {...}, title: {...}, content: {...}, nav: {...} }
 - 禁止将子元素属性作为组件的顶级属性单独暴露
 - 每个子元素属性必须使用对应的 HTML 元素类型进行类型约束
 - 必须排除组件内部已处理的属性（如 href、onClick 等）

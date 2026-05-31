@@ -7,18 +7,20 @@ npm install @your-org/ui
 ## Usage
 
 ```tsx
-import { Accordion } from "@/component/ui/accordion";
+import { AccordionControlled } from "@/component/ui/accordion-controlled";
 
 function App() {
+  const [openKeys, setOpenKeys] = useState<string[]>([]);
+  
   return (
-    <Accordion>
-      <Accordion.Item value="item-1" label="First Item">
+    <AccordionControlled openKeys={openKeys} onOpenChange={setOpenKeys}>
+      <AccordionControlled.Item value="item-1" label="First Item">
         This is the content of the first item
-      </Accordion.Item>
-      <Accordion.Item value="item-2" label="Second Item">
+      </AccordionControlled.Item>
+      <AccordionControlled.Item value="item-2" label="Second Item">
         This is the content of the second item
-      </Accordion.Item>
-    </Accordion>
+      </AccordionControlled.Item>
+    </AccordionControlled>
   );
 }
 ```
@@ -27,21 +29,42 @@ function App() {
 
 ### Basic Usage
 
-Only one item can be expanded at a time. The first item is not expanded by default.
+Basic usage with controlled mode.
 
 ```tsx
-<Accordion>
-  <Accordion.Item value="item-1" label="What is React?">
+const [openKeys, setOpenKeys] = useState(["item-1"]);
+
+<AccordionControlled openKeys={openKeys} onOpenChange={setOpenKeys}>
+  <AccordionControlled.Item value="item-1" label="What is React?">
     React is a JavaScript library for building user interfaces.
-  </Accordion.Item>
-  <Accordion.Item value="item-2" label="What is TypeScript?">
+  </AccordionControlled.Item>
+  <AccordionControlled.Item value="item-2" label="What is TypeScript?">
     TypeScript is a superset of JavaScript that adds a type system.
-  </Accordion.Item>
-  <Accordion.Item value="item-3" label="What is a Component?">
-    A component is a reusable UI snippet that can accept inputs and return React
-    elements.
-  </Accordion.Item>
-</Accordion>
+  </AccordionControlled.Item>
+</AccordionControlled>;
+```
+
+### Controlled Mode
+
+Use `openKeys` and `onOpenChange` to implement controlled mode, allowing you to manage the expanded state programmatically.
+
+```tsx
+const [openKeys, setOpenKeys] = useState(["item-1"]);
+
+<div className="space-y-4">
+  <div>Current open: {openKeys.join(", ")}</div>
+  <AccordionControlled
+    openKeys={openKeys}
+    onOpenChange={setOpenKeys}
+  >
+    <AccordionControlled.Item value="item-1" label="First Item">
+      Content
+    </AccordionControlled.Item>
+    <AccordionControlled.Item value="item-2" label="Second Item">
+      Content
+    </AccordionControlled.Item>
+  </AccordionControlled>
+</div>;
 ```
 
 ### Multiple Expansion
@@ -49,50 +72,20 @@ Only one item can be expanded at a time. The first item is not expanded by defau
 Use the `allowMultiple` prop to allow multiple items to be expanded simultaneously.
 
 ```tsx
-<Accordion allowMultiple>
-  <Accordion.Item value="item-1" label="What is React?">
-    React is a JavaScript library for building user interfaces.
-  </Accordion.Item>
-  <Accordion.Item value="item-2" label="What is TypeScript?">
-    TypeScript is a superset of JavaScript that adds a type system.
-  </Accordion.Item>
-</Accordion>
-```
+const [openKeys, setOpenKeys] = useState(["item-1", "item-2"]);
 
-### Controlled Mode
-
-Implement controlled mode through `openKeys` and `onOpenChange`.
-
-```tsx
-const [openKeys, setOpenKeys] = useState(["item-1"]);
-
-<Accordion openKeys={openKeys} onOpenChange={setOpenKeys}>
-  <Accordion.Item value="item-1" label="First Item">
+<AccordionControlled
+  openKeys={openKeys}
+  onOpenChange={setOpenKeys}
+  allowMultiple
+>
+  <AccordionControlled.Item value="item-1" label="First Item">
     Content
-  </Accordion.Item>
-  <Accordion.Item value="item-2" label="Second Item">
+  </AccordionControlled.Item>
+  <AccordionControlled.Item value="item-2" label="Second Item">
     Content
-  </Accordion.Item>
-</Accordion>;
-```
-
-### Custom Styling
-
-Customize container styling through `className`, and customize internal wrapped element styling through `itemProps`.
-
-```tsx
-<Accordion className="max-w-md">
-  <Accordion.Item
-    value="item-1"
-    label="Custom Styling"
-    itemProps={{
-      root: { className: "bg-blue-50" },
-      content: { className: "bg-blue-50/50" },
-    }}
-  >
-    Content Area
-  </Accordion.Item>
-</Accordion>
+  </AccordionControlled.Item>
+</AccordionControlled>;
 ```
 
 ### Custom Icon
@@ -100,55 +93,46 @@ Customize container styling through `className`, and customize internal wrapped 
 Customize the expand/collapse icon through the `icon` prop. It supports both static nodes and function forms.
 
 ```tsx
-import { Plus } from "lucide-react";
+const [openKeys, setOpenKeys] = useState([]);
 
-<Accordion icon={<Plus className="w-4 h-4" />}>
-  <Accordion.Item value="item-1" label="What is React?">
-    <p>React is a JavaScript library for building user interfaces.</p>
-  </Accordion.Item>
-  <Accordion.Item value="item-2" label="Why Use React?">
-    <p>React uses component-based development, data-driven views, and has a rich ecosystem.</p>
-  </Accordion.Item>
-</Accordion>
-```
-
-**Using function form (different icons for open/close state):**
-
-```tsx
-<Accordion icon={(open) => open ? <Minus /> : <Plus />}>
-  <Accordion.Item value="item-1" label="First Item">
+<AccordionControlled
+  openKeys={openKeys}
+  onOpenChange={setOpenKeys}
+  icon={(open) => <Plus className={`w-4 h-4 ${open ? "rotate-45" : ""}`} />}
+>
+  <AccordionControlled.Item value="item-1" label="Custom Icon">
     Content
-  </Accordion.Item>
-</Accordion>
+  </AccordionControlled.Item>
+</AccordionControlled>;
 ```
 
-## API Reference
+## API
 
-### Accordion Props
+### AccordionControlled Props
 
-| Prop            | Type                     | Default | Description                                                  |
-| --------------- | ------------------------ | ------- | ------------------------------------------------------------ |
-| defaultOpenKeys | string[]                 | []      | Initially expanded keys (uncontrolled)                       |
-| openKeys        | string[]                 | -       | Currently expanded keys (controlled)                         |
-| onOpenChange    | (keys: string[]) => void | -       | Callback when expansion state changes                        |
-| allowMultiple   | boolean                  | false   | Whether to allow multiple expansions                         |
-| className       | ClassNameValue           | -       | `string\|string[]\|boolean\|null\|undefined\|Record<string,string\|string[]>` |
-| icon            | ReactNode \| ((open: boolean) => ReactNode) | -       | Custom expand/collapse icon                                  |
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `defaultOpenKeys` | `string[]` | `[]` | Default expanded keys |
+| `openKeys` | `string[]` | - | Controlled expanded keys |
+| `onOpenChange` | `(keys: string[]) => void` | - | Callback when expanded keys change |
+| `allowMultiple` | `boolean` | `false` | Allow multiple items to be expanded |
+| `className` | `ClassNameValue` | - | Container class name |
+| `icon` | `ReactNode \| ((open: boolean) => ReactNode)` | - | Custom expand/collapse icon |
 
-### Accordion.Item Props
+### AccordionControlled.Item Props
 
-| Prop      | Type           | Default | Description                                                  |
-| --------- | -------------- | ------- | ------------------------------------------------------------ |
-| value     | string         | -       | Unique identifier (required)                                 |
-| label     | ReactNode      | -       | Label content (required)                                     |
-| className | ClassNameValue | -       | `string\|string[]\|boolean\|null\|undefined\|Record<string,string\|string[]>` |
-| itemProps | object         | -       | Internal wrapped props pass-through config                   |
-| icon      | ReactNode \| ((open: boolean) => ReactNode) | -       | Custom icon for this item (overrides Accordion icon)        |
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | - | Unique identifier (required) |
+| `label` | `ReactNode` | - | Item title content (required) |
+| `className` | `ClassNameValue` | - | Item class name |
+| `slotProps` | `object` | - | Internal element props passthrough |
+| `icon` | `ReactNode \| ((open: boolean) => ReactNode)` | - | Custom icon (overrides Accordion's icon) |
 
-### itemProps Config
+### slotProps Configuration
 
-| Property | Type                           | Description          |
-| -------- | ------------------------------ | -------------------- |
-| root     | React.ComponentProps<"div">    | Root element props   |
-| label    | React.ComponentProps<"span">   | Label element props  |
-| content  | React.ComponentProps<"div">    | Content area props  |
+| Prop | Type | Description |
+| --- | --- | --- |
+| `root` | `React.ComponentProps<"div">` | Root element props |
+| `label` | `React.ComponentProps<"span">` | Label element props |
+| `content` | `React.ComponentProps<"div">` | Content area props |

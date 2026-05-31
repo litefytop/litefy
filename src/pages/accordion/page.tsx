@@ -8,26 +8,31 @@ import {
   Anatomy,
   Button,
   Docs,
-  Accordion
+  Accordion,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages";
 import { getComponentNav } from "@/pages/config/routes";
 import {
   AccordionBasic,
+  AccordionControlledUsage,
   AccordionMultiple,
   AccordionIcon,
   AccordionDisabled,
 } from "./examples";
 import AccordionBasicRaw from "./examples/accordion-basic.tsx?raw";
+import AccordionControlledUsageRaw from "./examples/accordion-controlled-usage.tsx?raw";
 import AccordionMultipleRaw from "./examples/accordion-multiple.tsx?raw";
 import AccordionIconRaw from "./examples/accordion-icon.tsx?raw";
 import AccordionDisabledRaw from "./examples/accordion-disabled.tsx?raw";
 import accordionDoc from "./doc.mdx?raw";
 import accordionSrc from "@/component/ui/accordion.tsx?raw";
-import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, CopyIcon } from "lucide-react";
-
-
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CheckIcon,
+  CopyIcon,
+} from "lucide-react";
 
 function DemoSection({
   id,
@@ -63,20 +68,33 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
     {
       title: l.api.sectionTitles.accordionProps,
       data: [
-       
+        {
+          props: "defaultOpenKeys",
+          type: "string[]",
+          default: "[]",
+          description: l.api.props.defaultOpenKeys,
+        },
+        {
+          props: "openKeys",
+          type: "string[]",
+          description: l.api.props.openKeys,
+        },
+        {
+          props: "onOpenChange",
+          type: "(keys: string[]) => void",
+          description: l.api.props.onOpenChange,
+        },
+        {
+          props: "allowMultiple",
+          type: "boolean",
+          default: "false",
+          description: l.api.props.allowMultiple,
+        },
         {
           props: "className",
           type: "ClassNameValue",
-          
           description: lang.common.className,
         },
-        {
-          props: "icon",
-          type: "ReactNode | ((open: boolean) => ReactNode)",
-          
-          description: l.api.props.icon,
-        },
-
       ],
     },
     {
@@ -85,56 +103,62 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "value",
           type: "string",
-          
           description: l.api.itemProps.value,
         },
         {
           props: "label",
-          type: "ReactNode",
-          
+          type: "string",
           description: l.api.itemProps.label,
         },
         {
-          props: "itemProps",
-          type: "object",
-          
-          description: l.api.itemProps.itemProps,
-        },
-        {
-          props: "className",
-          type: "ClassNameValue",
-          
-          description: lang.common.className,
-        },
-        {
           props: "icon",
-          type: "ReactNode | ((open: boolean) => ReactNode)",
-          
+          type: "ReactNode",
           description: l.api.itemProps.icon,
+        },
+        {
+          props: "slotProps",
+          type: "object",
+          description: l.api.itemProps.slotProps,
+        },
+        {
+          props: "children",
+          type: "ReactNode",
+          description: l.api.itemProps.children,
+        },
+        {
+          props: "disabled",
+          type: "boolean",
+          default: "false",
+          description: l.api.itemProps.disabled,
         },
       ],
     },
     {
-      title: l.api.sectionTitles.itemPropsConfig,
+      title: l.api.sectionTitles.slotPropsConfig,
       data: [
-  
         {
-          props: "summary",
-          type: 'React.ComponentProps<"summary">',
-          
-          description: l.api.itemPropsConfig.summary,
+          props: "wrapper",
+          type: 'React.ComponentProps<"div">',
+          description: l.api.slotPropsConfig.wrapper,
+        },
+        {
+          props: "trigger",
+          type: 'React.ComponentProps<"span">',
+          description: l.api.slotPropsConfig.trigger,
         },
         {
           props: "content",
           type: 'React.ComponentProps<"div">',
-          
-          description: l.api.itemPropsConfig.content,
+          description: l.api.slotPropsConfig.content,
         },
       ],
     },
   ];
 
-  const nav = getComponentNav("/components/accordion", locale as "zh" | "en");
+  const nav = getComponentNav(
+    "/components/accordion",
+    locale as "zh" | "en",
+  );
 
   const handleCopy = () => {
     navigator.clipboard.writeText(accordionDoc);
@@ -195,13 +219,20 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
 
           <DemoSection
+            id="controlled"
+            title={lang.accordion.controlled.title}
+            code={AccordionControlledUsageRaw}
+          >
+            <AccordionControlledUsage />
+          </DemoSection>
+
+          <DemoSection
             id="multiple"
             title={lang.accordion.multiple.title}
             code={AccordionMultipleRaw}
           >
             <AccordionMultiple />
           </DemoSection>
-
 
           <DemoSection
             id="icon"
@@ -219,51 +250,40 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
             <AccordionDisabled />
           </DemoSection>
         </section>
+
         <section id="anatomy" className="mt-8 space-y-4">
-          <Title as="h2">{lang.accordion.anatomy.title}</Title>
+          <Title as="h2">{lang.anatomy}</Title>
           <Anatomy
             className="h-32"
             parts={[
-              {
-                id: "anatomy-accordion",
-                label: lang.accordion.anatomy.accordion,
-              },
-
-              { id: "anatomy-item", label: lang.accordion.anatomy.item },
-              { id: "anatomy-summary", label: lang.accordion.anatomy.summary },
-
+              { id: "anatomy-wrapper", label: lang.accordion.anatomy.wrapper },
+              { id: "anatomy-trigger", label: lang.accordion.anatomy.trigger },
               { id: "anatomy-content", label: lang.accordion.anatomy.content },
             ]}
           >
-            <Accordion
-              id="anatomy-accordion"
-              className="max-w-sm"
-            >
+            <Accordion className="max-w-sm" openKeys={["item-1"]}>
               <Accordion.Item
+                value="item-1"
                 label={lang.accordion.basic.title}
-                id="anatomy-item"
-                itemProps={{
-                  summary: { id: "anatomy-summary" },
-                  content: { id: "anatomy-content" },
+                slotProps={{
+                  wrapper: { id: "anatomy-wrapper", className:"p-1" },
+                  content: { id: "anatomy-content", className:"p-1" },
+                  trigger: { id: "anatomy-trigger", className:"p-1" },
                 }}
               >
-                {lang.accordion.anatomy.content}
-              </Accordion.Item>
-              <Accordion.Item  label={lang.accordion.basic.title}>
                 {lang.accordion.anatomy.content}
               </Accordion.Item>
             </Accordion>
           </Anatomy>
         </section>
+
         <section id="docs" data-anchor-id="docs" className="mt-12 space-y-4">
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
-
           <Docs sections={accordionSections} />
         </section>
 
-        
         <footer className="py-8 border-t mt-8">
           <div className="flex justify-between">
             <Button
@@ -295,20 +315,16 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
             <Anchor.Item href="#basic">
               {lang.accordion.basic.title}
             </Anchor.Item>
-            <Anchor.Item href="#multiple">
-              {lang.accordion.multiple.title}
-            </Anchor.Item>
             <Anchor.Item href="#controlled">
               {lang.accordion.controlled.title}
             </Anchor.Item>
-            <Anchor.Item href="#icon">
-              {lang.accordion.icon.title}
+            <Anchor.Item href="#multiple">
+              {lang.accordion.multiple.title}
             </Anchor.Item>
+            <Anchor.Item href="#icon">{lang.accordion.icon.title}</Anchor.Item>
+            <Anchor.Item href="#disabled">{lang.accordion.disabled.title}</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section
-            href="#anatomy"
-            linkText={lang.accordion.anatomy.title}
-          />
+          <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
           <Anchor.Section href="#docs" linkText={lang.docs} />
         </Anchor>
       </aside>

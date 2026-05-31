@@ -138,37 +138,37 @@ export default function ComboboxPage({ locale = "zh" }: { locale?: string }) {
       ],
     },
     {
-      title: l.api.sectionTitles.itemProps,
+      title: l.api.sectionTitles.slotProps,
       data: [
         {
           props: "container",
           type: "HTMLAttributes<HTMLDivElement>",
-          description: l.api.itemProps.container,
+          description: l.api.slotProps.container,
         },
         {
           props: "input",
           type: "InputHTMLAttributes<HTMLInputElement>",
-          description: l.api.itemProps.input,
+          description: l.api.slotProps.input,
         },
         {
           props: "list",
           type: "HTMLAttributes<HTMLUListElement>",
-          description: l.api.itemProps.list,
+          description: l.api.slotProps.list,
         },
         {
           props: "option",
           type: "LiHTMLAttributes<HTMLLIElement>",
-          description: l.api.itemProps.option,
+          description: l.api.slotProps.option,
         },
         {
           props: "clearButton",
           type: "ButtonHTMLAttributes<HTMLButtonElement>",
-          description: l.api.itemProps.clearButton,
+          description: l.api.slotProps.clearButton,
         },
         {
           props: "triggerButton",
           type: "ButtonHTMLAttributes<HTMLButtonElement>",
-          description: l.api.itemProps.triggerButton,
+          description: l.api.slotProps.triggerButton,
         },
       ],
     },

@@ -1,5 +1,17 @@
-import { useState, createContext, useContext, useEffect, useMemo } from "react";
+import {
+  useState,
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
 import { ClassNameValue, cn } from "@/lib";
+
+type HTMLAttrs<T> = Omit<T, "className"> & {
+  [key: `data-${string}`]: string | number | boolean | null | undefined;
+  className?: ClassNameValue;
+};
 
 interface AnchorContextValue {
   activeId: string;
@@ -18,23 +30,26 @@ function useAnchorContext() {
 
 function useObserveAnchor(targetId: string) {
   const { observer } = useAnchorContext();
+  const observedRef = useRef("");
 
   useEffect(() => {
-    if (!targetId) return;
-    const el = document.getElementById(targetId);
-    if (!el) {
-      return;
-    }
+    if (!targetId || !observer) return;
+    if (observedRef.current === targetId) return;
 
-    observer?.observe(el);
+    const el = document.getElementById(targetId);
+    if (!el) return;
+
+    observedRef.current = targetId;
+    observer.observe(el);
+
     return () => {
-      observer?.unobserve(el);
+      observer.unobserve(el);
+      observedRef.current = "";
     };
   }, [targetId, observer]);
 }
 
-type AnchorProps = React.ComponentProps<"div"> & {
-  className?: ClassNameValue;
+type AnchorProps = HTMLAttrs<React.ComponentProps<"nav">> & {
   rootMargin?: string;
   root?: Element | Document | null | React.RefObject<Element | Document | null>;
 };
@@ -51,45 +66,47 @@ export function Anchor({
     return "";
   });
 
+  useEffect(() => {
+    const handleHashChange = () => {
+      setActiveId(window.location.hash.slice(1));
+    };
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
   const observer = useMemo(() => {
     if (typeof window === "undefined") return null;
 
-    const rootElement = root && "current" in root ? root.current : root;
-
-    const isInIframe = window.self !== window.top;
-    const fallbackRoot = isInIframe ? document.documentElement : null;
+    let rootElement: Element | Document | null = null;
+    if (root) {
+      rootElement = "current" in root ? root.current : root;
+    }
 
     return new IntersectionObserver(
       (entries) => {
         let best: IntersectionObserverEntry | null = null;
-
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
-
           const rect = entry.boundingClientRect;
-
           if (!best) {
             best = entry;
           } else {
             const bestRect = best.boundingClientRect;
-
             const isBetter =
               rect.top >= 0 &&
               (rect.top < bestRect.top ||
-                (rect.top === bestRect.top && rect.bottom < bestRect.bottom));
-
+                (rect.top === bestRect.top && rect.bottom > bestRect.bottom));
             if (isBetter) {
               best = entry;
             }
           }
         }
-
         if (best) {
           setActiveId(best.target.id);
         }
       },
       {
-        root: rootElement ?? fallbackRoot,
+        root: rootElement,
         rootMargin: rootMargin || "0px 0px -80% 0px",
         threshold: 0,
       },
@@ -110,75 +127,88 @@ export function Anchor({
     }),
     [activeId, observer],
   );
+
   return (
     <AnchorContext.Provider value={contextValue}>
-      <div className={cn("flex flex-col gap-2", className)} {...props}>
-        {children}
-      </div>
+      <nav
+        aria-label="In-page anchor navigation"
+        className={cn(className)}
+        {...props}
+      >
+        <ul className={cn("flex flex-col gap-2 m-0 p-0 list-none")}>
+          {children}
+        </ul>
+      </nav>
     </AnchorContext.Provider>
   );
 }
 
-type AnchorSectionProps = Omit<React.ComponentProps<"div">, "className"> & {
+type AnchorSectionProps = {
   href?: string;
   linkText: string;
-  className?: ClassNameValue;
-  itemProps?: {
-    link?: Omit<React.ComponentProps<"a">, "href">;
-    nav?: Omit<React.ComponentProps<"nav">, "aria-label">;
+  slotProps?: {
+    wrapper?: HTMLAttrs<React.ComponentProps<"li">>;
+    link?: HTMLAttrs<Omit<React.ComponentProps<"a">, "href" | "children">>;
+    subList?: HTMLAttrs<React.ComponentProps<"ul">>;
   };
+  children?: React.ReactNode;
 };
 
 function AnchorSection({
   href,
   linkText,
-  className,
-  itemProps,
+  slotProps,
   children,
-  ...props
 }: AnchorSectionProps) {
   const { activeId } = useAnchorContext();
   const targetId = href?.replace(/^#/, "") || "";
-  const isActive = href && activeId === targetId;
+  const isActive = !!href && activeId === targetId;
 
   useObserveAnchor(targetId);
 
   return (
-    <div className={cn(className)} {...props}>
+    <li
+      {...slotProps?.wrapper}
+      className={cn("m-0 p-0", slotProps?.wrapper?.className)}
+    >
       <a
-        data-active={isActive}
+        {...slotProps?.link}
+        data-active={isActive ? "true" : undefined}
         aria-current={isActive ? "location" : undefined}
-        data-link={Boolean(href)}
         className={cn(
           "text-sm font-medium text-foreground hover:text-primary",
-          "data-[active=true]:text-primary data-[active=true]:underline data-[active=true]:underline-offset-4",
-          "focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
-          className,
+          "data-active:text-primary data-active:underline data-active:underline-offset-4",
+          slotProps?.link?.className,
         )}
         href={href}
-        {...itemProps?.link}
       >
         {linkText}
       </a>
       {children && (
-        <nav
-          className="flex flex-col gap-2 mt-2"
-          aria-label="In-page navigation"
-          {...itemProps?.nav}
+        <ul
+          {...slotProps?.subList}
+          className={cn(
+            "flex flex-col gap-2 mt-2 pl-2 list-none",
+            slotProps?.subList?.className,
+          )}
         >
           {children}
-        </nav>
+        </ul>
       )}
-    </div>
+    </li>
   );
 }
 
-type AnchorItemProps = Omit<React.ComponentProps<"a">, "className"> & {
+type AnchorItemProps = {
   href: string;
-  className?: ClassNameValue;
+  slotProps?: {
+    wrapper?: HTMLAttrs<React.ComponentProps<"li">>;
+    link?: HTMLAttrs<Omit<React.ComponentProps<"a">, "href" | "children">>;
+  };
+  children?: React.ReactNode;
 };
 
-function AnchorItem({ href, className, children, ...props }: AnchorItemProps) {
+function AnchorItem({ href, slotProps, children }: AnchorItemProps) {
   const { activeId } = useAnchorContext();
   const targetId = href.replace(/^#/, "");
   const isActive = activeId === targetId;
@@ -186,20 +216,24 @@ function AnchorItem({ href, className, children, ...props }: AnchorItemProps) {
   useObserveAnchor(targetId);
 
   return (
-    <a
-      href={href}
-      data-active={isActive}
-      aria-current={isActive ? "location" : undefined}
-      className={cn(
-        "block text-sm indent-2 text-muted-foreground hover:text-foreground",
-        "data-[active=true]:text-primary data-[active=true]:font-medium data-[active=true]:underline data-[active=true]:underline-offset-4",
-        "focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
-        className,
-      )}
-      {...props}
+    <li
+      {...slotProps?.wrapper}
+      className={cn("m-0 p-px", slotProps?.wrapper?.className)}
     >
-      {children}
-    </a>
+      <a
+        {...slotProps?.link}
+        href={href}
+        data-active={isActive ? "true" : undefined}
+        aria-current={isActive ? "location" : undefined}
+        className={cn(
+          "block text-sm text-muted-foreground hover:text-foreground",
+          "data-active:text-primary data-active:underline data-active:underline-offset-4",
+          slotProps?.link?.className,
+        )}
+      >
+        {children}
+      </a>
+    </li>
   );
 }
 

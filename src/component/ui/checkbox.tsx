@@ -2,7 +2,7 @@ import { ReactNode, useId, useRef, useState } from "react";
 import { cn, ClassNameValue } from "@/lib";
 import { ComponentProps } from "react";
 
-type WithDataAttributes<T> = T & {
+type HTMLAttrs<T> = T & {
   [key: `data-${string}`]: string | number | true | null | undefined;
   className?: ClassNameValue;
 };
@@ -19,8 +19,8 @@ export type CheckboxProps<T extends string> = {
   defaultValue?: T[];
   value?: T[];
   onValueChange?: (value: T[]) => void;
-  itemProps?: {
-    options?: WithDataAttributes<
+  slotProps?: {
+    options?: HTMLAttrs<
       Omit<
         CheckboxItemProps,
         "checked" | "value" | "span" | "onValueChange" | "label"
@@ -43,7 +43,7 @@ export function Checkbox<T extends string>({
   disabled,
   name,
   onBlur,
-  itemProps,
+  slotProps,
   options,
   invalid,
   className,
@@ -133,7 +133,7 @@ export function Checkbox<T extends string>({
     >
       {options.map((option) => (
         <CheckboxItem
-          {...itemProps?.options}
+          {...slotProps?.options}
           {...option}
           disabled={disabled || option.disabled}
           checked={selectedValues.includes(option.value as T)}
@@ -157,7 +157,7 @@ export type CheckboxItemProps = {
   indicator?: (checked: boolean) => ReactNode;
   name?: string;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
-  itemProps?: {
+  slotProps?: {
     label?: Omit<ComponentProps<"label">, "children">;
   };
 } & Omit<ComponentProps<"input">, "children" | "className">;
@@ -172,7 +172,7 @@ const CheckboxItem = ({
   name,
   onBlur,
   label,
-  itemProps,
+  slotProps,
   ...props
 }: CheckboxItemProps) => {
   const handleChange = () => onValueChange?.(value);
@@ -180,12 +180,12 @@ const CheckboxItem = ({
 
   return (
     <label
-      {...itemProps?.label}
+      {...slotProps?.label}
       htmlFor={inputId}
       className={cn(
         "inline-flex items-center justify-center gap-2 shrink-0 h-9 min-w-9 px-3 py-1 cursor-pointer select-none relative has-disabled:cursor-not-allowed has-disabled:opacity-50",
         checkboxClass[variant],
-        itemProps?.label?.className,
+        slotProps?.label?.className,
       )}
     >
       <input

@@ -1,6 +1,6 @@
 .anatomy-highlight {
   outline: 3px solid var(--primary);
-  outline-offset: -3px;
+  outline-offset: -2px;
 }
 
 .skeleton {

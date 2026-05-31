@@ -3,7 +3,7 @@
 import { Children, isValidElement } from "react";
 import { cn, ClassNameValue } from "@/lib";
 
-type WithDataAttributes<T> = T & {
+type HTMLAttrs<T> = T & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;
   className?: ClassNameValue;
 };
@@ -11,15 +11,15 @@ type WithDataAttributes<T> = T & {
 export type PaginatedViewProps = React.ComponentProps<"div"> & {
   children: React.ReactNode;
   activeIndex: number;
-  itemProps?: {
-    slide?: WithDataAttributes<React.ComponentProps<"div">>;
+  slotProps?: {
+    slide?: HTMLAttrs<React.ComponentProps<"div">>;
   };
 };
 
 export function PaginatedView({
   children,
   activeIndex,
-  itemProps,
+  slotProps,
   className,
   ...props
 }: PaginatedViewProps) {
@@ -27,7 +27,7 @@ export function PaginatedView({
   const totalSlides = slides.length;
   const safeIndex = Math.max(0, Math.min(activeIndex, totalSlides - 1));
 
-  const slide = itemProps?.slide ?? {};
+  const slide = slotProps?.slide ?? {};
   const slideWrapperProps = {
     ...slide,
     className: cn("w-full", slide.className),

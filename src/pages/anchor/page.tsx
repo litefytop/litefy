@@ -84,10 +84,10 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.sectionProps.linkText,
         },
         {
-          props: "itemProps",
+          props: "slotProps",
           type: "object",
 
-          description: l.api.sectionProps.itemProps,
+          description: l.api.sectionProps.slotProps,
         },
       ],
     },
@@ -99,7 +99,7 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
           props: "href",
           type: "string",
 
-          description: l.api.itemProps.href,
+          description: l.api.slotProps.href,
         },
         {
           props: "className",
@@ -110,20 +110,20 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
       ],
     },
     {
-      title: l.api.sectionTitles.itemPropsConfig,
+      title: l.api.sectionTitles.slotPropsConfig,
 
       data: [
         {
           props: "link",
           type: 'Omit<React.ComponentProps<"a">, "href" | "onClick">',
 
-          description: l.api.itemPropsConfig.link,
+          description: l.api.slotPropsConfig.link,
         },
         {
           props: "nav",
           type: 'Omit<React.ComponentProps<"nav">, "aria-label">',
 
-          description: l.api.itemPropsConfig.nav,
+          description: l.api.slotPropsConfig.nav,
         },
       ],
     },
@@ -212,22 +212,59 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
 
           <Anatomy
             parts={[
-              { id: "anatomy-anchor", label: l.anatomy.anchor },
-              { id: "anatomy-section", label: l.anatomy.section },
-              { id: "anatomy-item", label: l.anatomy.item },
-              { id: "anatomy-link", label: l.anatomy.link },
+              {
+                title: "Section",
+                items: [
+                  { id: "anatomy-section", label: l.anatomy.section.wrapper },
+                  { id: "anatomy-section-link", label: l.anatomy.section.link },
+                  {
+                    id: "anatomy-section-sub-list",
+                    label: l.anatomy.section.subList,
+                  },
+                ],
+              },
+              {
+                title: "Item",
+                items: [
+                  { id: "anatomy-item", label: l.anatomy.item.wrapper },
+                  { id: "anatomy-item-link", label: l.anatomy.item.link },
+                ],
+              },
             ]}
           >
-            <Anchor className="max-w-xs" id="anatomy-anchor">
+            <Anchor className="max-w-xs" id="anatomy-anchor" inert>
               <Anchor.Section
-                linkText="section"
-                id="anatomy-section"
-                className="m-1 p-1"
+                linkText="section 1"
+                slotProps={{
+                  wrapper: {
+                    id: "anatomy-section",
+                    className: "p-1",
+                  },
+                  link: {
+                    id: "anatomy-section-link",
+                    className: "p-1",
+                  },
+                  subList: {
+                    id: "anatomy-section-sub-list",
+                    className: "p-1",
+                  },
+                }}
               >
-                <Anchor.Item href="#section1" id="anatomy-item">
-                  <span id="anatomy-link">section 1.1</span>
+                <Anchor.Item
+                  href="#section1"
+                  slotProps={{
+                    wrapper: {
+                      id: "anatomy-item",
+                      className: "p-1",
+                    },
+                    link: {
+                      id: "anatomy-item-link",
+                      className: "p-1",
+                    },
+                  }}
+                >
+                  section 1.1
                 </Anchor.Item>
-                <Anchor.Item href="#section2">section 1.2</Anchor.Item>
               </Anchor.Section>
             </Anchor>
           </Anatomy>
@@ -239,7 +276,7 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
           </Title>
           <Docs sections={anchorSections} />
         </section>
-        
+
         <footer className="py-8 border-t mt-8">
           <div className="flex justify-between">
             <Button

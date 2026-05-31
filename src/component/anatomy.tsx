@@ -17,14 +17,21 @@ function useAnatomy() {
   return context;
 }
 
+interface AnatomyPart {
+  id?: string;
+  name?: string;
+  label: string;
+}
+
+interface AnatomyGroup {
+  title: string;
+  items: AnatomyPart[];
+}
+
 interface AnatomyProps {
   title?: string;
   children: React.ReactNode;
-  parts: {
-    id?: string;
-    name?: string;
-    label: string;
-  }[];
+  parts: AnatomyPart[] | AnatomyGroup[];
   className?: string;
 }
 
@@ -69,16 +76,36 @@ export function Anatomy({ title = "Anatomy", children, parts, className }: Anato
         </div>
         <div className="space-y-2">
           <p className="text-sm font-medium text-muted-foreground">{title}</p>
-          <div className="grid grid-cols-2 gap-2">
-            {parts.map((part) => (
-              <AnatomyItem 
-                key={part.id || part.name} 
-                id={part.id} 
-                name={part.name} 
-                label={part.label} 
-              />
-            ))}
-          </div>
+          {'items' in (parts[0] || {}) ? (
+            <div className="space-y-3">
+              {(parts as AnatomyGroup[]).map((group, groupIndex) => (
+                <div key={groupIndex}>
+                  <p className="text-xs font-medium text-muted-foreground mb-2">{group.title}</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {group.items.map((part) => (
+                      <AnatomyItem
+                        key={part.id || part.name}
+                        id={part.id}
+                        name={part.name}
+                        label={part.label}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-2">
+              {(parts as AnatomyPart[]).map((part) => (
+                <AnatomyItem
+                  key={part.id || part.name}
+                  id={part.id}
+                  name={part.name}
+                  label={part.label}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </AnatomyContext.Provider>

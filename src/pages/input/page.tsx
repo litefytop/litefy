@@ -132,32 +132,32 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
         },
 
         {
-          props: "itemProps",
+          props: "slotProps",
           type: "InputItemProps",
 
-          description: l.api.props.itemProps,
+          description: l.api.props.slotProps,
         },
       ],
     },
     {
-      title: l.api.sectionTitles.itemPropsConfig,
+      title: l.api.sectionTitles.slotPropsConfig,
 
       data: [
         {
           props: "group",
           type: `React.ComponentProps<"div">`,
-          description: l.api.itemPropsConfig.group,
+          description: l.api.slotPropsConfig.group,
         },
 
         {
           props: "leading",
           type: `React.ComponentProps<"span">`,
-          description: l.api.itemPropsConfig.leading,
+          description: l.api.slotPropsConfig.leading,
         },
         {
           props: "trailing",
           type: `React.ComponentProps<"span">`,
-          description: l.api.itemPropsConfig.trailing,
+          description: l.api.slotPropsConfig.trailing,
         },
 
       ],
@@ -261,7 +261,7 @@ export default function InputPage({ locale = "zh" }: { locale?: string }) {
               trailing=".com"
               placeholder="请输入域名"
               data-anatomy-name="input"
-              itemProps={{
+              slotProps={{
                 group: { "data-anatomy-name": "group" },
 
                 leading: { "data-anatomy-name": "leading" },

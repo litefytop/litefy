@@ -109,35 +109,35 @@ export default function TextareaPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.props.description,
         },
         {
-          props: "itemProps",
+          props: "slotProps",
           type: "TextareaItemProps",
-          description: l.api.props.itemProps,
+          description: l.api.props.slotProps,
         },
       ],
     },
     {
-      title: l.api.sectionTitles.itemPropsConfig,
+      title: l.api.sectionTitles.slotPropsConfig,
 
       data: [
         {
           props: "root",
           type: `React.ComponentProps<"div">`,
-          description: l.api.itemPropsConfig.root,
+          description: l.api.slotPropsConfig.root,
         },
         {
           props: "label",
           type: `React.ComponentProps<"label">`,
-          description: l.api.itemPropsConfig.label,
+          description: l.api.slotPropsConfig.label,
         },
         {
           props: "invalid",
           type: `React.ComponentProps<"small">`,
-          description: l.api.itemPropsConfig.invalid,
+          description: l.api.slotPropsConfig.invalid,
         },
         {
           props: "description",
           type: `React.ComponentProps<"small">`,
-          description: l.api.itemPropsConfig.description,
+          description: l.api.slotPropsConfig.description,
         },
       ],
     },

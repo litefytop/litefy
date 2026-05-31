@@ -1,3 +1,1 @@
-import AccordionPage from "./page";
-
-export default AccordionPage;
+export { default } from "./page";

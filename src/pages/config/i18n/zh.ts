@@ -1,3 +1,5 @@
+
+
 export const zh = {
   common: {
     copy: "复制",
@@ -40,7 +42,6 @@ export const zh = {
     form: "Form 表单",
     button: "Button 按钮",
     accordion: "Accordion 手风琴",
-    "accordion-controlled": "Accordion 手风琴（受控）",
     anchor: "Anchor 锚点",
     carousel: "Carousel 轮播图",
     toast: "Toast 消息提示",
@@ -125,7 +126,7 @@ export const zh = {
         alignX: "水平对齐",
         alignY: "垂直对齐",
       },
-      itemProps: {
+      slotProps: {
         children: "菜单项内容",
         onClick: "点击回调",
       },
@@ -134,58 +135,10 @@ export const zh = {
     },
   },
 
+
+
   accordion: {
     title: "手风琴",
-    description: "手风琴组件，用于展示可折叠的内容区域。",
-    basic: {
-      title: "基础",
-    },
-    multiple: {
-      title: "多个展开",
-    },
-    controlled: {
-      title: "受控",
-    },
-    icon: {
-      title: "自定义图标",
-    },
-    disabled: {
-      title: "禁用",
-    },
-    anatomy: {
-      title: "结构",
-      accordion: "手风琴",
-      item: "子组件",
-      summary:"摘要",
-      content: "内容",
-    },
-    api: {
-      props: {
-
- 
-        icon: "自定义展开/收起图标",
-      },
-      itemProps: {
-        value: "唯一标识符（必填）",
-        label: "标题内容（必填）",
-        itemProps: "内部封装属性透传配置",
-        icon: "自定义图标（覆盖 Accordion 的 icon）",
-      },
-      itemPropsConfig: {
-        summary: "摘要元素属性",
-        content: "内容区域属性",
-      },
-
-      sectionTitles: {
-        accordionProps: "Accordion Props",
-        accordionItemProps: "Accordion.Item Props",
-        itemPropsConfig: "itemProps 配置",
-      },
-    },
-  },
-
-  accordionControlled: {
-    title: "手风琴（受控）",
     description: "受控模式的手风琴组件，支持通过状态管理精确控制展开/收起行为。",
     basic: {
       title: "基础",
@@ -203,10 +156,8 @@ export const zh = {
       title: "禁用",
     },
     anatomy: {
-      title: "结构",
-      accordion: "手风琴",
-      item: "子组件",
-      label: "标题",
+      wrapper: "外部容器",
+      trigger: "触发器",
       content: "内容",
     },
     api: {
@@ -219,19 +170,21 @@ export const zh = {
       },
       itemProps: {
         value: "唯一标识符（必填）",
-        label: "标题内容（必填）",
-        itemProps: "内部封装属性透传配置",
-        icon: "自定义图标（覆盖 AccordionControlled 的 icon）",
+        label: "标签文本",
+        icon: "自定义展开/收起图标",
+        slotProps: "内部封装属性透传配置",
+        disabled: "是否禁用",
+       children: "内容区域",
       },
-      itemPropsConfig: {
-        root: "根元素属性",
-        label: "标签元素属性",
+      slotPropsConfig: {
+        wrapper: "外部容器元素属性",
+        trigger: "触发器元素属性",
         content: "内容区域属性",
       },
       sectionTitles: {
-        accordionProps: "AccordionControlled Props",
-        accordionItemProps: "AccordionControlled.Item Props",
-        itemPropsConfig: "itemProps 配置",
+        accordionProps: "Accordion Props",
+        accordionItemProps: "Accordion.Item Props",
+        slotPropsConfig: "slotProps 配置",
       },
     },
   },
@@ -241,7 +194,7 @@ export const zh = {
     description: "页面锚点导航组件。",
     examples: {
       description:
-        "默认监听根元素，由于示例使用 iframe 容器，因此需要手动指定 root 属性。",
+        "组件默认以浏览器视口作为监听根容器。当前示例运行在 iframe 内，因此通过 root 指定专属监听容器。页面内容整体偏下，故将 rootMargin 由默认值 0px 0px -80% 0px 调整为 0px 0px -60% 0px，扩大有效判定区域，提前触发锚点激活。",
     },
     scrollBehavior: {
       title: "滚动行为",
@@ -250,17 +203,23 @@ export const zh = {
       note: "根据 Header 高度调整该值，确保点击锚点链接时目标内容不会被 Header 遮挡。",
     },
     anatomy: {
-      anchor: "锚点",
-      section: "分组",
-      item: "项",
-      link: "链接文本",
+      section: {
+        wrapper: "分组容器",
+        link: "分组链接",
+        subList:"分组子列表",
+      },
+      item: {
+        wrapper: "项容器",
+        link: "项链接",
+      },
+   
     },
     api: {
       sectionTitles: {
         anchorProps: "Anchor Props",
         anchorSectionProps: "Anchor.Section Props",
         anchorItemProps: "Anchor.Item Props",
-        itemPropsConfig: "itemProps 配置",
+        slotPropsConfig: "slotProps 配置",
       },
       props: {
         rootMargin: "IntersectionObserver 的根边距（上 右 下 左）",
@@ -269,12 +228,12 @@ export const zh = {
       sectionProps: {
         href: "锚点目标 ID（带 # 前缀，可选）",
         linkText: "链接文本",
-        itemProps: "内部封装属性透传",
+        slotProps: "内部封装属性透传",
       },
-      itemProps: {
+      slotProps: {
         href: "锚点目标 ID（带 # 前缀）",
       },
-      itemPropsConfig: {
+      slotPropsConfig: {
         link: "链接 `<a>` 标签属性",
         nav: "内部导航 `<nav>` 容器属性",
       },
@@ -414,8 +373,8 @@ export const zh = {
       sectionTitles: {
         checkboxProps: "Checkbox Props",
         checkboxItemProps: "Checkbox.Item Props",
-        itemPropsConfig: "itemProps 配置",
-        itemProps: "itemProps 配置",
+        slotPropsConfig: "slotProps 配置",
+        slotProps: "slotProps 配置",
       },
       props: {
         value: "选中的值（受控模式）",
@@ -424,7 +383,7 @@ export const zh = {
         invalid: "无效状态",
         disabled: "是否禁用整个组",
         name: "表单字段名称",
-        itemProps: "内部元素属性透传配置",
+        slotProps: "内部元素属性透传配置",
         options: "选项数组，用于渲染多个复选框",
       },
       item: {
@@ -433,10 +392,10 @@ export const zh = {
         disabled: "是否禁用",
         variant: "样式变体",
         indicator: "指示器配置",
-        itemProps:"内部元素属性透传配置"
+        slotProps:"内部元素属性透传配置"
       },
 
-      itemProps: {
+      slotProps: {
 
 
         options: "选项项 `<button>` 元素属性",
@@ -493,7 +452,7 @@ export const zh = {
     api: {
       sectionTitles: {
         comboboxProps: "Combobox Props",
-        itemProps: "itemProps 配置",
+        slotProps: "slotProps 配置",
       },
       props: {
         value: "受控模式的值",
@@ -509,7 +468,7 @@ export const zh = {
         debounceMs: "防抖延迟（毫秒）",
         maxHeight: "下拉列表最大高度（px）",
       },
-      itemProps: {
+      slotProps: {
         container: "容器属性",
         input: "输入框属性",
         list: "列表属性",
@@ -582,7 +541,7 @@ export const zh = {
     api: {
       sectionTitles: {
         inputProps: "Input Props",
-        itemPropsConfig: "itemProps 配置",
+        slotPropsConfig: "slotProps 配置",
       },
       props: {
         value: "输入值（受控模式）",
@@ -595,9 +554,9 @@ export const zh = {
         description: "描述文本",
         leading: "前导内容",
         trailing: "尾随内容",
-        itemProps: "内部封装属性透传",
+        slotProps: "内部封装属性透传",
       },
-      itemPropsConfig: {
+      slotPropsConfig: {
         group: "组容器 `<div>` 属性",
 
    
@@ -627,7 +586,7 @@ export const zh = {
     api: {
       sectionTitles: {
         passwordProps: "Password Props",
-        itemPropsConfig: "itemProps 配置",
+        slotPropsConfig: "slotProps 配置",
       },
       props: {
         value: "输入值（受控模式）",
@@ -640,9 +599,9 @@ export const zh = {
         trailing: "后缀内容",
         placeholder: "占位符",
         disabled: "是否禁用",
-        itemProps: "内部封装属性透传",
+        slotProps: "内部封装属性透传",
       },
-      itemPropsConfig: {
+      slotPropsConfig: {
 
         group: "输入框组 `<div>` 属性",
 
@@ -695,7 +654,7 @@ export const zh = {
     api: {
       sectionTitles: {
         textareaProps: "Textarea Props",
-        itemPropsConfig: "itemProps 配置",
+        slotPropsConfig: "slotProps 配置",
       },
       props: {
         value: "输入值（受控模式）",
@@ -706,9 +665,9 @@ export const zh = {
         invalid: "无效信息",
         label: "标签文本",
         description: "描述文本",
-        itemProps: "内部封装属性透传",
+        slotProps: "内部封装属性透传",
       },
-      itemPropsConfig: {
+      slotPropsConfig: {
         root: "根容器 `<div>` 属性",
         label: "标签 `<label>` 属性",
         invalid: "无效 `<small>` 属性",
@@ -744,7 +703,7 @@ export const zh = {
     api: {
       sectionTitles: {
         tabsProps: "Tabs Props",
-        itemPropsConfig: "itemProps 配置",
+        slotPropsConfig: "slotProps 配置",
       },
       props: {
         options: "标签选项配置数组",
@@ -753,9 +712,9 @@ export const zh = {
         onValueChange: "标签切换回调",
         orientation: "方向：horizontal 或 vertical",
         activationMode: "激活模式：automatic 或 manual",
-        itemProps: "内部封装属性透传",
+        slotProps: "内部封装属性透传",
       },
-      itemPropsConfig: {
+      slotPropsConfig: {
         list: "列表容器 `<div>` 属性",
         trigger: "触发器 `<button>` 属性",
         content: "内容面板 `<div>` 属性",
@@ -768,7 +727,7 @@ export const zh = {
         "提供水平和垂直两种布局方向",
         "支持键盘导航，符合 WAI-ARIA 标准",
         "支持自动和手动两种激活模式",
-        "可通过 itemProps 透传内部元素属性",
+        "可通过 slotProps 透传内部元素属性",
       ],
       usage: "使用 Tabs 组件时，需要传入 options 数组配置所有标签选项。每个选项包含 value、label、children 和可选的 disabled 属性。",
     },
@@ -791,7 +750,7 @@ export const zh = {
     api: {
       sectionTitles: {
         uploadProps: "Upload Props",
-        itemPropsConfig: "itemProps 配置",
+        slotPropsConfig: "slotProps 配置",
       },
       props: {
         label: "标签文本",
@@ -801,9 +760,9 @@ export const zh = {
         multiple: "是否多选",
         accept: "接受的文件类型",
         onChange: "值变化回调，可返回 { invalid?: string } 触发无效状态",
-        itemProps: "内部封装属性透传",
+        slotProps: "内部封装属性透传",
       },
-      itemPropsConfig: {
+      slotPropsConfig: {
         root: "根容器 `<div>` 属性",
         label: "标签 `<label>` 属性",
         description: "描述 `<small>` 属性",
@@ -876,7 +835,7 @@ export const zh = {
     api: {
       sectionTitles: {
         selectProps: "Select Props",
-        itemPropsConfig: "itemProps 配置",
+        slotPropsConfig: "slotProps 配置",
       },
       props: {
         value: "选中的值（受控模式）",
@@ -891,9 +850,9 @@ export const zh = {
         description: "描述文本",
         leading: "前缀内容",
         trailing: "后缀内容",
-        itemProps: "内部封装属性透传",
+        slotProps: "内部封装属性透传",
       },
-      itemPropsConfig: {
+      slotPropsConfig: {
         group: "选择器组 `<div>` 属性",
         label: "标签 `<label>` 属性",
         invalid: "无效信息 `<div>` 属性",
@@ -1047,8 +1006,8 @@ export const zh = {
       sectionTitles: {
         radioProps: "Radio Props",
         radioItemProps: "Radio.Item Props",
-        itemPropsConfig: "itemProps 配置",
-        itemProps: "itemProps 配置",
+        slotPropsConfig: "slotProps 配置",
+        slotProps: "slotProps 配置",
       },
       props: {
         value: "选中值（受控模式）",
@@ -1058,7 +1017,7 @@ export const zh = {
         disabled: "是否禁用",
         name: "表单字段名称",
 
-        itemProps: "内部元素属性透传配置",
+        slotProps: "内部元素属性透传配置",
         options: "选项数组，用于渲染多个单选框",
       },
       item: {
@@ -1068,7 +1027,7 @@ export const zh = {
         variant: "样式变体 (radio | segment)",
         indicator: "指示器配置",
       },
-      itemProps: {
+      slotProps: {
  
         content: "内容容器 `<div>` 元素属性",
 
@@ -1144,7 +1103,7 @@ export const zh = {
     api: {
       sectionTitles: {
         numberFieldProps: "NumberField Props",
-        itemPropsConfig: "itemProps 配置",
+        slotPropsConfig: "slotProps 配置",
       },
       props: {
         value: "输入值（受控模式）",
@@ -1156,9 +1115,9 @@ export const zh = {
         max: "最大值",
         step: "步长",
         disabled: "是否禁用",
-        itemProps: "内部封装属性透传",
+        slotProps: "内部封装属性透传",
       },
-      itemPropsConfig: {
+      slotPropsConfig: {
 
         group: "输入框组 `<div>` 属性",
         btn: "按钮 `<button>` 属性",
@@ -1223,8 +1182,8 @@ export const zh = {
       props: {
         activeIndex: "当前显示的幻灯片索引",
         performanceThreshold: "启用动画的最大幻灯片数量，超过则禁用动画",
-        itemPropsRoot: "根元素属性",
-        itemPropsSlide: "幻灯片元素属性",
+        slotPropsRoot: "根元素属性",
+        slotPropsSlide: "幻灯片元素属性",
       },
     },
   },
@@ -1292,7 +1251,7 @@ export const zh = {
         autoPlayInterval: "自动播放间隔时间（毫秒）",
         loop: "是否循环播放",
         onChange: "索引变化时的回调",
-        itemPropsSlide: "幻灯片元素属性",
+        slotPropsSlide: "幻灯片元素属性",
       },
     },
   },

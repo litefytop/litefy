@@ -14,7 +14,7 @@ export default function CheckboxVariant() {
         options={items}
         defaultValue={["a"]}
         className="*:first:rounded-l-full *:last:rounded-r-full"
-        itemProps={{
+        slotProps={{
           options: {
             variant: "toggle",
             indicator: () => null,
@@ -24,7 +24,7 @@ export default function CheckboxVariant() {
       <Checkbox
         options={items}
         defaultValue={["a"]}
-        itemProps={{
+        slotProps={{
           options: {
             variant: "checkbox",
             indicator: (checked) =>

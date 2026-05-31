@@ -44,7 +44,7 @@ export type ToastItemProps = React.ComponentProps<"div"> & {
     className?: ClassNameValue;
   }>;
   isExpanded?: boolean;
-  itemProps?: {
+  slotProps?: {
     leading?: React.ComponentProps<"div">;
     content?: React.ComponentProps<"div">;
     actions?: React.ComponentProps<"div">;
@@ -114,7 +114,7 @@ function ToastItem({
   title,
   description,
   actions,
-  itemProps,
+  slotProps,
   className,
   ...restProps
 }: ToastItemProps) {
@@ -167,16 +167,16 @@ function ToastItem({
     >
       {icon && (
         <div
-          {...itemProps?.leading}
-          className={cn("shrink-0", itemProps?.leading?.className)}
+          {...slotProps?.leading}
+          className={cn("shrink-0", slotProps?.leading?.className)}
         >
           {icon}
         </div>
       )}
 
       <div
-        {...itemProps?.content}
-        className={cn("flex-1 min-w-0", itemProps?.content?.className)}
+        {...slotProps?.content}
+        className={cn("flex-1 min-w-0", slotProps?.content?.className)}
       >
         <div className="font-medium">{title}</div>
         {description && (
@@ -187,8 +187,8 @@ function ToastItem({
       </div>
       {actions && (
         <div
-          {...itemProps?.actions}
-          className={cn("flex gap-2", itemProps?.actions?.className)}
+          {...slotProps?.actions}
+          className={cn("flex gap-2", slotProps?.actions?.className)}
         >
           {actions.map((action, idx) => (
             <button

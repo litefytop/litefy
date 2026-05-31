@@ -91,10 +91,10 @@ export default function CarouselPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.props.onChange,
         },
         {
-          props: "itemProps.slide",
+          props: "slotProps.slide",
           type: "DivProps",
           default: "-",
-          description: l.api.props.itemPropsSlide,
+          description: l.api.props.slotPropsSlide,
         },
       ],
     },

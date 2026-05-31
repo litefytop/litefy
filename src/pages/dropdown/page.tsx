@@ -116,7 +116,7 @@ export default function DropdownPage({
           props: "onClick",
           type: "() => void",
 
-          description: l.api.itemProps.onClick,
+          description: l.api.slotProps.onClick,
         },
         {
           props: "className",
