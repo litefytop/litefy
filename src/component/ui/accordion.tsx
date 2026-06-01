@@ -7,7 +7,7 @@ import {
   useId,
 } from "react";
 import { ClassNameValue, cn } from "@/lib";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;
@@ -94,7 +94,7 @@ export function Accordion({
       <div
         {...props}
         className={cn(
-          "flex flex-col gap-2 inert:cursor-not-allowed inert:opacity-50",
+          "flex flex-col gap-2 inert:cursor-not-allowed inert:opacity-50 overflow-hidden",
           className,
         )}
         inert={disabled || props.inert}
@@ -136,10 +136,12 @@ function AccordionItem({
   const renderIcon = () => {
     if (typeof icon === "function") return icon(open);
     if (icon) return icon;
-    return open ? (
-      <ChevronUp className="size-4" />
-    ) : (
-      <ChevronDown className="size-4" />
+    return (
+      <ChevronDown
+        data-open={open || undefined}
+        className="size-4 transition-transform duration-300 data-open:-rotate-180"
+        aria-hidden
+      />
     );
   };
 
@@ -169,7 +171,7 @@ function AccordionItem({
         }}
         disabled={disabled}
         className={cn(
-          "flex items-center justify-start gap-2 w-full px-4 py-3  hover:bg-muted text-left",
+          "flex items-center justify-start gap-2 w-full px-4 py-3 hover:bg-muted text-left",
           "disabled:opacity-50 disabled:cursor-not-allowed",
           slotProps?.trigger?.className,
         )}
@@ -179,18 +181,26 @@ function AccordionItem({
       </button>
 
       <div
-        data-open={open ? "true" : undefined}
-        {...slotProps?.content}
-        id={panelId}
-        role="region"
-        aria-labelledby={buttonId}
+        data-open={open || undefined}
         className={cn(
-          "p-0 border-t bg-background h-0",
-          "data-open:h-fit data-open:px-4",
-          slotProps?.content?.className,
+          "grid transition-[grid-template-rows] duration-300 ease-in-out grid-rows-[0fr]",
+          "data-open:grid-rows-[1fr]",
         )}
       >
-        {children}
+        <div className="min-h-0 overflow-hidden">
+          <div
+            id={panelId}
+            role="region"
+            aria-labelledby={buttonId}
+            {...slotProps?.content}
+            className={cn(
+              "border-t bg-background p-4",
+              slotProps?.content?.className,
+            )}
+          >
+            {children}
+          </div>
+        </div>
       </div>
     </div>
   );

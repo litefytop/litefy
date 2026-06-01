@@ -1,4 +1,4 @@
-import { NavLink, useLocation, useNavigate, Outlet } from "react-router-dom";
+import { NavLink, useLocation, useNavigate, Outlet, ScrollRestoration } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { getNavItems, getPageTitle } from "@/pages/config/routes";
 import { Title, Image, Sidebar, Button, Toaster, Dropdown } from "@/component";
@@ -9,7 +9,7 @@ import LOGO from "@/assets/LOGO.svg";
 import { MoonIcon, SunIcon, PanelLeftIcon, LanguagesIcon, ContrastIcon } from "lucide-react";
 
 function ThemeToggle({ locale }: { locale: string }) {
-  const { colorScheme, setColorScheme } = useTheme()
+  const { colorScheme, setColorScheme } = useTheme();
   const lang = t(locale as "zh" | "en");
 
   const getIcon = () => {
@@ -19,7 +19,7 @@ function ThemeToggle({ locale }: { locale: string }) {
 
   return (
     <Dropdown>
-      <Dropdown.Trigger aria-label="Toggle color scheme" className={[Button.class.variant.ghost,"gap-2"]}>
+      <Dropdown.Trigger aria-label="Toggle color scheme" className={[Button.class.variant.ghost, "gap-2"]}>
         {getIcon()}
       </Dropdown.Trigger>
       <Dropdown.Content>
@@ -38,19 +38,6 @@ function ThemeToggle({ locale }: { locale: string }) {
       </Dropdown.Content>
     </Dropdown>
   );
-}
-
-function ScrollToTop() {
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    const main = document.querySelector("main");
-    if (main) {
-      main.scrollTop = 0;
-    }
-  }, [pathname]);
-
-  return null;
 }
 
 function UpdateTitle({ locale }: { locale: string }) {
@@ -85,9 +72,9 @@ function SidebarContent({ locale }: { locale: string }) {
   const navItems = getNavItems(locale as "zh" | "en");
 
   return (
-    <nav className="flex flex-col h-full overflow-y-auto p-4 gap-6">
+    <nav className="flex flex-col h-full overflow-y-auto p-4 gap-4">
       {navItems.map((group) => (
-        <ul key={group.title} className="space-y-1">
+        <ul key={group.title}>
           <li>
             <Title className="text-xs uppercase text-muted-foreground mb-2">
               {group.title}
@@ -99,7 +86,7 @@ function SidebarContent({ locale }: { locale: string }) {
                 to={`/${locale}${item.href}`}
                 end={item.href === "/"}
                 className={({ isActive }) =>
-                  `block px-3 py-2 rounded-md text-sm  ${
+                  `block px-3 py-2 rounded-md text-sm ${
                     isActive
                       ? "bg-accent text-accent-foreground"
                       : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
@@ -119,10 +106,9 @@ function SidebarContent({ locale }: { locale: string }) {
 function Header({ locale, className, sidebarRef }: { locale: string; className?: string; sidebarRef: React.RefObject<SidebarHandle | null> }) {
   return (
     <header
-      className={`h-14 border-b bg-card flex items-center justify-between px-4 ${className || ""}`}
+      className={`sticky top-0 z-10 h-14 border-b bg-card flex items-center justify-between px-4 ${className || ""}`}
     >
       <div className="flex items-center gap-2">
-
         <Image src={LOGO} className="size-8" alt="Logo" />
         <p className="whitespace-nowrap font-bold text-lg">Litefy UI</p>
       </div>
@@ -144,7 +130,7 @@ function Header({ locale, className, sidebarRef }: { locale: string; className?:
         </Button>
         <ThemeToggle locale={locale} />
         <LanguageToggle locale={locale} />
-                <Button
+        <Button
           variant="ghost"
           aria-label="Toggle sidebar"
           onClick={() => sidebarRef.current?.toggle()}
@@ -160,18 +146,20 @@ export function App({ locale = "zh" }: { locale?: string }) {
   const sidebarRef = useRef<SidebarHandle | null>(null);
 
   return (
-    <div className="flex flex-col h-screen bg-background text-foreground overflow-hidden">
-      <Header locale={locale} className="shrink-0" sidebarRef={sidebarRef} />
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar ref={sidebarRef} className="w-3xs shrink-0 overflow-y-auto">
+    <div className="min-h-screen bg-background text-foreground">
+      <Header locale={locale} sidebarRef={sidebarRef} />
+      <div className="flex">
+        <Sidebar ref={sidebarRef} className="sticky top-14 h-[calc(100vh-3.5rem)] w-3xs shrink-0 overflow-y-auto">
           <SidebarContent locale={locale} />
         </Sidebar>
-        <main className="flex-1 overflow-y-auto *:container *:mx-auto *:px-6 *:py-8 *:max-w-4xl">
-          <Outlet />
+        <main className="flex-1 min-w-0">
+          <div className="container mx-auto px-6 py-8 max-w-4xl">
+            <Outlet />
+          </div>
         </main>
       </div>
       <UpdateTitle locale={locale} />
-      <ScrollToTop />
+      <ScrollRestoration />
       <Toaster position="top-right" />
     </div>
   );

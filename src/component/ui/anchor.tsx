@@ -1,10 +1,13 @@
+"use client";
+
 import {
   useState,
   createContext,
   useContext,
   useEffect,
-  useMemo,
   useRef,
+  useCallback,
+  useMemo,
 } from "react";
 import { ClassNameValue, cn } from "@/lib";
 
@@ -14,8 +17,8 @@ type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
 };
 
 interface AnchorContextValue {
-  activeId: string;
-  observer: IntersectionObserver | null;
+  activeIds: Set<string>;
+  position: "left" | "right";
 }
 
 const AnchorContext = createContext<AnchorContextValue | null>(null);
@@ -28,117 +31,225 @@ function useAnchorContext() {
   return context;
 }
 
-function useObserveAnchor(targetId: string) {
-  const { observer } = useAnchorContext();
-  const observedRef = useRef("");
-
-  useEffect(() => {
-    if (!targetId || !observer) return;
-    if (observedRef.current === targetId) return;
-
-    const el = document.getElementById(targetId);
-    if (!el) return;
-
-    observedRef.current = targetId;
-    observer.observe(el);
-
-    return () => {
-      observer.unobserve(el);
-      observedRef.current = "";
-    };
-  }, [targetId, observer]);
-}
-
 type AnchorProps = Omit<React.ComponentProps<"nav">, "className"> & {
   rootMargin?: string;
   root?: Element | Document | null | React.RefObject<Element | Document | null>;
   className?: ClassNameValue;
+  position?: "left" | "right";
 };
 
 export function Anchor({
   className,
   children,
   root,
-  rootMargin,
+  rootMargin = "0px",
+  position = "right",
   ...props
 }: AnchorProps) {
-  const [activeId, setActiveId] = useState(() => {
-    if (typeof window !== "undefined") return window.location.hash.slice(1);
-    return "";
-  });
+  const [activeIds, setActiveIds] = useState<Set<string>>(new Set());
+  const activeIdsRef = useRef(activeIds);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const thumbRef = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const elementsMap = useRef<Map<string, Element>>(new Map());
+  const linkPositionsRef = useRef<Map<string, { top: number; bottom: number }>>(new Map());
 
   useEffect(() => {
-    const handleHashChange = () => {
-      setActiveId(window.location.hash.slice(1));
-    };
-    window.addEventListener("hashchange", handleHashChange);
-    return () => window.removeEventListener("hashchange", handleHashChange);
+    activeIdsRef.current = activeIds;
+  }, [activeIds]);
+
+  const registerLinkPositions = useCallback(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const links = container.querySelectorAll<HTMLAnchorElement>("a[href^='#']");
+    const newPositions = new Map<string, { top: number; bottom: number }>();
+
+    for (const link of links) {
+      const href = link.getAttribute("href");
+      if (!href || !href.startsWith("#")) continue;
+      const id = href.slice(1);
+      if (!id) continue;
+
+      const styles = getComputedStyle(link);
+      const top = link.offsetTop + parseFloat(styles.paddingTop);
+      const bottom = link.offsetTop + link.clientHeight - parseFloat(styles.paddingBottom);
+      newPositions.set(id, { top, bottom });
+    }
+
+    linkPositionsRef.current = newPositions;
   }, []);
 
-  const observer = useMemo(() => {
-    if (typeof window === "undefined") return null;
+  const updateThumb = useCallback(() => {
+    const container = containerRef.current;
+    const thumb = thumbRef.current;
+    if (!container || !thumb) return;
+
+    if (activeIdsRef.current.size === 0) {
+      thumb.style.top = "0px";
+      thumb.style.height = "0px";
+      return;
+    }
+
+    let upper = Number.MAX_VALUE;
+    let lower = 0;
+    for (const id of activeIdsRef.current) {
+      const pos = linkPositionsRef.current.get(id);
+      if (!pos) continue;
+      upper = Math.min(upper, pos.top);
+      lower = Math.max(lower, pos.bottom);
+    }
+
+    if (upper !== Number.MAX_VALUE) {
+      thumb.style.top = `${upper}px`;
+      thumb.style.height = `${lower - upper}px`;
+    } else {
+      thumb.style.top = "0px";
+      thumb.style.height = "0px";
+    }
+  }, []);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleResize = () => {
+      registerLinkPositions();
+      updateThumb();
+    };
+
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(container);
+    window.addEventListener("resize", handleResize);
+
+    handleResize();
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [registerLinkPositions, updateThumb]);
+
+  useEffect(() => {
+    registerLinkPositions();
+    updateThumb();
+  }, [children, registerLinkPositions, updateThumb]);
+
+  useEffect(() => {
+    updateThumb();
+  }, [activeIds, updateThumb]);
+
+  const handleIntersect = useCallback((entries: IntersectionObserverEntry[]) => {
+    const currentActive = activeIdsRef.current;
+    const newActiveIds = new Set(currentActive);
+    let changed = false;
+    for (const entry of entries) {
+      const id = entry.target.id;
+      if (entry.isIntersecting) {
+        if (!newActiveIds.has(id)) {
+          newActiveIds.add(id);
+          changed = true;
+        }
+      } else {
+        if (newActiveIds.has(id)) {
+          newActiveIds.delete(id);
+          changed = true;
+        }
+      }
+    }
+    if (changed) setActiveIds(newActiveIds);
+  }, []);
+
+  const setupObserver = useCallback(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const links = container.querySelectorAll<HTMLAnchorElement>("a[href^='#']");
+    const neededIds = new Set<string>();
+    for (const link of links) {
+      const href = link.getAttribute("href");
+      if (href && href.startsWith("#")) {
+        const id = href.slice(1);
+        if (id) neededIds.add(id);
+      }
+    }
+
+    const currentIds = new Set(elementsMap.current.keys());
+    const idsEqual =
+      neededIds.size === currentIds.size &&
+      Array.from(neededIds).every((id) => currentIds.has(id));
+
+    if (idsEqual && observerRef.current) {
+      return;
+    }
+
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+      observerRef.current = null;
+    }
 
     let rootElement: Element | Document | null = null;
     if (root) {
       rootElement = "current" in root ? root.current : root;
     }
 
-    return new IntersectionObserver(
-      (entries) => {
-        let best: IntersectionObserverEntry | null = null;
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          const rect = entry.boundingClientRect;
-          if (!best) {
-            best = entry;
-          } else {
-            const bestRect = best.boundingClientRect;
-            const isBetter =
-              rect.top >= 0 &&
-              (rect.top < bestRect.top ||
-                (rect.top === bestRect.top && rect.bottom > bestRect.bottom));
-            if (isBetter) {
-              best = entry;
-            }
-          }
-        }
-        if (best) {
-          setActiveId(best.target.id);
-        }
-      },
-      {
-        root: rootElement,
-        rootMargin: rootMargin || "0px 0px -90% 0px",
-        threshold: 0,
-      },
-    );
-  }, [rootMargin, root]);
+    observerRef.current = new IntersectionObserver(handleIntersect, {
+      root: rootElement,
+      rootMargin,
+      threshold: 0.3,
+    });
+
+    elementsMap.current.clear();
+    for (const id of neededIds) {
+      const el = document.getElementById(id);
+      if (el && document.contains(el)) {
+        elementsMap.current.set(id, el);
+        observerRef.current.observe(el);
+      }
+    }
+  }, [root, rootMargin, handleIntersect]);
 
   useEffect(() => {
-    if (!observer) return;
+    setupObserver();
+    const map = elementsMap.current;
     return () => {
-      observer.disconnect();
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+        observerRef.current = null;
+      }
+      map.clear();
     };
-  }, [observer]);
+  }, [setupObserver]);
 
-  const contextValue = useMemo(
-    () => ({
-      activeId,
-      observer,
-    }),
-    [activeId, observer],
-  );
+
+
+  const contextValue = useMemo(() => ({ activeIds, position }), [activeIds, position]);
+
+  const borderClass = position === "right" ? "border-s" : "border-e";
+  const thumbInsetClass = position === "right" ? "inset-s-0" : "inset-e-0";
 
   return (
     <AnchorContext.Provider value={contextValue}>
       <nav
         aria-label="In-page anchor navigation"
-        className={cn(className)}
+        className={cn("relative", className)}
         {...props}
       >
-        <ul className={cn("flex flex-col gap-2 m-0 p-0 list-none")}>
-          {children}
-        </ul>
+        <div
+          ref={thumbRef}
+          className={cn(
+            "absolute w-px bg-primary transition-[top,height] ease-linear",
+            thumbInsetClass
+          )}
+        />
+        <div
+          ref={containerRef}
+          className={cn("flex flex-col", borderClass, "border-transparent")}
+        >
+          <ul className={cn("flex flex-col gap-2 m-0 p-0 list-none")}>
+            {children}
+          </ul>
+        </div>
       </nav>
     </AnchorContext.Provider>
   );
@@ -161,11 +272,12 @@ function AnchorSection({
   slotProps,
   children,
 }: AnchorSectionProps) {
-  const { activeId } = useAnchorContext();
+  const { activeIds, position } = useAnchorContext();
   const targetId = href?.replace(/^#/, "") || "";
-  const isActive = !!href && activeId === targetId;
+  const isActive = !!href && activeIds.has(targetId);
 
-  useObserveAnchor(targetId);
+  const paddingClass = position === "right" ? "ps-2" : "pe-2";
+
 
   return (
     <li
@@ -174,14 +286,15 @@ function AnchorSection({
     >
       <a
         {...slotProps?.link}
-        data-active={isActive ? "true" : undefined}
+        href={href}
+        data-active={isActive || undefined}
         aria-current={isActive ? "location" : undefined}
         className={cn(
-          "text-sm font-medium text-foreground hover:text-primary",
-          "data-active:text-primary data-active:underline data-active:underline-offset-4",
-          slotProps?.link?.className,
+          "block text-sm font-medium text-foreground hover:text-primary transition-colors",
+          paddingClass,
+          "data-[active=true]:text-primary",
+          slotProps?.link?.className
         )}
-        href={href}
       >
         {linkText}
       </a>
@@ -189,8 +302,8 @@ function AnchorSection({
         <ul
           {...slotProps?.subList}
           className={cn(
-            "flex flex-col gap-2 mt-2 pl-2 list-none",
-            slotProps?.subList?.className,
+            "flex flex-col gap-2 mt-2 ps-2 list-none",
+            slotProps?.subList?.className
           )}
         >
           {children}
@@ -210,11 +323,12 @@ type AnchorItemProps = {
 };
 
 function AnchorItem({ href, slotProps, children }: AnchorItemProps) {
-  const { activeId } = useAnchorContext();
+  const { activeIds, position } = useAnchorContext();
   const targetId = href.replace(/^#/, "");
-  const isActive = activeId === targetId;
+  const isActive = activeIds.has(targetId);
 
-  useObserveAnchor(targetId);
+  const paddingClass = position === "right" ? "ps-2" : "pe-2";
+
 
   return (
     <li
@@ -224,12 +338,13 @@ function AnchorItem({ href, slotProps, children }: AnchorItemProps) {
       <a
         {...slotProps?.link}
         href={href}
-        data-active={isActive ? "true" : undefined}
+        data-active={isActive || undefined}
         aria-current={isActive ? "location" : undefined}
         className={cn(
-          "block text-sm text-muted-foreground hover:text-foreground",
-          "data-active:text-primary data-active:underline data-active:underline-offset-4",
-          slotProps?.link?.className,
+          "block text-sm text-muted-foreground hover:text-foreground transition-colors",
+          paddingClass,
+          "data-[active=true]:text-primary",
+          slotProps?.link?.className
         )}
       >
         {children}
@@ -240,4 +355,5 @@ function AnchorItem({ href, slotProps, children }: AnchorItemProps) {
 
 Anchor.Section = AnchorSection;
 Anchor.Item = AnchorItem;
+
 export type { AnchorProps, AnchorSectionProps, AnchorItemProps };

@@ -32,3 +32,5 @@
 ::-webkit-scrollbar-thumb:active {
   @apply bg-foreground/60;
 }
+
+html { scroll-padding-top: 3.5rem; }
