@@ -28,8 +28,7 @@ export const zh = {
   installation: "安装",
   examples: "示例",
   anatomy: "结构",
-  docs: "文档",
-  api: "API",
+  api: "API 参考文档",
   cssClasses: "CSS 类",
   usage: "用法",
   demo: "演示",
@@ -238,6 +237,14 @@ export const zh = {
         link: "链接 `<a>` 标签属性",
       },
     },
+    usageNotes: {
+      title: "锚点挂载说明",
+      description: "锚点应挂载在标题元素上而非父容器上，以避免始终观察到父容器导致激活状态异常。",
+      points: {
+        sameLevel: "推荐将锚点目标挂载在与标题同级的位置，保持结构清晰。",
+        discontinuous: "如果能接受锚点激活区不连续，挂载在父容器上也是可接受的方案。",
+      },
+    },
   },
 
   button: {
@@ -359,46 +366,38 @@ export const zh = {
     disabled: {
       title: "禁用",
     },
-
     variants: {
       title: "变体",
     },
-
     anatomy: {
       checkbox: "复选框",
-
-      item: "标签及指示器",
+      label: "标签",
+      indicator: "指示器",
     },
     api: {
       sectionTitles: {
         checkboxProps: "Checkbox Props",
-        checkboxItemProps: "Checkbox.Item Props",
-        slotPropsConfig: "slotProps 配置",
-        slotProps: "slotProps 配置",
+        checkboxGroupProps: "Checkbox.Group Props",
       },
       props: {
-        value: "选中的值（受控模式）",
-        defaultValue: "初始选中的值（非受控模式）",
-        onValueChange: "值变化回调，可返回 { invalid?: string } 触发无效状态",
-        invalid: "无效状态",
+        checked: "选中状态（受控模式）",
+        onValueChange: "选中状态变化回调",
+        value: "唯一标识符（组使用时必填）",
+        label: "标签文本",
+        disabled: "是否禁用",
+        variant: '样式变体 ("checkbox" | "toggle")',
+        indicator: "自定义指示器渲染函数",
+        name: "表单字段名称",
+        className: "自定义类名",
+      },
+      groupProps: {
+        defaultValue: "初始选中值数组（非受控模式）",
+        value: "当前选中值数组（受控模式）",
+        onValueChange: "值变化回调",
         disabled: "是否禁用整个组",
         name: "表单字段名称",
-        slotProps: "内部元素属性透传配置",
-        options: "选项数组，用于渲染多个复选框",
-      },
-      item: {
-        value: "复选框的值（必填）",
-        onCheckedChange: "选中状态变化回调",
-        disabled: "是否禁用",
-        variant: "样式变体",
-        indicator: "指示器配置",
-        slotProps:"内部元素属性透传配置"
-      },
-
-      slotProps: {
-
-
-        options: "选项项 `<button>` 元素属性",
+        invalid: "无效状态",
+        className: "自定义类名",
       },
     },
   },
@@ -440,9 +439,7 @@ export const zh = {
     async: {
       title: "异步搜索",
     },
-    withForm: {
-      title: "表单集成",
-    },
+
     disabled: {
       title: "禁用与无效",
     },

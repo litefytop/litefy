@@ -1,38 +1,41 @@
 import { ReactNode } from "react";
 import { Title } from "@/component";
 
-export interface DocsTableColumn {
+export interface APITableColumn {
   key: string;
   header: string;
 }
 
-export interface DocsTableItem {
+export interface APITableItem {
   props: string;
   type: string;
   default?: string;
   description: ReactNode;
+  id?: string;
 }
 
-export interface DocsTableProps {
+export interface APITableSectionProps {
+  id?: string;
   title: string;
-  columns?: DocsTableColumn[];
-  data: DocsTableItem[];
+  columns?: APITableColumn[];
+  data: APITableItem[];
 }
 
-const defaultColumns: DocsTableColumn[] = [
+const defaultColumns: APITableColumn[] = [
   { key: "prop", header: "Prop" },
   { key: "type", header: "Type" },
   { key: "default", header: "Default" },
   { key: "description", header: "Description" },
 ];
 
-export function DocsTable({
+export function APITableSection({
+  id,
   title,
   columns = defaultColumns,
   data,
-}: DocsTableProps) {
+}: APITableSectionProps) {
   return (
-    <div className="space-y-4">
+    <div id={id} className="space-y-4">
       <Title as="h4" className="py-2 px-3">
         {title}
       </Title>
@@ -52,7 +55,11 @@ export function DocsTable({
           </thead>
           <tbody>
             {data.map((row, index) => (
-              <tr key={index} className="border-b hover:bg-muted/50 ">
+              <tr
+                key={index}
+                id={row.id}
+                className="border-b hover:bg-muted/50 "
+              >
                 <td className="py-3 px-4 border-r last:border-r-0">
                   <code>{row.props}</code>
                 </td>
@@ -74,17 +81,18 @@ export function DocsTable({
   );
 }
 
-export interface DocsProps {
-  sections: DocsTableProps[];
+export interface APITableProps {
+  sections: APITableSectionProps[];
 }
 
-export function Docs({ sections }: DocsProps) {
+export function APITable({ sections }: APITableProps) {
   return (
     <div className="space-y-8">
       <section id="api" className="space-y-8">
         {sections.map((section, index) => (
-          <DocsTable
+          <APITableSection
             key={index}
+            id={section.id}
             title={section.title}
             columns={section.columns}
             data={section.data}

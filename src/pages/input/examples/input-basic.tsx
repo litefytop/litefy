@@ -1,5 +1,5 @@
 import { Input } from "@/component";
 
 export default function InputBasic() {
-  return <Input className="w-64" placeholder="Enter content" />;
+  return <Input placeholder="Enter content" />;
 }

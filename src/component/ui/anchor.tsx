@@ -31,19 +31,25 @@ function useAnchorContext() {
   return context;
 }
 
+type AnchorScrollConfig =
+  | true
+  | {
+      container?: HTMLElement | (() => HTMLElement) | "window";
+    };
+
 type AnchorProps = Omit<React.ComponentProps<"nav">, "className"> & {
-  rootMargin?: string;
-  root?: Element | Document | null | React.RefObject<Element | Document | null>;
   className?: ClassNameValue;
   position?: "left" | "right";
+  hashScroll?: AnchorScrollConfig;
+  intersectionObserverOptions?: IntersectionObserverInit;
 };
 
 export function Anchor({
   className,
   children,
-  root,
-  rootMargin = "0px",
   position = "right",
+  hashScroll,
+  intersectionObserverOptions,
   ...props
 }: AnchorProps) {
   const [activeIds, setActiveIds] = useState<Set<string>>(new Set());
@@ -52,11 +58,14 @@ export function Anchor({
   const thumbRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const elementsMap = useRef<Map<string, Element>>(new Map());
-  const linkPositionsRef = useRef<Map<string, { top: number; bottom: number }>>(new Map());
+  const linkPositionsRef = useRef<Map<string, { top: number; bottom: number }>>(
+    new Map(),
+  );
 
   useEffect(() => {
     activeIdsRef.current = activeIds;
   }, [activeIds]);
+
 
   const registerLinkPositions = useCallback(() => {
     const container = containerRef.current;
@@ -64,6 +73,7 @@ export function Anchor({
 
     const links = container.querySelectorAll<HTMLAnchorElement>("a[href^='#']");
     const newPositions = new Map<string, { top: number; bottom: number }>();
+    const containerRect = container.getBoundingClientRect();
 
     for (const link of links) {
       const href = link.getAttribute("href");
@@ -72,8 +82,11 @@ export function Anchor({
       if (!id) continue;
 
       const styles = getComputedStyle(link);
-      const top = link.offsetTop + parseFloat(styles.paddingTop);
-      const bottom = link.offsetTop + link.clientHeight - parseFloat(styles.paddingBottom);
+      const linkRect = link.getBoundingClientRect();
+      const top =
+        linkRect.top - containerRect.top + parseFloat(styles.paddingTop);
+      const bottom =
+        linkRect.bottom - containerRect.top - parseFloat(styles.paddingBottom);
       newPositions.set(id, { top, bottom });
     }
 
@@ -120,45 +133,40 @@ export function Anchor({
 
     const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(container);
-    window.addEventListener("resize", handleResize);
-
     handleResize();
 
     return () => {
       resizeObserver.disconnect();
-      window.removeEventListener("resize", handleResize);
     };
   }, [registerLinkPositions, updateThumb]);
-
-  useEffect(() => {
-    registerLinkPositions();
-    updateThumb();
-  }, [children, registerLinkPositions, updateThumb]);
 
   useEffect(() => {
     updateThumb();
   }, [activeIds, updateThumb]);
 
-  const handleIntersect = useCallback((entries: IntersectionObserverEntry[]) => {
-    const currentActive = activeIdsRef.current;
-    const newActiveIds = new Set(currentActive);
-    let changed = false;
-    for (const entry of entries) {
-      const id = entry.target.id;
-      if (entry.isIntersecting) {
-        if (!newActiveIds.has(id)) {
-          newActiveIds.add(id);
-          changed = true;
-        }
-      } else {
-        if (newActiveIds.has(id)) {
-          newActiveIds.delete(id);
-          changed = true;
+  const handleIntersect = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const currentActive = activeIdsRef.current;
+      const newActiveIds = new Set(currentActive);
+      let changed = false;
+      for (const entry of entries) {
+        const id = entry.target.id;
+        if (entry.isIntersecting) {
+          if (!newActiveIds.has(id)) {
+            newActiveIds.add(id);
+            changed = true;
+          }
+        } else {
+          if (newActiveIds.has(id)) {
+            newActiveIds.delete(id);
+            changed = true;
+          }
         }
       }
-    }
-    if (changed) setActiveIds(newActiveIds);
-  }, []);
+      if (changed) setActiveIds(newActiveIds);
+    },
+    [],
+  );
 
   const setupObserver = useCallback(() => {
     const container = containerRef.current;
@@ -188,16 +196,13 @@ export function Anchor({
       observerRef.current = null;
     }
 
-    let rootElement: Element | Document | null = null;
-    if (root) {
-      rootElement = "current" in root ? root.current : root;
-    }
+    const options: IntersectionObserverInit = {
+      root: intersectionObserverOptions?.root ?? null,
+      rootMargin: intersectionObserverOptions?.rootMargin ?? "0px",
+      threshold: intersectionObserverOptions?.threshold,
+    };
 
-    observerRef.current = new IntersectionObserver(handleIntersect, {
-      root: rootElement,
-      rootMargin,
-      threshold: 0.3,
-    });
+    observerRef.current = new IntersectionObserver(handleIntersect, options);
 
     elementsMap.current.clear();
     for (const id of neededIds) {
@@ -207,7 +212,7 @@ export function Anchor({
         observerRef.current.observe(el);
       }
     }
-  }, [root, rootMargin, handleIntersect]);
+  }, [intersectionObserverOptions, handleIntersect]);
 
   useEffect(() => {
     setupObserver();
@@ -221,9 +226,47 @@ export function Anchor({
     };
   }, [setupObserver]);
 
+  useEffect(() => {
+    if (!hashScroll) return;
 
+    const getContainer = (): Window | HTMLElement => {
+      if (hashScroll === true) return window;
+      const container = hashScroll.container;
+      if (!container || container === "window") return window;
+      if (typeof container === "function") return container();
+      return container;
+    };
 
-  const contextValue = useMemo(() => ({ activeIds, position }), [activeIds, position]);
+    const performScroll = (targetId: string) => {
+      const element = document.getElementById(targetId);
+      if (!element) return;
+      const container = getContainer();
+      if (container === window) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        const containerEl = container as HTMLElement;
+        const containerRect = containerEl.getBoundingClientRect();
+        const elementRect = element.getBoundingClientRect();
+        const offset =
+          elementRect.top - containerRect.top + containerEl.scrollTop;
+        containerEl.scrollTo({ top: offset, behavior: "smooth" });
+      }
+    };
+
+    const handleHashChange = () => {
+      const hash = window.location.hash.slice(1);
+      if (hash) performScroll(hash);
+    };
+
+    handleHashChange();
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, [hashScroll]);
+
+  const contextValue = useMemo(
+    () => ({ activeIds, position }),
+    [activeIds, position],
+  );
 
   const borderClass = position === "right" ? "border-s" : "border-e";
   const thumbInsetClass = position === "right" ? "inset-s-0" : "inset-e-0";
@@ -239,7 +282,7 @@ export function Anchor({
           ref={thumbRef}
           className={cn(
             "absolute w-px bg-primary transition-[top,height] ease-linear",
-            thumbInsetClass
+            thumbInsetClass,
           )}
         />
         <div
@@ -278,7 +321,6 @@ function AnchorSection({
 
   const paddingClass = position === "right" ? "ps-2" : "pe-2";
 
-
   return (
     <li
       {...slotProps?.wrapper}
@@ -290,10 +332,10 @@ function AnchorSection({
         data-active={isActive || undefined}
         aria-current={isActive ? "location" : undefined}
         className={cn(
-          "block text-sm font-medium text-foreground hover:text-primary transition-colors",
+          "text-sm text-foreground hover:text-primary transition-colors",
           paddingClass,
           "data-[active=true]:text-primary",
-          slotProps?.link?.className
+          slotProps?.link?.className,
         )}
       >
         {linkText}
@@ -303,7 +345,7 @@ function AnchorSection({
           {...slotProps?.subList}
           className={cn(
             "flex flex-col gap-2 mt-2 ps-2 list-none",
-            slotProps?.subList?.className
+            slotProps?.subList?.className,
           )}
         >
           {children}
@@ -329,7 +371,6 @@ function AnchorItem({ href, slotProps, children }: AnchorItemProps) {
 
   const paddingClass = position === "right" ? "ps-2" : "pe-2";
 
-
   return (
     <li
       {...slotProps?.wrapper}
@@ -344,7 +385,7 @@ function AnchorItem({ href, slotProps, children }: AnchorItemProps) {
           "block text-sm text-muted-foreground hover:text-foreground transition-colors",
           paddingClass,
           "data-[active=true]:text-primary",
-          slotProps?.link?.className
+          slotProps?.link?.className,
         )}
       >
         {children}

@@ -7,7 +7,7 @@ import {
   ShikiCodeBlock,
   Anatomy,
   Button,
-  Docs,
+  APITable,
   Select,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
@@ -298,7 +298,7 @@ export default function SelectPage({ locale = "zh" }: { locale?: string }) {
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
-          <Docs sections={selectSections} />
+          <APITable sections={selectSections} />
         </section>
         
         <footer className="py-8 border-t mt-8">

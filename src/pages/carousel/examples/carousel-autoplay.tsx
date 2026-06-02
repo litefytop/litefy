@@ -17,7 +17,6 @@ export default function CarouselAutoPlay() {
         onChange={(index) => setActiveIndex(index)}
         autoPlay
         autoPlayInterval={2000}
-        className="w-full"
       >
         {images.map((src, i) => (
           <div key={i} className="h-48 flex items-center justify-center rounded-lg overflow-hidden">

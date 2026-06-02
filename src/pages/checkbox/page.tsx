@@ -4,33 +4,28 @@ import {
   Anchor,
   Title,
   Description,
-  Checkbox,
+
   ShikiCodeBlock,
-  Anatomy,
+
   Button,
-  Docs,
+  APITable,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
-import {
-  CheckboxBasic,
-  CheckboxControlled,
-  CheckboxDisabled,
-  CheckboxVariant,
-} from "./examples";
+import { CheckboxBasic, CheckboxDisabled, CheckboxVariant } from "./examples";
+
 import {
   CheckIcon,
   CopyIcon,
   ArrowLeftIcon,
   ArrowRightIcon,
+
 } from "lucide-react";
 
 import CheckboxBasicRaw from "./examples/checkbox-basic.tsx?raw";
-import CheckboxControlledRaw from "./examples/checkbox-controlled.tsx?raw";
 import CheckboxDisabledRaw from "./examples/checkbox-disabled.tsx?raw";
 import CheckboxVariantRaw from "./examples/checkbox-variant.tsx?raw";
-
 import checkboxDoc from "./doc.mdx?raw";
 import checkboxSrc from "@/component/ui/checkbox.tsx?raw";
 
@@ -50,7 +45,7 @@ function DemoSection({
       <div>
         <Title as="h3">{title}</Title>
       </div>
-      <div className="border rounded-lg p-6 w-full overflow-x-auto overflow-y-hidden">
+      <div className="border rounded-lg p-6 w-full overflow-x-auto flex flex-col justify-center min-h-32 items-center">
         {children}
       </div>
       <ShikiCodeBlock>{code}</ShikiCodeBlock>
@@ -62,33 +57,33 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
-  const l = lang.checkbox;
+  const l = lang.checkbox ;
+
   const nav = getComponentNav("/components/checkbox", locale as "zh" | "en");
 
   const checkboxSections = [
     {
       title: l.api.sectionTitles.checkboxProps,
-
       data: [
         {
-          props: "defaultValue",
-          type: "string[]",
-          description: l.api.props.defaultValue,
-        },
-        {
-          props: "value",
-          type: "string[]",
-          description: l.api.props.value,
+          props: "checked",
+          type: "boolean",
+          description: l.api.props.checked,
         },
         {
           props: "onValueChange",
-          type: "(value: string[]) => void | { invalid?: string | boolean }",
+          type: "(checked: boolean) => void",
           description: l.api.props.onValueChange,
         },
         {
-          props: "invalid",
-          type: "boolean",
-          description: l.api.props.invalid,
+          props: "value",
+          type: "string",
+          description: l.api.props.value,
+        },
+        {
+          props: "label",
+          type: "ReactNode",
+          description: l.api.props.label,
         },
         {
           props: "disabled",
@@ -97,69 +92,66 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.props.disabled,
         },
         {
+          props: "variant",
+          type: '"checkbox" | "toggle"',
+          default: "checkbox",
+          description: l.api.props.variant,
+        },
+        {
+          props: "indicator",
+          type: "(checked: boolean) => ReactNode",
+          description: l.api.props.indicator,
+        },
+        {
           props: "name",
           type: "string",
           description: l.api.props.name,
         },
         {
-          props: "slotProps",
-          type: "object",
-          description: l.api.props.slotProps,
-        },
-        {
-          props: "options",
-          type: "Omit<CheckboxItemProps, 'checked'>[]",
-          description: l.api.props.options,
+          props: "className",
+          type: "ClassNameValue",
+          description: l.api.props.className,
         },
       ],
     },
     {
-      title: l.api.sectionTitles.checkboxItemProps,
-
+      title: l.api.sectionTitles.checkboxGroupProps,
       data: [
         {
-          props: "value",
-          type: "string",
-          description: l.api.item.value,
+          props: "defaultValue",
+          type: "T[]",
+          description: l.api.groupProps.defaultValue,
         },
         {
-          props: "onCheckedChange",
-          type: "(checked: boolean) => void",
-          description: l.api.item.onCheckedChange,
+          props: "value",
+          type: "T[]",
+          description: l.api.groupProps.value,
+        },
+        {
+          props: "onValueChange",
+          type: "(value: T[]) => void",
+          description: l.api.groupProps.onValueChange,
         },
         {
           props: "disabled",
           type: "boolean",
           default: "false",
-          description: l.api.item.disabled,
+          description: l.api.groupProps.disabled,
         },
         {
-          props: "variant",
-          type: "'checkbox' | 'toggle'",
-          default: "checkbox",
-          description: l.api.item.variant,
+          props: "name",
+          type: "string",
+          description: l.api.groupProps.name,
         },
         {
-          props: "slotProps",
-          type: "{label: ComponentProps<'label'>}",
-          description: l.api.item.slotProps,
+          props: "invalid",
+          type: "boolean",
+          description: l.api.groupProps.invalid,
         },
         {
-          props: "indicator",
-          type: "(checked: boolean) => ReactNode",
-          description: l.api.item.indicator,
-        },
-      ],
-    },
-
-    {
-      title: l.api.sectionTitles.slotProps,
-
-      data: [
-        {
-          props: "options",
-          type: 'Omit<CheckboxItemProps, "checked" | "value" | "label">',
-          description: l.api.slotProps.options,
+          props: "className",
+          type: "ClassNameValue",
+          description: l.api.groupProps.className,
         },
       ],
     },
@@ -206,31 +198,23 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 ">
-          <Title as="h2" className="mb-4">
+        <section className="mb-8">
+          <Title as="h2" id="installation" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{checkboxSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" >
-          <Title as="h2">{lang.examples}</Title>
+        <section>
+          <Title as="h2" id="examples">{lang.examples}</Title>
 
           <DemoSection id="basic" title={l.basic.title} code={CheckboxBasicRaw}>
             <CheckboxBasic />
           </DemoSection>
 
           <DemoSection
-            id="controlled"
-            title={l.controlled.title}
-            code={CheckboxControlledRaw}
-          >
-            <CheckboxControlled />
-          </DemoSection>
-
-          <DemoSection
             id="disabled"
-            title={l.disabled.title}
+            title={l.disabled?.title || "Disabled"}
             code={CheckboxDisabledRaw}
           >
             <CheckboxDisabled />
@@ -243,50 +227,15 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
           >
             <CheckboxVariant />
           </DemoSection>
-
-
         </section>
 
-        <section id="anatomy" className="mt-8 space-y-4">
-          <Title as="h2">{lang.anatomy}</Title>
-          <Anatomy
-            parts={[
-              { id: "anatomy-checkbox", label: l.anatomy.checkbox },
-              { id: "anatomy-item", label: l.anatomy.item },
-    
-            ]}
-          >
-            <Checkbox
-              id="anatomy-checkbox"
-              options={[
-                {
-                  value: "item1",
-                  label: "Item 1",
-                  slotProps: {
-                    label: {
-                      id: "anatomy-item",
-                    },
-                  },
-                },
-                {
-                  value: "item2",
-                  label: "Item 2",
-                },
-              ]}
-      
-             
-            />
-          </Anatomy>
-        </section>
-
-        <section id="docs" className="mt-12 space-y-8">
-          <Title as="h2" className="mb-4">
-            {lang.docs}
+        <section className="mt-12 space-y-8">
+          <Title as="h2" id="api" className="mb-4">
+            {lang.api}
           </Title>
-          <Docs sections={checkboxSections} />
+          <APITable sections={checkboxSections} />
         </section>
 
-        
         <footer className="py-8 border-t mt-8">
           <div className="flex justify-between">
             <Button
@@ -311,18 +260,15 @@ export default function CheckboxPage({ locale = "zh" }: { locale?: string }) {
         </footer>
       </div>
 
-  
       <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-full overflow-y-auto p-4">
         <Anchor>
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
-            <Anchor.Item href="#controlled">{l.controlled.title}</Anchor.Item>
             <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
             <Anchor.Item href="#variant">{l.variants.title}</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
-          <Anchor.Section href="#docs" linkText={lang.docs} />
+          <Anchor.Section href="#api" linkText={lang.api} />
         </Anchor>
       </aside>
     </div>

@@ -6,17 +6,20 @@ const items = [
   {
     value: "item-1",
     label: "Custom Icon",
-    content: "Use the icon prop in function form to customize the expand/collapse icon.",
+    content:
+      "Use the icon prop in function form to customize the expand/collapse icon.",
   },
   {
     value: "item-2",
     label: "Rotation Animation",
-    content: "The icon rotates 45 degrees when expanded, creating a plus-to-x effect.",
+    content:
+      "The icon rotates 45 degrees when expanded, creating a plus-to-x effect.",
   },
   {
     value: "item-3",
     label: "Full Control",
-    content: "Combine with controlled mode to have complete control over component state and behavior.",
+    content:
+      "Combine with controlled mode to have complete control over component state and behavior.",
   },
 ];
 
@@ -29,12 +32,13 @@ export default function AccordionCustomIcon() {
         <Accordion.Item
           key={item.value}
           value={item.value}
-           label={item.label}
-            icon={(open) => (
-              <Plus
-                className={`w-4 h-4 transition-transform ${open ? "rotate-45" : ""}`}
-              />
-            )}
+          label={item.label}
+          icon={(open) => (
+            <Plus
+              data-checked={open}
+              className={"w-4 h-4 transition-transform data-checked:rotate-45"}
+            />
+          )}
         >
           <p>{item.content}</p>
         </Accordion.Item>

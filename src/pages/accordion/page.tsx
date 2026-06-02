@@ -7,7 +7,7 @@ import {
   ShikiCodeBlock,
   Anatomy,
   Button,
-  Docs,
+  APITable,
   Accordion,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
@@ -47,9 +47,7 @@ function DemoSection({
 }) {
   return (
     <section id={id} className="space-y-4 py-4">
-      <div>
-        <Title as="h3">{title}</Title>
-      </div>
+      <Title as="h3">{title}</Title>
       <div className="border rounded-lg p-6 w-full overflow-x-auto">
         {children}
       </div>
@@ -198,15 +196,15 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
           <Description>{lang.accordion.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 ">
-          <Title as="h2" className="mb-4">
+        <section className="mb-8">
+          <Title as="h2" id="installation" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{accordionSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" >
-          <Title as="h2">{lang.examples}</Title>
+        <section>
+          <Title as="h2" id="examples">{lang.examples}</Title>
           <DemoSection
             id="basic"
             title={lang.accordion.basic.title}
@@ -248,8 +246,8 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
         </section>
 
-        <section id="anatomy" className="mt-8 space-y-4">
-          <Title as="h2">{lang.anatomy}</Title>
+        <section className="mt-8 space-y-4">
+          <Title as="h2" id="anatomy">{lang.anatomy}</Title>
           <Anatomy
             className="h-32"
             parts={[
@@ -264,8 +262,8 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
                 label={lang.accordion.basic.title}
                 slotProps={{
                   wrapper: { id: "anatomy-wrapper", className: "p-1" },
-                  content: { id: "anatomy-content", },
-                  trigger: { id: "anatomy-trigger", },
+                  content: { id: "anatomy-content" },
+                  trigger: { id: "anatomy-trigger" },
                 }}
               >
                <p> {lang.accordion.anatomy.content}</p>
@@ -274,11 +272,11 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
           </Anatomy>
         </section>
 
-        <section id="docs" className="mt-12 space-y-4">
-          <Title as="h2" className="mb-4">
-            {lang.docs}
+        <section className="mt-12 space-y-4">
+          <Title as="h2" id="api" className="mb-4">
+            {lang.api}
           </Title>
-          <Docs sections={accordionSections} />
+          <APITable sections={accordionSections} />
         </section>
 
         <footer className="py-8 border-t mt-8">
@@ -324,7 +322,7 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
             </Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
-          <Anchor.Section href="#docs" linkText={lang.docs} />
+          <Anchor.Section href="#api" linkText={lang.api} />
         </Anchor>
       </aside>
     </div>

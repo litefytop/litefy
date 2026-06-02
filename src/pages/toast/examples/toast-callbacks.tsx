@@ -9,11 +9,11 @@ export default function ToastWithCallbacks() {
             title: "Check callbacks in console",
             onClose: (event) => {
               if (event.type === "auto") {
-                console.log("‚è∞ Auto closed");
+                console.log("‚è?Auto closed");
               } else if (event.type === "manual") {
                 console.log("üëÜ Manually closed");
               } else if (event.type === "complete") {
-                console.log("‚úÖ Close complete");
+                console.log("‚ú?Close complete");
               }
             },
           })

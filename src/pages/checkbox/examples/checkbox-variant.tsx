@@ -1,44 +1,52 @@
+import { useState } from "react";
 import { Checkbox } from "@/component";
-import { CheckIcon, Square } from "lucide-react";
 
 export default function CheckboxVariant() {
-  const items = [
-    { value: "a", label: "toggle A" },
-    { value: "b", label: "toggle B" },
-    { value: "c", label: "toggle C" },
-  ];
+  const [toggleChecked, setToggleChecked] = useState(false);
 
   return (
-    <div className="flex flex-col  gap-4">
-      <Checkbox
-        options={items}
-        defaultValue={["a"]}
-        className="*:first:rounded-l-full *:last:rounded-r-full"
-        slotProps={{
-          options: {
-            variant: "toggle",
-            indicator: () => null,
-          },
-        }}
-      />
-      <Checkbox
-        options={items}
-        defaultValue={["a"]}
-        slotProps={{
-          options: {
-            variant: "checkbox",
-            indicator: (checked) =>
-              checked ? (
-                <CheckIcon
-                  size={16}
-                  className={`bg-primary text-primary-foreground  ${Checkbox.IndicatorClass}`}
-                />
-              ) : (
-                <Square size={16} className={`text-secondary-foreground  ${Checkbox.IndicatorClass}`} />
-              ),
-          },
-        }}
-      />
+    <div className="space-y-6">
+      <div>
+        <p className="text-sm text-muted-foreground mb-2">
+          Checkbox (default)
+        </p>
+        <Checkbox.Group defaultValue={["a"]}>
+          <Checkbox value="a" label="Option A" />
+          <Checkbox value="b" label="Option B" />
+          <Checkbox value="c" label="Option C" />
+        </Checkbox.Group>
+      </div>
+
+      <div>
+        <p className="text-sm text-muted-foreground mb-2">Toggle</p>
+        <Checkbox
+          variant="toggle"
+          checked={toggleChecked}
+          onValueChange={setToggleChecked}
+          label={`Toggle: ${toggleChecked ? "On" : "Off"}`}
+        />
+      </div>
+
+      <div>
+        <p className="text-sm text-muted-foreground mb-2">Toggle Group</p>
+        <Checkbox.Group defaultValue={["wifi"]}>
+          <Checkbox
+            variant="toggle"
+            value="wifi"
+            label="WiFi"
+          />
+          <Checkbox
+            variant="toggle"
+            value="bluetooth"
+            label="Bluetooth"
+          />
+          <Checkbox
+            variant="toggle"
+            value="airplane"
+            label="Airplane Mode"
+          />
+        </Checkbox.Group>
+      </div>
     </div>
   );
 }

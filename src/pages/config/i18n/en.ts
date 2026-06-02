@@ -27,7 +27,7 @@ export const en = {
   examples: "Examples",
   anatomy: "Anatomy",
   docs: "Docs",
-  api: "API",
+  api: "API Reference",
   cssClasses: "CSS Classes",
   usage: "Usage",
   demo: "Demo",
@@ -238,6 +238,14 @@ export const en = {
         link: "Link `<a>` tag props",
       },
     },
+    usageNotes: {
+      title: "Anchor Mounting Guidelines",
+      description: "Anchors should be mounted on title elements rather than parent containers to avoid always observing the parent container, which can cause activation state issues.",
+      points: {
+        sameLevel: "It is recommended to mount anchor targets at the same level as titles for a clear structure.",
+        discontinuous: "Mounting on parent containers is acceptable if you can tolerate discontinuous anchor activation areas.",
+      },
+    },
   },
 
   button: {
@@ -360,45 +368,38 @@ export const en = {
     disabled: {
       title: "Disabled",
     },
-
     variants: {
       title: "Variants",
     },
-
     anatomy: {
       checkbox: "Checkbox",
-
-      item: "Label and Indicator",
+      label: "Label",
+      indicator: "Indicator",
     },
     api: {
       sectionTitles: {
         checkboxProps: "Checkbox Props",
-        checkboxItemProps: "Checkbox.Item Props",
-        slotPropsConfig: "slotProps Config",
-        slotProps: "slotProps Config",
+        checkboxGroupProps: "Checkbox.Group Props",
       },
       props: {
-        value: "Selected values (controlled mode)",
-        defaultValue: "Initial selected values (uncontrolled mode)",
-        onValueChange:
-          "Value change callback, can return { invalid?: string } to trigger invalid state",
-        invalid: "Invalid state",
+        checked: "Checked state (controlled mode)",
+        onValueChange: "Checked state change callback",
+        value: "Unique identifier (required for group usage)",
+        label: "Label text",
+        disabled: "Whether disabled",
+        variant: 'Style variant ("checkbox" | "toggle")',
+        indicator: "Custom indicator renderer function",
+        name: "Form field name",
+        className: "Custom class name",
+      },
+      groupProps: {
+        defaultValue: "Initial selected values array (uncontrolled mode)",
+        value: "Current selected values array (controlled mode)",
+        onValueChange: "Value change callback",
         disabled: "Whether to disable entire group",
         name: "Form field name",
-        slotProps: "Internal element props passthrough config",
-        options: "Options array for rendering multiple checkboxes",
-      },
-      item: {
-        value: "Checkbox value (required)",
-        onCheckedChange: "Checked state change callback",
-        disabled: "Whether disabled",
-        variant: "Style variant",
-        indicator: "Indicator config",
-        slotProps: "Internal element props passthrough config",
-      },
-
-      slotProps: {
-        options: "Option item `<button>` element props",
+        invalid: "Invalid state",
+        className: "Custom class name",
       },
     },
   },
@@ -440,9 +441,7 @@ export const en = {
     async: {
       title: "Async Search",
     },
-    withForm: {
-      title: "With Form",
-    },
+
     disabled: {
       title: "Disabled & Invalid",
     },

@@ -2,47 +2,30 @@ import { Checkbox } from "@/component";
 
 export default function CheckboxDisabled() {
   return (
-    <div>
+    <div className="space-y-6">
       <div>
-        <label className="text-sm font-medium text-foreground">
-          Checkbox Disabled
-        </label>
-        <Checkbox disabled options={[
-          {
-            value: "apple",
-            label: "Apple",
-          },
-          {
-            value: "banana",
-            label: "Banana",
-          },
-          {
-            value: "orange",
-            label: "Orange",
-          },
-        ]}/>
-          
+        <p className="text-sm text-muted-foreground mb-2">Item Disabled</p>
+        <Checkbox disabled label="Disabled Checkbox" />
       </div>
+
       <div>
-        <label className="text-sm font-medium text-foreground">
-          Checkbox Item Disabled
-        </label>
-        <Checkbox  options={[
-          {
-            value: "apple",
-            label: "Apple",
-            disabled: true,
-          },
-          {
-            value: "banana",
-            label: "Banana",
-          },
-          {
-            value: "orange",
-            label: "Orange",
-          },
-        ]} />
-         
+        <p className="text-sm text-muted-foreground mb-2">Group Disabled</p>
+        <Checkbox.Group disabled>
+          <Checkbox value="apple" label="Apple" />
+          <Checkbox value="banana" label="Banana" />
+          <Checkbox value="orange" label="Orange" />
+        </Checkbox.Group>
+      </div>
+
+      <div>
+        <p className="text-sm text-muted-foreground mb-2">
+          Group Disabled with Item Override
+        </p>
+        <Checkbox.Group disabled>
+          <Checkbox value="apple" label="Apple" />
+          <Checkbox value="banana" label="Banana (Still Disabled)" />
+          <Checkbox value="orange" label="Orange" />
+        </Checkbox.Group>
       </div>
     </div>
   );

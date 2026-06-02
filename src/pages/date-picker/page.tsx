@@ -7,7 +7,7 @@ import {
   ShikiCodeBlock,
 
   Button,
-  Docs,
+  APITable,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
@@ -132,15 +132,15 @@ export default function DatePickerPage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 ">
-          <Title as="h2" className="mb-4">
+        <section className="mb-8">
+          <Title as="h2" id="installation" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{datePickerSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" >
-          <Title as="h2">{lang.examples}</Title>
+        <section>
+          <Title as="h2" id="examples">{lang.examples}</Title>
 
           <DemoSection
             id="basic"
@@ -165,11 +165,11 @@ export default function DatePickerPage({ locale = "zh" }: { locale?: string }) {
 
 
 
-        <section id="docs" className="mt-12 space-y-8">
-          <Title as="h2" className="mb-4">
-            {lang.docs}
+        <section className="mt-12 space-y-8">
+          <Title as="h2" id="api" className="mb-4">
+            {lang.api}
           </Title>
-          <Docs sections={datePickerSections} />
+          <APITable sections={datePickerSections} />
         </section>
 
         <section id="value-format" className="mt-8 space-y-4">
@@ -252,8 +252,8 @@ export default function DatePickerPage({ locale = "zh" }: { locale?: string }) {
             <Anchor.Item href="#type">{l.type.title}</Anchor.Item>
             <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
-          <Anchor.Section href="#docs" linkText={lang.docs} />
+          <Anchor.Section href="#api" linkText={lang.api} />
+          <Anchor.Section href="#value-format" linkText={l.valueNote} />
         </Anchor>
       </aside>
     </div>

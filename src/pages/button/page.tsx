@@ -6,7 +6,7 @@ import {
   Description,
   ShikiCodeBlock,
   Button,
-  Docs,
+  APITable,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
@@ -152,15 +152,15 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 ">
-          <Title as="h2" className="mb-4">
+        <section className="mb-8">
+          <Title as="h2" id="installation" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{buttonSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" >
-          <Title as="h2">{lang.examples}</Title>
+        <section>
+          <Title as="h2" id="examples">{lang.examples}</Title>
 
           <DemoSection
             id="variants"
@@ -203,11 +203,11 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
         </section>
 
-        <section id="docs" className="mt-12 space-y-8">
-          <Title as="h2" className="mb-4">
-            {lang.docs}
+        <section className="mt-12 space-y-8">
+          <Title as="h2" id="api" className="mb-4">
+            {lang.api}
           </Title>
-          <Docs sections={buttonSections} />
+          <APITable sections={buttonSections} />
         </section>
         
         <footer className="py-8 border-t mt-8">
@@ -244,7 +244,7 @@ export default function ButtonPage({ locale = "zh" }: { locale?: string }) {
             <Anchor.Item href="#icon-only">{l.iconOnly.title}</Anchor.Item>
             <Anchor.Item href="#with-icons">{l.withIcons.title}</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#docs" linkText={lang.docs} />
+          <Anchor.Section href="#api" linkText={lang.api} />
         </Anchor>
       </aside>
     </div>

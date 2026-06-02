@@ -8,7 +8,7 @@ import {
   ShikiCodeBlock,
   Anatomy,
   Button,
-  Docs,
+  APITable,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
@@ -289,7 +289,7 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
-          <Docs sections={radioSections} />
+          <APITable sections={radioSections} />
         </section>
         
         <footer className="py-8 border-t mt-8">

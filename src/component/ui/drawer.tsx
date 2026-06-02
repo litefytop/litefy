@@ -42,7 +42,6 @@ const Drawer = React.forwardRef<DrawerRef, DrawerProps>(
     const drawerRef = React.useRef<HTMLDivElement>(null);
     const previousFocusRef = React.useRef<HTMLElement | null>(null);
 
-    // 获取抽屉内所有可聚焦元素
     const getFocusableElements = () => {
       if (!drawerRef.current) return [];
       const focusableSelectors = [
@@ -55,10 +54,10 @@ const Drawer = React.forwardRef<DrawerRef, DrawerProps>(
       ];
       return Array.from(
         drawerRef.current.querySelectorAll<HTMLElement>(focusableSelectors.join(','))
-      ).filter(el => el.offsetParent !== null); // 过滤隐藏元素
+      ).filter(el => el.offsetParent !== null);
     };
 
-    // 焦点陷阱：Tab 键循环
+
     const handleKeyDown = (e: React.KeyboardEvent) => {
       if (e.key !== 'Tab') return;
       const focusable = getFocusableElements();
@@ -71,13 +70,11 @@ const Drawer = React.forwardRef<DrawerRef, DrawerProps>(
       const active = document.activeElement;
 
       if (e.shiftKey) {
-        // Shift + Tab: 如果焦点在第一个，则移到最后一个
         if (active === first || !drawerRef.current?.contains(active as Node)) {
           e.preventDefault();
           last.focus();
         }
       } else {
-        // Tab: 如果焦点在最后一个，则移到第一个
         if (active === last || !drawerRef.current?.contains(active as Node)) {
           e.preventDefault();
           first.focus();
@@ -96,11 +93,9 @@ const Drawer = React.forwardRef<DrawerRef, DrawerProps>(
       },
     }));
 
-    // 打开时保存原焦点，并聚焦到第一个可聚焦元素；关闭时恢复
     React.useEffect(() => {
       if (open) {
         previousFocusRef.current = document.activeElement as HTMLElement;
-        // 延迟确保 DOM 已渲染
         const timer = setTimeout(() => {
           const focusable = getFocusableElements();
           if (focusable.length > 0) {
@@ -116,7 +111,6 @@ const Drawer = React.forwardRef<DrawerRef, DrawerProps>(
       }
     }, [open]);
 
-    // ESC 关闭
     React.useEffect(() => {
       if (!open) return;
       const handleEsc = (e: KeyboardEvent) => {
@@ -149,7 +143,7 @@ const Drawer = React.forwardRef<DrawerRef, DrawerProps>(
           aria-labelledby={ariaLabelledby}
           tabIndex={-1}
           onClick={handleContentClick}
-          onKeyDown={handleKeyDown} // 焦点陷阱
+          onKeyDown={handleKeyDown} 
           className={cn(
             drawerClass[placement],
             "fixed bg-background p-6 overflow-auto focus:outline-none",

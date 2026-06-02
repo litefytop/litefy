@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { cn, ClassNameValue } from "@/lib/utils";
 import { ChevronDown, X } from "lucide-react";
-
-
 
 export type ComboboxChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
@@ -23,6 +22,7 @@ export type ComboboxProps = {
   className?: ClassNameValue;
   debounceMs?: number;
   maxHeight?: number;
+  loadingText?: string;
   slotProps?: {
     container?: React.HTMLAttributes<HTMLDivElement>;
     input?: React.InputHTMLAttributes<HTMLInputElement>;
@@ -48,6 +48,7 @@ export function Combobox({
   className,
   debounceMs = 300,
   maxHeight = 256,
+  loadingText = "Loading...",
   slotProps,
 }: ComboboxProps) {
   const [internalValue, setInternalValue] = useState(defaultValue);
@@ -55,11 +56,23 @@ export function Combobox({
   const [isOpen, setIsOpen] = useState(false);
   const [highlightIndex, setHighlightIndex] = useState(-1);
   const [isLoading, setIsLoading] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
   const inputRef = useRef<HTMLInputElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLUListElement>(null);
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
   const inputValue = controlledValue !== undefined ? controlledValue : internalValue;
+
+  const updateDropdownPosition = useCallback(() => {
+    if (!triggerRef.current) return;
+    const rect = triggerRef.current.getBoundingClientRect();
+    setDropdownPosition({
+      top: rect.bottom + 4,
+      left: rect.left,
+    });
+  }, []);
 
   const updateSuggestions = useCallback(
     async (input: string) => {
@@ -98,6 +111,21 @@ export function Combobox({
       }, debounceMs);
     }
   };
+
+  const handleFocus = useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      if (disabled) return;
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current);
+        debounceTimer.current = null;
+      }
+      setIsOpen(true);
+      setHighlightIndex(-1);
+      updateSuggestions(inputValue);
+      slotProps?.input?.onFocus?.(e);
+    },
+    [disabled, inputValue, updateSuggestions, slotProps?.input]
+  );
 
   const handleSelect = (option: string) => {
     if (controlledValue === undefined) setInternalValue(option);
@@ -166,7 +194,10 @@ export function Combobox({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      const isOutsideContainer = containerRef.current && !containerRef.current.contains(target);
+      const isOutsideDropdown = dropdownRef.current && !dropdownRef.current.contains(target);
+      if (isOutsideContainer && isOutsideDropdown) {
         setIsOpen(false);
         setHighlightIndex(-1);
       }
@@ -175,7 +206,58 @@ export function Combobox({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    updateDropdownPosition();
+    const handleScrollOrResize = () => updateDropdownPosition();
+    window.addEventListener("scroll", handleScrollOrResize, true);
+    window.addEventListener("resize", handleScrollOrResize);
+    return () => {
+      window.removeEventListener("scroll", handleScrollOrResize, true);
+      window.removeEventListener("resize", handleScrollOrResize);
+    };
+  }, [isOpen, updateDropdownPosition]);
+
   const showClear = clearable && inputValue.length > 0;
+  const shouldShowList = isOpen && (suggestions.length > 0 || isLoading);
+
+  const dropdownContent = (
+    <ul
+      ref={dropdownRef}
+      id="combobox-list"
+      role="listbox"
+      data-open={shouldShowList}
+      className={cn(
+        "fixed z-50 w-3xs rounded-md border border-input bg-background shadow-lg",
+        "max-h-64 overflow-auto data-[open=false]:hidden",
+        slotProps?.list?.className
+      )}
+      style={{ top: dropdownPosition.top, left: dropdownPosition.left, maxHeight }}
+      {...slotProps?.list}
+    >
+      {isLoading ? (
+        <li className="px-3 py-2 text-sm text-muted-foreground">{loadingText}</li>
+      ) : (
+        suggestions.map((option, idx) => (
+          <li
+            key={option}
+            role="option"
+            aria-selected={idx === highlightIndex}
+            onClick={() => handleSelect(option)}
+            className={cn(
+              "cursor-pointer px-3 py-2 text-sm transition-colors",
+              "hover:bg-accent hover:text-accent-foreground",
+              idx === highlightIndex && "bg-accent text-accent-foreground",
+              slotProps?.option?.className
+            )}
+            {...slotProps?.option}
+          >
+            {option}
+          </li>
+        ))
+      )}
+    </ul>
+  );
 
   return (
     <div
@@ -185,8 +267,9 @@ export function Combobox({
       {...slotProps?.container}
     >
       <div
+        ref={triggerRef}
         className={cn(
-          "flex items-center h-9 w-full rounded-md border border-input bg-background px-3 shadow-xs",
+          "flex items-center h-9 w-3xs rounded-md border border-input bg-background px-3 shadow-xs",
           "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
           "data-invalid:border-destructive data-invalid:ring-destructive/20",
           "disabled:opacity-50 disabled:cursor-not-allowed"
@@ -198,6 +281,7 @@ export function Combobox({
           value={inputValue}
           onChange={handleChange}
           onBlur={onBlur}
+          onFocus={handleFocus}
           onKeyDown={handleKeyDown}
           disabled={disabled}
           placeholder={placeholder}
@@ -244,41 +328,7 @@ export function Combobox({
         </button>
       </div>
 
-      {isOpen && (suggestions.length > 0 || isLoading) && (
-        <ul
-          id="combobox-list"
-          role="listbox"
-          className={cn(
-            "absolute z-50 mt-1 w-full rounded-md border border-input bg-background shadow-lg",
-            "max-h-64 overflow-auto",
-            slotProps?.list?.className
-          )}
-          style={{ maxHeight }}
-          {...slotProps?.list}
-        >
-          {isLoading ? (
-            <li className="px-3 py-2 text-sm text-muted-foreground">Loading...</li>
-          ) : (
-            suggestions.map((option, idx) => (
-              <li
-                key={option}
-                role="option"
-                aria-selected={idx === highlightIndex}
-                onClick={() => handleSelect(option)}
-                className={cn(
-                  "cursor-pointer px-3 py-2 text-sm transition-colors",
-                  "hover:bg-accent hover:text-accent-foreground",
-                  idx === highlightIndex && "bg-accent text-accent-foreground",
-                  slotProps?.option?.className
-                )}
-                {...slotProps?.option}
-              >
-                {option}
-              </li>
-            ))
-          )}
-        </ul>
-      )}
+      {typeof document !== "undefined" && createPortal(dropdownContent, document.body)}
     </div>
   );
 }

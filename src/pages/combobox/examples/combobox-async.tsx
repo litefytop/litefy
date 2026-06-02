@@ -2,7 +2,6 @@ import { Combobox } from "@/component";
 
 export default function ComboboxAsync() {
   const fetchOptions = async (input: string) => {
-    // Simulate API call with Promise
     await new Promise((resolve) => setTimeout(resolve, 500));
     
     const allOptions = [
@@ -16,6 +15,16 @@ export default function ComboboxAsync() {
       "Spain",
       "Canada",
       "Australia",
+      "Brazil",
+      "Mexico",
+      "India",
+      "South Korea",
+      "Netherlands",
+      "Sweden",
+      "Norway",
+      "Denmark",
+      "Finland",
+      "Poland",
     ];
 
     return allOptions.filter((opt) =>
@@ -24,12 +33,17 @@ export default function ComboboxAsync() {
   };
 
   return (
-    <div className="max-w-sm h-64">
+    <div className="max-w-sm h-64 ">
       <Combobox
         fetchOptions={fetchOptions}
-        placeholder="Search countries..."
+        placeholder="Search countries (type to filter)..."
         debounceMs={500}
       />
+      <p className="text-xs text-muted-foreground mt-2">
+        Type to search: China, USA, Japan, Germany, France, United Kingdom,
+        Italy, Spain, Canada, Australia, Brazil, Mexico, India, South Korea,
+        Netherlands, Sweden, Norway, Denmark, Finland, Poland
+      </p>
     </div>
   );
 }

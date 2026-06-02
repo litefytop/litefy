@@ -10,7 +10,6 @@ export default function CarouselBasic() {
       <Carousel
         activeIndex={activeIndex}
         onChange={(index) => setActiveIndex(index)}
-        className="w-full"
       >
         <div className="h-48 flex items-center justify-center bg-primary/10 rounded-lg">
           <span className="text-2xl font-bold">Slide 1</span>

@@ -8,7 +8,7 @@ import {
   ShikiCodeBlock,
   Anatomy,
   Button,
-  Docs,
+  APITable,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
@@ -222,7 +222,7 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
           >
             <Password
               data-anatomy-name="input"
-              placeholder="请输入密码"
+              placeholder="请输入密�?
               slotProps={{
                 toggle: { "data-anatomy-name": "toggle" },
                 group: { "data-anatomy-name": "group" },
@@ -235,7 +235,7 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
-          <Docs sections={passwordSections} />
+          <APITable sections={passwordSections} />
         </section>
         
         <footer className="py-8 border-t mt-8">

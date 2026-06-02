@@ -12,7 +12,6 @@ export default function CarouselLoop() {
         activeIndex={activeIndex}
         onChange={(index) => setActiveIndex(index)}
         loop
-        className="w-full"
       >
         {Array.from({ length: totalSlides }, (_, i) => (
           <div

@@ -6,7 +6,7 @@ import {
   Description,
   ShikiCodeBlock,
   Button,
-  Docs,
+  APITable,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
@@ -271,7 +271,7 @@ export default function FormPage({ locale = "zh" }: { locale?: string }) {
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
-          <Docs sections={formSections} />
+          <APITable sections={formSections} />
         </section>
         
         <footer className="py-8 border-t mt-8">

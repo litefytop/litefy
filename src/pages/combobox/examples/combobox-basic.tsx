@@ -2,7 +2,7 @@ import { Combobox } from "@/component";
 
 export default function ComboboxBasic() {
   return (
-    <div className="max-w-sm h-64">
+    <div className="max-w-sm">
       <Combobox
         options={[
           "China",
@@ -11,9 +11,17 @@ export default function ComboboxBasic() {
           "Germany",
           "France",
           "United Kingdom",
+          "Italy",
+          "Spain",
+          "Canada",
+          "Australia",
         ]}
-        placeholder="Select your country..."
+        placeholder="Select or search country..."
       />
+      <p className="text-xs text-muted-foreground mt-2">
+        Options: China, USA, Japan, Germany, France, United Kingdom, Italy,
+        Spain, Canada, Australia
+      </p>
     </div>
   );
 }

@@ -1,72 +1,75 @@
-import { ReactNode, useId, useRef, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useId,
+  useRef,
+  useState,
+} from "react";
 import { cn, ClassNameValue } from "@/lib";
 import { ComponentProps } from "react";
 
-type HTMLAttrs<T> = T & {
-  [key: `data-${string}`]: string | number | true | null | undefined;
+type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
+  [key: `data-${string}`]: string | number | boolean | null | undefined;
   className?: ClassNameValue;
 };
 
 const checkboxClass = {
   toggle:
-    "bg-input text-input-foreground border-y border-r first:border-l has-focus-visible:ring-2 has-focus-visible:ring-ring has-focus-visible:ring-offset-2 has-focus-visible:outline-none  has-checked:bg-primary has-checked:text-primary-foreground  group-data-invalid:text-destructive group-data-invalid:has-checked:bg-destructive group-data-invalid:accent-destructive group-data-invalid:ring-destructive",
+    "bg-input text-input-foreground border-y border-r first:border-l has-focus-visible:ring-2 has-focus-visible:ring-ring has-focus-visible:ring-offset-2 has-focus-visible:outline-none has-checked:bg-primary has-checked:text-primary-foreground group-data-invalid:text-destructive group-data-invalid:has-checked:bg-destructive group-data-invalid:accent-destructive group-data-invalid:ring-destructive",
   checkbox:
     "group-data-invalid:text-destructive group-data-invalid:accent-destructive",
 };
 
-export type CheckboxProps<T extends string> = {
-  invalid?: boolean;
+type CheckboxGroupContextValue = {
+  selected: Set<string>;
+  toggleValue: (v: string) => void;
+  disabled?: boolean;
+  name?: string;
+};
+const CheckboxGroupContext = createContext<CheckboxGroupContextValue | null>(
+  null,
+);
+
+export type CheckboxGroupProps<T extends string> = {
   defaultValue?: T[];
   value?: T[];
   onValueChange?: (value: T[]) => void;
-  slotProps?: {
-    options?: HTMLAttrs<
-      Omit<
-        CheckboxItemProps,
-        "checked" | "value" | "span" | "onValueChange" | "label"
-      > & { label?: ReactNode }
-    >;
-  };
-  options: Omit<CheckboxItemProps, "checked" | "onValueChange">[];
-  className?: ClassNameValue;
-  name?: string;
+  invalid?: boolean;
   disabled?: boolean;
-} & Omit<
-  ComponentProps<"div">,
-  "value" | "checked" | "children" | "className" | "type" | "style"
->;
+  name?: string;
+  className?: ClassNameValue;
+  children?: ReactNode;
+} & Omit<React.ComponentProps<"div">, "className">;
 
-export function Checkbox<T extends string>({
+function CheckboxGroup<T extends string>({
   defaultValue = [],
-  value: controlledValues,
+  value: controlledValue,
   onValueChange,
   disabled,
   name,
-  onBlur,
-  slotProps,
-  options,
   invalid,
   className,
+  children,
   ...props
-}: CheckboxProps<T>) {
+}: CheckboxGroupProps<T>) {
   const groupRef = useRef<HTMLDivElement>(null);
-  const [internalValues, setInternalValues] = useState<T[]>(defaultValue);
+  const [innerValue, setInnerValue] = useState<T[]>(defaultValue);
 
-  const selectedValues = controlledValues ?? internalValues;
+  const selectedArr = controlledValue ?? innerValue;
+  const selectedSet = new Set(selectedArr);
 
-  const setValue = (value: string) => {
-    const newValues = selectedValues.includes(value as T)
-      ? selectedValues.filter((v) => v !== value)
-      : [...selectedValues, value as T];
+  const toggleValue = (val: string) => {
+    const next = selectedSet.has(val as T)
+      ? selectedArr.filter((item) => item !== val)
+      : [...selectedArr, val];
 
-    if (controlledValues === undefined) {
-      setInternalValues(newValues);
-    }
-    onValueChange?.(newValues);
+    if (controlledValue === undefined) setInnerValue(next as T[]);
+    onValueChange?.(next as T[]);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    const allowedKeys = [
+    const allowKeys = [
       "ArrowRight",
       "ArrowDown",
       "ArrowLeft",
@@ -74,140 +77,154 @@ export function Checkbox<T extends string>({
       "Home",
       "End",
     ];
-    if (!allowedKeys.includes(e.key)) return;
-    if (!groupRef.current?.contains(document.activeElement)) return;
+    if (
+      !allowKeys.includes(e.key) ||
+      !groupRef.current?.contains(document.activeElement)
+    )
+      return;
 
-    const enabledOptions = options.filter((opt) => !opt.disabled);
-    if (!enabledOptions.length) return;
-
-    const activeOption = enabledOptions.find(
-      (opt) =>
-        groupRef.current?.querySelector(
-          `input[type="checkbox"][value="${CSS.escape(opt.value)}"]`,
-        ) === document.activeElement,
+    const inputs = Array.from(
+      groupRef.current.querySelectorAll<HTMLInputElement>(
+        "input[type='checkbox']:not(:disabled)",
+      ),
     );
-    if (!activeOption) return;
+    if (!inputs.length) return;
 
-    const currentIndex = enabledOptions.indexOf(activeOption);
-    let targetIndex: number;
-    const len = enabledOptions.length;
+    const curIdx = inputs.findIndex((el) => el === document.activeElement);
+    if (curIdx === -1) return;
+    const len = inputs.length;
+    let targetIdx = curIdx;
 
     switch (e.key) {
       case "ArrowRight":
       case "ArrowDown":
-        targetIndex = (currentIndex + 1) % len;
+        targetIdx = (curIdx + 1) % len;
         break;
       case "ArrowLeft":
       case "ArrowUp":
-        targetIndex = (currentIndex - 1 + len) % len;
+        targetIdx = (curIdx - 1 + len) % len;
         break;
       case "Home":
-        targetIndex = 0;
+        targetIdx = 0;
         break;
       case "End":
-        targetIndex = len - 1;
+        targetIdx = len - 1;
         break;
       default:
         return;
     }
-
     e.preventDefault();
-    const targetOption = enabledOptions[targetIndex];
-    (
-      groupRef.current?.querySelector(
-        `input[type="checkbox"][value="${CSS.escape(targetOption.value)}"]`,
-      ) as HTMLInputElement | null
-    )?.focus();
+    inputs[targetIdx].focus();
+  };
+
+  const ctx = {
+    selected: selectedSet,
+    toggleValue,
+    disabled,
+    name,
   };
 
   return (
     <div
       {...props}
-      role="group"
       ref={groupRef}
+      role="group"
       inert={disabled}
       onKeyDown={handleKeyDown}
-      data-invalid={invalid ? true : undefined}
+      data-invalid={invalid || undefined}
       aria-invalid={invalid}
-      className={cn("flex group inert:cursor-not-allowed inert:opacity-50 ", className)}
+      className={cn(
+        "flex group inert:cursor-not-allowed inert:opacity-50",
+        className,
+      )}
     >
-      {options.map((option) => (
-        <CheckboxItem
-          {...slotProps?.options}
-          {...option}
-          disabled={disabled || option.disabled}
-          checked={selectedValues.includes(option.value as T)}
-          key={option.value}
-          onValueChange={setValue}
-          name={name}
-          onBlur={onBlur}
-        />
-      ))}
+      <CheckboxGroupContext.Provider value={ctx as CheckboxGroupContextValue}>
+        {children}
+      </CheckboxGroupContext.Provider>
     </div>
   );
 }
 
-export type CheckboxItemProps = {
-  checked: boolean;
-  value: string;
+export type CheckboxProps = {
+  checked?: boolean;
+  onValueChange?: (checked: boolean) => void;
+  value?: string;
   label: ReactNode;
-  onValueChange?: (value: string) => void;
   disabled?: boolean;
   variant?: keyof typeof checkboxClass;
   indicator?: (checked: boolean) => ReactNode;
   name?: string;
-  onBlur?: React.FocusEventHandler<HTMLInputElement>;
-  slotProps?: {
-    label?: Omit<ComponentProps<"label">, "children">;
-  };
-} & Omit<ComponentProps<"input">, "children" | "className">;
+} & HTMLAttrs<ComponentProps<"input">>;
 
-const CheckboxItem = ({
+export const Checkbox = ({
   value,
   variant = "checkbox",
   indicator,
-  onValueChange,
   checked,
-  disabled,
-  name,
-  onBlur,
+  onValueChange,
+  disabled: itemDisabled,
+  name: itemName,
   label,
-  slotProps,
-  ...props
-}: CheckboxItemProps) => {
-  const handleChange = () => onValueChange?.(value);
+  className,
+  style,
+  ...restInputProps
+}: CheckboxProps) => {
+  const ctx = useContext(CheckboxGroupContext);
   const inputId = useId();
+  const [innerChecked, setInnerChecked] = useState(false);
+
+  let isChecked: boolean;
+  if (ctx && value) {
+    isChecked = ctx.selected.has(value);
+  } else if (checked !== undefined) {
+    isChecked = checked;
+  } else {
+    isChecked = innerChecked;
+  }
+
+
+  const finalName = itemName ?? ctx?.name;
+  const finalDisabled = ctx?.disabled || itemDisabled;
+
+  const handleChange = () => {
+    if (ctx && value) {
+      ctx.toggleValue(value);
+      return;
+    }
+    const next = !isChecked;
+    if (checked === undefined) setInnerChecked(next);
+    onValueChange?.(next);
+  };
 
   return (
     <label
-      {...slotProps?.label}
       htmlFor={inputId}
+      style={style}
       className={cn(
         "inline-flex items-center justify-center gap-2 shrink-0 h-9 min-w-9 px-3 py-1 cursor-pointer select-none relative has-disabled:cursor-not-allowed has-disabled:opacity-50",
+        "has-focus-visible:[&>*:first-child]:ring-2 has-focus-visible:[&>*:first-child]:ring-ring has-focus-visible:[&>*:first-child]:ring-offset-2 has-focus-visible:[&>*:first-child]:outline-none",
         checkboxClass[variant],
-        slotProps?.label?.className,
+        className,
       )}
     >
+      {indicator?.(isChecked)}
       <input
-        {...props}
+        {...restInputProps}
         type="checkbox"
         id={inputId}
         value={value}
-        name={name}
-        checked={checked}
-        disabled={disabled}
+        name={finalName}
+        checked={isChecked}
+        disabled={finalDisabled}
         onChange={handleChange}
-        onBlur={onBlur}
-        data-hidden={indicator?.(checked) === undefined ? undefined : true}
+        data-hidden={Boolean(indicator) || variant === "toggle" || undefined}
         className={cn(
           "accent-accent group-data-invalid:accent-destructive data-hidden:sr-only peer",
         )}
       />
-
-      {indicator?.(checked)}
       {label}
     </label>
   );
 };
 
-Checkbox.IndicatorClass = "peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:outline-none peer-focus-visible:ring-offset-2";
+Checkbox.Group = CheckboxGroup;

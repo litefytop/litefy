@@ -4,7 +4,7 @@ export function TextareaDisabled() {
   return (
     <Textarea
 
-      defaultValue="这是一个禁用的文本域"
+      defaultValue="This is a disabled textarea"
       disabled
  
     />

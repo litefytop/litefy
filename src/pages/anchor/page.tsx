@@ -7,7 +7,7 @@ import {
   ShikiCodeBlock,
   Anatomy,
   Button,
-  Docs,
+  APITable,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages";
@@ -34,7 +34,6 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
   const anchorSections = [
     {
       title: l.api.sectionTitles.anchorProps,
-
       data: [
         {
           props: "className",
@@ -58,7 +57,6 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
     },
     {
       title: l.api.sectionTitles.anchorSectionProps,
-
       data: [
         {
           props: "href",
@@ -84,9 +82,8 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
         },
       ],
     },
-     {
+    {
       title: l.api.sectionTitles.sectionSlotPropsConfig,
-
       data: [
         {
           props: "wrapper",
@@ -109,7 +106,6 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
     },
     {
       title: l.api.sectionTitles.anchorItemProps,
-
       data: [
         {
           props: "href",
@@ -127,7 +123,6 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
     },
     {
       title: l.api.sectionTitles.itemSlotPropsConfig,
-
       data: [
         {
           props: "link",
@@ -186,25 +181,41 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8">
-          <Title as="h2" className="mb-4">
+        <section className="mb-8">
+          <Title as="h2" id="installation" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{anchorSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples">
-          <Title as="h2">{lang.examples}</Title>
-          <section id="controlled" className="space-y-4 py-4">
+        <section>
+          <Title as="h2" id="examples">
+            {lang.examples}
+          </Title>
+          <section className="space-y-4 py-4">
             <div className="border rounded-lg p-6 w-full overflow-x-auto h-[600px]">
               <AnchorBasic />
             </div>
             <ShikiCodeBlock>{AnchorBasicRaw}</ShikiCodeBlock>
           </section>
+          <div className="mt-6 p-4 bg-muted rounded-lg">
+            <Title as="h3" className="mb-2 text-lg">
+              {l.usageNotes.title}
+            </Title>
+            <p className="text-muted-foreground mb-2">
+              {l.usageNotes.description}
+            </p>
+            <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+              <li>{l.usageNotes.points.sameLevel}</li>
+              <li>{l.usageNotes.points.discontinuous}</li>
+            </ul>
+          </div>
         </section>
 
-        <section id="anatomy" className="mt-8 space-y-4">
-          <Title as="h2">{lang.anatomy}</Title>
+        <section className="mt-8 space-y-4">
+          <Title as="h2" id="anatomy">
+            {lang.anatomy}
+          </Title>
 
           <Anatomy
             parts={[
@@ -228,8 +239,9 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
               },
             ]}
           >
-            <Anchor className="max-w-xs" id="anatomy-anchor" inert>
+            <Anchor className="max-w-xs" inert>
               <Anchor.Section
+                href="#section1"
                 linkText="section 1"
                 slotProps={{
                   wrapper: {
@@ -266,11 +278,11 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
           </Anatomy>
         </section>
 
-        <section id="docs" className="mt-12 space-y-8">
-          <Title as="h2" className="mb-4">
-            {lang.docs}
+        <section id="api" className="mt-12 space-y-8">
+          <Title as="h2"  className="mb-4">
+            {lang.api}
           </Title>
-          <Docs sections={anchorSections} />
+          <APITable sections={anchorSections} />
         </section>
 
         <footer className="py-8 border-t mt-8">
@@ -300,10 +312,9 @@ export default function AnchorPage({ locale = "zh" }: { locale?: string }) {
       <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-full overflow-y-auto p-4">
         <Anchor>
           <Anchor.Section href="#installation" linkText={lang.installation} />
-
           <Anchor.Section href="#examples" linkText={lang.examples} />
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
-          <Anchor.Section href="#docs" linkText={lang.docs} />
+          <Anchor.Section href="#api" linkText={lang.api} />
         </Anchor>
       </aside>
     </div>

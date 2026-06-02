@@ -85,18 +85,43 @@ function App() {
 
 ## Notes
 
+### Anchor Mounting Guidelines
+
+**Best Practice:** Mount anchor targets on title elements rather than parent containers.
+
+```tsx
+// ✅ Recommended: Mount on title
+<section>
+  <h2 id="installation">Installation</h2>
+  <p>Content here...</p>
+</section>
+
+// ❌ Avoid: Mount on parent container (will always be observed)
+<section id="installation">
+  <h2>Installation</h2>
+  <p>Content here...</p>
+</section>
+```
+
+**Why?** When mounted on parent containers, the IntersectionObserver will continuously observe the entire parent section, potentially causing activation state issues. Mounting on titles provides more precise activation points.
+
+**Alternative:** If you can tolerate discontinuous anchor activation areas, mounting on parent containers is acceptable.
+
 ### Smooth Scrolling & Offset
 
 When using Anchor component for page navigation, ensure target elements have proper scroll offset to avoid being covered by the fixed header:
 
 ```tsx
-<section id="installation" >
-  {/*  = 120px offset for header */}
+<section>
+  <h2 id="installation" className="scroll-mt-32">
+    Installation
+  </h2>
+  {/* = 120px offset for header */}
 </section>
 ```
 
 **Key points:**
-- Add scroll offset class (e.g., ``) to all anchor target elements based on your header height
+- Add scroll offset class (e.g., `scroll-mt-32`) to all anchor target elements based on your header height
 - Ensure `main` container has `scroll-behavior: smooth` in CSS
 - The Anchor component handles smooth scrolling automatically
 

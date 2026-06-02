@@ -5,7 +5,7 @@ import {
   Description,
   ShikiCodeBlock,
   Button,
-  Docs,
+  APITable,
   Anchor,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
@@ -168,7 +168,7 @@ export default function SeparatorPage({ locale = "zh" }: { locale?: string }) {
           <Title as="h2" className="mb-4">
             {lang.docs}
           </Title>
-          <Docs sections={separatorSections} />
+          <APITable sections={separatorSections} />
         </section>
         
         <footer className="py-8 border-t mt-8">

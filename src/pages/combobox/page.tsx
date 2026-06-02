@@ -6,7 +6,7 @@ import {
   Description,
   ShikiCodeBlock,
   Button,
-  Docs,
+  APITable,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
@@ -14,7 +14,7 @@ import { getComponentNav } from "@/pages/config/routes";
 import {
   ComboboxBasic,
   ComboboxAsync,
-  ComboboxWithForm,
+
   ComboboxDisabled,
   ComboboxClearable,
 } from "./examples";
@@ -27,7 +27,6 @@ import {
 
 import ComboboxBasicRaw from "./examples/combobox-basic.tsx?raw";
 import ComboboxAsyncRaw from "./examples/combobox-async.tsx?raw";
-import ComboboxWithFormRaw from "./examples/combobox-with-form.tsx?raw";
 import ComboboxDisabledRaw from "./examples/combobox-disabled.tsx?raw";
 import ComboboxClearableRaw from "./examples/combobox-clearable.tsx?raw";
 import comboboxDoc from "./doc.mdx?raw";
@@ -49,7 +48,7 @@ function DemoSection({
       <div>
         <Title as="h3">{title}</Title>
       </div>
-      <div className="border rounded-lg p-6 w-full overflow-x-auto">
+      <div className="border rounded-lg p-6 w-full overflow-hidden">
         {children}
       </div>
       <ShikiCodeBlock>{code}</ShikiCodeBlock>
@@ -215,15 +214,15 @@ export default function ComboboxPage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 ">
-          <Title as="h2" className="mb-4">
+        <section className="mb-8">
+          <Title as="h2" id="installation" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{comboboxSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" >
-          <Title as="h2">{lang.examples}</Title>
+        <section>
+          <Title as="h2" id="examples">{lang.examples}</Title>
 
           <DemoSection
             id="basic"
@@ -241,13 +240,7 @@ export default function ComboboxPage({ locale = "zh" }: { locale?: string }) {
             <ComboboxAsync />
           </DemoSection>
 
-          <DemoSection
-            id="with-form"
-            title={l.withForm.title}
-            code={ComboboxWithFormRaw}
-          >
-            <ComboboxWithForm />
-          </DemoSection>
+
 
           <DemoSection
             id="disabled"
@@ -266,11 +259,11 @@ export default function ComboboxPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
         </section>
 
-        <section id="docs" className="mt-12 space-y-8">
-          <Title as="h2" className="mb-4">
-            {lang.docs}
+        <section className="mt-12 space-y-8">
+          <Title as="h2" id="api" className="mb-4">
+            {lang.api}
           </Title>
-          <Docs sections={comboboxSections} />
+          <APITable sections={comboboxSections} />
         </section>
         
         <footer className="py-8 border-t mt-8">
@@ -303,11 +296,11 @@ export default function ComboboxPage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
             <Anchor.Item href="#async">{l.async.title}</Anchor.Item>
-            <Anchor.Item href="#with-form">{l.withForm.title}</Anchor.Item>
+ 
             <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
             <Anchor.Item href="#clearable">{l.clearable.title}</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#docs" linkText={lang.docs} />
+          <Anchor.Section href="#api" linkText={lang.api} />
         </Anchor>
       </aside>
     </div>

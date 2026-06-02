@@ -1,3 +1,1 @@
-import CheckboxPage from "./page";
-
-export default CheckboxPage;
+export { default } from "./page";

@@ -9,7 +9,6 @@ export type DatePickerProps = Omit<ComponentProps<"input">, "type"> & {
   invalid?: boolean;
   placeholder?: string;
   type?: "date" | "time" | "datetime-local" | "month" | "week";
-
   ref?: React.Ref<HTMLInputElement>;
 };
 

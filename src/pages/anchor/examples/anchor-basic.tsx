@@ -1,31 +1,29 @@
 import { Anchor } from "@/component";
-import { useRef } from "react";
+
 
 export default function AnchorDemoPage() {
-  const mainRef = useRef<HTMLDivElement>(null);
+
 
   return (
     <div className="flex h-full w-full" id="anchor-demo">
       <div
-        ref={mainRef}
         id="anchor-content"
         className="flex-1 w-full overflow-y-auto"
       >
-        <section
-          id="anchor-overview"
-          className="h-64 bg-red-200 flex flex-col justify-center p-6 border-b-2 border-red-300"
-        >
-          <h1 className="text-xl font-bold mb-2 text-red-950">🔴 Overview</h1>
+        <section className="h-64 bg-red-200 flex flex-col justify-center p-6 border-b-2 border-red-300">
+          <h1 id="anchor-overview" className="text-xl font-bold mb-2 text-red-950">
+            🔴 Overview
+          </h1>
           <p className="text-sm text-red-900">
             Anchor navigation component with scroll tracking
           </p>
         </section>
 
-        <section
-          id="anchor-installation"
-          className="h-64 bg-orange-200 flex flex-col justify-center p-6 border-b-2 border-orange-300"
-        >
-          <h2 className="text-lg font-bold mb-2 text-orange-950">
+        <section className="h-64 bg-orange-200 flex flex-col justify-center p-6 border-b-2 border-orange-300">
+          <h2
+            id="anchor-installation"
+            className="text-lg font-bold mb-2 text-orange-950"
+          >
             🟠 Installation
           </h2>
           <code className="text-xs bg-orange-300 text-orange-950 px-2 py-1 w-fit font-mono">
@@ -33,7 +31,10 @@ export default function AnchorDemoPage() {
           </code>
         </section>
 
-        <section id="anchor-usage">
+        <section >
+          <h2 id="anchor-usage" className="text-lg font-bold py-4">
+            Usage
+          </h2>
           <div
             id="anchor-basic-usage"
             className="h-64 bg-yellow-200 flex flex-col justify-center p-6 border-b-2 border-yellow-300"
@@ -71,7 +72,10 @@ export default function AnchorDemoPage() {
           </div>
         </section>
 
-        <section id="anchor-api-reference">
+        <section >
+          <h2 id="anchor-api-reference" className="text-lg font-bold py-4">
+            API Reference
+          </h2>
           <div
             id="anchor-props-ref"
             className="h-36 bg-indigo-200 flex flex-col justify-center p-6 border-b-2 border-indigo-300"
@@ -83,11 +87,11 @@ export default function AnchorDemoPage() {
           </div>
         </section>
 
-        <section
-          id="anchor-examples"
-          className="h-48 bg-purple-200 flex flex-col justify-center p-6 border-b-2 border-purple-300"
-        >
-          <h2 className="text-lg font-bold mb-2 text-purple-950">
+        <section className="h-48 bg-purple-200 flex flex-col justify-center p-6 border-b-2 border-purple-300">
+          <h2
+            id="anchor-examples"
+            className="text-lg font-bold mb-2 text-purple-950"
+          >
             💜 Examples
           </h2>
           <p className="text-sm text-purple-900">
@@ -97,13 +101,13 @@ export default function AnchorDemoPage() {
       </div>
 
       <aside className="hidden sm:block w-56 border-l bg-card h-full overflow-y-auto p-3">
-        <Anchor root={mainRef}>
+        <Anchor intersectionObserverOptions={{root:document.getElementById("anchor-content")}}>
           <Anchor.Section href="#anchor-overview" linkText="🔴 Overview" />
           <Anchor.Section
             href="#anchor-installation"
             linkText="🟠 Installation"
           />
-          <Anchor.Section linkText="Usage">
+          <Anchor.Section href="#anchor-usage" linkText="Usage">
             <Anchor.Item href="#anchor-basic-usage">🟡 Basic Usage</Anchor.Item>
             <Anchor.Item href="#anchor-sections-api">
               🟢 Sections & Items
@@ -112,7 +116,7 @@ export default function AnchorDemoPage() {
               🔵 Customization
             </Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section linkText="API Reference">
+          <Anchor.Section href="#anchor-api-reference" linkText="API Reference">
             <Anchor.Item href="#anchor-section-props">
               🟣 Section Props
             </Anchor.Item>

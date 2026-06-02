@@ -7,7 +7,7 @@ export function NumberFieldControlled() {
   return (
     <div>
       <NumberField value={value} onChange={(e) => setValue(e.target.value)} />
-      <p>当前值: {value}</p>
+      <p>Current value: {value}</p>
     </div>
   );
 }
