@@ -4,8 +4,15 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { cn, ClassNameValue } from "@/lib/utils";
 import { ChevronDown, X } from "lucide-react";
-
+type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
+  [key: `data-${string}`]: string | number | boolean | null | undefined;
+  className?: ClassNameValue;
+};
 export type ComboboxChangeEvent = React.ChangeEvent<HTMLInputElement>;
+type OptionFn = (keyword: string) => Promise<string[]>;
+type RenderListPayload = {
+  activeIndex: number;
+};
 
 export type ComboboxProps = {
   value?: string;
@@ -13,23 +20,30 @@ export type ComboboxProps = {
   onChange?: (e: ComboboxChangeEvent) => void;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   onSelect?: (option: string) => void;
-  options?: string[];
-  fetchOptions?: (input: string) => Promise<string[]>;
+  options?: string[] | OptionFn;
   placeholder?: string;
   disabled?: boolean;
   invalid?: boolean;
   clearable?: boolean;
-  className?: ClassNameValue;
   debounceMs?: number;
-  maxHeight?: number;
-  loadingText?: string;
+  skeleton?: React.ReactNode;
+  renderList?: (data: string[], payload: RenderListPayload) => React.ReactNode;
   slotProps?: {
-    container?: React.HTMLAttributes<HTMLDivElement>;
-    input?: React.InputHTMLAttributes<HTMLInputElement>;
-    list?: React.HTMLAttributes<HTMLUListElement>;
-    option?: React.LiHTMLAttributes<HTMLLIElement>;
-    clearButton?: React.ButtonHTMLAttributes<HTMLButtonElement>;
-    triggerButton?: React.ButtonHTMLAttributes<HTMLButtonElement>;
+    container?: HTMLAttrs<Omit<React.ComponentProps<"div">, "ref">>;
+    input?: HTMLAttrs<
+      Omit<
+        React.ComponentProps<"input">,
+        | "disabled"
+        | "clearable"
+        | "placeholder"
+        | "ref"
+        | "value"
+        | "defaultValue"
+      >
+    >;
+    list?: HTMLAttrs<Omit<React.ComponentProps<"ul">, "ref">>;
+    option?: HTMLAttrs<React.ComponentProps<"li">>;
+    clearButton?: HTMLAttrs<React.ComponentProps<"button">>;
   };
 };
 
@@ -39,31 +53,50 @@ export function Combobox({
   onChange,
   onBlur,
   onSelect,
-  options: staticOptions,
-  fetchOptions,
+  options,
   placeholder = "Search or type...",
   disabled,
   invalid,
   clearable = true,
-  className,
   debounceMs = 300,
-  maxHeight = 256,
-  loadingText = "Loading...",
+  skeleton,
+  renderList,
   slotProps,
 }: ComboboxProps) {
   const [internalValue, setInternalValue] = useState(defaultValue);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [highlightIndex, setHighlightIndex] = useState(-1);
-  const [isLoading, setIsLoading] = useState(false);
+  const [innerLoading, setInnerLoading] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+
   const inputRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLUListElement>(null);
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
+  const pendingRequestRef = useRef<string | null>(null);
+  const closeTimer = useRef<NodeJS.Timeout | null>(null);
 
-  const inputValue = controlledValue !== undefined ? controlledValue : internalValue;
+  const inputValue =
+    controlledValue !== undefined ? controlledValue : internalValue;
+
+  const cancelClose = () => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+
+  const closeDropdown = () => {
+    setIsOpen(false);
+    setHighlightIndex(-1);
+  };
+
+  const scheduleClose = () => {
+    cancelClose();
+    closeTimer.current = setTimeout(closeDropdown, 150);
+  };
 
   const updateDropdownPosition = useCallback(() => {
     if (!triggerRef.current) return;
@@ -74,93 +107,93 @@ export function Combobox({
     });
   }, []);
 
-  const updateSuggestions = useCallback(
-    async (input: string) => {
-      if (fetchOptions) {
-        setIsLoading(true);
-        try {
-          const results = await fetchOptions(input);
-          setSuggestions(results);
-        } finally {
-          setIsLoading(false);
-        }
-      } else if (staticOptions) {
-        const filtered = staticOptions.filter((opt) =>
-          opt.toLowerCase().includes(input.toLowerCase())
+  const fetchData = useCallback(
+    async (keyword: string) => {
+      if (!options) {
+        setSuggestions([]);
+        return;
+      }
+      if (Array.isArray(options)) {
+        const filtered = options.filter((opt) =>
+          opt.toLowerCase().includes(keyword.toLowerCase()),
         );
         setSuggestions(filtered);
+        return;
+      }
+      if (pendingRequestRef.current === keyword) return;
+      pendingRequestRef.current = keyword;
+      setInnerLoading(true);
+      try {
+        const list = await options(keyword);
+        if (pendingRequestRef.current === keyword) {
+          setSuggestions(list);
+        }
+      } finally {
+        if (pendingRequestRef.current === keyword) {
+          setInnerLoading(false);
+          pendingRequestRef.current = null;
+        }
       }
     },
-    [fetchOptions, staticOptions]
+    [options],
   );
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ComboboxChangeEvent) => {
     const newValue = e.target.value;
     if (controlledValue === undefined) setInternalValue(newValue);
     onChange?.(e);
 
-    if (newValue.trim() === "") {
-      setSuggestions([]);
-      setIsOpen(false);
-      setHighlightIndex(-1);
-    } else {
-      setIsOpen(true);
-      if (debounceTimer.current) clearTimeout(debounceTimer.current);
-      debounceTimer.current = setTimeout(() => {
-        updateSuggestions(newValue);
-      }, debounceMs);
-    }
+
+    setIsOpen(true);
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(() => {
+      fetchData(newValue);
+    }, debounceMs);
   };
 
   const handleFocus = useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
+      cancelClose();
       if (disabled) return;
-      if (debounceTimer.current) {
-        clearTimeout(debounceTimer.current);
-        debounceTimer.current = null;
-      }
       setIsOpen(true);
       setHighlightIndex(-1);
-      updateSuggestions(inputValue);
+      fetchData(inputValue);
       slotProps?.input?.onFocus?.(e);
     },
-    [disabled, inputValue, updateSuggestions, slotProps?.input]
+    [disabled, inputValue, fetchData, slotProps?.input],
   );
 
   const handleSelect = (option: string) => {
+    cancelClose();
     if (controlledValue === undefined) setInternalValue(option);
     const fakeEvent = {
       target: { value: option },
       currentTarget: { value: option },
-    } as React.ChangeEvent<HTMLInputElement>;
+    } as ComboboxChangeEvent;
     onChange?.(fakeEvent);
     onSelect?.(option);
-    setIsOpen(false);
-    setHighlightIndex(-1);
+    closeDropdown();
     inputRef.current?.focus();
   };
 
   const handleClear = () => {
+    cancelClose();
     if (controlledValue === undefined) setInternalValue("");
     const fakeEvent = {
       target: { value: "" },
       currentTarget: { value: "" },
-    } as React.ChangeEvent<HTMLInputElement>;
+    } as ComboboxChangeEvent;
     onChange?.(fakeEvent);
     setSuggestions([]);
-    setIsOpen(false);
-    setHighlightIndex(-1);
+    closeDropdown();
     inputRef.current?.focus();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!isOpen || suggestions.length === 0) {
-      if (e.key === "Enter" && inputValue.trim()) {
-        e.preventDefault();
-      }
+      if (e.key === "Enter" && inputValue.trim()) e.preventDefault();
       return;
     }
-
     switch (e.key) {
       case "ArrowDown":
         e.preventDefault();
@@ -168,7 +201,9 @@ export function Combobox({
         break;
       case "ArrowUp":
         e.preventDefault();
-        setHighlightIndex((prev) => (prev - 1 + suggestions.length) % suggestions.length);
+        setHighlightIndex(
+          (prev) => (prev - 1 + suggestions.length) % suggestions.length,
+        );
         break;
       case "Enter":
         e.preventDefault();
@@ -177,158 +212,185 @@ export function Combobox({
         }
         break;
       case "Escape":
-        setIsOpen(false);
-        setHighlightIndex(-1);
+        closeDropdown();
         break;
     }
   };
 
   const toggleDropdown = () => {
-    if (!disabled) {
-      setIsOpen((prev) => !prev);
-      if (!isOpen && inputValue.trim()) {
-        updateSuggestions(inputValue);
-      }
+    if (disabled) return;
+    cancelClose();
+    setIsOpen((prev) => !prev);
+    if (!isOpen) {
+      fetchData(inputValue);
     }
   };
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node;
-      const isOutsideContainer = containerRef.current && !containerRef.current.contains(target);
-      const isOutsideDropdown = dropdownRef.current && !dropdownRef.current.contains(target);
-      if (isOutsideContainer && isOutsideDropdown) {
-        setIsOpen(false);
-        setHighlightIndex(-1);
+    const handler = (ev: MouseEvent) => {
+      const target = ev.target as Node;
+      const inWrap = containerRef.current?.contains(target);
+      const inDrop = dropdownRef.current?.contains(target);
+      if (!inWrap && !inDrop) {
+        cancelClose();
+        closeDropdown();
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
   }, []);
 
   useEffect(() => {
     if (!isOpen) return;
     updateDropdownPosition();
-    const handleScrollOrResize = () => updateDropdownPosition();
-    window.addEventListener("scroll", handleScrollOrResize, true);
-    window.addEventListener("resize", handleScrollOrResize);
+    const onScrollResize = () => updateDropdownPosition();
+    window.addEventListener("scroll", onScrollResize, true);
+    window.addEventListener("resize", onScrollResize);
     return () => {
-      window.removeEventListener("scroll", handleScrollOrResize, true);
-      window.removeEventListener("resize", handleScrollOrResize);
+      window.removeEventListener("scroll", onScrollResize, true);
+      window.removeEventListener("resize", onScrollResize);
     };
   }, [isOpen, updateDropdownPosition]);
 
+  useEffect(() => {
+    if (
+      !dropdownRef.current ||
+      highlightIndex < 0 ||
+      innerLoading ||
+      renderList
+    )
+      return;
+    const item = dropdownRef.current.children[highlightIndex] as HTMLElement;
+    item?.scrollIntoView({ block: "nearest" });
+  }, [highlightIndex, innerLoading, renderList]);
+
+  useEffect(() => {
+    return () => {
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    };
+  }, []);
+
   const showClear = clearable && inputValue.length > 0;
-  const shouldShowList = isOpen && (suggestions.length > 0 || isLoading);
+  const shouldShowList = isOpen && (suggestions.length > 0 || innerLoading);
+  const loadingNode = skeleton ?? (
+    <li className="py-3 text-center text-sm text-muted-foreground">
+      Loading...
+    </li>
+  );
+  const listPayload: RenderListPayload = { activeIndex: highlightIndex };
+
+  const defaultListContent = suggestions.map((option, idx) => (
+    <li
+      role="option"
+      {...slotProps?.option}
+      key={`${option}_${idx}`}
+      aria-selected={idx === highlightIndex}
+      data-active={idx === highlightIndex || undefined}
+      onClick={() => handleSelect(option)}
+      className={cn(
+        "cursor-pointer px-3 py-2 text-sm transition-colors hover:bg-gray-100 data-active:bg-accent data-active:text-accent-foreground",
+        slotProps?.option?.className,
+      )}
+    >
+      {option}
+    </li>
+  ));
 
   const dropdownContent = (
     <ul
-      ref={dropdownRef}
       id="combobox-list"
       role="listbox"
-      data-open={shouldShowList}
-      className={cn(
-        "fixed z-50 w-3xs rounded-md border border-input bg-background shadow-lg",
-        "max-h-64 overflow-auto data-[open=false]:hidden",
-        slotProps?.list?.className
-      )}
-      style={{ top: dropdownPosition.top, left: dropdownPosition.left, maxHeight }}
       {...slotProps?.list}
+      ref={dropdownRef}
+      className={cn(
+        "fixed z-50 w-3xs max-h-64 rounded-md border border-input bg-background shadow-lg overflow-auto",
+        slotProps?.list?.className,
+      )}
+      style={{ top: dropdownPosition.top, left: dropdownPosition.left }}
     >
-      {isLoading ? (
-        <li className="px-3 py-2 text-sm text-muted-foreground">{loadingText}</li>
+      {innerLoading ? (
+        loadingNode
+      ) : suggestions.length > 0 ? (
+        renderList ? (
+          renderList(suggestions, listPayload)
+        ) : (
+          defaultListContent
+        )
       ) : (
-        suggestions.map((option, idx) => (
-          <li
-            key={option}
-            role="option"
-            aria-selected={idx === highlightIndex}
-            onClick={() => handleSelect(option)}
-            className={cn(
-              "cursor-pointer px-3 py-2 text-sm transition-colors",
-              "hover:bg-accent hover:text-accent-foreground",
-              idx === highlightIndex && "bg-accent text-accent-foreground",
-              slotProps?.option?.className
-            )}
-            {...slotProps?.option}
-          >
-            {option}
-          </li>
-        ))
+        <li className="py-3 text-center text-sm text-muted-foreground">
+          No data
+        </li>
       )}
     </ul>
   );
 
   return (
     <div
-      ref={containerRef}
-      className={cn("relative w-full", className)}
-      data-invalid={invalid}
       {...slotProps?.container}
+      ref={containerRef}
+      className={cn("relative w-3xs", slotProps?.container?.className)}
+      data-invalid={invalid}
     >
       <div
         ref={triggerRef}
+        onClick={() => {
+          inputRef.current?.focus();
+          toggleDropdown();
+        }}
         className={cn(
-          "flex items-center h-9 w-3xs rounded-md border border-input bg-background px-3 shadow-xs",
+          "flex items-center h-9 w-full rounded-md border border-input bg-background px-3 shadow-xs",
           "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
           "data-invalid:border-destructive data-invalid:ring-destructive/20",
-          "disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled ? "opacity-50 cursor-not-allowed" : "cursor-text",
         )}
       >
         <input
+          {...slotProps?.input}
           ref={inputRef}
           type="text"
           value={inputValue}
           onChange={handleChange}
-          onBlur={onBlur}
+          onBlur={(e) => {
+            scheduleClose();
+            onBlur?.(e);
+          }}
           onFocus={handleFocus}
           onKeyDown={handleKeyDown}
           disabled={disabled}
           placeholder={placeholder}
           className={cn(
-            "w-full bg-transparent py-1 text-sm outline-none",
-            "placeholder:text-muted-foreground",
-            "disabled:cursor-not-allowed",
-            slotProps?.input?.className
+            "w-full bg-transparent py-1 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed",
+            slotProps?.input?.className,
           )}
           aria-autocomplete="list"
           aria-expanded={isOpen}
           aria-controls="combobox-list"
-          {...slotProps?.input}
         />
         {showClear && (
           <button
+            aria-label="Clear"
+            {...slotProps?.clearButton}
             type="button"
             onClick={handleClear}
             className={cn(
               "shrink-0 rounded-sm p-0.5 text-muted-foreground hover:text-foreground",
-              slotProps?.clearButton?.className
+              slotProps?.clearButton?.className,
             )}
-            aria-label="Clear"
             tabIndex={-1}
-            {...slotProps?.clearButton}
           >
             <X className="size-4" />
           </button>
         )}
-        <button
-          type="button"
-          onClick={toggleDropdown}
-          disabled={disabled}
-          className={cn(
-            "shrink-0 rounded-sm p-0.5 text-muted-foreground hover:text-foreground",
-            "disabled:cursor-not-allowed",
-            slotProps?.triggerButton?.className
-          )}
-          aria-label="Toggle dropdown"
-          tabIndex={-1}
-          {...slotProps?.triggerButton}
-        >
-          <ChevronDown className="size-4 transition-transform" data-open={isOpen} />
-        </button>
+        <ChevronDown
+          data-open={isOpen || undefined}
+          className="size-4 transition-transform duration-200 data-open:rotate-180"
+        />
       </div>
 
-      {typeof document !== "undefined" && createPortal(dropdownContent, document.body)}
+      {shouldShowList &&
+        typeof document !== "undefined" &&
+        createPortal(dropdownContent, document.body)}
     </div>
   );
 }

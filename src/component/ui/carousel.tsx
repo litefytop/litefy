@@ -207,7 +207,6 @@ export function Carousel({
         className="flex transition-transform duration-300 ease-out"
         style={{
           transform: `translateX(-${currentIndex * 100}%)`,
-          cursor: isDragging ? "grabbing" : "grab",
         }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -232,4 +231,3 @@ export function Carousel({
   );
 }
 
-Carousel.displayName = "Carousel";

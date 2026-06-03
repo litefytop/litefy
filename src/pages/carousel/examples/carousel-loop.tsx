@@ -1,18 +1,13 @@
 import { useState } from "react";
-import { Carousel, Button } from "@/component";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Carousel, Pagination } from "@/component";
 
 export default function CarouselLoop() {
   const [activeIndex, setActiveIndex] = useState(0);
   const totalSlides = 5;
 
   return (
-    <div className="w-full space-y-4">
-      <Carousel
-        activeIndex={activeIndex}
-        onChange={(index) => setActiveIndex(index)}
-        loop
-      >
+    <div className="w-full">
+      <Carousel activeIndex={activeIndex} onChange={setActiveIndex} loop>
         {Array.from({ length: totalSlides }, (_, i) => (
           <div
             key={i}
@@ -23,24 +18,15 @@ export default function CarouselLoop() {
           </div>
         ))}
       </Carousel>
-
-      <div className="flex items-center justify-center gap-4">
-        <Button
-          variant="ghost"
-          onClick={() => setActiveIndex((i) => (i - 1 + totalSlides) % totalSlides)}
-        >
-          <ChevronLeft className="size-4" />
-        </Button>
-        <span className="text-sm">
-          {activeIndex + 1} / {totalSlides}
-        </span>
-        <Button
-          variant="ghost"
-          onClick={() => setActiveIndex((i) => (i + 1) % totalSlides)}
-        >
-          <ChevronRight className="size-4" />
-        </Button>
-      </div>
+      <Pagination
+        current={activeIndex + 1}
+        pageSize={1}
+        total={totalSlides}
+        onPageChange={(page) => setActiveIndex(page - 1)}
+        className="justify-center"
+      >
+        <Pagination.Indicator variant="bar" />
+      </Pagination>
     </div>
   );
 }

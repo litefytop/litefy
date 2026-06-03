@@ -272,8 +272,8 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
           </Anatomy>
         </section>
 
-        <section className="mt-12 space-y-4">
-          <Title as="h2" id="api" className="mb-4">
+        <section id="api" className="mt-12 space-y-4">
+          <Title as="h2"  className="mb-4">
             {lang.api}
           </Title>
           <APITable sections={accordionSections} />

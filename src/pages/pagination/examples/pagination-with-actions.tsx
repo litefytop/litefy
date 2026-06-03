@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pagination, Button, usePagination } from "@/component";
+import { Pagination, Button } from "@/component";
 import { 
   RefreshCw, 
   Download,
@@ -8,46 +8,6 @@ import {
   ChevronRight, 
   ChevronsRight 
 } from "lucide-react";
-
-const buttonStyles = 
-  "cursor-pointer outline-none inline-flex items-center justify-center shrink-0 select-none size-8 rounded-md border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50";
-
-function PaginationButtons() {
-  const { current, totalPages, goFirst, goPrev, goNext, goLast } = usePagination();
-
-  return (
-    <>
-      <button
-        onClick={goFirst}
-        disabled={current === 1}
-        className={buttonStyles}
-      >
-        <ChevronsLeft className="size-4" />
-      </button>
-      <button
-        onClick={goPrev}
-        disabled={current === 1}
-        className={buttonStyles}
-      >
-        <ChevronLeft className="size-4" />
-      </button>
-      <button
-        onClick={goNext}
-        disabled={current === totalPages}
-        className={buttonStyles}
-      >
-        <ChevronRight className="size-4" />
-      </button>
-      <button
-        onClick={goLast}
-        disabled={current === totalPages}
-        className={buttonStyles}
-      >
-        <ChevronsRight className="size-4" />
-      </button>
-    </>
-  );
-}
 
 export default function PaginationWithActions() {
   const [current, setCurrent] = useState(1);
@@ -62,7 +22,7 @@ export default function PaginationWithActions() {
       onPageSizeChange={setPageSize}
     >
       <Pagination.Description />
-      <Pagination.Controls>
+      <div className="flex items-center gap-2">
         <Pagination.Sizer />
         <div className="flex gap-2 mr-2">
           <Button variant="ghost" iconOnly>
@@ -72,8 +32,23 @@ export default function PaginationWithActions() {
             <Download className="size-4" />
           </Button>
         </div>
-        <PaginationButtons />
-      </Pagination.Controls>
+        <div className="flex gap-2">
+          <Pagination.Controls variant="first">
+            <ChevronsLeft className="size-4" />
+          </Pagination.Controls>
+          <div className="flex gap-2">
+            <Pagination.Controls variant="prev">
+              <ChevronLeft className="size-4" />
+            </Pagination.Controls>
+            <Pagination.Controls variant="next">
+              <ChevronRight className="size-4" />
+            </Pagination.Controls>
+          </div>
+          <Pagination.Controls variant="last">
+            <ChevronsRight className="size-4" />
+          </Pagination.Controls>
+        </div>
+      </div>
     </Pagination>
   );
 }

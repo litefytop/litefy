@@ -1131,6 +1131,9 @@ export const en = {
     withActions: {
       title: "With Actions",
     },
+    withIndicator: {
+      title: "With Indicator",
+    },
     api: {
       sectionTitles: {
         paginationProps: "Pagination Props",

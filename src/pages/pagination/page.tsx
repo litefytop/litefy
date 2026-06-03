@@ -15,6 +15,7 @@ import {
   PaginationBasic,
   PaginationCustomIcons,
   PaginationWithActions,
+  PaginationWithIndicator,
 } from "./examples";
 import {
   CheckIcon,
@@ -27,6 +28,7 @@ import PaginationBasicRaw from "./examples/pagination-basic.tsx?raw";
 
 import PaginationCustomIconsRaw from "./examples/pagination-custom-icons.tsx?raw";
 import PaginationWithActionsRaw from "./examples/pagination-with-actions.tsx?raw";
+import PaginationWithIndicatorRaw from "./examples/pagination-with-indicator.tsx?raw";
 import paginationDoc from "./doc.mdx?raw";
 import paginationSrc from "@/component/ui/pagination.tsx?raw";
 
@@ -189,15 +191,17 @@ export default function PaginationPage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 ">
-          <Title as="h2" className="mb-4">
+        <section className="mb-8 ">
+          <Title as="h2" id="installation" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{paginationSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" >
-          <Title as="h2">{lang.examples}</Title>
+        <section>
+          <Title as="h2" id="examples">
+            {lang.examples}
+          </Title>
 
           <DemoSection
             id="basic"
@@ -206,8 +210,6 @@ export default function PaginationPage({ locale = "zh" }: { locale?: string }) {
           >
             <PaginationBasic />
           </DemoSection>
-
-
 
           <DemoSection
             id="custom-icons"
@@ -224,15 +226,23 @@ export default function PaginationPage({ locale = "zh" }: { locale?: string }) {
           >
             <PaginationWithActions />
           </DemoSection>
+
+          <DemoSection
+            id="with-indicator"
+            title={l.withIndicator.title}
+            code={PaginationWithIndicatorRaw}
+          >
+            <PaginationWithIndicator />
+          </DemoSection>
         </section>
 
-        <section id="docs" className="mt-12 space-y-8">
+        <section id="api" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
-            {lang.docs}
+            {lang.api}
           </Title>
           <APITable sections={paginationSections} />
         </section>
-        
+
         <footer className="py-8 border-t mt-8">
           <div className="flex justify-between">
             <Button
@@ -262,10 +272,17 @@ export default function PaginationPage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
-            <Anchor.Item href="#custom-icons">{l.customIcons.title}</Anchor.Item>
-            <Anchor.Item href="#with-actions">{l.withActions.title}</Anchor.Item>
+            <Anchor.Item href="#custom-icons">
+              {l.customIcons.title}
+            </Anchor.Item>
+            <Anchor.Item href="#with-actions">
+              {l.withActions.title}
+            </Anchor.Item>
+            <Anchor.Item href="#with-indicator">
+              {l.withIndicator.title}
+            </Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#docs" linkText={lang.docs} />
+          <Anchor.Section href="#api" linkText={lang.api} />
         </Anchor>
       </aside>
     </div>

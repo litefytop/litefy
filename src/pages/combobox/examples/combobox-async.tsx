@@ -35,7 +35,7 @@ export default function ComboboxAsync() {
   return (
     <div className="max-w-sm h-64 ">
       <Combobox
-        fetchOptions={fetchOptions}
+        options={fetchOptions}
         placeholder="Search countries (type to filter)..."
         debounceMs={500}
       />

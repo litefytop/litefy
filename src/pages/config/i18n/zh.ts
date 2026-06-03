@@ -1136,6 +1136,9 @@ export const zh = {
     withActions: {
       title: "带操作按钮",
     },
+    withIndicator: {
+      title: "带页码指示器",
+    },
     api: {
       sectionTitles: {
         paginationProps: "Pagination Props",

@@ -6,6 +6,9 @@ import {
   useMemo,
   ComponentProps,
   ReactNode,
+  useRef,
+  useEffect,
+  useState,
 } from "react";
 import { ClassNameValue, cn } from "@/lib";
 
@@ -24,7 +27,6 @@ type PaginationContextValue = {
 
 const PaginationContext = createContext<PaginationContextValue | null>(null);
 
-// eslint-disable-next-line react-refresh/only-export-components
 export function usePagination() {
   const ctx = useContext(PaginationContext);
   if (!ctx) throw new Error("usePagination must be used within Pagination");
@@ -154,12 +156,50 @@ Pagination.Sizer = function PaginationSizer({
   );
 };
 
+export type PaginationControlsProps = {
+  variant: "first" | "prev" | "next" | "last";
+} & ComponentProps<"button">;
+
 Pagination.Controls = function PaginationControls({
+  variant,
   className,
+  children,
   ...props
-}: ComponentProps<"span">) {
+}: PaginationControlsProps) {
+  const { current, totalPages, goFirst, goPrev, goNext, goLast } = usePagination();
+  let onClick: () => void;
+  let disabled: boolean;
+
+  switch (variant) {
+    case "first":
+      onClick = goFirst;
+      disabled = current === 1;
+      break;
+    case "prev":
+      onClick = goPrev;
+      disabled = current === 1;
+      break;
+    case "next":
+      onClick = goNext;
+      disabled = current === totalPages;
+      break;
+    case "last":
+      onClick = goLast;
+      disabled = current === totalPages;
+      break;
+    default:
+      return null;
+  }
+
   return (
-    <span {...props} className={cn("flex items-center gap-2", className)} />
+    <button
+      {...props}
+      disabled={disabled}
+      onClick={onClick}
+      className={cn("inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-muted disabled:opacity-50 disabled:pointer-events-none", className)}
+    >
+      {children}
+    </button>
   );
 };
 
@@ -191,5 +231,110 @@ Pagination.Jumper = function PaginationJumper({
         </option>
       ))}
     </select>
+  );
+};
+
+const indicatorClass = {
+  base: "inline-flex items-center justify-center shrink-0 cursor-pointer select-none",
+  number:
+    "h-9 min-w-9 px-1 rounded-md text-muted-foreground data-active:text-primary data-active:border-primary data-active:border",
+  dot: "size-2 rounded-full bg-muted data-active:bg-primary",
+  bar: "w-6 h-2 rounded bg-muted data-active:bg-primary",
+};
+
+type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
+  [key: `data-${string}`]: string | number | boolean | null | undefined;
+  className?: ClassNameValue;
+};
+
+export type PaginationIndicatorProps = {
+  variant?: keyof typeof indicatorClass;
+  visibleCount?: number;
+  slotProps?: {
+    root?: HTMLAttrs<ComponentProps<"div">>;
+    item?: HTMLAttrs<ComponentProps<"button">>;
+  };
+};
+Pagination.Indicator = function PaginationIndicator({
+  variant = "number",
+  visibleCount = 5,
+  slotProps,
+}: PaginationIndicatorProps) {
+  const { current, totalPages, goTo } = usePagination();
+  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [startIndex, setStartIndex] = useState(0);
+  const viewCount = Math.min(visibleCount, totalPages);
+  const curIdx = current - 1;
+
+  useEffect(() => {
+    if (totalPages <= viewCount) {
+      setStartIndex(0);
+      return;
+    }
+    if (curIdx <= startIndex) {
+      setStartIndex(curIdx);
+    } else if (curIdx >= startIndex + viewCount) {
+      setStartIndex(curIdx - viewCount + 1);
+    }
+  }, [curIdx, viewCount, totalPages, startIndex]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!e.currentTarget.contains(document.activeElement)) return;
+    const allowed = ["ArrowLeft", "ArrowRight", "Home", "End"];
+    if (!allowed.includes(e.key)) return;
+    e.preventDefault();
+    let target = current;
+    switch (e.key) {
+      case "ArrowLeft": target = current - 1; break;
+      case "ArrowRight": target = current + 1; break;
+      case "Home": target = 1; break;
+      case "End": target = totalPages; break;
+    }
+    const next = Math.max(1, Math.min(target, totalPages));
+    goTo(next);
+    setTimeout(() => {
+      const focusPos = next - startIndex - 1;
+      itemRefs.current[focusPos]?.focus();
+    }, 0);
+  };
+
+  const renderPages: number[] = [];
+  for (let i = startIndex; i < startIndex + viewCount; i++) {
+    renderPages.push(i + 1);
+  }
+
+  return (
+    <div
+      {...slotProps?.root}
+      role="tablist"
+      onKeyDown={handleKeyDown}
+      className={cn(
+        "flex items-center gap-2 p-1 overflow-hidden",
+        slotProps?.root?.className,
+      )}
+    >
+      {renderPages.map((page, idx) => {
+        const active = page === current;
+        return (
+          <button
+            {...slotProps?.item}
+            key={page}
+            data-active={active || undefined}
+            ref={(el) => { itemRefs.current[idx] = el; }}
+            role="tab"
+            tabIndex={active ? 0 : -1}
+            aria-selected={active}
+            onClick={() => goTo(page)}
+            className={cn(
+              indicatorClass.base,
+              indicatorClass[variant],
+              slotProps?.item?.className,
+            )}
+          >
+            {variant === "number" ? page : null}
+          </button>
+        );
+      })}
+    </div>
   );
 };

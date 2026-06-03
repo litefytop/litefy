@@ -294,9 +294,9 @@ export default function SelectPage({ locale = "zh" }: { locale?: string }) {
           </Anatomy>
         </section>
 
-        <section id="docs" className="mt-12 space-y-8">
+        <section id="api" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
-            {lang.docs}
+            {lang.api}
           </Title>
           <APITable sections={selectSections} />
         </section>
@@ -336,7 +336,7 @@ export default function SelectPage({ locale = "zh" }: { locale?: string }) {
             <Anchor.Item href="#multiple">{l.multiple.title}</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
-          <Anchor.Section href="#docs" linkText={lang.docs} />
+          <Anchor.Section href="#docs" linkText={lang.api} />
         </Anchor>
       </aside>
     </div>
