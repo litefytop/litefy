@@ -1,23 +1,18 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Anchor,
   Title,
   Description,
   ShikiCodeBlock,
+  Anatomy,
   Button,
   APITable,
+  Combobox,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
-import {
-  ComboboxBasic,
-  ComboboxAsync,
-
-  ComboboxDisabled,
-  ComboboxClearable,
-} from "./examples";
 import {
   CheckIcon,
   CopyIcon,
@@ -48,7 +43,7 @@ function DemoSection({
       <div>
         <Title as="h3">{title}</Title>
       </div>
-      <div className="border rounded-lg p-6 w-full overflow-hidden">
+      <div className="border rounded-lg p-6 w-full overflow-x-auto">
         {children}
       </div>
       <ShikiCodeBlock>{code}</ShikiCodeBlock>
@@ -75,7 +70,6 @@ export default function ComboboxPage({ locale = "zh" }: { locale?: string }) {
         {
           props: "defaultValue",
           type: "string",
-          default: '""',
           description: l.api.props.defaultValue,
         },
         {
@@ -84,36 +78,34 @@ export default function ComboboxPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.props.onChange,
         },
         {
+          props: "onBlur",
+          type: "React.FocusEventHandler<HTMLInputElement>",
+          description: l.api.props.onBlur,
+        },
+        {
           props: "onSelect",
-          type: "(option: ComboboxOption) => void",
+          type: "(option: string) => void",
           description: l.api.props.onSelect,
         },
         {
           props: "options",
-          type: "ComboboxOption[]",
+          type: "string[] | ((keyword: string) => Promise<string[]>)",
           description: l.api.props.options,
-        },
-        {
-          props: "fetchOptions",
-          type: "(input: string) => Promise<ComboboxOption[]>",
-          description: l.api.props.fetchOptions,
         },
         {
           props: "placeholder",
           type: "string",
-          default: '"Select or type..."',
+          default: '"Search or type..."',
           description: l.api.props.placeholder,
         },
         {
           props: "disabled",
           type: "boolean",
-          default: "false",
           description: l.api.props.disabled,
         },
         {
           props: "invalid",
           type: "boolean",
-          default: "false",
           description: l.api.props.invalid,
         },
         {
@@ -129,10 +121,26 @@ export default function ComboboxPage({ locale = "zh" }: { locale?: string }) {
           description: l.api.props.debounceMs,
         },
         {
-          props: "maxHeight",
+          props: "skeleton",
+          type: "React.ReactNode",
+          description: l.api.props.skeleton,
+        },
+        {
+          props: "optionHeight",
           type: "number",
-          default: "256",
-          description: l.api.props.maxHeight,
+          default: "36",
+          description: l.api.props.optionHeight,
+        },
+        {
+          props: "overscan",
+          type: "number",
+          default: "2",
+          description: l.api.props.overscan,
+        },
+        {
+          props: "slotProps",
+          type: "ComboboxSlotProps",
+          description: l.api.props.slotProps,
         },
       ],
     },
@@ -141,33 +149,28 @@ export default function ComboboxPage({ locale = "zh" }: { locale?: string }) {
       data: [
         {
           props: "container",
-          type: "HTMLAttributes<HTMLDivElement>",
+          type: `Omit<React.ComponentProps<"div">, "ref">`,
           description: l.api.slotProps.container,
         },
         {
           props: "input",
-          type: "InputHTMLAttributes<HTMLInputElement>",
+          type: `Omit<React.ComponentProps<"input">, "ref" | "value" | "defaultValue" | ...>`,
           description: l.api.slotProps.input,
         },
         {
           props: "list",
-          type: "HTMLAttributes<HTMLUListElement>",
+          type: `Omit<React.ComponentProps<"ul">, "ref">`,
           description: l.api.slotProps.list,
         },
         {
           props: "option",
-          type: "LiHTMLAttributes<HTMLLIElement>",
+          type: `React.ComponentProps<"li">`,
           description: l.api.slotProps.option,
         },
         {
           props: "clearButton",
-          type: "ButtonHTMLAttributes<HTMLButtonElement>",
+          type: `React.ComponentProps<"button">`,
           description: l.api.slotProps.clearButton,
-        },
-        {
-          props: "triggerButton",
-          type: "ButtonHTMLAttributes<HTMLButtonElement>",
-          description: l.api.slotProps.triggerButton,
         },
       ],
     },
@@ -203,10 +206,18 @@ export default function ComboboxPage({ locale = "zh" }: { locale?: string }) {
                 )}
                 {lang.common.copyDocs}
               </Button>
-              <Button variant="ghost" onClick={handlePrev} disabled={!nav.prev}>
+              <Button
+                variant="ghost"
+                onClick={handlePrev}
+                disabled={!nav.prev}
+              >
                 <ArrowLeftIcon className="size-4" />
               </Button>
-              <Button variant="ghost" onClick={handleNext} disabled={!nav.next}>
+              <Button
+                variant="ghost"
+                onClick={handleNext}
+                disabled={!nav.next}
+              >
                 <ArrowRightIcon className="size-4" />
               </Button>
             </div>
@@ -214,22 +225,24 @@ export default function ComboboxPage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section className="mb-8">
-          <Title as="h2" id="installation" className="mb-4">
+        <section id="installation" className="mb-8 ">
+          <Title as="h2" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{comboboxSrc}</ShikiCodeBlock>
         </section>
 
         <section>
-          <Title as="h2" id="examples">{lang.examples}</Title>
+          <Title id="examples" as="h2">
+            {lang.examples}
+          </Title>
 
           <DemoSection
             id="basic"
             title={l.basic.title}
             code={ComboboxBasicRaw}
           >
-            <ComboboxBasic />
+            <Combobox options={["Apple", "Banana", "Cherry"]} />
           </DemoSection>
 
           <DemoSection
@@ -237,17 +250,33 @@ export default function ComboboxPage({ locale = "zh" }: { locale?: string }) {
             title={l.async.title}
             code={ComboboxAsyncRaw}
           >
-            <ComboboxAsync />
+            <Combobox
+              options={async (keyword) => {
+                await new Promise((resolve) => setTimeout(resolve, 500));
+                return ["React", "Vue", "Angular", "Svelte"].filter((item) =>
+                  item.toLowerCase().includes(keyword.toLowerCase())
+                );
+              }}
+            />
           </DemoSection>
-
-
 
           <DemoSection
             id="disabled"
             title={l.disabled.title}
             code={ComboboxDisabledRaw}
           >
-            <ComboboxDisabled />
+            <div className="space-y-4">
+              <Combobox
+                options={["Option 1", "Option 2", "Option 3"]}
+                disabled
+                placeholder="Disabled"
+              />
+              <Combobox
+                options={["Option 1", "Option 2", "Option 3"]}
+                invalid
+                placeholder="Invalid"
+              />
+            </div>
           </DemoSection>
 
           <DemoSection
@@ -255,17 +284,45 @@ export default function ComboboxPage({ locale = "zh" }: { locale?: string }) {
             title={l.clearable.title}
             code={ComboboxClearableRaw}
           >
-            <ComboboxClearable />
+            <Combobox
+              options={["Option 1", "Option 2", "Option 3"]}
+              defaultValue="Option 1"
+              clearable
+            />
           </DemoSection>
         </section>
 
-        <section className="mt-12 space-y-8">
-          <Title as="h2" id="api" className="mb-4">
+        <section id="anatomy" className="mt-8 space-y-4">
+          <Title as="h2">{lang.anatomy}</Title>
+          <Anatomy
+            className="h-48"
+            parts={[
+              { id: "anatomy-container", label: l.anatomy.container },
+              { id: "anatomy-input", label: l.anatomy.input },
+              { id: "anatomy-clear", label: l.anatomy.clear },
+              { id: "anatomy-dropdown", label: l.anatomy.dropdown },
+              { id: "anatomy-option", label: l.anatomy.option },
+            ]}
+          >
+            <Combobox
+              options={["Option 1", "Option 2", "Option 3"]}
+              defaultValue="Option 1"
+              slotProps={{
+                container: {
+                  style: { width: "256px" },
+                },
+              }}
+            />
+          </Anatomy>
+        </section>
+
+        <section id="api" data-anchor-id="api" className="mt-12 space-y-8">
+          <Title as="h2" className="mb-4">
             {lang.api}
           </Title>
           <APITable sections={comboboxSections} />
         </section>
-        
+
         <footer className="py-8 border-t mt-8">
           <div className="flex justify-between">
             <Button
@@ -292,15 +349,27 @@ export default function ComboboxPage({ locale = "zh" }: { locale?: string }) {
 
       <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-full overflow-y-auto p-4">
         <Anchor>
-          <Anchor.Section href="#installation" linkText={lang.installation} />
-          <Anchor.Section href="#examples" linkText={lang.examples}>
+          <Anchor.Section
+            href="#installation"
+            linkText={lang.installation}
+          />
+          <Anchor.Section
+            href="#examples"
+            linkText={lang.examples}
+          >
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
             <Anchor.Item href="#async">{l.async.title}</Anchor.Item>
- 
             <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
             <Anchor.Item href="#clearable">{l.clearable.title}</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#api" linkText={lang.api} />
+          <Anchor.Section
+            href="#anatomy"
+            linkText={lang.anatomy}
+          />
+          <Anchor.Section
+            href="#api"
+            linkText={lang.api}
+          />
         </Anchor>
       </aside>
     </div>

@@ -25,6 +25,7 @@ export default function AccordionDisabled() {
       <Accordion
         openKeys={openKeys}
         onOpenChange={setOpenKeys}
+        className="h-64 justify-center"
       >
         <Accordion.Item value="item-4" label="Enabled Item">
           <p>This accordion is still enabled and functional.</p>

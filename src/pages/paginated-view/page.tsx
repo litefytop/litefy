@@ -1,6 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  Anchor,
   Title,
   Description,
   ShikiCodeBlock,
@@ -11,15 +12,16 @@ import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
 import {
+  PaginatedViewBasic,
+} from "./examples";
+import {
   CheckIcon,
   CopyIcon,
   ArrowLeftIcon,
   ArrowRightIcon,
 } from "lucide-react";
 
-import { PaginatedViewBasic } from "./examples/index";
 import PaginatedViewBasicRaw from "./examples/paginated-view-basic.tsx?raw";
-
 import paginatedViewDoc from "./doc.mdx?raw";
 import paginatedViewSrc from "@/component/ui/paginated-view.tsx?raw";
 
@@ -61,32 +63,27 @@ export default function PaginatedViewPage({ locale = "zh" }: { locale?: string }
         {
           props: "activeIndex",
           type: "number",
-          default: "-",
           description: l.api.props.activeIndex,
-        },
-        {
-          props: "performanceThreshold",
-          type: "number",
-          default: "100",
-          description: l.api.props.performanceThreshold,
         },
         {
           props: "className",
           type: "ClassNameValue",
-          default: "-",
           description: lang.common.className,
         },
         {
-          props: "slotProps.root",
-          type: "DivProps",
-          default: "-",
-          description: l.api.props.slotPropsRoot,
+          props: "slotProps",
+          type: "PaginatedViewSlotProps",
+          description: l.api.props.slotProps,
         },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.slotPropsConfig,
+      data: [
         {
-          props: "slotProps.slide",
-          type: "DivProps",
-          default: "-",
-          description: l.api.props.slotPropsSlide,
+          props: "slide",
+          type: `React.ComponentProps<"div">`,
+          description: l.api.slotPropsConfig.slide,
         },
       ],
     },
@@ -133,15 +130,17 @@ export default function PaginatedViewPage({ locale = "zh" }: { locale?: string }
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 ">
-          <Title as="h2" className="mb-4">
+        <section className="mb-8 ">
+          <Title as="h2" id="installation" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{paginatedViewSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples">
-          <Title as="h2">{lang.examples}</Title>
+        <section>
+          <Title as="h2" id="examples">
+            {lang.examples}
+          </Title>
 
           <DemoSection
             id="basic"
@@ -150,17 +149,15 @@ export default function PaginatedViewPage({ locale = "zh" }: { locale?: string }
           >
             <PaginatedViewBasic />
           </DemoSection>
-
-      
         </section>
 
-        <section id="docs" className="mt-12 space-y-8">
+        <section id="api" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
-            {lang.docs}
+            {lang.api}
           </Title>
           <APITable sections={paginatedViewSections} />
         </section>
-        
+
         <footer className="py-8 border-t mt-8">
           <div className="flex justify-between">
             <Button
@@ -184,6 +181,16 @@ export default function PaginatedViewPage({ locale = "zh" }: { locale?: string }
           </div>
         </footer>
       </div>
+
+      <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-full overflow-y-auto p-4">
+        <Anchor>
+          <Anchor.Section href="#installation" linkText={lang.installation} />
+          <Anchor.Section href="#examples" linkText={lang.examples}>
+            <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
+          </Anchor.Section>
+          <Anchor.Section href="#api" linkText={lang.api} />
+        </Anchor>
+      </aside>
     </div>
   );
 }

@@ -5,11 +5,12 @@ export default function AccordionControlledUsage() {
   const [openKeys, setOpenKeys] = useState<string[]>(["item-1"]);
 
   return (
-    <div className="space-y-4">
-      <div className="text-sm text-muted-foreground">
-        Currently open: {openKeys.join(", ") || "None"}
-      </div>
-      <Accordion openKeys={openKeys} onOpenChange={setOpenKeys}>
+    <div>
+      <Accordion
+        openKeys={openKeys}
+        onOpenChange={setOpenKeys}
+        className="h-64 justify-center"
+      >
         <Accordion.Item value="item-1" label="First Item">
           <p>
             This is the content of the first item. Manage expanded items through
@@ -29,6 +30,9 @@ export default function AccordionControlledUsage() {
           </p>
         </Accordion.Item>
       </Accordion>
+      <div className="text-sm text-muted-foreground">
+        Currently open: {openKeys.join(", ") || "None"}
+      </div>
     </div>
   );
 }

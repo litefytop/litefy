@@ -5,7 +5,7 @@ export default function AccordionMultiple() {
   const [openKeys, setOpenKeys] = useState<string[]>(["item-1", "item-2"]);
 
   return (
-    <div className="space-y-4">
+    <div >
       <div className="text-sm text-muted-foreground">
         Currently open: {openKeys.join(", ") || "None"}
       </div>
@@ -13,6 +13,7 @@ export default function AccordionMultiple() {
         openKeys={openKeys}
         onOpenChange={setOpenKeys}
         allowMultiple
+        className="h-72 justify-center"
       >
         <Accordion.Item value="item-1" label="First Item">
           <p>Multiple items can be expanded simultaneously. Currently {openKeys.length} items are open.</p>

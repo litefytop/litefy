@@ -68,12 +68,14 @@ export const zh = {
     combobox: "Combobox 下拉选择器",
     sidebar: "Sidebar 侧边栏",
     paper: "Paper 纸张",
+    "virtual-scroll": "VirtualScroll 虚拟滚动",
     pagination: "Pagination 分页",
     transfer: "Transfer 穿梭框",
     overlay: "Overlay 遮罩",
     table: "Table 表格",
     sheet: "Sheet 抽屉",
     dropdown: "Dropdown 下拉菜单",
+    progress: "Progress 进度条",
     password: "Password 密码",
     "number-field": "NumberField 数字输入框",
   },
@@ -439,12 +441,18 @@ export const zh = {
     async: {
       title: "异步搜索",
     },
-
     disabled: {
       title: "禁用与无效",
     },
     clearable: {
       title: "可清除",
+    },
+    anatomy: {
+      container: "容器",
+      input: "输入框",
+      clear: "清除按钮",
+      dropdown: "下拉列表",
+      option: "选项",
     },
     api: {
       sectionTitles: {
@@ -455,23 +463,25 @@ export const zh = {
         value: "受控模式的值",
         defaultValue: "非受控模式的初始值",
         onChange: "值变化回调",
+        onBlur: "失焦回调",
         onSelect: "选择选项回调",
-        options: "静态选项数组",
-        fetchOptions: "异步获取选项函数",
+        options: "选项数组或异步获取选项函数",
         placeholder: "占位文本",
         disabled: "是否禁用",
         invalid: "是否无效状态",
         clearable: "是否显示清除按钮",
         debounceMs: "防抖延迟（毫秒）",
-        maxHeight: "下拉列表最大高度（px）",
+        skeleton: "自定义加载骨架屏",
+        optionHeight: "选项高度（像素）",
+        overscan: "虚拟滚动预渲染数量",
+        slotProps: "内部元素属性透传配置",
       },
       slotProps: {
-        container: "容器属性",
-        input: "输入框属性",
-        list: "列表属性",
-        option: "选项属性",
-        clearButton: "清除按钮属性",
-        triggerButton: "下拉按钮属性",
+        container: "容器 div 元素属性",
+        input: "输入框 input 元素属性",
+        list: "下拉列表 ul 元素属性",
+        option: "选项 li 元素属性",
+        clearButton: "清除按钮 button 元素属性",
       },
     },
   },
@@ -1174,16 +1184,47 @@ export const zh = {
     basic: {
       title: "基础",
     },
-
     api: {
       sectionTitles: {
         paginatedViewProps: "PaginatedView Props",
+        slotPropsConfig: "slotProps 配置",
       },
       props: {
-        activeIndex: "当前显示的幻灯片索引",
-        performanceThreshold: "启用动画的最大幻灯片数量，超过则禁用动画",
-        slotPropsRoot: "根元素属性",
-        slotPropsSlide: "幻灯片元素属性",
+        activeIndex: "当前显示的幻灯片索引（从 0 开始）",
+        className: "自定义类名",
+        slotProps: "内部元素属性透传配置",
+      },
+      slotPropsConfig: {
+        slide: "幻灯片容器 `<div>` 属性",
+      },
+    },
+  },
+
+  progress: {
+    title: "进度条",
+    description: "用于显示进度的组件，支持静态进度和检查点策略的动态进度。",
+    basic: {
+      title: "基础",
+    },
+    dynamic: {
+      title: "动态",
+    },
+    api: {
+      sectionTitles: {
+        progressProps: "Progress Props",
+      },
+      props: {
+        value: "静态进度值（0-1 之间）",
+        getCurrent: "获取当前进度的函数，返回数字或 Promise",
+        totalDuration: "预估总时长（秒）",
+        checkpoints: "检查点数组，用于触发进度更新",
+        reverse: "是否从右向左显示",
+        transitionDuration: "过渡动画时长（秒）",
+        className: "根容器类名",
+        barClassName: "进度条类名",
+        rootProps: "根容器 HTML 属性",
+        barProps: "进度条 HTML 属性",
+        onComplete: "进度完成回调",
       },
     },
   },
@@ -1200,6 +1241,29 @@ export const zh = {
       },
       props: {
         as: "要渲染的 HTML 元素",
+      },
+    },
+  },
+
+  virtualScroll: {
+    title: "虚拟滚动",
+    description: "高性能虚拟滚动组件，只渲染可见区域的项目。",
+    basic: {
+      title: "基础",
+    },
+    api: {
+      sectionTitles: {
+        virtualScrollProps: "VirtualScroll Props",
+      },
+      props: {
+        items: "要渲染的项目数组",
+        itemHeight: "每个项目的高度（像素）",
+        containerHeight: "容器高度（像素）",
+        renderItem: "渲染每个项目的函数",
+        overscan: "预渲染的额外项目数量",
+        onScroll: "滚动回调函数",
+        className: "内部容器类名",
+        containerClassName: "外部容器类名",
       },
     },
   },

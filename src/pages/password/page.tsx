@@ -185,15 +185,15 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 ">
-          <Title as="h2" className="mb-4">
+        <section className="mb-8">
+          <Title as="h2" id="installation" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{passwordSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" >
-          <Title as="h2">{lang.examples}</Title>
+        <section>
+          <Title as="h2" id="examples">{lang.examples}</Title>
 
           <DemoSection id="basic" title={l.basic.title} code={PasswordBasicRaw}>
             <PasswordBasic />
@@ -211,7 +211,7 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
         </section>
 
         <section id="anatomy" className="mt-8 space-y-4">
-          <Title as="h2">{lang.anatomy}</Title>
+          <Title as="h2" id="anatomy">{lang.anatomy}</Title>
           <Anatomy
             className="h-32"
             parts={[
@@ -222,7 +222,7 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
           >
             <Password
               data-anatomy-name="input"
-              placeholder="请输入密�?
+              placeholder="Enter password"
               slotProps={{
                 toggle: { "data-anatomy-name": "toggle" },
                 group: { "data-anatomy-name": "group" },
@@ -231,9 +231,9 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
           </Anatomy>
         </section>
 
-        <section id="docs" className="mt-12 space-y-8">
-          <Title as="h2" className="mb-4">
-            {lang.docs}
+        <section className="mt-12 space-y-8">
+          <Title as="h2" id="api" className="mb-4">
+            {lang.api}
           </Title>
           <APITable sections={passwordSections} />
         </section>
@@ -270,7 +270,7 @@ export default function PasswordPage({ locale = "zh" }: { locale?: string }) {
             <Anchor.Item href="#controlled">{l.controlled.title}</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
-          <Anchor.Section href="#docs" linkText={lang.docs} />
+          <Anchor.Section href="#api" linkText={lang.api} />
         </Anchor>
       </aside>
     </div>

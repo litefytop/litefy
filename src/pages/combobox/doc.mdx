@@ -1,136 +1,62 @@
 ## Installation
 
-Combobox 组件已经包含在项目中，无需额外安装依赖。
-
 ```bash
-# 已内置在项目组件库中
-import { Combobox } from "@/component/ui/combobox";
+npm install @your-org/ui
 ```
 
 ## Usage
 
-### Basic Example
-
 ```tsx
 import { Combobox } from "@/component";
-
-function App() {
-  return (
-    <Combobox
-      options={["China", "USA", "Japan"]}
-      placeholder="Select your country..."
-    />
-  );
-}
 ```
 
-### With Form
+## Examples
+
+### Basic
 
 ```tsx
-import { Combobox } from "@/component";
-import { Form } from "@/component/ui/form";
-
-function App() {
-  return (
-    <Form.Field 
-      name="country" 
-      label="Country" 
-      description="Select your country" 
-      validConfig={{ 
-        trigger: "onBlur", 
-        validate: (event: React.ChangeEvent<HTMLInputElement>) => { 
-          if (!event.target.value) return "Country is required"; 
-        }, 
-      }} 
-    > 
-      {(field) => ( 
-        <Combobox 
-          {...field} 
-          options={["China", "USA", "Japan"]} 
-          placeholder="Search country..." 
-        /> 
-      )} 
-    </Form.Field>
-  );
-}
+<Combobox options={["Apple", "Banana", "Cherry"]} />
 ```
 
 ### Async Search
 
 ```tsx
-import { Combobox } from "@/component";
-
-function App() {
-  return (
-    <Combobox
-      fetchOptions={async (input) => {
-        // Simulate API call with Promise
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        
-        const allOptions = ["China", "USA", "Japan", "Germany", "France"];
-
-        return allOptions.filter((opt) =>
-          opt.toLowerCase().includes(input.toLowerCase())
-        );
-      }}
-      debounceMs={500}
-      placeholder="Search countries..."
-    />
-  );
-}
-```
-
-### Controlled Mode
-
-```tsx
-import { useState } from "react";
-import { Combobox } from "@/component";
-
-function App() {
-  const [value, setValue] = useState("China");
-
-  return (
-    <Combobox
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      options={["China", "USA", "Japan"]}
-      placeholder="Select country..."
-    />
-  );
-}
+<Combobox
+  options={async (keyword) => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return ["React", "Vue", "Angular", "Svelte"].filter((item) =>
+      item.toLowerCase().includes(keyword.toLowerCase())
+    );
+  }}
+/>
 ```
 
 ### Disabled & Invalid
 
 ```tsx
-import { Combobox } from "@/component";
-
-function App() {
-  return (
-    <>
-      <Combobox
-        options={["China", "USA", "Japan"]}
-        placeholder="Disabled"
-        disabled
-      />
-      <Combobox
-        options={["China", "USA", "Japan"]}
-        placeholder="Invalid"
-        invalid
-      />
-    </>
-  );
-}
+<div className="space-y-4">
+  <Combobox
+    options={["Option 1", "Option 2", "Option 3"]}
+    disabled
+    placeholder="Disabled"
+  />
+  <Combobox
+    options={["Option 1", "Option 2", "Option 3"]}
+    invalid
+    placeholder="Invalid"
+  />
+</div>
 ```
 
-## Anatomy
+### Clearable
 
-- **Container**: 外层容器
-- **Input**: 输入框
-- **Trigger Button**: 下拉按钮
-- **Clear Button**: 清除按钮（可选）
-- **Option List**: 选项列表
-- **Option**: 单个选项
+```tsx
+<Combobox
+  options={["Option 1", "Option 2", "Option 3"]}
+  defaultValue="Option 1"
+  clearable
+/>
+```
 
 ## API Reference
 
@@ -138,63 +64,28 @@ function App() {
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `string` | - | 受控模式的值 |
-| `defaultValue` | `string` | `""` | 非受控模式的初始值 |
-| `onChange` | `(e: ComboboxChangeEvent) => void` | - | 值变化回调 |
-| `onBlur` | `FocusEventHandler` | - | 失焦回调 |
-| `onSelect` | `(option: string) => void` | - | 选择选项回调 |
-| `options` | `string[]` | - | 静态选项数组 |
-| `fetchOptions` | `(input: string) => Promise<string[]>` | - | 异步获取选项函数 |
-| `placeholder` | `string` | `"Search or type..."` | 占位文本 |
-| `disabled` | `boolean` | `false` | 是否禁用 |
-| `invalid` | `boolean` | `false` | 是否无效状态 |
-| `clearable` | `boolean` | `true` | 是否显示清除按钮 |
-| `className` | `ClassNameValue` | - | 自定义类名 |
-| `debounceMs` | `number` | `300` | 防抖延迟（毫秒） |
-| `maxHeight` | `number` | `256` | 下拉列表最大高度（px） |
+| value | string | - | Controlled mode value |
+| defaultValue | string | - | Uncontrolled mode initial value |
+| onChange | (e: ComboboxChangeEvent) => void | - | Value change callback |
+| onBlur | React.FocusEventHandler<HTMLInputElement> | - | Blur callback |
+| onSelect | (option: string) => void | - | Option selection callback |
+| options | string[] \| ((keyword: string) => Promise<string[]>) | - | Options array or async fetch function |
+| placeholder | string | "Search or type..." | Placeholder text |
+| disabled | boolean | false | Whether disabled |
+| invalid | boolean | false | Whether invalid state |
+| clearable | boolean | true | Whether show clear button |
+| debounceMs | number | 300 | Debounce delay in milliseconds |
+| skeleton | React.ReactNode | - | Custom loading skeleton |
+| optionHeight | number | 36 | Option item height in pixels |
+| overscan | number | 2 | Virtual scrolling overscan count |
+| slotProps | ComboboxSlotProps | - | Internal element props pass-through |
 
 ### slotProps Config
 
 | Prop | Type | Description |
 |------|------|-------------|
-| `container` | `HTMLAttributes<HTMLDivElement>` | 容器属性 |
-| `input` | `InputHTMLAttributes<HTMLInputElement>` | 输入框属性 |
-| `list` | `HTMLAttributes<HTMLUListElement>` | 列表属性 |
-| `option` | `LiHTMLAttributes<HTMLLIElement>` | 选项属性 |
-| `clearButton` | `ButtonHTMLAttributes<HTMLButtonElement>` | 清除按钮属性 |
-| `triggerButton` | `ButtonHTMLAttributes<HTMLButtonElement>` | 下拉按钮属性 |
-
-## Keyboard Shortcuts
-
-| Key | Action |
-|-----|--------|
-| `ArrowDown` | 高亮下一个选项 |
-| `ArrowUp` | 高亮上一个选项 |
-| `Enter` | 选择当前高亮选项 |
-| `Escape` | 关闭下拉列表 |
-
-## Best Practices
-
-### Performance
-
-- 使用 `debounceMs` 减少异步搜索的请求频率
-- 大量选项时设置合适的 `maxHeight`
-- 异步搜索时提供加载状态
-
-### Accessibility
-
-- 为 Combobox 提供清晰的 `placeholder`
-- 使用 `invalid` 状态配合表单验证
-- 确保选项文本描述清晰
-
-### Form Integration
-
-- 在 Form.Field 中使用时，通过 render props 获取 field 属性
-- 设置合适的 `validConfig` 进行表单验证
-- 使用 `onBlur` 触发验证
-
-## Related Components
-
-- [Form](/docs/components/form) - 表单组件
-- [Input](/docs/components/input) - 输入框
-- [Select](/docs/components/select) - 选择器
+| container | Omit<React.ComponentProps<"div">, "ref"> | Container div element props |
+| input | Omit<React.ComponentProps<"input">, "ref" \| "value" \| ...> | Input element props |
+| list | Omit<React.ComponentProps<"ul">, "ref"> | Dropdown list ul element props |
+| option | React.ComponentProps<"li"> | Option li element props |
+| clearButton | React.ComponentProps<"button"> | Clear button element props |

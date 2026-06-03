@@ -115,15 +115,15 @@ export default function TitlePage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 ">
-          <Title as="h2" className="mb-4">
+        <section className="mb-8">
+          <Title as="h2" id="installation" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{titleSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" >
-          <Title as="h2">{lang.examples}</Title>
+        <section>
+          <Title as="h2" id="examples">{lang.examples}</Title>
 
           <DemoSection
             id="basic"
@@ -134,9 +134,9 @@ export default function TitlePage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
         </section>
 
-        <section id="docs" className="mt-12 space-y-8">
-          <Title as="h2" className="mb-4">
-            {lang.docs}
+        <section className="mt-12 space-y-8">
+          <Title as="h2" id="api" className="mb-4">
+            {lang.api}
           </Title>
           <APITable sections={titleSections} />
         </section>
@@ -171,7 +171,7 @@ export default function TitlePage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#docs" linkText={lang.docs} />
+          <Anchor.Section href="#api" linkText={lang.api} />
         </Anchor>
       </aside>
     </div>

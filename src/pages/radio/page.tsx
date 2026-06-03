@@ -4,9 +4,9 @@ import {
   Anchor,
   Title,
   Description,
-  Radio,
+
   ShikiCodeBlock,
-  Anatomy,
+
   Button,
   APITable,
 } from "@/component";
@@ -206,15 +206,15 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 ">
-          <Title as="h2" className="mb-4">
+        <section className="mb-8">
+          <Title as="h2" id="installation" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{radioSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" >
-          <Title as="h2">{lang.examples}</Title>
+        <section>
+          <Title as="h2" id="examples">{lang.examples}</Title>
 
           <DemoSection
             id="basic"
@@ -251,43 +251,9 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
  
         </section>
 
-        <section id="anatomy" className="mt-8 space-y-4">
-          <Title as="h2">{lang.anatomy}</Title>
-          <Anatomy
-            className="h-40"
-            parts={[
-              { id: "anatomy-group", label: l.anatomy.group },
-              { id: "anatomy-label", label: l.anatomy.label },
-              { id: "anatomy-description", label: l.anatomy.description },
-              { id: "anatomy-item", label: l.anatomy.item },
-              { id: "anatomy-indicator", label: l.anatomy.indicator },
-            ]}
-          >
-            <Radio 
-    
-              slotProps={{
-   
-          
-          
-                content: {
-                  className: "flex flex-col gap-2",
-                },
-              }}
-              options={[
-                {
-                  value: "item1",
-                  label: "Item 1",
-                  id: "anatomy-item",
-                  indicator: { props: { id: "anatomy-indicator" } },
-                },
-              ]}
-            />
-          </Anatomy>
-        </section>
-
-        <section id="docs" className="mt-12 space-y-8">
-          <Title as="h2" className="mb-4">
-            {lang.docs}
+        <section className="mt-12 space-y-8">
+          <Title as="h2" id="api" className="mb-4">
+            {lang.api}
           </Title>
           <APITable sections={radioSections} />
         </section>
@@ -326,7 +292,7 @@ export default function RadioPage({ locale = "zh" }: { locale?: string }) {
             <Anchor.Item href="#variant">{l.variant.title}</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
-          <Anchor.Section href="#docs" linkText={lang.docs} />
+          <Anchor.Section href="#api" linkText={lang.api} />
         </Anchor>
       </aside>
     </div>

@@ -189,15 +189,15 @@ export default function ToastPage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 ">
-          <Title as="h2" className="mb-4">
+        <section className="mb-8">
+          <Title as="h2" id="installation" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{toastSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" >
-          <Title as="h2">{lang.examples}</Title>
+        <section>
+          <Title as="h2" id="examples">{lang.examples}</Title>
 
           <DemoSection
             id="types"
@@ -256,9 +256,9 @@ export default function ToastPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
         </section>
 
-        <section id="docs" className="mt-12 space-y-8">
-          <Title as="h2" className="mb-4">
-            {lang.docs}
+        <section className="mt-12 space-y-8">
+          <Title as="h2" id="api" className="mb-4">
+            {lang.api}
           </Title>
           <APITable sections={toastSections} />
         </section>
@@ -276,7 +276,7 @@ export default function ToastPage({ locale = "zh" }: { locale?: string }) {
             <Anchor.Item href="#dismiss">{l.dismiss.title}</Anchor.Item>
             <Anchor.Item href="#callbacks">{l.callbacks.title}</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#docs" linkText={lang.docs} />
+          <Anchor.Section href="#api" linkText={lang.api} />
         </Anchor>
       </aside>
     </div>

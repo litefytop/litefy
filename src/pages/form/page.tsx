@@ -251,8 +251,8 @@ export default function FormPage({ locale = "zh" }: { locale?: string }) {
           <ShikiCodeBlock>{formSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples">
-          <Title as="h2">{lang.examples}</Title>
+        <section>
+          <Title  id="examples" as="h2">{lang.examples}</Title>
 
           <DemoSection id="basic" title={l.basic.title} code={FormBasicRaw}>
             <FormBasic />
@@ -267,9 +267,9 @@ export default function FormPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
         </section>
 
-        <section id="docs" className="mt-12 space-y-8">
+        <section id="api" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
-            {lang.docs}
+            {lang.api}
           </Title>
           <APITable sections={formSections} />
         </section>
@@ -305,7 +305,7 @@ export default function FormPage({ locale = "zh" }: { locale?: string }) {
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
             <Anchor.Item href="#ref-example">{l.refExample.title}</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#docs" linkText={lang.docs} />
+          <Anchor.Section href="#api" linkText={lang.api} />
         </Anchor>
       </aside>
     </div>

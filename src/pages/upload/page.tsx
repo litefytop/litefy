@@ -170,15 +170,15 @@ export default function UploadPage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 ">
-          <Title as="h2" className="mb-4">
+        <section className="mb-8">
+          <Title as="h2" id="installation" className="mb-4">
             {lang.installation}
           </Title>
           <ShikiCodeBlock>{uploadSrc}</ShikiCodeBlock>
         </section>
 
-        <section id="examples" >
-          <Title as="h2">{lang.examples}</Title>
+        <section>
+          <Title as="h2" id="examples">{lang.examples}</Title>
 
           <DemoSection
             id="basic"
@@ -208,9 +208,9 @@ export default function UploadPage({ locale = "zh" }: { locale?: string }) {
         </section>
 
 
-        <section id="docs" className="mt-12 space-y-8">
-          <Title as="h2" className="mb-4">
-            {lang.docs}
+        <section className="mt-12 space-y-8">
+          <Title as="h2" id="api" className="mb-4">
+            {lang.api}
           </Title>
           <APITable sections={uploadSections} />
         </section>
@@ -225,7 +225,7 @@ export default function UploadPage({ locale = "zh" }: { locale?: string }) {
             <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
           </Anchor.Section>
           <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
-          <Anchor.Section href="#docs" linkText={lang.docs}/>
+          <Anchor.Section href="#api" linkText={lang.api}/>
         </Anchor>
       </aside>
     </div>

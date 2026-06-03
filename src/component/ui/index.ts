@@ -32,3 +32,5 @@ export * from "./date-picker";
 export * from "./form";
 export * from "./combobox";
 export * from "./carousel";
+export * from "./virtual-scroll";
+export * from "./progress";

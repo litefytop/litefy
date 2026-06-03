@@ -161,7 +161,6 @@ type FormFieldArg = {
   name: string;
   ref: (el: HTMLInputElement | null) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
   invalid: boolean;
   "aria-describedby": string;
@@ -186,7 +185,7 @@ export type FormFieldProps<T  > = Omit<
   children?: (field: FormFieldArg) => React.ReactNode;
   validConfig?: {
     validate?: (event: T) => string | boolean | null | undefined;
-    trigger?: "onChange" | "onBlur" | "onInput";
+    trigger?: "onChange" | "onBlur" ;
   };
 };
 
@@ -249,15 +248,7 @@ function FormField<T>({
     [validConfig],
   );
 
-  const onInput = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (validConfig?.trigger === "onInput") {
-        const invalid = validConfig?.validate?.(e as T);
-        setInternalInvalid(invalid);
-      }
-    },
-    [validConfig],
-  );
+
 
   return (
     <div
@@ -291,7 +282,7 @@ function FormField<T>({
         ref: inputRef,
         onChange,
         onBlur,
-        onInput,
+
         invalid: isInvalid,
         "aria-describedby": currentDescribedById,
       })}

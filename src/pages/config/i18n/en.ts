@@ -57,6 +57,7 @@ export const en = {
     theme: "Theme",
     title: "Title",
     description: "Description",
+    "virtual-scroll": "VirtualScroll",
     spin: "Spin",
     image: "Image",
     watermark: "Watermark",
@@ -75,6 +76,7 @@ export const en = {
     upload: "Upload",
     "date-picker": "DatePicker",
     "number-field": "NumberField",
+    progress: "Progress",
   },
 
   dropdown: {
@@ -441,12 +443,18 @@ export const en = {
     async: {
       title: "Async Search",
     },
-
     disabled: {
       title: "Disabled & Invalid",
     },
     clearable: {
       title: "Clearable",
+    },
+    anatomy: {
+      container: "Container",
+      input: "Input",
+      clear: "Clear Button",
+      dropdown: "Dropdown List",
+      option: "Option",
     },
     api: {
       sectionTitles: {
@@ -457,23 +465,25 @@ export const en = {
         value: "Controlled mode value",
         defaultValue: "Uncontrolled mode initial value",
         onChange: "Value change callback",
+        onBlur: "Blur callback",
         onSelect: "Option selection callback",
-        options: "Static options array",
-        fetchOptions: "Async function to fetch options",
+        options: "Options array or async fetch function",
         placeholder: "Placeholder text",
         disabled: "Whether disabled",
         invalid: "Whether invalid state",
         clearable: "Whether show clear button",
         debounceMs: "Debounce delay in milliseconds",
-        maxHeight: "Dropdown max height in pixels",
+        skeleton: "Custom loading skeleton",
+        optionHeight: "Option height in pixels",
+        overscan: "Virtual scrolling overscan count",
+        slotProps: "Internal element props pass-through",
       },
       slotProps: {
-        container: "Container props",
-        input: "Input props",
-        list: "List props",
-        option: "Option props",
-        clearButton: "Clear button props",
-        triggerButton: "Trigger button props",
+        container: "Container div element props",
+        input: "Input element props",
+        list: "Dropdown list ul element props",
+        option: "Option li element props",
+        clearButton: "Clear button element props",
       },
     },
   },
@@ -1169,16 +1179,47 @@ export const en = {
     basic: {
       title: "Basic",
     },
-
     api: {
       sectionTitles: {
         paginatedViewProps: "PaginatedView Props",
+        slotPropsConfig: "slotProps Config",
       },
       props: {
-        activeIndex: "Current active slide index",
-        performanceThreshold: "Maximum slides before disabling animation",
-        slotPropsRoot: "Root element props",
-        slotPropsSlide: "Slide element props",
+        activeIndex: "Current active slide index (0-based)",
+        className: "Custom className",
+        slotProps: "Internal element props pass-through",
+      },
+      slotPropsConfig: {
+        slide: "Slide container `<div>` props",
+      },
+    },
+  },
+
+  progress: {
+    title: "Progress",
+    description: "Progress bar component supporting static progress and checkpoint-based dynamic progress.",
+    basic: {
+      title: "Basic",
+    },
+    dynamic: {
+      title: "Dynamic",
+    },
+    api: {
+      sectionTitles: {
+        progressProps: "Progress Props",
+      },
+      props: {
+        value: "Static progress value (between 0-1)",
+        getCurrent: "Function to get current progress, returns number or Promise",
+        totalDuration: "Estimated total duration in seconds",
+        checkpoints: "Checkpoints array for triggering progress updates",
+        reverse: "Display from right to left",
+        transitionDuration: "Transition duration in seconds",
+        className: "Root container className",
+        barClassName: "Progress bar className",
+        rootProps: "Root container HTML attributes",
+        barProps: "Progress bar HTML attributes",
+        onComplete: "Callback when progress completes",
       },
     },
   },
@@ -1195,6 +1236,29 @@ export const en = {
       },
       props: {
         as: "The HTML element to render",
+      },
+    },
+  },
+
+  virtualScroll: {
+    title: "Virtual Scroll",
+    description: "High-performance virtual scroll component that only renders visible items.",
+    basic: {
+      title: "Basic",
+    },
+    api: {
+      sectionTitles: {
+        virtualScrollProps: "VirtualScroll Props",
+      },
+      props: {
+        items: "Array of items to render",
+        itemHeight: "Height of each item in pixels",
+        containerHeight: "Container height in pixels",
+        renderItem: "Function to render each item",
+        overscan: "Number of extra items to render",
+        onScroll: "Scroll callback function",
+        className: "Inner container className",
+        containerClassName: "Outer container className",
       },
     },
   },

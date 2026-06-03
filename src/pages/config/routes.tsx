@@ -37,6 +37,8 @@ const Title = lazy(() => import("@/pages/title"));
 const Paper = lazy(() => import("@/pages/paper"));
 const Combobox = lazy(() => import("@/pages/combobox"));
 const Carousel = lazy(() => import("@/pages/carousel"));
+const VirtualScroll = lazy(() => import("@/pages/virtual-scroll"));
+const Progress = lazy(() => import("@/pages/progress"));
 
 const introduction = {
   key: "introduction",
@@ -79,7 +81,8 @@ const componentRouteConfig = [
   { key: "paginated-view", path: "/components/paginated-view", Component: PaginatedView },
   { key: "pagination", path: "/components/pagination", Component: Pagination },
   { key: "transfer", path: "/components/transfer", Component: ComingSoon },
-
+  { key: "virtual-scroll", path: "/components/virtual-scroll", Component: VirtualScroll },
+  { key: "progress", path: "/components/progress", Component: Progress },
 ];
 
 function getLabel(t: typeof zh, key: string): string {

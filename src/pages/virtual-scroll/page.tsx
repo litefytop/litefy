@@ -1,33 +1,29 @@
-# page.tsx 结构说明
-
-## 组件模板
-
-```tsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CopyIcon,
-  CheckIcon,
   Anchor,
   Title,
   Description,
   ShikiCodeBlock,
-  Anatomy,
-  ComponentName,
   Button,
   APITable,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
-import { t } from "@/pages";
+import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
+import {
+  VirtualScrollBasic,
+} from "./examples";
+import {
+  CheckIcon,
+  CopyIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+} from "lucide-react";
 
-import { Example1 } from "./examples";
-
-import Example1Raw from "./examples/Example1.tsx?raw";
-import componentDoc from "./doc.mdx?raw";
-import componentSrc from "@/component/ui/component-name.tsx?raw";
+import VirtualScrollBasicRaw from "./examples/virtual-scroll-basic.tsx?raw";
+import virtualScrollDoc from "./doc.mdx?raw";
+import virtualScrollSrc from "@/component/ui/virtual-scroll.tsx?raw";
 
 function DemoSection({
   id,
@@ -41,7 +37,7 @@ function DemoSection({
   code: string;
 }) {
   return (
-   <section id={id} data-anchor-id={id} className="space-y-4 py-4">
+    <section id={id} className="space-y-4 py-4">
       <div>
         <Title as="h3">{title}</Title>
       </div>
@@ -53,18 +49,64 @@ function DemoSection({
   );
 }
 
-export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
-  const navigate = useNavigate();
+export default function VirtualScrollPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
-  const l = lang.componentName;
-  const nav = getComponentNav(
-    "/components/component-name",
-    locale as "zh" | "en",
-  );
+  const l = lang.virtualScroll;
+  const nav = getComponentNav("/components/virtual-scroll", locale as "zh" | "en");
+
+  const virtualScrollSections = [
+    {
+      title: l.api.sectionTitles.virtualScrollProps,
+      data: [
+        {
+          props: "items",
+          type: "T[]",
+          description: l.api.props.items,
+        },
+        {
+          props: "itemHeight",
+          type: "number",
+          description: l.api.props.itemHeight,
+        },
+        {
+          props: "containerHeight",
+          type: "number",
+          description: l.api.props.containerHeight,
+        },
+        {
+          props: "renderItem",
+          type: "(item: T, index: number) => React.ReactNode",
+          description: l.api.props.renderItem,
+        },
+        {
+          props: "overscan",
+          type: "number",
+          default: "2",
+          description: l.api.props.overscan,
+        },
+        {
+          props: "onScroll",
+          type: "(scrollTop: number) => void",
+          description: l.api.props.onScroll,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          description: l.api.props.className,
+        },
+        {
+          props: "containerClassName",
+          type: "ClassNameValue",
+          description: l.api.props.containerClassName,
+        },
+      ],
+    },
+  ];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(componentDoc);
+    navigator.clipboard.writeText(virtualScrollDoc);
     setCopied(true);
     Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);
@@ -77,19 +119,6 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
   const handleNext = () => {
     if (nav.next) navigate(`/${locale}${nav.next.href}`);
   };
-
-  const sections = [
-    {
-      title: l.api.sectionTitles.componentProps,
-      data: [
-        {
-          props: "propName",
-          type: "string",
-          description: l.api.props.propName,
-        },
-      ],
-    },
-  ];
 
   return (
     <div className="flex">
@@ -117,40 +146,32 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 ">
-          <Title as="h2" className="mb-4">
+        <section className="mb-8 ">
+          <Title as="h2" id="installation" className="mb-4">
             {lang.installation}
           </Title>
-          <ShikiCodeBlock>{componentSrc}</ShikiCodeBlock>
+          <ShikiCodeBlock>{virtualScrollSrc}</ShikiCodeBlock>
         </section>
 
         <section>
-          <Title id="examples" as="h2">{lang.examples}</Title>
+          <Title as="h2" id="examples">
+            {lang.examples}
+          </Title>
 
-          <DemoSection id="basic" title={l.basic.title} code={Example1Raw}>
-            <Example1 />
+          <DemoSection
+            id="basic"
+            title={l.basic.title}
+            code={VirtualScrollBasicRaw}
+          >
+            <VirtualScrollBasic />
           </DemoSection>
         </section>
 
-        <section id="anatomy" className="mt-8 space-y-4">
-          <Title as="h2">{lang.anatomy}</Title>
-          <Anatomy
-            className="h-32"
-            parts={[{ id: "anatomy-component", label: l.anatomy.component }]}
-          >
-            <ComponentName>
-              <div id="anatomy-component" className="w-64">
-                <h2 className="text-lg font-semibold mb-2">Component</h2>
-              </div>
-            </ComponentName>
-          </Anatomy>
-        </section>
-
-        <section id="api" data-anchor-id="api" className="mt-12 space-y-8">
+        <section id="api" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
             {lang.api}
           </Title>
-          <APITable sections={sections} />
+          <APITable sections={virtualScrollSections} />
         </section>
 
         <footer className="py-8 border-t mt-8">
@@ -183,11 +204,9 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
           <Anchor.Section href="#api" linkText={lang.api} />
         </Anchor>
       </aside>
     </div>
   );
 }
-```

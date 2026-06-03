@@ -1,33 +1,31 @@
-# page.tsx 结构说明
-
-## 组件模板
-
-```tsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CopyIcon,
-  CheckIcon,
   Anchor,
   Title,
   Description,
   ShikiCodeBlock,
-  Anatomy,
-  ComponentName,
   Button,
   APITable,
 } from "@/component";
 import { Toaster } from "@/component/ui/toast";
-import { t } from "@/pages";
+import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
+import {
+  ProgressBasic,
+  ProgressDynamic,
+} from "./examples";
+import {
+  CheckIcon,
+  CopyIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+} from "lucide-react";
 
-import { Example1 } from "./examples";
-
-import Example1Raw from "./examples/Example1.tsx?raw";
-import componentDoc from "./doc.mdx?raw";
-import componentSrc from "@/component/ui/component-name.tsx?raw";
+import ProgressBasicRaw from "./examples/progress-basic.tsx?raw";
+import ProgressDynamicRaw from "./examples/progress-dynamic.tsx?raw";
+import progressDoc from "./doc.mdx?raw";
+import progressSrc from "@/component/ui/progress.tsx?raw";
 
 function DemoSection({
   id,
@@ -41,7 +39,7 @@ function DemoSection({
   code: string;
 }) {
   return (
-   <section id={id} data-anchor-id={id} className="space-y-4 py-4">
+    <section id={id} className="space-y-4 py-4">
       <div>
         <Title as="h3">{title}</Title>
       </div>
@@ -53,18 +51,83 @@ function DemoSection({
   );
 }
 
-export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
-  const navigate = useNavigate();
+export default function ProgressPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
-  const l = lang.componentName;
-  const nav = getComponentNav(
-    "/components/component-name",
-    locale as "zh" | "en",
-  );
+  const l = lang.progress;
+  const nav = getComponentNav("/components/progress", locale as "zh" | "en");
+
+  const progressSections = [
+    {
+      title: l.api.sectionTitles.progressProps,
+      data: [
+        {
+          props: "value",
+          type: "number",
+          default: "0",
+          description: l.api.props.value,
+        },
+        {
+          props: "getCurrent",
+          type: "() => number | Promise<number>",
+          description: l.api.props.getCurrent,
+        },
+        {
+          props: "totalDuration",
+          type: "number",
+          default: "5",
+          description: l.api.props.totalDuration,
+        },
+        {
+          props: "checkpoints",
+          type: "number[]",
+          default: "[0.25, 0.5, 0.75, 1]",
+          description: l.api.props.checkpoints,
+        },
+        {
+          props: "reverse",
+          type: "boolean",
+          default: "false",
+          description: l.api.props.reverse,
+        },
+        {
+          props: "transitionDuration",
+          type: "number",
+          default: "0.2",
+          description: l.api.props.transitionDuration,
+        },
+        {
+          props: "className",
+          type: "ClassNameValue",
+          description: l.api.props.className,
+        },
+        {
+          props: "barClassName",
+          type: "ClassNameValue",
+          description: l.api.props.barClassName,
+        },
+        {
+          props: "rootProps",
+          type: "React.HTMLAttributes<HTMLDivElement>",
+          description: l.api.props.rootProps,
+        },
+        {
+          props: "barProps",
+          type: "React.HTMLAttributes<HTMLDivElement>",
+          description: l.api.props.barProps,
+        },
+        {
+          props: "onComplete",
+          type: "() => void",
+          description: l.api.props.onComplete,
+        },
+      ],
+    },
+  ];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(componentDoc);
+    navigator.clipboard.writeText(progressDoc);
     setCopied(true);
     Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);
@@ -77,19 +140,6 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
   const handleNext = () => {
     if (nav.next) navigate(`/${locale}${nav.next.href}`);
   };
-
-  const sections = [
-    {
-      title: l.api.sectionTitles.componentProps,
-      data: [
-        {
-          props: "propName",
-          type: "string",
-          description: l.api.props.propName,
-        },
-      ],
-    },
-  ];
 
   return (
     <div className="flex">
@@ -117,40 +167,40 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
           <Description>{l.description}</Description>
         </header>
 
-        <section id="installation" className="mb-8 ">
-          <Title as="h2" className="mb-4">
+        <section className="mb-8 ">
+          <Title as="h2" id="installation" className="mb-4">
             {lang.installation}
           </Title>
-          <ShikiCodeBlock>{componentSrc}</ShikiCodeBlock>
+          <ShikiCodeBlock>{progressSrc}</ShikiCodeBlock>
         </section>
 
         <section>
-          <Title id="examples" as="h2">{lang.examples}</Title>
+          <Title as="h2" id="examples">
+            {lang.examples}
+          </Title>
 
-          <DemoSection id="basic" title={l.basic.title} code={Example1Raw}>
-            <Example1 />
+          <DemoSection
+            id="basic"
+            title={l.basic.title}
+            code={ProgressBasicRaw}
+          >
+            <ProgressBasic />
+          </DemoSection>
+
+          <DemoSection
+            id="dynamic"
+            title={l.dynamic.title}
+            code={ProgressDynamicRaw}
+          >
+            <ProgressDynamic />
           </DemoSection>
         </section>
 
-        <section id="anatomy" className="mt-8 space-y-4">
-          <Title as="h2">{lang.anatomy}</Title>
-          <Anatomy
-            className="h-32"
-            parts={[{ id: "anatomy-component", label: l.anatomy.component }]}
-          >
-            <ComponentName>
-              <div id="anatomy-component" className="w-64">
-                <h2 className="text-lg font-semibold mb-2">Component</h2>
-              </div>
-            </ComponentName>
-          </Anatomy>
-        </section>
-
-        <section id="api" data-anchor-id="api" className="mt-12 space-y-8">
+        <section id="api" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
             {lang.api}
           </Title>
-          <APITable sections={sections} />
+          <APITable sections={progressSections} />
         </section>
 
         <footer className="py-8 border-t mt-8">
@@ -182,12 +232,11 @@ export default function ComponentPage({ locale = "zh" }: { locale?: string }) {
           <Anchor.Section href="#installation" linkText={lang.installation} />
           <Anchor.Section href="#examples" linkText={lang.examples}>
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
+            <Anchor.Item href="#dynamic">{l.dynamic.title}</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
           <Anchor.Section href="#api" linkText={lang.api} />
         </Anchor>
       </aside>
     </div>
   );
 }
-```

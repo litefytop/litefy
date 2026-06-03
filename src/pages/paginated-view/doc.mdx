@@ -1,7 +1,3 @@
-# PaginatedView
-
-A view component that displays one slide at a time with smooth transitions.
-
 ## Installation
 
 ```tsx
@@ -20,12 +16,58 @@ import { PaginatedView } from "@/component";
 </PaginatedView>
 ```
 
+### With Pagination Controls
+
+```tsx
+import { useState } from "react";
+import { PaginatedView, Pagination, usePagination, Button } from "@/component";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+function PaginationControls() {
+  const { current, totalPages, goPrev, goNext } = usePagination();
+  
+  return (
+    <div className="flex items-center gap-1">
+      <Pagination.Controls variant="prev" aria-label="Previous page">
+        <ChevronLeft className="size-4" />
+      </Pagination.Controls>
+      <Pagination.Jumper format={(page) => `Page ${page}`} />
+      <Pagination.Controls variant="next" aria-label="Next page">
+        <ChevronRight className="size-4" />
+      </Pagination.Controls>
+    </div>
+  );
+}
+
+export default function Example() {
+  const [current, setCurrent] = useState(1);
+  
+  return (
+    <Pagination
+      current={current}
+      pageSize={1}
+      total={100}
+      onPageChange={setCurrent}
+    >
+      <Pagination.Description />
+      <PaginationControls />
+    </Pagination>
+  );
+}
+```
+
 ## API Reference
+
+### PaginatedView Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| activeIndex | number | - | Current active slide index |
-| performanceThreshold | number | 100 | Maximum number of slides before disabling animation |
-| className | ClassNameValue | - | Container className |
-| slotProps.root | DivProps | - | Root element props |
-| slotProps.slide | DivProps | - | Slide element props |
+| activeIndex | number | - | Current active slide index (0-based) |
+| className | ClassNameValue | - | Custom className |
+| slotProps | PaginatedViewSlotProps | - | Internal element props pass-through |
+
+### slotProps Config
+
+| Prop | Type | Description |
+|------|------|-------------|
+| slide | React.ComponentProps<"div"> | Slide container `<div>` props |

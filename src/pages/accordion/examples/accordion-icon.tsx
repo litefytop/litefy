@@ -27,7 +27,7 @@ export default function AccordionCustomIcon() {
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
   return (
-    <Accordion openKeys={openKeys} onOpenChange={setOpenKeys}>
+    <Accordion openKeys={openKeys} onOpenChange={setOpenKeys} className="h-64 justify-center">
       {items.map((item) => (
         <Accordion.Item
           key={item.value}

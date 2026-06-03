@@ -2,32 +2,17 @@ import { Combobox } from "@/component";
 
 export default function ComboboxDisabled() {
   return (
-    <div className="max-w-sm space-y-4">
+    <div className="space-y-4">
       <Combobox
-        options={[
-          "China",
-          "USA",
-          "Japan",
-          "Germany",
-          "France",
-        ]}
-        placeholder="Disabled combobox"
+        options={["Option 1", "Option 2", "Option 3"]}
         disabled
+        placeholder="Disabled"
       />
       <Combobox
-        options={[
-          "China",
-          "USA",
-          "Japan",
-          "Germany",
-          "France",
-        ]}
-        placeholder="Invalid combobox"
+        options={["Option 1", "Option 2", "Option 3"]}
         invalid
+        placeholder="Invalid"
       />
-      <p className="text-xs text-muted-foreground mt-2">
-        Options: China, USA, Japan, Germany, France
-      </p>
     </div>
   );
 }

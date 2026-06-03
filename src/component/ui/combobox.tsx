@@ -1,18 +1,23 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 import { createPortal } from "react-dom";
 import { cn, ClassNameValue } from "@/lib/utils";
 import { ChevronDown, X } from "lucide-react";
+
 type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;
   className?: ClassNameValue;
 };
+
 export type ComboboxChangeEvent = React.ChangeEvent<HTMLInputElement>;
 type OptionFn = (keyword: string) => Promise<string[]>;
-type RenderListPayload = {
-  activeIndex: number;
-};
 
 export type ComboboxProps = {
   value?: string;
@@ -27,7 +32,8 @@ export type ComboboxProps = {
   clearable?: boolean;
   debounceMs?: number;
   skeleton?: React.ReactNode;
-  renderList?: (data: string[], payload: RenderListPayload) => React.ReactNode;
+  optionHeight?: number;
+  overscan?: number;
   slotProps?: {
     container?: HTMLAttrs<Omit<React.ComponentProps<"div">, "ref">>;
     input?: HTMLAttrs<
@@ -60,7 +66,8 @@ export function Combobox({
   clearable = true,
   debounceMs = 300,
   skeleton,
-  renderList,
+  optionHeight = 36,
+  overscan = 2,
   slotProps,
 }: ComboboxProps) {
   const [internalValue, setInternalValue] = useState(defaultValue);
@@ -69,17 +76,29 @@ export function Combobox({
   const [highlightIndex, setHighlightIndex] = useState(-1);
   const [innerLoading, setInnerLoading] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const [containerHeight, setContainerHeight] = useState(0);
+  const [scrollTop, setScrollTop] = useState(0);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const dropdownRef = useRef<HTMLUListElement>(null);
+  const listContainerRef = useRef<HTMLUListElement>(null);
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
   const pendingRequestRef = useRef<string | null>(null);
   const closeTimer = useRef<NodeJS.Timeout | null>(null);
+  const isMountedRef = useRef(true);
+  const resizeObserverRef = useRef<ResizeObserver | null>(null);
 
   const inputValue =
     controlledValue !== undefined ? controlledValue : internalValue;
+
+  const preprocessedOptions = useMemo(() => {
+    if (!options || !Array.isArray(options)) return null;
+    return options.map((opt) => ({
+      original: opt,
+      lower: opt.toLowerCase(),
+    }));
+  }, [options]);
 
   const cancelClose = () => {
     if (closeTimer.current) {
@@ -88,10 +107,11 @@ export function Combobox({
     }
   };
 
-  const closeDropdown = () => {
+  const closeDropdown = useCallback(() => {
     setIsOpen(false);
     setHighlightIndex(-1);
-  };
+    setScrollTop(0);
+  }, []);
 
   const scheduleClose = () => {
     cancelClose();
@@ -101,10 +121,16 @@ export function Combobox({
   const updateDropdownPosition = useCallback(() => {
     if (!triggerRef.current) return;
     const rect = triggerRef.current.getBoundingClientRect();
-    setDropdownPosition({
-      top: rect.bottom + 4,
-      left: rect.left,
-    });
+    const dropdownHeightEstimate = 256;
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const spaceAbove = rect.top;
+    let top: number;
+    if (spaceBelow >= dropdownHeightEstimate || spaceBelow >= spaceAbove) {
+      top = rect.bottom + 4;
+    } else {
+      top = rect.top - dropdownHeightEstimate - 4;
+    }
+    setDropdownPosition({ top, left: rect.left });
   }, []);
 
   const fetchData = useCallback(
@@ -113,37 +139,51 @@ export function Combobox({
         setSuggestions([]);
         return;
       }
-      if (Array.isArray(options)) {
-        const filtered = options.filter((opt) =>
-          opt.toLowerCase().includes(keyword.toLowerCase()),
-        );
+      if (preprocessedOptions) {
+        const lowerKeyword = keyword.toLowerCase();
+        const filtered = preprocessedOptions
+          .filter((item) => item.lower.includes(lowerKeyword))
+          .map((item) => item.original);
         setSuggestions(filtered);
         return;
       }
-      if (pendingRequestRef.current === keyword) return;
-      pendingRequestRef.current = keyword;
-      setInnerLoading(true);
-      try {
-        const list = await options(keyword);
-        if (pendingRequestRef.current === keyword) {
-          setSuggestions(list);
-        }
-      } finally {
-        if (pendingRequestRef.current === keyword) {
-          setInnerLoading(false);
-          pendingRequestRef.current = null;
+      if (typeof options === "function") {
+        if (pendingRequestRef.current === keyword) return;
+        pendingRequestRef.current = keyword;
+        setInnerLoading(true);
+        try {
+          const list = await options(keyword);
+          if (pendingRequestRef.current === keyword && isMountedRef.current) {
+            setSuggestions(list);
+          }
+        } finally {
+          if (pendingRequestRef.current === keyword && isMountedRef.current) {
+            setInnerLoading(false);
+            pendingRequestRef.current = null;
+          }
         }
       }
     },
-    [options],
+    [options, preprocessedOptions],
   );
+
+  const openDropdown = useCallback(() => {
+    if (!isOpen) {
+      setIsOpen(true);
+      updateDropdownPosition();
+      fetchData(inputValue);
+    }
+  }, [isOpen, inputValue, fetchData, updateDropdownPosition]);
 
   const handleChange = (e: ComboboxChangeEvent) => {
     const newValue = e.target.value;
     if (controlledValue === undefined) setInternalValue(newValue);
     onChange?.(e);
 
-
+    if (newValue.trim() === "") {
+      setSuggestions([]);
+      return;
+    }
     setIsOpen(true);
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
     debounceTimer.current = setTimeout(() => {
@@ -155,26 +195,27 @@ export function Combobox({
     (e: React.FocusEvent<HTMLInputElement>) => {
       cancelClose();
       if (disabled) return;
-      setIsOpen(true);
-      setHighlightIndex(-1);
-      fetchData(inputValue);
+      openDropdown();
       slotProps?.input?.onFocus?.(e);
     },
-    [disabled, inputValue, fetchData, slotProps?.input],
+    [disabled, openDropdown, slotProps?.input],
   );
 
-  const handleSelect = (option: string) => {
-    cancelClose();
-    if (controlledValue === undefined) setInternalValue(option);
-    const fakeEvent = {
-      target: { value: option },
-      currentTarget: { value: option },
-    } as ComboboxChangeEvent;
-    onChange?.(fakeEvent);
-    onSelect?.(option);
-    closeDropdown();
-    inputRef.current?.focus();
-  };
+  const handleSelect = useCallback(
+    (option: string) => {
+      cancelClose();
+      if (controlledValue === undefined) setInternalValue(option);
+      const fakeEvent = {
+        target: { value: option },
+        currentTarget: { value: option },
+      } as ComboboxChangeEvent;
+      onChange?.(fakeEvent);
+      onSelect?.(option);
+      closeDropdown();
+      inputRef.current?.focus();
+    },
+    [closeDropdown, controlledValue, onChange, onSelect],
+  );
 
   const handleClear = () => {
     cancelClose();
@@ -217,20 +258,11 @@ export function Combobox({
     }
   };
 
-  const toggleDropdown = () => {
-    if (disabled) return;
-    cancelClose();
-    setIsOpen((prev) => !prev);
-    if (!isOpen) {
-      fetchData(inputValue);
-    }
-  };
-
   useEffect(() => {
     const handler = (ev: MouseEvent) => {
       const target = ev.target as Node;
       const inWrap = containerRef.current?.contains(target);
-      const inDrop = dropdownRef.current?.contains(target);
+      const inDrop = listContainerRef.current?.contains(target);
       if (!inWrap && !inDrop) {
         cancelClose();
         closeDropdown();
@@ -238,34 +270,81 @@ export function Combobox({
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
-  }, []);
+  }, [closeDropdown]);
 
   useEffect(() => {
     if (!isOpen) return;
-    updateDropdownPosition();
-    const onScrollResize = () => updateDropdownPosition();
-    window.addEventListener("scroll", onScrollResize, true);
-    window.addEventListener("resize", onScrollResize);
+    const handleClose = () => closeDropdown();
+    window.addEventListener("scroll", handleClose, true);
+    window.addEventListener("resize", handleClose);
     return () => {
-      window.removeEventListener("scroll", onScrollResize, true);
-      window.removeEventListener("resize", onScrollResize);
+      window.removeEventListener("scroll", handleClose, true);
+      window.removeEventListener("resize", handleClose);
     };
-  }, [isOpen, updateDropdownPosition]);
+  }, [isOpen, closeDropdown]);
 
   useEffect(() => {
-    if (
-      !dropdownRef.current ||
-      highlightIndex < 0 ||
-      innerLoading ||
-      renderList
-    )
-      return;
-    const item = dropdownRef.current.children[highlightIndex] as HTMLElement;
-    item?.scrollIntoView({ block: "nearest" });
-  }, [highlightIndex, innerLoading, renderList]);
-
-  useEffect(() => {
+    if (!listContainerRef.current) return;
+    const updateHeight = () => {
+      if (listContainerRef.current) {
+        setContainerHeight(listContainerRef.current.clientHeight);
+      }
+    };
+    updateHeight();
+    resizeObserverRef.current = new ResizeObserver(updateHeight);
+    resizeObserverRef.current.observe(listContainerRef.current);
     return () => {
+      resizeObserverRef.current?.disconnect();
+    };
+  }, [isOpen, suggestions]);
+
+  useEffect(() => {
+    if (!listContainerRef.current || highlightIndex < 0 || innerLoading) return;
+    const container = listContainerRef.current;
+    const itemTop = highlightIndex * optionHeight;
+    const itemBottom = itemTop + optionHeight;
+    const scrollTopNow = container.scrollTop;
+    const containerHeightNow = container.clientHeight;
+
+    if (itemTop < scrollTopNow) {
+      container.scrollTop = itemTop;
+    } else if (itemBottom > scrollTopNow + containerHeightNow) {
+      container.scrollTop = itemBottom - containerHeightNow;
+    }
+  }, [highlightIndex, innerLoading, optionHeight]);
+
+  const visibleRange = useMemo(() => {
+    if (containerHeight <= 0) return { start: 0, end: suggestions.length };
+    const totalHeight = suggestions.length * optionHeight;
+    if (totalHeight <= containerHeight) {
+      return { start: 0, end: suggestions.length };
+    }
+    const startIndex = Math.max(
+      0,
+      Math.floor(scrollTop / optionHeight) - overscan,
+    );
+    const endIndex = Math.min(
+      suggestions.length,
+      Math.ceil((scrollTop + containerHeight) / optionHeight) + overscan,
+    );
+    return { start: startIndex, end: endIndex };
+  }, [scrollTop, suggestions.length, optionHeight, overscan, containerHeight]);
+
+  const handleScroll = useCallback((e: React.UIEvent<HTMLUListElement>) => {
+    setScrollTop(e.currentTarget.scrollTop);
+  }, []);
+
+  useEffect(() => {
+    if (listContainerRef.current) {
+      listContainerRef.current.scrollTop = 0;
+      setScrollTop(0);
+    }
+  }, [suggestions]);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
       if (debounceTimer.current) clearTimeout(debounceTimer.current);
       if (closeTimer.current) clearTimeout(closeTimer.current);
     };
@@ -278,31 +357,48 @@ export function Combobox({
       Loading...
     </li>
   );
-  const listPayload: RenderListPayload = { activeIndex: highlightIndex };
 
-  const defaultListContent = suggestions.map((option, idx) => (
-    <li
-      role="option"
-      {...slotProps?.option}
-      key={`${option}_${idx}`}
-      aria-selected={idx === highlightIndex}
-      data-active={idx === highlightIndex || undefined}
-      onClick={() => handleSelect(option)}
-      className={cn(
-        "cursor-pointer px-3 py-2 text-sm transition-colors hover:bg-gray-100 data-active:bg-accent data-active:text-accent-foreground",
-        slotProps?.option?.className,
-      )}
-    >
-      {option}
-    </li>
-  ));
+  const visibleOptions = useMemo(() => {
+    if (suggestions.length === 0) return null;
+    const { start, end } = visibleRange;
+    const items = [];
+    for (let i = start; i < end; i++) {
+      const option = suggestions[i];
+      items.push(
+        <li
+          key={`${option}_${i}`}
+          role="option"
+          aria-selected={i === highlightIndex}
+          data-active={i === highlightIndex || undefined}
+          data-index={i}
+          onClick={() => handleSelect(option)}
+          className={cn(
+            "cursor-pointer px-3 py-2 text-sm transition-colors hover:bg-muted data-active:ring-2 data-active:ring-inset",
+            slotProps?.option?.className,
+          )}
+          style={{ height: optionHeight }}
+        >
+          {option}
+        </li>,
+      );
+    }
+    return items;
+  }, [
+    suggestions,
+    visibleRange,
+    highlightIndex,
+    optionHeight,
+    slotProps?.option,
+    handleSelect,
+  ]);
 
   const dropdownContent = (
     <ul
       id="combobox-list"
       role="listbox"
       {...slotProps?.list}
-      ref={dropdownRef}
+      ref={listContainerRef}
+      onScroll={handleScroll}
       className={cn(
         "fixed z-50 w-3xs max-h-64 rounded-md border border-input bg-background shadow-lg overflow-auto",
         slotProps?.list?.className,
@@ -312,11 +408,22 @@ export function Combobox({
       {innerLoading ? (
         loadingNode
       ) : suggestions.length > 0 ? (
-        renderList ? (
-          renderList(suggestions, listPayload)
-        ) : (
-          defaultListContent
-        )
+        <div
+          style={{
+            height: suggestions.length * optionHeight,
+            position: "relative",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: visibleRange.start * optionHeight,
+              width: "100%",
+            }}
+          >
+            {visibleOptions}
+          </div>
+        </div>
       ) : (
         <li className="py-3 text-center text-sm text-muted-foreground">
           No data
@@ -330,13 +437,13 @@ export function Combobox({
       {...slotProps?.container}
       ref={containerRef}
       className={cn("relative w-3xs", slotProps?.container?.className)}
-      data-invalid={invalid}
     >
       <div
         ref={triggerRef}
+        data-invalid={invalid || undefined}
         onClick={() => {
           inputRef.current?.focus();
-          toggleDropdown();
+          openDropdown();
         }}
         className={cn(
           "flex items-center h-9 w-full rounded-md border border-input bg-background px-3 shadow-xs",
