@@ -1,4 +1,10 @@
-import { NavLink, useLocation, useNavigate, Outlet, ScrollRestoration } from "react-router-dom";
+import {
+  NavLink,
+  useLocation,
+  useNavigate,
+  Outlet,
+  ScrollRestoration,
+} from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { getNavItems, getPageTitle } from "@/pages/config/routes";
 import { Title, Image, Sidebar, Button, Toaster, Dropdown } from "@/component";
@@ -6,7 +12,13 @@ import { useTheme } from "@/component";
 import { t } from "@/pages/config/i18n";
 import { SidebarHandle } from "@/component/ui/sidebar";
 import LOGO from "@/assets/LOGO.svg";
-import { MoonIcon, SunIcon, PanelLeftIcon, LanguagesIcon, ContrastIcon } from "lucide-react";
+import {
+  MoonIcon,
+  SunIcon,
+  PanelLeftIcon,
+  LanguagesIcon,
+  ContrastIcon,
+} from "lucide-react";
 
 function ThemeToggle({ locale }: { locale: string }) {
   const { colorScheme, setColorScheme } = useTheme();
@@ -14,12 +26,20 @@ function ThemeToggle({ locale }: { locale: string }) {
 
   const getIcon = () => {
     if (colorScheme === "system") return <ContrastIcon size={20} />;
-    return colorScheme === "light" ? <SunIcon size={20} /> : <MoonIcon size={20} />;
+    return colorScheme === "light" ? (
+      <SunIcon size={20} />
+    ) : (
+      <MoonIcon size={20} />
+    );
   };
 
   return (
     <Dropdown>
-      <Dropdown.Trigger aria-label="Toggle color scheme" className={[Button.class.variant.ghost, "gap-2"]}>
+      <Dropdown.Trigger
+        aria-label="Toggle color scheme"
+        className={[Button.class.variant.ghost, "gap-2"]}
+     
+      >
         {getIcon()}
       </Dropdown.Trigger>
       <Dropdown.Content>
@@ -62,7 +82,7 @@ function LanguageToggle({ locale }: { locale: string }) {
   };
 
   return (
-    <Button variant="ghost" onClick={toggleLocale} aria-label="Toggle language">
+    <Button variant="ghost" onClick={toggleLocale} aria-label="Toggle language" iconOnly>
       <LanguagesIcon size={20} />
     </Button>
   );
@@ -103,7 +123,15 @@ function SidebarContent({ locale }: { locale: string }) {
   );
 }
 
-function Header({ locale, className, sidebarRef }: { locale: string; className?: string; sidebarRef: React.RefObject<SidebarHandle | null> }) {
+function Header({
+  locale,
+  className,
+  sidebarRef,
+}: {
+  locale: string;
+  className?: string;
+  sidebarRef: React.RefObject<SidebarHandle | null>;
+}) {
   return (
     <header
       className={`sticky top-0 z-10 h-14 border-b bg-card flex items-center justify-between px-4 ${className || ""}`}
@@ -114,6 +142,7 @@ function Header({ locale, className, sidebarRef }: { locale: string; className?:
       </div>
       <div className="flex items-center gap-2">
         <Button
+          iconOnly
           variant="ghost"
           aria-label="GitHub"
           onClick={() => window.open("https://github.com", "_blank")}
@@ -133,6 +162,7 @@ function Header({ locale, className, sidebarRef }: { locale: string; className?:
         <Button
           variant="ghost"
           aria-label="Toggle sidebar"
+          iconOnly
           onClick={() => sidebarRef.current?.toggle()}
         >
           <PanelLeftIcon />
@@ -149,7 +179,10 @@ export function App({ locale = "zh" }: { locale?: string }) {
     <div className="min-h-screen bg-background text-foreground">
       <Header locale={locale} sidebarRef={sidebarRef} />
       <div className="flex">
-        <Sidebar ref={sidebarRef} className="sticky top-14 h-[calc(100vh-3.5rem)] w-3xs shrink-0 overflow-y-auto">
+        <Sidebar
+          ref={sidebarRef}
+          className="sticky top-14 h-[calc(100vh-3.5rem)] w-3xs shrink-0 overflow-y-auto"
+        >
           <SidebarContent locale={locale} />
         </Sidebar>
         <main className="flex-1 min-w-0">

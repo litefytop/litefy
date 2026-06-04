@@ -16,6 +16,7 @@ export * from "./sidebar";
 export * from "./paper";
 export * from "./pagination";
 export * from "./toast";
+export * from "./tooltip";
 export * from "./paginated-view";
 export * from "./dropdown";
 export * from "./password";

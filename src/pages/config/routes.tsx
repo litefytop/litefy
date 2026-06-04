@@ -18,6 +18,7 @@ const Password = lazy(() => import("@/pages/password"));
 const Radio = lazy(() => import("@/pages/radio"));
 const Select = lazy(() => import("@/pages/select"));
 const Toast = lazy(() => import("@/pages/toast"));
+const Tooltip = lazy(() => import("@/pages/tooltip"));
 const Dialog = lazy(() => import("@/pages/dialog"));
 const Drawer = lazy(() => import("@/pages/drawer"));
 const Slider = lazy(() => import("@/pages/slider"));
@@ -51,6 +52,7 @@ const componentRouteConfig = [
   { key: "anchor", path: "/components/anchor", Component: Anchor },
   { key: "button", path: "/components/button", Component: Button },
   { key: "toast", path: "/components/toast", Component: Toast },
+  { key: "tooltip", path: "/components/tooltip", Component: Tooltip },
   { key: "dialog", path: "/components/dialog", Component: Dialog },
   { key: "drawer", path: "/components/drawer", Component: Drawer },
   { key: "input", path: "/components/input", Component: Input },
@@ -83,6 +85,7 @@ const componentRouteConfig = [
   { key: "transfer", path: "/components/transfer", Component: ComingSoon },
   { key: "virtual-scroll", path: "/components/virtual-scroll", Component: VirtualScroll },
   { key: "progress", path: "/components/progress", Component: Progress },
+
 ];
 
 function getLabel(t: typeof zh, key: string): string {

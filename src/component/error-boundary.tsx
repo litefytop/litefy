@@ -26,7 +26,6 @@ export const FallbackErrorPage = () => {
             Page Error
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mb-8">
-            A runtime error occurred. This may be caused by state update errors or functions dependent on state (like useActionState) not handling errors correctly.
             Please check that all branches correctly update state and that state-dependent functions have error handling.
           </p>
 

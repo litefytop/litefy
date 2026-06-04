@@ -93,19 +93,6 @@ export function Select({
     props.onBlur?.(e);
   };
 
-  const handleInput = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (multiple) {
-      const selectedValues = Array.from(e.target.selectedOptions).map(
-        (opt) => opt.value,
-      );
-      Object.defineProperty(e.target, "value", {
-        value: JSON.stringify(selectedValues),
-        writable: true,
-        configurable: true,
-      });
-    }
-    props.onInput?.(e);
-  };
 
   const defaultSelected = multiple
     ? (props.defaultValue as string[] | undefined)
@@ -118,7 +105,6 @@ export function Select({
       multiple={multiple}
       onChange={handleChange}
       onBlur={handleBlur}
-      onInput={handleInput}
       className={cn(
         "select-enhanced appearance-none border bg-background/75 rounded-md w-sm h-9 py-1 px-3 text-sm flex-1 items-center",
         "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",

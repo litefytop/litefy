@@ -44,6 +44,7 @@ export const zh = {
     anchor: "Anchor 锚点",
     carousel: "Carousel 轮播图",
     toast: "Toast 消息提示",
+    tooltip: "Tooltip 提示",
     dialog: "Dialog 对话框",
     drawer: "Drawer 抽屉",
     input: "Input 输入框",
@@ -352,6 +353,38 @@ export const zh = {
       toasterProps: {
         position: "消息位置",
         visibleToasts: "最大显示数量",
+      },
+    },
+  },
+
+  tooltip: {
+    title: "文字提示",
+    description: "鼠标悬停或获取焦点时显示的提示信息。",
+    basic: {
+      title: "基础用法",
+    },
+
+    anatomy: {
+      root: "根元素",
+      trigger: "触发器",
+      content: "内容",
+    },
+    api: {
+      sectionTitles: {
+        tooltipProps: "Tooltip Props",
+      },
+      props: {
+        children: "触发元素",
+        content: "提示内容",
+        side: "提示位置：top/bottom/left/right",
+        disabled: "是否禁用",
+        className: "自定义类名",
+        delay: "隐藏延迟（毫秒）",
+        slotProps: "子元素属性透传",
+      },
+      slotProps: {
+        trigger: "触发器元素属性",
+        content: "内容元素属性",
       },
     },
   },

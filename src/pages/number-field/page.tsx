@@ -4,9 +4,7 @@ import {
   Anchor,
   Title,
   Description,
-  NumberField,
   ShikiCodeBlock,
-  Anatomy,
   Button,
   APITable,
 } from "@/component";
@@ -180,10 +178,10 @@ export default function NumberFieldPage({
                 )}
                 {lang.common.copyDocs}
               </Button>
-              <Button variant="ghost" onClick={handlePrev} disabled={!nav.prev}>
+              <Button variant="ghost" onClick={handlePrev} disabled={!nav.prev} iconOnly>
                 <ArrowLeftIcon className="size-4" />
               </Button>
-              <Button variant="ghost" onClick={handleNext} disabled={!nav.next}>
+              <Button variant="ghost" onClick={handleNext} disabled={!nav.next} iconOnly>
                 <ArrowRightIcon className="size-4" />
               </Button>
             </div>

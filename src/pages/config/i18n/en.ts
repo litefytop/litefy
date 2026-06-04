@@ -43,6 +43,7 @@ export const en = {
     anchor: "Anchor",
     carousel: "Carousel",
     toast: "Toast",
+    tooltip: "Tooltip",
     dialog: "Dialog",
     drawer: "Drawer",
     input: "Input",
@@ -354,6 +355,38 @@ export const en = {
       toasterProps: {
         position: "Toast position",
         visibleToasts: "Maximum number of toasts to show",
+      },
+    },
+  },
+
+  tooltip: {
+    title: "Tooltip",
+    description: "Tooltip component for displaying hint text on hover or focus.",
+    basic: {
+      title: "Basic",
+    },
+
+    anatomy: {
+      root: "Root",
+      trigger: "Trigger",
+      content: "Content",
+    },
+    api: {
+      sectionTitles: {
+        tooltipProps: "Tooltip Props",
+      },
+      props: {
+        children: "Trigger element",
+        content: "Tooltip content",
+        side: "Tooltip position: top/bottom/left/right",
+        disabled: "Whether to disable",
+        className: "Custom class name",
+        delay: "Hide delay (milliseconds)",
+        slotProps: "Slot props for child elements",
+      },
+      slotProps: {
+        trigger: "Trigger element props",
+        content: "Content element props",
       },
     },
   },

@@ -7,7 +7,6 @@ export default function VirtualScrollBasic() {
     <VirtualScroll
       items={items}
       itemHeight={40}
-      containerHeight={400}
       renderItem={(item) => (
         <div className="h-10 flex items-center px-4 border-b hover:bg-muted">
           {item}

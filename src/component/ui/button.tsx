@@ -2,7 +2,7 @@ import { ClassNameValue, cn } from "@/lib";
 import { Loader2 } from "lucide-react";
 
 const buttonClass = {
-  base: "h-9 min-w-9 px-3 py-1 gap-1 whitespace-nowrap rounded-full cursor-pointer inline-flex items-center justify-center shrink-0 select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 data-svg-only:aspect-square",
+  base: "h-9 min-w-16 px-3 py-1 gap-1 whitespace-nowrap rounded-md cursor-pointer inline-flex items-center justify-center shrink-0 select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 disabled:pointer-events-none disabled:opacity-50 data-svg-only:aspect-square data-svg-only:min-w-0",
   variant: {
     primary: "bg-primary text-primary-foreground hover:bg-primary/90",
     destructive: `bg-destructive text-white 

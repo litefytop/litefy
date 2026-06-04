@@ -4,12 +4,12 @@ import * as React from "react";
 import { cn, type ClassNameValue } from "@/lib";
 import { useId } from "react";
 
-const DropdownContext = React.createContext<{
-  menuId?: string;
-  triggerId?: string;
-  setMenuId?: (id: string) => void;
-  setTriggerId?: (id: string) => void;
-} | null>(null);
+type DropdownContextValue = {
+  menuId: string;
+  triggerId: string;
+};
+
+const DropdownContext = React.createContext<DropdownContextValue | null>(null);
 
 function useDropdown() {
   const context = React.useContext(DropdownContext);
@@ -27,13 +27,11 @@ export function Dropdown({
   className?: ClassNameValue;
 }) {
   const id = useId();
-  const [menuId, setMenuId] = React.useState(`menu-${id}`);
-  const [triggerId, setTriggerId] = React.useState(`trigger-${id}`);
+  const menuId = `dropdown-menu-${id}`;
+  const triggerId = `dropdown-trigger-${id}`;
 
   return (
-    <DropdownContext.Provider
-      value={{ menuId, triggerId, setMenuId, setTriggerId }}
-    >
+    <DropdownContext.Provider value={{ menuId, triggerId }}>
       <div className={cn(className)} {...props}>
         {children}
       </div>
@@ -44,38 +42,41 @@ export function Dropdown({
 function DropdownTrigger({
   children,
   className,
-  id,
-  onToggle,
   ...props
 }: Omit<React.ComponentProps<"button">, "className"> & {
   className?: ClassNameValue;
 }) {
-  const { menuId, triggerId, setTriggerId } = useDropdown();
-  React.useEffect(() => {
-    if (id) {
-      setTriggerId?.(id);
-    }
-  }, [id, setTriggerId]);
+  const { menuId, triggerId } = useDropdown();
   const anchorName = `--anchor-${triggerId}`;
-const handleToggle = (e: React.ToggleEvent<HTMLButtonElement>) => {
-  onToggle?.(e);
-  const el = e.target as HTMLButtonElement;
-  el.setAttribute("aria-expanded", el.getAttribute("aria-expanded") === "true" ? "false" : "true");
-};
+
+  React.useEffect(() => {
+    const menu = document.getElementById(menuId);
+    if (!menu) return;
+    const handleToggle = (e: Event) => {
+      const open = (e as ToggleEvent).newState === "open";
+      const trigger = document.getElementById(triggerId);
+      if (trigger) trigger.setAttribute("aria-expanded", String(open));
+    };
+    menu.addEventListener("toggle", handleToggle);
+    return () => menu.removeEventListener("toggle", handleToggle);
+  }, [menuId, triggerId]);
+
+  const baseClassName = cn(
+    "cursor-pointer outline-none inline-flex items-center justify-center shrink-0 select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 disabled:pointer-events-none disabled:opacity-50 h-9 min-w-16 px-3 py-1 has-[>svg]:px-2 gap-1 rounded-md",
+    className
+  );
+
   return (
     <button
       {...props}
       id={triggerId}
+      type="button"
       popoverTarget={menuId}
       popoverTargetAction="toggle"
       aria-haspopup="menu"
-      type="button"
-      className={cn(
-        "cursor-pointer outline-none inline-flex items-center justify-center shrink-0 select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 h-9 min-w-9 px-3 py-1 has-[>svg]:px-2 gap-1 rounded-full",
-        className,
-      )}
-      style={{ anchorName } as React.CSSProperties}
-      onToggle={handleToggle}
+      aria-expanded="false"
+      className={baseClassName}
+      style={{ anchorName }}
     >
       {children}
     </button>
@@ -88,23 +89,15 @@ function DropdownContent({
   alignX = "center",
   alignY = "end",
   popover = "auto",
-  id,
   ...props
 }: React.ComponentProps<"menu"> & {
   alignX?: "start" | "center" | "end";
   alignY?: "start" | "center" | "end";
   popover?: "auto" | "manual" | "hint";
-  id?: string;
 }) {
-  const { menuId, triggerId, setMenuId } = useDropdown();
+  const { menuId, triggerId } = useDropdown();
   const anchorName = `--anchor-${triggerId}`;
   const menuRef = React.useRef<HTMLMenuElement>(null);
-
-  React.useEffect(() => {
-    if (id) {
-      setMenuId?.(id);
-    }
-  }, [id, setMenuId]);
 
   React.useEffect(() => {
     const menu = menuRef.current;
@@ -113,8 +106,8 @@ function DropdownContent({
     const getFocusable = () => {
       return Array.from(
         menu.querySelectorAll<HTMLElement>(
-          'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-        ),
+          'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
       ).filter((el) => el.offsetParent !== null);
     };
 
@@ -127,9 +120,7 @@ function DropdownContent({
         return;
       }
 
-      const currentIndex = focusable.findIndex(
-        (el) => el === document.activeElement,
-      );
+      const currentIndex = focusable.findIndex((el) => el === document.activeElement);
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
 
@@ -142,10 +133,7 @@ function DropdownContent({
         case "ArrowUp":
           e.preventDefault();
           if (currentIndex < 0) last.focus();
-          else
-            focusable[
-              (currentIndex - 1 + focusable.length) % focusable.length
-            ]?.focus();
+          else focusable[(currentIndex - 1 + focusable.length) % focusable.length]?.focus();
           break;
         case "Home":
           e.preventDefault();
@@ -161,22 +149,19 @@ function DropdownContent({
             if (currentIndex <= 0) last.focus();
             else focusable[currentIndex - 1]?.focus();
           } else {
-            if (currentIndex === focusable.length - 1 || currentIndex < 0)
-              first.focus();
+            if (currentIndex === focusable.length - 1 || currentIndex < 0) first.focus();
             else focusable[currentIndex + 1]?.focus();
           }
           break;
-   
-  
       }
     };
 
     const handleToggle = (e: Event) => {
-      const popoverOpen = (e as ToggleEvent).newState === "open";
-      if (popoverOpen) {
+      const open = (e as ToggleEvent).newState === "open";
+      if (open) {
         const focusable = getFocusable();
         requestAnimationFrame(() => focusable[0]?.focus());
-      } 
+      }
     };
 
     menu.addEventListener("keydown", handleKeyDown);
@@ -196,13 +181,13 @@ function DropdownContent({
       popover={popover}
       className={cn(
         "bg-popover text-popover-foreground min-w-32 rounded-md border p-1 shadow-md list-none m-0",
-        className,
+        className
       )}
       style={
         {
           positionAnchor: anchorName,
           positionArea: `${alignY} ${alignX}`,
-        } as React.CSSProperties
+        } 
       }
       {...props}
     >
@@ -214,7 +199,6 @@ function DropdownContent({
 function DropdownItem({
   children,
   className,
-
   ...props
 }: React.ComponentProps<"button">) {
   const { menuId } = useDropdown();
@@ -230,7 +214,7 @@ function DropdownItem({
           "hover:bg-accent hover:text-accent-foreground",
           "focus-visible:outline-none focus-visible:bg-accent focus-visible:text-accent-foreground",
           "disabled:pointer-events-none disabled:opacity-50",
-          className,
+          className
         )}
         {...props}
       >
@@ -240,10 +224,7 @@ function DropdownItem({
   );
 }
 
-function DropdownSeparator({
-  className,
-  ...props
-}: React.ComponentProps<"hr">) {
+function DropdownSeparator({ className, ...props }: React.ComponentProps<"hr">) {
   return (
     <li className="m-0">
       <hr {...props} className={cn("my-1 h-px bg-muted", className)} />
@@ -272,3 +253,4 @@ Dropdown.Content = DropdownContent;
 Dropdown.Item = DropdownItem;
 Dropdown.Separator = DropdownSeparator;
 Dropdown.Label = DropdownLabel;
+

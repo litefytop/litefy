@@ -118,10 +118,10 @@ export default function EmptyPage({ locale = "zh" }: { locale?: string }) {
                 )}
                 {lang.common.copyDocs}
               </Button>
-              <Button variant="ghost" onClick={handlePrev} disabled={!nav.prev}>
+              <Button variant="ghost" onClick={handlePrev} disabled={!nav.prev} iconOnly>
                 <ArrowLeftIcon className="size-4" />
               </Button>
-              <Button variant="ghost" onClick={handleNext} disabled={!nav.next}>
+              <Button variant="ghost" onClick={handleNext} disabled={!nav.next} iconOnly>
                 <ArrowRightIcon className="size-4" />
               </Button>
             </div>
@@ -156,9 +156,9 @@ export default function EmptyPage({ locale = "zh" }: { locale?: string }) {
           </DemoSection>
         </section>
 
-        <section id="docs" className="mt-12 space-y-8">
+        <section id="api" className="mt-12 space-y-8">
           <Title as="h2" className="mb-4">
-            {lang.docs}
+            {lang.api}
           </Title>
           <APITable sections={emptySections} />
         </section>
@@ -194,7 +194,7 @@ export default function EmptyPage({ locale = "zh" }: { locale?: string }) {
             <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
             <Anchor.Item href="#custom">{l.custom.title}</Anchor.Item>
           </Anchor.Section>
-          <Anchor.Section href="#docs" linkText={lang.docs} />
+          <Anchor.Section href="#api" linkText={lang.api} />
         </Anchor>
       </aside>
     </div>
