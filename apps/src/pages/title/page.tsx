@@ -20,7 +20,7 @@ import {
 
 import { TitleBasic } from "./examples/index";
 import TitleBasicRaw from "./examples/title-basic.tsx?raw";
-import titleDoc from "./doc.mdx?raw";
+import titleDoc from "@/docs/title.md?raw";
 import titleSrc from "@/component/ui/title.tsx?raw";
 
 function DemoSection({

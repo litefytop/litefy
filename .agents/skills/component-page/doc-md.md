@@ -1,4 +1,4 @@
-# doc.mdx 说明
+# doc.md 说明
 
 ## 用途
 
@@ -8,7 +8,7 @@
 
 ## 内容结构
 
-```mdx
+```md
 ## Installation
 
 ```bash

@@ -20,6 +20,7 @@ import {
 import SliderBasicRaw from "./examples/slider-basic.tsx?raw";
 import SliderControlledRaw from "./examples/slider-controlled.tsx?raw";
 import SliderOrientationRaw from "./examples/slider-orientation.tsx?raw";
+import sliderDoc from "@/docs/slider.md?raw";
 import sliderSrc from "@/component/ui/slider.tsx?raw";
 import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, CopyIcon } from "lucide-react";
 
@@ -90,7 +91,7 @@ export default function SliderPage({ locale = "zh" }: { locale?: string }) {
   ];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(sliderSrc);
+    navigator.clipboard.writeText(sliderDoc);
     setCopied(true);
     Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);

@@ -26,7 +26,7 @@ import {
 import PaperBasicRaw from "./examples/paper-basic.tsx?raw";
 import PaperVariantsRaw from "./examples/paper-variants.tsx?raw";
 import PaperPrintRaw from "./examples/paper-print.tsx?raw";
-import paperDoc from "./doc.mdx?raw";
+import paperDoc from "@/docs/paper.md?raw";
 import paperSrc from "@/component/ui/paper.tsx?raw";
 
 function DemoSection({

@@ -26,7 +26,7 @@ import RadioBasicRaw from "./examples/radio-basic.tsx?raw";
 import RadioControlledRaw from "./examples/radio-controlled.tsx?raw";
 import RadioDisabledRaw from "./examples/radio-disabled.tsx?raw";
 import RadioVariantRaw from "./examples/radio-variant.tsx?raw";
-import radioDoc from "./doc.mdx?raw";
+import radioDoc from "@/docs/radio.md?raw";
 import radioSrc from "@/component/ui/radio.tsx?raw";
 
 function DemoSection({

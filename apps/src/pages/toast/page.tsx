@@ -29,7 +29,7 @@ import ToastWithIconRaw from "./examples/toast-icon.tsx?raw";
 import ToastWithActionsRaw from "./examples/toast-actions.tsx?raw";
 import ToastDismissRaw from "./examples/toast-dismiss.tsx?raw";
 import ToastWithCallbacksRaw from "./examples/toast-callbacks.tsx?raw";
-import toastDoc from "./doc.mdx?raw";
+import toastDoc from "@/docs/toast.md?raw";
 import toastSrc from "@/component/ui/toast.tsx?raw";
 
 function DemoSection({

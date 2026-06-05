@@ -36,7 +36,7 @@ export const en = {
   componentsGroup: "Components",
 
   components: {
-    "paginated-view":"PaginatedView",
+    "paginated-viewer":"paginatedViewer",
     form: "Form",
     button: "Button",
     accordion: "Accordion",
@@ -423,7 +423,7 @@ export const en = {
         label: "Label text",
         disabled: "Whether disabled",
         variant: 'Style variant ("checkbox" | "toggle")',
-        indicator: "Custom indicator renderer function",
+        indicator: "Custom indicator render function",
         name: "Form field name",
         className: "Custom class name",
       },
@@ -1206,7 +1206,7 @@ export const en = {
     },
   },
 
-  paginatedView: {
+  paginatedViewer: {
     title: "Paginated View",
     description: "A view component that displays one slide at a time with smooth transitions.",
     basic: {
@@ -1214,7 +1214,7 @@ export const en = {
     },
     api: {
       sectionTitles: {
-        paginatedViewProps: "PaginatedView Props",
+        paginatedViewerProps: "paginatedViewer Props",
         slotPropsConfig: "slotProps Config",
       },
       props: {

@@ -1,0 +1,10 @@
+{
+  "name": "litefy-monorepo",
+  "private": true,
+  "scripts": {
+    "build:cli": "pnpm --filter litefy build",
+    "build:apps": "pnpm --filter @litefy/docs build",
+    "dev:cli": "pnpm --filter litefy dev",
+    "dev:apps": "pnpm --filter @litefy/docs dev"
+  }
+}

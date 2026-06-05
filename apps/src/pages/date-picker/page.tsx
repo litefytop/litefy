@@ -28,7 +28,7 @@ import DatePickerBasicRaw from "./examples/date-picker-basic.tsx?raw";
 import DatePickerTypeRaw from "./examples/date-picker-type.tsx?raw";
 import DatePickerDisabledRaw from "./examples/date-picker-disabled.tsx?raw";
 import datePickerSrc from "@/component/ui/date-picker.tsx?raw";
-
+import datePickerDoc from "@/docs/date-picker.md?raw";
 function DemoSection({
   id,
   title,
@@ -92,7 +92,7 @@ export default function DatePickerPage({ locale = "zh" }: { locale?: string }) {
   ];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(datePickerSrc);
+    navigator.clipboard.writeText(datePickerDoc);
     setCopied(true);
     Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);

@@ -1,0 +1,5 @@
+packages:
+  - "apps"
+  - "cli"
+allowBuilds:
+  esbuild: set this to true or false

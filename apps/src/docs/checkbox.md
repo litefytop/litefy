@@ -95,7 +95,7 @@ const [checked, setChecked] = useState(true);
 | label         | ReactNode                         | -           | Label text                                       |
 | disabled      | boolean                           | false       | Disable individual checkbox                      |
 | variant       | "checkbox" \| "toggle"            | "checkbox"  | Style variant                                    |
-| indicator     | (checked: boolean) => ReactNode   | -           | Custom indicator renderer                        |
+| indicator     | (checked: boolean) => ReactNode   | -           | Custom indicator render                        |
 | name          | string                            | -           | Form input name                                  |
 | className     | ClassNameValue                    | -           | Custom class name                                |
 

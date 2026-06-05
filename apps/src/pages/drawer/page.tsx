@@ -16,7 +16,7 @@ import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react
 import { DrawerBasic } from "./examples";
 
 import BasicRaw from "./examples/drawer-basic.tsx?raw";
-import componentDoc from "./doc.mdx?raw";
+import componentDoc from "@/docs/drawer.md?raw";
 import componentSrc from "@/component/ui/drawer.tsx?raw";
 
 function DemoSection({

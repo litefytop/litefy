@@ -22,7 +22,7 @@ import DropdownBasic from "./examples/dropdown-basic";
 import DropdownAlign from "./examples/dropdown-align";
 import DropdownSide from "./examples/dropdown-side";
 import DropdownSrc from "@/component/ui/dropdown.tsx?raw";
-import DropdownDoc from "./doc.mdx?raw";
+import DropdownDoc from "@/docs/dropdown.md?raw";
 
 function DemoSection({
   id,

@@ -26,7 +26,7 @@ import TabsControlledRaw from "./examples/tabs-controlled.tsx?raw";
 import TabsVerticalRaw from "./examples/tabs-vertical.tsx?raw";
 import TabsDisabledRaw from "./examples/tabs-disabled.tsx?raw";
 import TabsStyledRaw from "./examples/tabs-styled.tsx?raw";
-import tabsDoc from "./doc.mdx?raw";
+import tabsDoc from "@/docs/tabs.md?raw";
 import tabsSrc from "@/component/ui/tabs.tsx?raw";
 import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, CopyIcon } from "lucide-react";
 

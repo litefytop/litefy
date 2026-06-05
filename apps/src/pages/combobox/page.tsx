@@ -24,7 +24,7 @@ import ComboboxBasicRaw from "./examples/combobox-basic.tsx?raw";
 import ComboboxAsyncRaw from "./examples/combobox-async.tsx?raw";
 import ComboboxDisabledRaw from "./examples/combobox-disabled.tsx?raw";
 import ComboboxClearableRaw from "./examples/combobox-clearable.tsx?raw";
-import comboboxDoc from "./doc.mdx?raw";
+import comboboxDoc from "@/docs/combobox.md?raw";
 import comboboxSrc from "@/component/ui/combobox.tsx?raw";
 
 function DemoSection({

@@ -22,7 +22,7 @@ import { CarouselBasic, CarouselAutoPlay, CarouselLoop } from "./examples/index"
 import CarouselBasicRaw from "./examples/carousel-basic.tsx?raw";
 import CarouselAutoPlayRaw from "./examples/carousel-autoplay.tsx?raw";
 import CarouselLoopRaw from "./examples/carousel-loop.tsx?raw";
-import carouselDoc from "./doc.mdx?raw";
+import carouselDoc from "@/docs/carousel.md?raw";
 import carouselSrc from "@/component/ui/carousel.tsx?raw";
 
 function DemoSection({

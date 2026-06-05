@@ -8,7 +8,7 @@ type HTMLAttrs<T> = T & {
   className?: ClassNameValue;
 };
 
-export type PaginatedViewProps = React.ComponentProps<"div"> & {
+export type PaginatedViewerProps = React.ComponentProps<"div"> & {
   children: React.ReactNode;
   activeIndex: number;
   slotProps?: {
@@ -16,13 +16,13 @@ export type PaginatedViewProps = React.ComponentProps<"div"> & {
   };
 };
 
-export function PaginatedView({
+export function PaginatedViewer({
   children,
   activeIndex,
   slotProps,
   className,
   ...props
-}: PaginatedViewProps) {
+}: PaginatedViewerProps) {
   const slides = Children.toArray(children).filter(isValidElement);
   const totalSlides = slides.length;
   const safeIndex = Math.max(0, Math.min(activeIndex, totalSlides - 1));

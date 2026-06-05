@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PaginatedView, Paper, PaperProvider, Pagination } from "@/component";
+import { PaginatedViewer, Paper, PaperProvider, Pagination } from "@/component";
 import {
   ChevronsLeft,
   ChevronLeft,
@@ -7,12 +7,12 @@ import {
   ChevronsRight,
 } from "lucide-react";
 
-export default function PaginatedViewBasic() {
+export default function PaginatedViewerBasic() {
   const [current, setCurrent] = useState(1);
 
   return (
     <PaperProvider>
-      <PaginatedView activeIndex={current - 1}>
+      <PaginatedViewer activeIndex={current - 1}>
         {Array.from({ length: 100 }, (_, i) => (
           <Paper variant="a5" key={i}>
             <div className="h-40 flex items-center justify-center">
@@ -20,7 +20,7 @@ export default function PaginatedViewBasic() {
             </div>
           </Paper>
         ))}
-      </PaginatedView>
+      </PaginatedViewer>
       <Pagination
         current={current}
         pageSize={1}

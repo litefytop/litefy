@@ -26,7 +26,7 @@ import { getComponentNav } from "@/pages/config/routes";
 import { Example1 } from "./examples";
 
 import Example1Raw from "./examples/Example1.tsx?raw";
-import componentDoc from "./doc.mdx?raw";
+import componentDoc from "@/docs/component-name.md?raw";
 import componentSrc from "@/component/ui/component-name.tsx?raw";
 
 function DemoSection({

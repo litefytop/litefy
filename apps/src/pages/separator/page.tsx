@@ -22,7 +22,7 @@ import { SeparatorBasic, SeparatorVertical, SeparatorWithText } from "./examples
 import SeparatorBasicRaw from "./examples/separator-basic.tsx?raw";
 import SeparatorVerticalRaw from "./examples/separator-vertical.tsx?raw";
 import SeparatorTextRaw from "./examples/separator-text.tsx?raw";
-import separatorDoc from "./doc.mdx?raw";
+import separatorDoc from "@/docs/separator.md?raw";
 import separatorSrc from "@/component/ui/separator.tsx?raw";
 
 function DemoSection({

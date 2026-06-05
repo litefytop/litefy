@@ -15,7 +15,7 @@ import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react
 import { TooltipBasic } from "./examples";
 import TooltipBasicRaw from "./examples/tooltip-basic.tsx?raw";
 
-import tooltipDoc from "./doc.mdx?raw";
+import tooltipDoc from "@/docs/tooltip.md?raw";
 import tooltipSrc from "@/component/ui/tooltip.tsx?raw";
 
 function DemoSection({

@@ -20,6 +20,7 @@ import {
 import NumberFieldBasicRaw from "./examples/number-field-basic.tsx?raw";
 import NumberFieldControlledRaw from "./examples/number-field-controlled.tsx?raw";
 import NumberFieldDisabledRaw from "./examples/number-field-disabled.tsx?raw";
+import numberFieldDoc from "@/docs/number-field.md?raw";
 import numberFieldSrc from "@/component/ui/number-field.tsx?raw";
 import {
   CheckIcon,
@@ -149,7 +150,7 @@ export default function NumberFieldPage({
   ];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(numberFieldSrc);
+    navigator.clipboard.writeText(numberFieldDoc);
     setCopied(true);
     Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);

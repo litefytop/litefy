@@ -26,7 +26,7 @@ import {
 import CheckboxBasicRaw from "./examples/checkbox-basic.tsx?raw";
 import CheckboxDisabledRaw from "./examples/checkbox-disabled.tsx?raw";
 import CheckboxVariantRaw from "./examples/checkbox-variant.tsx?raw";
-import checkboxDoc from "./doc.mdx?raw";
+import checkboxDoc from "@/docs/checkbox.md?raw";
 import checkboxSrc from "@/component/ui/checkbox.tsx?raw";
 
 function DemoSection({

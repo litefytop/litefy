@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 
 import SidebarBasicRaw from "./examples/sidebar-basic.tsx?raw";
-import sidebarDoc from "./doc.mdx?raw";
+import sidebarDoc from "@/docs/sidebar.md?raw";
 import sidebarSrc from "@/component/ui/sidebar.tsx?raw";
 
 function DemoSection({

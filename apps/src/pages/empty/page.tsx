@@ -16,7 +16,7 @@ import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react
 import { EmptyBasic, EmptyCustom } from "./examples";
 import EmptyBasicRaw from "./examples/empty-basic.tsx?raw";
 import EmptyCustomRaw from "./examples/empty-custom.tsx?raw";
-import emptyDoc from "./doc.mdx?raw";
+import emptyDoc from "@/docs/empty.md?raw";
 import emptySrc from "@/component/ui/empty.tsx?raw";
 
 function DemoSection({

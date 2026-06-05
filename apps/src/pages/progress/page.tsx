@@ -24,7 +24,7 @@ import {
 
 import ProgressBasicRaw from "./examples/progress-basic.tsx?raw";
 import ProgressDynamicRaw from "./examples/progress-dynamic.tsx?raw";
-import progressDoc from "./doc.mdx?raw";
+import progressDoc from "@/docs/progress.md?raw";
 import progressSrc from "@/component/ui/progress.tsx?raw";
 
 function DemoSection({

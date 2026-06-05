@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { AnchorBasic } from "./examples";
 import AnchorBasicRaw from "./examples/anchor-basic.tsx?raw";
-import anchorDoc from "./doc.mdx?raw";
+import anchorDoc from "@/docs/anchor.md?raw";
 import anchorSrc from "@/component/ui/anchor.tsx?raw";
 
 export default function AnchorPage({ locale = "zh" }: { locale?: string }) {

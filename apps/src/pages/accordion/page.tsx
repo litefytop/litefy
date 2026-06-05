@@ -25,7 +25,7 @@ import AccordionControlledUsageRaw from "./examples/accordion-controlled-usage.t
 import AccordionMultipleRaw from "./examples/accordion-multiple.tsx?raw";
 import AccordionIconRaw from "./examples/accordion-icon.tsx?raw";
 import AccordionDisabledRaw from "./examples/accordion-disabled.tsx?raw";
-import accordionDoc from "./doc.mdx?raw";
+import accordionDoc from "@/docs/accordion.md?raw";
 import accordionSrc from "@/component/ui/accordion.tsx?raw";
 import {
   ArrowLeftIcon,

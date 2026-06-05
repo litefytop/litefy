@@ -18,7 +18,7 @@ import ImageBasicRaw from "./examples/image-basic.tsx?raw";
 import ImageSkeletonRaw from "./examples/image-skeleton.tsx?raw";
 import ImageFailureRaw from "./examples/image-failure.tsx?raw";
 import ImageProgressiveRaw from "./examples/image-progressive.tsx?raw";
-import imageDoc from "./doc.mdx?raw";
+import imageDoc from "@/docs/image.md?raw";
 import imageSrc from "@/component/ui/image.tsx?raw";
 
 function DemoSection({

@@ -9,7 +9,7 @@ interface InitOptions {
 
 interface LitefyConfig {
   components: string;
-  registry: string;
+  installed: string[];
 }
 
 async function init(options: InitOptions): Promise<void> {
@@ -27,7 +27,7 @@ async function init(options: InitOptions): Promise<void> {
   if (options.yes) {
     config = {
       components: './src/components',
-      registry: 'https://litefy.top/registry.json',
+      installed: [],
     };
   } else {
     const answers = await inquirer.prompt<{ componentsPath: string }>([
@@ -40,7 +40,7 @@ async function init(options: InitOptions): Promise<void> {
     ]);
     config = {
       components: answers.componentsPath,
-      registry: 'https://litefy.top/registry.json',
+      installed: [],
     };
   }
 

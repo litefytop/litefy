@@ -26,11 +26,11 @@ function MyDocument() {
 }
 ```
 
-### Multiple Pages with PaginatedView
+### Multiple Pages with paginatedViewer
 
 ```tsx
 import { useState } from "react";
-import { PaginatedView, PaperProvider, Paper, Pagination } from "@/component";
+import { paginatedViewer, PaperProvider, Paper, Pagination } from "@/component";
 
 function MultiPageDocument() {
   const [current, setCurrent] = useState(1);
@@ -39,7 +39,7 @@ function MultiPageDocument() {
   return (
     <div className="space-y-4">
       <PaperProvider totalPages={totalPages}>
-        <PaginatedView activeIndex={current - 1}>
+        <paginatedViewer activeIndex={current - 1}>
           <Paper variant="a4" countable>
             <h1>Page 1</h1>
             <div data-page-number>Page 1 of {totalPages}</div>
@@ -52,7 +52,7 @@ function MultiPageDocument() {
             <h1>Page 3</h1>
             <div data-page-number>Page 3 of {totalPages}</div>
           </Paper>
-        </PaginatedView>
+        </paginatedViewer>
       </PaperProvider>
 
       <Pagination

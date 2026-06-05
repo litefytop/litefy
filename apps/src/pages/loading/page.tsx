@@ -16,7 +16,7 @@ import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react
 import { LoadingBasic, LoadingCustom } from "./examples";
 import LoadingBasicRaw from "./examples/loading-basic.tsx?raw";
 import LoadingCustomRaw from "./examples/loading-custom.tsx?raw";
-import loadingDoc from "./doc.mdx?raw";
+import loadingDoc from "@/docs/loading.md?raw";
 import loadingSrc from "@/component/ui/loading.tsx?raw";
 
 function DemoSection({

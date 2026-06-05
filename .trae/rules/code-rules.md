@@ -22,5 +22,5 @@
 
 ## 文档规范
 
-- 演示代码（examples）和组件文档（doc.mdx）统一使用纯英文
+- 演示代码（examples）和组件文档（doc.md）统一使用纯英文
 - **className 属性**: 引用 i18n 中的定义

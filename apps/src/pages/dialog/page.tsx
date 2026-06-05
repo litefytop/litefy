@@ -16,7 +16,7 @@ import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react
 import { DialogBasic } from "./examples";
 
 import BasicRaw from "./examples/dialog-basic.tsx?raw";
-import componentDoc from "./doc.mdx?raw";
+import componentDoc from "@/docs/dialog.md?raw";
 import componentSrc from "@/component/ui/dialog.tsx?raw";
 
 function DemoSection({

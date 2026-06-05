@@ -1,0 +1,30 @@
+# Carousel
+
+A carousel component for cycling through slides.
+
+## Installation
+
+```tsx
+import { Carousel } from "@/component";
+```
+
+## Usage
+
+```tsx
+<Carousel activeIndex={0}>
+  <div>Slide 1</div>
+  <div>Slide 2</div>
+  <div>Slide 3</div>
+</Carousel>
+```
+
+## API Reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| activeIndex | number | - | Current active slide index |
+| autoPlay | boolean | false | Enable auto play |
+| autoPlayInterval | number | 3000 | Auto play interval in ms |
+| loop | boolean | false | Enable loop mode |
+| onChange | (index: number) => void | - | Callback when index changes |
+| slotProps.slide | DivProps | - | Slide element props |

@@ -6,10 +6,21 @@ import tseslint from "typescript-eslint";
 
 export default [
   {
-    ignores: ["src-tauri", "dist", "node_modules", ".vscode", "src/lib/utils/crypt/sm2.js"]
+    ignores: [ "dist", "node_modules", ".vscode"]
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
+   {
+    files: ["scripts/**/*.js"],
+    languageOptions: {
+      globals: {
+        ...globals.node,   
+      },
+    },
+    rules: {
+      "no-console": "off",
+    },
+  },
   {
     files: ["**/*.{ts,tsx}"],
     languageOptions: {

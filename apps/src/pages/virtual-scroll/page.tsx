@@ -22,8 +22,9 @@ import {
 } from "lucide-react";
 
 import VirtualScrollBasicRaw from "./examples/virtual-scroll-basic.tsx?raw";
-import virtualScrollDoc from "./doc.mdx?raw";
+
 import virtualScrollSrc from "@/component/ui/virtual-scroll.tsx?raw";
+import virtualScrollDoc from "@/docs/virtual-scroll.md?raw";
 
 function DemoSection({
   id,

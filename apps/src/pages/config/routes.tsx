@@ -31,7 +31,7 @@ const Watermark = lazy(() => import("@/pages/watermark"));
 const Form = lazy(() => import("@/pages/form"));
 const Loading = lazy(() => import("@/pages/loading"));
 const Pagination = lazy(() => import("@/pages/pagination"));
-const PaginatedView = lazy(() => import("@/pages/paginated-view"));
+const paginatedViewer = lazy(() => import("@/pages/paginated-viewer"));
 const Separator = lazy(() => import("@/pages/separator"));
 const Sidebar = lazy(() => import("@/pages/sidebar"));
 const Title = lazy(() => import("@/pages/title"));
@@ -80,7 +80,7 @@ const componentRouteConfig = [
   { key: "paper", path: "/components/paper", Component: Paper },
   { key: "combobox", path: "/components/combobox", Component: Combobox },
   { key: "carousel", path: "/components/carousel", Component: Carousel },
-  { key: "paginated-view", path: "/components/paginated-view", Component: PaginatedView },
+  { key: "paginated-viewer", path: "/components/paginated-viewer", Component: paginatedViewer },
   { key: "pagination", path: "/components/pagination", Component: Pagination },
   { key: "transfer", path: "/components/transfer", Component: ComingSoon },
   { key: "virtual-scroll", path: "/components/virtual-scroll", Component: VirtualScroll },

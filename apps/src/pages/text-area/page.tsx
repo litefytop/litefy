@@ -26,6 +26,7 @@ import TextareaControlledRaw from "./examples/textarea-controlled.tsx?raw";
 
 import TextareaDisabledRaw from "./examples/textarea-disabled.tsx?raw";
 import textareaSrc from "@/component/ui/text-area.tsx?raw";
+import textareaDoc from "@/docs/text-area.md?raw";
 
 function DemoSection({
   id,
@@ -143,7 +144,7 @@ export default function TextareaPage({ locale = "zh" }: { locale?: string }) {
   ];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(textareaSrc);
+    navigator.clipboard.writeText(textareaDoc);
     setCopied(true);
     Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);

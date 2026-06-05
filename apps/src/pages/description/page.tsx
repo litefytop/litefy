@@ -15,7 +15,7 @@ import { DescriptionBasic } from "./examples";
 import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
 import DescriptionBasicRaw from "./examples/description-basic.tsx?raw";
-import descriptionDoc from "./doc.mdx?raw";
+import descriptionDoc from "@/docs/description.md?raw";
 import descriptionSrc from "@/component/ui/description.tsx?raw";
 
 function DemoSection({

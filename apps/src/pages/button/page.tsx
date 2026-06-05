@@ -30,7 +30,7 @@ import ButtonDisabledRaw from "./examples/button-disabled.tsx?raw";
 import ButtonLoadingRaw from "./examples/button-loading.tsx?raw";
 import ButtonIconOnlyRaw from "./examples/button-icon-only.tsx?raw";
 import ButtonWithIconsRaw from "./examples/button-with-icons.tsx?raw";
-import buttonDoc from "./doc.mdx?raw";
+import buttonDoc from "@/docs/button.md?raw";
 import buttonSrc from "@/component/ui/button.tsx?raw";
 
 function DemoSection({

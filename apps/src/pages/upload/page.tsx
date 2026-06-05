@@ -22,6 +22,7 @@ import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react
 import UploadBasicRaw from "./examples/upload-basic.tsx?raw";
 import UploadMultipleRaw from "./examples/upload-multiple.tsx?raw";
 import UploadDisabledRaw from "./examples/upload-disabled.tsx?raw";
+import uploadDoc from "@/docs/upload.md?raw";
 import uploadSrc from "@/component/ui/upload.tsx?raw";
 
 function DemoSection({
@@ -130,7 +131,7 @@ export default function UploadPage({ locale = "zh" }: { locale?: string }) {
   ];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(uploadSrc);
+    navigator.clipboard.writeText(uploadDoc);
     setCopied(true);
     Toaster.success({ title: lang.common.copySuccess });
     setTimeout(() => setCopied(false), 2000);

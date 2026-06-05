@@ -2,24 +2,23 @@ import fs from 'fs-extra';
 import path from 'path';
 import axios from 'axios';
 import logger from '../utils/logger';
+import defaultRegistry from '../registry.json' ;
 
 interface AddOptions {
   overwrite?: boolean;
+  docs?: boolean;
 }
 
 interface LitefyConfig {
   components: string;
-  registry: string;
+  installed: string[];
 }
 
 interface RegistryEntry {
   url: string;
-  files?: string[];
 }
 
-interface Registry {
-  [componentName: string]: RegistryEntry;
-}
+type Registry = Record<string, RegistryEntry>;
 
 async function add(components: string[], options: AddOptions): Promise<void> {
   logger.step(`Preparing to add components: ${components.join(', ')}`);
@@ -39,8 +38,12 @@ async function add(components: string[], options: AddOptions): Promise<void> {
   await fs.ensureDir(componentsDir);
 
   for (const component of components) {
-    await addSingleComponent(component, componentsDir, options, config);
+    await addSingleComponent(component, componentsDir, options, config, defaultRegistry);
   }
+
+  const newInstalled = [...new Set([...config.installed, ...components])];
+  config.installed = newInstalled;
+  await fs.writeJson(configPath, config, { spaces: 2 });
 
   logger.success('All components added successfully!');
 }
@@ -49,34 +52,48 @@ async function addSingleComponent(
   componentName: string,
   targetDir: string,
   options: AddOptions,
-  config: LitefyConfig
+  config: LitefyConfig,
+  registry: Registry
 ): Promise<void> {
-  const filePath = path.join(targetDir, `${componentName}.tsx`);
+  const componentInfo = registry[componentName];
+  if (!componentInfo) {
+    logger.error(`Component not found: ${componentName}`);
+    return;
+  }
 
-  if ((await fs.pathExists(filePath)) && !options.overwrite) {
-    logger.warn(`${componentName} already exists, skipped (use --overwrite to force)`);
+  if (config.installed.includes(componentName) && !options.overwrite) {
+    logger.warn(`${componentName} already installed, skipped. Use --overwrite to force.`);
+    return;
+  }
+
+  const targetFilePath = path.join(targetDir, `${componentName}.tsx`);
+  if ((await fs.pathExists(targetFilePath)) && !options.overwrite) {
+    logger.warn(`${componentName}.tsx already exists, skipped. Use --overwrite to force.`);
     return;
   }
 
   logger.step(`Downloading ${componentName}.tsx...`);
-
   try {
-    const registryUrl = config.registry || 'https://litefy.top/registry.json';
-    const response = await axios.get<Registry>(registryUrl);
-    const registry = response.data;
+    const response = await axios.get<string>(componentInfo.url);
+    await fs.writeFile(targetFilePath, response.data);
+    logger.success(`${componentName}.tsx saved to ${targetFilePath}`);
+  } catch (err) {
+    logger.error(`Failed to download ${componentName}.tsx: ${err instanceof Error ? err.message : String(err)}`);
+    return;
+  }
 
-    const componentInfo = registry[componentName];
-    if (!componentInfo) {
-      logger.error(`Component not found: ${componentName}`);
-      return;
+  if (options.docs) {
+    const docsUrl = `https://gitee.com/a1337650/litefy/raw/main/apps/public/registry/docs/${componentName}.md`;
+    const docsDir = path.join(process.cwd(), 'docs');
+    await fs.ensureDir(docsDir);
+    const docsPath = path.join(docsDir, `${componentName}.md`);
+    try {
+      const docsResponse = await axios.get<string>(docsUrl);
+      await fs.writeFile(docsPath, docsResponse.data);
+      logger.success(`Documentation saved to ${docsPath}`);
+    } catch (err) {
+      logger.warn(`No documentation found for ${componentName} at ${docsUrl}`);
     }
-
-    const codeResponse = await axios.get<string>(componentInfo.url);
-    await fs.writeFile(filePath, codeResponse.data);
-    logger.success(`${componentName} added to ${filePath}`);
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    logger.error(`Failed to download ${componentName}: ${message}`);
   }
 }
 

@@ -32,7 +32,7 @@ import InputPrefixSuffixRaw from "./examples/input-prefix-suffix.tsx?raw";
 
 import InputDisabledRaw from "./examples/input-disabled.tsx?raw";
 import InputControlledRaw from "./examples/input-controlled.tsx?raw";
-import inputDoc from "./doc.mdx?raw";
+import inputDoc from "@/docs/input.md?raw";
 import inputSrc from "@/component/ui/input.tsx?raw";
 
 function DemoSection({

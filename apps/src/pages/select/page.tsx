@@ -27,7 +27,7 @@ import SelectControlledRaw from "./examples/select-controlled.tsx?raw";
 import SelectDisabledRaw from "./examples/select-disabled.tsx?raw";
 import SelectGroupRaw from "./examples/select-group.tsx?raw";
 import SelectMultipleRaw from "./examples/select-multiple.tsx?raw";
-import selectDoc from "./doc.mdx?raw";
+import selectDoc from "@/docs/select.md?raw";
 import selectSrc from "@/component/ui/select.tsx?raw";
 
 function DemoSection({

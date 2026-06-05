@@ -37,7 +37,7 @@ export const zh = {
   componentsGroup: "组件",
 
   components: {
-    "paginated-view":"PaginatedView 分页视图",
+    "paginated-viewer":"paginatedViewer 分页视图",
     form: "Form 表单",
     button: "Button 按钮",
     accordion: "Accordion 手风琴",
@@ -1211,7 +1211,7 @@ export const zh = {
     },
   },
 
-  paginatedView: {
+  paginatedViewer: {
     title: "分页视图",
     description: "一次只显示一个幻灯片的视图组件，支持平滑过渡动画。",
     basic: {
@@ -1219,7 +1219,7 @@ export const zh = {
     },
     api: {
       sectionTitles: {
-        paginatedViewProps: "PaginatedView Props",
+        paginatedViewerProps: "paginatedViewer Props",
         slotPropsConfig: "slotProps 配置",
       },
       props: {

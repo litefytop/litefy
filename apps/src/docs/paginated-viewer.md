@@ -1,7 +1,7 @@
 ## Installation
 
 ```tsx
-import { PaginatedView } from "@/component";
+import { PaginatedViewer } from "@/component";
 ```
 
 ## Usage
@@ -9,18 +9,18 @@ import { PaginatedView } from "@/component";
 ### Basic Usage
 
 ```tsx
-<PaginatedView activeIndex={0}>
+<PaginatedViewer activeIndex={0}>
   <div>Slide 1</div>
   <div>Slide 2</div>
   <div>Slide 3</div>
-</PaginatedView>
+</PaginatedViewer>
 ```
 
 ### With Pagination Controls
 
 ```tsx
 import { useState } from "react";
-import { PaginatedView, Pagination, usePagination, Button } from "@/component";
+import { PaginatedViewer, Pagination, usePagination, Button } from "@/component";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 function PaginationControls() {
@@ -58,13 +58,13 @@ export default function Example() {
 
 ## API Reference
 
-### PaginatedView Props
+### PaginatedViewer Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | activeIndex | number | - | Current active slide index (0-based) |
 | className | ClassNameValue | - | Custom className |
-| slotProps | PaginatedViewSlotProps | - | Internal element props pass-through |
+| slotProps | PaginatedViewerSlotProps | - | Internal element props pass-through |
 
 ### slotProps Config
 

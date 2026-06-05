@@ -21,7 +21,7 @@ import {
 import { WatermarkBasic, WatermarkCustom } from "./examples/index";
 import WatermarkBasicRaw from "./examples/watermark-basic.tsx?raw";
 import WatermarkCustomRaw from "./examples/watermark-custom.tsx?raw";
-import watermarkDoc from "./doc.mdx?raw";
+import watermarkDoc from "@/docs/watermark.md?raw";
 import watermarkSrc from "@/component/ui/watermark.tsx?raw";
 
 function DemoSection({

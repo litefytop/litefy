@@ -21,7 +21,7 @@ import {
 import { FormRefExample, FormBasic } from "./examples/index";
 import FormBasicRaw from "./examples/form-basic.tsx?raw";
 import FormRefExampleRaw from "./examples/form-ref.tsx?raw";
-import formDoc from "./doc.mdx?raw";
+import formDoc from "@/docs/form.md?raw";
 import formSrc from "@/component/ui/form.tsx?raw";
 
 function DemoSection({

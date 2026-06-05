@@ -28,7 +28,7 @@ import {
 import PasswordBasicRaw from "./examples/password-basic.tsx?raw";
 
 import PasswordControlledRaw from "./examples/password-controlled.tsx?raw";
-import passwordDoc from "./doc.mdx?raw";
+import passwordDoc from "@/docs/password.md?raw";
 import passwordSrc from "@/component/ui/password.tsx?raw";
 
 function DemoSection({

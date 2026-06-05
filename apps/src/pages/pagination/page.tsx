@@ -29,7 +29,7 @@ import PaginationBasicRaw from "./examples/pagination-basic.tsx?raw";
 import PaginationCustomIconsRaw from "./examples/pagination-custom-icons.tsx?raw";
 import PaginationWithActionsRaw from "./examples/pagination-with-actions.tsx?raw";
 import PaginationWithIndicatorRaw from "./examples/pagination-with-indicator.tsx?raw";
-import paginationDoc from "./doc.mdx?raw";
+import paginationDoc from "@/docs/pagination.md?raw";
 import paginationSrc from "@/component/ui/pagination.tsx?raw";
 
 function DemoSection({

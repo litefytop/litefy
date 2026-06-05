@@ -12,7 +12,7 @@ description: "Creates component documentation page following anchor page archite
 ```
 src/pages/<component-name>/
 ├── page.tsx           # 主页面文件
-├── doc.mdx            # 说明页 MD 格式（仅用于复制，不渲染）
+├── doc.md            # 说明页 MD 格式（仅用于复制，不渲染）
 ├── index.ts           # 导出配置（必须存在）
 └── examples/          # 示例目录
     ├── index.ts       # 批量导出所有示例
@@ -33,4 +33,4 @@ src/pages/<component-name>/
 - [page-tsx.md](./page-tsx.md) - 页面结构模板
 - [i18n.md](./i18n.md) - 翻译配置说明
 - [examples.md](./examples.md) - 示例文件说明
-- [doc-mdx.md](./doc-mdx.md) - doc.mdx 说明
+- [doc-md.md](./doc-md.md) - doc.md 说明

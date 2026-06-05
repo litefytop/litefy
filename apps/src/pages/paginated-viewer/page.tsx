@@ -12,7 +12,7 @@ import { Toaster } from "@/component/ui/toast";
 import { t } from "@/pages/config/i18n";
 import { getComponentNav } from "@/pages/config/routes";
 import {
-  PaginatedViewBasic,
+  PaginatedViewerBasic,
 } from "./examples";
 import {
   CheckIcon,
@@ -21,9 +21,9 @@ import {
   ArrowRightIcon,
 } from "lucide-react";
 
-import PaginatedViewBasicRaw from "./examples/paginated-view-basic.tsx?raw";
-import paginatedViewDoc from "./doc.mdx?raw";
-import paginatedViewSrc from "@/component/ui/paginated-view.tsx?raw";
+import PaginatedViewerBasicRaw from "./examples/paginated-viewer-basic.tsx?raw";
+import paginatedViewDoc from "@/docs/paginated-viewer.md?raw";
+import paginatedViewSrc from "@/component/ui/paginated-viewer.tsx?raw";
 
 function DemoSection({
   id,
@@ -49,16 +49,16 @@ function DemoSection({
   );
 }
 
-export default function PaginatedViewPage({ locale = "zh" }: { locale?: string }) {
+export default function PaginatedViewerPage({ locale = "zh" }: { locale?: string }) {
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const lang = t(locale as "zh" | "en");
-  const l = lang.paginatedView;
-  const nav = getComponentNav("/components/paginated-view", locale as "zh" | "en");
+  const l = lang.paginatedViewer;
+  const nav = getComponentNav("/components/paginated-viewer", locale as "zh" | "en");
 
-  const paginatedViewSections = [
+  const paginatedViewerSections = [
     {
-      title: l.api.sectionTitles.paginatedViewProps,
+      title: l.api.sectionTitles.paginatedViewerProps,
       data: [
         {
           props: "activeIndex",
@@ -72,7 +72,7 @@ export default function PaginatedViewPage({ locale = "zh" }: { locale?: string }
         },
         {
           props: "slotProps",
-          type: "PaginatedViewSlotProps",
+          type: "PaginatedViewerSlotProps",
           description: l.api.props.slotProps,
         },
       ],
@@ -145,9 +145,9 @@ export default function PaginatedViewPage({ locale = "zh" }: { locale?: string }
           <DemoSection
             id="basic"
             title={l.basic.title}
-            code={PaginatedViewBasicRaw}
+            code={PaginatedViewerBasicRaw}
           >
-            <PaginatedViewBasic />
+            <PaginatedViewerBasic />
           </DemoSection>
         </section>
 
@@ -155,7 +155,7 @@ export default function PaginatedViewPage({ locale = "zh" }: { locale?: string }
           <Title as="h2" className="mb-4">
             {lang.api}
           </Title>
-          <APITable sections={paginatedViewSections} />
+          <APITable sections={paginatedViewerSections} />
         </section>
 
         <footer className="py-8 border-t mt-8">
