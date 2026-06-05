@@ -21,7 +21,7 @@ export const createTailwindMerge = (
     const config = createConfigRest.reduce(
       (previousConfig, createConfigCurrent) =>
         createConfigCurrent(previousConfig),
-      createConfigFirst() as AnyConfig
+      createConfigFirst() as AnyConfig,
     );
 
     configUtils = createConfigUtils(config);
@@ -33,14 +33,15 @@ export const createTailwindMerge = (
   };
 
   const tailwindMerge = (classList: string[]) => {
-    const cachedResult = cacheGet(classList.join(""));
+    const cacheKey = classList.join("");
+    const cachedResult = cacheGet(cacheKey);
 
     if (cachedResult) {
       return cachedResult;
     }
 
     const result = mergeClassList(classList, configUtils);
-    cacheSet(classList.join(""), result);
+    cacheSet(cacheKey, result);
 
     return result;
   };
