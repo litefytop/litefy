@@ -1,0 +1,300 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Anchor,
+  Title,
+  Description,
+
+  ShikiCodeBlock,
+
+  Button,
+  APITable,
+} from "@/component";
+import { Toaster } from "@/component/ui/toast";
+import { t } from "@/pages/config/i18n";
+import { getComponentNav } from "@/pages/config/routes";
+import {
+  RadioBasic,
+  RadioControlled,
+  RadioDisabled,
+  RadioVariant,
+
+} from "./examples";
+import { CheckIcon, CopyIcon, ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
+
+import RadioBasicRaw from "./examples/radio-basic.tsx?raw";
+import RadioControlledRaw from "./examples/radio-controlled.tsx?raw";
+import RadioDisabledRaw from "./examples/radio-disabled.tsx?raw";
+import RadioVariantRaw from "./examples/radio-variant.tsx?raw";
+import radioDoc from "@/docs/radio.md?raw";
+import radioSrc from "@/component/ui/radio.tsx?raw";
+
+function DemoSection({
+  id,
+  title,
+  children,
+  code,
+}: {
+  id: string;
+  title: string;
+  children: React.ReactNode;
+  code: string;
+}) {
+  return (
+    <section
+      id={id}
+      className="space-y-4 py-4"
+    >
+      <div>
+        <Title as="h3">{title}</Title>
+      </div>
+      <div className="border rounded-lg p-6 w-full overflow-x-auto flex flex-col justify-center min-h-32 items-center">
+        {children}
+      </div>
+      <ShikiCodeBlock>{code}</ShikiCodeBlock>
+    </section>
+  );
+}
+
+export default function RadioPage({ locale = "zh" }: { locale?: string }) {
+  const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
+  const lang = t(locale as "zh" | "en");
+  const l = lang.radio;
+  const nav = getComponentNav("/components/radio", locale as "zh" | "en");
+
+  const radioSections = [
+    {
+      title: l.api.sectionTitles.radioProps,
+
+      data: [
+        {
+          props: "defaultValue",
+          type: "string",
+          description: l.api.props.defaultValue,
+        },
+        {
+          props: "value",
+          type: "string",
+          description: l.api.props.value,
+        },
+        {
+          props: "onValueChange",
+          type: "(value: string) => void | { invalid?: string }",
+          description: l.api.props.onValueChange,
+        },
+        {
+          props: "invalid",
+          type: "boolean ",
+          description: l.api.props.invalid,
+        },
+        {
+          props: "disabled",
+          type: "boolean",
+          default: "false",
+          description: l.api.props.disabled,
+        },
+        {
+          props: "name",
+          type: "string",
+          description: l.api.props.name,
+        },
+
+        {
+          props: "slotProps",
+          type: "object",
+          description: l.api.props.slotProps,
+        },
+        {
+          props: "options",
+          type: "Omit<RadioItemProps, 'checked'>[]",
+          description: l.api.props.options,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.radioItemProps,
+
+      data: [
+        {
+          props: "value",
+          type: "string",
+          description: l.api.item.value,
+        },
+        {
+          props: "onCheckedChange",
+          type: "(checked: boolean) => void",
+          description: l.api.item.onCheckedChange,
+        },
+        {
+          props: "disabled",
+          type: "boolean",
+          default: "false",
+          description: l.api.item.disabled,
+        },
+        {
+          props: "variant",
+          type: "'radio' | 'segment'",
+          default: "radio",
+          description: l.api.item.variant,
+        },
+        {
+          props: "indicator",
+          type: "RadioIndicatorConfig",
+          description: l.api.item.indicator,
+        },
+      ],
+    },
+    {
+      title: l.api.sectionTitles.slotProps,
+
+      data: [
+  
+        {
+          props: "content",
+          type: 'ComponentProps<"div">',
+          description: l.api.slotProps.content,
+        },
+       
+        {
+          props: "options",
+          type: 'Omit<RadioItemProps, "checked" | "value" | "label">',
+          description: l.api.slotProps.options,
+        },
+      ],
+    },
+  ];
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(radioDoc);
+    setCopied(true);
+    Toaster.success({ title: lang.common.copySuccess });
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handlePrev = () => {
+    if (nav.prev) navigate(`/${locale}${nav.prev.href}`);
+  };
+
+  const handleNext = () => {
+    if (nav.next) navigate(`/${locale}${nav.next.href}`);
+  };
+
+  return (
+    <div className="flex">
+      <div className="flex-1 w-full">
+        <header className="pb-4 mb-4 border-b space-y-3">
+          <div className="flex items-center justify-between">
+            <Title as="h1">{l.title}</Title>
+            <div className="flex items-center gap-2">
+              <Button onClick={handleCopy} variant="ghost">
+                {copied ? (
+                  <CheckIcon className="size-4 text-green-500 mr-1" />
+                ) : (
+                  <CopyIcon className="size-4 mr-1" />
+                )}
+                {lang.common.copyDocs}
+              </Button>
+              <Button variant="ghost" onClick={handlePrev} disabled={!nav.prev} iconOnly>
+                <ArrowLeftIcon className="size-4" />
+              </Button>
+              <Button variant="ghost" onClick={handleNext} disabled={!nav.next} iconOnly>
+                <ArrowRightIcon className="size-4" />
+              </Button>
+            </div>
+          </div>
+          <Description>{l.description}</Description>
+        </header>
+
+        <section className="mb-8">
+          <Title as="h2" id="installation" className="mb-4">
+            {lang.installation}
+          </Title>
+          <ShikiCodeBlock>{radioSrc}</ShikiCodeBlock>
+        </section>
+
+        <section>
+          <Title as="h2" id="examples">{lang.examples}</Title>
+
+          <DemoSection
+            id="basic"
+            title={l.basic.title}
+            code={RadioBasicRaw}
+          >
+            <RadioBasic />
+          </DemoSection>
+
+          <DemoSection
+            id="controlled"
+            title={l.controlled.title}
+            code={RadioControlledRaw}
+          >
+            <RadioControlled />
+          </DemoSection>
+
+          <DemoSection
+            id="disabled"
+            title={l.disabled?.title || "Disabled"}
+            code={RadioDisabledRaw}
+          >
+            <RadioDisabled />
+          </DemoSection>
+
+          <DemoSection
+            id="variant"
+            title={l.variant.title}
+            code={RadioVariantRaw}
+          >
+            <RadioVariant />
+          </DemoSection>
+
+ 
+        </section>
+
+        <section className="mt-12 space-y-8">
+          <Title as="h2" id="api" className="mb-4">
+            {lang.api}
+          </Title>
+          <APITable sections={radioSections} />
+        </section>
+        
+        <footer className="py-8 border-t mt-8">
+          <div className="flex justify-between">
+            <Button
+              variant="ghost"
+              onClick={handlePrev}
+              disabled={!nav.prev}
+              className={nav.prev ? "" : "invisible"}
+            >
+              <ArrowLeftIcon className="size-4 mr-2" />
+              {nav.prev?.title}
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={handleNext}
+              disabled={!nav.next}
+              className={nav.next ? "" : "invisible"}
+            >
+              {nav.next?.title}
+              <ArrowRightIcon className="size-4 ml-2" />
+            </Button>
+          </div>
+        </footer>
+      </div>
+
+      <aside className="hidden xl:block w-64 border-l bg-card fixed top-14 right-0 h-full overflow-y-auto p-4">
+        <Anchor>
+          <Anchor.Section href="#installation" linkText={lang.installation} />
+          <Anchor.Section href="#examples" linkText={lang.examples}>
+            <Anchor.Item href="#basic">{l.basic.title}</Anchor.Item>
+            <Anchor.Item href="#controlled">{l.controlled.title}</Anchor.Item>
+            <Anchor.Item href="#disabled">{l.disabled.title}</Anchor.Item>
+            <Anchor.Item href="#variant">{l.variant.title}</Anchor.Item>
+          </Anchor.Section>
+          <Anchor.Section href="#anatomy" linkText={lang.anatomy} />
+          <Anchor.Section href="#api" linkText={lang.api} />
+        </Anchor>
+      </aside>
+    </div>
+  );
+}

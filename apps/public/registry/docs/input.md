@@ -1,0 +1,55 @@
+## Installation
+
+```bash
+npm install @your-org/ui
+```
+
+## Usage
+
+```tsx
+import { Input } from "@/component/ui/input";
+
+function App() {
+  return <Input placeholder="Enter text..." />;
+}
+```
+
+## Examples
+
+### Basic
+
+```tsx
+<Input placeholder="Enter text..." />
+```
+
+### Prefix and Suffix
+
+```tsx
+<Input prefix="https://" suffix=".com" />
+<Input prefix="$" suffix=".00" />
+```
+
+### Invalid State
+
+```tsx
+<Input invalid error="This field is required" />
+```
+
+### Disabled
+
+```tsx
+<Input disabled placeholder="Disabled input" />
+```
+
+## API Reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| invalid | boolean | - | Invalid state |
+| label | ReactNode | - | Label |
+| description | ReactNode | - | Description |
+| error | ReactNode | - | Error message |
+| prefix | ReactNode | - | Prefix content |
+| suffix | ReactNode | - | Suffix content |
+| slotProps | { label?, group?, prefix?, suffix?, error?, description? } | - | Props for each part |
+| ...HTMLInputElementProps | HTMLInputElementProps | - | Other inherited input element props |

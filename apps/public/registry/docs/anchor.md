@@ -1,0 +1,163 @@
+## Installation
+
+```bash
+npm install @your-org/ui
+```
+
+## Usage
+
+```tsx
+import { Anchor } from "@/component/ui/anchor";
+
+function App() {
+  return (
+    <Anchor>
+      <Anchor.Section href="#installation" label="Installation" />
+      <Anchor.Section href="#usage" label="Usage">
+        <Anchor.Item href="#basic">Basic</Anchor.Item>
+        <Anchor.Item href="#with-sections">With Sections</Anchor.Item>
+      </Anchor.Section>
+    </Anchor>
+  );
+}
+```
+
+## Examples
+
+### Basic
+
+```tsx
+<Anchor>
+  <Anchor.Section href="#section-1" label="Section 1" />
+  <Anchor.Section href="#section-2" label="Section 2">
+    <Anchor.Item href="#sub-1">Subsection 1</Anchor.Item>
+    <Anchor.Item href="#sub-2">Subsection 2</Anchor.Item>
+  </Anchor.Section>
+</Anchor>
+```
+
+### With Sections
+
+```tsx
+<Anchor>
+  <Anchor.Section href="#intro" label="Introduction" />
+  <Anchor.Section href="#features" label="Features">
+    <Anchor.Item href="#fast">Fast</Anchor.Item>
+    <Anchor.Item href="#flexible">Flexible</Anchor.Item>
+  </Anchor.Section>
+  <Anchor.Section href="#pricing" label="Pricing" />
+</Anchor>
+```
+
+## API Reference
+
+### Anchor Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| className | ClassNameValue | - | `string\|string[]\|boolean\|null\|undefined\|Record<string,string\|string[]>` |
+| rootMargin | string | `"0px 0px -80% 0px"` | Root margin for IntersectionObserver (top right bottom left) |
+| root | `Element \| Document \| null \| RefObject<Element \| Document \| null>` | `null` | Root element for IntersectionObserver. In iframe, defaults to `document.documentElement` to fix viewport offset bug |
+
+### Anchor.Section Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| href | string | - | Anchor target ID (with # prefix, optional) |
+| linkText | string | - | Section label |
+| slotProps | object | - | Internal wrapped props pass-through |
+
+### Anchor.Item Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| href | string | - | Anchor target ID (with # prefix) |
+| className | ClassNameValue | - | `string\|string[]\|boolean\|null\|undefined\|Record<string,string\|string[]>` |
+
+
+
+### slotProps Config
+
+| Property | Type | Description |
+|------|------|------|
+| link | `Omit<React.ComponentProps<"a">, "href" \| "onClick">` | Link `<a>` tag props |
+| nav | `Omit<React.ComponentProps<"nav">, "aria-label">` | Internal navigation `<nav>` container props |
+
+## Notes
+
+### Anchor Mounting Guidelines
+
+**Best Practice:** Mount anchor targets on title elements rather than parent containers.
+
+```tsx
+// ✅ Recommended: Mount on title
+<section>
+  <h2 id="installation">Installation</h2>
+  <p>Content here...</p>
+</section>
+
+// ❌ Avoid: Mount on parent container (will always be observed)
+<section id="installation">
+  <h2>Installation</h2>
+  <p>Content here...</p>
+</section>
+```
+
+**Why?** When mounted on parent containers, the IntersectionObserver will continuously observe the entire parent section, potentially causing activation state issues. Mounting on titles provides more precise activation points.
+
+**Alternative:** If you can tolerate discontinuous anchor activation areas, mounting on parent containers is acceptable.
+
+### Smooth Scrolling & Offset
+
+When using Anchor component for page navigation, ensure target elements have proper scroll offset to avoid being covered by the fixed header:
+
+```tsx
+<section>
+  <h2 id="installation" className="scroll-mt-32">
+    Installation
+  </h2>
+  {/* = 120px offset for header */}
+</section>
+```
+
+**Key points:**
+- Add scroll offset class (e.g., `scroll-mt-32`) to all anchor target elements based on your header height
+- Ensure `main` container has `scroll-behavior: smooth` in CSS
+- The Anchor component handles smooth scrolling automatically
+
+### Root Margin
+
+The `rootMargin` prop controls when sections become active:
+
+```tsx
+<Anchor rootMargin="0px 0px -80% 0px">
+  {/* Sections become active when they're in the top 20% of the viewport */}
+</Anchor>
+```
+
+**Format:** `"top right bottom left"` (same as CSS margin)
+
+**Common values:**
+- `"0px 0px -80% 0px"` - Activate when section is in top 20% (default)
+- `"0px 0px -50% 0px"` - Activate when section is in top 50%
+- `"0px"` - Activate when section enters viewport
+
+### Root Element
+
+The `root` prop specifies the scroll container for IntersectionObserver:
+
+```tsx
+// Use custom scroll container
+const containerRef = useRef<HTMLElement>(null);
+<Anchor root={containerRef}>
+  {/* Monitors container instead of viewport */}
+</Anchor>
+
+// In iframe, automatically uses document.documentElement
+// to fix viewport offset bug
+<Anchor>
+  {/* Works correctly in iframe without manual root */}
+</Anchor>
+```
+
+**Important for iframes:** The component automatically detects if it's running in an iframe and uses `document.documentElement` as root to fix the IntersectionObserver viewport offset bug.
