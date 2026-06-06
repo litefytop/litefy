@@ -1,8 +1,4 @@
-## Installation
 
-```bash
-npm install @your-org/ui
-```
 
 ## Usage
 
