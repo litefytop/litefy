@@ -1,0 +1,150 @@
+{
+  "accordion": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/accordion.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/accordion.md"
+  },
+  "anchor": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/anchor.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/anchor.md"
+  },
+  "button": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/button.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/button.md"
+  },
+  "carousel": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/carousel.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/carousel.md"
+  },
+  "checkbox": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/checkbox.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/checkbox.md"
+  },
+  "combobox": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/combobox.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/combobox.md"
+  },
+  "date-picker": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/date-picker.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/date-picker.md"
+  },
+  "description": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/description.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/description.md"
+  },
+  "dialog": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/dialog.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/dialog.md"
+  },
+  "drawer": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/drawer.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/drawer.md"
+  },
+  "dropdown": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/dropdown.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/dropdown.md"
+  },
+  "empty": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/empty.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/empty.md"
+  },
+  "form": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/form.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/form.md"
+  },
+  "image": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/image.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/image.md"
+  },
+  "index.ts": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/index.ts",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/index.ts.md"
+  },
+  "input": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/input.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/input.md"
+  },
+  "loading": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/loading.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/loading.md"
+  },
+  "number-field": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/number-field.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/number-field.md"
+  },
+  "paginated-viewer": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/paginated-viewer.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/paginated-viewer.md"
+  },
+  "pagination": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/pagination.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/pagination.md"
+  },
+  "paper": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/paper.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/paper.md"
+  },
+  "password": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/password.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/password.md"
+  },
+  "progress": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/progress.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/progress.md"
+  },
+  "radio": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/radio.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/radio.md"
+  },
+  "select": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/select.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/select.md"
+  },
+  "separator": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/separator.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/separator.md"
+  },
+  "sidebar": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/sidebar.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/sidebar.md"
+  },
+  "slider": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/slider.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/slider.md"
+  },
+  "tabs": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/tabs.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/tabs.md"
+  },
+  "text-area": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/text-area.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/text-area.md"
+  },
+  "theme": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/theme.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/theme.md"
+  },
+  "title": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/title.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/title.md"
+  },
+  "toast": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/toast.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/toast.md"
+  },
+  "tooltip": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/tooltip.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/tooltip.md"
+  },
+  "upload": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/upload.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/upload.md"
+  },
+  "virtual-scroll": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/virtual-scroll.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/virtual-scroll.md"
+  },
+  "watermark": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/ui/watermark.tsx",
+    "docs": "https://cdn.jsdelivr.net/gh/litefytop/litefy@v0.0.1/apps/public/registry/docs/watermark.md"
+  }
+}

@@ -2,7 +2,6 @@ import fs from 'fs-extra';
 import path from 'path';
 import axios from 'axios';
 import logger from '../utils/logger';
-import defaultRegistry from '../registry.json';
 
 interface AddOptions {
   overwrite?: boolean;
@@ -16,9 +15,23 @@ interface LitefyConfig {
 
 interface RegistryEntry {
   url: string;
+  docs?: string;
 }
 
 type Registry = Record<string, RegistryEntry>;
+
+const REGISTRY_URL = 'https://cdn.jsdelivr.net/gh/litefytop/litefy@main/apps/public/registry.json';
+
+async function fetchRegistry(): Promise<Registry> {
+  try {
+    const response = await axios.get<Registry>(REGISTRY_URL);
+    return response.data;
+  } catch (error) {
+    logger.error(`Failed to fetch component registry from ${REGISTRY_URL}`);
+    logger.error(error instanceof Error ? error.message : String(error));
+    process.exit(1);
+  }
+}
 
 async function add(components: string[], options: AddOptions): Promise<void> {
   logger.step(`Preparing to add components: ${components.join(', ')}`);
@@ -37,8 +50,10 @@ async function add(components: string[], options: AddOptions): Promise<void> {
   const componentsDir = path.join(cwd, config.components || './src/components');
   await fs.ensureDir(componentsDir);
 
+  const registry = await fetchRegistry();
+
   for (const component of components) {
-    await addSingleComponent(component, componentsDir, options, config, defaultRegistry);
+    await addSingleComponent(component, componentsDir, options, config, registry);
   }
 
   const newInstalled = [...new Set([...config.installed, ...components])];
@@ -85,8 +100,8 @@ async function addSingleComponent(
     }
   }
 
-  if (options.docs) {
-    const docsUrl = `https://gitee.com/a1337650/litefy/raw/main/apps/public/registry/docs/${componentName}.md`;
+  if (options.docs && componentInfo.docs) {
+    const docsUrl = componentInfo.docs;
     const docsDir = path.join(process.cwd(), 'docs');
     await fs.ensureDir(docsDir);
     const docsPath = path.join(docsDir, `${componentName}.md`);
@@ -102,6 +117,8 @@ async function addSingleComponent(
         logger.warn(`No documentation found for ${componentName} at ${docsUrl}`);
       }
     }
+  } else if (options.docs && !componentInfo.docs) {
+    logger.warn(`No documentation URL configured for ${componentName} in registry.`);
   }
 }
 
