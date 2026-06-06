@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import axios from 'axios';
 import logger from '../utils/logger';
-import defaultRegistry from '../registry.json' ;
+import defaultRegistry from '../registry.json';
 
 interface AddOptions {
   overwrite?: boolean;
@@ -61,25 +61,28 @@ async function addSingleComponent(
     return;
   }
 
-  if (config.installed.includes(componentName) && !options.overwrite) {
-    logger.warn(`${componentName} already installed, skipped. Use --overwrite to force.`);
-    return;
-  }
-
   const targetFilePath = path.join(targetDir, `${componentName}.tsx`);
-  if ((await fs.pathExists(targetFilePath)) && !options.overwrite) {
-    logger.warn(`${componentName}.tsx already exists, skipped. Use --overwrite to force.`);
-    return;
+  const componentExists = await fs.pathExists(targetFilePath);
+  const alreadyInstalled = config.installed.includes(componentName);
+
+  let downloadComponent = true;
+  if (alreadyInstalled && !options.overwrite) {
+    logger.warn(`${componentName} already installed, skipping component download. Use --overwrite to force.`);
+    downloadComponent = false;
+  } else if (componentExists && !options.overwrite) {
+    logger.warn(`${componentName}.tsx already exists, skipping component download. Use --overwrite to force.`);
+    downloadComponent = false;
   }
 
-  logger.step(`Downloading ${componentName}.tsx...`);
-  try {
-    const response = await axios.get<string>(componentInfo.url);
-    await fs.writeFile(targetFilePath, response.data);
-    logger.success(`${componentName}.tsx saved to ${targetFilePath}`);
-  } catch (err) {
-    logger.error(`Failed to download ${componentName}.tsx: ${err instanceof Error ? err.message : String(err)}`);
-    return;
+  if (downloadComponent) {
+    logger.step(`Downloading ${componentName}.tsx...`);
+    try {
+      const response = await axios.get<string>(componentInfo.url);
+      await fs.writeFile(targetFilePath, response.data);
+      logger.success(`${componentName}.tsx saved to ${targetFilePath}`);
+    } catch (err) {
+      logger.error(`Failed to download ${componentName}.tsx: ${err instanceof Error ? err.message : String(err)}`);
+    }
   }
 
   if (options.docs) {
@@ -87,12 +90,17 @@ async function addSingleComponent(
     const docsDir = path.join(process.cwd(), 'docs');
     await fs.ensureDir(docsDir);
     const docsPath = path.join(docsDir, `${componentName}.md`);
-    try {
-      const docsResponse = await axios.get<string>(docsUrl);
-      await fs.writeFile(docsPath, docsResponse.data);
-      logger.success(`Documentation saved to ${docsPath}`);
-    } catch (err) {
-      logger.warn(`No documentation found for ${componentName} at ${docsUrl}`);
+    const docsExists = await fs.pathExists(docsPath);
+    if (docsExists && !options.overwrite) {
+      logger.warn(`Documentation ${componentName}.md already exists, skipped. Use --overwrite to force.`);
+    } else {
+      try {
+        const docsResponse = await axios.get<string>(docsUrl);
+        await fs.writeFile(docsPath, docsResponse.data);
+        logger.success(`Documentation saved to ${docsPath}`);
+      } catch (err) {
+        logger.warn(`No documentation found for ${componentName} at ${docsUrl}`);
+      }
     }
   }
 }
