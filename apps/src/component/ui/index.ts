@@ -35,3 +35,4 @@ export * from "./combobox";
 export * from "./carousel";
 export * from "./virtual-scroll";
 export * from "./progress";
+export * from "./scroll-shadow";

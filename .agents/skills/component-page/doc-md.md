@@ -9,11 +9,7 @@
 ## 内容结构
 
 ```md
-## Installation
 
-```bash
-npm install @your-org/ui
-```
 
 ## Usage
 

@@ -61,10 +61,7 @@ function DropdownTrigger({
     return () => menu.removeEventListener("toggle", handleToggle);
   }, [menuId, triggerId]);
 
-  const baseClassName = cn(
-    "cursor-pointer outline-none inline-flex items-center justify-center shrink-0 select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 disabled:pointer-events-none disabled:opacity-50 h-9 min-w-16 px-3 py-1 has-[>svg]:px-2 gap-1 rounded-md",
-    className
-  );
+;
 
   return (
     <button
@@ -75,7 +72,7 @@ function DropdownTrigger({
       popoverTargetAction="toggle"
       aria-haspopup="menu"
       aria-expanded="false"
-      className={baseClassName}
+      className={cn(className)}
       style={{ anchorName }}
     >
       {children}
@@ -106,8 +103,8 @@ function DropdownContent({
     const getFocusable = () => {
       return Array.from(
         menu.querySelectorAll<HTMLElement>(
-          'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        )
+          'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        ),
       ).filter((el) => el.offsetParent !== null);
     };
 
@@ -120,7 +117,9 @@ function DropdownContent({
         return;
       }
 
-      const currentIndex = focusable.findIndex((el) => el === document.activeElement);
+      const currentIndex = focusable.findIndex(
+        (el) => el === document.activeElement,
+      );
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
 
@@ -133,7 +132,10 @@ function DropdownContent({
         case "ArrowUp":
           e.preventDefault();
           if (currentIndex < 0) last.focus();
-          else focusable[(currentIndex - 1 + focusable.length) % focusable.length]?.focus();
+          else
+            focusable[
+              (currentIndex - 1 + focusable.length) % focusable.length
+            ]?.focus();
           break;
         case "Home":
           e.preventDefault();
@@ -149,7 +151,8 @@ function DropdownContent({
             if (currentIndex <= 0) last.focus();
             else focusable[currentIndex - 1]?.focus();
           } else {
-            if (currentIndex === focusable.length - 1 || currentIndex < 0) first.focus();
+            if (currentIndex === focusable.length - 1 || currentIndex < 0)
+              first.focus();
             else focusable[currentIndex + 1]?.focus();
           }
           break;
@@ -181,14 +184,12 @@ function DropdownContent({
       popover={popover}
       className={cn(
         "bg-popover text-popover-foreground min-w-32 rounded-md border p-1 shadow-md list-none m-0",
-        className
+        className,
       )}
-      style={
-        {
-          positionAnchor: anchorName,
-          positionArea: `${alignY} ${alignX}`,
-        } 
-      }
+      style={{
+        positionAnchor: anchorName,
+        positionArea: `${alignY} ${alignX}`,
+      }}
       {...props}
     >
       {children}
@@ -210,11 +211,8 @@ function DropdownItem({
         popoverTargetAction="hide"
         popoverTarget={menuId}
         className={cn(
-          "inline-flex gap-1 w-full text-start px-2 py-1.5 text-sm rounded-sm cursor-pointer",
-          "hover:bg-accent hover:text-accent-foreground",
-          "focus-visible:outline-none focus-visible:bg-accent focus-visible:text-accent-foreground",
-          "disabled:pointer-events-none disabled:opacity-50",
-          className
+          "inline-flex gap-3 w-full p-2 text-sm cursor-pointer items-center",
+          className,
         )}
         {...props}
       >
@@ -224,7 +222,10 @@ function DropdownItem({
   );
 }
 
-function DropdownSeparator({ className, ...props }: React.ComponentProps<"hr">) {
+function DropdownSeparator({
+  className,
+  ...props
+}: React.ComponentProps<"hr">) {
   return (
     <li className="m-0">
       <hr {...props} className={cn("my-1 h-px bg-muted", className)} />
@@ -253,4 +254,3 @@ Dropdown.Content = DropdownContent;
 Dropdown.Item = DropdownItem;
 Dropdown.Separator = DropdownSeparator;
 Dropdown.Label = DropdownLabel;
-

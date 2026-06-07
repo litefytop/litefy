@@ -27,23 +27,21 @@ export default function RadioVariant() {
         <p className="text-sm text-muted-foreground mb-2">segment</p>
         <Radio
           defaultValue="a"
+          variant="segment"
           options={[
             {
               value: "a",
               label: "A",
-              variant: "segment",
               className: "rounded-l-md rounded-tr-none rounded-br-none",
             },
             {
               value: "b",
               label: "B",
-              variant: "segment",
               className: "rounded-none",
             },
             {
               value: "c",
               label: "C",
-              variant: "segment",
               className: "rounded-r-md rounded-tl-none rounded-bl-none",
             },
           ]}

@@ -21,14 +21,6 @@ interface AccordionContextValue {
 
 const AccordionContext = createContext<AccordionContextValue | null>(null);
 
-function useAccordionContext() {
-  const context = useContext(AccordionContext);
-  if (!context) {
-    throw new Error("Accordion subcomponents must be used within Accordion");
-  }
-  return context;
-}
-
 type AccordionProps = React.ComponentProps<"div"> & {
   defaultOpenKeys?: string[];
   openKeys?: string[];
@@ -94,7 +86,7 @@ export function Accordion({
       <div
         {...props}
         className={cn(
-          "flex flex-col gap-2 inert:cursor-not-allowed inert:opacity-50 overflow-hidden",
+          "flex flex-col inert:cursor-not-allowed inert:opacity-50 overflow-hidden",
           className,
         )}
         inert={disabled || props.inert}
@@ -116,6 +108,8 @@ type AccordionItemProps = {
   children?: React.ReactNode;
   icon?: React.ReactNode | ((open: boolean) => React.ReactNode);
   label: React.ReactNode | ((open: boolean) => React.ReactNode);
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 };
 
 function AccordionItem({
@@ -125,11 +119,27 @@ function AccordionItem({
   children,
   icon,
   label,
+  open: controlledOpen,
+  onOpenChange: controlledOnOpenChange,
 }: AccordionItemProps) {
-  const { openKeys, onToggle } = useAccordionContext();
-  const open = openKeys.includes(value);
-  const internalId = useId();
+  const context = useContext(AccordionContext);
+  const [internalOpen, setInternalOpen] = useState(false);
 
+  const isControlled = controlledOpen !== undefined;
+  const ownOpen = isControlled ? controlledOpen : internalOpen;
+  const open = context ? context.openKeys.includes(value) : ownOpen;
+
+  const handleToggle = () => {
+    if (context) {
+      context.onToggle(value, context.openKeys);
+    } else {
+      const newOpen = !ownOpen;
+      if (!isControlled) setInternalOpen(newOpen);
+      controlledOnOpenChange?.(newOpen);
+    }
+  };
+
+  const internalId = useId();
   const panelId = slotProps?.content?.id ?? `${internalId}-panel`;
   const buttonId = slotProps?.trigger?.id ?? `${internalId}-button`;
 
@@ -155,7 +165,7 @@ function AccordionItem({
       {...slotProps?.wrapper}
       inert={disabled || slotProps?.wrapper?.inert}
       className={cn(
-        "overflow-hidden",
+        "overflow-hidden not-last:border-b",
         "inert:cursor-not-allowed inert:opacity-50",
         slotProps?.wrapper?.className,
       )}
@@ -167,17 +177,16 @@ function AccordionItem({
         aria-controls={panelId}
         onClick={(e) => {
           slotProps?.trigger?.onClick?.(e);
-          onToggle(value, openKeys);
+          handleToggle();
         }}
         disabled={disabled}
         className={cn(
-          "flex items-center justify-start gap-2 w-full px-4 py-3 hover:bg-muted text-left",
-          "disabled:opacity-50 disabled:cursor-not-allowed",
+          "flex justify-between items-center gap-2 w-full px-4 py-3 hover:underline cursor-pointer",
           slotProps?.trigger?.className,
         )}
       >
-        {renderIcon()}
         {renderLabel()}
+        {renderIcon()}
       </button>
 
       <div
@@ -194,7 +203,7 @@ function AccordionItem({
             aria-labelledby={buttonId}
             {...slotProps?.content}
             className={cn(
-              "border-t bg-background p-4",
+              "bg-background p-4",
               slotProps?.content?.className,
             )}
           >

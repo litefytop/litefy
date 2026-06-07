@@ -20,11 +20,12 @@ export type RadioProps<T extends string> = {
   defaultValue?: T;
   value?: T;
   onValueChange?: (value: T) => void;
+  variant?: keyof typeof radioClass;
   slotProps?: {
     content?: HTMLAttrs<Omit<ComponentProps<"div">, "children">>;
-    options?: Omit<RadioItemProps, "checked" | "value" | "label">;
+    options?: Omit<RadioItemProps, "checked" | "value" | "label"|"variant">;
   };
-  options: Omit<RadioItemProps, "checked">[];
+  options: Omit<RadioItemProps, "checked"|"variant">[];
 } & Omit<
   ComponentProps<"input">,
   "value" | "onChange" | "checked" | "children" | "className" | "type" | "style"
@@ -40,6 +41,7 @@ export function Radio<T extends string>({
   onBlur,
   slotProps,
   options,
+  variant,
   ...props
 }: RadioProps<T>) {
   const groupRef = useRef<HTMLDivElement>(null);
@@ -138,6 +140,7 @@ export function Radio<T extends string>({
         <RadioItem
           {...slotProps?.options}
           {...option}
+          variant={variant}
           data-index={index}
           checked={selectedValue === option.value}
           key={option.value}
@@ -158,14 +161,7 @@ type RadioItemProps = Omit<
   onValueChange?: (value: string) => void;
   disabled?: boolean;
   variant?: keyof typeof radioClass;
-  indicator?: {
-    checked?: ReactNode;
-    unchecked?: ReactNode;
-    hidden?: boolean;
-    props?: Omit<ComponentProps<"span">, "className"> & {
-      className?: ClassNameValue;
-    };
-  };
+  indicator?: (checked: boolean) => ReactNode;
   className?: ClassNameValue;
   label?: ReactNode;
 };
@@ -216,18 +212,20 @@ const RadioItem = ({
         className,
       )}
     >
-      {!indicator?.hidden && (
-        <span
-          {...indicator?.props}
+       <span
+
           data-checked={checked}
+          data-hidden={Boolean(indicator) || variant === "segment" || undefined}
           className={cn(
-            "flex items-center justify-center size-4 rounded-full outline border  data-[checked=true]:bg-primary data-[checked=true]:border-primary-foreground data-[checked=true]:text-primary-foreground group-data-[invalid=true]:border-destructive group-data-[invalid=true]:data-[checked=true]:bg-destructive",
-            indicator?.props?.className,
+            "flex items-center justify-center size-4 rounded-full outline border",
+            "data-[checked=true]:bg-primary data-[checked=true]:border-primary-foreground data-[checked=true]:text-primary-foreground",
+            "group-data-[invalid=true]:border-destructive group-data-[invalid=true]:data-[checked=true]:bg-destructive",
+            "data-hidden:hidden"
           )}
         >
-          {checked ? (indicator?.checked ?? <Check />) : indicator?.unchecked}
+          {checked ? <Check /> : null}
         </span>
-      )}
+         {indicator?.(checked)}
       {props.label}
     </button>
   );

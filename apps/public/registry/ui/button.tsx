@@ -24,7 +24,7 @@ export type ButtonProps = {
   variant?: keyof typeof buttonClass.variant;
   className?: ClassNameValue;
   loadingConfig?: ButtonLoadingConfig;
-  iconOnly?: boolean;
+  ?: boolean;
 } & React.ComponentProps<"button">;
 
 function Button({
@@ -32,7 +32,7 @@ function Button({
   className,
   loadingConfig,
   children,
-  iconOnly,
+  ,
   ...props
 }: ButtonProps) {
   const { loading: isLoading, icon: customLoadingIcon } = loadingConfig || {};
@@ -42,7 +42,7 @@ function Button({
   return (
     <button
       {...props}
-      data-svg-only={iconOnly}
+      data-svg-only={}
       className={cn(
         Button.class.base,
         Button.class.variant[variant],

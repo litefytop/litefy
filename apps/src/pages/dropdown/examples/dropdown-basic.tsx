@@ -3,7 +3,7 @@ import { Dropdown, Button } from "@/component";
 export default function DropdownBasic() {
   return (
     <Dropdown>
-      <Dropdown.Trigger className={Button.class.variant.ghost}>
+      <Dropdown.Trigger className={Button.class.variant.text}>
         Open Menu
       </Dropdown.Trigger>
       <Dropdown.Content>

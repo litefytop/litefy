@@ -1,8 +1,4 @@
-## Installation
 
-```bash
-npm install @your-org/ui
-```
 
 ## Usage
 
@@ -140,10 +136,10 @@ const { goFirst, goPrev, goNext, goLast } = Pagination.use();
   <Pagination.Controls>
     <Pagination.Sizer />
     <div className="flex gap-2">
-      <Button variant="ghost" iconOnly>
+      <Button variant="text" >
         <RefreshCw className="size-4" />
       </Button>
-      <Button variant="ghost" iconOnly>
+      <Button variant="text" >
         <Download className="size-4" />
       </Button>
     </div>

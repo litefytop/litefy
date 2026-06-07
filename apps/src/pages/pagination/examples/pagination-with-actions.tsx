@@ -25,10 +25,10 @@ export default function PaginationWithActions() {
       <div className="flex items-center gap-2">
         <Pagination.Sizer />
         <div className="flex gap-2 mr-2">
-          <Button variant="ghost" iconOnly>
+          <Button variant="text" >
             <RefreshCw className="size-4" />
           </Button>
-          <Button variant="ghost" iconOnly>
+          <Button variant="text" >
             <Download className="size-4" />
           </Button>
         </div>

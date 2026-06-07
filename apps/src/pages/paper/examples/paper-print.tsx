@@ -42,7 +42,7 @@ export default function PaperPrint() {
   return (
     <div className="space-y-4 h-screen">
       <div className="flex justify-end print:hidden">
-        <Button variant="ghost" onClick={() => printFn()}>
+        <Button variant="text" onClick={() => printFn()}>
           <Printer className="size-4 mr-2" />
           Print All
         </Button>
@@ -122,10 +122,10 @@ export default function PaperPrint() {
       <div className="p-4 bg-muted rounded-lg print:hidden">
         <h3 className="font-semibold mb-2">Print Instructions:</h3>
         <ul className="text-sm text-muted-foreground space-y-1">
-          <li>â€?Total pages: auto-completed to multiple of 4 (8 pages as needed)</li>
-          <li>â€?Paper size: A4 portrait</li>
-          <li>â€?Printer feature: Booklet printing (2 sheets of A3 = 8 pages)</li>
-          <li>â€?Page numbers are displayed using CSS with data-page-number</li>
+          <li>ï¿½?Total pages: auto-completed to multiple of 4 (8 pages as needed)</li>
+          <li>ï¿½?Paper size: A4 portrait</li>
+          <li>ï¿½?Printer feature: Booklet printing (2 sheets of A3 = 8 pages)</li>
+          <li>ï¿½?Page numbers are displayed using CSS with data-page-number</li>
         </ul>
       </div>
     </div>

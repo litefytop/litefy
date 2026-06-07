@@ -7,7 +7,15 @@ import {
 } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { getNavItems, getPageTitle } from "@/pages/config/routes";
-import { Title, Image, Sidebar, Button, Toaster, Dropdown } from "@/component";
+import {
+  Title,
+  Image,
+  Sidebar,
+  Button,
+  Toaster,
+  Dropdown,
+  ScrollShadow,
+} from "@/component";
 import { useTheme } from "@/component";
 import { t } from "@/pages/config/i18n";
 import { SidebarHandle } from "@/component/ui/sidebar";
@@ -20,55 +28,48 @@ import {
   ContrastIcon,
 } from "lucide-react";
 
-function ThemeToggle({ locale }: { locale: string }) {
-  const { colorScheme, setColorScheme } = useTheme();
-  const lang = t(locale as "zh" | "en");
-
-  const getIcon = () => {
-    if (colorScheme === "system") return <ContrastIcon size={20} />;
-    return colorScheme === "light" ? (
-      <SunIcon size={20} />
-    ) : (
-      <MoonIcon size={20} />
-    );
-  };
-
-  return (
-    <Dropdown>
-      <Dropdown.Trigger
-        aria-label="Toggle color scheme"
-        className={[Button.class.variant.ghost, "gap-2"]}
-     
-      >
-        {getIcon()}
-      </Dropdown.Trigger>
-      <Dropdown.Content>
-        <Dropdown.Item onClick={() => setColorScheme("light")}>
-          <SunIcon size={16} className="mr-2" />
-          {lang.common.theme.light}
-        </Dropdown.Item>
-        <Dropdown.Item onClick={() => setColorScheme("dark")}>
-          <MoonIcon size={16} className="mr-2" />
-          {lang.common.theme.dark}
-        </Dropdown.Item>
-        <Dropdown.Item onClick={() => setColorScheme("system")}>
-          <ContrastIcon size={16} className="mr-2" />
-          {lang.common.theme.system}
-        </Dropdown.Item>
-      </Dropdown.Content>
-    </Dropdown>
-  );
-}
-
-function UpdateTitle({ locale }: { locale: string }) {
+function useUpdateTitle({ locale }: { locale: string }) {
   const { pathname } = useLocation();
 
   useEffect(() => {
     const title = getPageTitle(pathname, locale as "zh" | "en");
     document.title = `${title} - Litefy UI`;
   }, [pathname, locale]);
+}
 
-  return null;
+function ThemeToggle({ locale }: { locale: string }) {
+  const { colorScheme, setColorScheme } = useTheme();
+  const lang = t(locale as "zh" | "en");
+
+  const getIcon = () => {
+    if (colorScheme === "system") return <ContrastIcon />;
+    return colorScheme === "light" ? <SunIcon /> : <MoonIcon />;
+  };
+
+  return (
+    <Dropdown>
+      <Dropdown.Trigger
+        aria-label="Toggle color scheme"
+        className={[Button.class.base, Button.class.variant.text]}
+      >
+        {getIcon()}
+      </Dropdown.Trigger>
+      <Dropdown.Content>
+        <Dropdown.Item onClick={() => setColorScheme("light")}>
+          <SunIcon size={16} />
+          {lang.common.theme.light}
+        </Dropdown.Item>
+        <Dropdown.Item onClick={() => setColorScheme("dark")}>
+          <MoonIcon size={16} />
+          {lang.common.theme.dark}
+        </Dropdown.Item>
+        <Dropdown.Item onClick={() => setColorScheme("system")}>
+          <ContrastIcon size={16} />
+          {lang.common.theme.system}
+        </Dropdown.Item>
+      </Dropdown.Content>
+    </Dropdown>
+  );
 }
 
 function LanguageToggle({ locale }: { locale: string }) {
@@ -82,8 +83,8 @@ function LanguageToggle({ locale }: { locale: string }) {
   };
 
   return (
-    <Button variant="ghost" onClick={toggleLocale} aria-label="Toggle language" iconOnly>
-      <LanguagesIcon size={20} />
+    <Button variant="text" onClick={toggleLocale} aria-label="Toggle language">
+      <LanguagesIcon />
     </Button>
   );
 }
@@ -92,7 +93,7 @@ function SidebarContent({ locale }: { locale: string }) {
   const navItems = getNavItems(locale as "zh" | "en");
 
   return (
-    <nav className="flex flex-col h-full overflow-y-auto p-4 gap-4">
+    <nav className="flex flex-col h-full  p-4 gap-4">
       {navItems.map((group) => (
         <ul key={group.title}>
           <li>
@@ -134,7 +135,7 @@ function Header({
 }) {
   return (
     <header
-      className={`sticky top-0 z-10 h-14 border-b bg-card flex items-center justify-between px-4 ${className || ""}`}
+      className={`border-b bg-card flex items-center justify-between px-4 ${className || ""}`}
     >
       <div className="flex items-center gap-2">
         <Image src={LOGO} className="size-8" alt="Logo" />
@@ -142,15 +143,12 @@ function Header({
       </div>
       <div className="flex items-center gap-2">
         <Button
-          iconOnly
-          variant="ghost"
+          variant="text"
           aria-label="GitHub"
           onClick={() => window.open("https://github.com", "_blank")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width={20}
-            height={20}
             viewBox="0 0 24 24"
             fill="currentColor"
           >
@@ -160,9 +158,8 @@ function Header({
         <ThemeToggle locale={locale} />
         <LanguageToggle locale={locale} />
         <Button
-          variant="ghost"
+          variant="text"
           aria-label="Toggle sidebar"
-          iconOnly
           onClick={() => sidebarRef.current?.toggle()}
         >
           <PanelLeftIcon />
@@ -174,24 +171,22 @@ function Header({
 
 export function App({ locale = "zh" }: { locale?: string }) {
   const sidebarRef = useRef<SidebarHandle | null>(null);
+  useUpdateTitle({ locale });
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header locale={locale} sidebarRef={sidebarRef} />
-      <div className="flex">
-        <Sidebar
-          ref={sidebarRef}
-          className="sticky top-14 h-[calc(100vh-3.5rem)] w-3xs shrink-0 overflow-y-auto"
-        >
+    <div className="grid grid-cols-[auto_1fr] grid-rows-[3.5rem_1fr] h-screen bg-background text-foreground overflow-hidden">
+      <Header locale={locale} sidebarRef={sidebarRef} className="col-span-2" />
+      <Sidebar controlRef={sidebarRef} className="w-3xs shrink-0 border-r">
+        <ScrollShadow>
           <SidebarContent locale={locale} />
-        </Sidebar>
-        <main className="flex-1 min-w-0">
-          <div className="container mx-auto px-6 py-8 max-w-4xl">
-            <Outlet />
-          </div>
-        </main>
-      </div>
-      <UpdateTitle locale={locale} />
+        </ScrollShadow>
+      </Sidebar>
+      <main className="flex-1  overflow-auto">
+        <div className="container mx-auto px-6 py-8 max-w-4xl">
+          <Outlet />
+        </div>
+      </main>
+
       <ScrollRestoration />
       <Toaster position="top-right" />
     </div>

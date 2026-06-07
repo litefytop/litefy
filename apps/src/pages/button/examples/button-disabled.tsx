@@ -6,7 +6,7 @@ export default function ButtonDisabled() {
       <Button variant="primary" disabled>Primary</Button>
       <Button variant="secondary" disabled>Secondary</Button>
       <Button variant="outline" disabled>Outline</Button>
-      <Button variant="ghost" disabled>Ghost</Button>
+      <Button variant="text" disabled>Ghost</Button>
       <Button variant="destructive" disabled>Destructive</Button>
       <Button variant="text" disabled>Text</Button>
     </div>
