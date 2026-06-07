@@ -25,7 +25,7 @@ export default function ButtonWithIcons() {
         Settings
       </Button>
 
-      <Button variant="ghost">
+      <Button variant="text">
         <ArrowLeftIcon />
         Back
       </Button>

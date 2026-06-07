@@ -28,7 +28,7 @@ export default function DropdownSide() {
         </Dropdown.Content>
       </Dropdown>
       <Dropdown>
-        <Dropdown.Trigger className={Button.class.variant.ghost}>
+        <Dropdown.Trigger className={Button.class.variant.text}>
           Right
         </Dropdown.Trigger>
         <Dropdown.Content alignX="end" alignY="center">

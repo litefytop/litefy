@@ -35,7 +35,7 @@ function App() {
 ### Icon Button
 
 ```tsx
-<Button variant="ghost">
+<Button variant="text">
   <Icon className="size-4" />
 </Button>
 ```

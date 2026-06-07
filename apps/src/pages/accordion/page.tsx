@@ -16,13 +16,12 @@ import { getComponentNav } from "@/pages/config/routes";
 import {
   AccordionBasic,
   AccordionControlledUsage,
-  AccordionMultiple,
+
   AccordionIcon,
   AccordionDisabled,
 } from "./examples";
 import AccordionBasicRaw from "./examples/accordion-basic.tsx?raw";
 import AccordionControlledUsageRaw from "./examples/accordion-controlled-usage.tsx?raw";
-import AccordionMultipleRaw from "./examples/accordion-multiple.tsx?raw";
 import AccordionIconRaw from "./examples/accordion-icon.tsx?raw";
 import AccordionDisabledRaw from "./examples/accordion-disabled.tsx?raw";
 import accordionDoc from "@/docs/accordion.md?raw";
@@ -39,19 +38,21 @@ function DemoSection({
   title,
   children,
   code,
+  label,
 }: {
   id: string;
   title: string;
   children: React.ReactNode;
   code: string;
+  label?: string;
 }) {
   return (
-    <section id={id} className="space-y-4 py-4">
+    <section id={id} className="flex flex-col gap-4 py-4">
       <Title as="h3">{title}</Title>
-      <div className="border rounded-lg p-6 w-full overflow-x-auto">
+      <div className="min-h-100 flex flex-col items-center justify-center border rounded-lg p-6 w-full overflow-x-auto"> 
         {children}
       </div>
-      <ShikiCodeBlock>{code}</ShikiCodeBlock>
+      <ShikiCodeBlock label={label}>{code}</ShikiCodeBlock>
     </section>
   );
 }
@@ -177,7 +178,7 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
           <div className="flex items-center justify-between">
             <Title as="h1">{lang.accordion.title}</Title>
             <div className="flex items-center gap-2">
-              <Button onClick={handleCopy} variant="ghost">
+              <Button onClick={handleCopy} variant="text">
                 {copied ? (
                   <CheckIcon className="size-4 text-green-500 mr-1" />
                 ) : (
@@ -185,10 +186,10 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
                 )}
                 {lang.common.copyDocs}
               </Button>
-              <Button variant="ghost" onClick={handlePrev} disabled={!nav.prev} iconOnly>
+              <Button variant="text" onClick={handlePrev} disabled={!nav.prev} >
                 <ArrowLeftIcon className="size-4" />
               </Button>
-              <Button variant="ghost" onClick={handleNext} disabled={!nav.next} iconOnly>
+              <Button variant="text" onClick={handleNext} disabled={!nav.next} >
                 <ArrowRightIcon className="size-4" />
               </Button>
             </div>
@@ -221,13 +222,7 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
             <AccordionControlledUsage />
           </DemoSection>
 
-          <DemoSection
-            id="multiple"
-            title={lang.accordion.multiple.title}
-            code={AccordionMultipleRaw}
-          >
-            <AccordionMultiple />
-          </DemoSection>
+  
 
           <DemoSection
             id="icon"
@@ -282,7 +277,7 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
         <footer className="py-8 border-t mt-8">
           <div className="flex justify-between">
             <Button
-              variant="ghost"
+              variant="text"
               onClick={handlePrev}
               disabled={!nav.prev}
               className={nav.prev ? "" : "invisible"}
@@ -291,7 +286,7 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
               {nav.prev?.title}
             </Button>
             <Button
-              variant="ghost"
+              variant="text"
               onClick={handleNext}
               disabled={!nav.next}
               className={nav.next ? "" : "invisible"}
@@ -312,9 +307,6 @@ export default function AccordionPage({ locale = "zh" }: { locale?: string }) {
             </Anchor.Item>
             <Anchor.Item href="#controlled">
               {lang.accordion.controlled.title}
-            </Anchor.Item>
-            <Anchor.Item href="#multiple">
-              {lang.accordion.multiple.title}
             </Anchor.Item>
             <Anchor.Item href="#icon">{lang.accordion.icon.title}</Anchor.Item>
             <Anchor.Item href="#disabled">

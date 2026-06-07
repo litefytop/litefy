@@ -171,7 +171,7 @@ export default function DropdownPage({
           <div className="flex items-center justify-between">
             <Title as="h1">{l.title}</Title>
             <div className="flex items-center gap-2">
-              <Button onClick={handleCopy} variant="ghost">
+              <Button onClick={handleCopy} variant="text">
                 {copied ? (
                   <CheckIcon className="size-4 text-green-500 mr-1" />
                 ) : (
@@ -179,10 +179,10 @@ export default function DropdownPage({
                 )}
                 {lang.common.copyDocs}
               </Button>
-              <Button variant="ghost" onClick={handlePrev} disabled={!nav.prev} iconOnly>
+              <Button variant="text" onClick={handlePrev} disabled={!nav.prev} >
                 <ArrowLeftIcon className="size-4" />
               </Button>
-              <Button variant="ghost" onClick={handleNext} disabled={!nav.next} iconOnly>
+              <Button variant="text" onClick={handleNext} disabled={!nav.next} >
                 <ArrowRightIcon className="size-4" />
               </Button>
             </div>
@@ -284,7 +284,7 @@ export default function DropdownPage({
         <footer className="py-8 border-t mt-8">
           <div className="flex justify-between">
             <Button
-              variant="ghost"
+              variant="text"
               onClick={handlePrev}
               disabled={!nav.prev}
               className={nav.prev ? "" : "invisible"}
@@ -293,7 +293,7 @@ export default function DropdownPage({
               {nav.prev?.title}
             </Button>
             <Button
-              variant="ghost"
+              variant="text"
               onClick={handleNext}
               disabled={!nav.next}
               className={nav.next ? "" : "invisible"}

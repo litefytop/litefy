@@ -1,15 +1,29 @@
 import { useState } from "react";
 import { Accordion } from "@/component/ui/accordion";
 
+import { Switch } from "@/component/ui/switch";
+
+
 export default function AccordionControlledUsage() {
   const [openKeys, setOpenKeys] = useState<string[]>(["item-1"]);
+  const allKeys = ["item-1", "item-2", "item-3"];
 
+  const toggleAll = () =>
+    setOpenKeys(openKeys.length === allKeys.length ? [] : allKeys);
   return (
-    <div>
+    <div className="flex flex-col gap-4 max-w-lg h-100">
+    <Switch
+      checked={openKeys.length === allKeys.length}
+      onCheckedChange={toggleAll}
+    >
+      Toggle Accordion
+    </Switch>
+     
       <Accordion
         openKeys={openKeys}
         onOpenChange={setOpenKeys}
-        className="h-64 justify-center"
+        allowMultiple={true}
+        className="justify-center "
       >
         <Accordion.Item value="item-1" label="First Item">
           <p>
@@ -30,9 +44,6 @@ export default function AccordionControlledUsage() {
           </p>
         </Accordion.Item>
       </Accordion>
-      <div className="text-sm text-muted-foreground">
-        Currently open: {openKeys.join(", ") || "None"}
-      </div>
     </div>
   );
 }

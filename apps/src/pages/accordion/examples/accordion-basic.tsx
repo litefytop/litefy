@@ -2,7 +2,7 @@ import { Accordion } from "@/component/ui/accordion";
 
 export default function AccordionBasic() {
   return (
-    <Accordion className="h-64 justify-center">
+    <Accordion className="max-w-lg">
       <Accordion.Item value="item-1" label="What is React?">
         <p>React is a JavaScript library for building user interfaces.</p>
       </Accordion.Item>

@@ -2,15 +2,21 @@ import { ClassNameValue, cn } from "@/lib";
 import { Loader2 } from "lucide-react";
 
 const buttonClass = {
-  base: "h-9 min-w-16 px-3 py-1 gap-1 whitespace-nowrap rounded-md cursor-pointer inline-flex items-center justify-center shrink-0 select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 disabled:pointer-events-none disabled:opacity-50 data-svg-only:aspect-square data-svg-only:min-w-0",
+  base: {
+    display: "inline-flex items-center justify-center cursor-pointer",
+    size: "gap-2 h-9 min-w-8",
+    spacing: "px-3 py-0",
+    border: "border border-transparent rounded-lg",
+    font: "font-sans text-sm text-center",
+    hasIcon:
+      "[&:has(>svg:only-child)]:p-1 [&:has(>svg:only-child)]:h-8 [&_svg:not([class*='size-'])]:size-4",
+  },
   variant: {
     primary: "bg-primary text-primary-foreground hover:bg-primary/90",
     destructive: `bg-destructive text-white 
       hover:bg-destructive/90
       focus-visible:ring-destructive/20`,
-    secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
     outline: `border-2 border-primary bg-transparent hover:bg-primary hover:text-primary-foreground`,
-    ghost: "hover:bg-muted hover:text-muted-foreground",
     text: "text-foreground hover:text-foreground/60",
   },
 };
@@ -24,7 +30,6 @@ export type ButtonProps = {
   variant?: keyof typeof buttonClass.variant;
   className?: ClassNameValue;
   loadingConfig?: ButtonLoadingConfig;
-  iconOnly?: boolean;
 } & React.ComponentProps<"button">;
 
 function Button({
@@ -32,7 +37,7 @@ function Button({
   className,
   loadingConfig,
   children,
-  iconOnly,
+
   ...props
 }: ButtonProps) {
   const { loading: isLoading, icon: customLoadingIcon } = loadingConfig || {};
@@ -42,7 +47,7 @@ function Button({
   return (
     <button
       {...props}
-      data-svg-only={iconOnly}
+
       className={cn(
         Button.class.base,
         Button.class.variant[variant],

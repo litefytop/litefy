@@ -148,9 +148,7 @@ export const en = {
     controlled: {
       title: "Controlled Mode",
     },
-    multiple: {
-      title: "Multiple",
-    },
+
     icon: {
       title: "Custom Icon",
     },

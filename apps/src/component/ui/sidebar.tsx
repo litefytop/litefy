@@ -1,4 +1,4 @@
-import { useState, useImperativeHandle, forwardRef } from "react";
+import { useState, useImperativeHandle, useRef } from "react";
 import { cn, ClassNameValue } from "@/lib";
 
 export type SidebarHandle = {
@@ -8,21 +8,18 @@ export type SidebarHandle = {
   isOpen: boolean;
 };
 
-export type SidebarProps = Omit<
-  React.ComponentProps<"aside">,
-  "className" | "ref"
-> & {
+export type SidebarProps = React.ComponentProps<"aside"> & {
   className?: ClassNameValue;
   defaultOpen?: boolean;
+  controlRef?: React.Ref<SidebarHandle>;
 };
 
-const Sidebar = forwardRef<SidebarHandle, SidebarProps>(function Sidebar(
-  { children, className, defaultOpen = true, ...props },
-  ref,
-) {
+function Sidebar({ children, className, defaultOpen = true, controlRef, ...props }: SidebarProps) {
   const [open, setOpen] = useState(defaultOpen);
+  const asideRef = useRef<HTMLElement>(null);
 
-  useImperativeHandle(ref, () => ({
+
+  useImperativeHandle(controlRef, () => ({
     toggle: () => setOpen((prev) => !prev),
     open: () => setOpen(true),
     close: () => setOpen(false),
@@ -32,15 +29,16 @@ const Sidebar = forwardRef<SidebarHandle, SidebarProps>(function Sidebar(
   return (
     <aside
       {...props}
+      ref={asideRef}
       data-close={!open ? true : undefined}
       className={cn(
         className,
-        "data-close:w-0 data-close:p-0 data-close:m-0 data-close:overflow-hidden",
+        "bg-sidebar min-h-0 h-full data-close:w-0 data-close:p-0 data-close:m-0 data-close:overflow-hidden",
       )}
     >
       {children}
     </aside>
   );
-});
+}
 
 export { Sidebar };

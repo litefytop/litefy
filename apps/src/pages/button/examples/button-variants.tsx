@@ -6,7 +6,7 @@ export default function ButtonVariants() {
       <Button variant="primary">Primary</Button>
       <Button variant="secondary">Secondary</Button>
       <Button variant="outline">Outline</Button>
-      <Button variant="ghost">Ghost</Button>
+      <Button variant="text">Ghost</Button>
       <Button variant="destructive">Destructive</Button>
       <Button variant="text">Text</Button>
     </div>

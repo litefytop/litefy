@@ -148,9 +148,7 @@ export const zh = {
     controlled: {
       title: "受控模式",
     },
-    multiple: {
-      title: "多选模式",
-    },
+
     icon: {
       title: "自定义图标",
     },

@@ -30,7 +30,7 @@ async function getHighlighter(): Promise<HighlighterCore> {
 
 interface CodeBlockProps {
   children?: React.ReactNode;
-  title?: string;
+  label?: string;
   isOpen?: boolean;
   onToggle?: () => void;
   code?: string;
@@ -39,7 +39,7 @@ interface CodeBlockProps {
 
 export function CodeBlock({
   children,
-  title,
+  label = "View Code",
   isOpen,
   onToggle,
   code: codeProp,
@@ -75,8 +75,11 @@ export function CodeBlock({
         className="flex items-center justify-between w-full px-4 py-2 bg-muted/50 hover:bg-muted cursor-pointer"
       >
         <span className="text-sm text-muted-foreground flex items-center gap-2">
-          <ChevronRightIcon className={`size-4 transition-transform ${isExpanded ? "rotate-90" : ""}`} />
-          {title || "View Code"}
+          <ChevronRightIcon
+            data-open={isExpanded || undefined}
+            className="size-4 transition-transform duration-300 data-open:rotate-90"
+          />
+          {label}
         </span>
         <button
           onClick={(e) => {
@@ -96,7 +99,10 @@ export function CodeBlock({
       {isExpanded && (
         <div className="bg-muted/20 border-t">
           {children || (
-            <pre className="p-4 text-sm font-mono overflow-auto" style={{ maxHeight }}>
+            <pre
+              className="p-4 text-sm font-mono overflow-auto"
+              style={{ maxHeight }}
+            >
               <code>{codeString}</code>
             </pre>
           )}
@@ -108,7 +114,7 @@ export function CodeBlock({
 
 interface ShikiCodeBlockProps {
   children?: React.ReactNode;
-  title?: string;
+  label?: string;
   isOpen?: boolean;
   onToggle?: () => void;
   maxHeight?: number | string;
@@ -116,7 +122,7 @@ interface ShikiCodeBlockProps {
 
 export function ShikiCodeBlock({
   children,
-  title,
+  label,
   isOpen,
   onToggle,
   maxHeight = "600px",
@@ -151,7 +157,7 @@ export function ShikiCodeBlock({
 
   return (
     <CodeBlock
-      title={title}
+      label={label}
       isOpen={isOpen}
       onToggle={onToggle}
       code={code}
