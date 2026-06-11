@@ -1,0 +1,92 @@
+---
+title: Accordion 手风琴
+description: 支持单选和多选展开模式的手风琴组件
+---
+
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add accordion" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="accordion" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 单选非受控
+
+基础的单选模式，使用非受控状态。
+
+<ComponentPreview 
+  name="accordion-single-uncontrolled"
+  title="单选非受控示例"
+/>
+
+### 多选受控
+
+高级用法，支持多选、受控模式和外部控制。
+
+<ComponentPreview 
+  name="accordion-multiple-controlled"
+  title="多选受控示例"
+/>
+
+### 自定义样式
+
+使用 `slotProps` 自定义手风琴项的外观。
+
+<ComponentPreview 
+  name="accordion-custom-styling"
+  title="自定义样式示例"
+/>
+
+## API 参考
+
+### Accordion
+
+主容器组件。
+
+
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `allowMultiple` | `boolean` | `false` | 启用多个项目同时展开 |
+| `defaultOpenKeys` | `string[]` | `[]` | 默认展开项的值（非受控） |
+| `openKeys` | `string[]` | `undefined` | 展开项的值（受控） |
+| `onOpenChange` | `(keys: string[]) => void` | `undefined` | 展开键变化时的回调 |
+| `className` | `string` | `undefined` | 容器的自定义 CSS 类 |
+
+### Accordion.Item
+
+单个手风琴项。
+
+
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | 项目的唯一标识符 |
+| `label` | `React.ReactNode` | - | 头部内容 |
+| `icon` | `React.ReactNode \| ((open: boolean) => React.ReactNode)` | `ChevronDown` | 自定义图标或图标函数 |
+| `disabled` | `boolean` | `false` | 禁用项目 |
+| `className` | `string` | `undefined` | 自定义 CSS 类 |
+| `slotProps` | `object` | `undefined` | 内部插槽的自定义属性 |
+
+### slotProps
+
+| Slot | Type | Description |
+|------|------|-------------|
+| `wrapper` | `React.HTMLAttributes<HTMLDivElement>` | 包装器 div 的属性 |
+| `trigger` | `React.ButtonHTMLAttributes<HTMLButtonElement>` | 触发器按钮的属性 |
+| `content` | `React.HTMLAttributes<HTMLDivElement>` | 内容面板的属性 |
+

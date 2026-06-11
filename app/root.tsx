@@ -5,25 +5,30 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useParams,
 } from 'react-router';
 import { RootProvider } from 'fumadocs-ui/provider/react-router';
+import { i18nProvider } from 'fumadocs-ui/i18n';
 import type { Route } from './+types/root';
-import './app.css';
+import './assets/styles/index.css';
 import SearchDialog from '@/components/search';
 import NotFound from './routes/not-found';
+import { i18n } from '@/lib/i18n';
+import { translations } from '@/lib/layout.shared';
+import { rewritePath } from 'fumadocs-core/negotiation';
 
-export const links: Route.LinksFunction = () => [
-  { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-  {
-    rel: 'preconnect',
-    href: 'https://fonts.gstatic.com',
-    crossOrigin: 'anonymous',
-  },
-  {
-    rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
-  },
-];
+function RootProviderWrapper({ children }: { children: React.ReactNode }) {
+  const { lang = i18n.defaultLanguage } = useParams<{ lang?: string }>();
+
+  return (
+    <RootProvider 
+      search={{ SearchDialog }}
+      i18n={i18nProvider(translations, lang)}
+    >
+      {children}
+    </RootProvider>
+  );
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -35,13 +40,31 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="flex flex-col min-h-screen">
-        <RootProvider search={{ SearchDialog }}>{children}</RootProvider>
+        <RootProviderWrapper>{children}</RootProviderWrapper>
         <ScrollRestoration />
         <Scripts />
       </body>
     </html>
   );
 }
+
+const { rewrite: rewriteLLM } = rewritePath('/docs{/*path}.md', '/llms.mdx/docs{/*path}');
+
+const serverMiddleware: Route.MiddlewareFunction = async ({ request }, next) => {
+  const url = new URL(request.url);
+  const pathname = url.pathname;
+  
+  // Only rewrite paths like /en/docs/xxx.md to /en/llms.mdx/docs/xxx
+  const langMatch = pathname.match(/^\/([a-z]{2})\/docs\/(.+)\.md$/);
+  if (langMatch) {
+    const [, lang, path] = langMatch;
+    return Response.redirect(new URL(`/${lang}/llms.mdx/docs/${path}`, url));
+  }
+  
+  return next();
+};
+
+export const middleware = [serverMiddleware];
 
 export default function App() {
   return <Outlet />;

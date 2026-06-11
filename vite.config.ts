@@ -7,5 +7,12 @@ export default defineConfig({
   plugins: [mdx(), tailwindcss(), reactRouter()],
   resolve: {
     tsconfigPaths: true,
+      noExternal: ['fumadocs-core', 'fumadocs-ui', 'fumadocs-openapi', '@fumadocs/base-ui'],
+  },
+  build: {
+    sourcemap: false,
+  },
+  css: {
+    devSourcemap: false,
   },
 });

@@ -4,6 +4,8 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+pnpmfileChecksum: sha256-nS9fVDOvnSXGGf5PSuRpMKxK2Sp8AQhGM27cqb2Qyqc=
+
 importers:
 
   .:
@@ -20,6 +22,9 @@ importers:
       fumadocs-mdx:
         specifier: 15.0.11
         version: 15.0.11(@types/mdast@4.0.4)(@types/mdx@2.0.14)(@types/react@19.2.17)(fumadocs-core@16.9.3(@mdx-js/mdx@3.1.1)(@types/estree-jsx@1.0.5)(@types/hast@3.0.4)(@types/mdast@4.0.4)(@types/react@19.2.17)(lucide-react@1.17.0(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react-router@7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)(zod@4.4.3))(react@19.2.7)(rolldown@1.0.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.28.0)(jiti@2.7.0))
+      fumadocs-registry:
+        specifier: ^0.3.2
+        version: 0.3.2(fumadocs-mdx@15.0.11(@types/mdast@4.0.4)(@types/mdx@2.0.14)(@types/react@19.2.17)(fumadocs-core@16.9.3(@mdx-js/mdx@3.1.1)(@types/estree-jsx@1.0.5)(@types/hast@3.0.4)(@types/mdast@4.0.4)(@types/react@19.2.17)(lucide-react@1.17.0(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react-router@7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)(zod@4.4.3))(react@19.2.7)(rolldown@1.0.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.28.0)(jiti@2.7.0)))
       fumadocs-ui:
         specifier: 16.9.3
         version: 16.9.3(@tailwindcss/oxide@4.3.0)(@types/mdx@2.0.14)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(fumadocs-core@16.9.3(@mdx-js/mdx@3.1.1)(@types/estree-jsx@1.0.5)(@types/hast@3.0.4)(@types/mdast@4.0.4)(@types/react@19.2.17)(lucide-react@1.17.0(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react-router@7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)(zod@4.4.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(tailwindcss@4.3.0)
@@ -38,9 +43,6 @@ importers:
       react-router:
         specifier: ^7.16.0
         version: 7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      tailwind-merge:
-        specifier: ^3.6.0
-        version: 3.6.0
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.4.16
@@ -2079,6 +2081,15 @@ packages:
       vite:
         optional: true
 
+  fumadocs-registry@0.3.2:
+    resolution: {integrity: sha512-wKFGRUB5X/qtikIkVaKoIl19gfS7Hk4uFiC7d25+ts4ttBd29Hq48vP7QfM/HDzBVGLRs8NzeTEOy1ngYiaQ2A==}
+    hasBin: true
+    peerDependencies:
+      fumadocs-mdx: '>=14.0.0'
+    peerDependenciesMeta:
+      fumadocs-mdx:
+        optional: true
+
   fumadocs-ui@16.9.3:
     resolution: {integrity: sha512-eoVKj1H+ATut0su+WIoPWBLRqzPMGD0hekIBr4GopWvUg1lS997HL4kP+Leyf+3CYlZtFgyXb6ylbvRLFtEj6Q==}
     peerDependencies:
@@ -2164,8 +2175,8 @@ packages:
     resolution: {integrity: sha512-6tyfJkFAmQV64x9Li007PNZgNxqRywig4Rv8PDfzU9kgDBmURaIvjSL2wKyx45LPSIXsvDkFGbOMqMHC1PsORA==}
     deprecated: Please update to ini >=1.3.6 to avoid a prototype pollution issue
 
-  inline-style-parser@0.1.1:
-    resolution: {integrity: sha512-7NXolsK4CAS5+xvdj5OMMbI962hU/wvwoxk+LWR9Ek9bVtyuuYScDN6eS0rUm6TxApFpw7CX1o4uJzcd4AyD3Q==}
+  inline-style-parser@0.2.7:
+    resolution: {integrity: sha512-Nb2ctOyNR8DqQoR0OwRG95uNWIC0C1lCgf5Naz5H6Ji72KZ8OcFZLz2P5sNgwlyoJ8Yif11oMuYs5pBQa86csA==}
 
   is-alphabetical@2.0.1:
     resolution: {integrity: sha512-FWyyY60MeTNyeSRpkM2Iry0G9hpr7/9kD40mD/cGQEuilcZYS4okz8SN2Q6rLCJ8gbCt6fN+rC+6tMGS99LaxQ==}
@@ -2909,11 +2920,11 @@ packages:
     resolution: {integrity: sha512-4gB8na07fecVVkOI6Rs4e7T6NOTki5EmL7TUduTs6bu3EdnSycntVJ4re8kgZA+wx9IueI2Y11bfbgwtzuE0KQ==}
     engines: {node: '>=0.10.0'}
 
-  style-to-js@1.0.0:
-    resolution: {integrity: sha512-OiaJVLD+ybcul+6oAdwTOKLFewvYapPLG4H3JiYBYUS0yoi29Ag1IiqprbVARaxiAXvkk+4B8aNcG7lyEDKebg==}
+  style-to-js@2.0.0:
+    resolution: {integrity: sha512-amkl/SwHF/Gb430+eOiN+XToZ6VsD2nota1kCXps4k1xagZOniEVNm8zKYm7RrGm2Q6d6hjnZdqebFIunoSJng==}
 
-  style-to-object@0.3.0:
-    resolution: {integrity: sha512-CzFnRRXhzWIdItT3OmF8SQfWyahHhjq3HwcMNCNLn+N7klOOqPjMeG/4JSu77D7ypZdGvSzvkrbyeTMizz2VrA==}
+  style-to-object@1.0.14:
+    resolution: {integrity: sha512-LIN7rULI0jBscWQYaSswptyderlarFkjQ+t79nzty8tcIAceVomEVlLzH5VP4Cmsv6MtKhs7qaAiwlcp+Mgaxw==}
 
   supports-color@7.2.0:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
@@ -4971,6 +4982,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  fumadocs-registry@0.3.2(fumadocs-mdx@15.0.11(@types/mdast@4.0.4)(@types/mdx@2.0.14)(@types/react@19.2.17)(fumadocs-core@16.9.3(@mdx-js/mdx@3.1.1)(@types/estree-jsx@1.0.5)(@types/hast@3.0.4)(@types/mdast@4.0.4)(@types/react@19.2.17)(lucide-react@1.17.0(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react-router@7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)(zod@4.4.3))(react@19.2.7)(rolldown@1.0.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.28.0)(jiti@2.7.0))):
+    dependencies:
+      picocolors: 1.1.1
+    optionalDependencies:
+      fumadocs-mdx: 15.0.11(@types/mdast@4.0.4)(@types/mdx@2.0.14)(@types/react@19.2.17)(fumadocs-core@16.9.3(@mdx-js/mdx@3.1.1)(@types/estree-jsx@1.0.5)(@types/hast@3.0.4)(@types/mdast@4.0.4)(@types/react@19.2.17)(lucide-react@1.17.0(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react-router@7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)(zod@4.4.3))(react@19.2.7)(rolldown@1.0.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.28.0)(jiti@2.7.0))
+
   fumadocs-ui@16.9.3(@tailwindcss/oxide@4.3.0)(@types/mdx@2.0.14)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(fumadocs-core@16.9.3(@mdx-js/mdx@3.1.1)(@types/estree-jsx@1.0.5)(@types/hast@3.0.4)(@types/mdast@4.0.4)(@types/react@19.2.17)(lucide-react@1.17.0(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react-router@7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)(zod@4.4.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(tailwindcss@4.3.0):
     dependencies:
       '@fumadocs/tailwind': 0.0.5(@tailwindcss/oxide@4.3.0)(tailwindcss@4.3.0)
@@ -5068,7 +5085,7 @@ snapshots:
       mdast-util-mdxjs-esm: 2.0.1
       property-information: 7.2.0
       space-separated-tokens: 2.0.2
-      style-to-js: 1.0.0
+      style-to-js: 2.0.0
       unist-util-position: 5.0.0
       zwitch: 2.0.4
     transitivePeerDependencies:
@@ -5102,7 +5119,7 @@ snapshots:
       mdast-util-mdxjs-esm: 2.0.1
       property-information: 7.2.0
       space-separated-tokens: 2.0.2
-      style-to-js: 1.0.0
+      style-to-js: 2.0.0
       unist-util-position: 5.0.0
       vfile-message: 4.0.3
     transitivePeerDependencies:
@@ -5136,7 +5153,7 @@ snapshots:
 
   ini@1.3.0: {}
 
-  inline-style-parser@0.1.1: {}
+  inline-style-parser@0.2.7: {}
 
   is-alphabetical@2.0.1: {}
 
@@ -6204,13 +6221,13 @@ snapshots:
 
   strip-json-comments@2.0.1: {}
 
-  style-to-js@1.0.0:
+  style-to-js@2.0.0:
     dependencies:
-      style-to-object: 0.3.0
+      style-to-object: 1.0.14
 
-  style-to-object@0.3.0:
+  style-to-object@1.0.14:
     dependencies:
-      inline-style-parser: 0.1.1
+      inline-style-parser: 0.2.7
 
   supports-color@7.2.0:
     dependencies:
