@@ -1,0 +1,81 @@
+---
+title: Combobox 组合框
+description: 支持自动补全的选项选择组件
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add combobox" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="combobox" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+基础组合框，使用静态选项。
+
+<ComponentPreview 
+  name="combobox-basic"
+  title="基础用法示例"
+/>
+
+### 异步搜索
+
+支持异步数据获取和防抖的组合框。
+
+<ComponentPreview 
+  name="combobox-async"
+  title="异步搜索示例"
+/>
+
+### 受控模式
+
+受控组合框，自定义值处理。
+
+<ComponentPreview 
+  name="combobox-controlled"
+  title="受控模式示例"
+/>
+
+## API 参考
+
+### Combobox
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | `undefined` | 受控值 |
+| `defaultValue` | `string` | `""` | 默认值（非受控） |
+| `onChange` | `(e: ComboboxChangeEvent) => void` | `undefined` | 值变化时的回调 |
+| `onSelect` | `(option: string) => void` | `undefined` | 选项被选中时的回调 |
+| `options` | `string[] \| ((keyword: string) => Promise<string[]>)` | `undefined` | 静态选项或异步获取函数 |
+| `placeholder` | `string` | `"Search or type..."` | 输入框占位符 |
+| `disabled` | `boolean` | `false` | 禁用组合框 |
+| `invalid` | `boolean` | `false` | 标记为无效 |
+| `clearable` | `boolean` | `true` | 显示清除按钮 |
+| `debounceMs` | `number` | `300` | 异步搜索的防抖延迟 |
+| `skeleton` | `React.ReactNode` | `undefined` | 自定义加载骨架 |
+| `optionHeight` | `number` | `36` | 每个选项的高度（像素） |
+| `overscan` | `number` | `2` | 视口外额外渲染的选项数量 |
+
+### slotProps
+
+| Slot | Type | Description |
+|------|------|-------------|
+| `container` | `React.HTMLAttributes<HTMLDivElement>` | 容器 div 的属性 |
+| `input` | `React.InputHTMLAttributes<HTMLInputElement>` | 输入框的属性 |
+| `list` | `React.HTMLAttributes<HTMLUListElement>` | 下拉列表的属性 |
+| `option` | `React.HTMLAttributes<HTMLLIElement>` | 每个选项的属性 |
+| `clearButton` | `React.ButtonHTMLAttributes<HTMLButtonElement>` | 清除按钮的属性 |

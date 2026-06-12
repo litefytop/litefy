@@ -5,60 +5,57 @@ import { Palette, Zap, Heart } from "lucide-react";
 
 export default function CustomStylingDemo() {
   return (
-    <Accordion className="w-md">
+    <Accordion className="w-md bg-card rounded-xl">
       <Accordion.Item
         value="item-1"
         label={
           <div className="flex items-center gap-2">
-            <Palette className="h-4 w-4 text-gray-600" />
-            <span>Custom Border Style</span>
+            <Palette className="h-4 w-4 text-primary" />
+            <span>Card style with top rounded</span>
           </div>
         }
         slotProps={{
-          wrapper: { className: "border-l-4 border-gray-600 bg-gray-50" },
-          trigger: { className: "hover:bg-gray-100" },
+          content: { className: "text-muted-foreground" },
         }}
       >
-        <p className="text-sm text-muted-foreground">
-          This item has a left border accent using <code className="bg-muted px-1.5 py-0.5 rounded">border-l-4 border-gray-600</code>. 
-          Perfect for highlighting important sections.
+        <p className="text-sm">
+          Use <code className="bg-muted px-1.5 py-0.5 rounded">slotProps.wrapper</code> to apply <code>rounded-t-lg</code>.
+          All items use <code>bg-card</code> for consistent card background.
         </p>
       </Accordion.Item>
+
       <Accordion.Item
         value="item-2"
         label={
           <div className="flex items-center gap-2">
-            <Zap className="h-4 w-4 text-gray-700" />
-            <span>Custom Background</span>
+            <Zap className="h-4 w-4 text-primary" />
+            <span>Card style without rounding</span>
           </div>
         }
         slotProps={{
-          wrapper: { className: "border-l-4 border-gray-700 bg-gray-100" },
-          trigger: { className: "hover:bg-gray-200" },
+          content: { className: "text-muted-foreground" },
         }}
       >
-        <p className="text-sm text-muted-foreground">
-          This item uses a subtle background with <code className="bg-muted px-1.5 py-0.5 rounded">bg-gray-100</code>. 
-          Great for drawing attention to special features.
+        <p className="text-sm">
+          Every part can be customized independently. This middle item has no extra rounding.
         </p>
       </Accordion.Item>
+
       <Accordion.Item
         value="item-3"
         label={
           <div className="flex items-center gap-2">
-            <Heart className="h-4 w-4 text-gray-800" />
-            <span>Custom Icon & Colors</span>
+            <Heart className="h-4 w-4 text-primary" />
+            <span>Card style with bottom rounded</span>
           </div>
         }
         slotProps={{
-          wrapper: { className: "border-l-4 border-gray-800 bg-gray-200" },
-          trigger: { className: "text-gray-900 hover:text-gray-950 hover:bg-gray-300" },
-          content: { className: "text-gray-800" },
+          content: { className: "italic text-muted-foreground/90" },
         }}
       >
         <p className="text-sm">
-          This item has custom text colors and a heart icon. 
-          Use <code className="bg-muted px-1.5 py-0.5 rounded">slotProps</code> to customize every part.
+          <code>slotProps</code> gives full control over inner components.
+          Change rounding, background, shadows, or any Tailwind class.
         </p>
       </Accordion.Item>
     </Accordion>

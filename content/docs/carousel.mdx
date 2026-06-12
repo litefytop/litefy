@@ -1,0 +1,63 @@
+---
+title: Carousel
+description: A carousel component for displaying rotating content
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add carousel" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="carousel" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Controlled
+
+Basic controlled carousel with manual navigation.
+
+<ComponentPreview 
+  name="carousel-basic"
+  title="Basic Controlled"
+/>
+
+### Auto Play
+
+Carousel with automatic slide rotation and loop mode.
+
+<ComponentPreview 
+  name="carousel-autoplay"
+  title="Auto Play"
+/>
+
+## API Reference
+
+### Carousel
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Slides content |
+| `activeIndex` | `number` | - | Current active slide index |
+| `onChange` | `(index: number) => void` | `undefined` | Callback when slide changes |
+| `autoPlay` | `boolean` | `false` | Enable automatic slide rotation |
+| `autoPlayInterval` | `number` | `3000` | Interval between slides in milliseconds |
+| `loop` | `boolean` | `false` | Enable infinite loop |
+| `slotProps` | `object` | `undefined` | Custom props for internal slots |
+
+### slotProps
+
+| Slot | Type | Description |
+|------|------|-------------|
+| `wrapper` | `React.HTMLAttributes<HTMLDivElement>` | Props for the wrapper div |
+| `slide` | `React.HTMLAttributes<HTMLDivElement>` | Props for each slide div |

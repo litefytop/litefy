@@ -6,9 +6,9 @@ import React, {
   useEffect,
   useCallback,
   useMemo,
+  useId,
 } from "react";
-import { createPortal } from "react-dom";
-import { cn, ClassNameValue } from "@/lib";
+import { cn, type ClassNameValue } from "@/lib";
 import { ChevronDown, X } from "lucide-react";
 
 type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
@@ -70,22 +70,22 @@ export function Combobox({
   overscan = 2,
   slotProps,
 }: ComboboxProps) {
+  const id = useId();
+  const popoverId = `combobox-popover-${id}`;
+  const anchorName = `--anchor-${id}`;
+
   const [internalValue, setInternalValue] = useState(defaultValue);
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [isOpen, setIsOpen] = useState(false);
   const [highlightIndex, setHighlightIndex] = useState(-1);
   const [innerLoading, setInnerLoading] = useState(false);
-  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
   const [containerHeight, setContainerHeight] = useState(0);
   const [scrollTop, setScrollTop] = useState(0);
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const triggerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const listContainerRef = useRef<HTMLUListElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
   const pendingRequestRef = useRef<string | null>(null);
-  const closeTimer = useRef<NodeJS.Timeout | null>(null);
   const isMountedRef = useRef(true);
   const resizeObserverRef = useRef<ResizeObserver | null>(null);
 
@@ -99,39 +99,6 @@ export function Combobox({
       lower: opt.toLowerCase(),
     }));
   }, [options]);
-
-  const cancelClose = () => {
-    if (closeTimer.current) {
-      clearTimeout(closeTimer.current);
-      closeTimer.current = null;
-    }
-  };
-
-  const closeDropdown = useCallback(() => {
-    setIsOpen(false);
-    setHighlightIndex(-1);
-    setScrollTop(0);
-  }, []);
-
-  const scheduleClose = () => {
-    cancelClose();
-    closeTimer.current = setTimeout(closeDropdown, 150);
-  };
-
-  const updateDropdownPosition = useCallback(() => {
-    if (!triggerRef.current) return;
-    const rect = triggerRef.current.getBoundingClientRect();
-    const dropdownHeightEstimate = 256;
-    const spaceBelow = window.innerHeight - rect.bottom;
-    const spaceAbove = rect.top;
-    let top: number;
-    if (spaceBelow >= dropdownHeightEstimate || spaceBelow >= spaceAbove) {
-      top = rect.bottom + 4;
-    } else {
-      top = rect.top - dropdownHeightEstimate - 4;
-    }
-    setDropdownPosition({ top, left: rect.left });
-  }, []);
 
   const fetchData = useCallback(
     async (keyword: string) => {
@@ -167,14 +134,6 @@ export function Combobox({
     [options, preprocessedOptions],
   );
 
-  const openDropdown = useCallback(() => {
-    if (!isOpen) {
-      setIsOpen(true);
-      updateDropdownPosition();
-      fetchData(inputValue);
-    }
-  }, [isOpen, inputValue, fetchData, updateDropdownPosition]);
-
   const handleChange = (e: ComboboxChangeEvent) => {
     const newValue = e.target.value;
     if (controlledValue === undefined) setInternalValue(newValue);
@@ -184,7 +143,7 @@ export function Combobox({
       setSuggestions([]);
       return;
     }
-    setIsOpen(true);
+
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
     debounceTimer.current = setTimeout(() => {
       fetchData(newValue);
@@ -193,17 +152,19 @@ export function Combobox({
 
   const handleFocus = useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
-      cancelClose();
       if (disabled) return;
-      openDropdown();
       slotProps?.input?.onFocus?.(e);
+      const popover = document.getElementById(popoverId) as HTMLElement | null;
+      if (popover && !popover.matches(":popover-open")) {
+        popover.showPopover();
+      }
+      fetchData(inputValue);
     },
-    [disabled, openDropdown, slotProps?.input],
+    [disabled, slotProps?.input, popoverId, fetchData, inputValue],
   );
 
   const handleSelect = useCallback(
     (option: string) => {
-      cancelClose();
       if (controlledValue === undefined) setInternalValue(option);
       const fakeEvent = {
         target: { value: option },
@@ -211,14 +172,14 @@ export function Combobox({
       } as ComboboxChangeEvent;
       onChange?.(fakeEvent);
       onSelect?.(option);
-      closeDropdown();
+      const popover = document.getElementById(popoverId) as HTMLElement | null;
+      popover?.hidePopover();
       inputRef.current?.focus();
     },
-    [closeDropdown, controlledValue, onChange, onSelect],
+    [controlledValue, onChange, onSelect, popoverId],
   );
 
   const handleClear = () => {
-    cancelClose();
     if (controlledValue === undefined) setInternalValue("");
     const fakeEvent = {
       target: { value: "" },
@@ -226,15 +187,20 @@ export function Combobox({
     } as ComboboxChangeEvent;
     onChange?.(fakeEvent);
     setSuggestions([]);
-    closeDropdown();
+    const popover = document.getElementById(popoverId) as HTMLElement | null;
+    popover?.hidePopover();
     inputRef.current?.focus();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!isOpen || suggestions.length === 0) {
+    const popover = document.getElementById(popoverId) as HTMLElement | null;
+    const isPopoverOpen = popover?.matches(":popover-open") ?? false;
+
+    if (!isPopoverOpen || suggestions.length === 0) {
       if (e.key === "Enter" && inputValue.trim()) e.preventDefault();
       return;
     }
+
     switch (e.key) {
       case "ArrowDown":
         e.preventDefault();
@@ -253,54 +219,45 @@ export function Combobox({
         }
         break;
       case "Escape":
-        closeDropdown();
+        popover?.hidePopover();
         break;
     }
   };
 
   useEffect(() => {
-    const handler = (ev: MouseEvent) => {
-      const target = ev.target as Node;
-      const inWrap = containerRef.current?.contains(target);
-      const inDrop = listContainerRef.current?.contains(target);
-      if (!inWrap && !inDrop) {
-        cancelClose();
-        closeDropdown();
+    const popover = document.getElementById(popoverId);
+    if (!popover) return;
+
+    const handleToggle = (e: Event) => {
+      const toggleEvent = e as ToggleEvent;
+      if (toggleEvent.newState === "closed") {
+        setHighlightIndex(-1);
+        setScrollTop(0);
       }
     };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, [closeDropdown]);
+
+    popover.addEventListener("toggle", handleToggle);
+    return () => popover.removeEventListener("toggle", handleToggle);
+  }, [popoverId]);
 
   useEffect(() => {
-    if (!isOpen) return;
-    const handleClose = () => closeDropdown();
-    window.addEventListener("scroll", handleClose, true);
-    window.addEventListener("resize", handleClose);
-    return () => {
-      window.removeEventListener("scroll", handleClose, true);
-      window.removeEventListener("resize", handleClose);
-    };
-  }, [isOpen, closeDropdown]);
-
-  useEffect(() => {
-    if (!listContainerRef.current) return;
+    if (!listRef.current) return;
     const updateHeight = () => {
-      if (listContainerRef.current) {
-        setContainerHeight(listContainerRef.current.clientHeight);
+      if (listRef.current) {
+        setContainerHeight(listRef.current.clientHeight);
       }
     };
     updateHeight();
     resizeObserverRef.current = new ResizeObserver(updateHeight);
-    resizeObserverRef.current.observe(listContainerRef.current);
+    resizeObserverRef.current.observe(listRef.current);
     return () => {
       resizeObserverRef.current?.disconnect();
     };
-  }, [isOpen, suggestions]);
+  }, [suggestions]);
 
   useEffect(() => {
-    if (!listContainerRef.current || highlightIndex < 0 || innerLoading) return;
-    const container = listContainerRef.current;
+    if (!listRef.current || highlightIndex < 0 || innerLoading) return;
+    const container = listRef.current;
     const itemTop = highlightIndex * optionHeight;
     const itemBottom = itemTop + optionHeight;
     const scrollTopNow = container.scrollTop;
@@ -335,8 +292,8 @@ export function Combobox({
   }, []);
 
   useEffect(() => {
-    if (listContainerRef.current) {
-      listContainerRef.current.scrollTop = 0;
+    if (listRef.current) {
+      listRef.current.scrollTop = 0;
       setScrollTop(0);
     }
   }, [suggestions]);
@@ -346,12 +303,11 @@ export function Combobox({
     return () => {
       isMountedRef.current = false;
       if (debounceTimer.current) clearTimeout(debounceTimer.current);
-      if (closeTimer.current) clearTimeout(closeTimer.current);
     };
   }, []);
 
   const showClear = clearable && inputValue.length > 0;
-  const shouldShowList = isOpen && (suggestions.length > 0 || innerLoading);
+  const shouldShowList = suggestions.length > 0 || innerLoading;
   const loadingNode = skeleton ?? (
     <li className="py-3 text-center text-sm text-muted-foreground">
       Loading...
@@ -392,58 +348,17 @@ export function Combobox({
     handleSelect,
   ]);
 
-  const dropdownContent = (
-    <ul
-      id="combobox-list"
-      role="listbox"
-      {...slotProps?.list}
-      ref={listContainerRef}
-      onScroll={handleScroll}
-      className={cn(
-        "fixed z-50 w-3xs max-h-64 rounded-md border border-input bg-background shadow-lg overflow-auto",
-        slotProps?.list?.className,
-      )}
-      style={{ top: dropdownPosition.top, left: dropdownPosition.left }}
-    >
-      {innerLoading ? (
-        loadingNode
-      ) : suggestions.length > 0 ? (
-        <div
-          style={{
-            height: suggestions.length * optionHeight,
-            position: "relative",
-          }}
-        >
-          <div
-            style={{
-              position: "absolute",
-              top: visibleRange.start * optionHeight,
-              width: "100%",
-            }}
-          >
-            {visibleOptions}
-          </div>
-        </div>
-      ) : (
-        <li className="py-3 text-center text-sm text-muted-foreground">
-          No data
-        </li>
-      )}
-    </ul>
-  );
-
   return (
     <div
       {...slotProps?.container}
       ref={containerRef}
+      style={{ anchorName }}
       className={cn("relative w-3xs", slotProps?.container?.className)}
     >
       <div
-        ref={triggerRef}
         data-invalid={invalid || undefined}
         onClick={() => {
           inputRef.current?.focus();
-          openDropdown();
         }}
         className={cn(
           "flex items-center h-9 w-full rounded-md border border-input bg-background px-3 shadow-xs",
@@ -459,7 +374,6 @@ export function Combobox({
           value={inputValue}
           onChange={handleChange}
           onBlur={(e) => {
-            scheduleClose();
             onBlur?.(e);
           }}
           onFocus={handleFocus}
@@ -471,8 +385,8 @@ export function Combobox({
             slotProps?.input?.className,
           )}
           aria-autocomplete="list"
-          aria-expanded={isOpen}
-          aria-controls="combobox-list"
+          popoverTarget={popoverId}
+          popoverTargetAction="toggle"
         />
         {showClear && (
           <button
@@ -490,14 +404,53 @@ export function Combobox({
           </button>
         )}
         <ChevronDown
-          data-open={isOpen || undefined}
-          className="size-4 transition-transform duration-200 data-open:rotate-180"
+          className="size-4 transition-transform duration-200"
         />
       </div>
 
-      {shouldShowList &&
-        typeof document !== "undefined" &&
-        createPortal(dropdownContent, document.body)}
+      <ul
+        id={popoverId}
+        ref={listRef}
+        popover="auto"
+        role="listbox"
+        onScroll={handleScroll}
+        className={cn(
+          "w-3xs max-h-64 rounded-md border border-input bg-background shadow-lg overflow-auto m-0 p-0",
+          "[&:popover-open]:block",
+          slotProps?.list?.className,
+        )}
+        style={{
+          positionAnchor: anchorName,
+          positionArea: "bottom start",
+        }}
+      >
+        {shouldShowList ? (
+          innerLoading ? (
+            loadingNode
+          ) : suggestions.length > 0 ? (
+            <div
+              style={{
+                height: suggestions.length * optionHeight,
+                position: "relative",
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  top: visibleRange.start * optionHeight,
+                  width: "100%",
+                }}
+              >
+                {visibleOptions}
+              </div>
+            </div>
+          ) : (
+            <li className="py-3 text-center text-sm text-muted-foreground">
+              No data
+            </li>
+          )
+        ) : null}
+      </ul>
     </div>
   );
 }

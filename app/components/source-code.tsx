@@ -5,14 +5,19 @@ import { type ClassNameValue, cn } from "@/lib";
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 
 interface SourceCodeProps {
-  /** 组件名称，用于选择对应的源码 */
-  component: "accordion";
+  component: string;
   className?: ClassNameValue;
 }
 
-const componentImports: Record<string, () => Promise<string>> = {
-  accordion: () => import("@/components/ui/accordion.tsx?raw").then((m) => m.default),
-};
+const modules = import.meta.glob("../components/ui/*.tsx", { query: "?raw", import: "default" });
+const componentImports: Record<string, () => Promise<string>> = {};
+
+for (const [path, loadFn] of Object.entries(modules)) {
+  const match = path.match(/\/([^/]+)\.tsx$/);
+  if (match) {
+    componentImports[match[1]] = loadFn as () => Promise<string>;
+  }
+}
 
 function SourceCodeContent({ component, className }: SourceCodeProps) {
   const [sourceCode, setSourceCode] = useState<string>("");

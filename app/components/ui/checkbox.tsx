@@ -1,13 +1,13 @@
 import {
   createContext,
-  ReactNode,
+  type ReactNode,
   useContext,
   useId,
   useRef,
   useState,
 } from "react";
-import { cn, ClassNameValue } from "@/lib";
-import { ComponentProps } from "react";
+import { cn, type ClassNameValue } from "@/lib";
+import { type ComponentProps } from "react";
 
 type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;
@@ -16,7 +16,7 @@ type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
 
 const checkboxClass = {
   toggle:
-    "bg-input text-input-foreground border-y border-r first:border-l has-focus-visible:ring-2 has-focus-visible:ring-ring has-focus-visible:ring-offset-2 has-focus-visible:outline-none has-checked:bg-primary has-checked:text-primary-foreground group-data-invalid:text-destructive group-data-invalid:has-checked:bg-destructive group-data-invalid:accent-destructive group-data-invalid:ring-destructive",
+    "bg-input text-input-foreground border-y border-r first:border-l has-focus-visible:ring-2 has-focus-visible:ring-ring has-focus-visible:ring-inset has-focus-visible:outline-none has-checked:bg-primary has-checked:text-primary-foreground group-data-invalid:text-destructive group-data-invalid:has-checked:bg-destructive group-data-invalid:accent-destructive group-data-invalid:ring-destructive",
   checkbox:
     "group-data-invalid:text-destructive group-data-invalid:accent-destructive",
 };
@@ -54,9 +54,9 @@ function CheckboxGroup<T extends string>({
   ...props
 }: CheckboxGroupProps<T>) {
   const groupRef = useRef<HTMLDivElement>(null);
-  const [innerValue, setInnerValue] = useState<T[]>(defaultValue);
+  const [uncontrolledValue, setUncontrolledValue] = useState<T[]>(defaultValue);
 
-  const selectedArr = controlledValue ?? innerValue;
+  const selectedArr = controlledValue ?? uncontrolledValue;
   const selectedSet = new Set(selectedArr);
 
   const toggleValue = (val: string) => {
@@ -64,7 +64,7 @@ function CheckboxGroup<T extends string>({
       ? selectedArr.filter((item) => item !== val)
       : [...selectedArr, val];
 
-    if (controlledValue === undefined) setInnerValue(next as T[]);
+    if (controlledValue === undefined) setUncontrolledValue(next as T[]);
     onValueChange?.(next as T[]);
   };
 
@@ -149,29 +149,30 @@ export type CheckboxProps = {
   checked?: boolean;
   onValueChange?: (checked: boolean) => void;
   value?: string;
-  label: ReactNode;
   disabled?: boolean;
   variant?: keyof typeof checkboxClass;
   indicator?: (checked: boolean) => ReactNode;
   name?: string;
+  children?: ReactNode;
 } & HTMLAttrs<ComponentProps<"input">>;
 
 export const Checkbox = ({
   value,
+  defaultChecked = false,
   variant = "checkbox",
   indicator,
   checked,
   onValueChange,
   disabled: itemDisabled,
   name: itemName,
-  label,
   className,
+  children,
   style,
   ...restInputProps
 }: CheckboxProps) => {
   const ctx = useContext(CheckboxGroupContext);
   const inputId = useId();
-  const [innerChecked, setInnerChecked] = useState(false);
+  const [innerChecked, setInnerChecked] = useState(defaultChecked);
 
   let isChecked: boolean;
   if (ctx && value) {
@@ -222,7 +223,7 @@ export const Checkbox = ({
           "accent-accent group-data-invalid:accent-destructive data-hidden:sr-only peer",
         )}
       />
-      {label}
+      {children}
     </label>
   );
 };

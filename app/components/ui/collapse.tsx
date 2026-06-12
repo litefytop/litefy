@@ -32,14 +32,14 @@ export function Collapse({
   children,
   ...props
 }: CollapseProps) {
-  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
   const isControlled = controlledOpen !== undefined;
-  const open = isControlled ? controlledOpen : internalOpen;
+  const open = isControlled ? controlledOpen : uncontrolledOpen;
 
   const toggle = useCallback(() => {
     if (disabled) return;
     if (!isControlled) {
-      setInternalOpen((prev) => {
+      setUncontrolledOpen((prev) => {
         const newState = !prev;
         onOpenChange?.(newState);
         return newState;

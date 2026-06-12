@@ -1,0 +1,78 @@
+---
+title: Checkbox
+description: A checkbox component with toggle variant support
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add checkbox" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="checkbox" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Basic checkbox with controlled and group modes.
+
+<ComponentPreview 
+  name="checkbox-basic"
+  title="Basic Usage"
+/>
+
+### Toggle Variant
+
+Use toggle variant for switch-like behavior.
+
+<ComponentPreview 
+  name="checkbox-toggle"
+  title="Toggle Variant"
+/>
+
+### Custom Indicator
+
+Customize the checkbox indicator with a custom icon.
+
+<ComponentPreview 
+  name="checkbox-custom-icon"
+  title="Custom Indicator"
+/>
+
+## API Reference
+
+### Checkbox
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | The checkbox content |
+| `checked` | `boolean` | `undefined` | Controlled checked state |
+| `onValueChange` | `(checked: boolean) => void` | `undefined` | Callback when checked state changes |
+| `value` | `string` | `undefined` | Value for group mode |
+| `variant` | `'checkbox' \| 'toggle'` | `'checkbox'` | Visual variant |
+| `indicator` | `(checked: boolean) => React.ReactNode` | `undefined` | Custom indicator render function |
+| `disabled` | `boolean` | `false` | Disable the checkbox |
+| `name` | `string` | `undefined` | Input name |
+
+### Checkbox.Group
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Checkbox items |
+| `value` | `T[]` | `undefined` | Controlled value |
+| `defaultValue` | `T[]` | `[]` | Default value (uncontrolled) |
+| `onValueChange` | `(value: T[]) => void` | `undefined` | Callback when value changes |
+| `disabled` | `boolean` | `false` | Disable all children |
+| `invalid` | `boolean` | `false` | Mark as invalid |
+| `name` | `string` | `undefined` | Group name |

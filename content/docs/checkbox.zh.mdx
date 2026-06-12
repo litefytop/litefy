@@ -1,0 +1,78 @@
+---
+title: Checkbox 复选框
+description: 支持toggle变体的复选框组件
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add checkbox" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="checkbox" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+基础复选框，支持受控和分组模式。
+
+<ComponentPreview 
+  name="checkbox-basic"
+  title="基础用法示例"
+/>
+
+### Toggle变体
+
+使用toggle变体实现开关效果。
+
+<ComponentPreview 
+  name="checkbox-toggle"
+  title="Toggle变体示例"
+/>
+
+### 自定义图标
+
+使用自定义图标替换默认指示器。
+
+<ComponentPreview 
+  name="checkbox-custom-icon"
+  title="自定义图标示例"
+/>
+
+## API 参考
+
+### Checkbox
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | 复选框内容 |
+| `checked` | `boolean` | `undefined` | 受控选中状态 |
+| `onValueChange` | `(checked: boolean) => void` | `undefined` | 选中状态变化时的回调 |
+| `value` | `string` | `undefined` | 分组模式下的值 |
+| `variant` | `'checkbox' \| 'toggle'` | `'checkbox'` | 视觉变体 |
+| `indicator` | `(checked: boolean) => React.ReactNode` | `undefined` | 自定义指示器渲染函数 |
+| `disabled` | `boolean` | `false` | 禁用复选框 |
+| `name` | `string` | `undefined` | 输入框名称 |
+
+### Checkbox.Group
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | 复选框子项 |
+| `value` | `T[]` | `undefined` | 受控值 |
+| `defaultValue` | `T[]` | `[]` | 默认值（非受控） |
+| `onValueChange` | `(value: T[]) => void` | `undefined` | 值变化时的回调 |
+| `disabled` | `boolean` | `false` | 禁用所有子项 |
+| `invalid` | `boolean` | `false` | 标记为无效 |
+| `name` | `string` | `undefined` | 分组名称 |

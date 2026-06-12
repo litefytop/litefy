@@ -1,0 +1,63 @@
+---
+title: Carousel 轮播
+description: 用于展示旋转内容的轮播组件
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add carousel" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="carousel" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础受控
+
+基础受控轮播，支持手动导航。
+
+<ComponentPreview 
+  name="carousel-basic"
+  title="基础受控示例"
+/>
+
+### 自动播放
+
+支持自动旋转和循环模式的轮播。
+
+<ComponentPreview 
+  name="carousel-autoplay"
+  title="自动播放示例"
+/>
+
+## API 参考
+
+### Carousel
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | 轮播内容 |
+| `activeIndex` | `number` | - | 当前活动轮播索引 |
+| `onChange` | `(index: number) => void` | `undefined` | 轮播切换时的回调 |
+| `autoPlay` | `boolean` | `false` | 启用自动轮播 |
+| `autoPlayInterval` | `number` | `3000` | 轮播间隔时间（毫秒） |
+| `loop` | `boolean` | `false` | 启用无限循环 |
+| `slotProps` | `object` | `undefined` | 内部插槽的自定义属性 |
+
+### slotProps
+
+| Slot | Type | Description |
+|------|------|-------------|
+| `wrapper` | `React.HTMLAttributes<HTMLDivElement>` | 包装器 div 的属性 |
+| `slide` | `React.HTMLAttributes<HTMLDivElement>` | 每个轮播项的属性 |

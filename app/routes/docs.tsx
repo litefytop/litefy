@@ -74,11 +74,10 @@ const clientLoader = browserCollections.docs.createClientLoader({
       path: string;
     },
   ) {
-    // 过滤掉 h1 标题 (depth: 1)，只保留 h2-h6
-    const filteredToc = (toc ?? []).filter((item) => item.depth > 1);
+
     
     return (
-      <DocsPage toc={filteredToc}>
+      <DocsPage toc={toc}>
         <title>{frontmatter.title}</title>
         <meta name="description" content={frontmatter.description} />
         <DocsTitle>{frontmatter.title}</DocsTitle>

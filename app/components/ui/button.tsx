@@ -1,4 +1,4 @@
-import { ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "@/lib";
 import { Loader2 } from "lucide-react";
 
 const buttonClass = {

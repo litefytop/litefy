@@ -23,7 +23,6 @@ export * from "./password";
 export * from "./theme";
 export * from "./accordion";
 export * from "./dialog";
-export * from "./anchor";
 export * from "./toast";
 export * from "./drawer";
 export * from "./select";

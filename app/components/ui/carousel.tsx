@@ -8,7 +8,7 @@ import {
   useCallback,
   useState,
 } from "react";
-import { cn, ClassNameValue } from "@/lib";
+import { cn, type ClassNameValue } from "@/lib";
 
 type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;

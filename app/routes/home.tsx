@@ -1,6 +1,6 @@
 import type { Route } from './+types/home';
 import { HomeLayout } from 'fumadocs-ui/layouts/home';
-import { Link, useParams, useNavigate } from 'react-router';
+import { Link, useParams } from 'react-router';
 import { baseOptions } from '@/lib/layout.shared';
 import { i18n } from '@/lib/i18n';
 import { useEffect } from 'react';
@@ -18,7 +18,6 @@ export default function Home() {
   const locale = params.lang || i18n.defaultLanguage;
   const docsPath = `/${locale}/docs`;
 
-  // 保存用户选择的语言到 localStorage
   useEffect(() => {
     if (typeof window !== 'undefined' && params.lang) {
       localStorage.setItem('preferred-language', params.lang);
@@ -40,7 +39,6 @@ export default function Home() {
           Open Docs
         </Link>
         
-        {/* Playground 占位区域 */}
         <div className="mt-12 w-full max-w-4xl">
           <div className="border-2 border-dashed rounded-lg p-12 min-h-[400px] flex items-center justify-center">
             <div className="text-center">
