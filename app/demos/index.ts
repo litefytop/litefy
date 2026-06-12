@@ -1,42 +1,42 @@
 import type { ComponentType } from "react";
-
-import SingleUncontrolledDemo from "./accordion/single-uncontrolled-demo";
-import MultipleControlledDemo from "./accordion/multiple-controlled-demo";
 import CustomStylingDemo from "./accordion/custom-styling-demo";
-
-import ButtonBasicDemo from "./button/basic-demo";
-import ButtonLoadingDemo from "./button/loading-demo";
-import ButtonIconDemo from "./button/icon-demo";
-
-import CarouselBasicDemo from "./carousel/basic-demo";
-import CarouselAutoplayDemo from "./carousel/autoplay-demo";
-
-import CheckboxBasicDemo from "./checkbox/basic-demo";
-import CheckboxToggleDemo from "./checkbox/toggle-demo";
-import CheckboxCustomIconDemo from "./checkbox/custom-icon-demo";
-
-import singleUncontrolledCode from "./accordion/single-uncontrolled-demo.tsx?raw";
-import multipleControlledCode from "./accordion/multiple-controlled-demo.tsx?raw";
 import customStylingCode from "./accordion/custom-styling-demo.tsx?raw";
-
+import MultipleControlledDemo from "./accordion/multiple-controlled-demo";
+import multipleControlledCode from "./accordion/multiple-controlled-demo.tsx?raw";
+import SingleUncontrolledDemo from "./accordion/single-uncontrolled-demo";
+import singleUncontrolledCode from "./accordion/single-uncontrolled-demo.tsx?raw";
+import ButtonBasicDemo from "./button/basic-demo";
 import buttonBasicCode from "./button/basic-demo.tsx?raw";
-import buttonLoadingCode from "./button/loading-demo.tsx?raw";
+import ButtonIconDemo from "./button/icon-demo";
 import buttonIconCode from "./button/icon-demo.tsx?raw";
-
-import carouselBasicCode from "./carousel/basic-demo.tsx?raw";
+import ButtonLoadingDemo from "./button/loading-demo";
+import buttonLoadingCode from "./button/loading-demo.tsx?raw";
+import CarouselAutoplayDemo from "./carousel/autoplay-demo";
 import carouselAutoplayCode from "./carousel/autoplay-demo.tsx?raw";
-
+import CarouselBasicDemo from "./carousel/basic-demo";
+import carouselBasicCode from "./carousel/basic-demo.tsx?raw";
+import CheckboxBasicDemo from "./checkbox/basic-demo";
 import checkboxBasicCode from "./checkbox/basic-demo.tsx?raw";
-import checkboxToggleCode from "./checkbox/toggle-demo.tsx?raw";
+import CheckboxCustomIconDemo from "./checkbox/custom-icon-demo";
 import checkboxCustomIconCode from "./checkbox/custom-icon-demo.tsx?raw";
-
-import ComboboxBasicDemo from "./combobox/basic-demo";
+import CheckboxToggleDemo from "./checkbox/toggle-demo";
+import checkboxToggleCode from "./checkbox/toggle-demo.tsx?raw";
 import ComboboxAsyncDemo from "./combobox/async-demo";
-import ComboboxControlledDemo from "./combobox/controlled-demo";
-
-import comboboxBasicCode from "./combobox/basic-demo.tsx?raw";
 import comboboxAsyncCode from "./combobox/async-demo.tsx?raw";
+import ComboboxBasicDemo from "./combobox/basic-demo";
+import comboboxBasicCode from "./combobox/basic-demo.tsx?raw";
+import ComboboxControlledDemo from "./combobox/controlled-demo";
 import comboboxControlledCode from "./combobox/controlled-demo.tsx?raw";
+import ComboboxVirtualScrollDemo from "./combobox/virtual-scroll-demo";
+import comboboxVirtualScrollCode from "./combobox/virtual-scroll-demo.tsx?raw";
+
+import DialogBasicDemo from "./dialog/basic-demo";
+import dialogBasicCode from "./dialog/basic-demo.tsx?raw";
+
+import DrawerBasicDemo from "./drawer/basic-demo";
+import drawerBasicCode from "./drawer/basic-demo.tsx?raw";
+import DrawerPlacementDemo from "./drawer/placement-demo";
+import drawerPlacementCode from "./drawer/placement-demo.tsx?raw";
 
 export interface DemoItem {
   component: ComponentType;
@@ -99,5 +99,21 @@ export const demos: Record<string, DemoItem> = {
   "combobox-controlled": {
     component: ComboboxControlledDemo,
     code: comboboxControlledCode,
+  },
+  "combobox-virtual-scroll": {
+    component: ComboboxVirtualScrollDemo,
+    code: comboboxVirtualScrollCode,
+  },
+  "dialog-basic": {
+    component: DialogBasicDemo,
+    code: dialogBasicCode,
+  },
+  "drawer-basic": {
+    component: DrawerBasicDemo,
+    code: drawerBasicCode,
+  },
+  "drawer-placement": {
+    component: DrawerPlacementDemo,
+    code: drawerPlacementCode,
   },
 };

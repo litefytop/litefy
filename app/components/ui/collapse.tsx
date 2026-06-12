@@ -1,6 +1,6 @@
-import { useState, useId, useCallback, createContext, useContext } from "react";
-import { cn } from "@/lib";
 import { ChevronDown } from "lucide-react";
+import { createContext, useCallback, useContext, useId, useState } from "react";
+import { cn } from "@/lib";
 
 interface CollapseContextValue {
   open: boolean;
@@ -48,9 +48,9 @@ export function Collapse({
       onOpenChange?.(!open);
     }
   }, [disabled, isControlled, onOpenChange, open]);
-  const idPrefix = useId();
-  const panelId = `collapse-panel-${idPrefix}`;
-  const triggerId = `collapse-trigger-${idPrefix}`;
+  const fallbackId = useId();
+  const panelId = `collapse-panel-${fallbackId}`;
+  const triggerId = `collapse-trigger-${fallbackId}`;
 
   const ctx = { open, toggle, panelId, triggerId };
 
@@ -128,10 +128,9 @@ export function CollapsePanel({
 }: Omit<React.ComponentProps<"div">, "id">) {
   const { open, panelId, triggerId } = useCollapseContext();
   return (
-    <div
+    <section
       {...props}
       id={panelId}
-      role="region"
       aria-labelledby={triggerId}
       data-open={open || undefined}
       className={cn(
@@ -142,7 +141,7 @@ export function CollapsePanel({
       )}
     >
       <div className="min-h-0 overflow-hidden">{children}</div>
-    </div>
+    </section>
   );
 }
 

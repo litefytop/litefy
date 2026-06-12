@@ -59,5 +59,6 @@ description: 用于展示旋转内容的轮播组件
 
 | Slot | Type | Description |
 |------|------|-------------|
-| `wrapper` | `React.HTMLAttributes<HTMLDivElement>` | 包装器 div 的属性 |
-| `slide` | `React.HTMLAttributes<HTMLDivElement>` | 每个轮播项的属性 |
+| `wrapper` | `React.ComponentProps<"section">` | 包装器 div 的属性 |
+| `list` | `React.ComponentProps<"ul">` | 列表元素的属性 |
+| `slide` | `React.ComponentProps<"li">` | 每个轮播项 div 的属性 |

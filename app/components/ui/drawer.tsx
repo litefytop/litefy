@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "@/lib";
 
 const drawerClass = {
   left: "left-0 top-0 h-full w-3xs",

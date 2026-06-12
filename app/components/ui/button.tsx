@@ -1,5 +1,5 @@
-import { type ClassNameValue, cn } from "@/lib";
 import { Loader2 } from "lucide-react";
+import { type ClassNameValue, cn } from "@/lib";
 
 const buttonClass = {
   base: {
@@ -47,7 +47,6 @@ function Button({
   return (
     <button
       {...props}
-
       className={cn(
         Button.class.base,
         Button.class.variant[variant],

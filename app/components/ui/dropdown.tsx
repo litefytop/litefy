@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { cn, type ClassNameValue } from "@/lib";
 import { useId } from "react";
+import { type ClassNameValue, cn } from "@/lib";
 
 type DropdownContextValue = {
   menuId: string;
@@ -61,8 +61,6 @@ function DropdownTrigger({
     return () => menu.removeEventListener("toggle", handleToggle);
   }, [menuId, triggerId]);
 
-;
-
   return (
     <button
       {...props}
@@ -117,8 +115,8 @@ function DropdownContent({
         return;
       }
 
-      const currentIndex = focusable.findIndex(
-        (el) => el === document.activeElement,
+      const currentIndex = focusable.indexOf(
+        document.activeElement as HTMLElement,
       );
       const first = focusable[0];
       const last = focusable[focusable.length - 1];

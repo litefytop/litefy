@@ -50,6 +50,15 @@ Controlled combobox with custom value handling.
   title="Controlled"
 />
 
+### Virtual Scroll
+
+Combobox with virtual scrolling for large datasets (10,000 items).
+
+<ComponentPreview 
+  name="combobox-virtual-scroll"
+  title="Virtual Scroll"
+/>
+
 ## API Reference
 
 ### Combobox
@@ -69,6 +78,7 @@ Controlled combobox with custom value handling.
 | `skeleton` | `React.ReactNode` | `undefined` | Custom loading skeleton |
 | `optionHeight` | `number` | `36` | Height of each option in pixels |
 | `overscan` | `number` | `2` | Number of extra options to render outside viewport |
+| `pageSize` | `number` | `50` | Number of items per page for paginated async options |
 
 ### slotProps
 

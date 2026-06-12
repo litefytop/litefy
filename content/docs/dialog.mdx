@@ -1,0 +1,53 @@
+---
+title: Dialog
+description: A modal dialog component built with the native HTML dialog element
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add dialog" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="dialog" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+A basic dialog component with focus management and keyboard navigation.
+
+<ComponentPreview 
+  name="dialog-basic"
+  title="Basic Dialog"
+/>
+
+## API Reference
+
+### Dialog
+
+A modal dialog component that uses the native HTML dialog element.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | `undefined` | Custom CSS class |
+| `onClose` | `() => void` | `undefined` | Callback when dialog is closed |
+
+### DialogRef
+
+The ref object returned by the Dialog component.
+
+| Method | Description |
+|--------|-------------|
+| `showModal()` | Open the dialog |
+| `close()` | Close the dialog |

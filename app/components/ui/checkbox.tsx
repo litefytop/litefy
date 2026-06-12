@@ -1,4 +1,5 @@
 import {
+  type ComponentProps,
   createContext,
   type ReactNode,
   useContext,
@@ -6,8 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { cn, type ClassNameValue } from "@/lib";
-import { type ComponentProps } from "react";
+import { type ClassNameValue, cn } from "@/lib";
 
 type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;
@@ -24,7 +24,6 @@ const checkboxClass = {
 type CheckboxGroupContextValue = {
   selected: Set<string>;
   toggleValue: (v: string) => void;
-  disabled?: boolean;
   name?: string;
 };
 const CheckboxGroupContext = createContext<CheckboxGroupContextValue | null>(
@@ -40,20 +39,19 @@ export type CheckboxGroupProps<T extends string> = {
   name?: string;
   className?: ClassNameValue;
   children?: ReactNode;
-} & Omit<React.ComponentProps<"div">, "className">;
+} & Omit<React.ComponentProps<"fieldset">, "className">;
 
 function CheckboxGroup<T extends string>({
   defaultValue = [],
   value: controlledValue,
   onValueChange,
-  disabled,
   name,
   invalid,
   className,
   children,
   ...props
 }: CheckboxGroupProps<T>) {
-  const groupRef = useRef<HTMLDivElement>(null);
+  const groupRef = useRef<HTMLFieldSetElement>(null);
   const [uncontrolledValue, setUncontrolledValue] = useState<T[]>(defaultValue);
 
   const selectedArr = controlledValue ?? uncontrolledValue;
@@ -68,7 +66,7 @@ function CheckboxGroup<T extends string>({
     onValueChange?.(next as T[]);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLFieldSetElement>) => {
     const allowKeys = [
       "ArrowRight",
       "ArrowDown",
@@ -90,7 +88,7 @@ function CheckboxGroup<T extends string>({
     );
     if (!inputs.length) return;
 
-    const curIdx = inputs.findIndex((el) => el === document.activeElement);
+    const curIdx = inputs.indexOf(document.activeElement as HTMLInputElement);
     if (curIdx === -1) return;
     const len = inputs.length;
     let targetIdx = curIdx;
@@ -120,16 +118,13 @@ function CheckboxGroup<T extends string>({
   const ctx = {
     selected: selectedSet,
     toggleValue,
-    disabled,
     name,
   };
 
   return (
-    <div
+    <fieldset
       {...props}
       ref={groupRef}
-      role="group"
-      inert={disabled}
       onKeyDown={handleKeyDown}
       data-invalid={invalid || undefined}
       aria-invalid={invalid}
@@ -141,7 +136,7 @@ function CheckboxGroup<T extends string>({
       <CheckboxGroupContext.Provider value={ctx as CheckboxGroupContextValue}>
         {children}
       </CheckboxGroupContext.Provider>
-    </div>
+    </fieldset>
   );
 }
 
@@ -163,15 +158,16 @@ export const Checkbox = ({
   indicator,
   checked,
   onValueChange,
-  disabled: itemDisabled,
-  name: itemName,
+  name,
   className,
   children,
   style,
-  ...restInputProps
+  id,
+  ...props
 }: CheckboxProps) => {
   const ctx = useContext(CheckboxGroupContext);
-  const inputId = useId();
+  const fallbackId = useId();
+  const _id = id ?? fallbackId;
   const [innerChecked, setInnerChecked] = useState(defaultChecked);
 
   let isChecked: boolean;
@@ -183,9 +179,7 @@ export const Checkbox = ({
     isChecked = innerChecked;
   }
 
-
-  const finalName = itemName ?? ctx?.name;
-  const finalDisabled = ctx?.disabled || itemDisabled;
+  const _name = name ?? ctx?.name;
 
   const handleChange = () => {
     if (ctx && value) {
@@ -199,7 +193,7 @@ export const Checkbox = ({
 
   return (
     <label
-      htmlFor={inputId}
+      htmlFor={_id}
       style={style}
       className={cn(
         "inline-flex items-center justify-center gap-2 shrink-0 h-9 min-w-9 px-3 py-1 cursor-pointer select-none relative has-disabled:cursor-not-allowed has-disabled:opacity-50",
@@ -210,13 +204,12 @@ export const Checkbox = ({
     >
       {indicator?.(isChecked)}
       <input
-        {...restInputProps}
+        {...props}
         type="checkbox"
-        id={inputId}
+        id={_id}
         value={value}
-        name={finalName}
+        name={_name}
         checked={isChecked}
-        disabled={finalDisabled}
         onChange={handleChange}
         data-hidden={Boolean(indicator) || variant === "toggle" || undefined}
         className={cn(

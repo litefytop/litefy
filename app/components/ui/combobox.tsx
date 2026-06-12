@@ -1,15 +1,16 @@
 "use client";
 
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  useMemo,
-  useId,
-} from "react";
-import { cn, type ClassNameValue } from "@/lib";
 import { ChevronDown, X } from "lucide-react";
+import type React from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { type ClassNameValue, cn } from "@/lib";
 
 type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;
@@ -17,7 +18,17 @@ type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
 };
 
 export type ComboboxChangeEvent = React.ChangeEvent<HTMLInputElement>;
-type OptionFn = (keyword: string) => Promise<string[]>;
+
+type PaginationParams = {
+  page: number;
+  size: number;
+  keyword: string;
+};
+
+type OptionFn = (params: PaginationParams) => Promise<{
+  list: string[];
+  hasMore: boolean;
+}>;
 
 export type ComboboxProps = {
   value?: string;
@@ -34,6 +45,7 @@ export type ComboboxProps = {
   skeleton?: React.ReactNode;
   optionHeight?: number;
   overscan?: number;
+  pageSize?: number;
   slotProps?: {
     container?: HTMLAttrs<Omit<React.ComponentProps<"div">, "ref">>;
     input?: HTMLAttrs<
@@ -68,26 +80,30 @@ export function Combobox({
   skeleton,
   optionHeight = 36,
   overscan = 2,
+  pageSize = 50,
   slotProps,
 }: ComboboxProps) {
-  const id = useId();
+  const _id = useId();
+  const id = slotProps?.list?.id ?? _id;
   const popoverId = `combobox-popover-${id}`;
   const anchorName = `--anchor-${id}`;
 
   const [internalValue, setInternalValue] = useState(defaultValue);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [highlightIndex, setHighlightIndex] = useState(-1);
-  const [innerLoading, setInnerLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [containerHeight, setContainerHeight] = useState(0);
   const [scrollTop, setScrollTop] = useState(0);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
-  const pendingRequestRef = useRef<string | null>(null);
   const isMountedRef = useRef(true);
   const resizeObserverRef = useRef<ResizeObserver | null>(null);
+  const isFetchingRef = useRef(false);
 
   const inputValue =
     controlledValue !== undefined ? controlledValue : internalValue;
@@ -101,37 +117,45 @@ export function Combobox({
   }, [options]);
 
   const fetchData = useCallback(
-    async (keyword: string) => {
-      if (!options) {
-        setSuggestions([]);
-        return;
-      }
-      if (preprocessedOptions) {
-        const lowerKeyword = keyword.toLowerCase();
-        const filtered = preprocessedOptions
-          .filter((item) => item.lower.includes(lowerKeyword))
-          .map((item) => item.original);
-        setSuggestions(filtered);
-        return;
-      }
-      if (typeof options === "function") {
-        if (pendingRequestRef.current === keyword) return;
-        pendingRequestRef.current = keyword;
-        setInnerLoading(true);
-        try {
-          const list = await options(keyword);
-          if (pendingRequestRef.current === keyword && isMountedRef.current) {
-            setSuggestions(list);
+    async (keyword: string, nextPage = 1, isAppend = false) => {
+      if (isFetchingRef.current) return;
+      isFetchingRef.current = true;
+      setLoading(true);
+
+      try {
+        if (preprocessedOptions) {
+          const lowerKeyword = keyword.toLowerCase();
+          const filtered = preprocessedOptions
+            .filter((item) => item.lower.includes(lowerKeyword))
+            .map((item) => item.original);
+          setSuggestions(filtered);
+          setHasMore(false);
+          return;
+        }
+
+        if (typeof options === "function") {
+          const res = await options({
+            page: nextPage,
+            size: pageSize,
+            keyword,
+          });
+
+          if (isAppend) {
+            setSuggestions((prev) => [...prev, ...res.list]);
+          } else {
+            setSuggestions(res.list);
           }
-        } finally {
-          if (pendingRequestRef.current === keyword && isMountedRef.current) {
-            setInnerLoading(false);
-            pendingRequestRef.current = null;
-          }
+          setHasMore(res.hasMore);
+          setPage(nextPage);
+        }
+      } finally {
+        if (isMountedRef.current) {
+          setLoading(false);
+          isFetchingRef.current = false;
         }
       }
     },
-    [options, preprocessedOptions],
+    [options, preprocessedOptions, pageSize],
   );
 
   const handleChange = (e: ComboboxChangeEvent) => {
@@ -141,12 +165,14 @@ export function Combobox({
 
     if (newValue.trim() === "") {
       setSuggestions([]);
+      setPage(1);
+      setHasMore(true);
       return;
     }
 
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
     debounceTimer.current = setTimeout(() => {
-      fetchData(newValue);
+      fetchData(newValue, 1, false);
     }, debounceMs);
   };
 
@@ -158,7 +184,7 @@ export function Combobox({
       if (popover && !popover.matches(":popover-open")) {
         popover.showPopover();
       }
-      fetchData(inputValue);
+      fetchData(inputValue, 1, false);
     },
     [disabled, slotProps?.input, popoverId, fetchData, inputValue],
   );
@@ -187,6 +213,8 @@ export function Combobox({
     } as ComboboxChangeEvent;
     onChange?.(fakeEvent);
     setSuggestions([]);
+    setPage(1);
+    setHasMore(true);
     const popover = document.getElementById(popoverId) as HTMLElement | null;
     popover?.hidePopover();
     inputRef.current?.focus();
@@ -224,6 +252,20 @@ export function Combobox({
     }
   };
 
+  const handleScroll = useCallback(
+    (e: React.UIEvent<HTMLUListElement>) => {
+      const el = e.currentTarget;
+      setScrollTop(el.scrollTop);
+
+      const { scrollHeight, scrollTop: st, clientHeight } = el;
+      const isReachBottom = st + clientHeight >= scrollHeight - 20;
+      if (isReachBottom && hasMore && !isFetchingRef.current) {
+        fetchData(inputValue, page + 1, true);
+      }
+    },
+    [hasMore, page, fetchData, inputValue],
+  );
+
   useEffect(() => {
     const popover = document.getElementById(popoverId);
     if (!popover) return;
@@ -253,10 +295,10 @@ export function Combobox({
     return () => {
       resizeObserverRef.current?.disconnect();
     };
-  }, [suggestions]);
+  }, []);
 
   useEffect(() => {
-    if (!listRef.current || highlightIndex < 0 || innerLoading) return;
+    if (!listRef.current || highlightIndex < 0 || loading) return;
     const container = listRef.current;
     const itemTop = highlightIndex * optionHeight;
     const itemBottom = itemTop + optionHeight;
@@ -268,7 +310,7 @@ export function Combobox({
     } else if (itemBottom > scrollTopNow + containerHeightNow) {
       container.scrollTop = itemBottom - containerHeightNow;
     }
-  }, [highlightIndex, innerLoading, optionHeight]);
+  }, [highlightIndex, loading, optionHeight]);
 
   const visibleRange = useMemo(() => {
     if (containerHeight <= 0) return { start: 0, end: suggestions.length };
@@ -287,16 +329,12 @@ export function Combobox({
     return { start: startIndex, end: endIndex };
   }, [scrollTop, suggestions.length, optionHeight, overscan, containerHeight]);
 
-  const handleScroll = useCallback((e: React.UIEvent<HTMLUListElement>) => {
-    setScrollTop(e.currentTarget.scrollTop);
-  }, []);
-
   useEffect(() => {
     if (listRef.current) {
       listRef.current.scrollTop = 0;
       setScrollTop(0);
     }
-  }, [suggestions]);
+  }, []);
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -307,7 +345,7 @@ export function Combobox({
   }, []);
 
   const showClear = clearable && inputValue.length > 0;
-  const shouldShowList = suggestions.length > 0 || innerLoading;
+  const shouldShowList = suggestions.length > 0 || loading;
   const loadingNode = skeleton ?? (
     <li className="py-3 text-center text-sm text-muted-foreground">
       Loading...
@@ -323,11 +361,15 @@ export function Combobox({
       items.push(
         <li
           key={`${option}_${i}`}
-          role="option"
-          aria-selected={i === highlightIndex}
           data-active={i === highlightIndex || undefined}
           data-index={i}
           onClick={() => handleSelect(option)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              handleSelect(option);
+            }
+          }}
           className={cn(
             "cursor-pointer px-3 py-2 text-sm transition-colors hover:bg-muted data-active:ring-2 data-active:ring-inset",
             slotProps?.option?.className,
@@ -357,9 +399,6 @@ export function Combobox({
     >
       <div
         data-invalid={invalid || undefined}
-        onClick={() => {
-          inputRef.current?.focus();
-        }}
         className={cn(
           "flex items-center h-9 w-full rounded-md border border-input bg-background px-3 shadow-xs",
           "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
@@ -385,8 +424,9 @@ export function Combobox({
             slotProps?.input?.className,
           )}
           aria-autocomplete="list"
+          aria-controls={popoverId}
           popoverTarget={popoverId}
-          popoverTargetAction="toggle"
+          popoverTargetAction="show"
         />
         {showClear && (
           <button
@@ -403,20 +443,16 @@ export function Combobox({
             <X className="size-4" />
           </button>
         )}
-        <ChevronDown
-          className="size-4 transition-transform duration-200"
-        />
+        <ChevronDown className="size-4 transition-transform duration-200" />
       </div>
 
       <ul
         id={popoverId}
         ref={listRef}
-        popover="auto"
-        role="listbox"
+        popover="manual"
         onScroll={handleScroll}
         className={cn(
-          "w-3xs max-h-64 rounded-md border border-input bg-background shadow-lg overflow-auto m-0 p-0",
-          "[&:popover-open]:block",
+          "w-3xs max-h-64 rounded-md border border-input bg-background shadow-lg overflow-auto m-0 p-0 ",
           slotProps?.list?.className,
         )}
         style={{
@@ -425,7 +461,7 @@ export function Combobox({
         }}
       >
         {shouldShowList ? (
-          innerLoading ? (
+          loading ? (
             loadingNode
           ) : suggestions.length > 0 ? (
             <div

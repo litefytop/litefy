@@ -50,6 +50,15 @@ description: 支持自动补全的选项选择组件
   title="受控模式示例"
 />
 
+### 虚拟滚动
+
+支持大数据集虚拟滚动（10,000 条数据）。
+
+<ComponentPreview 
+  name="combobox-virtual-scroll"
+  title="虚拟滚动示例"
+/>
+
 ## API 参考
 
 ### Combobox
@@ -69,6 +78,7 @@ description: 支持自动补全的选项选择组件
 | `skeleton` | `React.ReactNode` | `undefined` | 自定义加载骨架 |
 | `optionHeight` | `number` | `36` | 每个选项的高度（像素） |
 | `overscan` | `number` | `2` | 视口外额外渲染的选项数量 |
+| `pageSize` | `number` | `50` | 分页异步选项每页加载的数据条数 |
 
 ### slotProps
 

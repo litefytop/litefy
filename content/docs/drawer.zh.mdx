@@ -1,0 +1,66 @@
+---
+title: Drawer 抽屉
+description: 支持多种位置选项的滑入面板组件
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add drawer" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="drawer" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+默认从右侧滑入的基础抽屉组件。
+
+<ComponentPreview 
+  name="drawer-basic"
+  title="基础抽屉"
+/>
+
+### 位置选项
+
+抽屉可以定位在屏幕的任意一侧。
+
+<ComponentPreview 
+  name="drawer-placement"
+  title="位置选项"
+/>
+
+## API 参考
+
+### Drawer
+
+带有焦点管理和键盘导航的滑入面板组件。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | `undefined` | 自定义 CSS 类名 |
+| `placement` | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` | 抽屉的位置 |
+| `onClose` | `() => void` | `undefined` | 抽屉关闭时的回调函数 |
+| `onOpen` | `() => void` | `undefined` | 抽屉打开时的回调函数 |
+| `aria-label` | `string` | `undefined` | 无障碍标签 |
+| `aria-labelledby` | `string` | `undefined` | 标记抽屉的元素 ID |
+
+### DrawerRef
+
+Drawer 组件返回的 ref 对象。
+
+| Method | Description |
+|--------|-------------|
+| `show()` | 打开抽屉 |
+| `close()` | 关闭抽屉 |

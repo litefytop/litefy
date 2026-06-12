@@ -3,12 +3,12 @@
 import {
   Children,
   isValidElement,
+  useCallback,
   useEffect,
   useRef,
-  useCallback,
   useState,
 } from "react";
-import { cn, type ClassNameValue } from "@/lib";
+import { type ClassNameValue, cn } from "@/lib";
 
 type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;
@@ -19,8 +19,9 @@ export type CarouselProps = {
   children: React.ReactNode;
   activeIndex: number;
   slotProps?: {
-    wrapper?: HTMLAttrs<React.ComponentProps<"div">>;
-    slide?: HTMLAttrs<React.ComponentProps<"div">>;
+    wrapper?: HTMLAttrs<React.ComponentProps<"section">>;
+    list?: HTMLAttrs<React.ComponentProps<"ul">>;
+    slide?: HTMLAttrs<React.ComponentProps<"li">>;
   };
   autoPlay?: boolean;
   autoPlayInterval?: number;
@@ -40,8 +41,8 @@ export function Carousel({
   const slides = Children.toArray(children).filter(isValidElement);
   const totalSlides = slides.length;
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const rootRef = useRef<HTMLDivElement>(null);
-  const innerRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLElement>(null);
+  const innerRef = useRef<HTMLUListElement>(null);
   const isTransitioning = useRef(false);
   const currentIndexRef = useRef(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -59,7 +60,8 @@ export function Carousel({
   const goNext = useCallback(() => {
     if (isTransitioning.current || totalSlides <= 1) return;
     const nextIdx = currentIndexRef.current + 1;
-    const targetIdx = nextIdx >= totalSlides ? (loop ? 0 : totalSlides - 1) : nextIdx;
+    const targetIdx =
+      nextIdx >= totalSlides ? (loop ? 0 : totalSlides - 1) : nextIdx;
     if (targetIdx !== currentIndexRef.current) {
       onChange?.(targetIdx);
     }
@@ -132,7 +134,7 @@ export function Carousel({
       isTransitioning.current = false;
     }, 400);
     return () => clearTimeout(timeoutId);
-  }, [currentIndex, totalSlides]);
+  }, [totalSlides]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     if (totalSlides <= 1) return;
@@ -159,7 +161,10 @@ export function Carousel({
     if (!loop && totalSlides > 1) {
       const minTranslate = -(totalSlides - 1) * 100;
       const maxTranslate = 0;
-      newTranslate = Math.max(minTranslate, Math.min(maxTranslate, newTranslate));
+      newTranslate = Math.max(
+        minTranslate,
+        Math.min(maxTranslate, newTranslate),
+      );
     }
     if (innerRef.current) {
       innerRef.current.style.transform = `translateX(${newTranslate}%)`;
@@ -191,18 +196,18 @@ export function Carousel({
   const slideClass = cn("w-full shrink-0", slotProps?.slide?.className);
 
   return (
-    <div
+    <section
       ref={rootRef}
-      role="region"
       aria-roledescription="carousel"
       aria-label="Image carousel"
       {...slotProps?.wrapper}
       className={cn(
         "overflow-hidden select-none",
-        slotProps?.wrapper?.className
+        slotProps?.wrapper?.className,
       )}
     >
-      <div
+      <ul
+        {...slotProps?.list}
         ref={innerRef}
         className="flex transition-transform duration-300 ease-out"
         style={{
@@ -213,21 +218,20 @@ export function Carousel({
         onTouchEnd={handleTouchEnd}
       >
         {slides.map((child, idx) => {
-          const key = isValidElement(child) && child.key != null ? child.key : idx;
+          const key =
+            isValidElement(child) && child.key != null ? child.key : idx;
           return (
-            <div
+            <li
               key={key}
-              role="group"
               aria-roledescription="slide"
               {...slotProps?.slide}
               className={slideClass}
             >
               {child}
-            </div>
+            </li>
           );
         })}
-      </div>
-    </div>
+      </ul>
+    </section>
   );
 }
-

@@ -1,13 +1,13 @@
+import { ChevronDown } from "lucide-react";
 import {
-  useState,
   createContext,
-  useContext,
   useCallback,
-  useMemo,
+  useContext,
   useId,
+  useMemo,
+  useState,
 } from "react";
 import { type ClassNameValue, cn } from "@/lib";
-import { ChevronDown } from "lucide-react";
 
 type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;
@@ -105,8 +105,8 @@ export interface AccordionItemProps {
   children?: React.ReactNode;
   slotProps?: {
     wrapper?: HTMLAttrs<React.ComponentProps<"div">>;
-    content?: Omit<HTMLAttrs<React.ComponentProps<"div">>, "id">;
-    trigger?: Omit<HTMLAttrs<React.ComponentProps<"button">>, "id">;
+    content?: HTMLAttrs<React.ComponentProps<"section">>;
+    trigger?: HTMLAttrs<React.ComponentProps<"button">>;
   };
 }
 
@@ -120,9 +120,9 @@ function AccordionItem({
 }: AccordionItemProps) {
   const { openKeys, onToggle } = useAccordionContext();
   const open = openKeys.includes(value);
-  const internalId = useId();
-  const panelId = `accordion-panel-${internalId}`;
-  const buttonId = `accordion-trigger-${internalId}`;
+  const fallbackId = useId();
+  const panelId = slotProps?.content?.id ?? `accordion-panel-${fallbackId}`;
+  const buttonId = slotProps?.trigger?.id ?? `accordion-trigger-${fallbackId}`;
 
   const renderIcon = () => {
     if (typeof icon === "function") return icon(open);
@@ -172,21 +172,24 @@ function AccordionItem({
 
       <div
         data-open={open || undefined}
+        aria-hidden={!open}
         className={cn(
           "grid transition-[grid-template-rows] duration-300 ease-in-out grid-rows-[0fr]",
           "data-open:grid-rows-[1fr]",
         )}
       >
         <div className="min-h-0 overflow-hidden">
-          <div
+          <section
             id={panelId}
-            role="region"
             aria-labelledby={buttonId}
             {...slotProps?.content}
-            className={cn("p-4 pt-0 text-sm font-medium", slotProps?.content?.className)}
+            className={cn(
+              "p-4 pt-0 text-sm font-medium",
+              slotProps?.content?.className,
+            )}
           >
             {children}
-          </div>
+          </section>
         </div>
       </div>
     </div>

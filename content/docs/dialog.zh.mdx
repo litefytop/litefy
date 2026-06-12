@@ -1,0 +1,53 @@
+---
+title: Dialog 对话框
+description: 使用原生 HTML dialog 元素构建的模态对话框组件
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add dialog" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="dialog" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+带有焦点管理和键盘导航的基础对话框组件。
+
+<ComponentPreview 
+  name="dialog-basic"
+  title="基础对话框"
+/>
+
+## API 参考
+
+### Dialog
+
+使用原生 HTML dialog 元素的模态对话框组件。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | `undefined` | 自定义 CSS 类名 |
+| `onClose` | `() => void` | `undefined` | 对话框关闭时的回调函数 |
+
+### DialogRef
+
+Dialog 组件返回的 ref 对象。
+
+| Method | Description |
+|--------|-------------|
+| `showModal()` | 打开对话框 |
+| `close()` | 关闭对话框 |

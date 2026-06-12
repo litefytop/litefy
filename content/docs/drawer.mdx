@@ -1,0 +1,66 @@
+---
+title: Drawer
+description: A slide-in panel component with multiple placement options
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add drawer" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="drawer" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+A basic drawer component that slides in from the right by default.
+
+<ComponentPreview 
+  name="drawer-basic"
+  title="Basic Drawer"
+/>
+
+### Placement Options
+
+Drawer can be positioned on any side of the screen.
+
+<ComponentPreview 
+  name="drawer-placement"
+  title="Placement Options"
+/>
+
+## API Reference
+
+### Drawer
+
+A slide-in panel component with focus management and keyboard navigation.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | `undefined` | Custom CSS class |
+| `placement` | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` | Position of the drawer |
+| `onClose` | `() => void` | `undefined` | Callback when drawer is closed |
+| `onOpen` | `() => void` | `undefined` | Callback when drawer is opened |
+| `aria-label` | `string` | `undefined` | Accessibility label |
+| `aria-labelledby` | `string` | `undefined` | ID of the element labeling the drawer |
+
+### DrawerRef
+
+The ref object returned by the Drawer component.
+
+| Method | Description |
+|--------|-------------|
+| `show()` | Open the drawer |
+| `close()` | Close the drawer |
