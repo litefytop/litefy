@@ -1,7 +1,7 @@
 "use client";
 
+import { Heart, Settings, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Heart, Star, Settings } from "lucide-react";
 
 export default function ButtonIconDemo() {
   return (

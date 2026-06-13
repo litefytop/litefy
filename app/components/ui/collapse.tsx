@@ -1,5 +1,13 @@
 import { ChevronDown } from "lucide-react";
-import { createContext, useCallback, useContext, useId, useState } from "react";
+import {
+  Children,
+  createContext,
+  isValidElement,
+  useCallback,
+  useContext,
+  useId,
+  useState,
+} from "react";
 import { cn } from "@/lib";
 
 interface CollapseContextValue {
@@ -19,14 +27,14 @@ function useCollapseContext() {
 export interface CollapseProps extends Omit<React.ComponentProps<"div">, "id"> {
   open?: boolean;
   defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
+  onValueChange?: (open: boolean) => void;
   disabled?: boolean;
 }
 
 export function Collapse({
   open: controlledOpen,
   defaultOpen = false,
-  onOpenChange,
+  onValueChange,
   disabled = false,
   className,
   children,
@@ -41,18 +49,33 @@ export function Collapse({
     if (!isControlled) {
       setUncontrolledOpen((prev) => {
         const newState = !prev;
-        onOpenChange?.(newState);
+        onValueChange?.(newState);
         return newState;
       });
     } else {
-      onOpenChange?.(!open);
+      onValueChange?.(!open);
     }
-  }, [disabled, isControlled, onOpenChange, open]);
+  }, [disabled, isControlled, onValueChange, open]);
   const fallbackId = useId();
-  const panelId = `collapse-panel-${fallbackId}`;
-  const triggerId = `collapse-trigger-${fallbackId}`;
+  let triggerId: string | undefined;
+  let panelId: string | undefined;
 
-  const ctx = { open, toggle, panelId, triggerId };
+  Children.forEach(children, (child) => {
+    if (isValidElement(child)) {
+      if (child.type === CollapseTrigger) {
+        const props = child.props as Partial<React.ComponentProps<"button">>;
+        triggerId = props.id;
+      }
+      if (child.type === CollapsePanel) {
+        const props = child.props as Partial<React.ComponentProps<"section">>;
+        panelId = props.id;
+      }
+    }
+  });
+  const _panelId = panelId ?? `collapse-panel-${fallbackId}`;
+  const _triggerId = triggerId ?? `collapse-trigger-${fallbackId}`;
+
+  const ctx = { open, toggle, panelId: _panelId, triggerId: _triggerId };
 
   return (
     <CollapseContext.Provider value={ctx}>
@@ -82,18 +105,11 @@ export function CollapseHeader({
   );
 }
 
-export interface CollapseTriggerProps extends Omit<
-  React.ComponentProps<"button">,
-  "id" | "children"
-> {
-  children?: React.ReactNode;
-}
-
 export function CollapseTrigger({
   className,
   children,
   ...props
-}: CollapseTriggerProps) {
+}: React.ComponentProps<"button">) {
   const { open, toggle, triggerId, panelId } = useCollapseContext();
   return (
     <button
@@ -125,7 +141,7 @@ export function CollapsePanel({
   className,
   children,
   ...props
-}: Omit<React.ComponentProps<"div">, "id">) {
+}: React.ComponentProps<"section">) {
   const { open, panelId, triggerId } = useCollapseContext();
   return (
     <section

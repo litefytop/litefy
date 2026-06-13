@@ -1,3 +1,5 @@
+import { i18nProvider } from "fumadocs-ui/i18n";
+import { RootProvider } from "fumadocs-ui/provider/react-router";
 import {
   isRouteErrorResponse,
   Links,
@@ -6,22 +8,19 @@ import {
   Scripts,
   ScrollRestoration,
   useParams,
-} from 'react-router';
-import { RootProvider } from 'fumadocs-ui/provider/react-router';
-import { i18nProvider } from 'fumadocs-ui/i18n';
-import type { Route } from './+types/root';
-import './assets/styles/index.css';
-import SearchDialog from '@/components/search';
-import NotFound from './routes/not-found';
-import { i18n } from '@/lib/i18n';
-import { translations } from '@/lib/layout.shared';
-import { rewritePath } from 'fumadocs-core/negotiation';
+} from "react-router";
+import type { Route } from "./+types/root";
+import "./assets/styles/index.css";
+import SearchDialog from "@/components/search";
+import { i18n } from "@/lib/i18n";
+import { translations } from "@/lib/layout.shared";
+import NotFound from "./routes/not-found";
 
 function RootProviderWrapper({ children }: { children: React.ReactNode }) {
   const { lang = i18n.defaultLanguage } = useParams<{ lang?: string }>();
 
   return (
-    <RootProvider 
+    <RootProvider
       search={{ SearchDialog }}
       i18n={i18nProvider(translations, lang)}
     >
@@ -48,19 +47,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-const { rewrite: rewriteLLM } = rewritePath('/docs{/*path}.md', '/llms.mdx/docs{/*path}');
-
-const serverMiddleware: Route.MiddlewareFunction = async ({ request }, next) => {
+const serverMiddleware: Route.MiddlewareFunction = async (
+  { request },
+  next,
+) => {
   const url = new URL(request.url);
   const pathname = url.pathname;
-  
+
   // Only rewrite paths like /en/docs/xxx.md to /en/llms.mdx/docs/xxx
   const langMatch = pathname.match(/^\/([a-z]{2})\/docs\/(.+)\.md$/);
   if (langMatch) {
     const [, lang, path] = langMatch;
     return Response.redirect(new URL(`/${lang}/llms.mdx/docs/${path}`, url));
   }
-  
+
   return next();
 };
 
@@ -71,13 +71,13 @@ export default function App() {
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  let message = 'Oops!';
-  let details = 'An unexpected error occurred.';
+  let message = "Oops!";
+  let details = "An unexpected error occurred.";
   let stack: string | undefined;
 
   if (isRouteErrorResponse(error)) {
     if (error.status === 404) return <NotFound />;
-    message = 'Error';
+    message = "Error";
     details = error.statusText;
   } else if (import.meta.env.DEV && error && error instanceof Error) {
     details = error.message;

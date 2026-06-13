@@ -8,10 +8,10 @@ export default function CarouselAutoplayDemo() {
 
   return (
     <div className="relative w-full max-w-md mx-auto">
-      <Carousel 
-        activeIndex={activeIndex} 
+      <Carousel
+        activeIndex={activeIndex}
         onChange={setActiveIndex}
-        autoPlay 
+        autoPlay
         autoPlayInterval={2000}
         loop
       >
@@ -29,6 +29,7 @@ export default function CarouselAutoplayDemo() {
         {[0, 1, 2].map((idx) => (
           <button
             key={idx}
+            type="button"
             onClick={() => setActiveIndex(idx)}
             className={`w-2 h-2 rounded-full transition-all ${
               idx === activeIndex ? "bg-blue-500 w-6" : "bg-gray-300"

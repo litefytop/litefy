@@ -1,5 +1,5 @@
-import { cn, ClassNameValue } from "@/lib";
-import { ReactNode, useEffect, useRef, useState, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { type ClassNameValue, cn } from "@/lib";
 
 export type WatermarkProps = {
   text: string;
@@ -19,12 +19,14 @@ export type WatermarkProps = {
   gap?: number;
   padding?: number;
   opacity?: number;
-  children: ReactNode;
+  children: React.ReactNode;
   slotProps?: {
-    container?: Omit<React.ComponentProps<"div">, "className"> & { className?: ClassNameValue };
+    container?: Omit<React.ComponentProps<"div">, "className"> & {
+      className?: ClassNameValue;
+    };
   };
   className?: ClassNameValue;
-} & Omit<React.ComponentProps<"canvas">, "className"|"ref">;
+} & Omit<React.ComponentProps<"canvas">, "className" | "ref">;
 
 const COLOR_VAR_MAP: Record<string, string> = {
   muted: "--muted",
@@ -55,7 +57,9 @@ function Watermark({
   const containerRef = useRef<HTMLDivElement>(null);
   const [colorScheme, setColorScheme] = useState<"light" | "dark">(() => {
     if (typeof window === "undefined") return "light";
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
   });
 
   useEffect(() => {
@@ -97,7 +101,10 @@ function Watermark({
       if (computedColor) {
         fillColor = computedColor;
       } else {
-        fillColor = colorScheme === "dark" ? "rgba(255, 255, 255, 0.6)" : "rgba(0, 0, 0, 0.6)";
+        fillColor =
+          colorScheme === "dark"
+            ? "rgba(255, 255, 255, 0.6)"
+            : "rgba(0, 0, 0, 0.6)";
       }
     } else {
       fillColor = color;
@@ -139,7 +146,17 @@ function Watermark({
       }
     }
     ctx.restore();
-  }, [text, fontSize, color, fontFamily, rotate, gap, padding, opacity, colorScheme]);
+  }, [
+    text,
+    fontSize,
+    color,
+    fontFamily,
+    rotate,
+    gap,
+    padding,
+    opacity,
+    colorScheme,
+  ]);
 
   useEffect(() => {
     draw();
@@ -172,7 +189,10 @@ function Watermark({
     >
       <canvas
         ref={canvasRef}
-        className={cn("absolute inset-0 pointer-events-none select-none block size-full", className)}
+        className={cn(
+          "absolute inset-0 pointer-events-none select-none block size-full",
+          className,
+        )}
         {...props}
       />
       {children}

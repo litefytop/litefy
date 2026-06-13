@@ -12,19 +12,18 @@ export default function DialogBasicDemo() {
       <Button onClick={() => dialogRef.current?.showModal()}>
         Open Dialog
       </Button>
-      <Dialog controlRef={dialogRef}>
-        <div className="flex flex-col gap-4">
-          <h3 className="text-lg font-semibold">Dialog Title</h3>
-          <p>This is a basic dialog component.</p>
-          <div className="flex justify-end gap-2">
-            <Button
-              variant="outline"
-              onClick={() => dialogRef.current?.close()}
-            >
-              Cancel
-            </Button>
-            <Button onClick={() => dialogRef.current?.close()}>Confirm</Button>
+      <Dialog controlRef={dialogRef} className="w-full max-w-sm">
+        <div className="flex flex-col gap-6 pt-4">
+          <div className="flex flex-col gap-2">
+            <h3 className="text-lg font-semibold">Welcome to Litefy</h3>
+            <p className="text-sm text-muted-foreground">
+              A beautiful, fast, and modern React UI library for building
+              accessible and customizable web applications with ease.
+            </p>
           </div>
+          <Button className="w-full" onClick={() => dialogRef.current?.close()}>
+            Continue
+          </Button>
         </div>
       </Dialog>
     </div>

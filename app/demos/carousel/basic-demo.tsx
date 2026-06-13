@@ -1,8 +1,8 @@
 "use client";
 
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { Carousel } from "@/components/ui/carousel";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 export default function CarouselBasicDemo() {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -21,15 +21,15 @@ export default function CarouselBasicDemo() {
       </Carousel>
       <div className="flex justify-center items-center gap-2 mt-4">
         <button
+          type="button"
           onClick={() => setActiveIndex((i) => Math.max(0, i - 1))}
           className="inline-flex items-center justify-center cursor-pointer aspect-square bg-transparent"
         >
           <ChevronLeft />
         </button>
-        <span className="self-center">
-          {activeIndex + 1} / 3
-        </span>
+        <span className="self-center">{activeIndex + 1} / 3</span>
         <button
+          type="button"
           onClick={() => setActiveIndex((i) => Math.min(2, i + 1))}
           className="inline-flex items-center justify-center cursor-pointer aspect-square bg-transparent"
         >

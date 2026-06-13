@@ -168,7 +168,7 @@ export const Checkbox = ({
   const ctx = useContext(CheckboxGroupContext);
   const fallbackId = useId();
   const _id = id ?? fallbackId;
-  const [innerChecked, setInnerChecked] = useState(defaultChecked);
+  const [uncontrolledChecked, setUncontrolledChecked] = useState(defaultChecked);
 
   let isChecked: boolean;
   if (ctx && value) {
@@ -176,7 +176,7 @@ export const Checkbox = ({
   } else if (checked !== undefined) {
     isChecked = checked;
   } else {
-    isChecked = innerChecked;
+    isChecked = uncontrolledChecked;
   }
 
   const _name = name ?? ctx?.name;
@@ -187,7 +187,7 @@ export const Checkbox = ({
       return;
     }
     const next = !isChecked;
-    if (checked === undefined) setInnerChecked(next);
+    if (checked === undefined) setUncontrolledChecked(next);
     onValueChange?.(next);
   };
 

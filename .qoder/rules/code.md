@@ -1,3 +1,6 @@
+---
+trigger: always_on
+---
 # Code Style Rules
 
 ## Prohibit Code Comments
@@ -16,3 +19,18 @@
 
 - Legal/copyright headers (if required)
 - Compiler/tool directives (e.g., `// eslint-disable-next-line`)
+
+## Controlled/Uncontrolled State Naming
+
+- External (controlled) state variable: `controlledXXX`
+- Internal (uncontrolled) state variable: `uncontrolledXXX`
+- State value variable: `xxx` (combining controlled and uncontrolled)
+- Do NOT use `innerXXX` or `internalXXX` for internal state
+- Do NOT use `externalXXX` for external state
+
+## Internal/External Property Naming
+
+- External property: `xxx`
+- Internal property: `_xxx`
+- Do NOT use `externalXXX` for external properties
+- Do NOT use `internalXXX` for internal properties

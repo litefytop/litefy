@@ -1,7 +1,7 @@
 "use client";
 
+import { Heart, Palette, Zap } from "lucide-react";
 import { Accordion } from "@/components/ui/accordion";
-import { Palette, Zap, Heart } from "lucide-react";
 
 export default function CustomStylingDemo() {
   return (
@@ -19,8 +19,12 @@ export default function CustomStylingDemo() {
         }}
       >
         <p className="text-sm">
-          Use <code className="bg-muted px-1.5 py-0.5 rounded">slotProps.wrapper</code> to apply <code>rounded-t-lg</code>.
-          All items use <code>bg-card</code> for consistent card background.
+          Use{" "}
+          <code className="bg-muted px-1.5 py-0.5 rounded">
+            slotProps.wrapper
+          </code>{" "}
+          to apply <code>rounded-t-lg</code>. All items use <code>bg-card</code>{" "}
+          for consistent card background.
         </p>
       </Accordion.Item>
 
@@ -37,7 +41,8 @@ export default function CustomStylingDemo() {
         }}
       >
         <p className="text-sm">
-          Every part can be customized independently. This middle item has no extra rounding.
+          Every part can be customized independently. This middle item has no
+          extra rounding.
         </p>
       </Accordion.Item>
 

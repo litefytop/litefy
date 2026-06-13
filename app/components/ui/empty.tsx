@@ -1,7 +1,7 @@
 "use client";
 
-import { ClassNameValue, cn } from "@/lib";
 import { CopyIcon } from "lucide-react";
+import { type ClassNameValue, cn } from "@/lib";
 
 export type EmptyProps = Omit<React.ComponentProps<"div">, "children"> & {
   className?: ClassNameValue;

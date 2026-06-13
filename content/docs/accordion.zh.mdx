@@ -61,11 +61,11 @@ description: 支持单选和多选展开模式的手风琴组件
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `allowMultiple` | `boolean` | `false` | 启用多个项目同时展开 |
-| `defaultOpenKeys` | `string[]` | `[]` | 默认展开项的值（非受控） |
-| `openKeys` | `string[]` | `undefined` | 展开项的值（受控） |
-| `onOpenChange` | `(keys: string[]) => void` | `undefined` | 展开键变化时的回调 |
-| `className` | `string` | `undefined` | 容器的自定义 CSS 类 |
+| `multiple` | `boolean` | `false` | 启用多个项目同时展开 |
+| `defaultValue` | `string[]` | `[]` | 默认展开项的值（非受控） |
+| `value` | `string[]` | - | 展开项的值（受控） |
+| `onValueChange` | `(keys: string[]) => void` | - | 展开键变化时的回调 |
+| `className` | `string` | - | 容器的自定义 CSS 类 |
 
 ### Accordion.Item
 
@@ -79,8 +79,8 @@ description: 支持单选和多选展开模式的手风琴组件
 | `label` | `React.ReactNode` | - | 头部内容 |
 | `icon` | `React.ReactNode \| ((open: boolean) => React.ReactNode)` | `ChevronDown` | 自定义图标或图标函数 |
 | `disabled` | `boolean` | `false` | 禁用项目 |
-| `className` | `string` | `undefined` | 自定义 CSS 类 |
-| `slotProps` | `object` | `undefined` | 内部插槽的自定义属性 |
+| `className` | `string` | - | 自定义 CSS 类 |
+| `slotProps` | `object` | - | 内部插槽的自定义属性 |
 
 ### slotProps
 

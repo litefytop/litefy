@@ -1,7 +1,7 @@
-import { ReactNode, useCallback, useRef, useState } from "react";
-import { cn, ClassNameValue } from "@/lib";
 import { Check } from "lucide-react";
-import { ComponentProps } from "react";
+
+import { type ComponentProps, useCallback, useRef, useState } from "react";
+import { type ClassNameValue, cn } from "@/lib";
 
 type HTMLAttrs<T> = T & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;
@@ -16,16 +16,16 @@ const radioClass = {
 };
 
 export type RadioProps<T extends string> = {
-  invalid?: boolean ;
+  invalid?: boolean;
   defaultValue?: T;
   value?: T;
   onValueChange?: (value: T) => void;
   variant?: keyof typeof radioClass;
   slotProps?: {
     content?: HTMLAttrs<Omit<ComponentProps<"div">, "children">>;
-    options?: Omit<RadioItemProps, "checked" | "value" | "label"|"variant">;
+    options?: Omit<RadioItemProps, "checked" | "value" | "label" | "variant">;
   };
-  options: Omit<RadioItemProps, "checked"|"variant">[];
+  options: Omit<RadioItemProps, "checked" | "variant">[];
 } & Omit<
   ComponentProps<"input">,
   "value" | "onChange" | "checked" | "children" | "className" | "type" | "style"
@@ -54,7 +54,7 @@ export function Radio<T extends string>({
   const setValue = (value: string) => {
     const val = value as T;
     onValueChange?.(val);
-    if (controlledValues == undefined) {
+    if (controlledValues === undefined) {
       setInternalValue(val);
     }
   };
@@ -161,9 +161,9 @@ type RadioItemProps = Omit<
   onValueChange?: (value: string) => void;
   disabled?: boolean;
   variant?: keyof typeof radioClass;
-  indicator?: (checked: boolean) => ReactNode;
+  indicator?: (checked: boolean) => React.ReactNode;
   className?: ClassNameValue;
-  label?: ReactNode;
+  label?: React.ReactNode;
 };
 
 const RadioItem = ({
@@ -212,20 +212,19 @@ const RadioItem = ({
         className,
       )}
     >
-       <span
-
-          data-checked={checked}
-          data-hidden={Boolean(indicator) || variant === "segment" || undefined}
-          className={cn(
-            "flex items-center justify-center size-4 rounded-full outline border",
-            "data-[checked=true]:bg-primary data-[checked=true]:border-primary-foreground data-[checked=true]:text-primary-foreground",
-            "group-data-[invalid=true]:border-destructive group-data-[invalid=true]:data-[checked=true]:bg-destructive",
-            "data-hidden:hidden"
-          )}
-        >
-          {checked ? <Check /> : null}
-        </span>
-         {indicator?.(checked)}
+      <span
+        data-checked={checked}
+        data-hidden={Boolean(indicator) || variant === "segment" || undefined}
+        className={cn(
+          "flex items-center justify-center size-4 rounded-full outline border",
+          "data-[checked=true]:bg-primary data-[checked=true]:border-primary-foreground data-[checked=true]:text-primary-foreground",
+          "group-data-[invalid=true]:border-destructive group-data-[invalid=true]:data-[checked=true]:bg-destructive",
+          "data-hidden:hidden",
+        )}
+      >
+        {checked ? <Check /> : null}
+      </span>
+      {indicator?.(checked)}
       {props.label}
     </button>
   );

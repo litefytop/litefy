@@ -3,10 +3,6 @@ title: Accordion
 description: An accordion component that supports single and multiple expand modes
 ---
 
-# Accordion
-
-An accordion component that supports single and multiple expand modes.
-
 ## Installation
 
 <Tabs items={['CLI', 'Manual']} >
@@ -64,11 +60,11 @@ The main container component.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `allowMultiple` | `boolean` | `false` | Enable multiple items to be open simultaneously |
-| `defaultOpenKeys` | `string[]` | `[]` | Default open item values (uncontrolled) |
-| `openKeys` | `string[]` | `undefined` | Open item values (controlled) |
-| `onOpenChange` | `(keys: string[]) => void` | `undefined` | Callback when open keys change |
-| `className` | `string` | `undefined` | Custom CSS class for the container |
+| `multiple` | `boolean` | `false` | Enable multiple items to be open simultaneously |
+| `defaultValue` | `string[]` | `[]` | Default open item values (uncontrolled) |
+| `value` | `string[]` | - | Open item values (controlled) |
+| `onValueChange` | `(keys: string[]) => void` | - | Callback when open keys change |
+| `className` | `string` | - | Custom CSS class for the container |
 
 ### Accordion.Item
 
@@ -82,8 +78,8 @@ Individual accordion item.
 | `label` | `React.ReactNode` | - | The header content |
 | `icon` | `React.ReactNode \| ((open: boolean) => React.ReactNode)` | `ChevronDown` | Custom icon or icon function |
 | `disabled` | `boolean` | `false` | Disable the item |
-| `className` | `string` | `undefined` | Custom CSS class |
-| `slotProps` | `object` | `undefined` | Custom props for internal slots |
+| `className` | `string` | - | Custom CSS class |
+| `slotProps` | `object` | - | Custom props for internal slots |
 
 ### slotProps
 

@@ -32,31 +32,14 @@ Basic combobox with static options.
   title="Basic Usage"
 />
 
+
 ### Async Search
 
-Combobox with async data fetching and debouncing.
+Combobox with async options fetching and automatic slicing/pagination.
 
 <ComponentPreview 
   name="combobox-async"
   title="Async Search"
-/>
-
-### Controlled
-
-Controlled combobox with custom value handling.
-
-<ComponentPreview 
-  name="combobox-controlled"
-  title="Controlled"
-/>
-
-### Virtual Scroll
-
-Combobox with virtual scrolling for large datasets (10,000 items).
-
-<ComponentPreview 
-  name="combobox-virtual-scroll"
-  title="Virtual Scroll"
 />
 
 ## API Reference
@@ -65,27 +48,24 @@ Combobox with virtual scrolling for large datasets (10,000 items).
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `string` | `undefined` | Controlled value |
-| `defaultValue` | `string` | `""` | Default value (uncontrolled) |
-| `onChange` | `(e: ComboboxChangeEvent) => void` | `undefined` | Callback when value changes |
-| `onSelect` | `(option: string) => void` | `undefined` | Callback when option is selected |
-| `options` | `string[] \| ((keyword: string) => Promise<string[]>)` | `undefined` | Static options or async fetch function |
-| `placeholder` | `string` | `"Search or type..."` | Input placeholder |
+| `value` | `string` | - | Controlled value |
+| `defaultValue` | `string` | - | Default value (uncontrolled) |
+| `onChange` | `(e: ComboboxChangeEvent) => void` | - | Callback when value changes |
+| `onBlur` | `React.FocusEventHandler<HTMLInputElement>` | - | Callback when input loses focus |
+| `onSelect` | `(option: string) => void` | - | Callback when option is selected |
+| `options` | `string[] \| `<br/> `({page: number; size: number; keyword: string}) => Promise<{list: string[]; total: number}>` | - | Static options or async fetch function with pagination |
+| `placeholder` | `string` | - | Input placeholder |
 | `disabled` | `boolean` | `false` | Disable the combobox |
 | `invalid` | `boolean` | `false` | Mark as invalid |
-| `clearable` | `boolean` | `true` | Show clear button |
 | `debounceMs` | `number` | `300` | Debounce delay for async search |
-| `skeleton` | `React.ReactNode` | `undefined` | Custom loading skeleton |
-| `optionHeight` | `number` | `36` | Height of each option in pixels |
-| `overscan` | `number` | `2` | Number of extra options to render outside viewport |
-| `pageSize` | `number` | `50` | Number of items per page for paginated async options |
+| `skeleton` | `React.ReactNode` | - | Custom loading skeleton |
+| `pageSize` | `number` | `20` | Number of items per page for pagination |
 
 ### slotProps
 
 | Slot | Type | Description |
 |------|------|-------------|
-| `container` | `React.HTMLAttributes<HTMLDivElement>` | Props for the container div |
-| `input` | `React.InputHTMLAttributes<HTMLInputElement>` | Props for the input |
-| `list` | `React.HTMLAttributes<HTMLUListElement>` | Props for the dropdown list |
-| `option` | `React.HTMLAttributes<HTMLLIElement>` | Props for each option |
-| `clearButton` | `React.ButtonHTMLAttributes<HTMLButtonElement>` | Props for the clear button |
+| `container` | `HTMLAttrs<Omit<React.ComponentProps<"div">, "ref">>` | Props for the container div |
+| `input` | `HTMLAttrs<Omit<React.ComponentProps<"input">, "disabled" \| "placeholder" \| "ref" \| "value" \| "defaultValue">>` | Props for the input |
+| `list` | `HTMLAttrs<Omit<React.ComponentProps<"ul">, "ref">>` | Props for the dropdown list |
+| `option` | `HTMLAttrs<React.ComponentProps<"li">>` | Props for each option |

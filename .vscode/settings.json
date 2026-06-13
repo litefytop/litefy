@@ -1,0 +1,74 @@
+{
+  "files.associations": {
+    "*.tsx": "typescriptreact",
+    "*.json": "jsonc",
+    "*.css": "tailwindcss",
+    "*.mdx": "markdown"
+  },
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": false,
+  "python.languageServer": "Jedi",
+
+  "workbench.editor.enablePreview": false,
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "[css]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "explorer.confirmDragAndDrop": false,
+
+  "editor.autoClosingDelete": "always",
+  "editor.autoClosingOvertype": "always",
+  "[html]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "workbench.colorTheme": "Default Dark Modern",
+  "git.autofetch": true,
+  "tailwindCSS.experimental.configFile": null,
+  "tailwindCSS.classAttributes": [
+    ".*class*.",
+    "className",
+    ".*Classes.*",
+    ".*classes.*",
+    ".*Class*."
+  ],
+  "tailwindCSS.experimental.classRegex": [
+    ["Class \\=([^;]*);", "'([^']*)'"],
+    ["Class \\=([^;]*);", "\"([^\"]*)\""],
+    ["Class \\=([^;]*);", "\\`([^\\`]*)\\`"],
+    ["className \\=([^;]*);", "'([^']*)'"],
+    ["className \\=([^;]*);", "\"([^\"]*)\""],
+    ["className \\=([^;]*);", "\\`([^\\`]*)\\`"]
+  ],
+  "tailwindCSS.classFunctions": ["cn"],
+
+  "editor.wordWrap": "on",
+  "[snippets]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "editor.defaultFormatter": "biomejs.biome",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports.biome": "explicit",
+    "source.action.useSortedKeys.biome": "explicit"
+  }
+}

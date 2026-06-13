@@ -1,16 +1,15 @@
 "use client";
 
-import { cn, ClassNameValue } from "@/lib";
-import { ReactNode, useLayoutEffect, useRef } from "react";
 import { LoaderCircle } from "lucide-react";
-import React from "react";
+import { useLayoutEffect, useRef } from "react";
+import { type ClassNameValue, cn } from "@/lib";
 
 export type LoadingProps = React.ComponentProps<"div"> & {
   loading?: boolean;
-  children: ReactNode;
+  children: React.ReactNode;
   className?: ClassNameValue;
-  fallback?: ReactNode;
-  skeleton?: ReactNode;
+  fallback?: React.ReactNode;
+  skeleton?: React.ReactNode;
 };
 
 function Loading({

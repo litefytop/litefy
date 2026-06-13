@@ -32,31 +32,14 @@ description: 支持自动补全的选项选择组件
   title="基础用法示例"
 />
 
+
 ### 异步搜索
 
-支持异步数据获取和防抖的组合框。
+支持异步选项获取和自动切片/分页的组合框。
 
 <ComponentPreview 
   name="combobox-async"
   title="异步搜索示例"
-/>
-
-### 受控模式
-
-受控组合框，自定义值处理。
-
-<ComponentPreview 
-  name="combobox-controlled"
-  title="受控模式示例"
-/>
-
-### 虚拟滚动
-
-支持大数据集虚拟滚动（10,000 条数据）。
-
-<ComponentPreview 
-  name="combobox-virtual-scroll"
-  title="虚拟滚动示例"
 />
 
 ## API 参考
@@ -65,27 +48,24 @@ description: 支持自动补全的选项选择组件
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `string` | `undefined` | 受控值 |
-| `defaultValue` | `string` | `""` | 默认值（非受控） |
-| `onChange` | `(e: ComboboxChangeEvent) => void` | `undefined` | 值变化时的回调 |
-| `onSelect` | `(option: string) => void` | `undefined` | 选项被选中时的回调 |
-| `options` | `string[] \| ((keyword: string) => Promise<string[]>)` | `undefined` | 静态选项或异步获取函数 |
-| `placeholder` | `string` | `"Search or type..."` | 输入框占位符 |
+| `value` | `string` | - | 受控值 |
+| `defaultValue` | `string` | - | 默认值（非受控） |
+| `onChange` | `(e: ComboboxChangeEvent) => void` | - | 值变化时的回调 |
+| `onBlur` | `React.FocusEventHandler<HTMLInputElement>` | - | 输入框失焦时的回调 |
+| `onSelect` | `(option: string) => void` | - | 选项被选中时的回调 |
+| `options` | `string[] \| `<br/> `({page: number; size: number; keyword: string}) => Promise<{list: string[]; total: number}>` | - | 静态选项或带分页的异步获取函数 |
+| `placeholder` | `string` | - | 输入框占位符 |
 | `disabled` | `boolean` | `false` | 禁用组合框 |
 | `invalid` | `boolean` | `false` | 标记为无效 |
-| `clearable` | `boolean` | `true` | 显示清除按钮 |
 | `debounceMs` | `number` | `300` | 异步搜索的防抖延迟 |
-| `skeleton` | `React.ReactNode` | `undefined` | 自定义加载骨架 |
-| `optionHeight` | `number` | `36` | 每个选项的高度（像素） |
-| `overscan` | `number` | `2` | 视口外额外渲染的选项数量 |
-| `pageSize` | `number` | `50` | 分页异步选项每页加载的数据条数 |
+| `skeleton` | `React.ReactNode` | - | 自定义加载骨架 |
+| `pageSize` | `number` | `20` | 分页每页加载的数据条数 |
 
 ### slotProps
 
 | Slot | Type | Description |
 |------|------|-------------|
-| `container` | `React.HTMLAttributes<HTMLDivElement>` | 容器 div 的属性 |
-| `input` | `React.InputHTMLAttributes<HTMLInputElement>` | 输入框的属性 |
-| `list` | `React.HTMLAttributes<HTMLUListElement>` | 下拉列表的属性 |
-| `option` | `React.HTMLAttributes<HTMLLIElement>` | 每个选项的属性 |
-| `clearButton` | `React.ButtonHTMLAttributes<HTMLButtonElement>` | 清除按钮的属性 |
+| `container` | `HTMLAttrs<Omit<React.ComponentProps<"div">, "ref">>` | 容器 div 的属性 |
+| `input` | `HTMLAttrs<Omit<React.ComponentProps<"input">, "disabled" \| "placeholder" \| "ref" \| "value" \| "defaultValue">>` | 输入框的属性 |
+| `list` | `HTMLAttrs<Omit<React.ComponentProps<"ul">, "ref">>` | 下拉列表的属性 |
+| `option` | `HTMLAttrs<React.ComponentProps<"li">>` | 每个选项的属性 |

@@ -36,30 +36,31 @@ const Drawer = React.forwardRef<DrawerRef, DrawerProps>(
       "aria-labelledby": ariaLabelledby,
       ...props
     },
-    ref
+    ref,
   ) => {
     const [open, setOpen] = React.useState(false);
     const drawerRef = React.useRef<HTMLDivElement>(null);
     const previousFocusRef = React.useRef<HTMLElement | null>(null);
 
-    const getFocusableElements = () => {
+    const getFocusableElements = React.useCallback(() => {
       if (!drawerRef.current) return [];
       const focusableSelectors = [
-        'a[href]',
-        'button:not([disabled])',
-        'input:not([disabled])',
-        'textarea:not([disabled])',
-        'select:not([disabled])',
+        "a[href]",
+        "button:not([disabled])",
+        "input:not([disabled])",
+        "textarea:not([disabled])",
+        "select:not([disabled])",
         '[tabindex]:not([tabindex="-1"])',
       ];
       return Array.from(
-        drawerRef.current.querySelectorAll<HTMLElement>(focusableSelectors.join(','))
-      ).filter(el => el.offsetParent !== null);
-    };
-
+        drawerRef.current.querySelectorAll<HTMLElement>(
+          focusableSelectors.join(","),
+        ),
+      ).filter((el) => el.offsetParent !== null);
+    }, []);
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
-      if (e.key !== 'Tab') return;
+      if (e.key !== "Tab") return;
       const focusable = getFocusableElements();
       if (focusable.length === 0) {
         e.preventDefault();
@@ -109,7 +110,7 @@ const Drawer = React.forwardRef<DrawerRef, DrawerProps>(
         previousFocusRef.current.focus();
         previousFocusRef.current = null;
       }
-    }, [open]);
+    }, [open, getFocusableElements]);
 
     React.useEffect(() => {
       if (!open) return;
@@ -132,7 +133,12 @@ const Drawer = React.forwardRef<DrawerRef, DrawerProps>(
     if (!open) return null;
 
     return (
-      <div className="fixed inset-0 z-50" onClick={handleBackdropClick}>
+      <div
+        role="presentation"
+        aria-hidden="true"
+        className="fixed inset-0 z-50"
+        onClick={handleBackdropClick}
+      >
         <div className="absolute inset-0 bg-muted/50" />
         <div
           {...props}
@@ -143,18 +149,18 @@ const Drawer = React.forwardRef<DrawerRef, DrawerProps>(
           aria-labelledby={ariaLabelledby}
           tabIndex={-1}
           onClick={handleContentClick}
-          onKeyDown={handleKeyDown} 
+          onKeyDown={handleKeyDown}
           className={cn(
             drawerClass[placement],
             "fixed bg-background p-6 overflow-auto focus:outline-none",
-            className
+            className,
           )}
         >
           {children}
         </div>
       </div>
     );
-  }
+  },
 );
 
 Drawer.displayName = "Drawer";

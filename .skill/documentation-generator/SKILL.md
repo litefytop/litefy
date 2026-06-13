@@ -63,7 +63,7 @@ Description.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `prop` | `type` | `default` | Description |
+| `prop` | `type` | - | Description |
 
 ### slotProps
 
@@ -117,7 +117,7 @@ description: 中文描述
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `prop` | `type` | `default` | 中文描述 |
+| `prop` | `type` | - | 中文描述 |
 
 ### slotProps
 
@@ -161,7 +161,7 @@ description: Description
 ```markdown
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `type` | `value` | desc |
+| `name` | `type` | - | desc |
 ```
 
 ## Example
@@ -213,6 +213,8 @@ The button component.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `variant` | `'primary' \| 'destructive' \| 'outline' \| 'text'` | `'primary'` | Button visual variant |
+| `className` | `ClassNameValue` | - | Custom CSS class |
+| `loadingConfig` | `ButtonLoadingConfig` | - | Loading state configuration |
 ```
 
 **Chinese (`button.zh.mdx`):**
@@ -260,6 +262,8 @@ description: 支持多种变体和加载状态的按钮组件
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `variant` | `'primary' \| 'destructive' \| 'outline' \| 'text'` | `'primary'` | 按钮视觉变体 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+| `loadingConfig` | `ButtonLoadingConfig` | - | 加载状态配置 |
 ```
 
 ## Steps to Create Documentation
@@ -296,5 +300,5 @@ description: 支持多种变体和加载状态的按钮组件
 2. **Use consistent naming**: Follow `component-variant` pattern for demo names
 3. **Include multiple examples**: Show different use cases (basic, advanced, custom)
 4. **Document all props**: Include TypeScript types and default values
-5. **Use proper formatting**: Wrap prop names and types in backticks
+5. **Use proper formatting**: Wrap prop names and types in backticks. Use `-` (plain dash, no backticks) for optional props with no default value
 6. **Test demos**: Ensure all `<ComponentPreview>` components render correctly

@@ -15,8 +15,8 @@ type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
 };
 
 interface AccordionContextValue {
-  openKeys: string[];
-  onToggle: (key: string) => void;
+  activeValues: string[];
+  onToggle: (value: string) => void;
 }
 
 const AccordionContext = createContext<AccordionContextValue | null>(null);
@@ -32,56 +32,55 @@ export interface AccordionProps extends Omit<
   React.ComponentProps<"div">,
   "className"
 > {
-  defaultOpenKeys?: string[];
-  openKeys?: string[];
-  onOpenChange?: (keys: string[]) => void;
-  allowMultiple?: boolean;
+  defaultValue?: string[];
+  value?: string[];
+  onValueChange?: (values: string[]) => void;
+  multiple?: boolean;
   disabled?: boolean;
   className?: ClassNameValue;
 }
 
 export function Accordion({
-  defaultOpenKeys = [],
-  openKeys,
-  onOpenChange,
-  allowMultiple = false,
+  defaultValue = [],
+  value: controlledValue,
+  onValueChange,
+  multiple = false,
   disabled,
   className,
   children,
   ...props
 }: AccordionProps) {
-  const [internalOpenKeys, setInternalOpenKeys] = useState<string[]>(() => {
-    if (!allowMultiple && defaultOpenKeys.length > 0)
-      return [defaultOpenKeys[0]];
-    return allowMultiple ? defaultOpenKeys : [];
+  const [uncontrolledValue, setUncontrolledValue] = useState<string[]>(() => {
+    if (!multiple && defaultValue.length > 0) return [defaultValue[0]];
+    return multiple ? defaultValue : [];
   });
 
-  const isControlled = openKeys !== undefined;
-  const currentOpenKeys = isControlled ? openKeys : internalOpenKeys;
+  const isControlled = controlledValue !== undefined;
+  const activeValues = isControlled ? controlledValue : uncontrolledValue;
 
   const onToggle = useCallback(
-    (key: string) => {
+    (value: string) => {
       let next: string[];
-      const isOpened = currentOpenKeys.includes(key);
-      if (allowMultiple) {
+      const isOpened = activeValues.includes(value);
+      if (multiple) {
         next = isOpened
-          ? currentOpenKeys.filter((k) => k !== key)
-          : [...currentOpenKeys, key];
+          ? activeValues.filter((v) => v !== value)
+          : [...activeValues, value];
       } else {
-        next = isOpened ? [] : [key];
+        next = isOpened ? [] : [value];
       }
       if (isControlled) {
-        onOpenChange?.(next);
+        onValueChange?.(next);
       } else {
-        setInternalOpenKeys(next);
+        setUncontrolledValue(next);
       }
     },
-    [allowMultiple, currentOpenKeys, isControlled, onOpenChange],
+    [multiple, activeValues, isControlled, onValueChange],
   );
 
   const contextValue = useMemo(
-    () => ({ openKeys: currentOpenKeys, onToggle }),
-    [currentOpenKeys, onToggle],
+    () => ({ activeValues, onToggle }),
+    [activeValues, onToggle],
   );
 
   return (
@@ -118,8 +117,8 @@ function AccordionItem({
   children,
   slotProps,
 }: AccordionItemProps) {
-  const { openKeys, onToggle } = useAccordionContext();
-  const open = openKeys.includes(value);
+  const { activeValues, onToggle } = useAccordionContext();
+  const open = activeValues.includes(value);
   const fallbackId = useId();
   const panelId = slotProps?.content?.id ?? `accordion-panel-${fallbackId}`;
   const buttonId = slotProps?.trigger?.id ?? `accordion-trigger-${fallbackId}`;

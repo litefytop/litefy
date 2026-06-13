@@ -25,10 +25,6 @@ import ComboboxAsyncDemo from "./combobox/async-demo";
 import comboboxAsyncCode from "./combobox/async-demo.tsx?raw";
 import ComboboxBasicDemo from "./combobox/basic-demo";
 import comboboxBasicCode from "./combobox/basic-demo.tsx?raw";
-import ComboboxControlledDemo from "./combobox/controlled-demo";
-import comboboxControlledCode from "./combobox/controlled-demo.tsx?raw";
-import ComboboxVirtualScrollDemo from "./combobox/virtual-scroll-demo";
-import comboboxVirtualScrollCode from "./combobox/virtual-scroll-demo.tsx?raw";
 
 import DialogBasicDemo from "./dialog/basic-demo";
 import dialogBasicCode from "./dialog/basic-demo.tsx?raw";
@@ -37,6 +33,12 @@ import DrawerBasicDemo from "./drawer/basic-demo";
 import drawerBasicCode from "./drawer/basic-demo.tsx?raw";
 import DrawerPlacementDemo from "./drawer/placement-demo";
 import drawerPlacementCode from "./drawer/placement-demo.tsx?raw";
+import DropdownAlignmentDemo from "./dropdown/alignment-demo";
+import dropdownAlignmentCode from "./dropdown/alignment-demo.tsx?raw";
+import DropdownBasicDemo from "./dropdown/basic-demo";
+import dropdownBasicCode from "./dropdown/basic-demo.tsx?raw";
+import DropdownLabelDemo from "./dropdown/label-demo";
+import dropdownLabelCode from "./dropdown/label-demo.tsx?raw";
 
 export interface DemoItem {
   component: ComponentType;
@@ -96,14 +98,6 @@ export const demos: Record<string, DemoItem> = {
     component: ComboboxAsyncDemo,
     code: comboboxAsyncCode,
   },
-  "combobox-controlled": {
-    component: ComboboxControlledDemo,
-    code: comboboxControlledCode,
-  },
-  "combobox-virtual-scroll": {
-    component: ComboboxVirtualScrollDemo,
-    code: comboboxVirtualScrollCode,
-  },
   "dialog-basic": {
     component: DialogBasicDemo,
     code: dialogBasicCode,
@@ -115,5 +109,17 @@ export const demos: Record<string, DemoItem> = {
   "drawer-placement": {
     component: DrawerPlacementDemo,
     code: drawerPlacementCode,
+  },
+  "dropdown-basic": {
+    component: DropdownBasicDemo,
+    code: dropdownBasicCode,
+  },
+  "dropdown-label": {
+    component: DropdownLabelDemo,
+    code: dropdownLabelCode,
+  },
+  "dropdown-alignment": {
+    component: DropdownAlignmentDemo,
+    code: dropdownAlignmentCode,
   },
 };

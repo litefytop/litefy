@@ -57,22 +57,22 @@ Customize the checkbox indicator with a custom icon.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `React.ReactNode` | - | The checkbox content |
-| `checked` | `boolean` | `undefined` | Controlled checked state |
-| `onValueChange` | `(checked: boolean) => void` | `undefined` | Callback when checked state changes |
-| `value` | `string` | `undefined` | Value for group mode |
+| `checked` | `boolean` | - | Controlled checked state |
+| `onValueChange` | `(checked: boolean) => void` | - | Callback when checked state changes |
+| `value` | `string` | - | Value for group mode |
 | `variant` | `'checkbox' \| 'toggle'` | `'checkbox'` | Visual variant |
-| `indicator` | `(checked: boolean) => React.ReactNode` | `undefined` | Custom indicator render function |
+| `indicator` | `(checked: boolean) => React.ReactNode` | - | Custom indicator render function |
 | `disabled` | `boolean` | `false` | Disable the checkbox |
-| `name` | `string` | `undefined` | Input name |
+| `name` | `string` | - | Input name |
 
 ### Checkbox.Group
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `React.ReactNode` | - | Checkbox items |
-| `value` | `T[]` | `undefined` | Controlled value |
+| `value` | `T[]` | - | Controlled value |
 | `defaultValue` | `T[]` | `[]` | Default value (uncontrolled) |
-| `onValueChange` | `(value: T[]) => void` | `undefined` | Callback when value changes |
+| `onValueChange` | `(value: T[]) => void` | - | Callback when value changes |
 | `disabled` | `boolean` | `false` | Disable all children |
 | `invalid` | `boolean` | `false` | Mark as invalid |
-| `name` | `string` | `undefined` | Group name |
+| `name` | `string` | - | Group name |

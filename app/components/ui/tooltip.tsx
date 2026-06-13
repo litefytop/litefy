@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { cn, ClassNameValue } from "@/lib";
+import { type ClassNameValue, cn } from "@/lib";
 
 export type TooltipProps = {
   children: React.ReactNode;
@@ -50,7 +50,7 @@ export function Tooltip({
     if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
     hideTimeoutRef.current = setTimeout(() => {
       const el = document.getElementById(contentId);
-      if (el && el.matches(":popover-open")) {
+      if (el?.matches(":popover-open")) {
         el.hidePopover();
       }
     }, delay);
