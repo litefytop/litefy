@@ -1,66 +1,39 @@
 "use client";
 
-import { useRef } from "react";
-import { Drawer } from "@/components/ui/drawer";
+import { ChevronsUp } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Drawer } from "@/components/ui/drawer";
 
 export default function DrawerPlacementDemo() {
-  const leftDrawerRef = useRef<{ show: () => void; close: () => void }>(null);
-  const rightDrawerRef = useRef<{ show: () => void; close: () => void }>(null);
-  const topDrawerRef = useRef<{ show: () => void; close: () => void }>(null);
-  const bottomDrawerRef = useRef<{ show: () => void; close: () => void }>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
-    <div className="flex flex-wrap gap-3 justify-center">
-      <Button variant="outline" onClick={() => leftDrawerRef.current?.show()}>
-        Left
-      </Button>
-      <Button variant="outline" onClick={() => rightDrawerRef.current?.show()}>
-        Right
-      </Button>
-      <Button variant="outline" onClick={() => topDrawerRef.current?.show()}>
-        Top
-      </Button>
-      <Button variant="outline" onClick={() => bottomDrawerRef.current?.show()}>
-        Bottom
-      </Button>
-
-      <Drawer ref={leftDrawerRef} placement="left">
-        <div className="flex flex-col gap-4">
-          <h3 className="text-lg font-semibold">Left Drawer</h3>
-          <p>Drawer positioned on the left side.</p>
-          <Button variant="outline" onClick={() => leftDrawerRef.current?.close()}>
-            Close
-          </Button>
-        </div>
-      </Drawer>
-
-      <Drawer ref={rightDrawerRef} placement="right">
-        <div className="flex flex-col gap-4">
-          <h3 className="text-lg font-semibold">Right Drawer</h3>
-          <p>Drawer positioned on the right side.</p>
-          <Button variant="outline" onClick={() => rightDrawerRef.current?.close()}>
-            Close
-          </Button>
-        </div>
-      </Drawer>
-
-      <Drawer ref={topDrawerRef} placement="top">
-        <div className="flex flex-col gap-4">
-          <h3 className="text-lg font-semibold">Top Drawer</h3>
-          <p>Drawer positioned at the top.</p>
-          <Button variant="outline" onClick={() => topDrawerRef.current?.close()}>
-            Close
-          </Button>
-        </div>
-      </Drawer>
-
-      <Drawer ref={bottomDrawerRef} placement="bottom">
-        <div className="flex flex-col gap-4">
-          <h3 className="text-lg font-semibold">Bottom Drawer</h3>
-          <p>Drawer positioned at the bottom.</p>
-          <Button variant="outline" onClick={() => bottomDrawerRef.current?.close()}>
-            Close
+    <div className="flex flex-col items-center gap-4">
+      <Button onClick={() => setDrawerOpen(true)}>Open Drawer</Button>
+      <Drawer
+        placement="bottom"
+        open={drawerOpen}
+        onOpenChange={setDrawerOpen}
+        className="flex flex-col items-center"
+      >
+        <button
+          type="button"
+          onClick={() => setDrawerOpen(false)}
+          className="flex justify-center bg-muted w-3xs rounded-t-xl"
+        >
+          <ChevronsUp className="size-4 text-muted-foreground" />
+        </button>
+        <div className="flex flex-col gap-6 pt-4 w-md">
+          <div className="flex flex-col gap-2">
+            <h3 className="text-lg font-semibold">Welcome to Litefy</h3>
+            <p className="text-sm text-muted-foreground word-break">
+              A beautiful, fast, and modern React UI library for building
+              accessible and customizable web applications with ease.
+            </p>
+          </div>
+          <Button className="w-full" onClick={() => setDrawerOpen(false)}>
+            Continue
           </Button>
         </div>
       </Drawer>

@@ -31,8 +31,8 @@ import dialogBasicCode from "./dialog/basic-demo.tsx?raw";
 
 import DrawerBasicDemo from "./drawer/basic-demo";
 import drawerBasicCode from "./drawer/basic-demo.tsx?raw";
-import DrawerPlacementDemo from "./drawer/placement-demo";
-import drawerPlacementCode from "./drawer/placement-demo.tsx?raw";
+import DrawerExpandableDemo from "./drawer/placement-demo";
+import drawerExpandableCode from "./drawer/placement-demo.tsx?raw";
 import DropdownAlignmentDemo from "./dropdown/alignment-demo";
 import dropdownAlignmentCode from "./dropdown/alignment-demo.tsx?raw";
 import DropdownBasicDemo from "./dropdown/basic-demo";
@@ -106,9 +106,9 @@ export const demos: Record<string, DemoItem> = {
     component: DrawerBasicDemo,
     code: drawerBasicCode,
   },
-  "drawer-placement": {
-    component: DrawerPlacementDemo,
-    code: drawerPlacementCode,
+  "drawer-expandable": {
+    component: DrawerExpandableDemo,
+    code: drawerExpandableCode,
   },
   "dropdown-basic": {
     component: DropdownBasicDemo,
