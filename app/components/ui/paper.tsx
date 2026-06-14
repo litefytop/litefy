@@ -1,15 +1,15 @@
 "use client";
 
-import { cn, ClassNameValue } from "@/lib";
 import {
-  useRef,
-  useCallback,
-  useState,
-  useEffect,
   createContext,
+  useCallback,
   useContext,
+  useEffect,
   useMemo,
+  useRef,
+  useState,
 } from "react";
+import { type ClassNameValue, cn } from "@/lib";
 
 interface PaperContextType {
   register: () => number;
@@ -30,7 +30,11 @@ export type PaperProviderProps = React.ComponentProps<"div"> & {
   onTotalPagesChange?: (totalPages: number) => void;
 };
 
-export function PaperProvider({ children, onTotalPagesChange, ...props }: PaperProviderProps) {
+export function PaperProvider({
+  children,
+  onTotalPagesChange,
+  ...props
+}: PaperProviderProps) {
   const countRef = useRef(0);
   const [totalPages, setTotalPages] = useState(0);
 
@@ -50,11 +54,14 @@ export function PaperProvider({ children, onTotalPagesChange, ...props }: PaperP
     onTotalPagesChange?.(val);
   }, [onTotalPagesChange]);
 
-  const contextValue = useMemo(() => ({
-    register,
-    unregister,
-    totalPages
-  }), [register, unregister, totalPages]);
+  const contextValue = useMemo(
+    () => ({
+      register,
+      unregister,
+      totalPages,
+    }),
+    [register, unregister, totalPages],
+  );
 
   return (
     <PaperContext.Provider value={contextValue}>
@@ -67,16 +74,22 @@ const paperclass = {
   base: "mx-auto print:bg-white shadow-lg border-t print:shadow-none print:border-0 print:mx-0 print:p-0 bg-card text-card-foreground",
   variant: {
     a4: {
-      portrait: "w-[210mm] h-[297mm] p-[10mm] page-break-after print:w-[210mm] print:h-[297mm] print:p-[10mm]",
-      landscape: "w-[297mm] h-[210mm] p-[10mm] page-break-after print:w-[297mm] print:h-[297mm] print:p-[10mm]",
+      portrait:
+        "w-[210mm] h-[297mm] p-[10mm] page-break-after print:w-[210mm] print:h-[297mm] print:p-[10mm]",
+      landscape:
+        "w-[297mm] h-[210mm] p-[10mm] page-break-after print:w-[297mm] print:h-[297mm] print:p-[10mm]",
     },
     a5: {
-      portrait: "w-[148mm] h-[210mm] p-[5mm] page-break-after print:w-[148mm] print:h-[210mm] print:p-[5mm]",
-      landscape: "w-[210mm] h-[148mm] p-[5mm] page-break-after print:w-[210mm] print:h-[148mm] print:p-[5mm]",
+      portrait:
+        "w-[148mm] h-[210mm] p-[5mm] page-break-after print:w-[148mm] print:h-[210mm] print:p-[5mm]",
+      landscape:
+        "w-[210mm] h-[148mm] p-[5mm] page-break-after print:w-[210mm] print:h-[148mm] print:p-[5mm]",
     },
     scroll: {
-      portrait: "w-full h-fit flex flex-col overflow-y-auto p-[10mm] print:w-full print:h-fit print:overflow-visible print:p-[10mm]",
-      landscape: "h-full w-fit flex flex-col overflow-x-auto p-[10mm] print:h-full print:w-fit print:overflow-visible print:p-[10mm]",
+      portrait:
+        "w-full h-fit flex flex-col overflow-y-auto p-[10mm] print:w-full print:h-fit print:overflow-visible print:p-[10mm]",
+      landscape:
+        "h-full w-fit flex flex-col overflow-x-auto p-[10mm] print:h-full print:w-fit print:overflow-visible print:p-[10mm]",
     },
   },
 };
@@ -118,7 +131,7 @@ function Paper({
       className={cn(
         paperclass.base,
         paperclass.variant[variant][orientation],
-        className
+        className,
       )}
     >
       {children}
@@ -127,4 +140,5 @@ function Paper({
 }
 
 Paper.class = paperclass;
+
 export { Paper };

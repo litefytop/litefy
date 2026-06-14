@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn, ClassNameValue } from "@/lib";
+import { type ClassNameValue, cn } from "@/lib";
 
 export type SliderProps = Omit<React.ComponentProps<"input">, "type"> & {
   defaultValue?: number;

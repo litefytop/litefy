@@ -9,7 +9,7 @@ export type UploadProps = Omit<
 
   onChange?: (
     e: React.ChangeEvent<HTMLInputElement>,
-  ) => void | { invalid?: string };
+  ) => undefined | { invalid?: string };
 };
 
 export function Upload({

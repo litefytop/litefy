@@ -1,20 +1,25 @@
 "use client";
 
-import { Image } from "@/components/ui";
+import { RefreshCwIcon } from "lucide-react";
+import React from "react";
+import { Button, Image } from "@/components/ui";
 
-export default function ImageBasicDemo() {
+export default function ImageLoadingDemo() {
+  const [reloadKey, setReloadKey] = React.useState(0);
+
+  const handleReload = () => {
+    setReloadKey((prev) => prev + 1);
+  };
   return (
     <div className="flex flex-col gap-4">
       <Image
-        src="https://images.unsplash.com/photo-1682687220742-aba13b6e50ba"
-        alt="Beautiful landscape"
-        className="h-48 w-full rounded-lg"
+        key={reloadKey}
+        src="https://picsum.photos/seed/1/800/400"
+        alt="Random landscape image"
       />
-      <Image
-        src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4"
-        alt="Mountain view"
-        className="h-48 w-full rounded-lg"
-      />
+      <Button onClick={handleReload} variant="outline">
+        <RefreshCwIcon className="w-4 h-4" /> Reload
+      </Button>
     </div>
   );
 }

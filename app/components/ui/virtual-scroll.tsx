@@ -1,19 +1,10 @@
 "use client";
 
+import * as React from "react";
 import { cn } from "@/lib";
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useMemo,
-  useImperativeHandle,
-} from "react";
 
-export interface VirtualScrollProps<T> extends Omit<
-  React.ComponentProps<"div">,
-  "ref" | "onScroll"
-> {
+export interface VirtualScrollProps<T>
+  extends Omit<React.ComponentProps<"div">, "ref" | "onScroll"> {
   items: T[];
   itemHeight: number;
   renderItem: (item: T, index: number) => React.ReactNode;
@@ -30,38 +21,36 @@ export interface VirtualScrollHandle {
   scrollToBottom: () => void;
 }
 
-export function VirtualScroll<T>(
-  {
-    items,
-    itemHeight,
-    visibleCount = 5,
-    renderItem,
-    overscan = 5,
-    onScroll,
-    className,
-    ref,
-    ...props
-  }: VirtualScrollProps<T>
-) {
-  const [scrollTop, setScrollTop] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
+export function VirtualScroll<T>({
+  items,
+  itemHeight,
+  visibleCount = 5,
+  renderItem,
+  overscan = 5,
+  onScroll,
+  className,
+  ref,
+  ...props
+}: VirtualScrollProps<T>) {
+  const [scrollTop, setScrollTop] = React.useState(0);
+  const containerRef = React.useRef<HTMLDivElement>(null);
   const containerHeight = visibleCount * itemHeight;
   const totalHeight = items.length * itemHeight;
 
-  const startIndex = useMemo(() => {
+  const startIndex = React.useMemo(() => {
     if (containerHeight <= 0) return 0;
     const rawStart = Math.floor(scrollTop / itemHeight) - overscan;
     return Math.max(0, rawStart);
   }, [scrollTop, itemHeight, containerHeight, overscan]);
 
-  const endIndex = useMemo(() => {
+  const endIndex = React.useMemo(() => {
     if (containerHeight <= 0) return 0;
     const rawEnd =
       Math.ceil((scrollTop + containerHeight) / itemHeight) + overscan;
     return Math.min(items.length, rawEnd);
   }, [scrollTop, itemHeight, containerHeight, items.length, overscan]);
 
-  const visibleItems = useMemo(() => {
+  const visibleItems = React.useMemo(() => {
     const itemsToRender = [];
     for (let i = startIndex; i < endIndex; i++) {
       itemsToRender.push({
@@ -73,7 +62,7 @@ export function VirtualScroll<T>(
     return itemsToRender;
   }, [items, startIndex, endIndex, itemHeight]);
 
-  const handleScroll = useCallback(
+  const handleScroll = React.useCallback(
     (e: React.UIEvent<HTMLDivElement>) => {
       const newScrollTop = e.currentTarget.scrollTop;
       setScrollTop(newScrollTop);
@@ -82,7 +71,7 @@ export function VirtualScroll<T>(
     [onScroll],
   );
 
-  const scrollToIndex = useCallback(
+  const scrollToIndex = React.useCallback(
     (index: number, align: "start" | "center" | "end" = "start") => {
       if (!containerRef.current) return;
       const targetTop = index * itemHeight;
@@ -101,14 +90,14 @@ export function VirtualScroll<T>(
     [containerHeight, itemHeight, totalHeight],
   );
 
-  const scrollToTop = useCallback(() => {
+  const scrollToTop = React.useCallback(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = 0;
       setScrollTop(0);
     }
   }, []);
 
-  const scrollToBottom = useCallback(() => {
+  const scrollToBottom = React.useCallback(() => {
     if (containerRef.current) {
       const maxScroll = Math.max(0, totalHeight - containerHeight);
       containerRef.current.scrollTop = maxScroll;
@@ -116,13 +105,13 @@ export function VirtualScroll<T>(
     }
   }, [totalHeight, containerHeight]);
 
-  useImperativeHandle(ref, () => ({
+  React.useImperativeHandle(ref, () => ({
     scrollToIndex,
     scrollToTop,
     scrollToBottom,
   }));
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (containerRef.current && containerRef.current.scrollTop !== scrollTop) {
       containerRef.current.scrollTop = scrollTop;
     }
@@ -155,4 +144,3 @@ export function VirtualScroll<T>(
     </div>
   );
 }
-

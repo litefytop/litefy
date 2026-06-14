@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { cn, ClassNameValue } from "@/lib";
 import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
+import { type ClassNameValue, cn } from "@/lib";
 
 type HTMLAttrs<T> = T & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;

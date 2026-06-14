@@ -1,5 +1,5 @@
-import { useState, useImperativeHandle, useRef } from "react";
-import { cn, ClassNameValue } from "@/lib";
+import { useImperativeHandle, useRef, useState } from "react";
+import { type ClassNameValue, cn } from "@/lib";
 
 export type SidebarHandle = {
   toggle: () => void;
@@ -14,10 +14,15 @@ export type SidebarProps = React.ComponentProps<"aside"> & {
   controlRef?: React.Ref<SidebarHandle>;
 };
 
-function Sidebar({ children, className, defaultOpen = true, controlRef, ...props }: SidebarProps) {
+function Sidebar({
+  children,
+  className,
+  defaultOpen = true,
+  controlRef,
+  ...props
+}: SidebarProps) {
   const [open, setOpen] = useState(defaultOpen);
   const asideRef = useRef<HTMLElement>(null);
-
 
   useImperativeHandle(controlRef, () => ({
     toggle: () => setOpen((prev) => !prev),

@@ -1,4 +1,4 @@
-import { useState, useRef, useImperativeHandle } from "react";
+import { useImperativeHandle, useRef, useState } from "react";
 import { cn } from "@/lib";
 
 export type SwitchProps = {

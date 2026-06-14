@@ -48,10 +48,13 @@ function DropdownTrigger({
 }) {
   const { menuId, triggerId } = useDropdown();
   const anchorName = `--anchor-${triggerId}`;
-  const supportsAnchor = React.useMemo(
-    () => CSS.supports("anchor-name", "--test"),
-    [],
-  );
+  const [supportsAnchor, setSupportsAnchor] = React.useState(false);
+
+  React.useEffect(() => {
+    if (typeof CSS !== "undefined" && CSS.supports("anchor-name", "--test")) {
+      setSupportsAnchor(true);
+    }
+  }, []);
 
   React.useEffect(() => {
     const menu = document.getElementById(menuId);
@@ -101,11 +104,13 @@ function DropdownContent({
     top: number;
     left: number;
   } | null>(null);
+  const [supportsAnchor, setSupportsAnchor] = React.useState(false);
 
-  const supportsAnchor = React.useMemo(
-    () => CSS.supports("anchor-name", "--test"),
-    [],
-  );
+  React.useEffect(() => {
+    if (typeof CSS !== "undefined" && CSS.supports("anchor-name", "--test")) {
+      setSupportsAnchor(true);
+    }
+  }, []);
 
   const calculatePosition = React.useCallback(() => {
     const trigger = document.getElementById(triggerId);
