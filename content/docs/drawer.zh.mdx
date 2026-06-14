@@ -49,18 +49,13 @@ description: 支持多种位置选项的滑入面板组件
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `className` | `ClassNameValue` | - | 自定义 CSS 类名 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类名，支持字符串、数组、对象、布尔值等多种格式。 |
 | `placement` | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` | 抽屉的位置 |
 | `onClose` | `() => void` | - | 抽屉关闭时的回调函数 |
-| `onOpen` | `() => void` | - | 抽屉打开时的回调函数 |
-| `aria-label` | `string` | - | 无障碍标签 |
-| `aria-labelledby` | `string` | - | 标记抽屉的元素 ID |
+| `ref` | `React.Ref<HTMLDialogElement>` | - | 转发到原生 dialog 元素的 ref |
 
-### DrawerRef
+### slotProps
 
-Drawer 组件返回的 ref 对象。
-
-| Method | Description |
-|--------|-------------|
-| `show()` | 打开抽屉 |
-| `close()` | 关闭抽屉 |
+| Slot | Type | Description |
+|------|------|-------------|
+| `content` | `HTMLAttrs<Omit<React.ComponentProps<'div'>, 'style'>>` | 内容面板的属性 |

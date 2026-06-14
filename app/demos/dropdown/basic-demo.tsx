@@ -1,12 +1,15 @@
 "use client";
 
 import { Bell, LogOut, Settings } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Dropdown } from "@/components/ui/dropdown";
 
 export default function DropdownBasicDemo() {
   return (
     <Dropdown>
-      <Dropdown.Trigger className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">
+      <Dropdown.Trigger
+        className={[Button.class.base, Button.class.variant.primary]}
+      >
         Open Menu
       </Dropdown.Trigger>
       <Dropdown.Content>

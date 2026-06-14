@@ -40,14 +40,13 @@ A modal dialog component that uses the native HTML dialog element.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `className` | `ClassNameValue` | - | Custom CSS class |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
 | `onClose` | `() => void` | - | Callback when dialog is closed |
+| `closeTrigger` | `boolean` | `true` | Whether to show the ESC close button |
+| `ref` | `React.Ref<HTMLDialogElement>` | - | Ref forwarded to the native dialog element |
 
-### DialogRef
+### slotProps
 
-The ref object returned by the Dialog component.
-
-| Method | Description |
-|--------|-------------|
-| `showModal()` | Open the dialog |
-| `close()` | Close the dialog |
+| Slot | Type | Description |
+|------|------|-------------|
+| `closeTrigger` | `HTMLAttrs<Omit<React.ComponentProps<'button'>, 'onClick' \| 'type' \| 'aria-label'>>` | Props for the close button |

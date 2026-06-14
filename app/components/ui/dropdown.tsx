@@ -48,6 +48,10 @@ function DropdownTrigger({
 }) {
   const { menuId, triggerId } = useDropdown();
   const anchorName = `--anchor-${triggerId}`;
+  const supportsAnchor = React.useMemo(
+    () => CSS.supports("anchor-name", "--test"),
+    [],
+  );
 
   React.useEffect(() => {
     const menu = document.getElementById(menuId);
@@ -71,7 +75,7 @@ function DropdownTrigger({
       aria-haspopup="menu"
       aria-expanded="false"
       className={cn(className)}
-      style={{ anchorName }}
+      style={supportsAnchor ? { anchorName } : undefined}
     >
       {children}
     </button>
@@ -93,6 +97,91 @@ function DropdownContent({
   const { menuId, triggerId } = useDropdown();
   const anchorName = `--anchor-${triggerId}`;
   const menuRef = React.useRef<HTMLMenuElement>(null);
+  const [manualPosition, setManualPosition] = React.useState<{
+    top: number;
+    left: number;
+  } | null>(null);
+
+  const supportsAnchor = React.useMemo(
+    () => CSS.supports("anchor-name", "--test"),
+    [],
+  );
+
+  const calculatePosition = React.useCallback(() => {
+    const trigger = document.getElementById(triggerId);
+    const menu = menuRef.current;
+    if (!trigger || !menu) return;
+
+    const triggerRect = trigger.getBoundingClientRect();
+    const menuRect = menu.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    let top = 0;
+    let left = 0;
+
+    switch (alignY) {
+      case "start":
+        top = triggerRect.top;
+        break;
+      case "center":
+        top = triggerRect.top + triggerRect.height / 2 - menuRect.height / 2;
+        break;
+      case "end":
+        top = triggerRect.bottom - menuRect.height;
+        break;
+    }
+
+    switch (alignX) {
+      case "start":
+        left = triggerRect.left;
+        break;
+      case "center":
+        left = triggerRect.left + triggerRect.width / 2 - menuRect.width / 2;
+        break;
+      case "end":
+        left = triggerRect.right - menuRect.width;
+        break;
+    }
+
+    if (top + menuRect.height > viewportHeight) {
+      top = viewportHeight - menuRect.height - 8;
+    }
+    if (top < 0) top = 8;
+    if (left + menuRect.width > viewportWidth) {
+      left = viewportWidth - menuRect.width - 8;
+    }
+    if (left < 0) left = 8;
+
+    setManualPosition({ top, left });
+  }, [triggerId, alignX, alignY]);
+
+  React.useEffect(() => {
+    const menu = menuRef.current;
+    if (!menu) return;
+
+    const handleToggle = (e: Event) => {
+      const open = (e as ToggleEvent).newState === "open";
+      if (open && !supportsAnchor) {
+        calculatePosition();
+      }
+    };
+
+    menu.addEventListener("toggle", handleToggle);
+    return () => menu.removeEventListener("toggle", handleToggle);
+  }, [supportsAnchor, calculatePosition]);
+
+  React.useEffect(() => {
+    if (!supportsAnchor && manualPosition) {
+      const handleResizeOrScroll = () => calculatePosition();
+      window.addEventListener("resize", handleResizeOrScroll);
+      window.addEventListener("scroll", handleResizeOrScroll);
+      return () => {
+        window.removeEventListener("resize", handleResizeOrScroll);
+        window.removeEventListener("scroll", handleResizeOrScroll);
+      };
+    }
+  }, [supportsAnchor, manualPosition, calculatePosition]);
 
   React.useEffect(() => {
     const menu = menuRef.current;
@@ -174,6 +263,24 @@ function DropdownContent({
     };
   }, []);
 
+  const getStyle = () => {
+    if (supportsAnchor) {
+      return {
+        positionAnchor: anchorName,
+        positionArea: `${alignY} ${alignX}`,
+      };
+    }
+    if (manualPosition) {
+      return {
+        position: "fixed" as const,
+        top: manualPosition.top,
+        left: manualPosition.left,
+        margin: 0,
+      };
+    }
+    return {};
+  };
+
   return (
     <menu
       ref={menuRef}
@@ -181,13 +288,10 @@ function DropdownContent({
       aria-labelledby={triggerId}
       popover={popover}
       className={cn(
-        "bg-popover text-popover-foreground min-w-32 rounded-md border p-1 shadow-md list-none m-0",
+        "bg-popover text-popover-foreground min-w-32 rounded-md border p-1 shadow-md list-none m-1",
         className,
       )}
-      style={{
-        positionAnchor: anchorName,
-        positionArea: `${alignY} ${alignX}`,
-      }}
+      style={getStyle()}
       {...props}
     >
       {children}

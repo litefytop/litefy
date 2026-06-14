@@ -54,7 +54,6 @@ const serverMiddleware: Route.MiddlewareFunction = async (
   const url = new URL(request.url);
   const pathname = url.pathname;
 
-  // Only rewrite paths like /en/docs/xxx.md to /en/llms.mdx/docs/xxx
   const langMatch = pathname.match(/^\/([a-z]{2})\/docs\/(.+)\.md$/);
   if (langMatch) {
     const [, lang, path] = langMatch;
@@ -85,7 +84,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="pt-16 p-4 w-full max-w-[1400px] mx-auto">
+    <main className="pt-16 p-4 w-full max-w-350 mx-auto">
       <h1>{message}</h1>
       <p>{details}</p>
       {stack && (

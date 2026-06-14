@@ -64,7 +64,7 @@ The main container component.
 | `defaultValue` | `string[]` | `[]` | Default open item values (uncontrolled) |
 | `value` | `string[]` | - | Open item values (controlled) |
 | `onValueChange` | `(keys: string[]) => void` | - | Callback when open keys change |
-| `className` | `string` | - | Custom CSS class for the container |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
 
 ### Accordion.Item
 
@@ -78,7 +78,7 @@ Individual accordion item.
 | `label` | `React.ReactNode` | - | The header content |
 | `icon` | `React.ReactNode \| ((open: boolean) => React.ReactNode)` | `ChevronDown` | Custom icon or icon function |
 | `disabled` | `boolean` | `false` | Disable the item |
-| `className` | `string` | - | Custom CSS class |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
 | `slotProps` | `object` | - | Custom props for internal slots |
 
 ### slotProps

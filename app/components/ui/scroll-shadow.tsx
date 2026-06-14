@@ -1,4 +1,4 @@
-import { cn, ClassNameValue } from "@/lib";
+import { type ClassNameValue, cn } from "@/lib";
 
 type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;

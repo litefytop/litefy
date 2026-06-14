@@ -26,7 +26,6 @@ const lockScroll = () => {
     const html = document.documentElement;
     originalHtmlOverflow = html.style.overflow;
     originalHtmlScrollbarGutter = html.style.scrollbarGutter;
-
     html.style.scrollbarGutter = "stable";
     html.style.overflow = "hidden";
   }
@@ -46,39 +45,33 @@ const unlockScroll = () => {
   }
 };
 
-export type DialogControl = {
-  showModal: () => void;
-  close: () => void;
+type HTMLAttrs<T> = T & {
+  [key: `data-${string}`]: string | number | null | undefined | true;
+  className?: ClassNameValue;
 };
 
 export type DialogProps = React.ComponentProps<"dialog"> & {
   className?: ClassNameValue;
   onClose?: () => void;
-  controlRef?: React.Ref<DialogControl>;
   closeTrigger?: boolean;
+  slotProps?: {
+    closeTrigger?: HTMLAttrs<
+      Omit<React.ComponentProps<"button">, "onClick" | "type" | "aria-label">
+    >;
+  };
 };
 
 function Dialog({
   ref,
-  controlRef,
   className,
   children,
   onClose,
   closeTrigger = true,
+  slotProps,
   ...props
 }: DialogProps) {
   const _ref = React.useRef<HTMLDialogElement>(null);
-
-  const focusFirstElement = () => {
-    const dialog = _ref.current;
-    if (!dialog) return;
-    const focusable = dialog.querySelectorAll<HTMLElement>(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-    );
-    const first = Array.from(focusable).find((el) => el.offsetParent !== null);
-    if (first) first.focus();
-    else dialog.focus();
-  };
+  const isOpenRef = React.useRef(false);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key !== "Tab") return;
@@ -118,36 +111,36 @@ function Dialog({
     const dialog = _ref.current;
     if (!dialog) return;
 
-    const handleClose = () => {
-      unlockScroll();
-      onClose?.();
-    };
+    const observer = new MutationObserver(() => {
+      const nowOpen = dialog.hasAttribute("open");
+      if (nowOpen && !isOpenRef.current) {
+        lockScroll();
+        isOpenRef.current = true;
+      } else if (!nowOpen && isOpenRef.current) {
+        unlockScroll();
+        isOpenRef.current = false;
+        onClose?.();
+      }
+    });
 
-    dialog.addEventListener("close", handleClose);
-    return () => dialog.removeEventListener("close", handleClose);
+    observer.observe(dialog, { attributes: true, attributeFilter: ["open"] });
+
+    if (dialog.hasAttribute("open")) {
+      lockScroll();
+      isOpenRef.current = true;
+    }
+
+    return () => {
+      observer.disconnect();
+      if (isOpenRef.current) unlockScroll();
+    };
   }, [onClose]);
 
   React.useEffect(() => {
     return () => {
-      if (_ref.current?.open) {
-        unlockScroll();
-      }
+      if (isOpenRef.current) unlockScroll();
     };
   }, []);
-
-  React.useImperativeHandle(controlRef, () => ({
-    showModal: () => {
-      const dialog = _ref.current;
-      if (dialog) {
-        lockScroll();
-        dialog.showModal();
-        focusFirstElement();
-      }
-    },
-    close: () => {
-      _ref.current?.close();
-    },
-  }));
 
   const setRefs = (element: HTMLDialogElement | null) => {
     _ref.current = element;
@@ -176,8 +169,12 @@ function Dialog({
       {closeTrigger && (
         <button
           type="button"
+          {...slotProps?.closeTrigger}
           onClick={() => _ref.current?.close()}
-          className="absolute right-4 top-4 h-6 w-8 rounded-md border text-xs font-mono font-medium text-muted-foreground transition-colors hover:bg-muted-foreground/20"
+          className={cn(
+            "absolute right-4 top-4 h-6 w-8 rounded-md border text-xs font-mono font-medium text-muted-foreground transition-colors hover:bg-muted-foreground/20",
+            slotProps?.closeTrigger?.className,
+          )}
           aria-label="Close (ESC)"
         >
           ESC

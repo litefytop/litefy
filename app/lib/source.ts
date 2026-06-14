@@ -1,8 +1,8 @@
-import { loader } from 'fumadocs-core/source';
-import { docs } from 'collections/server';
-import { docsContentRoute, docsRoute } from './shared';
-import { i18n } from './i18n';
-import { demos } from '@/demos';
+import { docs } from "collections/server";
+import { loader } from "fumadocs-core/source";
+import { demos } from "@/demos";
+import { i18n } from "./i18n";
+import { docsRoute } from "./shared";
 
 export const source = loader({
   source: docs.toFumadocsSource(),
@@ -10,16 +10,17 @@ export const source = loader({
   i18n,
 });
 
-export function getPageMarkdownUrl(page: (typeof source)['$inferPage']) {
+export function getPageMarkdownUrl(page: (typeof source)["$inferPage"]) {
   const segments = [page.locale || i18n.defaultLanguage, ...page.slugs];
 
   return {
-    segments: [...segments, 'content.md'],
-    url: `/${page.locale || i18n.defaultLanguage}/llms.mdx/docs/${segments.slice(1).join('/')}`,
+    segments: [...segments, "content.md"],
+    url: `/${page.locale || i18n.defaultLanguage}/llms.mdx/docs/${segments.slice(1).join("/")}`,
   };
 }
 
-const COMPONENT_PREVIEW_REGEX = /<ComponentPreview\s+name\s*=\s*["']([^"']+)["'][^/>]*\/?>/g;
+const COMPONENT_PREVIEW_REGEX =
+  /<ComponentPreview\s+name\s*=\s*["']([^"']+)["'][^/>]*\/?>/g;
 const REGEX_ESCAPE = /[.*+?^${}()|[\]\\]/g;
 
 async function replaceComponentPreview(content: string): Promise<string> {
@@ -56,8 +57,8 @@ async function replaceComponentPreview(content: string): Promise<string> {
     if (processedMatches.has(match)) continue;
 
     processedMatches.add(match);
-    const escapedMatch = match.replace(REGEX_ESCAPE, '\\$&');
-    const regex = new RegExp(escapedMatch, 'g');
+    const escapedMatch = match.replace(REGEX_ESCAPE, "\\$&");
+    const regex = new RegExp(escapedMatch, "g");
 
     result = result.replace(regex, replacement);
   }
@@ -68,9 +69,7 @@ async function replaceComponentPreview(content: string): Promise<string> {
 const EXCESSIVE_NEWLINES = /\n{3,}/g;
 
 function cleanContent(content: string): string {
-  return content
-    .replace(EXCESSIVE_NEWLINES, '\n\n')
-    .trim();
+  return content.replace(EXCESSIVE_NEWLINES, "\n\n").trim();
 }
 
 async function processMDXContent(content: string): Promise<string> {
@@ -79,8 +78,8 @@ async function processMDXContent(content: string): Promise<string> {
   return processed;
 }
 
-export async function getLLMText(page: (typeof source)['$inferPage']) {
-  const rawContent = await page.data.getText('processed');
+export async function getLLMText(page: (typeof source)["$inferPage"]) {
+  const rawContent = await page.data.getText("processed");
   const processedContent = await processMDXContent(rawContent);
 
   return `# ${page.data.title} (${page.url})

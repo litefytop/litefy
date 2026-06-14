@@ -1,12 +1,22 @@
-import { createFromSource } from 'fumadocs-core/search/server';
-import { source } from '@/lib/source';
-import { i18n } from '@/lib/i18n';
+import { createTokenizer } from "@orama/tokenizers/mandarin";
+import { createFromSource } from "fumadocs-core/search/server";
+import { source } from "@/lib/source";
 
 const server = createFromSource(source, {
-  language: 'english',
+  localeMap: {
+    en: { language: "english" },
+    zh: {
+      components: {
+        tokenizer: createTokenizer(),
+      },
+      search: {
+        threshold: 0,
+        tolerance: 0,
+      },
+    },
+  },
 });
 
-export async function loader({ params }: { params: { lang?: string } }) {
-  const locale = params.lang || i18n.defaultLanguage;
+export async function loader() {
   return server.staticGET();
 }

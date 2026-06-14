@@ -59,7 +59,7 @@ The main container component.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `React.ReactNode` | - | Dropdown content |
-| `className` | `string` | - | Custom CSS class |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
 
 ### Dropdown.Trigger
 
@@ -68,7 +68,7 @@ The trigger button that opens the dropdown.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `React.ReactNode` | - | Trigger content |
-| `className` | `string` | - | Custom CSS class |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
 
 ### Dropdown.Content
 
@@ -77,7 +77,7 @@ The dropdown menu content.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `React.ReactNode` | - | Menu items |
-| `className` | `string` | - | Custom CSS class |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. To adjust the gap between the content and the trigger, add margin utility classes (e.g. `m-2`) here. |
 | `alignX` | `'start' \| 'center' \| 'end'` | `'center'` | Horizontal alignment |
 | `alignY` | `'start' \| 'center' \| 'end'` | `'end'` | Vertical alignment |
 | `popover` | `'auto' \| 'manual' \| 'hint'` | `'auto'` | Popover behavior |
@@ -89,7 +89,7 @@ Individual menu item.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `React.ReactNode` | - | Item content |
-| `className` | `string` | - | Custom CSS class |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
 
 ### Dropdown.Label
 
@@ -98,7 +98,7 @@ Label for grouping items.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `React.ReactNode` | - | Label text |
-| `className` | `string` | - | Custom CSS class |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
 
 ### Dropdown.Separator
 
@@ -106,4 +106,4 @@ Visual separator between items.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `className` | `string` | - | Custom CSS class |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |

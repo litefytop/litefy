@@ -1,11 +1,14 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Dropdown } from "@/components/ui/dropdown";
 
 export default function DropdownLabelDemo() {
   return (
     <Dropdown>
-      <Dropdown.Trigger className="px-4 py-2 border border-input rounded-md hover:bg-muted transition-colors">
+      <Dropdown.Trigger
+        className={[Button.class.base, Button.class.variant.primary]}
+      >
         Options
       </Dropdown.Trigger>
       <Dropdown.Content>

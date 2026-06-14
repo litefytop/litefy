@@ -49,18 +49,13 @@ A slide-in panel component with focus management and keyboard navigation.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `className` | `ClassNameValue` | - | Custom CSS class |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
 | `placement` | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` | Position of the drawer |
 | `onClose` | `() => void` | - | Callback when drawer is closed |
-| `onOpen` | `() => void` | - | Callback when drawer is opened |
-| `aria-label` | `string` | - | Accessibility label |
-| `aria-labelledby` | `string` | - | ID of the element labeling the drawer |
+| `ref` | `React.Ref<HTMLDialogElement>` | - | Ref forwarded to the native dialog element |
 
-### DrawerRef
+### slotProps
 
-The ref object returned by the Drawer component.
-
-| Method | Description |
-|--------|-------------|
-| `show()` | Open the drawer |
-| `close()` | Close the drawer |
+| Slot | Type | Description |
+|------|------|-------------|
+| `content` | `HTMLAttrs<Omit<React.ComponentProps<'div'>, 'style'>>` | Props for the inner content panel |

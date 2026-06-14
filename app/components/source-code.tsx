@@ -1,15 +1,18 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
-import { type ClassNameValue, cn } from "@/lib";
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
+import { Suspense, useEffect, useState } from "react";
+import { type ClassNameValue, cn } from "@/lib";
 
 interface SourceCodeProps {
   component: string;
   className?: ClassNameValue;
 }
 
-const modules = import.meta.glob("../components/ui/*.tsx", { query: "?raw", import: "default" });
+const modules = import.meta.glob("../components/ui/*.tsx", {
+  query: "?raw",
+  import: "default",
+});
 const componentImports: Record<string, () => Promise<string>> = {};
 
 for (const [path, loadFn] of Object.entries(modules)) {
@@ -43,7 +46,12 @@ function SourceCodeContent({ component, className }: SourceCodeProps) {
 
   if (loading) {
     return (
-      <div className={cn("bg-muted rounded-lg p-4 text-muted-foreground", className)}>
+      <div
+        className={cn(
+          "bg-muted rounded-lg p-4 text-muted-foreground",
+          className,
+        )}
+      >
         Loading source code...
       </div>
     );
@@ -51,7 +59,12 @@ function SourceCodeContent({ component, className }: SourceCodeProps) {
 
   if (!sourceCode) {
     return (
-      <div className={cn("bg-muted rounded-lg p-4 text-muted-foreground", className)}>
+      <div
+        className={cn(
+          "bg-muted rounded-lg p-4 text-muted-foreground",
+          className,
+        )}
+      >
         Source code not found for component: {component}
       </div>
     );
@@ -73,11 +86,18 @@ function SourceCodeContent({ component, className }: SourceCodeProps) {
 
 export function SourceCode({ component, className }: SourceCodeProps) {
   return (
-    <Suspense fallback={
-      <div className={cn("bg-muted rounded-lg p-4 text-muted-foreground", className)}>
-        Loading source code...
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div
+          className={cn(
+            "bg-muted rounded-lg p-4 text-muted-foreground",
+            className,
+          )}
+        >
+          Loading source code...
+        </div>
+      }
+    >
       <SourceCodeContent component={component} className={className} />
     </Suspense>
   );

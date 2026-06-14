@@ -1,5 +1,4 @@
 import { redirect } from "react-router";
-import type { Route } from "./+types/root";
 
 function getPreferredLanguage(): string {
   if (typeof window === "undefined") {
@@ -11,12 +10,14 @@ function getPreferredLanguage(): string {
     if (stored && ["en", "zh"].includes(stored)) {
       return stored;
     }
-  } catch (e) {}
+  } catch (e) {
+    console.error("Error reading preferred language:", e);
+  }
 
   return "en";
 }
 
-export async function loader({}: Route.LoaderArgs) {
+export async function loader() {
   const lang = getPreferredLanguage();
   return redirect(`/${lang}`);
 }

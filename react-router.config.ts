@@ -1,11 +1,11 @@
-import type { Config } from '@react-router/dev/config';
-import { glob } from 'node:fs/promises';
-import { createGetUrl, getSlugs } from 'fumadocs-core/source';
+import { glob } from "node:fs/promises";
+import type { Config } from "@react-router/dev/config";
+import { createGetUrl, getSlugs } from "fumadocs-core/source";
 
-const getUrl = createGetUrl('/docs');
+const getUrl = createGetUrl("/docs");
 
 export default {
-  ssr: true,  
+  ssr: true,
   future: {
     v8_middleware: true,
     v8_viteEnvironmentApi: true,
@@ -22,21 +22,21 @@ export default {
     }
 
     // 添加所有语言版本的文档路径
-    const languages = ['en', 'zh'];
+    const languages = ["en", "zh"];
 
     // 添加 docs 首页路径
     for (const lang of languages) {
       paths.push(`/${lang}/docs`);
     }
 
-    for await (const entry of glob('**/*.mdx', { cwd: 'content/docs' })) {
+    for await (const entry of glob("**/*.mdx", { cwd: "content/docs" })) {
       const slugs = getSlugs(entry);
 
       for (const lang of languages) {
         // 所有语言都有前缀
         paths.push(
           `/${lang}${getUrl(slugs)}`,
-          `/${lang}/llms.mdx/docs/${[...slugs, 'content.md'].join('/')}`
+          `/${lang}/llms.mdx/docs/${[...slugs, "content.md"].join("/")}`,
         );
       }
     }
@@ -46,11 +46,7 @@ export default {
       // Search API
       paths.push(`/${lang}/api/search`);
 
-      // LLM files
-      paths.push(
-        `/${lang}/llms.txt`,
-        `/${lang}/llms-full.txt`
-      );
+      paths.push(`/${lang}/llms.txt`, `/${lang}/llms-full.txt`);
     }
 
     return paths;

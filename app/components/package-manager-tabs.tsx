@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { CheckIcon, CopyIcon } from "lucide-react";
+import { useState } from "react";
 
 interface PackageManagerTabsProps {
   command: string;
@@ -32,6 +32,7 @@ export function PackageManagerTabs({ command }: PackageManagerTabsProps) {
               {item.cmd}
             </div>
             <button
+              type="button"
               onClick={() => handleCopy(item.cmd, item.key)}
               className="absolute top-1/2 right-2 -translate-y-1/2 p-1.5 rounded-md opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity"
               aria-label="Copy command"

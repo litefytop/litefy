@@ -1,4 +1,6 @@
-import type { Route } from "./+types/docs";
+import browserCollections from "collections/browser";
+import type { Folder, Item } from "fumadocs-core/page-tree";
+import { deserializePageTree } from "fumadocs-core/source/client";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import {
   DocsBody,
@@ -8,16 +10,13 @@ import {
   MarkdownCopyButton,
   ViewOptionsPopover,
 } from "fumadocs-ui/layouts/docs/page";
-import { getPageMarkdownUrl, source } from "@/lib/source";
-import browserCollections from "collections/browser";
+import { Link, useParams } from "react-router";
+import { getMDXComponents } from "@/components/mdx";
+import { i18n } from "@/lib/i18n";
 import { baseOptions } from "@/lib/layout.shared";
 import { gitConfig } from "@/lib/shared";
-import { deserializePageTree } from "fumadocs-core/source/client";
-import { useMDXComponents } from "@/components/mdx";
-import { i18n } from "@/lib/i18n";
-import { Link, useParams } from "react-router";
-
-import type { Folder, Item } from "fumadocs-core/page-tree";
+import { getPageMarkdownUrl, source } from "@/lib/source";
+import type { Route } from "./+types/docs";
 
 const docsIndexI18n = {
   en: {
@@ -74,8 +73,6 @@ const clientLoader = browserCollections.docs.createClientLoader({
       path: string;
     },
   ) {
-
-    
     return (
       <DocsPage toc={toc}>
         <title>{frontmatter.title}</title>
@@ -90,7 +87,7 @@ const clientLoader = browserCollections.docs.createClientLoader({
           />
         </div>
         <DocsBody>
-          <Mdx components={useMDXComponents()} />
+          <Mdx components={getMDXComponents()} />
         </DocsBody>
       </DocsPage>
     );
@@ -145,14 +142,18 @@ export default function Docs({ loaderData }: Route.ComponentProps) {
     docsIndexI18n[currentLocale as keyof typeof docsIndexI18n] ||
     docsIndexI18n.en;
   const tree = deserializePageTree(loaderData.pageTree);
+  const PageContent =
+    loaderData.mode === "page"
+      ? clientLoader.getComponent(loaderData.path)
+      : null;
 
-  if (loaderData.mode === "page") {
+  if (loaderData.mode === "page" && PageContent) {
     return (
       <DocsLayout {...baseOptions(currentLocale)} tree={tree}>
-        {clientLoader.useContent(loaderData.path, {
-          markdownUrl: loaderData.markdownUrl,
-          path: loaderData.path,
-        })}
+        <PageContent
+          markdownUrl={loaderData.markdownUrl}
+          path={loaderData.path}
+        />
       </DocsLayout>
     );
   }

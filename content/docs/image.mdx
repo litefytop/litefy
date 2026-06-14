@@ -1,0 +1,56 @@
+---
+title: Image
+description: An image component with loading states, placeholder support, and error handling
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add image" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="image" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Display images with proper styling and aspect ratio.
+
+<ComponentPreview 
+  name="image-basic"
+  title="Basic Usage"
+/>
+
+### Loading States
+
+Handle loading and error states with placeholder and fallback support.
+
+<ComponentPreview 
+  name="image-loading"
+  title="Loading States"
+/>
+
+## API Reference
+
+### Image
+
+The image component with loading state management.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `src` | `string` | - | Image source URL |
+| `alt` | `string` | - | Alternative text for the image |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `fallback` | `React.ReactNode` | - | Custom fallback element when image fails to load |
+| `placeholderSrc` | `string` | - | Placeholder image URL shown during loading |

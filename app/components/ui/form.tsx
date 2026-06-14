@@ -1,18 +1,19 @@
 "use client";
 
-import { ClassNameValue, cn } from "@/lib";
 import { Loader2 } from "lucide-react";
-import {
-  useActionState,
-  useRef,
-  useEffect,
-  createContext,
-  useContext,
-  useImperativeHandle,
-  useCallback,
-} from "react";
 import type { ReactNode } from "react";
-import { useId, useState } from "react";
+import {
+  createContext,
+  useActionState,
+  useCallback,
+  useContext,
+  useEffect,
+  useId,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
+import { type ClassNameValue, cn } from "@/lib";
 
 type FormContextType = {
   isPending: boolean;
@@ -30,7 +31,7 @@ export type FormRef = {
   submit: () => void;
 };
 
-type FormProps = Omit<React.ComponentProps<"form">, "onSubmit"|"ref"> & {
+type FormProps = Omit<React.ComponentProps<"form">, "onSubmit" | "ref"> & {
   onSubmit: (formData: FormData) => Promise<boolean>;
   autoReset?: boolean;
   ref?: React.Ref<FormRef>;
@@ -71,27 +72,28 @@ export function Form({
 
   const setValues = useCallback(
     (values: Record<string, string | number>) => {
-      Object.entries(values).forEach(([name, value]) => setValue(name, value));
+      Object.entries(values).forEach(([name, value]) => {
+        setValue(name, value);
+      });
     },
     [setValue],
   );
-    const reset = useCallback(() => {
-      internalRef.current?.reset();
-      elementsRef.current.forEach((el) => {
-        el.value = "";
-      });
-    }, []);
+  const reset = useCallback(() => {
+    internalRef.current?.reset();
+    elementsRef.current.forEach((el) => {
+      el.value = "";
+    });
+  }, []);
 
-    const submit = useCallback(() => {
-      internalRef.current?.requestSubmit();
-    }, []);
+  const submit = useCallback(() => {
+    internalRef.current?.requestSubmit();
+  }, []);
 
-  useImperativeHandle(externalRef, () => ({ setValue, setValues, reset, submit }), [
-    setValue,
-    setValues,
-    reset,
-    submit,
-  ]);
+  useImperativeHandle(
+    externalRef,
+    () => ({ setValue, setValues, reset, submit }),
+    [setValue, setValues, reset, submit],
+  );
 
   const action = async (prevCount: number, formData: FormData) => {
     const success = await onSubmit(formData);
@@ -166,7 +168,7 @@ type FormFieldArg = {
   "aria-describedby": string;
 };
 
-export type FormFieldProps<T  > = Omit<
+export type FormFieldProps<T> = Omit<
   React.ComponentProps<"div">,
   "children"
 > & {
@@ -185,7 +187,7 @@ export type FormFieldProps<T  > = Omit<
   children?: (field: FormFieldArg) => React.ReactNode;
   validConfig?: {
     validate?: (event: T) => string | boolean | null | undefined;
-    trigger?: "onChange" | "onBlur" ;
+    trigger?: "onChange" | "onBlur";
   };
 };
 
@@ -215,7 +217,7 @@ function FormField<T>({
   const id = inputId ?? internalId;
   const baseId = useId();
   const { id: descId, ...descriptionProps } = slotProps?.description ?? {};
-  const { id: invId, ...invalidProps } = slotProps?.invalid ?? {};;
+  const { id: invId, ...invalidProps } = slotProps?.invalid ?? {};
 
   const descriptionId = descId ?? `${baseId}-desc`;
   const invalidId = invId ?? `${baseId}-error`;
@@ -247,8 +249,6 @@ function FormField<T>({
     },
     [validConfig],
   );
-
-
 
   return (
     <div
@@ -339,7 +339,6 @@ function FormFieldset({
   children,
   ...rest
 }: FormFieldsetProps) {
-
   const isInvalid = Boolean(invalid);
   const hasInvalidContent = typeof invalid !== "boolean" && isInvalid;
 

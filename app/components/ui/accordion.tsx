@@ -1,12 +1,5 @@
 import { ChevronDown } from "lucide-react";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useId,
-  useMemo,
-  useState,
-} from "react";
+import * as React from "react";
 import { type ClassNameValue, cn } from "@/lib";
 
 type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
@@ -19,19 +12,19 @@ interface AccordionContextValue {
   onToggle: (value: string) => void;
 }
 
-const AccordionContext = createContext<AccordionContextValue | null>(null);
+const AccordionContext = React.createContext<AccordionContextValue | null>(
+  null,
+);
 
 function useAccordionContext() {
-  const context = useContext(AccordionContext);
+  const context = React.useContext(AccordionContext);
   if (!context)
     throw new Error("Accordion subcomponents must be used within Accordion");
   return context;
 }
 
-export interface AccordionProps extends Omit<
-  React.ComponentProps<"div">,
-  "className"
-> {
+export interface AccordionProps
+  extends Omit<React.ComponentProps<"div">, "className"> {
   defaultValue?: string[];
   value?: string[];
   onValueChange?: (values: string[]) => void;
@@ -50,15 +43,17 @@ export function Accordion({
   children,
   ...props
 }: AccordionProps) {
-  const [uncontrolledValue, setUncontrolledValue] = useState<string[]>(() => {
-    if (!multiple && defaultValue.length > 0) return [defaultValue[0]];
-    return multiple ? defaultValue : [];
-  });
+  const [uncontrolledValue, setUncontrolledValue] = React.useState<string[]>(
+    () => {
+      if (!multiple && defaultValue.length > 0) return [defaultValue[0]];
+      return multiple ? defaultValue : [];
+    },
+  );
 
   const isControlled = controlledValue !== undefined;
   const activeValues = isControlled ? controlledValue : uncontrolledValue;
 
-  const onToggle = useCallback(
+  const onToggle = React.useCallback(
     (value: string) => {
       let next: string[];
       const isOpened = activeValues.includes(value);
@@ -78,7 +73,7 @@ export function Accordion({
     [multiple, activeValues, isControlled, onValueChange],
   );
 
-  const contextValue = useMemo(
+  const contextValue = React.useMemo(
     () => ({ activeValues, onToggle }),
     [activeValues, onToggle],
   );
@@ -119,7 +114,7 @@ function AccordionItem({
 }: AccordionItemProps) {
   const { activeValues, onToggle } = useAccordionContext();
   const open = activeValues.includes(value);
-  const fallbackId = useId();
+  const fallbackId = React.useId();
   const panelId = slotProps?.content?.id ?? `accordion-panel-${fallbackId}`;
   const buttonId = slotProps?.trigger?.id ?? `accordion-trigger-${fallbackId}`;
 

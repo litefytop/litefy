@@ -1,5 +1,5 @@
-import { ClassNameValue, cn } from "@/lib";
 import type { ReactNode } from "react";
+import { type ClassNameValue, cn } from "@/lib";
 
 type HTMLAttrs<T> = T & {
   [key: `data-${string}`]: string | number | null | undefined | true;

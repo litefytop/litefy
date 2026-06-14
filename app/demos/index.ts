@@ -25,10 +25,12 @@ import ComboboxAsyncDemo from "./combobox/async-demo";
 import comboboxAsyncCode from "./combobox/async-demo.tsx?raw";
 import ComboboxBasicDemo from "./combobox/basic-demo";
 import comboboxBasicCode from "./combobox/basic-demo.tsx?raw";
-
+import DatePickerBasicDemo from "./date-picker/basic-demo";
+import datePickerBasicCode from "./date-picker/basic-demo.tsx?raw";
+import DatePickerInvalidDemo from "./date-picker/invalid-demo";
+import datePickerInvalidCode from "./date-picker/invalid-demo.tsx?raw";
 import DialogBasicDemo from "./dialog/basic-demo";
 import dialogBasicCode from "./dialog/basic-demo.tsx?raw";
-
 import DrawerBasicDemo from "./drawer/basic-demo";
 import drawerBasicCode from "./drawer/basic-demo.tsx?raw";
 import DrawerExpandableDemo from "./drawer/placement-demo";
@@ -39,6 +41,10 @@ import DropdownBasicDemo from "./dropdown/basic-demo";
 import dropdownBasicCode from "./dropdown/basic-demo.tsx?raw";
 import DropdownLabelDemo from "./dropdown/label-demo";
 import dropdownLabelCode from "./dropdown/label-demo.tsx?raw";
+import ImageBasicDemo from "./image/basic-demo";
+import imageBasicCode from "./image/basic-demo.tsx?raw";
+import ImageLoadingDemo from "./image/loading-demo";
+import imageLoadingCode from "./image/loading-demo.tsx?raw";
 
 export interface DemoItem {
   component: ComponentType;
@@ -121,5 +127,21 @@ export const demos: Record<string, DemoItem> = {
   "dropdown-alignment": {
     component: DropdownAlignmentDemo,
     code: dropdownAlignmentCode,
+  },
+  "date-picker-basic": {
+    component: DatePickerBasicDemo,
+    code: datePickerBasicCode,
+  },
+  "date-picker-invalid": {
+    component: DatePickerInvalidDemo,
+    code: datePickerInvalidCode,
+  },
+  "image-basic": {
+    component: ImageBasicDemo,
+    code: imageBasicCode,
+  },
+  "image-loading": {
+    component: ImageLoadingDemo,
+    code: imageLoadingCode,
   },
 };

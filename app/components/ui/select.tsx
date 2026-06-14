@@ -1,5 +1,5 @@
-import { ClassNameValue, cn } from "@/lib";
 import { useEffect, useRef } from "react";
+import { type ClassNameValue, cn } from "@/lib";
 
 type SelectOption = {
   label: string;
@@ -35,8 +35,7 @@ type MultipleSelectProps = BaseSelectProps & {
 
 export type SelectProps = SingleSelectProps | MultipleSelectProps;
 
-const optionClass =
-  "my-0.5 px-2 py-2.5 rounded-md";
+const optionClass = "my-0.5 px-2 py-2.5 rounded-md";
 
 export function Select({
   className,
@@ -48,7 +47,6 @@ export function Select({
   ...props
 }: SelectProps) {
   const selectRef = useRef<HTMLSelectElement>(null);
-
   useEffect(() => {
     if (!multiple || !selectRef.current) return;
 
@@ -93,7 +91,6 @@ export function Select({
     props.onBlur?.(e);
   };
 
-
   const defaultSelected = multiple
     ? (props.defaultValue as string[] | undefined)
     : undefined;
@@ -121,24 +118,17 @@ export function Select({
         </option>
       )}
 
-      {options.map((item, index) => {
+      {options.map((item) => {
         if ("group" in item) {
           return (
-            <optgroup
-              key={`group-${index}`}
-              label={item.group}
-              className="my-2 "
-            >
+            <optgroup key={item.group} label={item.group} className="my-2 ">
               {item.options.map((opt) => (
                 <option
                   key={opt.value}
                   value={opt.value}
                   className={cn(optionClass)}
-                
                   selected={
-                    multiple &&
-                    defaultSelected &&
-                    defaultSelected.includes(opt.value)
+                    multiple && defaultSelected?.includes(opt.value)
                       ? true
                       : undefined
                   }
@@ -155,9 +145,7 @@ export function Select({
             value={item.value}
             className={optionClass}
             selected={
-              multiple &&
-              defaultSelected &&
-              defaultSelected.includes(item.value)
+              multiple && defaultSelected?.includes(item.value)
                 ? true
                 : undefined
             }

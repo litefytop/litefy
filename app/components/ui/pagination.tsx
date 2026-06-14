@@ -1,16 +1,7 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useMemo,
-  ComponentProps,
-  ReactNode,
-  useRef,
-  useEffect,
-  useState,
-} from "react";
-import { ClassNameValue, cn } from "@/lib";
+import * as React from "react";
+import { type ClassNameValue, cn } from "@/lib";
 
 type PaginationContextValue = {
   current: number;
@@ -25,10 +16,12 @@ type PaginationContextValue = {
   setPageSize: (size: number) => void;
 };
 
-const PaginationContext = createContext<PaginationContextValue | null>(null);
+const PaginationContext = React.createContext<PaginationContextValue | null>(
+  null,
+);
 
 export function usePagination() {
-  const ctx = useContext(PaginationContext);
+  const ctx = React.useContext(PaginationContext);
   if (!ctx) throw new Error("usePagination must be used within Pagination");
   return ctx;
 }
@@ -40,8 +33,8 @@ export type PaginationProps = {
   onPageChange?: (page: number) => void;
   onPageSizeChange?: (size: number) => void;
   className?: ClassNameValue;
-  children?: ReactNode;
-} & Omit<ComponentProps<"div">, "onChange">;
+  children?: React.ReactNode;
+} & Omit<React.ComponentProps<"div">, "onChange">;
 
 export function Pagination({
   current,
@@ -53,12 +46,12 @@ export function Pagination({
   children,
   ...props
 }: PaginationProps) {
-  const totalPages = useMemo(
+  const totalPages = React.useMemo(
     () => Math.ceil(total / pageSize),
     [total, pageSize],
   );
 
-  const value = useMemo<PaginationContextValue>(
+  const value = React.useMemo<PaginationContextValue>(
     () => ({
       current,
       pageSize,
@@ -104,7 +97,7 @@ export function Pagination({
 
 export type PaginationDescriptionProps = {
   format?: (total: number, current: number, totalPages: number) => string;
-} & ComponentProps<"span">;
+} & React.ComponentProps<"span">;
 
 Pagination.Description = function PaginationDescription({
   format,
@@ -126,7 +119,7 @@ Pagination.Description = function PaginationDescription({
 export type PaginationSizerProps = {
   options?: number[];
   format?: (size: number) => string;
-} & ComponentProps<"select">;
+} & React.ComponentProps<"select">;
 
 Pagination.Sizer = function PaginationSizer({
   options = [10, 20, 50, 100],
@@ -158,7 +151,7 @@ Pagination.Sizer = function PaginationSizer({
 
 export type PaginationControlsProps = {
   variant: "first" | "prev" | "next" | "last";
-} & ComponentProps<"button">;
+} & React.ComponentProps<"button">;
 
 Pagination.Controls = function PaginationControls({
   variant,
@@ -166,7 +159,8 @@ Pagination.Controls = function PaginationControls({
   children,
   ...props
 }: PaginationControlsProps) {
-  const { current, totalPages, goFirst, goPrev, goNext, goLast } = usePagination();
+  const { current, totalPages, goFirst, goPrev, goNext, goLast } =
+    usePagination();
   let onClick: () => void;
   let disabled: boolean;
 
@@ -196,7 +190,10 @@ Pagination.Controls = function PaginationControls({
       {...props}
       disabled={disabled}
       onClick={onClick}
-      className={cn("inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-muted disabled:opacity-50 disabled:pointer-events-none", className)}
+      className={cn(
+        "inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-muted disabled:opacity-50 disabled:pointer-events-none",
+        className,
+      )}
     >
       {children}
     </button>
@@ -205,7 +202,7 @@ Pagination.Controls = function PaginationControls({
 
 export type PaginationJumperProps = {
   format?: (page: number) => string;
-} & Omit<ComponentProps<"select">, "value" | "onChange">;
+} & Omit<React.ComponentProps<"select">, "value" | "onChange">;
 
 Pagination.Jumper = function PaginationJumper({
   format,
@@ -213,7 +210,10 @@ Pagination.Jumper = function PaginationJumper({
   ...props
 }: PaginationJumperProps) {
   const { current, totalPages, goTo } = usePagination();
-
+  const pages = React.useMemo(
+    () => Array.from({ length: totalPages }, (_, i) => i + 1),
+    [totalPages],
+  );
   return (
     <select
       {...props}
@@ -225,9 +225,9 @@ Pagination.Jumper = function PaginationJumper({
         className,
       )}
     >
-      {Array.from({ length: totalPages }, (_, i) => (
-        <option key={i + 1} value={i + 1}>
-          {format ? format(i + 1) : `Page ${i + 1}`}
+      {pages.map((page) => (
+        <option key={page} value={page}>
+          {format ? format(page) : `Page ${page}`}
         </option>
       ))}
     </select>
@@ -251,8 +251,8 @@ export type PaginationIndicatorProps = {
   variant?: keyof typeof indicatorClass;
   visibleCount?: number;
   slotProps?: {
-    root?: HTMLAttrs<ComponentProps<"div">>;
-    item?: HTMLAttrs<ComponentProps<"button">>;
+    root?: HTMLAttrs<React.ComponentProps<"div">>;
+    item?: HTMLAttrs<React.ComponentProps<"button">>;
   };
 };
 Pagination.Indicator = function PaginationIndicator({
@@ -261,12 +261,12 @@ Pagination.Indicator = function PaginationIndicator({
   slotProps,
 }: PaginationIndicatorProps) {
   const { current, totalPages, goTo } = usePagination();
-  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const [startIndex, setStartIndex] = useState(0);
+  const itemRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
+  const [startIndex, setStartIndex] = React.useState(0);
   const viewCount = Math.min(visibleCount, totalPages);
   const curIdx = current - 1;
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (totalPages <= viewCount) {
       setStartIndex(0);
       return;
@@ -285,10 +285,18 @@ Pagination.Indicator = function PaginationIndicator({
     e.preventDefault();
     let target = current;
     switch (e.key) {
-      case "ArrowLeft": target = current - 1; break;
-      case "ArrowRight": target = current + 1; break;
-      case "Home": target = 1; break;
-      case "End": target = totalPages; break;
+      case "ArrowLeft":
+        target = current - 1;
+        break;
+      case "ArrowRight":
+        target = current + 1;
+        break;
+      case "Home":
+        target = 1;
+        break;
+      case "End":
+        target = totalPages;
+        break;
     }
     const next = Math.max(1, Math.min(target, totalPages));
     goTo(next);
@@ -320,7 +328,9 @@ Pagination.Indicator = function PaginationIndicator({
             {...slotProps?.item}
             key={page}
             data-active={active || undefined}
-            ref={(el) => { itemRefs.current[idx] = el; }}
+            ref={(el) => {
+              itemRefs.current[idx] = el;
+            }}
             role="tab"
             tabIndex={active ? 0 : -1}
             aria-selected={active}

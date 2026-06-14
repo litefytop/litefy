@@ -1,0 +1,56 @@
+---
+title: Image 图片
+description: 支持加载状态、占位符和错误处理的图片组件
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add image" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="image" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+显示具有适当样式和宽高比的图片。
+
+<ComponentPreview 
+  name="image-basic"
+  title="基础用法"
+/>
+
+### 加载状态
+
+处理加载和错误状态，支持占位符和回退元素。
+
+<ComponentPreview 
+  name="image-loading"
+  title="加载状态"
+/>
+
+## API 参考
+
+### Image
+
+带有加载状态管理的图片组件。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `src` | `string` | - | 图片源 URL |
+| `alt` | `string` | - | 图片的替代文本 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类，支持字符串、数组、对象、布尔值等多种格式。 |
+| `fallback` | `React.ReactNode` | - | 图片加载失败时显示的自定义回退元素 |
+| `placeholderSrc` | `string` | - | 加载期间显示的占位图片 URL |

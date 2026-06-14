@@ -1,7 +1,7 @@
 "use client";
 
 import { Children, isValidElement } from "react";
-import { cn, ClassNameValue } from "@/lib";
+import { type ClassNameValue, cn } from "@/lib";
 
 type HTMLAttrs<T> = T & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;

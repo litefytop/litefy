@@ -26,7 +26,6 @@ const lockScroll = () => {
     const html = document.documentElement;
     originalHtmlOverflow = html.style.overflow;
     originalHtmlScrollbarGutter = html.style.scrollbarGutter;
-
     html.style.scrollbarGutter = "stable";
     html.style.overflow = "hidden";
   }
@@ -46,20 +45,40 @@ const unlockScroll = () => {
   }
 };
 
-const drawerClass = {
-  left: "left-0 top-0 h-full w-md",
-  right: "right-0 top-0 h-full w-md",
-  top: "left-0 top-0 w-full h-112",
-  bottom: "left-0 bottom-0 w-full h-112",
+type HTMLAttrs<T> = T & {
+  [key: `data-${string}`]: string | number | null | undefined | true;
+  className?: ClassNameValue;
 };
 
-export type DrawerProps = React.ComponentProps<"div"> & {
+export type DrawerProps = React.ComponentProps<"dialog"> & {
   className?: ClassNameValue;
   placement?: "left" | "right" | "top" | "bottom";
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  "aria-label"?: string;
-  "aria-labelledby"?: string;
+  onClose?: () => void;
+  slotProps?: {
+    content?: HTMLAttrs<Omit<React.ComponentProps<"div">, "style">>;
+  };
+};
+
+const placementStyles = {
+  left: "left-0 top-0 bottom-0",
+  right: "right-0 top-0 bottom-0",
+  top: "left-0 right-0 top-0",
+  bottom: "left-0 right-0 bottom-0",
+};
+
+const getInitialTransform = (placement: DrawerProps["placement"]) => {
+  switch (placement) {
+    case "left":
+      return "translateX(-100%)";
+    case "right":
+      return "translateX(100%)";
+    case "top":
+      return "translateY(-100%)";
+    case "bottom":
+      return "translateY(100%)";
+    default:
+      return "";
+  }
 };
 
 function Drawer({
@@ -67,21 +86,106 @@ function Drawer({
   className,
   placement = "right",
   children,
-  open: controlledOpen,
-  onOpenChange,
-  "aria-label": ariaLabel,
-  "aria-labelledby": ariaLabelledby,
+  onClose,
+  slotProps,
   ...props
-}: DrawerProps & { ref?: React.Ref<HTMLDivElement> }) {
-  const [internalOpen, setInternalOpen] = React.useState(false);
-  const isControlled = controlledOpen !== undefined;
-  const open = isControlled ? controlledOpen : internalOpen;
+}: DrawerProps) {
+  const _ref = React.useRef<HTMLDialogElement>(null);
+  const isOpenRef = React.useRef(false);
+  const [isVisible, setIsVisible] = React.useState(false);
 
-  const drawerRef = React.useRef<HTMLDivElement>(null);
-  const previousFocusRef = React.useRef<HTMLElement | null>(null);
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key !== "Tab") return;
+    const dialog = _ref.current;
+    if (!dialog) return;
+    const focusable = Array.from(
+      dialog.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      ),
+    ).filter((el) => el.offsetParent !== null);
+    if (focusable.length === 0) {
+      e.preventDefault();
+      return;
+    }
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey) {
+      if (
+        document.activeElement === first ||
+        !dialog.contains(document.activeElement)
+      ) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (
+        document.activeElement === last ||
+        !dialog.contains(document.activeElement)
+      ) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  };
 
-  const setRefs = (element: HTMLDivElement | null) => {
-    drawerRef.current = element;
+  const closeWithAnimation = () => {
+    const dialog = _ref.current;
+    if (!dialog?.open) return;
+    setIsVisible(false);
+  };
+
+  React.useEffect(() => {
+    const dialog = _ref.current;
+    if (!dialog) return;
+
+    const observer = new MutationObserver(() => {
+      const nowOpen = dialog.hasAttribute("open");
+      if (nowOpen && !isOpenRef.current) {
+        lockScroll();
+        isOpenRef.current = true;
+        setIsVisible(true);
+      } else if (!nowOpen && isOpenRef.current) {
+        unlockScroll();
+        isOpenRef.current = false;
+        onClose?.();
+      }
+    });
+
+    observer.observe(dialog, { attributes: true, attributeFilter: ["open"] });
+
+    if (dialog.hasAttribute("open")) {
+      lockScroll();
+      isOpenRef.current = true;
+      setIsVisible(true);
+    }
+
+    return () => {
+      observer.disconnect();
+      if (isOpenRef.current) unlockScroll();
+    };
+  }, [onClose]);
+
+  React.useEffect(() => {
+    const dialog = _ref.current;
+    if (!dialog) return;
+    const handleTransitionEnd = () => {
+      if (!isVisible && dialog.open) {
+        dialog.close();
+      }
+    };
+    dialog.addEventListener("transitionend", handleTransitionEnd);
+    return () =>
+      dialog.removeEventListener("transitionend", handleTransitionEnd);
+  }, [isVisible]);
+
+  React.useEffect(() => {
+    return () => {
+      if (isOpenRef.current) unlockScroll();
+    };
+  }, []);
+
+  const setRefs = (element: HTMLDialogElement | null) => {
+    _ref.current = element;
     if (typeof ref === "function") {
       ref(element);
     } else if (ref) {
@@ -89,117 +193,43 @@ function Drawer({
     }
   };
 
-  const getFocusableElements = React.useCallback(() => {
-    if (!drawerRef.current) return [];
-    const focusableSelectors = [
-      "a[href]",
-      "button:not([disabled])",
-      "input:not([disabled])",
-      "textarea:not([disabled])",
-      "select:not([disabled])",
-      '[tabindex]:not([tabindex="-1"])',
-    ];
-    return Array.from(
-      drawerRef.current.querySelectorAll<HTMLElement>(
-        focusableSelectors.join(","),
-      ),
-    ).filter((el) => el.offsetParent !== null);
-  }, []);
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key !== "Tab") return;
-    const focusable = getFocusableElements();
-    if (focusable.length === 0) {
-      e.preventDefault();
-      return;
-    }
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    const active = document.activeElement;
-
-    if (e.shiftKey) {
-      if (active === first || !drawerRef.current?.contains(active as Node)) {
-        e.preventDefault();
-        last.focus();
-      }
-    } else {
-      if (active === last || !drawerRef.current?.contains(active as Node)) {
-        e.preventDefault();
-        first.focus();
-      }
-    }
-  };
-
-  React.useEffect(() => {
-    if (open) {
-      lockScroll();
-      previousFocusRef.current = document.activeElement as HTMLElement;
-      const timer = setTimeout(() => {
-        const focusable = getFocusableElements();
-        if (focusable.length > 0) {
-          focusable[0].focus();
-        } else {
-          drawerRef.current?.focus();
-        }
-      }, 0);
-      return () => {
-        clearTimeout(timer);
-        unlockScroll();
-      };
-    }
-    if (previousFocusRef.current) {
-      previousFocusRef.current.focus();
-      previousFocusRef.current = null;
-    }
-  }, [open, getFocusableElements]);
-
-  React.useEffect(() => {
-    if (!open) return;
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        if (!isControlled) setInternalOpen(false);
-        onOpenChange?.(false);
-      }
-    };
-    window.addEventListener("keydown", handleEsc);
-    return () => window.removeEventListener("keydown", handleEsc);
-  }, [open, isControlled, onOpenChange]);
-
-  const handleBackdropClick = () => {
-    if (!isControlled) setInternalOpen(false);
-    onOpenChange?.(false);
-  };
-  const handleContentClick = (e: React.MouseEvent) => e.stopPropagation();
-
-  if (!open) return null;
+  const transformValue = isVisible
+    ? "translate(0, 0)"
+    : getInitialTransform(placement);
 
   return (
-    <div
-      role="presentation"
-      aria-hidden="true"
-      className="fixed inset-0 z-50"
-      onClick={handleBackdropClick}
+    <dialog
+      ref={setRefs}
+      onKeyDown={handleKeyDown}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) closeWithAnimation();
+      }}
+      onCancel={(e) => {
+        e.preventDefault();
+        closeWithAnimation();
+      }}
+      className={cn("bg-transparent backdrop:bg-muted/50", className)}
+      {...props}
     >
-      <div className="absolute inset-0 bg-muted/50" />
       <div
-        {...props}
-        ref={setRefs}
-        role="dialog"
-        aria-modal="true"
-        aria-label={ariaLabel}
-        aria-labelledby={ariaLabelledby}
-        tabIndex={-1}
-        onClick={handleContentClick}
-        onKeyDown={handleKeyDown}
+        data-orientation={
+          placement === "left" || placement === "right"
+            ? "vertical"
+            : "horizontal"
+        }
+        {...slotProps?.content}
         className={cn(
-          drawerClass[placement],
-          "fixed bg-background p-6 overflow-auto focus:outline-none",
-          className,
+          "fixed bg-background shadow-lg transition-transform duration-300 ease-out p-4 flex flex-col",
+          placementStyles[placement],
+          "data-[orientation=horizontal]:h-1/3 data-[orientation=horizontal]:w-full data-[orientation=horizontal]:items-center",
+          "data-[orientation=vertical]:w-1/4  data-[orientation=vertical]:h-full",
+          slotProps?.content?.className,
         )}
+        style={{ transform: transformValue }}
       >
         {children}
       </div>
-    </div>
+    </dialog>
   );
 }
 

@@ -1,12 +1,4 @@
-import {
-  type ComponentProps,
-  createContext,
-  type ReactNode,
-  useContext,
-  useId,
-  useRef,
-  useState,
-} from "react";
+import * as React from "react";
 import { type ClassNameValue, cn } from "@/lib";
 
 type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
@@ -26,9 +18,8 @@ type CheckboxGroupContextValue = {
   toggleValue: (v: string) => void;
   name?: string;
 };
-const CheckboxGroupContext = createContext<CheckboxGroupContextValue | null>(
-  null,
-);
+const CheckboxGroupContext =
+  React.createContext<CheckboxGroupContextValue | null>(null);
 
 export type CheckboxGroupProps<T extends string> = {
   defaultValue?: T[];
@@ -38,7 +29,7 @@ export type CheckboxGroupProps<T extends string> = {
   disabled?: boolean;
   name?: string;
   className?: ClassNameValue;
-  children?: ReactNode;
+  children?: React.ReactNode;
 } & Omit<React.ComponentProps<"fieldset">, "className">;
 
 function CheckboxGroup<T extends string>({
@@ -51,8 +42,9 @@ function CheckboxGroup<T extends string>({
   children,
   ...props
 }: CheckboxGroupProps<T>) {
-  const groupRef = useRef<HTMLFieldSetElement>(null);
-  const [uncontrolledValue, setUncontrolledValue] = useState<T[]>(defaultValue);
+  const groupRef = React.useRef<HTMLFieldSetElement>(null);
+  const [uncontrolledValue, setUncontrolledValue] =
+    React.useState<T[]>(defaultValue);
 
   const selectedArr = controlledValue ?? uncontrolledValue;
   const selectedSet = new Set(selectedArr);
@@ -146,10 +138,10 @@ export type CheckboxProps = {
   value?: string;
   disabled?: boolean;
   variant?: keyof typeof checkboxClass;
-  indicator?: (checked: boolean) => ReactNode;
+  indicator?: (checked: boolean) => React.ReactNode;
   name?: string;
-  children?: ReactNode;
-} & HTMLAttrs<ComponentProps<"input">>;
+  children?: React.ReactNode;
+} & HTMLAttrs<React.ComponentProps<"input">>;
 
 export const Checkbox = ({
   value,
@@ -165,10 +157,11 @@ export const Checkbox = ({
   id,
   ...props
 }: CheckboxProps) => {
-  const ctx = useContext(CheckboxGroupContext);
-  const fallbackId = useId();
+  const ctx = React.useContext(CheckboxGroupContext);
+  const fallbackId = React.useId();
   const _id = id ?? fallbackId;
-  const [uncontrolledChecked, setUncontrolledChecked] = useState(defaultChecked);
+  const [uncontrolledChecked, setUncontrolledChecked] =
+    React.useState(defaultChecked);
 
   let isChecked: boolean;
   if (ctx && value) {

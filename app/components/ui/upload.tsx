@@ -1,9 +1,7 @@
-import * as React from "react";
-import { cn, ClassNameValue } from "@/lib";
-import { ComponentProps } from "react";
+import { type ClassNameValue, cn } from "@/lib";
 
 export type UploadProps = Omit<
-  ComponentProps<"input">,
+  React.ComponentProps<"input">,
   "type" | "className"
 > & {
   invalid?: boolean;

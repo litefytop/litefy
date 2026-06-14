@@ -1,6 +1,6 @@
 import { Check } from "lucide-react";
 
-import { type ComponentProps, useCallback, useRef, useState } from "react";
+import * as React from "react";
 import { type ClassNameValue, cn } from "@/lib";
 
 type HTMLAttrs<T> = T & {
@@ -22,12 +22,12 @@ export type RadioProps<T extends string> = {
   onValueChange?: (value: T) => void;
   variant?: keyof typeof radioClass;
   slotProps?: {
-    content?: HTMLAttrs<Omit<ComponentProps<"div">, "children">>;
+    content?: HTMLAttrs<Omit<React.ComponentProps<"div">, "children">>;
     options?: Omit<RadioItemProps, "checked" | "value" | "label" | "variant">;
   };
   options: Omit<RadioItemProps, "checked" | "variant">[];
 } & Omit<
-  ComponentProps<"input">,
+  React.ComponentProps<"input">,
   "value" | "onChange" | "checked" | "children" | "className" | "type" | "style"
 >;
 
@@ -44,8 +44,8 @@ export function Radio<T extends string>({
   variant,
   ...props
 }: RadioProps<T>) {
-  const groupRef = useRef<HTMLDivElement>(null);
-  const [internalValue, setInternalValue] = useState<T | undefined>(
+  const groupRef = React.useRef<HTMLDivElement>(null);
+  const [internalValue, setInternalValue] = React.useState<T | undefined>(
     defaultValue,
   );
 
@@ -152,7 +152,7 @@ export function Radio<T extends string>({
 }
 
 type RadioItemProps = Omit<
-  ComponentProps<"button">,
+  React.ComponentProps<"button">,
   "value" | "onChange" | "checked" | "children"
 > & {
   checked: boolean;
@@ -179,13 +179,13 @@ const RadioItem = ({
 }: RadioItemProps) => {
   const disabled = controlledDisable;
 
-  const handleClick = useCallback(() => {
+  const handleClick = React.useCallback(() => {
     if (disabled || checked) return;
     onValueChange?.(value);
     onCheckedChange?.(true);
   }, [disabled, value, onValueChange, onCheckedChange, checked]);
 
-  const handleKeyDown = useCallback(
+  const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent) => {
       if (e.key === " " || e.key === "Enter") {
         e.preventDefault();

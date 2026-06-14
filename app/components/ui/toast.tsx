@@ -1,19 +1,19 @@
 "use client";
 
+import {
+  CircleCheck,
+  CircleHelp,
+  Loader2,
+  TriangleAlert,
+  X,
+} from "lucide-react";
 import React, {
   useCallback,
   useEffect,
   useState,
   useSyncExternalStore,
 } from "react";
-import { ClassNameValue, cn } from "@/lib";
-import {
-  CircleCheck,
-  CircleHelp,
-  TriangleAlert,
-  X,
-  Loader2,
-} from "lucide-react";
+import { type ClassNameValue, cn } from "@/lib";
 
 export type ToastType = "success" | "error" | "warning" | "info" | "loading";
 
@@ -225,10 +225,8 @@ const positionClasses: Record<ToastPosition, string> = {
   "bottom-center": "bottom-4 left-1/2 -translate-x-1/2 items-center",
 };
 
-export interface ToastContainerProps extends Omit<
-  React.ComponentProps<"div">,
-  "className"
-> {
+export interface ToastContainerProps
+  extends Omit<React.ComponentProps<"div">, "className"> {
   position?: ToastPosition;
   visibleToasts?: number;
   className?: ClassNameValue;
@@ -269,12 +267,12 @@ function ToastContainer({
   }
 
   return (
-    <div
+    <section
       {...props}
       data-expanded={isExpanded}
       data-y-position={yPosition}
       className={cn(
-        "fixed z-100 w-full max-w-[420px]",
+        "fixed z-100 w-full max-w-105",
         positionClasses[position],
         !isExpanded && "*:absolute *:left-0 *:right-0",
         isExpanded && "flex flex-col gap-4",
@@ -288,7 +286,6 @@ function ToastContainer({
         "data-[expanded=false]:[&>*:nth-child(n+4)]:scale-100",
         className,
       )}
-      role="region"
       aria-label="Notifications"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -296,18 +293,18 @@ function ToastContainer({
       {filteredToasts.map((toast) => (
         <ToastItem key={toast.id} {...toast} isExpanded={isExpanded} />
       ))}
-    </div>
+    </section>
   );
 }
 
 /**
  * Toaster static methods
- * 
+ *
  * @example
  * // 1. Initialize in root component (once)
  * ```tsx
  * import { Toaster } from "@/component";
- * 
+ *
  * function App() {
  *   return (
  *     <div>
@@ -316,7 +313,7 @@ function ToastContainer({
  *   );
  * }
  * ```
- * 
+ *
  * @example
  * // 2. Use in any component
  * ```tsx
@@ -326,7 +323,7 @@ function ToastContainer({
  * Toaster.info({ title: "Info" });
  * Toaster.loading({ title: "Loading..." });
  * ```
- * 
+ *
  * @remarks
  * **Important:**
  * - `Toaster` component should be initialized only **once** in the root component

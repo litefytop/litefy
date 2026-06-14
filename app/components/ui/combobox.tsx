@@ -368,7 +368,7 @@ export function Combobox({
         {suggestions.length > 0 ? (
           suggestions.map((option, idx) => (
             <li
-              key={`${option}_${_id}`}
+              key={option}
               data-active={idx === highlightIndex || undefined}
               onClick={() => handleSelect(option)}
               onKeyDown={(e) => {

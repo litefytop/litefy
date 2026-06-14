@@ -8,7 +8,6 @@ export * from "./date-picker";
 export * from "./dialog";
 export * from "./drawer";
 export * from "./dropdown";
-export * from "./empty";
 export * from "./form";
 export * from "./image";
 export * from "./input";

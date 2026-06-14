@@ -1,8 +1,7 @@
-import type { ComponentProps } from "react";
 import * as React from "react";
 import { type ClassNameValue, cn } from "@/lib";
 
-export type DatePickerProps = Omit<ComponentProps<"input">, "type"> & {
+export type DatePickerProps = Omit<React.ComponentProps<"input">, "type"> & {
   className?: ClassNameValue;
   invalid?: boolean;
   placeholder?: string;

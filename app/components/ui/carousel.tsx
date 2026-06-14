@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  Children,
-  isValidElement,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import * as React from "react";
 import { type ClassNameValue, cn } from "@/lib";
 
 type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
@@ -38,26 +31,26 @@ export function Carousel({
   loop = false,
   onChange,
 }: CarouselProps) {
-  const slides = Children.toArray(children).filter(isValidElement);
+  const slides = React.Children.toArray(children).filter(React.isValidElement);
   const totalSlides = slides.length;
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const rootRef = useRef<HTMLElement>(null);
-  const innerRef = useRef<HTMLUListElement>(null);
-  const isTransitioning = useRef(false);
-  const currentIndexRef = useRef(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const dragStartX = useRef(0);
-  const dragCurrentX = useRef(0);
-  const dragStartTranslate = useRef(0);
+  const timerRef = React.useRef<NodeJS.Timeout | null>(null);
+  const rootRef = React.useRef<HTMLElement>(null);
+  const innerRef = React.useRef<HTMLUListElement>(null);
+  const isTransitioning = React.useRef(false);
+  const currentIndexRef = React.useRef(0);
+  const [isDragging, setIsDragging] = React.useState(false);
+  const dragStartX = React.useRef(0);
+  const dragCurrentX = React.useRef(0);
+  const dragStartTranslate = React.useRef(0);
 
   const safeInterval = Math.max(100, autoPlayInterval);
   const currentIndex = Math.max(0, Math.min(activeIndex, totalSlides - 1));
 
-  useEffect(() => {
+  React.useEffect(() => {
     currentIndexRef.current = currentIndex;
   }, [currentIndex]);
 
-  const goNext = useCallback(() => {
+  const goNext = React.useCallback(() => {
     if (isTransitioning.current || totalSlides <= 1) return;
     const nextIdx = currentIndexRef.current + 1;
     const targetIdx =
@@ -67,7 +60,7 @@ export function Carousel({
     }
   }, [totalSlides, loop, onChange]);
 
-  const goPrev = useCallback(() => {
+  const goPrev = React.useCallback(() => {
     if (isTransitioning.current || totalSlides <= 1) return;
     const prevIdx = currentIndexRef.current - 1;
     const targetIdx = prevIdx < 0 ? (loop ? totalSlides - 1 : 0) : prevIdx;
@@ -76,20 +69,20 @@ export function Carousel({
     }
   }, [totalSlides, loop, onChange]);
 
-  const clearTimer = useCallback(() => {
+  const clearTimer = React.useCallback(() => {
     if (timerRef.current) {
       clearInterval(timerRef.current);
       timerRef.current = null;
     }
   }, []);
 
-  const startTimer = useCallback(() => {
+  const startTimer = React.useCallback(() => {
     if (!autoPlay) return;
     clearTimer();
     timerRef.current = setInterval(goNext, safeInterval);
   }, [autoPlay, goNext, safeInterval, clearTimer]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (totalSlides <= 1) {
       clearTimer();
       return;
@@ -114,7 +107,7 @@ export function Carousel({
     };
   }, [autoPlay, startTimer, clearTimer, totalSlides]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const inner = innerRef.current;
     if (!inner) return;
     let eventFired = false;
@@ -127,7 +120,7 @@ export function Carousel({
     return () => inner.removeEventListener("transitionend", onTransitionEnd);
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (totalSlides <= 1) return;
     isTransitioning.current = true;
     const timeoutId = setTimeout(() => {
@@ -219,7 +212,7 @@ export function Carousel({
       >
         {slides.map((child, idx) => {
           const key =
-            isValidElement(child) && child.key != null ? child.key : idx;
+            React.isValidElement(child) && child.key != null ? child.key : idx;
           return (
             <li
               key={key}
