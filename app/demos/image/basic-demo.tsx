@@ -16,6 +16,7 @@ export default function ImageLoadingDemo() {
         key={reloadKey}
         src="https://picsum.photos/seed/1/800/400"
         alt="Random landscape image"
+        className="w-200 h-100"
       />
       <Button onClick={handleReload} variant="outline">
         <RefreshCwIcon className="w-4 h-4" /> Reload

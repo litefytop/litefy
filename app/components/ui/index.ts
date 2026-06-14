@@ -11,7 +11,6 @@ export * from "./dropdown";
 export * from "./form";
 export * from "./image";
 export * from "./input";
-export * from "./loading";
 export * from "./number-field";
 export * from "./paginated-viewer";
 export * from "./pagination";

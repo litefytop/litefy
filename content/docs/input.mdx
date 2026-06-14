@@ -1,0 +1,74 @@
+---
+title: Input
+description: An input component with leading/trailing slot support and validation states
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add input" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="input" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Input fields for different data types.
+
+<ComponentPreview 
+  name="input-basic"
+  title="Basic Usage"
+/>
+
+### With Icons
+
+Input fields with leading icon support.
+
+<ComponentPreview 
+  name="input-with-icons"
+  title="With Icons"
+/>
+
+### Invalid State
+
+Input fields with validation error state.
+
+<ComponentPreview 
+  name="input-invalid"
+  title="Invalid State"
+/>
+
+## API Reference
+
+### Input
+
+The input component with slot and validation support.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `type` | `'text' \| 'email' \| 'url' \| 'tel' \| 'search'` | `'text'` | Input type |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `leading` | `ReactNode` | - | Leading slot content (e.g., icons) |
+| `trailing` | `ReactNode` | - | Trailing slot content (e.g., buttons, icons) |
+| `invalid` | `boolean` | `false` | Whether the input is in an invalid state |
+| `slotProps` | `InputSlotProps` | - | Slot props for customization |
+
+### InputSlotProps
+
+| Slot | Type | Description |
+|------|------|-------------|
+| `group` | `HTMLAttributes<HTMLDivElement>` | Props for the input group container |
+| `leading` | `HTMLAttributes<HTMLSpanElement>` | Props for the leading slot container |
+| `trailing` | `HTMLAttributes<HTMLSpanElement>` | Props for the trailing slot container |

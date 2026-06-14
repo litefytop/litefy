@@ -45,6 +45,12 @@ import ImageBasicDemo from "./image/basic-demo";
 import imageBasicCode from "./image/basic-demo.tsx?raw";
 import ImageLoadingDemo from "./image/loading-demo";
 import imageLoadingCode from "./image/loading-demo.tsx?raw";
+import InputBasicDemo from "./input/basic-demo";
+import inputBasicCode from "./input/basic-demo.tsx?raw";
+import InputInvalidDemo from "./input/invalid-demo";
+import inputInvalidCode from "./input/invalid-demo.tsx?raw";
+import InputWithIconsDemo from "./input/with-icons-demo";
+import inputWithIconsCode from "./input/with-icons-demo.tsx?raw";
 
 export interface DemoItem {
   component: ComponentType;
@@ -143,5 +149,17 @@ export const demos: Record<string, DemoItem> = {
   "image-loading": {
     component: ImageLoadingDemo,
     code: imageLoadingCode,
+  },
+  "input-basic": {
+    component: InputBasicDemo,
+    code: inputBasicCode,
+  },
+  "input-with-icons": {
+    component: InputWithIconsDemo,
+    code: inputWithIconsCode,
+  },
+  "input-invalid": {
+    component: InputInvalidDemo,
+    code: inputInvalidCode,
   },
 };
