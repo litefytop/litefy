@@ -1,7 +1,7 @@
 "use client";
 
 import { Bold, Italic, Underline } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Checkbox } from "@/ui/checkbox";
 
 export default function CheckboxToggleDemo() {
   return (

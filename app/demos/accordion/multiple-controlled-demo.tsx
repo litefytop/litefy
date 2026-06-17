@@ -1,8 +1,8 @@
 "use client";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import { Accordion } from "@/components/ui/accordion";
-import { Switch } from "@/components/ui/switch";
+import { Accordion } from "@/ui/accordion";
+import { Switch } from "@/ui/switch";
 
 const items = [
   {

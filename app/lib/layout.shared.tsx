@@ -21,7 +21,7 @@ export function baseOptions(_currentLocale: string): BaseLayoutProps {
     nav: {
       title: (
         <div className="flex items-center gap-2">
-          <img src={logo} alt="Litefy UI" className="size-5" />
+          <img src={logo} alt="Litefy UI" className="size-8" />
           {appName}
         </div>
       ),

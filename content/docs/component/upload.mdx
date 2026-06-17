@@ -1,0 +1,64 @@
+---
+title: Upload
+description: A styled file input component with invalid state support
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add upload" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="upload" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+A simple file upload input.
+
+<ComponentPreview 
+  name="upload-basic"
+/>
+
+### Invalid State
+
+File upload input with error state styling for form validation.
+
+<ComponentPreview 
+  name="upload-invalid"
+/>
+
+### File Type Restrictions
+
+Restrict accepted file types using the native `accept` and `multiple` attributes.
+
+<ComponentPreview 
+  name="upload-multiple"
+/>
+
+## API Reference
+
+### Upload
+
+A styled file input component that supports all native file input attributes.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `invalid` | `boolean` | `false` | Marks the upload input as invalid for form validation |
+| `accept` | `string` | - | Native file type filter (e.g. `image/*`, `.pdf,.doc`) |
+| `multiple` | `boolean` | - | Allow selecting multiple files |
+| `disabled` | `boolean` | - | Disable the file input |
+| `name` | `string` | - | Input name for form submission |
+| `onChange` | `(e: React.ChangeEvent<HTMLInputElement>) => void` | - | Callback triggered when files are selected |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |

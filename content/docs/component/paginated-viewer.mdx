@@ -1,0 +1,50 @@
+---
+title: PaginatedViewer
+description: A pagination viewer component that displays one slide at a time
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add paginated-viewer" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="paginated-viewer" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Navigate through a multi-page document with previous/next buttons and page jump functionality.
+
+<ComponentPreview 
+  name="paginated-viewer-with-jump"
+/>
+
+## API Reference
+
+### PaginatedViewer
+
+The main container component that displays one child at a time based on the active index.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Slide elements to paginate through |
+| `activeIndex` | `number` | - | Index of the currently visible slide |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+
+### slotProps
+
+| Slot | Type | Description |
+|------|------|-------------|
+| `slide` | `React.ComponentProps<"div">` | Props for the slide wrapper div |

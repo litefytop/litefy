@@ -1,0 +1,68 @@
+---
+title: ScrollShadow
+description: A scrollable container with gradient shadow indicators for better scroll awareness
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add scroll-shadow" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="scroll-shadow" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+A scrollable container with bottom shadow indicator.
+
+<ComponentPreview 
+  name="scroll-shadow-basic"
+/>
+
+### Shadow Position
+
+Control where the shadow appears: top, bottom, left, or right.
+
+<ComponentPreview 
+  name="scroll-shadow-position"
+/>
+
+### Custom Size
+
+Adjust the shadow gradient size for different visual effects.
+
+<ComponentPreview 
+  name="scroll-shadow-size"
+/>
+
+## API Reference
+
+### ScrollShadow
+
+A scrollable container with gradient shadow indicators.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Scrollable content |
+| `position` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'bottom'` | Position of the shadow indicator |
+| `size` | `string` | `'64px'` | Size of the shadow gradient |
+| `slotProps` | `ScrollShadowSlotProps` | - | Slot props for customizing sub-elements |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+
+### ScrollShadowSlotProps
+
+| Slot | Type | Description |
+|------|------|-------------|
+| `shadow` | `React.ComponentProps<"div">` | Props for the shadow overlay element |

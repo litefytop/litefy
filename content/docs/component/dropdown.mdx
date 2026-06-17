@@ -1,0 +1,106 @@
+---
+title: Dropdown
+description: A dropdown menu component with keyboard navigation
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add dropdown" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="dropdown" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Basic dropdown menu with icon items and separator.
+
+<ComponentPreview 
+  name="dropdown-basic"
+/>
+
+### With Labels
+
+Dropdown with grouped items using labels.
+
+<ComponentPreview 
+  name="dropdown-label"
+/>
+
+### Alignment
+
+Control dropdown alignment with alignX and alignY props.
+
+<ComponentPreview 
+  name="dropdown-alignment"
+/>
+
+## API Reference
+
+### Dropdown
+
+The main container component.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Dropdown content |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+
+### Dropdown.Trigger
+
+The trigger button that opens the dropdown.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Trigger content |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+
+### Dropdown.Content
+
+The dropdown menu content.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Menu items |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. To adjust the gap between the content and the trigger, add margin utility classes (e.g. `m-2`) here. |
+| `alignX` | `'start' \| 'center' \| 'end'` | `'center'` | Horizontal alignment |
+| `alignY` | `'start' \| 'center' \| 'end'` | `'end'` | Vertical alignment |
+| `popover` | `'auto' \| 'manual' \| 'hint'` | `'auto'` | Popover behavior |
+
+### Dropdown.Item
+
+Individual menu item.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Item content |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+
+### Dropdown.Label
+
+Label for grouping items.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Label text |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+
+### Dropdown.Separator
+
+Visual separator between items.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |

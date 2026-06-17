@@ -1,0 +1,83 @@
+---
+title: Switch 开关
+description: 支持受控状态、插槽级定制以及原生输入特性的开关组件
+---
+
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add switch" />
+
+</Tab>
+
+<Tab value="手动">
+
+<SourceCode component="switch" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+带有默认选中状态的简单开关组件。
+
+<ComponentPreview 
+  name="switch-basic"
+/>
+
+### 受控模式
+
+通过受控状态在外部管理开关状态。
+
+<ComponentPreview 
+  name="switch-controlled"
+/>
+
+### 禁用
+
+展示开关在开启和关闭两种状态下的禁用样式。
+
+<ComponentPreview 
+  name="switch-disabled"
+/>
+
+### 自定义样式
+
+通过 `slotProps` 独立定制包装层、滑轨和滑块，改变尺寸、颜色和形状。
+
+<ComponentPreview 
+  name="switch-custom-styling"
+/>
+
+## API 参考
+
+### Switch
+
+基于复选框输入构建的开关组件，支持通过 `slotProps` 进行部件级定制。
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | 渲染在开关旁边的标签内容 |
+| `checked` | `boolean` | - | 受控的选中状态 |
+| `defaultChecked` | `boolean` | `false` | 非受控模式下的默认选中状态 |
+| `onCheckedChange` | `(checked: boolean) => void` | - | 选中状态变化时触发的回调函数 |
+| `disabled` | `boolean` | `false` | 禁用开关并应用 inert 样式 |
+| `name` | `string` | - | 用于表单提交的输入名称 |
+| `value` | `string` | - | 用于表单提交的输入值 |
+| `slotProps` | `SwitchSlotProps` | - | 转发到包装层、滑轨和滑块插槽的属性 |
+
+此外，其他原生 `<input type="checkbox">` 的属性（除 `type` 和 `className` 外）会展开到底层 input 元素。
+
+### SwitchSlotProps
+
+| 插槽 | 类型 | 描述 |
+|------|------|-------------|
+| `wrapper` | `HTMLAttrs<Omit<React.ComponentProps<"label">, "htmlFor">>` | 外层 `<label>` 元素的属性 |
+| `track` | `HTMLAttrs<React.ComponentProps<"span">>` | 滑轨元素的属性。开启时会接收 `data-checked` |
+| `thumb` | `HTMLAttrs<React.ComponentProps<"span">>` | 滑块元素的属性 |

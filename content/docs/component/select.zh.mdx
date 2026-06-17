@@ -1,0 +1,78 @@
+---
+title: Select 选择器
+description: 灵活的选择器组件，支持选项分组和验证状态
+---
+
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add select" />
+
+</Tab>
+
+<Tab value="手动">
+
+<SourceCode component="select" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+带有占位符和选项的基础选择器组件。
+
+<ComponentPreview 
+  name="select-basic"
+/>
+
+### 分组选项
+
+带有分组选项的选择器组件，用于更好地组织选项。
+
+<ComponentPreview 
+  name="select-grouped"
+/>
+
+### 无效状态
+
+显示表单验证无效状态的选择器组件。
+
+<ComponentPreview 
+  name="select-invalid"
+/>
+
+## API 参考
+
+### Select
+
+一个样式化的选择器组件，支持受控/非受控状态、选项分组和验证。
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+| `invalid` | `boolean` | `false` | 将选择器标记为无效状态，用于表单验证 |
+| `options` | `(SelectOption | SelectOptionGroup)[]` | - | 要显示的选项或选项组数组 |
+| `placeholder` | `string` | - | 未选择任何选项时显示的占位符文本 |
+| `value` | `string` | - | 受控模式下的选中值 |
+| `defaultValue` | `string` | - | 非受控模式下的默认选中值 |
+| `onChange` | `(e: React.ChangeEvent<HTMLSelectElement>) => void` | - | 选择变化时触发的回调函数 |
+
+### SelectOption
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|---------|-------------|
+| `label` | `string` | - | 选项的显示文本 |
+| `value` | `string` | - | 选项关联的值 |
+
+### SelectOptionGroup
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|---------|-------------|
+| `group` | `string` | - | 分组标签文本 |
+| `options` | `SelectOption[]` | - | 分组中的选项数组 |

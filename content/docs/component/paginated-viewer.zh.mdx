@@ -1,0 +1,50 @@
+---
+title: PaginatedViewer 分页查看器
+description: 一次显示一个幻灯片的分页查看器组件
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add paginated-viewer" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="paginated-viewer" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+通过上一页/下一页按钮和页面跳转功能浏览多页文档。
+
+<ComponentPreview 
+  name="paginated-viewer-with-jump"
+/>
+
+## API 参考
+
+### PaginatedViewer
+
+根据活动索引一次显示一个子元素的主要容器组件。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | 要分页的幻灯片元素 |
+| `activeIndex` | `number` | - | 当前可见幻灯片的索引 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类。支持字符串、数组、对象、布尔值等。 |
+
+### slotProps
+
+| Slot | Type | Description |
+|------|------|-------------|
+| `slide` | `React.ComponentProps<"div">` | 幻灯片包装 div 的属性 |

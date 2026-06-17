@@ -1,0 +1,114 @@
+---
+title: Pagination
+description: A flexible pagination component with multiple sub-components for navigation, sizing, and page jumping
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add pagination" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="pagination" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Basic pagination usage with navigation controls and page indicators.
+
+<ComponentPreview 
+  name="pagination-basic"
+/>
+
+## API Reference
+
+### Pagination
+
+The root pagination container that provides context to all sub-components.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `current` | `number` | - | Current page number |
+| `pageSize` | `number` | - | Number of items per page |
+| `total` | `number` | - | Total number of items |
+| `onPageChange` | `(page: number) => void` | - | Callback when page changes |
+| `onPageSizeChange` | `(size: number) => void` | - | Callback when page size changes |
+| `children` | `React.ReactNode` | - | Pagination sub-components |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+
+### Pagination.Description
+
+Displays pagination description text.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `format` | `(total: number, current: number, totalPages: number) => string` | - | Custom format function |
+
+### Pagination.Sizer
+
+Select dropdown for changing page size.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `options` | `number[]` | `[10, 20, 50, 100]` | Available page size options |
+| `format` | `(size: number) => string` | - | Custom format function for size display |
+
+### Pagination.Controls
+
+Navigation buttons for first, previous, next, and last page.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `'first' \| 'prev' \| 'next' \| 'last'` | - | Navigation button variant |
+
+### Pagination.Jumper
+
+Select dropdown for jumping to a specific page.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `format` | `(page: number) => string` | - | Custom format function for page display |
+
+### Pagination.Indicator
+
+Visual page indicator with multiple variants.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `'number' \| 'dot' \| 'bar'` | `'number'` | Visual variant for page indicators |
+| `visibleCount` | `number` | `5` | Number of visible page indicators |
+| `slotProps` | `PaginationIndicatorSlotProps` | - | Slot props for customizing sub-elements |
+
+### PaginationIndicatorSlotProps
+
+| Slot | Type | Description |
+|------|------|-------------|
+| `root` | `React.ComponentProps<"div">` | Props for the root container |
+| `item` | `React.ComponentProps<"button">` | Props for each page indicator button |
+
+### usePagination
+
+Hook to access pagination context from within Pagination component tree.
+
+Returns:
+- `current`: Current page number
+- `pageSize`: Items per page
+- `total`: Total items
+- `totalPages`: Total pages
+- `goTo(page)`: Navigate to specific page
+- `goPrev()`: Go to previous page
+- `goNext()`: Go to next page
+- `goFirst()`: Go to first page
+- `goLast()`: Go to last page
+- `setPageSize(size)`: Change page size

@@ -1,0 +1,87 @@
+---
+title: Radio
+description: A radio button component with segment variant support
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add radio" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="radio" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Basic radio buttons with individual and group modes.
+
+<ComponentPreview 
+  name="radio-basic"
+/>
+
+### Segment Variant
+
+Use segment variant for segmented control behavior.
+
+<ComponentPreview 
+  name="radio-segment"
+/>
+
+### Controlled Mode
+
+Manage radio group value externally with controlled state.
+
+<ComponentPreview 
+  name="radio-controlled"
+/>
+
+### Disabled
+
+Shows disabled state for individual radio and radio group.
+
+<ComponentPreview 
+  name="radio-disabled"
+/>
+
+## API Reference
+
+### Radio
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | The radio content |
+| `checked` | `boolean` | - | Controlled checked state |
+| `onValueChange` | `(checked: boolean) => void` | - | Callback when checked state changes |
+| `value` | `string` | - | Value for group mode |
+| `variant` | `'radio' \| 'segment'` | `'radio'` | Visual variant |
+| `indicator` | `(checked: boolean, wrapperClassName?: string) => React.ReactNode` | - | Custom indicator render function with wrapper className |
+| `disabled` | `boolean` | `false` | Disable the radio |
+| `name` | `string` | - | Input name |
+| `invalid` | `boolean` | `false` | Mark as invalid |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+
+### Radio.Group
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Radio items |
+| `value` | `T` | - | Controlled value |
+| `defaultValue` | `T` | - | Default value (uncontrolled) |
+| `onValueChange` | `(value: T) => void` | - | Callback when value changes |
+| `disabled` | `boolean` | `false` | Disable all children |
+| `invalid` | `boolean` | `false` | Mark as invalid |
+| `name` | `string` | - | Group name |
+| `variant` | `'radio' \| 'segment'` | `'radio'` | Visual variant for all children |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |

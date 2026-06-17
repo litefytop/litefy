@@ -1,0 +1,75 @@
+---
+title: NumberField
+description: A numeric input field with increment and decrement controls
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add number-field" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="number-field" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Basic number input with default values, range limits, and decimal steps.
+
+<ComponentPreview 
+  name="number-field-basic"
+/>
+
+### Invalid State
+
+Display validation errors using the `invalid` prop.
+
+<ComponentPreview 
+  name="number-field-invalid"
+/>
+
+### Controlled Mode
+
+Manage the value externally with controlled state.
+
+<ComponentPreview 
+  name="number-field-controlled"
+/>
+
+## API Reference
+
+### NumberField
+
+A numeric input field with built-in increment and decrement buttons.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `defaultValue` | `number \| string` | - | Initial value (uncontrolled mode) |
+| `value` | `number \| string \| null` | - | Current value (controlled mode) |
+| `onValueChange` | `(value: number \| null) => void \| (value: string) => void` | - | Value change handler. Returns `number \| null` when `positiveInteger=true`, otherwise `string` |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `invalid` | `boolean` | `false` | Whether the field is in an invalid state |
+| `min` | `number` | `0` (positiveInteger) or `-Infinity` | Minimum allowed value |
+| `max` | `number` | `Infinity` | Maximum allowed value |
+| `step` | `number` | `1` | Increment/decrement step size |
+| `positiveInteger` | `boolean` | `false` | Restrict to positive integers only. Changes value type to `number \| null` |
+| `disabled` | `boolean` | `false` | Disable the entire field |
+| `onBlur` | `React.FocusEventHandler<HTMLInputElement>` | - | Blur event handler |
+
+### slotProps
+
+| Slot | Type | Description |
+|------|------|-------------|
+| `group` | `React.ComponentProps<"div">` | Props for the wrapper div |
+| `step` | `React.ComponentProps<"button">` | Props for increment/decrement buttons |

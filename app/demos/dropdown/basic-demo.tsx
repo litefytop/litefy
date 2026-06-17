@@ -1,8 +1,8 @@
 "use client";
 
 import { Bell, LogOut, Settings } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Dropdown } from "@/components/ui/dropdown";
+import { Button } from "@/ui/button";
+import { Dropdown } from "@/ui/dropdown";
 
 export default function DropdownBasicDemo() {
   return (

@@ -1,8 +1,3 @@
-.anatomy-highlight {
-  outline: 3px solid var(--primary);
-  outline-offset: -2px;
-}
-
 .skeleton {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   background-color: hsl(var(--muted));
@@ -16,21 +11,4 @@
   50% {
     opacity: 0.5;
   }
-}
-
-.select-enhanced,
-.select-enhanced::picker(select) {
-  appearance: base-select;
-}
-
-.select-enhanced::picker(select) {
-
-  border-radius: calc(var(--radius) - 2px);
-  padding: 4px;
-  margin-block: 4px;
-  border: 1px solid var(--border);
-}
-
-.select-enhanced:open::picker-icon {
-  rotate: 180deg;
 }

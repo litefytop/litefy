@@ -1,2 +1,5 @@
+export * from "./component-preview";
+export * from "./mdx";
 export * from "./package-manager-tabs";
-export * from "./ui";
+export * from "./search";
+export * from "./source-code";

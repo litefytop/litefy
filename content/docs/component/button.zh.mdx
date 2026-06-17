@@ -1,0 +1,68 @@
+---
+title: Button 按钮
+description: 支持多种变体和加载状态的按钮组件
+---
+
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add button" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="button" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础变体
+
+不同的按钮变体适用于各种场景。
+
+<ComponentPreview 
+  name="button-basic"
+/>
+
+### 加载状态
+
+带有加载指示器和禁用状态的按钮。
+
+<ComponentPreview 
+  name="button-loading"
+/>
+
+### 带图标
+
+支持图标的按钮，增强视觉反馈。
+
+<ComponentPreview 
+  name="button-icon"
+/>
+
+## API 参考
+
+### Button
+
+按钮组件。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `'primary' \| 'destructive' \| 'outline' \| 'text'` | `'primary'` | 按钮视觉变体 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类，支持字符串、数组、对象、布尔值等多种格式。 |
+| `loadingConfig` | `ButtonLoadingConfig` | - | 加载状态配置 |
+
+### ButtonLoadingConfig
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `loading` | `boolean` | `false` | 按钮是否处于加载状态 |
+| `icon` | `React.ReactNode` | - | 自定义加载图标 |
