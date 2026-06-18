@@ -23,6 +23,23 @@ description: A multi-select component for selecting multiple options from a list
 
 ## Usage
 
+<Callout type="info" title="Native Alternative for Chrome 140+">
+  If you are targeting the latest Chrome (version 140 or above), the native
+  `<select>` element with `multiple` and `size={1}` provides comparable UX with
+  better performance out of the box. You can simply spread the props and
+  override the attributes:
+</Callout>
+
+```tsx
+<select {...props} multiple size={1}>
+  {options.map((opt) => (
+    <option key={opt.value} value={opt.value}>
+      {opt.label}
+    </option>
+  ))}
+</select>
+```
+
 ### Basic Usage
 
 A simple multi-select with a list of options.
@@ -61,7 +78,7 @@ A multi-select component that allows selecting multiple options.
 | `onChange` | `(values: string[]) => void` | - | Callback when selection changes |
 | `placeholder` | `string` | - | Placeholder text |
 | `invalid` | `boolean` | `false` | Whether the select is in invalid state |
-| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 
 ### SelectOption
 

@@ -5,7 +5,7 @@ import { createGetUrl } from "fumadocs-core/source";
 const getUrl = createGetUrl("/docs");
 
 export default {
-  ssr: true,
+  ssr: false,
   future: {
     v8_middleware: true,
     v8_viteEnvironmentApi: true,

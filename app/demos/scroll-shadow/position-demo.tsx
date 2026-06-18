@@ -14,13 +14,13 @@ export default function ScrollShadowPositionDemo() {
     <div className="grid grid-cols-2 gap-4">
       <div>
         <h3 className="text-sm font-medium mb-2">Top</h3>
-        <ScrollShadow position="top" className="h-48 border rounded-md">
+        <ScrollShadow edges="top" className="h-48 border rounded-md">
           {longContent}
         </ScrollShadow>
       </div>
       <div>
         <h3 className="text-sm font-medium mb-2">Bottom</h3>
-        <ScrollShadow position="bottom" className="h-48 border rounded-md">
+        <ScrollShadow edges="bottom" className="h-48 border rounded-md">
           {longContent}
         </ScrollShadow>
       </div>

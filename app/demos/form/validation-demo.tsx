@@ -16,10 +16,9 @@ export default function FormValidationDemo() {
         label="Username"
         description="At least 3 characters"
         validConfig={{
-          validate: (e) => {
-            const v = e.target.value;
-            if (v.length === 0) return "Username is required";
-            if (v.length < 3) return "Must be at least 3 characters";
+          validate: (value) => {
+            if (value.length === 0) return "Username is required";
+            if (value.length < 3) return "Must be at least 3 characters";
             return null;
           },
           trigger: "onChange",
@@ -31,10 +30,9 @@ export default function FormValidationDemo() {
         name="email"
         label="Email"
         validConfig={{
-          validate: (e) => {
-            const v = e.target.value;
-            if (v.length === 0) return "Email is required";
-            if (!/.+@.+\..+/.test(v)) return "Enter a valid email";
+          validate: (value) => {
+            if (value.length === 0) return "Email is required";
+            if (!/.+@.+\..+/.test(value)) return "Enter a valid email";
             return null;
           },
           trigger: "onBlur",

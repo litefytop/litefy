@@ -1,114 +1,79 @@
 "use client";
 
-import { Checkbox, Form, Input, Password, Radio, Select } from "@/ui";
+import { useRef } from "react";
+import {
+  Checkbox,
+  Form,
+  type FormRef,
+  type FormValues,
+  Input,
+  Radio,
+} from "@/ui";
 
-const countryOptions = [
-  { label: "United States", value: "us" },
-  { label: "United Kingdom", value: "uk" },
-  { label: "Canada", value: "ca" },
-  { label: "Australia", value: "au" },
-  { label: "Japan", value: "jp" },
-];
+export default function Demo() {
+  const formRef = useRef<FormRef>(null);
 
-export default function FormBasicDemo() {
+  const handleSubmit = async (values: FormValues) => {
+    console.log("submitted:", values);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    return true;
+  };
+
+  const loadData = () => {
+    formRef.current?.setValues({
+      name: "John",
+      email: "john@example.com",
+      interests: ["reading", "music"],
+      contact: "email",
+    });
+  };
+
   return (
-    <Form
-      className="w-sm space-y-4"
-      onSubmit={async () => {
-        await new Promise((r) => setTimeout(r, 800));
-        return true;
-      }}
-    >
-      <Form.Field name="name" label="Name">
-        {(field) => <Input {...field} placeholder="Enter your name" />}
-      </Form.Field>
+    <div>
+      <button type="button" onClick={loadData} className="mb-4">
+        Load data
+      </button>
 
-      <Form.Field
-        name="email"
-        label="Email"
-        description="We'll never share your email."
-      >
-        {(field) => (
-          <Input {...field} type="email" placeholder="you@example.com" />
-        )}
-      </Form.Field>
+      <Form ref={formRef} onSubmit={handleSubmit}>
+        <Form.Field name="name" label="Name">
+          {(field) => <Input {...field} placeholder="Enter your name" />}
+        </Form.Field>
 
-      <Form.Field
-        name="password"
-        label="Password"
-        description="At least 8 characters."
-      >
-        {(field) => <Password {...field} placeholder="••••••••" />}
-      </Form.Field>
+        <Form.Field name="email" label="Email">
+          {(field) => (
+            <Input {...field} type="email" placeholder="Enter your email" />
+          )}
+        </Form.Field>
 
-      <Form.Field name="country" label="Country">
-        {(field) => (
-          <Select
-            id={field.id}
-            name={field.name}
-            invalid={field.invalid}
-            onChange={(e) => field.onChange(e)}
-            onBlur={(e) => field.onBlur(e)}
-            options={countryOptions}
-            placeholder="Select a country"
-          />
-        )}
-      </Form.Field>
-
-      <Form.Field name="gender" label="Gender">
-        {(field) => (
-          <Radio.Group
-            name={field.name}
-            invalid={field.invalid}
-            defaultValue="male"
-            variant="segment"
-          >
-            <Radio value="male" variant="segment" className="rounded-l-full">
-              Male
-            </Radio>
-            <Radio value="female" variant="segment">
-              Female
-            </Radio>
-            <Radio value="other" variant="segment" className="rounded-r-full">
-              Other
-            </Radio>
-          </Radio.Group>
-        )}
-      </Form.Field>
-
-      <Form.Field
-        name="interests"
-        label="Interests"
-        description="Select all that apply."
-      >
-        {(field) => (
-          <Checkbox.Group
-            name={field.name}
-            invalid={field.invalid}
-            defaultValue={["frontend"]}
-          >
-            <Checkbox
-              value="frontend"
-              variant="toggle"
-              className="rounded-l-full"
-            >
-              Frontend
-            </Checkbox>
-            <Checkbox value="backend" variant="toggle">
-              Backend
-            </Checkbox>
-            <Checkbox
-              value="devops"
-              variant="toggle"
-              className="rounded-r-full"
-            >
-              DevOps
-            </Checkbox>
-          </Checkbox.Group>
-        )}
-      </Form.Field>
-
-      <Form.Submit>Submit</Form.Submit>
-    </Form>
+        <Form.Fieldset
+          name="interests"
+          legend="Interests"
+          description="Pick the ones you like"
+        >
+          {({ ...field }) => (
+            <Checkbox.Group {...field}>
+              <Checkbox value="reading">Reading</Checkbox>
+              <Checkbox value="music">Music</Checkbox>
+              <Checkbox value="sports">Sports</Checkbox>
+            </Checkbox.Group>
+          )}
+        </Form.Fieldset>
+        <Form.Fieldset
+          type="single"
+          name="contact"
+          legend="Contact preference"
+          description="How should we reach you?"
+        >
+          {({ ...field }) => (
+            <Radio.Group {...field}>
+              <Radio value="email">Email</Radio>
+              <Radio value="phone">Phone</Radio>
+              <Radio value="sms">SMS</Radio>
+            </Radio.Group>
+          )}
+        </Form.Fieldset>
+        <Form.Submit>Submit</Form.Submit>
+      </Form>
+    </div>
   );
 }

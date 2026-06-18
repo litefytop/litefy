@@ -49,6 +49,6 @@ The image component with loading state management.
 |------|------|---------|-------------|
 | `src` | `string` | - | Image source URL |
 | `alt` | `string` | - | Alternative text for the image |
-| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 | `fallback` | `React.ReactNode` | - | Custom fallback element when image fails to load |
 | `placeholderSrc` | `string` | - | Progressive loading of thumbnail URL |

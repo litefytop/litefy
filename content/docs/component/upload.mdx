@@ -61,4 +61,4 @@ A styled file input component that supports all native file input attributes.
 | `disabled` | `boolean` | - | Disable the file input |
 | `name` | `string` | - | Input name for form submission |
 | `onChange` | `(e: React.ChangeEvent<HTMLInputElement>) => void` | - | Callback triggered when files are selected |
-| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |

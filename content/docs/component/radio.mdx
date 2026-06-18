@@ -70,7 +70,7 @@ Shows disabled state for individual radio and radio group.
 | `disabled` | `boolean` | `false` | Disable the radio |
 | `name` | `string` | - | Input name |
 | `invalid` | `boolean` | `false` | Mark as invalid |
-| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 
 ### Radio.Group
 
@@ -84,4 +84,4 @@ Shows disabled state for individual radio and radio group.
 | `invalid` | `boolean` | `false` | Mark as invalid |
 | `name` | `string` | - | Group name |
 | `variant` | `'radio' \| 'segment'` | `'radio'` | Visual variant for all children |
-| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |

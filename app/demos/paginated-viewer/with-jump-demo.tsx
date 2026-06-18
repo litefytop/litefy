@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import * as React from "react";
 import { PaginatedViewer } from "@/ui";
 
@@ -60,6 +61,15 @@ export default function PaginatedViewerWithJumpDemo() {
       </PaginatedViewer>
 
       <div className="flex items-center gap-2 justify-center">
+        <button
+          type="button"
+          onClick={() => goToPage(currentPage - 1)}
+          disabled={currentPage === 0}
+          className="p-2 rounded bg-muted hover:bg-muted/80 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          aria-label="Previous page"
+        >
+          <ArrowLeft className="size-4" />
+        </button>
         <span className="text-sm text-muted-foreground">Jump to page:</span>
         <input
           type="text"
@@ -75,6 +85,15 @@ export default function PaginatedViewerWithJumpDemo() {
           className="px-3 py-1 rounded bg-muted hover:bg-muted/80 text-sm"
         >
           Go
+        </button>
+        <button
+          type="button"
+          onClick={() => goToPage(currentPage + 1)}
+          disabled={currentPage === pages.length - 1}
+          className="p-2 rounded bg-muted hover:bg-muted/80 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          aria-label="Next page"
+        >
+          <ArrowRight className="size-4" />
         </button>
       </div>
       <p className="text-sm text-center text-muted-foreground">

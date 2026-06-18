@@ -39,7 +39,7 @@ A modal dialog component that uses the native HTML dialog element.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 | `onClose` | `() => void` | - | Callback when dialog is closed |
 | `closeTrigger` | `boolean` | `true` | Whether to show the ESC close button |
 | `ref` | `React.Ref<HTMLDialogElement>` | - | Ref forwarded to the native dialog element |
