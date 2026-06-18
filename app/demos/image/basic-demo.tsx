@@ -2,7 +2,7 @@
 
 import { RefreshCwIcon } from "lucide-react";
 import React from "react";
-import { Button, Image } from "@/components/ui";
+import { Button, Image } from "@/ui";
 
 export default function ImageLoadingDemo() {
   const [reloadKey, setReloadKey] = React.useState(0);

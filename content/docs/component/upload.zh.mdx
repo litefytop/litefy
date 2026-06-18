@@ -1,0 +1,64 @@
+---
+title: Upload 上传
+description: 带有无效状态支持的文件上传输入组件
+---
+
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add upload" />
+
+</Tab>
+
+<Tab value="手动">
+
+<SourceCode component="upload" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+简单的文件上传输入。
+
+<ComponentPreview 
+  name="upload-basic"
+/>
+
+### 无效状态
+
+带有错误状态样式的文件上传输入，用于表单验证。
+
+<ComponentPreview 
+  name="upload-invalid"
+/>
+
+### 文件类型限制
+
+使用原生的 `accept` 和 `multiple` 属性限制可接受的文件类型。
+
+<ComponentPreview 
+  name="upload-multiple"
+/>
+
+## API 参考
+
+### Upload
+
+支持所有原生文件输入属性的样式化上传组件。
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|---------|-------------|
+| `invalid` | `boolean` | `false` | 将上传输入标记为无效状态，用于表单验证 |
+| `accept` | `string` | - | 原生文件类型过滤（例如 `image/*`、`.pdf,.doc`） |
+| `multiple` | `boolean` | - | 允许选择多个文件 |
+| `disabled` | `boolean` | - | 禁用文件输入 |
+| `name` | `string` | - | 用于表单提交的输入名称 |
+| `onChange` | `(e: React.ChangeEvent<HTMLInputElement>) => void` | - | 选择文件后触发的回调函数 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类。支持字符串、数组、对象、布尔值等。 |

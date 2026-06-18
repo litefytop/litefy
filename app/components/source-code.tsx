@@ -9,14 +9,14 @@ interface SourceCodeProps {
   className?: ClassNameValue;
 }
 
-const modules = import.meta.glob("../components/ui/*.tsx", {
+const modules = import.meta.glob(["../ui/*.tsx", "../ui/*.ts"], {
   query: "?raw",
   import: "default",
 });
 const componentImports: Record<string, () => Promise<string>> = {};
 
 for (const [path, loadFn] of Object.entries(modules)) {
-  const match = path.match(/\/([^/]+)\.tsx$/);
+  const match = path.match(/\/([^/]+)\.tsx$/) || path.match(/\/([^/]+)\.ts$/);
   if (match) {
     componentImports[match[1]] = loadFn as () => Promise<string>;
   }

@@ -1,7 +1,7 @@
 "use client";
 
 import { Mail, Phone, Search } from "lucide-react";
-import { Input } from "@/components/ui";
+import { Input } from "@/ui";
 
 export default function InputWithIconsDemo() {
   return (

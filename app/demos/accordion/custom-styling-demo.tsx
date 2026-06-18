@@ -1,7 +1,7 @@
 "use client";
 
 import { Heart, Palette, Zap } from "lucide-react";
-import { Accordion } from "@/components/ui/accordion";
+import { Accordion } from "@/ui/accordion";
 
 export default function CustomStylingDemo() {
   return (

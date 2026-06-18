@@ -1,0 +1,67 @@
+---
+title: Button
+description: A button component with multiple variants and loading states
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add button" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="button" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Variants
+
+Different button variants for various use cases.
+
+<ComponentPreview 
+  name="button-basic"
+/>
+
+### Loading State
+
+Buttons with loading indicators and disabled state.
+
+<ComponentPreview 
+  name="button-loading"
+/>
+
+### With Icons
+
+Buttons with icon support for enhanced visual feedback.
+
+<ComponentPreview 
+  name="button-icon"
+/>
+
+## API Reference
+
+### Button
+
+The button component.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `'primary' \| 'destructive' \| 'outline' \| 'text'` | `'primary'` | Button visual variant |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `loadingConfig` | `ButtonLoadingConfig` | - | Loading state configuration |
+
+### ButtonLoadingConfig
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `loading` | `boolean` | `false` | Whether the button is loading |
+| `icon` | `React.ReactNode` | - | Custom loading icon |

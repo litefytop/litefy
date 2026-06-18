@@ -1,6 +1,6 @@
 "use client";
 
-import { Combobox } from "@/components/ui/combobox";
+import { Combobox } from "@/ui/combobox";
 
 const countries = [
   "China",
@@ -18,10 +18,7 @@ const countries = [
 export default function ComboboxBasicDemo() {
   return (
     <div className="w-72">
-      <Combobox 
-        options={countries} 
-        placeholder="Select a country"
-      />
+      <Combobox options={countries} placeholder="Select a country" />
     </div>
   );
 }

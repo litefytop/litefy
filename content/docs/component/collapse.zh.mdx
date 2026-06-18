@@ -1,0 +1,109 @@
+---
+title: Collapse 折叠面板
+description: 独立的可折叠内容组件，带有平滑动画
+---
+
+## 概述
+
+Collapse 是一个独立的可折叠组件，专为 Accordion 固定布局过于严格的场景而设计。Accordion 强制使用带有项目的严格垂直列表布局，而 Collapse 提供灵活的、独立的可折叠区域，可以单独使用或用于自定义布局。
+
+**何时使用 Collapse vs Accordion：**
+- 使用 **Accordion** 当你需要具有一致样式的可折叠项目结构化列表时
+- 使用 **Collapse** 当你需要独立的可折叠区域、自定义布局或不需要固定手风琴结构的单个可折叠元素时
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add collapse" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="collapse" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+带有触发器和面板的基础折叠组件。
+
+<ComponentPreview 
+  name="collapse-basic"
+/>
+
+### 受控模式
+
+通过受控状态管理折叠的打开/关闭。
+
+<ComponentPreview 
+  name="collapse-controlled"
+/>
+
+### 禁用状态
+
+禁用折叠组件以阻止用户交互。
+
+<ComponentPreview 
+  name="collapse-disabled"
+/>
+
+## API 参考
+
+### Collapse
+
+折叠组件的根容器。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | 必须包含Collapse.Header（含Collapse.Trigger和可选的Collapse.Action），以及Collapse.Panel |
+| `open` | `boolean` | - | 受控的打开状态 |
+| `defaultOpen` | `boolean` | `false` | 默认打开状态（非受控） |
+| `onValueChange` | `(open: boolean) => void` | - | 打开状态变化时的回调 |
+| `disabled` | `boolean` | `false` | 禁用折叠交互 |
+| `className` | `string` | - | 根容器的自定义CSS类 |
+
+### Collapse.Header
+
+折叠触发器和操作按钮的容器，提供布局结构。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | 必须包含Collapse.Trigger，可选Collapse.Action |
+| `className` | `string` | - | 头部的自定义CSS类 |
+
+### Collapse.Trigger
+
+切换折叠打开/关闭状态的按钮。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode \| (open: boolean) => React.ReactNode` | - | 自定义触发器内容或渲染函数（默认为chevron图标） |
+| `icon` | `React.ReactNode \| (open: boolean) => React.ReactNode` | - | 自定义图标或触发器的渲染函数 |
+| `className` | `string` | - | 触发按钮的自定义CSS类 |
+
+### Collapse.Action
+
+可以放置在头部触发器旁边的操作按钮。这允许在头部放置多个交互元素，这是Accordion无法实现的。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | 操作按钮内容（如复制图标、删除图标） |
+| `className` | `string` | - | 操作按钮的自定义CSS类 |
+| `onClick` | `(e: React.MouseEvent) => void` | - | 操作的点击处理函数 |
+
+### Collapse.Panel
+
+带有平滑动画的可折叠内容面板。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | 可折叠的内容 |
+| `className` | `string` | - | 面板内容的自定义CSS类 |

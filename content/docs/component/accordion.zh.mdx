@@ -1,0 +1,88 @@
+---
+title: Accordion 手风琴
+description: 支持单选和多选展开模式的手风琴组件
+---
+
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add accordion" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="accordion" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 单选非受控
+
+基础的单选模式，使用非受控状态。
+
+<ComponentPreview 
+  name="accordion-single-uncontrolled"
+/>
+
+### 多选受控
+
+高级用法，支持多选、受控模式和外部控制。
+
+<ComponentPreview 
+  name="accordion-multiple-controlled"
+/>
+
+### 自定义样式
+
+使用 `slotProps` 自定义手风琴项的外观。
+
+<ComponentPreview 
+  name="accordion-custom-styling"
+/>
+
+## API 参考
+
+### Accordion
+
+主容器组件。根据 `multiple` prop 自动在单选和多选模式之间切换。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `multiple` | `boolean` | `false` | 当为 `true` 时，允许多个项目同时展开。将 `value` 类型更改为 `string[]`，否则为 `string` |
+| `defaultValue` | `string`（单选）\| `string[]`（多选） | - | 初始值（非受控）。单选模式：`string`，多选模式：`string[]` |
+| `value` | `string`（单选）\| `string[]`（多选） | - | 当前值（受控）。单选模式：`string`，多选模式：`string[]` |
+| `onValueChange` | `(value: string \| undefined) => void`（单选）\| `(values: string[]) => void`（多选） | - | 值变化回调。单选模式接收 `string \| undefined`，多选模式接收 `string[]` |
+| `disabled` | `boolean` | `false` | 禁用整个手风琴 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类。支持字符串、数组、对象、布尔值等。 |
+
+### Accordion.Item
+
+单个手风琴项。
+
+
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | 项目的唯一标识符 |
+| `label` | `React.ReactNode` | - | 头部内容 |
+| `icon` | `React.ReactNode \| ((open: boolean) => React.ReactNode)` | `ChevronDown` | 自定义图标或图标函数 |
+| `disabled` | `boolean` | `false` | 禁用项目 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类，支持字符串、数组、对象、布尔值等多种格式。 |
+| `slotProps` | `object` | - | 内部插槽的自定义属性 |
+
+### slotProps
+
+| Slot | Type | Description |
+|------|------|-------------|
+| `wrapper` | `React.ComponentProps<"div">` | 包装器 div 的属性 |
+| `trigger` | `React.ComponentProps<"button">` | 触发器按钮的属性 |
+| `content` | `React.ComponentProps<"section">` | 内容面板的属性 |
+

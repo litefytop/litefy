@@ -1,0 +1,41 @@
+{
+  "name": "litefy",
+  "version": "0.1.0",
+  "description": "Litefy UI - A lightweight React component library and CLI tool",
+  "bin": {
+    "litefy": "./dist/bin/cli.js"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/bin/cli.ts",
+    "prepublishOnly": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["litefy", "ui", "cli", "components"],
+  "author": "litefytop",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/litefytop/litefy.git"
+  },
+  "homepage": "https://litefy.top",
+  "bugs": {
+    "url": "https://github.com/litefytop/litefy/issues"
+  },
+  "dependencies": {
+    "commander": "^12.0.0",
+    "chalk": "^4.1.2",
+    "fs-extra": "^11.2.0",
+    "axios": "^1.6.0",
+    "inquirer": "^8.2.6"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/inquirer": "^9.0.7",
+    "@types/node": "^20.11.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  }
+}

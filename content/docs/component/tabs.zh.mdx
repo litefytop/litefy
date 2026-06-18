@@ -1,0 +1,89 @@
+---
+title: Tabs 标签页
+description: 支持多种变体和方向设置的标签页组件
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add tabs" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="tabs" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+带有非受控状态的基础标签页实现。
+
+<ComponentPreview 
+  name="tabs-basic"
+/>
+
+### 变体
+
+在线条和按钮变体之间切换，以获得不同的视觉样式。
+
+<ComponentPreview 
+  name="tabs-variant"
+/>
+
+### 方向
+
+支持水平和垂直标签页布局。
+
+<ComponentPreview 
+  name="tabs-orientation"
+/>
+
+### 受控模式
+
+通过受控状态外部管理活动标签。
+
+<ComponentPreview 
+  name="tabs-controlled"
+/>
+
+## API 参考
+
+### Tabs
+
+标签页的主要容器组件。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `defaultValue` | `string` | - | 初始活动标签值（非受控模式） |
+| `value` | `string` | - | 活动标签值（受控模式） |
+| `onValueChange` | `(value: string) => void` | - | 活动标签变化时的回调 |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | 布局方向 |
+| `variant` | `'button' \| 'line'` | `'line'` | 视觉样式变体 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类。支持字符串、数组、对象、布尔值等。 |
+
+### Tab
+
+单个标签面板组件。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | 标签的唯一标识符 |
+| `label` | `React.ReactNode` | - | 标签触发器的标签内容 |
+| `disabled` | `boolean` | `false` | 禁用该标签 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类。支持字符串、数组、对象、布尔值等。 |
+
+### slotProps
+
+| Slot | Type | Description |
+|------|------|-------------|
+| `list` | `React.ComponentProps<"div">` | 标签列表容器的属性 |
+| `trigger` | `React.ComponentProps<"button">` | 标签触发按钮的属性 |

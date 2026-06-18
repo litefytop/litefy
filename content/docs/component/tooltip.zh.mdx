@@ -1,0 +1,120 @@
+---
+title: Tooltip 提示框
+description: 在悬停或聚焦时显示的提示框组件
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add tooltip" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="tooltip" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+在悬停或聚焦时显示的基础提示框。
+
+<ComponentPreview 
+  name="tooltip-basic"
+/>
+
+### 位置控制
+
+使用side属性控制提示框的位置。
+
+<ComponentPreview 
+  name="tooltip-side"
+/>
+
+### 命令式控制
+
+在引导步骤或全局事件联动等高级场景中，使用命令式API手动打开或关闭提示框。
+
+<ComponentPreview 
+  name="tooltip-imperative"
+/>
+
+## API 参考
+
+### Tooltip
+
+提示框根组件。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | 必须包含Tooltip.Trigger和Tooltip.Content |
+| `side` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'top'` | 提示框相对于触发元素的位置 |
+| `delay` | `number` | `100` | 隐藏提示框前的延迟时间（毫秒） |
+
+### Tooltip.Trigger
+
+触发提示框显示的元素。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | 触发元素的内容 |
+| `className` | `string` | - | 触发按钮的自定义CSS类 |
+
+### Tooltip.Content
+
+触发时显示的提示框内容。支持`ref`用于命令式控制。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | 提示框内容 |
+| `className` | `string` | - | 提示框内容的自定义CSS类 |
+| `side` | `'top' \| 'bottom' \| 'left' \| 'right'` | - | 覆盖Tooltip根组件的side属性 |
+| `ref` | `React.Ref<HTMLDivElement>` | - | 用于访问DOM节点以进行命令式`showPopover()`和`hidePopover()`调用 |
+
+## 命令式 API
+
+在引导步骤或全局事件联动等高级场景中，可以使用命令式方式控制提示框：
+
+```tsx
+import { useRef } from 'react';
+import { Tooltip } from '@/ui/tooltip';
+
+function MyComponent() {
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const handleOpen = () => {
+    contentRef.current?.showPopover();
+  };
+
+  const handleClose = () => {
+    contentRef.current?.hidePopover();
+  };
+
+  return (
+    <>
+      <Tooltip>
+        <Tooltip.Trigger>悬停触发</Tooltip.Trigger>
+        <Tooltip.Content ref={contentRef}>
+          提示内容
+        </Tooltip.Content>
+      </Tooltip>
+      <button type="button" onClick={handleOpen}>手动打开</button>
+      <button type="button" onClick={handleClose}>手动关闭</button>
+    </>
+  );
+}
+```
+
+**注意事项：**
+
+- 此方式会与组件内部的悬停/焦点逻辑共存。多次调用`showPopover()`不会重复打开，`hidePopover()`会立即关闭。
+- 若需要在外部控制时完全接管显隐，可能需要自行处理内部定时器（例如在调用`hidePopover()`前清除`onPointerLeave`的延迟定时器）。
+- 建议仅在确实需要外部联动时使用此方案，常规场景请优先使用Trigger的内置交互。

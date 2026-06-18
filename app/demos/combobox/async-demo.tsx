@@ -1,6 +1,6 @@
 "use client";
 
-import { Combobox } from "@/components/ui/combobox";
+import { Combobox } from "@/ui/combobox";
 
 const fetchAsyncOptions = async ({
   page,

@@ -1,0 +1,114 @@
+---
+title: Pagination 分页
+description: 灵活的分页组件，包含多个子组件用于导航、尺寸调整和页面跳转
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add pagination" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="pagination" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+带有导航控制和页面指示器的基础分页用法。
+
+<ComponentPreview 
+  name="pagination-basic"
+/>
+
+## API 参考
+
+### Pagination
+
+根分页容器，为所有子组件提供上下文。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `current` | `number` | - | 当前页码 |
+| `pageSize` | `number` | - | 每页项目数 |
+| `total` | `number` | - | 项目总数 |
+| `onPageChange` | `(page: number) => void` | - | 页面变化时的回调 |
+| `onPageSizeChange` | `(size: number) => void` | - | 页面尺寸变化时的回调 |
+| `children` | `React.ReactNode` | - | 分页子组件 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类。支持字符串、数组、对象、布尔值等。 |
+
+### Pagination.Description
+
+显示分页描述文本。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `format` | `(total: number, current: number, totalPages: number) => string` | - | 自定义格式函数 |
+
+### Pagination.Sizer
+
+用于更改页面尺寸的选择下拉框。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `options` | `number[]` | `[10, 20, 50, 100]` | 可用的页面尺寸选项 |
+| `format` | `(size: number) => string` | - | 尺寸显示的自定义格式函数 |
+
+### Pagination.Controls
+
+用于首页、上一页、下一页和末页的导航按钮。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `'first' \| 'prev' \| 'next' \| 'last'` | - | 导航按钮变体 |
+
+### Pagination.Jumper
+
+用于跳转到特定页面的选择下拉框。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `format` | `(page: number) => string` | - | 页面显示的自定义格式函数 |
+
+### Pagination.Indicator
+
+具有多种变体的可视页面指示器。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `'number' \| 'dot' \| 'bar'` | `'number'` | 页面指示器的视觉变体 |
+| `visibleCount` | `number` | `5` | 可见页面指示器的数量 |
+| `slotProps` | `PaginationIndicatorSlotProps` | - | 用于自定义子元素的插槽属性 |
+
+### PaginationIndicatorSlotProps
+
+| Slot | Type | Description |
+|------|------|-------------|
+| `root` | `React.ComponentProps<"div">` | 根容器的属性 |
+| `item` | `React.ComponentProps<"button">` | 每个页面指示器按钮的属性 |
+
+### usePagination
+
+钩子，用于从 Pagination 组件树中访问分页上下文。
+
+返回值：
+- `current`：当前页码
+- `pageSize`：每页项目数
+- `total`：项目总数
+- `totalPages`：总页数
+- `goTo(page)`：导航到特定页面
+- `goPrev()`：上一页
+- `goNext()`：下一页
+- `goFirst()`：第一页
+- `goLast()`：最后一页
+- `setPageSize(size)`：更改页面尺寸

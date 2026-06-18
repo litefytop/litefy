@@ -1,0 +1,106 @@
+---
+title: Dropdown 下拉菜单
+description: 支持键盘导航的下拉菜单组件
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add dropdown" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="dropdown" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+基础下拉菜单，包含图标项和分隔符。
+
+<ComponentPreview 
+  name="dropdown-basic"
+/>
+
+### 带标签分组
+
+使用标签分组的下拉菜单。
+
+<ComponentPreview 
+  name="dropdown-label"
+/>
+
+### 对齐方式
+
+使用 alignX 和 alignY 属性控制下拉菜单的对齐方式。
+
+<ComponentPreview 
+  name="dropdown-alignment"
+/>
+
+## API 参考
+
+### Dropdown
+
+主容器组件。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | 下拉菜单内容 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类名，支持字符串、数组、对象、布尔值等多种格式。 |
+
+### Dropdown.Trigger
+
+触发下拉菜单的按钮。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | 触发器内容 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类，支持字符串、数组、对象、布尔值等多种格式。 |
+
+### Dropdown.Content
+
+下拉菜单内容区域。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | 菜单项 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类名，支持字符串、数组、对象、布尔值等多种格式。如需调整内容与触发器之间的间距，可在此处添加 margin 工具类（如 `mt-2`）。 |
+| `alignX` | `'start' \| 'center' \| 'end'` | `'center'` | 水平对齐方式 |
+| `alignY` | `'start' \| 'center' \| 'end'` | `'end'` | 垂直对齐方式 |
+| `popover` | `'auto' \| 'manual' \| 'hint'` | `'auto'` | Popover 行为 |
+
+### Dropdown.Item
+
+单个菜单项。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | 项内容 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类，支持字符串、数组、对象、布尔值等多种格式。 |
+
+### Dropdown.Label
+
+用于分组的标签。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | 标签文本 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类，支持字符串、数组、对象、布尔值等多种格式。 |
+
+### Dropdown.Separator
+
+项之间的视觉分隔符。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | - | 自定义 CSS 类，支持字符串、数组、对象、布尔值等多种格式。 |

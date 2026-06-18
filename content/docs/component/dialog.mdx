@@ -1,0 +1,51 @@
+---
+title: Dialog
+description: A modal dialog component built with the native HTML dialog element
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add dialog" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="dialog" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+A basic dialog component with focus management and keyboard navigation.
+
+<ComponentPreview 
+  name="dialog-basic"
+/>
+
+## API Reference
+
+### Dialog
+
+A modal dialog component that uses the native HTML dialog element.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `onClose` | `() => void` | - | Callback when dialog is closed |
+| `closeTrigger` | `boolean` | `true` | Whether to show the ESC close button |
+| `ref` | `React.Ref<HTMLDialogElement>` | - | Ref forwarded to the native dialog element |
+
+### slotProps
+
+| Slot | Type | Description |
+|------|------|-------------|
+| `closeTrigger` | `HTMLAttrs<Omit<React.ComponentProps<'button'>, 'onClick' \| 'type' \| 'aria-label'>>` | Props for the close button |

@@ -1,0 +1,109 @@
+---
+title: Collapse
+description: A standalone collapsible content component with smooth animations
+---
+
+## Overview
+
+Collapse is a standalone collapsible component designed for scenarios where the Accordion's fixed layout is too restrictive. While Accordion enforces a strict vertical list layout with items, Collapse provides flexible, independent collapsible sections that can be used individually or in custom layouts.
+
+**When to use Collapse vs Accordion:**
+- Use **Accordion** when you need a structured list of collapsible items with consistent styling
+- Use **Collapse** when you need standalone collapsible sections, custom layouts, or individual collapsible elements without the fixed accordion structure
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add collapse" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="collapse" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+A basic collapse component with trigger and panel.
+
+<ComponentPreview 
+  name="collapse-basic"
+/>
+
+### Controlled Mode
+
+Manage collapse state externally with controlled state.
+
+<ComponentPreview 
+  name="collapse-controlled"
+/>
+
+### Disabled State
+
+Disable the collapse to prevent user interaction.
+
+<ComponentPreview 
+  name="collapse-disabled"
+/>
+
+## API Reference
+
+### Collapse
+
+The root collapse wrapper component.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Must contain Collapse.Header (with Collapse.Trigger and optional Collapse.Action), and Collapse.Panel |
+| `open` | `boolean` | - | Controlled open state |
+| `defaultOpen` | `boolean` | `false` | Default open state (uncontrolled) |
+| `onValueChange` | `(open: boolean) => void` | - | Callback when open state changes |
+| `disabled` | `boolean` | `false` | Disable the collapse interaction |
+| `className` | `string` | - | Custom CSS class for the root container |
+
+### Collapse.Header
+
+Container for the collapse trigger and actions, provides layout structure.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Must contain Collapse.Trigger and optionally Collapse.Action |
+| `className` | `string` | - | Custom CSS class for the header |
+
+### Collapse.Trigger
+
+The button that toggles the collapse open/close state.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode \| (open: boolean) => React.ReactNode` | - | Custom trigger content or render function (defaults to chevron icon) |
+| `icon` | `React.ReactNode \| (open: boolean) => React.ReactNode` | - | Custom icon or render function for the trigger |
+| `className` | `string` | - | Custom CSS class for the trigger button |
+
+### Collapse.Action
+
+An action button that can be placed in the header alongside the trigger. This allows multiple interactive elements in the header, which is not possible with Accordion.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | The action button content (e.g., copy icon, delete icon) |
+| `className` | `string` | - | Custom CSS class for the action button |
+| `onClick` | `(e: React.MouseEvent) => void` | - | Click handler for the action |
+
+### Collapse.Panel
+
+The collapsible content panel with smooth animation.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | The collapsible content |
+| `className` | `string` | - | Custom CSS class for the panel content |

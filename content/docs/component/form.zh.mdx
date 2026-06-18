@@ -1,0 +1,143 @@
+---
+title: Form 表单
+description: 由字段、提交、校验和命令式 ref 控制组成的完整表单组件
+---
+
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add form" />
+
+</Tab>
+
+<Tab value="手动">
+
+<SourceCode component="form" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+使用 `Form`、`Form.Field` 和 `Form.Submit` 组合出一个表单。字段通过 render prop 暴露底层输入属性，便于完全控制。
+
+<ComponentPreview 
+  name="form-basic"
+/>
+
+### 校验
+
+通过 `validConfig` 添加客户端校验。校验在 `onChange` 或 `onBlur` 触发，返回的字符串会作为错误信息渲染。
+
+<ComponentPreview 
+  name="form-validation"
+/>
+
+### 横向布局
+
+将字段的 `direction` 设为 `"horizontal"`，即可让标签与控件并排显示。结合 `slotProps` 可以进一步定制标签样式。
+
+<ComponentPreview 
+  name="form-horizontal"
+/>
+
+### 命令式控制
+
+通过 `ref` 获取表单实例，从外部调用 `setValues`、`setValue`、`reset` 和 `submit`。
+
+<ComponentPreview 
+  name="form-imperative"
+/>
+
+## API 参考
+
+### Form
+
+构建在原生 `<form>` 元素之上的根表单组件。
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|---------|-------------|
+| `onSubmit` | `(formData: FormData) => Promise<boolean>` | - | 异步提交处理器。返回 `true` 表示成功并触发 `autoReset` |
+| `autoReset` | `boolean` | `true` | 当 `onSubmit` 解析为 `true` 时自动重置表单 |
+| `ref` | `React.Ref<FormRef>` | - | 提供 `setValue`、`setValues`、`reset`、`submit` 的命令式句柄 |
+| `children` | `React.ReactNode` | - | 表单内容，通常为 `Form.Field` 与 `Form.Submit` |
+
+此外，其他原生 `<form>` 属性（除 `onSubmit` 和 `ref` 外）会展开到底层 form 元素。
+
+### FormRef
+
+通过 `ref` 属性获取的命令式句柄。
+
+| 方法 | 类型 | 描述 |
+|------|------|-------------|
+| `setValue` | `(name: string, value: string \| number) => void` | 更新单个字段的值并派发 `change` 事件 |
+| `setValues` | `(values: Record<string, string \| number>) => void` | 一次性更新多个字段 |
+| `reset` | `() => void` | 重置表单并清空所有已注册的输入 |
+| `submit` | `() => void` | 触发一次程序化表单提交 |
+
+### Form.Submit
+
+自动反映表单提交状态的提交按钮。在表单提交过程中会被禁用，并可渲染自定义加载图标。
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|---------|-------------|
+| `loadingIcon` | `React.ReactNode` | - | 表单提交时显示的自定义图标，默认为旋转的 `Loader2` |
+| `children` | `React.ReactNode` | - | 按钮文案 |
+
+其他原生 `<button>` 属性（除被强制为 `submit` 的 `type` 外）均受支持。
+
+### Form.Field
+
+将标签、控件和辅助文字包装为单一可访问的字段。控件通过 render prop 提供。
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|---------|-------------|
+| `name` | `string` | - | 字段名称，用于在表单中注册输入 |
+| `label` | `React.ReactNode` | - | 渲染在控件上方的标签内容 |
+| `description` | `React.ReactNode` | - | 渲染在控件下方的辅助文字，校验失败时会被错误信息替代 |
+| `invalid` | `React.ReactNode` | - | 受控的错误信息。传入字符串时会渲染为错误并设置 `aria-invalid` |
+| `disabled` | `boolean` | `false` | 禁用字段并应用 inert 样式 |
+| `direction` | `"vertical" \| "horizontal"` | `"vertical"` | 标签与控件的排列方向 |
+| `inputId` | `string` | - | 底层控件的自定义 id |
+| `slotProps` | `FormFieldSlotProps` | - | 针对标签、辅助文字和错误文字的插槽定制 |
+| `validConfig` | `FormFieldValidConfig<T>` | - | 客户端校验配置 |
+| `children` | `(field: FormFieldArg) => React.ReactNode` | - | 接收输入属性并渲染控件的 render prop |
+
+此外，其他原生 `<div>` 属性会展开到字段容器。
+
+### FormFieldArg
+
+提供给 `Form.Field` 子元素的 render prop。
+
+| 属性 | 类型 | 描述 |
+|------|------|-------------|
+| `id` | `string` | 为底层输入生成的 id，转发到控件的 `id` |
+| `name` | `string` | 字段的 `name`，转发到控件的 `name` |
+| `ref` | `(el: HTMLInputElement \| null) => void` | 用于在表单中注册输入的 ref 回调 |
+| `onChange` | `(e: React.ChangeEvent<HTMLInputElement>) => void` | 变更处理器，当 `trigger` 为 `"onChange"` 时触发 `validConfig` |
+| `onBlur` | `(e: React.FocusEvent<HTMLInputElement>) => void` | 失焦处理器，当 `trigger` 为 `"onBlur"` 时触发 `validConfig` |
+| `invalid` | `boolean` | 字段当前是否处于无效状态 |
+| `aria-describedby` | `string` | 描述文字或错误文字的 id，用于无障碍访问 |
+
+### FormFieldSlotProps
+
+| 插槽 | 类型 | 描述 |
+|------|------|-------------|
+| `label` | `HTMLAttrs<React.ComponentProps<"label">>` | label 元素的属性 |
+| `description` | `HTMLAttrs<React.ComponentProps<"small">>` | 描述文字的属性。传入 `id` 可覆盖默认的 `aria-describedby` 目标 |
+| `invalid` | `HTMLAttrs<React.ComponentProps<"small">>` | 错误文字的属性。传入 `id` 可覆盖默认的 `aria-describedby` 目标 |
+
+### FormFieldValidConfig
+
+泛型 `T` 表示 change 事件的类型，通常为 `React.ChangeEvent<HTMLInputElement>`。
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|---------|-------------|
+| `validate` | `(event: T) => string \| boolean \| null \| undefined` | - | 校验函数。返回字符串会作为错误信息展示；返回真值则标记字段无效 |
+| `trigger` | `"onChange" \| "onBlur"` | - | 校验函数的触发时机 |

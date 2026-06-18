@@ -1,0 +1,120 @@
+---
+title: Tooltip
+description: A tooltip component that appears on hover or focus
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add tooltip" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="tooltip" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+A basic tooltip that appears on hover or focus.
+
+<ComponentPreview 
+  name="tooltip-basic"
+/>
+
+### Positioning
+
+Control the tooltip position with the side prop.
+
+<ComponentPreview 
+  name="tooltip-side"
+/>
+
+### Imperative Control
+
+Manually open or close tooltip using imperative API for advanced scenarios like guided tours or global event coordination.
+
+<ComponentPreview 
+  name="tooltip-imperative"
+/>
+
+## API Reference
+
+### Tooltip
+
+The root tooltip wrapper component.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Must contain Tooltip.Trigger and Tooltip.Content |
+| `side` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'top'` | Tooltip position relative to trigger |
+| `delay` | `number` | `100` | Delay in milliseconds before hiding tooltip |
+
+### Tooltip.Trigger
+
+The element that triggers the tooltip display.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | The trigger element content |
+| `className` | `string` | - | Custom CSS class for the trigger button |
+
+### Tooltip.Content
+
+The tooltip content that appears when triggered. Supports `ref` for imperative control.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | The tooltip content |
+| `className` | `string` | - | Custom CSS class for the content |
+| `side` | `'top' \| 'bottom' \| 'left' \| 'right'` | - | Override the side prop from Tooltip root |
+| `ref` | `React.Ref<HTMLDivElement>` | - | Ref to access DOM node for imperative `showPopover()` and `hidePopover()` calls |
+
+## Imperative API
+
+For advanced use cases like guided tours or global event coordination, you can control the tooltip imperatively:
+
+```tsx
+import { useRef } from 'react';
+import { Tooltip } from '@/ui/tooltip';
+
+function MyComponent() {
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const handleOpen = () => {
+    contentRef.current?.showPopover();
+  };
+
+  const handleClose = () => {
+    contentRef.current?.hidePopover();
+  };
+
+  return (
+    <>
+      <Tooltip>
+        <Tooltip.Trigger>Hover Trigger</Tooltip.Trigger>
+        <Tooltip.Content ref={contentRef}>
+          Tooltip content
+        </Tooltip.Content>
+      </Tooltip>
+      <button type="button" onClick={handleOpen}>Open</button>
+      <button type="button" onClick={handleClose}>Close</button>
+    </>
+  );
+}
+```
+
+**Important Notes:**
+
+- This approach coexists with the internal hover/focus logic. Multiple `showPopover()` calls won't reopen, and `hidePopover()` closes immediately.
+- If you need full control over visibility, you may need to handle internal timers (e.g., clear the `onPointerLeave` delay timer before calling `hidePopover()`).
+- Use this approach only when external coordination is necessary. For regular use, prefer the Trigger's built-in interactions.

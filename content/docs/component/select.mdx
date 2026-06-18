@@ -1,0 +1,78 @@
+---
+title: Select
+description: A flexible select component with support for option groups and validation states
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add select" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="select" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Basic select component with placeholder and options.
+
+<ComponentPreview 
+  name="select-basic"
+/>
+
+### With Option Groups
+
+Select component with grouped options for better organization.
+
+<ComponentPreview 
+  name="select-grouped"
+/>
+
+### Invalid State
+
+Select component showing invalid state for form validation.
+
+<ComponentPreview 
+  name="select-invalid"
+/>
+
+## API Reference
+
+### Select
+
+A styled select component with support for controlled/uncontrolled state, option groups, and validation.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | - | Custom CSS class |
+| `invalid` | `boolean` | `false` | Marks the select as invalid for form validation |
+| `options` | `(SelectOption | SelectOptionGroup)[]` | - | Array of options or option groups to display |
+| `placeholder` | `string` | - | Placeholder text shown when no option is selected |
+| `value` | `string` | - | Controlled selected value |
+| `defaultValue` | `string` | - | Default selected value for uncontrolled state |
+| `onChange` | `(e: React.ChangeEvent<HTMLSelectElement>) => void` | - | Callback triggered when selection changes |
+
+### SelectOption
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | - | Display text for the option |
+| `value` | `string` | - | Value associated with the option |
+
+### SelectOptionGroup
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `group` | `string` | - | Group label text |
+| `options` | `SelectOption[]` | - | Array of options in the group |

@@ -1,0 +1,89 @@
+---
+title: Tabs
+description: A tabs component with multiple variants and orientation support
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add tabs" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="tabs" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+The basic tabs implementation with uncontrolled state.
+
+<ComponentPreview 
+  name="tabs-basic"
+/>
+
+### Variants
+
+Switch between line and button variants for different visual styles.
+
+<ComponentPreview 
+  name="tabs-variant"
+/>
+
+### Orientation
+
+Support for both horizontal and vertical tab layouts.
+
+<ComponentPreview 
+  name="tabs-orientation"
+/>
+
+### Controlled Mode
+
+Manage the active tab externally with controlled state.
+
+<ComponentPreview 
+  name="tabs-controlled"
+/>
+
+## API Reference
+
+### Tabs
+
+The main container component for the tabs.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `defaultValue` | `string` | - | Initial active tab value (uncontrolled mode) |
+| `value` | `string` | - | Active tab value (controlled mode) |
+| `onValueChange` | `(value: string) => void` | - | Callback when active tab changes |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Layout orientation |
+| `variant` | `'button' \| 'line'` | `'line'` | Visual style variant |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+
+### Tab
+
+Individual tab panel component.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | Unique identifier for the tab |
+| `label` | `React.ReactNode` | - | Tab trigger label content |
+| `disabled` | `boolean` | `false` | Disable the tab |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+
+### slotProps
+
+| Slot | Type | Description |
+|------|------|-------------|
+| `list` | `React.ComponentProps<"div">` | Props for the tab list container |
+| `trigger` | `React.ComponentProps<"button">` | Props for the tab trigger buttons |

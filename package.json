@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prebuild": "pnpm node scripts/copy-registry.js",
     "build": "react-router build",
     "dev": "react-router dev",
     "start": "serve ./build/client --config ../../serve.json",
@@ -33,6 +34,7 @@
     "@types/node": "^25.9.1",
     "@types/react": "^19.2.16",
     "@types/react-dom": "^19.2.3",
+    "fs-extra": "^11.3.5",
     "react-router-devtools": "^6.2.1",
     "serve": "^14.2.6",
     "tailwindcss": "^4.3.0",

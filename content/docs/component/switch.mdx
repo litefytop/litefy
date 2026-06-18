@@ -1,0 +1,83 @@
+---
+title: Switch
+description: A toggle switch component with controlled state, slot-level customization, and native input support
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add switch" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="switch" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+A simple toggle switch with default checked state.
+
+<ComponentPreview 
+  name="switch-basic"
+/>
+
+### Controlled Mode
+
+Manage the switch state externally with controlled state.
+
+<ComponentPreview 
+  name="switch-controlled"
+/>
+
+### Disabled
+
+Shows the switch in a disabled state for both on and off positions.
+
+<ComponentPreview 
+  name="switch-disabled"
+/>
+
+### Custom Styling
+
+Customize the wrapper, track, and thumb independently through `slotProps` to change size, colors, and shape.
+
+<ComponentPreview 
+  name="switch-custom-styling"
+/>
+
+## API Reference
+
+### Switch
+
+A toggle switch component built on top of a checkbox input, with per-part customization via `slotProps`.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Label content rendered next to the switch |
+| `checked` | `boolean` | - | Controlled checked state |
+| `defaultChecked` | `boolean` | `false` | Default checked state for uncontrolled mode |
+| `onCheckedChange` | `(checked: boolean) => void` | - | Callback triggered when the checked state changes |
+| `disabled` | `boolean` | `false` | Disables the switch and applies inert styling |
+| `name` | `string` | - | Input name for form submission |
+| `value` | `string` | - | Input value for form submission |
+| `slotProps` | `SwitchSlotProps` | - | Props forwarded to the wrapper, track, and thumb slots |
+
+In addition, all other native `<input type="checkbox">` props (except `type` and `className`) are spread onto the underlying input.
+
+### SwitchSlotProps
+
+| Slot | Type | Description |
+|------|------|-------------|
+| `wrapper` | `HTMLAttrs<Omit<React.ComponentProps<"label">, "htmlFor">>` | Props for the outer `<label>` element |
+| `track` | `HTMLAttrs<React.ComponentProps<"span">>` | Props for the track element. Receives `data-checked` when on |
+| `thumb` | `HTMLAttrs<React.ComponentProps<"span">>` | Props for the thumb element |

@@ -1,0 +1,86 @@
+---
+title: Accordion
+description: An accordion component that supports single and multiple expand modes
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy add accordion" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<SourceCode component="accordion" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Single Uncontrolled
+
+The basic usage with single expand mode and uncontrolled state.
+
+<ComponentPreview 
+  name="accordion-single-uncontrolled"
+/>
+
+### Multiple Controlled
+
+Advanced usage with multiple expand mode, controlled state, and external toggle control.
+
+<ComponentPreview 
+  name="accordion-multiple-controlled"
+/>
+
+### Custom Styling
+
+Customize the appearance of accordion items using `slotProps`.
+
+<ComponentPreview 
+  name="accordion-custom-styling"
+/>
+
+## API Reference
+
+### Accordion
+
+The main container component. Automatically switches between single and multiple mode based on the `multiple` prop.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `multiple` | `boolean` | `false` | When `true`, allows multiple items to be open simultaneously. Changes `value` type to `string[]`, otherwise `string` |
+| `defaultValue` | `string` (single) \| `string[]` (multiple) | - | Initial value (uncontrolled). Single mode: `string`, Multiple mode: `string[]` |
+| `value` | `string` (single) \| `string[]` (multiple) | - | Current value (controlled). Single mode: `string`, Multiple mode: `string[]` |
+| `onValueChange` | `(value: string \| undefined) => void` (single) \| `(values: string[]) => void` (multiple) | - | Value change callback. Single mode receives `string \| undefined`, Multiple mode receives `string[]` |
+| `disabled` | `boolean` | `false` | Disable the entire accordion |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+
+### Accordion.Item
+
+Individual accordion item.
+
+
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | Unique identifier for the item |
+| `label` | `React.ReactNode` | - | The header content |
+| `icon` | `React.ReactNode \| ((open: boolean) => React.ReactNode)` | `ChevronDown` | Custom icon or icon function |
+| `disabled` | `boolean` | `false` | Disable the item |
+| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `slotProps` | `object` | - | Custom props for internal slots |
+
+### slotProps
+
+| Slot | Type | Description |
+|------|------|-------------|
+| `wrapper` | `React.ComponentProps<"div">` | Props for the wrapper div |
+| `trigger` | `React.ComponentProps<"button">` | Props for the trigger button |
+| `content` | `React.ComponentProps<"section">` | Props for the content panel |

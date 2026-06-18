@@ -12,7 +12,6 @@ export interface ComponentPreviewProps
   extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
   className?: string;
-  title?: string;
   hideCode?: boolean;
   description?: string;
   defaultExpanded?: boolean;
@@ -22,7 +21,6 @@ export interface ComponentPreviewProps
 export function ComponentPreview({
   name,
   className,
-  title,
   hideCode = false,
   description,
   defaultExpanded = false,

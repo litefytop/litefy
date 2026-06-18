@@ -1,6 +1,6 @@
 "use client";
 
-import { Input } from "@/components/ui";
+import { Input } from "@/ui";
 
 export default function InputInvalidDemo() {
   return (

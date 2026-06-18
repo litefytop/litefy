@@ -1,1 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><svg id="_图层_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="m16.57,5v35.97c0,2.94-1.02,5.77-2.84,7.89l-8.73,10.14V21.21c0-4.47,1.95-8.66,5.22-11.22l6.35-4.99Z" style="fill:#00a0da; stroke-width:0px;"/><path d="m59,46.04H26.88c-2.63,0-5.15,1.14-7.05,3.18l-9.05,9.77h33.74c3.99,0,7.73-2.18,10.03-5.84l4.45-7.11Z" style="fill:#00a0da; stroke-width:0px;"/><path d="m20.24,5h11.77v26.98c0,5.42-3.83,9.86-8.66,10.06l-3.11.13s0-37.17,0-37.17Z" style="fill:#00a0da; stroke-width:0px;"/><path d="m35.49,17.83v19.01h5.57c4,0,7.21-3.69,7.11-8.17l-.06-2.84c-.1-4.45-3.35-8-7.33-8,0,0-5.29,0-5.29,0Z" style="fill:#00a0da; stroke-width:0px;"/></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 28.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="_图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+<path d="M18.3,8v32c0,2.6-0.9,5.1-2.5,7L8,56V22.4c0-4,1.7-7.7,4.6-10L18.3,8z"/>
+<path d="M56,44.5H27.4c-2.3,0-4.6,1-6.3,2.8l-8,8.7h30c3.5,0,6.9-1.9,8.9-5.2L56,44.5z"/>
+<path d="M21.5,8H32v24c0,4.8-3.4,8.8-7.7,8.9L21.5,41V8z"/>
+<path d="M35.1,19.4v16.9h5c3.6,0,6.4-3.3,6.3-7.3l-0.1-2.5c-0.1-4-3-7.1-6.5-7.1H35.1z"/>
+</svg>

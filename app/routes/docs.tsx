@@ -20,17 +20,17 @@ import type { Route } from "./+types/docs";
 
 const docsIndexI18n = {
   en: {
-    title: "Components",
+    title: "Documentation",
     description:
-      "Here you can find all the components available in the library. We are working on adding more components.",
-    categoryDefaultDescription: "View related component documentation",
+      "Browse our comprehensive documentation to learn about all available features.",
+    categoryDefaultDescription: "View related documentation",
     footerText:
       "Can't find what you need? Try the [Registry Directory](/docs/directory) for community-maintained components.",
   },
   zh: {
-    title: "组件",
-    description: "这里可以找到库中所有可用的组件。我们正在持续添加更多组件。",
-    categoryDefaultDescription: "查看相关组件文档",
+    title: "文档",
+    description: "浏览我们全面的文档，了解所有可用功能。",
+    categoryDefaultDescription: "查看相关文档",
   },
 } as const;
 
@@ -104,30 +104,70 @@ function ComponentsList({
   t: typeof docsIndexI18n.en | typeof docsIndexI18n.zh;
 }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="space-y-12">
       {categories.map((category, index) => {
-        const url =
-          category.type === "folder"
-            ? category.index?.url || `/${locale}/docs`
-            : category.url;
+        if (category.type === "folder") {
+          const folder = category;
+          const items = folder.children.filter(
+            (child): child is Item => child.type === "page",
+          );
 
+          if (items.length === 0) return null;
+
+          const key = folder.$id ?? folder.name ?? index;
+
+          return (
+            <div key={String(key)} className="space-y-4">
+              <h2 className="text-2xl font-bold">{folder.name}</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {items.map((item, itemIndex) => {
+                  const url = item.url || `/${locale}/docs/${item.name}`;
+                  const itemKey = item.$id ?? item.name ?? itemIndex;
+
+                  return (
+                    <Link
+                      key={String(itemKey)}
+                      to={typeof url === "string" ? url : `/${locale}/docs`}
+                      className="group p-6 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
+                    >
+                      <div>
+                        <h3 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">
+                          {item.name}
+                        </h3>
+                        <p className="text-sm text-fd-muted-foreground line-clamp-2">
+                          {item.description || t.categoryDefaultDescription}
+                        </p>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        }
+
+        const url = category.url || `/${locale}/docs/${category.name}`;
         const key = category.$id ?? category.name ?? index;
 
         return (
-          <Link
-            key={String(key)}
-            to={typeof url === "string" ? url : "/"}
-            className="group p-6 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
-          >
-            <div>
-              <h3 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">
-                {category.name}
-              </h3>
-              <p className="text-sm text-fd-muted-foreground line-clamp-2">
-                {category.description || t.categoryDefaultDescription}
-              </p>
+          <div key={String(key)} className="space-y-4">
+            <h2 className="text-2xl font-bold">{category.name}</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <Link
+                to={typeof url === "string" ? url : `/${locale}/docs`}
+                className="group p-6 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
+              >
+                <div>
+                  <h3 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">
+                    {category.name}
+                  </h3>
+                  <p className="text-sm text-fd-muted-foreground line-clamp-2">
+                    {category.description || t.categoryDefaultDescription}
+                  </p>
+                </div>
+              </Link>
             </div>
-          </Link>
+          </div>
         );
       })}
     </div>
