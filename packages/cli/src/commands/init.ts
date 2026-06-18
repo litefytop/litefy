@@ -26,7 +26,7 @@ async function init(options: InitOptions): Promise<void> {
   let config: LitefyConfig;
   if (options.yes) {
     config = {
-      components: "./src/components",
+      components: "./src/ui",
       installed: [],
     };
   } else {
@@ -35,7 +35,7 @@ async function init(options: InitOptions): Promise<void> {
         type: "input",
         name: "componentsPath",
         message: "Components directory path:",
-        default: "./src/components",
+        default: "./src/ui",
       },
     ]);
     config = {

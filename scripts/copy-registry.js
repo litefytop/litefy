@@ -6,8 +6,21 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const srcComponentDir = path.resolve(__dirname, "../app/ui");
+const docsBaseDir = path.resolve(__dirname, "../content/docs");
 const registryRoot = path.resolve(__dirname, "../public/registry.json");
 const allowedExts = new Set([".tsx", ".ts"]);
+
+async function findDocFile(componentName) {
+  const subDirs = ["component", "css", "hooks"];
+  const targetName = `${componentName}.mdx`;
+  for (const dir of subDirs) {
+    const fullPath = path.join(docsBaseDir, dir, targetName);
+    if (await fs.pathExists(fullPath)) {
+      return `https://cdn.jsdelivr.net/gh/litefytop/litefy@main/content/docs/${dir}/${targetName}`;
+    }
+  }
+  return undefined;
+}
 
 async function generateRegistry() {
   const uiFiles = await fs.readdir(srcComponentDir);
@@ -19,9 +32,10 @@ async function generateRegistry() {
     if (file === "index.ts" || file === "index.tsx") continue;
 
     const name = path.basename(file, ext);
+    const docUrl = await findDocFile(name);
     registry[name] = {
       url: `https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/${file}`,
-      docs: `https://cdn.jsdelivr.net/gh/litefytop/litefy@main/content/docs/${name}.mdx`,
+      ...(docUrl ? { docs: docUrl } : {}),
     };
   }
 

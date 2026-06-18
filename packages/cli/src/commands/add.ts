@@ -11,6 +11,11 @@ interface AddOptions {
 interface LitefyConfig {
   components: string;
   installed: string[];
+  aliases?: {
+    ui: string;
+    hooks: string;
+    utils: string;
+  };
 }
 
 interface RegistryEntry {
@@ -48,7 +53,7 @@ async function add(components: string[], options: AddOptions): Promise<void> {
   }
 
   const config = (await fs.readJson(configPath)) as LitefyConfig;
-  const componentsDir = path.join(cwd, config.components || "./src/components");
+  const componentsDir = path.join(cwd, config.components || "./src/ui");
   await fs.ensureDir(componentsDir);
 
   const registry = await fetchRegistry();
