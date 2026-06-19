@@ -45,39 +45,35 @@ interface SingleAccordionProps extends CommonAccordionProps {
 
 export type AccordionProps = MultipleAccordionProps | SingleAccordionProps;
 
-function normalize(props: AccordionProps): {
+function normalize({ ...props }: AccordionProps): {
   multiple: boolean;
   defaultValue: string[];
   value: string[] | undefined;
   onValueChange: ((values: string[]) => void) | undefined;
-  rest: Omit<
-    AccordionProps,
-    "multiple" | "defaultValue" | "value" | "onValueChange"
-  >;
-} {
-  const multiple = props.multiple === true;
-
+} & CommonAccordionProps {
   let defaultValue: string[];
   let value: string[] | undefined;
   let onValueChange: ((values: string[]) => void) | undefined;
 
-  if (multiple) {
+  if (props.multiple) {
     const {
       defaultValue: _defaultValue,
       value: _value,
       onValueChange: _onValueChange,
+      multiple,
       ...rest
     } = props;
 
     defaultValue = _defaultValue ?? [];
     value = _value;
     onValueChange = _onValueChange;
-    return { multiple, defaultValue, value, onValueChange, rest };
+    return { multiple, defaultValue, value, onValueChange, ...rest };
   } else {
     const {
       defaultValue: _defaultValue,
       value: _value,
       onValueChange: _onValueChange,
+      multiple = false,
       ...rest
     } = props;
 
@@ -89,7 +85,7 @@ function normalize(props: AccordionProps): {
           _onValueChange?.(single);
         }
       : undefined;
-    return { multiple, defaultValue, value, onValueChange, rest };
+    return { multiple, defaultValue, value, onValueChange, ...rest };
   }
 }
 
@@ -99,9 +95,12 @@ export function Accordion(props: AccordionProps) {
     defaultValue,
     value: controlledValue,
     onValueChange,
-    rest,
+    disabled,
+    inert,
+    className,
+    ...rest
   } = normalize(props);
-  const { disabled, inert, className, children, ..._rest } = rest;
+
   const [uncontrolledValue, setUncontrolledValue] =
     React.useState<string[]>(defaultValue);
   const isControlled = controlledValue !== undefined;
@@ -135,12 +134,10 @@ export function Accordion(props: AccordionProps) {
   return (
     <AccordionContext.Provider value={contextValue}>
       <div
-        {..._rest}
+        {...rest}
         inert={disabled || inert}
         className={cn("flex flex-col inert:opacity-50", className)}
-      >
-        {children}
-      </div>
+      />
     </AccordionContext.Provider>
   );
 }

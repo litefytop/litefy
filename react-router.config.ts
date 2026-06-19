@@ -26,6 +26,9 @@ export default {
     const defaultLanguage = "en";
 
     for (const lang of languages) {
+      paths.push(`/${lang}`);
+    }
+    for (const lang of languages) {
       paths.push(`/${lang}/docs`);
     }
 

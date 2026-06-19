@@ -13,11 +13,7 @@ export default function MultiSelectControlledDemo() {
 
   return (
     <div className="space-y-4">
-      <MultiSelect
-        options={options}
-        value={selected}
-        onValueChange={setSelected}
-      />
+      <MultiSelect options={options} value={selected} onChange={setSelected} />
       <p className="text-sm text-muted-foreground">
         Selected: {selected.join(", ") || "none"}
       </p>

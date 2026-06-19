@@ -22,6 +22,7 @@ const CheckboxGroupContext =
   React.createContext<CheckboxGroupContextValue | null>(null);
 
 export type CheckboxGroupProps = {
+  disabled?: boolean;
   defaultValue?: string[];
   value?: string[];
   onValueChange?: (value: string[]) => void;
@@ -40,6 +41,7 @@ function CheckboxGroup({
   className,
   children,
   onBlur,
+  disabled,
   ...props
 }: CheckboxGroupProps) {
   const groupRef = React.useRef<HTMLDivElement>(null);
@@ -68,6 +70,7 @@ function CheckboxGroup({
   return (
     <div
       {...props}
+      inert={disabled || props.inert}
       ref={groupRef}
       aria-invalid={invalid}
       data-invalid={invalid || undefined}

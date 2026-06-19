@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "prebuild": "pnpm node scripts/copy-registry.js",
+    "prebuild": "pnpm node scripts/copy-registry.js && node scripts/build-page-trees.mjs",
     "build": "react-router build",
     "dev": "react-router dev",
     "start": "serve ./build/client --config ../../serve.json",

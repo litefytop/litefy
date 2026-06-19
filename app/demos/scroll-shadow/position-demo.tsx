@@ -1,13 +1,6 @@
 import { ScrollShadow } from "@/ui";
 
-const longContent = Array.from({ length: 20 }, (_, i) => {
-  const id = crypto.randomUUID();
-  return (
-    <p key={id} className="p-4 border-b last:border-b-0">
-      Item {i + 1} - Shadow appears at different positions
-    </p>
-  );
-});
+const ids = Array.from({ length: 20 }, (_, i) => i);
 
 export default function ScrollShadowPositionDemo() {
   return (
@@ -15,13 +8,21 @@ export default function ScrollShadowPositionDemo() {
       <div>
         <h3 className="text-sm font-medium mb-2">Top</h3>
         <ScrollShadow edges="top" className="h-48 border rounded-md">
-          {longContent}
+          {ids.map((id) => (
+            <p key={id} className="p-4 border-b last:border-b-0">
+              Item {id + 1} - Shadow appears at different positions
+            </p>
+          ))}
         </ScrollShadow>
       </div>
       <div>
         <h3 className="text-sm font-medium mb-2">Bottom</h3>
         <ScrollShadow edges="bottom" className="h-48 border rounded-md">
-          {longContent}
+          {ids.map((id) => (
+            <p key={id} className="p-4 border-b last:border-b-0">
+              Item {id + 1} - Shadow appears at different positions
+            </p>
+          ))}
         </ScrollShadow>
       </div>
     </div>

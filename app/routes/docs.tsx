@@ -12,11 +12,14 @@ import {
 } from "fumadocs-ui/layouts/docs/page";
 import { Link, useParams } from "react-router";
 import { getMDXComponents } from "@/components/mdx";
+import { pageTrees } from "@/generated/page-trees";
 import { i18n } from "@/lib/i18n";
 import { baseOptions } from "@/lib/layout.shared";
+import { buildMarkdownUrl } from "@/lib/markdown-url";
 import { gitConfig } from "@/lib/shared";
-import { getPageMarkdownUrl, source } from "@/lib/source";
 import type { Route } from "./+types/docs";
+
+type Locale = keyof typeof pageTrees;
 
 const docsIndexI18n = {
   en: {
@@ -33,34 +36,6 @@ const docsIndexI18n = {
     categoryDefaultDescription: "查看相关文档",
   },
 } as const;
-
-export async function loader({ params }: Route.LoaderArgs) {
-  const locale = (params as { lang?: string }).lang || i18n.defaultLanguage;
-  const wildcard = (params as { "*"?: string })["*"];
-  const slugs = wildcard
-    ? wildcard.split("/").filter((v: string) => v.length > 0)
-    : [];
-
-  if (slugs.length === 0) {
-    const pageTree = await source.serializePageTree(source.getPageTree(locale));
-    return {
-      mode: "index" as const,
-      pageTree,
-      locale,
-    };
-  }
-
-  const page = source.getPage(slugs, locale);
-  if (!page) throw new Response("Not found", { status: 404 });
-
-  return {
-    mode: "page" as const,
-    path: page.path,
-    markdownUrl: getPageMarkdownUrl(page).url,
-    pageTree: await source.serializePageTree(source.getPageTree(locale)),
-    locale,
-  };
-}
 
 const clientLoader = browserCollections.docs.createClientLoader({
   component(
@@ -174,28 +149,37 @@ function ComponentsList({
   );
 }
 
-export default function Docs({ loaderData }: Route.ComponentProps) {
-  const params = useParams<{ lang: string }>();
-  const currentLocale =
-    params.lang || loaderData.locale || i18n.defaultLanguage;
-  const t =
-    docsIndexI18n[currentLocale as keyof typeof docsIndexI18n] ||
-    docsIndexI18n.en;
-  const tree = deserializePageTree(loaderData.pageTree);
-  const PageContent =
-    loaderData.mode === "page"
-      ? clientLoader.getComponent(loaderData.path)
-      : null;
+function resolveLocale(input: string | undefined): Locale {
+  if (input && input in pageTrees) return input as Locale;
+  return i18n.defaultLanguage as Locale;
+}
 
-  if (loaderData.mode === "page" && PageContent) {
-    return (
-      <DocsLayout {...baseOptions(currentLocale)} tree={tree}>
-        <PageContent
-          markdownUrl={loaderData.markdownUrl}
-          path={loaderData.path}
-        />
-      </DocsLayout>
-    );
+export default function Docs({ params }: Route.ComponentProps) {
+  const routeParams = useParams<{ lang: string; "*"?: string }>();
+  const locale = resolveLocale(
+    (params as { lang?: string }).lang ?? routeParams.lang,
+  );
+  const wildcard = (params as { "*"?: string })["*"] ?? routeParams["*"] ?? "";
+  const slugs = wildcard
+    ? wildcard.split("/").filter((v: string) => v.length > 0)
+    : [];
+
+  const t = docsIndexI18n[locale] || docsIndexI18n.en;
+  const tree = deserializePageTree(pageTrees[locale]);
+
+  if (slugs.length > 0) {
+    const basePath = slugs.join("/");
+    const fullPath = locale === "zh" ? `${basePath}.zh.mdx` : `${basePath}.mdx`;
+    const PageContent = clientLoader.getComponent(fullPath);
+
+    if (PageContent) {
+      const markdownUrl = buildMarkdownUrl(locale, slugs).url;
+      return (
+        <DocsLayout {...baseOptions(locale)} tree={tree}>
+          <PageContent markdownUrl={markdownUrl} path={fullPath} />
+        </DocsLayout>
+      );
+    }
   }
 
   const categories = tree.children.filter(
@@ -204,14 +188,14 @@ export default function Docs({ loaderData }: Route.ComponentProps) {
   );
 
   return (
-    <DocsLayout {...baseOptions(currentLocale)} tree={tree}>
+    <DocsLayout {...baseOptions(locale)} tree={tree}>
       <div className="max-w-5xl mx-auto px-4 py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">{t.title}</h1>
           <p className="text-lg text-fd-muted-foreground">{t.description}</p>
         </div>
 
-        <ComponentsList categories={categories} locale={currentLocale} t={t} />
+        <ComponentsList categories={categories} locale={locale} t={t} />
       </div>
     </DocsLayout>
   );

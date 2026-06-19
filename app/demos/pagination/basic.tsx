@@ -13,8 +13,8 @@ export default function PaginationDemo() {
   const pageSize = 10;
   const totalPages = Math.ceil(totalRecords / pageSize);
 
-  const { index, goTo, next, prev, isFirst, isLast } = usePagination({
-    initial: 0,
+  const { index, goTo, next, previous, isFirst, isEnd } = usePagination({
+    base: 0,
     total: totalPages,
     loop: false,
   });
@@ -42,7 +42,7 @@ export default function PaginationDemo() {
 
         <button
           type="button"
-          onClick={prev}
+          onClick={previous}
           disabled={isFirst}
           className="px-3 py-1 text-sm border rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
         >
@@ -64,7 +64,7 @@ export default function PaginationDemo() {
         <button
           type="button"
           onClick={next}
-          disabled={isLast}
+          disabled={isEnd}
           className="px-3 py-1 text-sm border rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <ChevronRight className="size-4" />
@@ -73,7 +73,7 @@ export default function PaginationDemo() {
         <button
           type="button"
           onClick={() => goTo(totalPages - 1)}
-          disabled={isLast}
+          disabled={isEnd}
           className="px-3 py-1 text-sm border rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <ChevronsRight className="size-4" />
