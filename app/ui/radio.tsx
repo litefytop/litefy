@@ -36,13 +36,8 @@ export type RadioGroupProps = {
   className?: ClassNameValue;
   children?: React.ReactNode;
   variant?: "radio" | "segment";
-  onBlur?: (event: FocusEvent) => void;
-  legend?: string;
-  slotProps?: {
-    legend?: HTMLAttrs<Omit<React.ComponentProps<"legend">, "children">>;
-  };
 } & Omit<
-  React.ComponentProps<"fieldset">,
+  React.ComponentProps<"div">, // 改为 div 属性
   "onChange" | "defaultValue" | "value"
 >;
 
@@ -56,12 +51,8 @@ function RadioGroup({
   className,
   children,
   variant = "radio",
-  onBlur,
-  legend,
-  slotProps,
   ...props
 }: RadioGroupProps) {
-  const groupRef = React.useRef<HTMLFieldSetElement>(null);
   const [uncontrolledValue, setUncontrolledValue] = React.useState<
     string | undefined
   >(defaultValue);
@@ -81,24 +72,11 @@ function RadioGroup({
     disabled,
     variant,
   };
-  React.useEffect(() => {
-    if (!onBlur) return;
-    const el = groupRef.current;
-    if (!el) return;
-    const handleFocusOut = (e: FocusEvent) => {
-      const relatedTarget = e.relatedTarget as HTMLElement | null;
-      if (!el.contains(relatedTarget)) {
-        onBlur(e);
-      }
-    };
-    el.addEventListener("focusout", handleFocusOut);
-    return () => {
-      el.removeEventListener("focusout", handleFocusOut);
-    };
-  }, [onBlur]);
+
   return (
-    <fieldset
+    <div
       {...props}
+      role="radiogroup"
       aria-invalid={invalid}
       data-invalid={invalid || undefined}
       className={cn(
@@ -106,18 +84,10 @@ function RadioGroup({
         className,
       )}
     >
-      {legend && (
-        <legend
-          {...slotProps?.legend}
-          className={cn("text-sm font-medium", slotProps?.legend?.className)}
-        >
-          {legend}
-        </legend>
-      )}
       <RadioGroupContext.Provider value={ctx}>
         {children}
       </RadioGroupContext.Provider>
-    </fieldset>
+    </div>
   );
 }
 

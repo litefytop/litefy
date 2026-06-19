@@ -60,7 +60,7 @@ The main container component. Automatically switches between single and multiple
 | `value` | `string` (single) \| `string[]` (multiple) | - | Current value (controlled). Single mode: `string`, Multiple mode: `string[]` |
 | `onValueChange` | `(value: string \| undefined) => void` (single) \| `(values: string[]) => void` (multiple) | - | Value change callback. Single mode receives `string \| undefined`, Multiple mode receives `string[]` |
 | `disabled` | `boolean` | `false` | Disable the entire accordion |
-| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 
 ### Accordion.Item
 
@@ -74,7 +74,7 @@ Individual accordion item.
 | `label` | `React.ReactNode` | - | The header content |
 | `icon` | `React.ReactNode \| ((open: boolean) => React.ReactNode)` | `ChevronDown` | Custom icon or icon function |
 | `disabled` | `boolean` | `false` | Disable the item |
-| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 | `slotProps` | `object` | - | Custom props for internal slots |
 
 ### slotProps

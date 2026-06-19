@@ -69,7 +69,7 @@ Shows disabled state for individual checkbox and checkbox group.
 | `indicator` | `(checked: boolean, wrapperClassName?: string) => React.ReactNode` | - | Custom indicator render function with wrapper className |
 | `disabled` | `boolean` | `false` | Disable the checkbox |
 | `name` | `string` | - | Input name |
-| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 
 ### Checkbox.Group
 
@@ -82,4 +82,4 @@ Shows disabled state for individual checkbox and checkbox group.
 | `disabled` | `boolean` | `false` | Disable all children |
 | `invalid` | `boolean` | `false` | Mark as invalid |
 | `name` | `string` | - | Group name |
-| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |

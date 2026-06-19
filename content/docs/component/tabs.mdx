@@ -68,7 +68,7 @@ The main container component for the tabs.
 | `onValueChange` | `(value: string) => void` | - | Callback when active tab changes |
 | `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Layout orientation |
 | `variant` | `'button' \| 'line'` | `'line'` | Visual style variant |
-| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 
 ### Tab
 
@@ -79,7 +79,7 @@ Individual tab panel component.
 | `value` | `string` | - | Unique identifier for the tab |
 | `label` | `React.ReactNode` | - | Tab trigger label content |
 | `disabled` | `boolean` | `false` | Disable the tab |
-| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 
 ### slotProps
 

@@ -63,7 +63,7 @@ The root form component built on top of the native `<form>` element.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `onSubmit` | `(formData: FormData) => Promise<boolean>` | - | Async submit handler. Return `true` to mark success and trigger `autoReset` |
+| `onSubmit` | `(values: FormValues) => Promise<boolean>` | - | Async submit handler. Receives a preprocessed object where multi-value fields are arrays. Return `true` to mark success and trigger `autoReset` |
 | `autoReset` | `boolean` | `true` | Reset the form when `onSubmit` resolves to `true` |
 | `ref` | `React.Ref<FormRef>` | - | Imperative handle for `setValue`, `setValues`, `reset`, `submit` |
 | `children` | `React.ReactNode` | - | Form contents, typically `Form.Field` and `Form.Submit` |

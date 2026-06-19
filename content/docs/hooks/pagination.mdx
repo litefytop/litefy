@@ -45,7 +45,7 @@ The root pagination container that provides context to all sub-components.
 | `onPageChange` | `(page: number) => void` | - | Callback when page changes |
 | `onPageSizeChange` | `(size: number) => void` | - | Callback when page size changes |
 | `children` | `React.ReactNode` | - | Pagination sub-components |
-| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 
 ### Pagination.Description
 

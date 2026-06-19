@@ -22,6 +22,7 @@ const CheckboxGroupContext =
   React.createContext<CheckboxGroupContextValue | null>(null);
 
 export type CheckboxGroupProps = {
+  disabled?: boolean;
   defaultValue?: string[];
   value?: string[];
   onValueChange?: (value: string[]) => void;
@@ -29,12 +30,7 @@ export type CheckboxGroupProps = {
   name?: string;
   className?: ClassNameValue;
   children?: React.ReactNode;
-  onBlur?: (event: FocusEvent) => void;
-  legend?: string;
-  slotProps?: {
-    legend?: HTMLAttrs<Omit<React.ComponentProps<"legend">, "children">>;
-  };
-} & Omit<React.ComponentProps<"fieldset">, "className">;
+} & Omit<React.ComponentProps<"div">, "className">;
 
 function CheckboxGroup({
   defaultValue = [],
@@ -45,11 +41,10 @@ function CheckboxGroup({
   className,
   children,
   onBlur,
-  legend,
-  slotProps,
+  disabled,
   ...props
 }: CheckboxGroupProps) {
-  const groupRef = React.useRef<HTMLFieldSetElement>(null);
+  const groupRef = React.useRef<HTMLDivElement>(null);
   const [uncontrolledValue, setUncontrolledValue] =
     React.useState<string[]>(defaultValue);
 
@@ -65,77 +60,6 @@ function CheckboxGroup({
     onValueChange?.(next);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLFieldSetElement>) => {
-    const allowKeys = [
-      "ArrowRight",
-      "ArrowDown",
-      "ArrowLeft",
-      "ArrowUp",
-      "Home",
-      "End",
-    ];
-    if (
-      !allowKeys.includes(e.key) ||
-      !groupRef.current?.contains(document.activeElement)
-    )
-      return;
-
-    const inputs = Array.from(
-      groupRef.current.querySelectorAll<HTMLInputElement>(
-        "input[type='checkbox']:not(:disabled)",
-      ),
-    );
-    if (!inputs.length) return;
-
-    const curIdx = inputs.indexOf(document.activeElement as HTMLInputElement);
-    if (curIdx === -1) {
-      if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
-        inputs[inputs.length - 1]?.focus();
-      } else {
-        inputs[0]?.focus();
-      }
-      e.preventDefault();
-      return;
-    }
-
-    const len = inputs.length;
-    let targetIdx = curIdx;
-    switch (e.key) {
-      case "ArrowRight":
-      case "ArrowDown":
-        targetIdx = (curIdx + 1) % len;
-        break;
-      case "ArrowLeft":
-      case "ArrowUp":
-        targetIdx = (curIdx - 1 + len) % len;
-        break;
-      case "Home":
-        targetIdx = 0;
-        break;
-      case "End":
-        targetIdx = len - 1;
-        break;
-    }
-    e.preventDefault();
-    inputs[targetIdx]?.focus();
-  };
-
-  React.useEffect(() => {
-    if (!onBlur) return;
-    const el = groupRef.current;
-    if (!el) return;
-    const handleFocusOut = (e: FocusEvent) => {
-      const relatedTarget = e.relatedTarget as HTMLElement | null;
-      if (!el.contains(relatedTarget)) {
-        onBlur(e);
-      }
-    };
-    el.addEventListener("focusout", handleFocusOut);
-    return () => {
-      el.removeEventListener("focusout", handleFocusOut);
-    };
-  }, [onBlur]);
-
   const ctx = {
     selected: selectedSet,
     toggleValue,
@@ -144,10 +68,10 @@ function CheckboxGroup({
   };
 
   return (
-    <fieldset
+    <div
       {...props}
+      inert={disabled || props.inert}
       ref={groupRef}
-      onKeyDown={handleKeyDown}
       aria-invalid={invalid}
       data-invalid={invalid || undefined}
       className={cn(
@@ -155,18 +79,10 @@ function CheckboxGroup({
         className,
       )}
     >
-      {legend && (
-        <legend
-          {...slotProps?.legend}
-          className={cn("text-sm font-medium", slotProps?.legend?.className)}
-        >
-          {legend}
-        </legend>
-      )}
       <CheckboxGroupContext.Provider value={ctx}>
         {children}
       </CheckboxGroupContext.Provider>
-    </fieldset>
+    </div>
   );
 }
 

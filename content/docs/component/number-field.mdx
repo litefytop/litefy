@@ -58,7 +58,7 @@ A numeric input field with built-in increment and decrement buttons.
 | `defaultValue` | `number \| string` | - | Initial value (uncontrolled mode) |
 | `value` | `number \| string \| null` | - | Current value (controlled mode) |
 | `onValueChange` | `(value: number \| null) => void \| (value: string) => void` | - | Value change handler. Returns `number \| null` when `positiveInteger=true`, otherwise `string` |
-| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 | `invalid` | `boolean` | `false` | Whether the field is in an invalid state |
 | `min` | `number` | `0` (positiveInteger) or `-Infinity` | Minimum allowed value |
 | `max` | `number` | `Infinity` | Maximum allowed value |

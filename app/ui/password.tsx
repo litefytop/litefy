@@ -38,7 +38,7 @@ export function Password({
       data-invalid={invalid ? true : undefined}
       aria-invalid={invalid}
       className={cn(
-        "flex w-full max-w-md items-center rounded-md border border-input bg-background shadow-xs transition-colors px-2 h-9",
+        "flex w-full max-w-sm min-w-3xs items-center rounded-md border border-input bg-background shadow-xs transition-colors px-2 h-9",
         "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
         "data-[invalid=true]:border-destructive data-[invalid=true]:ring-destructive/20",
         "inert:cursor-not-allowed inert:opacity-50",

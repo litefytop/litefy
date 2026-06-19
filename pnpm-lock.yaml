@@ -46,6 +46,9 @@ importers:
       react-router:
         specifier: ^7.16.0
         version: 7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      tailwind-merge:
+        specifier: ^3.6.0
+        version: 3.6.0
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.4.16

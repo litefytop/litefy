@@ -5,7 +5,7 @@ import { createGetUrl } from "fumadocs-core/source";
 const getUrl = createGetUrl("/docs");
 
 export default {
-  ssr: true,
+  ssr: false,
   future: {
     v8_middleware: true,
     v8_viteEnvironmentApi: true,
@@ -25,6 +25,9 @@ export default {
     const languages = ["en", "zh"];
     const defaultLanguage = "en";
 
+    for (const lang of languages) {
+      paths.push(`/${lang}`);
+    }
     for (const lang of languages) {
       paths.push(`/${lang}/docs`);
     }

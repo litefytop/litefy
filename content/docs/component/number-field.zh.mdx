@@ -58,7 +58,7 @@ description: 带有增减控制按钮的数字输入字段
 | `defaultValue` | `number \| string` | - | 初始值（非受控模式） |
 | `value` | `number \| string \| null` | - | 当前值（受控模式） |
 | `onValueChange` | `(value: number \| null) => void \| (value: string) => void` | - | 值变化处理器。当 `positiveInteger=true` 时返回 `number \| null`，否则返回 `string` |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类。支持字符串、数组、对象、布尔值等。 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类。仅支持字符串、数组及各类假值。 |
 | `invalid` | `boolean` | `false` | 是否处于无效状态 |
 | `min` | `number` | `0`（positiveInteger）或 `-Infinity` | 允许的最小值 |
 | `max` | `number` | `Infinity` | 允许的最大值 |

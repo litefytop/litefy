@@ -12,7 +12,7 @@ export default function NotFound() {
   const params = useParams<{ lang: string }>();
 
   const locale = params.lang || i18n.defaultLanguage;
-  const docsPath = `/${locale}/docs`;
+  const docsPath = `/`;
 
   useEffect(() => {
     if (typeof window !== "undefined" && params.lang) {

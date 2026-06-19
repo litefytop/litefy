@@ -70,18 +70,7 @@ function SourceCodeContent({ component, className }: SourceCodeProps) {
     );
   }
 
-  return (
-    <DynamicCodeBlock
-      lang="tsx"
-      code={sourceCode}
-      options={{
-        themes: {
-          light: "github-light",
-          dark: "github-dark",
-        },
-      }}
-    />
-  );
+  return <DynamicCodeBlock lang="tsx" code={sourceCode} />;
 }
 
 export function SourceCode({ component, className }: SourceCodeProps) {

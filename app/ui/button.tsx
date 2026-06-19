@@ -2,15 +2,14 @@ import { Loader2 } from "lucide-react";
 import { type ClassNameValue, cn } from "@/lib";
 
 const buttonClass = {
-  base: {
-    display: "inline-flex items-center justify-center cursor-pointer",
-    size: "gap-2 h-9 min-w-8",
-    spacing: "px-3 py-0",
-    border: "border border-transparent rounded-lg",
-    font: "font-sans text-sm text-center",
-    hasIcon:
-      "[&:has(>svg:only-child)]:p-1 [&:has(>svg:only-child)]:h-8 [&_svg:not([class*='size-'])]:size-4",
-  },
+  base: [
+    "inline-flex items-center justify-center cursor-pointer",
+    "gap-2 h-9 min-w-8",
+    "px-3 py-0",
+    "border border-transparent rounded-lg",
+    "font-sans text-sm text-center",
+    "[&:has(>svg:only-child)]:p-1 [&:has(>svg:only-child)]:h-8 [&_svg:not([class*='size-'])]:size-4",
+  ],
   variant: {
     primary: "bg-primary text-primary-foreground hover:bg-primary/90",
     destructive:

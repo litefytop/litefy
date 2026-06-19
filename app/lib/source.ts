@@ -2,6 +2,7 @@ import { docs } from "collections/server";
 import { loader } from "fumadocs-core/source";
 import { demos } from "@/demos";
 import { i18n } from "./i18n";
+import { buildMarkdownUrl } from "./markdown-url";
 import { docsRoute } from "./shared";
 
 export const source = loader({
@@ -11,13 +12,10 @@ export const source = loader({
 });
 
 export function getPageMarkdownUrl(page: (typeof source)["$inferPage"]) {
-  const segments = [page.locale || i18n.defaultLanguage, ...page.slugs];
-
-  return {
-    segments: [...segments, "content.md"],
-    url: `/${page.locale || i18n.defaultLanguage}/llms.mdx/docs/${segments.slice(1).join("/")}`,
-  };
+  return buildMarkdownUrl(page.locale || i18n.defaultLanguage, page.slugs);
 }
+
+export { buildMarkdownUrl } from "./markdown-url";
 
 const COMPONENT_PREVIEW_REGEX =
   /<ComponentPreview\s+name\s*=\s*["']([^"']+)["'][^/>]*\/?>/g;

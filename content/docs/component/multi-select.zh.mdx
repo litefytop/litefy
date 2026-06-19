@@ -23,6 +23,22 @@ description: 支持从列表中选择多个选项的多选组件
 
 ## 用法
 
+<Callout type="info" title="Chrome 140+ 原生替代方案">
+  如果你面向的是最新的 Chrome 浏览器（版本大于 140），原生 `<select>` 配合
+  `multiple` 和 `size={1}` 即可获得相当的体验，且性能更好。直接展开 props
+  并覆盖相关属性即可：
+</Callout>
+
+```tsx
+<select {...props} multiple size={1}>
+  {options.map((opt) => (
+    <option key={opt.value} value={opt.value}>
+      {opt.label}
+    </option>
+  ))}
+</select>
+```
+
 ### 基础用法
 
 简单的多选列表。
@@ -61,7 +77,7 @@ description: 支持从列表中选择多个选项的多选组件
 | `onChange` | `(values: string[]) => void` | - | 选择变化时的回调函数 |
 | `placeholder` | `string` | - | 占位文本 |
 | `invalid` | `boolean` | `false` | 是否处于无效状态 |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类。支持字符串、数组、对象、布尔值等。 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类。仅支持字符串、数组及各类假值。 |
 
 ### SelectOption
 

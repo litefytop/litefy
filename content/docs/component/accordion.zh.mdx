@@ -61,7 +61,7 @@ description: 支持单选和多选展开模式的手风琴组件
 | `value` | `string`（单选）\| `string[]`（多选） | - | 当前值（受控）。单选模式：`string`，多选模式：`string[]` |
 | `onValueChange` | `(value: string \| undefined) => void`（单选）\| `(values: string[]) => void`（多选） | - | 值变化回调。单选模式接收 `string \| undefined`，多选模式接收 `string[]` |
 | `disabled` | `boolean` | `false` | 禁用整个手风琴 |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类。支持字符串、数组、对象、布尔值等。 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类。仅支持字符串、数组及各类假值。 |
 
 ### Accordion.Item
 

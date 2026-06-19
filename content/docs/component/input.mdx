@@ -56,7 +56,7 @@ The input component with slot and validation support.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `type` | `'text' \| 'email' \| 'url' \| 'tel' \| 'search'` | `'text'` | Input type |
-| `className` | `ClassNameValue` | - | Custom CSS class. Supports strings, arrays, objects, booleans, and more. |
+| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 | `leading` | `ReactNode` | - | Leading slot content (e.g., icons) |
 | `trailing` | `ReactNode` | - | Trailing slot content (e.g., buttons, icons) |
 | `invalid` | `boolean` | `false` | Whether the input is in an invalid state |
