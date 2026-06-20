@@ -26,7 +26,7 @@ interface RegistryEntry {
 type Registry = Record<string, RegistryEntry>;
 
 const REGISTRY_URL =
-  "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/public/registry.json";
+  "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/registry.json";
 
 async function fetchRegistry(): Promise<Registry> {
   try {
