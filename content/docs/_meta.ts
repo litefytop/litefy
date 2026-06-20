@@ -1,4 +1,18 @@
 export default {
+  index: {
+    name: "Getting Started",
+    displayName: {
+      en: "Getting Started",
+      zh: "入门",
+    },
+  },
+  overview: {
+    name: "Overview",
+    displayName: {
+      en: "Overview",
+      zh: "总览",
+    },
+  },
   component: {
     type: "folder",
     name: "Components",

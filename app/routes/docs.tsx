@@ -23,16 +23,16 @@ type Locale = keyof typeof pageTrees;
 
 const docsIndexI18n = {
   en: {
-    title: "Documentation",
+    title: "Overview",
     description:
-      "Browse our comprehensive documentation to learn about all available features.",
+      "Browse every component, CSS utility, and hook available in Litefy UI.",
     categoryDefaultDescription: "View related documentation",
     footerText:
       "Can't find what you need? Try the [Registry Directory](/docs/directory) for community-maintained components.",
   },
   zh: {
-    title: "文档",
-    description: "浏览我们全面的文档，了解所有可用功能。",
+    title: "总览",
+    description: "浏览 Litefy UI 中所有可用的组件、CSS 工具类与钩子。",
     categoryDefaultDescription: "查看相关文档",
   },
 } as const;
@@ -89,7 +89,10 @@ function ComponentsList({
 
           if (items.length === 0) return null;
 
-          const key = folder.$id ?? folder.name ?? index;
+          const key =
+            typeof folder.name === "string"
+              ? folder.name
+              : (folder.$id ?? index);
 
           return (
             <div key={String(key)} className="space-y-4">
@@ -97,7 +100,10 @@ function ComponentsList({
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {items.map((item, itemIndex) => {
                   const url = item.url || `/${locale}/docs/${item.name}`;
-                  const itemKey = item.$id ?? item.name ?? itemIndex;
+                  const itemKey =
+                    typeof item.name === "string"
+                      ? item.name
+                      : (item.$id ?? itemIndex);
 
                   return (
                     <Link
@@ -167,13 +173,20 @@ export default function Docs({ params }: Route.ComponentProps) {
   const t = docsIndexI18n[locale] || docsIndexI18n.en;
   const tree = deserializePageTree(pageTrees[locale]);
 
-  if (slugs.length > 0) {
-    const basePath = slugs.join("/");
+  const isOverview = slugs[0] === "overview";
+  const isIndexRoot = slugs.length === 0;
+  const effectiveSlugs = isIndexRoot ? ["index"] : slugs;
+
+  if (!isOverview) {
+    const basePath = effectiveSlugs.join("/");
     const fullPath = locale === "zh" ? `${basePath}.zh.mdx` : `${basePath}.mdx`;
     const PageContent = clientLoader.getComponent(fullPath);
 
     if (PageContent) {
-      const markdownUrl = buildMarkdownUrl(locale, slugs).url;
+      const markdownUrl = buildMarkdownUrl(
+        locale,
+        isIndexRoot ? [] : slugs,
+      ).url;
       return (
         <DocsLayout {...baseOptions(locale)} tree={tree}>
           <PageContent markdownUrl={markdownUrl} path={fullPath} />

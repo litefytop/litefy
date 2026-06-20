@@ -15,7 +15,7 @@ const DEFAULT_LANGUAGE = "en";
 
 const FRONTMATTER_RE = /^---\r?\n([\s\S]*?)\r?\n---/;
 const META_DISPLAY_RE =
-  /displayName:\s*\{\s*en:\s*"([^"]+)"(?:\s*,\s*zh:\s*"([^"]+)")?\s*\}/;
+  /displayName:\s*\{\s*en:\s*"([^"]+)"(?:\s*,\s*zh:\s*"([^"]+)")?\s*,?\s*\}/;
 const META_NAME_RE = /name:\s*"([^"]+)"/;
 
 function parseFrontmatter(content) {
@@ -37,13 +37,28 @@ function parseMetaFile(path) {
   const lines = content.split(/\r?\n/);
   let currentKey = null;
   let currentEntry = {};
+  let entryStart = 0;
 
-  for (const line of lines) {
+  const finalizeCurrent = (endIdx) => {
+    if (!currentKey) return;
+    const slice = lines.slice(entryStart, endIdx + 1).join("\n");
+    const displayMatch = slice.match(META_DISPLAY_RE);
+    if (displayMatch) {
+      const en = displayMatch[1];
+      const zh = displayMatch[2];
+      currentEntry.displayName = { en, ...(zh ? { zh } : {}) };
+    }
+    result[currentKey] = currentEntry;
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
     const keyMatch = line.match(/^\s{2}(\w+):\s*\{?\s*$/);
     if (keyMatch && !line.includes("displayName")) {
-      if (currentKey) result[currentKey] = currentEntry;
+      if (currentKey) finalizeCurrent(i - 1);
       currentKey = keyMatch[1];
       currentEntry = {};
+      entryStart = i;
       continue;
     }
     if (currentKey) {
@@ -53,24 +68,17 @@ function parseMetaFile(path) {
       const nameMatch = line.match(META_NAME_RE);
       if (nameMatch) currentEntry.name = nameMatch[1];
 
-      const displayMatch = line.match(META_DISPLAY_RE);
-      if (displayMatch) {
-        const en = displayMatch[1];
-        const zh = displayMatch[2];
-        currentEntry.displayName = { en, ...(zh ? { zh } : {}) };
-      }
-
       if (
         (line.includes("},") || (line.includes("}") && line.trim() === "},")) &&
         !line.match(/^\s{4}\w+:\s*\{/)
       ) {
-        result[currentKey] = currentEntry;
+        finalizeCurrent(i);
         currentKey = null;
         currentEntry = {};
       }
     }
   }
-  if (currentKey) result[currentKey] = currentEntry;
+  if (currentKey) finalizeCurrent(lines.length - 1);
   return result;
 }
 

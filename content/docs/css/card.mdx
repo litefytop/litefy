@@ -1,0 +1,57 @@
+---
+title: Card
+description: A glassmorphic surface with hover lift, soft shadow, and an ambient glow.
+---
+
+## Source Code
+
+```css
+.card {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--card-bg);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;
+  box-shadow: 0 10px 15px -3px var(--card-shadow);
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  box-shadow: 0 20px 25px -5px var(--card-shadow-hover);
+  transform: translateY(-4px);
+  border-color: oklch(1 0 0 / 0.5);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 30% 20%,
+    var(--card-glow) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+```
+
+## Examples
+
+### Basic
+
+A simple card with title, description, and actions.
+
+<ComponentPreview name="card-basic" />
+
+### Group
+
+Compose multiple `.card` elements into a responsive grid layout.
+
+<ComponentPreview name="card-group" />

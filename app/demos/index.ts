@@ -30,6 +30,18 @@ import ComboboxAsyncDemo from "./combobox/async-demo";
 import comboboxAsyncCode from "./combobox/async-demo.tsx?raw";
 import ComboboxBasicDemo from "./combobox/basic-demo";
 import comboboxBasicCode from "./combobox/basic-demo.tsx?raw";
+import CardBasicDemo from "./css/card-basic-demo";
+import cardBasicCode from "./css/card-basic-demo.tsx?raw";
+import CardGroupDemo from "./css/card-group-demo";
+import cardGroupCode from "./css/card-group-demo.tsx?raw";
+import KdbBasicDemo from "./css/kdb-basic-demo";
+import kdbBasicCode from "./css/kdb-basic-demo.tsx?raw";
+import KdbCombinationDemo from "./css/kdb-combination-demo";
+import kdbCombinationCode from "./css/kdb-combination-demo.tsx?raw";
+import SkeletonAvatarDemo from "./css/skeleton-avatar-demo";
+import skeletonAvatarCode from "./css/skeleton-avatar-demo.tsx?raw";
+import SkeletonTextDemo from "./css/skeleton-text-demo";
+import skeletonTextCode from "./css/skeleton-text-demo.tsx?raw";
 import DialogBasicDemo from "./dialog/basic-demo";
 import dialogBasicCode from "./dialog/basic-demo.tsx?raw";
 import DrawerBasicDemo from "./drawer/basic-demo";
@@ -197,6 +209,30 @@ export const demos: Record<string, DemoItem> = {
   "combobox-async": {
     component: ComboboxAsyncDemo,
     code: comboboxAsyncCode,
+  },
+  "kdb-basic": {
+    component: KdbBasicDemo,
+    code: kdbBasicCode,
+  },
+  "kdb-combination": {
+    component: KdbCombinationDemo,
+    code: kdbCombinationCode,
+  },
+  "skeleton-text": {
+    component: SkeletonTextDemo,
+    code: skeletonTextCode,
+  },
+  "skeleton-avatar": {
+    component: SkeletonAvatarDemo,
+    code: skeletonAvatarCode,
+  },
+  "card-basic": {
+    component: CardBasicDemo,
+    code: cardBasicCode,
+  },
+  "card-group": {
+    component: CardGroupDemo,
+    code: cardGroupCode,
   },
   "dialog-basic": {
     component: DialogBasicDemo,
