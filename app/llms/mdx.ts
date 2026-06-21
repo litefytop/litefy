@@ -1,7 +1,8 @@
 import type { LoaderFunctionArgs } from "react-router";
-import { getLLMText, source } from "@/lib/source";
 
 export async function loader({ params }: LoaderFunctionArgs) {
+  const { getLLMText, source } = await import("@/lib/source");
+
   const locale = params.lang || "en";
   const slug = params["*"] || "";
   const parts = slug.split("/").filter((v) => v.length > 0);

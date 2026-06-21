@@ -7,11 +7,11 @@ const __dirname = path.dirname(__filename);
 
 const srcComponentDir = path.resolve(__dirname, "../app/ui");
 const docsBaseDir = path.resolve(__dirname, "../content/docs");
-const registryRoot = path.resolve(__dirname, "../public/registry.json");
+const registryRoot = path.resolve(__dirname, "../registry.json");
 const allowedExts = new Set([".tsx", ".ts"]);
 
 async function findDocFile(componentName) {
-  const subDirs = ["component", "css", "hooks"];
+  const subDirs = ["component", "styles", "hooks"];
   const targetName = `${componentName}.mdx`;
   for (const dir of subDirs) {
     const fullPath = path.join(docsBaseDir, dir, targetName);

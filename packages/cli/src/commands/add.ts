@@ -6,6 +6,8 @@ import logger from "../utils/logger";
 interface AddOptions {
   overwrite?: boolean;
   docs?: boolean;
+  config?: string;
+  componentsDir?: string;
 }
 
 interface LitefyConfig {
@@ -16,6 +18,7 @@ interface LitefyConfig {
     hooks: string;
     utils: string;
   };
+  docs?: string;
 }
 
 interface RegistryEntry {
@@ -26,7 +29,7 @@ interface RegistryEntry {
 type Registry = Record<string, RegistryEntry>;
 
 const REGISTRY_URL =
-  "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/public/registry.json";
+  "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/registry.json";
 
 async function fetchRegistry(): Promise<Registry> {
   try {
@@ -43,17 +46,21 @@ async function add(components: string[], options: AddOptions): Promise<void> {
   logger.step(`Preparing to add components: ${components.join(", ")}`);
 
   const cwd = process.cwd();
-  const configPath = path.join(cwd, "litefy.json");
+  const configPath = options.config
+    ? path.resolve(cwd, options.config)
+    : path.join(cwd, "litefy.json");
 
   if (!(await fs.pathExists(configPath))) {
-    logger.warn("litefy.json not found. Please run `litefy init` first.");
-    logger.info("Auto-initializing...");
-    const init = await import("./init");
-    await init.default({ yes: false });
+    logger.warn(`litefy.json not found at ${configPath}`);
+    logger.info("Please run `litefy init` first.");
+    return;
   }
 
   const config = (await fs.readJson(configPath)) as LitefyConfig;
-  const componentsDir = path.join(cwd, config.components || "./src/ui");
+
+  const componentsDirRaw =
+    options.componentsDir || config.components || "./src/ui";
+  const componentsDir = path.resolve(cwd, componentsDirRaw);
   await fs.ensureDir(componentsDir);
 
   const registry = await fetchRegistry();
@@ -95,12 +102,12 @@ async function addSingleComponent(
   let downloadComponent = true;
   if (alreadyInstalled && !options.overwrite) {
     logger.warn(
-      `${componentName} already installed, skipping component download. Use --overwrite to force.`,
+      `${componentName} already installed in config, skipping. Use --overwrite to force.`,
     );
     downloadComponent = false;
   } else if (componentExists && !options.overwrite) {
     logger.warn(
-      `${componentName}.tsx already exists, skipping component download. Use --overwrite to force.`,
+      `${componentName}.tsx already exists, skipping. Use --overwrite to force.`,
     );
     downloadComponent = false;
   }
@@ -119,8 +126,9 @@ async function addSingleComponent(
   }
 
   if (options.docs && componentInfo.docs) {
-    const docsUrl = componentInfo.docs;
-    const docsDir = path.join(process.cwd(), "docs");
+    const docsDir = config.docs
+      ? path.resolve(process.cwd(), config.docs)
+      : path.join(process.cwd(), "docs");
     await fs.ensureDir(docsDir);
     const docsPath = path.join(docsDir, `${componentName}.md`);
     const docsExists = await fs.pathExists(docsPath);
@@ -130,12 +138,12 @@ async function addSingleComponent(
       );
     } else {
       try {
-        const docsResponse = await axios.get<string>(docsUrl);
+        const docsResponse = await axios.get<string>(componentInfo.docs);
         await fs.writeFile(docsPath, docsResponse.data);
         logger.success(`Documentation saved to ${docsPath}`);
       } catch (err) {
         logger.error(
-          `Failed to download ${componentName}: ${err instanceof Error ? err.message : String(err)}`,
+          `Failed to download ${componentName} docs: ${err instanceof Error ? err.message : String(err)}`,
         );
       }
     }

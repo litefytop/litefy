@@ -70,20 +70,53 @@ The main container component for the tabs.
 | `variant` | `'button' \| 'line'` | `'line'` | Visual style variant |
 | `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 
-### Tab
+### TabsList
 
-Individual tab panel component.
+Container for the tab trigger buttons.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+
+### TabsTrigger
+
+Individual tab button. Pair with `TabsContent` via the shared `value`.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `string` | - | Unique identifier for the tab |
-| `label` | `React.ReactNode` | - | Tab trigger label content |
 | `disabled` | `boolean` | `false` | Disable the tab |
 | `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 
-### slotProps
+### TabsContent
 
-| Slot | Type | Description |
-|------|------|-------------|
-| `list` | `React.ComponentProps<"div">` | Props for the tab list container |
-| `trigger` | `React.ComponentProps<"button">` | Props for the tab trigger buttons |
+Panel rendered when its `value` matches the active tab. Wrap children in `React.lazy()` to defer the import until the tab becomes active.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | Unique identifier matching a `TabsTrigger` |
+| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+
+### Lazy Loading
+
+`TabsContent` returns `null` while inactive, so wrapping children in `lazy()` defers the import:
+
+```tsx
+import { lazy, Suspense } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs";
+
+const LazySettings = lazy(() => import("./settings"));
+
+<Tabs defaultValue="profile">
+  <TabsList>
+    <TabsTrigger value="profile">Profile</TabsTrigger>
+    <TabsTrigger value="settings">Settings</TabsTrigger>
+  </TabsList>
+  <TabsContent value="profile">Profile content</TabsContent>
+  <TabsContent value="settings">
+    <Suspense fallback={null}>
+      <LazySettings />
+    </Suspense>
+  </TabsContent>
+</Tabs>
+```

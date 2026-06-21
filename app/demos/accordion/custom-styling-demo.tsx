@@ -19,11 +19,11 @@ export default function CustomStylingDemo() {
         }}
       >
         <p className="text-sm">
-          Use{" "}
+          Use
           <code className="bg-muted px-1.5 py-0.5 rounded">
             slotProps.wrapper
-          </code>{" "}
-          to apply <code>rounded-t-lg</code>. All items use <code>bg-card</code>{" "}
+          </code>
+          to apply <code>rounded-t-lg</code>. All items use <code>bg-card</code>
           for consistent card background.
         </p>
       </Accordion.Item>

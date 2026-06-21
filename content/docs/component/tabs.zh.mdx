@@ -70,20 +70,53 @@ description: 支持多种变体和方向设置的标签页组件
 | `variant` | `'button' \| 'line'` | `'line'` | 视觉样式变体 |
 | `className` | `ClassNameValue` | - | 自定义 CSS 类。仅支持字符串、数组及各类假值。 |
 
-### Tab
+### TabsList
 
-单个标签面板组件。
+标签触发按钮的容器。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | - | 自定义 CSS 类。仅支持字符串、数组及各类假值。 |
+
+### TabsTrigger
+
+单个标签按钮。通过共享的 `value` 与 `TabsContent` 配对。
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `string` | - | 标签的唯一标识符 |
-| `label` | `React.ReactNode` | - | 标签触发器的标签内容 |
 | `disabled` | `boolean` | `false` | 禁用该标签 |
 | `className` | `ClassNameValue` | - | 自定义 CSS 类。仅支持字符串、数组及各类假值。 |
 
-### slotProps
+### TabsContent
 
-| Slot | Type | Description |
-|------|------|-------------|
-| `list` | `React.ComponentProps<"div">` | 标签列表容器的属性 |
-| `trigger` | `React.ComponentProps<"button">` | 标签触发按钮的属性 |
+当其 `value` 与活动标签匹配时渲染的面板。配合 `React.lazy()` 包裹子节点，可在标签被激活前延迟加载。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | 与 `TabsTrigger` 匹配的唯一标识符 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类。仅支持字符串、数组及各类假值。 |
+
+### 懒加载
+
+`TabsContent` 在非激活时返回 `null`，因此用 `lazy()` 包裹子节点可以延迟 import：
+
+```tsx
+import { lazy, Suspense } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs";
+
+const LazySettings = lazy(() => import("./settings"));
+
+<Tabs defaultValue="profile">
+  <TabsList>
+    <TabsTrigger value="profile">个人资料</TabsTrigger>
+    <TabsTrigger value="settings">设置</TabsTrigger>
+  </TabsList>
+  <TabsContent value="profile">个人资料内容</TabsContent>
+  <TabsContent value="settings">
+    <Suspense fallback={null}>
+      <LazySettings />
+    </Suspense>
+  </TabsContent>
+</Tabs>
+```

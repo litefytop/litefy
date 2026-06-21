@@ -1,0 +1,130 @@
+---
+title: Theme
+description: Customize colors, fonts, and design variables of Litefy UI.
+---
+
+Copy the following CSS variables into your global stylesheet:
+
+```css
+:root {
+  color-scheme: light;
+  --background: oklch(98.8% 0.003 106.5);
+  --foreground: oklch(27.9% 0.041 260.031);
+
+  --surface-1: oklch(1 0 0);
+  --surface-2: oklch(0.9702 0 0);
+  --surface-3: var(--background);
+
+  --surface-1-foreground: var(--foreground);
+  --surface-2-foreground: var(--foreground);
+
+  --primary: oklch(27.5% 0.011 216.9);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(27.5% 0.011 216.9);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(27.5% 0.011 216.9);
+  --destructive: oklch(0.577 0.245 27.325);
+
+  --muted: oklch(0.2103 0.0059 285.89 / 3.14%);
+  --muted-foreground: oklch(0.556 0 0);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --radius: 0.625rem;
+
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+
+  --kbd-bg: oklch(1 0 0 / 0.7);
+  --kbd-border: oklch(0 0 0 / 0.08);
+  --kbd-shadow: oklch(0 0 0 / 0.06);
+  --kbd-bg-hover: oklch(1 0 0 / 0.9);
+  --kbd-border-hover: oklch(0 0 0 / 0.15);
+  --kbd-shadow-hover: oklch(0 0 0 / 0.1);
+  --kbd-bg-active: oklch(1 0 0 / 0.5);
+  --kbd-border-active: oklch(0 0 0 / 0.05);
+  --kbd-shadow-active: oklch(0 0 0 / 0.04);
+
+  --card-bg: var(--surface-1);
+  --card-border: oklch(1 0 0 / 0.3);
+  --card-shadow: oklch(0 0 0 / 0.05);
+  --card-shadow-hover: oklch(0 0 0 / 0.1);
+  --card-glow: oklch(1 0 0 / 0.4);
+}
+
+.dark {
+  color-scheme: dark;
+  --background: oklch(27.9% 0.041 260.031);
+  --foreground: oklch(0.985 0 0);
+  --surface-1: oklch(27.5% 0.011 216.9);
+  --surface-2: oklch(27.5% 0.011 216.9);
+  --surface-1-foreground: oklch(0.985 0 0);
+  --surface-2-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(27.5% 0.011 216.9);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+
+  --kbd-bg: oklch(0.269 0 0 / 0.6);
+  --kbd-border: oklch(1 0 0 / 0.2);
+  --kbd-shadow: oklch(0 0 0 / 0.3);
+  --kbd-bg-hover: oklch(0.269 0 0 / 0.8);
+  --kbd-border-hover: oklch(1 0 0 / 0.3);
+  --kbd-shadow-hover: oklch(0 0 0 / 0.4);
+  --kbd-bg-active: oklch(0.269 0 0 / 0.4);
+  --kbd-border-active: oklch(1 0 0 / 0.15);
+  --kbd-shadow-active: oklch(0 0 0 / 0.2);
+
+  --card-bg: var(--surface-1);
+  --card-border: oklch(1 0 0 / 0.1);
+  --card-shadow: oklch(0 0 0 / 0.2);
+  --card-shadow-hover: oklch(0 0 0 / 0.3);
+  --card-glow: oklch(1 0 0 / 0.08);
+}
+@theme inline {
+  --breakpoint-3xl: 1920px;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+}
+```
+
+Copy the following CSS variables into your global stylesheet.
+
+This theme includes both light and dark color schemes. The `.dark` class will automatically apply the dark mode when present.
+
+> Note: The variables use OKLCH color values, which are supported by all modern browsers. If you want to use them in Tailwind class names, they have been mapped via `@theme inline`.
+
