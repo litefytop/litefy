@@ -14,10 +14,10 @@ export default function SingleUncontrolledDemo() {
       </Accordion.Item>
       <Accordion.Item value="item-2" label="How do I install it?">
         <p className="text-muted-foreground">
-          Run{" "}
+          Run
           <code className="bg-muted px-1.5 py-0.5 rounded text-sm">
             npx litefy add accordion
-          </code>{" "}
+          </code>
           to install the accordion component. Make sure you have Tailwind CSS
           configured in your project.
         </p>

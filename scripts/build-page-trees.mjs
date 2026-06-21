@@ -53,7 +53,7 @@ function parseMetaFile(path) {
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    const keyMatch = line.match(/^\s{2}(\w+):\s*\{?\s*$/);
+    const keyMatch = line.match(/^\s{2}["']?([\w-]+)["']?:\s*\{?\s*$/);
     if (keyMatch && !line.includes("displayName")) {
       if (currentKey) finalizeCurrent(i - 1);
       currentKey = keyMatch[1];
@@ -70,7 +70,7 @@ function parseMetaFile(path) {
 
       if (
         (line.includes("},") || (line.includes("}") && line.trim() === "},")) &&
-        !line.match(/^\s{4}\w+:\s*\{/)
+        !line.match(/^\s{4}["']?[\w-]+["']?:\s*\{/)
       ) {
         finalizeCurrent(i);
         currentKey = null;

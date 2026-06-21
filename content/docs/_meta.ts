@@ -1,13 +1,29 @@
 export default {
   index: {
-    name: "Getting Started",
     displayName: {
-      en: "Getting Started",
-      zh: "入门",
+      en: "Introduction",
+      zh: "介绍",
+    },
+  },
+  installation: {
+    displayName: {
+      en: "Installation",
+      zh: "安装",
+    },
+  },
+  theming: {
+    displayName: {
+      en: "Theming",
+      zh: "主题",
+    },
+  },
+  cli: {
+    displayName: {
+      en: "Cli",
+      zh: "命令行",
     },
   },
   overview: {
-    name: "Overview",
     displayName: {
       en: "Overview",
       zh: "总览",
@@ -15,23 +31,20 @@ export default {
   },
   component: {
     type: "folder",
-    name: "Components",
     displayName: {
       en: "Components",
       zh: "组件",
     },
   },
-  css: {
+  styles: {
     type: "folder",
-    name: "CSS",
     displayName: {
-      en: "CSS",
+      en: "Styles",
       zh: "样式",
     },
   },
   hooks: {
     type: "folder",
-    name: "Hooks",
     displayName: {
       en: "Hooks",
       zh: "钩子",

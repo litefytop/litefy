@@ -1,0 +1,130 @@
+---
+title: CLI
+description: 使用 Litefy CLI 安装和管理组件。
+---
+
+Litefy 提供了一个命令行工具，用于将组件源码安装到你的项目中。
+
+## 前提条件
+
+在使用 Litefy 之前，请确保你的项目满足以下条件：
+
+- React 19+
+- Tailwind CSS 4 已配置
+- TypeScript 已启用
+- `@/` 路径别名已配置（如 `@/ui` 指向 `src/ui`）
+
+## 命令
+
+### `init`
+
+初始化 Litefy 配置。
+
+```bash
+npx litefy init
+```
+
+**选项**
+
+| 选项 | 简写 | 类型 | 说明 |
+|------|------|------|------|
+| `--yes` | `-y` | `boolean` | 跳过所有提示，使用默认配置 |
+| `--config` | `-c` | `string` | 配置文件路径，默认 `./litefy.json` |
+
+**示例**
+
+```bash
+# 交互式初始化
+npx litefy init
+
+# 使用默认配置
+npx litefy init -y
+
+# 指定配置文件路径
+npx litefy init -c ./config/litefy.json
+```
+
+**生成的配置**
+
+`init` 会生成一个 `litefy.json` 文件：
+
+```json
+{
+  "components": "./src/ui",
+  "docs": "./docs",
+  "installed": [],
+  "aliases": {
+    "ui": "@/ui",
+    "hooks": "@/hooks",
+    "utils": "@/utils"
+  }
+}
+```
+
+---
+
+### `add`
+
+将组件安装到你的项目中。
+
+```bash
+npx litefy add <components...>
+```
+
+**参数**
+
+| 参数 | 类型 | 说明 |
+|------|------|------|
+| `components` | `string...` | 要安装的组件名称，可指定多个 |
+
+**选项**
+
+| 选项 | 简写 | 类型 | 说明 |
+|------|------|------|------|
+| `--overwrite` | `-o` | `boolean` | 覆盖已存在的文件 |
+| `--docs` | `-d` | `boolean` | 同时下载组件文档（Markdown） |
+| `--components` | | `string` | 临时覆盖组件安装目录（不写入配置文件） |
+
+**示例**
+
+```bash
+# 安装单个组件
+npx litefy add button
+
+# 安装多个组件
+npx litefy add button accordion dialog
+
+# 覆盖已存在的文件
+npx litefy add button -o
+
+# 同时下载文档
+npx litefy add button -d
+
+# 临时安装到不同目录
+npx litefy add button --components ./src/components
+```
+
+**安装位置**
+
+组件安装目录优先级：
+
+1. 命令行 `--components` 参数（临时覆盖）
+2. `litefy.json` 中的 `components` 字段
+3. 默认值 `./src/ui`
+
+---
+
+## 配置文件
+
+`litefy.json` 存储在你的项目根目录，用于控制组件的安装行为。
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `components` | `string` | 组件安装目录，默认 `./src/ui` |
+| `docs` | `string` | 文档下载目录，默认 `./docs` |
+| `installed` | `string[]` | 已安装的组件列表（自动维护） |
+| `aliases.ui` | `string` | UI 组件别名，默认 `@/ui` |
+| `aliases.hooks` | `string` | Hooks 别名，默认 `@/hooks` |
+| `aliases.utils` | `string` | 工具函数别名，默认 `@/utils` |
+
+---

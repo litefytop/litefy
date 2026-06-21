@@ -14,6 +14,7 @@ program
   .command("init")
   .description("Initialize Litefy configuration in your project")
   .option("-y, --yes", "Skip all prompts, use defaults")
+  .option("-c, --config <path>", "Path to litefy.json", "./litefy.json")
   .action(init);
 
 program
@@ -21,6 +22,10 @@ program
   .description("Add components to your project")
   .option("-o, --overwrite", "Overwrite existing files")
   .option("-d, --docs", "Also download documentation (markdown)")
+  .option(
+    "--components <path>",
+    "Override components directory (does not modify config)",
+  )
   .action(add);
 
 program.parse();

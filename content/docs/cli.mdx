@@ -1,0 +1,155 @@
+---
+title: CLI
+description: Install and manage components using the Litefy CLI.
+---
+
+Litefy provides a command-line tool for installing component source code into your project.
+
+## Prerequisites
+
+Before using Litefy, make sure your project meets the following requirements:
+
+- React 19+
+- Tailwind CSS 4 configured
+- TypeScript enabled
+- `@/` path alias configured (e.g., `@/ui` pointing to `src/ui`)
+
+## Commands
+
+### `init`
+
+Initialize Litefy configuration.
+
+```bash
+npx litefy init
+```
+
+**Options**
+
+| Option | Alias | Type | Description |
+|--------|-------|------|-------------|
+| `--yes` | `-y` | `boolean` | Skip all prompts and use defaults |
+| `--config` | `-c` | `string` | Path to litefy.json, default `./litefy.json` |
+
+**Examples**
+
+```bash
+# Interactive initialization
+npx litefy init
+
+# Use default configuration
+npx litefy init -y
+
+# Specify config file path
+npx litefy init -c ./config/litefy.json
+```
+
+**Generated Configuration**
+
+`init` generates a `litefy.json` file:
+
+```json
+{
+  "components": "./src/ui",
+  "docs": "./docs",
+  "installed": [],
+  "aliases": {
+    "ui": "@/ui",
+    "hooks": "@/hooks",
+    "utils": "@/utils"
+  }
+}
+```
+
+---
+
+### `add`
+
+Install components into your project.
+
+```bash
+npx litefy add <components...>
+```
+
+**Arguments**
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `components` | `string...` | Component names to install, can specify multiple |
+
+**Options**
+
+| Option | Alias | Type | Description |
+|--------|-------|------|-------------|
+| `--overwrite` | `-o` | `boolean` | Overwrite existing files |
+| `--docs` | `-d` | `boolean` | Also download documentation (Markdown) |
+| `--components` | | `string` | Temporarily override components directory (does not modify config) |
+
+**Examples**
+
+```bash
+# Install a single component
+npx litefy add button
+
+# Install multiple components
+npx litefy add button accordion dialog
+
+# Overwrite existing files
+npx litefy add button -o
+
+# Also download documentation
+npx litefy add button -d
+
+# Temporarily install to a different directory
+npx litefy add button --components ./src/components
+```
+
+**Installation Location**
+
+Component installation directory priority:
+
+1. `--components` command line option (temporary override)
+2. `components` field in `litefy.json`
+3. Default `./src/ui`
+
+---
+
+## Configuration File
+
+`litefy.json` is stored in your project root and controls component installation behavior.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `components` | `string` | Component installation directory, default `./src/ui` |
+| `docs` | `string` | Documentation download directory, default `./docs` |
+| `installed` | `string[]` | List of installed components (auto-maintained) |
+| `aliases.ui` | `string` | UI component alias, default `@/ui` |
+| `aliases.hooks` | `string` | Hooks alias, default `@/hooks` |
+| `aliases.utils` | `string` | Utilities alias, default `@/utils` |
+
+---
+
+## Full Workflow
+
+```bash
+# 1. Initialize configuration
+npx litefy init
+
+# 2. Install components
+npx litefy add button accordion dialog
+
+# 3. Use in your project
+```
+
+```tsx
+import { Button } from "@/ui/button";
+import { Accordion } from "@/ui/accordion";
+
+export default function App() {
+  return (
+    <div>
+      <Button>Click me</Button>
+      <Accordion>{/* ... */}</Accordion>
+    </div>
+  );
+}

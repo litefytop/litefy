@@ -1,12 +1,13 @@
+import { spawn } from "node:child_process";
 import path from "node:path";
+import { detect } from "@antfu/ni";
 import fs from "fs-extra";
 import inquirer from "inquirer";
-import { spawn } from "child_process";
-import { detect } from "@antfu/ni";
 import logger from "../utils/logger";
 
 interface InitOptions {
   yes?: boolean;
+  config?: string;
   pm?: "npm" | "yarn" | "pnpm" | "bun";
 }
 
@@ -19,7 +20,7 @@ type PackageManager = "npm" | "yarn" | "pnpm" | "bun";
 
 async function detectPackageManager(
   cwd: string,
-  explicit?: PackageManager
+  explicit?: PackageManager,
 ): Promise<PackageManager> {
   if (explicit) return explicit;
 
@@ -39,7 +40,10 @@ async function detectPackageManager(
   return (detected as PackageManager) ?? "npm";
 }
 
-function getInstallCommand(pm: PackageManager): { cmd: string; args: string[] } {
+function getInstallCommand(pm: PackageManager): {
+  cmd: string;
+  args: string[];
+} {
   switch (pm) {
     case "yarn":
       return { cmd: "yarn", args: ["add"] };
@@ -54,7 +58,7 @@ function getInstallCommand(pm: PackageManager): { cmd: string; args: string[] } 
 
 function installDependencies(
   pm: PackageManager,
-  packages: string[]
+  packages: string[],
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     const { cmd, args } = getInstallCommand(pm);
@@ -77,10 +81,15 @@ async function init(options: InitOptions): Promise<void> {
   logger.step("Initializing Litefy configuration...");
 
   const cwd = process.cwd();
-  const configPath = path.join(cwd, "litefy.json");
+  const configPath = options.config
+    ? path.resolve(cwd, options.config)
+    : path.join(cwd, "litefy.json");
 
   if (await fs.pathExists(configPath)) {
-    logger.warn("litefy.json already exists, skipping initialization");
+    logger.warn(`litefy.json already exists at ${configPath}`);
+    logger.info(
+      "Use -c to specify a different path, or remove the existing file.",
+    );
     return;
   }
 
@@ -107,7 +116,7 @@ async function init(options: InitOptions): Promise<void> {
   }
 
   await fs.writeJson(configPath, config, { spaces: 2 });
-  logger.success("Initialization complete! Generated litefy.json");
+  logger.success(`Initialization complete! Generated ${configPath}`);
 
   const pm = await detectPackageManager(cwd, options.pm);
   logger.info(`Detected package manager: ${pm}`);
@@ -139,7 +148,7 @@ async function init(options: InitOptions): Promise<void> {
   } else {
     logger.info("Skipped dependency installation.");
     logger.info(
-      `You can install them later with: ${pm} add lucide-react tailwind-merge`
+      `You can install them later with: ${pm} add lucide-react tailwind-merge`,
     );
   }
 

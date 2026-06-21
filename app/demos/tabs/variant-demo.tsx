@@ -1,6 +1,6 @@
 "use client";
 
-import { Tab, Tabs } from "@/ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs";
 
 export default function TabsVariantDemo() {
   return (
@@ -8,30 +8,40 @@ export default function TabsVariantDemo() {
       <div>
         <h3 className="text-sm font-medium mb-3">Line Variant (Default)</h3>
         <Tabs defaultValue="tab1" variant="line">
-          <Tab value="tab1" label="Tab One">
+          <TabsList>
+            <TabsTrigger value="tab1">Tab One</TabsTrigger>
+            <TabsTrigger value="tab2">Tab Two</TabsTrigger>
+            <TabsTrigger value="tab3">Tab Three</TabsTrigger>
+          </TabsList>
+          <TabsContent value="tab1">
             Content for tab one with line variant.
-          </Tab>
-          <Tab value="tab2" label="Tab Two">
+          </TabsContent>
+          <TabsContent value="tab2">
             Content for tab two with line variant.
-          </Tab>
-          <Tab value="tab3" label="Tab Three">
+          </TabsContent>
+          <TabsContent value="tab3">
             Content for tab three with line variant.
-          </Tab>
+          </TabsContent>
         </Tabs>
       </div>
 
       <div>
         <h3 className="text-sm font-medium mb-3">Button Variant</h3>
         <Tabs defaultValue="tab1" variant="button">
-          <Tab value="tab1" label="Tab One">
+          <TabsList>
+            <TabsTrigger value="tab1">Tab One</TabsTrigger>
+            <TabsTrigger value="tab2">Tab Two</TabsTrigger>
+            <TabsTrigger value="tab3">Tab Three</TabsTrigger>
+          </TabsList>
+          <TabsContent value="tab1">
             Content for tab one with button variant.
-          </Tab>
-          <Tab value="tab2" label="Tab Two">
+          </TabsContent>
+          <TabsContent value="tab2">
             Content for tab two with button variant.
-          </Tab>
-          <Tab value="tab3" label="Tab Three">
+          </TabsContent>
+          <TabsContent value="tab3">
             Content for tab three with button variant.
-          </Tab>
+          </TabsContent>
         </Tabs>
       </div>
     </div>

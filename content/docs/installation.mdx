@@ -1,0 +1,47 @@
+---
+title: Installation
+description: Install Litefy components into your React project.
+---
+
+## Prerequisites
+
+Litefy is not a scaffolding tool. It assumes you already have a working React + Tailwind CSS project.
+
+Before proceeding, make sure your project meets the following requirements:
+
+- **React 19+** (Litefy uses React 19 features like `props.ref`; earlier versions will cause errors)
+- **Tailwind CSS 4** configured (Tailwind CSS 3 is not tested and compatibility is not guaranteed)
+- TypeScript enabled
+- `@/` path alias configured (e.g., `@/ui` pointing to `src/ui`)
+
+## Adding Components
+
+Run the following command to add a component:
+
+```bash
+npx litefy add button
+```
+
+Add the accordion component:
+
+```bash
+npx litefy add accordion
+```
+
+Add multiple components at once:
+
+```bash
+npx litefy add button accordion dialog
+```
+
+Each component will be installed to `@/ui/[component-name]/` with fully editable source code.
+
+## Theme Variables
+
+Litefy does not automatically inject theme variables. Choose your desired color palette from the <Link to="/en/docs/theming">Theming</Link> page and copy it manually into your global CSS file.
+
+## About Scaffolding
+
+Litefy does one thing: **puts component source code cleanly into your hands**.
+
+Whether you bootstrap your project with Vite, Next.js, or Create React App — Litefy doesn't care, and it doesn't need to. Scaffolding tools are already mature enough; there's no need to reinvent one.

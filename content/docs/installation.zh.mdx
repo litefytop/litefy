@@ -1,0 +1,47 @@
+---
+title: 安装
+description: 将 Litefy 组件安装到你的 React 项目中。
+---
+
+## 前提条件
+
+Litefy 不是一个脚手架工具。它假设你已经有一个可用的 React + Tailwind CSS 项目。
+
+在继续之前，请确保你的项目满足以下条件：
+
+- **React 19+**（Litefy 使用了 `props.ref` 等 React 19 特性，低于此版本会报错）
+- **Tailwind CSS 4** 已配置（Tailwind CSS 3 未经过测试，不保证兼容）
+- TypeScript 已启用
+- `@/` 路径别名已配置（如 `@/ui` 指向 `src/ui`）
+
+## 安装组件
+
+运行以下命令安装组件：
+
+```bash
+npx litefy add button
+```
+
+安装手风琴组件：
+
+```bash
+npx litefy add accordion
+```
+
+一次安装多个组件：
+
+```bash
+npx litefy add button accordion dialog
+```
+
+每个组件会被安装到 `@/ui/[组件名]/` 目录下，源码完全可编辑。
+
+## 主题变量
+
+Litefy 不自动注入主题变量。请从 <Link to="/zh/docs/theming">主题</Link> 页面选择你需要的色板，手动复制到你的全局 CSS 文件中。
+
+## 关于脚手架
+
+Litefy 只专注做一件事：**将组件源码干净地交到你手上**。
+
+你的项目用 Vite、Next.js 还是 Create React App 启动，Litefy 并不关心，也无需关心。脚手架工具已经足够成熟，我们没必要重新发明一个。

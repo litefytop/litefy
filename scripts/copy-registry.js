@@ -11,7 +11,7 @@ const registryRoot = path.resolve(__dirname, "../registry.json");
 const allowedExts = new Set([".tsx", ".ts"]);
 
 async function findDocFile(componentName) {
-  const subDirs = ["component", "css", "hooks"];
+  const subDirs = ["component", "styles", "hooks"];
   const targetName = `${componentName}.mdx`;
   for (const dir of subDirs) {
     const fullPath = path.join(docsBaseDir, dir, targetName);

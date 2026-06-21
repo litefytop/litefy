@@ -10,6 +10,7 @@ import {
   MarkdownCopyButton,
   ViewOptionsPopover,
 } from "fumadocs-ui/layouts/docs/page";
+import { useMemo } from "react";
 import { Link, useParams } from "react-router";
 import { getMDXComponents } from "@/components/mdx";
 import { pageTrees } from "@/generated/page-trees";
@@ -74,79 +75,50 @@ function ComponentsList({
   locale,
   t,
 }: {
-  categories: (Folder | Item)[];
+  categories: Folder[];
   locale: string;
   t: typeof docsIndexI18n.en | typeof docsIndexI18n.zh;
 }) {
   return (
     <div className="space-y-12">
-      {categories.map((category, index) => {
-        if (category.type === "folder") {
-          const folder = category;
-          const items = folder.children.filter(
-            (child): child is Item => child.type === "page",
-          );
+      {categories.map((folder, index) => {
+        const items = folder.children.filter(
+          (child): child is Item => child.type === "page",
+        );
 
-          if (items.length === 0) return null;
+        if (items.length === 0) return null;
 
-          const key =
-            typeof folder.name === "string"
-              ? folder.name
-              : (folder.$id ?? index);
-
-          return (
-            <div key={String(key)} className="space-y-4">
-              <h2 className="text-2xl font-bold">{folder.name}</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {items.map((item, itemIndex) => {
-                  const url = item.url || `/${locale}/docs/${item.name}`;
-                  const itemKey =
-                    typeof item.name === "string"
-                      ? item.name
-                      : (item.$id ?? itemIndex);
-
-                  return (
-                    <Link
-                      key={String(itemKey)}
-                      to={typeof url === "string" ? url : `/${locale}/docs`}
-                      className="group p-6 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
-                    >
-                      <div>
-                        <h3 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">
-                          {item.name}
-                        </h3>
-                        <p className="text-sm text-fd-muted-foreground line-clamp-2">
-                          {item.description || t.categoryDefaultDescription}
-                        </p>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        }
-
-        const url = category.url || `/${locale}/docs/${category.name}`;
-        const key = category.$id ?? category.name ?? index;
+        const key =
+          typeof folder.name === "string" ? folder.name : (folder.$id ?? index);
 
         return (
           <div key={String(key)} className="space-y-4">
-            <h2 className="text-2xl font-bold">{category.name}</h2>
+            <h2 className="text-2xl font-bold">{folder.name}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Link
-                to={typeof url === "string" ? url : `/${locale}/docs`}
-                className="group p-6 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
-              >
-                <div>
-                  <h3 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">
-                    {category.name}
-                  </h3>
-                  <p className="text-sm text-fd-muted-foreground line-clamp-2">
-                    {category.description || t.categoryDefaultDescription}
-                  </p>
-                </div>
-              </Link>
+              {items.map((item, itemIndex) => {
+                const url = item.url || `/${locale}/docs/${item.name}`;
+                const itemKey =
+                  typeof item.name === "string"
+                    ? item.name
+                    : (item.$id ?? itemIndex);
+
+                return (
+                  <Link
+                    key={String(itemKey)}
+                    to={typeof url === "string" ? url : `/${locale}/docs`}
+                    className="group p-6 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
+                  >
+                    <div>
+                      <h3 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">
+                        {item.name}
+                      </h3>
+                      <p className="text-sm text-fd-muted-foreground line-clamp-2">
+                        {item.description || t.categoryDefaultDescription}
+                      </p>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         );
@@ -171,7 +143,11 @@ export default function Docs({ params }: Route.ComponentProps) {
     : [];
 
   const t = docsIndexI18n[locale] || docsIndexI18n.en;
-  const tree = deserializePageTree(pageTrees[locale]);
+  const tree = useMemo(() => {
+    const t = deserializePageTree(pageTrees[locale]);
+    (t as { $id?: string }).$id = locale;
+    return t;
+  }, [locale]);
 
   const isOverview = slugs[0] === "overview";
   const isIndexRoot = slugs.length === 0;
@@ -196,8 +172,7 @@ export default function Docs({ params }: Route.ComponentProps) {
   }
 
   const categories = tree.children.filter(
-    (node): node is Folder | Item =>
-      node.type === "folder" || node.type === "page",
+    (node): node is Folder => node.type === "folder",
   );
 
   return (

@@ -1,36 +1,38 @@
 ---
-title: Getting Started
-description: Install Litefy UI and add your first component in a few minutes.
+title: Introduction
+description: A zero-runtime-dependency React component library. Open code, composition-first.
 ---
 
-## Introduction
+Litefy is a toolset built around these ideas:
 
-Litefy UI is a lightweight component library with almost no external dependencies. Every component is copy-paste friendly and ships with a CLI for faster setup.
+## Open Code
 
-## Installation
+All component source code is delivered directly. No black boxes, no irreversible abstraction layers. Want to change a button? Open `ui/button.tsx` and edit it.
 
-<Tabs items={['CLI', 'Manual']}>
+## Composition-First
 
-<Tab value="CLI">
+Every component shares a consistent API design, making behavior and interfaces predictable. You don't need to learn a new set of rules for each component.
 
-The fastest way to add a component is through the CLI. It drops the source file into your project so you own the code.
+## Lightweight Distribution
 
-<PackageManagerTabs command="litefy add button" />
+Components are installed into your project via CLI as source code. You own the code, not a dependency on an external package. No version pinning, no worries about upstream breaking changes. Your UI, your rules.
 
-</Tab>
+## Native-First
 
-<Tab value="Manual">
+Interactive components like popovers and menus are built using native browser APIs (`popover`, `anchor-position`) rather than wrapping third-party libraries.
 
-Copy the component source directly from the docs and paste it into your project. Each component page exposes the full source.
+For features like `anchor-position` that have Limited availability, we provide fallback mechanisms. However, for features like `popover` that have entered Baseline, we do not provide polyfills or compatibility workarounds. This means Litefy does not support legacy browsers.
 
-<SourceCode component="button" />
+Our principle is: once a feature reaches Baseline, we ship it as-is without fallbacks. We don't want to bloat the codebase with compatibility hacks for a minority of use cases, as that would contradict our lightweight philosophy.
 
-</Tab>
+If your target audience still requires support for older browsers, Litefy may not be the right choice for you.
 
-</Tabs>
+## Pure Style Components Are Not Distributed via CLI
 
-## Next Steps
+For components that have no interaction logic and are purely style-based (e.g., separators, cards, containers), Litefy does not package them as TypeScript components. Instead, we provide copyable style code directly.
 
-- Browse the **Components** section in the sidebar to add more components.
-- Open the **Overview** page for a quick index of every component, CSS utility, and hook.
-- Check the **CSS** section for utility classes like `Card`, `Kbd`, and `Skeleton`.
+We explored multiple automation approaches: generating a fixed CSS file—but we cannot predict the location or naming of the user's CSS files; using regex injection—which can fail if the user adds comments or other content that breaks the pattern; and having the CLI auto-locate and insert—which faces the same issues.
+
+After trying various automated solutions, we concluded that for these purely stylistic components, **manual copying is the most reliable method**. It doesn't assume anything about the user's directory structure, won't break due to custom configurations, and avoids the problem of unloading extra CSS files. It's not the most "automated" approach, but it's robust enough.
+
+If you have a better idea, feel free to [open an issue](https://github.com/litefytop/litefy/issues).
