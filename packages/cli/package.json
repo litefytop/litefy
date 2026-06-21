@@ -1,6 +1,6 @@
 {
   "name": "litefy",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Litefy UI - A lightweight React component library and CLI tool",
   "bin": {
     "litefy": "./dist/bin/cli.js"

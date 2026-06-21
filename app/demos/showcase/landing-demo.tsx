@@ -1,5 +1,6 @@
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router";
+import { cn } from "@/lib";
 import { Button } from "@/ui/button";
 
 const content = {
@@ -49,12 +50,19 @@ export default function LandingDemo({ locale }: LandingDemoProps) {
         <div className="mt-6 flex flex-wrap gap-2">
           <Link
             to={docsPath}
-            className={`${Button.class.base} ${Button.class.variant.primary}`}
+            className={cn(Button.class.base, Button.class.variant.primary)}
           >
             {t.primaryCta}
             <ArrowRight className="size-4" />
           </Link>
-          <Button variant="outline">{t.secondaryCta}</Button>
+          <Link
+            to="https://github.com/litefytop/litefy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(Button.class.base, Button.class.variant.outline)}
+          >
+            {t.secondaryCta}
+          </Link>
         </div>
       </div>
       <div className="relative hidden md:block">

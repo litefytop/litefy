@@ -53,6 +53,14 @@ const serverMiddleware: Route.MiddlewareFunction = async (
   const url = new URL(request.url);
   const pathname = url.pathname;
 
+  const segments = pathname.split("/").filter(Boolean);
+  if (segments.length > 0) {
+    const lang = segments[0];
+    if (lang !== "en" && lang !== "zh") {
+      return new Response("Not Found", { status: 404 });
+    }
+  }
+
   const langMatch = pathname.match(/^\/([a-z]{2})\/docs\/(.+)\.md$/);
   if (langMatch) {
     const [, lang, path] = langMatch;
