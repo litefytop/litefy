@@ -1,3 +1,6 @@
+[![en](https://img.shields.io/badge/lang-en-blue)](./README.md)
+[![zh-cn](https://img.shields.io/badge/lang-简体中文-green)](./README.zh-cn.md)
+
 # Litefy UI
 A lightweight, fully transparent React component library built with TailwindCSS.
 All component source code is delivered directly to your project, no black-box encapsulation. You own the code, control your UI entirely.
