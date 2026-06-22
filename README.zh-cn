@@ -1,3 +1,6 @@
+[![en](https://img.shields.io/badge/lang-English-blue)](./README.md)
+[![zh-cn](https://img.shields.io/badge/lang-简体中文-green)](./README.zh-cn.md)
+
 # Litefy UI
 一套基于 TailwindCSS 构建、轻量化、全透明的 React 组件库。
 所有组件源码直接交付项目，无黑盒封装，代码完全归你掌控，自主定制页面样式与逻辑。
