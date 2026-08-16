@@ -5,7 +5,6 @@ import logger from "../utils/logger";
 
 interface AddOptions {
   overwrite?: boolean;
-  docs?: boolean;
   config?: string;
   componentsDir?: string;
 }
@@ -18,7 +17,6 @@ interface LitefyConfig {
     hooks: string;
     utils: string;
   };
-  docs?: string;
 }
 
 interface RegistryEntry {
@@ -123,34 +121,6 @@ async function addSingleComponent(
         `Failed to download ${componentName}.tsx: ${err instanceof Error ? err.message : String(err)}`,
       );
     }
-  }
-
-  if (options.docs && componentInfo.docs) {
-    const docsDir = config.docs
-      ? path.resolve(process.cwd(), config.docs)
-      : path.join(process.cwd(), "docs");
-    await fs.ensureDir(docsDir);
-    const docsPath = path.join(docsDir, `${componentName}.md`);
-    const docsExists = await fs.pathExists(docsPath);
-    if (docsExists && !options.overwrite) {
-      logger.warn(
-        `Documentation ${componentName}.md already exists, skipped. Use --overwrite to force.`,
-      );
-    } else {
-      try {
-        const docsResponse = await axios.get<string>(componentInfo.docs);
-        await fs.writeFile(docsPath, docsResponse.data);
-        logger.success(`Documentation saved to ${docsPath}`);
-      } catch (err) {
-        logger.error(
-          `Failed to download ${componentName} docs: ${err instanceof Error ? err.message : String(err)}`,
-        );
-      }
-    }
-  } else if (options.docs && !componentInfo.docs) {
-    logger.warn(
-      `No documentation URL configured for ${componentName} in registry.`,
-    );
   }
 }
 

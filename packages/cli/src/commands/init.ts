@@ -1,4 +1,4 @@
-import { spawn } from "node:child_process";
+import crossSpawn from "cross-spawn";
 import path from "node:path";
 import { detect } from "@antfu/ni";
 import fs from "fs-extra";
@@ -62,10 +62,9 @@ function installDependencies(
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     const { cmd, args } = getInstallCommand(pm);
-    const child = spawn(cmd, [...args, ...packages], {
+    const child = crossSpawn(cmd, [...args, ...packages], {
       cwd: process.cwd(),
       stdio: "inherit",
-      shell: true,
     });
 
     child.on("close", (code) => {
