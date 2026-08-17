@@ -15,10 +15,10 @@ export function PackageManagerTabs({ command }: PackageManagerTabsProps) {
   };
 
   const list = [
-    { key: "npm", cmd: `npm ${command}` },
-    { key: "pnpm", cmd: `pnpm ${command}` },
-    { key: "yarn", cmd: `yarn ${command}` },
-    { key: "bun", cmd: `bun ${command}` },
+    { key: "npm", cmd: `npx ${command}` },
+    { key: "pnpm", cmd: `pnpm dlx ${command}` },
+    { key: "yarn", cmd: `yarn dlx ${command}` },
+    { key: "bun", cmd: `bun --bun ${command}` },
   ];
 
   return (

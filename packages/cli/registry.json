@@ -1,0 +1,101 @@
+{
+  "accordion": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/accordion.tsx"
+  },
+  "button": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/button.tsx"
+  },
+  "checkbox": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/checkbox.tsx"
+  },
+  "collapse": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/collapse.tsx"
+  },
+  "combobox": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/combobox.tsx"
+  },
+  "dialog": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/dialog.tsx"
+  },
+  "drawer": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/drawer.tsx"  
+  },
+  "dropdown": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/dropdown.tsx"
+  },
+  "form": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/form.tsx"
+  },
+  "image": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/image.tsx"
+  },
+  "input": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/input.tsx"
+  },
+  "muti-select": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/muti-select.tsx"
+  },
+  "number-field": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/number-field.tsx"
+  },
+  "paginated-viewer": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/paginated-viewer.tsx"
+  },
+  "pagination": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/pagination.tsx"
+  },
+  "paper": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/paper.tsx"
+  },
+  "password": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/password.tsx"
+  },
+  "progress": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/progress.tsx"
+  },
+  "radio": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/radio.tsx"
+  },
+  "scroll-shadow": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/scroll-shadow.tsx"
+  },
+  "select": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/select.tsx"
+  },
+  "separator": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/separator.tsx"
+  },
+  "sidebar": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/sidebar.tsx"
+  },
+  "slider": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/slider.tsx"
+  },
+  "switch": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/switch.tsx"
+  },
+  "tabs": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/tabs.tsx"
+  },
+  "text-area": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/text-area.tsx"
+  },
+  "theme": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/theme.ts"
+  },
+  "toast": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/toast.tsx"
+  },
+  "tooltip": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/tooltip.tsx"
+  },
+  "upload": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/upload.tsx"
+  },
+  "virtual-scroll": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/virtual-scroll.tsx"
+  },
+  "watermark": {
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/watermark.tsx"
+  }
+}

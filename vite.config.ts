@@ -4,6 +4,7 @@ import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
 import mdx from "fumadocs-mdx/vite";
 import { defineConfig, type Plugin } from "vite";
+import path from "node:path";
 
 const SCRIPT_PATH = fileURLToPath(
   new URL("./scripts/build-page-trees.mjs", import.meta.url),
@@ -33,6 +34,10 @@ function pageTreesPlugin(): Plugin {
 export default defineConfig({
   plugins: [mdx(), tailwindcss(), reactRouter(), pageTreesPlugin()],
   resolve: {
+        alias: {
+      "@": path.resolve(__dirname, "./app"),
+      "collections": path.resolve(__dirname, "./.source"),
+    },
     tsconfigPaths: true,
     noExternal: [
       "fumadocs-core",

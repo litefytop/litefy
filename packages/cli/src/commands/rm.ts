@@ -1,26 +1,40 @@
 import path from "node:path";
+import axios from "axios";
 import fs from "fs-extra";
 import logger from "../utils/logger";
-
-interface RmOptions {
-  config?: string;
-}
 
 interface LitefyConfig {
   components: string;
   installed: string[];
-  aliases?: {
-    ui: string;
-    hooks: string;
-    utils: string;
-  };
 }
 
-async function rm(components: string[], options: RmOptions): Promise<void> {
+interface RegistryEntry {
+  url: string;
+  docs?: string;
+}
+type Registry = Record<string, RegistryEntry>;
+
+const REGISTRY_URL =
+  "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/registry.json";
+
+async function fetchRegistry(): Promise<Registry> {
+  try {
+    const response = await axios.get<Registry>(REGISTRY_URL);
+    return response.data;
+  } catch (error) {
+    logger.error(`Failed to fetch component registry from ${REGISTRY_URL}`);
+    logger.error(error instanceof Error ? error.message : String(error));
+    process.exit(1);
+  }
+}
+
+function getFileNameFromUrl(url: string): string {
+  return path.basename(new URL(url).pathname);
+}
+
+async function rm(components: string[]): Promise<void> {
   const cwd = process.cwd();
-  const configPath = options.config
-    ? path.resolve(cwd, options.config)
-    : path.join(cwd, "litefy.json");
+  const configPath = path.join(cwd, "litefy.json");
 
   if (!(await fs.pathExists(configPath))) {
     logger.warn(`litefy.json not found at ${configPath}`);
@@ -29,15 +43,25 @@ async function rm(components: string[], options: RmOptions): Promise<void> {
   }
 
   const config = (await fs.readJson(configPath)) as LitefyConfig;
-  const componentsDir = path.resolve(cwd, config.components);
+  const componentsDirRaw = config.components || "./src/ui";
+  const componentsDir = path.resolve(cwd, componentsDirRaw);
+
+  const registry = await fetchRegistry();
 
   for (const comp of components) {
-    const targetFile = path.join(componentsDir, `${comp}.tsx`);
+    const componentInfo = registry[comp];
+    if (!componentInfo) {
+      logger.error(`Component not found in registry: ${comp}, skip`);
+      continue;
+    }
 
     if (!config.installed.includes(comp)) {
       logger.warn(`Component "${comp}" is not in installed list, skip`);
       continue;
     }
+
+    const fileName = getFileNameFromUrl(componentInfo.url);
+    const targetFile = path.join(componentsDir, fileName);
 
     if (await fs.pathExists(targetFile)) {
       await fs.remove(targetFile);

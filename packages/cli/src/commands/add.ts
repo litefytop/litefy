@@ -2,21 +2,15 @@ import path from "node:path";
 import axios from "axios";
 import fs from "fs-extra";
 import logger from "../utils/logger";
+import { getFileNameFromUrl, loadRegistry } from "../utils/registry";
 
 interface AddOptions {
   overwrite?: boolean;
-  config?: string;
-  componentsDir?: string;
 }
 
 interface LitefyConfig {
   components: string;
   installed: string[];
-  aliases?: {
-    ui: string;
-    hooks: string;
-    utils: string;
-  };
 }
 
 interface RegistryEntry {
@@ -26,27 +20,15 @@ interface RegistryEntry {
 
 type Registry = Record<string, RegistryEntry>;
 
-const REGISTRY_URL =
-  "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/registry.json";
 
-async function fetchRegistry(): Promise<Registry> {
-  try {
-    const response = await axios.get<Registry>(REGISTRY_URL);
-    return response.data;
-  } catch (error) {
-    logger.error(`Failed to fetch component registry from ${REGISTRY_URL}`);
-    logger.error(error instanceof Error ? error.message : String(error));
-    process.exit(1);
-  }
-}
+
+
 
 async function add(components: string[], options: AddOptions): Promise<void> {
   logger.step(`Preparing to add components: ${components.join(", ")}`);
 
   const cwd = process.cwd();
-  const configPath = options.config
-    ? path.resolve(cwd, options.config)
-    : path.join(cwd, "litefy.json");
+  const configPath = path.join(cwd, "litefy.json");
 
   if (!(await fs.pathExists(configPath))) {
     logger.warn(`litefy.json not found at ${configPath}`);
@@ -56,24 +38,25 @@ async function add(components: string[], options: AddOptions): Promise<void> {
 
   const config = (await fs.readJson(configPath)) as LitefyConfig;
 
-  const componentsDirRaw =
-    options.componentsDir || config.components || "./src/ui";
+  const componentsDirRaw = config.components || "./src/ui";
   const componentsDir = path.resolve(cwd, componentsDirRaw);
   await fs.ensureDir(componentsDir);
 
-  const registry = await fetchRegistry();
+  const registry = await loadRegistry();
 
+  const successList: string[] = [];
   for (const component of components) {
-    await addSingleComponent(
+    const ok = await addSingleComponent(
       component,
       componentsDir,
       options,
       config,
       registry,
     );
+    if (ok) successList.push(component);
   }
 
-  const newInstalled = [...new Set([...config.installed, ...components])];
+  const newInstalled = [...new Set([...config.installed, ...successList])];
   config.installed = newInstalled;
   await fs.writeJson(configPath, config, { spaces: 2 });
 
@@ -86,42 +69,44 @@ async function addSingleComponent(
   options: AddOptions,
   config: LitefyConfig,
   registry: Registry,
-): Promise<void> {
+): Promise<boolean> {
   const componentInfo = registry[componentName];
   if (!componentInfo) {
     logger.error(`Component not found: ${componentName}`);
-    return;
+    return false;
   }
 
-  const targetFilePath = path.join(targetDir, `${componentName}.tsx`);
+  if (config.installed.includes(componentName) && !options.overwrite) {
+    logger.warn(`${componentName} already installed in config, skipping. Use --overwrite to force.`);
+    return true;
+  }
+
+  const fileName = getFileNameFromUrl(componentInfo.url);
+  const targetFilePath = path.join(targetDir, fileName);
   const componentExists = await fs.pathExists(targetFilePath);
-  const alreadyInstalled = config.installed.includes(componentName);
 
   let downloadComponent = true;
-  if (alreadyInstalled && !options.overwrite) {
+  if (componentExists && !options.overwrite) {
     logger.warn(
-      `${componentName} already installed in config, skipping. Use --overwrite to force.`,
-    );
-    downloadComponent = false;
-  } else if (componentExists && !options.overwrite) {
-    logger.warn(
-      `${componentName}.tsx already exists, skipping. Use --overwrite to force.`,
+      `${fileName} already exists, skipping. Use --overwrite to force.`,
     );
     downloadComponent = false;
   }
 
   if (downloadComponent) {
-    logger.step(`Downloading ${componentName}.tsx...`);
+    logger.step(`Downloading ${fileName}...`);
     try {
       const response = await axios.get<string>(componentInfo.url);
       await fs.writeFile(targetFilePath, response.data);
-      logger.success(`${componentName}.tsx saved to ${targetFilePath}`);
+      logger.success(`${fileName} saved to ${targetFilePath}`);
     } catch (err) {
       logger.error(
-        `Failed to download ${componentName}.tsx: ${err instanceof Error ? err.message : String(err)}`,
+        `Failed to download ${fileName}: ${err instanceof Error ? err.message : String(err)}`,
       );
+      return false;
     }
   }
+  return true;
 }
 
 export default add;

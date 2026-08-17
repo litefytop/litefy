@@ -17,12 +17,6 @@ export default {
       zh: "主题",
     },
   },
-  cli: {
-    displayName: {
-      en: "Cli",
-      zh: "命令行",
-    },
-  },
   overview: {
     displayName: {
       en: "Overview",
@@ -47,7 +41,7 @@ export default {
     type: "folder",
     displayName: {
       en: "Hooks",
-      zh: "钩子",
+      zh: "Hooks",
     },
   },
 } as const;

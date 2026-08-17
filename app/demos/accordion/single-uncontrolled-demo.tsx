@@ -16,7 +16,7 @@ export default function SingleUncontrolledDemo() {
         <p className="text-muted-foreground">
           Run
           <code className="bg-muted px-1.5 py-0.5 rounded text-sm">
-            npx litefy add accordion
+            npx litefy@latest add accordion
           </code>
           to install the accordion component. Make sure you have Tailwind CSS
           configured in your project.

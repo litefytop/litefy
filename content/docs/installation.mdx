@@ -5,43 +5,108 @@ description: Install Litefy components into your React project.
 
 ## Prerequisites
 
-Litefy is not a scaffolding tool. It assumes you already have a working React + Tailwind CSS project.
+Litefy is not a scaffolding tool. It assumes you already have an existing React + Tailwind CSS project.
 
-Before proceeding, make sure your project meets the following requirements:
+Before you begin, make sure your project meets the following requirements:
 
-- **React 19+** (Litefy uses React 19 features like `props.ref`; earlier versions will cause errors)
-- **Tailwind CSS 4** configured (Tailwind CSS 3 is not tested and compatibility is not guaranteed)
+- **React 19+** (Litefy uses React 19 features such as `props.ref`. Older versions will throw errors.)
+- **Tailwind CSS 4** configured (Tailwind CSS 3 is untested and not guaranteed to work.)
 - TypeScript enabled
-- `@/` path alias configured (e.g., `@/ui` pointing to `src/ui`)
+- `@/` path alias configured (e.g. `@/ui` pointing to `src/ui`)
 
-## Adding Components
+## Commands
 
-Run the following command to add a component:
+### `init`
 
-```bash
-npx litefy add button
-```
+Initialize the Litefy configuration file.
 
-Add the accordion component:
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash 
+    npx litefy@latest init
+     ```
+  </Tab>
+  <Tab value="yarn">
+  ```bash 
+  yarn dlx litefy@latest init 
+  ```
+  </Tab>
+  <Tab value="pnpm">
+  ```bash 
+  pnpm dlx litefy@latest init 
+  ```
+  </Tab>
+  <Tab value="bun">
+  ```bash 
+  bunx --bun litefy@latest init 
+  ```
+  </Tab>
+</Tabs>
 
-```bash
-npx litefy add accordion
-```
+> If you skip initialization, running add commands will initialize automatically.
 
-Add multiple components at once:
+- `-y, --yes`: Skip interactive prompts and use default configuration
+- `--pm <npm|yarn|pnpm|bun>`: Explicitly set package manager, skip auto‑detection
 
-```bash
-npx litefy add button accordion dialog
-```
+---
 
-Each component will be installed to `@/ui/[component-name]/` with fully editable source code.
+### `add`
+
+Download and add components to your local project.
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash 
+    npx litefy@latest add <components...>
+    ```
+  </Tab>
+  <Tab value="yarn">
+  ```bash 
+  yarn dlx litefy@latest add <components...>
+  ```
+  </Tab>
+  <Tab value="pnpm">
+  ```bash 
+  pnpm dlx litefy@latest add <components...>
+  ```
+  </Tab>
+  <Tab value="bun">
+  ```bash 
+  bunx --bun litefy@latest add <components...>
+  ```
+  </Tab>
+</Tabs>
+
+- `-o, --overwrite`: Force‑overwrite existing local component files
+
+### `rm`
+
+Remove installed components: delete local source files and update the installed list in config.
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash 
+    npx litefy@latest rm <components...>
+    ```
+  </Tab>
+  <Tab value="yarn">
+  ```bash 
+  yarn dlx litefy@latest rm <components...>
+  ```
+  </Tab>
+  <Tab value="pnpm">
+  ```bash 
+  pnpm dlx litefy@latest rm <components...>
+  ```
+  </Tab>
+  <Tab value="bun">
+  ```bash 
+  bunx --bun litefy@latest rm <components...>
+  ```
+  </Tab>
+</Tabs>
 
 ## Theme Variables
 
-Litefy does not automatically inject theme variables. Choose your desired color palette from the <Link to="/en/docs/theming">Theming</Link> page and copy it manually into your global CSS file.
-
-## About Scaffolding
-
-Litefy does one thing: **puts component source code cleanly into your hands**.
-
-Whether you bootstrap your project with Vite, Next.js, or Create React App — Litefy doesn't care, and it doesn't need to. Scaffolding tools are already mature enough; there's no need to reinvent one.
+Litefy does not inject theme variables automatically.
+Head over to the <Link to="/docs/theming">Theming</Link> page, pick your desired color palette, and manually copy it into your global CSS file.

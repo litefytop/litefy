@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { program } from "commander";
+import { program,Option } from "commander";
 import packageJson from "../../package.json";
 import add from "../commands/add";
 import init from "../commands/init";
@@ -14,26 +14,29 @@ program
 program
   .command("init")
   .description("Initialize Litefy configuration in your project")
-  .option("-y, --yes", "Skip all prompts, use defaults")
-  .option("-c, --config <path>", "Path to litefy.json", "./litefy.json")
-  .action(init);
+  .option("-y, --yes", "Skip prompts, use default values")
+  .addOption(
+    new Option("--pm <pm>", "Specify package manager")
+      .choices(["npm", "yarn", "pnpm", "bun"])
+  )
+  .action((opts) => {
+    init({
+      yes: opts.yes,
+      pm: opts.pm,
+    });
+  });
 
 program
   .command("add <components...>")
   .description("Add components to your project")
   .option("-o, --overwrite", "Overwrite existing files")
-  .option(
-    "--components <path>",
-    "Override components directory (does not modify config)",
-  )
   .action(add);
 
 program
   .command("rm <components...>")
   .description("Remove installed components")
-  .option("-c, --config <path>", "Path to litefy.json config file")
-  .action(async (components: string[], opts) => {
-    await rm(components, { config: opts.config });
+  .action(async (components: string[]) => {
+    await rm(components);
   });
 
 program.parse();

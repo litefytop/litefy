@@ -33,7 +33,7 @@ const PANEL_BASE =
 
 function BlockSkeleton() {
   return (
-    <div className="flex h-full min-h-[600px] w-full items-center justify-center">
+    <div className="flex h-full min-h-150 w-full items-center justify-center">
       <div className="h-3/4 w-full max-w-3xl animate-pulse rounded-xl bg-fd-muted/50" />
     </div>
   );

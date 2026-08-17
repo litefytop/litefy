@@ -5,7 +5,7 @@ description: 将 Litefy 组件安装到你的 React 项目中。
 
 ## 前提条件
 
-Litefy 不是一个脚手架工具。它假设你已经有一个可用的 React + Tailwind CSS 项目。
+Litefy 不提供脚手架工具。它假设你已经有一个可用的 React + Tailwind CSS 项目。
 
 在继续之前，请确保你的项目满足以下条件：
 
@@ -14,34 +14,98 @@ Litefy 不是一个脚手架工具。它假设你已经有一个可用的 React 
 - TypeScript 已启用
 - `@/` 路径别名已配置（如 `@/ui` 指向 `src/ui`）
 
-## 安装组件
+## 命令
 
-运行以下命令安装组件：
+### `init`
 
-```bash
-npx litefy add button
-```
+初始化 Litefy 配置文件。
 
-安装手风琴组件：
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash 
+    npx litefy@latest init
+     ```
+  </Tab>
+  <Tab value="yarn">
+  ```bash 
+  yarn dlx litefy@latest init 
+  ```
+  </Tab>
+  <Tab value="pnpm">
+  ```bash 
+  pnpm dlx litefy@latest init 
+  ```
+  </Tab>
+  <Tab value="bun">
+  ```bash 
+  bunx --bun litefy@latest init 
+  ```
+  </Tab>
+</Tabs>
 
-```bash
-npx litefy add accordion
-```
+> 如果未初始化，直接执行添加组件命令时会自动完成初始化。
 
-一次安装多个组件：
+- `-y, --yes`：跳过交互式提示，直接使用默认配置
+- `--pm <npm|yarn|pnpm|bun>`：手动指定包管理器，跳过自动检测
 
-```bash
-npx litefy add button accordion dialog
-```
+---
 
-每个组件会被安装到 `@/ui/[组件名]/` 目录下，源码完全可编辑。
+### `add`
+
+下载并添加组件到本地项目。
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash 
+    npx litefy@latest add <components...>
+    ```
+  </Tab>
+  <Tab value="yarn">
+  ```bash 
+  yarn dlx litefy@latest add <components...>
+  ```
+  </Tab>
+  <Tab value="pnpm">
+  ```bash 
+  pnpm dlx litefy@latest add <components...>
+  ```
+  </Tab>
+  <Tab value="bun">
+  ```bash 
+  bunx --bun litefy@latest add <components...>
+  ```
+  </Tab>
+</Tabs>
+
+- `-o, --overwrite`：强制覆盖本地已经存在的组件文件
+
+### `rm`
+
+移除已安装组件：删除本地组件文件，同步更新配置内已安装列表。
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash 
+    npx litefy@latest rm <components...>
+    ```
+  </Tab>
+  <Tab value="yarn">
+  ```bash 
+  yarn dlx litefy@latest rm <components...>
+  ```
+  </Tab>
+  <Tab value="pnpm">
+  ```bash 
+  pnpm dlx litefy@latest rm <components...>
+  ```
+  </Tab>
+  <Tab value="bun">
+  ```bash 
+  bunx --bun litefy@latest rm <components...>
+  ```
+  </Tab>
+</Tabs>
 
 ## 主题变量
 
 Litefy 不自动注入主题变量。请从 <Link to="/zh/docs/theming">主题</Link> 页面选择你需要的色板，手动复制到你的全局 CSS 文件中。
-
-## 关于脚手架
-
-Litefy 只专注做一件事：**将组件源码干净地交到你手上**。
-
-你的项目用 Vite、Next.js 还是 Create React App 启动，Litefy 并不关心，也无需关心。脚手架工具已经足够成熟，我们没必要重新发明一个。

@@ -12,7 +12,7 @@ import {
 import type { Route } from "./+types/root";
 import "./assets/styles/index.css";
 import { Suspense } from "react";
-import SearchDialog from "@/components/search";
+import SearchDialog from "./components/search";
 import { i18n } from "@/lib/i18n";
 import { translations } from "@/lib/layout.shared";
 import { HydrateFallback } from "./components/hydrate-fallback";

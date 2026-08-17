@@ -9,8 +9,8 @@
     "start": "serve ./build/client --config ../../serve.json",
     "types:check": "react-router typegen && fumadocs-mdx && tsc --noEmit",
     "postinstall": "fumadocs-mdx",
-    "lint": "biome check",
-    "format": "biome format --write"
+    "cli:build": "pnpm --filter=litefy run build",
+    "cli:link": "pnpm --filter=litefy exec npm link"
   },
   "dependencies": {
     "@orama/orama": "^3.1.18",

@@ -7,7 +7,6 @@ import logger from "../utils/logger";
 
 interface InitOptions {
   yes?: boolean;
-  config?: string;
   pm?: "npm" | "yarn" | "pnpm" | "bun";
 }
 
@@ -80,15 +79,11 @@ async function init(options: InitOptions): Promise<void> {
   logger.step("Initializing Litefy configuration...");
 
   const cwd = process.cwd();
-  const configPath = options.config
-    ? path.resolve(cwd, options.config)
-    : path.join(cwd, "litefy.json");
+  const configPath = path.join(cwd, "litefy.json");
 
   if (await fs.pathExists(configPath)) {
     logger.warn(`litefy.json already exists at ${configPath}`);
-    logger.info(
-      "Use -c to specify a different path, or remove the existing file.",
-    );
+    logger.info("Remove the existing file and try again.");
     return;
   }
 
@@ -151,7 +146,7 @@ async function init(options: InitOptions): Promise<void> {
     );
   }
 
-  logger.info("Run `litefy add <component>` to add components");
+  logger.info("Run `litefy@latest add <component>` to add components");
 }
 
 export default init;
