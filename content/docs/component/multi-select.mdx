@@ -9,13 +9,13 @@ description: A multi-select component for selecting multiple options from a list
 
 <Tab value="CLI">
 
-<PackageManagerTabs command="litefy@latest add muti-select" />
+<PackageManagerTabs command="litefy@latest add multi-select" />
 
 </Tab>
 
 <Tab value="Manual">
 
-<SourceCode component="muti-select" />
+<Source type="component" name="multi-select" />
 
 </Tab>
 
@@ -70,26 +70,26 @@ Manage selected values externally with controlled state.
 
 A multi-select component that allows selecting multiple options.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `options` | `(SelectOption \| SelectOptionGroup)[]` | - | List of options or option groups |
-| `value` | `string[]` | - | Controlled selected values |
-| `defaultValue` | `string[]` | `[]` | Uncontrolled default selected values |
-| `onChange` | `(values: string[]) => void` | - | Callback when selection changes |
-| `placeholder` | `string` | - | Placeholder text |
-| `invalid` | `boolean` | `false` | Whether the select is in invalid state |
-| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| Prop           | Type                                    | Default | Description                                                                                                        |
+| -------------- | --------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
+| `options`      | `(SelectOption \| SelectOptionGroup)[]` | -       | List of options or option groups                                                                                   |
+| `value`        | `string[]`                              | -       | Controlled selected values                                                                                         |
+| `defaultValue` | `string[]`                              | `[]`    | Uncontrolled default selected values                                                                               |
+| `onChange`     | `(values: string[]) => void`            | -       | Callback when selection changes                                                                                    |
+| `placeholder`  | `string`                                | -       | Placeholder text                                                                                                   |
+| `invalid`      | `boolean`                               | `false` | Whether the select is in invalid state                                                                             |
+| `className`    | `ClassNameValue`                        | -       | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 
 ### SelectOption
 
-| Prop | Type | Description |
-|------|------|-------------|
+| Prop    | Type     | Description                  |
+| ------- | -------- | ---------------------------- |
 | `label` | `string` | Display label for the option |
-| `value` | `string` | Unique value for the option |
+| `value` | `string` | Unique value for the option  |
 
 ### SelectOptionGroup
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `group` | `string` | Group label |
+| Prop      | Type             | Description           |
+| --------- | ---------------- | --------------------- |
+| `group`   | `string`         | Group label           |
 | `options` | `SelectOption[]` | Options in this group |

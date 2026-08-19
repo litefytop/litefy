@@ -1,6 +1,6 @@
 "use client";
 
-import { Tooltip } from "@/ui/tooltip";
+import { Tooltip } from "@/ui";
 
 export default function TooltipSideDemo() {
   return (

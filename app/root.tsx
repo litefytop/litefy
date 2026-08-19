@@ -10,11 +10,11 @@ import {
   useParams,
 } from "react-router";
 import type { Route } from "./+types/root";
-import "./assets/styles/index.css";
+import "./ui/styles/index.css";
 import { Suspense } from "react";
 import SearchDialog from "./components/search";
 import { i18n } from "@/lib/i18n";
-import { translations } from "@/lib/layout.shared";
+import { translations } from "@/components/layout-shared";
 import { HydrateFallback } from "./components/hydrate-fallback";
 import NotFound from "./routes/not-found";
 

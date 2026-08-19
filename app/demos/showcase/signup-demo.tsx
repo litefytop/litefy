@@ -1,7 +1,7 @@
-import { Button } from "@/ui/button";
-import { Checkbox } from "@/ui/checkbox";
-import { Input } from "@/ui/input";
-import { Password } from "@/ui/password";
+import { Button } from "@/ui";
+import { Checkbox } from "@/ui";
+import { Input } from "@/ui";
+import { Password } from "@/ui";
 
 export default function SignupDemo() {
   return (

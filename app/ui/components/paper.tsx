@@ -70,7 +70,7 @@ export function PaperProvider({
 }
 
 const paperclass = {
-  base: "mx-auto print:bg-white shadow-lg border-t print:shadow-none print:border-0 print:mx-0 print:p-0 bg-card text-card-foreground",
+  base: "mx-auto print:bg-white shadow-lg border-t print:shadow-none print:border-0 print:mx-0 print:p-0  text-card-foreground",
   variant: {
     a4: {
       portrait:

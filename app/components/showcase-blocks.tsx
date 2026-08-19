@@ -3,7 +3,7 @@
 import { HourglassIcon } from "lucide-react";
 import { lazy, Suspense } from "react";
 import { cn } from "@/lib";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui";
 import SignupDemo from "../demos/showcase/signup-demo";
 
 export type ShowcaseLocale = "en" | "zh";

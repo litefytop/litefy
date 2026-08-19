@@ -15,7 +15,7 @@ description: A tabs component with multiple variants and orientation support
 
 <Tab value="Manual">
 
-<SourceCode component="tabs" />
+<Source type="component" name="tabs" />
 
 </Tab>
 
@@ -103,7 +103,7 @@ Panel rendered when its `value` matches the active tab. Wrap children in `React.
 
 ```tsx
 import { lazy, Suspense } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui";
 
 const LazySettings = lazy(() => import("./settings"));
 

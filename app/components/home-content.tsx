@@ -1,7 +1,7 @@
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { lazy, useEffect } from "react";
 import { Link } from "react-router";
-import { baseOptions } from "@/lib/layout.shared";
+import { baseOptions } from "@/components/layout-shared";
 import { Button } from "@/ui";
 
 export const content = {

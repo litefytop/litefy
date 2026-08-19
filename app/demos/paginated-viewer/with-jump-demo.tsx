@@ -46,7 +46,7 @@ export default function PaginatedViewerWithJumpDemo() {
     <div className="flex flex-col gap-4">
       <PaginatedViewer activeIndex={currentPage}>
         {pages.map((page) => (
-          <div key={page.id} className="bg-card p-8 rounded-lg border min-h-75">
+          <div key={page.id} className=" p-8 rounded-lg border min-h-75">
             <div className="flex justify-between items-start mb-4">
               <h3 className="text-xl font-bold">{page.title}</h3>
               <span className="text-sm text-muted-foreground">

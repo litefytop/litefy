@@ -1,38 +1,26 @@
 import path from "node:path";
-import axios from "axios";
 import fs from "fs-extra";
 import logger from "../utils/logger";
+import { getFileNameFromUrl, loadRegistry } from "../utils/registry";
+import { writeBarrelIndex } from "../utils/barrel";
+import type { Registry, RegistryEntry } from "./add";
 
 interface LitefyConfig {
-  components: string;
-  installed: string[];
+  components: {
+    path: string;
+    installed: string[];
+  };
+  hooks: {
+    path: string;
+    installed: string[];
+  };
+  styles: {
+    path: string;
+    installed: string[];
+  };
 }
 
-interface RegistryEntry {
-  url: string;
-  docs?: string;
-}
-type Registry = Record<string, RegistryEntry>;
-
-const REGISTRY_URL =
-  "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/registry.json";
-
-async function fetchRegistry(): Promise<Registry> {
-  try {
-    const response = await axios.get<Registry>(REGISTRY_URL);
-    return response.data;
-  } catch (error) {
-    logger.error(`Failed to fetch component registry from ${REGISTRY_URL}`);
-    logger.error(error instanceof Error ? error.message : String(error));
-    process.exit(1);
-  }
-}
-
-function getFileNameFromUrl(url: string): string {
-  return path.basename(new URL(url).pathname);
-}
-
-async function rm(components: string[]): Promise<void> {
+async function rm(names: string[]): Promise<void> {
   const cwd = process.cwd();
   const configPath = path.join(cwd, "litefy.json");
 
@@ -43,38 +31,78 @@ async function rm(components: string[]): Promise<void> {
   }
 
   const config = (await fs.readJson(configPath)) as LitefyConfig;
-  const componentsDirRaw = config.components || "./src/ui";
-  const componentsDir = path.resolve(cwd, componentsDirRaw);
+  const registry: Registry = await loadRegistry();
 
-  const registry = await fetchRegistry();
-
-  for (const comp of components) {
-    const componentInfo = registry[comp];
-    if (!componentInfo) {
-      logger.error(`Component not found in registry: ${comp}, skip`);
+  for (const name of names) {
+    const entry = registry[name];
+    if (!entry) {
+      logger.error(`"${name}" not found in local registry, skip`);
       continue;
     }
-
-    if (!config.installed.includes(comp)) {
-      logger.warn(`Component "${comp}" is not in installed list, skip`);
-      continue;
-    }
-
-    const fileName = getFileNameFromUrl(componentInfo.url);
-    const targetFile = path.join(componentsDir, fileName);
-
-    if (await fs.pathExists(targetFile)) {
-      await fs.remove(targetFile);
-      logger.success(`Deleted file: ${targetFile}`);
-    } else {
-      logger.warn(`File ${targetFile} not found, clean config only`);
-    }
-
-    config.installed = config.installed.filter((item) => item !== comp);
+    await removeSingle(name, entry, config, cwd);
   }
+
+  const compIndex = path.resolve(cwd, config.components.path, "index.ts");
+  await writeBarrelIndex(compIndex, config.components.installed);
+
+  const hookIndex = path.resolve(cwd, config.hooks.path, "index.ts");
+  await writeBarrelIndex(hookIndex, config.hooks.installed);
 
   await fs.writeJson(configPath, config, { spaces: 2 });
   logger.success("Remove done, updated litefy.json");
+}
+
+async function removeSingle(
+  itemName: string,
+  entry: RegistryEntry,
+  config: LitefyConfig,
+  cwd: string,
+) {
+  let relDir: string;
+  let installedArr: string[];
+
+  switch (entry.type) {
+    case "component":
+      relDir = config.components.path;
+      installedArr = config.components.installed;
+      break;
+    case "hook":
+      relDir = config.hooks.path;
+      installedArr = config.hooks.installed;
+      break;
+    case "css":
+      relDir = config.styles.path;
+      installedArr = config.styles.installed;
+      break;
+  }
+
+  if (!installedArr.includes(itemName)) {
+    logger.warn(`"${itemName}" is not installed, skip`);
+    return;
+  }
+
+  const targetDir = path.resolve(cwd, relDir);
+  const fileName = getFileNameFromUrl(entry.url);
+  const filePath = path.join(targetDir, fileName);
+
+  if (await fs.pathExists(filePath)) {
+    await fs.remove(filePath);
+    logger.success(`Deleted ${path.relative(cwd, filePath)}`);
+  } else {
+    logger.warn(`File not found ${path.relative(cwd, filePath)}, clean config only`);
+  }
+
+  switch (entry.type) {
+    case "component":
+      config.components.installed = config.components.installed.filter((x) => x !== itemName);
+      break;
+    case "hook":
+      config.hooks.installed = config.hooks.installed.filter((x) => x !== itemName);
+      break;
+    case "css":
+      config.styles.installed = config.styles.installed.filter((x) => x !== itemName);
+      break;
+  }
 }
 
 export default rm;

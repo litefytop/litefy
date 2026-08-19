@@ -1,8 +1,8 @@
-import { Button } from "@/ui/button";
-import { Input } from "@/ui/input";
-import { Select } from "@/ui/select";
-import { Switch } from "@/ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs";
+import { Button } from "@/ui";
+import { Input } from "@/ui";
+import { Select } from "@/ui";
+import { Switch } from "@/ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui";
 
 const tzOptions = [
   { label: "UTC", value: "utc" },

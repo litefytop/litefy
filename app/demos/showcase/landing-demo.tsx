@@ -1,7 +1,7 @@
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router";
 import { cn } from "@/lib";
-import { Button } from "@/ui/button";
+import { Button } from "@/ui";
 
 const content = {
   en: {

@@ -2,7 +2,7 @@ import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router";
 import { i18n } from "@/lib/i18n";
-import { baseOptions } from "@/lib/layout.shared";
+import { baseOptions } from "@/components/layout-shared";
 
 export function meta() {
   return [{ title: "Not Found" }];

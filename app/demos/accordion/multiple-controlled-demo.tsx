@@ -1,8 +1,8 @@
 "use client";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import { Accordion } from "@/ui/accordion";
-import { Switch } from "@/ui/switch";
+import { Accordion } from "@/ui";
+import { Switch } from "@/ui";
 
 const items = [
   {
@@ -31,6 +31,7 @@ export default function AccordionControlled() {
 
   const toggleAll = () =>
     setValue(value.length === allKeys.length ? [] : allKeys);
+
   return (
     <div className="flex flex-col gap-4 max-w-lg h-100">
       <Switch
@@ -44,26 +45,21 @@ export default function AccordionControlled() {
         value={value}
         onValueChange={setValue}
         multiple={true}
-        className="justify-center "
-      >
-        {items.map((item) => (
-          <Accordion.Item
-            key={item.value}
-            value={item.value}
-            label={item.label}
-            icon={(open) => (
+        className="justify-center"
+        items={items.map((item) => ({
+          value: item.value,
+          label: (
+            <div className="flex items-center justify-between w-full">
+              <span>{item.label}</span>
               <Plus
-                data-checked={open}
-                className={
-                  "w-4 h-4 transition-transform data-checked:rotate-45"
-                }
+                data-checked={value.includes(item.value) || undefined}
+                className="w-4 h-4 transition-transform data-checked:rotate-45"
               />
-            )}
-          >
-            {item.content}
-          </Accordion.Item>
-        ))}
-      </Accordion>
+            </div>
+          ),
+          content: item.content,
+        }))}
+      />
     </div>
   );
 }

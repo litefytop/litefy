@@ -15,7 +15,7 @@ import { Link, useParams } from "react-router";
 import { getMDXComponents } from "@/components/mdx";
 import { pageTrees } from "@/generated/page-trees";
 import { i18n } from "@/lib/i18n";
-import { baseOptions } from "@/lib/layout.shared";
+import { baseOptions } from "@/components/layout-shared";
 import { buildMarkdownUrl } from "@/lib/markdown-url";
 import { gitConfig } from "@/lib/shared";
 import type { Route } from "./+types/docs";
@@ -99,13 +99,13 @@ function ComponentsList({
                   <Link
                     key={String(itemKey)}
                     to={typeof url === "string" ? url : `/${locale}/docs`}
-                    className="group p-6 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
+                    className="group p-6 rounded-lg border  hover:bg-hover transition-colors"
                   >
                     <div>
-                      <h3 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">
+                      <h3 className="font-semibold text-lg mb-1 transition-colors">
                         {item.name}
                       </h3>
-                      <p className="text-sm text-fd-muted-foreground line-clamp-2">
+                      <p className="text-sm text-muted-foreground line-clamp-2">
                         {item.description || t.categoryDefaultDescription}
                       </p>
                     </div>

@@ -2,7 +2,7 @@
 
 import { Check, Copy } from "lucide-react";
 import { useState } from "react";
-import { Collapse } from "@/ui/collapse";
+import { Collapse } from "@/ui";
 
 export default function CollapseControlledDemo() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);

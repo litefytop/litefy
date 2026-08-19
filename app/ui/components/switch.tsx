@@ -65,7 +65,7 @@ export function Switch({
         className={cn(
           "relative inline-flex shrink-0 items-center rounded-full transition-colors duration-200 w-10 h-5",
           "has-focus-visible:outline-none has-focus-visible:ring-2 has-focus-visible:ring-ring has-focus-visible:ring-offset-2",
-          "bg-input data-checked:bg-primary",
+          "data-checked:bg-primary border",
           trackSlot?.className,
         )}
       >

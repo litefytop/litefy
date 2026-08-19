@@ -17,8 +17,7 @@ export function getPageMarkdownUrl(page: (typeof source)["$inferPage"]) {
 
 export { buildMarkdownUrl } from "./markdown-url";
 
-const COMPONENT_PREVIEW_REGEX =
-  /<ComponentPreview\s+name\s*=\s*["']([^"']+)["'][^/>]*\/?>/g;
+const COMPONENT_PREVIEW_REGEX = /<ComponentPreview\s+name\s*=\s*["']([^"']+)["'][^/>]*\/?>/g;
 const REGEX_ESCAPE = /[.*+?^${}()|[\]\\]/g;
 
 async function replaceComponentPreview(content: string): Promise<string> {

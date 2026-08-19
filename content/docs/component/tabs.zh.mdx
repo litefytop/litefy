@@ -15,7 +15,7 @@ description: 支持多种变体和方向设置的标签页组件
 
 <Tab value="Manual">
 
-<SourceCode component="tabs" />
+<Source type="component" name="tabs" />
 
 </Tab>
 
@@ -103,7 +103,7 @@ description: 支持多种变体和方向设置的标签页组件
 
 ```tsx
 import { lazy, Suspense } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui";
 
 const LazySettings = lazy(() => import("./settings"));
 

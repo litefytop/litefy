@@ -1,0 +1,9 @@
+[data-theme="rose"] {
+  --primary: oklch(45.5% 0.188 13.697);
+  --accent: oklch(27.1% 0.105 12.094);
+}
+
+.dark[data-theme="rose"] {
+  --primary: oklch(81% 0.117 11.638);
+  --accent: oklch(96.9% 0.015 12.422);
+}

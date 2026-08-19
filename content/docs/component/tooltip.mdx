@@ -15,7 +15,7 @@ description: A tooltip component that appears on hover or focus
 
 <Tab value="Manual">
 
-<SourceCode component="tooltip" />
+<Source type="component" name="tooltip" />
 
 </Tab>
 
@@ -85,7 +85,7 @@ For advanced use cases like guided tours or global event coordination, you can c
 
 ```tsx
 import { useRef } from 'react';
-import { Tooltip } from '@/ui/tooltip';
+import { Tooltip } from "@/ui";
 
 function MyComponent() {
   const contentRef = useRef<HTMLDivElement>(null);

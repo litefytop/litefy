@@ -1,101 +1,242 @@
 {
   "accordion": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/accordion.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/accordion.tsx"
   },
   "button": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/button.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/button.tsx"
   },
   "checkbox": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/checkbox.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/checkbox.tsx"
   },
   "collapse": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/collapse.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/collapse.tsx"
   },
   "combobox": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/combobox.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/combobox.tsx"
   },
   "dialog": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/dialog.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/dialog.tsx"
   },
   "drawer": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/drawer.tsx"  
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/drawer.tsx"
   },
   "dropdown": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/dropdown.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/dropdown.tsx"
   },
   "form": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/form.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/form.tsx"
   },
   "image": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/image.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/image.tsx"
   },
   "input": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/input.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/input.tsx"
   },
-  "muti-select": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/muti-select.tsx"
+  "multi-select": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/multi-select.tsx"
   },
   "number-field": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/number-field.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/number-field.tsx"
   },
   "paginated-viewer": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/paginated-viewer.tsx"
-  },
-  "pagination": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/pagination.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/paginated-viewer.tsx"
   },
   "paper": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/paper.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/paper.tsx"
   },
   "password": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/password.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/password.tsx"
   },
   "progress": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/progress.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/progress.tsx"
   },
   "radio": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/radio.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/radio.tsx"
   },
   "scroll-shadow": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/scroll-shadow.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/scroll-shadow.tsx"
   },
   "select": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/select.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/select.tsx"
   },
   "separator": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/separator.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/separator.tsx"
   },
   "sidebar": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/sidebar.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/sidebar.tsx"
   },
   "slider": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/slider.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/slider.tsx"
   },
   "switch": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/switch.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/switch.tsx"
   },
   "tabs": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/tabs.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/tabs.tsx"
   },
   "text-area": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/text-area.tsx"
-  },
-  "theme": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/theme.ts"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/text-area.tsx"
   },
   "toast": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/toast.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/toast.tsx"
   },
   "tooltip": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/tooltip.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/tooltip.tsx"
   },
   "upload": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/upload.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/upload.tsx"
   },
   "virtual-scroll": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/virtual-scroll.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/virtual-scroll.tsx"
   },
   "watermark": {
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/watermark.tsx"
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/watermark.tsx"
+  },
+  "use-pagination": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/hooks/use-pagination.ts"
+  },
+  "use-theme": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/hooks/use-theme.ts"
+  },
+  "style-amber-brand": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/amber-brand.css"
+  },
+  "style-card": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/card.css"
+  },
+  "style-custom-variant": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/custom-variant.css"
+  },
+  "style-cyan-brand": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/cyan-brand.css"
+  },
+  "style-emerald-brand": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/emerald-brand.css"
+  },
+  "style-fuchsia-brand": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/fuchsia-brand.css"
+  },
+  "style-gray-surface": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/gray-surface.css"
+  },
+  "style-indigo-brand": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/indigo-brand.css"
+  },
+  "style-kbd": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/kbd.css"
+  },
+  "style-lime-brand": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/lime-brand.css"
+  },
+  "style-mauve-surface": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/mauve-surface.css"
+  },
+  "style-mist-surface": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/mist-surface.css"
+  },
+  "style-olive-surface": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/olive-surface.css"
+  },
+  "style-orange-brand": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/orange-brand.css"
+  },
+  "style-pink-brand": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/pink-brand.css"
+  },
+  "style-purple-brand": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/purple-brand.css"
+  },
+  "style-rose-brand": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/rose-brand.css"
+  },
+  "style-skeleton": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/skeleton.css"
+  },
+  "style-sky-brand": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/sky-brand.css"
+  },
+  "style-slate-surface": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/slate-surface.css"
+  },
+  "style-stone-surface": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/stone-surface.css"
+  },
+  "style-taupe-surface": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/taupe-surface.css"
+  },
+  "style-teal-brand": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/teal-brand.css"
+  },
+  "style-theme": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/theme.css"
+  },
+  "style-typography": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/typography.css"
+  },
+  "style-violet-brand": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/violet-brand.css"
+  },
+  "style-zinc-surface": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/zinc-surface.css"
   }
 }

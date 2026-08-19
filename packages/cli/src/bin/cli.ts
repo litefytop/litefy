@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 
-import { program,Option } from "commander";
+import { program } from "commander";
 import packageJson from "../../package.json";
 import add from "../commands/add";
 import init from "../commands/init";
 import rm from "../commands/rm";
+import repair from "../commands/repair";
+import clean from "../commands/clean";
+import uninstall from "../commands/uninstall";
 
 program
   .name("litefy")
@@ -15,14 +18,9 @@ program
   .command("init")
   .description("Initialize Litefy configuration in your project")
   .option("-y, --yes", "Skip prompts, use default values")
-  .addOption(
-    new Option("--pm <pm>", "Specify package manager")
-      .choices(["npm", "yarn", "pnpm", "bun"])
-  )
   .action((opts) => {
     init({
       yes: opts.yes,
-      pm: opts.pm,
     });
   });
 
@@ -30,13 +28,28 @@ program
   .command("add <components...>")
   .description("Add components to your project")
   .option("-o, --overwrite", "Overwrite existing files")
-  .action(add);
+  .action(async (components: string[], opts) => {
+    await add(components, opts);
+  });
 
 program
-  .command("rm <components...>")
-  .description("Remove installed components")
-  .action(async (components: string[]) => {
-    await rm(components);
-  });
+  .command("rm <names...>")
+  .description("Remove specified components/hooks")
+  .action(async (names: string[]) => await rm(names));
+
+program
+  .command("repair")
+  .description("Repair: restore missing component/hook files (needs network)")
+  .action(async () => await repair());
+
+program
+  .command("clean")
+  .description("Clean: offline prune invalid entries from config, no network")
+  .action(async () => await clean());
+
+program
+  .command("uninstall")
+  .description("Uninstall: remove all local litefy files and litefy.json (dangerous)")
+  .action(async () => await uninstall());
 
 program.parse();

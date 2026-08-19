@@ -1,8 +1,8 @@
 import { uiTranslations } from "fumadocs-ui/i18n";
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
-import logo from "../assets/logo.svg";
-import { i18n } from "./i18n";
-import { appName, gitConfig } from "./shared";
+import logoRaw from "../assets/logo.svg?raw";
+import { i18n } from "../lib/i18n";
+import { appName, gitConfig } from "../lib/shared";
 export const translations = i18n
   .translations()
   .extend(uiTranslations())
@@ -21,7 +21,7 @@ export function baseOptions(_currentLocale: string): BaseLayoutProps {
     nav: {
       title: (
         <div className="flex items-center gap-2">
-          <img src={logo} alt="Litefy UI" className="size-8" />
+          <div dangerouslySetInnerHTML={{ __html: logoRaw }} className="fill-foreground size-8" />
           {appName}
         </div>
       ),

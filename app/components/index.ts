@@ -3,4 +3,5 @@ export * from "./mdx";
 export * from "./package-manager-tabs";
 export * from "./search";
 export * from "./showcase-blocks";
-export * from "./source-code";
+export * from "./source";
+export * from "./layout-shared";

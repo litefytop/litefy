@@ -1,0 +1,76 @@
+@layer base {
+  html,
+  main {
+    scroll-behavior: smooth;
+  }
+  body {
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+  }
+  input[type="password"]::-ms-reveal {
+    display: none;
+  }
+}
+
+:root {
+  color-scheme: light;
+
+  --background: oklch(98.5% 0 0);
+  --foreground: oklch(14.5% 0 0);
+  --muted: oklch(97% 0 none);
+  --muted-foreground: oklch(20.5% 0 none);
+  --hover: oklch(87% 0 none);
+
+  --primary: oklch(26.9% 0 none);
+  --accent: oklch(14.5% 0 0);
+
+  --destructive: oklch(44.4% 0.177 26.899);
+  --info: oklch(42.4% 0.199 265.638);
+  --success: oklch(39.3% 0.095 152.535);
+  --warning: oklch(42.1% 0.095 57.708);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --foreground: oklch(98.5% 0 0);
+  --background: oklch(14.5% 0 0);
+  --muted-foreground: oklch(97% 0 none);
+  --muted: oklch(20.5% 0 none);
+  --hover: oklch(37.1% 0 none);
+
+  --primary: oklch(70.8% 0 0);
+  --accent: oklch(98.5% 0 0);
+
+  --destructive: oklch(70.4% 0.191 22.216);
+  --info: oklch(70.7% 0.165 254.624);
+  --success: oklch(72.3% 0.219 149.579);
+  --warning: oklch(79.5% 0.184 86.047);
+}
+
+@theme inline {
+  --breakpoint-3xl: 1920px;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-hover: var(--hover);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--background);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--primary-foreground);
+
+  --color-info: var(--info);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-destructive: var(--destructive);
+
+  --color-border: var(--muted-foreground);
+  --color-input: var(--muted);
+  --color-ring: var(--accent);
+
+  --color-card: var(--background);
+  --color-card-foreground: var(--foreground);
+  --color-sidebar: var(--background);
+  --color-sidebar-foreground: var(--foreground);
+}

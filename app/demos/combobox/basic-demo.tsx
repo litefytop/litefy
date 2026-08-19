@@ -1,6 +1,6 @@
 "use client";
 
-import { Combobox } from "@/ui/combobox";
+import { Combobox } from "@/ui";
 
 const countries = [
   "China",

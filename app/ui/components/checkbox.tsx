@@ -40,7 +40,6 @@ function CheckboxGroup({
   invalid,
   className,
   children,
-  onBlur,
   disabled,
   ...props
 }: CheckboxGroupProps) {

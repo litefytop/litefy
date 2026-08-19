@@ -5,107 +5,186 @@ description: 将 Litefy 组件安装到你的 React 项目中。
 
 ## 前提条件
 
-Litefy 不提供脚手架工具。它假设你已经有一个可用的 React + Tailwind CSS 项目。
+Litefy 不提供完整项目脚手架，请在已有 React 项目中使用。
 
-在继续之前，请确保你的项目满足以下条件：
+项目需要满足：
 
-- **React 19+**（Litefy 使用了 `props.ref` 等 React 19 特性，低于此版本会报错）
-- **Tailwind CSS 4** 已配置（Tailwind CSS 3 未经过测试，不保证兼容）
-- TypeScript 已启用
-- `@/` 路径别名已配置（如 `@/ui` 指向 `src/ui`）
+- **React 19+**（依赖 React 19 新特性，低版本不兼容）
+- 已开启 TypeScript
+- 配置路径别名 `@/*` 指向项目源码根目录
+
+> 组件模板内部使用 `@/lib` 导入 `cn` 工具函数，需要别名正常工作。使用 CLI 默认路径时，只需把 `@` 映射到源码目录即可，无需额外特殊配置。别名的具体配置方式请参考你的构建工具文档。
 
 ## 命令
 
-### `init`
+### init
 
-初始化 Litefy 配置文件。
+初始化项目，生成 `litefy.json` 配置文件，创建 `ui/litefy` 目录结构，拉取 `cn.ts`，安装所需依赖。未初始化直接执行 add，会自动触发初始化流程。
+
+> ⚠️ 不要手动修改 `litefy.json` 中的路径字段。如果自行修改路径，你需要同步维护项目别名与导入语句，CLI 不会自动修复。
 
 <Tabs items={["npm", "yarn", "pnpm", "bun"]}>
   <Tab value="npm">
-    ```bash 
+    ```bash
     npx litefy@latest init
-     ```
+    ```
   </Tab>
   <Tab value="yarn">
-  ```bash 
-  yarn dlx litefy@latest init 
-  ```
+    ```bash
+    yarn dlx litefy@latest init
+    ```
   </Tab>
   <Tab value="pnpm">
-  ```bash 
-  pnpm dlx litefy@latest init 
-  ```
+    ```bash
+    pnpm dlx litefy@latest init
+    ```
   </Tab>
   <Tab value="bun">
-  ```bash 
-  bunx --bun litefy@latest init 
-  ```
+    ```bash
+    bunx --bun litefy@latest init
+    ```
   </Tab>
 </Tabs>
 
-> 如果未初始化，直接执行添加组件命令时会自动完成初始化。
+**参数**
 
-- `-y, --yes`：跳过交互式提示，直接使用默认配置
-- `--pm <npm|yarn|pnpm|bun>`：手动指定包管理器，跳过自动检测
+- `-y, --yes`：跳过交互，使用全部默认配置
 
----
+### add
 
-### `add`
-
-下载并添加组件到本地项目。
+批量下载安装组件与对应 hooks，自动更新聚合导出文件。
 
 <Tabs items={["npm", "yarn", "pnpm", "bun"]}>
   <Tab value="npm">
-    ```bash 
+    ```bash
     npx litefy@latest add <components...>
     ```
   </Tab>
   <Tab value="yarn">
-  ```bash 
-  yarn dlx litefy@latest add <components...>
-  ```
+    ```bash
+    yarn dlx litefy@latest add <components...>
+    ```
   </Tab>
   <Tab value="pnpm">
-  ```bash 
-  pnpm dlx litefy@latest add <components...>
-  ```
+    ```bash
+    pnpm dlx litefy@latest add <components...>
+    ```
   </Tab>
   <Tab value="bun">
-  ```bash 
-  bunx --bun litefy@latest add <components...>
-  ```
+    ```bash
+    bunx --bun litefy@latest add <components...>
+    ```
   </Tab>
 </Tabs>
 
-- `-o, --overwrite`：强制覆盖本地已经存在的组件文件
+**参数**
 
-### `rm`
+- `-o, --overwrite`：强制覆盖已存在的组件文件
 
-移除已安装组件：删除本地组件文件，同步更新配置内已安装列表。
+### rm
+
+移除已安装组件，删除对应文件，更新配置清单与聚合导出。
 
 <Tabs items={["npm", "yarn", "pnpm", "bun"]}>
   <Tab value="npm">
-    ```bash 
-    npx litefy@latest rm <components...>
+    ```bash
+    npx litefy@latest rm <names...>
     ```
   </Tab>
   <Tab value="yarn">
-  ```bash 
-  yarn dlx litefy@latest rm <components...>
-  ```
+    ```bash
+    yarn dlx litefy@latest rm <names...>
+    ```
   </Tab>
   <Tab value="pnpm">
-  ```bash 
-  pnpm dlx litefy@latest rm <components...>
-  ```
+    ```bash
+    pnpm dlx litefy@latest rm <names...>
+    ```
   </Tab>
   <Tab value="bun">
-  ```bash 
-  bunx --bun litefy@latest rm <components...>
-  ```
+    ```bash
+    bunx --bun litefy@latest rm <names...>
+    ```
   </Tab>
 </Tabs>
 
-## 主题变量
+### repair
 
-Litefy 不自动注入主题变量。请从 <Link to="/zh/docs/theming">主题</Link> 页面选择你需要的色板，手动复制到你的全局 CSS 文件中。
+校验本地资源完整性，联网补全缺失组件、hooks，重新生成聚合导出。
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest repair
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest repair
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest repair
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest repair
+    ```
+  </Tab>
+</Tabs>
+
+### clean
+
+离线清理，修剪配置内已经不存在的组件记录，不需要网络。
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest clean
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest clean
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest clean
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest clean
+    ```
+  </Tab>
+</Tabs>
+
+### uninstall
+
+完全卸载：删除所有 Litefy 本地文件以及 `litefy.json`。不会自动删除业务代码中手写的 import，需要你手动清理。
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest uninstall
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest uninstall
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest uninstall
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest uninstall
+    ```
+  </Tab>
+</Tabs>

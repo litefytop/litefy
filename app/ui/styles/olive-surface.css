@@ -1,0 +1,11 @@
+[data-theme="olive"] {
+  --background: oklch(98.8% 0.003 106.5);
+  --foreground: oklch(15.3% 0.006 107.1);
+  --muted: oklch(73.7% 0.021 106.9);
+}
+
+.dark[data-theme="olive"] {
+  --foreground: oklch(98.8% 0.003 106.5);
+  --background: oklch(15.3% 0.006 107.1);
+  --muted: oklch(39.4% 0.023 107.4);
+}

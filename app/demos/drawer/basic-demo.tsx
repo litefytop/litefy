@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { Button } from "@/ui/button";
-import { Drawer } from "@/ui/drawer";
+import { Button } from "@/ui";
+import { Drawer } from "@/ui";
 
 export default function DrawerBasicDemo() {
   const controlRef = React.useRef<HTMLDialogElement>(null);

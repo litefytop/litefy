@@ -1,0 +1,11 @@
+[data-theme="gray"] {
+  --background: oklch(98.5% 0.002 247.839);
+  --foreground: oklch(13% 0.028 261.692);
+  --muted: oklch(70.7% 0.022 261.325);
+}
+
+.dark[data-theme="gray"] {
+  --foreground: oklch(98.5% 0.002 247.839);
+  --background: oklch(13% 0.028 261.692);
+  --muted: oklch(44.6% 0.03 256.802);
+}

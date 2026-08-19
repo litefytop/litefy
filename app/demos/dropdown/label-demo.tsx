@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@/ui/button";
-import { Dropdown } from "@/ui/dropdown";
+import { Button } from "@/ui";
+import { Dropdown } from "@/ui";
 
 export default function DropdownLabelDemo() {
   return (

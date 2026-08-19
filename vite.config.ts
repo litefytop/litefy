@@ -6,18 +6,14 @@ import mdx from "fumadocs-mdx/vite";
 import { defineConfig, type Plugin } from "vite";
 import path from "node:path";
 
-const SCRIPT_PATH = fileURLToPath(
-  new URL("./scripts/build-page-trees.mjs", import.meta.url),
-);
+const SCRIPT_PATH = fileURLToPath(new URL("./scripts/build-page-trees.mjs", import.meta.url));
 
 function runBuildScript(): void {
   const result = spawnSync(process.execPath, [SCRIPT_PATH], {
     stdio: "inherit",
   });
   if (result.status !== 0) {
-    throw new Error(
-      `build-page-trees script failed with exit code ${result.status}`,
-    );
+    throw new Error(`build-page-trees script failed with exit code ${result.status}`);
   }
 }
 
@@ -30,21 +26,25 @@ function pageTreesPlugin(): Plugin {
     },
   };
 }
-
-export default defineConfig({
-  plugins: [mdx(), tailwindcss(), reactRouter(), pageTreesPlugin()],
-  resolve: {
-        alias: {
-      "@": path.resolve(__dirname, "./app"),
-      "collections": path.resolve(__dirname, "./.source"),
+function removeSourceMappingComment() {
+  return {
+    name: "remove-sourcemap-comment",
+    transform(code: string, id: string) {
+      if (id.includes("node_modules")) {
+        return code.replace(/\/\/# sourceMappingURL=.+\.map/g, "");
+      }
     },
-    tsconfigPaths: true,
-    noExternal: [
-      "fumadocs-core",
-      "fumadocs-ui",
-      "fumadocs-openapi",
-      "@fumadocs/base-ui",
-    ],
+  };
+}
+export default defineConfig({
+  plugins: [mdx(), tailwindcss(), reactRouter(), pageTreesPlugin(), removeSourceMappingComment()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./app"),
+      collections: path.resolve(__dirname, "./.source"),
+    },
+
+    noExternal: ["fumadocs-core", "fumadocs-ui", "fumadocs-openapi", "@fumadocs/base-ui"],
   },
   build: {
     sourcemap: false,

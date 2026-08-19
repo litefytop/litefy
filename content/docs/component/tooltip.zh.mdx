@@ -15,7 +15,7 @@ description: 在悬停或聚焦时显示的提示框组件
 
 <Tab value="Manual">
 
-<SourceCode component="tooltip" />
+<Source type="component" name="tooltip" />
 
 </Tab>
 
@@ -85,7 +85,7 @@ description: 在悬停或聚焦时显示的提示框组件
 
 ```tsx
 import { useRef } from 'react';
-import { Tooltip } from '@/ui/tooltip';
+import { Tooltip } from "@/ui";
 
 function MyComponent() {
   const contentRef = useRef<HTMLDivElement>(null);

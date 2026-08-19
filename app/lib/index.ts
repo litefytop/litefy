@@ -18,8 +18,7 @@
 // 4. If you need source:
 //    Use `import { source } from "@/lib/source"` directly.
 //    Do NOT add it to this barrel.
-export * from "./class-name";
+export * from "./cn";
 export * from "./i18n";
-export * from "./layout.shared";
 export * from "./markdown-url";
 export * from "./shared";

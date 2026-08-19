@@ -1,0 +1,25 @@
+@layer components {
+  .card {
+    @apply relative overflow-hidden rounded-2xl border transition-all duration-300;
+    background-color: var(--card-bg);
+    backdrop-filter: blur(8px);
+    border-color: var(--card-border);
+    box-shadow: 0 10px 15px -3px var(--card-shadow);
+  }
+
+  .card:hover {
+    @apply -translate-y-1;
+    box-shadow: 0 20px 25px -5px var(--card-shadow-hover);
+    border-color: var(--card-border-hover);
+  }
+
+  .card::before {
+    content: "";
+    @apply absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-500;
+    background: radial-gradient(ellipse at 30% 20%, var(--card-glow) 0%, transparent 70%);
+  }
+
+  .card:hover::before {
+    @apply opacity-100;
+  }
+}

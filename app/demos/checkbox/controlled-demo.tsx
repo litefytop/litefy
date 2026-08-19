@@ -2,7 +2,7 @@
 
 import { Check } from "lucide-react";
 import { useState } from "react";
-import { Checkbox } from "@/ui/checkbox";
+import { Checkbox } from "@/ui";
 
 export default function CheckboxCustomIconDemo() {
   const [checked, setChecked] = useState(false);

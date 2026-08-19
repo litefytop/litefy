@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/ui/button";
+import { Button } from "@/ui";
 
 export default function ButtonLoadingDemo() {
   const [loading, setLoading] = useState(false);

@@ -1,0 +1,9 @@
+[data-theme="orange"] {
+  --primary: oklch(40.8% 0.123 38.172);
+  --accent: oklch(26.6% 0.079 36.259);
+}
+
+.dark[data-theme="orange"] {
+  --primary: oklch(83.7% 0.128 66.29);
+  --accent: oklch(98% 0.016 73.684);
+}
