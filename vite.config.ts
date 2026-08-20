@@ -26,18 +26,9 @@ function pageTreesPlugin(): Plugin {
     },
   };
 }
-function removeSourceMappingComment() {
-  return {
-    name: "remove-sourcemap-comment",
-    transform(code: string, id: string) {
-      if (id.includes("node_modules")) {
-        return code.replace(/\/\/# sourceMappingURL=.+\.map/g, "");
-      }
-    },
-  };
-}
+
 export default defineConfig({
-  plugins: [mdx(), tailwindcss(), reactRouter(), pageTreesPlugin(), removeSourceMappingComment()],
+  plugins: [mdx(), tailwindcss(), reactRouter(), pageTreesPlugin()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./app"),
@@ -45,11 +36,5 @@ export default defineConfig({
     },
 
     noExternal: ["fumadocs-core", "fumadocs-ui", "fumadocs-openapi", "@fumadocs/base-ui"],
-  },
-  build: {
-    sourcemap: false,
-  },
-  css: {
-    devSourcemap: false,
   },
 });

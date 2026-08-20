@@ -3,7 +3,6 @@ title: Accordion 手风琴
 description: 支持单选和多选展开模式的手风琴组件
 ---
 
-
 ## 安装
 
 <Tabs items={['CLI', 'Manual']} >
@@ -28,7 +27,7 @@ description: 支持单选和多选展开模式的手风琴组件
 
 基础的单选模式，使用非受控状态。
 
-<ComponentPreview 
+<ComponentPreview
   name="accordion-single-uncontrolled"
 />
 
@@ -36,53 +35,92 @@ description: 支持单选和多选展开模式的手风琴组件
 
 高级用法，支持多选、受控模式和外部控制。
 
-<ComponentPreview 
+<ComponentPreview
   name="accordion-multiple-controlled"
 />
 
-### 自定义样式
+### 完全自定义样式
 
-使用 `slotProps` 自定义手风琴项的外观。
+直接使用底层原子组件实现高度自定义，样式需要自行提供。
 
-<ComponentPreview 
+<ComponentPreview
   name="accordion-custom-styling"
 />
 
 ## API 参考
 
-### Accordion
+### 高阶组件
 
-主容器组件。根据 `multiple` prop 自动在单选和多选模式之间切换。
+开箱即用主组件。根据 `multiple` prop 自动在单选和多选模式之间切换。
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `multiple` | `boolean` | `false` | 当为 `true` 时，允许多个项目同时展开。将 `value` 类型更改为 `string[]`，否则为 `string` |
-| `defaultValue` | `string`（单选）\| `string[]`（多选） | - | 初始值（非受控）。单选模式：`string`，多选模式：`string[]` |
-| `value` | `string`（单选）\| `string[]`（多选） | - | 当前值（受控）。单选模式：`string`，多选模式：`string[]` |
-| `onValueChange` | `(value: string \| undefined) => void`（单选）\| `(values: string[]) => void`（多选） | - | 值变化回调。单选模式接收 `string \| undefined`，多选模式接收 `string[]` |
-| `disabled` | `boolean` | `false` | 禁用整个手风琴 |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类。仅支持字符串、数组及各类假值。 |
+#### Accordion
 
-### Accordion.Item
+| Prop            | Type                                                                   | Default | Description                                                                    |
+| --------------- | ---------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------ |
+| `multiple`      | `boolean`                                                              | `false` | 当为 `true` 时，允许多个项目同时展开。值类型切换为 `string[]`，单选为 `string` |
+| `defaultValue`  | `string` \| `string[]`                                                 | -       | 初始值（非受控）。单选：`string`；多选：`string[]`                             |
+| `value`         | `string` \| `string[]`                                                 | -       | 当前值（受控）。单选：`string`；多选：`string[]`                               |
+| `onValueChange` | `(value: string \| undefined) => void` \| `(values: string[]) => void` | -       | 值变化回调                                                                     |
+| `disabled`      | `boolean`                                                              | `false` | 禁用整个手风琴                                                                 |
+| `items`         | `AccordionItemConfig[]`                                                | `[]`    | 手风琴配置项数组                                                               |
+| `className`     | `ClassNameValue`                                                       | -       | 容器自定义样式                                                                 |
 
-单个手风琴项。
+#### AccordionItemConfig
 
+| Field       | Type                                                      | Default       | Description                          |
+| ----------- | --------------------------------------------------------- | ------------- | ------------------------------------ |
+| `value`     | `string`                                                  | -             | 项目唯一标识符 **必填**              |
+| `label`     | `React.ReactNode`                                         | -             | 头部触发器显示内容                   |
+| `icon`      | `React.ReactNode \| ((open: boolean) => React.ReactNode)` | `ChevronDown` | 展开收起图标，支持函数接收 open 状态 |
+| `disabled`  | `boolean`                                                 | `false`       | 禁用单个项目                         |
+| `className` | `ClassNameValue`                                          | -             | 当前项外层自定义样式                 |
+| `slotProps` | `AccordionSlotProps`                                      | -             | 内部各元素透传属性                   |
 
+#### slotProps
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string` | - | 项目的唯一标识符 |
-| `label` | `React.ReactNode` | - | 头部内容 |
-| `icon` | `React.ReactNode \| ((open: boolean) => React.ReactNode)` | `ChevronDown` | 自定义图标或图标函数 |
-| `disabled` | `boolean` | `false` | 禁用项目 |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类，支持字符串、数组、对象、布尔值等多种格式。 |
-| `slotProps` | `object` | - | 内部插槽的自定义属性 |
+仅作用于高阶组件 `Accordion`，原子组件模式不生效。
 
-### slotProps
+| Slot      | Type                              | Description           |
+| --------- | --------------------------------- | --------------------- |
+| `wrapper` | `React.ComponentProps<"div">`     | 单项外层包装 div 属性 |
+| `trigger` | `React.ComponentProps<"button">`  | 触发器 button 属性    |
+| `content` | `React.ComponentProps<"section">` | 内容面板 section 属性 |
 
-| Slot | Type | Description |
-|------|------|-------------|
-| `wrapper` | `React.ComponentProps<"div">` | 包装器 div 的属性 |
-| `trigger` | `React.ComponentProps<"button">` | 触发器按钮的属性 |
-| `content` | `React.ComponentProps<"section">` | 内容面板的属性 |
+---
 
+### Headless 原子组件
+
+> 以下为底层原子组件，**无内置内边距、字号等视觉样式，样式需要通过 className 自行补充**。
+
+#### AccordionRoot
+
+| Prop        | Type                          | Default | Description           |
+| ----------- | ----------------------------- | ------- | --------------------- |
+| `disabled`  | `boolean`                     | `false` | 整体禁用              |
+| `className` | `ClassNameValue`              | -       | 自定义样式            |
+| `...props`  | `React.ComponentProps<"div">` | -       | 支持全部 div 原生属性 |
+
+#### AccordionItem
+
+| Prop        | Type                          | Default | Description           |
+| ----------- | ----------------------------- | ------- | --------------------- |
+| `disabled`  | `boolean`                     | `false` | 禁用此项              |
+| `className` | `ClassNameValue`              | -       | 自定义样式            |
+| `...props`  | `React.ComponentProps<"div">` | -       | 支持全部 div 原生属性 |
+
+#### AccordionTrigger
+
+| Prop        | Type                             | Default | Description                              |
+| ----------- | -------------------------------- | ------- | ---------------------------------------- |
+| `className` | `ClassNameValue`                 | -       | 自定义样式                               |
+| `...props`  | `React.ComponentProps<"button">` | -       | 支持全部 button 原生属性，可绑定 onClick |
+
+#### AccordionContent
+
+> DOM：外层 `<section>` 负责折叠动画，透传无障碍 props；`className` 作用于内部可见内容容器。
+
+| Prop        | Type                              | Default | Description                           |
+| ----------- | --------------------------------- | ------- | ------------------------------------- |
+| `open`      | `boolean`                         | `false` | 是否展开                              |
+| `className` | `ClassNameValue`                  | -       | 作用于内部可见内容容器                |
+| `...props`  | `React.ComponentProps<"section">` | -       | section 原生属性，用于无障碍、data‑\* |

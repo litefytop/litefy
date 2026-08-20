@@ -5,12 +5,11 @@ import { type ClassNameValue, cn } from "@/lib";
 const buttonClass = {
   base: "inline-flex items-center justify-center cursor-pointer gap-2 h-8 min-w-8 px-3 py-0 border border-transparent rounded-lg font-sans text-sm text-center data-pure-icon:aspect-square data-pure-icon:px-0 [&_svg:not([class*='size-'])]:size-4",
   variant: {
-    primary: "bg-primary text-primary-foreground hover:bg-primary/90",
+    primary: "bg-primary text-primary-foreground hover:bg-accent",
     destructive:
-      "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20",
-    outline:
-      "border-2 border-primary bg-transparent hover:bg-primary hover:text-primary-foreground",
-    text: "text-foreground hover:text-foreground/60",
+      "bg-destructive text-background hover:text-muted focus-visible:ring-destructive/20",
+    outline: "border-2 border-accent bg-transparent hover:bg-accent hover:text-primary-foreground",
+    text: "hover:text-foreground text-muted-foreground",
   },
 };
 
@@ -33,9 +32,7 @@ function hasTextChild(children: React.ReactNode): boolean {
     return children.some((child) => hasTextChild(child));
   }
   if (React.isValidElement(children)) {
-    return hasTextChild(
-      (children.props as { children?: React.ReactNode }).children,
-    );
+    return hasTextChild((children.props as { children?: React.ReactNode }).children);
   }
   return false;
 }
@@ -63,11 +60,7 @@ function Button({
       {...props}
       aria-busy={isLoading}
       data-pure-icon={isPureIcon || undefined}
-      className={cn(
-        Button.class.base,
-        Button.class.variant[variant],
-        className,
-      )}
+      className={cn(Button.class.base, Button.class.variant[variant], className)}
       disabled={isLoading || props.disabled}
     >
       {isLoading && loadingIcon}
