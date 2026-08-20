@@ -3,6 +3,7 @@ import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 import logoRaw from "../assets/logo.svg?raw";
 import { i18n } from "../lib/i18n";
 import { appName, gitConfig } from "../lib/shared";
+import { ThemeToggle } from "./theme-toggle";
 export const translations = i18n
   .translations()
   .extend(uiTranslations())
@@ -27,5 +28,6 @@ export function baseOptions(_currentLocale: string): BaseLayoutProps {
       ),
     },
     githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
+    slots: { themeSwitch: ThemeToggle },
   };
 }
