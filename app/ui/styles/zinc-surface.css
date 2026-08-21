@@ -1,11 +1,11 @@
-[data-theme="zinc"] {
+[data-surface="zinc"] {
   --background: oklch(98.5% 0 0);
   --foreground: oklch(14.1% 0.005 285.823);
   --hover: oklch(70.5% 0.015 286.067);
   --muted: oklch(96.7% 0.001 286.375);
 }
 
-.dark[data-theme="zinc"] {
+.dark[data-surface="zinc"] {
   --foreground: oklch(98.5% 0 0);
   --background: oklch(14.1% 0.005 285.823);
   --hover: oklch(44.2% 0.017 285.786);

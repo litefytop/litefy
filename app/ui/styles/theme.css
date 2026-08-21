@@ -1,14 +1,11 @@
 @layer base {
-  html,
-  main {
-    scroll-behavior: smooth;
+  *:focus {
+    outline: none;
   }
-  body {
-    font-synthesis-weight: none;
-    text-rendering: optimizeLegibility;
-  }
-  input[type="password"]::-ms-reveal {
-    display: none;
+  *:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--ring);
+    border-radius: inherit;
   }
 }
 
@@ -18,34 +15,37 @@
   --background: oklch(98.5% 0 0);
   --foreground: oklch(14.5% 0 0);
   --muted: oklch(92.2% 0 none);
-  --muted-foreground: oklch(20.5% 0 none);
+  --muted-foreground: oklch(26.9% 0 none);
   --hover: oklch(87% 0 none);
 
-  --primary: oklch(20.5% 0 none);
-  --accent: oklch(14.5% 0 0);
+  --primary: oklch(14.5% 0 none);
+  --accent: oklch(37.1% 0 0);
+  --ring: oklch(55.6% 0 none);
 
-  --destructive: oklch(44.4% 0.177 26.899);
-  --info: oklch(42.4% 0.199 265.638);
-  --success: oklch(39.3% 0.095 152.535);
-  --warning: oklch(42.1% 0.095 57.708);
+  --destructive-accent: oklch(57.7% 0.245 27.325);
+  --destructive: oklch(50.5% 0.213 27.518);
+  --info: oklch(54.6% 0.245 262.881);
+  --success: oklch(52.7% 0.154 150.069);
+  --warning: oklch(55.4% 0.135 66.442);
 }
 
 .dark {
   color-scheme: dark;
 
-  --foreground: oklch(98.5% 0 0);
   --background: oklch(14.5% 0 0);
+  --foreground: oklch(98.5% 0 0);
+  --muted: oklch(26.9% 0 none);
   --muted-foreground: oklch(92.2% 0 none);
-  --muted: oklch(20.5% 0 none);
-  --hover: oklch(26.9% 0 none);
+  --hover: oklch(37.1% 0 none);
 
-  --primary: oklch(92.2% 0 0);
-  --accent: oklch(98.5% 0 0);
+  --primary: oklch(98.5% 0 0);
+  --accent: oklch(87% 0 0);
 
+  --destructive-accent: oklch(63.7% 0.237 25.331);
   --destructive: oklch(70.4% 0.191 22.216);
-  --info: oklch(70.7% 0.165 254.624);
-  --success: oklch(72.3% 0.219 149.579);
-  --warning: oklch(79.5% 0.184 86.047);
+  --info: oklch(62.3% 0.214 259.815);
+  --success: oklch(62.7% 0.194 149.214);
+  --warning: oklch(68.1% 0.162 75.834);
 }
 
 @theme inline {
@@ -64,6 +64,7 @@
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-destructive: var(--destructive);
+  --color-destructive-accent: var(--destructive-accent);
 
   --color-border: var(--muted-foreground);
   --color-input: var(--muted);

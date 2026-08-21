@@ -3,13 +3,20 @@ import React from "react";
 import { type ClassNameValue, cn } from "@/lib";
 
 const buttonClass = {
-  base: "inline-flex items-center justify-center cursor-pointer gap-2 h-8 min-w-8 px-3 py-0 border border-transparent rounded-lg font-sans text-sm text-center data-pure-icon:aspect-square data-pure-icon:px-0 [&_svg:not([class*='size-'])]:size-4",
+  base: `cursor-pointer 
+  inline-flex items-center justify-center 
+  gap-2 h-8 min-w-8 px-3 py-0 
+  border border-transparent rounded-lg 
+  font-sans text-sm text-center 
+  data-pure-icon:aspect-square data-pure-icon:px-0 
+  [&_svg:not([class*='size-'])]:size-4 
+  disabled:cursor-not-allowed disabled:opacity-50 inert:cursor-not-allowed inert:opacity-50`,
   variant: {
-    primary: "bg-primary text-primary-foreground hover:bg-accent",
-    destructive:
-      "bg-destructive text-background hover:text-muted focus-visible:ring-destructive/20",
-    outline: "border-2 border-accent bg-transparent hover:bg-accent hover:text-primary-foreground",
-    text: "hover:text-foreground text-muted-foreground",
+    primary: "bg-primary text-primary-foreground hover:not-disabled:bg-accent",
+    destructive: "bg-destructive text-background hover:not-disabled:bg-destructive-accent",
+    outline:
+      "border-2 border-primary hover:not-disabled:bg-primary hover:not-disabled:text-primary-foreground",
+    text: "hover:not-disabled:text-accent",
   },
 };
 
@@ -52,7 +59,6 @@ function Button({
 }: ButtonProps) {
   const { loading: isLoading, icon: customLoadingIcon } = loadingConfig || {};
   const loadingIcon = customLoadingIcon || <Loader2 className="animate-spin" />;
-
   const isPureIcon = !isLoading && isIconOnly(children);
 
   return (

@@ -1,10 +1,10 @@
-[data-theme="slate"] {
+[data-surface="slate"] {
   --background: oklch(98.4% 0.003 247.858);
   --foreground: oklch(12.9% 0.042 264.695);
   --muted: oklch(70.4% 0.04 256.788);
 }
 
-.dark[data-theme="slate"] {
+.dark[data-surface="slate"] {
   --foreground: oklch(98.4% 0.003 247.858);
   --background: oklch(12.9% 0.042 264.695);
   --muted: oklch(44.6% 0.043 257.281);

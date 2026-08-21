@@ -1,9 +1,9 @@
-[data-theme="purple"] {
+[data-brand="purple"] {
   --primary: oklch(43.8% 0.218 303.724);
   --accent: oklch(29.1% 0.149 302.717);
 }
 
-.dark[data-theme="purple"] {
+.dark[data-brand="purple"] {
   --primary: oklch(71.4% 0.203 305.504);
   --accent: oklch(97.7% 0.014 308.299);
 }

@@ -1,9 +1,9 @@
-[data-theme="emerald"] {
+[data-brand="emerald"] {
   --primary: oklch(43.2% 0.095 166.913);
   --accent: oklch(26.2% 0.051 172.552);
 }
 
-.dark[data-theme="emerald"] {
+.dark[data-brand="emerald"] {
   --primary: oklch(69.6% 0.17 162.48);
   --accent: oklch(97.9% 0.021 166.113);
 }

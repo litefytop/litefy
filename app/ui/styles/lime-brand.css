@@ -1,9 +1,9 @@
-[data-theme="lime"] {
+[data-brand="lime"] {
   --primary: oklch(40.5% 0.101 131.063);
   --accent: oklch(27.4% 0.072 132.109);
 }
 
-.dark[data-theme="lime"] {
+.dark[data-brand="lime"] {
   --primary: oklch(76.8% 0.233 130.85);
   --accent: oklch(98.6% 0.031 120.757);
 }

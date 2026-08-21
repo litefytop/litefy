@@ -18,8 +18,7 @@ type CheckboxGroupContextValue = {
   name?: string;
   invalid?: boolean;
 };
-const CheckboxGroupContext =
-  React.createContext<CheckboxGroupContextValue | null>(null);
+const CheckboxGroupContext = React.createContext<CheckboxGroupContextValue | null>(null);
 
 export type CheckboxGroupProps = {
   disabled?: boolean;
@@ -44,8 +43,7 @@ function CheckboxGroup({
   ...props
 }: CheckboxGroupProps) {
   const groupRef = React.useRef<HTMLDivElement>(null);
-  const [uncontrolledValue, setUncontrolledValue] =
-    React.useState<string[]>(defaultValue);
+  const [uncontrolledValue, setUncontrolledValue] = React.useState<string[]>(defaultValue);
 
   const selectedArr = controlledValue ?? uncontrolledValue;
   const selectedSet = new Set(selectedArr);
@@ -78,9 +76,7 @@ function CheckboxGroup({
         className,
       )}
     >
-      <CheckboxGroupContext.Provider value={ctx}>
-        {children}
-      </CheckboxGroupContext.Provider>
+      <CheckboxGroupContext.Provider value={ctx}>{children}</CheckboxGroupContext.Provider>
     </div>
   );
 }
@@ -114,8 +110,7 @@ export const Checkbox = ({
   const ctx = React.useContext(CheckboxGroupContext);
   const fallbackId = React.useId();
   const _id = id ?? fallbackId;
-  const [uncontrolledChecked, setUncontrolledChecked] =
-    React.useState(defaultChecked);
+  const [uncontrolledChecked, setUncontrolledChecked] = React.useState(defaultChecked);
 
   let isChecked: boolean;
   if (ctx && value !== undefined) {
@@ -167,9 +162,7 @@ export const Checkbox = ({
         checked={isChecked}
         onChange={handleChange}
         data-hidden={Boolean(indicator) || variant === "toggle" || undefined}
-        className={cn(
-          "accent-primary data-invalid:accent-destructive data-hidden:sr-only peer",
-        )}
+        className={cn("accent-primary data-invalid:accent-destructive data-hidden:sr-only peer")}
       />
       {children}
     </label>

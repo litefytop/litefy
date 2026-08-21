@@ -1,0 +1,38 @@
+---
+title: Theme 主题
+description: 动态切换主题，支持多个主题配置
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add use-theme" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="hook" name="use-theme" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+## API 参考
+
+### useTheme 返回值
+
+| 属性          | 类型                            | 描述                                                  |
+| ------------- | ------------------------------- | ----------------------------------------------------- |
+| `brand`       | `string`                        | 当前激活的品牌色标识，对应 html `data-brand` 属性     |
+| `surface`     | `string`                        | 当前激活的画布色板标识，对应 html `data-surface` 属性 |
+| `theme`       | `"light" \| "dark" \| "system"` | 当前主题模式                                          |
+| `setBrand`    | `(brand: string) => void`       | 设置品牌色，写入本地存储并更新 DOM 属性               |
+| `setSurface`  | `(surface: string) => void`     | 设置画布色板，写入本地存储并更新 DOM 属性             |
+| `setTheme`    | `(mode: ThemeMode) => void`     | 设置主题模式：`light` / `dark` / `system`             |
+| `toggleTheme` | `() => void`                    | 切换明暗；`system` 模式下会基于系统实际颜色取反切换   |

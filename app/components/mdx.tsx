@@ -1,5 +1,4 @@
 import * as TabsComponents from "fumadocs-ui/components/tabs";
-import { TypeTable } from "fumadocs-ui/components/type-table";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import type { MDXComponents } from "mdx/types";
 import { Link } from "react-router";
@@ -7,14 +6,13 @@ import { ComponentPreview } from "./component-preview";
 import { PackageManagerTabs } from "./package-manager-tabs";
 import { Source } from "./source";
 
-
 export function getMDXComponents(components?: MDXComponents) {
   return {
     ...defaultMdxComponents,
     ...TabsComponents,
     ComponentPreview,
     PackageManagerTabs,
-    TypeTable,
+
     Source,
     Link,
 

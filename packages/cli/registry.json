@@ -139,10 +139,6 @@
     "type": "css",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/card.css"
   },
-  "style-custom-variant": {
-    "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/custom-variant.css"
-  },
   "style-cyan-brand": {
     "type": "css",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/cyan-brand.css"
