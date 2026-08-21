@@ -2,7 +2,7 @@
 
 import { Accordion } from "@/ui";
 
-export default function SingleUncontrolledDemo() {
+export default function Demo() {
   return (
     <Accordion
       className="w-md"

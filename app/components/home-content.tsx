@@ -34,7 +34,7 @@ export const content = {
 
 export type Locale = "en" | "zh";
 
-const LazyLandingDemo = lazy(() => import("../demos/showcase/landing-demo"));
+const LazyLandingDemo = lazy(() => import("../demos/showcase/landing"));
 
 export function HomeContent({ locale }: { locale: Locale }) {
   const t = content[locale] ?? content.en;

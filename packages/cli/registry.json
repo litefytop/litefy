@@ -11,10 +11,6 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/checkbox.tsx"
   },
-  "collapse": {
-    "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/collapse.tsx"
-  },
   "combobox": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/combobox.tsx"

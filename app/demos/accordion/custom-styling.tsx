@@ -4,7 +4,7 @@ import { Heart, Palette, Zap } from "lucide-react";
 import { Accordion } from "@/ui";
 import { useState } from "react";
 
-export default function CustomStylingDemo() {
+export default function Demo() {
   const [activeKeys, setActiveKeys] = useState<string[]>([]);
 
   const toggle = (value: string) => {

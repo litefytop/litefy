@@ -23,7 +23,7 @@ const items = [
   },
 ];
 
-export default function AccordionControlled() {
+export default function Demo() {
   const [value, setValue] = useState<string[]>(["item-1"]);
   const allKeys = ["item-1", "item-2", "item-3"];
 

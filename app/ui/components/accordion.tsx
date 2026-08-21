@@ -112,14 +112,17 @@ interface SingleAccordionProps extends AccordionRootProps {
 
 export type AccordionProps = MultipleAccordionProps | SingleAccordionProps;
 
-type AccordionItemConfig = Omit<AccordionItemProps, "children"> & {
+export interface AccordionItemConfig extends Omit<AccordionItemProps, "children"> {
   label: React.ReactNode | ((open: boolean) => React.ReactNode);
   icon?: React.ReactNode | ((open: boolean) => React.ReactNode);
   value: string;
   panel: React.ReactNode;
-  triggerProps?: HTMLAttrs<React.ComponentProps<"button">>;
-  panelProps?: HTMLAttrs<React.ComponentProps<"section">>;
-};
+  slots?: {
+    trigger?: HTMLAttrs<React.ComponentProps<"button">>;
+    panel?: HTMLAttrs<React.ComponentProps<"section">>;
+  };
+
+}
 
 export function Accordion({
   items,
@@ -170,7 +173,7 @@ export function Accordion({
   };
 
   return (
-    <AccordionRoot {...props}>
+    <AccordionRoot {...props} >
       {items.map((cfg) => {
         const panelId = `acc-panel-${cfg.value}`;
         const triggerId = `acc-trigger-${cfg.value}`;
@@ -186,14 +189,14 @@ export function Accordion({
             className={["not-last:border-b", cfg.className]}
           >
             <AccordionTrigger
-              {...cfg.triggerProps}
+              {...cfg.slots?.trigger}
               id={triggerId}
               aria-expanded={open}
               aria-controls={panelId}
               onClick={() => handleClick(cfg)}
               className={[
                 "aria-[expanded=false]:hover:bg-hover p-4 text-sm font-medium ",
-                cfg.triggerProps?.className,
+                cfg.slots?.trigger?.className,
               ]}
             >
               {labelNode}
@@ -209,8 +212,8 @@ export function Accordion({
               open={open}
               id={panelId}
               aria-labelledby={triggerId}
-              {...cfg.panelProps}
-              className={cn("p-4 pt-0 text-sm font-medium", cfg.panelProps?.className)}
+              {...cfg.slots?.panel}
+              className={cn("p-4 pt-0 text-sm font-medium", cfg.slots?.panel?.className)}
             >
               {cfg.panel}
             </AccordionContent>

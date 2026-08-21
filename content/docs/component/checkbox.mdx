@@ -28,58 +28,50 @@ description: A checkbox component with toggle variant support
 Basic checkbox with controlled and group modes.
 
 <ComponentPreview 
-  name="checkbox-basic"
+  name="checkbox-uncontrolled"
 />
 
-### Toggle Variant
+### Group Controlled
 
-Use toggle variant for switch-like behavior.
+Shows group controlled state for individual checkbox and checkbox group.
 
 <ComponentPreview 
-  name="checkbox-toggle"
+  name="checkbox-group-controlled"
 />
 
-### Controlled with Custom Indicator
+### Custom
 
-Demonstrates controlled checkbox with custom icon indicator, including both individual controlled state and controlled group state.
-
-<ComponentPreview 
-  name="checkbox-controlled"
-/>
-
-### Disabled
-
-Shows disabled state for individual checkbox and checkbox group.
+Shows custom checkbox with custom indicator indicator.
 
 <ComponentPreview 
-  name="checkbox-disabled"
+  name="checkbox-custom"
 />
 
 ## API Reference
 
 ### Checkbox
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | The checkbox content |
-| `checked` | `boolean` | - | Controlled checked state |
-| `onValueChange` | `(checked: boolean) => void` | - | Callback when checked state changes |
-| `value` | `string` | - | Value for group mode |
-| `variant` | `'checkbox' \| 'toggle'` | `'checkbox'` | Visual variant |
-| `indicator` | `(checked: boolean, wrapperClassName?: string) => React.ReactNode` | - | Custom indicator render function with wrapper className |
-| `disabled` | `boolean` | `false` | Disable the checkbox |
-| `name` | `string` | - | Input name |
-| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| Prop            | Type                                                               | Default      | Description                                                                                                        |
+| --------------- | ------------------------------------------------------------------ | ------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `children`      | `React.ReactNode`                                                  | -            | The checkbox content                                                                                               |
+| `checked`       | `boolean`                                                          | -            | Controlled checked state                                                                                           |
+| `onValueChange` | `(checked: boolean) => void`                                       | -            | Callback when checked state changes                                                                                |
+| `value`         | `string`                                                           | -            | Value for group mode                                                                                               |
+| `variant`       | `'checkbox' \| 'toggle'`                                           | `'checkbox'` | Visual variant                                                                                                     |
+| `indicator`     | `(checked: boolean, wrapperClassName?: string) => React.ReactNode` | -            | Custom indicator render function with wrapper className                                                            |
+| `disabled`      | `boolean`                                                          | `false`      | Disable the checkbox                                                                                               |
+| `name`          | `string`                                                           | -            | Input name                                                                                                         |
+| `className`     | `ClassNameValue`                                                   | -            | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 
 ### Checkbox.Group
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | Checkbox items |
-| `value` | `T[]` | - | Controlled value |
-| `defaultValue` | `T[]` | `[]` | Default value (uncontrolled) |
-| `onValueChange` | `(value: T[]) => void` | - | Callback when value changes |
-| `disabled` | `boolean` | `false` | Disable all children |
-| `invalid` | `boolean` | `false` | Mark as invalid |
-| `name` | `string` | - | Group name |
-| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| Prop            | Type                   | Default | Description                                                                                                        |
+| --------------- | ---------------------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
+| `children`      | `React.ReactNode`      | -       | Checkbox items                                                                                                     |
+| `value`         | `T[]`                  | -       | Controlled value                                                                                                   |
+| `defaultValue`  | `T[]`                  | `[]`    | Default value (uncontrolled)                                                                                       |
+| `onValueChange` | `(value: T[]) => void` | -       | Callback when value changes                                                                                        |
+| `disabled`      | `boolean`              | `false` | Disable all children                                                                                               |
+| `invalid`       | `boolean`              | `false` | Mark as invalid                                                                                                    |
+| `name`          | `string`               | -       | Group name                                                                                                         |
+| `className`     | `ClassNameValue`       | -       | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |

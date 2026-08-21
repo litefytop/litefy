@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/ui";
 
-export default function ButtonLoadingDemo() {
+export default function Demo() {
   const [loading, setLoading] = useState(false);
 
   const handleClick = () => {

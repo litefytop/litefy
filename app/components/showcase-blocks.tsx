@@ -4,11 +4,11 @@ import { HourglassIcon } from "lucide-react";
 import { lazy, Suspense } from "react";
 import { cn } from "@/lib";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui";
-import SignupDemo from "../demos/showcase/signup-demo";
+import SignupDemo from "../demos/showcase/signup";
 
 export type ShowcaseLocale = "en" | "zh";
 
-const LazySettingsDemo = lazy(() => import("../demos/showcase/settings-demo"));
+const LazySettingsDemo = lazy(() => import("../demos/showcase/settings"));
 
 const tabLabels = {
   signup: { en: "Sign-up Form", zh: "注册表单" },

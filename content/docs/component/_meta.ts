@@ -20,13 +20,7 @@ export default {
       zh: "复选框",
     },
   },
-  collapse: {
-    name: "Collapse",
-    displayName: {
-      en: "Collapse",
-      zh: "折叠面板",
-    },
-  },
+
   combobox: {
     name: "Combobox",
     displayName: {

@@ -3,7 +3,7 @@
 import { Heart, Settings, Star } from "lucide-react";
 import { Button } from "@/ui";
 
-export default function ButtonIconDemo() {
+export default function Demo() {
   return (
     <div className="flex flex-wrap gap-3">
       <Button>

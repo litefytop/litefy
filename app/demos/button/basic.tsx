@@ -2,7 +2,7 @@
 
 import { Button } from "@/ui";
 
-export default function ButtonBasicDemo() {
+export default function Demo() {
   return (
     <div className="flex flex-wrap gap-3">
       <Button variant="primary">Primary</Button>
