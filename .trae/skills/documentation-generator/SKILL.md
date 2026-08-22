@@ -13,7 +13,7 @@ Before writing, **read at least 2 existing component docs and demos** to underst
 
 Good references to check:
 - `content/docs/select.mdx` and `content/docs/select.zh.mdx`
-- `app/demos/accordion/*` (3 demos) and `app/demos/index.ts` registration
+- `app/demos/collapse/*` (3 demos) and `app/demos/index.ts` registration
 - `app/demos/button/*`, `app/demos/checkbox/*`, `app/demos/tabs/*`
 
 ## Workflow
@@ -77,7 +77,7 @@ Check that all of the following are correct:
 ## Key Patterns
 
 Refer to existing files in the codebase for the actual patterns:
-- Demo file structure: see `app/demos/accordion/*.tsx`
+- Demo file structure: see `app/demos/collapse/*.tsx`
 - Registration format: see `app/demos/index.ts`
 - MDX structure: see `content/docs/select.mdx`
 - Chinese translation: see `content/docs/select.zh.mdx`

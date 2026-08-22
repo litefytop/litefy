@@ -1,0 +1,142 @@
+---
+title: Collapse
+description: A collapsible component that supports single panel, multiple, and accordion mutually exclusive modes
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add collapse" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="collapse" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Single Collapse
+
+A controlled single panel built from `Collapse.Trigger` and `Collapse.Content`, which sync their open state automatically through Context.
+
+<ComponentPreview
+  name="collapse-single"
+/>
+
+### Group (Multiple)
+
+`Collapse.Group` supports multiple panels by default; several panels can be open at the same time.
+
+<ComponentPreview
+  name="collapse-multiple"
+/>
+
+### Accordion Mode
+
+Add the `accordion` prop to enable mutually exclusive mode, where only one panel can be open at a time.
+
+<ComponentPreview
+  name="collapse-accordion"
+/>
+
+## API Reference
+
+### Collapse
+
+A single collapsible panel. Renders a root container and connects `Collapse.Trigger` with `Collapse.Content` through Context.
+
+| Prop           | Type                          | Default | Description            |
+| -------------- | ----------------------------- | ------- | ---------------------- |
+| `open`         | `boolean`                     | -       | Controlled open state  |
+| `defaultOpen`  | `boolean`                     | `false` | Initial open state (uncontrolled) |
+| `onOpenChange` | `(open: boolean) => void`     | -       | Callback when open state changes |
+| `disabled`     | `boolean`                     | `false` | Disable the entire panel |
+| `className`    | `ClassNameValue`              | -       | Container custom styles |
+| `...props`     | `React.ComponentProps<"div">` | -       | All native div props supported |
+
+### Collapse.Group
+
+A group of collapsible panels. Multiple mode by default (several panels can be open); adding the `accordion` prop switches to mutually exclusive mode. The value type switches with the mode: `string` for accordion, `string[]` for multiple.
+
+| Prop              | Type                                                                   | Default | Description                                                                     |
+| ----------------- | ---------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------- |
+| `accordion`       | `boolean`                                                              | `false` | Enable mutually exclusive mode; at most one panel open at a time. Value type switches to `string`, multiple mode uses `string[]` |
+| `items`           | `CollapseItemConfig[]`                                                 | `[]`    | Array of collapsible panel config items                                        |
+| `defaultValue`    | `string` \| `string[]`                                                 | -       | Initial open value (uncontrolled). Accordion: `string`; multiple: `string[]`   |
+| `value`           | `string` \| `string[]`                                                 | -       | Current open value (controlled). Accordion: `string`; multiple: `string[]`     |
+| `onValueChange`   | `(value: string \| undefined) => void` \| `(values: string[]) => void` | -       | Callback when the open value changes                                            |
+| `disabled`        | `boolean`                                                              | `false` | Disable the entire group                                                        |
+| `className`       | `ClassNameValue`                                                       | -       | Container custom styles                                                         |
+| `itemClassName`   | `ClassNameValue`                                                       | -       | Uniformly applied to each Item's `className`; the item's own `className` takes precedence |
+| `itemTriggerIcon` | `ReactNode \| ((open: boolean) => ReactNode)`                          | -       | Uniformly applied icon to each Item; the item's own `icon` takes precedence    |
+| `...props`        | `React.ComponentProps<"div">`                                         | -       | All native div props supported                                                  |
+
+#### CollapseItemConfig
+
+| Field       | Type                                                      | Default       | Description                          |
+| ----------- | --------------------------------------------------------- | ------------- | ------------------------------------ |
+| `value`     | `string`                                                  | -             | Unique identifier for the item. **Required** |
+| `label`     | `React.ReactNode \| ((open: boolean) => React.ReactNode)` | -             | Content displayed on the header trigger; supports a function receiving the open state |
+| `content`   | `React.ReactNode`                                         | -             | Content displayed in the panel       |
+| `icon`      | `React.ReactNode \| ((open: boolean) => React.ReactNode)` | `ChevronDown` | Expand/collapse icon; supports a function receiving the open state |
+| `disabled`  | `boolean`                                                 | `false`       | Disable a single item                |
+| `className` | `ClassNameValue`                                          | -             | Custom styles for the outer wrapper of this item |
+| `slots`     | `CollapseSlotProps`                                       | -             | Pass-through props for internal elements |
+
+#### slots
+
+Only applies to the high-level `Collapse.Group` component; not effective in atomic component mode.
+
+| Slot      | Type                              | Description           |
+| --------- | --------------------------------- | --------------------- |
+| `trigger` | `React.ComponentProps<"button">`  | Props for the trigger button |
+| `content` | `React.ComponentProps<"section">` | Props for the content panel section |
+
+---
+
+### Headless Atomic Components
+
+> The following are low-level atomic components with **no built-in visual styles such as padding or font size. Styles need to be added via `className`**.
+
+#### CollapseRoot
+
+| Prop        | Type                          | Default | Description           |
+| ----------- | ----------------------------- | ------- | --------------------- |
+| `disabled`  | `boolean`                     | `false` | Disable all           |
+| `className` | `ClassNameValue`              | -       | Custom styles         |
+| `...props`  | `React.ComponentProps<"div">` | -       | All native div props supported |
+
+#### CollapseItem
+
+| Prop        | Type                          | Default | Description           |
+| ----------- | ----------------------------- | ------- | --------------------- |
+| `disabled`  | `boolean`                     | `false` | Disable this item     |
+| `className` | `ClassNameValue`              | -       | Custom styles         |
+| `...props`  | `React.ComponentProps<"div">` | -       | All native div props supported |
+
+#### CollapseTrigger
+
+> Inside `Collapse`, it automatically wires `aria-expanded`, `aria-controls`, and the open toggle; used standalone, control it yourself via `onClick`.
+
+| Prop        | Type                             | Default | Description              |
+| ----------- | -------------------------------- | ------- | ------------------------ |
+| `className` | `ClassNameValue`                 | -       | Custom styles            |
+| `...props`  | `React.ComponentProps<"button">` | -       | All native button props supported |
+
+#### CollapseContent
+
+> DOM: the outer `<section>` handles the collapse animation and passes through accessibility props; `className` applies to the inner visible content container. Inside `Collapse`, the open state is read automatically.
+
+| Prop        | Type                              | Default | Description                           |
+| ----------- | --------------------------------- | ------- | ------------------------------------- |
+| `open`      | `boolean`                         | `false` | Whether expanded                      |
+| `className` | `ClassNameValue`                  | -       | Custom styles                         |
+| `...props`  | `React.ComponentProps<"section">` | -       | Native section props, for accessibility, data-*, etc. |

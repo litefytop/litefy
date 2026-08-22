@@ -1,27 +1,26 @@
 import * as React from "react";
 import { type ClassNameValue, cn } from "@/lib";
 
-export interface CheckboxIndicatorProps extends Omit<React.ComponentProps<"input">, "type" | "checked" | "defaultChecked" | "className" | "children" | "value"> {
-  checked?: boolean;
-  defaultChecked?: boolean;
-  onCheckedChange?: (checked: boolean) => void;
-  children?: React.ReactNode | ((checked: boolean) => React.ReactNode);
+export interface CheckboxRootProps extends Omit<
+  React.ComponentProps<"input">,
+  "type" | "className" | "value"
+> {
   className?: ClassNameValue;
+  onCheckedChange?: (checked: boolean) => void;
   value?: string;
-} ;
+}
 
-export function CheckboxIndicator({
-  checked: controlledChecked,
-  defaultChecked = false,
-  onCheckedChange,
-  children,
+export function CheckboxRoot({
   className,
+  children,
+  checked: controlledChecked,
+  defaultChecked,
+  onCheckedChange,
   ...props
-}: CheckboxIndicatorProps) {
+}: CheckboxRootProps) {
   const [uncontrolledChecked, setUncontrolledChecked] = React.useState(defaultChecked);
   const isControlled = controlledChecked !== undefined;
   const checked = isControlled ? controlledChecked : uncontrolledChecked;
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const next = e.target.checked;
     if (!isControlled) {
@@ -29,46 +28,51 @@ export function CheckboxIndicator({
     }
     onCheckedChange?.(next);
   };
-
-  React.useEffect(() => {
-    if (isControlled) {
-      setUncontrolledChecked(controlledChecked);
-    }
-  }, [controlledChecked, isControlled]);
-
-  const content = typeof children === "function" ? children(checked) : children;
-
-  return (
-    <span className="focus-within:outline-2 focus-within:outline-ring flex">
-      {content}
+  return children ? (
+    <span role="checkbox" aria-checked={checked} className={cn(className)}>
       <input
         {...props}
         type="checkbox"
         checked={checked}
         onChange={handleChange}
-        data-sr-only={Boolean(children)||undefined}
-        className={cn("data-sr-only:sr-only", className)}
+        className={cn("sr-only")}
       />
+      {children}
     </span>
+  ) : (
+    <input
+      {...props}
+      type="checkbox"
+      checked={checked}
+      onChange={handleChange}
+      className={cn(className)}
+    />
   );
 }
 
-export interface CheckboxProps extends  Omit<CheckboxIndicatorProps, "children"> {
-  indicator?: React.ReactNode | ((checked: boolean) => React.ReactNode);
-  children?: React.ReactNode;
-  indicatorClassName?: ClassNameValue;
-} ;
+export interface CheckboxProps extends CheckboxRootProps {
+  indicator?: React.ReactNode;
+}
 
-export const Checkbox = ({
-  children,
-  indicator,
-  className,
-  indicatorClassName,
-  ...props
-}: CheckboxProps) => {
+export const Checkbox = ({ children, indicator, className, ...props }: CheckboxProps) => {
   return (
-    <label className={cn("flex items-center gap-2 select-none has-disabled:opacity-50 has-disabled:cursor-not-allowed", className)}>
-      <CheckboxIndicator {...props} children={indicator} className={cn("accent-primary",indicatorClassName)} />
+    <label
+      className={cn(
+        "flex items-center gap-4 select-none has-disabled:opacity-50 has-disabled:cursor-not-allowed font-medium",
+        className,
+      )}
+    >
+      <CheckboxRoot
+        {...props}
+        className={`flex items-center justify-center  
+          transition-colors duration-300 accent-primary aria-checked:bg-primary text-background bg-background 
+          has-focus-visible:ring-2 has-focus-visible:ring-ring 
+          [&_svg:not([class*='size-'])]:size-3 [&_svg]:stroke-4 
+          border border-border rounded-sm`}
+      >
+        {indicator}
+      </CheckboxRoot>
+
       {children}
     </label>
   );

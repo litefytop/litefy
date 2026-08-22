@@ -5,108 +5,186 @@ description: Install Litefy components into your React project.
 
 ## Prerequisites
 
-Litefy is not a scaffolding tool. It assumes you already have an existing React + Tailwind CSS project.
+Litefy does not provide a full project scaffold. Use it in an existing React project.
 
-Before you begin, make sure your project meets the following requirements:
+Your project needs to meet the following requirements:
 
-- **React 19+** (Litefy uses React 19 features such as `props.ref`. Older versions will throw errors.)
-- **Tailwind CSS 4** configured (Tailwind CSS 3 is untested and not guaranteed to work.)
+- **React 19+** (relies on new React 19 features; older versions are incompatible)
 - TypeScript enabled
-- `@/` path alias configured (e.g. `@/ui` pointing to `src/ui`)
+- Path alias `@/*` configured to point to the root of your source code
+
+> Component templates import the `cn` utility from `@/lib` internally, so the alias must work properly. When using the CLI default paths, you only need to map `@` to your source directory; no extra special configuration is required. See your build tool's documentation for how to configure the alias.
 
 ## Commands
 
-### `init`
+### init
 
-Initialize the Litefy configuration file.
+Initialize your project: generate the `litefy.json` config file, create the `ui/litefy` directory structure, pull in `cn.ts`, and install the required dependencies. Running `add` before initialization triggers the initialization flow automatically.
+
+> ⚠️ Do not manually modify the path fields in `litefy.json`. If you change the paths yourself, you must keep the project alias and import statements in sync; the CLI will not fix them automatically.
 
 <Tabs items={["npm", "yarn", "pnpm", "bun"]}>
   <Tab value="npm">
-    ```bash 
+    ```bash
     npx litefy@latest init
-     ```
+    ```
   </Tab>
   <Tab value="yarn">
-  ```bash 
-  yarn dlx litefy@latest init 
-  ```
+    ```bash
+    yarn dlx litefy@latest init
+    ```
   </Tab>
   <Tab value="pnpm">
-  ```bash 
-  pnpm dlx litefy@latest init 
-  ```
+    ```bash
+    pnpm dlx litefy@latest init
+    ```
   </Tab>
   <Tab value="bun">
-  ```bash 
-  bunx --bun litefy@latest init 
-  ```
+    ```bash
+    bunx --bun litefy@latest init
+    ```
   </Tab>
 </Tabs>
 
-> If you skip initialization, running add commands will initialize automatically.
+**Options**
 
-- `-y, --yes`: Skip interactive prompts and use default configuration
-- `--pm <npm|yarn|pnpm|bun>`: Explicitly set package manager, skip auto‑detection
+- `-y, --yes`: Skip interactive prompts and use all default configuration
 
----
+### add
 
-### `add`
-
-Download and add components to your local project.
+Download and install components and their corresponding hooks in batch, and automatically update the aggregate export file.
 
 <Tabs items={["npm", "yarn", "pnpm", "bun"]}>
   <Tab value="npm">
-    ```bash 
+    ```bash
     npx litefy@latest add <components...>
     ```
   </Tab>
   <Tab value="yarn">
-  ```bash 
-  yarn dlx litefy@latest add <components...>
-  ```
+    ```bash
+    yarn dlx litefy@latest add <components...>
+    ```
   </Tab>
   <Tab value="pnpm">
-  ```bash 
-  pnpm dlx litefy@latest add <components...>
-  ```
+    ```bash
+    pnpm dlx litefy@latest add <components...>
+    ```
   </Tab>
   <Tab value="bun">
-  ```bash 
-  bunx --bun litefy@latest add <components...>
-  ```
+    ```bash
+    bunx --bun litefy@latest add <components...>
+    ```
   </Tab>
 </Tabs>
 
-- `-o, --overwrite`: Force‑overwrite existing local component files
+**Options**
 
-### `rm`
+- `-o, --overwrite`: Force overwrite existing component files
 
-Remove installed components: delete local source files and update the installed list in config.
+### rm
+
+Remove installed components: delete the corresponding files and update the config manifest and aggregate exports.
 
 <Tabs items={["npm", "yarn", "pnpm", "bun"]}>
   <Tab value="npm">
-    ```bash 
-    npx litefy@latest rm <components...>
+    ```bash
+    npx litefy@latest rm <names...>
     ```
   </Tab>
   <Tab value="yarn">
-  ```bash 
-  yarn dlx litefy@latest rm <components...>
-  ```
+    ```bash
+    yarn dlx litefy@latest rm <names...>
+    ```
   </Tab>
   <Tab value="pnpm">
-  ```bash 
-  pnpm dlx litefy@latest rm <components...>
-  ```
+    ```bash
+    pnpm dlx litefy@latest rm <names...>
+    ```
   </Tab>
   <Tab value="bun">
-  ```bash 
-  bunx --bun litefy@latest rm <components...>
-  ```
+    ```bash
+    bunx --bun litefy@latest rm <names...>
+    ```
   </Tab>
 </Tabs>
 
-## Theme Variables
+### repair
 
-Litefy does not inject theme variables automatically.
-Head over to the <Link to="/docs/theming">Theming</Link> page, pick your desired color palette, and manually copy it into your global CSS file.
+Validate the integrity of local resources, fetch missing components and hooks online, and regenerate aggregate exports.
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest repair
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest repair
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest repair
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest repair
+    ```
+  </Tab>
+</Tabs>
+
+### clean
+
+Offline cleanup: prune component records in the config that no longer exist locally. No network required.
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest clean
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest clean
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest clean
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest clean
+    ```
+  </Tab>
+</Tabs>
+
+### uninstall
+
+Completely uninstall: delete all Litefy local files and `litefy.json`. Hand-written imports in your business code are not removed automatically; clean them up manually.
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest uninstall
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest uninstall
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest uninstall
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest uninstall
+    ```
+  </Tab>
+</Tabs>

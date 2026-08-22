@@ -1,20 +1,20 @@
 import type { ComponentType } from "react";
-import AccordionCustomStylingDemo from "./accordion/custom-styling";
-import accordionCustomStylingCode from "./accordion/custom-styling.tsx?raw";
-import AccordionMultipleControlledDemo from "./accordion/multiple-controlled";
-import accordionMultipleControlledCode from "./accordion/multiple-controlled.tsx?raw";
-import AccordionSingleUncontrolledDemo from "./accordion/single-uncontrolled";
-import accordionSingleUncontrolledCode from "./accordion/single-uncontrolled.tsx?raw";
+import CollapseAccordionDemo from "./collapse/accordion";
+import collapseAccordionCode from "./collapse/accordion.tsx?raw";
+import CollapseMultipleDemo from "./collapse/multiple";
+import collapseMultipleCode from "./collapse/multiple.tsx?raw";
+import CollapseSingleDemo from "./collapse/single";
+import collapseSingleCode from "./collapse/single.tsx?raw";
 import ButtonBasicDemo from "./button/basic";
 import buttonBasicCode from "./button/basic.tsx?raw";
 import ButtonIconDemo from "./button/icon";
 import buttonIconCode from "./button/icon.tsx?raw";
 import ButtonLoadingDemo from "./button/loading";
 import buttonLoadingCode from "./button/loading.tsx?raw";
-import CheckboxUncontrolledDemo from "./checkbox/uncontrolled";
-import checkboxUncontrolledCode from "./checkbox/uncontrolled.tsx?raw";
-import CheckboxGroupControlledDemo from "./checkbox/group-controlled";
-import checkboxGroupControlledCode from "./checkbox/group-controlled.tsx?raw";
+import CheckboxBasicDemo from "./checkbox/basic";
+import checkboxBasicCode from "./checkbox/basic.tsx?raw";
+import CheckboxGroupDemo from "./checkbox/group";
+import checkboxGroupCode from "./checkbox/group.tsx?raw";
 import CheckboxCustomDemo from "./checkbox/custom";
 import checkboxCustomCode from "./checkbox/custom.tsx?raw";
 import ComboboxAsyncDemo from "./combobox/async";
@@ -138,17 +138,17 @@ export interface DemoItem {
 }
 
 export const demos: Record<string, DemoItem> = {
-  "accordion-single-uncontrolled": {
-    component: AccordionSingleUncontrolledDemo,
-    code: accordionSingleUncontrolledCode,
+  "collapse-single": {
+    component: CollapseSingleDemo,
+    code: collapseSingleCode,
   },
-  "accordion-multiple-controlled": {
-    component: AccordionMultipleControlledDemo,
-    code: accordionMultipleControlledCode,
+  "collapse-multiple": {
+    component: CollapseMultipleDemo,
+    code: collapseMultipleCode,
   },
-  "accordion-custom-styling": {
-    component: AccordionCustomStylingDemo,
-    code: accordionCustomStylingCode,
+  "collapse-accordion": {
+    component: CollapseAccordionDemo,
+    code: collapseAccordionCode,
   },
   "button-basic": {
     component: ButtonBasicDemo,
@@ -163,13 +163,13 @@ export const demos: Record<string, DemoItem> = {
     code: buttonIconCode,
   },
 
-  "checkbox-uncontrolled": {
-    component: CheckboxUncontrolledDemo,
-    code: checkboxUncontrolledCode,
+  "checkbox-basic": {
+    component: CheckboxBasicDemo,
+    code: checkboxBasicCode,
   },
-  "checkbox-group-controlled": {
-    component: CheckboxGroupControlledDemo,
-    code: checkboxGroupControlledCode,
+  "checkbox-group": {
+    component: CheckboxGroupDemo,
+    code: checkboxGroupCode,
   },
   "checkbox-custom": {
     component: CheckboxCustomDemo,

@@ -1,16 +1,16 @@
 export default {
-  accordion: {
-    name: "Accordion",
-    displayName: {
-      en: "Accordion",
-      zh: "手风琴",
-    },
-  },
   button: {
     name: "Button",
     displayName: {
       en: "Button",
       zh: "按钮",
+    },
+  },
+  collapse: {
+    name: "Collapse",
+    displayName: {
+      en: "Collapse",
+      zh: "折叠面板",
     },
   },
   checkbox: {
