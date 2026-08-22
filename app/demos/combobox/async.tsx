@@ -1,6 +1,7 @@
 "use client";
 
-import { Combobox } from "@/ui";
+import { useState } from "react";
+import { Combobox, useRemotePagination } from "@/ui";
 
 const fetchAsyncOptions = async ({
   page,
@@ -29,14 +30,23 @@ const fetchAsyncOptions = async ({
   return { list: paged, total: totalItems };
 };
 
-export default function ComboboxAsyncDemo() {
+export default function Demo() {
+  const remote = useRemotePagination({
+    fetcher: fetchAsyncOptions,
+    debounceMs: 300,
+    pageSize: 20,
+  });
+
+  const [selected, setSelected] = useState("");
+
   return (
-    <div className="w-72">
+ 
       <Combobox
-        options={fetchAsyncOptions}
+        remote={remote}
+        value={selected}
+        onSelect={(v) => setSelected(v)}
         placeholder="Search items..."
-        pageSize={10}
       />
-    </div>
+    
   );
 }

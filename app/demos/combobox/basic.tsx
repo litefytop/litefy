@@ -15,10 +15,8 @@ const countries = [
   "Brazil",
 ];
 
-export default function ComboboxBasicDemo() {
+export default function Demo() {
   return (
-    <div className="w-72">
       <Combobox options={countries} placeholder="Select a country" />
-    </div>
   );
 }

@@ -505,7 +505,7 @@ type FormFieldsetProps<T extends FieldsetMode = "multi"> = {
     trigger?: "onChange" | "onBlur";
     debounceMs?: number;
   };
-} & Omit<React.ComponentPropsWithoutRef<"fieldset">, "className" | "children">;
+} & Omit<React.ComponentPropsWithRef<"fieldset">, "className" | "children">;
 
 function FormFieldset<T extends FieldsetMode = "multi">({
   type = "multi" as T,
