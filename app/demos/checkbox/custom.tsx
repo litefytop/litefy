@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { CheckboxRoot } from "@/ui";
+import { CheckboxIndicator } from "@/ui";
 import { Check, Minus } from "lucide-react";
 
 const checkboxClass =
-  "flex items-center justify-center size-3 border border-border bg-background aria-checked:bg-primary aria-checked:text-background transition-colors [&_svg]:size-3 [&_svg]:stroke-4";
+  "flex items-center justify-center  border border-border bg-background aria-checked:bg-primary text-background transition-colors [&_svg]:size-3 [&_svg]:stroke-4";
 
 export default function Demo() {
   const [values, setValues] = useState<string[]>([]);
@@ -24,22 +24,27 @@ export default function Demo() {
   return (
     <div className="flex flex-col gap-4">
       <label className="flex items-center gap-2">
-        <CheckboxRoot checked={allChecked} onCheckedChange={toggleAll} className={checkboxClass}>
-          {indeterminate ? <Minus /> : allChecked ? <Check /> : null}
-        </CheckboxRoot>
+        <CheckboxIndicator
+          checked={values.length > 0}
+          onCheckedChange={toggleAll}
+          className={checkboxClass}
+        >
+          {indeterminate ? <Minus /> : <Check />}
+        </CheckboxIndicator>
         <span>All</span>
       </label>
 
       <div className="flex flex-col gap-2 pl-4">
         {allValues.map((val) => (
           <label key={val} className="flex items-center gap-2">
-            <CheckboxRoot
+            <CheckboxIndicator
               checked={values.includes(val)}
               onCheckedChange={() => toggleItem(val)}
               className={checkboxClass}
             >
-              {values.includes(val) ? <Check /> : null}
-            </CheckboxRoot>
+              <Check />
+            </CheckboxIndicator>
+
             <span>{val}</span>
           </label>
         ))}

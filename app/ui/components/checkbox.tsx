@@ -1,7 +1,8 @@
 import * as React from "react";
 import { type ClassNameValue, cn } from "@/lib";
+import { Check } from "lucide-react";
 
-export interface CheckboxRootProps extends Omit<
+export interface CheckboxIndicatorProps extends Omit<
   React.ComponentProps<"input">,
   "type" | "className" | "value"
 > {
@@ -10,80 +11,88 @@ export interface CheckboxRootProps extends Omit<
   value?: string;
 }
 
-export function CheckboxRoot({
+export function CheckboxIndicator({
   className,
   children,
-  checked: controlledChecked,
+  checked,
   defaultChecked,
   onCheckedChange,
   ...props
-}: CheckboxRootProps) {
-  const [uncontrolledChecked, setUncontrolledChecked] = React.useState(defaultChecked);
-  const isControlled = controlledChecked !== undefined;
-  const checked = isControlled ? controlledChecked : uncontrolledChecked;
+}: CheckboxIndicatorProps) {
+  const [_checked, setChecked] = React.useState(defaultChecked);
+  const isControlled = checked !== undefined;
+  const checked$ = isControlled ? checked : _checked;
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const next = e.target.checked;
     if (!isControlled) {
-      setUncontrolledChecked(next);
+      setChecked(next);
     }
     onCheckedChange?.(next);
   };
-  return children ? (
-    <span role="checkbox" aria-checked={checked} className={cn(className)}>
+  return (
+    <span
+      role="checkbox"
+      aria-checked={checked$}
+      className={cn("inline-flex items-center justify-center min-w-3 min-h-3", className)}
+    >
       <input
         {...props}
         type="checkbox"
-        checked={checked}
+        checked={checked$}
         onChange={handleChange}
         className={cn("sr-only")}
       />
       {children}
     </span>
-  ) : (
-    <input
-      {...props}
-      type="checkbox"
-      checked={checked}
-      onChange={handleChange}
-      className={cn(className)}
-    />
   );
 }
 
-export interface CheckboxProps extends CheckboxRootProps {
+export interface CheckboxProps extends CheckboxIndicatorProps {
   indicator?: React.ReactNode;
+  slots?: {
+    label?: Omit<React.ComponentProps<"label">, "children">;
+    indicator?: Omit<CheckboxIndicatorProps, "children">;
+  };
 }
 
-export const Checkbox = ({ children, indicator, className, ...props }: CheckboxProps) => {
+export const Checkbox = ({
+  children,
+  indicator,
+  className,
+  slots,
+  checked,
+  ...props
+}: CheckboxProps) => {
   return (
     <label
+      {...slots?.label}
       className={cn(
         "flex items-center gap-4 select-none has-disabled:opacity-50 has-disabled:cursor-not-allowed font-medium",
-        className,
+        slots?.label?.className,
       )}
     >
-      <CheckboxRoot
+      <CheckboxIndicator
         {...props}
-        className={`flex items-center justify-center  
-          transition-colors duration-300 accent-primary aria-checked:bg-primary text-background bg-background 
+        checked={checked}
+        className={cn(
+          `transition-colors duration-300 aria-checked:bg-primary text-background bg-background 
           has-focus-visible:ring-2 has-focus-visible:ring-ring 
           [&_svg:not([class*='size-'])]:size-3 [&_svg]:stroke-4 
-          border border-border rounded-sm`}
+          border border-border rounded-sm`,
+          className,
+        )}
       >
-        {indicator}
-      </CheckboxRoot>
+        {indicator ?? <Check />}
+      </CheckboxIndicator>
 
       {children}
     </label>
   );
 };
 
-export interface CheckboxOptionConfig {
+export interface CheckboxOptionConfig extends Omit<CheckboxProps, "children"> {
   label: string;
   value: string;
-  disabled?: boolean;
-  className?: ClassNameValue;
-  indicator?: CheckboxProps["indicator"];
 }
 
 export interface CheckboxGroupProps {
@@ -100,7 +109,7 @@ export interface CheckboxGroupProps {
 
 export function CheckboxGroup({
   options,
-  value: controlledValue,
+  value,
   defaultValue = [],
   onChange,
   name,
@@ -109,18 +118,16 @@ export function CheckboxGroup({
   itemClassName,
   itemIndicator,
 }: CheckboxGroupProps) {
-  const [uncontrolledValue, setUncontrolledValue] = React.useState<string[]>(defaultValue);
-  const isControlled = controlledValue !== undefined;
-  const selectedValues = isControlled ? controlledValue : uncontrolledValue;
-  const selectedSet = React.useMemo(() => new Set(selectedValues), [selectedValues]);
+  const [_value, setValue] = React.useState<string[]>(defaultValue);
+  const isControlled = value !== undefined;
+  const value$ = isControlled ? value : _value;
+  const selectedSet = React.useMemo(() => new Set(value$), [value$]);
 
   const handleToggle = (val: string) => {
-    const next = selectedSet.has(val)
-      ? selectedValues.filter((v) => v !== val)
-      : [...selectedValues, val];
+    const next = selectedSet.has(val) ? value$.filter((v) => v !== val) : [...value$, val];
 
     if (!isControlled) {
-      setUncontrolledValue(next);
+      setValue(next);
     }
     onChange?.(next);
   };

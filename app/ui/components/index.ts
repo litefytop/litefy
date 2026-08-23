@@ -1,4 +1,4 @@
-export * from "./collapse";
+export * from "./collapse‑accordion";
 export * from "./button";
 export * from "./checkbox";
 export * from "./combobox";

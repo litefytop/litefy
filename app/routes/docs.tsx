@@ -102,9 +102,7 @@ function ComponentsList({
                     className="group p-6 rounded-lg border  hover:bg-hover transition-colors"
                   >
                     <div>
-                      <h3 className="font-semibold text-lg mb-1 transition-colors">
-                        {item.name}
-                      </h3>
+                      <h3 className="font-semibold text-lg mb-1 transition-colors">{item.name}</h3>
                       <p className="text-sm text-muted-foreground line-clamp-2">
                         {item.description || t.categoryDefaultDescription}
                       </p>

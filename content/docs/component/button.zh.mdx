@@ -3,7 +3,6 @@ title: Button 按钮
 description: 支持多种变体和加载状态的按钮组件
 ---
 
-
 ## 安装
 
 <Tabs items={['CLI', 'Manual']} >
@@ -54,15 +53,17 @@ description: 支持多种变体和加载状态的按钮组件
 
 按钮组件。
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `variant` | `'primary' \| 'destructive' \| 'outline' \| 'text'` | `'primary'` | 按钮视觉变体 |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类，支持字符串、数组、对象、布尔值等多种格式。 |
-| `loadingConfig` | `ButtonLoadingConfig` | - | 加载状态配置 |
+| Prop            | Type                                                | Default     | Description                                               |
+| --------------- | --------------------------------------------------- | ----------- | --------------------------------------------------------- |
+| `variant`       | `'primary' \| 'destructive' \| 'outline' \| 'text'` | `'primary'` | 按钮视觉变体                                              |
+| `className`     | `ClassNameValue`                                    | -           | 自定义 CSS 类，支持字符串、数组、对象、布尔值等多种格式。 |
+| `loadingConfig` | `ButtonLoadingConfig`                               | -           | 加载状态配置                                              |
 
 ### ButtonLoadingConfig
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `loading` | `boolean` | `false` | 按钮是否处于加载状态 |
-| `icon` | `React.ReactNode` | - | 自定义加载图标 |
+| Prop      | Type              | Default | Description          |
+| --------- | ----------------- | ------- | -------------------- |
+| `loading` | `boolean`         | `false` | 按钮是否处于加载状态 |
+| `icon`    | `React.ReactNode` | -       | 自定义加载图标       |
+
+> Button 的原子就是浏览器原生 `<button>`元素
