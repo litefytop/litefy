@@ -45,12 +45,12 @@ export function CollapseTrigger({ children, className, onClick, ...props }: Coll
   );
 }
 
-export interface CollapseContentProps extends Omit<React.ComponentProps<"section">, "className"> {
+export interface CollapsePanelProps extends Omit<React.ComponentProps<"section">, "className"> {
   className?: ClassNameValue;
   open?: boolean;
 }
 
-export function CollapseContent({ children, className, open, ...props }: CollapseContentProps) {
+export function CollapsePanel({ children, className, open, ...props }: CollapsePanelProps) {
   return (
     <section
       data-open={open}
@@ -66,15 +66,16 @@ export function CollapseContent({ children, className, open, ...props }: Collaps
   );
 }
 
-export interface CollapseProps extends CollapseTriggerProps {
-  label: React.ReactNode | ((open: boolean) => React.ReactNode);
+export interface CollapseProps extends CollapseRootProps {
+  label?: React.ReactNode | ((open: boolean) => React.ReactNode);
   icon?: React.ReactNode | ((open: boolean) => React.ReactNode);
-  open: boolean;
-  value: string;
-  panel: React.ReactNode;
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  itemKey?: string;
   slots?: {
-    root?: Omit<CollapseRootProps, "children">;
-    panel?: Omit<CollapseContentProps, "children">;
+    panel?: Omit<CollapsePanelProps, "children">;
+    trigger?: Omit<CollapseTriggerProps, "children">;
   };
 }
 
@@ -83,23 +84,39 @@ export function Collapse({
   label,
   icon,
   open,
+  defaultOpen = false,
   children,
   className,
+  itemKey,
+  onOpenChange,
   ...props
 }: CollapseProps) {
-  const panelId = `acc-panel-${props.value}`;
-  const triggerId = `acc-trigger-${props.value}`;
-
-  const labelNode = typeof label === "function" ? label(open) : label;
-  const iconNode = typeof icon === "function" ? icon(open) : icon;
+  const [_open, setOpen] = React.useState(defaultOpen);
+  const isControlled = open !== undefined;
+  const open$ = isControlled ? open : _open;
+  const handleToggle = () => {
+    const next = !open$;
+    if (!isControlled) {
+      setOpen(next);
+    }
+    onOpenChange?.(next);
+  };
+  const panelId = `acc-panel-${itemKey}`;
+  const triggerId = `acc-trigger-${itemKey}`;
+  const labelNode = typeof label === "function" ? label(open$) : label;
+  const iconNode = typeof icon === "function" ? icon(open$) : icon;
   return (
-    <CollapseRoot {...slots?.root} className={["not-last:border-b", slots?.root?.className]}>
+    <CollapseRoot {...props} className={className}>
       <CollapseTrigger
-        {...props}
+        {...slots?.trigger}
         id={triggerId}
         aria-expanded={open}
         aria-controls={panelId}
-        className={["aria-[expanded=false]:hover:bg-hover p-4 text-sm font-medium ", className]}
+        onClick={(e) => {
+          slots?.trigger?.onClick?.(e);
+          handleToggle();
+        }}
+        className={["aria-[expanded=false]:hover:bg-hover p-4 text-sm font-medium ", slots?.trigger?.className]}
       >
         {labelNode}
         {iconNode ?? (
@@ -110,111 +127,133 @@ export function Collapse({
           />
         )}
       </CollapseTrigger>
-      <CollapseContent
+      <CollapsePanel
+        {...slots?.panel}
         open={open}
         id={panelId}
         aria-labelledby={triggerId}
-        {...slots?.panel}
-        className={cn("p-4 pt-0 text-sm font-medium", slots?.panel?.className)}
+
+        className={cn(["p-4 pt-0 text-sm font-medium", slots?.panel?.className])}
       >
         {children}
-      </CollapseContent>
+      </CollapsePanel>
     </CollapseRoot>
   );
 }
 
-export interface AccordionRootProps extends Omit<
-  React.ComponentProps<"div">,
-  "className" | "defaultValue"
-> {
-  className?: ClassNameValue;
-  disabled?: boolean;
-}
 
-export function AccordionRoot({ className, disabled, inert, ...props }: AccordionRootProps) {
-  return (
-    <div
-      {...props}
-      inert={disabled || inert}
-      className={cn("flex flex-col inert:opacity-50 inert:cursor-not-allowed", className)}
-    />
-  );
-}
-
-interface CollapseItemConfig extends Omit<CollapseProps, "children"> {
+export interface CollapseItemConfig extends Omit<CollapseProps, "children"|"open"|"onOpenChange"|"itemKey"> {
   panel: React.ReactNode;
-}
-interface MultipleAccordionProps extends AccordionRootProps {
-  multiple: true;
-  defaultValue?: string[];
-  value?: string[];
-  onValueChange?: (values: string[]) => void;
-  items: CollapseItemConfig[];
+  itemKey: string;
 }
 
-interface SingleAccordionProps extends AccordionRootProps {
-  multiple?: false;
-  defaultValue?: string;
-  value?: string;
-  onValueChange?: (value: string | undefined) => void;
+export interface AccordionRootProps extends CollapseRootProps {
   items: CollapseItemConfig[];
+itemClassName?: {
+  root?: ClassNameValue;
+  trigger?: ClassNameValue;
+  panel?: ClassNameValue;
+}
+
+  itemIcon?: React.ReactNode | ((open: boolean) => React.ReactNode);
+}
+
+
+export interface MultipleAccordionProps extends AccordionRootProps {
+  multiple: true;
+  defaultActiveKeys?: string[];
+  activeKeys?: string[];
+  onKeyChange?: (values: string[]) => void;
+
+}
+
+export interface SingleAccordionProps extends AccordionRootProps {
+  multiple?: false;
+  defaultActiveKeys?: string;
+  activeKeys?: string;
+  onKeyChange?: (value: string | undefined) => void;
+
 }
 
 export type AccordionProps = MultipleAccordionProps | SingleAccordionProps;
 export function Accordion({
   items,
   multiple = false,
-  value,
-  defaultValue,
-  onValueChange,
+  activeKeys,
+  defaultActiveKeys,
+  onKeyChange,
+  itemClassName,
+  itemIcon,
   ...props
 }: AccordionProps) {
-  const [uncontrolledActiveKeys, setActiveKeys] = React.useState<string[]>(() => {
+  const [_activeKeys, setActiveKeys] = React.useState<string[]>(() => {
     if (multiple) {
-      const v = defaultValue as string[] | undefined;
+      const v = defaultActiveKeys as string[] | undefined;
       return v ?? [];
     } else {
-      const v = defaultValue as string | undefined;
+      const v = defaultActiveKeys as string | undefined;
       return v !== undefined ? [v] : [];
     }
   });
-  const isControlled = value !== undefined;
-  const activeKeys = isControlled
+  const isControlled = activeKeys !== undefined;
+  const activeKeys$ = isControlled
     ? multiple
-      ? value
-      : value
-        ? [value]
+      ? activeKeys
+      : activeKeys
+        ? [activeKeys]
         : []
-    : uncontrolledActiveKeys;
+    : _activeKeys;
 
-  const handleClick = (cfg: CollapseItemConfig) => {
-    setActiveKeys((prevKeys) => {
-      const open = prevKeys.includes(cfg.value);
-      let next: string[];
-
-      if (multiple) {
-        next = open ? prevKeys.filter((k) => k !== cfg.value) : [...prevKeys, cfg.value];
-      } else {
-        next = open ? [] : [cfg.value];
-      }
-
-      if (multiple) {
-        (onValueChange as MultipleAccordionProps["onValueChange"])?.(next);
-      } else {
-        const out = next.length > 0 ? next[0] : undefined;
-        (onValueChange as SingleAccordionProps["onValueChange"])?.(out);
-      }
-
-      return next;
-    });
-  };
 
   return (
-    <AccordionRoot {...props}>
+    <CollapseRoot
+      {...props}
+
+    >
       {items.map((cfg) => {
-        const open = activeKeys.includes(cfg.value);
-        return <Collapse {...cfg} key={cfg.value} open={open} onClick={() => handleClick(cfg)} />;
+        const open = activeKeys$.includes(cfg.itemKey);
+        const onOpenChange = (open: boolean) => {
+          setActiveKeys((prevKeys) => {
+
+            let next: string[];
+
+            if (multiple) {
+              next = open ? prevKeys.filter((k) => k !== cfg.itemKey) : [...prevKeys, cfg.itemKey];
+            } else {
+              next = open ? [] : [cfg.itemKey];
+            }
+
+            if (multiple) {
+              (onKeyChange as MultipleAccordionProps["onKeyChange"])?.(next);
+            } else {
+              const out = next.length > 0 ? next[0] : undefined;
+              (onKeyChange as SingleAccordionProps["onKeyChange"])?.(out);
+            }
+
+            return next;
+          });
+        };
+        return (
+          <Collapse
+            {...cfg}
+            key={cfg.itemKey}
+            className={["not-last:border-b", cfg.className , itemClassName?.root]}
+            slots={{
+              panel: {
+                ...cfg?.slots?.panel,
+                className: [cfg.slots?.panel?.className , itemClassName?.panel],
+              },
+              trigger: {
+                ...cfg?.slots?.trigger,
+                className: [cfg.slots?.trigger?.className , itemClassName?.trigger],
+              },
+            }}
+            icon={cfg.icon ?? itemIcon}
+            open={open}
+            onOpenChange={onOpenChange}
+          />
+        );
       })}
-    </AccordionRoot>
+    </CollapseRoot>
   );
 }

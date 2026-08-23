@@ -1,10 +1,10 @@
 import type { ComponentType } from "react";
 import CollapseAccordionDemo from "./collapse/accordion";
 import collapseAccordionCode from "./collapse/accordion.tsx?raw";
-import CollapseMultipleDemo from "./collapse/multiple";
-import collapseMultipleCode from "./collapse/multiple.tsx?raw";
-import CollapseSingleDemo from "./collapse/single";
-import collapseSingleCode from "./collapse/single.tsx?raw";
+import CollapseCollapseDemo from "./collapse/collapse";
+import collapseCollapseCode from "./collapse/collapse.tsx?raw";
+import CollapseCustomDemo from "./collapse/custom";
+import collapseCustomCode from "./collapse/custom.tsx?raw";
 import ButtonBasicDemo from "./button/basic";
 import buttonBasicCode from "./button/basic.tsx?raw";
 import ButtonIconDemo from "./button/icon";
@@ -138,13 +138,13 @@ export interface DemoItem {
 }
 
 export const demos: Record<string, DemoItem> = {
-  "collapse-single": {
-    component: CollapseSingleDemo,
-    code: collapseSingleCode,
+  "collapse-basic": {
+    component: CollapseCollapseDemo,
+    code: collapseCollapseCode,
   },
-  "collapse-multiple": {
-    component: CollapseMultipleDemo,
-    code: collapseMultipleCode,
+  "collapse-custom": {
+    component: CollapseCustomDemo,
+    code: collapseCustomCode,
   },
   "collapse-accordion": {
     component: CollapseAccordionDemo,

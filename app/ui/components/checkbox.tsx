@@ -142,7 +142,7 @@ export function CheckboxGroup({
           name={name}
           checked={selectedSet.has(option.value)}
           onCheckedChange={() => handleToggle(option.value)}
-          className={option.className ?? itemClassName}
+          className={[option.className , itemClassName]}
           indicator={option.indicator ?? itemIndicator}
         >
           {option.label}
