@@ -3,48 +3,6 @@
 import * as React from "react";
 import { type ClassNameValue, cn } from "@/lib";
 
-const getLockCount = (): number => {
-  if (typeof window === "undefined") return 0;
-  const value = document.documentElement.getAttribute("data-scroll-lock");
-  if (value === null) return 0;
-  const parsed = parseInt(value, 10);
-  return Number.isNaN(parsed) ? 0 : parsed;
-};
-
-const setLockCount = (count: number) => {
-  if (typeof window === "undefined") return;
-  document.documentElement.setAttribute("data-scroll-lock", String(count));
-};
-
-let originalHtmlOverflow = "";
-let originalHtmlScrollbarGutter = "";
-
-const lockScroll = () => {
-  if (typeof window === "undefined") return;
-  const count = getLockCount();
-  if (count === 0) {
-    const html = document.documentElement;
-    originalHtmlOverflow = html.style.overflow;
-    originalHtmlScrollbarGutter = html.style.scrollbarGutter;
-    html.style.scrollbarGutter = "stable";
-    html.style.overflow = "hidden";
-  }
-  setLockCount(count + 1);
-};
-
-const unlockScroll = () => {
-  if (typeof window === "undefined") return;
-  const count = getLockCount();
-  if (count === 1) {
-    const html = document.documentElement;
-    html.style.overflow = originalHtmlOverflow;
-    html.style.scrollbarGutter = originalHtmlScrollbarGutter;
-  }
-  if (count > 0) {
-    setLockCount(count - 1);
-  }
-};
-
 type HTMLAttrs<T> = T & {
   [key: `data-${string}`]: string | number | null | undefined | true;
   className?: ClassNameValue;
@@ -110,18 +68,12 @@ function Drawer({
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
     if (e.shiftKey) {
-      if (
-        document.activeElement === first ||
-        !dialog.contains(document.activeElement)
-      ) {
+      if (document.activeElement === first || !dialog.contains(document.activeElement)) {
         e.preventDefault();
         last.focus();
       }
     } else {
-      if (
-        document.activeElement === last ||
-        !dialog.contains(document.activeElement)
-      ) {
+      if (document.activeElement === last || !dialog.contains(document.activeElement)) {
         e.preventDefault();
         first.focus();
       }
@@ -141,11 +93,9 @@ function Drawer({
     const observer = new MutationObserver(() => {
       const nowOpen = dialog.hasAttribute("open");
       if (nowOpen && !isOpenRef.current) {
-        lockScroll();
         isOpenRef.current = true;
         setIsVisible(true);
       } else if (!nowOpen && isOpenRef.current) {
-        unlockScroll();
         isOpenRef.current = false;
         onClose?.();
       }
@@ -154,15 +104,11 @@ function Drawer({
     observer.observe(dialog, { attributes: true, attributeFilter: ["open"] });
 
     if (dialog.hasAttribute("open")) {
-      lockScroll();
       isOpenRef.current = true;
       setIsVisible(true);
     }
 
-    return () => {
-      observer.disconnect();
-      if (isOpenRef.current) unlockScroll();
-    };
+    return () => observer.disconnect();
   }, [onClose]);
 
   React.useEffect(() => {
@@ -174,15 +120,8 @@ function Drawer({
       }
     };
     dialog.addEventListener("transitionend", handleTransitionEnd);
-    return () =>
-      dialog.removeEventListener("transitionend", handleTransitionEnd);
+    return () => dialog.removeEventListener("transitionend", handleTransitionEnd);
   }, [isVisible]);
-
-  React.useEffect(() => {
-    return () => {
-      if (isOpenRef.current) unlockScroll();
-    };
-  }, []);
 
   const setRefs = (element: HTMLDialogElement | null) => {
     _ref.current = element;
@@ -193,9 +132,7 @@ function Drawer({
     }
   };
 
-  const transformValue = isVisible
-    ? "translate(0, 0)"
-    : getInitialTransform(placement);
+  const transformValue = isVisible ? "translate(0, 0)" : getInitialTransform(placement);
 
   return (
     <dialog
@@ -212,17 +149,13 @@ function Drawer({
       {...props}
     >
       <div
-        data-orientation={
-          placement === "left" || placement === "right"
-            ? "vertical"
-            : "horizontal"
-        }
+        data-orientation={placement === "left" || placement === "right" ? "vertical" : "horizontal"}
         {...slotProps?.content}
         className={cn(
           "fixed bg-background shadow-lg transition-transform duration-300 ease-out p-4 flex flex-col",
           placementStyles[placement],
           "data-[orientation=horizontal]:h-1/3 data-[orientation=horizontal]:w-full data-[orientation=horizontal]:items-center",
-          "data-[orientation=vertical]:w-1/4  data-[orientation=vertical]:h-full",
+          "data-[orientation=vertical]:w-1/4 data-[orientation=vertical]:h-full",
           slotProps?.content?.className,
         )}
         style={{ transform: transformValue }}

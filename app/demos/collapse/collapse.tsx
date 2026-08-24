@@ -2,17 +2,15 @@
 
 import { Collapse } from "@/ui";
 
-
-
 export default function Demo() {
-
   return (
     <div>
       <Collapse
-        label="Collapse 1"
+        label="Collapse and Accordion"
         className="w-md divide-y rounded-md border border-border"
       >
-
+        Use the Collapse component for a single collapsible panel, and the Accordion component for
+        multiple collapsible panels.
       </Collapse>
     </div>
   );

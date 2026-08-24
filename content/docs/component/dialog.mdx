@@ -37,15 +37,11 @@ A basic dialog component with focus management and keyboard navigation.
 
 A modal dialog component that uses the native HTML dialog element.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
-| `onClose` | `() => void` | - | Callback when dialog is closed |
-| `closeTrigger` | `boolean` | `true` | Whether to show the ESC close button |
-| `ref` | `React.Ref<HTMLDialogElement>` | - | Ref forwarded to the native dialog element |
+| Prop           | Type                           | Default | Description                                                                                                        |
+| -------------- | ------------------------------ | ------- | ------------------------------------------------------------------------------------------------------------------ |
+| `className`    | `ClassNameValue`               | -       | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| `onClose`      | `() => void`                   | -       | Callback when dialog is closed                                                                                     |
+| `closeTrigger` | `React.ReactNode`              | -       | Built-in close trigger element. Can be disabled by passing `null`                                                  |
+| `ref`          | `React.Ref<HTMLDialogElement>` | -       | Ref forwarded to the native dialog element                                                                         |
 
-### slotProps
-
-| Slot | Type | Description |
-|------|------|-------------|
-| `closeTrigger` | `HTMLAttrs<Omit<React.ComponentProps<'button'>, 'onClick' \| 'type' \| 'aria-label'>>` | Props for the close button |
+> Dialog atom is the native `<dialog>` element.
