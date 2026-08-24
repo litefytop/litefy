@@ -31,10 +31,9 @@ description: 支持自动补全的选项选择组件
   name="combobox-basic"
 />
 
-
 ### 异步搜索
 
-支持异步选项获取和自动切片/分页的组合框。
+支持异步选项获取和滚动分页加载的组合框，通过 `remote` 对象配置。
 
 <ComponentPreview 
   name="combobox-async"
@@ -44,26 +43,34 @@ description: 支持自动补全的选项选择组件
 
 ### Combobox
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string` | - | 受控值 |
-| `defaultValue` | `string` | - | 默认值（非受控） |
-| `onChange` | `(e: ComboboxChangeEvent) => void` | - | 值变化时的回调 |
-| `onBlur` | `React.FocusEventHandler<HTMLInputElement>` | - | 输入框失焦时的回调 |
-| `onSelect` | `(option: string) => void` | - | 选项被选中时的回调 |
-| `options` | `string[] \| `<br/> `({page: number; size: number; keyword: string}) => Promise<{list: string[]; total: number}>` | - | 静态选项或带分页的异步获取函数 |
-| `placeholder` | `string` | - | 输入框占位符 |
-| `disabled` | `boolean` | `false` | 禁用组合框 |
-| `invalid` | `boolean` | `false` | 标记为无效 |
-| `debounceMs` | `number` | `300` | 异步搜索的防抖延迟 |
-| `skeleton` | `React.ReactNode` | - | 自定义加载骨架 |
-| `pageSize` | `number` | `20` | 分页每页加载的数据条数 |
+| Prop            | Type                       | Default       | Description                              |
+| --------------- | -------------------------- | ------------- | ---------------------------------------- |
+| `value`         | `string`                   | -             | 受控选中值                               |
+| `defaultValue`  | `string`                   | `""`          | 非受控模式初始默认值                     |
+| `onValueChange` | `(value: string) => void`  | -             | 输入框内容变化回调                       |
+| `onSelect`      | `(option: string) => void` | -             | 下拉选项被选中时回调                     |
+| `options`       | `string[]`                 | -             | 静态选项数组                             |
+| `remote`        | `ComboboxRemoteApi`        | -             | 异步搜索配置对象，用于后端搜索、滚动分页 |
+| `placeholder`   | `string`                   | `"Search..."` | 输入框占位符                             |
+| `empty`         | `React.ReactNode`          | -             | 下拉无数据时自定义渲染内容               |
+| `slotProps`     | `object`                   | `{}`          | 内部子元素属性透传                       |
+
+#### ComboboxRemoteApi
+
+| Field         | Type                       | Description            |
+| ------------- | -------------------------- | ---------------------- |
+| `data`        | `string[]`                 | 当前返回的选项列表     |
+| `loading`     | `boolean`                  | 是否加载中             |
+| `isSearching` | `boolean`                  | 是否正在搜索           |
+| `hasMore`     | `boolean`                  | 是否还有更多分页数据   |
+| `search`      | `(keyword:string) => void` | 输入关键词触发搜索     |
+| `loadMore`    | `() => void`               | 滚动到底部触发加载更多 |
 
 ### slotProps
 
-| Slot | Type | Description |
-|------|------|-------------|
-| `container` | `HTMLAttrs<Omit<React.ComponentProps<"div">, "ref">>` | 容器 div 的属性 |
-| `input` | `HTMLAttrs<Omit<React.ComponentProps<"input">, "disabled" \| "placeholder" \| "ref" \| "value" \| "defaultValue">>` | 输入框的属性 |
-| `list` | `HTMLAttrs<Omit<React.ComponentProps<"ul">, "ref">>` | 下拉列表的属性 |
-| `option` | `HTMLAttrs<React.ComponentProps<"li">>` | 每个选项的属性 |
+| Slot      | Type                                                                       | Description        |
+| --------- | -------------------------------------------------------------------------- | ------------------ |
+| `root`    | `HTMLAttrs<Omit<React.ComponentProps<"div">, "ref">>`                      | 外层容器 div 属性  |
+| `popover` | `HTMLAttrs<Omit<React.ComponentProps<"div">, "ref" \| "popoverTarget">>`   | 下拉浮层容器属性   |
+| `list`    | `HTMLAttrs<Omit<React.ComponentProps<"ul">, "ref" \| "id" \| "onScroll">>` | 下拉列表 ul 属性   |
+| `option`  | `HTMLAttrs<React.ComponentProps<"li">>`                                    | 每一个选项 li 属性 |
