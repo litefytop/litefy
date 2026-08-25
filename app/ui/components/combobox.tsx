@@ -8,7 +8,10 @@ export function ComboboxRoot({ className, ...props }: ComboboxRootProps) {
   return <div className={cn("relative", className)} {...props} />;
 }
 
-export interface ComboboxInputProps extends Omit<React.ComponentProps<"input">, "className"|"value"|"defaultValue"|"onSelect"> {
+export interface ComboboxInputProps extends Omit<
+  React.ComponentProps<"input">,
+  "className" | "value" | "defaultValue" | "onSelect"
+> {
   className?: ClassNameValue;
   value?: string;
   defaultValue?: string;
@@ -36,24 +39,16 @@ export function ComboboxList({ className, onScrollBottom, ...props }: ComboboxLi
     props.onScroll?.(e);
   };
 
-  return (
-    <ul role="listbox" className={cn(className)} onScroll={handleScroll} {...props} />
-  );
+  return <ul role="listbox" className={cn(className)} onScroll={handleScroll} {...props} />;
 }
 
 export interface ComboboxOptionProps extends Omit<React.ComponentProps<"li">, "className"> {
   className?: ClassNameValue;
-  active?: boolean;
-  "data-value"?: string;
   id?: string;
 }
-export function ComboboxOption({ className, active, ...props }: ComboboxOptionProps) {
-  return (
-    <li role="option" data-active={active || undefined} className={cn(className)} {...props} />
-  );
+export function ComboboxOption({ className, ...props }: ComboboxOptionProps) {
+  return <li role="option" className={cn(className)} {...props} />;
 }
-
-
 
 export interface ComboboxRemoteApi {
   data: string[];
@@ -77,19 +72,22 @@ export interface ComboboxProps extends Omit<ComboboxInputProps, "onChange"> {
     list?: Omit<ComboboxListProps, "children">;
     option?: Omit<ComboboxOptionProps, "children">;
   };
-};
+}
 
 export function Combobox({
   value: controlledValue,
   defaultValue = "",
   onValueChange,
   onSelect,
+  onClick,
+  onKeyDown,
   options,
   remote,
-  placeholder = "Search...",
+  placeholder = "typing to search...",
   empty,
   className,
   slotProps = {},
+  ref,
   ...props
 }: ComboboxProps) {
   const id = React.useId();
@@ -97,7 +95,7 @@ export function Combobox({
 
   const rootRef = React.useRef<HTMLDivElement>(null);
   const popoverRef = React.useRef<HTMLDivElement>(null);
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const _ref = React.useRef<HTMLInputElement>(null);
   const listRef = React.useRef<HTMLUListElement>(null);
 
   const [_selectedValue, setSelectedValue] = React.useState(defaultValue);
@@ -110,6 +108,12 @@ export function Combobox({
       setSearchText(controlledValue);
     }
   }, [controlledValue]);
+
+  React.useEffect(() => {
+    if (remote) {
+      remote.search("");
+    }
+  }, []);
 
   const suggestions$ = React.useMemo(() => {
     if (remote) return remote.data;
@@ -199,7 +203,7 @@ export function Combobox({
     onSelect?.(opt);
     setSearchText(opt);
     closePopover();
-    inputRef.current?.focus();
+    _ref.current?.focus();
   };
 
   const handleScrollBottom = () => {
@@ -236,34 +240,50 @@ export function Combobox({
         closePopover();
         break;
     }
+    onKeyDown?.(e);
   };
-
+  const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    openPopover();
+    onClick?.(e);
+  };
+  const setRefs = (element: HTMLInputElement | null) => {
+    _ref.current = element;
+    if (typeof ref === "function") {
+      ref(element);
+    } else if (ref) {
+      ref.current = element;
+    }
+  };
   return (
     <>
       <ComboboxRoot ref={rootRef} {...slotProps.root}>
         <ComboboxInput
           {...props}
-                   ref={inputRef}
+          ref={setRefs}
           value={searchText}
           placeholder={placeholder}
-          onClick={openPopover}
+          onClick={handleClick}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
+          aria-activedescendant={highlightValue ? `option-${id}-${highlightValue}` : undefined}
+          aria-controls={listboxId}
           className={cn("h-9 w-full px-3 py-2 border rounded-md outline-none", className)}
-         
         />
       </ComboboxRoot>
 
       <ComboboxPopover
         ref={popoverRef}
-        className={cn("rounded-lg border bg-background shadow-lg overflow-hidden", slotProps.popover?.className)}
+        className={cn(
+          "rounded-lg border bg-background shadow-lg overflow-hidden -top-full",
+          slotProps.popover?.className,
+        )}
         {...slotProps.popover}
       >
         <ComboboxList
           ref={listRef}
           id={listboxId}
           onScrollBottom={handleScrollBottom}
-          className={cn("max-h-64 overflow-auto p-1", slotProps.list?.className)}
+          className={cn("max-h-64 overflow-auto p-1 overscroll-contain", slotProps.list?.className)}
           {...slotProps.list}
         >
           {suggestions$.length === 0
@@ -274,21 +294,25 @@ export function Combobox({
                   No data
                 </ComboboxOption>
               ))
-            : suggestions$.map((opt) => (
-                <ComboboxOption
-                  key={opt}
-                  data-value={opt}
-                  active={opt === highlightValue}
-                  onClick={() => handleSelectItem(opt)}
-                  className={cn(
-                    "px-3 py-2 text-sm cursor-pointer hover:bg-muted data-[active=true]:bg-muted rounded-sm",
-                    slotProps.option?.className,
-                  )}
-                  {...slotProps.option}
-                >
-                  {opt}
-                </ComboboxOption>
-              ))}
+            : suggestions$.map((opt) => {
+                const optionId = `option-${id}-${opt}`;
+                return (
+                  <ComboboxOption
+                    key={optionId}
+                    id={optionId}
+                    aria-selected={opt === highlightValue}
+                    data-value={opt}
+                    onClick={() => handleSelectItem(opt)}
+                    className={cn(
+                      "px-3 py-2 text-sm cursor-pointer hover:bg-muted aria-selected:bg-muted rounded-sm",
+                      slotProps.option?.className,
+                    )}
+                    {...slotProps.option}
+                  >
+                    {opt}
+                  </ComboboxOption>
+                );
+              })}
         </ComboboxList>
       </ComboboxPopover>
     </>

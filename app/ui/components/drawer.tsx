@@ -8,10 +8,11 @@ type HTMLAttrs<T> = T & {
   className?: ClassNameValue;
 };
 
-export type DrawerProps = React.ComponentProps<"dialog"> & {
+export type DrawerProps = Omit<React.ComponentProps<"dialog">, "open" | "onClose"> & {
   className?: ClassNameValue;
   placement?: "left" | "right" | "top" | "bottom";
-  onClose?: () => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
   slotProps?: {
     content?: HTMLAttrs<Omit<React.ComponentProps<"div">, "style">>;
   };
@@ -24,37 +25,84 @@ const placementStyles = {
   bottom: "left-0 right-0 bottom-0",
 };
 
-const getInitialTransform = (placement: DrawerProps["placement"]) => {
-  switch (placement) {
-    case "left":
-      return "translateX(-100%)";
-    case "right":
-      return "translateX(100%)";
-    case "top":
-      return "translateY(-100%)";
-    case "bottom":
-      return "translateY(100%)";
-    default:
-      return "";
-  }
+const transformMap = {
+  left: "translateX(-100%)",
+  right: "translateX(100%)",
+  top: "translateY(-100%)",
+  bottom: "translateY(100%)",
+};
+
+const sizeClassesMap = {
+  left: "w-1/4 h-full",
+  right: "w-1/4 h-full",
+  top: "h-1/3 w-full items-center",
+  bottom: "h-1/3 w-full items-center",
 };
 
 function Drawer({
-  ref,
   className,
   placement = "right",
+  open,
+  onOpenChange,
   children,
-  onClose,
   slotProps,
   ...props
 }: DrawerProps) {
-  const _ref = React.useRef<HTMLDialogElement>(null);
-  const isOpenRef = React.useRef(false);
-  const [isVisible, setIsVisible] = React.useState(false);
+  const dialogRef = React.useRef<HTMLDialogElement>(null);
+  const contentRef = React.useRef<HTMLDivElement>(null);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+  React.useEffect(() => {
+    const dialog = dialogRef.current;
+    const content = contentRef.current;
+    if (!dialog || !content) return;
+
+    if (open) {
+      dialog.showModal();
+      requestAnimationFrame(() => {
+        content.dataset.state = "open";
+      });
+    } else {
+      content.dataset.state = "closing";
+    }
+  }, [open]);
+
+  React.useEffect(() => {
+    const content = contentRef.current;
+    if (!content) return;
+
+    const onTransitionEnd = (e: TransitionEvent) => {
+      if (e.propertyName === "transform" && content.dataset.state === "closing") {
+        const dialog = dialogRef.current;
+        if (dialog?.open) {
+          dialog.close();
+          content.dataset.state = "closed";
+          onOpenChange(false);
+        }
+      }
+    };
+
+    content.addEventListener("transitionend", onTransitionEnd);
+    return () => content.removeEventListener("transitionend", onTransitionEnd);
+  }, [onOpenChange]);
+
+  const handleClose = React.useCallback(() => {
+    onOpenChange(false);
+  }, [onOpenChange]);
+
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
+    if (e.target === e.currentTarget) {
+      handleClose();
+    }
+  };
+
+  const handleCancel = (e: React.SyntheticEvent<HTMLDialogElement>) => {
+    e.preventDefault();
+    handleClose();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDialogElement>) => {
     if (e.key !== "Tab") return;
-    const dialog = _ref.current;
+    const dialog = dialogRef.current;
     if (!dialog) return;
     const focusable = Array.from(
       dialog.querySelectorAll<HTMLElement>(
@@ -80,85 +128,33 @@ function Drawer({
     }
   };
 
-  const closeWithAnimation = () => {
-    const dialog = _ref.current;
-    if (!dialog?.open) return;
-    setIsVisible(false);
-  };
-
-  React.useEffect(() => {
-    const dialog = _ref.current;
-    if (!dialog) return;
-
-    const observer = new MutationObserver(() => {
-      const nowOpen = dialog.hasAttribute("open");
-      if (nowOpen && !isOpenRef.current) {
-        isOpenRef.current = true;
-        setIsVisible(true);
-      } else if (!nowOpen && isOpenRef.current) {
-        isOpenRef.current = false;
-        onClose?.();
-      }
-    });
-
-    observer.observe(dialog, { attributes: true, attributeFilter: ["open"] });
-
-    if (dialog.hasAttribute("open")) {
-      isOpenRef.current = true;
-      setIsVisible(true);
-    }
-
-    return () => observer.disconnect();
-  }, [onClose]);
-
-  React.useEffect(() => {
-    const dialog = _ref.current;
-    if (!dialog) return;
-    const handleTransitionEnd = () => {
-      if (!isVisible && dialog.open) {
-        dialog.close();
-      }
-    };
-    dialog.addEventListener("transitionend", handleTransitionEnd);
-    return () => dialog.removeEventListener("transitionend", handleTransitionEnd);
-  }, [isVisible]);
-
   const setRefs = (element: HTMLDialogElement | null) => {
-    _ref.current = element;
-    if (typeof ref === "function") {
-      ref(element);
-    } else if (ref) {
-      ref.current = element;
-    }
+    dialogRef.current = element;
   };
 
-  const transformValue = isVisible ? "translate(0, 0)" : getInitialTransform(placement);
+  const transform = open ? "translate(0, 0)" : transformMap[placement];
+  const sizeClasses = sizeClassesMap[placement];
 
   return (
     <dialog
       ref={setRefs}
       onKeyDown={handleKeyDown}
-      onClick={(e) => {
-        if (e.target === e.currentTarget) closeWithAnimation();
-      }}
-      onCancel={(e) => {
-        e.preventDefault();
-        closeWithAnimation();
-      }}
+      onClick={handleBackdropClick}
+      onCancel={handleCancel}
       className={cn("bg-transparent backdrop:bg-muted/50", className)}
       {...props}
     >
       <div
-        data-orientation={placement === "left" || placement === "right" ? "vertical" : "horizontal"}
+        ref={contentRef}
+        data-state={open ? "open" : "closed"}
         {...slotProps?.content}
         className={cn(
           "fixed bg-background shadow-lg transition-transform duration-300 ease-out p-4 flex flex-col",
           placementStyles[placement],
-          "data-[orientation=horizontal]:h-1/3 data-[orientation=horizontal]:w-full data-[orientation=horizontal]:items-center",
-          "data-[orientation=vertical]:w-1/4 data-[orientation=vertical]:h-full",
+          sizeClasses,
           slotProps?.content?.className,
         )}
-        style={{ transform: transformValue }}
+        style={{ transform }}
       >
         {children}
       </div>

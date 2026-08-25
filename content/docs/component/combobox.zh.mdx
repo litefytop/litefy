@@ -43,17 +43,18 @@ description: 支持自动补全的选项选择组件
 
 ### Combobox
 
-| Prop            | Type                       | Default       | Description                              |
-| --------------- | -------------------------- | ------------- | ---------------------------------------- |
-| `value`         | `string`                   | -             | 受控选中值                               |
-| `defaultValue`  | `string`                   | `""`          | 非受控模式初始默认值                     |
-| `onValueChange` | `(value: string) => void`  | -             | 输入框内容变化回调                       |
-| `onSelect`      | `(option: string) => void` | -             | 下拉选项被选中时回调                     |
-| `options`       | `string[]`                 | -             | 静态选项数组                             |
-| `remote`        | `ComboboxRemoteApi`        | -             | 异步搜索配置对象，用于后端搜索、滚动分页 |
-| `placeholder`   | `string`                   | `"Search..."` | 输入框占位符                             |
-| `empty`         | `React.ReactNode`          | -             | 下拉无数据时自定义渲染内容               |
-| `slotProps`     | `object`                   | `{}`          | 内部子元素属性透传                       |
+| Prop            | Type                          | Default                 | Description                              |
+| --------------- | ----------------------------- | ----------------------- | ---------------------------------------- |
+| `value`         | `string`                      | -                       | 受控选中值                               |
+| `defaultValue`  | `string`                      | `""`                    | 非受控模式初始默认值                     |
+| `onValueChange` | `(value: string) => void`     | -                       | 输入框内容变化回调                       |
+| `onSelect`      | `(option: string) => void`    | -                       | 下拉选项被选中时回调                     |
+| `options`       | `string[]`                    | -                       | 静态选项数组                             |
+| `remote`        | `ComboboxRemoteApi`           | -                       | 异步搜索配置对象，用于后端搜索、滚动分页 |
+| `placeholder`   | `string`                      | `"typing to search..."` | 输入框占位符                             |
+| `empty`         | `React.ReactNode`             | -                       | 下拉无数据时自定义渲染内容               |
+| `ref`           | `React.Ref<HTMLInputElement>` | -                       | 转发到内部输入框的 ref                   |
+| `slotProps`     | `object`                      | `{}`                    | 内部子元素属性透传                       |
 
 #### ComboboxRemoteApi
 
