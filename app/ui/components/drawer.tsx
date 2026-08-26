@@ -3,26 +3,25 @@
 import * as React from "react";
 import { type ClassNameValue, cn } from "@/lib";
 
-// ============================================================
-// 原子组件
-// ============================================================
+export type DrawerWrapperProps = Omit<React.ComponentProps<"div">, "children" | "className"> & {
+  className?: ClassNameValue;
+};
 
-// ---------- DrawerRoot ----------
 export type DrawerRootProps = Omit<React.ComponentProps<"dialog">, "open" | "onClose"> & {
   className?: ClassNameValue;
   placement?: "left" | "right" | "top" | "bottom";
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  slotProps?: {
-    drawer?: Omit<React.ComponentProps<"div">, "children">;
+  slots?: {
+    wrapper?: DrawerWrapperProps;
   };
 };
 
 const placementStyles = {
-  left: "left-0 top-0 bottom-0",
-  right: "right-0 top-0 bottom-0",
-  top: "left-0 right-0 top-0",
-  bottom: "left-0 right-0 bottom-0",
+  left: "left-0 top-0 bottom-0 flex-row-reverse",
+  right: "right-0 top-0 bottom-0 flex-row",
+  top: "left-0 right-0 top-0 flex-col-reverse",
+  bottom: "left-0 right-0 bottom-0 flex-col",
 };
 
 const transformMap = {
@@ -38,46 +37,48 @@ export function DrawerRoot({
   open,
   onOpenChange,
   children,
-  slotProps,
+  slots = { wrapper: { ref: null } },
   onClick,
   onCancel,
   onKeyDown,
+  ref,
   ...props
 }: DrawerRootProps) {
-  const dialogRef = React.useRef<HTMLDialogElement>(null);
-  const drawerRef = React.useRef<HTMLDivElement>(null);
-
-  const isHorizontal = placement === "left" || placement === "right";
-
+  const _ref = React.useRef<HTMLDialogElement>(null);
+  const _wrapperRef = React.useRef<HTMLDivElement>(null);
+  const openRef = React.useRef(open);
   React.useEffect(() => {
-    const dialog = dialogRef.current;
-    const drawer = drawerRef.current;
-    if (!dialog || !drawer) return;
+    const dialog = _ref.current;
+    const wrapper = _wrapperRef.current;
+    openRef.current = open;
+    if (!dialog || !wrapper) return;
     if (open) {
-      dialog.showModal();
+      if (!dialog.open) {
+        dialog.showModal();
+      }
       requestAnimationFrame(() => {
-        drawer.style.transform = "translate(0, 0)";
+        wrapper.style.transform = "translate(0, 0)";
       });
     } else {
-      drawer.style.transform = transformMap[placement];
+      wrapper.style.transform = transformMap[placement];
     }
   }, [open, placement]);
 
   React.useEffect(() => {
-    const drawer = drawerRef.current;
-    if (!drawer) return;
+    const wrapper = _wrapperRef.current;
+    const dialog = _ref.current;
+
+    if (!wrapper || !dialog) return;
     const onTransitionEnd = (e: TransitionEvent) => {
-      if (e.propertyName === "transform" && !open) {
-        const dialog = dialogRef.current;
+      if (e.propertyName === "transform" && !openRef.current) {
         if (dialog?.open) {
           dialog.close();
-          onOpenChange(false);
         }
       }
     };
-    drawer.addEventListener("transitionend", onTransitionEnd);
-    return () => drawer.removeEventListener("transitionend", onTransitionEnd);
-  }, [open, onOpenChange]);
+    wrapper.addEventListener("transitionend", onTransitionEnd);
+    return () => wrapper.removeEventListener("transitionend", onTransitionEnd);
+  }, []);
 
   const handleClose = React.useCallback(() => {
     onOpenChange(false);
@@ -98,7 +99,7 @@ export function DrawerRoot({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDialogElement>) => {
     if (e.key === "Tab") {
-      const dialog = dialogRef.current;
+      const dialog = _ref.current;
       if (!dialog) return;
       const focusable = Array.from(
         dialog.querySelectorAll<HTMLElement>(
@@ -126,13 +127,16 @@ export function DrawerRoot({
     onKeyDown?.(e);
   };
 
-  const setRefs = (element: HTMLDialogElement | null) => {
-    dialogRef.current = element;
-  };
-
   return (
     <dialog
-      ref={setRefs}
+      ref={(element: HTMLDialogElement | null) => {
+        _ref.current = element;
+        if (typeof ref === "function") {
+          ref(element);
+        } else if (ref) {
+          ref.current = element;
+        }
+      }}
       onKeyDown={handleKeyDown}
       onClick={handleBackdropClick}
       onCancel={handleCancel}
@@ -140,15 +144,20 @@ export function DrawerRoot({
       {...props}
     >
       <div
-        ref={drawerRef}
+        {...slots?.wrapper}
+        ref={(element: HTMLDivElement | null) => {
+          _wrapperRef.current = element;
+          if (typeof slots?.wrapper?.ref === "function") {
+            slots?.wrapper?.ref(element);
+          } else if (slots?.wrapper?.ref) {
+            slots.wrapper.ref.current = element;
+          }
+        }}
         className={cn(
-          "fixed shadow-lg transition-transform duration-300 ease-out flex bg-background",
-          isHorizontal ? "flex-row w-1/4 h-full" : "flex-col h-1/3 w-full",
+          "fixed transition-transform duration-300 ease-out flex",
           placementStyles[placement],
-          slotProps?.drawer?.className,
+          slots?.wrapper?.className,
         )}
-        style={{ transform: open ? "translate(0, 0)" : transformMap[placement] }}
-        {...slotProps?.drawer}
       >
         {children}
       </div>
@@ -156,91 +165,40 @@ export function DrawerRoot({
   );
 }
 
-// ---------- DrawerDrag ----------
-export type DrawerDragProps = React.ComponentProps<"div"> & {
+export type DrawerDragProps = Omit<React.ComponentProps<"div">, "className"> & {
   className?: ClassNameValue;
   isHorizontal?: boolean;
-  isReverse?: boolean;
 };
 
-export function DrawerDrag({
-  className,
-  isHorizontal = false,
-  isReverse = false,
-  ...props
-}: DrawerDragProps) {
+export function DrawerDrag({ className, isHorizontal, ...props }: DrawerDragProps) {
   return (
-    <div
-      className={cn(
-        "shrink-0 flex items-center justify-center",
-        isHorizontal ? "w-4 h-full" : "h-4 w-full",
-        isReverse ? "order-1" : "order-0",
-        className,
-      )}
-      {...props}
-    >
+    <div className={cn("shrink-0 flex items-center justify-center", className)} {...props}>
       <div
-        className={cn(
-          "rounded-full bg-muted-foreground",
-          isHorizontal ? "w-1 h-12" : "w-12 h-1",
-        )}
+        className={cn("rounded-full bg-muted-foreground", isHorizontal ? "w-1 h-12" : "w-12 h-1")}
       />
     </div>
   );
 }
 
-// ---------- DrawerContent ----------
-export type DrawerContentProps = React.ComponentProps<"div"> & {
+export type DrawerContentProps = Omit<React.ComponentProps<"div">, "className"> & {
   className?: ClassNameValue;
-  placement?: "left" | "right" | "top" | "bottom";
 };
 
-const borderClassMap = {
-  left: "border-l-0",
-  right: "border-r-0",
-  top: "border-t-0",
-  bottom: "border-b-0",
-};
-
-export function DrawerContent({
-  className,
-  placement = "right",
-  children,
-  ...props
-}: DrawerContentProps) {
-  const isHorizontal = placement === "left" || placement === "right";
-  const isReverse = placement === "left" || placement === "top";
-
+export function DrawerContent({ className, children, ...props }: DrawerContentProps) {
   return (
-    <div
-      className={cn(
-        "flex flex-col flex-1 overflow-auto bg-muted p-4",
-        "border border-border",
-        borderClassMap[placement],
-        isReverse ? "order-0" : "order-1",
-        !isHorizontal && "items-center",
-        className,
-      )}
-      {...props}
-    >
+    <div className={cn("flex flex-col flex-1 overflow-auto", className)} {...props}>
       {children}
     </div>
   );
 }
 
-// ============================================================
-// 成品组件
-// ============================================================
-
-export type DrawerProps = Omit<React.ComponentProps<"dialog">, "open" | "onClose"> & {
-  className?: ClassNameValue;
-  placement?: "left" | "right" | "top" | "bottom";
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  slotProps?: {
-    drawer?: Omit<React.ComponentProps<"div">, "children">;
+export interface DrawerProps extends Omit<DrawerRootProps, "slots"> {
+  slots?: {
+    wrapper?: DrawerWrapperProps;
+    drag?: Omit<DrawerDragProps, "children">;
+    content?: Omit<DrawerContentProps, "children">;
   };
-};
+}
 
 export function Drawer({
   className,
@@ -248,11 +206,10 @@ export function Drawer({
   open,
   onOpenChange,
   children,
-  slotProps,
+  slots,
   ...props
 }: DrawerProps) {
   const isHorizontal = placement === "left" || placement === "right";
-  const isReverse = placement === "left" || placement === "top";
 
   return (
     <DrawerRoot
@@ -260,11 +217,26 @@ export function Drawer({
       placement={placement}
       open={open}
       onOpenChange={onOpenChange}
-      slotProps={slotProps}
+      slots={{
+        wrapper: {
+          ...slots?.wrapper,
+          className: cn(
+            isHorizontal ? "w-1/4 h-full" : "h-1/3 w-full",
+            "shadow-lg bg-background",
+            slots?.wrapper?.className,
+          ),
+        },
+      }}
       {...props}
     >
-      <DrawerDrag isHorizontal={isHorizontal} isReverse={isReverse} />
-      <DrawerContent placement={placement}>
+      <DrawerDrag
+        isHorizontal={isHorizontal}
+        className={cn(
+          isHorizontal ? "w-4 h-full border-x" : "h-4 w-full border-y",
+          "border-border",
+        )}
+      />
+      <DrawerContent className={cn("bg-muted p-4", !isHorizontal && "items-center")}>
         {children}
       </DrawerContent>
     </DrawerRoot>

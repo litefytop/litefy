@@ -15,7 +15,7 @@ const buttonClass = {
     primary: "bg-primary text-primary-foreground hover:not-disabled:bg-accent",
     destructive: "bg-destructive text-background hover:not-disabled:bg-destructive-accent",
     outline:
-      "border-2 border-primary hover:not-disabled:bg-primary hover:not-disabled:text-primary-foreground",
+      "border border-primary hover:not-disabled:bg-primary hover:not-disabled:text-primary-foreground",
     text: "hover:not-disabled:text-accent",
   },
 };

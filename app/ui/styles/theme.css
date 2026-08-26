@@ -14,7 +14,7 @@
 
   --background: oklch(98.5% 0 0);
   --foreground: oklch(14.5% 0 0);
-  --muted: oklch(92.2% 0 none);
+  --muted: oklch(97% 0 none);
   --muted-foreground: oklch(26.9% 0 none);
   --hover: oklch(87% 0 none);
 
@@ -35,7 +35,7 @@
   --background: oklch(14.5% 0 0);
   --foreground: oklch(98.5% 0 0);
   --muted: oklch(26.9% 0 none);
-  --muted-foreground: oklch(92.2% 0 none);
+  --muted-foreground: oklch(97% 0 none);
   --hover: oklch(37.1% 0 none);
 
   --primary: oklch(98.5% 0 0);
@@ -65,7 +65,7 @@
   --color-warning: var(--warning);
   --color-destructive: var(--destructive);
   --color-destructive-accent: var(--destructive-accent);
-
+ 
   --color-border: var(--muted-foreground);
   --color-input: var(--muted);
   --color-ring: var(--ring);

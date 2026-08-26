@@ -274,7 +274,7 @@ export function Combobox({
       <ComboboxPopover
         ref={popoverRef}
         className={cn(
-          "rounded-lg border bg-background shadow-lg overflow-hidden -top-full",
+          "border bg-background shadow-lg overflow-hidden -top-full rounded-md",
           slotProps.popover?.className,
         )}
         {...slotProps.popover}
@@ -283,7 +283,10 @@ export function Combobox({
           ref={listRef}
           id={listboxId}
           onScrollBottom={handleScrollBottom}
-          className={cn("max-h-64 overflow-auto p-1 overscroll-contain", slotProps.list?.className)}
+          className={cn(
+            "max-h-64 overflow-auto p-1 overscroll-contain border border-border rounded-md",
+            slotProps.list?.className,
+          )}
           {...slotProps.list}
         >
           {suggestions$.length === 0
@@ -304,7 +307,7 @@ export function Combobox({
                     data-value={opt}
                     onClick={() => handleSelectItem(opt)}
                     className={cn(
-                      "px-3 py-2 text-sm cursor-pointer hover:bg-muted aria-selected:bg-muted rounded-sm",
+                      "px-3 py-2 text-sm cursor-pointer hover:bg-hover  rounded-sm",
                       slotProps.option?.className,
                     )}
                     {...slotProps.option}
