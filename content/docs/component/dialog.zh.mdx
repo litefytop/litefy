@@ -25,23 +25,61 @@ description: 使用原生 HTML dialog 元素构建的模态对话框组件
 
 ### 基础用法
 
-带有焦点管理和键盘导航的基础对话框组件。
+受控模式的基础对话框组件，内置 Tab 焦点圈定与 Esc 关闭。
 
 <ComponentPreview 
   name="dialog-basic"
 />
 
+### 命令对话框
+
+通过 `dialog.success` / `dialog.error` / `dialog.warning` / `dialog.info` 命令式方法触发的对话框，动态创建并在关闭后自动销毁。
+
+<ComponentPreview 
+  name="dialog-command"
+/>
+
 ## API 参考
 
-### Dialog
+### 高阶组件
 
-使用原生 HTML dialog 元素的模态对话框组件。
+开箱即用的成品组件。
 
-| Prop           | Type                           | Default | Description                                                 |
-| -------------- | ------------------------------ | ------- | ----------------------------------------------------------- |
-| `className`    | `ClassNameValue`               | -       | 自定义 CSS 类名，支持字符串、数组、对象、布尔值等多种格式。 |
-| `onClose`      | `() => void`                   | -       | 对话框关闭时的回调函数                                      |
-| `closeTrigger` | `React.ReactNode`              | -       | 内置关闭按钮元素，可以用 `null` 来禁用默认关闭按钮。        |
-| `ref`          | `React.Ref<HTMLDialogElement>` | -       | 转发到原生 dialog 元素的 ref                                |
+#### Dialog
 
-> Dialog 的原子就是浏览器原生 `<dialog>`元素
+基于原生 HTML `dialog` 元素的模态对话框组件，内置焦点圈定、Esc 关闭处理和过渡动画。
+
+| Prop           | Type                                               | Default       | Description                                                                   |
+| -------------- | -------------------------------------------------- | ------------- | ----------------------------------------------------------------------------- |
+| `open`         | `boolean`                                          | -（必填）     | 受控打开状态，内部通过原生 `showModal()` / `close()` 同步                     |
+| `onOpenChange` | `(open: boolean) => void`                          | -             | 打开状态变化回调，Esc、关闭按钮点击、原生 `cancel` / `close` 时触发           |
+| `closeTrigger` | `React.ReactNode`                                  | 内置 ESC 按钮 | 自定义关闭按钮元素，传入 `null` 可禁用默认关闭按钮                            |
+| `className`    | `ClassNameValue`                                   | -             | 自定义 CSS 类名，作用于原生 dialog 元素                                       |
+| `ref`          | `React.Ref<HTMLDialogElement>`                     | -             | 转发到原生 dialog 元素                                                        |
+| `children`     | `React.ReactNode`                                  | -             | 对话框内容                                                                    |
+| `onClick`      | `(e: React.MouseEvent<HTMLDialogElement>) => void` | -             | 点击 Backdrop 时触发的事件回调，可自行实现点击遮罩关闭                        |
+| `...props`     | `React.ComponentProps<"dialog">`                   | -             | 支持全部 dialog 原生属性（`onKeyDown`、`onCancel`、`onClose` 由组件内部接管） |
+
+#### dialog
+
+命令式触发方法，动态创建对话框并在关闭后自动销毁。
+
+| Method    | Type                                   | Description    |
+| --------- | -------------------------------------- | -------------- |
+| `success` | `(opts: DialogCommandOptions) => void` | 打开命令对话框 |
+| `error`   | `(opts: DialogCommandOptions) => void` | 打开命令对话框 |
+| `warning` | `(opts: DialogCommandOptions) => void` | 打开命令对话框 |
+| `info`    | `(opts: DialogCommandOptions) => void` | 打开命令对话框 |
+
+> 四个方法为语义化快捷方式，行为一致。
+> 浏览器限制：模态 dialog（`showModal()`）同一时间只能打开一个，重复打开会被浏览器拦截，而非排队等待。
+
+#### DialogCommandOptions
+
+| Field      | Type              | Description          |
+| ---------- | ----------------- | -------------------- |
+| `title`    | `React.ReactNode` | 对话框标题           |
+| `children` | `React.ReactNode` | 对话框内容           |
+| `props`    | `DialogProps`     | 透传给 Dialog 的属性 |
+
+> `Dialog` 没有独立的 Headless 原子组件，其原子就是浏览器原生 `<dialog>` 元素，交互行为遵循原生规范：

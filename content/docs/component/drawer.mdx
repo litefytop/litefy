@@ -25,15 +25,15 @@ description: A slide-in panel component with multiple placement options
 
 ### Basic Usage
 
-A basic drawer component that slides in from the right by default.
+A basic drawer that slides in from the right by default.
 
 <ComponentPreview 
   name="drawer-basic"
 />
 
-### Expandable Drawer
+### Resizable Drawer
 
-A bottom drawer with expandable height controlled by an internal toggle button.
+Drag the handle to resize the drawer; it closes automatically when shrunk below a threshold. Dragging is an advanced composition capability provided by the external `useDrag` hook.
 
 <ComponentPreview 
   name="drawer-expandable"
@@ -41,19 +41,72 @@ A bottom drawer with expandable height controlled by an internal toggle button.
 
 ## API Reference
 
-### Drawer
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Drawer
 
 A slide-in panel component with focus management and keyboard navigation.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
-| `placement` | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` | Position of the drawer |
-| `onClose` | `() => void` | - | Callback when drawer is closed |
-| `ref` | `React.Ref<HTMLDialogElement>` | - | Ref forwarded to the native dialog element |
+| Prop           | Type                                      | Default   | Description                                            |
+| -------------- | ----------------------------------------- | --------- | ------------------------------------------------------- |
+| `className`    | `ClassNameValue`                          | -         | Custom CSS class name, supports strings, arrays, objects, booleans and other formats. |
+| `placement`    | `'left' \| 'right' \| 'top' \| 'bottom'`  | `'right'` | Position of the drawer                                  |
+| `open`         | `boolean`                                 | -         | Controls whether the drawer is open or closed           |
+| `onOpenChange` | `(open: boolean) => void`                 | -         | Callback when the drawer state changes                  |
+| `drag`         | `DrawerDragApi`                           | -         | Drag gesture object used to implement a resizable drawer |
+| `children`     | `React.ReactNode`                         | -         | Drawer panel content                                    |
+| `slots`        | `object`                                  | -         | Pass-through props for internal elements                |
 
-### slotProps
+> Note: `ref` needs to be applied to the low-level `DrawerRoot`; the high-level composite component `Drawer` does not provide a ref.
 
-| Slot | Type | Description |
-|------|------|-------------|
-| `content` | `HTMLAttrs<Omit<React.ComponentProps<'div'>, 'style'>>` | Props for the inner content panel |
+#### slots
+
+Only applies to the high-level `Drawer` component; the low-level `DrawerRoot` slots only support `wrapper`.
+
+| Slot       | Type                                   | Description                          |
+| ---------- | -------------------------------------- | ------------------------------------ |
+| `wrapper`  | `DrawerWrapperProps`                   | Props for the outer drawer container |
+| `drag`     | `Omit<DrawerDragProps, "children">`    | Props for the drag handle            |
+| `content`  | `Omit<DrawerContentProps, "children">` | Props for the content panel          |
+
+---
+
+### Headless Atomic Components
+
+> The following are low-level atomic components with **minimal built-in styles; styles should be added via className**. The high-level composite component `Drawer` is composed of these atomic components.
+
+#### DrawerRoot
+
+Low-level drawer container built on the native `dialog` element, with built-in focus management, Tab focus trapping, Esc close handling and transition animation.
+
+| Prop            | Type                                     | Default   | Description                                                   |
+| --------------- | ---------------------------------------- | --------- | -------------------------------------------------------------- |
+| `placement`     | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` | Position of the drawer                                         |
+| `open`          | `boolean`                                | -         | Controls whether the drawer is open or closed                  |
+| `onOpenChange`  | `(open: boolean) => void`                | -         | Callback when the drawer state changes                         |
+| `className`     | `ClassNameValue`                         | -         | Custom class name, applied to the native dialog element        |
+| `slots.wrapper` | `DrawerWrapperProps`                     | -         | Props for the inner sliding container                           |
+| `ref`           | `React.Ref<HTMLDialogElement>`           | -         | Ref forwarded to the native dialog element                     |
+| `...props`      | `React.ComponentProps<"dialog">`         | -         | Supports all native dialog props (except `open`, `onClose`)    |
+
+#### DrawerDrag
+
+Drag handle that renders a round indicator bar. The drag logic is provided by the external `useDrag` hook and bound via `onPointerDown`.
+
+| Prop           | Type                           | Default | Description                                               |
+| -------------- | ------------------------------ | ------- | ------------------------------------------------------------ |
+| `isHorizontal` | `boolean`                      | -       | Whether horizontal, determining the indicator orientation    |
+| `className`    | `ClassNameValue`               | -       | Custom class name                                            |
+| `...props`     | `React.ComponentProps<"div">`  | -       | Supports all native div props (except `className`)           |
+
+#### DrawerContent
+
+Content panel container.
+
+| Prop        | Type                           | Default | Description                                             |
+| ----------- | ------------------------------ | ------- | ---------------------------------------------------------- |
+| `className` | `ClassNameValue`               | -       | Custom class name                                          |
+| `children`  | `React.ReactNode`              | -       | Panel content                                              |
+| `...props`  | `React.ComponentProps<"div">`  | -       | Supports all native div props (except `className`)         |

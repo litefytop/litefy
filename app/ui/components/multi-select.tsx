@@ -2,7 +2,6 @@
 
 import { ChevronDown } from "lucide-react";
 import * as React from "react";
-import { createPortal } from "react-dom";
 import { type ClassNameValue, cn } from "@/lib";
 
 type SelectOption = {
@@ -49,16 +48,6 @@ export interface MultiSelectProps
   };
 }
 
-function useSupportsAnchor() {
-  const [supported, setSupported] = React.useState(false);
-  React.useEffect(() => {
-    if (typeof CSS !== "undefined" && CSS.supports("anchor-name", "--test")) {
-      setSupported(true);
-    }
-  }, []);
-  return supported;
-}
-
 export function MultiSelect({
   value: controlledValue,
   defaultValue = [],
@@ -83,12 +72,6 @@ export function MultiSelect({
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   const panelRef = React.useRef<HTMLDivElement>(null);
   const listRef = React.useRef<HTMLDivElement>(null);
-  const supportsAnchor = useSupportsAnchor();
-  const anchorName = `--anchor-${triggerId}`;
-  const [panelPosition, setPanelPosition] = React.useState<{
-    top: number;
-    left: number;
-  } | null>(null);
   const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const selected =
@@ -134,7 +117,6 @@ export function MultiSelect({
   };
 
   const updatePanelPosition = React.useCallback(() => {
-    if (supportsAnchor) return;
     const trigger = triggerRef.current;
     const panel = panelRef.current;
     if (!trigger || !panel) return;
@@ -153,8 +135,13 @@ export function MultiSelect({
       left = viewportWidth - panelRect.width - 8;
     }
     if (left < 8) left = 8;
-    setPanelPosition({ top, left });
-  }, [supportsAnchor]);
+
+    panel.style.position = "fixed";
+    panel.style.top = `${top}px`;
+    panel.style.left = `${left}px`;
+    panel.style.width = `${triggerRect.width}px`;
+    panel.style.margin = "0";
+  }, []);
 
   const openPopover = React.useCallback(() => {
     const panel = panelRef.current;
@@ -163,7 +150,9 @@ export function MultiSelect({
     setIsOpen(true);
     setHighlightIndex(-1);
     if (listRef.current) listRef.current.scrollTop = 0;
-    updatePanelPosition();
+    // 位置需要在显示后计算，因为 popover 可能会影响布局，但用 fixed 定位可以立即计算
+    // 使用 requestAnimationFrame 确保渲染完成
+    requestAnimationFrame(updatePanelPosition);
   }, [updatePanelPosition]);
 
   const closePopover = React.useCallback(() => {
@@ -181,9 +170,9 @@ export function MultiSelect({
     }
   }, [isOpen, openPopover, closePopover]);
 
+  // 监听窗口变化重新定位
   React.useEffect(() => {
-    if (supportsAnchor || !isOpen) return;
-
+    if (!isOpen) return;
     const handleUpdate = () => {
       if (timerRef.current) return;
       timerRef.current = setTimeout(() => {
@@ -203,8 +192,22 @@ export function MultiSelect({
         timerRef.current = null;
       }
     };
-  }, [supportsAnchor, isOpen, updatePanelPosition]);
+  }, [isOpen, updatePanelPosition]);
 
+  // 点击外部关闭
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleDocumentClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (triggerRef.current?.contains(target)) return;
+      if (panelRef.current?.contains(target)) return;
+      closePopover();
+    };
+    document.addEventListener("mousedown", handleDocumentClick);
+    return () => document.removeEventListener("mousedown", handleDocumentClick);
+  }, [isOpen, closePopover]);
+
+  // 键盘导航
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
     if (!isOpen) return;
 
@@ -237,6 +240,7 @@ export function MultiSelect({
     }
   };
 
+  // 同步 popover 的 toggle 事件
   React.useEffect(() => {
     const panel = panelRef.current;
     if (!panel) return;
@@ -248,6 +252,7 @@ export function MultiSelect({
     return () => panel.removeEventListener("toggle", handleToggle);
   }, []);
 
+  // 高亮项滚动可见
   React.useEffect(() => {
     if (highlightIndex >= 0 && listRef.current) {
       const items = listRef.current.querySelectorAll('[role="option"]');
@@ -257,20 +262,6 @@ export function MultiSelect({
       }
     }
   }, [highlightIndex]);
-
-  const panelStyle = supportsAnchor
-    ? ({
-        positionAnchor: anchorName,
-        positionArea: "end center",
-      } as React.CSSProperties)
-    : panelPosition
-      ? ({
-          position: "fixed",
-          top: panelPosition.top,
-          left: panelPosition.left,
-          margin: 0,
-        } as React.CSSProperties)
-      : undefined;
 
   const OptionItem = ({
     opt,
@@ -315,79 +306,6 @@ export function MultiSelect({
     </div>
   );
 
-  const panelContent = (
-    <div
-      id={panelId}
-      ref={panelRef}
-      popover="auto"
-      role="listbox"
-      aria-multiselectable="true"
-      className={cn(
-        "w-full max-h-64 rounded-md border border-input bg-background shadow-lg overflow-auto p-1",
-        slotProps?.panel?.className,
-      )}
-      style={panelStyle}
-    >
-      <div ref={listRef} className="space-y-0">
-        {options.length === 0 ? (
-          <div className="py-2 text-center text-sm text-muted-foreground">
-            {emptyFallback}
-          </div>
-        ) : (
-          options.map((item) => {
-            if ("group" in item) {
-              return (
-                <div
-                  key={item.group}
-                  role="presentation"
-                  {...slotProps?.group}
-                  className={cn("py-1", slotProps?.group?.className)}
-                >
-                  <div
-                    {...slotProps?.groupLabel}
-                    className={cn(
-                      "px-2 py-1 text-xs font-semibold text-muted-foreground",
-                      slotProps?.groupLabel?.className,
-                    )}
-                  >
-                    {item.group}
-                  </div>
-                  {item.options.map((opt) => {
-                    const isSelected = selected.includes(opt.value);
-                    const isHighlighted =
-                      valueToIndexMap.get(opt.value) === highlightIndex;
-                    return (
-                      <OptionItem
-                        key={opt.value}
-                        opt={opt}
-                        isSelected={isSelected}
-                        isHighlighted={isHighlighted}
-                        onToggle={toggleOption}
-                      />
-                    );
-                  })}
-                  <hr className="my-1 border-border" />
-                </div>
-              );
-            }
-            const isSelected = selected.includes(item.value);
-            const isHighlighted =
-              valueToIndexMap.get(item.value) === highlightIndex;
-            return (
-              <OptionItem
-                key={item.value}
-                opt={item}
-                isSelected={isSelected}
-                isHighlighted={isHighlighted}
-                onToggle={toggleOption}
-              />
-            );
-          })
-        )}
-      </div>
-    </div>
-  );
-
   return (
     <>
       <div
@@ -415,7 +333,6 @@ export function MultiSelect({
             "data-invalid:border-destructive data-invalid:ring-destructive/20 data-invalid:text-destructive",
             slotProps?.trigger?.className,
           )}
-          style={supportsAnchor ? { anchorName } : undefined}
         >
           <span className="truncate">{displayContent}</span>
           <ChevronDown
@@ -427,7 +344,84 @@ export function MultiSelect({
         </button>
       </div>
 
-      {createPortal(panelContent, document.body)}
+      {/* popover 面板直接放在这里，不通过 portal */}
+      <div
+        id={panelId}
+        ref={panelRef}
+        popover="manual"
+        role="listbox"
+        aria-multiselectable="true"
+        className={cn(
+          "w-full max-h-64 rounded-md border border-input bg-background shadow-lg overflow-auto p-1",
+          slotProps?.panel?.className,
+        )}
+        style={{
+          // 初始样式，位置会在打开时由 updatePanelPosition 覆盖
+          position: "fixed",
+          top: 0,
+          left: 0,
+          margin: 0,
+          visibility: isOpen ? "visible" : "hidden", // 避免闪烁
+        }}
+      >
+        <div ref={listRef} className="space-y-0">
+          {options.length === 0 ? (
+            <div className="py-2 text-center text-sm text-muted-foreground">
+              {emptyFallback}
+            </div>
+          ) : (
+            options.map((item) => {
+              if ("group" in item) {
+                return (
+                  <div
+                    key={item.group}
+                    role="presentation"
+                    {...slotProps?.group}
+                    className={cn("py-1", slotProps?.group?.className)}
+                  >
+                    <div
+                      {...slotProps?.groupLabel}
+                      className={cn(
+                        "px-2 py-1 text-xs font-semibold text-muted-foreground",
+                        slotProps?.groupLabel?.className,
+                      )}
+                    >
+                      {item.group}
+                    </div>
+                    {item.options.map((opt) => {
+                      const isSelected = selected.includes(opt.value);
+                      const isHighlighted =
+                        valueToIndexMap.get(opt.value) === highlightIndex;
+                      return (
+                        <OptionItem
+                          key={opt.value}
+                          opt={opt}
+                          isSelected={isSelected}
+                          isHighlighted={isHighlighted}
+                          onToggle={toggleOption}
+                        />
+                      );
+                    })}
+                    <hr className="my-1 border-border" />
+                  </div>
+                );
+              }
+              const isSelected = selected.includes(item.value);
+              const isHighlighted =
+                valueToIndexMap.get(item.value) === highlightIndex;
+              return (
+                <OptionItem
+                  key={item.value}
+                  opt={item}
+                  isSelected={isSelected}
+                  isHighlighted={isHighlighted}
+                  onToggle={toggleOption}
+                />
+              );
+            })
+          )}
+        </div>
+      </div>
 
       <input
         type="hidden"

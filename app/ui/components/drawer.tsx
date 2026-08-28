@@ -1,5 +1,4 @@
 "use client";
-
 import * as React from "react";
 import { type ClassNameValue, cn } from "@/lib";
 
@@ -38,7 +37,7 @@ export function DrawerRoot({
   onOpenChange,
   children,
   slots = { wrapper: { ref: null } },
-  onClick,
+
   onCancel,
   onKeyDown,
   ref,
@@ -47,6 +46,7 @@ export function DrawerRoot({
   const _ref = React.useRef<HTMLDialogElement>(null);
   const _wrapperRef = React.useRef<HTMLDivElement>(null);
   const openRef = React.useRef(open);
+
   React.useEffect(() => {
     const dialog = _ref.current;
     const wrapper = _wrapperRef.current;
@@ -67,7 +67,6 @@ export function DrawerRoot({
   React.useEffect(() => {
     const wrapper = _wrapperRef.current;
     const dialog = _ref.current;
-
     if (!wrapper || !dialog) return;
     const onTransitionEnd = (e: TransitionEvent) => {
       if (e.propertyName === "transform" && !openRef.current) {
@@ -84,12 +83,6 @@ export function DrawerRoot({
     onOpenChange(false);
   }, [onOpenChange]);
 
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
-    if (e.target === e.currentTarget) {
-      handleClose();
-    }
-    onClick?.(e);
-  };
 
   const handleCancel = (e: React.SyntheticEvent<HTMLDialogElement>) => {
     e.preventDefault();
@@ -103,8 +96,8 @@ export function DrawerRoot({
       if (!dialog) return;
       const focusable = Array.from(
         dialog.querySelectorAll<HTMLElement>(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-        ),
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
       ).filter((el) => el.offsetParent !== null);
       if (focusable.length === 0) {
         e.preventDefault();
@@ -138,7 +131,6 @@ export function DrawerRoot({
         }
       }}
       onKeyDown={handleKeyDown}
-      onClick={handleBackdropClick}
       onCancel={handleCancel}
       className={cn(className)}
       {...props}
@@ -156,7 +148,7 @@ export function DrawerRoot({
         className={cn(
           "fixed transition-transform duration-300 ease-out flex",
           placementStyles[placement],
-          slots?.wrapper?.className,
+          slots?.wrapper?.className
         )}
       >
         {children}
@@ -192,7 +184,13 @@ export function DrawerContent({ className, children, ...props }: DrawerContentPr
   );
 }
 
+export interface DrawerDragApi {
+  isDragging: boolean;
+  handlePointerDown: (e: React.PointerEvent<HTMLElement>) => void;
+}
+
 export interface DrawerProps extends Omit<DrawerRootProps, "slots"> {
+  drag?: DrawerDragApi;
   slots?: {
     wrapper?: DrawerWrapperProps;
     drag?: Omit<DrawerDragProps, "children">;
@@ -207,12 +205,14 @@ export function Drawer({
   onOpenChange,
   children,
   slots,
+  drag,
   ...props
 }: DrawerProps) {
   const isHorizontal = placement === "left" || placement === "right";
 
   return (
     <DrawerRoot
+      {...props}
       className={className}
       placement={placement}
       open={open}
@@ -223,20 +223,24 @@ export function Drawer({
           className: cn(
             isHorizontal ? "w-1/4 h-full" : "h-1/3 w-full",
             "shadow-lg bg-background",
-            slots?.wrapper?.className,
+            slots?.wrapper?.className
           ),
         },
       }}
-      {...props}
+
+
     >
       <DrawerDrag
         isHorizontal={isHorizontal}
         className={cn(
           isHorizontal ? "w-4 h-full border-x" : "h-4 w-full border-y",
           "border-border",
+          slots?.drag?.className
         )}
+        {...slots?.drag}
+        onPointerDown={drag?.handlePointerDown}
       />
-      <DrawerContent className={cn("bg-muted p-4", !isHorizontal && "items-center")}>
+      <DrawerContent className={cn("bg-muted p-4", !isHorizontal && "items-center")} {...slots?.content}>
         {children}
       </DrawerContent>
     </DrawerRoot>

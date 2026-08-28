@@ -1,18 +1,22 @@
 "use client";
-
-import { useRef } from "react";
+import { useState } from "react";
 import { Button } from "@/ui";
 import { Dialog } from "@/ui";
 
-export default function DialogBasicDemo() {
-  const dialogRef = useRef<HTMLDialogElement | null>(null);
+export default function Demo() {
+  const [open, setOpen] = useState(false);
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
+    if (e.target === e.currentTarget) {
+      setOpen(false);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <Button onClick={() => dialogRef.current?.showModal()}>
+      <Button onClick={() => setOpen(true)}>
         Open Dialog
       </Button>
-      <Dialog ref={dialogRef} className="w-full max-w-sm">
+      <Dialog open={open} onOpenChange={setOpen} className="w-full max-w-sm" onClick={handleBackdropClick}>
         <div className="flex flex-col gap-6 pt-4">
           <div className="flex flex-col gap-2">
             <h3 className="text-lg font-semibold">Welcome to Litefy</h3>
@@ -21,7 +25,7 @@ export default function DialogBasicDemo() {
               accessible and customizable web applications with ease.
             </p>
           </div>
-          <Button className="w-full" onClick={() => dialogRef.current?.close()}>
+          <Button className="w-full" onClick={() => setOpen(false)}>
             Continue
           </Button>
         </div>

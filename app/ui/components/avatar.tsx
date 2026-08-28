@@ -2,59 +2,52 @@
 import * as React from "react";
 import { type ClassNameValue, cn } from "@/lib";
 
-export interface ImageRootProps extends Omit<React.ComponentProps<"div">, "className"> {
+export interface AvatarRootProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
 }
-export function ImageRoot({ className, ...props }: ImageRootProps) {
-  return (
-    <div
+export function AvatarRoot({ className, ...props }: AvatarRootProps) {
+  return <div
       {...props}
       className={cn(
-        "relative overflow-hidden",
-        className
+        "flex aspect-square overflow-hidden items-center justify-center",
+        className,
+    
       )}
-    />
-  );
+    />;
 }
-
-export interface ImageImageProps extends Omit<React.ComponentProps<"img">, "className"> {
+export interface AvatarImageProps extends Omit<React.ComponentProps<"img">, "className" > {
   className?: ClassNameValue;
 }
-export function ImageImage({ className, ...props }: ImageImageProps) {
-  return (
-    <img
+export function AvatarImage({ className, ...props }: AvatarImageProps) {
+  return <img
       {...props}
       className={cn(
-        "w-full h-full object‑cover",
-        className
+        "w-full h-full",
+        className,
+    
       )}
-    />
-  );
+    />;
 }
 
-export type ImageProps = {
+export type AvatarProps = {
   className?: ClassNameValue;
   src: string;
-  alt?: string;
+  skeleton?: React.ReactNode;
   fallback?: React.ReactNode;
-  loadingNode?: React.ReactNode;
   slots?: {
     wrapper?: Omit<React.ComponentProps<"div">, "children">;
   };
-} & Omit<React.ComponentProps<"img">, "className">;
+} & Omit<React.ComponentProps<"img">, "className" | "src">;
 
-export function Image({
+export function Avatar({
   src,
-  alt,
-  className,
+  skeleton,
   fallback,
-  loadingNode,
+  className,
   slots,
   ...props
-}: ImageProps) {
-  const [status, setStatus] = React.useState<"loading" | "success" | "failure">(
-    "loading",
-  );
+}: AvatarProps) {
+  const [status, setStatus] = React.useState<"loading" | "success" | "failure">("loading");
 
   React.useEffect(() => {
     let isActive = true;
@@ -75,32 +68,29 @@ export function Image({
       isActive = false;
       img.onload = null;
       img.onerror = null;
-      setTimeout(() => {
-        if (img.src) img.src = "";
-      }, 0);
     };
   }, [src]);
 
   return (
-    <ImageRoot
+    <AvatarRoot 
       {...slots?.wrapper}
       className={cn(
+        "bg-muted border",
         className,
         slots?.wrapper?.className
       )}
     >
-      {status === "loading" && loadingNode}
+      {status === "loading" && skeleton}
       {status === "failure" && fallback}
       {status === "success" && (
-        <ImageImage
+        <AvatarImage
           {...props}
           src={src}
-          alt={alt}
-          style={{ contentVisibility: "auto", ...props.style }}
+          className="object-cover"
           loading="lazy"
           decoding="async"
         />
       )}
-    </ImageRoot>
+    </AvatarRoot>
   );
 }

@@ -1,4 +1,6 @@
 import type { ComponentType } from "react";
+import AvatarBasicDemo from "./avatar/basic";
+import avatarBasicCode from "./avatar/basic.tsx?raw";
 import CollapseAccordionDemo from "./collapse/accordion";
 import collapseAccordionCode from "./collapse/accordion.tsx?raw";
 import CollapseCollapseDemo from "./collapse/collapse";
@@ -35,16 +37,16 @@ import SkeletonTextDemo from "./css/skeleton-text";
 import skeletonTextCode from "./css/skeleton-text.tsx?raw";
 import DialogBasicDemo from "./dialog/basic";
 import dialogBasicCode from "./dialog/basic.tsx?raw";
+import DialogCommandDemo from "./dialog/command";
+import dialogCommandCode from "./dialog/command.tsx?raw";
 import DrawerBasicDemo from "./drawer/basic";
 import drawerBasicCode from "./drawer/basic.tsx?raw";
-import DrawerExpandableDemo from "./drawer/placement";
-import drawerExpandableCode from "./drawer/placement.tsx?raw";
+import DrawerExpandableDemo from "./drawer/expandable";
+import drawerExpandableCode from "./drawer/expandable.tsx?raw";
 import DropdownAlignmentDemo from "./dropdown/alignment";
 import dropdownAlignmentCode from "./dropdown/alignment.tsx?raw";
 import DropdownBasicDemo from "./dropdown/basic";
 import dropdownBasicCode from "./dropdown/basic.tsx?raw";
-import DropdownLabelDemo from "./dropdown/label";
-import dropdownLabelCode from "./dropdown/label.tsx?raw";
 import FormBasicDemo from "./form/basic";
 import formBasicCode from "./form/basic.tsx?raw";
 import FormHorizontalDemo from "./form/horizontal";
@@ -211,6 +213,10 @@ export const demos: Record<string, DemoItem> = {
     component: DialogBasicDemo,
     code: dialogBasicCode,
   },
+  "dialog-command": {
+    component: DialogCommandDemo,
+    code: dialogCommandCode,
+  },
   "drawer-basic": {
     component: DrawerBasicDemo,
     code: drawerBasicCode,
@@ -223,10 +229,7 @@ export const demos: Record<string, DemoItem> = {
     component: DropdownBasicDemo,
     code: dropdownBasicCode,
   },
-  "dropdown-label": {
-    component: DropdownLabelDemo,
-    code: dropdownLabelCode,
-  },
+
   "dropdown-alignment": {
     component: DropdownAlignmentDemo,
     code: dropdownAlignmentCode,
@@ -246,6 +249,10 @@ export const demos: Record<string, DemoItem> = {
   "form-validation": {
     component: FormValidationDemo,
     code: formValidationCode,
+  },
+  "avatar-basic": {
+    component: AvatarBasicDemo,
+    code: avatarBasicCode,
   },
   "image-basic": {
     component: ImageBasicDemo,

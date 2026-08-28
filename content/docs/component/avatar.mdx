@@ -1,0 +1,76 @@
+---
+title: Avatar
+description: An avatar component with loading skeleton and error fallback support
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add avatar" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="avatar" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Preloads the image and tracks the loading state: shows `skeleton` while loading, `fallback` on failure, and renders the image on success.
+
+<ComponentPreview 
+  name="avatar-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Avatar
+
+An avatar component with preload state management; the outer container has built-in `flex`, `aspect-square`, `overflow-hidden`, `items-center` and `justify-center` styles, plus `bg-muted` and `border`; the image fills with `object-cover`.
+
+| Prop            | Type                                                    | Default      | Description                                                         |
+| --------------- | ------------------------------------------------------- | ------------ | -------------------------------------------------------------------- |
+| `src`           | `string`                                                | - (required) | Image source URL                                                    |
+| `alt`           | `string`                                                | -            | Alternative text for the image                                      |
+| `className`     | `ClassNameValue`                                        | -            | Custom CSS class name, applied to the outer container               |
+| `skeleton`      | `React.ReactNode`                                       | -            | Placeholder element shown while loading                             |
+| `fallback`      | `React.ReactNode`                                       | -            | Custom fallback element shown when the image fails to load          |
+| `slots.wrapper` | `Omit<React.ComponentProps<"div">, "children">`         | -            | Props for the outer container; its `className` takes precedence over `className` |
+| `...props`      | `React.ComponentProps<"img">`                           | -            | Supports all native img props (except `className`, `src`), with built-in `loading="lazy"` and `decoding="async"` |
+
+---
+
+### Headless Atomic Components
+
+> The following are low-level atomic components with **minimal built-in styles; styles should be added via className**. The high-level composite component `Avatar` is composed of these atomic components.
+
+#### AvatarRoot
+
+Outer container with built-in `flex`, `aspect-square`, `overflow-hidden`, `items-center` and `justify-center`.
+
+| Prop        | Type                          | Default | Description                    |
+| ----------- | ------------------------------ | ------- | -------------------------------- |
+| `className` | `ClassNameValue`               | -       | Custom class name                |
+| `...props`  | `React.ComponentProps<"div">`  | -       | Supports all native div props    |
+
+#### AvatarImage
+
+The image element with built-in `w-full` and `h-full`.
+
+| Prop        | Type                          | Default | Description                    |
+| ----------- | ------------------------------ | ------- | -------------------------------- |
+| `className` | `ClassNameValue`               | -       | Custom class name                |
+| `...props`  | `React.ComponentProps<"img">`  | -       | Supports all native img props    |

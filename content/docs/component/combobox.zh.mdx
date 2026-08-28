@@ -41,7 +41,13 @@ description: 支持自动补全的选项选择组件
 
 ## API 参考
 
-### Combobox
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Combobox
+
+支持静态选项与异步搜索的组合框，内置键盘导航与滚动分页加载。
 
 | Prop            | Type                          | Default                 | Description                              |
 | --------------- | ----------------------------- | ----------------------- | ---------------------------------------- |
@@ -67,7 +73,7 @@ description: 支持自动补全的选项选择组件
 | `search`      | `(keyword:string) => void` | 输入关键词触发搜索     |
 | `loadMore`    | `() => void`               | 滚动到底部触发加载更多 |
 
-### slotProps
+#### slotProps
 
 | Slot      | Type                                                                       | Description        |
 | --------- | -------------------------------------------------------------------------- | ------------------ |
@@ -75,3 +81,58 @@ description: 支持自动补全的选项选择组件
 | `popover` | `HTMLAttrs<Omit<React.ComponentProps<"div">, "ref" \| "popoverTarget">>`   | 下拉浮层容器属性   |
 | `list`    | `HTMLAttrs<Omit<React.ComponentProps<"ul">, "ref" \| "id" \| "onScroll">>` | 下拉列表 ul 属性   |
 | `option`  | `HTMLAttrs<React.ComponentProps<"li">>`                                    | 每一个选项 li 属性 |
+
+---
+
+### Headless 原子组件
+
+> 以下为底层原子组件，**内置样式极少，样式需要通过 className 自行补充**。高层组合组件 `Combobox` 即由以下原子组件组合而成。
+
+#### ComboboxRoot
+
+外层容器，为下拉浮层提供定位基准。
+
+| Prop        | Type                          | Default | Description                             |
+| ----------- | ----------------------------- | ------- | --------------------------------------- |
+| `className` | `ClassNameValue`              | -       | 自定义类名                              |
+| `...props`  | `React.ComponentProps<"div">` | -       | 支持全部 div 原生属性（除 `className`） |
+
+#### ComboboxInput
+
+搜索输入框。
+
+| Prop           | Type                            | Default | Description                                           |
+| -------------- | ------------------------------- | ------- | ----------------------------------------------------- |
+| `value`        | `string`                        | -       | 受控输入值                                            |
+| `defaultValue` | `string`                        | -       | 非受控模式初始值                                      |
+| `className`    | `ClassNameValue`                | -       | 自定义类名                                            |
+| `...props`     | `React.ComponentProps<"input">` | -       | 支持全部 input 原生属性（除 `className`、`onSelect`） |
+
+#### ComboboxPopover
+
+下拉浮层容器，基于原生 Popover API 渲染为 `popover="manual"` 的 div。
+
+| Prop        | Type                          | Default | Description                             |
+| ----------- | ----------------------------- | ------- | --------------------------------------- |
+| `className` | `ClassNameValue`              | -       | 自定义类名                              |
+| `...props`  | `React.ComponentProps<"div">` | -       | 支持全部 div 原生属性（除 `className`） |
+
+#### ComboboxList
+
+下拉列表，渲染为 `role="listbox"` 的 ul。滚动接近底部约 `120px` 时自动触发 `onScrollBottom`。
+
+| Prop             | Type                         | Default | Description                            |
+| ---------------- | ---------------------------- | ------- | -------------------------------------- |
+| `onScrollBottom` | `() => void`                 | -       | 滚动接近底部时的回调                   |
+| `className`      | `ClassNameValue`             | -       | 自定义类名                             |
+| `...props`       | `React.ComponentProps<"ul">` | -       | 支持全部 ul 原生属性（除 `className`） |
+
+#### ComboboxOption
+
+单个选项，渲染为 `role="option"` 的 li。
+
+| Prop        | Type                         | Default | Description                                |
+| ----------- | ---------------------------- | ------- | ------------------------------------------ |
+| `id`        | `string`                     | -       | 选项 id，用于 `aria-activedescendant` 关联 |
+| `className` | `ClassNameValue`             | -       | 自定义类名                                 |
+| `...props`  | `React.ComponentProps<"li">` | -       | 支持全部 li 原生属性（除 `className`）     |

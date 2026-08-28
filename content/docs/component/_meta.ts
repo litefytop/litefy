@@ -1,4 +1,11 @@
 export default {
+  avatar: {
+    name: "Avatar",
+    displayName: {
+      en: "Avatar",
+      zh: "头像",
+    },
+  },
   button: {
     name: "Button",
     displayName: {

@@ -1,6 +1,6 @@
 ---
 title: Dialog
-description: A modal dialog component built with the native HTML dialog element
+description: A modal dialog component built on the native HTML dialog element
 ---
 
 ## Installation
@@ -25,23 +25,61 @@ description: A modal dialog component built with the native HTML dialog element
 
 ### Basic Usage
 
-A basic dialog component with focus management and keyboard navigation.
+A basic dialog component in controlled mode, with built-in Tab focus trapping and Esc close handling.
 
 <ComponentPreview 
   name="dialog-basic"
 />
 
+### Command Dialog
+
+A dialog triggered imperatively via the `dialog.success` / `dialog.error` / `dialog.warning` / `dialog.info` methods, created dynamically and destroyed automatically after closing.
+
+<ComponentPreview 
+  name="dialog-command"
+/>
+
 ## API Reference
 
-### Dialog
+### High-level Components
 
-A modal dialog component that uses the native HTML dialog element.
+Ready-to-use composite components.
 
-| Prop           | Type                           | Default | Description                                                                                                        |
-| -------------- | ------------------------------ | ------- | ------------------------------------------------------------------------------------------------------------------ |
-| `className`    | `ClassNameValue`               | -       | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
-| `onClose`      | `() => void`                   | -       | Callback when dialog is closed                                                                                     |
-| `closeTrigger` | `React.ReactNode`              | -       | Built-in close trigger element. Can be disabled by passing `null`                                                  |
-| `ref`          | `React.Ref<HTMLDialogElement>` | -       | Ref forwarded to the native dialog element                                                                         |
+#### Dialog
 
-> Dialog atom is the native `<dialog>` element.
+A modal dialog component built on the native HTML `dialog` element, with built-in focus trapping, Esc close handling and transition animation.
+
+| Prop           | Type                                               | Default          | Description                                                                    |
+| -------------- | -------------------------------------------------- | ---------------- | -------------------------------------------------------------------------------- |
+| `open`         | `boolean`                                          | - (required)     | Controlled open state, synced with the native `showModal()` / `close()` internally |
+| `onOpenChange` | `(open: boolean) => void`                          | -                | Callback when the open state changes; fired on Esc, close button click, native `cancel` / `close` |
+| `closeTrigger` | `React.ReactNode`                                  | Built-in ESC button | Custom close button element; pass `null` to disable the default close button |
+| `className`    | `ClassNameValue`                                   | -                | Custom CSS class name, applied to the native dialog element                      |
+| `ref`          | `React.Ref<HTMLDialogElement>`                     | -                | Ref forwarded to the native dialog element                                       |
+| `children`     | `React.ReactNode`                                  | -                | Dialog content                                                                   |
+| `onClick`      | `(e: React.MouseEvent<HTMLDialogElement>) => void` | -                | Event callback fired when the Backdrop is clicked; implement close-on-backdrop-click yourself |
+| `...props`     | `React.ComponentProps<"dialog">`                   | -                | Supports all native dialog props (`onKeyDown`, `onCancel`, `onClose` are handled internally) |
+
+#### dialog
+
+Imperative trigger methods that create the dialog dynamically and destroy it automatically after closing.
+
+| Method    | Type                                   | Description            |
+| --------- | -------------------------------------- | ---------------------- |
+| `success` | `(opts: DialogCommandOptions) => void` | Opens a command dialog |
+| `error`   | `(opts: DialogCommandOptions) => void` | Opens a command dialog |
+| `warning` | `(opts: DialogCommandOptions) => void` | Opens a command dialog |
+| `info`    | `(opts: DialogCommandOptions) => void` | Opens a command dialog |
+
+> The four methods are semantic shortcuts with identical behavior.
+> Browser limitation: only one modal dialog (`showModal()`) can be open at a time; repeated opens are blocked by the browser rather than queued.
+
+#### DialogCommandOptions
+
+| Field      | Type              | Description                            |
+| ---------- | ----------------- | -------------------------------------- |
+| `title`    | `React.ReactNode` | Dialog title                           |
+| `children` | `React.ReactNode` | Dialog content                         |
+| `props`    | `DialogProps`     | Pass-through props forwarded to Dialog |
+
+> `Dialog` has no dedicated Headless atomic components; its atom is the browser's native `<dialog>` element, and its behavior follows the native specification:

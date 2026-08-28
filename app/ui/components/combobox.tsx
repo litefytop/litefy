@@ -31,12 +31,12 @@ export interface ComboboxListProps extends Omit<React.ComponentProps<"ul">, "cla
   className?: ClassNameValue;
   onScrollBottom?: () => void;
 }
-export function ComboboxList({ className, onScrollBottom, ...props }: ComboboxListProps) {
+export function ComboboxList({ className, onScrollBottom, onScroll, ...props }: ComboboxListProps) {
   const handleScroll = (e: React.UIEvent<HTMLUListElement>) => {
     const el = e.currentTarget;
     const distanceToBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
     if (distanceToBottom < 120) onScrollBottom?.();
-    props.onScroll?.(e);
+    onScroll?.(e);
   };
 
   return <ul role="listbox" className={cn(className)} onScroll={handleScroll} {...props} />;
@@ -59,11 +59,9 @@ export interface ComboboxRemoteApi {
   loadMore: () => void;
 }
 
-export interface ComboboxProps extends Omit<ComboboxInputProps, "onChange"> {
+export type ComboboxProps = Omit<ComboboxInputProps, "onChange"> & {
   onValueChange?: (value: string) => void;
   onSelect?: (value: string) => void;
-  options?: string[];
-  remote?: ComboboxRemoteApi;
   placeholder?: string;
   empty?: React.ReactNode;
   slotProps?: {
@@ -72,7 +70,10 @@ export interface ComboboxProps extends Omit<ComboboxInputProps, "onChange"> {
     list?: Omit<ComboboxListProps, "children">;
     option?: Omit<ComboboxOptionProps, "children">;
   };
-}
+} & (
+  | { options?: string[]; remote?: never }
+  | { options?: never; remote?: ComboboxRemoteApi }
+);
 
 export function Combobox({
   value: controlledValue,
@@ -201,6 +202,7 @@ export function Combobox({
       setSelectedValue(opt);
     }
     onSelect?.(opt);
+    onValueChange?.(opt);
     setSearchText(opt);
     closePopover();
     _ref.current?.focus();

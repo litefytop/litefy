@@ -49,23 +49,74 @@ description: 支持前后置插槽和验证状态的输入框组件
 
 ## API 参考
 
-### Input
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Input
 
 带有插槽和验证支持的输入框组件。
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `type` | `'text' \| 'email' \| 'url' \| 'tel' \| 'search'` | `'text'` | 输入类型 |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类，支持字符串、数组、对象、布尔值等多种格式。 |
-| `leading` | `ReactNode` | - | 前置插槽内容（如图标） |
-| `trailing` | `ReactNode` | - | 后置插槽内容（如按钮、图标） |
-| `invalid` | `boolean` | `false` | 输入框是否处于无效状态 |
-| `slotProps` | `InputSlotProps` | - | 用于自定义的插槽属性 |
+| Prop       | Type                                                       | Default | Description                                        |
+| ---------- | ---------------------------------------------------------- | ------- | --------------------------------------------------- |
+| `type`     | `'text' \| 'email' \| 'url' \| 'tel' \| 'search'`          | `'text'` | 输入类型                                            |
+| `className`| `ClassNameValue`                                           | -       | 自定义 CSS 类名，作用于内部输入框元素               |
+| `leading`  | `ReactNode`                                                | -       | 前置插槽内容（如图标）                              |
+| `trailing` | `ReactNode`                                                | -       | 后置插槽内容（如按钮、图标）                        |
+| `invalid`  | `boolean`                                                  | `false` | 输入框是否处于无效状态                              |
+| `disabled` | `boolean`                                                  | `false` | 禁用输入框，同时在外层容器设置 `inert`              |
+| `slotProps`| `InputSlotProps`                                           | -       | 内部子元素属性透传                                  |
+| `...props` | `React.ComponentProps<"input">`                            | -       | 支持全部 input 原生属性（除 `type`）                |
 
-### InputSlotProps
+#### slotProps
 
-| Slot | Type | Description |
-|------|------|-------------|
-| `group` | `HTMLAttributes<HTMLDivElement>` | 输入框组容器的属性 |
-| `leading` | `HTMLAttributes<HTMLSpanElement>` | 前置插槽容器的属性 |
-| `trailing` | `HTMLAttributes<HTMLSpanElement>` | 后置插槽容器的属性 |
+仅作用于高阶组件 `Input`。
+
+| Slot       | Type               | Description          |
+| ---------- | ------------------- | --------------------- |
+| `group`    | `InputGroupProps`  | 输入框组容器的属性    |
+| `leading`  | `InputLeadingProps`| 前置插槽容器的属性    |
+| `trailing` | `InputTrailingProps`| 后置插槽容器的属性   |
+
+---
+
+### Headless 原子组件
+
+> 以下为底层原子组件，**内置样式极少，样式需要通过 className 自行补充**。高层组合组件 `Input` 即由以下原子组件组合而成。
+
+#### InputGroup
+
+外层容器，内置 `flex` 布局。
+
+| Prop       | Type                          | Default | Description           |
+| ---------- | ------------------------------ | ------- | ---------------------- |
+| `className`| `ClassNameValue`               | -       | 自定义类名             |
+| `...props` | `React.ComponentProps<"div">`  | -       | 支持全部 div 原生属性（含 `data-*` 属性） |
+
+#### InputLeading
+
+前置插槽容器，渲染为 `span`，内置 `shrink-0`。
+
+| Prop       | Type                           | Default | Description           |
+| ---------- | ------------------------------- | ------- | ---------------------- |
+| `className`| `ClassNameValue`                | -       | 自定义类名             |
+| `...props` | `React.ComponentProps<"span">`  | -       | 支持全部 span 原生属性（含 `data-*` 属性） |
+
+#### InputTrailing
+
+后置插槽容器，渲染为 `span`，内置 `shrink-0`。
+
+| Prop       | Type                           | Default | Description           |
+| ---------- | ------------------------------- | ------- | ---------------------- |
+| `className`| `ClassNameValue`                | -       | 自定义类名             |
+| `...props` | `React.ComponentProps<"span">`  | -       | 支持全部 span 原生属性（含 `data-*` 属性） |
+
+#### InputField
+
+输入框元素，内置 `appearance-none`；`type` 限定为 `'text' | 'email' | 'url' | 'tel' | 'search'`。
+
+| Prop       | Type                                              | Default | Description                            |
+| ---------- | -------------------------------------------------- | ------- | --------------------------------------- |
+| `type`     | `'text' \| 'email' \| 'url' \| 'tel' \| 'search'` | `'text'`| 输入类型                                |
+| `className`| `ClassNameValue`                                   | -       | 自定义类名                              |
+| `...props` | `React.ComponentProps<"input">`                    | -       | 支持全部 input 原生属性（除 `type`）    |

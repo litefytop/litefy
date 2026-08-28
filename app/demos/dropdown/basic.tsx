@@ -1,32 +1,25 @@
 "use client";
-
-import { Bell, LogOut, Settings } from "lucide-react";
-import { Button } from "@/ui";
 import { Dropdown } from "@/ui";
+import { Button } from "@/ui";
 
 export default function DropdownBasicDemo() {
   return (
-    <Dropdown>
-      <Dropdown.Trigger
-        className={[Button.class.base, Button.class.variant.primary]}
-      >
-        Open Menu
-      </Dropdown.Trigger>
-      <Dropdown.Content>
-        <Dropdown.Item>
-          <Bell className="w-4 h-4 mr-2" />
-          Notifications
-        </Dropdown.Item>
-        <Dropdown.Item>
-          <Settings className="w-4 h-4 mr-2" />
-          Settings
-        </Dropdown.Item>
-        <Dropdown.Separator />
-        <Dropdown.Item className="text-destructive">
-          <LogOut className="w-4 h-4 mr-2" />
-          Logout
-        </Dropdown.Item>
-      </Dropdown.Content>
-    </Dropdown>
+    <Dropdown
+      slots={{
+        trigger: {
+          className: [Button.class.base, Button.class.variant.primary],
+          children: "Open Menu",
+        },
+      }}
+      items={[
+        { itemType: "label", label: "Account" },
+        { itemType: "action", label: "Profile" },
+        { itemType: "action", label: "Preferences" },
+        { itemType: "label", label: "System" },
+        { itemType: "action", label: "Notifications" },
+        { itemType: "action", label: "Settings" },
+        { itemType: "action", label: "Logout", className: "text-destructive" },
+      ]}
+    />
   );
 }

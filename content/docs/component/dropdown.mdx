@@ -31,14 +31,6 @@ Basic dropdown menu with icon items and separator.
   name="dropdown-basic"
 />
 
-### With Labels
-
-Dropdown with grouped items using labels.
-
-<ComponentPreview 
-  name="dropdown-label"
-/>
-
 ### Alignment
 
 Control dropdown alignment with alignX and alignY props.
@@ -53,54 +45,54 @@ Control dropdown alignment with alignX and alignY props.
 
 The main container component.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | Dropdown content |
-| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| Prop        | Type              | Default | Description                                                                                                        |
+| ----------- | ----------------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
+| `children`  | `React.ReactNode` | -       | Dropdown content                                                                                                   |
+| `className` | `ClassNameValue`  | -       | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 
 ### Dropdown.Trigger
 
 The trigger button that opens the dropdown.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | Trigger content |
-| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| Prop        | Type              | Default | Description                                                                                                        |
+| ----------- | ----------------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
+| `children`  | `React.ReactNode` | -       | Trigger content                                                                                                    |
+| `className` | `ClassNameValue`  | -       | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 
 ### Dropdown.Content
 
 The dropdown menu content.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | Menu items |
-| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. To adjust the gap between the content and the trigger, add margin utility classes (e.g. `m-2`) here. |
-| `alignX` | `'start' \| 'center' \| 'end'` | `'center'` | Horizontal alignment |
-| `alignY` | `'start' \| 'center' \| 'end'` | `'end'` | Vertical alignment |
-| `popover` | `'auto' \| 'manual' \| 'hint'` | `'auto'` | Popover behavior |
+| Prop        | Type                           | Default    | Description                                                                                                                                                                                                             |
+| ----------- | ------------------------------ | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `children`  | `React.ReactNode`              | -          | Menu items                                                                                                                                                                                                              |
+| `className` | `ClassNameValue`               | -          | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. To adjust the gap between the content and the trigger, add margin utility classes (e.g. `m-2`) here. |
+| `alignX`    | `'start' \| 'center' \| 'end'` | `'center'` | Horizontal alignment                                                                                                                                                                                                    |
+| `alignY`    | `'start' \| 'center' \| 'end'` | `'end'`    | Vertical alignment                                                                                                                                                                                                      |
+| `popover`   | `'auto' \| 'manual' \| 'hint'` | `'auto'`   | Popover behavior                                                                                                                                                                                                        |
 
 ### Dropdown.Item
 
 Individual menu item.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | Item content |
-| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| Prop        | Type              | Default | Description                                                                                                        |
+| ----------- | ----------------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
+| `children`  | `React.ReactNode` | -       | Item content                                                                                                       |
+| `className` | `ClassNameValue`  | -       | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 
 ### Dropdown.Label
 
 Label for grouping items.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | Label text |
-| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| Prop        | Type              | Default | Description                                                                                                        |
+| ----------- | ----------------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
+| `children`  | `React.ReactNode` | -       | Label text                                                                                                         |
+| `className` | `ClassNameValue`  | -       | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 
 ### Dropdown.Separator
 
 Visual separator between items.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| Prop        | Type             | Default | Description                                                                                                        |
+| ----------- | ---------------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
+| `className` | `ClassNameValue` | -       | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |

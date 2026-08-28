@@ -1,3 +1,4 @@
+export * from "./avatar";
 export * from "./collapse‑accordion";
 export * from "./button";
 export * from "./checkbox";

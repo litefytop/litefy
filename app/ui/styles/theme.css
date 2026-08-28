@@ -65,7 +65,7 @@
   --color-warning: var(--warning);
   --color-destructive: var(--destructive);
   --color-destructive-accent: var(--destructive-accent);
- 
+
   --color-border: var(--muted-foreground);
   --color-input: var(--muted);
   --color-ring: var(--ring);
