@@ -5,7 +5,7 @@ export interface ComboboxRootProps extends Omit<React.ComponentProps<"div">, "cl
   className?: ClassNameValue;
 }
 export function ComboboxRoot({ className, ...props }: ComboboxRootProps) {
-  return <div className={cn("relative", className)} {...props} />;
+  return <div className={cn(className)} {...props} />;
 }
 
 export interface ComboboxInputProps extends Omit<
@@ -70,10 +70,7 @@ export type ComboboxProps = Omit<ComboboxInputProps, "onChange"> & {
     list?: Omit<ComboboxListProps, "children">;
     option?: Omit<ComboboxOptionProps, "children">;
   };
-} & (
-  | { options?: string[]; remote?: never }
-  | { options?: never; remote?: ComboboxRemoteApi }
-);
+} & ({ options?: string[]; remote?: never } | { options?: never; remote?: ComboboxRemoteApi });
 
 export function Combobox({
   value: controlledValue,
@@ -93,6 +90,7 @@ export function Combobox({
 }: ComboboxProps) {
   const id = React.useId();
   const listboxId = `listbox-${id}`;
+  const anchorName = `--combobox-${id.replace(/[^a-zA-Z0-9_-]/g, "")}`;
 
   const rootRef = React.useRef<HTMLDivElement>(null);
   const popoverRef = React.useRef<HTMLDivElement>(null);
@@ -122,17 +120,6 @@ export function Combobox({
     return (options ?? []).filter((opt) => opt.toLowerCase().includes(searchText.toLowerCase()));
   }, [options, searchText, remote]);
 
-  const updatePopoverPosition = React.useCallback(() => {
-    if (!rootRef.current || !popoverRef.current) return;
-    if (!popoverRef.current.matches(":popover-open")) return;
-
-    const triggerRect = rootRef.current.getBoundingClientRect();
-    popoverRef.current.style.inset = "unset";
-    popoverRef.current.style.top = `${triggerRect.bottom + 4}px`;
-    popoverRef.current.style.left = `${triggerRect.left}px`;
-    popoverRef.current.style.width = `${triggerRect.width}px`;
-  }, []);
-
   const closePopover = React.useCallback(() => {
     popoverRef.current?.hidePopover();
     setHighlightValue(null);
@@ -146,26 +133,11 @@ export function Combobox({
     const el = popoverRef.current;
     if (!el) return;
     const handler = (e: ToggleEvent) => {
-      const isOpen = e.newState === "open";
-      if (isOpen) {
-        updatePopoverPosition();
-      } else {
-        setHighlightValue(null);
-      }
+      if (e.newState !== "open") setHighlightValue(null);
     };
     el.addEventListener("toggle", handler);
     return () => el.removeEventListener("toggle", handler);
-  }, [updatePopoverPosition]);
-
-  React.useEffect(() => {
-    const onResize = () => updatePopoverPosition();
-    window.addEventListener("resize", onResize);
-    window.addEventListener("scroll", onResize, true);
-    return () => {
-      window.removeEventListener("resize", onResize);
-      window.removeEventListener("scroll", onResize, true);
-    };
-  }, [updatePopoverPosition]);
+  }, []);
 
   React.useLayoutEffect(() => {
     if (!highlightValue || !listRef.current) return;
@@ -258,7 +230,11 @@ export function Combobox({
   };
   return (
     <>
-      <ComboboxRoot ref={rootRef} {...slotProps.root}>
+      <ComboboxRoot
+        ref={rootRef}
+        {...slotProps.root}
+        style={{ anchorName, ...slotProps.root?.style }}
+      >
         <ComboboxInput
           {...props}
           ref={setRefs}
@@ -275,11 +251,20 @@ export function Combobox({
 
       <ComboboxPopover
         ref={popoverRef}
+        {...slotProps.popover}
         className={cn(
-          "border bg-background shadow-lg overflow-hidden -top-full rounded-md",
+          "border bg-background shadow-lg overflow-hidden rounded-md",
           slotProps.popover?.className,
         )}
-        {...slotProps.popover}
+        style={{
+          margin: "4px 0 0",
+          positionAnchor: anchorName,
+          positionArea: "bottom span-right",
+          justifySelf: "start",
+          width: "anchor-size(width)",
+          positionTryFallbacks: "flip-block",
+          ...slotProps.popover?.style,
+        }}
       >
         <ComboboxList
           ref={listRef}

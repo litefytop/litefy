@@ -1,6 +1,8 @@
 import type { ComponentType } from "react";
 import AvatarBasicDemo from "./avatar/basic";
 import avatarBasicCode from "./avatar/basic.tsx?raw";
+import AvatarCustomDemo from "./avatar/custom";
+import avatarCustomCode from "./avatar/custom.tsx?raw";
 import CollapseAccordionDemo from "./collapse/accordion";
 import collapseAccordionCode from "./collapse/accordion.tsx?raw";
 import CollapseCollapseDemo from "./collapse/collapse";
@@ -23,6 +25,8 @@ import ComboboxAsyncDemo from "./combobox/async";
 import comboboxAsyncCode from "./combobox/async.tsx?raw";
 import ComboboxBasicDemo from "./combobox/basic";
 import comboboxBasicCode from "./combobox/basic.tsx?raw";
+import ComboboxCustomDemo from "./combobox/custom";
+import comboboxCustomCode from "./combobox/custom.tsx?raw";
 import CardBasicDemo from "./css/card-basic";
 import cardBasicCode from "./css/card-basic.tsx?raw";
 import CardGroupDemo from "./css/card-group";
@@ -43,10 +47,14 @@ import DrawerBasicDemo from "./drawer/basic";
 import drawerBasicCode from "./drawer/basic.tsx?raw";
 import DrawerExpandableDemo from "./drawer/expandable";
 import drawerExpandableCode from "./drawer/expandable.tsx?raw";
+import DrawerCustomDemo from "./drawer/custom";
+import drawerCustomCode from "./drawer/custom.tsx?raw";
 import DropdownAlignmentDemo from "./dropdown/alignment";
 import dropdownAlignmentCode from "./dropdown/alignment.tsx?raw";
 import DropdownBasicDemo from "./dropdown/basic";
 import dropdownBasicCode from "./dropdown/basic.tsx?raw";
+import DropdownCustomDemo from "./dropdown/custom";
+import dropdownCustomCode from "./dropdown/custom.tsx?raw";
 import FormBasicDemo from "./form/basic";
 import formBasicCode from "./form/basic.tsx?raw";
 import FormHorizontalDemo from "./form/horizontal";
@@ -185,6 +193,10 @@ export const demos: Record<string, DemoItem> = {
     component: ComboboxAsyncDemo,
     code: comboboxAsyncCode,
   },
+  "combobox-custom": {
+    component: ComboboxCustomDemo,
+    code: comboboxCustomCode,
+  },
   "kdb-basic": {
     component: KdbBasicDemo,
     code: kdbBasicCode,
@@ -225,14 +237,21 @@ export const demos: Record<string, DemoItem> = {
     component: DrawerExpandableDemo,
     code: drawerExpandableCode,
   },
+  "drawer-custom": {
+    component: DrawerCustomDemo,
+    code: drawerCustomCode,
+  },
   "dropdown-basic": {
     component: DropdownBasicDemo,
     code: dropdownBasicCode,
   },
-
   "dropdown-alignment": {
     component: DropdownAlignmentDemo,
     code: dropdownAlignmentCode,
+  },
+  "dropdown-custom": {
+    component: DropdownCustomDemo,
+    code: dropdownCustomCode,
   },
   "form-basic": {
     component: FormBasicDemo,
@@ -253,6 +272,10 @@ export const demos: Record<string, DemoItem> = {
   "avatar-basic": {
     component: AvatarBasicDemo,
     code: avatarBasicCode,
+  },
+  "avatar-custom": {
+    component: AvatarCustomDemo,
+    code: avatarCustomCode,
   },
   "image-basic": {
     component: ImageBasicDemo,

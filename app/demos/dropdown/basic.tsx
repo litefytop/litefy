@@ -12,13 +12,26 @@ export default function DropdownBasicDemo() {
         },
       }}
       items={[
-        { itemType: "label", label: "Account" },
-        { itemType: "action", label: "Profile" },
-        { itemType: "action", label: "Preferences" },
-        { itemType: "label", label: "System" },
-        { itemType: "action", label: "Notifications" },
-        { itemType: "action", label: "Settings" },
-        { itemType: "action", label: "Logout", className: "text-destructive" },
+        {
+          type: "group",
+          label: <span className="text-muted-foreground">Account</span>,
+          children: [
+            { label: "Profile" },
+            {
+              label: "Preferences",
+              children: [{ label: "Theme" }, { label: "Language" }],
+            },
+          ],
+        },
+        {
+          type: "group",
+          label: <span className="text-muted-foreground">System</span>,
+          children: [
+            { label: "Notifications" },
+            { label: "Settings" },
+            { label: "Logout", className: "text-destructive" },
+          ],
+        },
       ]}
     />
   );

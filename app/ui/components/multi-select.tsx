@@ -19,25 +19,20 @@ type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
   className?: ClassNameValue;
 };
 
-export interface MultiSelectProps
-  extends Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    "value" | "defaultValue" | "onChange" | "className" | "type"
-  > {
+export interface MultiSelectProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "value" | "defaultValue" | "onChange" | "className" | "type"
+> {
   value?: string[];
   defaultValue?: string[];
   onChange?: (values: string[]) => void;
   options: (SelectOption | SelectOptionGroup)[];
   placeholder?: string;
-  emptyFallback?: string;
+  empty?: React.ReactNode;
   disabled?: boolean;
   invalid?: boolean;
   className?: ClassNameValue;
   selectedIcon?: React.ReactNode;
-  renderDisplay?: (
-    selected: string[],
-    options: (SelectOption | SelectOptionGroup)[],
-  ) => React.ReactNode;
   slotProps?: {
     container?: HTMLAttrs<React.ComponentProps<"div">>;
     trigger?: HTMLAttrs<React.ComponentProps<"button">>;
@@ -54,12 +49,11 @@ export function MultiSelect({
   onChange,
   options,
   placeholder = "Select...",
-  emptyFallback = "No options available...",
+  empty = "No options available...",
   disabled = false,
   invalid = false,
   className,
   selectedIcon = "✓",
-  renderDisplay,
   slotProps = {},
   ...inputProps
 }: MultiSelectProps) {
@@ -74,8 +68,7 @@ export function MultiSelect({
   const listRef = React.useRef<HTMLDivElement>(null);
   const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const selected =
-    controlledValue !== undefined ? controlledValue : internalValue;
+  const selected = controlledValue !== undefined ? controlledValue : internalValue;
 
   const flatOptions = React.useMemo(() => {
     const result: { label: string; value: string; group?: string }[] = [];
@@ -100,13 +93,15 @@ export function MultiSelect({
   }, [flatOptions]);
 
   const displayContent = React.useMemo(() => {
-    if (renderDisplay) {
-      return renderDisplay(selected, options);
+    if (selected.length === 0) {
+      return placeholder;
     }
-    return selected.length > 0
-      ? `Selected ${selected.length} items`
-      : placeholder;
-  }, [selected, options, renderDisplay, placeholder]);
+    if (selected.length === 1) {
+      const found = flatOptions.find((opt) => opt.value === selected[0]);
+      return found?.label ?? selected[0];
+    }
+    return `Selected ${selected.length} items`;
+  }, [selected, placeholder, flatOptions]);
 
   const toggleOption = (value: string) => {
     const newSelected = selected.includes(value)
@@ -150,8 +145,6 @@ export function MultiSelect({
     setIsOpen(true);
     setHighlightIndex(-1);
     if (listRef.current) listRef.current.scrollTop = 0;
-    // 位置需要在显示后计算，因为 popover 可能会影响布局，但用 fixed 定位可以立即计算
-    // 使用 requestAnimationFrame 确保渲染完成
     requestAnimationFrame(updatePanelPosition);
   }, [updatePanelPosition]);
 
@@ -170,7 +163,6 @@ export function MultiSelect({
     }
   }, [isOpen, openPopover, closePopover]);
 
-  // 监听窗口变化重新定位
   React.useEffect(() => {
     if (!isOpen) return;
     const handleUpdate = () => {
@@ -194,7 +186,6 @@ export function MultiSelect({
     };
   }, [isOpen, updatePanelPosition]);
 
-  // 点击外部关闭
   React.useEffect(() => {
     if (!isOpen) return;
     const handleDocumentClick = (e: MouseEvent) => {
@@ -207,16 +198,13 @@ export function MultiSelect({
     return () => document.removeEventListener("mousedown", handleDocumentClick);
   }, [isOpen, closePopover]);
 
-  // 键盘导航
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
     if (!isOpen) return;
 
     switch (e.key) {
       case "ArrowDown": {
         e.preventDefault();
-        setHighlightIndex((prev) =>
-          prev + 1 < flatOptions.length ? prev + 1 : prev,
-        );
+        setHighlightIndex((prev) => (prev + 1 < flatOptions.length ? prev + 1 : prev));
         break;
       }
       case "ArrowUp": {
@@ -240,7 +228,6 @@ export function MultiSelect({
     }
   };
 
-  // 同步 popover 的 toggle 事件
   React.useEffect(() => {
     const panel = panelRef.current;
     if (!panel) return;
@@ -252,7 +239,6 @@ export function MultiSelect({
     return () => panel.removeEventListener("toggle", handleToggle);
   }, []);
 
-  // 高亮项滚动可见
   React.useEffect(() => {
     if (highlightIndex >= 0 && listRef.current) {
       const items = listRef.current.querySelectorAll('[role="option"]');
@@ -310,10 +296,7 @@ export function MultiSelect({
     <>
       <div
         {...slotProps?.container}
-        className={cn(
-          "relative inline-block w-full min-w-3xs max-w-sm",
-          className,
-        )}
+        className={cn("relative inline-block w-full min-w-3xs max-w-sm", className)}
       >
         <button
           {...slotProps?.trigger}
@@ -344,7 +327,6 @@ export function MultiSelect({
         </button>
       </div>
 
-      {/* popover 面板直接放在这里，不通过 portal */}
       <div
         id={panelId}
         ref={panelRef}
@@ -356,19 +338,16 @@ export function MultiSelect({
           slotProps?.panel?.className,
         )}
         style={{
-          // 初始样式，位置会在打开时由 updatePanelPosition 覆盖
           position: "fixed",
           top: 0,
           left: 0,
           margin: 0,
-          visibility: isOpen ? "visible" : "hidden", // 避免闪烁
+          visibility: isOpen ? "visible" : "hidden",
         }}
       >
         <div ref={listRef} className="space-y-0">
           {options.length === 0 ? (
-            <div className="py-2 text-center text-sm text-muted-foreground">
-              {emptyFallback}
-            </div>
+            <div className="py-2 text-center text-sm text-muted-foreground">{empty}</div>
           ) : (
             options.map((item) => {
               if ("group" in item) {
@@ -390,8 +369,7 @@ export function MultiSelect({
                     </div>
                     {item.options.map((opt) => {
                       const isSelected = selected.includes(opt.value);
-                      const isHighlighted =
-                        valueToIndexMap.get(opt.value) === highlightIndex;
+                      const isHighlighted = valueToIndexMap.get(opt.value) === highlightIndex;
                       return (
                         <OptionItem
                           key={opt.value}
@@ -407,8 +385,7 @@ export function MultiSelect({
                 );
               }
               const isSelected = selected.includes(item.value);
-              const isHighlighted =
-                valueToIndexMap.get(item.value) === highlightIndex;
+              const isHighlighted = valueToIndexMap.get(item.value) === highlightIndex;
               return (
                 <OptionItem
                   key={item.value}
@@ -423,12 +400,7 @@ export function MultiSelect({
         </div>
       </div>
 
-      <input
-        type="hidden"
-        {...inputProps}
-        value={selected.join(",")}
-        disabled={disabled}
-      />
+      <input type="hidden" {...inputProps} value={selected.join(",")} disabled={disabled} />
     </>
   );
 }

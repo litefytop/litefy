@@ -39,6 +39,14 @@ Combobox supporting async options fetching and scroll-based pagination, configur
   name="combobox-async"
 />
 
+### Custom
+
+Use the low-level atomic components for advanced customization.
+
+<ComponentPreview 
+  name="combobox-custom"
+/>
+
 ## API Reference
 
 ### High-level Components
@@ -49,7 +57,7 @@ Ready-to-use composite components.
 
 A combobox supporting static options and async search, with built-in keyboard navigation and scroll-based pagination.
 
-| Prop            | Type                          | Default                 | Description                                       |
+| Prop            | Type                          | Default                 | Description                                                         |
 | --------------- | ----------------------------- | ----------------------- | ------------------------------------------------------------------- |
 | `value`         | `string`                      | -                       | Controlled selected value                                           |
 | `defaultValue`  | `string`                      | `""`                    | Initial default value (uncontrolled)                                |
@@ -75,7 +83,7 @@ A combobox supporting static options and async search, with built-in keyboard na
 
 #### slotProps
 
-| Slot      | Type                                                                       | Description                    |
+| Slot      | Type                                                                       | Description                              |
 | --------- | -------------------------------------------------------------------------- | ---------------------------------------- |
 | `root`    | `HTMLAttrs<Omit<React.ComponentProps<"div">, "ref">>`                      | Props for the outer container div        |
 | `popover` | `HTMLAttrs<Omit<React.ComponentProps<"div">, "ref" \| "popoverTarget">>`   | Props for the dropdown popover container |

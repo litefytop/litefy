@@ -17,7 +17,6 @@ export function Dialog({
   open,
   onOpenChange,
   closeTrigger,
-
   ...props
 }: DialogProps) {
   const _ref = React.useRef<HTMLDialogElement>(null);
@@ -66,8 +65,6 @@ export function Dialog({
     onOpenChange?.(false);
   };
 
-
-
   const handleCancel = (e: React.SyntheticEvent<HTMLDialogElement>) => {
     e.preventDefault();
     onOpenChange?.(false);
@@ -89,7 +86,7 @@ export function Dialog({
       onKeyDown={handleKeyDown}
       onCancel={handleCancel}
       onClose={handleNativeClose}
- 
+
       className={cn(
         "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 m-0",
         "rounded-lg border bg-background p-6 shadow-lg text-foreground",

@@ -1,6 +1,6 @@
 ---
 title: Dropdown 下拉菜单
-description: 支持键盘导航的下拉菜单组件
+description: 基于 popover + CSS Anchor Positioning 的下拉菜单组件，支持键盘导航
 ---
 
 ## 安装
@@ -25,7 +25,7 @@ description: 支持键盘导航的下拉菜单组件
 
 ### 基础用法
 
-基础下拉菜单，包含图标项和分隔符。
+通过 `items` 配置驱动菜单。支持分组标签，任意菜单项可以展开二级子菜单（最多两级）。
 
 <ComponentPreview 
   name="dropdown-basic"
@@ -33,66 +33,95 @@ description: 支持键盘导航的下拉菜单组件
 
 ### 对齐方式
 
-使用 alignX 和 alignY 属性控制下拉菜单的对齐方式。
+使用 `positionArea`（任意合法的 CSS `position-area` 值）控制常规定位；或使用 `alignX` 将菜单边对边贴靠在 trigger 旁，适配侧边栏导航场景。
 
 <ComponentPreview 
   name="dropdown-alignment"
+/>
+
+### 自定义
+
+使用底层原子组件实现自定义。
+
+<ComponentPreview 
+  name="dropdown-custom"
 />
 
 ## API 参考
 
 ### Dropdown
 
-主容器组件。
+主组件。根面板是 `popover="manual"` 元素，通过 `position-anchor` / `position-area` 定位，内置碰撞检测（`position-try-fallbacks`）。
 
-| Prop        | Type              | Default | Description                                                 |
-| ----------- | ----------------- | ------- | ----------------------------------------------------------- |
-| `children`  | `React.ReactNode` | -       | 下拉菜单内容                                                |
-| `className` | `ClassNameValue`  | -       | 自定义 CSS 类名，支持字符串、数组、对象、布尔值等多种格式。 |
+| Prop            | Type                                    | Default             | Description                                                 |
+| --------------- | --------------------------------------- | ------------------- | ------------------------------------------------------------ |
+| `items`         | `DropdownItemConfig[]`                  | `[]`                | 菜单项配置，见下方 [items](#items)                           |
+| `slots.trigger` | `DropdownTriggerProps`                  | -                   | 触发按钮的属性                                               |
+| `itemClassName` | `ClassNameValue`                        | -                   | 应用到每个菜单项按钮的类名                                   |
+| `positionArea`  | `string`                                | `'bottom span-all'` | 任意合法的 CSS `position-area` 值。建议使用 `span-*` 系列，碰撞检测才能正常工作 |
+| `alignX`        | `'start' \| 'end'`                      | -                   | 侧边栏模式：`start` 表示菜单的 end 边贴靠 trigger 的 start 边（向左展开）；`end` 表示菜单的 start 边贴靠 trigger 的 end 边（向右展开）。优先级高于 `positionArea` |
+| `className`     | `ClassNameValue`                        | -                   | 自定义 CSS 类名，支持字符串、数组、对象、布尔值等多种格式。  |
+| `...props`      | `React.ComponentProps<"div">`           | -                   | 支持根面板的全部 div 原生属性                                |
 
-### Dropdown.Trigger
+#### items
 
-触发下拉菜单的按钮。
+```ts
+type DropdownGroupItem = {
+  type: "group";
+  label: React.ReactNode;
+  children: DropdownMenuItem[];
+};
 
-| Prop        | Type              | Default | Description                                               |
-| ----------- | ----------------- | ------- | --------------------------------------------------------- |
-| `children`  | `React.ReactNode` | -       | 触发器内容                                                |
-| `className` | `ClassNameValue`  | -       | 自定义 CSS 类，支持字符串、数组、对象、布尔值等多种格式。 |
+type DropdownMenuItem = {
+  label: React.ReactNode;
+  disabled?: boolean;
+  className?: ClassNameValue;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  children?: Omit<DropdownMenuItem, "children">[];
+};
 
-### Dropdown.Content
+type DropdownItemConfig = DropdownGroupItem | DropdownMenuItem;
+```
 
-下拉菜单内容区域。
+#### 键盘导航
 
-| Prop        | Type                           | Default    | Description                                                                                                                          |
-| ----------- | ------------------------------ | ---------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `children`  | `React.ReactNode`              | -          | 菜单项                                                                                                                               |
-| `className` | `ClassNameValue`               | -          | 自定义 CSS 类名，支持字符串、数组、对象、布尔值等多种格式。如需调整内容与触发器之间的间距，可在此处添加 margin 工具类（如 `mt-2`）。 |
-| `alignX`    | `'start' \| 'center' \| 'end'` | `'center'` | 水平对齐方式                                                                                                                         |
-| `alignY`    | `'start' \| 'center' \| 'end'` | `'end'`    | 垂直对齐方式                                                                                                                         |
-| `popover`   | `'auto' \| 'manual' \| 'hint'` | `'auto'`   | Popover 行为                                                                                                                         |
+| 按键               | 行为                                 |
+| ------------------ | ------------------------------------- |
+| `Space` / `Enter`  | 打开菜单并聚焦第一个菜单项            |
+| `ArrowDown` / `ArrowUp` | 在菜单项之间移动（循环）         |
+| `ArrowRight`       | 打开当前菜单项的子菜单                |
+| `ArrowLeft`        | 关闭子菜单并回到父级菜单项            |
+| `Escape`           | 关闭菜单并重新聚焦 trigger            |
 
-### Dropdown.Item
+---
 
-单个菜单项。
+### Headless 原子组件
 
-| Prop        | Type              | Default | Description                                               |
-| ----------- | ----------------- | ------- | --------------------------------------------------------- |
-| `children`  | `React.ReactNode` | -       | 项内容                                                    |
-| `className` | `ClassNameValue`  | -       | 自定义 CSS 类，支持字符串、数组、对象、布尔值等多种格式。 |
+> 以下为底层原子组件，**内置样式极少，样式需要通过 className 自行补充**。高层组合组件 `Dropdown` 即由以下原子组件组合而成。
 
-### Dropdown.Label
+#### DropdownTrigger
 
-用于分组的标签。
+触发按钮，内置 `type="button"` 和 `aria-haspopup="menu"`。高层组件 `Dropdown` 通过内联 style 为其设置 `anchor-name`。
 
-| Prop        | Type              | Default | Description                                               |
-| ----------- | ----------------- | ------- | --------------------------------------------------------- |
-| `children`  | `React.ReactNode` | -       | 标签文本                                                  |
-| `className` | `ClassNameValue`  | -       | 自定义 CSS 类，支持字符串、数组、对象、布尔值等多种格式。 |
+| Prop        | Type                            | Default | Description           |
+| ----------- | -------------------------------- | ------- | ----------------------- |
+| `className` | `ClassNameValue`                 | -       | 自定义类名              |
+| `...props`  | `React.ComponentProps<"button">` | -       | 支持全部 button 原生属性 |
 
-### Dropdown.Separator
+#### DropdownContent
 
-项之间的视觉分隔符。
+通用面板容器。
 
-| Prop        | Type             | Default | Description                                               |
-| ----------- | ---------------- | ------- | --------------------------------------------------------- |
-| `className` | `ClassNameValue` | -       | 自定义 CSS 类，支持字符串、数组、对象、布尔值等多种格式。 |
+| Prop        | Type                          | Default | Description           |
+| ----------- | ------------------------------ | ------- | ----------------------- |
+| `className` | `ClassNameValue`               | -       | 自定义类名              |
+| `...props`  | `React.ComponentProps<"div">`  | -       | 支持全部 div 原生属性   |
+
+#### DropdownItem
+
+菜单项包装元素（`li`），内置 `m-0`。
+
+| Prop        | Type                         | Default | Description          |
+| ----------- | ----------------------------- | ------- | ---------------------- |
+| `className` | `ClassNameValue`              | -       | 自定义类名             |
+| `...props`  | `React.ComponentProps<"li">`  | -       | 支持全部 li 原生属性   |

@@ -1,6 +1,6 @@
 ---
 title: Dropdown
-description: A dropdown menu component with keyboard navigation
+description: A dropdown menu component with keyboard navigation, built on popover + CSS Anchor Positioning
 ---
 
 ## Installation
@@ -25,7 +25,7 @@ description: A dropdown menu component with keyboard navigation
 
 ### Basic Usage
 
-Basic dropdown menu with icon items and separator.
+Dropdown menu driven by the `items` config. Items can be grouped with labels, and any item can open a two-level submenu (max two levels).
 
 <ComponentPreview 
   name="dropdown-basic"
@@ -33,66 +33,95 @@ Basic dropdown menu with icon items and separator.
 
 ### Alignment
 
-Control dropdown alignment with alignX and alignY props.
+Use `positionArea` (any valid CSS `position-area` value) for general placement, or `alignX` to attach the menu edge-to-edge beside the trigger for sidebar-style navigation.
 
 <ComponentPreview 
   name="dropdown-alignment"
+/>
+
+### Custom
+
+Use the low-level atomic components for advanced customization.
+
+<ComponentPreview 
+  name="dropdown-custom"
 />
 
 ## API Reference
 
 ### Dropdown
 
-The main container component.
+The main component. The root panel is a `popover="manual"` element positioned with `position-anchor` / `position-area`, with built-in collision detection (`position-try-fallbacks`).
 
-| Prop        | Type              | Default | Description                                                                                                        |
-| ----------- | ----------------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
-| `children`  | `React.ReactNode` | -       | Dropdown content                                                                                                   |
-| `className` | `ClassNameValue`  | -       | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| Prop            | Type                                    | Default             | Description                                                                                                        |
+| --------------- | --------------------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `items`         | `DropdownItemConfig[]`                  | `[]`                | Menu item config, see [items](#items) below                                                                        |
+| `slots.trigger` | `DropdownTriggerProps`                  | -                   | Props for the trigger button                                                                                       |
+| `itemClassName` | `ClassNameValue`                        | -                   | Class applied to every menu item button                                                                            |
+| `positionArea`  | `string`                                | `'bottom span-all'` | Any valid CSS `position-area` value. Use `span-*` variants so collision detection works correctly                  |
+| `alignX`        | `'start' \| 'end'`                      | -                   | Sidebar mode: `start` attaches the menu's end edge to the trigger's start edge (opens left); `end` attaches the menu's start edge to the trigger's end edge (opens right). Takes precedence over `positionArea` |
+| `className`     | `ClassNameValue`                        | -                   | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| `...props`      | `React.ComponentProps<"div">`           | -                   | Supports all native div props on the root panel                                                                    |
 
-### Dropdown.Trigger
+#### items
 
-The trigger button that opens the dropdown.
+```ts
+type DropdownGroupItem = {
+  type: "group";
+  label: React.ReactNode;
+  children: DropdownMenuItem[];
+};
 
-| Prop        | Type              | Default | Description                                                                                                        |
-| ----------- | ----------------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
-| `children`  | `React.ReactNode` | -       | Trigger content                                                                                                    |
-| `className` | `ClassNameValue`  | -       | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+type DropdownMenuItem = {
+  label: React.ReactNode;
+  disabled?: boolean;
+  className?: ClassNameValue;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  children?: Omit<DropdownMenuItem, "children">[];
+};
 
-### Dropdown.Content
+type DropdownItemConfig = DropdownGroupItem | DropdownMenuItem;
+```
 
-The dropdown menu content.
+#### Keyboard Navigation
 
-| Prop        | Type                           | Default    | Description                                                                                                                                                                                                             |
-| ----------- | ------------------------------ | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `children`  | `React.ReactNode`              | -          | Menu items                                                                                                                                                                                                              |
-| `className` | `ClassNameValue`               | -          | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. To adjust the gap between the content and the trigger, add margin utility classes (e.g. `m-2`) here. |
-| `alignX`    | `'start' \| 'center' \| 'end'` | `'center'` | Horizontal alignment                                                                                                                                                                                                    |
-| `alignY`    | `'start' \| 'center' \| 'end'` | `'end'`    | Vertical alignment                                                                                                                                                                                                      |
-| `popover`   | `'auto' \| 'manual' \| 'hint'` | `'auto'`   | Popover behavior                                                                                                                                                                                                        |
+| Key          | Behavior                                          |
+| ------------ | -------------------------------------------------- |
+| `Space` / `Enter` | Open the menu and focus the first item       |
+| `ArrowDown` / `ArrowUp` | Move between items (wraps around)      |
+| `ArrowRight` | Open the submenu of the current item              |
+| `ArrowLeft`  | Close the submenu and return to the parent item   |
+| `Escape`     | Close the menu and refocus the trigger            |
 
-### Dropdown.Item
+---
 
-Individual menu item.
+### Headless Atomic Components
 
-| Prop        | Type              | Default | Description                                                                                                        |
-| ----------- | ----------------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
-| `children`  | `React.ReactNode` | -       | Item content                                                                                                       |
-| `className` | `ClassNameValue`  | -       | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+> The following are low-level atomic components with **minimal built-in styles; styles should be added via className**. The high-level composite component `Dropdown` is composed of these atomic components.
 
-### Dropdown.Label
+#### DropdownTrigger
 
-Label for grouping items.
+The trigger button with built-in `type="button"` and `aria-haspopup="menu"`. The high-level `Dropdown` sets `anchor-name` on it via inline style.
 
-| Prop        | Type              | Default | Description                                                                                                        |
-| ----------- | ----------------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
-| `children`  | `React.ReactNode` | -       | Label text                                                                                                         |
-| `className` | `ClassNameValue`  | -       | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| Prop        | Type                            | Default | Description                     |
+| ----------- | -------------------------------- | ------- | -------------------------------- |
+| `className` | `ClassNameValue`                 | -       | Custom class name                |
+| `...props`  | `React.ComponentProps<"button">` | -       | Supports all native button props |
 
-### Dropdown.Separator
+#### DropdownContent
 
-Visual separator between items.
+Generic panel container.
 
-| Prop        | Type             | Default | Description                                                                                                        |
-| ----------- | ---------------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
-| `className` | `ClassNameValue` | -       | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| Prop        | Type                          | Default | Description                  |
+| ----------- | ------------------------------ | ------- | ------------------------------ |
+| `className` | `ClassNameValue`               | -       | Custom class name              |
+| `...props`  | `React.ComponentProps<"div">`  | -       | Supports all native div props  |
+
+#### DropdownItem
+
+Menu item wrapper (`li`) with built-in `m-0`.
+
+| Prop        | Type                         | Default | Description                 |
+| ----------- | ----------------------------- | ------- | ----------------------------- |
+| `className` | `ClassNameValue`              | -       | Custom class name             |
+| `...props`  | `React.ComponentProps<"li">`  | -       | Supports all native li props  |

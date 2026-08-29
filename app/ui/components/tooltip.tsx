@@ -84,14 +84,11 @@ export type TooltipProps = {
 
 export function Tooltip({ children, delay = 100, side = "top" }: TooltipProps) {
   const fallbackId = React.useId();
-  const { triggerId: userTriggerId, contentId: userContentId } =
-    findIds(children);
+  const { triggerId: userTriggerId, contentId: userContentId } = findIds(children);
   const triggerId = userTriggerId ?? `tooltip-trigger-${fallbackId}`;
   const contentId = userContentId ?? `tooltip-content-${fallbackId}`;
 
-  const hideTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(
-    null,
-  );
+  const hideTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const show = React.useCallback(() => {
     if (hideTimeoutRef.current) {
@@ -142,11 +139,7 @@ export function Tooltip({ children, delay = 100, side = "top" }: TooltipProps) {
     };
   }, []);
 
-  return (
-    <TooltipContext.Provider value={contextValue}>
-      {children}
-    </TooltipContext.Provider>
-  );
+  return <TooltipContext.Provider value={contextValue}>{children}</TooltipContext.Provider>;
 }
 
 export type TooltipTriggerProps = {
@@ -154,11 +147,7 @@ export type TooltipTriggerProps = {
   className?: string;
 } & Omit<React.ComponentProps<"button">, "className" | "children" | "id">;
 
-function TooltipTrigger({
-  children,
-  className,
-  ...props
-}: TooltipTriggerProps) {
+function TooltipTrigger({ children, className, ...props }: TooltipTriggerProps) {
   const { triggerId, show, scheduleHide, cancelHide } = useTooltip();
   const supportsAnchor = useSupportsAnchor();
 
@@ -181,9 +170,7 @@ function TooltipTrigger({
         "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
         className,
       )}
-      style={
-        supportsAnchor ? { anchorName: `--anchor-${triggerId}` } : undefined
-      }
+      style={supportsAnchor ? { anchorName: `--anchor-${triggerId}` } : undefined}
     >
       {children}
     </button>
@@ -205,13 +192,7 @@ function TooltipContent({
   ref,
   ...props
 }: TooltipContentProps) {
-  const {
-    triggerId,
-    contentId,
-    side: ctxSide,
-    scheduleHide,
-    cancelHide,
-  } = useTooltip();
+  const { triggerId, contentId, side: ctxSide, scheduleHide, cancelHide } = useTooltip();
   const side = propSide ?? ctxSide;
   const _ref = React.useRef<HTMLDivElement>(null);
   const supportsAnchor = useSupportsAnchor();
@@ -250,14 +231,8 @@ function TooltipContent({
         break;
     }
 
-    top = Math.min(
-      Math.max(top, 8),
-      window.innerHeight - contentRect.height - 8,
-    );
-    left = Math.min(
-      Math.max(left, 8),
-      window.innerWidth - contentRect.width - 8,
-    );
+    top = Math.min(Math.max(top, 8), window.innerHeight - contentRect.height - 8);
+    left = Math.min(Math.max(left, 8), window.innerWidth - contentRect.width - 8);
 
     setManualPosition({ top, left });
   }, [triggerId, side]);
