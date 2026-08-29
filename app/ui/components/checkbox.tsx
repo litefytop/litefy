@@ -74,13 +74,13 @@ export const Checkbox = ({
       <CheckboxIndicator
         {...props}
         checked={checked}
-        className={cn(
-          `transition-colors duration-300 aria-checked:bg-primary text-background bg-background 
-          has-focus-visible:ring-2 has-focus-visible:ring-ring 
-          [&_svg:not([class*='size-'])]:size-3 [&_svg]:stroke-4 
-          border border-border rounded-sm`,
+        className={[
+          "transition-colors duration-300 aria-checked:bg-primary text-background bg-background ",
+          "has-focus-visible:ring-2 has-focus-visible:ring-ring ",
+          "[&_svg:not([class*='size-'])]:size-3 [&_svg]:stroke-4 ",
+          "border border-border rounded-sm",
           className,
-        )}
+        ]}
       >
         {indicator ?? <Check />}
       </CheckboxIndicator>

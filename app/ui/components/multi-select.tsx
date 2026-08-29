@@ -1,5 +1,4 @@
 "use client";
-
 import { ChevronDown } from "lucide-react";
 import * as React from "react";
 import { type ClassNameValue, cn } from "@/lib";
@@ -8,7 +7,6 @@ type SelectOption = {
   label: string;
   value: string;
 };
-
 type SelectOptionGroup = {
   group: string;
   options: SelectOption[];
@@ -18,6 +16,63 @@ type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
   [key: `data-${string}`]: string | number | boolean | null | undefined;
   className?: ClassNameValue;
 };
+
+export interface MultiSelectRootProps extends Omit<React.ComponentProps<"div">, "className"> {
+  className?: ClassNameValue;
+}
+export function MultiSelectRoot({ className, ...props }: MultiSelectRootProps) {
+  return <div className={cn(className)} {...props} />;
+}
+
+export interface MultiSelectTriggerProps extends Omit<React.ComponentProps<"button">, "className"> {
+  className?: ClassNameValue;
+}
+export function MultiSelectTrigger({ className, ...props }: MultiSelectTriggerProps) {
+  return (
+    <button
+      type="button"
+      aria-haspopup="listbox"
+      className={cn(className)}
+      {...props}
+    />
+  );
+}
+
+export interface MultiSelectPopoverProps extends Omit<React.ComponentProps<"div">, "className"> {
+  className?: ClassNameValue;
+}
+export function MultiSelectPopover({ className, ...props }: MultiSelectPopoverProps) {
+  return (
+    <div
+      popover="manual"
+      role="listbox"
+      aria-multiselectable="true"
+      className={cn(className)}
+      {...props}
+    />
+  );
+}
+
+export interface MultiSelectGroupProps extends Omit<React.ComponentProps<"div">, "className"> {
+  className?: ClassNameValue;
+}
+export function MultiSelectGroup({ className, ...props }: MultiSelectGroupProps) {
+  return <div role="presentation" className={cn(className)} {...props} />;
+}
+
+export interface MultiSelectLabelProps extends Omit<React.ComponentProps<"div">, "className"> {
+  className?: ClassNameValue;
+}
+export function MultiSelectLabel({ className, ...props }: MultiSelectLabelProps) {
+  return <div className={cn(className)} {...props} />;
+}
+
+export interface MultiSelectOptionProps extends Omit<React.ComponentProps<"li">, "className"> {
+  className?: ClassNameValue;
+}
+export function MultiSelectOption({ className, ...props }: MultiSelectOptionProps) {
+  return <li role="option" className={cn(className)} {...props} />;
+}
 
 export interface MultiSelectProps extends Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -31,20 +86,19 @@ export interface MultiSelectProps extends Omit<
   empty?: React.ReactNode;
   disabled?: boolean;
   invalid?: boolean;
-  className?: ClassNameValue;
   selectedIcon?: React.ReactNode;
   slotProps?: {
     container?: HTMLAttrs<React.ComponentProps<"div">>;
     trigger?: HTMLAttrs<React.ComponentProps<"button">>;
     panel?: HTMLAttrs<React.ComponentProps<"div">>;
-    option?: HTMLAttrs<React.ComponentProps<"div">>;
+    option?: HTMLAttrs<React.ComponentProps<"li">>;
     group?: HTMLAttrs<React.ComponentProps<"div">>;
     groupLabel?: HTMLAttrs<React.ComponentProps<"div">>;
   };
 }
 
 export function MultiSelect({
-  value: controlledValue,
+  value,
   defaultValue = [],
   onChange,
   options,
@@ -52,23 +106,24 @@ export function MultiSelect({
   empty = "No options available...",
   disabled = false,
   invalid = false,
-  className,
   selectedIcon = "✓",
   slotProps = {},
-  ...inputProps
+  ...props
 }: MultiSelectProps) {
   const id = React.useId();
   const triggerId = slotProps.trigger?.id || `multi-select-trigger-${id}`;
   const panelId = slotProps.panel?.id || `multi-select-panel-${id}`;
-  const [internalValue, setInternalValue] = React.useState(defaultValue);
+  const anchorName = `--multi-select-${id.replace(/[^a-zA-Z0-9_-]/g, "")}`;
+
+  const [_value, setValue] = React.useState(defaultValue);
   const [isOpen, setIsOpen] = React.useState(false);
   const [highlightIndex, setHighlightIndex] = React.useState(-1);
+
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   const panelRef = React.useRef<HTMLDivElement>(null);
-  const listRef = React.useRef<HTMLDivElement>(null);
-  const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const listRef = React.useRef<HTMLUListElement>(null);
 
-  const selected = controlledValue !== undefined ? controlledValue : internalValue;
+  const value$ = value !== undefined ? value : _value;
 
   const flatOptions = React.useMemo(() => {
     const result: { label: string; value: string; group?: string }[] = [];
@@ -93,50 +148,23 @@ export function MultiSelect({
   }, [flatOptions]);
 
   const displayContent = React.useMemo(() => {
-    if (selected.length === 0) {
+    if (value$.length === 0) {
       return placeholder;
     }
-    if (selected.length === 1) {
-      const found = flatOptions.find((opt) => opt.value === selected[0]);
-      return found?.label ?? selected[0];
+    if (value$.length === 1) {
+      const found = flatOptions.find((opt) => opt.value === value$[0]);
+      return found?.label ?? value$[0];
     }
-    return `Selected ${selected.length} items`;
-  }, [selected, placeholder, flatOptions]);
+    return `Selected ${value$.length} items`;
+  }, [value$, placeholder, flatOptions]);
 
-  const toggleOption = (value: string) => {
-    const newSelected = selected.includes(value)
-      ? selected.filter((v) => v !== value)
-      : [...selected, value];
-    if (controlledValue === undefined) setInternalValue(newSelected);
+  const toggleOption = (option: string) => {
+    const newSelected = value$.includes(option)
+      ? value$.filter((v) => v !== option)
+      : [...value$, option];
+    if (value === undefined) setValue(newSelected);
     onChange?.(newSelected);
   };
-
-  const updatePanelPosition = React.useCallback(() => {
-    const trigger = triggerRef.current;
-    const panel = panelRef.current;
-    if (!trigger || !panel) return;
-
-    const triggerRect = trigger.getBoundingClientRect();
-    const panelRect = panel.getBoundingClientRect();
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-
-    let top = triggerRect.bottom + 4;
-    let left = triggerRect.left;
-    if (top + panelRect.height > viewportHeight) {
-      top = triggerRect.top - panelRect.height - 4;
-    }
-    if (left + panelRect.width > viewportWidth) {
-      left = viewportWidth - panelRect.width - 8;
-    }
-    if (left < 8) left = 8;
-
-    panel.style.position = "fixed";
-    panel.style.top = `${top}px`;
-    panel.style.left = `${left}px`;
-    panel.style.width = `${triggerRect.width}px`;
-    panel.style.margin = "0";
-  }, []);
 
   const openPopover = React.useCallback(() => {
     const panel = panelRef.current;
@@ -145,8 +173,7 @@ export function MultiSelect({
     setIsOpen(true);
     setHighlightIndex(-1);
     if (listRef.current) listRef.current.scrollTop = 0;
-    requestAnimationFrame(updatePanelPosition);
-  }, [updatePanelPosition]);
+  }, []);
 
   const closePopover = React.useCallback(() => {
     const panel = panelRef.current;
@@ -165,29 +192,6 @@ export function MultiSelect({
 
   React.useEffect(() => {
     if (!isOpen) return;
-    const handleUpdate = () => {
-      if (timerRef.current) return;
-      timerRef.current = setTimeout(() => {
-        updatePanelPosition();
-        timerRef.current = null;
-      }, 100);
-    };
-
-    window.addEventListener("resize", handleUpdate);
-    window.addEventListener("scroll", handleUpdate, { passive: true });
-
-    return () => {
-      window.removeEventListener("resize", handleUpdate);
-      window.removeEventListener("scroll", handleUpdate);
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-        timerRef.current = null;
-      }
-    };
-  }, [isOpen, updatePanelPosition]);
-
-  React.useEffect(() => {
-    if (!isOpen) return;
     const handleDocumentClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (triggerRef.current?.contains(target)) return;
@@ -200,7 +204,6 @@ export function MultiSelect({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
     if (!isOpen) return;
-
     switch (e.key) {
       case "ArrowDown": {
         e.preventDefault();
@@ -241,124 +244,115 @@ export function MultiSelect({
 
   React.useEffect(() => {
     if (highlightIndex >= 0 && listRef.current) {
-      const items = listRef.current.querySelectorAll('[role="option"]');
-      const target = items[highlightIndex] as HTMLElement;
+      const items = listRef.current.querySelectorAll<HTMLElement>('[role="option"]');
+      const target = items[highlightIndex];
       if (target) {
         target.scrollIntoView({ block: "nearest" });
       }
     }
   }, [highlightIndex]);
 
-  const OptionItem = ({
-    opt,
-    isSelected,
-    isHighlighted,
-    onToggle,
-  }: {
-    opt: { label: string; value: string };
-    isSelected: boolean;
-    isHighlighted: boolean;
-    onToggle: (value: string) => void;
-  }) => (
-    <div
-      role="option"
-      aria-selected={isSelected}
-      tabIndex={-1}
-      data-active={isHighlighted || undefined}
-      onClick={() => onToggle(opt.value)}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          onToggle(opt.value);
-        }
-      }}
-      className={cn(
-        "flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm transition-colors",
-        "hover:bg-accent hover:text-accent-foreground",
-        "focus:outline-none focus:ring-2 focus:ring-ring",
-        "data-[active=true]:bg-accent data-[active=true]:ring-2 data-[active=true]:ring-ring",
-        slotProps?.option?.className,
-      )}
-    >
-      <span
-        className={cn(
-          "flex size-4 items-center justify-center rounded-sm border border-primary",
-          isSelected ? "bg-primary text-primary-foreground" : "bg-transparent",
-        )}
+  const renderOption = (opt: SelectOption) => {
+    const isSelected = value$.includes(opt.value);
+    const isHighlighted = valueToIndexMap.get(opt.value) === highlightIndex;
+    return (
+      <MultiSelectOption
+        key={opt.value}
+        {...slotProps?.option}
+        tabIndex={-1}
+        aria-selected={isSelected}
+        data-active={isHighlighted || undefined}
+        onClick={() => toggleOption(opt.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            toggleOption(opt.value);
+          }
+        }}
+        className={["flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm transition-colors",
+          "hover:bg-hover data-[active=true]:bg-hover",
+          slotProps?.option?.className]}
       >
-        {isSelected && selectedIcon}
-      </span>
-      <span className="flex-1 truncate">{opt.label}</span>
-    </div>
-  );
-
-  return (
-    <>
-      <div
-        {...slotProps?.container}
-        className={cn("relative inline-block w-full min-w-3xs max-w-sm", className)}
-      >
-        <button
-          {...slotProps?.trigger}
-          ref={triggerRef}
-          id={triggerId}
-          type="button"
-          disabled={disabled}
-          onClick={togglePopover}
-          onKeyDown={handleKeyDown}
-          aria-haspopup="listbox"
-          aria-expanded={isOpen}
-          aria-controls={panelId}
-          data-invalid={invalid ? true : undefined}
+        <span
+          aria-selected={isSelected}
           className={cn(
-            "flex h-9 w-full min-w-3xs max-w-sm items-center justify-between rounded-md border border-input bg-background px-3 text-sm shadow-xs group",
-            "disabled:cursor-not-allowed disabled:opacity-50",
-            "data-invalid:border-destructive data-invalid:ring-destructive/20 data-invalid:text-destructive",
-            slotProps?.trigger?.className,
+            "flex size-4 items-center justify-center rounded-sm border border-primary",
+             "aria-selected:bg-primary aria-selected:text-primary-foreground bg-transparent",
           )}
         >
-          <span className="truncate">{displayContent}</span>
-          <ChevronDown
-            className={cn(
-              "size-4 transition-transform duration-200",
-              "group-aria-expanded:rotate-180",
-            )}
-          />
-        </button>
-      </div>
+          {isSelected && selectedIcon}
+        </span>
+        <span className="flex-1 truncate">{opt.label}</span>
+      </MultiSelectOption>
+    );
+  };
 
-      <div
-        id={panelId}
-        ref={panelRef}
-        popover="manual"
-        role="listbox"
-        aria-multiselectable="true"
+  return (
+    <MultiSelectRoot
+      {...slotProps?.container}
+      className={cn(
+        "relative w-sm",
+        slotProps?.container?.className,
+      )}
+    >
+      <MultiSelectTrigger
+        {...slotProps?.trigger}
+        ref={triggerRef}
+        id={triggerId}
+        disabled={disabled}
+        onClick={togglePopover}
+        onKeyDown={handleKeyDown}
+        aria-expanded={isOpen}
+        aria-controls={panelId}
+        data-invalid={invalid ? true : undefined}
+        style={{ anchorName, ...slotProps?.trigger?.style }}
         className={cn(
-          "w-full max-h-64 rounded-md border border-input bg-background shadow-lg overflow-auto p-1",
+          "flex h-9 w-full items-center justify-between rounded-md border   px-3 text-sm group",
+          "disabled:cursor-not-allowed disabled:opacity-50",
+          "data-invalid:border-destructive-accent data-invalid:ring-destructive data-invalid:text-destructive",
+          slotProps?.trigger?.className,
+        )}
+      >
+        {displayContent}
+        <ChevronDown
+          className={cn(
+            "size-4 transition-transform duration-200",
+            "group-aria-expanded:rotate-180",
+          )}
+        />
+      </MultiSelectTrigger>
+
+      <MultiSelectPopover
+        ref={panelRef}
+        id={panelId}
+        {...slotProps?.panel}
+        style={{
+          margin: "4px 0 0",
+          positionAnchor: anchorName,
+          positionArea: "bottom span-right",
+          justifySelf: "start",
+          width: "anchor-size(width)",
+          positionTryFallbacks: "flip-block",
+          ...slotProps?.panel?.style,
+        }}
+        className={cn(
+          "max-h-64 rounded-md border border-input bg-background shadow-lg overflow-auto p-1",
           slotProps?.panel?.className,
         )}
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          margin: 0,
-          visibility: isOpen ? "visible" : "hidden",
-        }}
       >
-        <div ref={listRef} className="space-y-0">
+        <ul ref={listRef} className="m-0 p-0 list-none space-y-0">
           {options.length === 0 ? (
-            <div className="py-2 text-center text-sm text-muted-foreground">{empty}</div>
+            <li className="py-2 text-center text-sm text-muted-foreground">{empty}</li>
           ) : (
             options.map((item) => {
               if ("group" in item) {
                 return (
-                  <div
+                  <MultiSelectGroup
                     key={item.group}
-                    role="presentation"
                     {...slotProps?.group}
-                    className={cn("py-1", slotProps?.group?.className)}
+                    className={cn("py-1 not-last:border-b border-border", slotProps?.group?.className)}
                   >
-                    <div
+                    <MultiSelectLabel
                       {...slotProps?.groupLabel}
                       className={cn(
                         "px-2 py-1 text-xs font-semibold text-muted-foreground",
@@ -366,41 +360,19 @@ export function MultiSelect({
                       )}
                     >
                       {item.group}
-                    </div>
-                    {item.options.map((opt) => {
-                      const isSelected = selected.includes(opt.value);
-                      const isHighlighted = valueToIndexMap.get(opt.value) === highlightIndex;
-                      return (
-                        <OptionItem
-                          key={opt.value}
-                          opt={opt}
-                          isSelected={isSelected}
-                          isHighlighted={isHighlighted}
-                          onToggle={toggleOption}
-                        />
-                      );
-                    })}
-                    <hr className="my-1 border-border" />
-                  </div>
+                    </MultiSelectLabel>
+                    {item.options.map(renderOption)}
+                    
+                  </MultiSelectGroup>
                 );
               }
-              const isSelected = selected.includes(item.value);
-              const isHighlighted = valueToIndexMap.get(item.value) === highlightIndex;
-              return (
-                <OptionItem
-                  key={item.value}
-                  opt={item}
-                  isSelected={isSelected}
-                  isHighlighted={isHighlighted}
-                  onToggle={toggleOption}
-                />
-              );
+              return renderOption(item);
             })
           )}
-        </div>
-      </div>
+        </ul>
+      </MultiSelectPopover>
 
-      <input type="hidden" {...inputProps} value={selected.join(",")} disabled={disabled} />
-    </>
+      <input  {...props} type="hidden" value={value$.join(",")} disabled={disabled} />
+    </MultiSelectRoot>
   );
 }

@@ -11,7 +11,7 @@ type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
 const radioClass = {
   radio: "data-invalid:text-destructive data-invalid:accent-destructive",
   segment:
-    "bg-input text-input-foreground border-y border-r first:border-l has-focus-visible:ring-2 has-focus-visible:ring-ring has-focus-visible:ring-inset has-focus-visible:outline-none has-checked:bg-primary has-checked:text-primary-foreground data-invalid:text-destructive data-invalid:has-checked:bg-destructive",
+    "bg-input text-input-foreground border-y border-r first:border-l has-focus-visible:ring-2 has-focus-visible:ring-ring has-focus-visible:ring-inset  has-checked:bg-primary has-checked:text-primary-foreground data-invalid:text-destructive data-invalid:has-checked:bg-destructive",
 };
 
 type RadioGroupContextValue = {
@@ -80,7 +80,7 @@ function RadioGroup({
       aria-invalid={invalid}
       data-invalid={invalid || undefined}
       className={cn(
-        "flex inert:cursor-not-allowed inert:opacity-50 disabled:cursor-not-allowed disabled:opacity-50",
+        "flex",
         className,
       )}
     >
@@ -154,7 +154,7 @@ export const Radio = ({
       data-invalid={_invalid || undefined}
       className={cn(
         "inline-flex items-center justify-center gap-2 shrink-0 h-9 min-w-9 px-3 py-1 cursor-pointer select-none relative has-disabled:cursor-not-allowed has-disabled:opacity-50",
-        "has-focus-visible:[&>*:first-child]:ring-2 has-focus-visible:[&>*:first-child]:ring-ring has-focus-visible:[&>*:first-child]:ring-offset-2 has-focus-visible:[&>*:first-child]:outline-none",
+        "has-focus-visible:[&>*:first-child]:ring-2 has-focus-visible:[&>*:first-child]:ring-ring has-focus-visible:[&>*:first-child]:ring-offset-2 has-focus-visible:[&>*:first-child]:",
         radioClass[variant],
         className,
       )}

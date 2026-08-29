@@ -275,7 +275,7 @@ function FormSubmit({
       disabled={isPending}
       ref={ref}
       className={cn(
-        "border border-input cursor-pointer outline-none inline-flex items-center justify-center shrink-0 select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 h-9 min-w-9 px-3 py-1 has-[>svg]:px-2 gap-1 rounded-md",
+        "border border-input cursor-pointer  inline-flex items-center justify-center shrink-0 select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 h-9 min-w-9 px-3 py-1 has-[>svg]:px-2 gap-1 rounded-md",
         className,
       )}
       {...props}
@@ -339,7 +339,6 @@ function FormField({
   invalid: externalInvalid,
   direction = "vertical",
   slotProps,
-  disabled,
   children,
   validConfig,
   inputId,
@@ -423,11 +422,10 @@ function FormField({
   return (
     <div
       {...props}
-      inert={disabled}
       data-invalid={isInvalid ? true : undefined}
       data-direction={direction}
       className={cn(
-        "grid gap-1 group inert:cursor-not-allowed inert:opacity-50 items-center",
+        "grid gap-1 group items-center",
         "data-[direction=vertical]:grid-cols-1",
         "data-[direction=horizontal]:grid-cols-[auto_1fr]",
         className,

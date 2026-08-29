@@ -234,7 +234,7 @@ export function Combobox({
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           className={cn(
-            "w-full px-3 py-2 text-sm outline-none border-b bg-transparent",
+            "w-full px-3 py-2 text-sm border-b bg-transparent",
             slotProps.input?.className,
           )}
           {...slotProps.input}

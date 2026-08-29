@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Input } from "@/ui";
 
-export default function InputInvalidDemo() {
+export default function Demo() {
   const [value, setValue] = useState("");
   const [invalid, setInvalid] = useState(false);
 

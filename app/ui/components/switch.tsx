@@ -52,10 +52,8 @@ export function Switch({
   return (
     <label
       {...wrapperSlot}
-      inert={disabled || wrapperSlot?.inert}
       className={cn(
         "inline-flex items-center gap-2",
-        "inert:cursor-not-allowed inert:opacity-50",
         wrapperSlot?.className,
       )}
     >
@@ -64,7 +62,7 @@ export function Switch({
         data-checked={checked || undefined}
         className={cn(
           "relative inline-flex shrink-0 items-center rounded-full transition-colors duration-200 w-10 h-5",
-          "has-focus-visible:outline-none has-focus-visible:ring-2 has-focus-visible:ring-ring has-focus-visible:ring-offset-2",
+          "has-focus-visible:ring-2 has-focus-visible:ring-ring has-focus-visible:ring-offset-2",
           "data-checked:bg-primary border",
           trackSlot?.className,
         )}

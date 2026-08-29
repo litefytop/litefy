@@ -50,7 +50,6 @@ export function NumberField(props: NumberFieldProps) {
     step = 1,
     slotProps,
     disabled,
-    inert,
     defaultValue = "",
     onValueChange,
     value: controlledValue,
@@ -175,9 +174,8 @@ export function NumberField(props: NumberFieldProps) {
     <div
       {...slotProps?.group}
       data-invalid={invalid || undefined}
-      inert={disabled || inert}
       className={cn(
-        "group border-input bg-background flex w-3xs items-center rounded-full border shadow-xs outline-none",
+        "group border-input bg-background flex w-3xs items-center rounded-full border shadow-xs ",
         "invalid:cursor-not-allowed invalid:opacity-50",
         "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
         "data-invalid:border-destructive/70 data-invalid:ring-destructive/20",
@@ -212,7 +210,7 @@ export function NumberField(props: NumberFieldProps) {
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
         className={cn(
-          "outline-none border-0 bg-transparent w-full h-8 px-2 text-sm flex-1 text-center",
+          "border-0 bg-transparent w-full h-8 px-2 text-sm flex-1 text-center",
           "placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground",
           "group-aria-invalid:border-destructive/70",
           className,

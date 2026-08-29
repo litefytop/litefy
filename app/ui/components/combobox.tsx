@@ -24,7 +24,7 @@ export interface ComboboxPopoverProps extends Omit<React.ComponentProps<"div">, 
   className?: ClassNameValue;
 }
 export function ComboboxPopover({ className, ...props }: ComboboxPopoverProps) {
-  return <div popover="manual" className={cn(className)} {...props} />;
+  return <div  className={cn(className)} {...props} />;
 }
 
 export interface ComboboxListProps extends Omit<React.ComponentProps<"ul">, "className"> {
@@ -73,7 +73,7 @@ export type ComboboxProps = Omit<ComboboxInputProps, "onChange"> & {
 } & ({ options?: string[]; remote?: never } | { options?: never; remote?: ComboboxRemoteApi });
 
 export function Combobox({
-  value: controlledValue,
+  value,
   defaultValue = "",
   onValueChange,
   onSelect,
@@ -102,11 +102,11 @@ export function Combobox({
   const [highlightValue, setHighlightValue] = React.useState<string | null>(null);
 
   React.useEffect(() => {
-    if (controlledValue !== undefined) {
-      setSelectedValue(controlledValue);
-      setSearchText(controlledValue);
+    if (value !== undefined) {
+      setSelectedValue(value);
+      setSearchText(value);
     }
-  }, [controlledValue]);
+  }, [value]);
 
   React.useEffect(() => {
     if (remote) {
@@ -170,7 +170,7 @@ export function Combobox({
   };
 
   const handleSelectItem = (opt: string) => {
-    if (controlledValue === undefined) {
+    if (value === undefined) {
       setSelectedValue(opt);
     }
     onSelect?.(opt);
@@ -245,12 +245,13 @@ export function Combobox({
           onKeyDown={handleKeyDown}
           aria-activedescendant={highlightValue ? `option-${id}-${highlightValue}` : undefined}
           aria-controls={listboxId}
-          className={cn("h-9 w-full px-3 py-2 border rounded-md outline-none", className)}
+          className={cn("h-9 w-full px-3 py-2 border rounded-md bg-input", className)}
         />
       </ComboboxRoot>
 
       <ComboboxPopover
         ref={popoverRef}
+        popover="manual"
         {...slotProps.popover}
         className={cn(
           "border bg-background shadow-lg overflow-hidden rounded-md",
@@ -294,7 +295,7 @@ export function Combobox({
                     data-value={opt}
                     onClick={() => handleSelectItem(opt)}
                     className={cn(
-                      "px-3 py-2 text-sm cursor-pointer hover:bg-hover  rounded-sm",
+                      "px-3 py-2 text-sm cursor-pointer hover:bg-hover rounded-sm aria-selected:bg-hover",
                       slotProps.option?.className,
                     )}
                     {...slotProps.option}

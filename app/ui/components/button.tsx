@@ -9,8 +9,7 @@ const buttonClass = {
   border border-transparent rounded-lg 
   font-sans text-sm text-center 
   data-pure-icon:aspect-square data-pure-icon:px-0 
-  [&_svg:not([class*='size-'])]:size-4 
-  disabled:cursor-not-allowed disabled:opacity-50 inert:cursor-not-allowed inert:opacity-50`,
+  [&_svg:not([class*='size-'])]:size-4`,
   variant: {
     primary: "bg-primary text-primary-foreground hover:not-disabled:bg-accent",
     destructive: "bg-destructive text-background hover:not-disabled:bg-destructive-accent",

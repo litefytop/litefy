@@ -7,6 +7,14 @@
     box-shadow: inset 0 0 0 2px var(--ring);
     border-radius: inherit;
   }
+  [disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  [inert] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 }
 
 :root {

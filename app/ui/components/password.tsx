@@ -34,14 +34,12 @@ export function Password({
   return (
     <div
       {...slotProps?.group}
-      inert={disabled || props.inert}
       data-invalid={invalid ? true : undefined}
       aria-invalid={invalid}
       className={cn(
         "flex w-full max-w-sm min-w-3xs items-center rounded-md border border-input bg-background shadow-xs transition-colors px-2 h-9",
         "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
         "data-[invalid=true]:border-destructive data-[invalid=true]:ring-destructive/20",
-        "inert:cursor-not-allowed inert:opacity-50",
         slotProps?.group?.className,
       )}
     >
@@ -50,7 +48,7 @@ export function Password({
         disabled={disabled}
         type={showPassword ? "text" : "password"}
         className={cn(
-          "appearance-none border-0 bg-transparent outline-none px-2 py-1 text-sm flex-1 min-w-0",
+          "appearance-none border-0 bg-transparent px-2 py-1 text-sm flex-1 min-w-0",
           "placeholder:text-muted-foreground",
           "selection:bg-primary selection:text-primary-foreground",
           className,

@@ -67,12 +67,14 @@ import ImageBasicDemo from "./image/basic";
 import imageBasicCode from "./image/basic.tsx?raw";
 import ImageLoadingDemo from "./image/loading";
 import imageLoadingCode from "./image/loading.tsx?raw";
+import ImageCustomDemo from "./image/custom";
+import imageCustomCode from "./image/custom.tsx?raw";
 import InputBasicDemo from "./input/basic";
 import inputBasicCode from "./input/basic.tsx?raw";
 import InputInvalidDemo from "./input/invalid";
 import inputInvalidCode from "./input/invalid.tsx?raw";
-import InputWithIconsDemo from "./input/with-icons";
-import inputWithIconsCode from "./input/with-icons.tsx?raw";
+import InputCustomDemo from "./input/custom";
+import inputCustomCode from "./input/custom.tsx?raw";
 import MultiSelectBasicDemo from "./multi-select/basic";
 import multiSelectBasicCode from "./multi-select/basic.tsx?raw";
 import MultiSelectControlledDemo from "./multi-select/controlled";
@@ -285,13 +287,17 @@ export const demos: Record<string, DemoItem> = {
     component: ImageLoadingDemo,
     code: imageLoadingCode,
   },
+  "image-custom": {
+    component: ImageCustomDemo,
+    code: imageCustomCode,
+  },
   "input-basic": {
     component: InputBasicDemo,
     code: inputBasicCode,
   },
-  "input-with-icons": {
-    component: InputWithIconsDemo,
-    code: inputWithIconsCode,
+  "input-custom": {
+    component: InputCustomDemo,
+    code: inputCustomCode,
   },
   "input-invalid": {
     component: InputInvalidDemo,

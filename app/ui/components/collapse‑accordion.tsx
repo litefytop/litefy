@@ -10,7 +10,7 @@ export function CollapseRoot({ children, className, ...props }: CollapseRootProp
   return (
     <div
       {...props}
-      className={cn("flex flex-col", "inert:cursor-not-allowed inert:opacity-50", className)}
+      className={cn("flex flex-col", className)}
     >
       {children}
     </div>

@@ -39,6 +39,14 @@ description: 支持加载状态、加载占位与错误处理的图片组件
   name="image-loading"
 />
 
+### 自定义
+
+直接使用底层原子组件实现高度自定义。
+
+<ComponentPreview 
+  name="image-custom"
+/>
+
 ## API 参考
 
 ### 高阶组件
@@ -57,7 +65,7 @@ description: 支持加载状态、加载占位与错误处理的图片组件
 | `fallback`      | `React.ReactNode`                               | -         | 图片加载失败时显示的自定义回退元素                                                                            |
 | `loadingNode`   | `React.ReactNode`                               | -         | 加载中显示的占位元素，可用于渐进式模糊缩略图                                                                  |
 | `slots.wrapper` | `Omit<React.ComponentProps<"div">, "children">` | -         | 外层容器属性，`className` 优先级高于 `className`                                                              |
-| `...props`      | `React.ComponentProps<"img">`                   | -       | 支持全部 img 原生属性（除 `className`），内置 `loading="lazy"`、`decoding="async"`、`contentVisibility: auto` |
+| `...props`      | `React.ComponentProps<"img">`                   | -         | 支持全部 img 原生属性（除 `className`），内置 `loading="lazy"`、`decoding="async"`、`contentVisibility: auto` |
 
 ---
 
@@ -70,15 +78,15 @@ description: 支持加载状态、加载占位与错误处理的图片组件
 外层容器，内置 `relative`、`overflow-hidden`。
 
 | Prop        | Type                          | Default | Description           |
-| ----------- | ------------------------------ | ------- | ---------------------- |
-| `className` | `ClassNameValue`               | -       | 自定义类名             |
-| `...props`  | `React.ComponentProps<"div">`  | -       | 支持全部 div 原生属性  |
+| ----------- | ----------------------------- | ------- | --------------------- |
+| `className` | `ClassNameValue`              | -       | 自定义类名            |
+| `...props`  | `React.ComponentProps<"div">` | -       | 支持全部 div 原生属性 |
 
 #### ImageImage
 
 图片元素，内置 `w-full`、`h-full`、`object-cover`。
 
 | Prop        | Type                          | Default | Description           |
-| ----------- | ------------------------------ | ------- | ---------------------- |
-| `className` | `ClassNameValue`               | -       | 自定义类名             |
-| `...props`  | `React.ComponentProps<"img">`  | -       | 支持全部 img 原生属性  |
+| ----------- | ----------------------------- | ------- | --------------------- |
+| `className` | `ClassNameValue`              | -       | 自定义类名            |
+| `...props`  | `React.ComponentProps<"img">` | -       | 支持全部 img 原生属性 |

@@ -1,13 +1,14 @@
 "use client";
 
+import { Mail, Phone, Search } from "lucide-react";
 import { Input } from "@/ui";
 
-export default function InputBasicDemo() {
+export default function Demo() {
   return (
     <div className="flex flex-col gap-4">
-      <Input type="text" placeholder="Enter text" />
-      <Input type="email" placeholder="Enter email" />
-      <Input type="search" placeholder="Search..." />
+      <Input type="email" placeholder="Enter email" leading={<Mail />} trailing={"@example.com"} />
+      <Input type="search" placeholder="Search..." leading={<Search />} />
+      <Input type="tel" placeholder="Enter phone" leading={<Phone />} />
     </div>
   );
 }

@@ -86,9 +86,8 @@ export function Input({
   return (
     <InputGroup
       {...slotProps?.group}
-      inert={props.inert || disabled}
       data-invalid={invalid || undefined}
-      className={[" h-9 rounded-md w-sm px-2 border shadow-xs outline-none border-input bg-background items-center",
+      className={[" h-9 rounded-md w-sm px-2 border shadow-xs bg-input items-center",
         "focus-within:ring-inset focus-within:ring-ring focus-within:ring-1",
         "data-invalid:border-destructive-accent data-invalid:ring-destructive-accent",
         slotProps?.group?.className]}
@@ -102,7 +101,7 @@ export function Input({
         {...props}
         disabled={disabled}
         aria-invalid={invalid}
-        className={["flex-1 outline-none border-0 ring-0 bg-transparent px-2 py-1 placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground", className]}
+        className={["flex-1 border-0 ring-0 bg-transparent px-2 py-1 placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground", className]}
       />
       {trailing && (
         <InputTrailing {...slotProps?.trailing} className={["text-muted-foreground [&>svg]:w-4 [&>svg]:h-4 px-2",slotProps?.trailing?.className]}>
