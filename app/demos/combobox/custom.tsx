@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useCallback, useEffect, useMemo } from "react";
+import { useState, useRef, useCallback, useEffect, useMemo, useId } from "react";
 import { ComboboxRoot, ComboboxInput, ComboboxPopover, ComboboxList, ComboboxOption } from "@/ui";
 
 const options = ["Apple", "Banana", "Orange", "Grape", "Mango", "Peach"];
@@ -8,29 +8,16 @@ export default function Demo() {
   const [searchText, setSearchText] = useState("");
   const [highlightValue, setHighlightValue] = useState<string | null>(null);
 
-  const rootRef = useRef<HTMLDivElement>(null);
+  const id = useId();
+  const anchorName = `--combobox-demo-${id.replace(/[^a-zA-Z0-9_-]/g, "")}`;
+
   const popoverRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const filtered = useMemo(() => {
     if (!searchText.trim()) return options;
     return options.filter((o) => o.toLowerCase().includes(searchText.toLowerCase()));
   }, [searchText]);
-
-  const onValueChange = useCallback((val: string) => {
-    console.log("onValueChange:", val);
-  }, []);
-
-  const updatePopoverPosition = useCallback(() => {
-    if (!rootRef.current || !popoverRef.current) return;
-    if (!popoverRef.current.matches(":popover-open")) return;
-    const triggerRect = rootRef.current.getBoundingClientRect();
-    popoverRef.current.style.inset = "unset";
-    popoverRef.current.style.top = `${triggerRect.bottom + 4}px`;
-    popoverRef.current.style.left = `${triggerRect.left}px`;
-    popoverRef.current.style.width = `${triggerRect.width}px`;
-  }, []);
 
   const openPopover = useCallback(() => {
     popoverRef.current?.showPopover();
@@ -43,45 +30,17 @@ export default function Demo() {
 
   const selectItem = useCallback(
     (opt: string) => {
-      console.log("selectItem:", opt);
       setSearchText(opt);
       setHighlightValue(null);
       closePopover();
-      onValueChange(opt);
-      inputRef.current?.focus();
     },
-    [closePopover, onValueChange],
+    [closePopover],
   );
-
-  useEffect(() => {
-    const el = popoverRef.current;
-    if (!el) return;
-    const onToggle = (e: ToggleEvent) => {
-      if (e.newState === "open") {
-        updatePopoverPosition();
-      } else {
-        setHighlightValue(null);
-      }
-    };
-    el.addEventListener("toggle", onToggle);
-    return () => el.removeEventListener("toggle", onToggle);
-  }, [updatePopoverPosition]);
-
-  useEffect(() => {
-    const onResize = () => updatePopoverPosition();
-    window.addEventListener("resize", onResize);
-    window.addEventListener("scroll", onResize, true);
-    return () => {
-      window.removeEventListener("resize", onResize);
-      window.removeEventListener("scroll", onResize, true);
-    };
-  }, [updatePopoverPosition]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (!popoverRef.current?.matches(":popover-open")) return;
       const target = e.target as HTMLElement;
-      if (rootRef.current?.contains(target)) return;
       if (popoverRef.current?.contains(target)) return;
       closePopover();
     };
@@ -104,12 +63,13 @@ export default function Demo() {
           openPopover();
           setHighlightValue(filtered[Math.min(idx + 1, filtered.length - 1)] ?? null);
           break;
-        case "ArrowUp":
+        case "ArrowUp": {
           e.preventDefault();
           openPopover();
           const prev = idx - 1;
           setHighlightValue(prev >= 0 ? filtered[prev] : null);
           break;
+        }
         case "Enter":
           e.preventDefault();
           if (highlightValue) selectItem(highlightValue);
@@ -130,39 +90,44 @@ export default function Demo() {
   };
 
   return (
-    <ComboboxRoot ref={rootRef}>
+    <ComboboxRoot style={{ anchorName }}>
       <ComboboxInput
-        ref={inputRef}
         value={searchText}
-        placeholder="typing to search..."
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
         onClick={openPopover}
-        className="h-9 w-full px-3 py-2 border rounded-md outline-none"
       />
       <ComboboxPopover
         ref={popoverRef}
-        popover="manual"
-        className="border bg-background shadow-lg  rounded-md max-h-64 overflow-auto -top-full"
+        style={{
+          margin: "4px 0 0",
+          positionAnchor: anchorName,
+          positionArea: "bottom span-right",
+          justifySelf: "start",
+          width: "anchor-size(width)",
+          positionTryFallbacks: "flip-block",
+        }}
       >
-        <ComboboxList ref={listRef} className="p-1">
-          {filtered.length === 0 ? (
-            <ComboboxOption className="pointer-events-none px-3 py-2 text-sm text-muted-foreground">
+        <ComboboxList
+          ref={listRef}
+          empty={
+            <ComboboxOption className="pointer-events-none text-muted-foreground">
               No data
             </ComboboxOption>
-          ) : (
-            filtered.map((opt) => (
-              <ComboboxOption
-                key={opt}
-                data-value={opt}
-                aria-selected={opt === highlightValue}
-                onClick={() => selectItem(opt)}
-                className="px-3 py-2 text-sm cursor-pointer hover:bg-hover rounded-sm"
-              >
-                {opt}
-              </ComboboxOption>
-            ))
-          )}
+          }
+        >
+          {filtered.length > 0
+            ? filtered.map((opt) => (
+                <ComboboxOption
+                  key={opt}
+                  data-value={opt}
+                  aria-selected={opt === highlightValue}
+                  onClick={() => selectItem(opt)}
+                >
+                  {opt}
+                </ComboboxOption>
+              ))
+            : null}
         </ComboboxList>
       </ComboboxPopover>
     </ComboboxRoot>

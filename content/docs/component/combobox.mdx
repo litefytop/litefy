@@ -41,7 +41,7 @@ Combobox supporting async options fetching and scroll-based pagination, configur
 
 ### Custom
 
-Use the low-level atomic components for advanced customization.
+Assemble the composable components with CSS anchor positioning, keyboard navigation, and an empty state.
 
 <ComponentPreview 
   name="combobox-custom"
@@ -59,16 +59,16 @@ A combobox supporting static options and async search, with built-in keyboard na
 
 | Prop            | Type                          | Default                 | Description                                                         |
 | --------------- | ----------------------------- | ----------------------- | ------------------------------------------------------------------- |
-| `value`         | `string`                      | -                       | Controlled selected value                                           |
+| `value`         | `string`                      | -                       | Controlled input value                                              |
 | `defaultValue`  | `string`                      | `""`                    | Initial default value (uncontrolled)                                |
-| `onValueChange` | `(value: string) => void`     | -                       | Callback when the input value changes                               |
+| `onValueChange` | `(value: string) => void`     | -                       | Callback when the input value changes; in controlled mode, update `value` here |
 | `onSelect`      | `(option: string) => void`    | -                       | Callback when a dropdown option is selected                         |
 | `options`       | `string[]`                    | -                       | Static options array                                                |
 | `remote`        | `ComboboxRemoteApi`           | -                       | Async search config object for backend search and scroll pagination |
-| `placeholder`   | `string`                      | `"typing to search..."` | Input placeholder                                                   |
-| `empty`         | `React.ReactNode`             | -                       | Custom content when dropdown has no data                            |
-| `ref`           | `React.Ref<HTMLInputElement>` | -                       | Ref forwarded to the internal input                                 |
-| `slotProps`     | `object`                      | `{}`                    | Props passed through to internal child elements                     |
+| `empty`         | `React.ReactNode`             | -                       | Custom content when the dropdown has no data                        |
+| `classNames`    | `{ root?: ClassNameValue; popover?: ClassNameValue; list?: ClassNameValue; option?: ClassNameValue }` | - | Custom classes for the internal elements |
+| `styles`        | `{ root?: React.CSSProperties; popover?: React.CSSProperties; list?: React.CSSProperties; option?: React.CSSProperties }` | - | Inline styles for the internal elements; `styles.popover` merges over the built-in anchor positioning |
+| `...props`      | `React.ComponentProps<"input">` | -                     | Supports all native input props (except `className`, `style`, `onChange`, `onSelect`), such as `placeholder`, `disabled`, `ref` |
 
 #### ComboboxRemoteApi
 
@@ -81,20 +81,13 @@ A combobox supporting static options and async search, with built-in keyboard na
 | `search`      | `(keyword:string) => void` | Trigger a search by keyword        |
 | `loadMore`    | `() => void`               | Load more on scrolling to bottom   |
 
-#### slotProps
-
-| Slot      | Type                                                                       | Description                              |
-| --------- | -------------------------------------------------------------------------- | ---------------------------------------- |
-| `root`    | `HTMLAttrs<Omit<React.ComponentProps<"div">, "ref">>`                      | Props for the outer container div        |
-| `popover` | `HTMLAttrs<Omit<React.ComponentProps<"div">, "ref" \| "popoverTarget">>`   | Props for the dropdown popover container |
-| `list`    | `HTMLAttrs<Omit<React.ComponentProps<"ul">, "ref" \| "id" \| "onScroll">>` | Props for the dropdown list ul           |
-| `option`  | `HTMLAttrs<React.ComponentProps<"li">>`                                    | Props for each option li                 |
-
 ---
 
-### Headless Atomic Components
+### Composable Components
 
-> The following are low-level atomic components with **minimal built-in styles; styles should be added via className**. The high-level composite component `Combobox` is composed of these atomic components.
+> The following components can be freely assembled. They carry the same default styles as the composite `Combobox`; override them via `className`.
+
+> When assembling manually, anchor positioning must be wired by yourself: set `anchorName` on `ComboboxRoot`, then `positionAnchor`, `positionArea`, `width` etc. on `ComboboxPopover`.
 
 #### ComboboxRoot
 
@@ -107,12 +100,13 @@ Outer container that provides the positioning anchor for the dropdown popover.
 
 #### ComboboxInput
 
-Search input field.
+Search input field with built-in sizing, border, and background.
 
 | Prop           | Type                            | Default | Description                                                      |
 | -------------- | ------------------------------- | ------- | ---------------------------------------------------------------- |
 | `value`        | `string`                        | -       | Controlled input value                                           |
 | `defaultValue` | `string`                        | -       | Initial value (uncontrolled)                                     |
+| `placeholder`  | `string`                        | `"typing to search..."` | Input placeholder                                |
 | `className`    | `ClassNameValue`                | -       | Custom class name                                                |
 | `...props`     | `React.ComponentProps<"input">` | -       | Supports all native input props (except `className`, `onSelect`) |
 
@@ -132,12 +126,13 @@ Dropdown list rendered as a ul with `role="listbox"`. Automatically triggers `on
 | Prop             | Type                         | Default | Description                                       |
 | ---------------- | ---------------------------- | ------- | ------------------------------------------------- |
 | `onScrollBottom` | `() => void`                 | -       | Callback when scrolled near the bottom            |
+| `empty`          | `React.ReactNode`            | -       | Content rendered when `children` is empty         |
 | `className`      | `ClassNameValue`             | -       | Custom class name                                 |
 | `...props`       | `React.ComponentProps<"ul">` | -       | Supports all native ul props (except `className`) |
 
 #### ComboboxOption
 
-Single option rendered as an li with `role="option"`.
+Single option rendered as an li with `role="option"`; `aria-selected` styling is applied automatically.
 
 | Prop        | Type                         | Default | Description                                          |
 | ----------- | ---------------------------- | ------- | ---------------------------------------------------- |

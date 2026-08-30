@@ -9,28 +9,36 @@ export function AvatarRoot({ className, ...props }: AvatarRootProps) {
   return (
     <div
       {...props}
-      className={cn("flex aspect-square overflow-hidden items-center justify-center", className)}
+      className={cn(
+        "flex aspect-square overflow-hidden items-center justify-center border border-border size-12",
+        className,
+      )}
     />
   );
 }
 export interface AvatarImageProps extends Omit<React.ComponentProps<"img">, "className"> {
   className?: ClassNameValue;
+  src: string;
 }
 export function AvatarImage({ className, ...props }: AvatarImageProps) {
-  return <img {...props} className={cn("w-full h-full", className)} />;
+  return (
+    <img
+      {...props}
+      className={cn("size-full object-cover", className)}
+      loading="lazy"
+      decoding="async"
+    />
+  );
 }
 
-export type AvatarProps = {
-  className?: ClassNameValue;
-  src: string;
+export interface AvatarProps extends Omit<AvatarImageProps, "className" | "style"> {
   skeleton?: React.ReactNode;
   fallback?: React.ReactNode;
-  slots?: {
-    wrapper?: Omit<React.ComponentProps<"div">, "children">;
-  };
-} & Omit<React.ComponentProps<"img">, "className" | "src">;
+  classNames?: { root?: ClassNameValue; image?: ClassNameValue };
+  styles?: { root?: React.CSSProperties; image?: React.CSSProperties };
+}
 
-export function Avatar({ src, skeleton, fallback, className, slots, ...props }: AvatarProps) {
+export function Avatar({ skeleton, fallback, src, classNames, styles }: AvatarProps) {
   const [status, setStatus] = React.useState<"loading" | "success" | "failure">("loading");
 
   React.useEffect(() => {
@@ -56,20 +64,11 @@ export function Avatar({ src, skeleton, fallback, className, slots, ...props }: 
   }, [src]);
 
   return (
-    <AvatarRoot
-      {...slots?.wrapper}
-      className={cn("bg-muted border", className, slots?.wrapper?.className)}
-    >
+    <AvatarRoot className={classNames?.root} style={styles?.root}>
       {status === "loading" && skeleton}
       {status === "failure" && fallback}
       {status === "success" && (
-        <AvatarImage
-          {...props}
-          src={src}
-          className="object-cover"
-          loading="lazy"
-          decoding="async"
-        />
+        <AvatarImage src={src} className={classNames?.image} style={styles?.image} />
       )}
     </AvatarRoot>
   );

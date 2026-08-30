@@ -7,7 +7,7 @@ export default function Demo() {
     <div>
       <Collapse
         label="Collapse and Accordion"
-        className="w-md divide-y rounded-md border border-border"
+        classNames={{ root: "w-md rounded-md border border-border" }}
       >
         Use the Collapse component for a single collapsible panel, and the Accordion component for
         multiple collapsible panels.

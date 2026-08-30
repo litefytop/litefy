@@ -41,7 +41,7 @@ Data-driven group mode with select-all / indeterminate states.
 
 ### Custom
 
-Use the low-level atomic component for advanced customization.
+Build a select-all group with indeterminate state using the composable components.
 
 <ComponentPreview 
   name="checkbox-custom"
@@ -55,60 +55,73 @@ Ready-to-use composite components.
 
 #### Checkbox
 
-| Prop              | Type                         | Default | Description                                     |
-| :---------------- | :--------------------------- | :------ | :---------------------------------------------- |
-| `children`        | `React.ReactNode`            | -       | The checkbox label text                         |
-| `checked`         | `boolean`                    | -       | Controlled checked state                        |
-| `defaultChecked`  | `boolean`                    | -       | Default checked state (uncontrolled)            |
-| `onCheckedChange` | `(checked: boolean) => void` | -       | Callback when the checked state changes         |
-| `indicator`       | `React.ReactNode`            | -       | Custom indicator content, replaces default icon |
-| `value`           | `string`                     | -       | Identifier for group mode                       |
-| `disabled`        | `boolean`                    | `false` | Disable the checkbox                            |
-| `name`            | `string`                     | -       | Input name attribute                            |
-| `className`       | `ClassNameValue`             | -       | Custom class names, applied to the label        |
+| Prop              | Type                                            | Default | Description                                     |
+| :---------------- | :---------------------------------------------- | :------ | :---------------------------------------------- |
+| `children`        | `React.ReactNode`                               | -       | The checkbox label text                         |
+| `checked`         | `boolean`                                       | -       | Controlled checked state                        |
+| `defaultChecked`  | `boolean`                                       | -       | Default checked state (uncontrolled)            |
+| `onChange`        | `(e: React.ChangeEvent<HTMLInputElement>) => void` | -    | Native change callback                          |
+| `onCheckedChange` | `(checked: boolean) => void`                    | -       | Callback when the checked state changes         |
+| `indicator`       | `React.ReactNode`                               | -       | Custom indicator content, replaces default icon |
+| `classNames`      | `{ indicator?: ClassNameValue; label?: ClassNameValue }` | - | Custom classes for the indicator and label  |
+| `styles`          | `{ indicator?: React.CSSProperties; label?: React.CSSProperties }` | - | Inline styles for the indicator and label |
+| `disabled`        | `boolean`                                       | `false` | Disable the checkbox                            |
+| `...props`        | `React.ComponentProps<"input">`                 | -       | Supports all native input props (except `type`, `className`, `value`), such as `name`, `value`, `required` |
 
 #### Checkbox.Group
 
-| Prop            | Type                         | Default | Description                                  |
-| :-------------- | :--------------------------- | :------ | :------------------------------------------- |
-| `options`       | `CheckboxOptionConfig[]`     | -       | Options data array                           |
-| `value`         | `string[]`                   | -       | Controlled selected values                   |
-| `defaultValue`  | `string[]`                   | `[]`    | Default selected values (uncontrolled)       |
-| `onChange`      | `(values: string[]) => void` | -       | Callback when values change                  |
-| `disabled`      | `boolean`                    | `false` | Disable all options                          |
-| `name`          | `string`                     | -       | Group name                                   |
-| `className`     | `ClassNameValue`             | -       | Custom class names, applied to the container |
-| `itemClassName` | `ClassNameValue`             | -       | Uniformly applied className to each item     |
-| `itemIndicator` | `CheckboxProps["indicator"]` | -       | Uniformly applied indicator to each item     |
+| Prop           | Type                         | Default | Description                                        |
+| :------------- | :--------------------------- | :------ | :------------------------------------------------- |
+| `options`      | `CheckboxOptionConfig[]`     | -       | Options data array                                 |
+| `value`        | `string[]`                   | -       | Controlled selected values                         |
+| `defaultValue` | `string[]`                   | `[]`    | Default selected values (uncontrolled)             |
+| `onChange`     | `(values: string[]) => void` | -       | Callback when values change                        |
+| `name`         | `string`                     | -       | Group name, applied to each input                  |
+| `disabled`     | `boolean`                    | `false` | Disable all options                                |
+| `className`    | `ClassNameValue`             | -       | Custom class names, applied to the container       |
+| `common`       | `{ classNames?: { indicator?: ClassNameValue; label?: ClassNameValue }; styles?: { indicator?: React.CSSProperties; label?: React.CSSProperties }; indicator?: React.ReactNode }` | - | Uniform configuration applied to each option |
 
 #### CheckboxOptionConfig
 
-| Field       | Type                         | Default | Description             |
-| :---------- | :--------------------------- | :------ | :---------------------- |
-| `label`     | `string`                     | -       | Option display text     |
-| `value`     | `string`                     | -       | Unique identifier value |
-| `disabled`  | `boolean`                    | `false` | Disable a single option |
-| `className` | `ClassNameValue`             | -       | Item custom class names |
-| `indicator` | `CheckboxProps["indicator"]` | -       | Item custom indicator   |
+Extends all `Checkbox` props except `children`.
+
+| Field       | Type             | Default | Description               |
+| :---------- | :--------------- | :------ | :------------------------ |
+| `label`     | `string`         | -       | Option display text       |
+| `value`     | `string`         | -       | Unique identifier value   |
+| `indicator` | `React.ReactNode` | -      | Option custom indicator   |
 
 ---
 
-### Headless Atomic Components
+### Composable Components
 
-> The following are low-level atomic components with **no built-in styles; styles need to be added via className**.
+> The following components can be freely assembled. They carry the same default styles as the composite `Checkbox`; override them via `className`.
+
+#### CheckboxRoot
+
+The visually hidden native input (`sr-only`) that carries state, focus, and form semantics.
+
+| Prop       | Type                            | Default | Description                                                           |
+| :--------- | :------------------------------ | :------ | :-------------------------------------------------------------------- |
+| `className` | `ClassNameValue`               | -       | Custom CSS class                                                       |
+| `...props` | `React.ComponentProps<"input">` | -       | Supports all native input props (except `type`, `className`, `value`) |
 
 #### CheckboxIndicator
 
-Low-level state container for advanced customization scenarios.
+The visual indicator rendered as a `span` with `role="checkbox"` and `aria-checked`; checked styling is applied automatically.
 
-| Prop              | Type                            | Default | Description                                                                  |
-| :---------------- | :------------------------------ | :------ | :--------------------------------------------------------------------------- |
-| `checked`         | `boolean`                       | -       | Controlled checked state                                                     |
-| `defaultChecked`  | `boolean`                       | -       | Default checked state (uncontrolled)                                         |
-| `onCheckedChange` | `(checked: boolean) => void`    | -       | Callback when the checked state changes                                      |
-| `value`           | `string`                        | -       | Identifier for group mode                                                    |
-| `disabled`        | `boolean`                       | `false` | Disable                                                                      |
-| `name`            | `string`                        | -       | Input name attribute                                                         |
-| `className`       | `ClassNameValue`                | -       | Applied to the wrapper span with children, otherwise to the native input     |
-| `children`        | `React.ReactNode`               | -       | Custom indicator content; when provided, the native input is visually hidden |
-| `...props`        | `React.ComponentProps<"input">` | -       | Supports all native input props (except `type`, `className`, `value`)        |
+| Prop       | Type                           | Default | Description                                |
+| :--------- | :----------------------------- | :------ | :----------------------------------------- |
+| `checked`  | `boolean`                      | -       | Drives `aria-checked` and the checked styles |
+| `className` | `ClassNameValue`              | -       | Custom CSS class                           |
+| `children` | `React.ReactNode`              | -       | Indicator content, defaults to a check icon in the composite |
+| `...props` | `React.ComponentProps<"span">` | -       | Supports all native span props             |
+
+#### CheckboxLabel
+
+The label wrapper that associates the input with the indicator and text.
+
+| Prop       | Type                            | Default | Description                      |
+| :--------- | :------------------------------ | :------ | :------------------------------- |
+| `className` | `ClassNameValue`               | -       | Custom CSS class                 |
+| `...props` | `React.ComponentProps<"label">` | -       | Supports all native label props  |

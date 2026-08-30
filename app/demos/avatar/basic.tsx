@@ -7,23 +7,19 @@ export default function AvatarDemo() {
       <Avatar
         src="https://picsum.photos/seed/av1/200/200"
         alt="user avatar"
-        className="w-14 h-14 rounded-full"
-        skeleton={<div className="bg-muted animate-pulse" />}
+        classNames={{ root: "rounded-full" }}
       />
 
       <Avatar
         src="https://invalid-url-notfound/image.png"
         alt="broken avatar"
-        className="w-14 h-14 rounded-full bg-muted "
-        skeleton={<div className="bg-muted animate-pulse" />}
-        fallback={<div className="flex items-center justify-center text-muted-foreground font-bold">User</div>}
-      />
-
-      <Avatar
-        src="https://picsum.photos/seed/av2/200/200"
-        alt="custom wrapper avatar"
-        className="w-14 h-14 rounded-full"
-  
+        classNames={{ root: "rounded-full" }}
+        skeleton={<div className="bg-neutral animate-pulse size-full" />}
+        fallback={
+          <div className="flex items-center justify-center  bg-neutral text-background size-full">
+            User
+          </div>
+        }
       />
     </div>
   );

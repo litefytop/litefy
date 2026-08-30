@@ -3,12 +3,36 @@ import * as React from "react";
 import { createRoot } from "react-dom/client";
 import { type ClassNameValue, cn } from "@/lib";
 
-export type DialogProps = React.ComponentProps<"dialog"> & {
+export type DialogRootProps = Omit<React.ComponentProps<"dialog">, "className"> & {
   className?: ClassNameValue;
+};
+
+export function DialogRoot({ className, ...props }: DialogRootProps) {
+  return <dialog {...props} className={cn(className)} />;
+}
+
+export type DialogCloseProps = Omit<React.ComponentProps<"button">, "className"> & {
+  className?: ClassNameValue;
+};
+
+export function DialogClose({ className, ...props }: DialogCloseProps) {
+  return (
+    <button
+      type="button"
+      {...props}
+      className={cn(
+        "absolute right-4 top-4 h-6 w-8 rounded-md border text-xs font-mono font-medium text-muted-foreground transition-colors hover:bg-muted-foreground/20 select-none",
+        className,
+      )}
+    />
+  );
+}
+
+export interface DialogProps extends Omit<DialogRootProps, "ref"> {
+  ref?: React.Ref<HTMLDialogElement>;
   open: boolean;
   onOpenChange?: (open: boolean) => void;
-  closeTrigger?: React.ReactNode;
-};
+}
 
 export function Dialog({
   ref,
@@ -16,7 +40,6 @@ export function Dialog({
   children,
   open,
   onOpenChange,
-  closeTrigger,
   ...props
 }: DialogProps) {
   const _ref = React.useRef<HTMLDialogElement>(null);
@@ -80,13 +103,12 @@ export function Dialog({
   };
 
   return (
-    <dialog
+    <DialogRoot
       {...props}
       ref={setRefs}
       onKeyDown={handleKeyDown}
       onCancel={handleCancel}
       onClose={handleNativeClose}
-
       className={cn(
         "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 m-0",
         "rounded-lg border bg-background p-6 shadow-lg text-foreground",
@@ -94,20 +116,11 @@ export function Dialog({
         className,
       )}
     >
-      {closeTrigger ?? (
-        <button
-          type="button"
-          onClick={() => onOpenChange?.(false)}
-          className={
-            "absolute right-4 top-4 h-6 w-8 rounded-md border text-xs font-mono font-medium text-muted-foreground transition-colors hover:bg-muted-foreground/20 select-none"
-          }
-          aria-label="Close (ESC)"
-        >
-          ESC
-        </button>
-      )}
+      <DialogClose aria-label="Close (ESC)" onClick={() => onOpenChange?.(false)}>
+        ESC
+      </DialogClose>
       {children}
-    </dialog>
+    </DialogRoot>
   );
 }
 

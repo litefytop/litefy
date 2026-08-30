@@ -43,6 +43,8 @@ import DialogBasicDemo from "./dialog/basic";
 import dialogBasicCode from "./dialog/basic.tsx?raw";
 import DialogCommandDemo from "./dialog/command";
 import dialogCommandCode from "./dialog/command.tsx?raw";
+import DialogCustomDemo from "./dialog/custom";
+import dialogCustomCode from "./dialog/custom.tsx?raw";
 import DrawerBasicDemo from "./drawer/basic";
 import drawerBasicCode from "./drawer/basic.tsx?raw";
 import DrawerExpandableDemo from "./drawer/expandable";
@@ -226,6 +228,10 @@ export const demos: Record<string, DemoItem> = {
   "dialog-basic": {
     component: DialogBasicDemo,
     code: dialogBasicCode,
+  },
+  "dialog-custom": {
+    component: DialogCustomDemo,
+    code: dialogCustomCode,
   },
   "dialog-command": {
     component: DialogCommandDemo,

@@ -21,7 +21,7 @@ const items = [
     label: "Global Quick Styling",
     panel: (
       <p className="text-muted-foreground">
-        Use <code>itemClassName</code> to set shared styles for all items. You can customize the
+        Use <code>common.classNames</code> to set shared styles for all items. You can customize the
         root wrapper, trigger button and content panel in one place, instead of configuring
         className for every single item separately.
       </p>
@@ -32,7 +32,7 @@ const items = [
     label: "Global Custom Icon",
     panel: (
       <p className="text-muted-foreground">
-        The <code>itemIcon</code> prop provides a global icon configuration. It accepts static
+        The <code>common.icon</code> prop provides a global icon configuration. It accepts static
         ReactNode or a render function receiving the <code>open</code> state. This avoids repeating
         icon setup across each item definition.
       </p>
@@ -60,14 +60,16 @@ export default function Demo() {
         multiple={false}
         activeKeys={value}
         onKeyChange={setValue}
-        className="w-md divide-y rounded-md border border-border"
+        className="w-md rounded-md border border-border"
         items={items}
-        itemIcon={(open) => (
-          <Plus
-            data-open={open}
-            className="size-4 transition-transform duration-300 data-[open=true]:-rotate-45"
-          />
-        )}
+        common={{
+          icon: (open) => (
+            <Plus
+              data-open={open}
+              className="size-4 transition-transform duration-300 data-[open=true]:-rotate-45"
+            />
+          ),
+        }}
       />
     </div>
   );

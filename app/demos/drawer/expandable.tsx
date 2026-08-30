@@ -40,24 +40,15 @@ export default function DrawerResizableDemo() {
     <div className="p-8">
       <Button onClick={() => setOpen(true)}>Open Drawer</Button>
       <Drawer
+        ref={wrapperRef}
         open={open}
         onOpenChange={setOpen}
-        onClick={handleBackdropClick}
+        onBackdropClick={handleBackdropClick}
         placement="bottom"
-        slots={{
-          wrapper: {
-            ref: wrapperRef,
-            style: {
-              height: 320,
-              minHeight: "20vh",
-              maxHeight: "100vh",
-            },
-          },
-        }}
         drag={drag}
       >
         <div className="flex flex-col gap-4 pt-2">
-           <h3 className="text-lg font-semibold">Bottom placement</h3>
+          <h3 className="text-lg font-semibold">Bottom placement</h3>
           <p>Drag upward: expand, capped by max‑height</p>
           <p>Drag downward: shrink. Close drawer when calculated size drops below min‑height</p>
           <Button onClick={() => setOpen(false)}>Close</Button>

@@ -1,12 +1,39 @@
 "use client";
-import { useState, useRef } from "react";
-import { DrawerRoot, DrawerDrag, DrawerContent } from "@/ui";
-import { useDrag } from "@/ui";
+import { useState, useRef, useEffect } from "react";
+import { DrawerRoot, DrawerWrapper, DrawerDrag, DrawerContent, useDrag } from "@/ui";
 
 export default function Demo() {
   const [open, setOpen] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const dragStartRef = useRef({ baseSize: 0 });
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    const wrapper = wrapperRef.current;
+    if (!dialog || !wrapper) return;
+    if (open) {
+      if (!dialog.open) dialog.showModal();
+      requestAnimationFrame(() => {
+        wrapper.style.transform = "translate(0, 0)";
+      });
+    } else {
+      wrapper.style.transform = "translateY(100%)";
+    }
+  }, [open]);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    const wrapper = wrapperRef.current;
+    if (!dialog || !wrapper) return;
+    const onTransitionEnd = (e: TransitionEvent) => {
+      if (e.propertyName === "transform" && !open && dialog.open) {
+        dialog.close();
+      }
+    };
+    wrapper.addEventListener("transitionend", onTransitionEnd);
+    return () => wrapper.removeEventListener("transitionend", onTransitionEnd);
+  }, [open]);
 
   const drag = useDrag({
     disabled: !open,
@@ -18,42 +45,42 @@ export default function Demo() {
       const el = wrapperRef.current;
       if (!el) return;
       el.style.transitionDuration = "0ms";
-      const nextHeight = dragStartRef.current.baseSize - info.dy;
-      el.style.height = `${nextHeight}px`;
+      el.style.height = `${dragStartRef.current.baseSize - info.dy}px`;
     },
     onDragEnd: () => {
       if (!wrapperRef.current) return;
       wrapperRef.current.style.transitionDuration = "";
     },
   });
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
-    if (e.target !== e.currentTarget) return;
-    setOpen(false);
-  };
+
   return (
     <div className="flex flex-col gap-4 items-center p-6">
       <button onClick={() => setOpen(true)}>Open Drawer</button>
       <DrawerRoot
-        placement="bottom"
-        open={open}
-        onOpenChange={setOpen}
-        onClick={handleBackdropClick}
-        slots={{
-          wrapper: {
-            ref: wrapperRef,
-            className: "h-[30vh] w-full min-h-[15vh] max-h-[85vh]",
-          },
+        ref={dialogRef}
+        onCancel={(e) => {
+          e.preventDefault();
+          setOpen(false);
+        }}
+        onClick={(e) => {
+          if (e.target === e.currentTarget) setOpen(false);
         }}
       >
-        <DrawerDrag
+        <DrawerWrapper
+          ref={wrapperRef}
           isHorizontal={false}
-          onPointerDown={drag.handlePointerDown}
-          className="h-4 w-full border-y border-border"
-        />
-        <DrawerContent className="bg-background p-4">
-          <p>Atomic drag‑resize drawer</p>
-          <p className="text-sm text-muted-foreground mt-2">Drag handle to shrink / expand panel</p>
-        </DrawerContent>
+          placement="bottom"
+          style={{ transform: "translateY(100%)" }}
+          className="h-[30vh] min-h-[15vh] max-h-[85vh]"
+        >
+          <DrawerDrag isHorizontal={false} onPointerDown={drag.handlePointerDown} />
+          <DrawerContent className="bg-background">
+            <p>Drag handle to shrink / expand panel</p>
+            <button className="mt-2" onClick={() => setOpen(false)}>
+              Close
+            </button>
+          </DrawerContent>
+        </DrawerWrapper>
       </DrawerRoot>
     </div>
   );

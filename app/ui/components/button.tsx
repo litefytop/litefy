@@ -3,19 +3,12 @@ import React from "react";
 import { type ClassNameValue, cn } from "@/lib";
 
 const buttonClass = {
-  base: `cursor-pointer 
-  inline-flex items-center justify-center 
-  gap-2 h-8 min-w-8 px-3 py-0 
-  border border-transparent rounded-lg 
-  font-sans text-sm text-center 
-  data-pure-icon:aspect-square data-pure-icon:px-0 
-  [&_svg:not([class*='size-'])]:size-4`,
+  base: "cursor-pointer inline-flex items-center justify-center gap-2 h-8 min-w-8 px-3 rounded-lg text-sm text-center [&_svg:not([class*='size-'])]:size-4",
   variant: {
-    primary: "bg-primary text-primary-foreground hover:not-disabled:bg-accent",
-    destructive: "bg-destructive text-background hover:not-disabled:bg-destructive-accent",
-    outline:
-      "border border-primary hover:not-disabled:bg-primary hover:not-disabled:text-primary-foreground",
-    text: "hover:not-disabled:text-accent",
+    primary: "bg-primary text-primary-foreground hover:bg-accent",
+    destructive: "bg-destructive text-background hover:bg-destructive-accent",
+    outline: "border border-primary hover:bg-primary hover:text-primary-foreground",
+    text: "hover:text-accent",
   },
 };
 
@@ -65,7 +58,12 @@ function Button({
       {...props}
       aria-busy={isLoading}
       data-pure-icon={isPureIcon || undefined}
-      className={cn(Button.class.base, Button.class.variant[variant], className)}
+      className={cn(
+        Button.class.base,
+        Button.class.variant[variant],
+        "data-pure-icon:aspect-square data-pure-icon:px-0",
+        className,
+      )}
       disabled={isLoading || props.disabled}
     >
       {isLoading && loadingIcon}

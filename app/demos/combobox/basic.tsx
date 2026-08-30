@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Combobox } from "@/ui";
 
 const countries = [
@@ -16,7 +17,14 @@ const countries = [
 ];
 
 export default function Demo() {
+  const [value, setValue] = useState("");
+
   return (
-      <Combobox options={countries} placeholder="Select a country" />
+    <Combobox
+      value={value}
+      onValueChange={setValue}
+      options={countries}
+      placeholder="Select a country"
+    />
   );
 }

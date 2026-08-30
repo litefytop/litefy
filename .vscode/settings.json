@@ -21,23 +21,22 @@
   "git.autofetch": true,
   "tailwindCSS.experimental.configFile": null,
   "tailwindCSS.classAttributes": [
-    ".*class*.",
     "className",
-    ".*Classes.*",
+    "classNames",
+    ".*class*.",
     ".*classes.*",
-    ".*Class*."
   ],
   "tailwindCSS.experimental.classRegex": [
     [
-      "Class \\=([^;]*);",
+      "classNames \\=([^;]*);",
       "'([^']*)'"
     ],
     [
-      "Class \\=([^;]*);",
+      "classNames \\=([^;]*);",
       "\"([^\"]*)\""
     ],
     [
-      "Class \\=([^;]*);",
+      "classNames \\=([^;]*);",
       "\\`([^\\`]*)\\`"
     ],
     [

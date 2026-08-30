@@ -34,5 +34,15 @@ export default function Demo() {
 
   const [selected, setSelected] = useState("");
 
-  return <Combobox remote={remote} value={selected} onSelect={(v) => setSelected(v)} />;
+  return (
+    <div>
+      <Combobox
+        remote={remote}
+        value={selected}
+        onValueChange={setSelected}
+        onSelect={(v) => setSelected(v)}
+      />
+      <p>Selected: {selected}</p>
+    </div>
+  );
 }

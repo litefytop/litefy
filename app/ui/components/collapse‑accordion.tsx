@@ -8,10 +8,7 @@ export interface CollapseRootProps extends Omit<React.ComponentProps<"div">, "cl
 
 export function CollapseRoot({ children, className, ...props }: CollapseRootProps) {
   return (
-    <div
-      {...props}
-      className={cn("flex flex-col", className)}
-    >
+    <div {...props} className={cn("flex flex-col not-last:border-b", className)}>
       {children}
     </div>
   );
@@ -19,15 +16,24 @@ export function CollapseRoot({ children, className, ...props }: CollapseRootProp
 
 export interface CollapseTriggerProps extends Omit<React.ComponentProps<"button">, "className"> {
   className?: ClassNameValue;
+  open?: boolean;
 }
 
-export function CollapseTrigger({ children, className, onClick, ...props }: CollapseTriggerProps) {
+export function CollapseTrigger({
+  children,
+  className,
+  open,
+  onClick,
+  ...props
+}: CollapseTriggerProps) {
   return (
     <button
       {...props}
       type="button"
+      aria-expanded={open}
       className={cn(
-        "flex justify-between items-center border border-transparent cursor-pointer",
+        "flex justify-between items-center cursor-pointer",
+        "aria-[expanded=false]:hover:bg-hover p-4 text-sm font-medium",
         className,
       )}
       onClick={onClick}
@@ -40,54 +46,53 @@ export function CollapseTrigger({ children, className, onClick, ...props }: Coll
 export interface CollapsePanelProps extends Omit<React.ComponentProps<"section">, "className"> {
   className?: ClassNameValue;
   open?: boolean;
-  slots?: {
-    content?: CollapseRootProps;
-  };
 }
 
-export function CollapsePanel({ children, className, open, slots, ...props }: CollapsePanelProps) {
+export function CollapsePanel({ children, className, open, ...props }: CollapsePanelProps) {
   return (
     <section
       data-open={open}
       {...props}
       className={cn(
         "grid transition-[grid-template-rows] duration-300 ease-in-out data-[open=false]:grid-rows-[0fr] data-[open=true]:grid-rows-[1fr]",
-        className,
       )}
     >
       <div className="overflow-hidden min-h-0">
-        <div {...slots?.content} className={cn("min-h-0", slots?.content?.className)}>
-          {children}
-        </div>
+        <div className={cn("min-h-0 p-4 pt-0 text-sm font-medium", className)}>{children}</div>
       </div>
     </section>
   );
 }
 
-export interface CollapseProps extends CollapseRootProps {
+export interface CollapseProps extends Omit<CollapseRootProps, "className" | "style"> {
   label?: React.ReactNode | ((open: boolean) => React.ReactNode);
   icon?: React.ReactNode | ((open: boolean) => React.ReactNode);
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   itemKey?: string;
-  slots?: {
-    panel?: Omit<CollapsePanelProps, "children" | "slots">;
-    trigger?: Omit<CollapseTriggerProps, "children">;
-    content?: Omit<CollapseRootProps, "children">;
+  classNames?: {
+    trigger?: ClassNameValue;
+    panel?: ClassNameValue;
+    root?: ClassNameValue;
+  };
+  styles?: {
+    trigger?: React.CSSProperties;
+    panel?: React.CSSProperties;
+    root?: React.CSSProperties;
   };
 }
 
 export function Collapse({
-  slots,
   label,
   icon,
   open,
   defaultOpen = false,
   children,
-  className,
   itemKey,
   onOpenChange,
+  styles,
+  classNames,
   ...props
 }: CollapseProps) {
   const id = React.useId();
@@ -106,20 +111,14 @@ export function Collapse({
   const labelNode = typeof label === "function" ? label(open$) : label;
   const iconNode = typeof icon === "function" ? icon(open$) : icon;
   return (
-    <CollapseRoot {...props} className={className}>
+    <CollapseRoot {...props} className={classNames?.root} style={styles?.root}>
       <CollapseTrigger
-        {...slots?.trigger}
+        open={open$}
         id={triggerId}
-        aria-expanded={open$}
         aria-controls={panelId}
-        onClick={(e) => {
-          slots?.trigger?.onClick?.(e);
-          handleToggle();
-        }}
-        className={[
-          "aria-[expanded=false]:hover:bg-hover p-4 text-sm font-medium ",
-          slots?.trigger?.className,
-        ]}
+        onClick={handleToggle}
+        className={[classNames?.trigger]}
+        style={styles?.trigger}
       >
         {labelNode}
         {iconNode ?? (
@@ -131,16 +130,10 @@ export function Collapse({
         )}
       </CollapseTrigger>
       <CollapsePanel
-        {...slots?.panel}
         open={open$}
         id={panelId}
         aria-labelledby={triggerId}
-        className={slots?.panel?.className}
-        slots={{
-          content: {
-            className: ["p-4 pt-0 text-sm font-medium", slots?.content?.className],
-          },
-        }}
+        className={classNames?.panel}
       >
         {children}
       </CollapsePanel>
@@ -182,12 +175,14 @@ export interface SingleAccordionProps extends AccordionRootProps {
 
 export interface AccordionRootProps extends CollapseRootProps {
   items: CollapseItemConfig[];
-  itemClassName?: {
-    root?: ClassNameValue;
-    trigger?: ClassNameValue;
-    panel?: ClassNameValue;
+  common?: {
+    classNames?: {
+      root?: ClassNameValue;
+      trigger?: ClassNameValue;
+      panel?: ClassNameValue;
+    };
+    icon?: React.ReactNode | ((open: boolean) => React.ReactNode);
   };
-  itemIcon?: React.ReactNode | ((open: boolean) => React.ReactNode);
 }
 
 export interface MultipleAccordionProps extends AccordionRootProps {
@@ -212,8 +207,7 @@ export function Accordion({
   activeKeys,
   defaultActiveKeys,
   onKeyChange,
-  itemClassName,
-  itemIcon,
+  common,
   ...props
 }: AccordionProps) {
   const [_activeKeys, setActiveKeys] = React.useState<string[]>(() => {
@@ -268,20 +262,13 @@ export function Accordion({
           <Collapse
             {...cfg}
             key={cfg.itemKey}
-            className={cn("not-last:border-b", cfg.className, itemClassName?.root)}
-            slots={{
-              panel: {
-                ...cfg.slots?.panel,
-                className: [cfg.slots?.panel?.className, itemClassName?.panel],
-              },
-              trigger: {
-                ...cfg.slots?.trigger,
-                className: [cfg.slots?.trigger?.className, itemClassName?.trigger],
-              },
-              content: cfg.slots?.content,
+            classNames={{
+              root: cfg.classNames?.root ?? common?.classNames?.root,
+              trigger: cfg.classNames?.trigger ?? common?.classNames?.trigger,
+              panel: cfg.classNames?.panel ?? common?.classNames?.panel,
             }}
 
-            icon={cfg.icon ?? itemIcon}
+            icon={cfg.icon ?? common?.icon}
             open={activeKeys$.includes(cfg.itemKey)}
             onOpenChange={() => handleToggle(cfg.itemKey)}
           >

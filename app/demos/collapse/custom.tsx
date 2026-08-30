@@ -21,9 +21,9 @@ const items = [
     label: "CollapseRoot",
     panel: (
       <p className="text-muted-foreground">
-        <code>CollapseRoot</code> is the container component for the accordion/collapse. It handles
-        layout, borders, rounded corners, and dividers. It accepts a <code>className</code> for
-        custom styling and supports the <code>inert</code> attribute to control the disabled state.
+        <code>CollapseRoot</code> is the container for the accordion/collapse. It lays items out
+        vertically and separates them with <code>not-last:border-b</code>. It accepts a{" "}
+        <code>className</code> for custom styling and forwards all native div props.
       </p>
     ),
   },
@@ -33,9 +33,8 @@ const items = [
     panel: (
       <p className="text-muted-foreground">
         <code>CollapseTrigger</code> is the interactive button that toggles the panel open or
-        closed. It is a <code>&lt;button&gt;</code> element that can be customised with labels,
-        icons, and includes built‑in <code>aria‑expanded</code> and <code>aria‑controls</code> for
-        accessibility.
+        closed. The <code>open</code> prop drives <code>aria-expanded</code>, and hover styles apply
+        while collapsed.
       </p>
     ),
   },
@@ -44,10 +43,9 @@ const items = [
     label: "CollapsePanel",
     panel: (
       <p className="text-muted-foreground">
-        <code>CollapsePanel</code> is the content container that expands and collapses. It is
-        controlled by the <code>open</code> prop and includes a smooth height transition animation.
-        It accepts a <code>className</code> for custom padding and styling, and supports a
-        <code>slots</code> API for deeper customisation of its inner structure.
+        <code>CollapsePanel</code> is the content container that expands and collapses through a
+        grid rows transition driven by the <code>open</code> prop. <code>className</code> applies to
+        the inner content wrapper for custom padding and styling.
       </p>
     ),
   },
@@ -58,11 +56,8 @@ function CollapseItemDemo({ item }: { item: (typeof items)[number] }) {
   const isOpen = activeKey === item.itemKey;
 
   return (
-    <div className="flex flex-col">
-      <CollapseTrigger
-        className="w-full justify-between p-4 text-sm font-medium"
-        onClick={() => toggle(item.itemKey)}
-      >
+    <>
+      <CollapseTrigger open={isOpen} onClick={() => toggle(item.itemKey)}>
         {item.label}
         <ChevronDown
           data-open={isOpen}
@@ -70,14 +65,10 @@ function CollapseItemDemo({ item }: { item: (typeof items)[number] }) {
           aria-hidden
         />
       </CollapseTrigger>
-      <CollapsePanel
-        open={isOpen}
-        className="text-sm text-muted-foreground"
-        slots={{ content: { className: "px-4 pb-4" } }}
-      >
+      <CollapsePanel open={isOpen} className="text-muted-foreground">
         {item.panel}
       </CollapsePanel>
-    </div>
+    </>
   );
 }
 
@@ -90,7 +81,7 @@ export default function Demo() {
 
   return (
     <AccordionDemoCtx.Provider value={{ activeKey, toggle }}>
-      <CollapseRoot className="w-md rounded-md border border-border divide-y">
+      <CollapseRoot className="w-md rounded-md border border-border">
         {items.map((cfg) => (
           <CollapseItemDemo key={cfg.itemKey} item={cfg} />
         ))}
