@@ -41,7 +41,7 @@ description: 支持加载状态、加载占位与错误处理的图片组件
 
 ### 自定义
 
-直接使用底层原子组件实现高度自定义。
+直接使用可组合组件实现高度自定义。
 
 <ComponentPreview 
   name="image-custom"
@@ -57,21 +57,18 @@ description: 支持加载状态、加载占位与错误处理的图片组件
 
 预加载管理的图片组件，外层容器内置 `relative`、`overflow-hidden` 样式。
 
-| Prop            | Type                                            | Default   | Description                                                                                                   |
-| --------------- | ----------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------- |
-| `src`           | `string`                                        | -（必填） | 图片源 URL                                                                                                    |
-| `alt`           | `string`                                        | -         | 图片的替代文本                                                                                                |
-| `className`     | `ClassNameValue`                                | -         | 自定义 CSS 类名，作用于外层容器                                                                               |
-| `fallback`      | `React.ReactNode`                               | -         | 图片加载失败时显示的自定义回退元素                                                                            |
-| `loadingNode`   | `React.ReactNode`                               | -         | 加载中显示的占位元素，可用于渐进式模糊缩略图                                                                  |
-| `slots.wrapper` | `Omit<React.ComponentProps<"div">, "children">` | -         | 外层容器属性，`className` 优先级高于 `className`                                                              |
-| `...props`      | `React.ComponentProps<"img">`                   | -         | 支持全部 img 原生属性（除 `className`），内置 `loading="lazy"`、`decoding="async"`、`contentVisibility: auto` |
+| Prop          | Type                                            | Default   | Description                                                             |
+| ------------- | ----------------------------------------------- | --------- | ------------------------------------------------------------------------ |
+| `src`         | `string`                                        | -（必填） | 图片源 URL                                                               |
+| `alt`         | `string`                                        | -         | 图片的替代文本                                                           |
+| `fallback`    | `React.ReactNode`                               | -         | 图片加载失败时显示的自定义回退元素                                       |
+| `loadingNode` | `React.ReactNode`                               | -         | 加载中显示的占位元素，可用于渐进式模糊缩略图                             |
+| `classNames`  | `{ root?: ClassNameValue; image?: ClassNameValue }` | -     | 根容器和图片的自定义类名                                                 |
+| `styles`      | `{ root?: React.CSSProperties; image?: React.CSSProperties }` | - | 根容器和图片的内联样式                                        |
 
 ---
 
-### Headless 原子组件
-
-> 以下为底层原子组件，**内置样式极少，样式需要通过 className 自行补充**。高层组合组件 `Image` 即由以下原子组件组合而成。
+### 可组合组件
 
 #### ImageRoot
 
@@ -84,7 +81,7 @@ description: 支持加载状态、加载占位与错误处理的图片组件
 
 #### ImageImage
 
-图片元素，内置 `w-full`、`h-full`、`object-cover`。
+图片元素，内置 `size-full`、`object-cover`、`loading="lazy"` 和 `decoding="async"`。
 
 | Prop        | Type                          | Default | Description           |
 | ----------- | ----------------------------- | ------- | --------------------- |

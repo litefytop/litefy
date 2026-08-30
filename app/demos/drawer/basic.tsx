@@ -5,10 +5,8 @@ import { Drawer } from "@/ui";
 
 export default function DrawerBasicDemo() {
   const [open, setOpen] = useState(false);
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
-    if (e.target === e.currentTarget) {
-      setOpen(false);
-    }
+  const handleBackdropClick = () => {
+    setOpen(false);
   };
   return (
     <div className="flex flex-col items-center gap-4">

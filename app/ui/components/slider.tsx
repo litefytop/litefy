@@ -27,7 +27,7 @@ export function Slider({
       data-invalid={invalid ? true : undefined}
       aria-invalid={invalid}
       className={cn(
-        "bg-muted rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed p-4 w-3xs h-2 accent-primary",
+        "bg-input rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed p-4 w-3xs h-2 accent-primary",
         "data-invalid:accent-destructive",
         SliderClass[orientation],
         className,

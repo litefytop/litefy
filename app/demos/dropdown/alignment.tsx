@@ -8,34 +8,25 @@ export default function DropdownAlignmentDemo() {
         <h3 className="text-sm font-medium mb-4">Position Area</h3>
         <div className="flex gap-4">
           <Dropdown
-            style={{ positionArea: "bottom span-right", justifySelf: "start" }}
-            slots={{
-              trigger: {
-                className: [Button.class.base, Button.class.variant.primary],
-                children: "span-right",
-              },
-            }}
+            styles={{ content: { positionArea: "bottom span-right", justifySelf: "start" } }}
+            classNames={{ trigger: [Button.class.base, Button.class.variant.primary] }}
             items={[{ label: "Item 1" }, { label: "Item 2" }, { label: "Item 3" }]}
-          />
+          >
+            span-right
+          </Dropdown>
           <Dropdown
-            slots={{
-              trigger: {
-                className: [Button.class.base, Button.class.variant.primary],
-                children: "bottom span-all",
-              },
-            }}
+            classNames={{ trigger: [Button.class.base, Button.class.variant.primary] }}
             items={[{ label: "Item 1" }, { label: "Item 2" }, { label: "Item 3" }]}
-          />
+          >
+            bottom span-all
+          </Dropdown>
           <Dropdown
-            style={{ positionArea: "bottom span-left", justifySelf: "end" }}
-            slots={{
-              trigger: {
-                className: [Button.class.base, Button.class.variant.primary],
-                children: "span-left",
-              },
-            }}
+            styles={{ content: { positionArea: "bottom span-left", justifySelf: "end" } }}
+            classNames={{ trigger: [Button.class.base, Button.class.variant.primary] }}
             items={[{ label: "Item 1" }, { label: "Item 2" }, { label: "Item 3" }]}
-          />
+          >
+            span-left
+          </Dropdown>
         </div>
       </div>
       <div>
@@ -43,24 +34,18 @@ export default function DropdownAlignmentDemo() {
         <div className="flex gap-4">
           <Dropdown
             alignX="start"
-            slots={{
-              trigger: {
-                className: [Button.class.base, Button.class.variant.primary],
-                children: "alignX start",
-              },
-            }}
+            classNames={{ trigger: [Button.class.base, Button.class.variant.primary] }}
             items={[{ label: "Item 1" }, { label: "Item 2" }, { label: "Item 3" }]}
-          />
+          >
+            alignX start
+          </Dropdown>
           <Dropdown
             alignX="end"
-            slots={{
-              trigger: {
-                className: [Button.class.base, Button.class.variant.primary],
-                children: "alignX end",
-              },
-            }}
+            classNames={{ trigger: [Button.class.base, Button.class.variant.primary] }}
             items={[{ label: "Item 1" }, { label: "Item 2" }, { label: "Item 3" }]}
-          />
+          >
+            alignX end
+          </Dropdown>
         </div>
       </div>
     </div>

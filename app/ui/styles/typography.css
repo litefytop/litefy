@@ -1,30 +1,30 @@
 @layer components {
   .heading-h1 {
-    @apply font-semibold tracking-tight text-foreground text-4xl sm:text-5xl lg:text-6xl;
+    @apply font-semibold tracking-tight text-4xl sm:text-5xl lg:text-6xl;
   }
 
   .heading-h2 {
-    @apply font-semibold tracking-tight text-foreground text-3xl sm:text-4xl lg:text-5xl;
+    @apply font-semibold tracking-tight text-3xl sm:text-4xl lg:text-5xl;
   }
 
   .heading-h3 {
-    @apply font-semibold tracking-tight text-foreground text-2xl sm:text-3xl lg:text-4xl;
+    @apply font-semibold tracking-tight text-2xl sm:text-3xl lg:text-4xl;
   }
 
   .heading-h4 {
-    @apply font-semibold tracking-tight text-foreground text-xl sm:text-2xl lg:text-3xl;
+    @apply font-semibold tracking-tight text-xl sm:text-2xl lg:text-3xl;
   }
 
   .heading-h5 {
-    @apply font-semibold tracking-tight text-foreground text-lg sm:text-xl lg:text-2xl;
+    @apply font-semibold tracking-tight text-lg sm:text-xl lg:text-2xl;
   }
 
   .heading-h6 {
-    @apply font-semibold tracking-tight text-foreground text-base sm:text-lg lg:text-xl;
+    @apply font-semibold tracking-tight text-base sm:text-lg lg:text-xl;
   }
 
   .headline {
-    @apply font-bold tracking-tight text-foreground text-4xl py-4 mb-4;
+    @apply font-bold tracking-tight text-4xl py-4 mb-4;
   }
 
   .description {

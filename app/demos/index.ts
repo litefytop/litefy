@@ -87,6 +87,8 @@ import NumberFieldBasicDemo from "./number-field/basic";
 import numberFieldBasicCode from "./number-field/basic.tsx?raw";
 import NumberFieldControlledDemo from "./number-field/controlled";
 import numberFieldControlledCode from "./number-field/controlled.tsx?raw";
+import NumberFieldCustomDemo from "./number-field/custom";
+import numberFieldCustomCode from "./number-field/custom.tsx?raw";
 import NumberFieldInvalidDemo from "./number-field/invalid";
 import numberFieldInvalidCode from "./number-field/invalid.tsx?raw";
 import PaginatedViewerWithJumpDemo from "./paginated-viewer/with-jump";
@@ -320,6 +322,10 @@ export const demos: Record<string, DemoItem> = {
   "number-field-controlled": {
     component: NumberFieldControlledDemo,
     code: numberFieldControlledCode,
+  },
+  "number-field-custom": {
+    component: NumberFieldCustomDemo,
+    code: numberFieldCustomCode,
   },
   "tabs-basic": {
     component: TabsBasicDemo,

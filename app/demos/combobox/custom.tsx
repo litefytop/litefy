@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef, useCallback, useEffect, useMemo, useId } from "react";
-import { ComboboxRoot, ComboboxInput, ComboboxPopover, ComboboxList, ComboboxOption } from "@/ui";
+import { ComboboxRoot, ComboboxInput, ComboboxContent, ComboboxList, ComboboxOption } from "@/ui";
 
 const options = ["Apple", "Banana", "Orange", "Grape", "Mango", "Peach"];
 
@@ -97,7 +97,7 @@ export default function Demo() {
         onKeyDown={handleKeyDown}
         onClick={openPopover}
       />
-      <ComboboxPopover
+      <ComboboxContent
         ref={popoverRef}
         style={{
           margin: "4px 0 0",
@@ -129,7 +129,7 @@ export default function Demo() {
               ))
             : null}
         </ComboboxList>
-      </ComboboxPopover>
+      </ComboboxContent>
     </ComboboxRoot>
   );
 }

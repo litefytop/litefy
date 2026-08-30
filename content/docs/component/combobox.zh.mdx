@@ -85,10 +85,6 @@ description: 支持自动补全的选项选择组件
 
 ### 可组合组件
 
-> 以下组件可自由拼装。它们内置了与组合组件 `Combobox` 相同的默认样式，可通过 `className` 覆盖。
-
-> 手动拼装时需自行接入锚点定位：在 `ComboboxRoot` 上设置 `anchorName`，在 `ComboboxPopover` 上设置 `positionAnchor`、`positionArea`、`width` 等。
-
 #### ComboboxRoot
 
 外层容器，为下拉浮层提供定位锚点。
@@ -110,7 +106,7 @@ description: 支持自动补全的选项选择组件
 | `className`    | `ClassNameValue`                | -       | 自定义类名                                            |
 | `...props`     | `React.ComponentProps<"input">` | -       | 支持全部 input 原生属性（除 `className`、`onSelect`） |
 
-#### ComboboxPopover
+#### ComboboxContent
 
 下拉浮层容器，基于原生 Popover API 渲染为 `popover="manual"` 的 div
 

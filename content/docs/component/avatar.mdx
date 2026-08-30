@@ -31,7 +31,7 @@ Avatar component handling image loading, success, and failure states with skelet
   name="avatar-basic"
 />
 
-### Composable Components
+### Custom
 
 Compose `AvatarRoot` and `AvatarImage` directly. They carry the same default styles as the composite `Avatar` and can be freely assembled and overridden via `className`.
 
@@ -41,7 +41,11 @@ Compose `AvatarRoot` and `AvatarImage` directly. They carry the same default sty
 
 ## API Reference
 
-### Avatar
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Avatar
 
 A self-managing avatar component that preloads the image and switches between skeleton, image, and fallback states.
 
@@ -57,9 +61,7 @@ Supports all native `<img>` attributes (such as `alt`) except `className` and `s
 
 ### Composable Components
 
-> The following components can be freely assembled. Unlike headless atomic components, they ship with the same default styles as the composite `Avatar`; override them via `className`.
-
-### AvatarRoot
+#### AvatarRoot
 
 The container element rendered as a square with default `size-12`, centered content and hidden overflow.
 
@@ -69,7 +71,7 @@ The container element rendered as a square with default `size-12`, centered cont
 
 Supports all native `<div>` attributes.
 
-### AvatarImage
+#### AvatarImage
 
 The image element rendered with lazy loading and async decoding.
 

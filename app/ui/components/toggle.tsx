@@ -40,7 +40,7 @@ export const Toggle = ({
       onClick={handleClick}
       className={cn(
         "inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium",
-        "border border-border bg-background text-foreground",
+        "border border-border text-foreground",
         "transition-colors duration-200",
         "aria-checked:bg-primary aria-checked:text-primary-foreground aria-checked:border-primary",
         "hover:not-aria-checked:bg-muted/50",

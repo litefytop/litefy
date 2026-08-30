@@ -6,10 +6,8 @@ export default function DrawerResizableDemo() {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const dragStartRef = useRef({ base: 0, minPx: 0 });
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
-    if (e.target === e.currentTarget) {
-      setOpen(false);
-    }
+  const handleBackdropClick = () => {
+    setOpen(false);
   };
   const drag = useDrag({
     disabled: !open,

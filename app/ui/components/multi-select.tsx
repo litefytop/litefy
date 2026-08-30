@@ -336,7 +336,7 @@ export function MultiSelect({
           ...slotProps?.panel?.style,
         }}
         className={cn(
-          "max-h-64 rounded-md border border-input bg-background shadow-lg overflow-auto p-1",
+          "max-h-64 rounded-md border border-input shadow-lg overflow-auto p-1",
           slotProps?.panel?.className,
         )}
       >

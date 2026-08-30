@@ -29,11 +29,7 @@ export type PaperProviderProps = React.ComponentProps<"div"> & {
   onTotalPagesChange?: (totalPages: number) => void;
 };
 
-export function PaperProvider({
-  children,
-  onTotalPagesChange,
-  ...props
-}: PaperProviderProps) {
+export function PaperProvider({ children, onTotalPagesChange, ...props }: PaperProviderProps) {
   const countRef = useRef(0);
   const [totalPages, setTotalPages] = useState(0);
 
@@ -127,11 +123,7 @@ function Paper({
   return (
     <div
       {...props}
-      className={cn(
-        paperclass.base,
-        paperclass.variant[variant][orientation],
-        className,
-      )}
+      className={cn(paperclass.base, paperclass.variant[variant][orientation], className)}
     >
       {children}
     </div>

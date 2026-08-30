@@ -30,14 +30,14 @@ export function ComboboxInput({
   );
 }
 
-export interface ComboboxPopoverProps extends Omit<React.ComponentProps<"div">, "className"> {
+export interface ComboboxContentProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
 }
-export function ComboboxPopover({ className, ...props }: ComboboxPopoverProps) {
+export function ComboboxContent({ className, ...props }: ComboboxContentProps) {
   return (
     <div
       popover="manual"
-      className={cn("border bg-background shadow-lg overflow-hidden rounded-md", className)}
+      className={cn("border shadow-lg overflow-hidden rounded-md", className)}
       {...props}
     />
   );
@@ -257,7 +257,7 @@ export function Combobox({
         />
       </ComboboxRoot>
 
-      <ComboboxPopover
+      <ComboboxContent
         ref={popoverRef}
         style={{
           margin: "4px 0 0",
@@ -301,7 +301,7 @@ export function Combobox({
                 );
               })}
         </ComboboxList>
-      </ComboboxPopover>
+      </ComboboxContent>
     </>
   );
 }

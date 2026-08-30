@@ -12,7 +12,7 @@ export default function ImageLoadingDemo() {
        
         src="https://picsum.photos/seed/3/1200/800"
         alt="Random image"
-        className="w-160 h-80 border"
+        classNames={{ root: "w-160 h-80 border" }}
         loadingNode={
           <div className="relative w-full h-full">
             <img

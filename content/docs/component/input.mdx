@@ -41,7 +41,7 @@ Input fields with validation error state.
 
 ### Custom
 
-Use the low-level atomic components for advanced customization.
+Compose `InputGroup`, `InputLeading`, `InputTrailing` and a native input; the `focus-within` focus ring and `data-invalid` invalid styles apply automatically.
 
 <ComponentPreview 
   name="input-custom"
@@ -57,35 +57,23 @@ Ready-to-use composite components.
 
 The input component with slot and validation support.
 
-| Prop        | Type                                              | Default  | Description                                               |
-| ----------- | ------------------------------------------------- | -------- | --------------------------------------------------------- |
-| `type`      | `'text' \| 'email' \| 'url' \| 'tel' \| 'search'` | `'text'` | Input type                                                |
-| `className` | `ClassNameValue`                                  | -        | Custom CSS class name, applied to the inner input element |
-| `leading`   | `ReactNode`                                       | -        | Leading slot content (e.g., icons)                        |
-| `trailing`  | `ReactNode`                                       | -        | Trailing slot content (e.g., buttons, icons)              |
-| `invalid`   | `boolean`                                         | `false`  | Whether the input is in an invalid state                  |
-| `slotProps` | `InputSlotProps`                                  | -        | Pass-through props for internal elements                  |
-| `...props`  | `React.ComponentProps<"input">`                   | -        | Supports all native input props (except `type`)           |
-
-#### slotProps
-
-Only applies to the high-level `Input` component.
-
-| Slot       | Type                 | Description                           |
-| ---------- | -------------------- | ------------------------------------- |
-| `group`    | `InputGroupProps`    | Props for the input group container   |
-| `leading`  | `InputLeadingProps`  | Props for the leading slot container  |
-| `trailing` | `InputTrailingProps` | Props for the trailing slot container |
+| Prop         | Type                                              | Default  | Description                                               |
+| ------------ | ------------------------------------------------- | -------- | --------------------------------------------------------- |
+| `type`       | `'text' \| 'email' \| 'url' \| 'tel' \| 'search'` | `'text'` | Input type                                                |
+| `leading`    | `ReactNode`                                       | -        | Leading slot content (e.g., icons)                        |
+| `trailing`   | `ReactNode`                                       | -        | Trailing slot content (e.g., buttons, icons)              |
+| `invalid`    | `boolean`                                         | `false`  | Whether the input is in an invalid state                  |
+| `classNames` | `{ root?: ClassNameValue; leading?: ClassNameValue; trailing?: ClassNameValue; input?: ClassNameValue }` | - | Custom classes for the internal elements |
+| `styles` | `{ root?: React.CSSProperties; leading?: React.CSSProperties; trailing?: React.CSSProperties; input?: React.CSSProperties }` | - | Inline styles for the internal elements |
+| `...props`   | `React.ComponentProps<"input">`                   | -        | Supports all native input props (except `type`, `className`) |
 
 ---
 
-### Headless Atomic Components
-
-> The following are low-level atomic components with **minimal built-in styles; styles should be added via className**. The high-level composite component `Input` is composed of these atomic components.
+### Composable Components
 
 #### InputGroup
 
-Outer container with built-in `flex` layout.
+Outer container with the complete input styles built in: size (`h-9 w-sm`), rounded border, background, `focus-within` focus ring, and the `data-invalid` invalid state styles.
 
 | Prop        | Type                          | Default | Description                                                   |
 | ----------- | ----------------------------- | ------- | ------------------------------------------------------------- |
@@ -94,7 +82,7 @@ Outer container with built-in `flex` layout.
 
 #### InputLeading
 
-Leading slot container rendered as a `span`, with built-in `shrink-0`.
+Leading slot container rendered as a `span`, with built-in `shrink-0`, icon sizing and padding.
 
 | Prop        | Type                           | Default | Description                                                    |
 | ----------- | ------------------------------ | ------- | -------------------------------------------------------------- |
@@ -103,19 +91,9 @@ Leading slot container rendered as a `span`, with built-in `shrink-0`.
 
 #### InputTrailing
 
-Trailing slot container rendered as a `span`, with built-in `shrink-0`.
+Trailing slot container rendered as a `span`, with built-in `shrink-0`, icon sizing and padding.
 
 | Prop        | Type                           | Default | Description                                                    |
 | ----------- | ------------------------------ | ------- | -------------------------------------------------------------- |
 | `className` | `ClassNameValue`               | -       | Custom class name                                              |
 | `...props`  | `React.ComponentProps<"span">` | -       | Supports all native span props (including `data-*` attributes) |
-
-#### InputField
-
-The input element with built-in `appearance-none`; `type` is restricted to `'text' | 'email' | 'url' | 'tel' | 'search'`.
-
-| Prop        | Type                                              | Default  | Description                                     |
-| ----------- | ------------------------------------------------- | -------- | ----------------------------------------------- |
-| `type`      | `'text' \| 'email' \| 'url' \| 'tel' \| 'search'` | `'text'` | Input type                                      |
-| `className` | `ClassNameValue`                                  | -        | Custom class name                               |
-| `...props`  | `React.ComponentProps<"input">`                   | -        | Supports all native input props (except `type`) |

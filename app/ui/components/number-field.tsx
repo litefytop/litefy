@@ -3,24 +3,78 @@
 import * as React from "react";
 import { type ClassNameValue, cn } from "@/lib";
 
-type HTMLAttrs<T> = T & {
-  [key: `data-${string}`]: string | number | true | null | undefined;
+export type NumberGroupProps = Omit<React.ComponentProps<"div">, "className"> & {
   className?: ClassNameValue;
 };
+export function NumberGroup({ className, ...props }: NumberGroupProps) {
+  return (
+    <div
+      {...props}
+      className={cn(
+        "group border-input flex w-3xs items-center rounded-full border shadow-xs",
+        "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
+        "data-invalid:border-destructive/70 data-invalid:ring-destructive/20",
+        className,
+      )}
+    />
+  );
+}
+
+export type NumberDecrementProps = Omit<React.ComponentProps<"button">, "className"> & {
+  className?: ClassNameValue;
+};
+export function NumberDecrement({ className, ...props }: NumberDecrementProps) {
+  return (
+    <button
+      type="button"
+      aria-label="Decrease"
+      {...props}
+      className={cn(
+        "flex size-9 shrink-0 items-center justify-center rounded-l-full border-r border-input text-muted-foreground hover:text-primary",
+        "group-data-invalid:border-destructive/70 disabled:cursor-not-allowed disabled:opacity-50",
+        className,
+      )}
+    />
+  );
+}
+
+export type NumberIncrementProps = Omit<React.ComponentProps<"button">, "className"> & {
+  className?: ClassNameValue;
+};
+export function NumberIncrement({ className, ...props }: NumberIncrementProps) {
+  return (
+    <button
+      type="button"
+      aria-label="Increase"
+      {...props}
+      className={cn(
+        "flex size-9 shrink-0 items-center justify-center rounded-r-full border-l border-input text-muted-foreground hover:text-primary",
+        "group-data-invalid:border-destructive/70 disabled:cursor-not-allowed disabled:opacity-50",
+        className,
+      )}
+    />
+  );
+}
 
 type BaseNumberFieldProps = Omit<
   React.ComponentProps<"input">,
   "className" | "value" | "defaultValue" | "type" | "onChange"
 > & {
-  className?: ClassNameValue;
   invalid?: boolean;
   min?: number;
   max?: number;
   step?: number;
-  slotProps?: {
-    group?: HTMLAttrs<React.ComponentProps<"div">>;
-    stepDown?: HTMLAttrs<React.ComponentProps<"button">>;
-    stepUp?: HTMLAttrs<React.ComponentProps<"button">>;
+  classNames?: {
+    group?: ClassNameValue;
+    decrement?: ClassNameValue;
+    increment?: ClassNameValue;
+    input?: ClassNameValue;
+  };
+  styles?: {
+    group?: React.CSSProperties;
+    decrement?: React.CSSProperties;
+    increment?: React.CSSProperties;
+    input?: React.CSSProperties;
   };
 };
 
@@ -43,12 +97,12 @@ export type NumberFieldProps = PositiveIntegerMode | NormalMode;
 export function NumberField(props: NumberFieldProps) {
   const {
     positiveInteger = false,
-    className,
     invalid,
     min = positiveInteger ? 0 : -Infinity,
     max = Infinity,
     step = 1,
-    slotProps,
+    classNames,
+    styles,
     disabled,
     defaultValue = "",
     onValueChange,
@@ -62,9 +116,7 @@ export function NumberField(props: NumberFieldProps) {
     String(defaultValue ?? ""),
   );
 
-  const value = isControlled
-    ? String(controlledValue ?? "")
-    : uncontrolledValue;
+  const value = isControlled ? String(controlledValue ?? "") : uncontrolledValue;
 
   const normalize = React.useCallback(
     (str: string): string => {
@@ -167,36 +219,22 @@ export function NumberField(props: NumberFieldProps) {
   const safeMin = Number.isFinite(min) ? min : undefined;
   const safeMax = Number.isFinite(max) ? max : undefined;
   const numValue = value === "" ? undefined : parseFloat(value);
-  const valuenow =
-    numValue !== undefined && !Number.isNaN(numValue) ? numValue : undefined;
+  const valuenow = numValue !== undefined && !Number.isNaN(numValue) ? numValue : undefined;
 
   return (
-    <div
-      {...slotProps?.group}
+    <NumberGroup
       data-invalid={invalid || undefined}
-      className={cn(
-        "group border-input bg-background flex w-3xs items-center rounded-full border shadow-xs ",
-        "invalid:cursor-not-allowed invalid:opacity-50",
-        "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
-        "data-invalid:border-destructive/70 data-invalid:ring-destructive/20",
-        slotProps?.group?.className,
-      )}
+      className={classNames?.group}
+      style={styles?.group}
     >
-      <button
-        {...slotProps?.stepDown}
-        type="button"
-        aria-label="Decrease"
+      <NumberDecrement
         disabled={disabled || valuenow === min}
         onClick={handleMinus}
-        className={cn(
-          "size-9 flex items-center justify-center text-muted-foreground hover:text-primary rounded-l-full border-r border-input",
-          "group-data-invalid:border-destructive/70",
-          slotProps?.stepDown?.className,
-        )}
+        className={classNames?.decrement}
+        style={styles?.decrement}
       >
         −
-      </button>
-
+      </NumberDecrement>
       <input
         {...rest}
         type="text"
@@ -210,30 +248,23 @@ export function NumberField(props: NumberFieldProps) {
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
         className={cn(
-          "border-0 bg-transparent w-full h-8 px-2 text-sm flex-1 text-center",
+          "h-8 w-full min-w-0 flex-1 border-0 bg-transparent px-2 text-center text-sm",
           "placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground",
-          "group-aria-invalid:border-destructive/70",
-          className,
+          classNames?.input,
         )}
+        style={styles?.input}
         aria-valuemin={safeMin}
         aria-valuemax={safeMax}
         aria-valuenow={valuenow}
       />
-
-      <button
-        {...slotProps?.stepUp}
-        type="button"
-        aria-label="Increase"
+      <NumberIncrement
         disabled={disabled || valuenow === max}
         onClick={handlePlus}
-        className={cn(
-          "size-9 flex items-center justify-center text-muted-foreground hover:text-primary rounded-r-full border-l border-input",
-          "group-data-invalid:border-destructive/70",
-          slotProps?.stepUp?.className,
-        )}
+        className={classNames?.increment}
+        style={styles?.increment}
       >
         +
-      </button>
-    </div>
+      </NumberIncrement>
+    </NumberGroup>
   );
 }

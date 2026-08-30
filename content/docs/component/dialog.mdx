@@ -55,23 +55,21 @@ Ready-to-use composite components.
 
 #### Dialog
 
-A modal dialog component built on the native HTML `dialog` element, with built-in focus trapping, Esc close handling and transition animation.
+A modal dialog component built on the native HTML `dialog` element, with built-in focus trapping and Esc close handling.
 
-| Prop           | Type                                               | Default      | Description                                                                                       |
-| -------------- | -------------------------------------------------- | ------------ | ------------------------------------------------------------------------------------------------- |
-| `open`         | `boolean`                                          | - (required) | Controlled open state, synced with the native `showModal()` / `close()` internally                |
-| `onOpenChange` | `(open: boolean) => void`                          | -            | Callback when the open state changes; fired on Esc, close button click, native `cancel` / `close` |
-| `className`    | `ClassNameValue`                                   | -            | Custom CSS class name, applied to the native dialog element                                       |
-| `ref`          | `React.Ref<HTMLDialogElement>`                     | -            | Ref forwarded to the native dialog element                                                        |
-| `children`     | `React.ReactNode`                                  | -            | Dialog content                                                                                    |
-| `onClick`      | `(e: React.MouseEvent<HTMLDialogElement>) => void` | -            | Event callback fired when the Backdrop is clicked; implement close-on-backdrop-click yourself     |
-| `...props`     | `React.ComponentProps<"dialog">`                   | -            | Supports all native dialog props (`onKeyDown`, `onCancel`, `onClose` are handled internally)      |
+| Prop              | Type                                                | Default      | Description                                                                                       |
+| ----------------- | --------------------------------------------------- | ------------ | ------------------------------------------------------------------------------------------------- |
+| `open`            | `boolean`                                           | - (required) | Controlled open state, synced with the native `showModal()` / `close()` internally                |
+| `onOpenChange`    | `(open: boolean) => void`                           | -            | Callback when the open state changes; fired on Esc, close button click, native `cancel` / `close` |
+| `onBackdropClick` | `(e: React.MouseEvent<HTMLDialogElement>) => void`  | -            | Callback fired when the backdrop is clicked; implement close-on-backdrop-click with it            |
+| `classNames`      | `{ root?, content?, close? }`                       | -            | Custom class names per part, applied to the dialog element, content area and close button         |
+| `styles`          | `{ root?, content?, close? }`                       | -            | Inline styles per part                                                                            |
+| `children`        | `React.ReactNode`                                   | -            | Dialog content, rendered inside the content area `DialogContent`                                  |
+| `...props`        | `React.ComponentProps<"div">`                       | -            | Remaining props are passed through to the content area `DialogContent` (except `className` / `styles`) |
 
 ---
 
 ### Composable Components
-
-> The following components can be freely assembled. `DialogClose` carries the same default styles as the composite `Dialog`'s close button; override them via `className`. `DialogRoot` is a plain native `dialog` with no styles or behavior.
 
 #### DialogRoot
 
@@ -91,6 +89,16 @@ Close button with built-in styles, absolutely positioned in the top-right corner
 | `className` | `ClassNameValue`               | -       | Custom class name                                     |
 | `children` | `React.ReactNode`               | -       | Button content                                        |
 | `...props` | `React.ComponentProps<"button">` | -      | Supports all native button props (except `className`) |
+
+#### DialogContent
+
+Content container with built-in default panel styles: centered positioning, `min-w-70 max-w-md` width, rounded border, shadow and background.
+
+| Prop       | Type                           | Default | Description                                          |
+| ---------- | ------------------------------ | ------- | ---------------------------------------------------- |
+| `className` | `ClassNameValue`              | -       | Custom class name                                    |
+| `children` | `React.ReactNode`              | -       | Content area content                                 |
+| `...props` | `React.ComponentProps<"div">`  | -       | Supports all native div props (except `className`)   |
 
 #### dialog
 

@@ -56,20 +56,20 @@ The main component. The root panel is a `popover="manual"` element positioned wi
 | Prop            | Type                                    | Default             | Description                                                                                                        |
 | --------------- | --------------------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | `items`         | `DropdownItemConfig[]`                  | `[]`                | Menu item config, see [items](#items) below                                                                        |
-| `slots.trigger` | `DropdownTriggerProps`                  | -                   | Props for the trigger button                                                                                       |
+| `children`      | `React.ReactNode`                       | -                   | Content of the trigger button                                                                                      |
 | `itemClassName` | `ClassNameValue`                        | -                   | Class applied to every menu item button                                                                            |
 | `positionArea`  | `string`                                | `'bottom span-all'` | Any valid CSS `position-area` value. Use `span-*` variants so collision detection works correctly                  |
-| `alignX`        | `'start' \| 'end'`                      | -                   | Sidebar mode: `start` attaches the menu's end edge to the trigger's start edge (opens left); `end` attaches the menu's start edge to the trigger's end edge (opens right). Takes precedence over `positionArea` |
-| `className`     | `ClassNameValue`                        | -                   | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| `alignX`        | `'start' \| 'end' \| 'center'`          | -                   | Sidebar mode: `start` attaches the menu's end edge to the trigger's start edge (opens left); `end` attaches the menu's start edge to the trigger's end edge (opens right); `center` centers it. Takes precedence over `positionArea` |
+| `classNames`    | `{ trigger?: ClassNameValue; content?: ClassNameValue }` | -  | Custom classes for the trigger button and root panel                                                               |
+| `styles`        | `{ trigger?: React.CSSProperties; content?: React.CSSProperties }` | - | Inline styles for the trigger button and root panel; `styles.content` merges with the built-in positioning styles |
 | `...props`      | `React.ComponentProps<"div">`           | -                   | Supports all native div props on the root panel                                                                    |
 
 #### items
 
 ```ts
-type DropdownGroupItem = {
-  type: "group";
-  label: React.ReactNode;
-  children: DropdownMenuItem[];
+type DropdownGroup = {
+  group: React.ReactNode;
+  items: DropdownMenuItem[];
 };
 
 type DropdownMenuItem = {
@@ -80,7 +80,7 @@ type DropdownMenuItem = {
   children?: Omit<DropdownMenuItem, "children">[];
 };
 
-type DropdownItemConfig = DropdownGroupItem | DropdownMenuItem;
+type DropdownItemConfig = DropdownGroup | DropdownMenuItem;
 ```
 
 #### Keyboard Navigation
@@ -95,9 +95,7 @@ type DropdownItemConfig = DropdownGroupItem | DropdownMenuItem;
 
 ---
 
-### Headless Atomic Components
-
-> The following are low-level atomic components with **minimal built-in styles; styles should be added via className**. The high-level composite component `Dropdown` is composed of these atomic components.
+### Composable Components
 
 #### DropdownTrigger
 
@@ -110,12 +108,22 @@ The trigger button with built-in `type="button"` and `aria-haspopup="menu"`. The
 
 #### DropdownContent
 
-Generic panel container.
+Popover panel container rendered as a `popover="manual"` div with built-in panel styles (`bg-popover`, `min-w-32`, `max-h-96`, `overflow-auto`, `rounded-md`, `border`, `p-1`, `shadow-md`). The composite `Dropdown` renders both its root panel and submenu with it.
 
 | Prop        | Type                          | Default | Description                  |
 | ----------- | ------------------------------ | ------- | ------------------------------ |
 | `className` | `ClassNameValue`               | -       | Custom class name              |
 | `...props`  | `React.ComponentProps<"div">`  | -       | Supports all native div props  |
+
+#### DropdownSubContent
+
+Submenu panel container based on `DropdownContent`, with built-in submenu positioning styles (`position-area: right span-bottom` and flip fallbacks). Anchor it to the parent menu item via `positionAnchor` (each item's `anchor-name` is `--dropdown-sub-{entryId}`).
+
+| Prop             | Type                          | Default | Description                          |
+| ---------------- | ------------------------------ | ------- | -------------------------------------- |
+| `positionAnchor` | `string`                       | -       | `anchor-name` of the parent menu item  |
+| `className`      | `ClassNameValue`               | -       | Custom class name                      |
+| `...props`       | `React.ComponentProps<"div">`  | -       | Supports all native div props          |
 
 #### DropdownItem
 

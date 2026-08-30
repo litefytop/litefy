@@ -47,9 +47,21 @@ Manage the value externally with controlled state.
   name="number-field-controlled"
 />
 
+### Custom
+
+Compose `NumberGroup`, `NumberDecrement`, `NumberIncrement` and a native input; the `focus-within` focus ring and `data-invalid` invalid styles apply automatically.
+
+<ComponentPreview 
+  name="number-field-custom"
+/>
+
 ## API Reference
 
-### NumberField
+### High-level Components
+
+Ready-to-use composite components.
+
+#### NumberField
 
 A numeric input field with built-in increment and decrement buttons.
 
@@ -58,18 +70,45 @@ A numeric input field with built-in increment and decrement buttons.
 | `defaultValue` | `number \| string` | - | Initial value (uncontrolled mode) |
 | `value` | `number \| string \| null` | - | Current value (controlled mode) |
 | `onValueChange` | `(value: number \| null) => void \| (value: string) => void` | - | Value change handler. Returns `number \| null` when `positiveInteger=true`, otherwise `string` |
-| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
 | `invalid` | `boolean` | `false` | Whether the field is in an invalid state |
 | `min` | `number` | `0` (positiveInteger) or `-Infinity` | Minimum allowed value |
 | `max` | `number` | `Infinity` | Maximum allowed value |
 | `step` | `number` | `1` | Increment/decrement step size |
 | `positiveInteger` | `boolean` | `false` | Restrict to positive integers only. Changes value type to `number \| null` |
+| `classNames` | `{ group?: ClassNameValue; decrement?: ClassNameValue; increment?: ClassNameValue; input?: ClassNameValue }` | - | Custom classes for the internal elements |
+| `styles` | `{ group?: React.CSSProperties; decrement?: React.CSSProperties; increment?: React.CSSProperties; input?: React.CSSProperties }` | - | Inline styles for the internal elements |
 | `disabled` | `boolean` | `false` | Disable the entire field |
-| `onBlur` | `React.FocusEventHandler<HTMLInputElement>` | - | Blur event handler |
+| `...props` | `React.ComponentProps<"input">` | - | Supports all native input props (except `type`, `className`), such as `onBlur` |
 
-### slotProps
+---
 
-| Slot | Type | Description |
-|------|------|-------------|
-| `group` | `React.ComponentProps<"div">` | Props for the wrapper div |
-| `step` | `React.ComponentProps<"button">` | Props for increment/decrement buttons |
+### Composable Components
+
+#### NumberGroup
+
+Outer container with the complete input styles built in: size (`w-3xs`), rounded border, `focus-within` focus ring, and the `data-invalid` invalid state styles.
+
+| Prop        | Type                          | Default | Description                                                   |
+| ----------- | ----------------------------- | ------- | ------------------------------------------------------------- |
+| `className` | `ClassNameValue`              | -       | Custom class name                                             |
+| `...props`  | `React.ComponentProps<"div">` | -       | Supports all native div props (including `data-*` attributes) |
+
+#### NumberDecrement
+
+The decrement button with built-in left semicircle styling and disabled state.
+
+| Prop        | Type                             | Default | Description                                     |
+| ----------- | -------------------------------- | ------- | ----------------------------------------------- |
+| `className` | `ClassNameValue`                 | -       | Custom class name                               |
+| `children`  | `React.ReactNode`                | -       | Button content                                  |
+| `...props`  | `React.ComponentProps<"button">` | -       | Supports all native button props (except `className`) |
+
+#### NumberIncrement
+
+The increment button with built-in right semicircle styling and disabled state.
+
+| Prop        | Type                             | Default | Description                                     |
+| ----------- | -------------------------------- | ------- | ----------------------------------------------- |
+| `className` | `ClassNameValue`                 | -       | Custom class name                               |
+| `children`  | `React.ReactNode`                | -       | Button content                                  |
+| `...props`  | `React.ComponentProps<"button">` | -       | Supports all native button props (except `className`) |

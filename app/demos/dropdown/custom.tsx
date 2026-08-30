@@ -1,30 +1,24 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { createPortal } from "react-dom";
 import { DropdownTrigger, DropdownContent, DropdownItem } from "@/ui";
+
+const anchorName = "--dropdown-custom-demo";
 
 export default function Demo() {
   const [open, setOpen] = useState(false);
-  const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
-  const calculatePosition = () => {
-    if (!triggerRef.current) return;
-    const rect = triggerRef.current.getBoundingClientRect();
-    setPosition({
-      top: rect.bottom + 4,
-      left: rect.left,
-    });
-  };
-
-  const toggle = () => {
-    if (!open) calculatePosition();
-    setOpen(!open);
-  };
-
-  const close = () => setOpen(false);
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (!panel) return;
+    if (open) {
+      if (!panel.matches(":popover-open")) panel.showPopover();
+    } else {
+      if (panel.matches(":popover-open")) panel.hidePopover();
+    }
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -32,47 +26,58 @@ export default function Demo() {
       const target = e.target as HTMLElement;
       if (triggerRef.current?.contains(target)) return;
       if (panelRef.current?.contains(target)) return;
-      close();
+      setOpen(false);
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [open]);
 
+  const close = () => setOpen(false);
+
   return (
     <>
-      <DropdownTrigger ref={triggerRef} onClick={toggle}>
+      <DropdownTrigger
+        ref={triggerRef}
+        style={{ anchorName }}
+        onClick={() => setOpen(!open)}
+      >
         Open Custom Menu
       </DropdownTrigger>
-
-      {open &&
-        position &&
-        createPortal(
-          <DropdownContent
-            ref={panelRef}
-            className="fixed z-50 bg-white rounded-md border shadow-lg min-w-32 p-1 list-none m-0"
-            style={{ top: position.top, left: position.left }}
+      <DropdownContent
+        ref={panelRef}
+        style={{
+          positionAnchor: anchorName,
+          positionArea: "bottom span-all",
+          justifySelf: "center",
+          margin: "4px 0 0",
+          positionTryFallbacks: "flip-block, flip-inline",
+        }}
+      >
+        <DropdownItem>
+          <button
+            className="w-full text-left px-2 py-1.5 text-sm font-semibold hover:bg-hover"
+            onClick={close}
           >
-            <DropdownItem className="not-last:border-b">
-              <button className="w-full text-left px-3 py-2 hover:bg-gray-100" onClick={close}>
-                Profile
-              </button>
-            </DropdownItem>
-            <DropdownItem className="not-last:border-b">
-              <button className="w-full text-left px-3 py-2 hover:bg-gray-100" onClick={close}>
-                Settings
-              </button>
-            </DropdownItem>
-            <DropdownItem>
-              <button
-                className="w-full text-left px-3 py-2 text-red-600 hover:bg-gray-100"
-                onClick={close}
-              >
-                Logout
-              </button>
-            </DropdownItem>
-          </DropdownContent>,
-          document.body,
-        )}
+            Profile
+          </button>
+        </DropdownItem>
+        <DropdownItem>
+          <button
+            className="w-full text-left px-2 py-1.5 text-sm font-semibold hover:bg-hover"
+            onClick={close}
+          >
+            Settings
+          </button>
+        </DropdownItem>
+        <DropdownItem>
+          <button
+            className="w-full text-left px-2 py-1.5 text-sm font-semibold text-destructive hover:bg-hover"
+            onClick={close}
+          >
+            Logout
+          </button>
+        </DropdownItem>
+      </DropdownContent>
     </>
   );
 }

@@ -6,55 +6,33 @@ export interface ImageRootProps extends Omit<React.ComponentProps<"div">, "class
   className?: ClassNameValue;
 }
 export function ImageRoot({ className, ...props }: ImageRootProps) {
-  return (
-    <div
-      {...props}
-      className={cn(
-        "relative overflow-hidden",
-        className
-      )}
-    />
-  );
+  return <div {...props} className={cn("relative overflow-hidden", className)} />;
 }
 
 export interface ImageImageProps extends Omit<React.ComponentProps<"img">, "className"> {
   className?: ClassNameValue;
+  src: string;
 }
 export function ImageImage({ className, ...props }: ImageImageProps) {
   return (
     <img
       {...props}
-      className={cn(
-        "w-full h-full object‑cover",
-        className
-      )}
+      className={cn("size-full object-cover", className)}
+      loading="lazy"
+      decoding="async"
     />
   );
 }
 
-export type ImageProps = {
-  className?: ClassNameValue;
-  src: string;
-  alt?: string;
+export interface ImageProps extends Omit<ImageImageProps, "className" | "style"> {
   fallback?: React.ReactNode;
   loadingNode?: React.ReactNode;
-  slots?: {
-    wrapper?: Omit<React.ComponentProps<"div">, "children">;
-  };
-} & Omit<React.ComponentProps<"img">, "className">;
+  classNames?: { root?: ClassNameValue; image?: ClassNameValue };
+  styles?: { root?: React.CSSProperties; image?: React.CSSProperties };
+}
 
-export function Image({
-  src,
-  alt,
-  className,
-  fallback,
-  loadingNode,
-  slots,
-  ...props
-}: ImageProps) {
-  const [status, setStatus] = React.useState<"loading" | "success" | "failure">(
-    "loading",
-  );
+export function Image({ src, alt, fallback, loadingNode, classNames, styles }: ImageProps) {
+  const [status, setStatus] = React.useState<"loading" | "success" | "failure">("loading");
 
   React.useEffect(() => {
     let isActive = true;
@@ -75,31 +53,15 @@ export function Image({
       isActive = false;
       img.onload = null;
       img.onerror = null;
-      setTimeout(() => {
-        if (img.src) img.src = "";
-      }, 0);
     };
   }, [src]);
 
   return (
-    <ImageRoot
-      {...slots?.wrapper}
-      className={cn(
-        className,
-        slots?.wrapper?.className
-      )}
-    >
+    <ImageRoot className={classNames?.root} style={styles?.root}>
       {status === "loading" && loadingNode}
       {status === "failure" && fallback}
       {status === "success" && (
-        <ImageImage
-          {...props}
-          src={src}
-          alt={alt}
-          style={{ contentVisibility: "auto", ...props.style }}
-          loading="lazy"
-          decoding="async"
-        />
+        <ImageImage src={src} alt={alt} className={classNames?.image} style={styles?.image} />
       )}
     </ImageRoot>
   );

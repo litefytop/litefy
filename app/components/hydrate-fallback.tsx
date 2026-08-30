@@ -1,6 +1,6 @@
 export function HydrateFallback() {
   return (
-    <div className="min-h-screen bg-background p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8">
       <div className="mx-auto max-w-7xl animate-pulse space-y-8">
         <div className="flex items-center justify-between">
           <div className="h-8 w-32 rounded bg-muted" />

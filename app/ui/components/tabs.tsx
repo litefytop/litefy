@@ -146,7 +146,7 @@ if (autoScroll && isHorizontal) {
         onClick={handleScrollPrev}
         disabled={!canScrollLeft}
         aria-label="Scroll tabs left"
-        className="size-8 flex items-center justify-center rounded-md text-foreground hover:text-primary disabled:opacity-25 disabled:cursor-not-allowed shrink-0"
+        className="size-8 flex items-center justify-center rounded-md hover:text-primary disabled:opacity-25 disabled:cursor-not-allowed shrink-0"
       >
         <ChevronLeft className="size-4"/>
       </button>
@@ -164,7 +164,7 @@ if (autoScroll && isHorizontal) {
         onClick={handleScrollNext}
         disabled={!canScrollRight}
         aria-label="Scroll tabs right"
-        className="size-8 flex items-center justify-center rounded-md text-foreground hover:text-primary disabled:opacity-25 disabled:cursor-not-allowed shrink-0"
+        className="size-8 flex items-center justify-center rounded-md hover:text-primary disabled:opacity-25 disabled:cursor-not-allowed shrink-0"
       >
        <ChevronRight className="size-4"/>
       </button>
@@ -194,8 +194,8 @@ export interface TabsTriggerProps extends React.ComponentProps<"button"> {
 
 const triggerStyles = {
   button:
-    "rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm",
-  line: "bg-transparent text-muted-foreground hover:text-foreground border-b-2 border-transparent data-[state=active]:text-primary data-[state=active]:border-primary",
+    "rounded-md text-muted-foreground hover:hover:bg-muted/50 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm",
+  line: "bg-transparent text-muted-foreground hover:border-b-2 border-transparent data-[state=active]:text-primary data-[state=active]:border-primary",
 };
 
 export function TabsTrigger({

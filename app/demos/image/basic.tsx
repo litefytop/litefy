@@ -9,7 +9,7 @@ export default function ImageLoadingDemo() {
         <Image
         src="https://picsum.photos/seed/1/1200/800"
         alt="Random landscape image"
-        className="w-160 h-80 border"
+        classNames={{ root: "w-160 h-80 border" }}
       />
   );
 }

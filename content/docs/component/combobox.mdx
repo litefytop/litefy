@@ -85,10 +85,6 @@ A combobox supporting static options and async search, with built-in keyboard na
 
 ### Composable Components
 
-> The following components can be freely assembled. They carry the same default styles as the composite `Combobox`; override them via `className`.
-
-> When assembling manually, anchor positioning must be wired by yourself: set `anchorName` on `ComboboxRoot`, then `positionAnchor`, `positionArea`, `width` etc. on `ComboboxPopover`.
-
 #### ComboboxRoot
 
 Outer container that provides the positioning anchor for the dropdown popover.
@@ -110,7 +106,7 @@ Search input field with built-in sizing, border, and background.
 | `className`    | `ClassNameValue`                | -       | Custom class name                                                |
 | `...props`     | `React.ComponentProps<"input">` | -       | Supports all native input props (except `className`, `onSelect`) |
 
-#### ComboboxPopover
+#### ComboboxContent
 
 Dropdown popover container rendered as a `popover="manual"` div based on the native Popover API.
 

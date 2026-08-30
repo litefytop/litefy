@@ -55,23 +55,21 @@ description: 使用原生 HTML dialog 元素构建的模态对话框组件
 
 #### Dialog
 
-基于原生 HTML `dialog` 元素的模态对话框组件，内置焦点圈定、Esc 关闭处理和过渡动画。
+基于原生 HTML `dialog` 元素的模态对话框组件，内置焦点圈定与 Esc 关闭处理。
 
-| Prop           | Type                                               | Default   | Description                                                                   |
-| -------------- | -------------------------------------------------- | --------- | ----------------------------------------------------------------------------- |
-| `open`         | `boolean`                                          | -（必填） | 受控打开状态，内部通过原生 `showModal()` / `close()` 同步                     |
-| `onOpenChange` | `(open: boolean) => void`                          | -         | 打开状态变化回调，Esc、关闭按钮点击、原生 `cancel` / `close` 时触发           |
-| `className`    | `ClassNameValue`                                   | -         | 自定义 CSS 类名，作用于原生 dialog 元素                                       |
-| `ref`          | `React.Ref<HTMLDialogElement>`                     | -         | 转发到原生 dialog 元素                                                        |
-| `children`     | `React.ReactNode`                                  | -         | 对话框内容                                                                    |
-| `onClick`      | `(e: React.MouseEvent<HTMLDialogElement>) => void` | -         | 点击 Backdrop 时触发的事件回调，可自行实现点击遮罩关闭                        |
-| `...props`     | `React.ComponentProps<"dialog">`                   | -         | 支持全部 dialog 原生属性（`onKeyDown`、`onCancel`、`onClose` 由组件内部接管） |
+| Prop              | Type                                                | Default   | Description                                                                   |
+| ----------------- | --------------------------------------------------- | --------- | ----------------------------------------------------------------------------- |
+| `open`            | `boolean`                                           | -（必填） | 受控打开状态，内部通过原生 `showModal()` / `close()` 同步                     |
+| `onOpenChange`    | `(open: boolean) => void`                           | -         | 打开状态变化回调，Esc、关闭按钮点击、原生 `cancel` / `close` 时触发           |
+| `onBackdropClick` | `(e: React.MouseEvent<HTMLDialogElement>) => void`  | -         | 点击遮罩时触发的回调，可实现点击遮罩关闭                                      |
+| `classNames`      | `{ root?, content?, close? }`                       | -         | 各部分自定义类名，分别作用于 dialog 元素、内容区、关闭按钮                    |
+| `styles`          | `{ root?, content?, close? }`                       | -         | 各部分内联样式                                                                |
+| `children`        | `React.ReactNode`                                   | -         | 对话框内容，渲染在内容区 `DialogContent` 内                                   |
+| `...props`        | `React.ComponentProps<"div">`                       | -         | 其余属性透传给内容区 `DialogContent`（`className` / `styles` 除外）           |
 
 ---
 
 ### 可组合组件
-
-> 以下组件可自由拼装。`DialogClose` 内置与组合组件 `Dialog` 关闭按钮相同的默认样式，可通过 `className` 覆盖；`DialogRoot` 为无样式与行为的原生 `dialog`。
 
 #### DialogRoot
 
@@ -91,6 +89,16 @@ dialog 元素，渲染为无内置样式与行为的原生 `dialog`。
 | `className` | `ClassNameValue`                 | -       | 自定义类名                                 |
 | `children`  | `React.ReactNode`                | -       | 按钮内容                                   |
 | `...props`  | `React.ComponentProps<"button">` | -       | 支持全部 button 原生属性（除 `className`） |
+
+#### DialogContent
+
+内容区容器，内置面板默认样式：居中定位、`min-w-70 max-w-md` 宽度、圆角边框、阴影与背景。
+
+| Prop        | Type                           | Default | Description                              |
+| ----------- | ------------------------------ | ------- | ---------------------------------------- |
+| `className` | `ClassNameValue`               | -       | 自定义类名                               |
+| `children`  | `React.ReactNode`              | -       | 内容区内容                               |
+| `...props`  | `React.ComponentProps<"div">`  | -       | 支持全部 div 原生属性（除 `className`）  |
 
 #### dialog
 

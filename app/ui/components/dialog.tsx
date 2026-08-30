@@ -21,32 +21,62 @@ export function DialogClose({ className, ...props }: DialogCloseProps) {
       type="button"
       {...props}
       className={cn(
-        "absolute right-4 top-4 h-6 w-8 rounded-md border text-xs font-mono font-medium text-muted-foreground transition-colors hover:bg-muted-foreground/20 select-none",
+        "absolute right-4 top-4 h-6 w-8 rounded-md border text-xs font-mono font-medium text-muted-foreground transition-colors hover:bg-hover select-none",
         className,
       )}
     />
   );
 }
 
-export interface DialogProps extends Omit<DialogRootProps, "ref"> {
-  ref?: React.Ref<HTMLDialogElement>;
+export type DialogContentProps = Omit<React.ComponentProps<"div">, "className"> & {
+  className?: ClassNameValue;
+};
+
+export function DialogContent({ className, ...props }: DialogContentProps) {
+  return (
+    <div
+      {...props}
+      className={cn(
+        "fixed min-w-70 max-w-md",
+        "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 m-0",
+        "rounded-lg border p-6 shadow-lg bg-background",
+        className,
+      )}
+    />
+  );
+}
+
+export interface DialogProps extends Omit<DialogContentProps, "className" | "styles"> {
   open: boolean;
   onOpenChange?: (open: boolean) => void;
+  onBackdropClick?: (e: React.MouseEvent<HTMLDialogElement>) => void;
+  classNames?: {
+    root?: ClassNameValue;
+    content?: ClassNameValue;
+    close?: ClassNameValue;
+  };
+  styles?: {
+    root?: React.CSSProperties;
+    content?: React.CSSProperties;
+    close?: React.CSSProperties;
+  };
 }
 
 export function Dialog({
-  ref,
-  className,
+  classNames,
+  styles,
   children,
   open,
   onOpenChange,
+  onBackdropClick,
   ...props
 }: DialogProps) {
-  const _ref = React.useRef<HTMLDialogElement>(null);
+  const ref = React.useRef<HTMLDialogElement>(null);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!open) return;
     if (e.key !== "Tab") return;
-    const dialog = _ref.current;
+    const dialog = ref.current;
     if (!dialog) return;
     const focusable = Array.from(
       dialog.querySelectorAll<HTMLElement>(
@@ -75,7 +105,7 @@ export function Dialog({
   };
 
   React.useEffect(() => {
-    const dialog = _ref.current;
+    const dialog = ref.current;
     if (!dialog) return;
     if (open) {
       if (!dialog.open) dialog.showModal();
@@ -93,33 +123,29 @@ export function Dialog({
     onOpenChange?.(false);
   };
 
-  const setRefs = (element: HTMLDialogElement | null) => {
-    _ref.current = element;
-    if (typeof ref === "function") {
-      ref(element);
-    } else if (ref) {
-      ref.current = element;
-    }
-  };
-
   return (
     <DialogRoot
-      {...props}
-      ref={setRefs}
+      ref={ref}
       onKeyDown={handleKeyDown}
       onCancel={handleCancel}
       onClose={handleNativeClose}
-      className={cn(
-        "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 m-0",
-        "rounded-lg border bg-background p-6 shadow-lg text-foreground",
-        "backdrop:bg-muted/50",
-        className,
-      )}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onBackdropClick?.(e);
+      }}
+      className={classNames?.root}
+      style={styles?.root}
     >
-      <DialogClose aria-label="Close (ESC)" onClick={() => onOpenChange?.(false)}>
-        ESC
-      </DialogClose>
-      {children}
+      <DialogContent {...props} style={styles?.content} className={classNames?.content}>
+        <DialogClose
+          className={classNames?.close}
+          style={styles?.close}
+          aria-label="Close (ESC)"
+          onClick={() => onOpenChange?.(false)}
+        >
+          ESC
+        </DialogClose>
+        {children}
+      </DialogContent>
     </DialogRoot>
   );
 }
@@ -153,11 +179,9 @@ function renderCommandDialog(options: DialogCommandOptions) {
     }, [open]);
 
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
-        <div className="min-w-70 max-w-md">
-          {options.title && <h3 className="text-lg font-semibold mb-3">{options.title}</h3>}
-          <div>{options.children}</div>
-        </div>
+      <Dialog open={open} onOpenChange={setOpen} {...options.props}>
+        {options.title && <h3 className="text-lg font-semibold mb-3">{options.title}</h3>}
+        <div>{options.children}</div>
       </Dialog>
     );
   }

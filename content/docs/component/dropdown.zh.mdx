@@ -41,7 +41,7 @@ description: 基于 popover + CSS Anchor Positioning 的下拉菜单组件，支
 
 ### 自定义
 
-使用底层原子组件实现自定义。
+使用可组合组件实现自定义。
 
 <ComponentPreview 
   name="dropdown-custom"
@@ -56,20 +56,20 @@ description: 基于 popover + CSS Anchor Positioning 的下拉菜单组件，支
 | Prop            | Type                                    | Default             | Description                                                 |
 | --------------- | --------------------------------------- | ------------------- | ------------------------------------------------------------ |
 | `items`         | `DropdownItemConfig[]`                  | `[]`                | 菜单项配置，见下方 [items](#items)                           |
-| `slots.trigger` | `DropdownTriggerProps`                  | -                   | 触发按钮的属性                                               |
+| `children`      | `React.ReactNode`                       | -                   | 触发按钮内容                                                 |
 | `itemClassName` | `ClassNameValue`                        | -                   | 应用到每个菜单项按钮的类名                                   |
 | `positionArea`  | `string`                                | `'bottom span-all'` | 任意合法的 CSS `position-area` 值。建议使用 `span-*` 系列，碰撞检测才能正常工作 |
-| `alignX`        | `'start' \| 'end'`                      | -                   | 侧边栏模式：`start` 表示菜单的 end 边贴靠 trigger 的 start 边（向左展开）；`end` 表示菜单的 start 边贴靠 trigger 的 end 边（向右展开）。优先级高于 `positionArea` |
-| `className`     | `ClassNameValue`                        | -                   | 自定义 CSS 类名，支持字符串、数组、对象、布尔值等多种格式。  |
+| `alignX`        | `'start' \| 'end' \| 'center'`          | -                   | 侧边栏模式：`start` 表示菜单的 end 边贴靠 trigger 的 start 边（向左展开）；`end` 表示菜单的 start 边贴靠 trigger 的 end 边（向右展开）；`center` 居中。优先级高于 `positionArea` |
+| `classNames`    | `{ trigger?: ClassNameValue; content?: ClassNameValue }` | -  | 触发按钮与根面板的自定义类名                                 |
+| `styles`        | `{ trigger?: React.CSSProperties; content?: React.CSSProperties }` | - | 触发按钮与根面板的内联样式；`styles.content` 会与内置定位样式合并 |
 | `...props`      | `React.ComponentProps<"div">`           | -                   | 支持根面板的全部 div 原生属性                                |
 
 #### items
 
 ```ts
-type DropdownGroupItem = {
-  type: "group";
-  label: React.ReactNode;
-  children: DropdownMenuItem[];
+type DropdownGroup = {
+  group: React.ReactNode;
+  items: DropdownMenuItem[];
 };
 
 type DropdownMenuItem = {
@@ -80,7 +80,7 @@ type DropdownMenuItem = {
   children?: Omit<DropdownMenuItem, "children">[];
 };
 
-type DropdownItemConfig = DropdownGroupItem | DropdownMenuItem;
+type DropdownItemConfig = DropdownGroup | DropdownMenuItem;
 ```
 
 #### 键盘导航
@@ -95,9 +95,7 @@ type DropdownItemConfig = DropdownGroupItem | DropdownMenuItem;
 
 ---
 
-### Headless 原子组件
-
-> 以下为底层原子组件，**内置样式极少，样式需要通过 className 自行补充**。高层组合组件 `Dropdown` 即由以下原子组件组合而成。
+### 可组合组件
 
 #### DropdownTrigger
 
@@ -110,12 +108,22 @@ type DropdownItemConfig = DropdownGroupItem | DropdownMenuItem;
 
 #### DropdownContent
 
-通用面板容器。
+Popover 面板容器，渲染为 `popover="manual"` 的 div，内置面板样式（`bg-popover`、`min-w-32`、`max-h-96`、`overflow-auto`、`rounded-md`、`border`、`p-1`、`shadow-md`）。高层组件 `Dropdown` 的根面板与子菜单均由它渲染。
 
 | Prop        | Type                          | Default | Description           |
 | ----------- | ------------------------------ | ------- | ----------------------- |
 | `className` | `ClassNameValue`               | -       | 自定义类名              |
 | `...props`  | `React.ComponentProps<"div">`  | -       | 支持全部 div 原生属性   |
+
+#### DropdownSubContent
+
+子菜单面板容器，基于 `DropdownContent`，内置子菜单定位样式（`position-area: right span-bottom` 与翻转回退），通过 `positionAnchor` 锚定到父菜单项（每个菜单项的 `anchor-name` 为 `--dropdown-sub-{entryId}`）。
+
+| Prop             | Type                          | Default | Description                    |
+| ---------------- | ------------------------------ | ------- | -------------------------------- |
+| `positionAnchor` | `string`                       | -       | 锚定的父菜单项 `anchor-name`     |
+| `className`      | `ClassNameValue`               | -       | 自定义类名                       |
+| `...props`       | `React.ComponentProps<"div">`  | -       | 支持全部 div 原生属性            |
 
 #### DropdownItem
 

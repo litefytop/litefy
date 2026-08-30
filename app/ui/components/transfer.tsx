@@ -9,11 +9,11 @@ export function ComboboxTrigger({ className, ...props }: ComboboxTriggerProps) {
   return <button type="button" className={cn(className)} {...props} />;
 }
 
-export interface ComboboxPopoverProps extends Omit<React.ComponentProps<"div">, "className"> {
+export interface ComboboxContentProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
 }
 
-export function ComboboxPopover({ className, ...props }: ComboboxPopoverProps) {
+export function ComboboxContent({ className, ...props }: ComboboxContentProps) {
   return <div popover="auto" className={cn(className)} {...props} />;
 }
 
@@ -217,11 +217,11 @@ export function Combobox({
       >
         {value$ || placeholder}
       </ComboboxTrigger>
-      <ComboboxPopover
+      <ComboboxContent
         ref={popoverRef}
         id={popoverId}
         className={cn(
-          "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-md rounded-lg border bg-background shadow-lg overflow-hidden p-2",
+          "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-md rounded-lg border shadow-lg overflow-hidden p-2",
           slotProps.popover?.className,
         )}
         onClick={handlePopoverClick}
@@ -271,7 +271,7 @@ export function Combobox({
                 </ComboboxOption>
               ))}
         </ComboboxList>
-      </ComboboxPopover>
+      </ComboboxContent>
     </>
   );
 }

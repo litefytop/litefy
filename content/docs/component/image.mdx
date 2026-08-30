@@ -57,21 +57,18 @@ Ready-to-use composite components.
 
 An image component with preload state management; the outer container has built-in `relative` and `overflow-hidden` styles.
 
-| Prop            | Type                                            | Default      | Description                                                         |
-| --------------- | ----------------------------------------------- | ------------ | -------------------------------------------------------------------- |
-| `src`           | `string`                                        | - (required) | Image source URL                                                    |
-| `alt`           | `string`                                        | -            | Alternative text for the image                                      |
-| `className`     | `ClassNameValue`                                | -            | Custom CSS class name, applied to the outer container               |
-| `fallback`      | `React.ReactNode`                               | -            | Custom fallback element shown when the image fails to load          |
-| `loadingNode`   | `React.ReactNode`                               | -            | Placeholder element shown while loading, commonly used for progressive blurred thumbnails |
-| `slots.wrapper` | `Omit<React.ComponentProps<"div">, "children">` | -            | Props for the outer container; its `className` takes precedence over `className` |
-| `...props`      | `React.ComponentProps<"img">`                   | -            | Supports all native img props (except `className`), with built-in `loading="lazy"`, `decoding="async"` and `contentVisibility: auto` |
+| Prop          | Type                                            | Default      | Description                                                                 |
+| ------------- | ----------------------------------------------- | ------------ | ---------------------------------------------------------------------------- |
+| `src`         | `string`                                        | - (required) | Image source URL                                                             |
+| `alt`         | `string`                                        | -            | Alternative text for the image                                               |
+| `fallback`    | `React.ReactNode`                               | -            | Custom fallback element shown when the image fails to load                   |
+| `loadingNode` | `React.ReactNode`                               | -            | Placeholder element shown while loading, commonly used for progressive blurred thumbnails |
+| `classNames`  | `{ root?: ClassNameValue; image?: ClassNameValue }` | -        | Custom classes for the root container and image                              |
+| `styles`      | `{ root?: React.CSSProperties; image?: React.CSSProperties }` | - | Inline styles for the root container and image                          |
 
 ---
 
-### Headless Atomic Components
-
-> The following are low-level atomic components with **minimal built-in styles; styles should be added via className**. The high-level composite component `Image` is composed of these atomic components.
+### Composable Components
 
 #### ImageRoot
 
@@ -84,7 +81,7 @@ Outer container with built-in `relative` and `overflow-hidden`.
 
 #### ImageImage
 
-The image element with built-in `w-full`, `h-full` and `object-cover`.
+The image element with built-in `size-full`, `object-cover`, `loading="lazy"` and `decoding="async"`.
 
 | Prop        | Type                          | Default | Description                    |
 | ----------- | ------------------------------ | ------- | -------------------------------- |

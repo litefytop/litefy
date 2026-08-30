@@ -31,7 +31,7 @@ description: 头像组件，支持图片加载状态、骨架屏和回退内容
   name="avatar-basic"
 />
 
-### 自由拼装组件
+### 自定义
 
 直接组合 `AvatarRoot` 和 `AvatarImage`，内置与组合组件 `Avatar` 相同的默认样式，可自由拼装并通过 `className` 覆盖。
 
@@ -41,7 +41,11 @@ description: 头像组件，支持图片加载状态、骨架屏和回退内容
 
 ## API 参考
 
-### Avatar
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Avatar
 
 自动管理图片预加载的头像组件，在骨架屏、图片和回退内容三种状态之间切换。
 
@@ -55,11 +59,9 @@ description: 头像组件，支持图片加载状态、骨架屏和回退内容
 
 支持所有原生 `<img>` 属性（如 `alt`），但不支持 `className` 和 `style`。
 
-### 自由拼装组件
+### 可组合组件
 
-> 以下组件可自由拼装。与 Headless 原子组件不同，它们内置了与组合组件 `Avatar` 相同的默认样式，可通过 `className` 覆盖。
-
-### AvatarRoot
+#### AvatarRoot
 
 容器元素，渲染为默认 `size-12` 的正方形，内容居中且溢出隐藏。
 
@@ -69,7 +71,7 @@ description: 头像组件，支持图片加载状态、骨架屏和回退内容
 
 支持所有原生 `<div>` 属性。
 
-### AvatarImage
+#### AvatarImage
 
 图片元素，默认启用懒加载和异步解码。
 

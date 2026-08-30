@@ -12,8 +12,10 @@ export function InputGroup({ className, ...props }: InputGroupProps) {
     <div
       {...props}
       className={cn(
-        "flex",
-        className
+        "flex h-9 w-sm rounded-md px-2 border shadow-xs bg-input items-center",
+        "focus-within:ring-inset focus-within:ring-ring focus-within:ring-1",
+        "data-invalid:border-destructive-accent data-invalid:ring-destructive-accent",
+        className,
       )}
     />
   );
@@ -24,10 +26,7 @@ export function InputLeading({ className, ...props }: InputLeadingProps) {
   return (
     <span
       {...props}
-      className={cn(
-        "shrink-0",
-        className
-      )}
+      className={cn("shrink-0 text-muted-foreground [&>svg]:w-4 [&>svg]:h-4 px-2", className)}
     />
   );
 }
@@ -37,74 +36,50 @@ export function InputTrailing({ className, ...props }: InputTrailingProps) {
   return (
     <span
       {...props}
-      className={cn(
-        "shrink-0",
-        className
-      )}
+      className={cn("shrink-0 text-muted-foreground [&>svg]:w-4 [&>svg]:h-4 px-2", className)}
     />
   );
 }
 
-export type InputFieldProps = Omit<React.ComponentProps<"input">, "type"|"className"> & {
-  type?: "text" | "email" | "url" | "tel" | "search";
-  className?: ClassNameValue;
-};
-export function InputField({ className, ...props }: InputFieldProps) {
-  return (
-    <input
-      {...props}
-      className={cn(
-        "appearance-none",
-        className
-      )}
-    />
-  );
-}
-
-export type InputProps = Omit<React.ComponentProps<"input">, "type"> & {
+export type InputProps = Omit<React.ComponentProps<"input">, "type" | "className"> & {
   type?: "text" | "email" | "url" | "tel" | "search";
   value?: string;
   leading?: ReactNode;
   trailing?: ReactNode;
   invalid?: boolean;
-  slotProps?: {
-    group?: InputGroupProps;
-    leading?: InputLeadingProps;
-    trailing?: InputTrailingProps;
+  classNames?: {
+    root?: ClassNameValue;
+    leading?: ClassNameValue;
+    trailing?: ClassNameValue;
+    input?: ClassNameValue;
+  };
+  styles?: {
+    root?: React.CSSProperties;
+    leading?: React.CSSProperties;
+    trailing?: React.CSSProperties;
+    input?: React.CSSProperties;
   };
 };
 
-export function Input({
-  className,
-  leading,
-  trailing,
-  slotProps,
-  invalid,
-  disabled,
-  ...props
-}: InputProps) {
+export function Input({ classNames, styles, leading, trailing, invalid, ...props }: InputProps) {
   return (
-    <InputGroup
-      {...slotProps?.group}
-      data-invalid={invalid || undefined}
-      className={[" h-9 rounded-md w-sm px-2 border shadow-xs bg-input items-center",
-        "focus-within:ring-inset focus-within:ring-ring focus-within:ring-1",
-        "data-invalid:border-destructive-accent data-invalid:ring-destructive-accent",
-        slotProps?.group?.className]}
-    >
+    <InputGroup className={classNames?.root} style={styles?.root} data-invalid={invalid || undefined}>
       {leading && (
-        <InputLeading {...slotProps?.leading} className={["text-muted-foreground [&>svg]:w-4 [&>svg]:h-4 px-2",slotProps?.leading?.className]}>
+        <InputLeading className={classNames?.leading} style={styles?.leading}>
           {leading}
         </InputLeading>
       )}
-      <InputField
+      <input
         {...props}
-        disabled={disabled}
         aria-invalid={invalid}
-        className={["flex-1 border-0 ring-0 bg-transparent px-2 py-1 placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground", className]}
+        className={cn(
+          "flex-1 border-0 ring-0 bg-transparent px-2 py-1 placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground",
+          classNames?.input,
+        )}
+        style={styles?.input}
       />
       {trailing && (
-        <InputTrailing {...slotProps?.trailing} className={["text-muted-foreground [&>svg]:w-4 [&>svg]:h-4 px-2",slotProps?.trailing?.className]}>
+        <InputTrailing className={classNames?.trailing} style={styles?.trailing}>
           {trailing}
         </InputTrailing>
       )}
