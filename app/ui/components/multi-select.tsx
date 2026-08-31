@@ -28,14 +28,7 @@ export interface MultiSelectTriggerProps extends Omit<React.ComponentProps<"butt
   className?: ClassNameValue;
 }
 export function MultiSelectTrigger({ className, ...props }: MultiSelectTriggerProps) {
-  return (
-    <button
-      type="button"
-      aria-haspopup="listbox"
-      className={cn(className)}
-      {...props}
-    />
-  );
+  return <button type="button" aria-haspopup="listbox" className={cn(className)} {...props} />;
 }
 
 export interface MultiSelectPopoverProps extends Omit<React.ComponentProps<"div">, "className"> {
@@ -269,15 +262,17 @@ export function MultiSelect({
             toggleOption(opt.value);
           }
         }}
-        className={["flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm transition-colors",
+        className={[
+          "flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm transition-colors",
           "hover:bg-hover data-[active=true]:bg-hover",
-          slotProps?.option?.className]}
+          slotProps?.option?.className,
+        ]}
       >
         <span
           aria-selected={isSelected}
           className={cn(
             "flex size-4 items-center justify-center rounded-sm border border-primary",
-             "aria-selected:bg-primary aria-selected:text-primary-foreground bg-transparent",
+            "aria-selected:bg-primary aria-selected:text-primary-foreground bg-transparent",
           )}
         >
           {isSelected && selectedIcon}
@@ -290,10 +285,7 @@ export function MultiSelect({
   return (
     <MultiSelectRoot
       {...slotProps?.container}
-      className={cn(
-        "relative w-sm",
-        slotProps?.container?.className,
-      )}
+      className={cn("relative w-sm", slotProps?.container?.className)}
     >
       <MultiSelectTrigger
         {...slotProps?.trigger}
@@ -336,7 +328,7 @@ export function MultiSelect({
           ...slotProps?.panel?.style,
         }}
         className={cn(
-          "max-h-64 rounded-md border border-input shadow-lg overflow-auto p-1",
+          "max-h-64 rounded-md border border-muted shadow-lg overflow-auto p-1",
           slotProps?.panel?.className,
         )}
       >
@@ -350,7 +342,10 @@ export function MultiSelect({
                   <MultiSelectGroup
                     key={item.group}
                     {...slotProps?.group}
-                    className={cn("py-1 not-last:border-b border-border", slotProps?.group?.className)}
+                    className={cn(
+                      "py-1 not-last:border-b border-border",
+                      slotProps?.group?.className,
+                    )}
                   >
                     <MultiSelectLabel
                       {...slotProps?.groupLabel}
@@ -362,7 +357,6 @@ export function MultiSelect({
                       {item.group}
                     </MultiSelectLabel>
                     {item.options.map(renderOption)}
-                    
                   </MultiSelectGroup>
                 );
               }
@@ -372,7 +366,7 @@ export function MultiSelect({
         </ul>
       </MultiSelectPopover>
 
-      <input  {...props} type="hidden" value={value$.join(",")} disabled={disabled} />
+      <input {...props} type="hidden" value={value$.join(",")} disabled={disabled} />
     </MultiSelectRoot>
   );
 }

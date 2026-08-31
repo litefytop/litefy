@@ -1,5 +1,5 @@
 @layer components {
   .skeleton {
-    @apply rounded-(--radius) bg-muted animate-pulse;
+    @apply size-full bg-neutral animate-pulse;
   }
 }

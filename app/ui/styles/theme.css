@@ -77,8 +77,6 @@
   --color-destructive: var(--destructive);
   --color-destructive-accent: var(--destructive-accent);
 
-
-  --color-input: var(--muted);
   --color-ring: var(--ring);
 
   --color-card: var(--background);

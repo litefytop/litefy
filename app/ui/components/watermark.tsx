@@ -1,32 +1,18 @@
+"use client";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { type ClassNameValue, cn } from "@/lib";
 
-export type WatermarkProps = {
-  text: string;
-  fontSize?: number;
-  color?:
-    | "muted"
-    | "muted-foreground"
-    | "primary"
-    | "primary-foreground"
-    | "secondary"
-    | "secondary-foreground"
-    | "accent"
-    | "accent-foreground"
-    | (string & {});
-  fontFamily?: string;
-  rotate?: number;
-  gap?: number;
-  padding?: number;
-  opacity?: number;
-  children: React.ReactNode;
-  slotProps?: {
-    container?: Omit<React.ComponentProps<"div">, "className"> & {
-      className?: ClassNameValue;
-    };
-  };
-  className?: ClassNameValue;
-} & Omit<React.ComponentProps<"canvas">, "className" | "ref">;
+export type WatermarkColor =
+  | "muted"
+  | "muted-foreground"
+  | "primary"
+  | "primary-foreground"
+  | "secondary"
+  | "secondary-foreground"
+  | "accent"
+  | "accent-foreground"
+  | (string & {});
 
 const COLOR_VAR_MAP: Record<string, string> = {
   muted: "--muted",
@@ -39,7 +25,27 @@ const COLOR_VAR_MAP: Record<string, string> = {
   "accent-foreground": "--accent-foreground",
 };
 
-function Watermark({
+export type WatermarkRootProps = React.ComponentProps<"div"> & {
+  className?: ClassNameValue;
+};
+
+export function WatermarkRoot({ className, ...props }: WatermarkRootProps) {
+  return <div {...props} className={cn("relative", className)} />;
+}
+
+export type WatermarkCanvasProps = Omit<React.ComponentProps<"canvas">, "className" | "ref"> & {
+  text: string;
+  fontSize?: number;
+  color?: WatermarkColor;
+  fontFamily?: string;
+  rotate?: number;
+  gap?: number;
+  padding?: number;
+  opacity?: number;
+  className?: ClassNameValue;
+};
+
+export function WatermarkCanvas({
   text,
   fontSize = 16,
   color = "muted-foreground",
@@ -48,18 +54,13 @@ function Watermark({
   gap = 100,
   padding = 20,
   opacity = 0.3,
-  children,
-  slotProps,
   className,
   ...props
-}: WatermarkProps) {
+}: WatermarkCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
   const [colorScheme, setColorScheme] = useState<"light" | "dark">(() => {
     if (typeof window === "undefined") return "light";
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   });
 
   useEffect(() => {
@@ -73,7 +74,7 @@ function Watermark({
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
-    const container = containerRef.current;
+    const container = canvas?.parentElement;
     if (!canvas || !container || typeof window === "undefined" || !text) return;
 
     const ctx = canvas.getContext("2d");
@@ -101,18 +102,15 @@ function Watermark({
       if (computedColor) {
         fillColor = computedColor;
       } else {
-        fillColor =
-          colorScheme === "dark"
-            ? "rgba(255, 255, 255, 0.6)"
-            : "rgba(0, 0, 0, 0.6)";
+        fillColor = colorScheme === "dark" ? "rgba(255, 255, 255, 0.6)" : "rgba(0, 0, 0, 0.6)";
       }
     } else {
       fillColor = color;
     }
 
+    ctx.font = `${fontSize}px ${fontFamily}`;
     const rad = (rotate * Math.PI) / 180;
-    const textMetrics = ctx.measureText(text);
-    const textWidth = textMetrics.width;
+    const textWidth = ctx.measureText(text).width;
     const textHeight = fontSize;
 
     const cos = Math.abs(Math.cos(rad));
@@ -132,7 +130,6 @@ function Watermark({
     ctx.save();
     ctx.globalAlpha = opacity;
     ctx.fillStyle = fillColor;
-    ctx.font = `${fontSize}px ${fontFamily}`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
@@ -146,21 +143,12 @@ function Watermark({
       }
     }
     ctx.restore();
-  }, [
-    text,
-    fontSize,
-    color,
-    fontFamily,
-    rotate,
-    gap,
-    padding,
-    opacity,
-    colorScheme,
-  ]);
+  }, [text, fontSize, color, fontFamily, rotate, gap, padding, opacity, colorScheme]);
 
   useEffect(() => {
     draw();
-    const container = containerRef.current;
+    const canvas = canvasRef.current;
+    const container = canvas?.parentElement;
     if (!container) return;
 
     let rafId: number | null = null;
@@ -182,22 +170,69 @@ function Watermark({
   }, [draw]);
 
   return (
-    <div
-      ref={containerRef}
-      {...slotProps?.container}
-      className={cn("relative", slotProps?.container?.className)}
-    >
-      <canvas
-        ref={canvasRef}
-        className={cn(
-          "absolute inset-0 pointer-events-none select-none block size-full",
-          className,
-        )}
-        {...props}
-      />
-      {children}
-    </div>
+    <canvas
+      ref={canvasRef}
+      className={cn("absolute inset-0 pointer-events-none select-none block size-full", className)}
+      {...props}
+    />
   );
 }
 
-export { Watermark };
+export type WatermarkProps = Omit<React.ComponentProps<"div">, "className" | "style"> & {
+  text: string;
+  fontSize?: number;
+  color?: WatermarkColor;
+  fontFamily?: string;
+  rotate?: number;
+  gap?: number;
+  padding?: number;
+  opacity?: number;
+  className?: ClassNameValue;
+  style?: React.CSSProperties;
+  classNames?: {
+    root?: ClassNameValue;
+    canvas?: ClassNameValue;
+  };
+  styles?: {
+    root?: React.CSSProperties;
+    canvas?: React.CSSProperties;
+  };
+};
+
+export function Watermark({
+  text,
+  fontSize,
+  color,
+  fontFamily,
+  rotate,
+  gap,
+  padding,
+  opacity,
+  children,
+  className,
+  style,
+  classNames,
+  styles,
+  ...props
+}: WatermarkProps) {
+  return (
+    <WatermarkRoot {...props} className={cn(className, classNames?.root)} style={style}>
+      <WatermarkCanvas
+        text={text}
+        fontSize={fontSize}
+        color={color}
+        fontFamily={fontFamily}
+        rotate={rotate}
+        gap={gap}
+        padding={padding}
+        opacity={opacity}
+        className={classNames?.canvas}
+        style={styles?.canvas}
+      />
+      {children}
+    </WatermarkRoot>
+  );
+}
+
+Watermark.Root = WatermarkRoot;
+Watermark.Canvas = WatermarkCanvas;

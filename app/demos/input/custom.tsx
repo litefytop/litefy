@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Search, TriangleAlert } from "lucide-react";
-import { InputGroup, InputLeading, InputTrailing } from "@/ui";
+import { InputGroup, InputLeading, InputRoot, InputTrailing } from "@/ui";
 
 export default function Demo() {
   const [value, setValue] = useState("");
@@ -13,12 +13,11 @@ export default function Demo() {
       <InputLeading>
         <Search />
       </InputLeading>
-      <input
+      <InputRoot
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Search mail..."
         aria-invalid={invalid}
-        className="min-w-0 flex-1 border-0 bg-transparent px-2 py-1 text-sm outline-none placeholder:text-muted-foreground ring-0"
       />
       <InputTrailing>
         {invalid ? (

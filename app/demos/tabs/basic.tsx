@@ -1,24 +1,28 @@
 "use client";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui";
+import { Tabs } from "@/ui";
 
 export default function TabsBasicDemo() {
   return (
-    <Tabs defaultValue="account">
-      <TabsList>
-        <TabsTrigger value="account">Account</TabsTrigger>
-        <TabsTrigger value="password">Password</TabsTrigger>
-        <TabsTrigger value="notifications">Notifications</TabsTrigger>
-      </TabsList>
-      <TabsContent value="account">
-        Manage your account settings and preferences.
-      </TabsContent>
-      <TabsContent value="password">
-        Change your password and security settings.
-      </TabsContent>
-      <TabsContent value="notifications">
-        Configure your notification preferences.
-      </TabsContent>
-    </Tabs>
+    <Tabs
+      defaultValue="account"
+      options={[
+        {
+          value: "account",
+          label: "Account",
+          content: "Manage your account settings and preferences.",
+        },
+        {
+          value: "password",
+          label: "Password",
+          content: "Change your password and security settings.",
+        },
+        {
+          value: "notifications",
+          label: "Notifications",
+          content: "Configure your notification preferences.",
+        },
+      ]}
+    />
   );
 }

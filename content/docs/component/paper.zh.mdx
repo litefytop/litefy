@@ -1,0 +1,44 @@
+---
+title: Paper 纸张
+description: 支持打印的页面容器，提供 A4/A5 纵向与横向变体。
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add paper" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="paper" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+不传 `variant` 时渲染为全宽可滚动纸张，随内容增长。分页文档请选择固定的打印变体：`a4`、`a5`、`a4-landscape` 或 `a5-landscape`。
+
+<ComponentPreview
+  name="paper-basic"
+/>
+
+## API 参考
+
+### 高级组件
+
+#### Paper
+
+支持打印的页面容器。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `'a4' \| 'a5' \| 'a4-landscape' \| 'a5-landscape'` | - | 固定纸张尺寸；省略则为默认的全宽可滚动纸张 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+| `...props` | `React.ComponentProps<"div">` | - | 支持所有原生 div 属性 |

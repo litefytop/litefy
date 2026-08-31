@@ -1,0 +1,88 @@
+---
+title: Sidebar 侧边栏
+description: 支持通过 ref 外部控制的可折叠侧边栏
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add sidebar" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="sidebar" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+以 `aside` 元素渲染的侧边栏。关闭时通过 `data-close` 属性收起为零宽度。
+
+<ComponentPreview
+  name="sidebar-basic"
+/>
+
+### Ref 控制
+
+侧边栏通过 `ref` 暴露命令式句柄，兄弟节点或任意外部代码都能直接控制它，无需状态提升。
+
+<ComponentPreview
+  name="sidebar-ref"
+/>
+
+```tsx
+import { useRef } from "react";
+import { Sidebar, type SidebarHandle } from "@/ui";
+
+function Layout() {
+  const sidebarRef = useRef<SidebarHandle>(null);
+
+  return (
+    <div className="flex">
+      <Sidebar ref={sidebarRef} defaultOpen className="w-48">
+        <nav>侧边栏内容</nav>
+      </Sidebar>
+      <main>
+        <button type="button" onClick={() => sidebarRef.current?.toggle()}>
+          切换
+        </button>
+      </main>
+    </div>
+  );
+}
+```
+
+## API 参考
+
+### 高级组件
+
+#### Sidebar
+
+内部维护展开状态的 `aside` 元素，通过 `data-close` 属性收起。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `ref` | `React.Ref<SidebarHandle>` | - | 命令式句柄，包含 `toggle`、`open`、`close` 和 `isOpen`，用于外部控制 |
+| `defaultOpen` | `boolean` | `true` | 初始展开状态 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+| `...props` | `React.ComponentProps<"aside">` | - | 支持所有原生 aside 属性（除 `className`、`ref` 外） |
+
+#### SidebarHandle
+
+挂载到 `ref` 上的命令式句柄。
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `toggle` | `() => void` | 切换展开状态 |
+| `open` | `() => void` | 展开侧边栏 |
+| `close` | `() => void` | 收起侧边栏 |
+| `isOpen` | `boolean` | 当前展开状态 |

@@ -41,7 +41,7 @@ description: 支持前后置插槽和验证状态的输入框组件
 
 ### 自定义
 
-使用 `InputGroup`、`InputLeading`、`InputTrailing` 与原生 input 拼装，`focus-within` 焦点环与 `data-invalid` 无效状态样式自动生效。
+使用 `InputGroup`、`InputLeading`、`InputRoot`、`InputTrailing` 拼装，`focus-within` 焦点环与 `data-invalid` 无效状态样式自动生效。
 
 <ComponentPreview 
   name="input-custom"
@@ -63,8 +63,8 @@ description: 支持前后置插槽和验证状态的输入框组件
 | `leading`    | `ReactNode`                                       | -        | 前置插槽内容（如图标）                |
 | `trailing`   | `ReactNode`                                       | -        | 后置插槽内容（如按钮、图标）          |
 | `invalid`    | `boolean`                                         | `false`  | 输入框是否处于无效状态                |
-| `classNames` | `{ root?: ClassNameValue; leading?: ClassNameValue; trailing?: ClassNameValue; input?: ClassNameValue }` | - | 内部元素的自定义类名 |
-| `styles` | `{ root?: React.CSSProperties; leading?: React.CSSProperties; trailing?: React.CSSProperties; input?: React.CSSProperties }` | - | 内部元素的内联样式 |
+| `classNames` | `{ group?: ClassNameValue; leading?: ClassNameValue; trailing?: ClassNameValue; root?: ClassNameValue }` | - | 容器、插槽与输入框的自定义类名 |
+| `styles` | `{ group?: React.CSSProperties; leading?: React.CSSProperties; trailing?: React.CSSProperties; root?: React.CSSProperties }` | - | 容器、插槽与输入框的内联样式 |
 | `...props`   | `React.ComponentProps<"input">`                   | -        | 支持全部 input 原生属性（除 `type`、`className`） |
 
 ---
@@ -88,6 +88,15 @@ description: 支持前后置插槽和验证状态的输入框组件
 | ----------- | ------------------------------ | ------- | ------------------------------------------ |
 | `className` | `ClassNameValue`               | -       | 自定义类名                                 |
 | `...props`  | `React.ComponentProps<"span">` | -       | 支持全部 span 原生属性（含 `data-*` 属性） |
+
+#### InputRoot
+
+原生 input 元素，内置基础样式：自适应宽度、无边框透明背景、placeholder 与选区颜色。
+
+| Prop        | Type                            | Default | Description                                        |
+| ----------- | ------------------------------- | ------- | -------------------------------------------------- |
+| `className` | `ClassNameValue`                | -       | 自定义类名                                         |
+| `...props`  | `React.ComponentProps<"input">` | -       | 支持全部 input 原生属性（除 `className`），如 `type`、`value`、`onChange` |
 
 #### InputTrailing
 

@@ -1,0 +1,88 @@
+---
+title: use-drag
+description: Pointer-based drag hook with pointer capture, drag info callbacks and an isDragging flag
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add use-drag" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="hook" name="use-drag" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+Bind `handlePointerDown` to the drag handle. The hook captures the pointer, tracks movement on the document and reports deltas through callbacks.
+
+<ComponentPreview
+  name="use-drag-basic"
+/>
+
+```tsx
+import { useDrag } from "@/ui";
+
+function DraggableBox() {
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const startRef = useRef({ x: 0, y: 0 });
+
+  const drag = useDrag({
+    onDragStart: () => {
+      startRef.current = offset;
+    },
+    onDragMove: ({ dx, dy }) => {
+      setOffset({ x: startRef.current.x + dx, y: startRef.current.y + dy });
+    },
+  });
+
+  return <div onPointerDown={drag.handlePointerDown} style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }} />;
+}
+```
+
+## API Reference
+
+### useDrag
+
+```ts
+function useDrag(opts?: UseDragOptions): DragResult
+```
+
+#### UseDragOptions
+
+| Property | Type | Default | Description |
+|------|------|---------|-------------|
+| `disabled` | `boolean` | `false` | Ignore pointer down events when true |
+| `onDragStart` | `(e: React.PointerEvent<HTMLElement>) => void` | - | Called when the drag gesture starts |
+| `onDragMove` | `(info: DragInfo) => void` | - | Called on every pointer move while dragging |
+| `onDragEnd` | `(info: DragInfo) => void` | - | Called when the pointer is released |
+
+#### DragInfo
+
+| Property | Type | Description |
+|------|------|-------------|
+| `dx` | `number` | Horizontal offset from the drag start position |
+| `dy` | `number` | Vertical offset from the drag start position |
+| `clientX` | `number` | Current pointer client X |
+| `clientY` | `number` | Current pointer client Y |
+
+#### DragResult
+
+| Property | Type | Description |
+|------|------|-------------|
+| `isDragging` | `boolean` | Whether a drag gesture is currently active |
+| `handlePointerDown` | `(e: React.PointerEvent<HTMLElement>) => void` | Bind to the drag handle's `onPointerDown` |
+
+**Notes:**
+
+- Deltas are relative to the pointer's start position; callers decide how to accumulate them.
+- Uses pointer capture, so the drag keeps tracking even when the pointer leaves the handle.

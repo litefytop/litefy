@@ -1,0 +1,88 @@
+---
+title: Input OTP
+description: 一次性验证码输入框，支持自动跳格、粘贴填充、键盘导航与掩码模式。
+---
+
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add input-otp" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="input-otp" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+支持自动跳格、退格回退、方向键导航与剪贴板粘贴的验证码输入框。
+
+<ComponentPreview
+  name="input-otp-basic"
+/>
+
+### 掩码
+
+将格子渲染为密码输入，适用于 PIN 码场景。
+
+<ComponentPreview
+  name="input-otp-mask"
+/>
+
+### 受控
+
+通过 `value` 外部受控，并经 `onValueChange` 接收值变化。
+
+<ComponentPreview
+  name="input-otp-controlled"
+/>
+
+## API 参考
+
+### 高级组件
+
+#### InputOtp
+
+由下方零件组合而成的验证码输入框，封装值状态与交互逻辑。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `length` | `number` | `6` | 格子数量 |
+| `value` | `string` | - | 当前值（受控） |
+| `defaultValue` | `string` | `""` | 初始值（非受控） |
+| `onValueChange` | `(value: string) => void` | - | 值变化时的回调 |
+| `disabled` | `boolean` | `false` | 禁用所有格子 |
+| `invalid` | `boolean` | `false` | 在容器设置 `data-invalid`，每个格子设置 `aria-invalid` |
+| `mask` | `boolean` | `false` | 将格子渲染为密码输入 |
+| `name` | `string` | - | 渲染 hidden input 用于表单提交 |
+| `aria-label` | `string` | - | 无障碍标签，每个格子会附加序号后缀 |
+| `className` | `ClassNameValue` | - | 容器自定义类 |
+| `style` | `React.CSSProperties` | - | 容器自定义内联样式 |
+| `classNames` | `{ group?; slot? }` | - | 各零件自定义类 |
+| `styles` | `{ group?; slot? }` | - | 各零件自定义内联样式 |
+
+输入后自动跳到下一格，空格子按 `Backspace` 回退并删除上一格，方向键在格子间移动，粘贴从当前格起填充。首个格子使用 `autoComplete='one-time-code'`。
+
+---
+
+### 可组合组件
+
+纯展示零件，不内置状态与交互，供高级使用者自由拼装。
+
+#### InputOtpGroup
+
+最外层容器。
+
+#### InputOtpSlot
+
+单个格子，渲染为 `<input>`；值、事件与 aria 属性由使用者接入。

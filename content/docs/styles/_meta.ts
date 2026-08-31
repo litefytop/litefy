@@ -13,7 +13,14 @@ export default {
       zh: "卡片",
     },
   },
-  kdb: {
+  typography: {
+    name: "Typography",
+    displayName: {
+      en: "Typography",
+      zh: "排版",
+    },
+  },
+  kbd: {
     name: "Kbd",
     displayName: {
       en: "Kbd",

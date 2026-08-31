@@ -102,14 +102,7 @@ export function Progress({
       mounted = false;
       timerIdsRef.current.forEach(clearTimeout);
     };
-  }, [
-    isDynamic,
-    getCurrent,
-    totalDuration,
-    checkpoints,
-    onComplete,
-    staticValue,
-  ]);
+  }, [isDynamic, getCurrent, totalDuration, checkpoints, onComplete, staticValue]);
 
   const barStyle = {
     width: `${width}%`,
@@ -118,17 +111,10 @@ export function Progress({
   };
 
   return (
-    <div
-      {...rootProps}
-      className={cn("h-1 bg-gray-200 rounded-full overflow-hidden", className)}
-    >
+    <div {...rootProps} className={cn("h-1 bg-muted rounded-full overflow-hidden", className)}>
       <div
         {...barProps}
-        className={cn(
-          "h-full rounded-full",
-          reverse ? "bg-blue-500 float-right" : "bg-blue-500",
-          barClassName,
-        )}
+        className={cn("h-full rounded-full bg-primary", reverse && "float-right", barClassName)}
         style={barStyle}
       />
     </div>

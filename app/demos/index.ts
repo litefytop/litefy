@@ -31,10 +31,16 @@ import CardBasicDemo from "./css/card-basic";
 import cardBasicCode from "./css/card-basic.tsx?raw";
 import CardGroupDemo from "./css/card-group";
 import cardGroupCode from "./css/card-group.tsx?raw";
-import KdbBasicDemo from "./css/kdb-basic";
-import kdbBasicCode from "./css/kdb-basic.tsx?raw";
-import KdbCombinationDemo from "./css/kdb-combination";
-import kdbCombinationCode from "./css/kdb-combination.tsx?raw";
+import TypographyHeadingsDemo from "./css/typography-headings";
+import typographyHeadingsCode from "./css/typography-headings.tsx?raw";
+import TypographyTextDemo from "./css/typography-text";
+import typographyTextCode from "./css/typography-text.tsx?raw";
+import PaperBasicDemo from "./paper/basic";
+import paperBasicCode from "./paper/basic.tsx?raw";
+import KbdBasicDemo from "./css/kbd-basic";
+import kbdBasicCode from "./css/kbd-basic.tsx?raw";
+import KbdCombinationDemo from "./css/kbd-combination";
+import kbdCombinationCode from "./css/kbd-combination.tsx?raw";
 import SkeletonAvatarDemo from "./css/skeleton-avatar";
 import skeletonAvatarCode from "./css/skeleton-avatar.tsx?raw";
 import SkeletonTextDemo from "./css/skeleton-text";
@@ -73,6 +79,12 @@ import ImageCustomDemo from "./image/custom";
 import imageCustomCode from "./image/custom.tsx?raw";
 import InputBasicDemo from "./input/basic";
 import inputBasicCode from "./input/basic.tsx?raw";
+import InputOtpBasicDemo from "./input-otp/basic";
+import inputOtpBasicCode from "./input-otp/basic.tsx?raw";
+import InputOtpControlledDemo from "./input-otp/controlled";
+import inputOtpControlledCode from "./input-otp/controlled.tsx?raw";
+import InputOtpMaskDemo from "./input-otp/mask";
+import inputOtpMaskCode from "./input-otp/mask.tsx?raw";
 import InputInvalidDemo from "./input/invalid";
 import inputInvalidCode from "./input/invalid.tsx?raw";
 import InputCustomDemo from "./input/custom";
@@ -93,12 +105,16 @@ import NumberFieldInvalidDemo from "./number-field/invalid";
 import numberFieldInvalidCode from "./number-field/invalid.tsx?raw";
 import PaginatedViewerWithJumpDemo from "./paginated-viewer/with-jump";
 import paginatedViewerWithJumpCode from "./paginated-viewer/with-jump.tsx?raw";
-import PaginationBasicDemo from "./pagination/basic";
-import paginationBasicCode from "./pagination/basic.tsx?raw";
+import PaginationBasicDemo from "./use-pagination/basic";
+import paginationBasicCode from "./use-pagination/basic.tsx?raw";
+import ListBasicDemo from "./list/basic";
+import listBasicCode from "./list/basic.tsx?raw";
 import PasswordBasicDemo from "./password/basic";
 import passwordBasicCode from "./password/basic.tsx?raw";
 import PasswordControlledDemo from "./password/controlled";
 import passwordControlledCode from "./password/controlled.tsx?raw";
+import PasswordCustomDemo from "./password/custom";
+import passwordCustomCode from "./password/custom.tsx?raw";
 import PasswordInvalidDemo from "./password/invalid";
 import passwordInvalidCode from "./password/invalid.tsx?raw";
 import RadioBasicDemo from "./radio/basic";
@@ -113,18 +129,40 @@ import ScrollShadowPositionDemo from "./scroll-shadow/position";
 import scrollShadowPositionCode from "./scroll-shadow/position.tsx?raw";
 import ScrollShadowSizeDemo from "./scroll-shadow/size";
 import scrollShadowSizeCode from "./scroll-shadow/size.tsx?raw";
+import SeparatorBasicDemo from "./separator/basic";
+import separatorBasicCode from "./separator/basic.tsx?raw";
+import SeparatorCustomDemo from "./separator/custom";
+import separatorCustomCode from "./separator/custom.tsx?raw";
+import SegmentBasicDemo from "./segment/basic";
+import segmentBasicCode from "./segment/basic.tsx?raw";
+import SegmentCustomDemo from "./segment/custom";
+import segmentCustomCode from "./segment/custom.tsx?raw";
+import SidebarBasicDemo from "./sidebar/basic";
+import sidebarBasicCode from "./sidebar/basic.tsx?raw";
+import SidebarRefDemo from "./sidebar/ref";
+import sidebarRefCode from "./sidebar/ref.tsx?raw";
+import SliderBasicDemo from "./slider/basic";
+import sliderBasicCode from "./slider/basic.tsx?raw";
+import SliderOrientationDemo from "./slider/orientation";
+import sliderOrientationCode from "./slider/orientation.tsx?raw";
+import SliderInvalidDemo from "./slider/invalid";
+import sliderInvalidCode from "./slider/invalid.tsx?raw";
 import SelectBasicDemo from "./select/basic";
 import selectBasicCode from "./select/basic.tsx?raw";
 import SelectGroupedDemo from "./select/grouped";
 import selectGroupedCode from "./select/grouped.tsx?raw";
 import SelectInvalidDemo from "./select/invalid";
 import selectInvalidCode from "./select/invalid.tsx?raw";
+import SelectCustomDemo from "./select/custom";
+import selectCustomCode from "./select/custom.tsx?raw";
 import SwitchBasicDemo from "./switch/basic";
 import switchBasicCode from "./switch/basic.tsx?raw";
 import SwitchControlledDemo from "./switch/controlled";
 import switchControlledCode from "./switch/controlled.tsx?raw";
 import SwitchCustomStylingDemo from "./switch/custom-styling";
 import switchCustomStylingCode from "./switch/custom-styling.tsx?raw";
+import SwitchCustomDemo from "./switch/custom";
+import switchCustomCode from "./switch/custom.tsx?raw";
 import SwitchDisabledDemo from "./switch/disabled";
 import switchDisabledCode from "./switch/disabled.tsx?raw";
 import TabsBasicDemo from "./tabs/basic";
@@ -135,16 +173,28 @@ import TabsOrientationDemo from "./tabs/orientation";
 import tabsOrientationCode from "./tabs/orientation.tsx?raw";
 import TabsVariantDemo from "./tabs/variant";
 import tabsVariantCode from "./tabs/variant.tsx?raw";
+import ToggleBasicDemo from "./toggle/basic";
+import toggleBasicCode from "./toggle/basic.tsx?raw";
+import ToggleGroupDemo from "./toggle/group";
+import toggleGroupCode from "./toggle/group.tsx?raw";
+import ToggleCustomDemo from "./toggle/custom";
+import toggleCustomCode from "./toggle/custom.tsx?raw";
 import TooltipBasicDemo from "./tooltip/basic";
 import tooltipBasicCode from "./tooltip/basic.tsx?raw";
 import TooltipImperativeDemo from "./tooltip/imperative";
 import tooltipImperativeCode from "./tooltip/imperative.tsx?raw";
-import TooltipSideDemo from "./tooltip/side";
-import tooltipSideCode from "./tooltip/side.tsx?raw";
+import UseDragBasicDemo from "./use-drag/basic";
+import useDragBasicCode from "./use-drag/basic.tsx?raw";
+import UseRemotePaginationBasicDemo from "./use-remote-pagination/basic";
+import useRemotePaginationBasicCode from "./use-remote-pagination/basic.tsx?raw";
+import UseThemeBasicDemo from "./use-theme/basic";
+import useThemeBasicCode from "./use-theme/basic.tsx?raw";
+import VirtualScrollBasicDemo from "./virtual-scroll/basic";
+import virtualScrollBasicCode from "./virtual-scroll/basic.tsx?raw";
 import UploadBasicDemo from "./upload/basic";
 import uploadBasicCode from "./upload/basic.tsx?raw";
-import UploadInvalidDemo from "./upload/invalid";
-import uploadInvalidCode from "./upload/invalid.tsx?raw";
+import UploadCustomDemo from "./upload/custom";
+import uploadCustomCode from "./upload/custom.tsx?raw";
 import UploadMultipleDemo from "./upload/multiple";
 import uploadMultipleCode from "./upload/multiple.tsx?raw";
 
@@ -203,13 +253,13 @@ export const demos: Record<string, DemoItem> = {
     component: ComboboxCustomDemo,
     code: comboboxCustomCode,
   },
-  "kdb-basic": {
-    component: KdbBasicDemo,
-    code: kdbBasicCode,
+  "kbd-basic": {
+    component: KbdBasicDemo,
+    code: kbdBasicCode,
   },
-  "kdb-combination": {
-    component: KdbCombinationDemo,
-    code: kdbCombinationCode,
+  "kbd-combination": {
+    component: KbdCombinationDemo,
+    code: kbdCombinationCode,
   },
   "skeleton-text": {
     component: SkeletonTextDemo,
@@ -226,6 +276,18 @@ export const demos: Record<string, DemoItem> = {
   "card-group": {
     component: CardGroupDemo,
     code: cardGroupCode,
+  },
+  "typography-headings": {
+    component: TypographyHeadingsDemo,
+    code: typographyHeadingsCode,
+  },
+  "typography-text": {
+    component: TypographyTextDemo,
+    code: typographyTextCode,
+  },
+  "paper-basic": {
+    component: PaperBasicDemo,
+    code: paperBasicCode,
   },
   "dialog-basic": {
     component: DialogBasicDemo,
@@ -303,6 +365,18 @@ export const demos: Record<string, DemoItem> = {
     component: InputBasicDemo,
     code: inputBasicCode,
   },
+  "input-otp-basic": {
+    component: InputOtpBasicDemo,
+    code: inputOtpBasicCode,
+  },
+  "input-otp-controlled": {
+    component: InputOtpControlledDemo,
+    code: inputOtpControlledCode,
+  },
+  "input-otp-mask": {
+    component: InputOtpMaskDemo,
+    code: inputOtpMaskCode,
+  },
   "input-custom": {
     component: InputCustomDemo,
     code: inputCustomCode,
@@ -343,6 +417,18 @@ export const demos: Record<string, DemoItem> = {
     component: TabsControlledDemo,
     code: tabsControlledCode,
   },
+  "toggle-basic": {
+    component: ToggleBasicDemo,
+    code: toggleBasicCode,
+  },
+  "toggle-group": {
+    component: ToggleGroupDemo,
+    code: toggleGroupCode,
+  },
+  "toggle-custom": {
+    component: ToggleCustomDemo,
+    code: toggleCustomCode,
+  },
   "paginated-viewer-with-jump": {
     component: PaginatedViewerWithJumpDemo,
     code: paginatedViewerWithJumpCode,
@@ -350,6 +436,10 @@ export const demos: Record<string, DemoItem> = {
   "pagination-basic": {
     component: PaginationBasicDemo,
     code: paginationBasicCode,
+  },
+  "list-basic": {
+    component: ListBasicDemo,
+    code: listBasicCode,
   },
   "multi-select-basic": {
     component: MultiSelectBasicDemo,
@@ -375,6 +465,10 @@ export const demos: Record<string, DemoItem> = {
     component: PasswordControlledDemo,
     code: passwordControlledCode,
   },
+  "password-custom": {
+    component: PasswordCustomDemo,
+    code: passwordCustomCode,
+  },
   "scroll-shadow-basic": {
     component: ScrollShadowBasicDemo,
     code: scrollShadowBasicCode,
@@ -386,6 +480,42 @@ export const demos: Record<string, DemoItem> = {
   "scroll-shadow-size": {
     component: ScrollShadowSizeDemo,
     code: scrollShadowSizeCode,
+  },
+  "separator-basic": {
+    component: SeparatorBasicDemo,
+    code: separatorBasicCode,
+  },
+  "separator-custom": {
+    component: SeparatorCustomDemo,
+    code: separatorCustomCode,
+  },
+  "segment-basic": {
+    component: SegmentBasicDemo,
+    code: segmentBasicCode,
+  },
+  "segment-custom": {
+    component: SegmentCustomDemo,
+    code: segmentCustomCode,
+  },
+  "sidebar-basic": {
+    component: SidebarBasicDemo,
+    code: sidebarBasicCode,
+  },
+  "sidebar-ref": {
+    component: SidebarRefDemo,
+    code: sidebarRefCode,
+  },
+  "slider-basic": {
+    component: SliderBasicDemo,
+    code: sliderBasicCode,
+  },
+  "slider-orientation": {
+    component: SliderOrientationDemo,
+    code: sliderOrientationCode,
+  },
+  "slider-invalid": {
+    component: SliderInvalidDemo,
+    code: sliderInvalidCode,
   },
   "radio-basic": {
     component: RadioBasicDemo,
@@ -412,6 +542,10 @@ export const demos: Record<string, DemoItem> = {
     component: SelectInvalidDemo,
     code: selectInvalidCode,
   },
+  "select-custom": {
+    component: SelectCustomDemo,
+    code: selectCustomCode,
+  },
   "switch-basic": {
     component: SwitchBasicDemo,
     code: switchBasicCode,
@@ -424,6 +558,10 @@ export const demos: Record<string, DemoItem> = {
     component: SwitchCustomStylingDemo,
     code: switchCustomStylingCode,
   },
+  "switch-custom": {
+    component: SwitchCustomDemo,
+    code: switchCustomCode,
+  },
   "switch-disabled": {
     component: SwitchDisabledDemo,
     code: switchDisabledCode,
@@ -431,10 +569,6 @@ export const demos: Record<string, DemoItem> = {
   "tooltip-basic": {
     component: TooltipBasicDemo,
     code: tooltipBasicCode,
-  },
-  "tooltip-side": {
-    component: TooltipSideDemo,
-    code: tooltipSideCode,
   },
   "tooltip-imperative": {
     component: TooltipImperativeDemo,
@@ -444,12 +578,28 @@ export const demos: Record<string, DemoItem> = {
     component: UploadBasicDemo,
     code: uploadBasicCode,
   },
-  "upload-invalid": {
-    component: UploadInvalidDemo,
-    code: uploadInvalidCode,
+  "use-drag-basic": {
+    component: UseDragBasicDemo,
+    code: useDragBasicCode,
+  },
+  "use-remote-pagination-basic": {
+    component: UseRemotePaginationBasicDemo,
+    code: useRemotePaginationBasicCode,
+  },
+  "use-theme-basic": {
+    component: UseThemeBasicDemo,
+    code: useThemeBasicCode,
+  },
+  "virtual-scroll-basic": {
+    component: VirtualScrollBasicDemo,
+    code: virtualScrollBasicCode,
   },
   "upload-multiple": {
     component: UploadMultipleDemo,
     code: uploadMultipleCode,
+  },
+  "upload-custom": {
+    component: UploadCustomDemo,
+    code: uploadCustomCode,
   },
 };

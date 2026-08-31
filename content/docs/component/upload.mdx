@@ -1,6 +1,6 @@
 ---
 title: Upload
-description: A styled file input component with invalid state support
+description: A dropzone upload component with local validation, drag and drop, and a decoupled upload monitor hook
 ---
 
 ## Installation
@@ -25,40 +25,72 @@ description: A styled file input component with invalid state support
 
 ### Basic Usage
 
-A simple file upload input.
+The Upload component handles selection, drag and drop and local validation only — it performs no network requests and keeps no upload state. Pair it with the [`useUploadMonitor`](/docs/hooks/use-upload-monitor) hook to execute uploads and track progress.
 
-<ComponentPreview 
+<ComponentPreview
   name="upload-basic"
 />
 
-### Invalid State
+### Restrictions
 
-File upload input with error state styling for form validation.
+`accept`, `maxSize` and `maxCount` are validated locally; rejected files are reported via `onFilesRejected`.
 
-<ComponentPreview 
-  name="upload-invalid"
+<ComponentPreview
+  name="upload-multiple"
 />
 
-### File Type Restrictions
+### Custom
 
-Restrict accepted file types using the native `accept` and `multiple` attributes.
+Assemble the parts manually for full control over the dropzone content and behavior.
 
-<ComponentPreview 
-  name="upload-multiple"
+<ComponentPreview
+  name="upload-custom"
 />
 
 ## API Reference
 
-### Upload
+### High-level Components
 
-A styled file input component that supports all native file input attributes.
+#### Upload
+
+A dropzone built with the parts below, encapsulating validation and file item lifecycle.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `invalid` | `boolean` | `false` | Marks the upload input as invalid for form validation |
-| `accept` | `string` | - | Native file type filter (e.g. `image/*`, `.pdf,.doc`) |
-| `multiple` | `boolean` | - | Allow selecting multiple files |
-| `disabled` | `boolean` | - | Disable the file input |
-| `name` | `string` | - | Input name for form submission |
-| `onChange` | `(e: React.ChangeEvent<HTMLInputElement>) => void` | - | Callback triggered when files are selected |
-| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| `accept` | `string` | - | Accepted file types (MIME types, `image/*` or extensions like `.pdf`) |
+| `multiple` | `boolean` | `false` | Allow selecting multiple files |
+| `maxCount` | `number` | - | Maximum number of simultaneously accepted items |
+| `maxSize` | `number` | - | Maximum file size in bytes |
+| `disabled` | `boolean` | `false` | Disables click, keyboard and drag interactions |
+| `invalid` | `boolean` | `false` | Sets `data-invalid` on the root and `aria-invalid` on the dropzone |
+| `children` | `React.ReactNode` | - | Custom dropzone content; defaults to a hint text |
+| `onFilesAccepted` | `(items: UploadItem[]) => void` | - | Called with validated items, each carrying `{ uid, file, signal }` |
+| `onFilesRejected` | `(rejects: UploadReject[]) => void` | - | Called with rejected files and reasons (`accept` / `maxSize` / `maxCount`) |
+| `onFileRemove` | `(uid: string) => void` | - | Called after `actionsRef.current.remove(uid)` aborts the item's controller |
+| `onDragEnter` | `(e: React.DragEvent) => void` | - | Called when files are dragged into the dropzone |
+| `onDragLeave` | `(e: React.DragEvent) => void` | - | Called when files are dragged out of the dropzone |
+| `actionsRef` | `React.Ref<UploadActions>` | - | Imperative handle exposing `remove(uid)` and `clear()`; `remove` aborts the item's controller before firing `onFileRemove` |
+| `className` | `ClassNameValue` | - | Custom class for the root |
+| `style` | `React.CSSProperties` | - | Custom inline style for the root |
+| `classNames` | `{ root?; dropzone?; hiddenInput? }` | - | Custom classes for each part |
+| `styles` | `{ root?; dropzone?; hiddenInput? }` | - | Custom inline styles for each part |
+
+All controllers are aborted when the component unmounts.
+
+---
+
+### Composable Components
+
+Pure display parts with no built-in state or interaction, for advanced custom assembly.
+
+#### UploadRoot
+
+The outermost container.
+
+#### UploadDropzone
+
+The dropzone surface; renders as a div with `role="button"` styles left to the consumer to wire.
+
+#### UploadHiddenInput
+
+The hidden native `input[type=file]`; the consumer wires `onChange` and triggers `click()` externally.

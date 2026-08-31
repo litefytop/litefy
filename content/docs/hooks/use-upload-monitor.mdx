@@ -1,0 +1,83 @@
+---
+title: use-upload-monitor
+description: Monitor file uploads with XMLHttpRequest progress tracking and abortable removal
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add use-upload-monitor" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="hook" name="use-upload-monitor" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+Fully decoupled from the Upload component — the hook receives the `items` produced by `onFilesAccepted` and handles the network layer with `XMLHttpRequest`.
+
+<ComponentPreview
+  name="upload-basic"
+/>
+
+```tsx
+import { Upload, useUploadMonitor } from "@/ui";
+
+function Demo() {
+  const upload = useUploadMonitor({ action: "/api/upload" });
+  return (
+    <Upload
+      multiple
+      onFilesAccepted={upload.acceptFiles}
+      onFileRemove={upload.removeItem}
+    />
+  );
+}
+```
+
+Each accepted item is uploaded immediately; `xhr.upload.onprogress` updates `progress` and moves the status from `pending` to `uploading`. Removing an item aborts its request; an aborted `AbortSignal` from the Upload also aborts the request.
+
+## API Reference
+
+### useUploadMonitor
+
+```ts
+function useUploadMonitor(options: UseUploadMonitorOptions): UseUploadMonitorResult
+```
+
+#### UseUploadMonitorOptions
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `action` | `string` | - | Upload URL; requests are sent via `POST` |
+| `fieldName` | `string` | `"file"` | FormData field name for the file |
+| `headers` | `Record<string, string>` | - | Extra request headers |
+| `withCredentials` | `boolean` | - | Send credentials cross-origin |
+| `data` | `Record<string, string>` | - | Extra FormData fields appended beside the file |
+
+#### UseUploadMonitorResult
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `fileList` | `UploadMonitorItem[]` | Items with `{ uid, file, status, progress }` |
+| `acceptFiles` | `(items: UploadItem[]) => void` | Start uploading validated items from the Upload component |
+| `removeItem` | `(uid: string) => void` | Abort the request and remove the item |
+| `clearAll` | `() => void` | Abort all requests and clear the list |
+
+#### UploadMonitorItem
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `uid` | `string` | Unique id matching the Upload item |
+| `file` | `File` | The file being uploaded |
+| `status` | `'pending' \| 'uploading' \| 'success' \| 'error'` | Upload lifecycle state |
+| `progress` | `number` | Upload percentage, `0` – `100` |

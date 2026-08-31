@@ -78,6 +78,20 @@ export default {
       zh: "输入框",
     },
   },
+  "input-otp": {
+    name: "Input OTP",
+    displayName: {
+      en: "Input OTP",
+      zh: "验证码输入",
+    },
+  },
+  list: {
+    name: "List",
+    displayName: {
+      en: "List",
+      zh: "列表",
+    },
+  },
   "multi-select": {
     name: "Multi Select",
     displayName: {
@@ -99,11 +113,11 @@ export default {
       zh: "分页查看器",
     },
   },
-  pagination: {
-    name: "Pagination",
+  paper: {
+    name: "Paper",
     displayName: {
-      en: "Pagination",
-      zh: "分页",
+      en: "Paper",
+      zh: "纸张",
     },
   },
   password: {
@@ -134,6 +148,34 @@ export default {
       zh: "滚动阴影",
     },
   },
+  separator: {
+    name: "Separator",
+    displayName: {
+      en: "Separator",
+      zh: "分隔符",
+    },
+  },
+  segment: {
+    name: "Segment",
+    displayName: {
+      en: "Segment",
+      zh: "分段控制器",
+    },
+  },
+  sidebar: {
+    name: "Sidebar",
+    displayName: {
+      en: "Sidebar",
+      zh: "侧边栏",
+    },
+  },
+  slider: {
+    name: "Slider",
+    displayName: {
+      en: "Slider",
+      zh: "滑块",
+    },
+  },
   switch: {
     name: "Switch",
     displayName: {
@@ -146,6 +188,13 @@ export default {
     displayName: {
       en: "Tabs",
       zh: "标签页",
+    },
+  },
+  toggle: {
+    name: "Toggle",
+    displayName: {
+      en: "Toggle",
+      zh: "切换按钮",
     },
   },
   tooltip: {

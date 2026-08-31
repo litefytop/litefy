@@ -1,0 +1,83 @@
+---
+title: use-upload-monitor
+description: 基于 XMLHttpRequest 监控文件上传进度，支持中止与删除
+---
+
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add use-upload-monitor" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="hook" name="use-upload-monitor" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+与 Upload 组件完全解耦——hook 接收 `onFilesAccepted` 输出的 `items`，内部使用 `XMLHttpRequest` 处理网络上传。
+
+<ComponentPreview
+  name="upload-basic"
+/>
+
+```tsx
+import { Upload, useUploadMonitor } from "@/ui";
+
+function Demo() {
+  const upload = useUploadMonitor({ action: "/api/upload" });
+  return (
+    <Upload
+      multiple
+      onFilesAccepted={upload.acceptFiles}
+      onFileRemove={upload.removeItem}
+    />
+  );
+}
+```
+
+每个被接受的条目立即开始上传；`xhr.upload.onprogress` 更新 `progress`，状态从 `pending` 变为 `uploading`。删除条目会中止对应请求；Upload 侧 `AbortSignal` 被中止时同样会终止请求。
+
+## API 参考
+
+### useUploadMonitor
+
+```ts
+function useUploadMonitor(options: UseUploadMonitorOptions): UseUploadMonitorResult
+```
+
+#### UseUploadMonitorOptions
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `action` | `string` | - | 上传地址；以 `POST` 方式发送 |
+| `fieldName` | `string` | `"file"` | 文件在 FormData 中的字段名 |
+| `headers` | `Record<string, string>` | - | 额外请求头 |
+| `withCredentials` | `boolean` | - | 跨域请求是否携带凭据 |
+| `data` | `Record<string, string>` | - | 附加到 FormData 的额外字段 |
+
+#### UseUploadMonitorResult
+
+| 属性 | 类型 | 描述 |
+|------|------|------|
+| `fileList` | `UploadMonitorItem[]` | 条目列表，包含 `{ uid, file, status, progress }` |
+| `acceptFiles` | `(items: UploadItem[]) => void` | 接收 Upload 输出的条目并开始上传 |
+| `removeItem` | `(uid: string) => void` | 中止对应请求并移除条目 |
+| `clearAll` | `() => void` | 中止全部请求并清空列表 |
+
+#### UploadMonitorItem
+
+| 属性 | 类型 | 描述 |
+|------|------|------|
+| `uid` | `string` | 唯一标识，与 Upload 条目对应 |
+| `file` | `File` | 正在上传的文件 |
+| `status` | `'pending' \| 'uploading' \| 'success' \| 'error'` | 上传生命周期状态 |
+| `progress` | `number` | 上传百分比，`0` – `100` |

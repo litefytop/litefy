@@ -1,0 +1,97 @@
+---
+title: use-remote-pagination
+description: Debounced keyword search plus append-based pagination for remote data sources
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add use-remote-pagination" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="hook" name="use-remote-pagination" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+Pair a debounced `search` with `loadMore` to query remote sources. The same fetcher handles both; a single in-flight request guard prevents duplicated fetches.
+
+<ComponentPreview
+  name="use-remote-pagination-basic"
+/>
+
+```tsx
+import { useRemotePagination } from "@/ui";
+
+const fetcher = async ({ page, size, keyword }: { page: number; size: number; keyword: string }) => {
+  const res = await fetch(`/api/items?page=${page}&size=${size}&keyword=${keyword}`);
+  return res.json();
+};
+
+function ItemList() {
+  const remote = useRemotePagination({ fetcher });
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    if (!remote.hasMore || remote.loading) return;
+    const el = e.currentTarget;
+    if (el.scrollHeight - el.scrollTop - el.clientHeight < 40) remote.loadMore();
+  };
+  return (
+    <div onScroll={handleScroll} className="h-64 overflow-y-auto">
+      {remote.data.map((item) => <li key={item}>{item}</li>)}
+    </div>
+  );
+}
+```
+
+## API Reference
+
+### useRemotePagination
+
+```ts
+function useRemotePagination(opts: UseRemotePaginationOptions): UseRemotePaginationResult
+```
+
+#### UseRemotePaginationOptions
+
+| Property | Type | Default | Description |
+|------|------|---------|-------------|
+| `fetcher` | `RemotePaginationFn` | - | Async function receiving `{ page, size, keyword }` and returning `{ list, total }` |
+| `debounceMs` | `number` | `300` | Debounce delay for `search` |
+| `pageSize` | `number` | `20` | Items requested per page |
+
+#### RemotePaginationFn
+
+```ts
+type RemotePaginationFn = (params: {
+  page: number;
+  size: number;
+  keyword: string;
+}) => Promise<{ list: string[]; total: number }>;
+```
+
+#### UseRemotePaginationResult
+
+| Property | Type | Description |
+|------|------|-------------|
+| `data` | `string[]` | Accumulated list; replaced on search, appended on loadMore |
+| `loading` | `boolean` | Whether a request is in flight |
+| `isSearching` | `boolean` | Whether a fresh (page 1) request is in flight, for showing search placeholders |
+| `hasMore` | `boolean` | Whether more pages remain, derived from `list.length < total` |
+| `search` | `(keyword: string) => void` | Debounced keyword search; resets to page 1 and replaces `data` |
+| `loadMore` | `() => void` | Fetch the next page with the current keyword and append |
+| `reset` | `() => void` | Clear data and restore the initial state |
+
+**Notes:**
+
+- The fetcher response shape is fixed to `{ list, total }`; map your API response to this shape before returning.
+- `list` items are typed as `string[]` in this version; key them uniquely downstream.
+- Only one request runs at a time; concurrent triggers are dropped rather than queued.

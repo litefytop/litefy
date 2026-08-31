@@ -51,11 +51,15 @@ export default function Demo() {
           description="Pick the ones you like"
         >
           {({ ...field }) => (
-            <Checkbox.Group {...field}>
-              <Checkbox value="reading">Reading</Checkbox>
-              <Checkbox value="music">Music</Checkbox>
-              <Checkbox value="sports">Sports</Checkbox>
-            </Checkbox.Group>
+            <Checkbox.Group
+              {...field}
+              onChange={field.onValueChange}
+              options={[
+                { label: "Reading", value: "reading" },
+                { label: "Music", value: "music" },
+                { label: "Sports", value: "sports" },
+              ]}
+            />
           )}
         </Form.Fieldset>
         <Form.Fieldset
@@ -65,11 +69,14 @@ export default function Demo() {
           description="How should we reach you?"
         >
           {({ ...field }) => (
-            <Radio.Group {...field}>
-              <Radio value="email">Email</Radio>
-              <Radio value="phone">Phone</Radio>
-              <Radio value="sms">SMS</Radio>
-            </Radio.Group>
+            <Radio.Group
+              {...field}
+              options={[
+                { label: "Email", value: "email" },
+                { label: "Phone", value: "phone" },
+                { label: "SMS", value: "sms" },
+              ]}
+            />
           )}
         </Form.Fieldset>
         <Form.Submit>Submit</Form.Submit>

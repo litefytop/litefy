@@ -1,6 +1,6 @@
 ---
-title: Upload 上传
-description: 带有无效状态支持的文件上传输入组件
+title: Upload
+description: 拖拽上传区域组件，支持本地校验、拖拽上传，并搭配完全解耦的上传监控 hook
 ---
 
 ## 安装
@@ -25,40 +25,72 @@ description: 带有无效状态支持的文件上传输入组件
 
 ### 基础用法
 
-简单的文件上传输入。
+Upload 组件只处理选择、拖拽与本地校验——不发起网络请求，也不维护上传状态。搭配 [`useUploadMonitor`](/docs/hooks/use-upload-monitor) hook 执行上传并跟踪进度。
 
-<ComponentPreview 
+<ComponentPreview
   name="upload-basic"
 />
 
-### 无效状态
+### 校验限制
 
-带有错误状态样式的文件上传输入，用于表单验证。
+`accept`、`maxSize` 与 `maxCount` 在本地校验；被拒绝的文件通过 `onFilesRejected` 上报。
 
-<ComponentPreview 
-  name="upload-invalid"
+<ComponentPreview
+  name="upload-multiple"
 />
 
-### 文件类型限制
+### 自定义拼装
 
-使用原生的 `accept` 和 `multiple` 属性限制可接受的文件类型。
+手动组合零件，完全控制 dropzone 的内容与行为。
 
-<ComponentPreview 
-  name="upload-multiple"
+<ComponentPreview
+  name="upload-custom"
 />
 
 ## API 参考
 
-### Upload
+### 高级组件
 
-支持所有原生文件输入属性的样式化上传组件。
+#### Upload
 
-| 属性 | 类型 | 默认值 | 描述 |
+由下方零件组合而成的拖拽上传区域，封装校验与文件条目生命周期。
+
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `invalid` | `boolean` | `false` | 将上传输入标记为无效状态，用于表单验证 |
-| `accept` | `string` | - | 原生文件类型过滤（例如 `image/*`、`.pdf,.doc`） |
-| `multiple` | `boolean` | - | 允许选择多个文件 |
-| `disabled` | `boolean` | - | 禁用文件输入 |
-| `name` | `string` | - | 用于表单提交的输入名称 |
-| `onChange` | `(e: React.ChangeEvent<HTMLInputElement>) => void` | - | 选择文件后触发的回调函数 |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类。仅支持字符串、数组及各类假值。 |
+| `accept` | `string` | - | 接受的文件类型（MIME 类型、`image/*` 或 `.pdf` 等扩展名） |
+| `multiple` | `boolean` | `false` | 允许选择多个文件 |
+| `maxCount` | `number` | - | 同时接受的最大条目数量 |
+| `maxSize` | `number` | - | 单个文件最大字节数 |
+| `disabled` | `boolean` | `false` | 禁用点击、键盘与拖拽交互 |
+| `invalid` | `boolean` | `false` | 在根节点设置 `data-invalid`，dropzone 设置 `aria-invalid` |
+| `children` | `React.ReactNode` | - | 自定义 dropzone 内容；默认为提示文本 |
+| `onFilesAccepted` | `(items: UploadItem[]) => void` | - | 校验通过时触发，每项包含 `{ uid, file, signal }` |
+| `onFilesRejected` | `(rejects: UploadReject[]) => void` | - | 校验失败时触发，携带拒绝原因（`accept` / `maxSize` / `maxCount`） |
+| `onFileRemove` | `(uid: string) => void` | - | `actionsRef.current.remove(uid)` 中止对应 controller 后触发 |
+| `onDragEnter` | `(e: React.DragEvent) => void` | - | 文件拖入 dropzone 时触发 |
+| `onDragLeave` | `(e: React.DragEvent) => void` | - | 文件拖出 dropzone 时触发 |
+| `actionsRef` | `React.Ref<UploadActions>` | - | 命令式句柄，暴露 `remove(uid)` 与 `clear()`；`remove` 会先中止对应 controller 再触发 `onFileRemove` |
+| `className` | `ClassNameValue` | - | 根节点自定义类 |
+| `style` | `React.CSSProperties` | - | 根节点自定义内联样式 |
+| `classNames` | `{ root?; dropzone?; hiddenInput? }` | - | 各零件自定义类 |
+| `styles` | `{ root?; dropzone?; hiddenInput? }` | - | 各零件自定义内联样式 |
+
+组件卸载时中止全部 controller。
+
+---
+
+### 可组合组件
+
+纯展示零件，不内置状态与交互，供高级使用者自由拼装。
+
+#### UploadRoot
+
+最外层容器。
+
+#### UploadDropzone
+
+拖拽区域表面；渲染为 `role="button"` 的 div，事件与样式由使用者接入。
+
+#### UploadHiddenInput
+
+隐藏的原生 `input[type=file]`；`onChange` 与外部 `click()` 触发由使用者接入。

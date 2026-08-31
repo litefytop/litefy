@@ -1,4 +1,4 @@
-import { HomeContent } from "@/components/home-content";
+import { HomeContent } from "./home";
 
 export function meta() {
   return [

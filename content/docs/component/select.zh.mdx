@@ -43,25 +43,73 @@ description: 灵活的选择器组件，支持选项分组和验证状态
 
 显示表单验证无效状态的选择器组件。
 
-<ComponentPreview 
+<ComponentPreview
   name="select-invalid"
+/>
+
+### 自定义拼装
+
+使用可组合组件拼装自定义样式的选择器。
+
+<ComponentPreview
+  name="select-custom"
 />
 
 ## API 参考
 
-### Select
+### 高级组件
+
+开箱即用的组合组件。
+
+#### Select
 
 一个样式化的选择器组件，支持受控/非受控状态、选项分组和验证。
 
 | 属性 | 类型 | 默认值 | 描述 |
 |------|------|---------|-------------|
-| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
 | `invalid` | `boolean` | `false` | 将选择器标记为无效状态，用于表单验证 |
-| `options` | `(SelectOption | SelectOptionGroup)[]` | - | 要显示的选项或选项组数组 |
+| `options` | `(SelectOption \| SelectOptionGroup)[]` | - | 要显示的选项或选项组数组 |
 | `placeholder` | `string` | - | 未选择任何选项时显示的占位符文本 |
+| `classNames` | `{ group?, root?, icon?: ClassNameValue }` | - | 定制容器、选择框和图标的自定义类名 |
+| `styles` | `{ group?, root?, icon?: React.CSSProperties }` | - | 定制容器、选择框和图标的内联样式 |
 | `value` | `string` | - | 受控模式下的选中值 |
-| `defaultValue` | `string` | - | 非受控模式下的默认选中值 |
+| `defaultValue` | `string` | `""` | 非受控模式下的默认选中值 |
 | `onChange` | `(e: React.ChangeEvent<HTMLSelectElement>) => void` | - | 选择变化时触发的回调函数 |
+| `...props` | `React.ComponentProps<"select">` | - | 支持所有原生 select 属性（除 `className` 外），如 `name`、`disabled`、`required` |
+
+---
+
+### 可组合组件
+
+#### SelectGroup
+
+用于定位选择框和图标的包装容器。
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+| `...props` | `React.ComponentProps<"div">` | - | 支持所有原生 div 属性 |
+
+#### SelectRoot
+
+带有内置基础样式的原生 select 元素，承载状态、焦点和表单语义。
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|---------|-------------|
+| `invalid` | `boolean` | `false` | 应用 `data-invalid` 和 `aria-invalid` |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+| `children` | `React.ReactNode` | - | select 内容，通常为 `<option>` 和 `<optgroup>` 元素 |
+| `...props` | `React.ComponentProps<"select">` | - | 支持所有原生 select 属性（除 `className` 外） |
+
+#### SelectIcon
+
+定位在选择框之后的箭头指示图标。选择框带有 `peer` 类，默认图标支持 `peer-focus` 变体。
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | 自定义图标内容，替换默认的箭头图标 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+| `...props` | `React.ComponentProps<"span">` | - | 支持所有原生 span 属性 |
 
 ### SelectOption
 

@@ -1,6 +1,6 @@
 ---
-title: Theme 主题
-description: 动态切换主题，支持多个主题配置
+title: use-theme
+description: 全局主题状态 hook，品牌、表面与颜色模式持久化到 localStorage
 ---
 
 ## 安装
@@ -13,7 +13,7 @@ description: 动态切换主题，支持多个主题配置
 
 </Tab>
 
-<Tab value="Manual">
+<Tab value="手动">
 
 <Source type="hook" name="use-theme" />
 
@@ -23,16 +23,43 @@ description: 动态切换主题，支持多个主题配置
 
 ## 用法
 
+通过 `useSyncExternalStore` 共享的模块级全局状态。加载时从 localStorage 读取 `brand` / `surface` / `theme`，应用到 `document.documentElement`（`data-brand`、`data-surface`、`.dark`、`color-scheme`），`theme` 为 `"system"` 时跟随系统配色。
+
+<ComponentPreview
+  name="use-theme-basic"
+/>
+
+```tsx
+import { useTheme } from "@/ui";
+
+function ThemeToggle() {
+  const theme = useTheme();
+  return <button onClick={theme.toggleTheme}>切换</button>;
+}
+```
+
 ## API 参考
 
-### useTheme 返回值
+### useTheme
 
-| 属性          | 类型                            | 描述                                                  |
-| ------------- | ------------------------------- | ----------------------------------------------------- |
-| `brand`       | `string`                        | 当前激活的品牌色标识，对应 html `data-brand` 属性     |
-| `surface`     | `string`                        | 当前激活的画布色板标识，对应 html `data-surface` 属性 |
-| `theme`       | `"light" \| "dark" \| "system"` | 当前主题模式                                          |
-| `setBrand`    | `(brand: string) => void`       | 设置品牌色，写入本地存储并更新 DOM 属性               |
-| `setSurface`  | `(surface: string) => void`     | 设置画布色板，写入本地存储并更新 DOM 属性             |
-| `setTheme`    | `(mode: ThemeMode) => void`     | 设置主题模式：`light` / `dark` / `system`             |
-| `toggleTheme` | `() => void`                    | 切换明暗；`system` 模式下会基于系统实际颜色取反切换   |
+```ts
+function useTheme(): ThemeState
+```
+
+返回 `ThemeState`：
+
+| 属性 | 类型 | 说明 |
+|------|------|------|
+| `brand` | `string` | 当前品牌 token，映射到根元素的 `data-brand` |
+| `surface` | `string` | 当前表面 token，映射到根元素的 `data-surface` |
+| `theme` | `'light' \| 'dark' \| 'system'` | 当前颜色模式 |
+| `setBrand` | `(brand: string) => void` | 设置品牌 token，持久化并应用 |
+| `setSurface` | `(surface: string) => void` | 设置表面 token，持久化并应用 |
+| `setTheme` | `(mode: ThemeMode) => void` | 设置颜色模式，持久化并应用 |
+| `toggleTheme` | `() => void` | 在亮色与暗色之间切换（`system` 时先解析实际模式） |
+
+**注意事项：**
+
+- 状态保存在 React 之外，多处调用 `useTheme` 共享同一份 store 并同步更新。
+- 持久化到 localStorage 的 `theme-storage` 键。
+- `theme` 为 `"system"` 时保留存储值，实际应用的模式实时跟随 `prefers-color-scheme` 变化。

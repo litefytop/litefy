@@ -1,6 +1,6 @@
 ---
 title: Tooltip 提示框
-description: 在悬停或聚焦时显示的提示框组件
+description: 基于原生 Popover API 和 CSS 锚点定位构建的提示框组件
 ---
 
 ## 安装
@@ -13,7 +13,7 @@ description: 在悬停或聚焦时显示的提示框组件
 
 </Tab>
 
-<Tab value="Manual">
+<Tab value="手动">
 
 <Source type="component" name="tooltip" />
 
@@ -25,89 +25,92 @@ description: 在悬停或聚焦时显示的提示框组件
 
 ### 基础用法
 
-在悬停或聚焦时显示的基础提示框。
+在悬停或聚焦时显示的基础提示框。组合组件接收单个触发元素作为 `children`，并通过 `content` 属性传入提示内容。
 
-<ComponentPreview 
+<ComponentPreview
   name="tooltip-basic"
-/>
-
-### 位置控制
-
-使用side属性控制提示框的位置。
-
-<ComponentPreview 
-  name="tooltip-side"
 />
 
 ### 命令式控制
 
-在引导步骤或全局事件联动等高级场景中，使用命令式API手动打开或关闭提示框。
+手动拼装零件并匹配 `id` 和 `anchorName`，在引导步骤等高级场景中使用命令式 API 控制弹出层。
 
-<ComponentPreview 
+<ComponentPreview
   name="tooltip-imperative"
 />
 
 ## API 参考
 
-### Tooltip
+### 高级组件
 
-提示框根组件。
+开箱即用的组合组件。
+
+#### Tooltip
+
+克隆单个触发子元素并注入锚点关联与悬停/焦点处理器，通过 portal 渲染提示内容。
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | 必须包含Tooltip.Trigger和Tooltip.Content |
-| `side` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'top'` | 提示框相对于触发元素的位置 |
+| `children` | `React.ReactElement` | - | 触发元素，会被克隆并注入 `popoverTarget`、`anchorName` 样式和悬停/焦点处理器 |
+| `content` | `React.ReactNode` | - | 提示内容 |
 | `delay` | `number` | `100` | 隐藏提示框前的延迟时间（毫秒） |
 
-### Tooltip.Trigger
+---
 
-触发提示框显示的元素。
+### 可组合组件
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | 触发元素的内容 |
-| `className` | `string` | - | 触发按钮的自定义CSS类 |
+#### TooltipTrigger
 
-### Tooltip.Content
-
-触发时显示的提示框内容。支持`ref`用于命令式控制。
+带有内置悬停和焦点显隐逻辑的触发按钮。通过 DOM id 和锚点名称与内容组件解耦通信。
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | 提示框内容 |
-| `className` | `string` | - | 提示框内容的自定义CSS类 |
-| `side` | `'top' \| 'bottom' \| 'left' \| 'right'` | - | 覆盖Tooltip根组件的side属性 |
-| `ref` | `React.Ref<HTMLDivElement>` | - | 用于访问DOM节点以进行命令式`showPopover()`和`hidePopover()`调用 |
+| `popoverId` | `string` | - | 要显隐的内容元素 id |
+| `anchorName` | `string` | - | 设置在触发元素上的 CSS 锚点名称，与内容的 `positionAnchor` 匹配 |
+| `delay` | `number` | `100` | 隐藏延迟时间（毫秒） |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+| `style` | `React.CSSProperties` | - | 自定义内联样式，与锚点名称合并 |
+| `...props` | `React.ComponentProps<"button">` | - | 支持所有原生 button 属性（除 `className`、`style` 外） |
+
+#### TooltipContent
+
+通过 portal 渲染的提示气泡，带 `popover="manual"` 和锚点定位。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `id` | `string` | - | 供触发元素 `popoverId` 引用的元素 id |
+| `anchorName` | `string` | - | 触发元素的锚点名称，应用为 `positionAnchor` |
+| `delay` | `number` | `100` | 指针交互的隐藏延迟时间（毫秒） |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+| `style` | `React.CSSProperties` | - | 自定义内联样式，与锚点样式合并 |
+| `ref` | `React.Ref<HTMLDivElement>` | - | 指向弹出层元素的 ref，用于命令式 `showPopover()` 和 `hidePopover()` 调用 |
+| `...props` | `React.ComponentProps<"div">` | - | 支持所有原生 div 属性（除 `className`、`style`、`id` 外） |
 
 ## 命令式 API
 
-在引导步骤或全局事件联动等高级场景中，可以使用命令式方式控制提示框：
+在引导步骤或全局事件联动等高级场景中，手动拼装零件并使用命令式方式控制弹出层：
 
 ```tsx
 import { useRef } from 'react';
-import { Tooltip } from "@/ui";
+import { TooltipContent, TooltipTrigger } from "@/ui";
 
 function MyComponent() {
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const handleOpen = () => {
-    contentRef.current?.showPopover();
-  };
-
-  const handleClose = () => {
-    contentRef.current?.hidePopover();
-  };
-
   return (
     <>
-      <Tooltip>
-        <Tooltip.Trigger>悬停触发</Tooltip.Trigger>
-        <Tooltip.Content ref={contentRef}>
-          提示内容
-        </Tooltip.Content>
-      </Tooltip>
-      <button type="button" onClick={handleOpen}>手动打开</button>
-      <button type="button" onClick={handleClose}>手动关闭</button>
+      <TooltipTrigger popoverId="my-tip" anchorName="--my-tip">
+        悬停触发
+      </TooltipTrigger>
+      <TooltipContent id="my-tip" anchorName="--my-tip" ref={contentRef}>
+        提示内容
+      </TooltipContent>
+      <button type="button" onClick={() => contentRef.current?.showPopover()}>
+        手动打开
+      </button>
+      <button type="button" onClick={() => contentRef.current?.hidePopover()}>
+        手动关闭
+      </button>
     </>
   );
 }
@@ -115,6 +118,7 @@ function MyComponent() {
 
 **注意事项：**
 
-- 此方式会与组件内部的悬停/焦点逻辑共存。多次调用`showPopover()`不会重复打开，`hidePopover()`会立即关闭。
-- 若需要在外部控制时完全接管显隐，可能需要自行处理内部定时器（例如在调用`hidePopover()`前清除`onPointerLeave`的延迟定时器）。
-- 建议仅在确实需要外部联动时使用此方案，常规场景请优先使用Trigger的内置交互。
+- 基于原生 Popover API 和 CSS 锚点定位（`anchor-name` / `position-anchor` / `position-area`）构建，无手动定位回退。
+- 默认锚定在触发元素上方，通过 `position-try-fallbacks: flip-block, flip-inline` 自动处理溢出翻转，无需方向属性。
+- 指针悬停在提示内容上时保持显示；对已打开的弹出层调用 `showPopover()` 不会重复打开。
+- `hidePopover()` 会立即关闭，不受隐藏延迟影响。

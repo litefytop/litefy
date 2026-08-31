@@ -94,7 +94,7 @@ export function ToggleGroup({
   };
 
   return (
-    <div className={cn("flex flex-wrap gap-2", className)}>
+    <div className={cn("inline-flex", className)}>
       {options.map((option) => (
         <Toggle
           key={option.value}
@@ -102,7 +102,10 @@ export function ToggleGroup({
           disabled={disabled || option.disabled}
           checked={selectedSet.has(option.value)}
           onCheckedChange={() => handleToggle(option.value)}
-          className={option.className ?? itemClassName}
+          className={cn(
+            "rounded-none border-y border-r border-l-0 border-border aria-checked:border-border first:border-l first:rounded-l-md last:rounded-r-md",
+            option.className ?? itemClassName,
+          )}
         >
           {option.label}
         </Toggle>

@@ -49,7 +49,7 @@ description: 带有增减控制按钮的数字输入字段
 
 ### 自定义
 
-使用 `NumberGroup`、`NumberDecrement`、`NumberIncrement` 与原生 input 拼装，`focus-within` 焦点环与 `data-invalid` 无效状态样式自动生效。
+使用 `NumberGroup`、`NumberDecrement`、`NumberRoot`、`NumberIncrement` 拼装，`focus-within` 焦点环与 `data-invalid` 无效状态样式自动生效。
 
 <ComponentPreview 
   name="number-field-custom"
@@ -75,8 +75,8 @@ description: 带有增减控制按钮的数字输入字段
 | `max` | `number` | `Infinity` | 允许的最大值 |
 | `step` | `number` | `1` | 增减步长 |
 | `positiveInteger` | `boolean` | `false` | 限制为正整数。将值类型更改为 `number \| null` |
-| `classNames` | `{ group?: ClassNameValue; decrement?: ClassNameValue; increment?: ClassNameValue; input?: ClassNameValue }` | - | 内部元素的自定义类名 |
-| `styles` | `{ group?: React.CSSProperties; decrement?: React.CSSProperties; increment?: React.CSSProperties; input?: React.CSSProperties }` | - | 内部元素的内联样式 |
+| `classNames` | `{ group?: ClassNameValue; decrement?: ClassNameValue; increment?: ClassNameValue; root?: ClassNameValue }` | - | 内部元素的自定义类名 |
+| `styles` | `{ group?: React.CSSProperties; decrement?: React.CSSProperties; increment?: React.CSSProperties; root?: React.CSSProperties }` | - | 内部元素的内联样式 |
 | `disabled` | `boolean` | `false` | 禁用整个字段 |
 | `...props` | `React.ComponentProps<"input">` | - | 支持全部 input 原生属性（除 `type`、`className`），如 `onBlur` |
 
@@ -112,3 +112,12 @@ description: 带有增减控制按钮的数字输入字段
 | `className` | `ClassNameValue`                 | -       | 自定义类名                                   |
 | `children`  | `React.ReactNode`                | -       | 按钮内容                                     |
 | `...props`  | `React.ComponentProps<"button">` | -       | 支持全部 button 原生属性（除 `className`）   |
+
+#### NumberRoot
+
+承载状态的文本输入框，内置居中数字排版样式。
+
+| Prop        | Type                            | Default | Description                                                    |
+| ----------- | ------------------------------- | ------- | -------------------------------------------------------------- |
+| `className` | `ClassNameValue`                | -       | 自定义类名                                                     |
+| `...props`  | `React.ComponentProps<"input">` | -       | 支持全部 input 原生属性（除 `className`），如 `value`、`onChange` 和 `role="spinbutton"` 相关 aria 属性 |

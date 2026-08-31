@@ -1,18 +1,7 @@
 "use client";
 
-import {
-  CircleCheck,
-  CircleHelp,
-  Loader2,
-  TriangleAlert,
-  X,
-} from "lucide-react";
-import React, {
-  useCallback,
-  useEffect,
-  useState,
-  useSyncExternalStore,
-} from "react";
+import { CircleCheck, CircleHelp, Loader2, TriangleAlert, X } from "lucide-react";
+import React, { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import { type ClassNameValue, cn } from "@/lib";
 
 export type ToastType = "success" | "error" | "warning" | "info" | "loading";
@@ -166,30 +155,17 @@ function ToastItem({
       )}
     >
       {icon && (
-        <div
-          {...slotProps?.leading}
-          className={cn("shrink-0", slotProps?.leading?.className)}
-        >
+        <div {...slotProps?.leading} className={cn("shrink-0", slotProps?.leading?.className)}>
           {icon}
         </div>
       )}
 
-      <div
-        {...slotProps?.content}
-        className={cn("flex-1 min-w-0", slotProps?.content?.className)}
-      >
+      <div {...slotProps?.content} className={cn("flex-1 min-w-0", slotProps?.content?.className)}>
         <div className="font-medium">{title}</div>
-        {description && (
-          <div className="text-sm text-muted-foreground mt-1">
-            {description}
-          </div>
-        )}
+        {description && <div className="text-sm text-muted-foreground mt-1">{description}</div>}
       </div>
       {actions && (
-        <div
-          {...slotProps?.actions}
-          className={cn("flex gap-2", slotProps?.actions?.className)}
-        >
+        <div {...slotProps?.actions} className={cn("flex gap-2", slotProps?.actions?.className)}>
           {actions.map((action, idx) => (
             <button
               key={idx}
@@ -225,8 +201,7 @@ const positionClasses: Record<ToastPosition, string> = {
   "bottom-center": "bottom-4 left-1/2 -translate-x-1/2 items-center",
 };
 
-export interface ToastContainerProps
-  extends Omit<React.ComponentProps<"div">, "className"> {
+export interface ToastContainerProps extends Omit<React.ComponentProps<"div">, "className"> {
   position?: ToastPosition;
   visibleToasts?: number;
   className?: ClassNameValue;
@@ -240,9 +215,7 @@ function ToastContainer({
 }: ToastContainerProps) {
   const toasts = useToastStore();
   const [isExpanded, setIsExpanded] = useState(false);
-  const [expandedTimeout, setExpandedTimeout] = useState<NodeJS.Timeout | null>(
-    null,
-  );
+  const [expandedTimeout, setExpandedTimeout] = useState<NodeJS.Timeout | null>(null);
 
   const filteredToasts = toasts.slice(-visibleToasts);
   const yPosition = position.startsWith("top") ? "top" : "bottom";
@@ -385,10 +358,7 @@ function promise<T>(promise: () => Promise<T>, data: PromiseData<T>) {
   promise()
     .then((response) => {
       toastObserver.removeToast(loadingId);
-      const message =
-        typeof data.success === "function"
-          ? data.success(response)
-          : data.success;
+      const message = typeof data.success === "function" ? data.success(response) : data.success;
       toastObserver.addToast({
         title: message,
         type: "success",
@@ -396,8 +366,7 @@ function promise<T>(promise: () => Promise<T>, data: PromiseData<T>) {
     })
     .catch((error) => {
       toastObserver.removeToast(loadingId);
-      const message =
-        typeof data.error === "function" ? data.error(error) : data.error;
+      const message = typeof data.error === "function" ? data.error(error) : data.error;
       toastObserver.addToast({
         title: message,
         type: "error",

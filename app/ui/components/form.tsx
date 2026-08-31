@@ -13,16 +13,10 @@ type Entry = {
 
 type FormContextType = {
   isPending: boolean;
-  register: (
-    name: string,
-    element: FormElement | null,
-    setter?: Setter,
-  ) => void;
+  register: (name: string, element: FormElement | null, setter?: Setter) => void;
   unregister: (name: string) => void;
   formValues: Record<string, FormValue>;
-  setFormValues: React.Dispatch<
-    React.SetStateAction<Record<string, FormValue>>
-  >;
+  setFormValues: React.Dispatch<React.SetStateAction<Record<string, FormValue>>>;
 };
 
 const FormContext = React.createContext<FormContextType>({
@@ -76,23 +70,18 @@ export function Form({
 }: FormProps) {
   const internalRef = React.useRef<HTMLFormElement>(null);
   const elementsRef = React.useRef<Map<string, Entry>>(new Map());
-  const [formValues, setFormValues] = React.useState<Record<string, FormValue>>(
-    {},
-  );
+  const [formValues, setFormValues] = React.useState<Record<string, FormValue>>({});
 
-  const registerElement = React.useCallback(
-    (name: string, element: FormElement) => {
-      const existing = elementsRef.current.get(name);
-      if (!existing) {
-        elementsRef.current.set(name, { elements: [element] });
-      } else {
-        if (!existing.elements.includes(element)) {
-          existing.elements.push(element);
-        }
+  const registerElement = React.useCallback((name: string, element: FormElement) => {
+    const existing = elementsRef.current.get(name);
+    if (!existing) {
+      elementsRef.current.set(name, { elements: [element] });
+    } else {
+      if (!existing.elements.includes(element)) {
+        existing.elements.push(element);
       }
-    },
-    [],
-  );
+    }
+  }, []);
 
   const registerSetter = React.useCallback((name: string, setter: Setter) => {
     const existing = elementsRef.current.get(name);
@@ -124,9 +113,7 @@ export function Form({
 
     for (const [name, value] of entries) {
       if (Array.isArray(value)) {
-        newState[name] = value.map((v) =>
-          typeof v === "string" ? v : String(v),
-        );
+        newState[name] = value.map((v) => (typeof v === "string" ? v : String(v)));
       } else {
         newState[name] = value;
       }
@@ -138,9 +125,7 @@ export function Form({
       if (!entry) continue;
 
       if (entry.setter) {
-        entry.setter(
-          Array.isArray(value) ? value.map((v) => String(v)) : value,
-        );
+        entry.setter(Array.isArray(value) ? value.map((v) => String(v)) : value);
         continue;
       }
 
@@ -242,12 +227,7 @@ export function Form({
 
   return (
     <FormContext.Provider value={contextValue}>
-      <form
-        ref={internalRef}
-        action={formAction}
-        className={className}
-        {...props}
-      >
+      <form ref={internalRef} action={formAction} className={className} {...props}>
         {children}
       </form>
     </FormContext.Provider>
@@ -258,16 +238,9 @@ type FormSubmitProps = React.ComponentProps<"button"> & {
   loadingIcon?: React.ReactNode;
 };
 
-function FormSubmit({
-  children,
-  className,
-  ref,
-  loadingIcon,
-  ...props
-}: FormSubmitProps) {
+function FormSubmit({ children, className, ref, loadingIcon, ...props }: FormSubmitProps) {
   const { isPending } = React.useContext(FormContext);
-  const icon =
-    isPending && (loadingIcon ?? <Loader2 className="animate-spin size-4" />);
+  const icon = isPending && (loadingIcon ?? <Loader2 className="animate-spin size-4" />);
 
   return (
     <button
@@ -275,7 +248,7 @@ function FormSubmit({
       disabled={isPending}
       ref={ref}
       className={cn(
-        "border border-input cursor-pointer  inline-flex items-center justify-center shrink-0 select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 h-9 min-w-9 px-3 py-1 has-[>svg]:px-2 gap-1 rounded-md",
+        "border border-border cursor-pointer  inline-flex items-center justify-center shrink-0 select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 h-9 min-w-9 px-3 py-1 has-[>svg]:px-2 gap-1 rounded-md",
         className,
       )}
       {...props}
@@ -320,12 +293,7 @@ export type FormFieldProps = Omit<React.ComponentProps<"div">, "children"> & {
   validConfig?: {
     validate?: (
       value: string,
-    ) =>
-      | string
-      | boolean
-      | null
-      | undefined
-      | Promise<string | boolean | null | undefined>;
+    ) => string | boolean | null | undefined | Promise<string | boolean | null | undefined>;
     trigger?: "onChange" | "onBlur";
     debounceMs?: number;
   };
@@ -474,9 +442,7 @@ Form.Field = FormField;
 
 type FieldsetMode = "single" | "multi";
 
-type FieldsetValue<T extends FieldsetMode> = T extends "multi"
-  ? string[]
-  : string;
+type FieldsetValue<T extends FieldsetMode> = T extends "multi" ? string[] : string;
 
 type FieldsetRenderArg<T extends FieldsetMode = "multi"> = Omit<
   FormFieldArg,
@@ -517,11 +483,8 @@ function FormFieldset<T extends FieldsetMode = "multi">({
   validConfig,
   ...props
 }: FormFieldsetProps<T>) {
-  const { register, unregister, formValues, setFormValues } =
-    React.useContext(FormContext);
-  const [internalInvalid, setInternalInvalid] = React.useState<
-    string | boolean | undefined
-  >();
+  const { register, unregister, formValues, setFormValues } = React.useContext(FormContext);
+  const [internalInvalid, setInternalInvalid] = React.useState<string | boolean | undefined>();
   const finalInvalid = externalInvalid ?? internalInvalid;
   const isInvalid = Boolean(finalInvalid);
   const hasInvalidContent = typeof finalInvalid === "string";
@@ -637,10 +600,7 @@ function FormFieldset<T extends FieldsetMode = "multi">({
       {children?.(renderArg)}
       <small
         id={describedBy}
-        className={cn(
-          "text-sm text-muted-foreground",
-          isInvalid && "text-destructive",
-        )}
+        className={cn("text-sm text-muted-foreground", isInvalid && "text-destructive")}
         role={hasInvalidContent ? "alert" : undefined}
       >
         {hasInvalidContent ? finalInvalid : description}

@@ -1,39 +1,35 @@
 "use client";
 
 import { useRef } from "react";
-import { Tooltip } from "@/ui";
+import { TooltipContent, TooltipTrigger } from "@/ui";
 
 export default function TooltipImperativeDemo() {
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const handleOpen = () => {
-    contentRef.current?.showPopover();
-  };
-
-  const handleClose = () => {
-    contentRef.current?.hidePopover();
-  };
-
   return (
     <div className="flex flex-col items-center gap-4 py-8">
-      <Tooltip>
-        <Tooltip.Trigger>Hover Trigger</Tooltip.Trigger>
-        <Tooltip.Content ref={contentRef}>
-          Imperatively controlled tooltip
-        </Tooltip.Content>
-      </Tooltip>
+      <TooltipTrigger popoverId="imperative-tip" anchorName="--imperative-tip">
+        Hover Trigger
+      </TooltipTrigger>
+      <TooltipContent
+        id="imperative-tip"
+        anchorName="--imperative-tip"
+        ref={contentRef}
+      >
+        Imperatively controlled tooltip
+      </TooltipContent>
 
       <div className="flex gap-2">
         <button
           type="button"
-          onClick={handleOpen}
+          onClick={() => contentRef.current?.showPopover()}
           className="px-4 py-2 text-sm border rounded hover:bg-accent"
         >
           Open
         </button>
         <button
           type="button"
-          onClick={handleClose}
+          onClick={() => contentRef.current?.hidePopover()}
           className="px-4 py-2 text-sm border rounded hover:bg-accent"
         >
           Close

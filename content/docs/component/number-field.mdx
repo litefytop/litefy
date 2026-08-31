@@ -49,7 +49,7 @@ Manage the value externally with controlled state.
 
 ### Custom
 
-Compose `NumberGroup`, `NumberDecrement`, `NumberIncrement` and a native input; the `focus-within` focus ring and `data-invalid` invalid styles apply automatically.
+Compose `NumberGroup`, `NumberDecrement`, `NumberRoot`, `NumberIncrement`; the `focus-within` focus ring and `data-invalid` invalid styles apply automatically.
 
 <ComponentPreview 
   name="number-field-custom"
@@ -75,8 +75,8 @@ A numeric input field with built-in increment and decrement buttons.
 | `max` | `number` | `Infinity` | Maximum allowed value |
 | `step` | `number` | `1` | Increment/decrement step size |
 | `positiveInteger` | `boolean` | `false` | Restrict to positive integers only. Changes value type to `number \| null` |
-| `classNames` | `{ group?: ClassNameValue; decrement?: ClassNameValue; increment?: ClassNameValue; input?: ClassNameValue }` | - | Custom classes for the internal elements |
-| `styles` | `{ group?: React.CSSProperties; decrement?: React.CSSProperties; increment?: React.CSSProperties; input?: React.CSSProperties }` | - | Inline styles for the internal elements |
+| `classNames` | `{ group?: ClassNameValue; decrement?: ClassNameValue; increment?: ClassNameValue; root?: ClassNameValue }` | - | Custom classes for the internal elements |
+| `styles` | `{ group?: React.CSSProperties; decrement?: React.CSSProperties; increment?: React.CSSProperties; root?: React.CSSProperties }` | - | Inline styles for the internal elements |
 | `disabled` | `boolean` | `false` | Disable the entire field |
 | `...props` | `React.ComponentProps<"input">` | - | Supports all native input props (except `type`, `className`), such as `onBlur` |
 
@@ -112,3 +112,12 @@ The increment button with built-in right semicircle styling and disabled state.
 | `className` | `ClassNameValue`                 | -       | Custom class name                               |
 | `children`  | `React.ReactNode`                | -       | Button content                                  |
 | `...props`  | `React.ComponentProps<"button">` | -       | Supports all native button props (except `className`) |
+
+#### NumberRoot
+
+The state-carrying text input with centered numeric styling built in.
+
+| Prop        | Type                           | Default | Description                                            |
+| ----------- | ------------------------------ | ------- | ------------------------------------------------------ |
+| `className` | `ClassNameValue`               | -       | Custom class name                                      |
+| `...props`  | `React.ComponentProps<"input">` | -      | Supports all native input props (except `className`), such as `value`, `onChange` and `role="spinbutton"` aria attributes |

@@ -25,7 +25,7 @@ export function ComboboxInput({
     <input
       {...props}
       placeholder={placeholder}
-      className={cn("h-9 w-full px-3 py-2 border rounded-md bg-input", className)}
+      className={cn("h-9 w-full px-3 py-2 border rounded-md bg-muted", className)}
     />
   );
 }

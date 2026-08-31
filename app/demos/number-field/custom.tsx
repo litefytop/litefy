@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
-import { NumberDecrement, NumberGroup, NumberIncrement } from "@/ui";
+import { NumberDecrement, NumberGroup, NumberIncrement, NumberRoot } from "@/ui";
 
 export default function Demo() {
   const [value, setValue] = useState(5);
@@ -13,7 +13,7 @@ export default function Demo() {
       <NumberDecrement disabled={value <= 0} onClick={() => setValue(clamp(value - 1))}>
         <Minus className="size-4" />
       </NumberDecrement>
-      <input
+      <NumberRoot
         role="spinbutton"
         aria-valuemin={0}
         aria-valuemax={10}
@@ -23,7 +23,6 @@ export default function Demo() {
           const num = parseInt(e.target.value, 10);
           setValue(Number.isNaN(num) ? 0 : clamp(num));
         }}
-        className="h-8 w-full min-w-0 flex-1 border-0 bg-transparent px-2 text-center text-sm"
       />
       <NumberIncrement disabled={value >= 10} onClick={() => setValue(clamp(value + 1))}>
         <Plus className="size-4" />

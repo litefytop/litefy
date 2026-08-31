@@ -1,6 +1,6 @@
 ---
 title: Tooltip
-description: A tooltip component that appears on hover or focus
+description: A tooltip component built on the native Popover API and CSS anchor positioning
 ---
 
 ## Installation
@@ -25,89 +25,92 @@ description: A tooltip component that appears on hover or focus
 
 ### Basic Usage
 
-A basic tooltip that appears on hover or focus.
+A basic tooltip that appears on hover or focus. The composite accepts a single trigger element as `children` and a `content` prop.
 
-<ComponentPreview 
+<ComponentPreview
   name="tooltip-basic"
-/>
-
-### Positioning
-
-Control the tooltip position with the side prop.
-
-<ComponentPreview 
-  name="tooltip-side"
 />
 
 ### Imperative Control
 
-Manually open or close tooltip using imperative API for advanced scenarios like guided tours or global event coordination.
+Assemble the parts manually with matching `id` and `anchorName`, then control the popover imperatively for advanced scenarios like guided tours.
 
-<ComponentPreview 
+<ComponentPreview
   name="tooltip-imperative"
 />
 
 ## API Reference
 
-### Tooltip
+### High-level Components
 
-The root tooltip wrapper component.
+Ready-to-use composite component.
+
+#### Tooltip
+
+Clones the single trigger child with the anchor wiring and hover/focus handlers, and renders the tooltip content through a portal.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | Must contain Tooltip.Trigger and Tooltip.Content |
-| `side` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'top'` | Tooltip position relative to trigger |
+| `children` | `React.ReactElement` | - | The trigger element, cloned with `popoverTarget`, `anchorName` styling and hover/focus handlers |
+| `content` | `React.ReactNode` | - | The tooltip content |
 | `delay` | `number` | `100` | Delay in milliseconds before hiding tooltip |
 
-### Tooltip.Trigger
+---
 
-The element that triggers the tooltip display.
+### Composable Components
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | The trigger element content |
-| `className` | `string` | - | Custom CSS class for the trigger button |
+#### TooltipTrigger
 
-### Tooltip.Content
-
-The tooltip content that appears when triggered. Supports `ref` for imperative control.
+The trigger button with built-in hover and focus show/hide logic. Communicates with the content purely through DOM ids and anchor names.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | The tooltip content |
-| `className` | `string` | - | Custom CSS class for the content |
-| `side` | `'top' \| 'bottom' \| 'left' \| 'right'` | - | Override the side prop from Tooltip root |
-| `ref` | `React.Ref<HTMLDivElement>` | - | Ref to access DOM node for imperative `showPopover()` and `hidePopover()` calls |
+| `popoverId` | `string` | - | The content element id to show/hide |
+| `anchorName` | `string` | - | CSS anchor name set on the trigger, matched by the content's `positionAnchor` |
+| `delay` | `number` | `100` | Hide delay in milliseconds |
+| `className` | `ClassNameValue` | - | Custom CSS class |
+| `style` | `React.CSSProperties` | - | Custom inline styles, merged with the anchor name |
+| `...props` | `React.ComponentProps<"button">` | - | Supports all native button props (except `className`, `style`) |
+
+#### TooltipContent
+
+The tooltip bubble rendered through a portal with `popover="manual"` and anchor positioning.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `id` | `string` | - | Element id referenced by the trigger's `popoverId` |
+| `anchorName` | `string` | - | Trigger's anchor name, applied as `positionAnchor` |
+| `delay` | `number` | `100` | Hide delay in milliseconds for pointer interactions |
+| `className` | `ClassNameValue` | - | Custom CSS class |
+| `style` | `React.CSSProperties` | - | Custom inline styles, merged with the anchor styles |
+| `ref` | `React.Ref<HTMLDivElement>` | - | Ref to the popover element for imperative `showPopover()` and `hidePopover()` calls |
+| `...props` | `React.ComponentProps<"div">` | - | Supports all native div props (except `className`, `style`, `id`) |
 
 ## Imperative API
 
-For advanced use cases like guided tours or global event coordination, you can control the tooltip imperatively:
+For advanced use cases like guided tours or global event coordination, wire the parts manually and control the popover imperatively:
 
 ```tsx
 import { useRef } from 'react';
-import { Tooltip } from "@/ui";
+import { TooltipContent, TooltipTrigger } from "@/ui";
 
 function MyComponent() {
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const handleOpen = () => {
-    contentRef.current?.showPopover();
-  };
-
-  const handleClose = () => {
-    contentRef.current?.hidePopover();
-  };
-
   return (
     <>
-      <Tooltip>
-        <Tooltip.Trigger>Hover Trigger</Tooltip.Trigger>
-        <Tooltip.Content ref={contentRef}>
-          Tooltip content
-        </Tooltip.Content>
-      </Tooltip>
-      <button type="button" onClick={handleOpen}>Open</button>
-      <button type="button" onClick={handleClose}>Close</button>
+      <TooltipTrigger popoverId="my-tip" anchorName="--my-tip">
+        Hover Trigger
+      </TooltipTrigger>
+      <TooltipContent id="my-tip" anchorName="--my-tip" ref={contentRef}>
+        Tooltip content
+      </TooltipContent>
+      <button type="button" onClick={() => contentRef.current?.showPopover()}>
+        Open
+      </button>
+      <button type="button" onClick={() => contentRef.current?.hidePopover()}>
+        Close
+      </button>
     </>
   );
 }
@@ -115,6 +118,7 @@ function MyComponent() {
 
 **Important Notes:**
 
-- This approach coexists with the internal hover/focus logic. Multiple `showPopover()` calls won't reopen, and `hidePopover()` closes immediately.
-- If you need full control over visibility, you may need to handle internal timers (e.g., clear the `onPointerLeave` delay timer before calling `hidePopover()`).
-- Use this approach only when external coordination is necessary. For regular use, prefer the Trigger's built-in interactions.
+- Built on the native Popover API and CSS anchor positioning (`anchor-name` / `position-anchor` / `position-area`), with no manual positioning fallback.
+- Anchored above the trigger by default, with `position-try-fallbacks: flip-block, flip-inline` handling overflow automatically — no direction prop needed.
+- The content keeps itself open while the pointer is over it; `showPopover()` on an already open popover is a no-op.
+- Multiple `showPopover()` calls won't reopen, and `hidePopover()` closes immediately.

@@ -3,164 +3,56 @@
 import * as React from "react";
 import { type ClassNameValue, cn } from "@/lib";
 
-type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
-  [key: `data-${string}`]: string | number | boolean | null | undefined;
+export interface RadioProps extends Omit<
+  React.ComponentProps<"input">,
+  "type" | "className"
+> {
   className?: ClassNameValue;
-};
-
-const radioClass = {
-  radio: "data-invalid:text-destructive data-invalid:accent-destructive",
-  segment:
-    "bg-input text-input-foreground border-y border-r first:border-l has-focus-visible:ring-2 has-focus-visible:ring-ring has-focus-visible:ring-inset  has-checked:bg-primary has-checked:text-primary-foreground data-invalid:text-destructive data-invalid:has-checked:bg-destructive",
-};
-
-type RadioGroupContextValue = {
-  name?: string;
-  value: string | undefined;
-  setValue: (v: string) => void;
   invalid?: boolean;
-  disabled?: boolean;
-  variant?: "radio" | "segment";
-};
-const RadioGroupContext = React.createContext<RadioGroupContextValue | null>(
-  null,
-);
-
-export type RadioGroupProps = {
-  defaultValue?: string;
-  value?: string;
-  onValueChange?: (value: string) => void;
-  invalid?: boolean;
-  disabled?: boolean;
-  name?: string;
-  className?: ClassNameValue;
-  children?: React.ReactNode;
-  variant?: "radio" | "segment";
-} & Omit<
-  React.ComponentProps<"div">, // 改为 div 属性
-  "onChange" | "defaultValue" | "value"
->;
-
-function RadioGroup({
-  defaultValue,
-  value: controlledValue,
-  onValueChange,
-  name,
-  invalid,
-  disabled,
-  className,
-  children,
-  variant = "radio",
-  ...props
-}: RadioGroupProps) {
-  const [uncontrolledValue, setUncontrolledValue] = React.useState<
-    string | undefined
-  >(defaultValue);
-  const isControlled = controlledValue !== undefined;
-  const selectedValue = isControlled ? controlledValue : uncontrolledValue;
-
-  const setValue = (val: string) => {
-    if (!isControlled) setUncontrolledValue(val);
-    onValueChange?.(val);
-  };
-
-  const ctx = {
-    name,
-    value: selectedValue,
-    setValue,
-    invalid,
-    disabled,
-    variant,
-  };
-
-  return (
-    <div
-      {...props}
-      role="radiogroup"
-      aria-invalid={invalid}
-      data-invalid={invalid || undefined}
-      className={cn(
-        "flex",
-        className,
-      )}
-    >
-      <RadioGroupContext.Provider value={ctx}>
-        {children}
-      </RadioGroupContext.Provider>
-    </div>
-  );
+  onCheckedChange?: (checked: boolean) => void;
+  indicator?: (checked: boolean, wrapperClassName?: string) => React.ReactNode;
 }
 
-export type RadioProps = {
-  checked?: boolean;
-  onValueChange?: (checked: boolean) => void;
-  value?: string;
-  disabled?: boolean;
-  variant?: keyof typeof radioClass;
-  indicator?: (checked: boolean, wrapperClassName?: string) => React.ReactNode;
-  name?: string;
-  children?: React.ReactNode;
-  invalid?: boolean;
-} & HTMLAttrs<Omit<React.ComponentProps<"input">, "type">>;
-
 export const Radio = ({
-  value,
-  defaultChecked = false,
-  variant = "radio",
-  indicator,
-  checked,
-  onValueChange,
-  name,
-  className,
   children,
+  checked: controlledChecked,
+  defaultChecked = false,
+  onCheckedChange,
+  indicator,
+  className,
   style,
   invalid,
   id,
   ...props
 }: RadioProps) => {
-  const ctx = React.useContext(RadioGroupContext);
   const fallbackId = React.useId();
   const _id = id ?? fallbackId;
   const [uncontrolledChecked, setUncontrolledChecked] =
     React.useState(defaultChecked);
-
-  let isChecked: boolean;
-  if (ctx && value !== undefined) {
-    isChecked = ctx.value === value;
-  } else if (checked !== undefined) {
-    isChecked = checked;
-  } else {
-    isChecked = uncontrolledChecked;
-  }
-
-  const _name = name ?? ctx?.name;
-  const _invalid = invalid ?? ctx?.invalid;
+  const isControlled = controlledChecked !== undefined;
+  const checked$ = isControlled ? controlledChecked : uncontrolledChecked;
 
   const handleChange = () => {
-    if (ctx && value) {
-      ctx.setValue(value);
-      return;
-    }
-    const next = !isChecked;
-    if (checked === undefined) setUncontrolledChecked(next);
-    onValueChange?.(next);
+    if (checked$) return;
+    if (!isControlled) setUncontrolledChecked(true);
+    onCheckedChange?.(true);
   };
 
   return (
     <label
       htmlFor={_id}
       style={style}
-      aria-invalid={!ctx && _invalid}
-      data-invalid={_invalid || undefined}
+      aria-invalid={invalid}
+      data-invalid={invalid || undefined}
       className={cn(
         "inline-flex items-center justify-center gap-2 shrink-0 h-9 min-w-9 px-3 py-1 cursor-pointer select-none relative has-disabled:cursor-not-allowed has-disabled:opacity-50",
-        "has-focus-visible:[&>*:first-child]:ring-2 has-focus-visible:[&>*:first-child]:ring-ring has-focus-visible:[&>*:first-child]:ring-offset-2 has-focus-visible:[&>*:first-child]:",
-        radioClass[variant],
+        "has-focus-visible:[&>*:first-child]:ring-2 has-focus-visible:[&>*:first-child]:ring-ring has-focus-visible:[&>*:first-child]:ring-offset-2",
+        "data-invalid:text-destructive",
         className,
       )}
     >
       {indicator?.(
-        isChecked,
+        checked$,
         "peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-2 flex items-center justify-center",
       )}
 
@@ -168,12 +60,10 @@ export const Radio = ({
         {...props}
         type="radio"
         id={_id}
-        value={value}
-        name={_name}
-        data-invalid={_invalid || undefined}
-        checked={isChecked}
+        data-invalid={invalid || undefined}
+        checked={checked$}
         onChange={handleChange}
-        data-hidden={Boolean(indicator) || variant === "segment" || undefined}
+        data-hidden={Boolean(indicator) || undefined}
         className={cn(
           "accent-primary data-invalid:accent-destructive data-hidden:sr-only peer",
         )}
@@ -182,5 +72,71 @@ export const Radio = ({
     </label>
   );
 };
+
+export interface RadioOptionConfig extends Omit<RadioProps, "children"> {
+  label: string;
+  value: string;
+}
+
+export interface RadioGroupProps {
+  options: RadioOptionConfig[];
+  value?: string;
+  defaultValue?: string;
+  onValueChange?: (value: string) => void;
+  name?: string;
+  disabled?: boolean;
+  invalid?: boolean;
+  className?: ClassNameValue;
+  common?: {
+    className?: ClassNameValue;
+    indicator?: RadioProps["indicator"];
+  };
+}
+
+export function RadioGroup({
+  options,
+  value,
+  defaultValue,
+  onValueChange,
+  name,
+  disabled,
+  invalid,
+  className,
+  common,
+}: RadioGroupProps) {
+  const [_value, setValue] = React.useState<string | undefined>(defaultValue);
+  const isControlled = value !== undefined;
+  const value$ = isControlled ? value : _value;
+
+  const handleSelect = (val: string) => {
+    if (!isControlled) setValue(val);
+    onValueChange?.(val);
+  };
+
+  return (
+    <div
+      role="radiogroup"
+      aria-invalid={invalid}
+      data-invalid={invalid || undefined}
+      className={cn("flex flex-col gap-2", className)}
+    >
+      {options.map((option) => (
+        <Radio
+          key={option.value}
+          value={option.value}
+          name={name}
+          disabled={disabled || option.disabled}
+          invalid={invalid || option.invalid}
+          checked={value$ === option.value}
+          onCheckedChange={() => handleSelect(option.value)}
+          indicator={option.indicator ?? common?.indicator}
+          className={option.className ?? common?.className}
+        >
+          {option.label}
+        </Radio>
+      ))}
+    </div>
+  );
+}
 
 Radio.Group = RadioGroup;

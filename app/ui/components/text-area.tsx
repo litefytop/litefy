@@ -2,18 +2,13 @@
 
 import { type ClassNameValue, cn } from "@/lib";
 
-export type TextareaProps = Omit<
-  React.ComponentProps<"textarea">,
-  "value" | "onChange"
-> & {
+export type TextareaProps = Omit<React.ComponentProps<"textarea">, "value" | "onChange"> & {
   value?: string;
   className?: ClassNameValue;
 
   invalid?: boolean;
 
-  onChange?: (
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => undefined | { invalid?: string };
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => undefined | { invalid?: string };
 };
 
 export function Textarea({
@@ -29,7 +24,7 @@ export function Textarea({
       aria-invalid={invalid}
       data-invalid={invalid ? true : undefined}
       className={cn(
-        "flex w-full rounded-lg border border-input shadow-xs transition-colors px-2 py-2 text-sm",
+        "flex w-full rounded-lg border border-border shadow-xs transition-colors px-2 py-2 text-sm",
         "min-h-20 resize-y",
         "focus:border-primary focus:ring-2 focus:ring-primary/20",
         "data-[invalid=true]:border-destructive data-[invalid=true]:ring-destructive/20",

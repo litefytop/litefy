@@ -43,6 +43,14 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/input.tsx"
   },
+  "input-otp": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/input-otp.tsx"
+  },
+  "list": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/list.tsx"
+  },
   "multi-select": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/multi-select.tsx"
@@ -115,10 +123,6 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/upload.tsx"
   },
-  "virtual-scroll": {
-    "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/virtual-scroll.tsx"
-  },
   "watermark": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/watermark.tsx"
@@ -130,6 +134,22 @@
   "use-theme": {
     "type": "hook",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/hooks/use-theme.ts"
+  },
+  "use-drag": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/hooks/use-drag.ts"
+  },
+  "use-remote-pagination": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/hooks/use-remote-pagination.ts"
+  },
+  "use-virtual-scroll": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/hooks/use-virtual-scroll.ts"
+  },
+  "use-upload-monitor": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/hooks/use-upload-monitor.ts"
   },
   "style-amber-brand": {
     "type": "css",

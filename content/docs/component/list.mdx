@@ -1,0 +1,84 @@
+---
+title: List
+description: A pure scrollable list container that renders items, with no built-in pagination
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add list" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="list" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+A pure scroll container driven by `items`; rows are rendered via `renderItem`. No navigator is built in — pair it with the [`usePagination`](/docs/hooks/use-pagination) hook when paging is needed.
+
+<ComponentPreview
+  name="list-basic"
+/>
+
+```tsx
+import { List } from "@/ui";
+
+<List
+  className="h-40 rounded-md border"
+  items={tasks}
+  getKey={(task) => task.id}
+  empty={<div className="px-3 py-4 text-center text-muted-foreground">No data</div>}
+  renderItem={(task) => (
+    <>
+      <span className="flex-1 truncate">{task.title}</span>
+      <span className="text-muted-foreground">{task.status}</span>
+    </>
+  )}
+/>
+```
+
+## API Reference
+
+### High-level Components
+
+#### List
+
+A scrollable list built with the parts below; sizing is fully controlled by the consumer (e.g. `h-40 rounded-md border`).
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `T[]` | - | Data array to render |
+| `renderItem` | `(item: T, index: number) => ReactNode` | - | Row content renderer |
+| `getKey` | `(item: T, index: number) => Key` | - | Row key extractor; defaults to the index |
+| `empty` | `React.ReactNode` | - | Rendered when `items` is empty |
+| `className` | `ClassNameValue` | - | Custom class for the root |
+| `style` | `React.CSSProperties` | - | Custom inline style for the root |
+| `classNames` | `{ root?; item? }` | - | Custom classes for each part |
+| `styles` | `{ root?; item? }` | - | Custom inline styles for each part |
+
+The root applies `divide-y divide-border` between rows and `overflow-y-auto` for scrolling.
+
+---
+
+### Composable Components
+
+Pure display parts with no built-in state, for advanced custom assembly.
+
+#### ListRoot
+
+The scroll container; renders as a div with `overflow-y-auto`.
+
+#### ListItem
+
+A single row; renders as a flex div with `px-3 py-2 text-sm` base styling.

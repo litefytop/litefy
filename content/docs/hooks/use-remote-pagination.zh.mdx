@@ -1,0 +1,97 @@
+---
+title: use-remote-pagination
+description: 关键词防抖搜索加分页追加，用于远程数据源
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add use-remote-pagination" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="hook" name="use-remote-pagination" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+`search`（防抖）与 `loadMore`（追加）共用同一个 fetcher 查询远程数据源；内置单一请求进行中的守卫，避免重复请求。
+
+<ComponentPreview
+  name="use-remote-pagination-basic"
+/>
+
+```tsx
+import { useRemotePagination } from "@/ui";
+
+const fetcher = async ({ page, size, keyword }: { page: number; size: number; keyword: string }) => {
+  const res = await fetch(`/api/items?page=${page}&size=${size}&keyword=${keyword}`);
+  return res.json();
+};
+
+function ItemList() {
+  const remote = useRemotePagination({ fetcher });
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    if (!remote.hasMore || remote.loading) return;
+    const el = e.currentTarget;
+    if (el.scrollHeight - el.scrollTop - el.clientHeight < 40) remote.loadMore();
+  };
+  return (
+    <div onScroll={handleScroll} className="h-64 overflow-y-auto">
+      {remote.data.map((item) => <li key={item}>{item}</li>)}
+    </div>
+  );
+}
+```
+
+## API 参考
+
+### useRemotePagination
+
+```ts
+function useRemotePagination(opts: UseRemotePaginationOptions): UseRemotePaginationResult
+```
+
+#### UseRemotePaginationOptions
+
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `fetcher` | `RemotePaginationFn` | - | 接收 `{ page, size, keyword }`、返回 `{ list, total }` 的异步函数 |
+| `debounceMs` | `number` | `300` | `search` 的防抖延迟 |
+| `pageSize` | `number` | `20` | 每页请求条数 |
+
+#### RemotePaginationFn
+
+```ts
+type RemotePaginationFn = (params: {
+  page: number;
+  size: number;
+  keyword: string;
+}) => Promise<{ list: string[]; total: number }>;
+```
+
+#### UseRemotePaginationResult
+
+| 属性 | 类型 | 说明 |
+|------|------|------|
+| `data` | `string[]` | 累积的数据列表；搜索时替换，加载更多时追加 |
+| `loading` | `boolean` | 是否有请求进行中 |
+| `isSearching` | `boolean` | 是否有全新（第 1 页）请求进行中，用于展示搜索占位 |
+| `hasMore` | `boolean` | 是否还有更多页，由 `list.length < total` 推导 |
+| `search` | `(keyword: string) => void` | 防抖关键词搜索；重置到第 1 页并替换 `data` |
+| `loadMore` | `() => void` | 以当前关键词请求下一页并追加 |
+| `reset` | `() => void` | 清空数据并恢复初始状态 |
+
+**注意事项：**
+
+- fetcher 返回结构固定为 `{ list, total }`，需先将 API 响应映射为该结构。
+- 本版本 `list` 条目类型为 `string[]`，下游渲染时注意提供唯一 key。
+- 同一时刻只允许一个请求进行，并发触发会被丢弃而不是排队。

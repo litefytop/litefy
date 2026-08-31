@@ -11,9 +11,9 @@ export function NumberGroup({ className, ...props }: NumberGroupProps) {
     <div
       {...props}
       className={cn(
-        "group border-input flex w-3xs items-center rounded-full border shadow-xs",
+        "flex w-3xs items-center rounded-full border border-border",
         "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
-        "data-invalid:border-destructive/70 data-invalid:ring-destructive/20",
+        "data-invalid:border-destructive-accent data-invalid:ring-destructive data-invalid:text-destructive",
         className,
       )}
     />
@@ -30,8 +30,7 @@ export function NumberDecrement({ className, ...props }: NumberDecrementProps) {
       aria-label="Decrease"
       {...props}
       className={cn(
-        "flex size-9 shrink-0 items-center justify-center rounded-l-full border-r border-input text-muted-foreground hover:text-primary",
-        "group-data-invalid:border-destructive/70 disabled:cursor-not-allowed disabled:opacity-50",
+        "flex size-9 shrink-0 items-center justify-center rounded-l-full hover:text-primary",
         className,
       )}
     />
@@ -48,8 +47,24 @@ export function NumberIncrement({ className, ...props }: NumberIncrementProps) {
       aria-label="Increase"
       {...props}
       className={cn(
-        "flex size-9 shrink-0 items-center justify-center rounded-r-full border-l border-input text-muted-foreground hover:text-primary",
-        "group-data-invalid:border-destructive/70 disabled:cursor-not-allowed disabled:opacity-50",
+        "flex size-9 shrink-0 items-center justify-center rounded-r-full hover:text-primary",
+        className,
+      )}
+    />
+  );
+}
+
+export type NumberRootProps = Omit<React.ComponentProps<"input">, "className"> & {
+  className?: ClassNameValue;
+};
+
+export function NumberRoot({ className, ...props }: NumberRootProps) {
+  return (
+    <input
+      {...props}
+      className={cn(
+        "h-8 w-full min-w-0 flex-1 border-0 bg-transparent px-2 text-center text-sm ring-0",
+        "placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground",
         className,
       )}
     />
@@ -68,13 +83,13 @@ type BaseNumberFieldProps = Omit<
     group?: ClassNameValue;
     decrement?: ClassNameValue;
     increment?: ClassNameValue;
-    input?: ClassNameValue;
+    root?: ClassNameValue;
   };
   styles?: {
     group?: React.CSSProperties;
     decrement?: React.CSSProperties;
     increment?: React.CSSProperties;
-    input?: React.CSSProperties;
+    root?: React.CSSProperties;
   };
 };
 
@@ -235,7 +250,7 @@ export function NumberField(props: NumberFieldProps) {
       >
         −
       </NumberDecrement>
-      <input
+      <NumberRoot
         {...rest}
         type="text"
         inputMode={positiveInteger ? "numeric" : "decimal"}
@@ -247,12 +262,8 @@ export function NumberField(props: NumberFieldProps) {
         onChange={handleChange}
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
-        className={cn(
-          "h-8 w-full min-w-0 flex-1 border-0 bg-transparent px-2 text-center text-sm",
-          "placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground",
-          classNames?.input,
-        )}
-        style={styles?.input}
+        className={classNames?.root}
+        style={styles?.root}
         aria-valuemin={safeMin}
         aria-valuemax={safeMax}
         aria-valuenow={valuenow}

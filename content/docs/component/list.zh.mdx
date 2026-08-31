@@ -1,0 +1,84 @@
+---
+title: List
+description: 纯滚动列表容器，渲染 items 数据，不内置分页导航
+---
+
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add list" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="list" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+由 `items` 驱动的纯滚动容器，行内容通过 `renderItem` 渲染。不内置导航器——需要分页时搭配 [`usePagination`](/docs/hooks/use-pagination) hook。
+
+<ComponentPreview
+  name="list-basic"
+/>
+
+```tsx
+import { List } from "@/ui";
+
+<List
+  className="h-40 rounded-md border"
+  items={tasks}
+  getKey={(task) => task.id}
+  empty={<div className="px-3 py-4 text-center text-muted-foreground">暂无数据</div>}
+  renderItem={(task) => (
+    <>
+      <span className="flex-1 truncate">{task.title}</span>
+      <span className="text-muted-foreground">{task.status}</span>
+    </>
+  )}
+/>
+```
+
+## API 参考
+
+### 高级组件
+
+#### List
+
+由下方零件组合而成的滚动列表；尺寸完全由使用者指定（如 `h-40 rounded-md border`）。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `T[]` | - | 要渲染的数据数组 |
+| `renderItem` | `(item: T, index: number) => ReactNode` | - | 行内容渲染函数 |
+| `getKey` | `(item: T, index: number) => Key` | - | 行 key 提取函数；默认使用索引 |
+| `empty` | `React.ReactNode` | - | `items` 为空时渲染的内容 |
+| `className` | `ClassNameValue` | - | 根节点自定义类 |
+| `style` | `React.CSSProperties` | - | 根节点自定义内联样式 |
+| `classNames` | `{ root?; item? }` | - | 各零件自定义类 |
+| `styles` | `{ root?; item? }` | - | 各零件自定义内联样式 |
+
+根节点在行之间应用 `divide-y divide-border`，并通过 `overflow-y-auto` 提供滚动。
+
+---
+
+### 可组合组件
+
+纯展示零件，不内置状态，供高级使用者自由拼装。
+
+#### ListRoot
+
+滚动容器；渲染为 `overflow-y-auto` 的 div。
+
+#### ListItem
+
+单行；渲染为基础样式为 `px-3 py-2 text-sm` 的 flex div。
