@@ -1,0 +1,25 @@
+---
+title: Date Picker
+description: A date picker assembled from Picker and Calendar — not a shipped component, only a composition guide with demos
+---
+
+Date Picker is not a shipped component with source code. It is a composition of two primitives: [Picker](/docs/component/picker) provides the input trigger and the popover panel, and [Calendar](/docs/component/calendar) provides the month panel view. Assemble them directly in your page — the demo below is the complete implementation.
+
+## Usage
+
+### DatePicker Assembly
+
+Hold the popover open state and the selected date in your own state. `onChange` from the Calendar updates the input value (via the controlled `value` prop of Picker) and closes the panel through `onOpenChange`.
+
+<ComponentPreview
+  name="picker-datepicker"
+/>
+
+Key points of the assembly:
+
+- Picker's `open` / `onOpenChange` control the panel, so the demo can close it when a date is picked.
+- The input `value` is derived from the selected `Temporal.PlainDate`; formatting is up to you (the demo uses `date.toString()`).
+- `visibleMonth` lives in your state and follows `onVisibleMonthChange`, keeping the panel on the selected month when reopened.
+- `trailing={<CalendarIcon />}` decorates the input; pass any icon you like.
+
+Refer to the [Picker API](/docs/component/picker) and [Calendar API](/docs/component/calendar) for the full prop tables of both parts.

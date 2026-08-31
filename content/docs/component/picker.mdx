@@ -1,0 +1,99 @@
+---
+title: Picker
+description: A generic input + popover container component for building pickers such as a date picker, powered by native popover and CSS anchor positioning
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add picker" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="picker" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Click the input to toggle the popover panel. The open state and the input value each support controlled (`open` / `value`) and uncontrolled (`defaultOpen` / `defaultValue`) modes.
+
+<ComponentPreview
+  name="picker-basic"
+/>
+
+### DatePicker Assembly
+
+Picker is a building block, not a finished widget. Compose it with [Calendar](/docs/component/calendar) to assemble a date picker directly in your page — no dedicated DatePicker component is needed. Selecting a date updates the input value and closes the panel via `onOpenChange`.
+
+<ComponentPreview
+  name="picker-datepicker"
+/>
+
+The same assembly model applies to other pickers: combine Picker with any panel content (a list, a color grid, a tree) inside the `children` slot.
+
+## API Reference
+
+### High-level Components
+
+#### Picker
+
+| Prop            | Type                              | Default | Description                                                                 |
+| :-------------- | :-------------------------------- | :------ | :-------------------------------------------------------------------------- |
+| `value`         | `string`                          | -       | Controlled input value                                                      |
+| `defaultValue`  | `string`                          | `""`    | Default input value (uncontrolled)                                          |
+| `onValueChange` | `(value: string) => void`         | -       | Fired when the input value changes                                          |
+| `open`          | `boolean`                         | -       | Controlled popover open state                                               |
+| `defaultOpen`   | `boolean`                         | `false` | Initial open state (uncontrolled)                                           |
+| `onOpenChange`  | `(open: boolean) => void`         | -       | Fired when the popover should open or close (click, outside press, Escape)  |
+| `trailing`      | `React.ReactNode`                 | -       | Icon rendered at the input's trailing edge                                  |
+| `children`      | `React.ReactNode`                 | -       | Popover panel content                                                       |
+| `classNames`    | `PickerClassNames`                | -       | Per-part class name overrides: `root`, `input`, `trailing`, `popover`       |
+| `styles`        | `PickerStyles`                    | -       | Per-part style overrides: `root`, `input`, `trailing`, `popover`            |
+| `...props`      | `React.ComponentProps<"input">`   | -       | Remaining native input props, such as `placeholder` and `disabled`          |
+
+Behavior notes:
+
+- The popover is a native `popover="manual"` element positioned with CSS anchor positioning; the panel is anchored to the input, aligned to the bottom-start edge, with `min-width: anchor-size(width)` and a `flip-block` fallback.
+- Clicking the input toggles the panel. Pressing `Escape` or pressing outside both the input and the panel closes it.
+- The popover positioning depends on CSS anchor positioning support — make sure the target environment supports it.
+
+---
+
+### Composable Components
+
+#### PickerRoot
+
+Wrapper around the input; carries the anchor name consumed by the panel. Extends all native `div` props.
+
+| Prop       | Type                          | Default | Description        |
+| :--------- | :---------------------------- | :------ | :----------------- |
+| `className`| `ClassNameValue`              | -       | Custom class names |
+| `...props` | `React.ComponentProps<"div">` | -       | Native div props   |
+
+#### PickerInput
+
+The trigger input. Extends all native `input` props (except `className`).
+
+| Prop       | Type                           | Default | Description         |
+| :--------- | :----------------------------- | :------ | :------------------ |
+| `className`| `ClassNameValue`               | -       | Custom class names  |
+| `...props` | `React.ComponentProps<"input">`| -       | Native input props  |
+
+#### PickerContent
+
+The popover panel. A native `popover="manual"` element; call `showPopover()` / `hidePopover()` imperatively, or position it by setting `positionAnchor` to the anchor name of the corresponding `PickerRoot`.
+
+| Prop       | Type                          | Default | Description         |
+| :--------- | :---------------------------- | :------ | :------------------ |
+| `className`| `ClassNameValue`              | -       | Custom class names  |
+| `...props` | `React.ComponentProps<"div">` | -       | Native div props    |

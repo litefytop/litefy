@@ -20,19 +20,25 @@ export function CalendarRoot({ className, ...props }: CalendarRootProps) {
   );
 }
 
-export interface CalendarHeaderProps extends Omit<React.ComponentProps<"header">, "className" | "title"> {
+export interface CalendarHeaderProps extends Omit<
+  React.ComponentProps<"header">,
+  "className" | "title"
+> {
   title: React.ReactNode;
   onPrevious?: () => void;
   onNext?: () => void;
   className?: ClassNameValue;
 }
 
-export function CalendarHeader({ title, onPrevious, onNext, className, ...props }: CalendarHeaderProps) {
+export function CalendarHeader({
+  title,
+  onPrevious,
+  onNext,
+  className,
+  ...props
+}: CalendarHeaderProps) {
   return (
-    <header
-      {...props}
-      className={cn("flex items-center justify-between gap-2", className)}
-    >
+    <header {...props} className={cn("flex items-center justify-between gap-2", className)}>
       <button
         type="button"
         onClick={onPrevious}
@@ -54,7 +60,10 @@ export function CalendarHeader({ title, onPrevious, onNext, className, ...props 
   );
 }
 
-export interface CalendarGridProps extends Omit<React.ComponentProps<"div">, "className" | "onSelect"> {
+export interface CalendarGridProps extends Omit<
+  React.ComponentProps<"div">,
+  "className" | "onSelect"
+> {
   weeks: Temporal.PlainDate[][];
   visibleMonth: Temporal.PlainDate;
   value?: Temporal.PlainDate | null;
@@ -80,11 +89,7 @@ export function CalendarGrid({
       : ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
   return (
-    <div
-      role="grid"
-      {...props}
-      className={cn("grid grid-cols-7 gap-y-1", className)}
-    >
+    <div role="grid" {...props} className={cn("grid grid-cols-7 gap-y-1", className)}>
       <div role="row" className="col-span-7 grid grid-cols-7">
         {weekdayLabels.map((label) => (
           <div
@@ -111,7 +116,10 @@ export function CalendarGrid({
   );
 }
 
-export interface CalendarGridRowProps extends Omit<React.ComponentProps<"div">, "className" | "onSelect"> {
+export interface CalendarGridRowProps extends Omit<
+  React.ComponentProps<"div">,
+  "className" | "onSelect"
+> {
   week: Temporal.PlainDate[];
   visibleMonth: Temporal.PlainDate;
   value?: Temporal.PlainDate | null;
@@ -145,7 +153,10 @@ export function CalendarGridRow({
   );
 }
 
-export interface CalendarGridCellProps extends Omit<React.ComponentProps<"button">, "className" | "type"> {
+export interface CalendarGridCellProps extends Omit<
+  React.ComponentProps<"button">,
+  "className" | "type"
+> {
   date: Temporal.PlainDate;
   outsideMonth?: boolean;
   selected?: boolean;
@@ -208,14 +219,11 @@ export function Calendar({
   const value = isControlled ? controlledValue : uncontrolledValue;
 
   const firstOfMonth = visibleMonth.with({ day: 1 });
-  const offset =
-    firstDayOfWeek === 1 ? firstOfMonth.dayOfWeek - 1 : firstOfMonth.dayOfWeek % 7;
+  const offset = firstDayOfWeek === 1 ? firstOfMonth.dayOfWeek - 1 : firstOfMonth.dayOfWeek % 7;
   const start = firstOfMonth.subtract({ days: offset });
   const weekCount = Math.ceil((offset + visibleMonth.daysInMonth) / 7);
   const weeks = Array.from({ length: weekCount }, (_, weekIndex) =>
-    Array.from({ length: 7 }, (_, dayIndex) =>
-      start.add({ days: weekIndex * 7 + dayIndex }),
-    ),
+    Array.from({ length: 7 }, (_, dayIndex) => start.add({ days: weekIndex * 7 + dayIndex })),
   );
 
   const handleSelect = (date: Temporal.PlainDate) => {

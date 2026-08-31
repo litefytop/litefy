@@ -13,6 +13,13 @@ export default {
       zh: "按钮",
     },
   },
+  calendar: {
+    name: "Calendar",
+    displayName: {
+      en: "Calendar",
+      zh: "日历",
+    },
+  },
   collapse: {
     name: "Collapse",
     displayName: {
@@ -33,6 +40,14 @@ export default {
     displayName: {
       en: "Combobox",
       zh: "组合框",
+    },
+  },
+
+  datepicker: {
+    name: "Date Picker",
+    displayName: {
+      en: "Date Picker",
+      zh: "日期选择器",
     },
   },
 
@@ -125,6 +140,13 @@ export default {
     displayName: {
       en: "Password",
       zh: "密码输入框",
+    },
+  },
+  picker: {
+    name: "Picker",
+    displayName: {
+      en: "Picker",
+      zh: "拾取器",
     },
   },
   radio: {

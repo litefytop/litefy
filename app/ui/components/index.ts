@@ -17,6 +17,7 @@ export * from "./number-field";
 export * from "./paginated-viewer";
 export * from "./paper";
 export * from "./password";
+export * from "./picker";
 export * from "./progress";
 export * from "./radio";
 export * from "./scroll-shadow";

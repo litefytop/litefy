@@ -15,6 +15,12 @@ import ButtonIconDemo from "./button/icon";
 import buttonIconCode from "./button/icon.tsx?raw";
 import ButtonLoadingDemo from "./button/loading";
 import buttonLoadingCode from "./button/loading.tsx?raw";
+import CalendarBasicDemo from "./calendar/basic";
+import calendarBasicCode from "./calendar/basic.tsx?raw";
+import CalendarCustomDemo from "./calendar/custom";
+import calendarCustomCode from "./calendar/custom.tsx?raw";
+import CalendarDisabledDemo from "./calendar/disabled";
+import calendarDisabledCode from "./calendar/disabled.tsx?raw";
 import CheckboxBasicDemo from "./checkbox/basic";
 import checkboxBasicCode from "./checkbox/basic.tsx?raw";
 import CheckboxGroupDemo from "./checkbox/group";
@@ -115,6 +121,10 @@ import PasswordControlledDemo from "./password/controlled";
 import passwordControlledCode from "./password/controlled.tsx?raw";
 import PasswordCustomDemo from "./password/custom";
 import passwordCustomCode from "./password/custom.tsx?raw";
+import PickerBasicDemo from "./picker/basic";
+import pickerBasicCode from "./picker/basic.tsx?raw";
+import PickerDatepickerDemo from "./picker/datepicker";
+import pickerDatepickerCode from "./picker/datepicker.tsx?raw";
 import PasswordInvalidDemo from "./password/invalid";
 import passwordInvalidCode from "./password/invalid.tsx?raw";
 import RadioBasicDemo from "./radio/basic";
@@ -227,6 +237,18 @@ export const demos: Record<string, DemoItem> = {
   "button-icon": {
     component: ButtonIconDemo,
     code: buttonIconCode,
+  },
+  "calendar-basic": {
+    component: CalendarBasicDemo,
+    code: calendarBasicCode,
+  },
+  "calendar-disabled": {
+    component: CalendarDisabledDemo,
+    code: calendarDisabledCode,
+  },
+  "calendar-custom": {
+    component: CalendarCustomDemo,
+    code: calendarCustomCode,
   },
 
   "checkbox-basic": {
@@ -468,6 +490,14 @@ export const demos: Record<string, DemoItem> = {
   "password-custom": {
     component: PasswordCustomDemo,
     code: passwordCustomCode,
+  },
+  "picker-basic": {
+    component: PickerBasicDemo,
+    code: pickerBasicCode,
+  },
+  "picker-datepicker": {
+    component: PickerDatepickerDemo,
+    code: pickerDatepickerCode,
   },
   "scroll-shadow-basic": {
     component: ScrollShadowBasicDemo,

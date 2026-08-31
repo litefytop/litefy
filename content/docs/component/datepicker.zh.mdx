@@ -1,0 +1,25 @@
+---
+title: Date Picker 日期选择器
+description: 由 Picker 和 Calendar 拼装而成的日期选择器 —— 不提供组件源码，仅提供组合示范
+---
+
+Date Picker 不是一个提供源码的组件。它是两个基础零件的组合：[Picker](/docs/component/picker) 提供输入框触发器和弹出面板，[Calendar](/docs/component/calendar) 提供月份面板视图。直接在页面中拼装即可 —— 下面的示例就是完整的实现。
+
+## 用法
+
+### 拼装 DatePicker
+
+弹窗打开状态和选中日期都保存在你自己的状态中。Calendar 的 `onChange` 更新输入框的值（通过 Picker 的受控 `value` 属性），并通过 `onOpenChange` 关闭面板。
+
+<ComponentPreview
+  name="picker-datepicker"
+/>
+
+拼装要点：
+
+- Picker 的 `open` / `onOpenChange` 控制面板，因此示例可以在选中日期后关闭面板。
+- 输入框的 `value` 由选中的 `Temporal.PlainDate` 派生；格式化方式由你决定（示例使用 `date.toString()`）。
+- `visibleMonth` 保存在你的状态中并跟随 `onVisibleMonthChange`，重新打开面板时仍停留在选中月份。
+- `trailing={<CalendarIcon />}` 装饰输入框；可以换成任意图标。
+
+两个零件的完整属性表请参阅 [Picker API](/docs/component/picker) 和 [Calendar API](/docs/component/calendar)。
