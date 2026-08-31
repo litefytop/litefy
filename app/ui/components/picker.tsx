@@ -84,6 +84,8 @@ export function Picker({
   children,
   classNames,
   styles,
+  onClick: onClickProp,
+  onKeyDown: onKeyDownProp,
   ...props
 }: PickerProps) {
   const anchorName = `--picker-${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
@@ -142,10 +144,22 @@ export function Picker({
           style={styles?.input}
           value={value}
           aria-expanded={open}
-          onClick={() => handleOpenChange(!open)}
+          onClick={(e) => {
+            onClickProp?.(e);
+            if (!e.defaultPrevented) handleOpenChange(!open);
+          }}
           onChange={handleInputChange}
           onKeyDown={(e) => {
-            if (e.key === "Escape") handleOpenChange(false);
+            onKeyDownProp?.(e);
+            if (e.defaultPrevented) return;
+            if (e.key === "Escape") {
+              handleOpenChange(false);
+              return;
+            }
+            if (e.key === "ArrowDown" && !open) {
+              e.preventDefault();
+              handleOpenChange(true);
+            }
           }}
           className={cn(trailing && "pr-9", classNames?.input)}
         />

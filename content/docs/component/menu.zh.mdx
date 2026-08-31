@@ -1,0 +1,148 @@
+---
+title: Menu 菜单
+description: 可直接在文档流中使用的菜单组件，支持分组、二级子菜单与键盘导航
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add menu" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="menu" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+Menu 是真正的菜单组件，直接在文档流中渲染 —— 无需触发器或弹出面板包装。菜单项由 `items` 配置驱动：支持分组标签、禁用项，任意菜单项可以展开二级子菜单（最多两级）。由于文档流中没有面板容器，容器样式需要自己提供（如 `w-48 rounded-md border bg-popover p-1 shadow-md`）。
+
+<ComponentPreview
+  name="menu-basic"
+/>
+
+```tsx
+import { Menu, type MenuConfig } from "@/ui";
+
+const items: MenuConfig[] = [
+  {
+    group: "Account",
+    items: [
+      { label: "Profile" },
+      { label: "Preferences", children: [{ label: "Theme" }, { label: "Language" }] },
+    ],
+  },
+  {
+    group: "System",
+    items: [{ label: "Notifications" }, { label: "Settings" }, { label: "Logout" }],
+  },
+];
+
+<Menu
+  className="w-48 rounded-md border bg-popover p-1 shadow-md"
+  items={items}
+  onSelect={(item) => setSelected(item.label)}
+/>
+```
+
+#### 键盘导航
+
+| 按键               | 行为                                 |
+| ------------------ | ------------------------------------- |
+| `ArrowDown` / `ArrowUp` | 在可用菜单项之间移动（循环）     |
+| `ArrowRight`       | 打开当前菜单项的子菜单                |
+| `ArrowLeft`        | 关闭子菜单并回到父级菜单项            |
+| `Enter` / `Space`  | 选中当前聚焦的菜单项                  |
+| `Escape`           | 触发 `onEscape` 并关闭子菜单          |
+
+子菜单在悬停时打开（带短延迟关闭），或通过 `ArrowRight` 持续打开。在菜单之外点击会关闭已打开的子菜单；`Escape` 会转发给你的 `onEscape` 处理器，以便包装它的弹出面板（如 Popover）自行关闭。
+
+#### 组合
+
+`Popover + Menu` 可以拼装出下拉菜单：用 Popover 提供触发器和浮动面板，把 `Menu` 放进面板内容中，传入 `autoFocus={open}` 让每次打开时聚焦第一个菜单项，并通过 `onEscape` 关闭面板。完整拼装参见 [Dropdown Menu](/docs/component/dropdown-menu) 指南。
+
+## API 参考
+
+### Menu
+
+| Prop           | Type                              | Default | Description                                                                 |
+| -------------- | ---------------------------------- | ------- | ---------------------------------------------------------------------------- |
+| `items`        | `MenuConfig[]`                     | `[]`    | 菜单项配置，见下方 [items](#items)                                           |
+| `autoFocus`    | `boolean`                          | -       | 每次变为 `true` 时聚焦第一个可用菜单项；传入包装弹出面板的 `open` 即可每次打开时聚焦 |
+| `onSelect`     | `(item: MenuItemConfig) => void`   | -       | 点击或键盘选中菜单项时触发                                                   |
+| `onEscape`     | `() => void`                       | -       | 菜单内按下 `Escape` 时触发                                                   |
+| `className`    | `ClassNameValue`                   | -       | 根列表自定义类名；文档流中的容器样式放在这里                                 |
+| `style`        | `React.CSSProperties`              | -       | 根列表内联样式                                                               |
+| `itemClassName`| `ClassNameValue`                   | -       | 应用到每个菜单项按钮的类名                                                   |
+| `classNames`   | `{ root?; item?; label?; sub? }`   | -       | 各零件自定义类名                                                             |
+| `styles`       | `{ root?; item?; label?; sub? }`   | -       | 各零件自定义内联样式                                                         |
+
+#### items
+
+```ts
+type MenuItemConfig = {
+  label: React.ReactNode;
+  disabled?: boolean;
+  className?: ClassNameValue;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  children?: Omit<MenuItemConfig, "children">[];
+};
+
+type MenuGroupConfig = {
+  group: React.ReactNode;
+  items: MenuItemConfig[];
+};
+
+type MenuConfig = MenuGroupConfig | MenuItemConfig;
+```
+
+---
+
+### 可组合组件
+
+#### MenuRoot
+
+根列表（`ul`，`role="menu"`），内置 `m-0 list-none p-0`。
+
+| Prop        | Type                       | Default | Description           |
+| ----------- | --------------------------- | ------- | ----------------------- |
+| `className` | `ClassNameValue`            | -       | 自定义类名              |
+| `...props`  | `React.ComponentProps<"ul">` | -      | 支持全部 ul 原生属性    |
+
+#### MenuItem
+
+菜单项包装元素（`li`），内置 `m-0 not-last:border-b`。复合组件会在其中渲染 `role="menuitem"` 按钮，并通过 `anchor-name` 锚定子菜单。
+
+| Prop        | Type                       | Default | Description           |
+| ----------- | --------------------------- | ------- | ----------------------- |
+| `className` | `ClassNameValue`            | -       | 自定义类名              |
+| `...props`  | `React.ComponentProps<"li">` | -      | 支持全部 li 原生属性    |
+
+#### MenuLabel
+
+分组标签行（`li`），内置弱化的标签样式。
+
+| Prop        | Type                       | Default | Description           |
+| ----------- | --------------------------- | ------- | ----------------------- |
+| `className` | `ClassNameValue`            | -       | 自定义类名              |
+| `...props`  | `React.ComponentProps<"li">` | -      | 支持全部 li 原生属性    |
+
+#### MenuSubContent
+
+子菜单面板容器，渲染为 `popover="manual"` 的 div，内置子菜单定位样式（`position-area: right span-bottom` 与翻转回退），通过 `positionAnchor` 锚定到父菜单项（每个菜单项的 `anchor-name` 为 `--menu-sub-{entryId}`）。
+
+| Prop             | Type                          | Default | Description                    |
+| ---------------- | ------------------------------ | ------- | -------------------------------- |
+| `positionAnchor` | `string`                       | -       | 锚定的父菜单项 `anchor-name`     |
+| `className`      | `ClassNameValue`               | -       | 自定义类名                       |
+| `...props`       | `React.ComponentProps<"div">`  | -       | 支持全部 div 原生属性            |

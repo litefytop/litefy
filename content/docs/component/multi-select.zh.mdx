@@ -1,94 +1,25 @@
 ---
-title: MultiSelect 多选框
-description: 支持从列表中选择多个选项的多选组件
+title: MultiSelect 多选
+description: 由 Popover 和 Checkbox 拼装而成的多选 —— 不提供组件源码，仅提供组合示范
 ---
 
-## 安装
-
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add multi-select" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="multi-select" />
-
-</Tab>
-
-</Tabs>
+MultiSelect 不是一个提供源码的组件。它是两个基础零件的组合：[Popover](/docs/component/popover) 提供触发器和浮动面板，[CheckboxGroup](/docs/component/checkbox) 提供带多选状态的选项列表。直接在页面中拼装即可 —— 下面的示例就是完整的实现。
 
 ## 用法
 
-<Callout type="info" title="Chrome 140+ 原生替代方案">
-  如果你面向的是最新的 Chrome 浏览器（版本大于 140），原生 `<select>` 配合
-  `multiple` 和 `size={1}` 即可获得相当的体验，且性能更好。直接展开 props
-  并覆盖相关属性即可：
-</Callout>
-
-```tsx
-<select {...props} multiple size={1}>
-  {options.map((opt) => (
-    <option key={opt.value} value={opt.value}>
-      {opt.label}
-    </option>
-  ))}
-</select>
-```
-
 ### 基础用法
 
-简单的多选列表。
+选中值保存在你自己的状态中，把 `CheckboxGroup` 放进 Popover 的面板内容里，并在触发器上显示选中数量。
 
-<ComponentPreview 
+<ComponentPreview
   name="multi-select-basic"
 />
 
-### 分组选项
+拼装要点：
 
-将选项组织成逻辑分组，提升用户体验。
+- Popover 的 `open` / `onOpenChange` 控制面板；`PopoverContent` 已自带面板外观，勾选列表无需额外容器样式。
+- 面板内的点击永远不会关闭它 —— Popover 只在面板外按下鼠标或按 `Escape` 时关闭 —— 用户可以自由勾选多个选项。
+- `CheckboxGroup` 是受控的（`value` / `onChange`，类型为 `string[]`）；把值写回页面状态并从中派生触发器文案。始终渲染数量（例如 `` `Categories (${values.length})` ``）而不要在不同文案间切换，这样触发器宽度稳定，避免布局抖动。
+- 复选框原生可 Tab 聚焦、`Space` 切换，键盘访问无需额外接线。
 
-<ComponentPreview 
-  name="multi-select-grouped"
-/>
-
-### 受控模式
-
-通过受控状态管理外部选中值。
-
-<ComponentPreview 
-  name="multi-select-controlled"
-/>
-
-## API 参考
-
-### MultiSelect
-
-支持选择多个选项的多选组件。
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `options` | `(SelectOption \| SelectOptionGroup)[]` | - | 选项列表或选项分组 |
-| `value` | `string[]` | - | 受控的选中值 |
-| `defaultValue` | `string[]` | `[]` | 非受控的默认选中值 |
-| `onChange` | `(values: string[]) => void` | - | 选择变化时的回调函数 |
-| `placeholder` | `string` | - | 占位文本 |
-| `invalid` | `boolean` | `false` | 是否处于无效状态 |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类。仅支持字符串、数组及各类假值。 |
-
-### SelectOption
-
-| Prop | Type | Description |
-|------|------|-------------|
-| `label` | `string` | 选项的显示标签 |
-| `value` | `string` | 选项的唯一值 |
-
-### SelectOptionGroup
-
-| Prop | Type | Description |
-|------|------|-------------|
-| `group` | `string` | 分组标签 |
-| `options` | `SelectOption[]` | 该分组中的选项 |
+两个零件的完整属性表请参阅 [Popover API](/docs/component/popover) 和 [Checkbox API](/docs/component/checkbox)。

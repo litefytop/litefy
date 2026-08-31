@@ -1,51 +1,68 @@
 "use client";
+import { Popover } from "@/ui";
 import { Button } from "@/ui";
-import { Dropdown } from "@/ui";
-export default function DropdownAlignmentDemo() {
+
+function ActionList() {
+  return (
+    <div className="flex flex-col">
+      {["Item 1", "Item 2", "Item 3"].map((label) => (
+        <button
+          key={label}
+          type="button"
+          className="px-2 py-1.5 text-left text-sm font-semibold rounded-sm hover:bg-hover"
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+export default function PopoverAlignmentDemo() {
   return (
     <div className="flex flex-col gap-8">
       <div>
         <h3 className="text-sm font-medium mb-4">Position Area</h3>
         <div className="flex gap-4">
-          <Dropdown
+          <Popover
             styles={{ content: { positionArea: "bottom span-right", justifySelf: "start" } }}
             classNames={{ trigger: [Button.class.base, Button.class.variant.primary] }}
-            items={[{ label: "Item 1" }, { label: "Item 2" }, { label: "Item 3" }]}
+            trigger="span-right"
           >
-            span-right
-          </Dropdown>
-          <Dropdown
+            <ActionList />
+          </Popover>
+          <Popover
             classNames={{ trigger: [Button.class.base, Button.class.variant.primary] }}
-            items={[{ label: "Item 1" }, { label: "Item 2" }, { label: "Item 3" }]}
+            trigger="bottom span-all"
           >
-            bottom span-all
-          </Dropdown>
-          <Dropdown
+            <ActionList />
+          </Popover>
+          <Popover
             styles={{ content: { positionArea: "bottom span-left", justifySelf: "end" } }}
             classNames={{ trigger: [Button.class.base, Button.class.variant.primary] }}
-            items={[{ label: "Item 1" }, { label: "Item 2" }, { label: "Item 3" }]}
+            trigger="span-left"
           >
-            span-left
-          </Dropdown>
+            <ActionList />
+          </Popover>
         </div>
       </div>
       <div>
         <h3 className="text-sm font-medium mb-4">Align X (sidebar)</h3>
         <div className="flex gap-4">
-          <Dropdown
+          <Popover
             alignX="start"
             classNames={{ trigger: [Button.class.base, Button.class.variant.primary] }}
-            items={[{ label: "Item 1" }, { label: "Item 2" }, { label: "Item 3" }]}
+            trigger="alignX start"
           >
-            alignX start
-          </Dropdown>
-          <Dropdown
+            <ActionList />
+          </Popover>
+          <Popover
             alignX="end"
             classNames={{ trigger: [Button.class.base, Button.class.variant.primary] }}
-            items={[{ label: "Item 1" }, { label: "Item 2" }, { label: "Item 3" }]}
+            trigger="alignX end"
           >
-            alignX end
-          </Dropdown>
+            <ActionList />
+          </Popover>
         </div>
       </div>
     </div>

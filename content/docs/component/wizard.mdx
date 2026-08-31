@@ -1,0 +1,31 @@
+---
+title: Wizard
+description: A steps + pager composition for wizard forms — visited steps can be revisited, future steps are locked
+---
+
+Wizard is not a shipped component — it is a composition of `Steps` and `Pager` plus plain markup. Copy the full implementation from the demo (View Code) into your project and adapt it freely.
+
+> Prerequisite: install `Steps` and `Pager` first (`litefy@latest add steps pager`).
+
+## Usage
+
+### Basic Usage
+
+A paged form: the `Steps` indicator and the `Pager` body share one controlled index, Back / Next buttons drive both, and the last step swaps the Next button for Submit.
+
+<ComponentPreview
+  name="wizard-basic"
+/>
+
+Key points of the composition:
+
+- One `index` state drives both components: `<Steps index={index} onChange={go} />` and `<Pager index={index} onChange={go}>`.
+- A `maxIndex` state records the highest visited step and is passed as `Steps`' `maxIndex` — visited steps can be revisited (back), future steps cannot be skipped ahead.
+- The pager body turns `go` into the paging handler, so step clicks, buttons and page switches stay in sync.
+- Use `gesture={false}` on the Pager in form flows to prevent accidental swipe submission, and keep `loop` off — the boundaries are the flow's start and end.
+
+## Anatomy
+
+- `<Steps>` with `index` + `maxIndex` — the progress indicator and backward navigation
+- `<Pager>` with `gesture={false}` — one mounted page per step, View-Transition animation between steps
+- A footer with Back / Next (or Submit on the last step), all calling the same `go` handler that clamps the index and grows `maxIndex`

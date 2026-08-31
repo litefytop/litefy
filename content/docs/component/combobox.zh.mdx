@@ -1,137 +1,33 @@
 ---
 title: Combobox 组合框
-description: 支持自动补全的选项选择组件
+description: 由 Picker 和 List 拼装而成的组合框 —— 不提供组件源码，仅提供组合示范
 ---
 
-## 安装
-
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add combobox" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="combobox" />
-
-</Tab>
-
-</Tabs>
+Combobox 不是一个提供源码的组件。它是两个基础零件的组合：[Picker](/docs/component/picker) 提供输入框触发器和弹出面板，[List](/docs/component/list) 提供支持键盘导航和高亮的选项列表。直接在页面中拼装即可 —— 下面的示例就是完整的实现。
 
 ## 用法
 
 ### 基础用法
 
-基础组合框，使用静态选项。
+客户端过滤逻辑保存在你自己的状态中：`onValueChange` 镜像键入的文本，选项由它过滤得出，列表聚焦后由 `List` 内置的键盘导航接管。
 
-<ComponentPreview 
+<ComponentPreview
   name="combobox-basic"
 />
 
+拼装要点：
+
+- 焦点始终留在输入框。`ArrowDown` 打开面板（Picker 内置），随后 `ArrowDown` / `ArrowUp` 通过 `List` 受控的 `highlightIndex` 驱动高亮，键入和方向键导航可以同时进行。
+- `List` 通过 `data-highlighted` 渲染高亮并自动滚动到可视区域；输入框按 `Enter`（或点击行）经 `onSelect` 选中。
+- `onSelect` 把选中的选项写回输入框文本，并通过 `onOpenChange` 关闭面板；关闭时同时清空高亮。
+- 过滤后的选项耗尽时渲染 `empty` 节点。
+
 ### 异步搜索
 
-支持异步选项获取和滚动分页加载的组合框，通过 `remote` 对象配置。
+数据量大或来源为远程接口时，在 `onValueChange` 中调用 `remote.search` 发起搜索，并在列表滚动到底部时通过 `onScrollBottom` 加载更多 —— [`useRemotePagination`](/docs/hooks/use-remote-pagination) hook 提供防抖请求、数据和加载控制。
 
-<ComponentPreview 
+<ComponentPreview
   name="combobox-async"
 />
 
-### 自定义
-
-使用可组合组件拼装，通过 CSS 锚点定位、键盘导航与空数据状态实现。
-
-<ComponentPreview 
-  name="combobox-custom"
-/>
-
-## API 参考
-
-### 高阶组件
-
-开箱即用的成品组件。
-
-#### Combobox
-
-支持静态选项与异步搜索的组合框，内置键盘导航与滚动分页加载。
-
-| 属性            | 类型                          | 默认值                  | 描述                                                    |
-| --------------- | ----------------------------- | ----------------------- | ------------------------------------------------------- |
-| `value`         | `string`                      | -                       | 受控输入值                                              |
-| `defaultValue`  | `string`                      | `""`                    | 非受控模式初始默认值                                    |
-| `onValueChange` | `(value: string) => void`     | -                       | 输入框内容变化回调；受控模式下需在此更新 `value`       |
-| `onSelect`      | `(option: string) => void`    | -                       | 下拉选项被选中时回调                                    |
-| `options`       | `string[]`                    | -                       | 静态选项数组                                            |
-| `remote`        | `ComboboxRemoteApi`           | -                       | 异步搜索配置对象，用于后端搜索、滚动分页                |
-| `empty`         | `React.ReactNode`             | -                       | 下拉无数据时自定义渲染内容                              |
-| `classNames`    | `{ root?: ClassNameValue; popover?: ClassNameValue; list?: ClassNameValue; option?: ClassNameValue }` | - | 内部元素的自定义类名 |
-| `styles`        | `{ root?: React.CSSProperties; popover?: React.CSSProperties; list?: React.CSSProperties; option?: React.CSSProperties }` | - | 内部元素的内联样式；`styles.popover` 会与内置锚点定位合并 |
-| `...props`      | `React.ComponentProps<"input">` | -                     | 支持全部 input 原生属性（除 `className`、`style`、`onChange`、`onSelect`），如 `placeholder`、`disabled`、`ref` |
-
-#### ComboboxRemoteApi
-
-| Field         | Type                       | Description            |
-| ------------- | -------------------------- | ---------------------- |
-| `data`        | `string[]`                 | 当前返回的选项列表     |
-| `loading`     | `boolean`                  | 是否加载中             |
-| `isSearching` | `boolean`                  | 是否正在搜索           |
-| `hasMore`     | `boolean`                  | 是否还有更多分页数据   |
-| `search`      | `(keyword:string) => void` | 输入关键词触发搜索     |
-| `loadMore`    | `() => void`               | 滚动到底部触发加载更多 |
-
----
-
-### 可组合组件
-
-#### ComboboxRoot
-
-外层容器，为下拉浮层提供定位锚点。
-
-| Prop        | Type                          | Default | Description                             |
-| ----------- | ----------------------------- | ------- | --------------------------------------- |
-| `className` | `ClassNameValue`              | -       | 自定义类名                              |
-| `...props`  | `React.ComponentProps<"div">` | -       | 支持全部 div 原生属性（除 `className`） |
-
-#### ComboboxInput
-
-搜索输入框，内置尺寸、边框与背景样式。
-
-| Prop           | Type                            | Default | Description                                           |
-| -------------- | ------------------------------- | ------- | ----------------------------------------------------- |
-| `value`        | `string`                        | -       | 受控输入值                                            |
-| `defaultValue` | `string`                        | -       | 非受控模式初始值                                      |
-| `placeholder`  | `string`                        | `"typing to search..."` | 输入框占位符                          |
-| `className`    | `ClassNameValue`                | -       | 自定义类名                                            |
-| `...props`     | `React.ComponentProps<"input">` | -       | 支持全部 input 原生属性（除 `className`、`onSelect`） |
-
-#### ComboboxContent
-
-下拉浮层容器，基于原生 Popover API 渲染为 `popover="manual"` 的 div
-
-| Prop        | Type                          | Default | Description                             |
-| ----------- | ----------------------------- | ------- | --------------------------------------- |
-| `className` | `ClassNameValue`              | -       | 自定义类名                              |
-| `...props`  | `React.ComponentProps<"div">` | -       | 支持全部 div 原生属性（除 `className`） |
-
-#### ComboboxList
-
-下拉列表，渲染为 `role="listbox"` 的 ul。滚动接近底部约 `120px` 时自动触发 `onScrollBottom`
-
-| Prop             | Type                         | Default | Description                            |
-| ---------------- | ---------------------------- | ------- | -------------------------------------- |
-| `onScrollBottom` | `() => void`                 | -       | 滚动接近底部时的回调                   |
-| `empty`          | `React.ReactNode`            | -       | `children` 为空时渲染的内容            |
-| `className`      | `ClassNameValue`             | -       | 自定义类名                             |
-| `...props`       | `React.ComponentProps<"ul">` | -       | 支持全部 ul 原生属性（除 `className`） |
-
-#### ComboboxOption
-
-单个选项，渲染为 `role="option"` 的 li，`aria-selected` 样式自动应用
-
-| Prop        | Type                         | Default | Description                                |
-| ----------- | ---------------------------- | ------- | ------------------------------------------ |
-| `id`        | `string`                     | -       | 选项 id，用于 `aria-activedescendant` 关联 |
-| `className` | `ClassNameValue`             | -       | 自定义类名                                 |
-| `...props`  | `React.ComponentProps<"li">` | -       | 支持全部 li 原生属性（除 `className`）     |
+两个零件的完整属性表请参阅 [Picker API](/docs/component/picker) 和 [List API](/docs/component/list)。

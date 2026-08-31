@@ -42,7 +42,7 @@ export default {
       zh: "上传监控",
     },
   },
-  pagination: {
+  "use-pagination": {
     name: "Pagination",
     displayName: {
       en: "use-pagination",

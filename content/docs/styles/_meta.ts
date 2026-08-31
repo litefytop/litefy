@@ -34,4 +34,18 @@ export default {
       zh: "骨架屏",
     },
   },
+  tag: {
+    name: "Tag",
+    displayName: {
+      en: "Tag",
+      zh: "标签",
+    },
+  },
+  capsule: {
+    name: "Capsule",
+    displayName: {
+      en: "Capsule",
+      zh: "胶囊徽章",
+    },
+  },
 } as const;

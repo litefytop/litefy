@@ -1,0 +1,37 @@
+---
+title: Capsule
+description: A pill container that turns two tags into a shields-io style two-color badge.
+---
+
+## Source Code
+
+<Source type="css" name="capsule" />
+
+## Examples
+
+### Badges
+
+`.capsule` is a pill-shaped overflow-hidden container. Put two `.tag` children inside — the container clips their corners and slightly enlarges them — and you get a shields-io style two-color badge in seconds.
+
+<ComponentPreview name="capsule-badge" />
+
+### Composition
+
+The left tag acts as the label, the right one as the value. Colors are plain utilities on each tag. The container itself works on `<span>` or `<a>`.
+
+```html
+<span class="capsule">
+  <span class="tag bg-neutral-600 text-white">build</span>
+  <span class="tag bg-emerald-600 text-white">passing</span>
+</span>
+
+<a class="capsule" href="#">
+  <span class="tag bg-neutral-600 text-white">docs</span>
+  <span class="tag bg-violet-600 text-white">litefy.dev</span>
+</a>
+```
+
+## Notes
+
+- `.capsule > .tag` neutralizes the tag radius (`rounded-none`) and bumps padding to `px-2.5 py-1` for badge proportions — no manual radius juggling.
+- More than two tags work too: the container just clips whatever is inside.

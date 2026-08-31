@@ -1,0 +1,69 @@
+---
+title: Badge
+description: A small status marker with three modes — a dot when empty, a numeric counter with overflow cap, and a banner for text like "New".
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add badge" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="badge" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+The mode is derived from the props: nothing passed renders a dot, a `count` renders a numeric pill (capped by `max`, overflowing as `99+`), and any other children render a banner.
+
+<ComponentPreview
+  name="badge-basic"
+/>
+
+### Modes
+
+```html
+<Badge />
+<Badge count={120} />
+<Badge>New</Badge>
+```
+
+- **Dot** — no content: a `size-2` circle, typically absolutely positioned onto an icon or button.
+- **Numeric** — `count` with `max` (default `99`): values above the cap render as `99+`. Digits are `tabular-nums` so the width stays stable.
+- **Banner** — text children such as `New` / `Beta`: a rounded rectangle with theme radius.
+
+### Positioning
+
+`Badge` is a plain `span` — wrap the host in a relative container and position it absolutely:
+
+```tsx
+<button className="relative">
+  Inbox
+  <Badge count={3} className="absolute -top-1.5 -right-1.5" />
+</button>
+```
+
+## API Reference
+
+### Badge
+
+| Prop       | Type                          | Default | Description                                                        |
+| :--------- | :---------------------------- | :------ | :----------------------------------------------------------------- |
+| `children` | `React.ReactNode`             | -       | Banner content; omitted or `null` renders the dot mode             |
+| `count`    | `number`                      | -       | Numeric mode — takes precedence over `children`                    |
+| `max`      | `number`                      | `99`    | Overflow cap; counts above it render as `${max}+`                  |
+| `className`| `ClassNameValue`              | -       | Custom class names — merged over the mode styles                   |
+| `...props` | `React.ComponentProps<"span">`| -       | Native span props                                                  |
+
+All modes default to `bg-destructive text-destructive-foreground`; override with background/text utilities for custom colors.

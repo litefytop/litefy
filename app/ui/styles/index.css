@@ -22,8 +22,10 @@
 @import "./mist-surface.css";
 @import "./mauve-surface.css";
 @import "./card.css";
+@import "./capsule.css";
 @import "./kbd.css";
 @import "./skeleton.css";
+@import "./tag.css";
 @import "./typography.css";
 
 @import "fumadocs-ui/css/neutral.css";

@@ -1,0 +1,32 @@
+---
+title: Tag
+description: 单色 chip，无交互逻辑 —— 可挂在 span、a 或 button 上，用任意背景工具类着色。
+---
+
+## 源码
+
+<Source type="css" name="tag" />
+
+## 示例
+
+### 基础用法
+
+`.tag` 是纯 CSS chip：圆角、单一背景色、无 hover 或 focus 状态。不传颜色工具类时回退为弱化底色。
+
+<ComponentPreview name="tag-basic" />
+
+### 着色
+
+chip 就是单一平色 —— 传任意 Tailwind 背景工具类加对比文字色即可。由于没有交互逻辑，同一类名可以原样用在 `<span>`（仅展示）、`<a>`（链接）或 `<button>`（操作）上。
+
+```html
+<span class="tag">default</span>
+<span class="tag bg-emerald-600 text-white">stable</span>
+<a class="tag bg-violet-600 text-white" href="#">link tag</a>
+<button class="tag bg-emerald-600 text-white">button tag</button>
+```
+
+## 说明
+
+- `.tag` 只定义形状与排版 —— 圆角跟随 `--radius`，背景与文字色完全来自工具类，不会与主题冲突。
+- 与 [Capsule](/docs/styles/capsule) 组合可快速生成 shields-io 风格徽章。

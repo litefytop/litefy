@@ -1,0 +1,31 @@
+---
+title: Wizard
+description: Steps + Pager 组合的向导表单 —— 已到达步骤可回退，未来步骤不可跳过
+---
+
+Wizard 不是发布组件 —— 它是 `Steps` 和 `Pager` 加普通标记的组合。从示例（View Code）复制完整实现到项目中，自由调整。
+
+> 前置依赖：先安装 `Steps` 和 `Pager`（`litefy@latest add steps pager`）。
+
+## 用法
+
+### 基础用法
+
+分页表单：`Steps` 指示器与 `Pager` 内容区共享同一个受控索引，Back / Next 按钮同时驱动两者，最后一步将 Next 替换为 Submit。
+
+<ComponentPreview
+  name="wizard-basic"
+/>
+
+组合要点：
+
+- 一个 `index` 状态同时驱动两个组件：`<Steps index={index} onChange={go} />` 与 `<Pager index={index} onChange={go}>`。
+- 一个 `maxIndex` 状态记录已到达的最远步骤，传给 `Steps` 的 `maxIndex` —— 已到达步骤可回退，未来步骤不能跳过。
+- `go` 同时作为 Pager 的翻页处理器，步骤点击、按钮翻页、页面切换三者保持同步。
+- 表单场景给 Pager 设置 `gesture={false}` 防止误滑提交，并保持 `loop` 关闭 —— 流程的起点和终点就是边界。
+
+## 结构
+
+- `<Steps>` 传 `index` + `maxIndex` —— 进度指示与回退导航
+- `<Pager>` 传 `gesture={false}` —— 每个步骤只挂载一页 DOM，步骤间以 View-Transition 动画切换
+- 底部 Back / Next（最后一步为 Submit），全部调用同一个 `go` 处理器：夹取索引并增长 `maxIndex`

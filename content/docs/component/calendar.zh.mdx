@@ -30,6 +30,8 @@ description: 基于浏览器原生 Temporal API 的日历面板组件，支持�
 
 当前显示的月份完全受控：将 `visibleMonth` 保存在状态中，通过 `onVisibleMonthChange` 更新。选中值同时支持受控（`value` + `onChange`）和非受控（`defaultValue`）模式。
 
+键盘导航：整个网格只有一个 Tab 停靠点（选中日期，未选中时为 1 号），`ArrowRight` / `ArrowLeft` / `ArrowDown` / `ArrowUp` 在当前月份内按一天或一周移动光标 —— 只移动焦点，选中值不变，按 `Enter` / `Space` 才确认。禁用日期会被跳过，移动到月边界即停止。
+
 <ComponentPreview
   name="calendar-basic"
 />
@@ -122,17 +124,19 @@ description: 基于浏览器原生 Temporal API 的日历面板组件，支持�
 | `value`          | `Temporal.PlainDate \| null`            | -      | 选中日期               |
 | `isDateDisabled` | `(date: Temporal.PlainDate) => boolean` | -      | 返回 `true` 禁用该日期 |
 | `onSelect`       | `(date: Temporal.PlainDate) => void`    | -      | 格子点击时触发         |
+| `tabStopDate`    | `string`                                | -      | 网格中唯一 Tab 停靠点的 ISO 日期字符串；省略则所有格子保持原生 Tab 行为 |
 | `className`      | `ClassNameValue`                        | -      | 自定义类名             |
 | `...props`       | `React.ComponentProps<"div">`           | -      | 原生 div 属性          |
 
 #### CalendarGridCell
 
-单个日期格子，渲染为 button。`aria-selected` 驱动选中样式，`data-outside-month` 弱化非当月格子。
+单个日期格子，渲染为 button。`aria-selected` 驱动选中样式，`data-outside-month` 弱化非当月格子。方向键移动光标到其它日期（`Enter` / `Space` 确认）；每个格子带有 `data-date` 属性供网格内查找。
 
 | 属性           | 类型                             | 默认值  | 描述                                            |
 | -------------- | -------------------------------- | ------- | ----------------------------------------------- |
 | `date`         | `Temporal.PlainDate`             | -       | 该格子渲染的日期（显示 `date.day`）             |
 | `outsideMonth` | `boolean`                        | `false` | 置灰弱化不属于可见月份的格子                    |
 | `selected`     | `boolean`                        | `false` | 将格子高亮为选中状态                            |
+| `tabStop`      | `boolean`                        | -       | Roving tabindex：`true` 使该格子成为唯一 Tab 停靠点；省略则保持原生 Tab 行为 |
 | `className`    | `ClassNameValue`                 | -       | 自定义类名                                      |
 | `...props`     | `React.ComponentProps<"button">` | -       | 原生 button 属性（除 `type` 外），如 `disabled` |

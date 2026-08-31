@@ -9,7 +9,7 @@ Date Picker 不是一个提供源码的组件。它是两个基础零件的组�
 
 ### 拼装 DatePicker
 
-弹窗打开状态和选中日期都保存在你自己的状态中。Calendar 的 `onChange` 更新输入框的值（通过 Picker 的受控 `value` 属性），并通过 `onOpenChange` 关闭面板。
+弹窗打开状态和选中日期都保存在你自己的状态中。输入框完全可编辑：`onValueChange` 将每次键入镜像到文本状态，键入完整的 ISO 日期（`2026-08-31`）即可同步选中值和显示月份 —— 选错了日期可以直接在输入框里改。从面板选择日期则会更新文本，并通过 `onOpenChange` 关闭面板。
 
 <ComponentPreview
   name="picker-datepicker"
@@ -17,9 +17,10 @@ Date Picker 不是一个提供源码的组件。它是两个基础零件的组�
 
 拼装要点：
 
-- Picker 的 `open` / `onOpenChange` 控制面板，因此示例可以在选中日期后关闭面板。
-- 输入框的 `value` 由选中的 `Temporal.PlainDate` 派生；格式化方式由你决定（示例使用 `date.toString()`）。
-- `visibleMonth` 保存在你的状态中并跟随 `onVisibleMonthChange`，重新打开面板时仍停留在选中月份。
+- Picker 的 `open` / `onOpenChange` 控制面板，因此示例可以在选中日期后关闭面板。`ArrowDown` 打开面板（Picker 内置），输入框按 `Enter` 提交完整键入的日期并关闭面板。
+- 输入框的 `value` 镜像一个文本状态，每次键入都通过 `onValueChange` 更新。受控模式下父组件必须响应 `onValueChange`，否则键入会被阻断。
+- 键入完整的 ISO 日期（`2026-08-31`）会解析为 `Temporal.PlainDate` 并同步选中值和 `visibleMonth`；不完整或非法输入不影响当前选中值。
+- 面板的可见月份保存在你的状态中并跟随 `onVisibleMonthChange`，重新打开时仍停留在所浏览的月份。
 - `trailing={<CalendarIcon />}` 装饰输入框；可以换成任意图标。
 
 两个零件的完整属性表请参阅 [Picker API](/docs/component/picker) 和 [Calendar API](/docs/component/calendar)。

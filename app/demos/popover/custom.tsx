@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { DropdownTrigger, DropdownContent, DropdownItem } from "@/ui";
+import { PopoverTrigger, PopoverContent } from "@/ui";
 
-const anchorName = "--dropdown-custom-demo";
+const anchorName = "--popover-custom-demo";
 
 export default function Demo() {
   const [open, setOpen] = useState(false);
@@ -36,14 +36,14 @@ export default function Demo() {
 
   return (
     <>
-      <DropdownTrigger
+      <PopoverTrigger
         ref={triggerRef}
         style={{ anchorName }}
         onClick={() => setOpen(!open)}
       >
-        Open Custom Menu
-      </DropdownTrigger>
-      <DropdownContent
+        Open Custom Popover
+      </PopoverTrigger>
+      <PopoverContent
         ref={panelRef}
         style={{
           positionAnchor: anchorName,
@@ -53,31 +53,25 @@ export default function Demo() {
           positionTryFallbacks: "flip-block, flip-inline",
         }}
       >
-        <DropdownItem>
-          <button
-            className="w-full text-left px-2 py-1.5 text-sm font-semibold hover:bg-hover"
-            onClick={close}
-          >
-            Profile
-          </button>
-        </DropdownItem>
-        <DropdownItem>
-          <button
-            className="w-full text-left px-2 py-1.5 text-sm font-semibold hover:bg-hover"
-            onClick={close}
-          >
-            Settings
-          </button>
-        </DropdownItem>
-        <DropdownItem>
-          <button
-            className="w-full text-left px-2 py-1.5 text-sm font-semibold text-destructive hover:bg-hover"
-            onClick={close}
-          >
-            Logout
-          </button>
-        </DropdownItem>
-      </DropdownContent>
+        <button
+          className="w-full text-left px-2 py-1.5 text-sm font-semibold rounded-sm hover:bg-hover"
+          onClick={close}
+        >
+          Profile
+        </button>
+        <button
+          className="w-full text-left px-2 py-1.5 text-sm font-semibold rounded-sm hover:bg-hover"
+          onClick={close}
+        >
+          Settings
+        </button>
+        <button
+          className="w-full text-left px-2 py-1.5 text-sm font-semibold rounded-sm hover:bg-hover text-destructive"
+          onClick={close}
+        >
+          Logout
+        </button>
+      </PopoverContent>
     </>
   );
 }

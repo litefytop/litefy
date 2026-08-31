@@ -100,7 +100,7 @@ export const Checkbox = ({
   };
   return (
     <CheckboxLabel className={classNames?.label} style={styles?.label}>
-      <CheckboxRoot {...props} checked={checked$} onChange={handleChange} />
+      <CheckboxRoot {...props} disabled={disabled} checked={checked$} onChange={handleChange} />
       <CheckboxIndicator
         checked={checked$}
         aria-disabled={disabled}

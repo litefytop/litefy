@@ -3,6 +3,10 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/avatar.tsx"
   },
+  "badge": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/badge.tsx"
+  },
   "collapse": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/collapse.tsx"
@@ -15,10 +19,6 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/checkbox.tsx"
   },
-  "combobox": {
-    "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/combobox.tsx"
-  },
   "dialog": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/dialog.tsx"
@@ -27,9 +27,9 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/drawer.tsx"
   },
-  "dropdown": {
+  "popover": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/dropdown.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/popover.tsx"
   },
   "form": {
     "type": "component",
@@ -51,17 +51,13 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/list.tsx"
   },
-  "multi-select": {
-    "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/multi-select.tsx"
-  },
   "number-field": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/number-field.tsx"
   },
-  "paginated-viewer": {
+  "pager": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/paginated-viewer.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/pager.tsx"
   },
   "paper": {
     "type": "component",
@@ -98,6 +94,10 @@
   "slider": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/slider.tsx"
+  },
+  "steps": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/steps.tsx"
   },
   "switch": {
     "type": "component",
@@ -154,6 +154,10 @@
   "style-amber-brand": {
     "type": "css",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/amber-brand.css"
+  },
+  "style-capsule": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/capsule.css"
   },
   "style-card": {
     "type": "css",
@@ -230,6 +234,10 @@
   "style-stone-surface": {
     "type": "css",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/stone-surface.css"
+  },
+  "style-tag": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/tag.css"
   },
   "style-taupe-surface": {
     "type": "css",

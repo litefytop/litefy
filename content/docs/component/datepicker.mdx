@@ -9,7 +9,7 @@ Date Picker is not a shipped component with source code. It is a composition of 
 
 ### DatePicker Assembly
 
-Hold the popover open state and the selected date in your own state. `onChange` from the Calendar updates the input value (via the controlled `value` prop of Picker) and closes the panel through `onOpenChange`.
+Hold the popover open state and the selected date in your own state. The input is fully editable: `onValueChange` mirrors every keystroke into a text state, and typing a complete ISO date (`2026-08-31`) syncs the selection and the visible month — so a wrongly picked date can be corrected by typing. Selecting from the panel updates the text and closes it via `onOpenChange`.
 
 <ComponentPreview
   name="picker-datepicker"
@@ -17,9 +17,10 @@ Hold the popover open state and the selected date in your own state. `onChange` 
 
 Key points of the assembly:
 
-- Picker's `open` / `onOpenChange` control the panel, so the demo can close it when a date is picked.
-- The input `value` is derived from the selected `Temporal.PlainDate`; formatting is up to you (the demo uses `date.toString()`).
-- `visibleMonth` lives in your state and follows `onVisibleMonthChange`, keeping the panel on the selected month when reopened.
+- Picker's `open` / `onOpenChange` control the panel, so the demo can close it when a date is picked. `ArrowDown` opens the panel (built into Picker), and `Enter` in the input commits a complete typed date and closes the panel.
+- The input `value` mirrors a text state updated on every keystroke via `onValueChange`. In controlled mode the parent must respond to `onValueChange`, otherwise typing is blocked.
+- Typing a complete ISO date (`2026-08-31`) parses to a `Temporal.PlainDate` and syncs both the selection and `visibleMonth`; partial or invalid input leaves the selection untouched.
+- The panel keeps the visible month in your state via `onVisibleMonthChange`, so it reopens on the month you were browsing.
 - `trailing={<CalendarIcon />}` decorates the input; pass any icon you like.
 
 Refer to the [Picker API](/docs/component/picker) and [Calendar API](/docs/component/calendar) for the full prop tables of both parts.

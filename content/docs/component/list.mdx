@@ -1,6 +1,6 @@
 ---
 title: List
-description: A pure scrollable list container that renders items, with no built-in pagination
+description: A scrollable list container with keyboard navigation, highlight, selection and scroll-bottom callbacks
 ---
 
 ## Installation
@@ -25,7 +25,7 @@ description: A pure scrollable list container that renders items, with no built-
 
 ### Basic Usage
 
-A pure scroll container driven by `items`; rows are rendered via `renderItem`. No navigator is built in — pair it with the [`usePagination`](/docs/hooks/use-pagination) hook when paging is needed.
+A scroll container driven by `items`; rows are rendered via `renderItem`. Pair it with the [`usePagination`](/docs/hooks/use-pagination) hook when paging is needed.
 
 <ComponentPreview
   name="list-basic"
@@ -48,6 +48,16 @@ import { List } from "@/ui";
 />
 ```
 
+Keyboard navigation is built in: the root is focusable (`tabIndex={0}`), `ArrowUp` / `ArrowDown` move the highlight (wrapping at both ends) and scroll it into view automatically, and `Enter` or a click on a row fires `onSelect`. The highlighted item carries `data-highlighted` (styled as `bg-hover`). For containers that keep focus elsewhere — such as a combobox input — pass `highlightIndex` / `onHighlightChange` to control the highlight externally; see the [Combobox](/docs/component/combobox) guide.
+
+### Grouping
+
+Provide `getGroup` to derive a group label per item; a header row is rendered when the label changes. Group headers are plain rows — they are not focusable, not highlighted by keyboard navigation and not selectable, so `ArrowUp` / `ArrowDown` / `Enter` only ever operate on data items. Customize the header via `renderGroupHeader`.
+
+<ComponentPreview
+  name="list-grouped"
+/>
+
 ## API Reference
 
 ### High-level Components
@@ -62,23 +72,34 @@ A scrollable list built with the parts below; sizing is fully controlled by the 
 | `renderItem` | `(item: T, index: number) => ReactNode` | - | Row content renderer |
 | `getKey` | `(item: T, index: number) => Key` | - | Row key extractor; defaults to the index |
 | `empty` | `React.ReactNode` | - | Rendered when `items` is empty |
+| `highlightIndex` | `number \| null` | - | Controlled highlight index; omit for internal keyboard navigation |
+| `onHighlightChange` | `(index: number \| null) => void` | - | Fired when the highlight changes |
+| `getGroup` | `(item: T, index: number) => string` | - | Group label extractor; a header row is rendered when the label changes |
+| `renderGroupHeader` | `(label: string) => ReactNode` | - | Custom group header renderer; defaults to the raw label |
+| `onSelect` | `(item: T, index: number) => void` | - | Fired when a row is clicked or confirmed with `Enter` during keyboard navigation |
+| `onScrollBottom` | `() => void` | - | Fired when the list is scrolled to the bottom, for load-more scenarios |
+| `ref` | `React.Ref<HTMLDivElement>` | - | Ref to the root element, e.g. to move focus into the list |
 | `className` | `ClassNameValue` | - | Custom class for the root |
 | `style` | `React.CSSProperties` | - | Custom inline style for the root |
-| `classNames` | `{ root?; item? }` | - | Custom classes for each part |
-| `styles` | `{ root?; item? }` | - | Custom inline styles for each part |
+| `classNames` | `{ root?; item?; header? }` | - | Custom classes for each part |
+| `styles` | `{ root?; item?; header? }` | - | Custom inline styles for each part |
 
-The root applies `divide-y divide-border` between rows and `overflow-y-auto` for scrolling.
+The root applies `divide-y divide-border` between rows, `overflow-y-auto` for scrolling, and a `focus-visible` ring when focused.
 
 ---
 
 ### Composable Components
 
-Pure display parts with no built-in state, for advanced custom assembly.
+Pure display parts with no built-in state, for advanced custom assembly. Each part extends the native `div` props, and its `className` is merged with the built-in defaults through `cn` — passing one extends the defaults instead of replacing them, which differs from a plain DOM `className`. When composing the high-level `List`, prefer the `classNames` / `styles` props for overrides.
 
 #### ListRoot
 
-The scroll container; renders as a div with `overflow-y-auto`.
+The scroll container; renders as a div with `overflow-y-auto` and a `focus-visible` ring when focused.
 
 #### ListItem
 
-A single row; renders as a flex div with `px-3 py-2 text-sm` base styling.
+A single data row; renders as a flex div with `px-3 py-2 text-sm`, `cursor-pointer`, `hover:bg-hover` and `data-highlighted:bg-hover`.
+
+#### ListHeader
+
+A non-interactive group header row rendered by `getGroup`; renders as a div with `px-3 py-1.5 text-xs font-medium text-muted-foreground`. It is not focusable, not highlighted by keyboard navigation and not selectable.

@@ -1,0 +1,25 @@
+---
+title: Dropdown Menu
+description: A dropdown menu assembled from Popover and Menu — not a shipped component, only a composition guide with demos
+---
+
+Dropdown Menu is not a shipped component with source code. It is a composition of two primitives: [Popover](/docs/component/popover) provides the trigger and the floating panel, and [Menu](/docs/component/menu) provides the items, grouping, submenus and keyboard navigation. Assemble them directly in your page — the demo below is the complete implementation.
+
+## Usage
+
+### Basic Usage
+
+Hold the panel open state in your own state, put `Menu` inside the Popover content, and wire the closing paths together.
+
+<ComponentPreview
+  name="dropdown-menu-basic"
+/>
+
+Key points of the assembly:
+
+- Popover's `open` / `onOpenChange` control the panel; no extra container styling is needed since `PopoverContent` already carries the panel look.
+- Pass `autoFocus={open}` to `Menu` so the first enabled item is focused every time the panel opens — arrow keys work immediately.
+- `Escape` needs no wiring: Menu's `Escape` bubbles up to the Popover panel, which closes it and refocuses the trigger.
+- `onSelect` writes the chosen item back into your state, closes the panel via `onOpenChange`, and refocuses the trigger through Popover's `ref`.
+
+Refer to the [Popover API](/docs/component/popover) and [Menu API](/docs/component/menu) for the full prop tables of both parts.

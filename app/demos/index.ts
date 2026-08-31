@@ -1,6 +1,8 @@
 import type { ComponentType } from "react";
 import AvatarBasicDemo from "./avatar/basic";
 import avatarBasicCode from "./avatar/basic.tsx?raw";
+import BadgeBasicDemo from "./badge/basic";
+import badgeBasicCode from "./badge/basic.tsx?raw";
 import AvatarCustomDemo from "./avatar/custom";
 import avatarCustomCode from "./avatar/custom.tsx?raw";
 import CollapseAccordionDemo from "./collapse/accordion";
@@ -31,18 +33,20 @@ import ComboboxAsyncDemo from "./combobox/async";
 import comboboxAsyncCode from "./combobox/async.tsx?raw";
 import ComboboxBasicDemo from "./combobox/basic";
 import comboboxBasicCode from "./combobox/basic.tsx?raw";
-import ComboboxCustomDemo from "./combobox/custom";
-import comboboxCustomCode from "./combobox/custom.tsx?raw";
 import CardBasicDemo from "./css/card-basic";
 import cardBasicCode from "./css/card-basic.tsx?raw";
 import CardGroupDemo from "./css/card-group";
 import cardGroupCode from "./css/card-group.tsx?raw";
+import CapsuleBadgeDemo from "./css/capsule-badge";
+import capsuleBadgeCode from "./css/capsule-badge.tsx?raw";
 import TypographyHeadingsDemo from "./css/typography-headings";
 import typographyHeadingsCode from "./css/typography-headings.tsx?raw";
 import TypographyTextDemo from "./css/typography-text";
 import typographyTextCode from "./css/typography-text.tsx?raw";
 import PaperBasicDemo from "./paper/basic";
 import paperBasicCode from "./paper/basic.tsx?raw";
+import TagBasicDemo from "./css/tag-basic";
+import tagBasicCode from "./css/tag-basic.tsx?raw";
 import KbdBasicDemo from "./css/kbd-basic";
 import kbdBasicCode from "./css/kbd-basic.tsx?raw";
 import KbdCombinationDemo from "./css/kbd-combination";
@@ -63,12 +67,14 @@ import DrawerExpandableDemo from "./drawer/expandable";
 import drawerExpandableCode from "./drawer/expandable.tsx?raw";
 import DrawerCustomDemo from "./drawer/custom";
 import drawerCustomCode from "./drawer/custom.tsx?raw";
-import DropdownAlignmentDemo from "./dropdown/alignment";
-import dropdownAlignmentCode from "./dropdown/alignment.tsx?raw";
-import DropdownBasicDemo from "./dropdown/basic";
-import dropdownBasicCode from "./dropdown/basic.tsx?raw";
-import DropdownCustomDemo from "./dropdown/custom";
-import dropdownCustomCode from "./dropdown/custom.tsx?raw";
+import DropdownMenuBasicDemo from "./dropdown-menu/basic";
+import dropdownMenuBasicCode from "./dropdown-menu/basic.tsx?raw";
+import PopoverBasicDemo from "./popover/basic";
+import popoverBasicCode from "./popover/basic.tsx?raw";
+import PopoverAlignmentDemo from "./popover/alignment";
+import popoverAlignmentCode from "./popover/alignment.tsx?raw";
+import PopoverCustomDemo from "./popover/custom";
+import popoverCustomCode from "./popover/custom.tsx?raw";
 import FormBasicDemo from "./form/basic";
 import formBasicCode from "./form/basic.tsx?raw";
 import FormHorizontalDemo from "./form/horizontal";
@@ -97,10 +103,6 @@ import InputCustomDemo from "./input/custom";
 import inputCustomCode from "./input/custom.tsx?raw";
 import MultiSelectBasicDemo from "./multi-select/basic";
 import multiSelectBasicCode from "./multi-select/basic.tsx?raw";
-import MultiSelectControlledDemo from "./multi-select/controlled";
-import multiSelectControlledCode from "./multi-select/controlled.tsx?raw";
-import MultiSelectGroupedDemo from "./multi-select/grouped";
-import multiSelectGroupedCode from "./multi-select/grouped.tsx?raw";
 import NumberFieldBasicDemo from "./number-field/basic";
 import numberFieldBasicCode from "./number-field/basic.tsx?raw";
 import NumberFieldControlledDemo from "./number-field/controlled";
@@ -109,11 +111,17 @@ import NumberFieldCustomDemo from "./number-field/custom";
 import numberFieldCustomCode from "./number-field/custom.tsx?raw";
 import NumberFieldInvalidDemo from "./number-field/invalid";
 import numberFieldInvalidCode from "./number-field/invalid.tsx?raw";
-import PaginatedViewerWithJumpDemo from "./paginated-viewer/with-jump";
-import paginatedViewerWithJumpCode from "./paginated-viewer/with-jump.tsx?raw";
+import PagerBasicDemo from "./pager/basic";
+import pagerBasicCode from "./pager/basic.tsx?raw";
+import PagerGestureDemo from "./pager/gesture";
+import pagerGestureCode from "./pager/gesture.tsx?raw";
 import PaginationBasicDemo from "./use-pagination/basic";
 import paginationBasicCode from "./use-pagination/basic.tsx?raw";
 import ListBasicDemo from "./list/basic";
+import ListGroupedDemo from "./list/grouped";
+import listGroupedCode from "./list/grouped.tsx?raw";
+import MenuBasicDemo from "./menu/basic";
+import menuBasicCode from "./menu/basic.tsx?raw";
 import listBasicCode from "./list/basic.tsx?raw";
 import PasswordBasicDemo from "./password/basic";
 import passwordBasicCode from "./password/basic.tsx?raw";
@@ -157,6 +165,10 @@ import SliderOrientationDemo from "./slider/orientation";
 import sliderOrientationCode from "./slider/orientation.tsx?raw";
 import SliderInvalidDemo from "./slider/invalid";
 import sliderInvalidCode from "./slider/invalid.tsx?raw";
+import StepsBasicDemo from "./steps/basic";
+import stepsBasicCode from "./steps/basic.tsx?raw";
+import WizardBasicDemo from "./wizard/basic";
+import wizardBasicCode from "./wizard/basic.tsx?raw";
 import SelectBasicDemo from "./select/basic";
 import selectBasicCode from "./select/basic.tsx?raw";
 import SelectGroupedDemo from "./select/grouped";
@@ -193,6 +205,10 @@ import TooltipBasicDemo from "./tooltip/basic";
 import tooltipBasicCode from "./tooltip/basic.tsx?raw";
 import TooltipImperativeDemo from "./tooltip/imperative";
 import tooltipImperativeCode from "./tooltip/imperative.tsx?raw";
+import TransferBasicDemo from "./transfer/basic";
+import transferBasicCode from "./transfer/basic.tsx?raw";
+import TransferPickerBasicDemo from "./transfer-picker/basic";
+import transferPickerBasicCode from "./transfer-picker/basic.tsx?raw";
 import UseDragBasicDemo from "./use-drag/basic";
 import useDragBasicCode from "./use-drag/basic.tsx?raw";
 import UseRemotePaginationBasicDemo from "./use-remote-pagination/basic";
@@ -263,17 +279,13 @@ export const demos: Record<string, DemoItem> = {
     component: CheckboxCustomDemo,
     code: checkboxCustomCode,
   },
-  "combobox-basic": {
-    component: ComboboxBasicDemo,
-    code: comboboxBasicCode,
-  },
   "combobox-async": {
     component: ComboboxAsyncDemo,
     code: comboboxAsyncCode,
   },
-  "combobox-custom": {
-    component: ComboboxCustomDemo,
-    code: comboboxCustomCode,
+  "combobox-basic": {
+    component: ComboboxBasicDemo,
+    code: comboboxBasicCode,
   },
   "kbd-basic": {
     component: KbdBasicDemo,
@@ -294,6 +306,14 @@ export const demos: Record<string, DemoItem> = {
   "card-basic": {
     component: CardBasicDemo,
     code: cardBasicCode,
+  },
+  "tag-basic": {
+    component: TagBasicDemo,
+    code: tagBasicCode,
+  },
+  "capsule-badge": {
+    component: CapsuleBadgeDemo,
+    code: capsuleBadgeCode,
   },
   "card-group": {
     component: CardGroupDemo,
@@ -335,17 +355,21 @@ export const demos: Record<string, DemoItem> = {
     component: DrawerCustomDemo,
     code: drawerCustomCode,
   },
-  "dropdown-basic": {
-    component: DropdownBasicDemo,
-    code: dropdownBasicCode,
+  "popover-basic": {
+    component: PopoverBasicDemo,
+    code: popoverBasicCode,
   },
-  "dropdown-alignment": {
-    component: DropdownAlignmentDemo,
-    code: dropdownAlignmentCode,
+  "dropdown-menu-basic": {
+    component: DropdownMenuBasicDemo,
+    code: dropdownMenuBasicCode,
   },
-  "dropdown-custom": {
-    component: DropdownCustomDemo,
-    code: dropdownCustomCode,
+  "popover-alignment": {
+    component: PopoverAlignmentDemo,
+    code: popoverAlignmentCode,
+  },
+  "popover-custom": {
+    component: PopoverCustomDemo,
+    code: popoverCustomCode,
   },
   "form-basic": {
     component: FormBasicDemo,
@@ -366,6 +390,10 @@ export const demos: Record<string, DemoItem> = {
   "avatar-basic": {
     component: AvatarBasicDemo,
     code: avatarBasicCode,
+  },
+  "badge-basic": {
+    component: BadgeBasicDemo,
+    code: badgeBasicCode,
   },
   "avatar-custom": {
     component: AvatarCustomDemo,
@@ -451,9 +479,13 @@ export const demos: Record<string, DemoItem> = {
     component: ToggleCustomDemo,
     code: toggleCustomCode,
   },
-  "paginated-viewer-with-jump": {
-    component: PaginatedViewerWithJumpDemo,
-    code: paginatedViewerWithJumpCode,
+  "pager-basic": {
+    component: PagerBasicDemo,
+    code: pagerBasicCode,
+  },
+  "pager-gesture": {
+    component: PagerGestureDemo,
+    code: pagerGestureCode,
   },
   "pagination-basic": {
     component: PaginationBasicDemo,
@@ -463,17 +495,17 @@ export const demos: Record<string, DemoItem> = {
     component: ListBasicDemo,
     code: listBasicCode,
   },
+  "list-grouped": {
+    component: ListGroupedDemo,
+    code: listGroupedCode,
+  },
+  "menu-basic": {
+    component: MenuBasicDemo,
+    code: menuBasicCode,
+  },
   "multi-select-basic": {
     component: MultiSelectBasicDemo,
     code: multiSelectBasicCode,
-  },
-  "multi-select-grouped": {
-    component: MultiSelectGroupedDemo,
-    code: multiSelectGroupedCode,
-  },
-  "multi-select-controlled": {
-    component: MultiSelectControlledDemo,
-    code: multiSelectControlledCode,
   },
   "password-basic": {
     component: PasswordBasicDemo,
@@ -547,6 +579,14 @@ export const demos: Record<string, DemoItem> = {
     component: SliderInvalidDemo,
     code: sliderInvalidCode,
   },
+  "steps-basic": {
+    component: StepsBasicDemo,
+    code: stepsBasicCode,
+  },
+  "wizard-basic": {
+    component: WizardBasicDemo,
+    code: wizardBasicCode,
+  },
   "radio-basic": {
     component: RadioBasicDemo,
     code: radioBasicCode,
@@ -603,6 +643,14 @@ export const demos: Record<string, DemoItem> = {
   "tooltip-imperative": {
     component: TooltipImperativeDemo,
     code: tooltipImperativeCode,
+  },
+  "transfer-basic": {
+    component: TransferBasicDemo,
+    code: transferBasicCode,
+  },
+  "transfer-picker-basic": {
+    component: TransferPickerBasicDemo,
+    code: transferPickerBasicCode,
   },
   "upload-basic": {
     component: UploadBasicDemo,

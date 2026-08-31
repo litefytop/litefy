@@ -1,0 +1,37 @@
+---
+title: Capsule
+description: 胶囊容器，两个 tag 即可拼成 shields-io 风格双色徽章。
+---
+
+## 源码
+
+<Source type="css" name="capsule" />
+
+## 示例
+
+### 徽章
+
+`.capsule` 是胶囊形 overflow-hidden 容器。放入两个 `.tag` 子元素 —— 容器裁掉它们的圆角并稍微放大 —— 几秒就能得到 shields-io 风格的双色徽章。
+
+<ComponentPreview name="capsule-badge" />
+
+### 组合
+
+左侧 tag 是标签，右侧是值。颜色就是每个 tag 上的普通工具类。容器本身可以用在 `<span>` 或 `<a>` 上。
+
+```html
+<span class="capsule">
+  <span class="tag bg-neutral-600 text-white">build</span>
+  <span class="tag bg-emerald-600 text-white">passing</span>
+</span>
+
+<a class="capsule" href="#">
+  <span class="tag bg-neutral-600 text-white">docs</span>
+  <span class="tag bg-violet-600 text-white">litefy.dev</span>
+</a>
+```
+
+## 说明
+
+- `.capsule > .tag` 会抹平 tag 的圆角（`rounded-none`）并把内边距调整为 `px-2.5 py-1` 以匹配徽章比例 —— 无需手动处理圆角。
+- 也支持两个以上的 tag：容器只负责裁切内部内容。

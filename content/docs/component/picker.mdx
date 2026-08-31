@@ -65,6 +65,9 @@ Behavior notes:
 
 - The popover is a native `popover="manual"` element positioned with CSS anchor positioning; the panel is anchored to the input, aligned to the bottom-start edge, with `min-width: anchor-size(width)` and a `flip-block` fallback.
 - Clicking the input toggles the panel. Pressing `Escape` or pressing outside both the input and the panel closes it.
+- Keyboard: `ArrowDown` opens the panel when it is closed, and `Escape` closes it — built in, no wiring needed.
+- Consumer `onKeyDown` / `onClick` handlers are composed with the internal behavior, not overridden; the internal open and Escape-close are skipped when the consumer calls `preventDefault`.
+- In controlled mode the parent must respond to `onValueChange` by updating `value`, otherwise typing in the input is blocked.
 - The popover positioning depends on CSS anchor positioning support — make sure the target environment supports it.
 
 ---

@@ -1,0 +1,54 @@
+---
+title: Transfer
+description: A dual-panel transfer composition for moving items between source and target lists with checkbox selection
+---
+
+Transfer is not a shipped component — it is a composition of `Checkbox` plus plain markup. Copy the full implementation from the demo (View Code) into your project and adapt it freely.
+
+> Prerequisite: install `Checkbox` first (`npx shadcn@latest add checkbox` style, or `litefy@latest add checkbox`).
+
+## Usage
+
+### Basic Usage
+
+Fully controlled `value`: the array holds the items currently in the target panel. Disabled items stay in the source panel and cannot be moved. `renderItem` is not required — plain `label` items render as text.
+
+<ComponentPreview
+  name="transfer-basic"
+/>
+
+Key points of the implementation:
+
+- `value` / `defaultValue` / `onChange` follow the controlled/uncontrolled convention: `value` holds the item values currently in the target panel, `onChange` fires after moving in either direction, and the order stays stable in `dataSource` order.
+- Each panel owns its own checked state (`Set`). The move buttons apply the checked items and clear the panel's checked state; a direction is disabled while its panel has no checked items.
+- Rows are rendered with the `Checkbox` composite — native `input` gives keyboard access (Tab + Space) for free, and `disabled` items cannot be checked or moved.
+- `titles` / `renderItem` / `classNames` (root / panel / header / body / item / actions) are provided for customization.
+
+## API Reference
+
+### Transfer
+
+| Prop           | Type                                            | Default             | Description                                                       |
+| :------------- | :---------------------------------------------- | :------------------ | :---------------------------------------------------------------- |
+| `dataSource`   | `TransferItemConfig[]`                          | -                   | All available items                                               |
+| `value`        | `string[]`                                      | -                   | Controlled values — the item values currently in the target panel |
+| `defaultValue` | `string[]`                                      | `[]`                | Default target values (uncontrolled)                              |
+| `onChange`     | `(value: string[]) => void`                     | -                   | Fired after moving items in either direction                      |
+| `titles`       | `[React.ReactNode, React.ReactNode]`            | `Source` / `Target` | Titles of the source and target panels                            |
+| `renderItem`   | `(item: TransferItemConfig) => React.ReactNode` | -                   | Custom item renderer, applied in both panels                      |
+| `className`    | `string`                                        | -                   | Custom class names, applied to the root                           |
+| `classNames`   | `root` / `panel` / `header` / `body` / `item` / `actions` | -         | Custom class names per slot                                       |
+
+### TransferItemConfig
+
+| Field      | Type              | Default | Description                                                                     |
+| :--------- | :---------------- | :------ | :------------------------------------------------------------------------------ |
+| `label`    | `React.ReactNode` | -       | Item display content                                                            |
+| `value`    | `string`          | -       | Unique identifier value                                                         |
+| `disabled` | `boolean`         | `false` | Disable the item — it stays in the source panel and cannot be checked or moved  |
+
+### Anatomy
+
+- Two bordered panels, each with a header (`title` + `count` such as `1/3`) and a scrollable body (`max-h-64 overflow-auto`)
+- A middle actions column with two move buttons (`ArrowRight` / `ArrowLeft`), disabled when the corresponding panel has no checked items
+- Rows are `Checkbox` composites with a full-width clickable label; an empty panel renders a muted `No data` line

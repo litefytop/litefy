@@ -30,6 +30,8 @@ description: A calendar panel component built on the native Temporal API, suppor
 
 The visible month is fully controlled: hold it in state and update it via `onVisibleMonthChange`. The selection supports both controlled (`value` + `onChange`) and uncontrolled (`defaultValue`) modes.
 
+Keyboard navigation: the grid has a single tab stop (the selected date, or day 1 when nothing is selected), and `ArrowRight` / `ArrowLeft` / `ArrowDown` / `ArrowUp` move the cursor by one day or one week within the visible month — only focus moves, the value does not change until `Enter` / `Space` confirms. Disabled days are skipped and navigation stops at the month edges.
+
 <ComponentPreview
   name="calendar-basic"
 />
@@ -122,17 +124,19 @@ A single week row. Usually rendered by `CalendarGrid`, but can be composed manua
 | `value`           | `Temporal.PlainDate \| null`             | -       | Selected date                                 |
 | `isDateDisabled`  | `(date: Temporal.PlainDate) => boolean`  | -       | Return `true` to disable the date             |
 | `onSelect`        | `(date: Temporal.PlainDate) => void`     | -       | Fired on cell click                           |
+| `tabStopDate`     | `string`                                 | -       | ISO date string of the single tab stop in the grid; omit to keep all cells natively tabbable |
 | `className`       | `ClassNameValue`                         | -       | Custom class names                            |
 | `...props`        | `React.ComponentProps<"div">`            | -       | Native div props                              |
 
 #### CalendarGridCell
 
-A single date cell rendered as a button. `aria-selected` drives the selected styles, `data-outside-month` fades out-of-month cells.
+A single date cell rendered as a button. `aria-selected` drives the selected styles, `data-outside-month` fades out-of-month cells. Arrow keys move the cursor to another day (Enter / Space confirms); each cell carries a `data-date` attribute for in-grid lookup.
 
 | Prop            | Type                              | Default | Description                                             |
 | :-------------- | :-------------------------------- | :------ | :------------------------------------------------------ |
 | `date`          | `Temporal.PlainDate`              | -       | The date this cell renders (shows `date.day`)           |
 | `outsideMonth`  | `boolean`                         | `false` | Grays out cells not belonging to the visible month      |
 | `selected`      | `boolean`                         | `false` | Highlights the cell as selected                         |
+| `tabStop`       | `boolean`                         | -       | Roving tabindex: `true` makes the cell the only tab stop; omit to keep native tab behavior |
 | `className`     | `ClassNameValue`                  | -       | Custom class names                                      |
 | `...props`      | `React.ComponentProps<"button">`  | -       | Native button props (except `type`), such as `disabled` |

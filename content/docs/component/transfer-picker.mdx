@@ -1,0 +1,26 @@
+---
+title: Transfer Picker
+description: A transfer picker assembled from Popover, Input, List and Checkbox — not a shipped component, only a composition guide with demos
+---
+
+Transfer Picker is not a shipped component with source code. It is a composition of existing primitives: the [Popover](/docs/component/popover) trigger shows the selection count like [MultiSelect](/docs/component/multi-select), but the panel opens a transfer layout — the left side is a remote-search `Input + List` (the Combobox assembly), and chosen values move to the right-side selected list where they can be batch-removed. Assemble it directly in your page — the demo below is the complete implementation.
+
+It exists because of data volume. Grouped [MultiSelect](/docs/component/multi-select) fits known, enumerable datasets (e.g. cities); when data lives on a server with unknown size, grouping is meaningless and typing-to-search is the only viable filtering — so the left panel is a remote list and never renders groups.
+
+## Usage
+
+### Basic Usage
+
+<ComponentPreview
+  name="transfer-picker-basic"
+/>
+
+Key points of the assembly:
+
+- The [Popover](/docs/component/popover) trigger renders a constant-shaped label `` `Options (${selected.length})` `` so its width stays stable and avoids layout shift.
+- The left panel pairs a controlled [Input](/docs/component/input) with a [List](/docs/component/list) driven by the `useRemotePagination` hook: typing debounces `remote.search`, scrolling to the bottom calls `remote.loadMore`, and keyboard navigation uses the controlled `highlightIndex` pattern (focus stays on the input, `ArrowDown`/`ArrowUp` move the highlight, `Enter` confirms).
+- Clicking an item or pressing `Enter` moves it to the right; selecting a value that is already selected does **not** create a duplicate — it increments that entry's count, displayed as `label ×n` both in the left list and the right panel.
+- The right panel lists selected entries as [Checkbox](/docs/component/checkbox) items; check several and hit the `Remove (n)` footer button to batch-delete, which mirrors the transfer's multi-select-and-move-back interaction.
+- The left list intentionally has no grouping — with server-side data of unknown size, grouping is meaningless once the user is filtering by text.
+
+Refer to the [Popover API](/docs/component/popover), [List API](/docs/component/list), [Input API](/docs/component/input), [Checkbox API](/docs/component/checkbox) and the `useRemotePagination` hook for the full prop tables.

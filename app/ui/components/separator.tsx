@@ -3,8 +3,7 @@
 import * as React from "react";
 import { type ClassNameValue, cn } from "@/lib";
 
-export interface SeparatorLineProps
-  extends Omit<React.ComponentProps<"div">, "className"> {
+export interface SeparatorLineProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
   orientation?: "horizontal" | "vertical";
 }
@@ -28,8 +27,7 @@ export function SeparatorLine({
   );
 }
 
-export interface SeparatorTextProps
-  extends Omit<React.ComponentProps<"span">, "className"> {
+export interface SeparatorTextProps extends Omit<React.ComponentProps<"span">, "className"> {
   className?: ClassNameValue;
   orientation?: "horizontal" | "vertical";
 }
@@ -74,13 +72,7 @@ export function Separator({
   styles,
 }: SeparatorProps) {
   if (!children) {
-    return (
-      <SeparatorLine
-        role="separator"
-        orientation={orientation}
-        className={className}
-      />
-    );
+    return <SeparatorLine role="separator" orientation={orientation} className={className} />;
   }
 
   return (
@@ -99,11 +91,7 @@ export function Separator({
         className={cn("flex-1", classNames?.line)}
         style={styles?.line}
       />
-      <SeparatorText
-        orientation={orientation}
-        className={classNames?.text}
-        style={styles?.text}
-      >
+      <SeparatorText orientation={orientation} className={classNames?.text} style={styles?.text}>
         {children}
       </SeparatorText>
       <SeparatorLine

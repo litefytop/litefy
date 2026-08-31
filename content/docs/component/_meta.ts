@@ -6,6 +6,13 @@ export default {
       zh: "头像",
     },
   },
+  badge: {
+    name: "Badge",
+    displayName: {
+      en: "Badge",
+      zh: "徽标",
+    },
+  },
   button: {
     name: "Button",
     displayName: {
@@ -65,10 +72,10 @@ export default {
       zh: "抽屉",
     },
   },
-  dropdown: {
-    name: "Dropdown",
+  "dropdown-menu": {
+    name: "Dropdown Menu",
     displayName: {
-      en: "Dropdown",
+      en: "Dropdown Menu",
       zh: "下拉菜单",
     },
   },
@@ -107,6 +114,13 @@ export default {
       zh: "列表",
     },
   },
+  menu: {
+    name: "Menu",
+    displayName: {
+      en: "Menu",
+      zh: "菜单",
+    },
+  },
   "multi-select": {
     name: "Multi Select",
     displayName: {
@@ -121,11 +135,11 @@ export default {
       zh: "数字输入框",
     },
   },
-  "paginated-viewer": {
-    name: "Paginated Viewer",
+  pager: {
+    name: "Pager",
     displayName: {
-      en: "Paginated Viewer",
-      zh: "分页查看器",
+      en: "Pager",
+      zh: "分页容器",
     },
   },
   paper: {
@@ -147,6 +161,13 @@ export default {
     displayName: {
       en: "Picker",
       zh: "拾取器",
+    },
+  },
+  popover: {
+    name: "Popover",
+    displayName: {
+      en: "Popover",
+      zh: "弹出面板",
     },
   },
   radio: {
@@ -198,6 +219,13 @@ export default {
       zh: "滑块",
     },
   },
+  steps: {
+    name: "Steps",
+    displayName: {
+      en: "Steps",
+      zh: "步骤条",
+    },
+  },
   switch: {
     name: "Switch",
     displayName: {
@@ -226,11 +254,32 @@ export default {
       zh: "提示框",
     },
   },
+  transfer: {
+    name: "Transfer",
+    displayName: {
+      en: "Transfer",
+      zh: "穿梭框",
+    },
+  },
+  "transfer-picker": {
+    name: "Transfer Picker",
+    displayName: {
+      en: "Transfer Picker",
+      zh: "穿梭选择器",
+    },
+  },
   upload: {
     name: "Upload",
     displayName: {
       en: "Upload",
       zh: "上传",
+    },
+  },
+  wizard: {
+    name: "Wizard",
+    displayName: {
+      en: "Wizard",
+      zh: "向导",
     },
   },
 } as const;

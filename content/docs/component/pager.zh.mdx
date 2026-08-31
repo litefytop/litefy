@@ -1,0 +1,71 @@
+---
+title: Pager
+description: 受控单 DOM 分页容器，支持触摸手势拖拽翻页、循环与 View-Transition 切换动画，面向漫画阅读等分页内容场景
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add pager" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="pager" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 尺寸约定
+
+组件不会根据内容自适应 —— 必须通过 `className`（或 `style`）提供宽高。根元素使用 `overflow-hidden` 裁切，精确尺寸从根本上杜绝布局抖动。
+
+### DOM 策略
+
+常态只挂载当前页。触摸拖拽时临时挂载相邻页做实时 `transform` 跟随，回弹/落定动画结束后立刻卸载恢复单 DOM。程序跳转任何时刻都只有一个页面 DOM。
+
+### 基础用法
+
+完全受控的 `index` / `onChange` —— 示例用导航按钮驱动，默认 `transition="view-transition"`。浏览器不支持 `document.startViewTransition` 时降级为无动画瞬间切换。
+
+<ComponentPreview
+  name="pager-basic"
+/>
+
+### 手势 + 循环
+
+触摸拖拽以容器宽度 25% 为阈值：超过则翻页，否则回弹。非 `loop` 时拖出边界有橡皮筋阻尼。开启 `loop` 后索引按页数取模循环。
+
+<ComponentPreview
+  name="pager-gesture"
+/>
+
+## 行为说明
+
+- `transition="view-transition"` 的程序跳转在 `document.startViewTransition` 内执行；上一个动画未结束时新的跳转直接切换内容并跳过动画，绝并发 `startViewTransition`。
+- 每个实例通过 `useId` 生成唯一 `view-transition-name`，多个 Pager 实例共存不会快照冲突。
+- 手势路径不使用 View-Transition —— 拖拽是纯 `transform` 位移，结束附 200ms 落定动画。
+- `transition="none"` 完全关闭程序切换动画；`gesture={false}` 关闭触摸手势。
+- `onChange` 始终收到归一化索引 —— `loop` 时取模，否则夹取到边界。
+
+## API 参考
+
+### Pager
+
+| 属性         | 类型                            | 默认值            | 描述                                              |
+| :----------- | :------------------------------ | :---------------- | :------------------------------------------------ |
+| `index`      | `number`                        | -                 | 受控当前页索引                                    |
+| `onChange`   | `(nextIndex: number) => void`   | -                 | 手势翻页提交后触发，由父组件更新 `index`          |
+| `children`   | `React.ReactNode[]`             | -                 | 每个子项一页；只有当前页挂载 DOM                  |
+| `loop`       | `boolean`                       | `false`           | 到达边界后循环翻页                                |
+| `transition` | `"none" \| "view-transition"`   | `"view-transition"` | 程序跳转的动画策略（不影响手势拖拽）            |
+| `gesture`    | `boolean`                       | `true`            | 是否启用触摸手势                                  |
+| `className`  | `ClassNameValue`                | -                 | 自定义类名 —— 必须包含宽高                        |
+| `...props`   | `React.ComponentProps<"div">`   | -                 | 原生 div 属性，透传到根容器                       |

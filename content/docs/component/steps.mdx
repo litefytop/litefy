@@ -1,0 +1,87 @@
+---
+title: Steps
+description: A controlled steps indicator with completed, current and upcoming states, and forward-jump locking for wizard flows
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add steps" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="steps" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Fully controlled `index`. With `maxIndex` set to the highest visited step, completed steps stay clickable for going back while future steps are locked (`disabled`) and cannot be skipped ahead — exactly what a wizard needs.
+
+<ComponentPreview
+  name="steps-basic"
+/>
+
+Key points:
+
+- `maxIndex` defaults to `items.length - 1` (all steps clickable); pass the highest visited index to lock future steps.
+- Clicking a clickable step fires `onChange(nextIndex)`; the current step is never clickable.
+- States are derived: `completed` shows a `Check` icon and a primary connector line up to the current step, `current` gets `aria-current="step"`.
+
+## API Reference
+
+### Steps
+
+| Prop        | Type                          | Default             | Description                                        |
+| :---------- | :---------------------------- | :------------------ | :------------------------------------------------- |
+| `items`     | `StepsItemConfig[]`           | -                   | Step definitions                                   |
+| `index`     | `number`                      | -                   | Controlled current step index                      |
+| `onChange`  | `(nextIndex: number) => void` | -                   | Fired when a clickable step is selected            |
+| `maxIndex`  | `number`                      | `items.length - 1`  | Highest selectable index — steps beyond it are disabled |
+| `className` | `ClassNameValue`              | -                   | Custom class names, applied to the root            |
+| `classNames` | `marker` / `title` / `description` / `connector` | - | Custom class names per slot      |
+
+### StepsItemConfig
+
+| Field         | Type              | Default | Description             |
+| :------------ | :---------------- | :------ | :---------------------- |
+| `title`       | `React.ReactNode` | -       | Step title              |
+| `description` | `React.ReactNode` | -       | Optional secondary text |
+
+### Composable Components
+
+The parts extend native DOM props and merge their built-in `className` through `cn` — passing `className` extends the defaults instead of replacing them.
+
+#### StepsRoot
+
+The outer `<ol>` flex container (`role` list semantics come from the native element).
+
+| Prop       | Type                      | Default | Description          |
+| :--------- | :------------------------ | :------ | :------------------- |
+| `className` | `ClassNameValue`         | -       | Custom class names   |
+| `...props` | `React.ComponentProps<"ol">` | -    | Native ol props      |
+
+#### StepsItem
+
+A single step: connector line (from the second item on), circular marker button, title and optional description. The marker is a real `<button>` — keyboard accessible when `clickable`.
+
+| Prop          | Type                              | Default | Description                                                        |
+| :------------ | :-------------------------------- | :------ | :----------------------------------------------------------------- |
+| `index`       | `number`                          | -       | Zero-based step index, reported through `onSelect`                 |
+| `state`       | `"completed" \| "current" \| "upcoming"` | - | Visual state                                                      |
+| `title`       | `React.ReactNode`                 | -       | Step title                                                         |
+| `description` | `React.ReactNode`                 | -       | Optional secondary text                                            |
+| `clickable`   | `boolean`                         | -       | Whether the marker button is enabled                               |
+| `onSelect`    | `(index: number) => void`         | -       | Fired on marker click                                              |
+| `className`   | `ClassNameValue`                  | -       | Custom class names, applied to the item                            |
+| `classNames`  | `marker` / `title` / `description` / `connector` | - | Custom class names per slot                       |
+| `...props`    | `React.ComponentProps<"li">`      | -       | Native li props                                                    |

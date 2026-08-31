@@ -88,6 +88,12 @@ export function CalendarGrid({
       ? ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
       : ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
+  const inMonth =
+    value && value.year === visibleMonth.year && value.month === visibleMonth.month
+      ? value
+      : visibleMonth.with({ day: 1 });
+  const tabStopDate = inMonth.toString();
+
   return (
     <div role="grid" {...props} className={cn("grid grid-cols-7 gap-y-1", className)}>
       <div role="row" className="col-span-7 grid grid-cols-7">
@@ -109,6 +115,7 @@ export function CalendarGrid({
           value={value}
           isDateDisabled={isDateDisabled}
           onSelect={onSelect}
+          tabStopDate={tabStopDate}
           className="col-span-7"
         />
       ))}
@@ -116,15 +123,13 @@ export function CalendarGrid({
   );
 }
 
-export interface CalendarGridRowProps extends Omit<
-  React.ComponentProps<"div">,
-  "className" | "onSelect"
-> {
+export interface CalendarGridRowProps extends Omit<React.ComponentProps<"div">, "className" | "onSelect"> {
   week: Temporal.PlainDate[];
   visibleMonth: Temporal.PlainDate;
   value?: Temporal.PlainDate | null;
   isDateDisabled?: (date: Temporal.PlainDate) => boolean;
   onSelect?: (date: Temporal.PlainDate) => void;
+  tabStopDate?: string;
   className?: ClassNameValue;
 }
 
@@ -134,6 +139,7 @@ export function CalendarGridRow({
   value,
   isDateDisabled,
   onSelect,
+  tabStopDate,
   className,
   ...props
 }: CalendarGridRowProps) {
@@ -146,6 +152,7 @@ export function CalendarGridRow({
           outsideMonth={date.year !== visibleMonth.year || date.month !== visibleMonth.month}
           selected={value?.equals(date) ?? false}
           disabled={isDateDisabled?.(date) ?? false}
+          tabStop={tabStopDate === undefined ? undefined : date.toString() === tabStopDate}
           onClick={onSelect ? () => onSelect(date) : undefined}
         />
       ))}
@@ -153,30 +160,62 @@ export function CalendarGridRow({
   );
 }
 
-export interface CalendarGridCellProps extends Omit<
-  React.ComponentProps<"button">,
-  "className" | "type"
-> {
+export interface CalendarGridCellProps extends Omit<React.ComponentProps<"button">, "className" | "type"> {
   date: Temporal.PlainDate;
   outsideMonth?: boolean;
   selected?: boolean;
+  tabStop?: boolean;
   className?: ClassNameValue;
 }
+
+const dayOffsets: Record<string, number> = {
+  ArrowRight: 1,
+  ArrowLeft: -1,
+  ArrowDown: 7,
+  ArrowUp: -7,
+};
 
 export function CalendarGridCell({
   date,
   outsideMonth,
   selected,
+  tabStop,
   className,
+  onKeyDown: onKeyDownProp,
   ...props
 }: CalendarGridCellProps) {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    onKeyDownProp?.(e);
+    if (e.defaultPrevented) return;
+    const offset = dayOffsets[e.key];
+    if (!offset) return;
+    e.preventDefault();
+    const grid = e.currentTarget.closest('[role="grid"]');
+    if (!grid) return;
+    let next = date;
+    for (let i = 0; i < 31; i++) {
+      next = next.add({ days: offset });
+      if (next.year !== date.year || next.month !== date.month) return;
+      const btn = grid.querySelector<HTMLButtonElement>(
+        `button[data-date="${next.toString()}"]`,
+      );
+      if (!btn) return;
+      if (btn.disabled) continue;
+      btn.focus();
+      return;
+    }
+  };
+
   return (
     <button
       type="button"
       role="gridcell"
       aria-selected={selected}
       data-outside-month={outsideMonth || undefined}
+      data-date={date.toString()}
+      tabIndex={tabStop === undefined ? undefined : tabStop ? 0 : -1}
       {...props}
+      onKeyDown={handleKeyDown}
       className={cn(
         "inline-flex h-8 w-8 items-center justify-center rounded-md text-sm tabular-nums cursor-pointer select-none",
         "transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",

@@ -1,0 +1,69 @@
+---
+title: Badge
+description: 小型状态标记，三种模式 —— 无内容时显示圆点，数字计数带溢出上限，横幅模式展示 "New" 之类的文本。
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add badge" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="badge" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+模式由 props 推导：什么都不传显示圆点，传 `count` 显示数字胶囊（受 `max` 上限约束，超出显示 `99+`），传其它 children 显示横幅。
+
+<ComponentPreview
+  name="badge-basic"
+/>
+
+### 模式
+
+```html
+<Badge />
+<Badge count={120} />
+<Badge>New</Badge>
+```
+
+- **圆点** —— 无内容：`size-2` 圆形，通常绝对定位到图标或按钮上。
+- **数字** —— `count` 配合 `max`（默认 `99`）：超过上限显示 `99+`。数字使用 `tabular-nums`，宽度稳定不抖动。
+- **横幅** —— `New` / `Beta` 之类的文本 children：主题圆角的圆角矩形。
+
+### 定位
+
+`Badge` 就是普通的 `span` —— 在宿主元素外包一层相对定位容器，然后绝对定位：
+
+```tsx
+<button className="relative">
+  Inbox
+  <Badge count={3} className="absolute -top-1.5 -right-1.5" />
+</button>
+```
+
+## API 参考
+
+### Badge
+
+| 属性       | 类型                          | 默认值  | 描述                                              |
+| :--------- | :---------------------------- | :------ | :------------------------------------------------ |
+| `children` | `React.ReactNode`             | -       | 横幅内容；省略或 `null` 显示圆点模式              |
+| `count`    | `number`                      | -       | 数字模式 —— 优先于 `children`                     |
+| `max`      | `number`                      | `99`    | 溢出上限；超过后显示 `${max}+`                    |
+| `className`| `ClassNameValue`              | -       | 自定义类名 —— 与模式样式合并                      |
+| `...props` | `React.ComponentProps<"span">`| -       | 原生 span 属性                                    |
+
+所有模式默认 `bg-destructive text-destructive-foreground`；用背景/文字工具类覆盖即可换色。

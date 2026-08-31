@@ -1,0 +1,25 @@
+---
+title: Dropdown Menu 下拉菜单
+description: 由 Popover 和 Menu 拼装而成的下拉菜单 —— 不提供组件源码，仅提供组合示范
+---
+
+Dropdown Menu 不是一个提供源码的组件。它是两个基础零件的组合：[Popover](/docs/component/popover) 提供触发器和浮动面板，[Menu](/docs/component/menu) 提供菜单项、分组、子菜单和键盘导航。直接在页面中拼装即可 —— 下面的示例就是完整的实现。
+
+## 用法
+
+### 基础用法
+
+面板打开状态保存在你自己的状态中，把 `Menu` 放进 Popover 的面板内容里，并把各条关闭路径接在一起。
+
+<ComponentPreview
+  name="dropdown-menu-basic"
+/>
+
+拼装要点：
+
+- Popover 的 `open` / `onOpenChange` 控制面板；无需额外的容器样式，`PopoverContent` 已自带面板外观。
+- 给 `Menu` 传入 `autoFocus={open}`，面板每次打开时聚焦第一个可用菜单项 —— 方向键立即可用。
+- `Escape` 无需额外接线：Menu 的 `Escape` 会冒泡到 Popover 面板，由它关闭面板并把焦点还给触发器。
+- `onSelect` 把选中的菜单项写回你的状态，通过 `onOpenChange` 关闭面板，并通过 Popover 的 `ref` 把焦点还给触发器。
+
+两个零件的完整属性表请参阅 [Popover API](/docs/component/popover) 和 [Menu API](/docs/component/menu)。

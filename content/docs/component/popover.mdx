@@ -1,0 +1,85 @@
+---
+title: Popover
+description: A button-triggered popover panel built on popover + CSS Anchor Positioning — the base for dropdown-menu compositions
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add popover" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="popover" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Popover is a button + popover base, not a menu: the `trigger` opens a panel whose content is entirely yours. Clicking the trigger toggles the panel; `Escape` (from the trigger or inside the panel) or a click outside both closes it. Compose it with [Menu](/docs/component/menu) to build a dropdown menu, or with [Checkbox](/docs/component/checkbox) to build a [MultiSelect](/docs/component/multi-select).
+
+<ComponentPreview
+  name="popover-basic"
+/>
+
+### Alignment
+
+Beyond the built-in `alignX` (`start` / `center` / `end`), any CSS Anchor Positioning `positionArea` can be set through `styles.content`, with `flip-block, flip-inline` fallbacks enabled by default.
+
+<ComponentPreview
+  name="popover-alignment"
+/>
+
+### Composable Components
+
+Assemble the parts manually for full control over the trigger wiring — the demo replicates the composite's lifecycle: `showPopover()` / `hidePopover()` on open changes, outside `mousedown` to close, `Escape` handling.
+
+<ComponentPreview
+  name="popover-custom"
+/>
+
+## API Reference
+
+### Popover
+
+| Prop            | Type                          | Default   | Description                                                                        |
+| :-------------- | :---------------------------- | :-------- | :--------------------------------------------------------------------------------- |
+| `trigger`       | `React.ReactNode`             | -         | Content of the trigger button                                                      |
+| `open`          | `boolean`                     | -         | Controlled panel state                                                             |
+| `defaultOpen`   | `boolean`                     | `false`   | Initial panel state (uncontrolled)                                                 |
+| `onOpenChange`  | `(open: boolean) => void`     | -         | Fired whenever the panel wants to open or close                                    |
+| `ref`           | `React.Ref<HTMLButtonElement>`| -         | Forwards to the trigger button (e.g. to restore focus after closing)               |
+| `alignX`        | `"start" \| "center" \| "end"`| `center`  | Horizontal alignment of the panel relative to the trigger                          |
+| `className`     | `ClassNameValue`              | -         | Custom class names, applied to the panel                                           |
+| `classNames`    | `trigger` / `content`         | -         | Custom class names per slot                                                        |
+| `styles`        | `trigger` / `content`         | -         | Inline styles per slot — e.g. `styles.content.positionArea` overrides `alignX`     |
+| `...props`      | `PopoverContentProps`         | -         | Rest props spread on the panel; consumer `onKeyDown` composes with the built-in Escape handling |
+
+Closing paths: trigger click toggles, `Escape` (trigger or panel) closes and refocuses the trigger, `mousedown` outside both closes. Consumer `preventDefault()` inside `onKeyDown` skips the built-in behavior.
+
+### PopoverTrigger
+
+The trigger button with built-in `type="button"`. The composite `Popover` sets `anchor-name` on it via inline style, wires the toggle click and closes on `Escape`.
+
+| Prop       | Type                        | Default | Description        |
+| :--------- | :-------------------------- | :------ | :----------------- |
+| `className`| `ClassNameValue`            | -       | Custom class names |
+| `...props` | `React.ComponentProps<"button">` | -  | Native button props |
+
+### PopoverContent
+
+The floating panel. A `popover="manual"` div with `tabIndex={-1}`, pre-wired panel look (`bg-popover`, border, shadow, scrollable up to `max-h-96`).
+
+| Prop       | Type                     | Default | Description        |
+| :--------- | :----------------------- | :------ | :----------------- |
+| `className`| `ClassNameValue`         | -       | Custom class names |
+| `...props` | `React.ComponentProps<"div">` | -  | Native div props   |

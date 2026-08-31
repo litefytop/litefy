@@ -7,37 +7,51 @@ type HTMLAttrs<T> = Omit<T, "className"> & {
   className?: ClassNameValue;
 };
 
-export interface DropdownTriggerProps extends HTMLAttrs<React.ComponentProps<"button">> {
+export interface MenuRootProps extends HTMLAttrs<React.ComponentProps<"ul">> {
   className?: ClassNameValue;
 }
-export function DropdownTrigger({ className, ...props }: DropdownTriggerProps) {
-  return <button {...props} type="button" aria-haspopup="menu" className={cn(className)} />;
+export function MenuRoot({ className, ...props }: MenuRootProps) {
+  return (
+    <ul role="menu" {...props} className={cn("m-0 list-none p-0", className)} />
+  );
 }
 
-export interface DropdownContentProps extends HTMLAttrs<React.ComponentProps<"div">> {
+export interface MenuItemProps extends HTMLAttrs<React.ComponentProps<"li">> {
   className?: ClassNameValue;
 }
-export function DropdownContent({ className, ...props }: DropdownContentProps) {
+export function MenuItem({ className, ...props }: MenuItemProps) {
+  return <li className={cn("m-0 not-last:border-b", className)} {...props} />;
+}
+
+export interface MenuLabelProps extends HTMLAttrs<React.ComponentProps<"li">> {
+  className?: ClassNameValue;
+}
+export function MenuLabel({ className, ...props }: MenuLabelProps) {
+  return (
+    <li
+      className={cn(
+        "m-0 not-last:border-b px-2 py-1.5 text-xs text-muted-foreground",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+export interface MenuSubContentProps extends HTMLAttrs<React.ComponentProps<"div">> {
+  positionAnchor?: string;
+  className?: ClassNameValue;
+}
+export function MenuSubContent({ positionAnchor, className, style, ...props }: MenuSubContentProps) {
   return (
     <div
       {...props}
       popover="manual"
       tabIndex={-1}
       className={cn(
-        "bg-popover text-popover-foreground min-w-32 max-h-96 overflow-auto rounded-md border p-1 shadow-md list-none",
+        "bg-popover text-popover-foreground min-w-32 max-h-96 overflow-auto rounded-md border p-1 shadow-md",
         className,
       )}
-    />
-  );
-}
-
-export interface DropdownSubContentProps extends DropdownContentProps {
-  positionAnchor?: string;
-}
-export function DropdownSubContent({ positionAnchor, style, ...props }: DropdownSubContentProps) {
-  return (
-    <DropdownContent
-      {...props}
       style={{
         margin: 0,
         positionAnchor,
@@ -51,102 +65,91 @@ export function DropdownSubContent({ positionAnchor, style, ...props }: Dropdown
   );
 }
 
-export interface DropdownItemProps extends HTMLAttrs<React.ComponentProps<"li">> {
-  className?: ClassNameValue;
-}
-export function DropdownItem({ children, className, ...props }: DropdownItemProps) {
-  return (
-    <li className={cn("m-0 not-last:border-b", className)} {...props}>
-      {children}
-    </li>
-  );
-}
-
-type DropdownGroup = {
-  group: React.ReactNode;
-  items: DropdownMenuItem[];
-};
-
-type DropdownMenuItem = {
+export type MenuItemConfig = {
   label: React.ReactNode;
   disabled?: boolean;
   className?: ClassNameValue;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  children?: Omit<DropdownMenuItem, "children">[];
+  children?: Omit<MenuItemConfig, "children">[];
 };
 
-export type DropdownItemConfig = DropdownGroup | DropdownMenuItem;
-
-type DropdownAlignX = "start" | "end" | "center";
-
-const alignXMap: Record<
-  DropdownAlignX,
-  { positionArea: string; justifySelf: string; alignSelf: string; margin: string }
-> = {
-  start: {
-    positionArea: "left span-bottom",
-    justifySelf: "end",
-    alignSelf: "start",
-    margin: "0 4px 0 0",
-  },
-  center: {
-    positionArea: "bottom span-all",
-    justifySelf: "center",
-    alignSelf: "start",
-    margin: "4px 0 0",
-  },
-  end: {
-    positionArea: "right span-bottom",
-    justifySelf: "start",
-    alignSelf: "start",
-    margin: "0 0 0 4px",
-  },
+export type MenuGroupConfig = {
+  group: React.ReactNode;
+  items: MenuItemConfig[];
 };
 
-export interface DropdownProps extends Omit<DropdownContentProps, "className" | "style"> {
+export type MenuConfig = MenuGroupConfig | MenuItemConfig;
+
+export interface MenuProps {
+  items: MenuConfig[];
+  autoFocus?: boolean;
+  onSelect?: (item: MenuItemConfig) => void;
+  onEscape?: () => void;
+  className?: ClassNameValue;
+  style?: React.CSSProperties;
   itemClassName?: ClassNameValue;
-  items?: DropdownItemConfig[];
-  alignX?: DropdownAlignX;
   classNames?: {
-    trigger?: ClassNameValue;
-    content?: ClassNameValue;
+    root?: ClassNameValue;
+    item?: ClassNameValue;
+    label?: ClassNameValue;
+    sub?: ClassNameValue;
   };
   styles?: {
-    trigger?: React.CSSProperties;
-    content?: React.CSSProperties;
+    root?: React.CSSProperties;
+    item?: React.CSSProperties;
+    label?: React.CSSProperties;
+    sub?: React.CSSProperties;
   };
 }
 
-interface DropdownMenuProps {
-  items: DropdownItemConfig[];
+interface MenuListProps {
+  ref?: React.Ref<HTMLUListElement>;
+  items: MenuConfig[];
   uid: string;
-  open?: boolean;
   autoFocus?: boolean;
-  onSelect?: () => void;
+  className?: ClassNameValue;
+  style?: React.CSSProperties;
+  itemClassName?: ClassNameValue;
+  classNames?: {
+    item?: ClassNameValue;
+    label?: ClassNameValue;
+  };
+  styles?: {
+    item?: React.CSSProperties;
+    label?: React.CSSProperties;
+  };
+  onSelect?: (item: MenuItemConfig) => void;
   onEscape?: () => void;
-  onArrowRight?: (entryId: string, item: DropdownMenuItem) => void;
+  onArrowRight?: (entryId: string, item: MenuItemConfig) => void;
   onArrowLeft?: () => void;
-  onItemMouseEnter?: (entryId: string, item: DropdownMenuItem) => void;
+  onItemMouseEnter?: (entryId: string, item: MenuItemConfig) => void;
   onItemMouseLeave?: () => void;
 }
 
-function DropdownMenu({
+function MenuList({
+  ref,
   items,
   uid,
-  open,
   autoFocus,
+  className,
+  style,
+  itemClassName,
+  classNames,
+  styles,
   onSelect,
   onEscape,
   onArrowRight,
   onArrowLeft,
   onItemMouseEnter,
   onItemMouseLeave,
-}: DropdownMenuProps) {
+}: MenuListProps) {
   const listRef = React.useRef<HTMLUListElement>(null);
   const [activeEntry, setActiveEntry] = React.useState<string | null>(null);
 
-  const entries = React.useMemo<{ entryId: string; item: DropdownMenuItem }[]>(() => {
-    const list: { entryId: string; item: DropdownMenuItem }[] = [];
+  React.useImperativeHandle(ref, () => listRef.current as HTMLUListElement, []);
+
+  const entries = React.useMemo<{ entryId: string; item: MenuItemConfig }[]>(() => {
+    const list: { entryId: string; item: MenuItemConfig }[] = [];
     items.forEach((item, idx) => {
       const itemUid = `${uid}-${idx}`;
       if ("items" in item) {
@@ -178,31 +181,23 @@ function DropdownMenu({
   };
 
   React.useEffect(() => {
-    if (!open) {
-      setActiveEntry(null);
-      return;
-    }
-    const frame = requestAnimationFrame(focusFirst);
-    return () => cancelAnimationFrame(frame);
-  }, [open, entries]);
-
-  React.useEffect(() => {
     if (!autoFocus) return;
     const frame = requestAnimationFrame(focusFirst);
     return () => cancelAnimationFrame(frame);
   }, [autoFocus]);
 
-  const renderItem = (mi: DropdownMenuItem, entryId: string) => {
+  const renderItem = (mi: MenuItemConfig, entryId: string) => {
     const hasSub = !!(mi.children && mi.children.length > 0);
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       mi.onClick?.(e);
-      onSelect?.();
+      onSelect?.(mi);
     };
     return (
-      <DropdownItem
+      <MenuItem
         key={entryId}
         data-entry={entryId}
-        style={{ anchorName: `--dropdown-sub-${entryId}` }}
+        className={classNames?.item}
+        style={{ anchorName: `--menu-sub-${entryId}`, ...styles?.item }}
         onKeyDown={(e) => {
           const enabled = entries.filter((en) => !en.item.disabled);
           const idx = enabled.findIndex((en) => en.entryId === activeEntry);
@@ -252,11 +247,14 @@ function DropdownMenu({
       >
         <button
           type="button"
+          role="menuitem"
           disabled={mi.disabled}
+          aria-haspopup={hasSub ? "menu" : undefined}
           className={cn(
             "w-full text-left px-2 py-1.5 text-sm font-semibold",
             hasSub && "flex items-center justify-between cursor-default",
             activeEntry === entryId && "bg-hover",
+            itemClassName,
             mi.className,
           )}
           onClick={hasSub ? undefined : handleClick}
@@ -264,7 +262,7 @@ function DropdownMenu({
           {mi.label}
           {hasSub && <span aria-hidden>›</span>}
         </button>
-      </DropdownItem>
+      </MenuItem>
     );
   };
 
@@ -273,12 +271,13 @@ function DropdownMenu({
     const itemUid = `${uid}-${idx}`;
     if ("items" in item) {
       nodes.push(
-        <DropdownItem
+        <MenuLabel
           key={`${itemUid}-label`}
-          className="px-2 py-1.5 text-xs text-muted-foreground"
+          className={classNames?.label}
+          style={styles?.label}
         >
           {item.group}
-        </DropdownItem>,
+        </MenuLabel>,
       );
       item.items.forEach((mi, childIdx) => {
         nodes.push(renderItem(mi, `${itemUid}-${childIdx}`));
@@ -289,28 +288,27 @@ function DropdownMenu({
   });
 
   return (
-    <ul ref={listRef} className="m-0 list-none p-0">
+    <MenuRoot ref={listRef} className={className} style={style}>
       {nodes}
-    </ul>
+    </MenuRoot>
   );
 }
 
-export function Dropdown({
-  items = [],
-  alignX = "center",
+export function Menu({
+  items,
+  autoFocus,
+  onSelect,
+  onEscape,
+  className,
+  style,
+  itemClassName,
   classNames,
   styles,
-  children,
-  ...props
-}: DropdownProps) {
+}: MenuProps) {
   const id = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
-  const anchorName = `--dropdown-${id}`;
-  const triggerRef = React.useRef<HTMLButtonElement>(null);
-  const rootPanelRef = React.useRef<HTMLDivElement>(null);
+  const rootPanelRef = React.useRef<HTMLUListElement>(null);
   const subPanelRef = React.useRef<HTMLDivElement>(null);
-
-  const [open, setOpen] = React.useState(false);
-  const [hoverSubItem, setHoverSubItem] = React.useState<DropdownMenuItem | null>(null);
+  const [hoverSubItem, setHoverSubItem] = React.useState<MenuItemConfig | null>(null);
   const [hoverAnchor, setHoverAnchor] = React.useState<string | null>(null);
   const [subAutoFocus, setSubAutoFocus] = React.useState(false);
 
@@ -330,65 +328,37 @@ export function Dropdown({
     clearTimer();
   };
 
-  const closeAll = React.useCallback(() => {
-    setOpen(false);
-    setHoverSubItem(null);
-    setHoverAnchor(null);
-    setSubAutoFocus(false);
-    clearTimer();
-  }, []);
-
-  React.useEffect(() => {
-    const panel = rootPanelRef.current;
-    if (!panel) return;
-    if (open) {
-      panel.showPopover();
-    } else {
-      panel.hidePopover();
-    }
-  }, [open]);
-
   React.useEffect(() => {
     const panel = subPanelRef.current;
     if (!panel) return;
-    if (open && hoverSubItem && hoverAnchor) {
+    if (hoverSubItem && hoverAnchor) {
       panel.showPopover();
     } else {
       panel.hidePopover();
     }
-  }, [open, hoverSubItem, hoverAnchor]);
-
-  const handleTriggerClick = () => {
-    setOpen(!open);
-    setHoverSubItem(null);
-    clearTimer();
-  };
+  }, [hoverSubItem, hoverAnchor]);
 
   React.useEffect(() => {
-    if (!open) {
-      setHoverSubItem(null);
-      setHoverAnchor(null);
-      clearTimer();
-      return;
-    }
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (rootPanelRef.current?.contains(target)) return;
       if (subPanelRef.current?.contains(target)) return;
-      closeAll();
+      closeSub();
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [open, closeAll]);
+  }, []);
 
-  const openSub = (entryId: string, item: DropdownMenuItem, focus: boolean) => {
+  React.useEffect(() => () => clearTimer(), []);
+
+  const openSub = (entryId: string, item: MenuItemConfig, focus: boolean) => {
     clearTimer();
-    setHoverAnchor(`--dropdown-sub-${entryId}`);
+    setHoverAnchor(`--menu-sub-${entryId}`);
     setHoverSubItem(item);
     setSubAutoFocus(focus);
   };
 
-  const handleItemMouseEnter = (entryId: string, item: DropdownMenuItem) => {
+  const handleItemMouseEnter = (entryId: string, item: MenuItemConfig) => {
     clearTimer();
     if (!item.children?.length) {
       timerRef.current = window.setTimeout(closeSub, 150);
@@ -403,12 +373,12 @@ export function Dropdown({
   };
 
   const handleEscape = () => {
-    closeAll();
-    triggerRef.current?.focus();
+    closeSub();
+    onEscape?.();
   };
 
   const handleArrowLeft = () => {
-    const parentEntry = hoverAnchor?.replace("--dropdown-sub-", "") ?? null;
+    const parentEntry = hoverAnchor?.replace("--menu-sub-", "") ?? null;
     closeSub();
     if (!parentEntry) return;
     const btn = document.querySelector<HTMLButtonElement>(
@@ -419,56 +389,54 @@ export function Dropdown({
     btn.scrollIntoView({ block: "nearest" });
   };
 
+  const handleSelect = onSelect
+    ? (item: MenuItemConfig) => {
+        closeSub();
+        onSelect(item);
+      }
+    : undefined;
+
   return (
     <>
-      <DropdownTrigger
-        ref={triggerRef}
-        onClick={handleTriggerClick}
-        className={classNames?.trigger}
-        style={{ anchorName, ...styles?.trigger }}
-      >
-        {children}
-      </DropdownTrigger>
-      <DropdownContent
+      <MenuList
         ref={rootPanelRef}
-        {...props}
-        className={classNames?.content}
-        style={{
-          positionAnchor: anchorName,
-          ...alignXMap[alignX],
-          positionTryFallbacks: "flip-block, flip-inline",
-          ...styles?.content,
-        }}
-      >
-        <DropdownMenu
-          open={open}
-          items={items}
-          uid={`${id}-root`}
-          onSelect={closeAll}
-          onEscape={handleEscape}
-          onArrowRight={(entryId, item) => openSub(entryId, item, true)}
-          onItemMouseEnter={handleItemMouseEnter}
-          onItemMouseLeave={handleItemMouseLeave}
-        />
-      </DropdownContent>
-      {open && hoverSubItem && hoverAnchor && !!hoverSubItem.children?.length && (
-        <DropdownSubContent
+        items={items}
+        uid={`${id}-root`}
+        autoFocus={autoFocus}
+        className={cn(className, classNames?.root)}
+        style={{ ...style, ...styles?.root }}
+        itemClassName={itemClassName}
+        classNames={{ item: classNames?.item, label: classNames?.label }}
+        styles={{ item: styles?.item, label: styles?.label }}
+        onSelect={handleSelect}
+        onEscape={handleEscape}
+        onArrowRight={(entryId, item) => openSub(entryId, item, true)}
+        onItemMouseEnter={handleItemMouseEnter}
+        onItemMouseLeave={handleItemMouseLeave}
+      />
+      {hoverSubItem && hoverAnchor && !!hoverSubItem.children?.length && (
+        <MenuSubContent
           ref={subPanelRef}
           positionAnchor={hoverAnchor}
           onMouseEnter={clearTimer}
           onMouseLeave={handleItemMouseLeave}
+          className={classNames?.sub}
+          style={styles?.sub}
         >
-          <DropdownMenu
+          <MenuList
             autoFocus={subAutoFocus}
             items={hoverSubItem.children}
             uid={`${id}-sub`}
-            onSelect={closeAll}
+            itemClassName={itemClassName}
+            classNames={{ item: classNames?.item, label: classNames?.label }}
+            styles={{ item: styles?.item, label: styles?.label }}
+            onSelect={handleSelect}
             onEscape={handleEscape}
             onArrowLeft={handleArrowLeft}
             onItemMouseEnter={clearTimer}
             onItemMouseLeave={handleItemMouseLeave}
           />
-        </DropdownSubContent>
+        </MenuSubContent>
       )}
     </>
   );

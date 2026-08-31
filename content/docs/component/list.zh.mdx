@@ -1,6 +1,6 @@
 ---
 title: List
-description: 纯滚动列表容器，渲染 items 数据，不内置分页导航
+description: 支持键盘导航、高亮、选中与滚动到底回调的滚动列表容器
 ---
 
 ## 安装
@@ -25,7 +25,7 @@ description: 纯滚动列表容器，渲染 items 数据，不内置分页导航
 
 ### 基础用法
 
-由 `items` 驱动的纯滚动容器，行内容通过 `renderItem` 渲染。不内置导航器——需要分页时搭配 [`usePagination`](/docs/hooks/use-pagination) hook。
+由 `items` 驱动的滚动容器，行内容通过 `renderItem` 渲染。需要分页时搭配 [`usePagination`](/docs/hooks/use-pagination) hook。
 
 <ComponentPreview
   name="list-basic"
@@ -48,6 +48,16 @@ import { List } from "@/ui";
 />
 ```
 
+键盘导航是内置的：根节点可聚焦（`tabIndex={0}`），`ArrowUp` / `ArrowDown` 移动高亮（两端循环）并自动滚动到可视区域，`Enter` 或点击行触发 `onSelect`。高亮项携带 `data-highlighted`（样式为 `bg-hover`）。对于焦点需要留在别处的容器 —— 如 combobox 输入框 —— 传入 `highlightIndex` / `onHighlightChange` 从外部受控高亮，参见 [Combobox](/docs/component/combobox) 指南。
+
+### 分组
+
+提供 `getGroup` 为每项派生分组标签；标签变化时渲染一行组标题。组标题是普通行 —— 不可聚焦、不会被键盘导航高亮、也不可选中，因此 `ArrowUp` / `ArrowDown` / `Enter` 只作用于数据项。通过 `renderGroupHeader` 自定义标题渲染。
+
+<ComponentPreview
+  name="list-grouped"
+/>
+
 ## API 参考
 
 ### 高级组件
@@ -62,23 +72,34 @@ import { List } from "@/ui";
 | `renderItem` | `(item: T, index: number) => ReactNode` | - | 行内容渲染函数 |
 | `getKey` | `(item: T, index: number) => Key` | - | 行 key 提取函数；默认使用索引 |
 | `empty` | `React.ReactNode` | - | `items` 为空时渲染的内容 |
+| `highlightIndex` | `number \| null` | - | 受控高亮索引；省略时使用内部键盘导航 |
+| `onHighlightChange` | `(index: number \| null) => void` | - | 高亮变化时触发 |
+| `getGroup` | `(item: T, index: number) => string` | - | 分组标签提取函数；标签变化时渲染组标题行 |
+| `renderGroupHeader` | `(label: string) => ReactNode` | - | 自定义组标题渲染；默认渲染原始标签 |
+| `onSelect` | `(item: T, index: number) => void` | - | 点击行或键盘导航期间按下 `Enter` 确认时触发 |
+| `onScrollBottom` | `() => void` | - | 列表滚动到底部时触发，用于加载更多场景 |
+| `ref` | `React.Ref<HTMLDivElement>` | - | 根元素 ref，例如用于把焦点移入列表 |
 | `className` | `ClassNameValue` | - | 根节点自定义类 |
 | `style` | `React.CSSProperties` | - | 根节点自定义内联样式 |
-| `classNames` | `{ root?; item? }` | - | 各零件自定义类 |
-| `styles` | `{ root?; item? }` | - | 各零件自定义内联样式 |
+| `classNames` | `{ root?; item?; header? }` | - | 各零件自定义类 |
+| `styles` | `{ root?; item?; header? }` | - | 各零件自定义内联样式 |
 
-根节点在行之间应用 `divide-y divide-border`，并通过 `overflow-y-auto` 提供滚动。
+根节点在行之间应用 `divide-y divide-border`，通过 `overflow-y-auto` 提供滚动，聚焦时显示 `focus-visible` 描边。
 
 ---
 
 ### 可组合组件
 
-纯展示零件，不内置状态，供高级使用者自由拼装。
+纯展示零件，不内置状态，供高级使用者自由拼装。每个零件继承原生 `div` 属性，其 `className` 会通过 `cn` 与内置默认类合并 —— 传入的是在默认基础上扩展，而非整体替换，这与原生 DOM `className` 的行为不同。使用高级组件 `List` 时，优先通过 `classNames` / `styles` 覆盖。
 
 #### ListRoot
 
-滚动容器；渲染为 `overflow-y-auto` 的 div。
+滚动容器；渲染为 `overflow-y-auto` 的 div，聚焦时显示 `focus-visible` 描边。
 
 #### ListItem
 
-单行；渲染为基础样式为 `px-3 py-2 text-sm` 的 flex div。
+单行数据项；渲染为基础样式为 `px-3 py-2 text-sm`、`cursor-pointer`、`hover:bg-hover`、`data-highlighted:bg-hover` 的 flex div。
+
+#### ListHeader
+
+由 `getGroup` 渲染的非交互组标题行；渲染为 `px-3 py-1.5 text-xs font-medium text-muted-foreground` 的 div。不可聚焦、不会被键盘导航高亮、也不可选中。

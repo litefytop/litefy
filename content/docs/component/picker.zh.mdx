@@ -65,6 +65,9 @@ Picker 是一个积木组件，而不是成品组件。将它与 [Calendar](/doc
 
 - 弹出面板是原生 `popover="manual"` 元素，使用 CSS 锚点定位：锚定在输入框上，底边起始对齐，`min-width: anchor-size(width)`，并带有 `flip-block` 回退。
 - 点击输入框切换面板；按下 `Escape` 或在输入框和面板之外按下鼠标时关闭。
+- 键盘：面板关闭时按 `ArrowDown` 打开面板，按 `Escape` 关闭 —— 内置行为，无需接线。
+- 消费者传入的 `onKeyDown` / `onClick` 与内部行为组合调用，不会被覆盖；当消费者调用 `preventDefault` 时跳过内部的打开与 Escape 关闭。
+- 受控模式下父组件必须响应 `onValueChange` 更新 `value`，否则输入框无法键入。
 - 面板定位依赖 CSS 锚点定位支持 —— 请确保目标环境支持该特性。
 
 ---

@@ -1,95 +1,25 @@
 ---
 title: MultiSelect
-description: A multi-select component for selecting multiple options from a list
+description: A multi-select assembled from Popover and Checkbox — not a shipped component, only a composition guide with demos
 ---
 
-## Installation
-
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add multi-select" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="multi-select" />
-
-</Tab>
-
-</Tabs>
+MultiSelect is not a shipped component with source code. It is a composition of two primitives: [Popover](/docs/component/popover) provides the trigger and the floating panel, and [CheckboxGroup](/docs/component/checkbox) provides the option list with multi-select state. Assemble them directly in your page — the demo below is the complete implementation.
 
 ## Usage
 
-<Callout type="info" title="Native Alternative for Chrome 140+">
-  If you are targeting the latest Chrome (version 140 or above), the native
-  `<select>` element with `multiple` and `size={1}` provides comparable UX with
-  better performance out of the box. You can simply spread the props and
-  override the attributes:
-</Callout>
-
-```tsx
-<select {...props} multiple size={1}>
-  {options.map((opt) => (
-    <option key={opt.value} value={opt.value}>
-      {opt.label}
-    </option>
-  ))}
-</select>
-```
-
 ### Basic Usage
 
-A simple multi-select with a list of options.
+Hold the selected values in your own state, put `CheckboxGroup` inside the Popover content, and show the selection count on the trigger.
 
-<ComponentPreview 
+<ComponentPreview
   name="multi-select-basic"
 />
 
-### Grouped Options
+Key points of the assembly:
 
-Organize options into logical groups for better user experience.
+- Popover's `open` / `onOpenChange` control the panel; `PopoverContent` already carries the panel look, so the checkbox list needs no extra container styling.
+- Clicks inside the panel never close it — Popover only closes on outside mousedown or `Escape` — so users can toggle several checkboxes freely.
+- `CheckboxGroup` is controlled (`value` / `onChange` with `string[]`); write the values back to your page state and derive the trigger label from them. Always render the count (e.g. `` `Categories (${values.length})` ``) instead of switching between different labels, so the trigger keeps a stable width and avoids layout shift.
+- Checkboxes are natively tabbable and toggled with `Space`, so keyboard access works without extra wiring.
 
-<ComponentPreview 
-  name="multi-select-grouped"
-/>
-
-### Controlled Mode
-
-Manage selected values externally with controlled state.
-
-<ComponentPreview 
-  name="multi-select-controlled"
-/>
-
-## API Reference
-
-### MultiSelect
-
-A multi-select component that allows selecting multiple options.
-
-| Prop           | Type                                    | Default | Description                                                                                                        |
-| -------------- | --------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
-| `options`      | `(SelectOption \| SelectOptionGroup)[]` | -       | List of options or option groups                                                                                   |
-| `value`        | `string[]`                              | -       | Controlled selected values                                                                                         |
-| `defaultValue` | `string[]`                              | `[]`    | Uncontrolled default selected values                                                                               |
-| `onChange`     | `(values: string[]) => void`            | -       | Callback when selection changes                                                                                    |
-| `placeholder`  | `string`                                | -       | Placeholder text                                                                                                   |
-| `invalid`      | `boolean`                               | `false` | Whether the select is in invalid state                                                                             |
-| `className`    | `ClassNameValue`                        | -       | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
-
-### SelectOption
-
-| Prop    | Type     | Description                  |
-| ------- | -------- | ---------------------------- |
-| `label` | `string` | Display label for the option |
-| `value` | `string` | Unique value for the option  |
-
-### SelectOptionGroup
-
-| Prop      | Type             | Description           |
-| --------- | ---------------- | --------------------- |
-| `group`   | `string`         | Group label           |
-| `options` | `SelectOption[]` | Options in this group |
+Refer to the [Popover API](/docs/component/popover) and [Checkbox API](/docs/component/checkbox) for the full prop tables of both parts.

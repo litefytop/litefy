@@ -90,7 +90,7 @@ CLI 全自动维护所有 installed 数组与 index.ts 导出，无需手动修�
 5. 样式保护性忽略：Repair / Clean 不处理 CSS 文件，保留用户自定义样式修改。
    📦 可用资源清单
    组件、Hooks 持续更新，内置清单包含：
-   accordion, anchor, button, carousel, checkbox, collapse, combobox, date-picker, description, dialog, drawer, dropdown, empty, form, image, input, loading, number-field, paginated-viewer, pagination, paper, password, progress, radio, select, separator, sidebar, slider, tabs, text-area, theme, title, toast, tooltip, upload, virtual-scroll, watermark
+   accordion, anchor, button, carousel, checkbox, collapse, date-picker, description, dialog, drawer, empty, form, image, input, loading, number-field, pager, pagination, paper, password, popover, progress, radio, select, separator, sidebar, slider, steps, tabs, text-area, theme, title, toast, tooltip, upload, virtual-scroll, watermark
    📌 版本机制
    注册表、组件资源跟随 CLI 版本发布，升级 CLI 即可获取最新组件与修复：
    npx litefy@latest add button
