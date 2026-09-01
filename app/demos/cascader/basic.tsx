@@ -12,67 +12,67 @@ type CascaderNode = {
 
 const tree: CascaderNode[] = [
   {
-    value: "guangdong",
-    label: "广东省",
+    value: "california",
+    label: "California",
     children: [
       {
-        value: "guangzhou",
-        label: "广州市",
+        value: "los-angeles",
+        label: "Los Angeles",
         children: [
-          { value: "tianhe", label: "天河区" },
-          { value: "yuexiu", label: "越秀区" },
-          { value: "haizhu", label: "海珠区" },
+          { value: "downtown", label: "Downtown" },
+          { value: "hollywood", label: "Hollywood" },
+          { value: "pasadena", label: "Pasadena" },
         ],
       },
       {
-        value: "shenzhen",
-        label: "深圳市",
+        value: "san-francisco",
+        label: "San Francisco",
         children: [
-          { value: "nanshan", label: "南山区" },
-          { value: "futian", label: "福田区" },
-          { value: "luohu", label: "罗湖区" },
-        ],
-      },
-    ],
-  },
-  {
-    value: "hunan",
-    label: "湖南省",
-    children: [
-      {
-        value: "changsha",
-        label: "长沙市",
-        children: [
-          { value: "yuelu", label: "岳麓区" },
-          { value: "kaifu", label: "开福区" },
+          { value: "soma", label: "SoMa" },
+          { value: "richmond", label: "Richmond" },
+          { value: "sunset", label: "Sunset" },
         ],
       },
     ],
   },
   {
-    value: "neimenggu",
-    label: "内蒙古自治区",
+    value: "new-york",
+    label: "New York",
     children: [
       {
-        value: "huhehaote",
-        label: "呼和浩特市",
+        value: "new-york-city",
+        label: "New York City",
         children: [
-          { value: "xincheng", label: "新城区" },
-          { value: "huimin", label: "回民区" },
+          { value: "manhattan", label: "Manhattan" },
+          { value: "brooklyn", label: "Brooklyn" },
         ],
       },
     ],
   },
   {
-    value: "zhejiang",
-    label: "浙江省",
+    value: "texas",
+    label: "Texas",
     children: [
       {
-        value: "hangzhou",
-        label: "杭州市",
+        value: "houston",
+        label: "Houston",
         children: [
-          { value: "xihu", label: "西湖区" },
-          { value: "binjiang", label: "滨江区" },
+          { value: "midtown", label: "Midtown" },
+          { value: "uptown", label: "Uptown" },
+        ],
+      },
+    ],
+  },
+  {
+    value: "washington",
+    label: "Washington",
+    children: [
+      {
+        value: "seattle",
+        label: "Seattle",
+        children: [
+          { value: "ballard", label: "Ballard" },
+          { value: "fremont", label: "Fremont" },
         ],
       },
     ],
@@ -143,7 +143,7 @@ export default function CascaderBasicDemo() {
             openLevel === 0 ? " text-foreground" : ""
           }`}
         >
-          请选择你的籍贯
+          Select your location
         </button>
       ) : (
         <>

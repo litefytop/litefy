@@ -27,7 +27,7 @@ export default function PaginationDemo() {
   return (
     <div className="flex items-center justify-between gap-4 px-4 py-3 border rounded-md w-full">
       <div className="text-sm text-gray-600">
-        {startRecord} - {endRecord} / 共 {Math.ceil(totalRecords / pageSize)} 页
+        {startRecord} - {endRecord} of {Math.ceil(totalRecords / pageSize)} pages
       </div>
 
       <div className="flex items-center gap-2">
@@ -56,7 +56,7 @@ export default function PaginationDemo() {
         >
           {pageOptions.map((page) => (
             <option key={page} value={page}>
-              第 {page} 页
+              Page {page}
             </option>
           ))}
         </select>

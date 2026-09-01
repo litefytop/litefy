@@ -32,7 +32,7 @@ function Sidebar({ ref, children, className, defaultOpen = true, ...props }: Sid
       data-close={!open ? true : undefined}
       className={cn(
         className,
-        "bg-sidebar min-h-0 h-full overflow-hidden transition-[width,padding,margin] duration-300 ease-in-out data-close:w-0 data-close:p-0 data-close:m-0",
+        "min-h-0 h-full overflow-hidden transition-[width,padding,margin] duration-300 ease-in-out data-close:w-0 data-close:p-0 data-close:m-0",
       )}
     >
       {children}

@@ -2,10 +2,12 @@
   --background: oklch(98.4% 0.003 247.858);
   --foreground: oklch(12.9% 0.042 264.695);
   --muted: oklch(70.4% 0.04 256.788);
+  --neutral: oklch(86.9% 0.022 252.894);
 }
 
 .dark[data-surface="slate"] {
   --foreground: oklch(98.4% 0.003 247.858);
   --background: oklch(12.9% 0.042 264.695);
   --muted: oklch(44.6% 0.043 257.281);
+  --neutral: oklch(37.2% 0.044 257.287);
 }

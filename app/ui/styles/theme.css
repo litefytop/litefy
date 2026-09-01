@@ -1,9 +1,9 @@
 :root {
   color-scheme: light;
 
-  --background: oklch(98.5% 0 0);
-  --foreground: oklch(14.5% 0 0);
-  --muted: oklch(97% 0 none);
+  --background: oklch(97% 0 0);
+  --foreground: oklch(20.5% 0 none);
+  --muted: oklch(92.2% 0 none);
   --muted-foreground: oklch(26.9% 0 none);
   --neutral: oklch(87% 0 none);
 
@@ -22,13 +22,13 @@
 .dark {
   color-scheme: dark;
 
-  --background: oklch(14.5% 0 0);
-  --foreground: oklch(98.5% 0 0);
+  --background: oklch(20.5% 0 none);
+  --foreground: oklch(97% 0 0);
   --muted: oklch(26.9% 0 none);
-  --muted-foreground: oklch(97% 0 none);
+  --muted-foreground: oklch(92.2% 0 none);
   --neutral: oklch(37.1% 0 none);
 
-  --primary: oklch(98.5% 0 0);
+  --primary: oklch(97% 0 0);
   --accent: oklch(87% 0 0);
 
   --destructive-accent: oklch(63.7% 0.237 25.331);
@@ -46,23 +46,17 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-hover: var(--neutral);
   --color-neutral: var(--neutral);
-  --color-border: var(--neutral);
 
   --color-primary: var(--primary);
   --color-primary-foreground: var(--background);
   --color-accent: var(--accent);
-  --color-accent-foreground: var(--primary-foreground);
+  --color-accent-foreground: var(--foreground);
+  --color-border: var(--ring);
+  --color-ring: var(--ring);
 
   --color-info: var(--info);
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-destructive: var(--destructive);
   --color-destructive-accent: var(--destructive-accent);
-
-  --color-ring: var(--ring);
-
-  --color-card: var(--background);
-  --color-card-foreground: var(--foreground);
-  --color-sidebar: var(--background);
-  --color-sidebar-foreground: var(--foreground);
 }

@@ -187,10 +187,10 @@ export default function TransferPickerBasicDemo() {
             </div>
             <div className="flex gap-2 border-t p-2">
               <Button variant="outline" className="flex-1" onClick={() => setOpen(false)}>
-                暂存
+                Stash
               </Button>
               <Button className="flex-1" onClick={() => setOpen(false)}>
-                确定
+                Confirm
               </Button>
             </div>
           </div>

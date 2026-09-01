@@ -38,6 +38,31 @@ function ThemeToggle() {
 }
 ```
 
+## Theming tokens
+
+`surface` and `brand` switch the CSS variable sets defined in `app/ui/styles/*-surface.css` and `app/ui/styles/*-brand.css`. The preview above lets you switch them live.
+
+### Surface
+
+The surface palette is a neutral color system for containers:
+
+| Token | Purpose |
+|------|-------------|
+| `--background` / `--foreground` | Containers that carry content, e.g. popover, sidebar, card, paper |
+| `--muted` | Areas that should not draw attention, e.g. the app-level background; content containers are painted with the more prominent `--background`, so users focus on them against the muted backdrop |
+| `--muted-foreground` | Description text, one step weaker than body text |
+| `--neutral` | Hover states and skeleton backgrounds |
+
+### Brand
+
+The brand palette is the theme color system. Except for the default black-and-white theme, brands are colorful:
+
+| Token | Purpose |
+|------|-------------|
+| `--primary` | The main brand color, used for emphasized actions and states |
+| `--accent` | The reinforced primary color, used for hover scenarios |
+| `--ring` | Borders and focus outlines, also part of the brand color family |
+
 ## API Reference
 
 ### useTheme

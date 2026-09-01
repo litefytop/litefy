@@ -25,7 +25,7 @@ description: A menu component usable directly in the document flow, with groupin
 
 ### Basic Usage
 
-Menu is a real menu component that renders directly in the document flow — no trigger or popover wrapper required. Items are driven by the `items` config: they can be grouped with labels, disabled, and any item can open a two-level submenu (max two levels). Since there is no panel container in the flow, provide the container styling yourself (e.g. `w-48 rounded-md border bg-popover p-1 shadow-md`).
+Menu is a real menu component that renders directly in the document flow — no trigger or popover wrapper required. Items are driven by the `items` config: they can be grouped with labels, disabled, and any item can open a two-level submenu (max two levels). Since there is no panel container in the flow, provide the container styling yourself (e.g. `w-48 rounded-md border p-1 shadow-md`).
 
 <ComponentPreview
   name="menu-basic"
@@ -49,7 +49,7 @@ const items: MenuConfig[] = [
 ];
 
 <Menu
-  className="w-48 rounded-md border bg-popover p-1 shadow-md"
+  className="w-48 rounded-md border p-1 shadow-md"
   items={items}
   onSelect={(item) => setSelected(item.label)}
 />

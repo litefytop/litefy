@@ -81,7 +81,7 @@ export default function ChatInputDemo() {
         value={text}
         onChange={handleTextChange}
         onPaste={handlePaste}
-        placeholder="输入消息，粘贴截图试试…"
+        placeholder="Type a message, try pasting a screenshot…"
         className="min-h-16 resize-none border-0 px-1 shadow-none focus:ring-0"
       />
       <div className="flex items-center justify-between">
@@ -92,7 +92,7 @@ export default function ChatInputDemo() {
             className="px-2.5 py-1 text-xs"
           >
             <Brain />
-            深度思考
+            Deep think
           </Toggle>
           <Toggle
             checked={webSearch}
@@ -100,7 +100,7 @@ export default function ChatInputDemo() {
             className="px-2.5 py-1 text-xs"
           >
             <Globe />
-            联网搜索
+            Web search
           </Toggle>
         </div>
         <Button onClick={handleSend} disabled={!canSend}>
