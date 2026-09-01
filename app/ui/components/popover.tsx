@@ -24,7 +24,7 @@ export function PopoverContent({ className, ...props }: PopoverContentProps) {
       popover="manual"
       tabIndex={-1}
       className={cn(
-        "bg-popover text-popover-foreground min-w-32 max-h-96 overflow-auto rounded-md border p-1 shadow-md",
+        "bg-background text-foreground min-w-32 max-h-96 overflow-auto rounded-md border p-1 shadow-md",
         className,
       )}
     />
@@ -32,6 +32,15 @@ export function PopoverContent({ className, ...props }: PopoverContentProps) {
 }
 
 type PopoverAlignX = "start" | "end" | "center";
+
+const focusableSelector = [
+  "a[href]",
+  "button:not(:disabled)",
+  'input:not(:disabled):not([type="hidden"])',
+  "select:not(:disabled)",
+  "textarea:not(:disabled)",
+  '[tabindex]:not([tabindex="-1"]):not(:disabled)',
+].join(", ");
 
 const alignXMap: Record<
   PopoverAlignX,
@@ -45,7 +54,7 @@ const alignXMap: Record<
   },
   center: {
     positionArea: "bottom span-all",
-    justifySelf: "center",
+    justifySelf: "anchor-center",
     alignSelf: "start",
     margin: "4px 0 0",
   },
@@ -115,6 +124,8 @@ export function Popover({
     if (!panel) return;
     if (open) {
       panel.showPopover();
+      const firstFocusable = panel.querySelector<HTMLElement>(focusableSelector);
+      (firstFocusable ?? panel).focus();
     } else {
       panel.hidePopover();
     }

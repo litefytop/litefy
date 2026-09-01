@@ -3,6 +3,7 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router";
 import { baseOptions } from "@/components/layout-shared";
+import { ExampleWall } from "@/components/example-wall";
 import { Button } from "@/ui";
 import { cn } from "@/lib";
 import { i18n } from "@/lib/i18n";
@@ -12,8 +13,7 @@ export type Locale = "en" | "zh";
 const content = {
   en: {
     title: "Litefy UI - Lightweight React Component Library",
-    description:
-      "Litefy UI is a lightweight React UI library for building modern web apps.",
+    description: "Litefy UI is a lightweight React UI library for building modern web apps.",
     heading: (
       <>
         Native at its core
@@ -21,9 +21,7 @@ const content = {
         Lean external tooling
       </>
     ),
-    subheading:
-      "Lightweight native React components with minimal external tooling",
-    viewComponentsButton: "View Components",
+    subheading: "Lightweight native React components with minimal external tooling",
   },
   zh: {
     title: "Litefy UI - 轻量级无依赖 React 组件库",
@@ -31,7 +29,6 @@ const content = {
       "Litefy UI 是一款无依赖、轻量级的 React UI 库，提供开箱即用的组件，助你快速构建现代化、响应式的 Web 应用。适合用于个人项目及企业级开发。",
     heading: <>原生为基底 极简外部依赖</>,
     subheading: "轻量原生 React 组件库，仅保留必要外部工具",
-    viewComponentsButton: "查看组件",
   },
 } as const;
 
@@ -49,8 +46,7 @@ const landingContent = {
     badge: "v1.0 发布",
     title1: "用更少的工作",
     title2: "构建精美的界面",
-    description:
-      "面向现代 Web 应用的轻量级、零依赖 UI 库。无障碍、可组合,开箱即用。",
+    description: "面向现代 Web 应用的轻量级、零依赖 UI 库。无障碍、可组合,开箱即用。",
     primaryCta: "开始使用",
     secondaryCta: "在 GitHub 查看",
   },
@@ -87,10 +83,7 @@ function LandingHero({ locale }: { locale: Locale }) {
           {t.description}
         </p>
         <div className="mt-6 flex flex-wrap gap-2">
-          <Link
-            to={docsPath}
-            className={cn(Button.class.base, Button.class.variant.primary)}
-          >
+          <Link to={docsPath} className={cn(Button.class.base, Button.class.variant.primary)}>
             {t.primaryCta}
             <ArrowRight className="size-4" />
           </Link>
@@ -142,14 +135,9 @@ export function HomeContent({ locale }: { locale: Locale }) {
         <div className="mt-12 w-full max-w-5xl text-left">
           <LandingHero locale={locale} />
         </div>
-        <h1 className="headline">{t.heading}</h1>
-        <p className="text-fd-muted-foreground mb-4">{t.subheading}</p>
-        <Link
-          to={`${locale}/docs/overview`}
-          className={`${Button.class.base} ${Button.class.variant.primary}`}
-        >
-          {t.viewComponentsButton}
-        </Link>
+        <h1 className="headline mt-4">{t.heading}</h1>
+        <p className="text-fd-muted-foreground">{t.subheading}</p>
+        <ExampleWall locale={locale} />
       </div>
     </HomeLayout>
   );

@@ -22,6 +22,7 @@ export function PickerInput({ className, ...props }: PickerInputProps) {
       className={cn(
         "h-9 w-full px-3 py-2 text-sm border rounded-md bg-muted outline-none cursor-pointer",
         "placeholder:text-muted-foreground focus:ring-inset focus:ring-1 focus:ring-ring",
+        "disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
     />
@@ -38,7 +39,7 @@ export function PickerContent({ className, ...props }: PickerContentProps) {
       popover="manual"
       {...props}
       className={cn(
-        "bg-popover text-popover-foreground border shadow-lg rounded-md",
+        "bg-background text-foreground border shadow-lg rounded-md",
         className,
       )}
     />

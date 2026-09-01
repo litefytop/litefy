@@ -47,7 +47,7 @@ description: 基于原生 Popover API 和 CSS 锚点定位构建的提示框组�
 
 #### Tooltip
 
-克隆单个触发子元素并注入锚点关联与悬停/焦点处理器，通过 portal 渲染提示内容。
+克隆单个触发子元素并注入锚点关联与悬停/焦点处理器，提示内容内联渲染。
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
@@ -74,7 +74,7 @@ description: 基于原生 Popover API 和 CSS 锚点定位构建的提示框组�
 
 #### TooltipContent
 
-通过 portal 渲染的提示气泡，带 `popover="manual"` 和锚点定位。
+内联渲染的提示气泡，带 `popover="manual"`（top layer 不受祖先 `overflow` 裁剪）和锚点定位。
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|

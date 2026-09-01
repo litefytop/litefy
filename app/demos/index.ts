@@ -3,6 +3,18 @@ import AvatarBasicDemo from "./avatar/basic";
 import avatarBasicCode from "./avatar/basic.tsx?raw";
 import BadgeBasicDemo from "./badge/basic";
 import badgeBasicCode from "./badge/basic.tsx?raw";
+import BreadcrumbBasicDemo from "./breadcrumb/basic";
+import breadcrumbBasicCode from "./breadcrumb/basic.tsx?raw";
+import ChartLineDemo from "./chart/line";
+import chartLineCode from "./chart/line.tsx?raw";
+import ChartAreaDemo from "./chart/area";
+import chartAreaCode from "./chart/area.tsx?raw";
+import ChartBarsDemo from "./chart/bars";
+import chartBarsCode from "./chart/bars.tsx?raw";
+import ChatInputBasicDemo from "./chat-input/basic";
+import chatInputBasicCode from "./chat-input/basic.tsx?raw";
+import CascaderBasicDemo from "./cascader/basic";
+import cascaderBasicCode from "./cascader/basic.tsx?raw";
 import AvatarCustomDemo from "./avatar/custom";
 import avatarCustomCode from "./avatar/custom.tsx?raw";
 import CollapseAccordionDemo from "./collapse/accordion";
@@ -27,6 +39,10 @@ import CheckboxBasicDemo from "./checkbox/basic";
 import checkboxBasicCode from "./checkbox/basic.tsx?raw";
 import CheckboxGroupDemo from "./checkbox/group";
 import checkboxGroupCode from "./checkbox/group.tsx?raw";
+import ChipGroupBasicDemo from "./chip-group/basic";
+import chipGroupBasicCode from "./chip-group/basic.tsx?raw";
+import ChipGroupTooltipDemo from "./chip-group/tooltip";
+import chipGroupTooltipCode from "./chip-group/tooltip.tsx?raw";
 import CheckboxCustomDemo from "./checkbox/custom";
 import checkboxCustomCode from "./checkbox/custom.tsx?raw";
 import ComboboxAsyncDemo from "./combobox/async";
@@ -71,10 +87,16 @@ import DropdownMenuBasicDemo from "./dropdown-menu/basic";
 import dropdownMenuBasicCode from "./dropdown-menu/basic.tsx?raw";
 import PopoverBasicDemo from "./popover/basic";
 import popoverBasicCode from "./popover/basic.tsx?raw";
+import ProgressBasicDemo from "./progress/basic";
+import progressBasicCode from "./progress/basic.tsx?raw";
 import PopoverAlignmentDemo from "./popover/alignment";
 import popoverAlignmentCode from "./popover/alignment.tsx?raw";
 import PopoverCustomDemo from "./popover/custom";
 import popoverCustomCode from "./popover/custom.tsx?raw";
+import PreviewCardImageDemo from "./preview-card/image";
+import previewCardImageCode from "./preview-card/image.tsx?raw";
+import PreviewCardBasicDemo from "./preview-card/basic";
+import previewCardBasicCode from "./preview-card/basic.tsx?raw";
 import FormBasicDemo from "./form/basic";
 import formBasicCode from "./form/basic.tsx?raw";
 import FormHorizontalDemo from "./form/horizontal";
@@ -103,6 +125,8 @@ import InputCustomDemo from "./input/custom";
 import inputCustomCode from "./input/custom.tsx?raw";
 import MultiSelectBasicDemo from "./multi-select/basic";
 import multiSelectBasicCode from "./multi-select/basic.tsx?raw";
+import MultiSelectGroupedDemo from "./multi-select/grouped";
+import multiSelectGroupedCode from "./multi-select/grouped.tsx?raw";
 import NumberFieldBasicDemo from "./number-field/basic";
 import numberFieldBasicCode from "./number-field/basic.tsx?raw";
 import NumberFieldControlledDemo from "./number-field/controlled";
@@ -167,6 +191,14 @@ import SliderInvalidDemo from "./slider/invalid";
 import sliderInvalidCode from "./slider/invalid.tsx?raw";
 import StepsBasicDemo from "./steps/basic";
 import stepsBasicCode from "./steps/basic.tsx?raw";
+import TimelineBasicDemo from "./timeline/basic";
+import timelineBasicCode from "./timeline/basic.tsx?raw";
+import ToastBasicDemo from "./toast/basic";
+import toastBasicCode from "./toast/basic.tsx?raw";
+import ToastActionsDemo from "./toast/actions";
+import toastActionsCode from "./toast/actions.tsx?raw";
+import ToastPromiseDemo from "./toast/promise";
+import toastPromiseCode from "./toast/promise.tsx?raw";
 import WizardBasicDemo from "./wizard/basic";
 import wizardBasicCode from "./wizard/basic.tsx?raw";
 import SelectBasicDemo from "./select/basic";
@@ -209,6 +241,8 @@ import TransferBasicDemo from "./transfer/basic";
 import transferBasicCode from "./transfer/basic.tsx?raw";
 import TransferPickerBasicDemo from "./transfer-picker/basic";
 import transferPickerBasicCode from "./transfer-picker/basic.tsx?raw";
+import TransferPickerMultipleDemo from "./transfer-picker/multiple";
+import transferPickerMultipleCode from "./transfer-picker/multiple.tsx?raw";
 import UseDragBasicDemo from "./use-drag/basic";
 import useDragBasicCode from "./use-drag/basic.tsx?raw";
 import UseRemotePaginationBasicDemo from "./use-remote-pagination/basic";
@@ -250,6 +284,22 @@ export const demos: Record<string, DemoItem> = {
     component: ButtonLoadingDemo,
     code: buttonLoadingCode,
   },
+  "chat-input-basic": {
+    component: ChatInputBasicDemo,
+    code: chatInputBasicCode,
+  },
+  "chart-line": {
+    component: ChartLineDemo,
+    code: chartLineCode,
+  },
+  "chart-area": {
+    component: ChartAreaDemo,
+    code: chartAreaCode,
+  },
+  "chart-bars": {
+    component: ChartBarsDemo,
+    code: chartBarsCode,
+  },
   "button-icon": {
     component: ButtonIconDemo,
     code: buttonIconCode,
@@ -274,6 +324,14 @@ export const demos: Record<string, DemoItem> = {
   "checkbox-group": {
     component: CheckboxGroupDemo,
     code: checkboxGroupCode,
+  },
+  "chip-group-basic": {
+    component: ChipGroupBasicDemo,
+    code: chipGroupBasicCode,
+  },
+  "chip-group-tooltip": {
+    component: ChipGroupTooltipDemo,
+    code: chipGroupTooltipCode,
   },
   "checkbox-custom": {
     component: CheckboxCustomDemo,
@@ -371,6 +429,18 @@ export const demos: Record<string, DemoItem> = {
     component: PopoverCustomDemo,
     code: popoverCustomCode,
   },
+  "preview-card-image": {
+    component: PreviewCardImageDemo,
+    code: previewCardImageCode,
+  },
+  "preview-card-basic": {
+    component: PreviewCardBasicDemo,
+    code: previewCardBasicCode,
+  },
+  "progress-basic": {
+    component: ProgressBasicDemo,
+    code: progressBasicCode,
+  },
   "form-basic": {
     component: FormBasicDemo,
     code: formBasicCode,
@@ -394,6 +464,14 @@ export const demos: Record<string, DemoItem> = {
   "badge-basic": {
     component: BadgeBasicDemo,
     code: badgeBasicCode,
+  },
+  "breadcrumb-basic": {
+    component: BreadcrumbBasicDemo,
+    code: breadcrumbBasicCode,
+  },
+  "cascader-basic": {
+    component: CascaderBasicDemo,
+    code: cascaderBasicCode,
   },
   "avatar-custom": {
     component: AvatarCustomDemo,
@@ -507,6 +585,10 @@ export const demos: Record<string, DemoItem> = {
     component: MultiSelectBasicDemo,
     code: multiSelectBasicCode,
   },
+  "multi-select-grouped": {
+    component: MultiSelectGroupedDemo,
+    code: multiSelectGroupedCode,
+  },
   "password-basic": {
     component: PasswordBasicDemo,
     code: passwordBasicCode,
@@ -583,6 +665,22 @@ export const demos: Record<string, DemoItem> = {
     component: StepsBasicDemo,
     code: stepsBasicCode,
   },
+  "timeline-basic": {
+    component: TimelineBasicDemo,
+    code: timelineBasicCode,
+  },
+  "toast-basic": {
+    component: ToastBasicDemo,
+    code: toastBasicCode,
+  },
+  "toast-actions": {
+    component: ToastActionsDemo,
+    code: toastActionsCode,
+  },
+  "toast-promise": {
+    component: ToastPromiseDemo,
+    code: toastPromiseCode,
+  },
   "wizard-basic": {
     component: WizardBasicDemo,
     code: wizardBasicCode,
@@ -651,6 +749,10 @@ export const demos: Record<string, DemoItem> = {
   "transfer-picker-basic": {
     component: TransferPickerBasicDemo,
     code: transferPickerBasicCode,
+  },
+  "transfer-picker-multiple": {
+    component: TransferPickerMultipleDemo,
+    code: transferPickerMultipleCode,
   },
   "upload-basic": {
     component: UploadBasicDemo,

@@ -236,7 +236,7 @@ export function Slider({
           className={cn(
             "size-5 touch-none rounded-full border-2 border-primary bg-background shadow-sm",
             "cursor-grab active:cursor-grabbing",
-            "focus-visible:ring-2 focus-visible:ring-ring",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
             "group-data-invalid:border-destructive",
             "disabled:pointer-events-none disabled:opacity-60 disabled:cursor-not-allowed",
             classNames?.thumb,

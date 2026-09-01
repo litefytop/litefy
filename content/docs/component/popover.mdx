@@ -25,7 +25,7 @@ description: A button-triggered popover panel built on popover + CSS Anchor Posi
 
 ### Basic Usage
 
-Popover is a button + popover base, not a menu: the `trigger` opens a panel whose content is entirely yours. Clicking the trigger toggles the panel; `Escape` (from the trigger or inside the panel) or a click outside both closes it. Compose it with [Menu](/docs/component/menu) to build a dropdown menu, or with [Checkbox](/docs/component/checkbox) to build a [MultiSelect](/docs/component/multi-select).
+Popover is a button + popover base, not a menu: the `trigger` opens a panel whose content is entirely yours. Clicking the trigger toggles the panel; focus moves to the first focusable element inside the panel when it opens (falling back to the panel itself when none exists), and `Escape` (from the trigger or inside the panel) or a click outside both closes it. Compose it with [Menu](/docs/component/menu) to build a dropdown menu, or with [Checkbox](/docs/component/checkbox) to build a [MultiSelect](/docs/component/multi-select).
 
 <ComponentPreview
   name="popover-basic"

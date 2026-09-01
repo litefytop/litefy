@@ -41,22 +41,14 @@ export function ScrollShadow({
   slotProps,
 }: ScrollShadowProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [visibility, setVisibility] =
-    useState<Record<Edge, boolean>>(initialVisibility);
+  const [visibility, setVisibility] = useState<Record<Edge, boolean>>(initialVisibility);
   const edges = useMemo(() => normalizeEdges(edgesProp), [edgesProp]);
 
   const updateVisibility = useCallback(() => {
     const el = scrollRef.current;
     if (!el) return;
 
-    const {
-      scrollTop,
-      scrollLeft,
-      scrollHeight,
-      scrollWidth,
-      clientHeight,
-      clientWidth,
-    } = el;
+    const { scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth } = el;
 
     const canScrollVertical = scrollHeight > clientHeight;
     const canScrollHorizontal = scrollWidth > clientWidth;
@@ -90,32 +82,25 @@ export function ScrollShadow({
 
   const edgeConfig = {
     top: {
-      className:
-        "top-0 inset-x-0 bg-linear-to-b from-background to-transparent",
+      className: "top-0 inset-x-0 bg-linear-to-b from-background to-transparent",
       style: { height: size },
     },
     bottom: {
-      className:
-        "bottom-0 inset-x-0 bg-linear-to-t from-background to-transparent",
+      className: "bottom-0 inset-x-0 bg-linear-to-t from-background to-transparent",
       style: { height: size },
     },
     left: {
-      className:
-        "left-0 inset-y-0 bg-linear-to-r from-background to-transparent",
+      className: "left-0 inset-y-0 bg-linear-to-r from-background to-transparent",
       style: { width: size },
     },
     right: {
-      className:
-        "right-0 inset-y-0 bg-linear-to-l from-background to-transparent",
+      className: "right-0 inset-y-0 bg-linear-to-l from-background to-transparent",
       style: { width: size },
     },
   };
 
   return (
-    <div
-      {...slotProps?.wrapper}
-      className={cn("relative overflow-hidden", className)}
-    >
+    <div {...slotProps?.wrapper} className={cn("relative overflow-hidden", className)}>
       <div ref={scrollRef} className="size-full overflow-auto">
         {children}
       </div>
@@ -131,11 +116,7 @@ export function ScrollShadow({
             key={edge}
             {...shadowProps}
             data-position={edge}
-            className={cn(
-              "pointer-events-none absolute",
-              config.className,
-              shadowProps?.className,
-            )}
+            className={cn("pointer-events-none absolute", config.className, shadowProps?.className)}
             style={{ ...config.style, ...shadowProps?.style }}
           />
         );

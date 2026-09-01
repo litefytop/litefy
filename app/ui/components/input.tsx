@@ -12,7 +12,7 @@ export function InputGroup({ className, ...props }: InputGroupProps) {
     <div
       {...props}
       className={cn(
-        "flex h-9 w-sm rounded-md px-2 border bg-muted items-center",
+        "flex h-9 w-full max-w-sm rounded-md px-2 border bg-muted items-center",
         "focus-within:ring-inset focus-within:ring-ring focus-within:ring-1",
         "data-invalid:border-destructive-accent data-invalid:ring-destructive-accent",
         className,
@@ -41,6 +41,7 @@ export function InputRoot({ className, ...props }: InputRootProps) {
       {...props}
       className={cn(
         "flex-1 border-0 ring-0 bg-transparent px-2 py-1 text-sm outline-none placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground",
+        "disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
     />

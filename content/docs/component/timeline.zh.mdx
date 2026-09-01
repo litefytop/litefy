@@ -1,0 +1,85 @@
+---
+title: Timeline 时间轴
+description: 垂直时间轴，标记、连接线、时间、标题与描述的纯展示组件
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add timeline" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="timeline" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+纯展示组件，无需受控状态 —— 通过 `items` 定义条目，连接线自动终止于最后一项。
+
+<ComponentPreview
+  name="timeline-basic"
+/>
+
+实现要点：
+
+- 每个条目自上而下渲染 `time`（等宽数字）、`heading`（加粗）与可选 `description`（弱化文本），均为 `React.ReactNode`。
+- 标记默认为主题色圆点；传入 `marker`（如图标）后自动放大为带边框的圆形容器。
+- 连接线由 `Timeline` 自动控制：最后一项不渲染；单独使用 `TimelineItem` 时可通过 `connector={false}` 手动关闭。
+
+## API 参考
+
+### Timeline
+
+| 属性        | 类型                            | 默认值 | 描述                     |
+| :---------- | :------------------------------ | :----- | :----------------------- |
+| `items`     | `TimelineItemConfig[]`          | -      | 时间轴条目定义           |
+| `className` | `ClassNameValue`                | -      | 自定义类名，应用于根元素 |
+| `classNames` | `marker` / `connector` / `time` / `heading` / `description` | - | 按插槽自定义类名 |
+
+### TimelineItemConfig
+
+| 字段          | 类型              | 默认值 | 描述                                             |
+| :------------ | :---------------- | :----- | :----------------------------------------------- |
+| `marker`      | `React.ReactNode` | -      | 可选的自定义标记内容（如图标），默认为主题色圆点 |
+| `time`        | `React.ReactNode` | -      | 可选的时间文本                                   |
+| `heading`     | `React.ReactNode` | -      | 标题                                             |
+| `description` | `React.ReactNode` | -      | 可选的描述文本                                   |
+
+### 组合零件
+
+零件继承原生 DOM 属性，内置 `className` 通过 `cn` 合并 —— 传入 `className` 是扩展默认值而非替换。
+
+#### TimelineRoot
+
+外层 `<ol>` flex 容器（列表语义来自原生元素）。
+
+| 属性       | 类型                         | 默认值  | 描述         |
+| :--------- | :--------------------------- | :------ | :----------- |
+| `className` | `ClassNameValue`            | -       | 自定义类名   |
+| `...props` | `React.ComponentProps<"ol">` | -       | 原生 ol 属性 |
+
+#### TimelineItem
+
+单个条目：标记、连接线（`connector` 控制）、时间、标题与可选描述。
+
+| 属性          | 类型                                                      | 默认值  | 描述                                       |
+| :------------ | :-------------------------------------------------------- | :------ | :----------------------------------------- |
+| `connector`   | `boolean`                                                 | `true`  | 是否渲染标记下方的连接线                   |
+| `marker`      | `React.ReactNode`                                         | -       | 可选的自定义标记内容，默认为主题色圆点     |
+| `time`        | `React.ReactNode`                                         | -       | 可选的时间文本                             |
+| `heading`     | `React.ReactNode`                                         | -       | 标题                                       |
+| `description` | `React.ReactNode`                                         | -       | 可选的描述文本                             |
+| `className`   | `ClassNameValue`                                          | -       | 自定义类名，应用于条目                     |
+| `classNames`  | `marker` / `connector` / `time` / `heading` / `description` | -       | 按插槽自定义类名                           |
+| `...props`    | `React.ComponentProps<"li">`                              | -       | 原生 li 属性                               |

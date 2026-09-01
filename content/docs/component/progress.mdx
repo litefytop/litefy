@@ -1,0 +1,51 @@
+---
+title: Progress
+description: A pure UI progress bar that only renders current and duration — no built-in scheduling, sampling, or estimation logic
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add progress" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="progress" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Progress is a pure UI component: the bar width transitions to `current` (%) over `duration` (ms) via CSS — progress computation, sampling, estimation, and polling all belong to the business side, and the component ships no timers of its own. `isAbort` and `isComplete` express the failure and success semantics: aborting freezes the bar at its current width instantly with the failure color, while completing forces 100% with the success color.
+
+<ComponentPreview
+  name="progress-basic"
+/>
+
+Key points:
+
+- The bar width transitions to `current`% via `transition-[width]` over `duration` ms — changing `duration` while `current` stays the same does not restart an in-flight transition; that is inherent CSS transition behavior.
+- When `isAbort` is true the transition duration drops to zero, the width freezes at the pre-abort position (the component records the last non-aborted width internally), subsequent `current` / `duration` are ignored, and the fill switches to `bg-destructive`.
+- When `isComplete` is true the width is forced to 100% and the fill switches to `bg-success`.
+- The demo shows the typical async-task driving pattern: sample once 1s after start to compute the rate and the estimated total duration, set `current=99.999` with `duration=estimate`; resample at 1/4, 1/2, 3/4 of the estimate and refine `duration`; after the estimate elapses, poll the simulated task and only set `isComplete` when it truly finishes. Deviation between the UI progress and the real backend progress is expected — that is the trade of smoothness for estimation.
+
+## API Reference
+
+### Progress
+
+| Prop         | Type              | Default | Description                                                        |
+| :----------- | :---------------- | :------ | :----------------------------------------------------------------- |
+| `current`    | `number`          | -       | Target width percentage (0–100, clamped automatically)             |
+| `duration`   | `number`          | -       | Width transition duration in milliseconds                          |
+| `isAbort`    | `boolean`         | `false` | Abort: stop the transition instantly, freeze the width, apply the failure color, ignore further progress |
+| `isComplete` | `boolean`         | `false` | Complete: force the width to 100% and apply the success color      |
+| `className`  | `ClassNameValue`  | -       | Custom class names, applied to the track                           |

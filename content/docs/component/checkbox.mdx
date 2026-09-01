@@ -41,7 +41,7 @@ Data-driven group mode with select-all / indeterminate states.
 
 ### Custom
 
-Build a select-all group with indeterminate state using the composable components.
+Build a select-all group with indeterminate state using the composable components. Note that `CheckboxRoot` must be nested inside `CheckboxIndicator` — the focus ring relies on `has-focus-visible:` matching a descendant of the indicator, so placing the root outside breaks the visible focus style on keyboard focus.
 
 <ComponentPreview 
   name="checkbox-custom"
@@ -72,7 +72,7 @@ Ready-to-use composite components.
 
 | Prop           | Type                         | Default | Description                                        |
 | :------------- | :--------------------------- | :------ | :------------------------------------------------- |
-| `options`      | `CheckboxOptionConfig[]`     | -       | Options data array                                 |
+| `options`      | `(CheckboxOptionConfig \| CheckboxOptionGroup)[]` | -       | Options data array, flat or grouped                |
 | `value`        | `string[]`                   | -       | Controlled selected values                         |
 | `defaultValue` | `string[]`                   | `[]`    | Default selected values (uncontrolled)             |
 | `onChange`     | `(values: string[]) => void` | -       | Callback when values change                        |
@@ -90,6 +90,15 @@ Extends all `Checkbox` props except `children`.
 | `label`     | `string`         | -       | Option display text       |
 | `value`     | `string`         | -       | Unique identifier value   |
 | `indicator` | `React.ReactNode` | -      | Option custom indicator   |
+
+#### CheckboxOptionGroup
+
+Grouped options, rendered as a group with a header.
+
+| Field     | Type                     | Default | Description            |
+| :-------- | :----------------------- | :------ | :--------------------- |
+| `group`   | `string`                 | -       | Group header           |
+| `options` | `CheckboxOptionConfig[]` | -       | Options within a group |
 
 ---
 

@@ -14,6 +14,13 @@ export default {
       zh: "主题",
     },
   },
+  "use-chart-palette": {
+    name: "Chart Palette",
+    displayName: {
+      en: "use-chart-palette",
+      zh: "图表色板",
+    },
+  },
   "use-drag": {
     name: "Drag",
     displayName: {

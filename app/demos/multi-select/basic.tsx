@@ -17,14 +17,12 @@ export default function Demo() {
     <div className="flex flex-col items-center gap-3">
       <Popover
         trigger={`Categories (${values.length})`}
-        classNames={{ trigger: [Button.class.base, Button.class.variant.primary] }}
+        classNames={{
+          trigger: [Button.class.base, Button.class.variant.primary, "w-56"],
+          content: "w-56",
+        }}
       >
-        <CheckboxGroup
-          options={options}
-          value={values}
-          onChange={setValues}
-          className="min-w-40"
-        />
+        <CheckboxGroup options={options} value={values} onChange={setValues} />
       </Popover>
       <p className="text-sm text-muted-foreground">
         Selected: {values.length > 0 ? values.join(", ") : "-"}

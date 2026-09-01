@@ -11,7 +11,7 @@ export type TabsVariant = "button" | "line";
 const triggerStyles: Record<TabsVariant, string> = {
   button:
     "rounded-md text-muted-foreground hover:bg-muted/50 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm",
-  line: "bg-transparent text-muted-foreground border-transparent hover:border-b-2 data-[state=active]:text-primary data-[state=active]:border-primary",
+  line: "bg-transparent text-muted-foreground border-b-2 border-transparent data-[state=active]:text-primary data-[state=active]:border-primary",
 };
 
 export interface TabsListProps extends Omit<React.ComponentProps<"div">, "className"> {
@@ -120,7 +120,9 @@ export function TabsList({
         isHorizontal ? "border-b border-border" : "flex-col border-r border-border",
         className,
       )}
-    />
+    >
+      {children}
+    </div>
   );
 }
 
@@ -189,7 +191,7 @@ export function TabsTrigger({
       onClick={() => !disabled && onValueChange?.(value)}
       onKeyDown={handleKeyDown}
       className={cn(
-        "px-4 py-2 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed",
+        "px-4 py-2 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         triggerStyles[variant],
         className,
       )}

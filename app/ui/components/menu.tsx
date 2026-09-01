@@ -49,7 +49,7 @@ export function MenuSubContent({ positionAnchor, className, style, ...props }: M
       popover="manual"
       tabIndex={-1}
       className={cn(
-        "bg-popover text-popover-foreground min-w-32 max-h-96 overflow-auto rounded-md border p-1 shadow-md",
+        "bg-background text-foreground min-w-32 max-h-96 overflow-auto rounded-md border p-1 shadow-md",
         className,
       )}
       style={{
@@ -251,7 +251,9 @@ function MenuList({
           disabled={mi.disabled}
           aria-haspopup={hasSub ? "menu" : undefined}
           className={cn(
-            "w-full text-left px-2 py-1.5 text-sm font-semibold",
+            "w-full text-left px-2 py-1.5 text-sm font-semibold cursor-pointer",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
+            "disabled:cursor-not-allowed disabled:opacity-50",
             hasSub && "flex items-center justify-between cursor-default",
             activeEntry === entryId && "bg-hover",
             itemClassName,

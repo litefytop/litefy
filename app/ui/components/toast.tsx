@@ -6,14 +6,6 @@ import { type ClassNameValue, cn } from "@/lib";
 
 export type ToastType = "success" | "error" | "warning" | "info" | "loading";
 
-export type ToastPosition =
-  | "top-left"
-  | "top-center"
-  | "top-right"
-  | "bottom-left"
-  | "bottom-right"
-  | "bottom-center";
-
 export type CloseEvent = {
   type: "auto" | "manual" | "complete";
   id?: string | number;
@@ -77,11 +69,27 @@ class ToastObserver {
 
 const toastObserver = new ToastObserver();
 
+const dismissHandlers = new Map<string | number, () => void>();
+
+const removeWithExit = (id: string | number) => {
+  const handler = dismissHandlers.get(id);
+  if (handler) {
+    handler();
+    return;
+  }
+  const toast = toastObserver.getToasts().find((t) => String(t.id) === String(id));
+  toast?.onClose?.({ type: "manual", id });
+  toast?.onClose?.({ type: "complete", id });
+  toastObserver.removeToast(id);
+};
+
+const emptyToasts: ToastItemProps[] = [];
+
 const useToastStore = () => {
   return useSyncExternalStore(
     toastObserver.subscribe,
     () => toastObserver.getToasts(),
-    () => [],
+    () => emptyToasts,
   );
 };
 
@@ -108,7 +116,7 @@ function ToastItem({
   ...restProps
 }: ToastItemProps) {
   const [isExiting, setIsExiting] = useState(false);
-  const isInitialMount = React.useRef(true);
+  const remainingRef = React.useRef<number | undefined>(undefined);
 
   const handleDismiss = useCallback(
     (closeType: "auto" | "manual" = "manual") => {
@@ -124,20 +132,35 @@ function ToastItem({
   );
 
   useEffect(() => {
-    const d = duration ?? 3000;
+    const d = duration ?? 5000;
     if (type === "loading" || d === Infinity || isExpanded) {
       return;
     }
 
-    const timerDuration = isInitialMount.current ? d : 1000;
-    isInitialMount.current = false;
-
+    if (remainingRef.current === undefined) {
+      remainingRef.current = d;
+    }
+    const startedAt = Date.now();
     const timer = setTimeout(() => {
       handleDismiss("auto");
-    }, timerDuration);
+    }, remainingRef.current);
 
-    return () => clearTimeout(timer);
+    return () => {
+      remainingRef.current = Math.max(
+        0,
+        (remainingRef.current ?? d) - (Date.now() - startedAt),
+      );
+      clearTimeout(timer);
+    };
   }, [handleDismiss, isExpanded, type, duration]);
+
+  useEffect(() => {
+    if (id === undefined) return;
+    dismissHandlers.set(id, () => handleDismiss("manual"));
+    return () => {
+      dismissHandlers.delete(id);
+    };
+  }, [handleDismiss, id]);
 
   const icon = customIcon ?? toastIcons[type || "success"];
 
@@ -147,7 +170,7 @@ function ToastItem({
       data-expanded={isExpanded}
       data-exiting={isExiting}
       className={cn(
-        "pointer-events-auto flex w-full items-center justify-between gap-3 rounded-lg border p-4 shadow-lg text-popover-foreground bg-popover",
+        "pointer-events-auto flex w-full items-center justify-between gap-3 rounded-lg border p-4 shadow-lg text-foreground bg-background",
         "data-[expanded=true]:scale-100",
         "data-[exiting=true]:animate-out data-[exiting=true]:slide-out-to-top data-[exiting=true]:duration-300",
         "transition-all duration-400",
@@ -176,7 +199,7 @@ function ToastItem({
               }}
               className={cn(
                 "inline-flex items-center justify-center rounded-md text-sm font-medium",
-                "focus-visible:ring-2 focus-visible:ring-ring",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 "disabled:pointer-events-none disabled:opacity-50",
                 "h-8 px-3 py-1",
                 "hover:bg-accent hover:text-accent-foreground",
@@ -192,33 +215,66 @@ function ToastItem({
   );
 }
 
-const positionClasses: Record<ToastPosition, string> = {
-  "top-left": "top-4 left-4 items-start",
-  "top-right": "top-4 right-4 items-end",
-  "top-center": "top-4 left-1/2 -translate-x-1/2 items-center",
-  "bottom-left": "bottom-4 left-4 items-start",
-  "bottom-right": "bottom-4 right-4 items-end",
-  "bottom-center": "bottom-4 left-1/2 -translate-x-1/2 items-center",
-};
-
 export interface ToastContainerProps extends Omit<React.ComponentProps<"div">, "className"> {
-  position?: ToastPosition;
   visibleToasts?: number;
   className?: ClassNameValue;
 }
 
-function ToastContainer({
-  position = "top-right",
-  visibleToasts = 3,
-  className,
-  ...props
-}: ToastContainerProps) {
+let hostOwnerId: symbol | null = null;
+const hostListeners = new Set<() => void>();
+
+function claimHost(id: symbol) {
+  if (hostOwnerId === null) {
+    hostOwnerId = id;
+    hostListeners.forEach((listener) => listener());
+  }
+}
+
+function releaseHost(id: symbol) {
+  if (hostOwnerId === id) {
+    hostOwnerId = null;
+    hostListeners.forEach((listener) => listener());
+  }
+}
+
+function useHostClaim() {
+  const idRef = React.useRef(Symbol("toaster-host"));
+  const [isHost, setIsHost] = React.useState(false);
+
+  React.useEffect(() => {
+    const id = idRef.current;
+    claimHost(id);
+    const sync = () => setIsHost(hostOwnerId === id);
+    sync();
+    hostListeners.add(sync);
+    return () => {
+      releaseHost(id);
+      hostListeners.delete(sync);
+    };
+  }, []);
+
+  return isHost;
+}
+
+function ToastContainer({ visibleToasts = 3, className, ...props }: ToastContainerProps) {
+  const isHost = useHostClaim();
   const toasts = useToastStore();
   const [isExpanded, setIsExpanded] = useState(false);
   const [expandedTimeout, setExpandedTimeout] = useState<NodeJS.Timeout | null>(null);
+  const prevCount = React.useRef(0);
 
   const filteredToasts = toasts.slice(-visibleToasts);
-  const yPosition = position.startsWith("top") ? "top" : "bottom";
+
+  React.useEffect(() => {
+    if (toasts.length > prevCount.current) {
+      setIsExpanded(false);
+      setExpandedTimeout((current) => {
+        if (current) clearTimeout(current);
+        return null;
+      });
+    }
+    prevCount.current = toasts.length;
+  }, [toasts.length]);
 
   const handleMouseEnter = () => {
     if (expandedTimeout) {
@@ -235,7 +291,7 @@ function ToastContainer({
     setExpandedTimeout(timeout);
   };
 
-  if (filteredToasts.length === 0) {
+  if (!isHost || filteredToasts.length === 0) {
     return null;
   }
 
@@ -243,10 +299,8 @@ function ToastContainer({
     <section
       {...props}
       data-expanded={isExpanded}
-      data-y-position={yPosition}
       className={cn(
-        "fixed z-100 w-full max-w-105",
-        positionClasses[position],
+        "fixed top-4 left-1/2 -translate-x-1/2 z-100 w-full max-w-105",
         !isExpanded && "*:absolute *:left-0 *:right-0",
         isExpanded && "flex flex-col gap-4",
         "data-[expanded=false]:[&>*:nth-child(1)]:translate-y-0",
@@ -270,40 +324,6 @@ function ToastContainer({
   );
 }
 
-/**
- * Toaster static methods
- *
- * @example
- * // 1. Initialize in root component (once)
- * ```tsx
- * import { Toaster } from "@/component";
- *
- * function App() {
- *   return (
- *     <div>
- *       <Toaster position="top-center" />
- *     </div>
- *   );
- * }
- * ```
- *
- * @example
- * // 2. Use in any component
- * ```tsx
- * Toaster.success({ title: "Success" });
- * Toaster.error({ title: "Error" });
- * Toaster.warning({ title: "Warning" });
- * Toaster.info({ title: "Info" });
- * Toaster.loading({ title: "Loading..." });
- * ```
- *
- * @remarks
- * **Important:**
- * - `Toaster` component should be initialized only **once** in the root component
- * - `position` is a global configuration, **do not** declare multiple positions
- * - Example: Declaring both `<Toaster position="top-center" />` and `<Toaster position="top-right" />` will cause each toast to appear twice
- * - Design philosophy: Fixed toast position to avoid distracting users
- */
 const Toaster = Object.assign(ToastContainer, {
   success: (options: ToastItemProps) => {
     return toastObserver.addToast({ ...options, type: "success" });
@@ -321,23 +341,21 @@ const Toaster = Object.assign(ToastContainer, {
     return toastObserver.addToast({ ...options, type: "info" });
   },
 
-  dismiss: (id?: string) => {
+  loading: (options: ToastItemProps) => {
+    return toastObserver.addToast({ ...options, type: "loading" });
+  },
+
+  dismiss: (id?: string | number) => {
     if (id !== undefined) {
-      const toasts = toastObserver.getToasts();
-      const toast = toasts.find((t) => String(t.id) === String(id));
-      if (toast?.onClose) {
-        toast.onClose({ type: "manual", id });
-      }
-      toastObserver.removeToast(id);
-    } else {
-      const toasts = toastObserver.getToasts();
-      toasts.forEach((t) => {
-        if (t?.onClose) {
-          t.onClose({ type: "manual", id: t.id });
-        }
-        toastObserver.removeToast(t.id!);
-      });
+      removeWithExit(id);
+      return;
     }
+    const toasts = toastObserver.getToasts();
+    toasts.forEach((t) => {
+      if (t.id !== undefined) {
+        removeWithExit(t.id);
+      }
+    });
   },
 
   promise,
@@ -357,7 +375,7 @@ function promise<T>(promise: () => Promise<T>, data: PromiseData<T>) {
 
   promise()
     .then((response) => {
-      toastObserver.removeToast(loadingId);
+      removeWithExit(loadingId);
       const message = typeof data.success === "function" ? data.success(response) : data.success;
       toastObserver.addToast({
         title: message,
@@ -365,7 +383,7 @@ function promise<T>(promise: () => Promise<T>, data: PromiseData<T>) {
       } as ToastItemProps);
     })
     .catch((error) => {
-      toastObserver.removeToast(loadingId);
+      removeWithExit(loadingId);
       const message = typeof data.error === "function" ? data.error(error) : data.error;
       toastObserver.addToast({
         title: message,

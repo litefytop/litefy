@@ -24,7 +24,7 @@ export default function Demo() {
     <div className="flex flex-col items-center gap-3">
       <Menu
         items={items}
-        className="w-48 rounded-md border bg-popover p-1 shadow-md"
+        className="w-48 rounded-md border bg-background p-1 shadow-md"
         onSelect={(item) => setSelected(item.label)}
       />
       <p className="text-sm text-muted-foreground">Selected: {selected ?? "-"}</p>

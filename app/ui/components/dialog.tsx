@@ -8,7 +8,7 @@ export type DialogRootProps = Omit<React.ComponentProps<"dialog">, "className"> 
 };
 
 export function DialogRoot({ className, ...props }: DialogRootProps) {
-  return <dialog {...props} className={cn(className)} />;
+  return <dialog {...props} className={cn("focus:outline-none", className)} />;
 }
 
 export type DialogCloseProps = Omit<React.ComponentProps<"button">, "className"> & {
@@ -21,7 +21,7 @@ export function DialogClose({ className, ...props }: DialogCloseProps) {
       type="button"
       {...props}
       className={cn(
-        "absolute right-4 top-4 h-6 w-8 rounded-md border text-xs font-mono font-medium text-muted-foreground transition-colors hover:bg-hover select-none",
+        "absolute right-4 top-4 h-6 w-8 rounded-md border text-xs font-mono font-medium text-muted-foreground transition-colors hover:bg-hover select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         className,
       )}
     />

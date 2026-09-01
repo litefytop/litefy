@@ -1,0 +1,81 @@
+---
+title: use-chart-palette
+description: 基于当前主题主色自动生成 8 个高对比度图表颜色的 hook，支持沿色环取色与同色系取色两种模式
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add use-chart-palette" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="hook" name="use-chart-palette" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+hook 读取当前主题的 `--color-primary` 与 `--color-background`，生成 8 个保证对比度不低于 3:1 的 OKLCH 颜色。主题切换（class / style / 主题数据属性变化）时通过 MutationObserver 自动重算，无需手动刷新。主色为无彩色时回退到蓝色系（色相 250°）。
+
+```tsx
+import { useChartPalette } from "@/ui";
+
+function Swatches() {
+  const palette = useChartPalette();
+
+  return (
+    <div className="flex gap-2">
+      {palette.map((color) => (
+        <div key={color} className="size-8 rounded-md" style={{ background: color }} />
+      ))}
+    </div>
+  );
+}
+```
+
+典型场景是为 Chart 的各数据系列显式指定颜色（不指定时 Chart 会自动按索引循环取色板）：
+
+```tsx
+const palette = useChartPalette({ mode: "mono" });
+
+const series = [
+  { label: "Returning", stroke: palette[0], fill: palette[0] },
+  { label: "New", stroke: palette[1], fill: palette[1] },
+];
+```
+
+**注意：**
+
+- 为避免 SSR 水合不一致，首次渲染返回默认色板，挂载后同步为当前主题色。
+- 主题 CSS 变量链（如 `--color-primary: var(--brand)`）通过探针元素解析最终颜色值。
+
+## API 参考
+
+### useChartPalette
+
+```ts
+function useChartPalette(options?: ChartPaletteOptions): string[]
+```
+
+返回长度为 8 的颜色数组，格式为 `oklch(L C H)` 字符串。
+
+#### ChartPaletteOptions
+
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `mode` | `"wheel" \| "mono"` | `"wheel"` | 取色模式 |
+
+#### 取色模式
+
+| 模式 | 行为 |
+|------|------|
+| `"wheel"` | 从主色色相开始沿色环每 45° 取一色，适合需要高区分度的多系列折线图 |
+| `"mono"` | 锁定主色色相，通过明度阶梯与两档饱和度区分系列，适合与主题保持一致的柱状/面积图 |

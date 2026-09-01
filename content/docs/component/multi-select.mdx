@@ -20,6 +20,16 @@ Key points of the assembly:
 - Popover's `open` / `onOpenChange` control the panel; `PopoverContent` already carries the panel look, so the checkbox list needs no extra container styling.
 - Clicks inside the panel never close it — Popover only closes on outside mousedown or `Escape` — so users can toggle several checkboxes freely.
 - `CheckboxGroup` is controlled (`value` / `onChange` with `string[]`); write the values back to your page state and derive the trigger label from them. Always render the count (e.g. `` `Categories (${values.length})` ``) instead of switching between different labels, so the trigger keeps a stable width and avoids layout shift.
-- Checkboxes are natively tabbable and toggled with `Space`, so keyboard access works without extra wiring.
+- Focus lands on the first checkbox when the panel opens; `Tab` walks through checkboxes, `Space` toggles, and `Escape` closes the panel. Arrow keys cycle focus between options inside a `Checkbox.Group` (disabled options are skipped).
 
 Refer to the [Popover API](/docs/component/popover) and [Checkbox API](/docs/component/checkbox) for the full prop tables of both parts.
+
+### Grouped Usage
+
+`CheckboxGroup`'s `options` also accepts the `{ group, options }` form, rendering a grouped list with headers.
+
+<ComponentPreview
+  name="multi-select-grouped"
+/>
+
+Grouping is purely presentational — every option's `value` still flows into the same `string[]` state, exactly like the basic usage.

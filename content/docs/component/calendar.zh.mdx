@@ -30,7 +30,7 @@ description: 基于浏览器原生 Temporal API 的日历面板组件，支持�
 
 当前显示的月份完全受控：将 `visibleMonth` 保存在状态中，通过 `onVisibleMonthChange` 更新。选中值同时支持受控（`value` + `onChange`）和非受控（`defaultValue`）模式。
 
-键盘导航：整个网格只有一个 Tab 停靠点（选中日期，未选中时为 1 号），`ArrowRight` / `ArrowLeft` / `ArrowDown` / `ArrowUp` 在当前月份内按一天或一周移动光标 —— 只移动焦点，选中值不变，按 `Enter` / `Space` 才确认。禁用日期会被跳过，移动到月边界即停止。
+键盘导航：整个网格只有一个 Tab 停靠点（选中日期，未选中时为 1 号），`ArrowRight` / `ArrowLeft` / `ArrowDown` / `ArrowUp` 按一天或一周移动光标 —— 只移动焦点，选中值不变，按 `Enter` / `Space` 才确认。禁用日期会被跳过；目标日期不在当前网格内时自动切换到相邻月份并聚焦该日期。
 
 <ComponentPreview
   name="calendar-basic"

@@ -11,7 +11,7 @@ export function NumberGroup({ className, ...props }: NumberGroupProps) {
     <div
       {...props}
       className={cn(
-        "flex w-3xs items-center rounded-full border border-border",
+        "flex max-w-3xs w-full items-center rounded-full ",
         "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
         "data-invalid:border-destructive-accent data-invalid:ring-destructive data-invalid:text-destructive",
         className,
@@ -31,6 +31,8 @@ export function NumberDecrement({ className, ...props }: NumberDecrementProps) {
       {...props}
       className={cn(
         "flex size-9 shrink-0 items-center justify-center rounded-l-full hover:text-primary",
+        "disabled:opacity-50 disabled:cursor-not-allowed",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
         className,
       )}
     />
@@ -48,6 +50,8 @@ export function NumberIncrement({ className, ...props }: NumberIncrementProps) {
       {...props}
       className={cn(
         "flex size-9 shrink-0 items-center justify-center rounded-r-full hover:text-primary",
+        "disabled:opacity-50 disabled:cursor-not-allowed",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
         className,
       )}
     />
@@ -63,8 +67,9 @@ export function NumberRoot({ className, ...props }: NumberRootProps) {
     <input
       {...props}
       className={cn(
-        "h-8 w-full min-w-0 flex-1 border-0 bg-transparent px-2 text-center text-sm ring-0",
+        "h-8 w-full min-w-0 flex-1 border-0 bg-transparent px-2 text-center text-sm ring-0 outline-none",
         "placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground",
+        "disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
     />

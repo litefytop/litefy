@@ -19,8 +19,18 @@ Key points of the assembly:
 
 - The [Popover](/docs/component/popover) trigger renders a constant-shaped label `` `Options (${selected.length})` `` so its width stays stable and avoids layout shift.
 - The left panel pairs a controlled [Input](/docs/component/input) with a [List](/docs/component/list) driven by the `useRemotePagination` hook: typing debounces `remote.search`, scrolling to the bottom calls `remote.loadMore`, and keyboard navigation uses the controlled `highlightIndex` pattern (focus stays on the input, `ArrowDown`/`ArrowUp` move the highlight, `Enter` confirms).
-- Clicking an item or pressing `Enter` moves it to the right; selecting a value that is already selected does **not** create a duplicate — it increments that entry's count, displayed as `label ×n` both in the left list and the right panel.
-- The right panel lists selected entries as [Checkbox](/docs/component/checkbox) items; check several and hit the `Remove (n)` footer button to batch-delete, which mirrors the transfer's multi-select-and-move-back interaction.
+- Clicking an item or pressing `Enter` toggles it between selected and deselected — selected entries are marked with a check in the left list, and the right-side selected list shows no counts.
+- The right panel lists selected entries as [Checkbox](/docs/component/checkbox) items; the header provides a select-all checkbox, and checking several then hitting the header `Remove` button batch-deletes them (the button shows no count).
 - The left list intentionally has no grouping — with server-side data of unknown size, grouping is meaningless once the user is filtering by text.
+
+### Multiple with Counts
+
+When each entry needs a quantity, extend the basic usage with a [NumberField](/docs/component/number-field) per selected entry to control its count, and show the total in the header:
+
+<ComponentPreview
+  name="transfer-picker-multiple"
+/>
+
+In this mode, clicking a list item only adds it (selected entries are checked in the left list, repeated clicks have no side effect) and the count is adjusted entirely via the `NumberField`; the single-select mode has no use for `NumberField`, hence two separate demos.
 
 Refer to the [Popover API](/docs/component/popover), [List API](/docs/component/list), [Input API](/docs/component/input), [Checkbox API](/docs/component/checkbox) and the `useRemotePagination` hook for the full prop tables.

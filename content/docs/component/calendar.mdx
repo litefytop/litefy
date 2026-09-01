@@ -30,7 +30,7 @@ description: A calendar panel component built on the native Temporal API, suppor
 
 The visible month is fully controlled: hold it in state and update it via `onVisibleMonthChange`. The selection supports both controlled (`value` + `onChange`) and uncontrolled (`defaultValue`) modes.
 
-Keyboard navigation: the grid has a single tab stop (the selected date, or day 1 when nothing is selected), and `ArrowRight` / `ArrowLeft` / `ArrowDown` / `ArrowUp` move the cursor by one day or one week within the visible month — only focus moves, the value does not change until `Enter` / `Space` confirms. Disabled days are skipped and navigation stops at the month edges.
+Keyboard navigation: the grid has a single tab stop (the selected date, or day 1 when nothing is selected), and `ArrowRight` / `ArrowLeft` / `ArrowDown` / `ArrowUp` move the cursor by one day or one week — only focus moves, the value does not change until `Enter` / `Space` confirms. Disabled days are skipped; when the target date is outside the current grid, the visible month switches automatically and the target date is focused.
 
 <ComponentPreview
   name="calendar-basic"

@@ -1,0 +1,22 @@
+---
+title: Chat Input
+description: A chat input composed from Textarea, screenshot paste handling and a bottom action bar — no component source, composition guide only
+---
+
+Chat Input is not a component with shipped source. Its core is the promise that [Textarea](/docs/component/text-area) stays a pure primitive: paste handling, previews and buttons are all composed on the business side. `Textarea` passes through the native `onPaste`, where `clipboardData` yields the pasted screenshots; image previews render in a thumbnail strip outside the Textarea (`<textarea>` cannot display images inside its text flow — a natural boundary that forces composition); the action bar is plain flex layout. Compose it directly in your page — the example below is the complete implementation.
+
+## Usage
+
+### Basic Usage
+
+<ComponentPreview
+  name="chat-input-basic"
+/>
+
+Key points:
+
+- Screenshot paste: in `onPaste`, filter `clipboardData.items` for entries whose `type` starts with `image/`, then `e.preventDefault()` to stop image paths from landing in the text; text paste is unaffected (early return when there are no images).
+- Thumbnail strip: `URL.createObjectURL(file)` creates each thumbnail URL; call `URL.revokeObjectURL` on remove or send to release memory.
+- Bottom action bar: a flex row sibling to the Textarea — [Toggle](/docs/component/toggle) capability switches on the left (deep think, web search), send button on the right; sending is allowed when there is text or screenshots.
+- `Textarea` is overridden via `className` to be borderless and shadowless (`border-0 shadow-none focus:ring-0`) so it blends into the outer container, which owns the overall border.
+- Enter-to-send, drafts and @mentions are likewise business-layer concerns — extend via `onKeyDown` as needed; the primitive stays out of it.

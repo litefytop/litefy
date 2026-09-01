@@ -21,7 +21,7 @@ export type DrawerRootProps = Omit<React.ComponentProps<"dialog">, "className"> 
 };
 
 export function DrawerRoot({ className, ...props }: DrawerRootProps) {
-  return <dialog {...props} className={cn(className)} />;
+  return <dialog {...props} className={cn("focus:outline-none", className)} />;
 }
 export type DrawerWrapperProps = Omit<React.ComponentProps<"div">, "className"> & {
   className?: ClassNameValue;

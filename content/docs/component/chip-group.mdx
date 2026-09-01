@@ -1,0 +1,73 @@
+---
+title: Chip Group
+description: A primitive component that automatically collapses overflowing chips, exposing the hidden set via renderMore / onOverflowChange for consumer-side composition
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add chip-group" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="chip-group" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+The component is a pure primitive with two responsibilities: rendering chips and overflow-collapse measurement. It ships no built-in `+N` trigger and no built-in panel — the hidden set is exposed via the `onOverflowChange` callback, and `renderMore(hidden)` renders a custom trigger inline (the example composes a `+N` popover with `Popover`):
+
+<ComponentPreview
+  name="chip-group-basic"
+/>
+
+Key points:
+
+- The measurement approach is "shadow container + greedy accumulation": every chip renders inside an absolutely positioned off-viewport shadow container; widths (`offsetWidth` plus gaps) accumulate one by one and stop as soon as the next chip would overflow; when overflowing and a `renderMore` trigger exists, the available width is first reduced by the trigger's actual width (taken from the real inline element's `offsetWidth`) and the fit runs again.
+- Chips that pass the stopping rule stay visible; the remaining items are handed to the consumer via `renderMore(hidden)` and `onOverflowChange(hidden)`.
+- Width changes (window resize, container dragging, font loading) trigger a recompute through `ResizeObserver` — no business-side wiring needed.
+- The cost is a small amount of JS measurement, traded for stable logic and layout freedom: the rendered width and the visible count always agree.
+- Chips default to `max-w-40 truncate` so a single long label cannot break the layout; all chips are `shrink-0` to keep measured and rendered widths identical.
+- `renderMore` is the only inline mount point: the `+N` trigger must participate in inline width reservation, so it cannot be rendered entirely from outside. The component reserves its inline slot via a render prop, while the presentation (Popover, Tooltip, plain text) is fully up to the consumer.
+
+### Tooltip Composition
+
+Returning a `Tooltip`-wrapped button from `renderMore` gives hover preview of the collapsed content:
+
+<ComponentPreview
+  name="chip-group-tooltip"
+/>
+
+Key points:
+
+- The trigger style and displayed content are fully controlled by the consumer; the example shows the hidden items.
+- The component does not care what is inside `renderMore` — it only reserves the inline slot and measures its width.
+
+## API Reference
+
+### ChipGroup
+
+| Prop               | Type                                          | Default | Description                                                    |
+| :----------------- | :-------------------------------------------- | :------ | :------------------------------------------------------------- |
+| `items`            | `ChipItem[]`                                  | -       | All chip items                                                 |
+| `onOverflowChange` | `(hidden: ChipItem[]) => void`                | -       | Fired when the hidden set changes, carrying the hidden items   |
+| `renderMore`       | `(hidden: ChipItem[]) => React.ReactNode`     | -       | Renders a custom trigger inline; `hidden` is the collapsed items |
+| `className`        | `ClassNameValue`                              | -       | Custom class names, applied to the outer container (set `max-width` here) |
+| `classNames`       | `chip`                                        | -       | Custom class names per slot                                    |
+
+### ChipItem
+
+| Field   | Type              | Default | Description     |
+| :------ | :---------------- | :------ | :-------------- |
+| `value` | `string`          | -       | Unique identity |
+| `label` | `React.ReactNode` | -       | Chip text       |

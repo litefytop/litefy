@@ -1,0 +1,19 @@
+---
+title: Cascader 级联选择器
+description: 由面包屑样式的触发器和 List 通过 CSS 锚点定位拼装而成的级联选择器 —— 不提供组件源码，仅提供组合示范
+---
+
+Cascader 不是一个提供源码的组件。常见级联选择器选中一级后并列弹出多列面板，层级多了既占空间又难看；这里的做法是：**触发器做成面包屑的样式，但不用 [Breadcrumb](/docs/component/breadcrumb) 组件** —— 面包屑的语义是 `<nav>` 页面导航地标，用在级联触发器上会误导辅助技术，所以直接用普通按钮加 `ChevronRight` 拼出同样的外观。初始渲染 `placeholder`（"请选择你的籍贯"），点击后省份 [List](/docs/component/list) 面板出现在选择框正下方；每选中一级，面包屑追加该项并继续下一级；选错或想改选时，点击面包屑中的任意一级（包括已选的叶子）都会唤起该级的选择面板重新开始。不依赖 Popover 组件，面板由原生 `popover` 属性驱动。直接在页面中拼装即可 —— 下面的示例就是完整的实现。
+
+<ComponentPreview
+  name="cascader-basic"
+/>
+
+实现要点：
+
+- **单一容器锚点**：选择框容器通过内联 `anchor-name`（由 `useId()` 生成保证唯一）注册为唯一锚点；所有面板内联渲染并声明 `popover="manual"`（top layer 不受祖先 `overflow` 裁剪，无需 portal），统一通过 `position-anchor` 绑定该锚点、`position-area: bottom span-all` 显示在容器正下方，`position-try-fallbacks: flip-block` 在视口边缘自动翻转 —— 面板位置固定，切换层级时不会跳动。
+- **单一状态驱动**：`path`（已下钻的分支数组）+ `selected`（叶子）两个状态驱动全部联动。点击第 `i` 个条目会截断 `path` 至 `slice(0, i)` 并打开该级面板 —— 即"点击省，重新开始省的选择"；已选的叶子也可点击（`slice(0, i)` 恰好不截断），直接唤起叶子所在级的选择面板改选。
+- **触发器不复用 Breadcrumb**：面包屑语义是 `<nav>` 页面导航地标，触发器场景直接用普通按钮（带 `aria-expanded`）加 `ChevronRight` 拼装。
+- List 的 `onSelect` 区分两种条目：有 `children` 则追加 `path` 并自动打开下一级面板，否则视为叶子 —— 写入 `selected`、关闭面板，叶子以高亮文本追加在面包屑末尾。
+- 面板使用原生 `popover="manual"` 属性，由单一份 `openLevel` 状态通过 `showPopover()` / `hidePopover()` 控制显隐 —— 任意时刻最多一个面板打开；面板外的 `mousedown` 会收起面板。
+- 需要 Chrome 125+ 以支持 CSS 锚点定位。

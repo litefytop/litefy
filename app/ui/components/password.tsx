@@ -39,7 +39,7 @@ export function PasswordRoot({ className, visible, ...props }: PasswordRootProps
       {...props}
       type={visible ? "text" : "password"}
       className={cn(
-        "appearance-none border-0 bg-transparent px-2 py-1 text-sm flex-1 min-w-0",
+        "appearance-none border-0 bg-transparent px-2 py-1 text-sm flex-1 min-w-0 outline-none",
         "placeholder:text-muted-foreground",
         "selection:bg-primary selection:text-primary-foreground ring-0",
         className,
@@ -61,7 +61,7 @@ export function PasswordToggle({ className, visible, children, ...props }: Passw
       aria-pressed={visible}
       aria-label={visible ? "Hide password" : "Show password"}
       className={cn(
-        "hover:text-foreground/80 rounded-md p-1 text-muted-foreground transition-colors",
+        "hover:text-foreground/80 rounded-md p-1 text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         className,
       )}
     >

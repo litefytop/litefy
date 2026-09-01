@@ -3,7 +3,7 @@ import React from "react";
 import { type ClassNameValue, cn } from "@/lib";
 
 const buttonClass = {
-  base: "cursor-pointer inline-flex items-center justify-center gap-2 h-8 min-w-8 px-3 rounded-lg text-sm text-center [&_svg:not([class*='size-'])]:size-4",
+  base: "cursor-pointer inline-flex items-center justify-center gap-2 h-8 min-w-8 px-3 rounded-lg text-sm text-center disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background [&_svg:not([class*='size-'])]:size-4",
   variant: {
     primary: "bg-primary text-primary-foreground hover:bg-accent",
     destructive: "bg-destructive text-background hover:bg-destructive-accent",
@@ -17,11 +17,11 @@ export type ButtonLoadingConfig = {
   icon?: React.ReactNode;
 };
 
-export type ButtonProps = {
+export interface ButtonProps extends Omit<React.ComponentProps<"button">, "className"> {
   variant?: keyof typeof buttonClass.variant;
   className?: ClassNameValue;
   loadingConfig?: ButtonLoadingConfig;
-} & React.ComponentProps<"button">;
+}
 
 function hasTextChild(children: React.ReactNode): boolean {
   if (typeof children === "string" || typeof children === "number") {

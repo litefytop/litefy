@@ -1,13 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Check } from "lucide-react";
 import { Button, Checkbox, Input, List, Popover, useRemotePagination } from "@/ui";
-
-type SelectedEntry = {
-  value: string;
-  label: string;
-  count: number;
-};
 
 const fetchAsyncOptions = async ({
   page,
@@ -40,15 +35,14 @@ export default function TransferPickerBasicDemo() {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
   const [highlightIndex, setHighlightIndex] = useState<number | null>(null);
-  const [selected, setSelected] = useState<SelectedEntry[]>([]);
+  const [selected, setSelected] = useState<string[]>([]);
   const [checked, setChecked] = useState<ReadonlySet<string>>(new Set());
 
   useEffect(() => {
     remote.search("");
   }, []);
 
-  const totalCount = selected.reduce((sum, entry) => sum + entry.count, 0);
-  const selectedValues = new Set(selected.map((entry) => entry.value));
+  const selectedValues = new Set(selected);
 
   const toggleChecked = (value: string, next: boolean) => {
     setChecked((prev) => {
@@ -62,21 +56,24 @@ export default function TransferPickerBasicDemo() {
     });
   };
 
-  const addToSelected = (label: string) => {
+  const toggleSelected = (value: string) => {
     setSelected((prev) => {
-      const existing = prev.find((entry) => entry.value === label);
-      if (existing) {
-        return prev.map((entry) =>
-          entry.value === label ? { ...entry, count: entry.count + 1 } : entry,
-        );
+      if (prev.includes(value)) {
+        setChecked((prevChecked) => {
+          if (!prevChecked.has(value)) return prevChecked;
+          const nextChecked = new Set(prevChecked);
+          nextChecked.delete(value);
+          return nextChecked;
+        });
+        return prev.filter((v) => v !== value);
       }
-      return [...prev, { value: label, label, count: 1 }];
+      return [...prev, value];
     });
     setHighlightIndex(null);
   };
 
   const removeChecked = () => {
-    setSelected((prev) => prev.filter((entry) => !checked.has(entry.value)));
+    setSelected((prev) => prev.filter((value) => !checked.has(value)));
     setChecked(new Set());
   };
 
@@ -90,7 +87,7 @@ export default function TransferPickerBasicDemo() {
         }}
         trigger={`Options (${selected.length})`}
         classNames={{ trigger: [Button.class.base, Button.class.variant.primary] }}
-        className="w-[36rem] max-w-[90vw]"
+        className="w-xl max-w-[90vw]"
       >
         <div className="flex gap-3">
           <div className="flex min-w-0 flex-1 flex-col gap-2">
@@ -119,7 +116,7 @@ export default function TransferPickerBasicDemo() {
                   );
                 } else if (e.key === "Enter" && highlightIndex !== null) {
                   e.preventDefault();
-                  addToSelected(remote.data[highlightIndex]);
+                  toggleSelected(remote.data[highlightIndex]);
                 }
               }}
               placeholder="Type to search remotely"
@@ -131,11 +128,7 @@ export default function TransferPickerBasicDemo() {
               renderItem={(item) => (
                 <span className="flex items-center justify-between gap-2">
                   <span>{item}</span>
-                  {selectedValues.has(item) && (
-                    <span className="text-xs text-muted-foreground">
-                      ×{selected.find((entry) => entry.value === item)?.count}
-                    </span>
-                  )}
+                  {selectedValues.has(item) && <Check className="size-3.5 text-primary" />}
                 </span>
               )}
               getKey={(item) => item}
@@ -144,60 +137,67 @@ export default function TransferPickerBasicDemo() {
                   {remote.loading ? "Loading..." : "No data"}
                 </div>
               }
-              onSelect={(item) => addToSelected(item)}
+              onSelect={(item) => toggleSelected(item)}
               onScrollBottom={() => {
                 if (remote.hasMore && !remote.loading) remote.loadMore();
               }}
               className="max-h-56 rounded-md border"
             />
             <p className="px-1 text-xs text-muted-foreground">
-              Click or press Enter to move an item to the right — selecting it again increments its count.
+              Click or press Enter to toggle an item — selected items are marked with a check.
             </p>
           </div>
           <div className="flex min-w-0 flex-1 flex-col rounded-md border">
-            <div className="flex items-center justify-between gap-2 border-b px-3 py-2 text-sm font-medium">
-              <span>Selected</span>
-              <span className="text-xs font-normal text-muted-foreground">{totalCount}</span>
-            </div>
-            <div className="flex min-h-24 flex-1 flex-col overflow-auto p-1">
-              {selected.length === 0 ? (
-                <p className="px-3 py-2 text-sm text-muted-foreground">No data</p>
-              ) : (
-                selected.map((entry) => (
-                  <Checkbox
-                    key={entry.value}
-                    checked={checked.has(entry.value)}
-                    onCheckedChange={(next) => toggleChecked(entry.value, next)}
-                    classNames={{
-                      label: "w-full gap-2 rounded-sm px-3 py-2 text-sm font-normal cursor-pointer hover:bg-hover",
-                    }}
-                  >
-                    <span className="flex min-w-0 items-center justify-between gap-2">
-                      <span className="truncate">{entry.label}</span>
-                      <span className="text-xs text-muted-foreground">×{entry.count}</span>
-                    </span>
-                  </Checkbox>
-                ))
-              )}
-            </div>
-            <div className="border-t p-1">
+            <div className="flex items-center gap-2 border-b px-2 py-2">
+              <Checkbox
+                checked={selected.length > 0 && selected.every((value) => checked.has(value))}
+                disabled={selected.length === 0}
+                onCheckedChange={(next) => setChecked(next ? new Set(selected) : new Set())}
+                classNames={{ label: "gap-2 text-sm font-medium cursor-pointer" }}
+              >
+                <span>Selected</span>
+              </Checkbox>
               <button
                 type="button"
                 disabled={checked.size === 0}
                 onClick={removeChecked}
-                className="w-full cursor-pointer rounded-sm px-2 py-1.5 text-left text-sm font-semibold text-destructive transition-colors hover:bg-hover disabled:pointer-events-none disabled:opacity-50"
+                className="ml-auto cursor-pointer rounded-sm px-2 py-1 text-xs font-semibold text-destructive transition-colors hover:bg-hover disabled:pointer-events-none disabled:opacity-50"
               >
-                Remove ({checked.size})
+                Remove
               </button>
+            </div>
+            <div className="flex max-h-56 min-h-24 flex-1 flex-col overflow-auto p-1">
+              {selected.length === 0 ? (
+                <p className="px-3 py-2 text-sm text-muted-foreground">No data</p>
+              ) : (
+                selected.map((value) => (
+                  <Checkbox
+                    key={value}
+                    checked={checked.has(value)}
+                    onCheckedChange={(next) => toggleChecked(value, next)}
+                    classNames={{
+                      label:
+                        "w-full gap-2 rounded-sm px-3 py-2 text-sm font-normal cursor-pointer hover:bg-hover",
+                    }}
+                  >
+                    <span className="truncate">{value}</span>
+                  </Checkbox>
+                ))
+              )}
+            </div>
+            <div className="flex gap-2 border-t p-2">
+              <Button variant="outline" className="flex-1" onClick={() => setOpen(false)}>
+                暂存
+              </Button>
+              <Button className="flex-1" onClick={() => setOpen(false)}>
+                确定
+              </Button>
             </div>
           </div>
         </div>
       </Popover>
       <p className="text-sm text-muted-foreground">
-        Selected:{" "}
-        {selected.length > 0
-          ? selected.map((entry) => `${entry.label} ×${entry.count}`).join(", ")
-          : "-"}
+        Selected: {selected.length > 0 ? selected.join(", ") : "-"}
       </p>
     </div>
   );

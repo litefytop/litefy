@@ -3,7 +3,7 @@ import { Paper } from "@/ui";
 export default function PaperBasicDemo() {
   return (
     <div className="w-full overflow-auto py-4">
-      <Paper variant="a5">
+      <Paper>
         <div className="flex items-baseline justify-between border-b pb-3">
           <h3 className="text-lg font-semibold">Litefy UI</h3>
           <span className="text-xs text-muted-foreground">2026-08-31</span>

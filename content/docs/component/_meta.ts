@@ -13,6 +13,13 @@ export default {
       zh: "徽标",
     },
   },
+  breadcrumb: {
+    name: "Breadcrumb",
+    displayName: {
+      en: "Breadcrumb",
+      zh: "面包屑",
+    },
+  },
   button: {
     name: "Button",
     displayName: {
@@ -27,6 +34,27 @@ export default {
       zh: "日历",
     },
   },
+  cascader: {
+    name: "Cascader",
+    displayName: {
+      en: "Cascader",
+      zh: "级联选择器",
+    },
+  },
+  chart: {
+    name: "Chart",
+    displayName: {
+      en: "Chart",
+      zh: "图表",
+    },
+  },
+  "chat-input": {
+    name: "Chat Input",
+    displayName: {
+      en: "Chat Input",
+      zh: "聊天输入框",
+    },
+  },
   collapse: {
     name: "Collapse",
     displayName: {
@@ -39,6 +67,13 @@ export default {
     displayName: {
       en: "Checkbox",
       zh: "复选框",
+    },
+  },
+  "chip-group": {
+    name: "Chip Group",
+    displayName: {
+      en: "Chip Group",
+      zh: "折叠标签组",
     },
   },
 
@@ -170,6 +205,20 @@ export default {
       zh: "弹出面板",
     },
   },
+  "preview-card": {
+    name: "Preview Card",
+    displayName: {
+      en: "Preview Card",
+      zh: "预览卡片",
+    },
+  },
+  progress: {
+    name: "Progress",
+    displayName: {
+      en: "Progress",
+      zh: "进度条",
+    },
+  },
   radio: {
     name: "Radio",
     displayName: {
@@ -238,6 +287,20 @@ export default {
     displayName: {
       en: "Tabs",
       zh: "标签页",
+    },
+  },
+  timeline: {
+    name: "Timeline",
+    displayName: {
+      en: "Timeline",
+      zh: "时间轴",
+    },
+  },
+  toast: {
+    name: "Toast",
+    displayName: {
+      en: "Toast",
+      zh: "轻提示",
     },
   },
   toggle: {

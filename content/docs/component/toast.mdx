@@ -1,0 +1,109 @@
+---
+title: Toast
+description: A global toast notification component with a store-based imperative API
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add toast" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="toast" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Call `Toaster.success` / `Toaster.error` / `Toaster.warning` / `Toaster.info` / `Toaster.loading` imperatively. Mount a single `<Toaster />` once in your app to render the toast list; it is fixed at the top-center of the viewport and shows up to 3 stacked toasts by default.
+
+<ComponentPreview
+  name="toast-basic"
+/>
+
+### Actions
+
+Toasts can carry action buttons. Pass `duration: Infinity` to keep the toast open until the user dismisses it, and use `Toaster.dismiss()` to close a specific toast by id or all toasts at once.
+
+<ComponentPreview
+  name="toast-actions"
+/>
+
+### Promise
+
+`Toaster.promise` shows a loading toast and automatically replaces it with a success or error toast when the promise settles.
+
+<ComponentPreview
+  name="toast-promise"
+/>
+
+## API Reference
+
+### High-level Components
+
+#### Toaster
+
+The toast host. Render it once in your application; it subscribes to the global toast store and renders the toast list fixed at the top-center of the viewport. It also carries the imperative methods below.
+
+If multiple `<Toaster />` instances are mounted, only the first one acts as the host and renders toasts; the rest render nothing, so accidental duplicate mounts can never cause duplicated toasts or inconsistent hover pausing.
+
+Collapsed toasts stack with a scale/offset visual; hovering expands them into a vertical list and pauses auto-dismiss.
+
+| Prop            | Type                                    | Default | Description                                                                |
+| --------------- | --------------------------------------- | ------- | -------------------------------------------------------------------------- |
+| `visibleToasts` | `number`                                | `3`     | Maximum number of toasts rendered at the same time                         |
+| `className`     | `ClassNameValue`                        | -       | Custom class name for the container                                        |
+| `...props`      | `React.ComponentProps<"div">`           | -       | Remaining props are passed through to the container `section` element       |
+
+Imperative methods:
+
+| Method    | Type                                                                          | Description                                                       |
+| --------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `success` | `(options: ToastItemProps) => string \| number`                               | Shows a success toast, returns the toast id                       |
+| `error`   | `(options: ToastItemProps) => string \| number`                               | Shows an error toast, returns the toast id                        |
+| `warning` | `(options: ToastItemProps) => string \| number`                               | Shows a warning toast, returns the toast id                       |
+| `info`    | `(options: ToastItemProps) => string \| number`                               | Shows an info toast, returns the toast id                         |
+| `loading` | `(options: ToastItemProps) => string \| number`                               | Shows a persistent loading toast (never auto-dismisses)           |
+| `dismiss` | `(id?: string \| number) => void`                                             | Dismisses a toast by id; without an id, dismisses all toasts      |
+| `promise` | `<T>(promise: () => Promise<T>, data: PromiseData<T>) => void`                | Loading toast that upgrades to success/error on settle            |
+
+#### ToastItemProps
+
+Options accepted by every imperative method.
+
+| Prop          | Type                                    | Default    | Description                                                                                     |
+| ------------- | --------------------------------------- | ---------- | ----------------------------------------------------------------------------------------------- |
+| `title`       | `React.ReactNode`                       | -          | Toast title                                                                                     |
+| `description` | `React.ReactNode`                       | -          | Secondary text below the title                                                                  |
+| `type`        | `"success" \| "error" \| "warning" \| "info" \| "loading"` | -       | Icon type; set automatically by the semantic methods                          |
+| `icon`        | `React.ReactNode`                       | type icon  | Custom icon, overrides the built-in type icon                                                   |
+| `duration`    | `number`                                | `5000`     | Auto-dismiss delay in ms; `Infinity` disables auto-dismiss (loading toasts always persist)      |
+| `onClose`     | `(event: CloseEvent) => void`           | -          | Fired with `type: "auto" \| "manual"` on dismiss start and `type: "complete"` after removal     |
+| `actions`     | `Array<{ children, onClick?, className? }>` | -      | Action buttons; `onClick` receives a `dismiss` callback that closes the toast                    |
+| `slotProps`   | `{ leading?, content?, actions? }`      | -          | Props forwarded to the icon, content and actions slots                                          |
+| `className`   | `ClassNameValue`                        | -          | Custom class name for the toast card                                                            |
+
+#### CloseEvent
+
+| Field  | Type                                 | Description                                              |
+| ------ | ------------------------------------ | -------------------------------------------------------- |
+| `type` | `"auto" \| "manual" \| "complete"`   | Why the toast closed; `"complete"` fires after removal    |
+| `id`   | `string \| number` (optional)        | The toast id                                             |
+
+#### PromiseData&lt;T&gt;
+
+| Field     | Type                                                       | Description                              |
+| --------- | ---------------------------------------------------------- | ---------------------------------------- |
+| `loading` | `React.ReactNode`                                          | Title shown while the promise is pending |
+| `success` | `React.ReactNode \| ((data: T) => React.ReactNode)`        | Title on resolve                         |
+| `error`   | `React.ReactNode \| ((error: unknown) => React.ReactNode)` | Title on reject                          |

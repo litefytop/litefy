@@ -41,11 +41,7 @@ export function SeparatorText({
     <span
       {...props}
       data-orientation={orientation}
-      className={cn(
-        "text-muted-foreground text-sm whitespace-nowrap",
-        "data-[orientation=vertical]:writing-mode-vertical-lr data-[orientation=vertical]:rotate-180",
-        className,
-      )}
+      className={cn("text-muted-foreground text-sm whitespace-nowrap", className)}
     />
   );
 }

@@ -69,6 +69,7 @@ export interface CalendarGridProps extends Omit<
   value?: Temporal.PlainDate | null;
   isDateDisabled?: (date: Temporal.PlainDate) => boolean;
   onSelect?: (date: Temporal.PlainDate) => void;
+  onNavigate?: (date: Temporal.PlainDate) => void;
   firstDayOfWeek?: 0 | 1;
   className?: ClassNameValue;
 }
@@ -79,6 +80,7 @@ export function CalendarGrid({
   value,
   isDateDisabled,
   onSelect,
+  onNavigate,
   firstDayOfWeek = 0,
   className,
   ...props
@@ -115,6 +117,7 @@ export function CalendarGrid({
           value={value}
           isDateDisabled={isDateDisabled}
           onSelect={onSelect}
+          onNavigate={onNavigate}
           tabStopDate={tabStopDate}
           className="col-span-7"
         />
@@ -129,6 +132,7 @@ export interface CalendarGridRowProps extends Omit<React.ComponentProps<"div">, 
   value?: Temporal.PlainDate | null;
   isDateDisabled?: (date: Temporal.PlainDate) => boolean;
   onSelect?: (date: Temporal.PlainDate) => void;
+  onNavigate?: (date: Temporal.PlainDate) => void;
   tabStopDate?: string;
   className?: ClassNameValue;
 }
@@ -139,6 +143,7 @@ export function CalendarGridRow({
   value,
   isDateDisabled,
   onSelect,
+  onNavigate,
   tabStopDate,
   className,
   ...props
@@ -154,6 +159,7 @@ export function CalendarGridRow({
           disabled={isDateDisabled?.(date) ?? false}
           tabStop={tabStopDate === undefined ? undefined : date.toString() === tabStopDate}
           onClick={onSelect ? () => onSelect(date) : undefined}
+          onNavigate={onNavigate}
         />
       ))}
     </div>
@@ -165,6 +171,7 @@ export interface CalendarGridCellProps extends Omit<React.ComponentProps<"button
   outsideMonth?: boolean;
   selected?: boolean;
   tabStop?: boolean;
+  onNavigate?: (date: Temporal.PlainDate) => void;
   className?: ClassNameValue;
 }
 
@@ -180,6 +187,7 @@ export function CalendarGridCell({
   outsideMonth,
   selected,
   tabStop,
+  onNavigate,
   className,
   onKeyDown: onKeyDownProp,
   ...props
@@ -195,11 +203,13 @@ export function CalendarGridCell({
     let next = date;
     for (let i = 0; i < 31; i++) {
       next = next.add({ days: offset });
-      if (next.year !== date.year || next.month !== date.month) return;
       const btn = grid.querySelector<HTMLButtonElement>(
         `button[data-date="${next.toString()}"]`,
       );
-      if (!btn) return;
+      if (!btn) {
+        onNavigate?.(next);
+        return;
+      }
       if (btn.disabled) continue;
       btn.focus();
       return;
@@ -251,6 +261,8 @@ export function Calendar({
   firstDayOfWeek = 0,
   className,
 }: CalendarProps) {
+  const rootRef = React.useRef<HTMLDivElement>(null);
+  const pendingFocusRef = React.useRef<string | null>(null);
   const [uncontrolledValue, setValue] = React.useState<Temporal.PlainDate | null>(
     defaultValue ?? null,
   );
@@ -271,6 +283,20 @@ export function Calendar({
     onChange?.(date);
   };
 
+  const handleNavigate = (date: Temporal.PlainDate) => {
+    pendingFocusRef.current = date.toString();
+    onVisibleMonthChange?.(date.with({ day: 1 }));
+  };
+
+  React.useEffect(() => {
+    const target = pendingFocusRef.current;
+    if (!target) return;
+    pendingFocusRef.current = null;
+    rootRef.current
+      ?.querySelector<HTMLButtonElement>(`button[data-date="${target}"]`)
+      ?.focus();
+  });
+
   const handlePreviousMonth = () => {
     onVisibleMonthChange?.(visibleMonth.subtract({ months: 1 }));
   };
@@ -280,7 +306,7 @@ export function Calendar({
   };
 
   return (
-    <CalendarRoot className={className}>
+    <CalendarRoot ref={rootRef} className={className}>
       <CalendarHeader
         title={`${visibleMonth.year} / ${visibleMonth.month}`}
         onPrevious={handlePreviousMonth}
@@ -292,6 +318,7 @@ export function Calendar({
         value={value}
         isDateDisabled={isDateDisabled}
         onSelect={handleSelect}
+        onNavigate={handleNavigate}
         firstDayOfWeek={firstDayOfWeek}
       />
     </CalendarRoot>

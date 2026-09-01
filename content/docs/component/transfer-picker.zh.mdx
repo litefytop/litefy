@@ -19,8 +19,18 @@ Transfer Picker 不是一个提供源码的组件。它是现有基础零件的�
 
 - [Popover](/docs/component/popover) 的触发器渲染形状恒定的文案 `` `Options (${selected.length})` ``，宽度稳定，避免布局抖动。
 - 左侧面板是受控 [Input](/docs/component/input) + [List](/docs/component/list)，由 `useRemotePagination` hook 驱动：键入防抖触发 `remote.search`，滚动到底触发 `remote.loadMore`，键盘导航采用受控 `highlightIndex` 模式（焦点始终留在输入框，`ArrowDown`/`ArrowUp` 移动高亮，`Enter` 确认）。
-- 点击列表项或按 `Enter` 即移动到右侧；对已选中的值再次选择**不会**产生重复项 —— 而是该条目的数量 +1，左右两侧都以 `label ×n` 显示。
-- 右侧已选列表的每个条目是 [Checkbox](/docs/component/checkbox)；勾选若干后点击底部 `Remove (n)` 按钮批量删除，对应穿梭框"多选后反向移动"的交互。
+- 点击列表项或按 `Enter` 在选中与取消之间切换 —— 已选条目在左侧列表以 √ 标记，右侧已选列表不显示数量。
+- 右侧已选列表的每个条目是 [Checkbox](/docs/component/checkbox)；表头提供全选框，勾选若干后点击表头 `Remove` 按钮批量删除（按钮不显示计数）。
 - 左侧列表刻意不分组 —— 对于服务器端总量未知的数据，用户已经用文字筛选了，分组失去意义。
+
+### 多选计数
+
+需要每个条目携带数量时，在基础用法之上为右侧每个条目增加 [NumberField](/docs/component/number-field) 控制数量，表头展示所有条目的总数：
+
+<ComponentPreview
+  name="transfer-picker-multiple"
+/>
+
+该模式下点击列表项只做添加（已选条目在左侧打 √，重复点击无副作用），数量完全由 `NumberField` 调整；单选模式用不到 `NumberField`，因此拆成两个独立示例。
 
 各零件的完整属性表请参阅 [Popover API](/docs/component/popover)、[List API](/docs/component/list)、[Input API](/docs/component/input)、[Checkbox API](/docs/component/checkbox) 与 `useRemotePagination` hook。

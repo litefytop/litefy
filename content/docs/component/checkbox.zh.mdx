@@ -41,7 +41,7 @@ description: 复选框组件，支持受控、非受控、分组和自定义指�
 
 ### 自定义
 
-使用可组合组件构建带全选/半选状态的分组。
+使用可组合组件构建带全选/半选状态的分组。注意 `CheckboxRoot` 必须放在 `CheckboxIndicator` 内部 —— 聚焦环样式依赖 `has-focus-visible:` 选择器匹配指示器的后代元素，root 放在外面会导致键盘聚焦时样式失效。
 
 <ComponentPreview 
   name="checkbox-custom"
@@ -72,7 +72,7 @@ description: 复选框组件，支持受控、非受控、分组和自定义指�
 
 | 属性           | 类型                                                                                                                                                                              | 默认值  | 描述                       |
 | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------ | :------------------------- |
-| `options`      | `CheckboxOptionConfig[]`                                                                                                                                                          | -       | 选项数据数组               |
+| `options`      | `(CheckboxOptionConfig \| CheckboxOptionGroup)[]`                                                                                                                                 | -       | 选项数据数组，支持平铺或分组 |
 | `value`        | `string[]`                                                                                                                                                                        | -       | 受控选中值                 |
 | `defaultValue` | `string[]`                                                                                                                                                                        | `[]`    | 默认选中值（非受控）       |
 | `onChange`     | `(values: string[]) => void`                                                                                                                                                      | -       | 值变化回调                 |
@@ -90,6 +90,15 @@ description: 复选框组件，支持受控、非受控、分组和自定义指�
 | `label`     | `string`          | -      | 选项显示文本     |
 | `value`     | `string`          | -      | 唯一标识值       |
 | `indicator` | `React.ReactNode` | -      | 子项自定义指示器 |
+
+#### CheckboxOptionGroup
+
+分组选项，渲染带标题的分组。
+
+| 字段      | 类型                    | 默认值 | 描述         |
+| :-------- | :---------------------- | :----- | :----------- |
+| `group`   | `string`                | -      | 分组标题     |
+| `options` | `CheckboxOptionConfig[]`| -      | 组内选项数组 |
 
 ---
 

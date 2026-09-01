@@ -47,7 +47,7 @@ Ready-to-use composite component.
 
 #### Tooltip
 
-Clones the single trigger child with the anchor wiring and hover/focus handlers, and renders the tooltip content through a portal.
+Clones the single trigger child with the anchor wiring and hover/focus handlers, and renders the tooltip content inline.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
@@ -74,7 +74,7 @@ The trigger button with built-in hover and focus show/hide logic. Communicates w
 
 #### TooltipContent
 
-The tooltip bubble rendered through a portal with `popover="manual"` and anchor positioning.
+The tooltip bubble rendered inline with `popover="manual"` (the top layer escapes ancestor `overflow` clipping) and anchor positioning.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|

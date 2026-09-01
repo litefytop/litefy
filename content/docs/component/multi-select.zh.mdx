@@ -20,6 +20,16 @@ MultiSelect 不是一个提供源码的组件。它是两个基础零件的组�
 - Popover 的 `open` / `onOpenChange` 控制面板；`PopoverContent` 已自带面板外观，勾选列表无需额外容器样式。
 - 面板内的点击永远不会关闭它 —— Popover 只在面板外按下鼠标或按 `Escape` 时关闭 —— 用户可以自由勾选多个选项。
 - `CheckboxGroup` 是受控的（`value` / `onChange`，类型为 `string[]`）；把值写回页面状态并从中派生触发器文案。始终渲染数量（例如 `` `Categories (${values.length})` ``）而不要在不同文案间切换，这样触发器宽度稳定，避免布局抖动。
-- 复选框原生可 Tab 聚焦、`Space` 切换，键盘访问无需额外接线。
+- 面板打开后焦点自动落在第一个复选框上，`Tab` 在复选框间移动、`Space` 切换、`Escape` 关闭面板；在 `Checkbox.Group` 内按方向键可在选项间循环移动焦点（跳过禁用项）。
 
 两个零件的完整属性表请参阅 [Popover API](/docs/component/popover) 和 [Checkbox API](/docs/component/checkbox)。
+
+### 分组用法
+
+`CheckboxGroup` 的 `options` 也接受 `{ group, options }` 形式，渲染带标题的分组列表。
+
+<ComponentPreview
+  name="multi-select-grouped"
+/>
+
+分组只是展示结构 —— 所有选项的 `value` 仍汇聚在同一个 `string[]` 状态里，与基础用法完全一致。

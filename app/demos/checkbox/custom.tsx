@@ -19,8 +19,8 @@ export default function Demo() {
   return (
     <div className="flex flex-col gap-4">
       <CheckboxLabel>
-        <CheckboxRoot checked={values.length > 0} onChange={toggleAll} />
         <CheckboxIndicator checked={values.length > 0}>
+          <CheckboxRoot checked={values.length > 0} onChange={toggleAll} />
           {indeterminate ? <Minus /> : <Check />}
         </CheckboxIndicator>
         <span>All</span>
@@ -28,11 +28,11 @@ export default function Demo() {
       <div className="flex flex-col gap-2 pl-4">
         {ALL_VALUES.map((val) => (
           <CheckboxLabel key={val}>
-            <CheckboxRoot
-              checked={values.includes(val)}
-              onChange={() => toggleItem(val)}
-            />
             <CheckboxIndicator checked={values.includes(val)}>
+              <CheckboxRoot
+                checked={values.includes(val)}
+                onChange={() => toggleItem(val)}
+              />
               <Check />
             </CheckboxIndicator>
             <span>{val}</span>

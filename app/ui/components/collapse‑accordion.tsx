@@ -34,6 +34,7 @@ export function CollapseTrigger({
       className={cn(
         "flex justify-between items-center cursor-pointer",
         "aria-[expanded=false]:hover:bg-hover p-4 text-sm font-medium",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
         className,
       )}
       onClick={onClick}

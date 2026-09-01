@@ -1,0 +1,96 @@
+---
+title: Chart
+description: A chart composition built on uPlot and useChartPalette — automatic canvas theming, responsive width, interactive legend and hover tooltip
+---
+
+Chart is a composition example built on [uPlot](https://github.com/leeoniya/uPlot) and `useChartPalette` — it ships no installable source; the full implementation lives in each demo's source below (every demo contains a copy-paste-ready `Chart` wrapper). It colors data series automatically with the 8-color palette, follows theme variables (`--color-border` / `--color-muted-foreground`) for grid and axis text, redraws responsively via ResizeObserver when the container resizes, and ships an interactive legend (click to toggle series) plus a cursor-following tooltip.
+
+## Installation
+
+Chart depends on uPlot — install it first:
+
+```bash
+pnpm add uplot
+```
+
+It also depends on the `useChartPalette` hook — install both:
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add use-chart-palette" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="hook" name="use-chart-palette" />
+
+</Tab>
+
+</Tabs>
+
+`useChartPalette` can also be used standalone for custom visualizations — call `useChartPalette({ mode: "wheel" | "mono" })` to get 8 theme-synced colors. See [use-chart-palette](/docs/hooks/use-chart-palette) for details.
+
+Keep `import "uplot/dist/uPlot.min.css"` — uPlot's built-in stylesheet is purely structural layout (canvas/overlay positioning, cursor lines, selection box); charts break apart without it.
+
+## Usage
+
+### Line Chart
+
+<ComponentPreview
+  name="chart-line"
+/>
+
+`data` is uPlot's AlignedData: the first array holds x values (`time` defaults to `true`, so pass Unix timestamps in seconds), and each following array maps to the corresponding entry in `series`. Series without an explicit `stroke` pick colors from the palette by index (cycling).
+
+### Area Chart
+
+<ComponentPreview
+  name="chart-area"
+/>
+
+`fill: true` fills from the zero baseline towards the data direction (`fillTo` defaults to 0), so mixed positive/negative data like temperatures needs no extra configuration — negative regions fill downwards naturally.
+
+### Bar Chart
+
+<ComponentPreview
+  name="chart-bars"
+/>
+
+uPlot has no built-in bar paths; pass a custom paths builder via `series[].paths` to draw bars. Bar colors come from `useChartPalette` explicitly, assigned to both `stroke` and `fill`. Bar charts usually pair with `time={false}` for a numeric x axis — in that mode the component automatically extends the x range by half a unit on both ends so edge bars are not clipped. The paths builder is fully customizable — scatter, stepped lines or any other shape can be built the same way.
+
+## API
+
+### ChartProps
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | uPlot.AlignedData | - | Aligned chart data, first array is x values |
+| series | ChartSeriesConfig[] | - | Series configs, one per y array in data |
+| height | number | 240 | Chart height in pixels; width always adapts to the container |
+| time | boolean | true | Whether the x axis is a time scale; when false it is treated as plain numbers |
+| className | ClassNameValue | - | Extra classes appended to the root element |
+| onReady | (u: uPlot) => void | - | Called once the chart instance is created, for accessing native uPlot APIs |
+
+### ChartSeriesConfig
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| label | string | - | Series name, shown in the legend and tooltip |
+| stroke | string | Auto from palette | Line color, any valid CSS color |
+| width | number | 1.5 | Line width in pixels |
+| fill | string \| boolean | - | Area fill; `true` uses the line color at 18% opacity, a string is used as a custom fill color |
+| value | (v: number) => string | - | Value formatter used in the tooltip |
+| show | boolean | true | Whether the series is initially visible |
+| paths | uPlot.Series["paths"] | - | Custom paths builder for bars, scatter and other non-line shapes |
+
+### Behavior Notes
+
+- **Legend**: rendered above the chart; click to toggle a series off/on.
+- **Zoom**: drag a box in the plot area to zoom into that region; **double-click** to reset to the full data range.
+- **Tooltip**: shows every visible series' value at the cursor's x position, follows the cursor and clamps to the container bounds.
+- **Theme sync**: when the theme changes primary/background colors, `useChartPalette` triggers a rebuild so series and grid colors update accordingly.
+- **Palette modes**: `useChartPalette()` picks hues around the color wheel by default (high contrast); `useChartPalette({ mode: "mono" })` stays within the primary hue family (series are distinguished by lightness — great for theme-consistent bar/area charts). When the primary is achromatic, both modes fall back to a blue hue.
+- **Data updates**: when only `data` changes, `uPlot.setData` redraws incrementally without recreating the instance — suitable for polling and realtime streams.

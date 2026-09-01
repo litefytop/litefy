@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { createPortal } from "react-dom";
 import { type ClassNameValue, cn } from "@/lib";
 
 const hideTimers = new WeakMap<Element, ReturnType<typeof setTimeout>>();
@@ -118,9 +117,7 @@ export function TooltipContent({
   onPointerLeave,
   ...props
 }: TooltipContentProps) {
-  if (typeof document === "undefined") return null;
-
-  return createPortal(
+  return (
     <div
       ref={ref}
       id={id}
@@ -135,20 +132,21 @@ export function TooltipContent({
         onPointerLeave?.(e);
       }}
       className={cn(
-        "z-50 rounded-md bg-popover px-3 py-1.5 text-xs text-popover-foreground shadow-md border w-max max-w-sm m-1",
+        "z-50 rounded-md bg-background px-3 py-1.5 text-xs text-foreground shadow-md border w-max max-w-sm m-1",
         className,
       )}
       style={{
         positionAnchor: anchorName,
-        positionArea: "top center",
+        positionArea: "top span-all",
+        justifySelf: "anchor-center",
+        alignSelf: "end",
         positionTryFallbacks: "flip-block, flip-inline",
         ...style,
       }}
       {...props}
     >
       {children}
-    </div>,
-    document.body,
+    </div>
   );
 }
 

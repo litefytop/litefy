@@ -26,7 +26,7 @@ export function Textarea({
       className={cn(
         "flex w-full rounded-lg border border-border shadow-xs transition-colors px-2 py-2 text-sm",
         "min-h-20 resize-y",
-        "focus:border-primary focus:ring-2 focus:ring-primary/20",
+        "focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20",
         "data-[invalid=true]:border-destructive data-[invalid=true]:ring-destructive/20",
         "disabled:cursor-not-allowed disabled:opacity-50",
         "placeholder:text-muted-foreground",
