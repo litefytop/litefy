@@ -1,5 +1,0 @@
-@layer components {
-  .tag {
-    @apply inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-(--radius) bg-muted px-2 py-0.5 text-xs font-medium no-underline text-foreground;
-  }
-}
