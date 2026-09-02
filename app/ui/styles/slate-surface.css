@@ -1,13 +1,15 @@
 [data-surface="slate"] {
-  --background: oklch(98.4% 0.003 247.858);
-  --foreground: oklch(12.9% 0.042 264.695);
-  --muted: oklch(70.4% 0.04 256.788);
+  --background: oklch(96.8% 0.007 247.896);
+  --foreground: oklch(20.8% 0.042 265.755);
+  --muted: oklch(92.9% 0.013 255.508);
+  --muted-foreground: oklch(27.8% 0.033 256.848);
   --neutral: oklch(86.9% 0.022 252.894);
 }
 
 .dark[data-surface="slate"] {
-  --foreground: oklch(98.4% 0.003 247.858);
-  --background: oklch(12.9% 0.042 264.695);
-  --muted: oklch(44.6% 0.043 257.281);
+  --foreground: oklch(96.8% 0.007 247.896);
+  --background: oklch(20.8% 0.042 265.755);
+  --muted: oklch(27.9% 0.041 260.031);
+  --muted-foreground: oklch(92.8% 0.006 264.531);
   --neutral: oklch(37.2% 0.044 257.287);
 }

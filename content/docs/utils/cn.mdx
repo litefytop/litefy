@@ -1,0 +1,48 @@
+---
+title: cn
+description: A tailwind-merge based class merge helper that resolves conflicting Tailwind utilities in the last-wins order.
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add cn" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="util" name="cn" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+```tsx
+import { cn } from "@/ui";
+
+<div className={cn("p-4 rounded-lg", isActive && "bg-primary text-primary-foreground", className)} />
+```
+
+`cn` is `twMerge` re-exported: later classes win over earlier conflicting ones, and conditional values (`false`, `null`, `undefined`) are ignored.
+
+## Notes
+
+- Every Litefy component imports `cn` from `@/ui`, so the utils directory must sit next to the components directory. Installing any component via CLI automatically pulls in `cn`.
+- Requires the `tailwind-merge` npm package (`npm add tailwind-merge`).
+
+## API Reference
+
+### cn
+
+```ts
+function cn(...inputs: ClassNameValue[]): string;
+type ClassNameValue = ClassValue | ClassValue[];
+```
+
+Merges class values with tailwind-merge and returns a single class string.

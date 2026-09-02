@@ -1,6 +1,6 @@
 import { Loader2 } from "lucide-react";
 import * as React from "react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
 type FormElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 type FormValue = string | number | string[] | number[] | null;
@@ -261,10 +261,40 @@ function FormSubmit({ children, className, ref, loadingIcon, ...props }: FormSub
 
 Form.Submit = FormSubmit;
 
-type HTMLAttrs<T> = T & {
-  [key: `data-${string}`]: string | number | null | undefined | true;
+export interface FormLabelProps extends Omit<React.ComponentProps<"label">, "className"> {
   className?: ClassNameValue;
-};
+}
+
+export function FormLabel({ className, ...props }: FormLabelProps) {
+  return (
+    <label
+      {...props}
+      className={cn(
+        "text-sm font-medium leading-none indent-2 py-1 select-none min-w-16",
+        "group-data-[direction=horizontal]:text-end",
+        className,
+      )}
+    />
+  );
+}
+
+export interface FormHintProps extends Omit<React.ComponentProps<"small">, "className"> {
+  className?: ClassNameValue;
+}
+
+export function FormHint({ className, ...props }: FormHintProps) {
+  return (
+    <small
+      {...props}
+      className={cn(
+        "text-sm indent-2 h-5 text-muted-foreground",
+        "group-data-invalid:text-destructive",
+        "group-data-[direction=horizontal]:col-start-2",
+        className,
+      )}
+    />
+  );
+}
 
 type FormFieldArg = {
   id: string;
@@ -276,16 +306,24 @@ type FormFieldArg = {
   "aria-describedby"?: string;
 };
 
-export type FormFieldProps = Omit<React.ComponentProps<"div">, "children"> & {
+export type FormFieldProps = Omit<
+  React.ComponentProps<"div">,
+  "children" | "className" | "style"
+> & {
   label?: React.ReactNode;
   description?: React.ReactNode;
   invalid?: React.ReactNode;
   disabled?: boolean;
   direction?: "vertical" | "horizontal";
-  slotProps?: {
-    label?: HTMLAttrs<React.ComponentProps<"label">>;
-    invalid?: HTMLAttrs<React.ComponentProps<"small">>;
-    description?: HTMLAttrs<React.ComponentProps<"small">>;
+  classNames?: {
+    root?: ClassNameValue;
+    label?: ClassNameValue;
+    hint?: ClassNameValue;
+  };
+  styles?: {
+    root?: React.CSSProperties;
+    label?: React.CSSProperties;
+    hint?: React.CSSProperties;
   };
   inputId?: string;
   name: string;
@@ -300,13 +338,13 @@ export type FormFieldProps = Omit<React.ComponentProps<"div">, "children"> & {
 };
 
 function FormField({
-  className,
   label,
   name,
   description,
   invalid: externalInvalid,
   direction = "vertical",
-  slotProps,
+  classNames,
+  styles,
   children,
   validConfig,
   inputId,
@@ -323,11 +361,8 @@ function FormField({
   const internalId = React.useId();
   const id = inputId ?? internalId;
   const baseId = React.useId();
-  const { id: descId, ...descriptionProps } = slotProps?.description ?? {};
-  const { id: invId, ...invalidProps } = slotProps?.invalid ?? {};
-
-  const descriptionId = descId ?? generateId(baseId, "desc");
-  const invalidId = invId ?? generateId(baseId, "error");
+  const descriptionId = generateId(baseId, "desc");
+  const invalidId = generateId(baseId, "error");
   const currentDescribedById = hasInvalidContent ? invalidId : descriptionId;
 
   const inputRef = React.useCallback(
@@ -396,21 +431,14 @@ function FormField({
         "grid gap-1 group items-center",
         "data-[direction=vertical]:grid-cols-1",
         "data-[direction=horizontal]:grid-cols-[auto_1fr]",
-        className,
+        classNames?.root,
       )}
+      style={styles?.root}
     >
       {label && (
-        <label
-          {...slotProps?.label}
-          htmlFor={id}
-          className={cn(
-            "text-sm font-medium leading-none indent-2 py-1 select-none min-w-16",
-            "group-data-[direction=horizontal]:text-end",
-            slotProps?.label?.className,
-          )}
-        >
+        <FormLabel htmlFor={id} className={classNames?.label} style={styles?.label}>
           {label}
-        </label>
+        </FormLabel>
       )}
       {children?.({
         id,
@@ -421,19 +449,14 @@ function FormField({
         invalid: isInvalid,
         "aria-describedby": currentDescribedById,
       })}
-      <small
+      <FormHint
         id={currentDescribedById}
-        {...(hasInvalidContent ? invalidProps : descriptionProps)}
-        className={cn(
-          "text-sm indent-2 h-5 text-muted-foreground",
-          "group-data-invalid:text-destructive",
-          "group-data-[direction=horizontal]:col-start-2",
-          (hasInvalidContent ? invalidProps : descriptionProps).className,
-        )}
+        className={classNames?.hint}
+        style={styles?.hint}
         role={hasInvalidContent ? "alert" : undefined}
       >
         {hasInvalidContent ? finalInvalid : description}
-      </small>
+      </FormHint>
     </div>
   );
 }
@@ -460,7 +483,16 @@ type FormFieldsetProps<T extends FieldsetMode = "multi"> = {
   description?: React.ReactNode;
   invalid?: React.ReactNode;
   disabled?: boolean;
-  className?: string;
+  classNames?: {
+    root?: ClassNameValue;
+    legend?: ClassNameValue;
+    hint?: ClassNameValue;
+  };
+  styles?: {
+    root?: React.CSSProperties;
+    legend?: React.CSSProperties;
+    hint?: React.CSSProperties;
+  };
   children?: (field: FieldsetRenderArg<T>) => React.ReactNode;
   validConfig?: {
     validate?: (
@@ -469,7 +501,7 @@ type FormFieldsetProps<T extends FieldsetMode = "multi"> = {
     trigger?: "onChange" | "onBlur";
     debounceMs?: number;
   };
-} & Omit<React.ComponentPropsWithRef<"fieldset">, "className" | "children">;
+} & Omit<React.ComponentPropsWithRef<"fieldset">, "className" | "children" | "style">;
 
 function FormFieldset<T extends FieldsetMode = "multi">({
   type = "multi" as T,
@@ -478,7 +510,8 @@ function FormFieldset<T extends FieldsetMode = "multi">({
   description,
   invalid: externalInvalid,
   disabled,
-  className,
+  classNames,
+  styles,
   children,
   validConfig,
   ...props
@@ -594,13 +627,23 @@ function FormFieldset<T extends FieldsetMode = "multi">({
       disabled={disabled}
       aria-invalid={isInvalid}
       aria-describedby={describedBy}
-      className={cn("space-y-1", className)}
+      className={cn("space-y-1", classNames?.root)}
+      style={styles?.root}
     >
-      {legend && <legend>{legend}</legend>}
+      {legend && (
+        <legend className={cn(classNames?.legend)} style={styles?.legend}>
+          {legend}
+        </legend>
+      )}
       {children?.(renderArg)}
       <small
         id={describedBy}
-        className={cn("text-sm text-muted-foreground", isInvalid && "text-destructive")}
+        className={cn(
+          "text-sm text-muted-foreground",
+          isInvalid && "text-destructive",
+          classNames?.hint,
+        )}
+        style={styles?.hint}
         role={hasInvalidContent ? "alert" : undefined}
       >
         {hasInvalidContent ? finalInvalid : description}

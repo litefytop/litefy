@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { createRoot } from "react-dom/client";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
 export type DialogRootProps = Omit<React.ComponentProps<"dialog">, "className"> & {
   className?: ClassNameValue;

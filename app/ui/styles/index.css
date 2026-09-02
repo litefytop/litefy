@@ -21,12 +21,6 @@
 @import "./gray-surface.css";
 @import "./mist-surface.css";
 @import "./mauve-surface.css";
-@import "./card.css";
-@import "./capsule.css";
-@import "./kbd.css";
-@import "./skeleton.css";
-@import "./tag.css";
-@import "./typography.css";
 
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
@@ -36,6 +30,6 @@ html {
   scrollbar-width: thin;
 }
 *::-webkit-scrollbar {
-  width: 6px;  
-  height: 6px;  
+  width: 6px;
+  height: 6px;
 }

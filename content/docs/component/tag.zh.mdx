@@ -1,0 +1,64 @@
+---
+title: Tag 标签
+description: 无交互逻辑的单色标签——用任意背景工具类着色。
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add tag" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="tag" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+`Tag` 是纯展示标签：圆角、单一背景色、无悬停或焦点状态。不传颜色工具类时回退为 muted 表面。
+
+<ComponentPreview name="tag-basic" />
+
+### 着色
+
+标签是单一平面色——传入任意 Tailwind 背景工具类加对比文本色即可。
+
+```tsx
+<Tag>default</Tag>
+<Tag className="bg-emerald-600 text-white">stable</Tag>
+<Tag className="bg-amber-500 text-white">beta</Tag>
+```
+
+### 链接与按钮
+
+`Tag` 始终渲染为 `<span>`，不提供 `as` 属性。需要链接或按钮时，把 `Tag.className`（基础类名）组合到原生元素上：
+
+```tsx
+import { cn, Tag } from "@/ui";
+
+<a href="#" className={cn(Tag.className, "bg-violet-600 text-white")}>link tag</a>
+<button type="button" className={cn(Tag.className, "bg-emerald-600 text-white")}>button tag</button>
+```
+
+## 注意
+
+- `Tag` 只定义形状与排版——圆角跟随 `--radius`，背景/文本色完全来自工具类，不会与主题冲突。
+- 静态属性 `Tag.className` 暴露基础类名，供其他元素复用。
+- 与 [Capsule](/docs/component/capsule) 组件组合可快速生成 shields-io 风格徽章。
+
+## API 参考
+
+### Tag
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | - | 自定义 CSS 类，背景/文本色用工具类 |
+| `...props` | `React.ComponentProps<"span">` | - | 支持所有原生 span 属性 |

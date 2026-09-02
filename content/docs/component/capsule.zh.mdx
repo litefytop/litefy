@@ -1,0 +1,59 @@
+---
+title: Capsule 胶囊徽章
+description: 胶囊容器，将两个标签拼成 shields-io 风格双色徽章。
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add capsule" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="capsule" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+`Capsule` 是胶囊形 overflow-hidden 容器。放入两个 [Tag](/docs/component/tag) 子元素——给每个标签传 `rounded-none px-2.5 py-1` 获得徽章比例——即可快速拼出 shields-io 风格双色徽章。
+
+<ComponentPreview name="capsule-badge" />
+
+### 组合
+
+左侧标签作为标签名，右侧作为值。颜色是每个标签上的普通工具类。用 `as` 属性将容器渲染为 `span`（默认）或 `a`（链接）。
+
+```tsx
+<Capsule>
+  <Tag className="rounded-none px-2.5 py-1 bg-neutral-600 text-white">build</Tag>
+  <Tag className="rounded-none px-2.5 py-1 bg-emerald-600 text-white">passing</Tag>
+</Capsule>
+
+<Capsule as="a" href="#">
+  <Tag className="rounded-none px-2.5 py-1 bg-neutral-600 text-white">docs</Tag>
+  <Tag className="rounded-none px-2.5 py-1 bg-violet-600 text-white">litefy.dev</Tag>
+</Capsule>
+```
+
+## 注意
+
+- 标签上的 `rounded-none px-2.5 py-1` 会去掉其圆角并增大内边距，形成徽章比例。
+- 支持两个以上标签：容器会裁剪任意内容。
+
+## API 参考
+
+### Capsule
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `as` | `'span' \| 'a'` | `'span'` | 渲染的元素类型 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+| `...props` | `React.ComponentProps<E>` | - | 由 `as` 决定的元素原生属性 |

@@ -1,13 +1,15 @@
 [data-surface="gray"] {
-  --background: oklch(98.5% 0.002 247.839);
-  --foreground: oklch(13% 0.028 261.692);
-  --muted: oklch(70.7% 0.022 261.325);
+  --background: oklch(96.7% 0.003 264.542);
+  --foreground: oklch(21% 0.034 264.665);
+  --muted: oklch(92.8% 0.006 264.531);
+  --muted-foreground: oklch(27.8% 0.033 256.848);
   --neutral: oklch(87.2% 0.01 258.338);
 }
 
 .dark[data-surface="gray"] {
-  --foreground: oklch(98.5% 0.002 247.839);
-  --background: oklch(13% 0.028 261.692);
-  --muted: oklch(44.6% 0.03 256.802);
+  --foreground: oklch(96.7% 0.003 264.542);
+  --background: oklch(21% 0.034 264.665);
+  --muted: oklch(27.8% 0.033 256.848);
+  --muted-foreground: oklch(92.8% 0.006 264.531);
   --neutral: oklch(37.3% 0.034 259.733);
 }

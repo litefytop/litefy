@@ -3,7 +3,7 @@
 import * as React from "react";
 import { flushSync } from "react-dom";
 import { Children, isValidElement } from "react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
 export type PagerTransition = "none" | "view-transition";
 
@@ -79,8 +79,7 @@ export function Pager({
     });
   }, [index, renderedIndex, transition, normalize, total]);
 
-  const canGo = (from: number, dir: 1 | -1) =>
-    loop || (dir === 1 ? from < total - 1 : from > 0);
+  const canGo = (from: number, dir: 1 | -1) => loop || (dir === 1 ? from < total - 1 : from > 0);
 
   const resist = (from: number, dx: number) => {
     if (loop) return dx;
@@ -168,19 +167,13 @@ export function Pager({
           style={{ transform: drag ? `translateX(${drag.offset}px)` : undefined }}
         >
           {drag && prevIndex !== null && (
-            <div
-              aria-hidden
-              className="absolute inset-y-0 left-0 h-full w-full -translate-x-full"
-            >
+            <div aria-hidden className="absolute inset-y-0 left-0 h-full w-full -translate-x-full">
               {slides[prevIndex]}
             </div>
           )}
           <div className="h-full w-full">{slides[current]}</div>
           {drag && nextIndex !== null && (
-            <div
-              aria-hidden
-              className="absolute inset-y-0 left-0 h-full w-full translate-x-full"
-            >
+            <div aria-hidden className="absolute inset-y-0 left-0 h-full w-full translate-x-full">
               {slides[nextIndex]}
             </div>
           )}

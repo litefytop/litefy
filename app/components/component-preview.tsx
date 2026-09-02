@@ -5,7 +5,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useParams } from "react-router";
 import { demos } from "@/demos";
-import { cn } from "@/lib";
+import { cn } from "@/ui";
 import { i18n } from "@/lib/i18n";
 
 export interface ComponentPreviewProps

@@ -1,7 +1,6 @@
 import path from "node:path";
 import fs from "fs-extra";
 import inquirer from "inquirer";
-import axios from "axios";
 import logger from "../utils/logger";
 import { detectPackageManager, installDependencies, type PackageManager } from "../utils/pm";
 
@@ -14,7 +13,7 @@ interface LitefyConfig {
     path: string;
     installed: string[];
   };
-  hooks: {
+  utils: {
     path: string;
     installed: string[];
   };
@@ -26,9 +25,13 @@ interface LitefyConfig {
 
 const DEFAULT_PARENT = "./src";
 const UI_FIXED_SUB = path.join("ui", "litefy");
-const DEFAULT_CN_PATH = "./src/lib/cn.ts";
 const DEPENDENCIES = ["lucide-react", "tailwindcss", "tailwind-merge"];
-const CN_CDN_URL = "https://cdn.jsdelivr.net/gh/litefy‑ui/registry@main/app/lib/cn.ts";
+
+const CN_TEMPLATE = `import { type ClassNameValue, twMerge } from "tailwind-merge";
+
+export const cn = twMerge;
+export type { ClassNameValue };
+`;
 
 async function writeLitefyConfig(cwd: string, config: LitefyConfig) {
   const configPath = path.join(cwd, "litefy.json");
@@ -51,11 +54,6 @@ async function writeLitefyCss(outDir: string) {
   await fs.writeFile(filePath, content, "utf-8");
 }
 
-async function fetchCnTemplate(): Promise<string> {
-  const res = await axios.get<string>(CN_CDN_URL, { timeout: 10000 });
-  return res.data;
-}
-
 async function init(options: InitOptions): Promise<void> {
   logger.step("Initializing Litefy configuration...");
 
@@ -69,15 +67,12 @@ async function init(options: InitOptions): Promise<void> {
   }
 
   let parentPath: string;
-  let cnPath: string;
 
   if (options.yes) {
     parentPath = DEFAULT_PARENT;
-    cnPath = DEFAULT_CN_PATH;
   } else {
     const answers = await inquirer.prompt<{
       parentPath: string;
-      cnPath: string;
     }>([
       {
         type: "input",
@@ -85,20 +80,13 @@ async function init(options: InitOptions): Promise<void> {
         message: "Litefy parent directory (ui/litefy will be created inside):",
         default: DEFAULT_PARENT,
       },
-      {
-        type: "input",
-        name: "cnPath",
-        message: "cn.ts output file path:",
-        default: DEFAULT_CN_PATH,
-      },
     ]);
     parentPath = answers.parentPath;
-    cnPath = answers.cnPath;
   }
 
   const uiRoot = path.join(parentPath, UI_FIXED_SUB);
   const componentsPath = path.join(uiRoot, "components");
-  const hooksPath = path.join(uiRoot, "hooks");
+  const utilsPath = path.join(uiRoot, "utils");
   const stylesPath = path.join(uiRoot, "styles");
 
   const config: LitefyConfig = {
@@ -106,8 +94,8 @@ async function init(options: InitOptions): Promise<void> {
       path: componentsPath,
       installed: [],
     },
-    hooks: {
-      path: hooksPath,
+    utils: {
+      path: utilsPath,
       installed: [],
     },
     styles: {
@@ -115,6 +103,14 @@ async function init(options: InitOptions): Promise<void> {
       installed: [],
     },
   };
+
+  await fs.ensureDir(utilsPath);
+  const cnFile = path.resolve(cwd, utilsPath, "cn.ts");
+  if (!(await fs.pathExists(cnFile))) {
+    await fs.writeFile(cnFile, CN_TEMPLATE, "utf-8");
+    logger.info("Created utils/cn.ts");
+  }
+  if (!config.utils.installed.includes("cn")) config.utils.installed.push("cn");
 
   await writeLitefyConfig(cwd, config);
   logger.success(`Generated ${configPath}`);
@@ -125,7 +121,7 @@ async function init(options: InitOptions): Promise<void> {
   if (!(await fs.pathExists(barrelIndexTs))) {
     await fs.ensureDir(path.dirname(barrelIndexTs));
     const indexSource = `export * from "./components";
-export * from "./hooks";
+export * from "./utils";
 `;
     await fs.writeFile(barrelIndexTs, indexSource, "utf-8");
     logger.info(`Created ${path.relative(cwd, barrelIndexTs)}`);
@@ -135,26 +131,11 @@ export * from "./hooks";
 
   const compIndex = path.resolve(cwd, componentsPath, "index.ts");
   await fs.ensureFile(compIndex);
-  const hookIndex = path.resolve(cwd, hooksPath, "index.ts");
-  await fs.ensureFile(hookIndex);
-  logger.info("Created empty components/index.ts & hooks/index.ts barrel skeletons");
-
-  const cnOutputPath = path.resolve(cwd, cnPath);
-  if (!(await fs.pathExists(cnOutputPath))) {
-    try {
-      const cnContent = await fetchCnTemplate();
-      await fs.ensureDir(path.dirname(cnOutputPath));
-      await fs.writeFile(cnOutputPath, cnContent, "utf-8");
-      logger.success(`Generated ${path.relative(cwd, cnOutputPath)}`);
-    } catch (err) {
-      logger.error(
-        `Failed to download cn.ts template: ${err instanceof Error ? err.message : String(err)}`,
-      );
-      logger.info(`Please manually create ${cnPath}.`);
-    }
-  } else {
-    logger.info(`${cnPath} already exists, skip generating`);
+  const utilIndex = path.resolve(cwd, utilsPath, "index.ts");
+  if (!(await fs.pathExists(utilIndex))) {
+    await fs.writeFile(utilIndex, 'export * from "./cn";\n', "utf-8");
   }
+  logger.info("Created components/index.ts barrel skeleton & utils/index.ts exporting cn");
 
   let pm = await detectPackageManager(cwd);
   if (!options.yes) {
@@ -192,9 +173,8 @@ export * from "./hooks";
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │ Directory layout:                                                             │
 │   components: ${componentsPath.padEnd(36)}                                    │
-│   hooks:      ${hooksPath.padEnd(36)}                                         │
+│   utils:      ${utilsPath.padEnd(36)}                                         │
 │   styles:     ${stylesPath.padEnd(36)}                                        │
-│   cn.ts:      ${cnPath.padEnd(36)}                                            │
 └──────────────────────────────────────────────────────────────────────────────┘
 
 

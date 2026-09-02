@@ -1,0 +1,25 @@
+---
+title: Context Menu
+description: A right-click menu assembled from Menu with native popover and pointer anchoring — not a shipped component, only a composition guide with demos
+---
+
+Context Menu is not a shipped component with source code. It composes [Menu](/docs/component/menu) with a native `popover="manual"` panel anchored to the pointer through CSS anchor positioning. A context menu is just a different trigger: `onContextMenu` to suppress the browser menu, a zero-size anchor element moved to the cursor, and a manually shown popover.
+
+## Usage
+
+### Basic Usage
+
+<ComponentPreview
+  name="context-menu-basic"
+/>
+
+Key points of the assembly:
+
+- The target area calls `e.preventDefault()` in `onContextMenu`, records `clientX` / `clientY`, and opens the panel.
+- A zero-size `fixed` div with `anchorName` is rendered at the pointer position — this is the anchor the panel attaches to.
+- The panel uses `positionArea: "bottom right"` so its top-left corner sits at the cursor, plus a small margin offset; `positionTryFallbacks: "flip-block, flip-inline"` keeps it inside the viewport near edges.
+- Show and hide are manual (`panel.showPopover()` / `hidePopover()` in an effect). `manual` popovers have no light dismiss, so a document `mousedown` listener closes the panel on outside clicks.
+- Right-clicking again while the menu is open re-anchors it to the new cursor position.
+- `Menu` provides items, grouping, submenus and keyboard navigation; `autoFocus={open}` focuses the first item on open and `onEscape` closes the panel.
+
+Refer to the [Menu API](/docs/component/menu) for the full prop table of the menu part.

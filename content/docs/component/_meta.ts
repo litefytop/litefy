@@ -27,6 +27,20 @@ export default {
       zh: "按钮",
     },
   },
+  capsule: {
+    name: "Capsule",
+    displayName: {
+      en: "Capsule",
+      zh: "胶囊徽章",
+    },
+  },
+  card: {
+    name: "Card",
+    displayName: {
+      en: "Card",
+      zh: "卡片",
+    },
+  },
   calendar: {
     name: "Calendar",
     displayName: {
@@ -114,6 +128,13 @@ export default {
       zh: "下拉菜单",
     },
   },
+  "context-menu": {
+    name: "Context Menu",
+    displayName: {
+      en: "Context Menu",
+      zh: "右键菜单",
+    },
+  },
   form: {
     name: "Form",
     displayName: {
@@ -140,6 +161,13 @@ export default {
     displayName: {
       en: "Input OTP",
       zh: "验证码输入",
+    },
+  },
+  kbd: {
+    name: "Kbd",
+    displayName: {
+      en: "Kbd",
+      zh: "键盘按键",
     },
   },
   list: {
@@ -261,6 +289,13 @@ export default {
       zh: "侧边栏",
     },
   },
+  skeleton: {
+    name: "Skeleton",
+    displayName: {
+      en: "Skeleton",
+      zh: "骨架屏",
+    },
+  },
   slider: {
     name: "Slider",
     displayName: {
@@ -289,6 +324,13 @@ export default {
       zh: "标签页",
     },
   },
+  tag: {
+    name: "Tag",
+    displayName: {
+      en: "Tag",
+      zh: "标签",
+    },
+  },
   timeline: {
     name: "Timeline",
     displayName: {
@@ -315,6 +357,13 @@ export default {
     displayName: {
       en: "Tooltip",
       zh: "提示框",
+    },
+  },
+  typography: {
+    name: "Typography",
+    displayName: {
+      en: "Typography",
+      zh: "排版",
     },
   },
   transfer: {

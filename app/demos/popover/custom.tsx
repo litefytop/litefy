@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { PopoverTrigger, PopoverContent } from "@/ui";
+import { Button, PopoverContent } from "@/ui";
 
 const anchorName = "--popover-custom-demo";
 
@@ -36,13 +36,9 @@ export default function Demo() {
 
   return (
     <>
-      <PopoverTrigger
-        ref={triggerRef}
-        style={{ anchorName }}
-        onClick={() => setOpen(!open)}
-      >
+      <Button ref={triggerRef} style={{ anchorName }} onClick={() => setOpen(!open)}>
         Open Custom Popover
-      </PopoverTrigger>
+      </Button>
       <PopoverContent
         ref={panelRef}
         style={{

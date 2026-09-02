@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router";
 import { baseOptions } from "@/components/layout-shared";
 import { ExampleWall } from "@/components/example-wall";
-import { Button } from "@/ui";
-import { cn } from "@/lib";
+import { Button, Typography } from "@/ui";
+import { cn } from "@/ui";
 import { i18n } from "@/lib/i18n";
 
 export type Locale = "en" | "zh";
@@ -83,7 +83,10 @@ function LandingHero({ locale }: { locale: Locale }) {
           {t.description}
         </p>
         <div className="mt-6 flex flex-wrap gap-2">
-          <Link to={docsPath} className={cn(Button.class.base, Button.class.variant.primary)}>
+          <Link
+            to={docsPath}
+            className={cn(Button.className.base, Button.className.variant.primary)}
+          >
             {t.primaryCta}
             <ArrowRight className="size-4" />
           </Link>
@@ -91,7 +94,7 @@ function LandingHero({ locale }: { locale: Locale }) {
             to="https://github.com/litefytop/litefy"
             target="_blank"
             rel="noopener noreferrer"
-            className={cn(Button.class.base, Button.class.variant.outline)}
+            className={cn(Button.className.base, Button.className.variant.outline)}
           >
             {t.secondaryCta}
           </Link>
@@ -135,7 +138,9 @@ export function HomeContent({ locale }: { locale: Locale }) {
         <div className="mt-12 w-full max-w-5xl text-left">
           <LandingHero locale={locale} />
         </div>
-        <h1 className="headline mt-4">{t.heading}</h1>
+        <Typography variant="headline" className="mt-4">
+          {t.heading}
+        </Typography>
         <p className="text-fd-muted-foreground">{t.subheading}</p>
         <ExampleWall locale={locale} />
       </div>

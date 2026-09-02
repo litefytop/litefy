@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
 export interface ImageRootProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;

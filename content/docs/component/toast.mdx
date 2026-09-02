@@ -90,8 +90,8 @@ Options accepted by every imperative method.
 | `duration`    | `number`                                | `5000`     | Auto-dismiss delay in ms; `Infinity` disables auto-dismiss (loading toasts always persist)      |
 | `onClose`     | `(event: CloseEvent) => void`           | -          | Fired with `type: "auto" \| "manual"` on dismiss start and `type: "complete"` after removal     |
 | `actions`     | `Array<{ children, onClick?, className? }>` | -      | Action buttons; `onClick` receives a `dismiss` callback that closes the toast                    |
-| `slotProps`   | `{ leading?, content?, actions? }`      | -          | Props forwarded to the icon, content and actions slots                                          |
-| `className`   | `ClassNameValue`                        | -          | Custom class name for the toast card                                                            |
+| `classNames`  | `{ root?, icon?, content?, title?, description?, actions? }` | - | Custom classes for each part of the toast card                                                  |
+| `styles`      | `{ root?, icon?, content?, title?, description?, actions? }` | - | Inline styles for each part of the toast card                                                   |
 
 #### CloseEvent
 
@@ -107,3 +107,77 @@ Options accepted by every imperative method.
 | `loading` | `React.ReactNode`                                          | Title shown while the promise is pending |
 | `success` | `React.ReactNode \| ((data: T) => React.ReactNode)`        | Title on resolve                         |
 | `error`   | `React.ReactNode \| ((error: unknown) => React.ReactNode)` | Title on reject                          |
+
+### Composable Components
+
+The toast card is built from the parts below. They are exported so you can assemble a custom toast card when the composite API is not enough.
+
+#### ToastRoot
+
+The toast card container. Carries the card surface (border, shadow, background) and the stack/exit animation states driven by `data-expanded` / `data-exiting`.
+
+| Prop        | Type             | Default | Description      |
+| ----------- | ---------------- | ------- | ---------------- |
+| `className` | `ClassNameValue` | -       | Custom CSS class |
+
+Supports all native `<div>` attributes.
+
+#### ToastIcon
+
+Wrapper for the leading icon.
+
+| Prop        | Type             | Default | Description      |
+| ----------- | ---------------- | ------- | ---------------- |
+| `className` | `ClassNameValue` | -       | Custom CSS class |
+
+Supports all native `<div>` attributes.
+
+#### ToastContent
+
+Wrapper for the title and description column.
+
+| Prop        | Type             | Default | Description      |
+| ----------- | ---------------- | ------- | ---------------- |
+| `className` | `ClassNameValue` | -       | Custom CSS class |
+
+Supports all native `<div>` attributes.
+
+#### ToastTitle
+
+The title text.
+
+| Prop        | Type             | Default | Description      |
+| ----------- | ---------------- | ------- | ---------------- |
+| `className` | `ClassNameValue` | -       | Custom CSS class |
+
+Supports all native `<div>` attributes.
+
+#### ToastDescription
+
+The secondary text below the title.
+
+| Prop        | Type             | Default | Description      |
+| ----------- | ---------------- | ------- | ---------------- |
+| `className` | `ClassNameValue` | -       | Custom CSS class |
+
+Supports all native `<div>` attributes.
+
+#### ToastActions
+
+Wrapper for a group of action buttons.
+
+| Prop        | Type             | Default | Description      |
+| ----------- | ---------------- | ------- | ---------------- |
+| `className` | `ClassNameValue` | -       | Custom CSS class |
+
+Supports all native `<div>` attributes.
+
+#### ToastAction
+
+A single action button rendered as `<button type="button">`.
+
+| Prop        | Type             | Default | Description      |
+| ----------- | ---------------- | ------- | ---------------- |
+| `className` | `ClassNameValue` | -       | Custom CSS class |
+
+Supports all native `<button>` attributes.

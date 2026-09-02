@@ -12,6 +12,7 @@ Generate component documentation in both English and Chinese following the Litef
 Before writing, **read at least 2 existing component docs and demos** to understand the project's actual structure, naming conventions, and patterns. Do not assume—inspect the codebase first.
 
 Good references to check:
+
 - `content/docs/select.mdx` and `content/docs/select.zh.mdx`
 - `app/demos/collapse/*` (3 demos) and `app/demos/index.ts` registration
 - `app/demos/button/*`, `app/demos/checkbox/*`, `app/demos/tabs/*`
@@ -21,6 +22,7 @@ Good references to check:
 ### Step 1: Analyze the Component
 
 Read the component source at `app/ui/{component}.tsx` to understand:
+
 - Main component props and types
 - Sub-components (e.g., `Component.SubComponent`)
 - Controlled/uncontrolled patterns
@@ -46,10 +48,10 @@ For each demo, add two imports (component + `?raw` code) and one entry in the `d
 Create `content/docs/{component}.mdx`. Follow the structure of existing docs like `content/docs/select.mdx`.
 
 Required sections:
+
 - Frontmatter with `title` and `description`
 - `## Installation` with CLI and Manual tabs
 - `## Usage` with one `### Variant` subsection per demo, each containing a `<ComponentPreview name="..." />`
-- `## API Reference` with tables for main component, sub-components, and slotProps
 
 ### Step 5: Create Chinese Documentation
 
@@ -58,6 +60,7 @@ Create `content/docs/{component}.zh.mdx` by translating the English version. Kee
 ### Step 6: Verify
 
 Check that all of the following are correct:
+
 - Demo files exist and use the `-demo` suffix
 - Demos are registered in `app/demos/index.ts` with both `component` and `code` fields
 - `<ComponentPreview name="..." />` keys match registered demo keys
@@ -77,6 +80,7 @@ Check that all of the following are correct:
 ## Key Patterns
 
 Refer to existing files in the codebase for the actual patterns:
+
 - Demo file structure: see `app/demos/collapse/*.tsx`
 - Registration format: see `app/demos/index.ts`
 - MDX structure: see `content/docs/select.mdx`

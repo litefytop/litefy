@@ -15,9 +15,9 @@ export default function FormHorizontalDemo() {
         name="email"
         label="Email"
         direction="horizontal"
-        slotProps={{
-          label: { className: "w-24 text-muted-foreground" },
-          description: { className: "text-xs" },
+        classNames={{
+          label: "w-24 text-muted-foreground",
+          hint: "text-xs",
         }}
       >
         {(field) => <Input {...field} type="email" />}
@@ -26,8 +26,8 @@ export default function FormHorizontalDemo() {
         name="phone"
         label="Phone"
         direction="horizontal"
-        slotProps={{
-          label: { className: "w-24 text-muted-foreground" },
+        classNames={{
+          label: "w-24 text-muted-foreground",
         }}
       >
         {(field) => <Input {...field} type="tel" placeholder="+1 555 1234" />}

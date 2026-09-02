@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
 export interface CalendarRootProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
@@ -126,7 +126,10 @@ export function CalendarGrid({
   );
 }
 
-export interface CalendarGridRowProps extends Omit<React.ComponentProps<"div">, "className" | "onSelect"> {
+export interface CalendarGridRowProps extends Omit<
+  React.ComponentProps<"div">,
+  "className" | "onSelect"
+> {
   week: Temporal.PlainDate[];
   visibleMonth: Temporal.PlainDate;
   value?: Temporal.PlainDate | null;
@@ -166,7 +169,10 @@ export function CalendarGridRow({
   );
 }
 
-export interface CalendarGridCellProps extends Omit<React.ComponentProps<"button">, "className" | "type"> {
+export interface CalendarGridCellProps extends Omit<
+  React.ComponentProps<"button">,
+  "className" | "type"
+> {
   date: Temporal.PlainDate;
   outsideMonth?: boolean;
   selected?: boolean;
@@ -203,9 +209,7 @@ export function CalendarGridCell({
     let next = date;
     for (let i = 0; i < 31; i++) {
       next = next.add({ days: offset });
-      const btn = grid.querySelector<HTMLButtonElement>(
-        `button[data-date="${next.toString()}"]`,
-      );
+      const btn = grid.querySelector<HTMLButtonElement>(`button[data-date="${next.toString()}"]`);
       if (!btn) {
         onNavigate?.(next);
         return;
@@ -292,9 +296,7 @@ export function Calendar({
     const target = pendingFocusRef.current;
     if (!target) return;
     pendingFocusRef.current = null;
-    rootRef.current
-      ?.querySelector<HTMLButtonElement>(`button[data-date="${target}"]`)
-      ?.focus();
+    rootRef.current?.querySelector<HTMLButtonElement>(`button[data-date="${target}"]`)?.focus();
   });
 
   const handlePreviousMonth = () => {

@@ -15,15 +15,7 @@
 ## Exceptions
 
 - Legal/copyright headers (if required)
-- Compiler/tool directives 
-
-## Controlled/Uncontrolled State Naming
-
-- External (controlled) state variable: `controlledXXX`
-- Internal (uncontrolled) state variable: `uncontrolledXXX`
-- State value variable: `xxx` (combining controlled and uncontrolled)
-- Do NOT use `innerXXX` or `internalXXX` for internal state
-- Do NOT use `externalXXX` for external state
+- Compiler/tool directives
 
 ## Internal/External Property Naming
 

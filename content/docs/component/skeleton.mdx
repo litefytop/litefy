@@ -1,0 +1,45 @@
+---
+title: Skeleton
+description: A pulsing placeholder block for loading states.
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add skeleton" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="skeleton" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+Text lines.
+
+<ComponentPreview name="skeleton-text" />
+
+### Avatar
+
+Combine a circle block with lines to sketch a user row.
+
+<ComponentPreview name="skeleton-avatar" />
+
+## API Reference
+
+### Skeleton
+
+A pulsing placeholder block. It fills its container by default (`size-full`); pass `className` to shape it. The base color follows the `--color-neutral` theme token.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | - | Custom CSS class, e.g. `h-4 w-1/2 rounded-full` |
+| `...props` | `React.ComponentProps<"div">` | - | Supports all native div props |

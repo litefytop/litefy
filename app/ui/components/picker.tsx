@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
 export interface PickerRootProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
@@ -38,10 +38,7 @@ export function PickerContent({ className, ...props }: PickerContentProps) {
     <div
       popover="manual"
       {...props}
-      className={cn(
-        "bg-background text-foreground border shadow-lg rounded-md",
-        className,
-      )}
+      className={cn("bg-background text-foreground border shadow-lg rounded-md", className)}
     />
   );
 }
@@ -60,8 +57,10 @@ export interface PickerStyles {
   popover?: React.CSSProperties;
 }
 
-export interface PickerProps
-  extends Omit<PickerInputProps, "value" | "defaultValue" | "onChange" | "className"> {
+export interface PickerProps extends Omit<
+  PickerInputProps,
+  "value" | "defaultValue" | "onChange" | "className"
+> {
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;

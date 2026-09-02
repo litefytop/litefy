@@ -12,7 +12,7 @@ export default function PopoverBasicDemo() {
     <div className="flex flex-col items-center gap-3">
       <Popover
         trigger="Open"
-        classNames={{ trigger: [Button.class.base, Button.class.variant.primary] }}
+        classNames={{ trigger: [Button.className.base, Button.className.variant.primary] }}
       >
         <div className="flex flex-col">
           {actions.map((action) => (

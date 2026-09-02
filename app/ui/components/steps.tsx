@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Check } from "lucide-react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
 export interface StepsRootProps extends Omit<React.ComponentProps<"ol">, "className"> {
   className?: ClassNameValue;
@@ -14,7 +14,10 @@ export function StepsRoot({ className, ...props }: StepsRootProps) {
 
 export type StepsItemState = "completed" | "current" | "upcoming";
 
-export interface StepsItemProps extends Omit<React.ComponentProps<"li">, "className" | "title" | "onSelect"> {
+export interface StepsItemProps extends Omit<
+  React.ComponentProps<"li">,
+  "className" | "title" | "onSelect"
+> {
   index: number;
   state: StepsItemState;
   title: React.ReactNode;

@@ -1,9 +1,17 @@
 export default {
   index: {
-    name: "Hooks Overview",
+    name: "Utils Overview",
     displayName: {
       en: "Overview",
       zh: "概览",
+    },
+  },
+
+  cn: {
+    name: "Class Merge",
+    displayName: {
+      en: "cn",
+      zh: "类名合并",
     },
   },
 

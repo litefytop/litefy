@@ -1,0 +1,59 @@
+---
+title: Capsule
+description: A pill container that turns two tags into a shields-io style two-color badge.
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add capsule" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="capsule" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+`Capsule` is a pill-shaped overflow-hidden container. Put two [Tag](/docs/component/tag) children inside — pass `rounded-none px-2.5 py-1` to each tag for badge proportions — and you get a shields-io style two-color badge in seconds.
+
+<ComponentPreview name="capsule-badge" />
+
+### Composition
+
+The left tag acts as the label, the right one as the value. Colors are plain utilities on each tag. Use the `as` prop to render the container as `span` (default) or `a` (link).
+
+```tsx
+<Capsule>
+  <Tag className="rounded-none px-2.5 py-1 bg-neutral-600 text-white">build</Tag>
+  <Tag className="rounded-none px-2.5 py-1 bg-emerald-600 text-white">passing</Tag>
+</Capsule>
+
+<Capsule as="a" href="#">
+  <Tag className="rounded-none px-2.5 py-1 bg-neutral-600 text-white">docs</Tag>
+  <Tag className="rounded-none px-2.5 py-1 bg-violet-600 text-white">litefy.dev</Tag>
+</Capsule>
+```
+
+## Notes
+
+- `rounded-none px-2.5 py-1` on the tags neutralizes their radius and bumps padding for badge proportions.
+- More than two tags work too: the container just clips whatever is inside.
+
+## API Reference
+
+### Capsule
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `as` | `'span' \| 'a'` | `'span'` | Rendered element type |
+| `className` | `ClassNameValue` | - | Custom CSS class |
+| `...props` | `React.ComponentProps<E>` | - | Native props of the element selected by `as` |

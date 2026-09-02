@@ -5,7 +5,7 @@ import logger from "../utils/logger";
 
 interface LitefyConfig {
   components: { path: string };
-  hooks: { path: string };
+  utils: { path: string };
   styles: { path: string };
 }
 
@@ -23,7 +23,7 @@ export async function uninstall() {
       type: "confirm",
       name: "confirm",
       message:
-        "Are you sure to uninstall Litefy from this project?\nThis will DELETE components/hooks/styles directories and litefy.json. Continue?",
+        "Are you sure to uninstall Litefy from this project?\nThis will DELETE components/utils/styles directories and litefy.json. Continue?",
       default: false,
     },
   ]);
@@ -36,11 +36,11 @@ export async function uninstall() {
   const config = (await fs.readJson(configPath)) as LitefyConfig;
 
   const compDir = path.resolve(cwd, config.components.path);
-  const hookDir = path.resolve(cwd, config.hooks.path);
+  const utilDir = path.resolve(cwd, config.utils.path);
   const styleDir = path.resolve(cwd, config.styles.path);
 
   if (await fs.pathExists(compDir)) await fs.remove(compDir);
-  if (await fs.pathExists(hookDir)) await fs.remove(hookDir);
+  if (await fs.pathExists(utilDir)) await fs.remove(utilDir);
   if (await fs.pathExists(styleDir)) await fs.remove(styleDir);
 
   await fs.remove(configPath);

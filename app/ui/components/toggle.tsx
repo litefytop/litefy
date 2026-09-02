@@ -1,5 +1,5 @@
 import * as React from "react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
 export interface ToggleProps {
   checked?: boolean;

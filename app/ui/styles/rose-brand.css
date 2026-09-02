@@ -1,9 +1,11 @@
 [data-brand="rose"] {
   --primary: oklch(51.4% 0.222 16.935);
   --accent: oklch(45.5% 0.188 13.697);
+  --ring: oklch(71.2% 0.194 13.428);
 }
 
 .dark[data-brand="rose"] {
   --primary: oklch(71.2% 0.194 13.428);
   --accent: oklch(81% 0.117 11.638);
+  --ring: oklch(51.4% 0.222 16.935);
 }

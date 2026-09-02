@@ -26,20 +26,20 @@ export default function PopoverAlignmentDemo() {
         <div className="flex gap-4">
           <Popover
             styles={{ content: { positionArea: "bottom span-right", justifySelf: "start" } }}
-            classNames={{ trigger: [Button.class.base, Button.class.variant.primary] }}
+            classNames={{ trigger: [Button.className.base, Button.className.variant.primary] }}
             trigger="span-right"
           >
             <ActionList />
           </Popover>
           <Popover
-            classNames={{ trigger: [Button.class.base, Button.class.variant.primary] }}
+            classNames={{ trigger: [Button.className.base, Button.className.variant.primary] }}
             trigger="bottom span-all"
           >
             <ActionList />
           </Popover>
           <Popover
             styles={{ content: { positionArea: "bottom span-left", justifySelf: "end" } }}
-            classNames={{ trigger: [Button.class.base, Button.class.variant.primary] }}
+            classNames={{ trigger: [Button.className.base, Button.className.variant.primary] }}
             trigger="span-left"
           >
             <ActionList />
@@ -51,14 +51,14 @@ export default function PopoverAlignmentDemo() {
         <div className="flex gap-4">
           <Popover
             alignX="start"
-            classNames={{ trigger: [Button.class.base, Button.class.variant.primary] }}
+            classNames={{ trigger: [Button.className.base, Button.className.variant.primary] }}
             trigger="alignX start"
           >
             <ActionList />
           </Popover>
           <Popover
             alignX="end"
-            classNames={{ trigger: [Button.class.base, Button.class.variant.primary] }}
+            classNames={{ trigger: [Button.className.base, Button.className.variant.primary] }}
             trigger="alignX end"
           >
             <ActionList />

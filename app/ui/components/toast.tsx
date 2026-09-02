@@ -2,7 +2,7 @@
 
 import { CircleCheck, CircleHelp, Loader2, TriangleAlert, X } from "lucide-react";
 import React, { useCallback, useEffect, useState, useSyncExternalStore } from "react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
 export type ToastType = "success" | "error" | "warning" | "info" | "loading";
 
@@ -11,7 +11,90 @@ export type CloseEvent = {
   id?: string | number;
 };
 
-export type ToastItemProps = React.ComponentProps<"div"> & {
+export interface ToastRootProps extends Omit<React.ComponentProps<"div">, "className"> {
+  className?: ClassNameValue;
+}
+
+export function ToastRoot({ className, ...props }: ToastRootProps) {
+  return (
+    <div
+      {...props}
+      className={cn(
+        "pointer-events-auto flex w-full items-center justify-between gap-3 rounded-lg border p-4 shadow-lg text-foreground bg-background",
+        "data-[expanded=true]:scale-100",
+        "data-[exiting=true]:animate-out data-[exiting=true]:slide-out-to-top data-[exiting=true]:duration-300",
+        "transition-all duration-400",
+        className,
+      )}
+    />
+  );
+}
+
+export interface ToastIconProps extends Omit<React.ComponentProps<"div">, "className"> {
+  className?: ClassNameValue;
+}
+
+export function ToastIcon({ className, ...props }: ToastIconProps) {
+  return <div {...props} className={cn("shrink-0", className)} />;
+}
+
+export interface ToastContentProps extends Omit<React.ComponentProps<"div">, "className"> {
+  className?: ClassNameValue;
+}
+
+export function ToastContent({ className, ...props }: ToastContentProps) {
+  return <div {...props} className={cn("flex-1 min-w-0", className)} />;
+}
+
+export interface ToastTitleProps extends Omit<React.ComponentProps<"div">, "className"> {
+  className?: ClassNameValue;
+}
+
+export function ToastTitle({ className, ...props }: ToastTitleProps) {
+  return <div {...props} className={cn("font-medium", className)} />;
+}
+
+export interface ToastDescriptionProps extends Omit<React.ComponentProps<"div">, "className"> {
+  className?: ClassNameValue;
+}
+
+export function ToastDescription({ className, ...props }: ToastDescriptionProps) {
+  return <div {...props} className={cn("text-sm text-muted-foreground mt-1", className)} />;
+}
+
+export interface ToastActionsProps extends Omit<React.ComponentProps<"div">, "className"> {
+  className?: ClassNameValue;
+}
+
+export function ToastActions({ className, ...props }: ToastActionsProps) {
+  return <div {...props} className={cn("flex gap-2", className)} />;
+}
+
+export interface ToastActionProps extends Omit<
+  React.ComponentProps<"button">,
+  "className" | "type"
+> {
+  className?: ClassNameValue;
+}
+
+export function ToastAction({ className, ...props }: ToastActionProps) {
+  return (
+    <button
+      {...props}
+      type="button"
+      className={cn(
+        "inline-flex items-center justify-center rounded-md text-sm font-medium",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "disabled:pointer-events-none disabled:opacity-50",
+        "h-8 px-3 py-1",
+        "hover:bg-accent hover:text-accent-foreground",
+        className,
+      )}
+    />
+  );
+}
+
+export type ToastItemProps = Omit<React.ComponentProps<"div">, "className" | "style"> & {
   id?: string | number;
   type?: ToastType;
   title?: React.ReactNode;
@@ -25,10 +108,21 @@ export type ToastItemProps = React.ComponentProps<"div"> & {
     className?: ClassNameValue;
   }>;
   isExpanded?: boolean;
-  slotProps?: {
-    leading?: React.ComponentProps<"div">;
-    content?: React.ComponentProps<"div">;
-    actions?: React.ComponentProps<"div">;
+  classNames?: {
+    root?: ClassNameValue;
+    icon?: ClassNameValue;
+    content?: ClassNameValue;
+    title?: ClassNameValue;
+    description?: ClassNameValue;
+    actions?: ClassNameValue;
+  };
+  styles?: {
+    root?: React.CSSProperties;
+    icon?: React.CSSProperties;
+    content?: React.CSSProperties;
+    title?: React.CSSProperties;
+    description?: React.CSSProperties;
+    actions?: React.CSSProperties;
   };
 };
 
@@ -111,8 +205,8 @@ function ToastItem({
   title,
   description,
   actions,
-  slotProps,
-  className,
+  classNames,
+  styles,
   ...restProps
 }: ToastItemProps) {
   const [isExiting, setIsExiting] = useState(false);
@@ -146,10 +240,7 @@ function ToastItem({
     }, remainingRef.current);
 
     return () => {
-      remainingRef.current = Math.max(
-        0,
-        (remainingRef.current ?? d) - (Date.now() - startedAt),
-      );
+      remainingRef.current = Math.max(0, (remainingRef.current ?? d) - (Date.now() - startedAt));
       clearTimeout(timer);
     };
   }, [handleDismiss, isExpanded, type, duration]);
@@ -165,53 +256,45 @@ function ToastItem({
   const icon = customIcon ?? toastIcons[type || "success"];
 
   return (
-    <div
+    <ToastRoot
       {...restProps}
       data-expanded={isExpanded}
       data-exiting={isExiting}
-      className={cn(
-        "pointer-events-auto flex w-full items-center justify-between gap-3 rounded-lg border p-4 shadow-lg text-foreground bg-background",
-        "data-[expanded=true]:scale-100",
-        "data-[exiting=true]:animate-out data-[exiting=true]:slide-out-to-top data-[exiting=true]:duration-300",
-        "transition-all duration-400",
-        className,
-      )}
+      className={classNames?.root}
+      style={styles?.root}
     >
       {icon && (
-        <div {...slotProps?.leading} className={cn("shrink-0", slotProps?.leading?.className)}>
+        <ToastIcon className={classNames?.icon} style={styles?.icon}>
           {icon}
-        </div>
+        </ToastIcon>
       )}
-
-      <div {...slotProps?.content} className={cn("flex-1 min-w-0", slotProps?.content?.className)}>
-        <div className="font-medium">{title}</div>
-        {description && <div className="text-sm text-muted-foreground mt-1">{description}</div>}
-      </div>
+      <ToastContent className={classNames?.content} style={styles?.content}>
+        <ToastTitle className={classNames?.title} style={styles?.title}>
+          {title}
+        </ToastTitle>
+        {description && (
+          <ToastDescription className={classNames?.description} style={styles?.description}>
+            {description}
+          </ToastDescription>
+        )}
+      </ToastContent>
       {actions && (
-        <div {...slotProps?.actions} className={cn("flex gap-2", slotProps?.actions?.className)}>
+        <ToastActions className={classNames?.actions} style={styles?.actions}>
           {actions.map((action, idx) => (
-            <button
+            <ToastAction
               key={idx}
-              type="button"
+              className={action.className}
               onClick={(e) => {
                 e.stopPropagation();
                 action.onClick?.(handleDismiss);
               }}
-              className={cn(
-                "inline-flex items-center justify-center rounded-md text-sm font-medium",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                "disabled:pointer-events-none disabled:opacity-50",
-                "h-8 px-3 py-1",
-                "hover:bg-accent hover:text-accent-foreground",
-                action.className,
-              )}
             >
               {action.children}
-            </button>
+            </ToastAction>
           ))}
-        </div>
+        </ToastActions>
       )}
-    </div>
+    </ToastRoot>
   );
 }
 

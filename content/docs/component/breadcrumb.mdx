@@ -1,6 +1,6 @@
 ---
 title: Breadcrumb
-description: A navigation trail showing the current page hierarchy, with a placeholder for empty states, composable into any container
+description: A navigation trail of composable parts — nav, list, item, link, page and separator — with a data-driven composite for simple trails
 ---
 
 ## Installation
@@ -23,48 +23,59 @@ description: A navigation trail showing the current page hierarchy, with a place
 
 ## Usage
 
-### Basic Usage
+### Data-driven
 
-Configure the trail via `items`; `placeholder` renders when `items` is empty (for initial-trigger scenarios). Clicking an entry fires `onSelect(index, entry)`, meaning "level `index` becomes this entry" — everything after it is the consumer's to clear.
+For simple trails, the composite `Breadcrumb` renders `items` in order — the last entry becomes the current page, the rest render as links:
 
 <ComponentPreview
   name="breadcrumb-basic"
 />
 
-Key points:
+```tsx
+import { Breadcrumb } from "@/ui";
 
-- Semantic structure is `nav > ol > li`, with `aria-current="page"` on the last entry.
-- When `items` is empty the `placeholder` renders — the breadcrumb can therefore act as the initial trigger area for containers like a cascader.
-- `BreadcrumbLink` is a real `<a>`; the demo uses `preventDefault` to intercept navigation and rewrite the trail instead.
+<Breadcrumb
+  items={[
+    { label: "Home", href: "/" },
+    { label: "Project", href: "/project" },
+    { label: "Current Page" },
+  ]}
+/>
+```
 
-### Navigation Menu
+### Parts composition
 
-Entries with a `menu` configured (`BreadcrumbEntry` is recursive — `menu` holds the child options of that entry) pop up a navigation menu right below the entry on hover or keyboard focus:
+Every layer is exported as a part — compose them freely for full control over items, icons and separators:
 
-- Selecting a menu entry fires `onSelect(index + 1, menuEntry)` — the same callback semantics as clicking an entry ("level `index` becomes this entry"), so truncating with `items.slice(0, index)` on the consumer side clears everything after the switched level.
-- Menu panels render inline with `popover="manual"` (the top layer escapes ancestor `overflow` clipping), anchored below their entry via `anchor-name` / `position-anchor`, and auto-flip at viewport edges.
-- Hover opens the menu; leaving both the entry and the panel closes it after 120ms. On keyboard, focus or `Tab` opens it, `ArrowDown` / `ArrowUp` cycle through menu items, `Escape` closes and restores focus, and a `mousedown` outside also closes it.
-- Clicking the entry itself still fires `onSelect(index, entry)`, independent of the menu.
+<ComponentPreview
+  name="breadcrumb-custom"
+/>
+
+### Navigation menu
+
+The hover-menu demo shows how to attach a hover menu to an entry with `PopoverContent` — the panel renders inline with `popover="manual"` (the top layer escapes ancestor `overflow` clipping), anchors below its entry, opens on hover or focus, and closes 120ms after leaving both the entry and the panel:
+
+<ComponentPreview
+  name="breadcrumb-hover-menu"
+/>
 
 ## API Reference
 
 ### Breadcrumb
 
-| Prop         | Type                                        | Default | Description                             |
-| :----------- | :------------------------------------------ | :------ | :-------------------------------------- |
-| `items`      | `BreadcrumbEntry[]`                         | -       | Trail entries in hierarchy order        |
-| `placeholder`| `React.ReactNode`                           | -       | Content rendered when `items` is empty  |
-| `onSelect`   | `(index: number, entry: BreadcrumbEntry) => void` | - | Fired when an entry is clicked or a menu entry is selected; means "level `index` becomes this entry" |
-| `className`  | `ClassNameValue`                            | -       | Custom class names, applied to the root |
-| `classNames` | `list` / `link` / `page` / `separator` / `placeholder` | - | Custom class names per slot |
+| Prop         | Type                                            | Default | Description                                                |
+| :----------- | :---------------------------------------------- | :------ | :--------------------------------------------------------- |
+| `items`      | `BreadcrumbDataItem[]`                          | -       | Trail entries in hierarchy order; the last renders as page |
+| `classNames` | `root` / `list` / `link` / `page` / `separator` | -       | Custom class names per slot                                |
+| `styles`     | `root` / `list` / `link` / `page` / `separator` | -       | Custom styles per slot                                     |
+| `...props`   | `React.ComponentProps<"nav">`                   | -       | Native nav props, spread onto the root                     |
 
-### BreadcrumbEntry
+### BreadcrumbDataItem
 
-| Field   | Type                    | Default | Description                                                   |
-| :------ | :---------------------- | :------ | :------------------------------------------------------------ |
-| `value` | `string`                | -       | Unique identity                                               |
-| `label` | `React.ReactNode`       | -       | Entry text                                                    |
-| `menu`  | `BreadcrumbEntry[]`     | -       | Child options; configuring it enables the hover navigation menu |
+| Field   | Type              | Default | Description                                  |
+| :------ | :---------------- | :------ | :------------------------------------------- |
+| `label` | `React.ReactNode` | -       | Entry text                                   |
+| `href`  | `string`          | -       | Link target; entries with it render as links |
 
 ### Composable Components
 
@@ -74,53 +85,53 @@ The parts extend native DOM props and merge their built-in `className` through `
 
 The outer `<nav aria-label="breadcrumb">` container.
 
-| Prop       | Type                          | Default | Description      |
-| :--------- | :---------------------------- | :------ | :--------------- |
-| `className` | `ClassNameValue`             | -       | Custom class names |
-| `...props` | `React.ComponentProps<"nav">` | -       | Native nav props |
+| Prop        | Type                          | Default | Description        |
+| :---------- | :---------------------------- | :------ | :----------------- |
+| `className` | `ClassNameValue`              | -       | Custom class names |
+| `...props`  | `React.ComponentProps<"nav">` | -       | Native nav props   |
 
 #### BreadcrumbList
 
 The inner `<ol>`, flex layout with wrapping.
 
-| Prop       | Type                         | Default | Description      |
-| :--------- | :--------------------------- | :------ | :--------------- |
-| `className` | `ClassNameValue`            | -       | Custom class names |
-| `...props` | `React.ComponentProps<"ol">` | -       | Native ol props  |
+| Prop        | Type                         | Default | Description        |
+| :---------- | :--------------------------- | :------ | :----------------- |
+| `className` | `ClassNameValue`             | -       | Custom class names |
+| `...props`  | `React.ComponentProps<"ol">` | -       | Native ol props    |
 
 #### BreadcrumbItem
 
 A single `<li>` entry container.
 
-| Prop       | Type                         | Default | Description      |
-| :--------- | :--------------------------- | :------ | :--------------- |
-| `className` | `ClassNameValue`            | -       | Custom class names |
-| `...props` | `React.ComponentProps<"li">` | -       | Native li props  |
+| Prop        | Type                         | Default | Description        |
+| :---------- | :--------------------------- | :------ | :----------------- |
+| `className` | `ClassNameValue`             | -       | Custom class names |
+| `...props`  | `React.ComponentProps<"li">` | -       | Native li props    |
 
 #### BreadcrumbLink
 
 A clickable trail link (a real `<a>`).
 
-| Prop       | Type                        | Default | Description      |
-| :--------- | :-------------------------- | :------ | :--------------- |
-| `className` | `ClassNameValue`           | -       | Custom class names |
-| `...props` | `React.ComponentProps<"a">` | -       | Native a props   |
+| Prop        | Type                        | Default | Description        |
+| :---------- | :-------------------------- | :------ | :----------------- |
+| `className` | `ClassNameValue`            | -       | Custom class names |
+| `...props`  | `React.ComponentProps<"a">` | -       | Native a props     |
 
 #### BreadcrumbPage
 
 The current page text (not clickable, `aria-current="page"`).
 
-| Prop       | Type                           | Default | Description      |
-| :--------- | :----------------------------- | :------ | :--------------- |
-| `className` | `ClassNameValue`              | -       | Custom class names |
-| `...props` | `React.ComponentProps<"span">` | -      | Native span props |
+| Prop        | Type                           | Default | Description        |
+| :---------- | :----------------------------- | :------ | :----------------- |
+| `className` | `ClassNameValue`               | -       | Custom class names |
+| `...props`  | `React.ComponentProps<"span">` | -       | Native span props  |
 
 #### BreadcrumbSeparator
 
 The separator, rendering a `ChevronRight` icon by default — replace via `children`.
 
-| Prop       | Type                         | Default | Description              |
-| :--------- | :--------------------------- | :------ | :----------------------- |
-| `className` | `ClassNameValue`            | -       | Custom class names       |
-| `children` | `React.ReactNode`            | -       | Custom separator content |
-| `...props` | `React.ComponentProps<"li">` | -       | Native li props          |
+| Prop        | Type                         | Default | Description              |
+| :---------- | :--------------------------- | :------ | :----------------------- |
+| `className` | `ClassNameValue`             | -       | Custom class names       |
+| `children`  | `React.ReactNode`            | -       | Custom separator content |
+| `...props`  | `React.ComponentProps<"li">` | -       | Native li props          |

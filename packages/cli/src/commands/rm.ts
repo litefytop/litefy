@@ -10,7 +10,7 @@ interface LitefyConfig {
     path: string;
     installed: string[];
   };
-  hooks: {
+  utils: {
     path: string;
     installed: string[];
   };
@@ -45,8 +45,8 @@ async function rm(names: string[]): Promise<void> {
   const compIndex = path.resolve(cwd, config.components.path, "index.ts");
   await writeBarrelIndex(compIndex, config.components.installed);
 
-  const hookIndex = path.resolve(cwd, config.hooks.path, "index.ts");
-  await writeBarrelIndex(hookIndex, config.hooks.installed);
+  const hookIndex = path.resolve(cwd, config.utils.path, "index.ts");
+  await writeBarrelIndex(hookIndex, config.utils.installed);
 
   await fs.writeJson(configPath, config, { spaces: 2 });
   logger.success("Remove done, updated litefy.json");
@@ -67,8 +67,9 @@ async function removeSingle(
       installedArr = config.components.installed;
       break;
     case "hook":
-      relDir = config.hooks.path;
-      installedArr = config.hooks.installed;
+    case "util":
+      relDir = config.utils.path;
+      installedArr = config.utils.installed;
       break;
     case "css":
       relDir = config.styles.path;
@@ -97,7 +98,8 @@ async function removeSingle(
       config.components.installed = config.components.installed.filter((x) => x !== itemName);
       break;
     case "hook":
-      config.hooks.installed = config.hooks.installed.filter((x) => x !== itemName);
+    case "util":
+      config.utils.installed = config.utils.installed.filter((x) => x !== itemName);
       break;
     case "css":
       config.styles.installed = config.styles.installed.filter((x) => x !== itemName);

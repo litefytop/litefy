@@ -1,3 +1,4 @@
+export * from "./cn";
 export * from "./use-pagination";
 export * from "./use-theme";
 export * from "./use-chart-palette";

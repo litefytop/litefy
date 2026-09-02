@@ -1,5 +1,5 @@
 import { ChevronDown } from "lucide-react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
 export type SelectOption = {
   label: string;

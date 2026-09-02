@@ -1,12 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
-export interface RadioProps extends Omit<
-  React.ComponentProps<"input">,
-  "type" | "className"
-> {
+export interface RadioProps extends Omit<React.ComponentProps<"input">, "type" | "className"> {
   className?: ClassNameValue;
   invalid?: boolean;
   onCheckedChange?: (checked: boolean) => void;
@@ -27,8 +24,7 @@ export const Radio = ({
 }: RadioProps) => {
   const fallbackId = React.useId();
   const _id = id ?? fallbackId;
-  const [uncontrolledChecked, setUncontrolledChecked] =
-    React.useState(defaultChecked);
+  const [uncontrolledChecked, setUncontrolledChecked] = React.useState(defaultChecked);
   const isControlled = controlledChecked !== undefined;
   const checked$ = isControlled ? controlledChecked : uncontrolledChecked;
 
@@ -64,9 +60,7 @@ export const Radio = ({
         checked={checked$}
         onChange={handleChange}
         data-hidden={Boolean(indicator) || undefined}
-        className={cn(
-          "accent-primary data-invalid:accent-destructive data-hidden:sr-only peer",
-        )}
+        className={cn("accent-primary data-invalid:accent-destructive data-hidden:sr-only peer")}
       />
       {children}
     </label>

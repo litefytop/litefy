@@ -29,7 +29,7 @@ export default function Demo() {
         open={open}
         onOpenChange={setOpen}
         trigger="Open Menu"
-        classNames={{ trigger: [Button.class.base, Button.class.variant.primary] }}
+        classNames={{ trigger: [Button.className.base, Button.className.variant.primary] }}
       >
         <Menu
           autoFocus={open}

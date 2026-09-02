@@ -7,6 +7,8 @@ description: 自定义 Litefy UI 的颜色、字体与设计变量。
 
 <Source type="css" name="theme" />
 
+该主题包含亮色与暗色两套配色，根元素存在 `.dark` 类时会自动应用暗色模式。
+
 > 注意：变量使用 OKLCH 色值，现代浏览器均已支持。如需在 Tailwind 类名中使用，已通过 `@theme inline` 完成映射。
 
 ## 主题构成
@@ -16,4 +18,43 @@ Litefy 的主题由两部分可自由组合的模块组成：
 - **Surface**：中性画布色板，控制页面背景与文本色系。
 - **Brand**：品牌交互色板，控制按钮、强调控件主色。
 
-> 查看全部内置预设色板、静态导入以及运行时切换用法，请参阅 [`useTheme`](./hooks/use-theme.zh.mdx)。
+> 需要在运行时用 `useTheme` 切换色板，请参阅 [`useTheme`](./utils/use-theme.zh.mdx)。
+
+## Surface 预设
+
+每个预设覆写中性色变量（`--background`、`--foreground`、`--muted`、`--muted-foreground`、`--neutral`）。
+
+<PresetTabs
+  items={[
+    "gray-surface",
+    "mauve-surface",
+    "mist-surface",
+    "olive-surface",
+    "slate-surface",
+    "stone-surface",
+    "taupe-surface",
+    "zinc-surface",
+  ]}
+/>
+
+## Brand 预设
+
+每个预设覆写品牌色变量（`--primary` 与 `--accent`）。
+
+<PresetTabs
+  items={[
+    "amber-brand",
+    "cyan-brand",
+    "emerald-brand",
+    "fuchsia-brand",
+    "indigo-brand",
+    "lime-brand",
+    "orange-brand",
+    "pink-brand",
+    "purple-brand",
+    "rose-brand",
+    "sky-brand",
+    "teal-brand",
+    "violet-brand",
+  ]}
+/>

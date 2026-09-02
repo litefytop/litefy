@@ -18,7 +18,7 @@ export default function Demo() {
       <Popover
         trigger={`Categories (${values.length})`}
         classNames={{
-          trigger: [Button.class.base, Button.class.variant.primary, "w-56"],
+          trigger: [Button.className.base, Button.className.variant.primary, "w-56"],
           content: "w-56",
         }}
       >

@@ -3,6 +3,7 @@ import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 import logoRaw from "../assets/logo.svg?raw";
 import { i18n } from "../lib/i18n";
 import { appName, gitConfig } from "../lib/shared";
+import { ThemeSwitcher } from "./theme-switcher";
 
 export const translations = i18n
   .translations()
@@ -17,7 +18,7 @@ export const translations = i18n
     },
   });
 
-export function baseOptions(_currentLocale: string): BaseLayoutProps {
+export function baseOptions(currentLocale: string): BaseLayoutProps {
   return {
     nav: {
       title: (
@@ -25,6 +26,14 @@ export function baseOptions(_currentLocale: string): BaseLayoutProps {
           <div dangerouslySetInnerHTML={{ __html: logoRaw }} className="fill-foreground size-8" />
           {appName}
         </div>
+      ),
+    },
+    slots: {
+      themeSwitch: (props) => (
+        <ThemeSwitcher
+          lang={currentLocale === "zh" ? "zh" : "en"}
+          className={props.className}
+        />
       ),
     },
     githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,

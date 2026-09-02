@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
 type HTMLAttrs<T> = Omit<T, "className"> & {
   [key: `data-${string}`]: string | number | null | undefined | true;

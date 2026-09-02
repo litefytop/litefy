@@ -1,9 +1,11 @@
 [data-brand="violet"] {
   --primary: oklch(54.1% 0.281 293.009);
   --accent: oklch(49.1% 0.27 292.581);
+  --ring: oklch(70.2% 0.183 293.541);
 }
 
 .dark[data-brand="violet"] {
   --primary: oklch(70.2% 0.183 293.541);
   --accent: oklch(81.1% 0.111 293.571);
+  --ring: oklch(54.1% 0.281 293.009);
 }

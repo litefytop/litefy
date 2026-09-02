@@ -24,7 +24,7 @@ Combobox 不是一个提供源码的组件。它是两个基础零件的组合�
 
 ### 异步搜索
 
-数据量大或来源为远程接口时，在 `onValueChange` 中调用 `remote.search` 发起搜索，并在列表滚动到底部时通过 `onScrollBottom` 加载更多 —— [`useRemotePagination`](/docs/hooks/use-remote-pagination) hook 提供防抖请求、数据和加载控制。
+数据量大或来源为远程接口时，在 `onValueChange` 中调用 `remote.search` 发起搜索，并在列表滚动到底部时通过 `onScrollBottom` 加载更多 —— [`useRemotePagination`](/docs/utils/use-remote-pagination) hook 提供防抖请求、数据和加载控制。
 
 <ComponentPreview
   name="combobox-async"

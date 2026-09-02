@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import type { Key, ReactNode } from "react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
 export interface ListRootProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;

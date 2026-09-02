@@ -5,6 +5,10 @@ import BadgeBasicDemo from "./badge/basic";
 import badgeBasicCode from "./badge/basic.tsx?raw";
 import BreadcrumbBasicDemo from "./breadcrumb/basic";
 import breadcrumbBasicCode from "./breadcrumb/basic.tsx?raw";
+import BreadcrumbCustomDemo from "./breadcrumb/custom";
+import breadcrumbCustomCode from "./breadcrumb/custom.tsx?raw";
+import BreadcrumbHoverMenuDemo from "./breadcrumb/hover-menu";
+import breadcrumbHoverMenuCode from "./breadcrumb/hover-menu.tsx?raw";
 import ChartLineDemo from "./chart/line";
 import chartLineCode from "./chart/line.tsx?raw";
 import ChartAreaDemo from "./chart/area";
@@ -49,28 +53,28 @@ import ComboboxAsyncDemo from "./combobox/async";
 import comboboxAsyncCode from "./combobox/async.tsx?raw";
 import ComboboxBasicDemo from "./combobox/basic";
 import comboboxBasicCode from "./combobox/basic.tsx?raw";
-import CardBasicDemo from "./css/card-basic";
-import cardBasicCode from "./css/card-basic.tsx?raw";
-import CardGroupDemo from "./css/card-group";
-import cardGroupCode from "./css/card-group.tsx?raw";
-import CapsuleBadgeDemo from "./css/capsule-badge";
-import capsuleBadgeCode from "./css/capsule-badge.tsx?raw";
-import TypographyHeadingsDemo from "./css/typography-headings";
-import typographyHeadingsCode from "./css/typography-headings.tsx?raw";
-import TypographyTextDemo from "./css/typography-text";
-import typographyTextCode from "./css/typography-text.tsx?raw";
+import CardBasicDemo from "./card/basic";
+import cardBasicCode from "./card/basic.tsx?raw";
+import CardGroupDemo from "./card/group";
+import cardGroupCode from "./card/group.tsx?raw";
+import CapsuleBadgeDemo from "./capsule/badge";
+import capsuleBadgeCode from "./capsule/badge.tsx?raw";
+import TypographyHeadingsDemo from "./typography/headings";
+import typographyHeadingsCode from "./typography/headings.tsx?raw";
+import TypographyTextDemo from "./typography/text";
+import typographyTextCode from "./typography/text.tsx?raw";
 import PaperBasicDemo from "./paper/basic";
 import paperBasicCode from "./paper/basic.tsx?raw";
-import TagBasicDemo from "./css/tag-basic";
-import tagBasicCode from "./css/tag-basic.tsx?raw";
-import KbdBasicDemo from "./css/kbd-basic";
-import kbdBasicCode from "./css/kbd-basic.tsx?raw";
-import KbdCombinationDemo from "./css/kbd-combination";
-import kbdCombinationCode from "./css/kbd-combination.tsx?raw";
-import SkeletonAvatarDemo from "./css/skeleton-avatar";
-import skeletonAvatarCode from "./css/skeleton-avatar.tsx?raw";
-import SkeletonTextDemo from "./css/skeleton-text";
-import skeletonTextCode from "./css/skeleton-text.tsx?raw";
+import TagBasicDemo from "./tag/basic";
+import tagBasicCode from "./tag/basic.tsx?raw";
+import KbdBasicDemo from "./kbd/basic";
+import kbdBasicCode from "./kbd/basic.tsx?raw";
+import KbdCombinationDemo from "./kbd/combination";
+import kbdCombinationCode from "./kbd/combination.tsx?raw";
+import SkeletonAvatarDemo from "./skeleton/avatar";
+import skeletonAvatarCode from "./skeleton/avatar.tsx?raw";
+import SkeletonTextDemo from "./skeleton/text";
+import skeletonTextCode from "./skeleton/text.tsx?raw";
 import DialogBasicDemo from "./dialog/basic";
 import dialogBasicCode from "./dialog/basic.tsx?raw";
 import DialogCommandDemo from "./dialog/command";
@@ -85,6 +89,8 @@ import DrawerCustomDemo from "./drawer/custom";
 import drawerCustomCode from "./drawer/custom.tsx?raw";
 import DropdownMenuBasicDemo from "./dropdown-menu/basic";
 import dropdownMenuBasicCode from "./dropdown-menu/basic.tsx?raw";
+import ContextMenuBasicDemo from "./context-menu/basic";
+import contextMenuBasicCode from "./context-menu/basic.tsx?raw";
 import PopoverBasicDemo from "./popover/basic";
 import popoverBasicCode from "./popover/basic.tsx?raw";
 import ProgressBasicDemo from "./progress/basic";
@@ -421,6 +427,10 @@ export const demos: Record<string, DemoItem> = {
     component: DropdownMenuBasicDemo,
     code: dropdownMenuBasicCode,
   },
+  "context-menu-basic": {
+    component: ContextMenuBasicDemo,
+    code: contextMenuBasicCode,
+  },
   "popover-alignment": {
     component: PopoverAlignmentDemo,
     code: popoverAlignmentCode,
@@ -468,6 +478,14 @@ export const demos: Record<string, DemoItem> = {
   "breadcrumb-basic": {
     component: BreadcrumbBasicDemo,
     code: breadcrumbBasicCode,
+  },
+  "breadcrumb-custom": {
+    component: BreadcrumbCustomDemo,
+    code: breadcrumbCustomCode,
+  },
+  "breadcrumb-hover-menu": {
+    component: BreadcrumbHoverMenuDemo,
+    code: breadcrumbHoverMenuCode,
   },
   "cascader-basic": {
     component: CascaderBasicDemo,

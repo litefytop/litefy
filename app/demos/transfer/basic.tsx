@@ -3,7 +3,7 @@
 import * as React from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Checkbox } from "@/ui/components";
-import { cn } from "@/lib";
+import { cn } from "@/ui";
 
 export type TransferItemConfig = {
   label: React.ReactNode;

@@ -1,13 +1,13 @@
 "use client";
 
-import { Image, Tooltip } from "@/ui";
+import { Card, Image, Tooltip } from "@/ui";
 
 export default function PreviewCardBasicDemo() {
   return (
     <Tooltip
       delay={200}
       content={
-        <div className="card w-72">
+        <Card className="w-72">
           <Image
             src="https://picsum.photos/seed/preview-card/1200/800"
             alt="Preview"
@@ -19,7 +19,7 @@ export default function PreviewCardBasicDemo() {
               Hovering the link renders an image card as a rich preview.
             </p>
           </div>
-        </div>
+        </Card>
       }
     >
       <a

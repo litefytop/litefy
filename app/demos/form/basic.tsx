@@ -1,14 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import {
-  Checkbox,
-  Form,
-  type FormRef,
-  type FormValues,
-  Input,
-  Radio,
-} from "@/ui";
+import { Checkbox, Form, type FormRef, type FormValues, Input, Radio } from "@/ui";
 
 export default function Demo() {
   const formRef = useRef<FormRef>(null);
@@ -40,16 +33,10 @@ export default function Demo() {
         </Form.Field>
 
         <Form.Field name="email" label="Email">
-          {(field) => (
-            <Input {...field} type="email" placeholder="Enter your email" />
-          )}
+          {(field) => <Input {...field} type="email" placeholder="Enter your email" />}
         </Form.Field>
 
-        <Form.Fieldset
-          name="interests"
-          legend="Interests"
-          description="Pick the ones you like"
-        >
+        <Form.Fieldset name="interests" legend="Interests" description="Pick the ones you like">
           {({ ...field }) => (
             <Checkbox.Group
               {...field}

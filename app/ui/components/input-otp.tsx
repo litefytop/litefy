@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
 export interface InputOtpGroupProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
@@ -11,7 +11,10 @@ export function InputOtpGroup({ className, ...props }: InputOtpGroupProps) {
   return <div {...props} className={cn("flex items-center gap-2", className)} />;
 }
 
-export interface InputOtpSlotProps extends Omit<React.ComponentProps<"input">, "className" | "ref"> {
+export interface InputOtpSlotProps extends Omit<
+  React.ComponentProps<"input">,
+  "className" | "ref"
+> {
   className?: ClassNameValue;
   ref?: React.Ref<HTMLInputElement>;
 }

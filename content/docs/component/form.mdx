@@ -41,7 +41,7 @@ Use `validConfig` to add client-side validation. Validation runs on `onChange` o
 
 ### Horizontal Layout
 
-Set `direction="horizontal"` on a field for a side-by-side label/control layout. Combine with `slotProps` to style the label.
+Set `direction="horizontal"` on a field for a side-by-side label/control layout. Combine with `classNames` to style the label.
 
 <ComponentPreview 
   name="form-horizontal"
@@ -104,7 +104,8 @@ Wraps a label, control, and helper text into a single accessible field. The cont
 | `invalid`     | `React.ReactNode`                          | -            | Controlled error message. A string value is rendered as an error and sets `aria-invalid` |
 | `direction`   | `"vertical" \| "horizontal"`               | `"vertical"` | Layout direction of label and control                                                    |
 | `inputId`     | `string`                                   | -            | Custom id for the underlying control                                                     |
-| `slotProps`   | `FormFieldSlotProps`                       | -            | Per-slot customization for the label, description, and invalid text                      |
+| `classNames`  | `{ root?, label?, hint? }`                 | -            | Custom classes for the field container, label, and hint text                             |
+| `styles`      | `{ root?, label?, hint? }`                 | -            | Inline styles for the field container, label, and hint text                              |
 | `validConfig` | `FormFieldValidConfig<T>`                  | -            | Client-side validation configuration                                                     |
 | `children`    | `(field: FormFieldArg) => React.ReactNode` | -            | Render prop that receives the input props for the underlying control                     |
 
@@ -124,13 +125,25 @@ Render prop provided to `Form.Field` children.
 | `invalid`          | `boolean`                                          | Whether the field is currently invalid                                 |
 | `aria-describedby` | `string`                                           | Id of the description or error message, for accessibility              |
 
-### FormFieldSlotProps
+### FormLabel
 
-| Slot          | Type                                       | Description                                                                                 |
-| ------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------- |
-| `label`       | `HTMLAttrs<React.ComponentProps<"label">>` | Props for the label element                                                                 |
-| `description` | `HTMLAttrs<React.ComponentProps<"small">>` | Props for the description text. Pass `id` to override the default `aria-describedby` target |
-| `invalid`     | `HTMLAttrs<React.ComponentProps<"small">>` | Props for the error text. Pass `id` to override the default `aria-describedby` target       |
+The field label rendered as `<label>`.
+
+| Prop        | Type             | Default | Description      |
+| ----------- | ---------------- | ------- | ---------------- |
+| `className` | `ClassNameValue` | -       | Custom CSS class |
+
+Supports all native `<label>` attributes.
+
+### FormHint
+
+The hint text rendered as `<small>`. Shows the description normally and the error message (with `role="alert"`) when the field is invalid.
+
+| Prop        | Type             | Default | Description      |
+| ----------- | ---------------- | ------- | ---------------- |
+| `className` | `ClassNameValue` | -       | Custom CSS class |
+
+Supports all native `<small>` attributes.
 
 ### FormFieldValidConfig
 

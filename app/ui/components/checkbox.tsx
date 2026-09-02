@@ -1,5 +1,5 @@
 import * as React from "react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 import { Check } from "lucide-react";
 
 export interface CheckboxRootProps extends Omit<

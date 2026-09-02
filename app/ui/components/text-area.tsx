@@ -1,6 +1,6 @@
 "use client";
 
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
 export type TextareaProps = Omit<React.ComponentProps<"textarea">, "value" | "onChange"> & {
   value?: string;

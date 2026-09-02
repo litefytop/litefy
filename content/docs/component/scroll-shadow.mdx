@@ -56,13 +56,43 @@ A scrollable container with gradient shadow indicators.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `React.ReactNode` | - | Scrollable content |
-| `position` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'bottom'` | Position of the shadow indicator |
+| `edges` | `'top' \| 'bottom' \| 'left' \| 'right' \| Array<'top' \| 'bottom' \| 'left' \| 'right'>` | `'bottom'` | Edge(s) where the shadow indicator appears |
 | `size` | `string` | `'64px'` | Size of the shadow gradient |
-| `slotProps` | `ScrollShadowSlotProps` | - | Slot props for customizing sub-elements |
-| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| `classNames` | `{ root?, viewport?, edge? }` | - | Custom classes for the container, scroll viewport and shadow overlays |
+| `styles` | `{ root?, viewport?, edge? }` | - | Inline styles for the container, scroll viewport and shadow overlays |
 
-### ScrollShadowSlotProps
+Each shadow overlay carries a `data-position` attribute (`top` / `bottom` / `left` / `right`), so single edges can be targeted with variants like `data-[position=top]:`.
 
-| Slot | Type | Description |
-|------|------|-------------|
-| `shadow` | `React.ComponentProps<"div">` | Props for the shadow overlay element |
+### Composable Components
+
+#### ScrollShadowRoot
+
+The outer container that hides overflow and anchors the shadow overlays.
+
+| Prop        | Type             | Default | Description      |
+| ----------- | ---------------- | ------- | ---------------- |
+| `className` | `ClassNameValue` | -       | Custom CSS class |
+
+Supports all native `<div>` attributes.
+
+#### ScrollShadowViewport
+
+The scrollable viewport filling the root.
+
+| Prop        | Type             | Default | Description      |
+| ----------- | ---------------- | ------- | ---------------- |
+| `className` | `ClassNameValue` | -       | Custom CSS class |
+
+Supports all native `<div>` attributes, including `ref`.
+
+#### ScrollShadowEdge
+
+A single gradient shadow overlay for one edge.
+
+| Prop        | Type             | Default     | Description                                    |
+| ----------- | ---------------- | ----------- | ---------------------------------------------- |
+| `edge`      | `'top' \| 'bottom' \| 'left' \| 'right'` | `'bottom'` | Edge the gradient points from    |
+| `size`      | `string`         | `'64px'`    | Gradient size along the scroll axis            |
+| `className` | `ClassNameValue` | -           | Custom CSS class                               |
+
+Supports all native `<div>` attributes. Visibility is not managed by the part itself; the composite `ScrollShadow` toggles it based on scroll position.

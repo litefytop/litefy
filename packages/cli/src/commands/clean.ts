@@ -10,7 +10,7 @@ interface LitefyConfig {
     path: string;
     installed: string[];
   };
-  hooks: {
+  utils: {
     path: string;
     installed: string[];
   };
@@ -63,9 +63,9 @@ export async function clean() {
     registry,
     cwd,
   );
-  config.hooks.installed = await filterMissing(
-    config.hooks.installed,
-    config.hooks.path,
+  config.utils.installed = await filterMissing(
+    config.utils.installed,
+    config.utils.path,
     registry,
     cwd,
   );
@@ -73,8 +73,8 @@ export async function clean() {
   const compIndex = path.resolve(cwd, config.components.path, "index.ts");
   await writeBarrelIndex(compIndex, config.components.installed);
 
-  const hookIndex = path.resolve(cwd, config.hooks.path, "index.ts");
-  await writeBarrelIndex(hookIndex, config.hooks.installed);
+  const hookIndex = path.resolve(cwd, config.utils.path, "index.ts");
+  await writeBarrelIndex(hookIndex, config.utils.installed);
 
   await fs.writeJson(configPath, config, { spaces: 2 });
   logger.success("Clean finished, pruned invalid config entries");

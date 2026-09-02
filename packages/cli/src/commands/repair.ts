@@ -11,7 +11,7 @@ interface LitefyConfig {
     path: string;
     installed: string[];
   };
-  hooks: {
+  utils: {
     path: string;
     installed: string[];
   };
@@ -49,13 +49,13 @@ export async function repair() {
     processList.push({ name, entry, targetDir: config.components.path });
   }
 
-  for (const name of config.hooks.installed) {
+  for (const name of config.utils.installed) {
     const entry = registry[name];
     if (!entry) {
       logger.warn(`[repair] ${name} exists in config but missing from registry, skip`);
       continue;
     }
-    processList.push({ name, entry, targetDir: config.hooks.path });
+    processList.push({ name, entry, targetDir: config.utils.path });
   }
 
   for (const item of processList) {
@@ -73,8 +73,8 @@ export async function repair() {
   const compIndex = path.resolve(cwd, config.components.path, "index.ts");
   await writeBarrelIndex(compIndex, config.components.installed);
 
-  const hookIndex = path.resolve(cwd, config.hooks.path, "index.ts");
-  await writeBarrelIndex(hookIndex, config.hooks.installed);
+  const hookIndex = path.resolve(cwd, config.utils.path, "index.ts");
+  await writeBarrelIndex(hookIndex, config.utils.installed);
 
   await fs.writeJson(configPath, config, { spaces: 2 });
   logger.success("Repair finished");

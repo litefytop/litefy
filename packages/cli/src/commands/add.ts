@@ -16,7 +16,7 @@ interface LitefyConfig {
     path: string;
     installed: string[];
   };
-  hooks: {
+  utils: {
     path: string;
     installed: string[];
   };
@@ -27,9 +27,10 @@ interface LitefyConfig {
 }
 
 export type RegistryEntry = {
-  type: "component" | "hook" | "css";
+  type: "component" | "hook" | "util" | "css";
   url: string;
   docs?: string;
+  dependence?: string[];
 };
 
 export type Registry = Record<string, RegistryEntry>;
@@ -48,45 +49,56 @@ async function add(selectNames: string[], options: AddOptions): Promise<void> {
   const config = (await fs.readJson(configPath)) as LitefyConfig;
   const registry: Registry = await loadRegistry();
 
-  const successComponents: string[] = [];
-  const successHooks: string[] = [];
-  const successStyles: string[] = [];
+  const targetDirFor = (entry: RegistryEntry) =>
+    entry.type === "component"
+      ? config.components.path
+      : entry.type === "css"
+        ? config.styles.path
+        : config.utils.path;
 
-  for (const name of selectNames) {
+  const installedListFor = (entry: RegistryEntry) =>
+    entry.type === "component"
+      ? config.components.installed
+      : entry.type === "css"
+        ? config.styles.installed
+        : config.utils.installed;
+
+  const processed = new Set<string>();
+  const queue = [...selectNames];
+
+  while (queue.length) {
+    const name = queue.shift()!;
+    if (processed.has(name)) continue;
+    processed.add(name);
+
     const entry = registry[name];
     if (!entry) {
       logger.error(`Not found in registry: ${name}`);
       continue;
     }
 
-    let ok = false;
-    switch (entry.type) {
-      case "component":
-        ok = await addSingle(name, entry, config.components.path, cwd, options);
-        if (ok) successComponents.push(name);
-        break;
-      case "hook":
-        ok = await addSingle(name, entry, config.hooks.path, cwd, options);
-        if (ok) successHooks.push(name);
-        break;
-      case "css":
-        ok = await addSingle(name, entry, config.styles.path, cwd, options);
-        if (ok) successStyles.push(name);
-        break;
+    const ok = await addSingle(name, entry, targetDirFor(entry), cwd, options);
+    if (!ok) continue;
+
+    const installedList = installedListFor(entry);
+    if (!installedList.includes(name)) installedList.push(name);
+
+    for (const dep of entry.dependence ?? []) {
+      if (processed.has(dep)) continue;
+      if (!registry[dep]) {
+        logger.warn(`Dependency "${dep}" of ${name} not found in registry, skip`);
+        continue;
+      }
+      logger.info(`Resolving dependency "${dep}" required by ${name}`);
+      queue.push(dep);
     }
   }
-
-  config.components.installed = [
-    ...new Set([...config.components.installed, ...successComponents]),
-  ];
-  config.hooks.installed = [...new Set([...config.hooks.installed, ...successHooks])];
-  config.styles.installed = [...new Set([...config.styles.installed, ...successStyles])];
 
   const compIndex = path.resolve(cwd, config.components.path, "index.ts");
   await writeBarrelIndex(compIndex, config.components.installed);
 
-  const hookIndex = path.resolve(cwd, config.hooks.path, "index.ts");
-  await writeBarrelIndex(hookIndex, config.hooks.installed);
+  const utilIndex = path.resolve(cwd, config.utils.path, "index.ts");
+  await writeBarrelIndex(utilIndex, config.utils.installed);
 
   await fs.writeJson(configPath, config, { spaces: 2 });
   logger.success("Process finished.");

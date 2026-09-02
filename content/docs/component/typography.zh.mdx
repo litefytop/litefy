@@ -1,0 +1,56 @@
+---
+title: Typography 排版
+description: 标题、headline、描述与行内代码样式，构建一致的排版层级。
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add typography" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="typography" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 标题
+
+`h1` 到 `h6` 变体的响应式标题，semibold 字重与紧凑字距。
+
+<ComponentPreview name="typography-headings" />
+
+### 文本
+
+用于页面内容的 headline、描述与行内代码变体。
+
+<ComponentPreview name="typography-text" />
+
+## API 参考
+
+### Typography
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `'h1' \| 'h2' \| 'h3' \| 'h4' \| 'h5' \| 'h6' \| 'headline' \| 'description' \| 'heading-code' \| 'description-code'` | `'description'` | 排版变体；同时决定渲染的标签（`h1`~`h6`、`p` 或 `code`） |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+| `...props` | `React.ComponentProps<"p">` | - | 支持所有原生段落属性 |
+
+#### 变体
+
+| 变体 | 渲染标签 | 描述 |
+|---------|--------------|-------------|
+| `h1` ~ `h6` | `h1` ~ `h6` | 响应式标题，层级递减 |
+| `headline` | `h1` | 页面级粗体大标题，带纵向间距 |
+| `description` | `p` | 弱化的正文文本 |
+| `heading-code` | `code` | 标题内联代码样式 |
+| `description-code` | `code` | 正文行内代码样式 |

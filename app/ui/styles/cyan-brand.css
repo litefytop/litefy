@@ -1,9 +1,11 @@
 [data-brand="cyan"] {
   --primary: oklch(52% 0.105 223.128);
   --accent: oklch(45% 0.085 224.283);
+  --ring: oklch(71.5% 0.143 215.221);
 }
 
 .dark[data-brand="cyan"] {
   --primary: oklch(71.5% 0.143 215.221);
   --accent: oklch(78.9% 0.154 211.53);
+  --ring: oklch(52% 0.105 223.128);
 }

@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
 export interface AvatarRootProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
@@ -10,7 +10,7 @@ export function AvatarRoot({ className, ...props }: AvatarRootProps) {
     <div
       {...props}
       className={cn(
-        "flex aspect-square overflow-hidden items-center justify-center border border-border size-12",
+        "flex aspect-square overflow-hidden items-center justify-center size-12 text-2xl rounded-full",
         className,
       )}
     />
@@ -18,7 +18,6 @@ export function AvatarRoot({ className, ...props }: AvatarRootProps) {
 }
 export interface AvatarImageProps extends Omit<React.ComponentProps<"img">, "className"> {
   className?: ClassNameValue;
-  src: string;
 }
 export function AvatarImage({ className, ...props }: AvatarImageProps) {
   return (
@@ -42,6 +41,10 @@ export function Avatar({ skeleton, fallback, src, classNames, styles }: AvatarPr
   const [status, setStatus] = React.useState<"loading" | "success" | "failure">("loading");
 
   React.useEffect(() => {
+    if (!src) {
+      setStatus("failure");
+      return;
+    }
     let isActive = true;
     setStatus("loading");
     const img = new window.Image();

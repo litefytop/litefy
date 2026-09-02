@@ -1,6 +1,8 @@
+import { Card } from "@/ui";
+
 export default function CardBasicDemo() {
   return (
-    <div className="card w-full max-w-sm p-6">
+    <Card className="w-full max-w-sm p-6">
       <h3 className="text-lg font-semibold">Litefy Card</h3>
       <p className="text-muted-foreground mt-2 text-sm">
         A glassmorphic surface with subtle border, soft shadow and a glow that
@@ -17,6 +19,6 @@ export default function CardBasicDemo() {
           Cancel
         </button>
       </div>
-    </div>
+    </Card>
   );
 }

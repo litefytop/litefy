@@ -118,19 +118,19 @@ export default function ProgressBasicDemo() {
       </p>
       <div className="flex gap-2">
         {phase === "running" ? (
-          <Button className={[Button.class.base, Button.class.variant.destructive]} onClick={abort}>
+          <Button className={[Button.className.base, Button.className.variant.destructive]} onClick={abort}>
             Abort
           </Button>
         ) : (
           <Button
-            className={[Button.class.base, Button.class.variant.primary]}
+            className={[Button.className.base, Button.className.variant.primary]}
             disabled={phase === "complete"}
             onClick={start}
           >
             Start
           </Button>
         )}
-        <Button className={[Button.class.base, Button.class.variant.outline]} onClick={reset}>
+        <Button className={[Button.className.base, Button.className.variant.outline]} onClick={reset}>
           Reset
         </Button>
       </div>

@@ -1,6 +1,6 @@
 ---
 title: Breadcrumb 面包屑
-description: 展示当前页面层级的导航路径，支持自定义标记与占位符，可嵌入任意容器
+description: 由零件组合而成的导航路径——nav、list、item、link、page、separator，另有数据驱动的组合组件应对简单场景
 ---
 
 ## 安装
@@ -23,48 +23,59 @@ description: 展示当前页面层级的导航路径，支持自定义标记与�
 
 ## 用法
 
-### 基础用法
+### 数据驱动
 
-通过 `items` 配置路径，`placeholder` 在 `items` 为空时渲染（用于初始触发场景）；点击条目触发 `onSelect(index, entry)`，语义是"第 `index` 级变成该条目，清空其后所有内容"。
+简单场景直接用组合组件 `Breadcrumb`，按顺序渲染 `items`——最后一条渲染为当前页，其余渲染为链接：
 
 <ComponentPreview
   name="breadcrumb-basic"
 />
 
-实现要点：
+```tsx
+import { Breadcrumb } from "@/ui";
 
-- 语义结构为 `nav > ol > li`，末尾条目带 `aria-current="page"`。
-- `items` 为空时渲染 `placeholder` —— 面包屑因此可以充当级联选择器等容器的初始触发区。
-- `BreadcrumbLink` 是真实 `<a>`，demo 中用 `preventDefault` 阻止跳转并改写路径。
+<Breadcrumb
+  items={[
+    { label: "Home", href: "/" },
+    { label: "Project", href: "/project" },
+    { label: "Current Page" },
+  ]}
+/>
+```
+
+### 零件组合
+
+每一层都导出为零件——自由组合以完全掌控条目、图标与分隔符：
+
+<ComponentPreview
+  name="breadcrumb-custom"
+/>
 
 ### 导航菜单
 
-条目配置 `menu` 后（`BreadcrumbEntry` 递归结构，`menu` 即该条目的下级选项），hover 或键盘聚焦该条目时会在其正下方弹出导航菜单：
+hover-menu demo 演示了如何用 `PopoverContent` 给条目挂上悬停菜单——面板内联渲染并声明 `popover="manual"`（top layer 不受祖先 `overflow` 裁剪），锚定在条目下方，hover 或聚焦时打开，离开条目与面板 120ms 后关闭：
 
-- 选中菜单条目触发 `onSelect(index + 1, menuEntry)` —— 与点击条目共用同一回调语义（"第 `index` 级变成该条目"），消费方用 `items.slice(0, index)` 截断即可实现"切换上级菜单后清空后续内容"。
-- 菜单面板内联渲染并声明 `popover="manual"`（top layer 不受祖先 `overflow` 裁剪），通过 `anchor-name` / `position-anchor` 锚定到条目下方，视口边缘自动翻转。
-- hover 打开、离开条目与面板 120ms 后关闭；键盘 `Tab` / `Shift+Tab` 或聚焦即打开，`ArrowDown` / `ArrowUp` 在菜单项间循环移动，`Escape` 关闭并归还焦点，面板外 `mousedown` 也会关闭。
-- 点击条目本身仍触发 `onSelect(index, entry)`，与菜单互不影响。
+<ComponentPreview
+  name="breadcrumb-hover-menu"
+/>
 
 ## API 参考
 
 ### Breadcrumb
 
-| 属性         | 类型                                        | 默认值 | 描述                                     |
-| :----------- | :------------------------------------------ | :----- | :--------------------------------------- |
-| `items`      | `BreadcrumbEntry[]`                         | -      | 路径条目，按层级顺序排列                 |
-| `placeholder`| `React.ReactNode`                           | -      | `items` 为空时渲染的占位内容             |
-| `onSelect`   | `(index: number, entry: BreadcrumbEntry) => void` | - | 点击条目或选中菜单条目时触发，语义为"第 `index` 级变成该条目" |
-| `className`  | `ClassNameValue`                            | -      | 自定义类名，应用于根元素                 |
-| `classNames` | `list` / `link` / `page` / `separator` / `placeholder` | - | 按插槽自定义类名      |
+| 属性         | 类型                                            | 默认值 | 描述                                           |
+| :----------- | :---------------------------------------------- | :----- | :--------------------------------------------- |
+| `items`      | `BreadcrumbDataItem[]`                          | -      | 路径条目，按层级顺序排列；最后一条渲染为当前页 |
+| `classNames` | `root` / `list` / `link` / `page` / `separator` | -      | 按插槽自定义类名                               |
+| `styles`     | `root` / `list` / `link` / `page` / `separator` | -      | 按插槽自定义样式                               |
+| `...props`   | `React.ComponentProps<"nav">`                   | -      | 原生 nav 属性，展开到根元素                    |
 
-### BreadcrumbEntry
+### BreadcrumbDataItem
 
-| 字段    | 类型                    | 默认值 | 描述                                        |
-| :------ | :---------------------- | :----- | :------------------------------------------ |
-| `value` | `string`                | -      | 唯一标识                                    |
-| `label` | `React.ReactNode`       | -      | 条目文本                                    |
-| `menu`  | `BreadcrumbEntry[]`     | -      | 下级选项，配置后 hover / 聚焦该条目弹出导航菜单 |
+| 字段    | 类型              | 默认值 | 描述                             |
+| :------ | :---------------- | :----- | :------------------------------- |
+| `label` | `React.ReactNode` | -      | 条目文本                         |
+| `href`  | `string`          | -      | 链接目标；配置后该条目渲染为链接 |
 
 ### 组合零件
 
@@ -74,53 +85,53 @@ description: 展示当前页面层级的导航路径，支持自定义标记与�
 
 外层 `<nav aria-label="breadcrumb">` 容器。
 
-| 属性       | 类型                         | 默认值  | 描述         |
-| :--------- | :--------------------------- | :------ | :----------- |
-| `className` | `ClassNameValue`            | -       | 自定义类名   |
-| `...props` | `React.ComponentProps<"nav">` | -      | 原生 nav 属性 |
+| 属性        | 类型                          | 默认值 | 描述          |
+| :---------- | :---------------------------- | :----- | :------------ |
+| `className` | `ClassNameValue`              | -      | 自定义类名    |
+| `...props`  | `React.ComponentProps<"nav">` | -      | 原生 nav 属性 |
 
 #### BreadcrumbList
 
 内层 `<ol>`，flex 布局并允许换行。
 
-| 属性       | 类型                        | 默认值  | 描述         |
-| :--------- | :-------------------------- | :------ | :----------- |
-| `className` | `ClassNameValue`           | -       | 自定义类名   |
-| `...props` | `React.ComponentProps<"ol">` | -      | 原生 ol 属性 |
+| 属性        | 类型                         | 默认值 | 描述         |
+| :---------- | :--------------------------- | :----- | :----------- |
+| `className` | `ClassNameValue`             | -      | 自定义类名   |
+| `...props`  | `React.ComponentProps<"ol">` | -      | 原生 ol 属性 |
 
 #### BreadcrumbItem
 
 单个 `<li>` 条目容器。
 
-| 属性       | 类型                        | 默认值  | 描述         |
-| :--------- | :-------------------------- | :------ | :----------- |
-| `className` | `ClassNameValue`           | -       | 自定义类名   |
-| `...props` | `React.ComponentProps<"li">` | -      | 原生 li 属性 |
+| 属性        | 类型                         | 默认值 | 描述         |
+| :---------- | :--------------------------- | :----- | :----------- |
+| `className` | `ClassNameValue`             | -      | 自定义类名   |
+| `...props`  | `React.ComponentProps<"li">` | -      | 原生 li 属性 |
 
 #### BreadcrumbLink
 
 可点击路径链接（真实 `<a>`）。
 
-| 属性       | 类型                       | 默认值  | 描述           |
-| :--------- | :------------------------- | :------ | :------------- |
-| `className` | `ClassNameValue`          | -       | 自定义类名     |
-| `...props` | `React.ComponentProps<"a">` | -      | 原生 a 属性    |
+| 属性        | 类型                        | 默认值 | 描述        |
+| :---------- | :-------------------------- | :----- | :---------- |
+| `className` | `ClassNameValue`            | -      | 自定义类名  |
+| `...props`  | `React.ComponentProps<"a">` | -      | 原生 a 属性 |
 
 #### BreadcrumbPage
 
 当前页文本（不可点击，带 `aria-current="page"`）。
 
-| 属性       | 类型                         | 默认值  | 描述           |
-| :--------- | :--------------------------- | :------ | :------------- |
-| `className` | `ClassNameValue`            | -       | 自定义类名     |
-| `...props` | `React.ComponentProps<"span">` | -    | 原生 span 属性 |
+| 属性        | 类型                           | 默认值 | 描述           |
+| :---------- | :----------------------------- | :----- | :------------- |
+| `className` | `ClassNameValue`               | -      | 自定义类名     |
+| `...props`  | `React.ComponentProps<"span">` | -      | 原生 span 属性 |
 
 #### BreadcrumbSeparator
 
 分隔符，默认渲染 `ChevronRight` 图标，可通过 `children` 替换。
 
-| 属性       | 类型                        | 默认值  | 描述             |
-| :--------- | :-------------------------- | :------ | :--------------- |
-| `className` | `ClassNameValue`           | -       | 自定义类名       |
-| `children` | `React.ReactNode`           | -       | 自定义分隔符内容 |
-| `...props` | `React.ComponentProps<"li">` | -      | 原生 li 属性     |
+| 属性        | 类型                         | 默认值 | 描述             |
+| :---------- | :--------------------------- | :----- | :--------------- |
+| `className` | `ClassNameValue`             | -      | 自定义类名       |
+| `children`  | `React.ReactNode`            | -      | 自定义分隔符内容 |
+| `...props`  | `React.ComponentProps<"li">` | -      | 原生 li 属性     |

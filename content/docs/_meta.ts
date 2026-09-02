@@ -30,18 +30,11 @@ export default {
       zh: "组件",
     },
   },
-  styles: {
+  utils: {
     type: "folder",
     displayName: {
-      en: "Styles",
-      zh: "样式",
-    },
-  },
-  hooks: {
-    type: "folder",
-    displayName: {
-      en: "Hooks",
-      zh: "Hooks",
+      en: "Utils",
+      zh: "工具函数",
     },
   },
 } as const;

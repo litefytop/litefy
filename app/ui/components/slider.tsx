@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
 export interface SliderRootProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
@@ -28,7 +28,10 @@ export function SliderFill({ className, ...props }: SliderFillProps) {
   return <div {...props} aria-hidden className={cn("absolute", className)} />;
 }
 
-export interface SliderThumbProps extends Omit<React.ComponentProps<"button">, "className" | "ref"> {
+export interface SliderThumbProps extends Omit<
+  React.ComponentProps<"button">,
+  "className" | "ref"
+> {
   className?: ClassNameValue;
   ref?: React.Ref<HTMLButtonElement>;
 }

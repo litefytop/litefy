@@ -1,0 +1,45 @@
+---
+title: Card
+description: A glassmorphic surface with hover lift, soft shadow, and an ambient glow.
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add card" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="card" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+A simple card with title, description, and actions.
+
+<ComponentPreview name="card-basic" />
+
+### Group
+
+Compose multiple `Card` elements into a responsive grid layout.
+
+<ComponentPreview name="card-group" />
+
+## API Reference
+
+### Card
+
+A glassmorphic surface with hover lift, soft shadow, and an ambient glow that fades in on hover. The glow color can be customized via the `--card-glow` CSS variable.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | - | Custom CSS class |
+| `...props` | `React.ComponentProps<"div">` | - | Supports all native div props |

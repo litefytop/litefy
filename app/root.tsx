@@ -33,6 +33,7 @@ export function Layout(
       <body className="flex flex-col min-h-screen">
         <Suspense fallback={<HydrateFallback />}>
           <RootProvider
+            theme={{ enabled: false }}
             search={{ SearchDialog }}
             i18n={i18nProvider(translations, lang)}
           >

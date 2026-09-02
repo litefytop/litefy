@@ -1,9 +1,11 @@
 [data-brand="fuchsia"] {
   --primary: oklch(51.8% 0.253 323.949);
   --accent: oklch(45.2% 0.211 324.591);
+  --ring: oklch(74% 0.238 322.16);
 }
 
 .dark[data-brand="fuchsia"] {
   --primary: oklch(74% 0.238 322.16);
   --accent: oklch(83.3% 0.145 321.434);
+  --ring: oklch(51.8% 0.253 323.949);
 }

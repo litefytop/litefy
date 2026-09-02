@@ -32,7 +32,7 @@ const docsIndexI18n = {
   },
   zh: {
     title: "总览",
-    description: "浏览 Litefy UI 中所有可用的组件、CSS 工具类与Hooks。",
+    description: "浏览 Litefy UI 中所有可用的组件、CSS 工具类与工具函数。",
     categoryDefaultDescription: "查看相关文档",
   },
 } as const;

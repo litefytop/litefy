@@ -1,6 +1,6 @@
 import { ChevronDown } from "lucide-react";
 import * as React from "react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
 export interface CollapseRootProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;

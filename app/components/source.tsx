@@ -2,9 +2,9 @@
 
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 import { Suspense, useEffect, useState } from "react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "@/ui";
 
-type SourceType = "component" | "hook" | "css";
+type SourceType = "component" | "hook" | "util" | "css";
 
 interface SourceProps {
   type: SourceType;
@@ -22,14 +22,14 @@ for (const [path, loader] of Object.entries(componentGlob)) {
   if (m) componentMap[m[1]] = loader as () => Promise<string>;
 }
 
-const hookGlob = import.meta.glob("../ui/hooks/*.ts", {
+const utilGlob = import.meta.glob("../ui/utils/*.ts", {
   query: "?raw",
   import: "default",
 });
-const hookMap: Record<string, () => Promise<string>> = {};
-for (const [path, loader] of Object.entries(hookGlob)) {
+const utilMap: Record<string, () => Promise<string>> = {};
+for (const [path, loader] of Object.entries(utilGlob)) {
   const m = path.match(/\/([^/]+)\.ts$/);
-  if (m) hookMap[m[1]] = loader as () => Promise<string>;
+  if (m) utilMap[m[1]] = loader as () => Promise<string>;
 }
 
 const cssGlob = import.meta.glob("../ui/styles/*.css", {
@@ -47,7 +47,8 @@ function getMeta(type: SourceType) {
     case "component":
       return { lang: "tsx", suffix: ".tsx", map: componentMap };
     case "hook":
-      return { lang: "ts", suffix: ".ts", map: hookMap };
+    case "util":
+      return { lang: "ts", suffix: ".ts", map: utilMap };
     case "css":
       return { lang: "css", suffix: ".css", map: cssMap };
   }

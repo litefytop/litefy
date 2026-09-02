@@ -4,7 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import componentMeta from "../../content/docs/component/_meta";
-import { cn } from "@/lib";
+import { cn } from "@/ui";
 
 type DemoModule = { default: React.ComponentType };
 type MetaEntry = { name?: string; displayName?: { en: string; zh: string } };
@@ -12,7 +12,6 @@ type MetaEntry = { name?: string; displayName?: { en: string; zh: string } };
 const demoModules = import.meta.glob<DemoModule>("../demos/**/*.tsx");
 
 const EXCLUDED_FOLDERS = new Set([
-  "css",
   "virtual-scroll",
   "use-drag",
   "use-pagination",

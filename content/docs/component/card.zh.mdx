@@ -1,0 +1,45 @@
+---
+title: Card 卡片
+description: 玻璃拟态卡片表面，悬停上浮、柔和阴影与氛围光晕。
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add card" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="card" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+一个包含标题、描述与操作按钮的简单卡片。
+
+<ComponentPreview name="card-basic" />
+
+### 组合
+
+将多个 `Card` 组合成响应式网格布局。
+
+<ComponentPreview name="card-group" />
+
+## API 参考
+
+### Card
+
+玻璃拟态卡片表面，悬停上浮并伴随柔和阴影与渐入的氛围光晕。光晕颜色可通过 `--card-glow` CSS 变量自定义。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+| `...props` | `React.ComponentProps<"div">` | - | 支持所有原生 div 属性 |

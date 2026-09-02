@@ -41,7 +41,7 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 
 ### 横向布局
 
-将字段的 `direction` 设为 `"horizontal"`，即可让标签与控件并排显示。结合 `slotProps` 可以进一步定制标签样式。
+将字段的 `direction` 设为 `"horizontal"`，即可让标签与控件并排显示。结合 `classNames` 可以进一步定制标签样式。
 
 <ComponentPreview 
   name="form-horizontal"
@@ -104,7 +104,8 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 | `invalid`     | `React.ReactNode`                          | -            | 受控的错误信息。传入字符串时会渲染为错误并设置 `aria-invalid` |
 | `direction`   | `"vertical" \| "horizontal"`               | `"vertical"` | 标签与控件的排列方向                                          |
 | `inputId`     | `string`                                   | -            | 底层控件的自定义 id                                           |
-| `slotProps`   | `FormFieldSlotProps`                       | -            | 针对标签、辅助文字和错误文字的插槽定制                        |
+| `classNames`  | `{ root?, label?, hint? }`                 | -            | 字段容器、标签与提示文字的自定义类                            |
+| `styles`      | `{ root?, label?, hint? }`                 | -            | 字段容器、标签与提示文字的内联样式                            |
 | `validConfig` | `FormFieldValidConfig<T>`                  | -            | 客户端校验配置                                                |
 | `children`    | `(field: FormFieldArg) => React.ReactNode` | -            | 接收输入属性并渲染控件的 render prop                          |
 
@@ -124,13 +125,25 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 | `invalid`          | `boolean`                                          | 字段当前是否处于无效状态                                      |
 | `aria-describedby` | `string`                                           | 描述文字或错误文字的 id，用于无障碍访问                       |
 
-### FormFieldSlotProps
+### FormLabel
 
-| 插槽          | 类型                                       | 描述                                                           |
-| ------------- | ------------------------------------------ | -------------------------------------------------------------- |
-| `label`       | `HTMLAttrs<React.ComponentProps<"label">>` | label 元素的属性                                               |
-| `description` | `HTMLAttrs<React.ComponentProps<"small">>` | 描述文字的属性。传入 `id` 可覆盖默认的 `aria-describedby` 目标 |
-| `invalid`     | `HTMLAttrs<React.ComponentProps<"small">>` | 错误文字的属性。传入 `id` 可覆盖默认的 `aria-describedby` 目标 |
+字段标签，渲染为 `<label>`。
+
+| Prop        | Type             | Default | Description      |
+| ----------- | ---------------- | ------- | ---------------- |
+| `className` | `ClassNameValue` | -       | 自定义 CSS 类 |
+
+支持所有原生 `<label>` 属性。
+
+### FormHint
+
+提示文字，渲染为 `<small>`。正常时显示描述文字，字段无效时显示错误信息（带 `role="alert"`）。
+
+| Prop        | Type             | Default | Description      |
+| ----------- | ---------------- | ------- | ---------------- |
+| `className` | `ClassNameValue` | -       | 自定义 CSS 类 |
+
+支持所有原生 `<small>` 属性。
 
 ### FormFieldValidConfig
 

@@ -1,0 +1,48 @@
+---
+title: cn 类名合并
+description: 基于 tailwind-merge 的类名合并工具，按后者优先解决 Tailwind 工具类冲突。
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add cn" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="util" name="cn" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+```tsx
+import { cn } from "@/ui";
+
+<div className={cn("p-4 rounded-lg", isActive && "bg-primary text-primary-foreground", className)} />
+```
+
+`cn` 即 `twMerge` 的再导出：后面的类优先于前面冲突的类，条件值（`false`、`null`、`undefined`）会被忽略。
+
+## 注意
+
+- 所有 Litefy 组件都从 `@/ui` 导入 `cn`，因此 utils 目录必须与 components 目录同级。通过 CLI 安装任意组件时会自动带上 `cn`。
+- 需要 `tailwind-merge` npm 包（`npm add tailwind-merge`）。
+
+## API 参考
+
+### cn
+
+```ts
+function cn(...inputs: ClassNameValue[]): string;
+type ClassNameValue = ClassValue | ClassValue[];
+```
+
+使用 tailwind-merge 合并类名值并返回单个类名字符串。

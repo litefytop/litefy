@@ -1,6 +1,6 @@
 import { Loader2 } from "lucide-react";
 import React from "react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
 const buttonClass = {
   base: "cursor-pointer inline-flex items-center justify-center gap-2 h-8 min-w-8 px-3 rounded-lg text-sm text-center disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background [&_svg:not([class*='size-'])]:size-4",
@@ -59,8 +59,8 @@ function Button({
       aria-busy={isLoading}
       data-pure-icon={isPureIcon || undefined}
       className={cn(
-        Button.class.base,
-        Button.class.variant[variant],
+        Button.className.base,
+        Button.className.variant[variant],
         "data-pure-icon:aspect-square data-pure-icon:px-0",
         className,
       )}
@@ -72,6 +72,6 @@ function Button({
   );
 }
 
-Button.class = buttonClass;
+Button.className = buttonClass;
 
 export { Button };

@@ -1,0 +1,25 @@
+---
+title: Context Menu 右键菜单
+description: 由 Menu 配合原生 popover 与指针锚点拼装而成的右键菜单 —— 不提供组件源码，仅提供组合示范
+---
+
+Context Menu 不是一个提供源码的组件。它由 [Menu](/docs/component/menu) 配合原生 `popover="manual"` 面板，通过 CSS anchor positioning 锚定到指针位置拼装而成。右键菜单只是换了触发方式：`onContextMenu` 阻止浏览器默认菜单，一个零尺寸锚点元素跟随鼠标，再手动打开 popover。
+
+## 用法
+
+### 基础用法
+
+<ComponentPreview
+  name="context-menu-basic"
+/>
+
+拼装要点：
+
+- 目标区域在 `onContextMenu` 中调用 `e.preventDefault()`，记录 `clientX` / `clientY` 并打开面板。
+- 在指针位置渲染一个零尺寸的 `fixed` div，并设置 `anchorName` —— 它就是面板的锚点。
+- 面板使用 `positionArea: "bottom right"`，让左上角贴合光标，再配合少量 margin 偏移；`positionTryFallbacks: "flip-block, flip-inline"` 保证靠近边缘时不溢出视口。
+- 显示与关闭都是手动控制（effect 中调用 `panel.showPopover()` / `hidePopover()`）。`manual` popover 没有轻关闭行为，需要 document 级 `mousedown` 监听在点击面板外部时关闭。
+- 菜单已打开时再次右键，会把菜单重新锚定到新的光标位置。
+- `Menu` 提供菜单项、分组、子菜单和键盘导航；`autoFocus={open}` 在打开时聚焦第一项，`onEscape` 负责关闭面板。
+
+菜单零件的完整属性表请参阅 [Menu API](/docs/component/menu)。

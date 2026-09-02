@@ -96,13 +96,6 @@ export default function UseThemeBasicDemo() {
           ))}
         </div>
       </div>
-      <button
-        type="button"
-        onClick={theme.toggleTheme}
-        className="rounded-md border px-3 py-1.5 text-sm hover:bg-accent"
-      >
-        Toggle light / dark
-      </button>
     </div>
   );
 }

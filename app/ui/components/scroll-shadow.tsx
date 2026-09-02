@@ -1,26 +1,61 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { type ClassNameValue, cn } from "@/lib";
-
-type HTMLAttrs<T> = Omit<T, "className" | "children"> & {
-  [key: `data-${string}`]: string | number | boolean | null | undefined;
-  className?: ClassNameValue;
-};
+import { type ClassNameValue, cn } from "..";
 
 type Edge = "top" | "bottom" | "left" | "right";
 type EdgesProp = Edge | Edge[];
 
-export type ScrollShadowProps = {
-  children: React.ReactNode;
-  edges?: EdgesProp;
+export interface ScrollShadowRootProps extends Omit<React.ComponentProps<"div">, "className"> {
+  className?: ClassNameValue;
+}
+
+export function ScrollShadowRoot({ className, ...props }: ScrollShadowRootProps) {
+  return <div {...props} className={cn("relative overflow-hidden", className)} />;
+}
+
+export interface ScrollShadowViewportProps extends Omit<React.ComponentProps<"div">, "className"> {
+  className?: ClassNameValue;
+}
+
+export function ScrollShadowViewport({ className, ...props }: ScrollShadowViewportProps) {
+  return <div {...props} className={cn("size-full overflow-auto", className)} />;
+}
+
+export interface ScrollShadowEdgeProps extends Omit<React.ComponentProps<"div">, "className"> {
+  className?: ClassNameValue;
+  edge?: Edge;
   size?: string;
-  className?: string;
-  slotProps?: {
-    wrapper?: HTMLAttrs<React.ComponentProps<"div">>;
-    shadows?: Partial<Record<Edge, HTMLAttrs<React.ComponentProps<"div">>>>;
-  };
+}
+
+const edgeClasses: Record<Edge, string> = {
+  top: "top-0 inset-x-0 bg-linear-to-b from-background to-transparent",
+  bottom: "bottom-0 inset-x-0 bg-linear-to-t from-background to-transparent",
+  left: "left-0 inset-y-0 bg-linear-to-r from-background to-transparent",
+  right: "right-0 inset-y-0 bg-linear-to-l from-background to-transparent",
 };
+
+export function ScrollShadowEdge({
+  className,
+  edge = "bottom",
+  size = "64px",
+  style,
+  ...props
+}: ScrollShadowEdgeProps) {
+  return (
+    <div
+      {...props}
+      data-position={edge}
+      className={cn("pointer-events-none absolute", edgeClasses[edge], className)}
+      style={
+        {
+          [edge === "top" || edge === "bottom" ? "height" : "width"]: size,
+          ...style,
+        } as React.CSSProperties
+      }
+    />
+  );
+}
 
 const normalizeEdges = (edges: EdgesProp = ["bottom"]): Edge[] => {
   return Array.isArray(edges) ? edges : [edges];
@@ -33,12 +68,28 @@ const initialVisibility: Record<Edge, boolean> = {
   right: false,
 };
 
+export interface ScrollShadowProps {
+  children: React.ReactNode;
+  edges?: EdgesProp;
+  size?: string;
+  classNames?: {
+    root?: ClassNameValue;
+    viewport?: ClassNameValue;
+    edge?: ClassNameValue;
+  };
+  styles?: {
+    root?: React.CSSProperties;
+    viewport?: React.CSSProperties;
+    edge?: React.CSSProperties;
+  };
+}
+
 export function ScrollShadow({
   children,
   edges: edgesProp = ["bottom"],
   size = "64px",
-  className,
-  slotProps,
+  classNames,
+  styles,
 }: ScrollShadowProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [visibility, setVisibility] = useState<Record<Edge, boolean>>(initialVisibility);
@@ -80,47 +131,26 @@ export function ScrollShadow({
     };
   }, [updateVisibility]);
 
-  const edgeConfig = {
-    top: {
-      className: "top-0 inset-x-0 bg-linear-to-b from-background to-transparent",
-      style: { height: size },
-    },
-    bottom: {
-      className: "bottom-0 inset-x-0 bg-linear-to-t from-background to-transparent",
-      style: { height: size },
-    },
-    left: {
-      className: "left-0 inset-y-0 bg-linear-to-r from-background to-transparent",
-      style: { width: size },
-    },
-    right: {
-      className: "right-0 inset-y-0 bg-linear-to-l from-background to-transparent",
-      style: { width: size },
-    },
-  };
-
   return (
-    <div {...slotProps?.wrapper} className={cn("relative overflow-hidden", className)}>
-      <div ref={scrollRef} className="size-full overflow-auto">
+    <ScrollShadowRoot className={classNames?.root} style={styles?.root}>
+      <ScrollShadowViewport
+        ref={scrollRef}
+        className={classNames?.viewport}
+        style={styles?.viewport}
+      >
         {children}
-      </div>
-
-      {edges.map((edge) => {
-        if (!visibility[edge]) return null;
-
-        const config = edgeConfig[edge];
-        const shadowProps = slotProps?.shadows?.[edge];
-
-        return (
-          <div
+      </ScrollShadowViewport>
+      {edges.map((edge) =>
+        visibility[edge] ? (
+          <ScrollShadowEdge
             key={edge}
-            {...shadowProps}
-            data-position={edge}
-            className={cn("pointer-events-none absolute", config.className, shadowProps?.className)}
-            style={{ ...config.style, ...shadowProps?.style }}
+            edge={edge}
+            size={size}
+            className={classNames?.edge}
+            style={styles?.edge}
           />
-        );
-      })}
-    </div>
+        ) : null,
+      )}
+    </ScrollShadowRoot>
   );
 }

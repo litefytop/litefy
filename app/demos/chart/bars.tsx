@@ -3,7 +3,7 @@
 import * as React from "react";
 import uPlot from "uplot";
 import "uplot/dist/uPlot.min.css";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "@/ui";
 import { useChartPalette } from "@/ui";
 
 interface ChartSeriesConfig {

@@ -1,46 +1,8 @@
 "use client";
 import * as React from "react";
-import { type ClassNameValue, cn } from "@/lib";
-
-type HTMLAttrs<T> = Omit<T, "className"> & {
-  [key: `data-${string}`]: string | number | null | undefined | true;
-  className?: ClassNameValue;
-};
-
-export interface PopoverTriggerProps extends HTMLAttrs<React.ComponentProps<"button">> {
-  className?: ClassNameValue;
-}
-export function PopoverTrigger({ className, ...props }: PopoverTriggerProps) {
-  return <button {...props} type="button" className={cn(className)} />;
-}
-
-export interface PopoverContentProps extends HTMLAttrs<React.ComponentProps<"div">> {
-  className?: ClassNameValue;
-}
-export function PopoverContent({ className, ...props }: PopoverContentProps) {
-  return (
-    <div
-      {...props}
-      popover="manual"
-      tabIndex={-1}
-      className={cn(
-        "bg-background text-foreground min-w-32 max-h-96 overflow-auto rounded-md border p-1 shadow-md",
-        className,
-      )}
-    />
-  );
-}
+import { type ClassNameValue, cn } from "..";
 
 type PopoverAlignX = "start" | "end" | "center";
-
-const focusableSelector = [
-  "a[href]",
-  "button:not(:disabled)",
-  'input:not(:disabled):not([type="hidden"])',
-  "select:not(:disabled)",
-  "textarea:not(:disabled)",
-  '[tabindex]:not([tabindex="-1"]):not(:disabled)',
-].join(", ");
 
 const alignXMap: Record<
   PopoverAlignX,
@@ -66,47 +28,28 @@ const alignXMap: Record<
   },
 };
 
-export interface PopoverProps extends Omit<PopoverContentProps, "className" | "style" | "ref"> {
-  ref?: React.Ref<HTMLButtonElement>;
-  trigger: React.ReactNode;
+export interface PopoverContentProps extends Omit<React.ComponentProps<"div">, "className"> {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   alignX?: PopoverAlignX;
   className?: ClassNameValue;
   style?: React.CSSProperties;
-  classNames?: {
-    trigger?: ClassNameValue;
-    content?: ClassNameValue;
-  };
-  styles?: {
-    trigger?: React.CSSProperties;
-    content?: React.CSSProperties;
-  };
 }
 
-export function Popover({
-  ref,
-  trigger,
+export function PopoverContent({
   open: controlledOpen,
   defaultOpen = false,
   onOpenChange,
   alignX = "center",
   className,
   style,
-  classNames,
-  styles,
   onKeyDown: onKeyDownProp,
   children,
+  ref,
   ...props
-}: PopoverProps) {
-  const id = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
-  const anchorName = `--popover-${id}`;
-  const triggerRef = React.useRef<HTMLButtonElement>(null);
+}: PopoverContentProps) {
   const panelRef = React.useRef<HTMLDivElement>(null);
-
-  React.useImperativeHandle(ref, () => triggerRef.current as HTMLButtonElement, []);
-
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen);
   const isControlled = controlledOpen !== undefined;
   const open = isControlled ? controlledOpen : uncontrolledOpen;
@@ -124,8 +67,6 @@ export function Popover({
     if (!panel) return;
     if (open) {
       panel.showPopover();
-      const firstFocusable = panel.querySelector<HTMLElement>(focusableSelector);
-      (firstFocusable ?? panel).focus();
     } else {
       panel.hidePopover();
     }
@@ -136,7 +77,6 @@ export function Popover({
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (panelRef.current?.contains(target)) return;
-      if (triggerRef.current?.contains(target)) return;
       handleOpenChange(false);
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -147,36 +87,179 @@ export function Popover({
     onKeyDownProp?.(e);
     if (!e.defaultPrevented && e.key === "Escape") {
       handleOpenChange(false);
-      triggerRef.current?.focus();
+    }
+  };
+
+  const setRefs = (element: HTMLDivElement | null) => {
+    panelRef.current = element;
+    if (typeof ref === "function") {
+      ref(element);
+    } else if (ref) {
+      ref.current = element;
     }
   };
 
   return (
+    <div
+      ref={setRefs}
+      {...props}
+      popover="manual"
+      onKeyDown={handleContentKeyDown}
+      className={cn(
+        "bg-background text-foreground min-w-32 max-h-96 overflow-auto rounded-md border p-1 shadow-md",
+        className,
+      )}
+      style={{
+        ...alignXMap[alignX],
+        positionTryFallbacks: "flip-block, flip-inline",
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+export type UsePopoverTriggerOptions = {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  mode?: "click" | "hover";
+  hoverDelayOpen?: number;
+  hoverDelayClose?: number;
+};
+
+export function usePopoverTrigger(options: UsePopoverTriggerOptions) {
+  const {
+    open,
+    onOpenChange,
+    mode = { click: true, hover: false },
+    hoverDelayOpen = 0,
+    hoverDelayClose = 200,
+  } = options;
+  const id = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
+  const anchorName = `--popover-trigger-${id}`;
+  const timerRef = React.useRef<number | null>(null);
+
+  const clearTimer = React.useCallback(() => {
+    if (timerRef.current !== null) {
+      window.clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  }, []);
+
+  const scheduleOpen = React.useCallback(() => {
+    clearTimer();
+    if (hoverDelayOpen > 0) {
+      timerRef.current = window.setTimeout(() => onOpenChange(true), hoverDelayOpen);
+    } else {
+      onOpenChange(true);
+    }
+  }, [clearTimer, hoverDelayOpen, onOpenChange]);
+
+  const scheduleClose = React.useCallback(() => {
+    clearTimer();
+    timerRef.current = window.setTimeout(() => onOpenChange(false), hoverDelayClose);
+  }, [clearTimer, hoverDelayClose, onOpenChange]);
+
+  const triggerProps = React.useMemo(() => {
+    return {
+      "aria-haspopup": "menu" as const,
+      "aria-expanded": open,
+      style: {
+        anchorName: anchorName,
+      },
+      onClick: (e: React.MouseEvent) => {
+        if (mode === "hover") return;
+        e.preventDefault();
+        onOpenChange(!open);
+      },
+      onMouseEnter: () => {
+        if (mode === "click") return;
+        clearTimer();
+        scheduleOpen();
+      },
+      onMouseLeave: () => {
+        if (mode === "click") return;
+        scheduleClose();
+      },
+      onFocus: () => {
+        if (mode === "click") return;
+        clearTimer();
+        onOpenChange(true);
+      },
+      onKeyDown: (e: React.KeyboardEvent) => {
+        if (mode === "hover") return;
+        if (e.key === "ArrowDown" || e.key === " ") {
+          e.preventDefault();
+          onOpenChange(true);
+        }
+      },
+    };
+  }, [open, onOpenChange, mode, clearTimer, scheduleOpen, scheduleClose]);
+
+  return { triggerProps, clearTimer, scheduleClose, scheduleOpen, anchorName };
+}
+
+export interface PopoverProps extends Omit<React.ComponentProps<"button">, "className"> {
+  trigger: React.ReactNode;
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  alignX?: PopoverAlignX;
+  children: React.ReactNode;
+  classNames?: {
+    trigger?: ClassNameValue;
+    content?: ClassNameValue;
+  };
+  styles?: {
+    trigger?: React.CSSProperties;
+    content?: React.CSSProperties;
+  };
+}
+
+export function Popover({
+  trigger,
+  open,
+  defaultOpen = false,
+  onOpenChange,
+  alignX = "center",
+  classNames,
+  styles,
+  children,
+}: PopoverProps) {
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen);
+  const isControlled = open !== undefined;
+  const innerOpen = isControlled ? open : uncontrolledOpen;
+
+  const handleOpenChange = React.useCallback(
+    (next: boolean) => {
+      if (!isControlled) setUncontrolledOpen(next);
+      onOpenChange?.(next);
+    },
+    [isControlled, onOpenChange],
+  );
+
+  const { triggerProps, anchorName } = usePopoverTrigger({
+    open: innerOpen,
+    onOpenChange: handleOpenChange,
+  });
+
+  return (
     <>
-      <PopoverTrigger
-        ref={triggerRef}
-        aria-expanded={open}
-        onClick={() => handleOpenChange(!open)}
-        onKeyDown={(e) => {
-          if (e.key === "Escape") handleOpenChange(false);
-        }}
-        className={classNames?.trigger}
-        style={{ anchorName, ...styles?.trigger }}
+      <button
+        {...triggerProps}
+        type="button"
+        className={cn(classNames?.trigger)}
+        style={{ ...triggerProps.style, ...styles?.trigger }}
       >
         {trigger}
-      </PopoverTrigger>
+      </button>
       <PopoverContent
-        ref={panelRef}
-        {...props}
-        onKeyDown={handleContentKeyDown}
-        className={cn(className, classNames?.content)}
-        style={{
-          positionAnchor: anchorName,
-          ...alignXMap[alignX],
-          positionTryFallbacks: "flip-block, flip-inline",
-          ...style,
-          ...styles?.content,
-        }}
+        open={innerOpen}
+        onOpenChange={handleOpenChange}
+        alignX={alignX}
+        className={classNames?.content}
+        style={{ anchorName, ...styles?.content }}
       >
         {children}
       </PopoverContent>

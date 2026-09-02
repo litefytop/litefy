@@ -1,11 +1,11 @@
 ---
-title: Badge
-description: 小型状态标记，三种模式 —— 无内容时显示圆点，数字计数带溢出上限，横幅模式展示 "New" 之类的文本。
+title: Badge 徽标
+description: 带角标的方形承载位——内部放图标，右上角通过 Tag 渲染标记。
 ---
 
 ## 安装
 
-<Tabs items={['CLI', 'Manual']} >
+<Tabs items={['CLI', '手动']} >
 
 <Tab value="CLI">
 
@@ -13,7 +13,7 @@ description: 小型状态标记，三种模式 —— 无内容时显示圆点�
 
 </Tab>
 
-<Tab value="Manual">
+<Tab value="手动">
 
 <Source type="component" name="badge" />
 
@@ -25,45 +25,43 @@ description: 小型状态标记，三种模式 —— 无内容时显示圆点�
 
 ### 基础用法
 
-模式由 props 推导：什么都不传显示圆点，传 `count` 显示数字胶囊（受 `max` 上限约束，超出显示 `99+`），传其它 children 显示横幅。
+`Badge` 是一个固定尺寸的承载面（默认 `size-12` 的 muted 方块），角标通过 [Tag](/docs/component/tag) 组件渲染——传 `label` 即可在右上角挂上数字或文本标记。
 
 <ComponentPreview
   name="badge-basic"
 />
 
-### 模式
+### 尺寸
 
-```html
-<Badge />
-<Badge count={120} />
-<Badge>New</Badge>
-```
-
-- **圆点** —— 无内容：`size-2` 圆形，通常绝对定位到图标或按钮上。
-- **数字** —— `count` 配合 `max`（默认 `99`）：超过上限显示 `99+`。数字使用 `tabular-nums`，宽度稳定不抖动。
-- **横幅** —— `New` / `Beta` 之类的文本 children：主题圆角的圆角矩形。
-
-### 定位
-
-`Badge` 就是普通的 `span` —— 在宿主元素外包一层相对定位容器，然后绝对定位：
+承载面的形状完全来自工具类，用 `className` 即可改造——角标会自动重新锚定：
 
 ```tsx
-<button className="relative">
-  Inbox
-  <Badge count={3} className="absolute -top-1.5 -right-1.5" />
-</button>
+<Badge className="size-8 rounded-full" label={3}>
+  <Bell className="size-5" />
+</Badge>
 ```
+
+### 角标配色
+
+`label` 渲染为 Tag，用 `label` 插槽以同样的方式着色：
+
+```tsx
+<Badge label="New" classNames={{ label: "bg-emerald-600 text-white" }} />
+```
+
+## 注意
+
+- 角标内部使用 [Tag](/docs/component/tag) 组件——CLI 安装时请一并添加：`litefy add badge tag`。
 
 ## API 参考
 
 ### Badge
 
-| 属性       | 类型                          | 默认值  | 描述                                              |
-| :--------- | :---------------------------- | :------ | :------------------------------------------------ |
-| `children` | `React.ReactNode`             | -       | 横幅内容；省略或 `null` 显示圆点模式              |
-| `count`    | `number`                      | -       | 数字模式 —— 优先于 `children`                     |
-| `max`      | `number`                      | `99`    | 溢出上限；超过后显示 `${max}+`                    |
-| `className`| `ClassNameValue`              | -       | 自定义类名 —— 与模式样式合并                      |
-| `...props` | `React.ComponentProps<"span">`| -       | 原生 span 属性                                    |
-
-所有模式默认 `bg-destructive text-destructive-foreground`；用背景/文字工具类覆盖即可换色。
+| 属性       | 类型                              | 默认值 | 描述                                       |
+| :--------- | :-------------------------------- | :----- | :----------------------------------------- |
+| `children` | `React.ReactNode`                 | -      | 承载面内容，通常放图标                     |
+| `label`    | `React.ReactNode`                 | -      | 角标内容，以 Tag 渲染在右上角              |
+| `classNames`| `{ label?: ClassNameValue }`     | -      | 按插槽自定义类名                           |
+| `styles`   | `{ label?: React.CSSProperties }` | -      | 按插槽自定义样式                           |
+| `className`| `ClassNameValue`                  | -      | 承载面的自定义类名                         |
+| `...props` | `React.ComponentProps<"div">`     | -      | 原生 div 属性                              |

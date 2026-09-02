@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
 const hideTimers = new WeakMap<Element, ReturnType<typeof setTimeout>>();
 

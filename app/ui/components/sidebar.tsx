@@ -1,7 +1,7 @@
 "use client";
 
 import { useImperativeHandle, useState } from "react";
-import { type ClassNameValue, cn } from "@/lib";
+import { type ClassNameValue, cn } from "..";
 
 export type SidebarHandle = {
   toggle: () => void;

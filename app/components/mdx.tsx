@@ -4,6 +4,7 @@ import type { MDXComponents } from "mdx/types";
 import { Link } from "react-router";
 import { ComponentPreview } from "./component-preview";
 import { PackageManagerTabs } from "./package-manager-tabs";
+import { PresetTabs } from "./preset-tabs";
 import { Source } from "./source";
 
 export function getMDXComponents(components?: MDXComponents) {
@@ -12,6 +13,7 @@ export function getMDXComponents(components?: MDXComponents) {
     ...TabsComponents,
     ComponentPreview,
     PackageManagerTabs,
+    PresetTabs,
 
     Source,
     Link,

@@ -93,8 +93,10 @@ export default function TransferPickerMultipleDemo() {
           if (!next) setHighlightIndex(null);
         }}
         trigger={`Options (${selected.length})`}
-        classNames={{ trigger: [Button.class.base, Button.class.variant.primary] }}
-        className="w-xl max-w-[90vw]"
+        classNames={{
+          trigger: [Button.className.base, Button.className.variant.primary],
+          content: "w-xl max-w-[90vw]",
+        }}
       >
         <div className="flex gap-3">
           <div className="flex min-w-0 flex-1 flex-col gap-2">
