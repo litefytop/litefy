@@ -87,7 +87,7 @@ export function ToastAction({ className, ...props }: ToastActionProps) {
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         "disabled:pointer-events-none disabled:opacity-50",
         "h-8 px-3 py-1",
-        "hover:bg-accent hover:text-accent-foreground",
+        "hover:bg-primary-accent hover:text-primary-foreground",
         className,
       )}
     />
@@ -189,7 +189,7 @@ const useToastStore = () => {
 
 const toastIcons: Record<ToastType, React.ReactNode> = {
   success: <CircleCheck className="size-4 text-green-500" />,
-  error: <X className="size-4 text-destructive" />,
+  error: <X className="size-4 text-danger" />,
   warning: <TriangleAlert className="size-4 text-amber-400" />,
   info: <CircleHelp className="size-4" />,
   loading: <Loader2 className="size-4 animate-spin" />,

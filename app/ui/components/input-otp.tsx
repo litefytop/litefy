@@ -27,7 +27,7 @@ export function InputOtpSlot({ className, ref, ...props }: InputOtpSlotProps) {
       className={cn(
         "size-9 rounded-md border border-border bg-muted text-center text-sm font-medium outline-none transition-colors",
         "focus:border-primary focus:ring-2 focus:ring-ring/50",
-        "aria-invalid:border-destructive aria-invalid:ring-destructive/20",
+        "aria-invalid:border-danger aria-invalid:ring-danger/20",
         "disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}

@@ -43,7 +43,7 @@ export function UploadDropzone({ className, ...props }: UploadDropzoneProps) {
         "hover:border-primary/50 hover:bg-muted/50",
         "focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none",
         "data-dragging:border-primary data-dragging:bg-primary/5",
-        "data-invalid:border-destructive data-invalid:bg-destructive/5",
+        "data-invalid:border-danger data-invalid:bg-danger/5",
         "data-disabled:pointer-events-none data-disabled:opacity-50",
         className,
       )}

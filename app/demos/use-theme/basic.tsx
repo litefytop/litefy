@@ -3,32 +3,32 @@
 import { useTheme } from "@/ui";
 
 const SURFACES = [
-  { value: "", color: "oklch(87% 0 0)" },
-  { value: "olive", color: "oklch(88% 0.011 106.6)" },
-  { value: "mist", color: "oklch(87.2% 0.007 219.6)" },
-  { value: "mauve", color: "oklch(86.5% 0.012 325.68)" },
-  { value: "taupe", color: "oklch(86.8% 0.007 39.5)" },
-  { value: "stone", color: "oklch(86.9% 0.005 56.366)" },
-  { value: "zinc", color: "oklch(70.5% 0.015 286.067)" },
-  { value: "slate", color: "oklch(86.9% 0.022 252.894)" },
-  { value: "gray", color: "oklch(87.2% 0.01 258.338)" },
+  { value: "", color: "oklch(55.6% 0 none)" },
+  { value: "olive", color: "oklch(58% 0.031 107.3)" },
+  { value: "mist", color: "oklch(56% 0.021 213.5)" },
+  { value: "mauve", color: "oklch(54.2% 0.034 322.5)" },
+  { value: "taupe", color: "oklch(54.7% 0.021 43.1)" },
+  { value: "stone", color: "oklch(55.3% 0.013 58.071)" },
+  { value: "zinc", color: "oklch(55.2% 0.016 285.938)" },
+  { value: "slate", color: "oklch(55.4% 0.046 257.417)" },
+  { value: "gray", color: "oklch(55.1% 0.027 264.364)" },
 ];
 
 const BRANDS = [
-  { value: "", color: "oklch(14.5% 0 0)" },
-  { value: "cyan", color: "oklch(39.8% 0.07 227.392)" },
-  { value: "violet", color: "oklch(43.2% 0.232 292.759)" },
-  { value: "teal", color: "oklch(43.7% 0.078 188.216)" },
-  { value: "sky", color: "oklch(44.3% 0.11 240.79)" },
-  { value: "rose", color: "oklch(45.5% 0.188 13.697)" },
-  { value: "purple", color: "oklch(43.8% 0.218 303.724)" },
-  { value: "pink", color: "oklch(45.9% 0.187 3.815)" },
-  { value: "orange", color: "oklch(40.8% 0.123 38.172)" },
-  { value: "lime", color: "oklch(40.5% 0.101 131.063)" },
-  { value: "indigo", color: "oklch(45.7% 0.24 277.023)" },
-  { value: "fuchsia", color: "oklch(45.2% 0.211 324.591)" },
-  { value: "emerald", color: "oklch(43.2% 0.095 166.913)" },
-  { value: "amber", color: "oklch(41.4% 0.112 45.904)" },
+  { value: "", color: "oklch(55.6% 0 none)" },
+  { value: "cyan", color: "oklch(70.6% 0.137 204)" },
+  { value: "violet", color: "oklch(60.6% 0.25 292.717)" },
+  { value: "teal", color: "oklch(70.4% 0.14 182.503)" },
+  { value: "sky", color: "oklch(68.5% 0.135 217)" },
+  { value: "rose", color: "oklch(64.5% 0.246 16.439)" },
+  { value: "purple", color: "oklch(62.7% 0.265 303.9)" },
+  { value: "pink", color: "oklch(65.6% 0.241 354.308)" },
+  { value: "orange", color: "oklch(70.5% 0.213 47.604)" },
+  { value: "lime", color: "oklch(76.8% 0.233 130.85)" },
+  { value: "indigo", color: "oklch(58.5% 0.233 277.117)" },
+  { value: "fuchsia", color: "oklch(66.7% 0.295 322.15)" },
+  { value: "emerald", color: "oklch(69.6% 0.17 162.48)" },
+  { value: "amber", color: "oklch(76.9% 0.188 70.08)" },
 ];
 
 export default function UseThemeBasicDemo() {
@@ -46,7 +46,7 @@ export default function UseThemeBasicDemo() {
             type="button"
             onClick={() => theme.setTheme(mode)}
             className={
-              "rounded-md border px-3 py-1.5 text-sm capitalize hover:bg-accent" +
+              "rounded-md border px-3 py-1.5 text-sm capitalize hover:bg-primary-accent" +
               (theme.theme === mode ? " bg-primary text-primary-foreground" : "")
             }
           >

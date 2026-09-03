@@ -16,4 +16,4 @@ export function Capsule({ children, className, ...props }: CapsuleProps) {
 }
 
 Capsule.className =
-  "inline-flex items-center overflow-hidden rounded-full first:rounded-l-full last:rounded-r-full";
+  "inline-flex items-center overflow-hidden rounded-md *:rounded-none *:px-2 *:py-1";

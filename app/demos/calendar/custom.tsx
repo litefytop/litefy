@@ -5,8 +5,8 @@ import { CalendarGrid, CalendarHeader, CalendarRoot } from "@/ui";
 
 export default function Demo() {
   const [visibleMonth, setVisibleMonth] = useState(() => Temporal.Now.plainDateISO());
-  const [selectedDate, setSelectedDate] = useState<Temporal.PlainDate | null>(
-    () => Temporal.Now.plainDateISO(),
+  const [selectedDate, setSelectedDate] = useState<Temporal.PlainDate | null>(() =>
+    Temporal.Now.plainDateISO(),
   );
 
   const firstOfMonth = visibleMonth.with({ day: 1 });
@@ -14,9 +14,7 @@ export default function Demo() {
   const start = firstOfMonth.subtract({ days: offset });
   const weekCount = Math.ceil((offset + visibleMonth.daysInMonth) / 7);
   const weeks = Array.from({ length: weekCount }, (_, weekIndex) =>
-    Array.from({ length: 7 }, (_, dayIndex) =>
-      start.add({ days: weekIndex * 7 + dayIndex }),
-    ),
+    Array.from({ length: 7 }, (_, dayIndex) => start.add({ days: weekIndex * 7 + dayIndex })),
   );
 
   const handleSelect = (date: Temporal.PlainDate) => {
@@ -25,7 +23,7 @@ export default function Demo() {
   };
 
   return (
-    <CalendarRoot className="rounded-full border-2 border-primary p-4">
+    <CalendarRoot className="rounded-md border-2 border-primary p-4">
       <CalendarHeader
         title={`${visibleMonth.year} / ${visibleMonth.month}`}
         onPrevious={() => setVisibleMonth(visibleMonth.subtract({ months: 1 }))}

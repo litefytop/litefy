@@ -1,182 +1,295 @@
 "use client";
-
 import * as React from "react";
-import type { Key, ReactNode } from "react";
-import { type ClassNameValue, cn } from "..";
+import { cn } from "..";
 
-export interface ListRootProps extends Omit<React.ComponentProps<"div">, "className"> {
-  className?: ClassNameValue;
-}
-
-export function ListRoot({ className, ...props }: ListRootProps) {
-  return (
-    <div
-      {...props}
-      className={cn(
-        "overflow-y-auto outline-none focus-visible:ring-1 focus-visible:ring-ring",
-        className,
-      )}
-    />
-  );
-}
-
-export interface ListItemProps extends Omit<React.ComponentProps<"div">, "className"> {
-  className?: ClassNameValue;
-}
-
-export function ListItem({ className, ...props }: ListItemProps) {
-  return (
-    <div
-      {...props}
-      className={cn(
-        "flex items-center gap-3 px-3 py-2 text-sm cursor-pointer transition-colors",
-        "hover:bg-hover data-highlighted:bg-hover",
-        className,
-      )}
-    />
-  );
-}
-
-export interface ListHeaderProps extends Omit<React.ComponentProps<"div">, "className"> {
-  className?: ClassNameValue;
-}
-
-export function ListHeader({ className, ...props }: ListHeaderProps) {
-  return (
-    <div
-      {...props}
-      className={cn("px-3 py-1.5 text-xs font-medium text-muted-foreground", className)}
-    />
-  );
-}
-
-export interface ListClassNames {
-  root?: ClassNameValue;
-  item?: ClassNameValue;
-  header?: ClassNameValue;
-}
-
-export interface ListStyles {
-  root?: React.CSSProperties;
-  item?: React.CSSProperties;
-  header?: React.CSSProperties;
-}
-
-export interface ListProps<T> {
-  ref?: React.Ref<HTMLDivElement>;
+export type ListControllerProps<T> = {
   items: T[];
-  renderItem: (item: T, index: number) => ReactNode;
-  getKey?: (item: T, index: number) => Key;
-  empty?: ReactNode;
   highlightIndex?: number | null;
   onHighlightChange?: (index: number | null) => void;
-  getGroup?: (item: T, index: number) => string;
-  renderGroupHeader?: (label: string) => ReactNode;
   onSelect?: (item: T, index: number) => void;
   onScrollBottom?: () => void;
-  className?: ClassNameValue;
-  style?: React.CSSProperties;
-  classNames?: ListClassNames;
-  styles?: ListStyles;
-}
+};
 
-export function List<T>({
-  ref,
-  items,
-  renderItem,
-  getKey,
-  empty,
-  highlightIndex: controlledHighlight,
-  onHighlightChange,
-  getGroup,
-  renderGroupHeader,
-  onSelect,
-  onScrollBottom,
-  className,
-  style,
-  classNames,
-  styles,
-}: ListProps<T>) {
-  const rootRef = React.useRef<HTMLDivElement>(null);
+function useListController<T>(props: ListControllerProps<T>) {
+  const {
+    items,
+    highlightIndex: controlledHighlight,
+    onHighlightChange,
+    onSelect,
+    onScrollBottom,
+  } = props;
+  const rootRef = React.useRef<HTMLUListElement | HTMLDivElement>(null);
+
   const [uncontrolledHighlight, setUncontrolledHighlight] = React.useState<number | null>(null);
-  const isHighlightControlled = controlledHighlight !== undefined;
-  const highlightIndex = isHighlightControlled ? controlledHighlight : uncontrolledHighlight;
+  const isControlled = controlledHighlight !== undefined;
+  const highlightIndex = isControlled ? controlledHighlight : uncontrolledHighlight;
 
   const setHighlightIndex = (next: number | null) => {
-    if (!isHighlightControlled) setUncontrolledHighlight(next);
+    if (!isControlled) setUncontrolledHighlight(next);
     onHighlightChange?.(next);
   };
 
-  React.useImperativeHandle(ref, () => rootRef.current as HTMLDivElement, []);
-
   React.useLayoutEffect(() => {
     if (highlightIndex === null) return;
-    rootRef.current
-      ?.querySelector<HTMLElement>("[data-highlighted]")
-      ?.scrollIntoView({ block: "nearest", behavior: "instant" });
+    const el = rootRef.current?.querySelector<HTMLElement>("[data-highlighted='true']");
+    el?.scrollIntoView({ block: "nearest", behavior: "instant" });
   }, [highlightIndex]);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLUListElement | HTMLDivElement>) => {
+    if (items.length === 0) return;
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      if (items.length === 0) return;
-      setHighlightIndex(
-        highlightIndex === null || highlightIndex >= items.length - 1 ? 0 : highlightIndex + 1,
-      );
+      const next = highlightIndex === null ? 0 : Math.min(highlightIndex + 1, items.length - 1);
+      setHighlightIndex(next);
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      if (items.length === 0) return;
-      setHighlightIndex(
-        highlightIndex === null || highlightIndex <= 0 ? items.length - 1 : highlightIndex - 1,
-      );
-    } else if (e.key === "Enter" && highlightIndex !== null && highlightIndex < items.length) {
+      const next = highlightIndex === null ? items.length - 1 : Math.max(highlightIndex - 1, 0);
+      setHighlightIndex(next);
+    } else if (e.key === "Enter" && highlightIndex !== null) {
       e.preventDefault();
       onSelect?.(items[highlightIndex], highlightIndex);
     }
   };
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+  const handleScroll = (e: React.UIEvent<HTMLUListElement | HTMLDivElement>) => {
     if (!onScrollBottom) return;
-    const el = e.currentTarget;
-    if (el.scrollTop + el.clientHeight >= el.scrollHeight - 1) onScrollBottom();
+    const target = e.currentTarget;
+    const threshold = 16;
+    if (target.scrollTop + target.clientHeight >= target.scrollHeight - threshold) {
+      onScrollBottom();
+    }
   };
 
+  return { rootRef, highlightIndex, setHighlightIndex, handleKeyDown, handleScroll };
+}
+
+export interface ListClassNames {
+  root?: string;
+  item?: string;
+  groupHeader?: string;
+}
+
+export interface ListStyles {
+  root?: React.CSSProperties;
+  item?: React.CSSProperties;
+  groupHeader?: React.CSSProperties;
+}
+
+export interface ListProps<T> {
+  ref?: React.Ref<HTMLUListElement | HTMLDivElement>;
+  items: T[];
+  getKey?: (item: T, index: number) => React.Key;
+  getGroup?: (item: T, index: number) => string;
+  renderGroupHeader?: (groupName: string) => React.ReactNode;
+  renderItem: (item: T, index: number) => React.ReactNode;
+  empty?: React.ReactNode;
+  highlightIndex?: number | null;
+  onHighlightChange?: (index: number | null) => void;
+  onSelect?: (item: T, index: number) => void;
+  onScrollBottom?: () => void;
+  className?: string;
+  style?: React.CSSProperties;
+  classNames?: ListClassNames;
+  styles?: ListStyles;
+}
+
+export type OrderProps<T> = Omit<ListProps<T>, "getGroup" | "renderGroupHeader">;
+
+function groupItems<T>(items: T[], getGroup: (item: T, index: number) => string) {
+  const map = new Map<string, Array<{ item: T; index: number }>>();
+  items.forEach((item, index) => {
+    const name = getGroup(item, index);
+    if (!map.has(name)) map.set(name, []);
+    map.get(name)!.push({ item, index });
+  });
+  return Array.from(map.entries());
+}
+
+export function List<T>(props: ListProps<T>) {
+  const {
+    items,
+    getKey,
+    getGroup,
+    renderGroupHeader,
+    renderItem,
+    empty,
+    highlightIndex,
+    onHighlightChange,
+    onSelect,
+    onScrollBottom,
+    className,
+    style,
+    classNames = {},
+    styles = {},
+  } = props;
+
+  const controller = useListController({
+    items,
+    highlightIndex,
+    onHighlightChange,
+    onSelect,
+    onScrollBottom,
+  });
+
+  const hasGroup = typeof getGroup === "function" && typeof renderGroupHeader === "function";
+
+  if (items.length === 0 && empty !== undefined) {
+    return (
+      <ul
+        ref={controller.rootRef as React.Ref<HTMLUListElement>}
+        tabIndex={0}
+        onKeyDown={controller.handleKeyDown}
+        onScroll={controller.handleScroll}
+        className={cn("overflow-y-auto outline-none list-none", className, classNames.root)}
+        style={{ ...style, ...styles.root }}
+      >
+        <li className="px-3 py-2 text-sm text-neutral-500">{empty}</li>
+      </ul>
+    );
+  }
+
+  if (!hasGroup) {
+    return (
+      <ul
+        ref={controller.rootRef as React.Ref<HTMLUListElement>}
+        tabIndex={0}
+        onKeyDown={controller.handleKeyDown}
+        onScroll={controller.handleScroll}
+        className={cn(
+          "overflow-y-auto outline-none list-none divide-y divide-border",
+          className,
+          classNames.root,
+        )}
+        style={{ ...style, ...styles.root }}
+      >
+        {items.map((item, index) => (
+          <li
+            key={getKey?.(item, index) ?? index}
+            data-highlighted={controller.highlightIndex === index}
+            onClick={() => onSelect?.(item, index)}
+            className={cn(
+              "px-3 py-2 text-sm cursor-pointer transition-colors hover:bg-hover data-[highlighted=true]:bg-hover",
+              classNames.item,
+            )}
+            style={styles.item}
+          >
+            {renderItem(item, index)}
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  const grouped = groupItems(items, getGroup!);
+
   return (
-    <ListRoot
-      ref={rootRef}
+    <div
+      ref={controller.rootRef as React.Ref<HTMLDivElement>}
       tabIndex={0}
-      onKeyDown={handleKeyDown}
-      onScroll={handleScroll}
-      className={cn("divide-y divide-border", className, classNames?.root)}
-      style={{ ...style, ...styles?.root }}
+      onKeyDown={controller.handleKeyDown}
+      onScroll={controller.handleScroll}
+      className={cn("overflow-y-auto outline-none", className, classNames.root)}
+      style={{ ...style, ...styles.root }}
     >
-      {items.length === 0 && empty !== undefined
-        ? empty
-        : (() => {
-            let lastGroup: string | undefined;
-            return items.map((item, index) => {
-              const group = getGroup?.(item, index);
-              const showHeader = group !== undefined && group !== lastGroup;
-              if (group !== undefined) lastGroup = group;
-              return (
-                <React.Fragment key={getKey?.(item, index) ?? index}>
-                  {showHeader && (
-                    <ListHeader className={classNames?.header} style={styles?.header}>
-                      {renderGroupHeader ? renderGroupHeader(group) : group}
-                    </ListHeader>
-                  )}
-                  <ListItem
-                    data-highlighted={index === highlightIndex || undefined}
-                    onClick={() => onSelect?.(item, index)}
-                    className={classNames?.item}
-                    style={styles?.item}
-                  >
-                    {renderItem(item, index)}
-                  </ListItem>
-                </React.Fragment>
-              );
-            });
-          })()}
-    </ListRoot>
+      {grouped.map(([groupName, groupItemsList]) => (
+        <div key={groupName}>
+          <div
+            className={cn(
+              "px-3 py-1.5 text-xs font-medium text-muted-foreground",
+              classNames.groupHeader,
+            )}
+            style={styles.groupHeader}
+          >
+            {renderGroupHeader!(groupName)}
+          </div>
+          <ul className="list-none divide-y divide-border">
+            {groupItemsList.map(({ item, index }) => (
+              <li
+                key={getKey?.(item, index) ?? index}
+                data-highlighted={controller.highlightIndex === index}
+                onClick={() => onSelect?.(item, index)}
+                className={cn(
+                  "px-3 py-2 text-sm cursor-pointer transition-colors hover:bg-hover data-[highlighted=true]:bg-hover",
+                  classNames.item,
+                )}
+                style={styles.item}
+              >
+                {renderItem(item, index)}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function Order<T>(props: OrderProps<T>) {
+  const {
+    getKey,
+    items,
+    renderItem,
+    empty,
+    highlightIndex,
+    onHighlightChange,
+    onSelect,
+    onScrollBottom,
+    className,
+    style,
+    classNames = {},
+    styles = {},
+  } = props;
+
+  const controller = useListController({
+    items,
+    highlightIndex,
+    onHighlightChange,
+    onSelect,
+    onScrollBottom,
+  });
+
+  if (items.length === 0 && empty !== undefined) {
+    return (
+      <ol
+        ref={controller.rootRef as React.Ref<HTMLOListElement>}
+        tabIndex={0}
+        onKeyDown={controller.handleKeyDown}
+        onScroll={controller.handleScroll}
+        className={cn("overflow-y-auto outline-none list-decimal pl-6", className, classNames.root)}
+        style={{ ...style, ...styles.root }}
+      >
+        <li className="px-3 py-2 text-sm text-neutral-500">{empty}</li>
+      </ol>
+    );
+  }
+
+  return (
+    <ol
+      ref={controller.rootRef as React.Ref<HTMLOListElement>}
+      tabIndex={0}
+      onKeyDown={controller.handleKeyDown}
+      onScroll={controller.handleScroll}
+      className={cn(
+        "overflow-y-auto outline-none list-decimal pl-6 divide-y divide-border",
+        className,
+        classNames.root,
+      )}
+      style={{ ...style, ...styles.root }}
+    >
+      {items.map((item, index) => (
+        <li
+          key={getKey?.(item, index) ?? index}
+          data-highlighted={controller.highlightIndex === index}
+          onClick={() => onSelect?.(item, index)}
+          className={cn(
+            "px-3 py-2 text-sm cursor-pointer transition-colors hover:bg-hover data-[highlighted=true]:bg-hover",
+            classNames.item,
+          )}
+          style={styles.item}
+        >
+          {renderItem(item, index)}
+        </li>
+      ))}
+    </ol>
   );
 }

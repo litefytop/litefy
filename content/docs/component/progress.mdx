@@ -34,7 +34,7 @@ Progress is a pure UI component: the bar width transitions to `current` (%) over
 Key points:
 
 - The bar width transitions to `current`% via `transition-[width]` over `duration` ms — changing `duration` while `current` stays the same does not restart an in-flight transition; that is inherent CSS transition behavior.
-- When `isAbort` is true the transition duration drops to zero, the width freezes at the pre-abort position (the component records the last non-aborted width internally), subsequent `current` / `duration` are ignored, and the fill switches to `bg-destructive`.
+- When `isAbort` is true the transition duration drops to zero, the width freezes at the pre-abort position (the component records the last non-aborted width internally), subsequent `current` / `duration` are ignored, and the fill switches to `bg-danger`.
 - When `isComplete` is true the width is forced to 100% and the fill switches to `bg-success`.
 - The demo shows the typical async-task driving pattern: sample once 1s after start to compute the rate and the estimated total duration, set `current=99.999` with `duration=estimate`; resample at 1/4, 1/2, 3/4 of the estimate and refine `duration`; after the estimate elapses, poll the simulated task and only set `isComplete` when it truly finishes. Deviation between the UI progress and the real backend progress is expected — that is the trade of smoothness for estimation.
 

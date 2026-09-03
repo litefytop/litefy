@@ -1,11 +1,9 @@
 [data-brand="amber"] {
   --primary: oklch(55.5% 0.163 48.998);
-  --accent: oklch(47.3% 0.137 46.201);
-  --ring: oklch(76.9% 0.188 70.08);
+ --primary-accent: oklch(47.3% 0.137 46.201);
 }
 
 .dark[data-brand="amber"] {
   --primary: oklch(76.9% 0.188 70.08);
-  --accent: oklch(82.8% 0.189 84.429);
-  --ring: oklch(55.5% 0.163 48.998);
+ --primary-accent: oklch(82.8% 0.189 84.429);
 }

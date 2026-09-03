@@ -22,7 +22,7 @@ export default function PopoverBasicDemo() {
               onClick={() => setSelected(action)}
               className={
                 "px-2 py-1.5 text-left text-sm font-semibold rounded-sm hover:bg-hover" +
-                (action === "Delete" ? " text-destructive" : "")
+                (action === "Delete" ? " text-danger" : "")
               }
             >
               {action}

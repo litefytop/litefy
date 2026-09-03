@@ -211,14 +211,14 @@ export function Slider({
         className={cn(
           "rounded-full bg-muted",
           isVertical ? "h-64 w-2" : "h-2 w-3xs",
-          "group-data-invalid:bg-destructive/20",
+          "group-data-invalid:bg-danger/20",
           classNames?.track,
         )}
         style={styles?.track}
       >
         <SliderFill
           className={cn(
-            "rounded-full bg-primary group-data-invalid:bg-destructive",
+            "rounded-full bg-primary group-data-invalid:bg-danger",
             classNames?.fill,
           )}
           style={{ ...fillStyle, ...styles?.fill }}
@@ -240,7 +240,7 @@ export function Slider({
             "size-5 touch-none rounded-full border-2 border-primary bg-background shadow-sm",
             "cursor-grab active:cursor-grabbing",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-            "group-data-invalid:border-destructive",
+            "group-data-invalid:border-danger",
             "disabled:pointer-events-none disabled:opacity-60 disabled:cursor-not-allowed",
             classNames?.thumb,
           )}

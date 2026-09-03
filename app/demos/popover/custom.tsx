@@ -62,7 +62,7 @@ export default function Demo() {
           Settings
         </button>
         <button
-          className="w-full text-left px-2 py-1.5 text-sm font-semibold rounded-sm hover:bg-hover text-destructive"
+          className="w-full text-left px-2 py-1.5 text-sm font-semibold rounded-sm hover:bg-hover text-danger"
           onClick={close}
         >
           Logout

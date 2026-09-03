@@ -23,14 +23,14 @@ export default function TooltipImperativeDemo() {
         <button
           type="button"
           onClick={() => contentRef.current?.showPopover()}
-          className="px-4 py-2 text-sm border rounded hover:bg-accent"
+          className="px-4 py-2 text-sm border rounded hover:bg-primary-accent"
         >
           Open
         </button>
         <button
           type="button"
           onClick={() => contentRef.current?.hidePopover()}
-          className="px-4 py-2 text-sm border rounded hover:bg-accent"
+          className="px-4 py-2 text-sm border rounded hover:bg-primary-accent"
         >
           Close
         </button>

@@ -17,21 +17,21 @@ export default function VirtualScrollBasicDemo() {
         <button
           type="button"
           onClick={() => virtual.scrollToIndex(250, "center")}
-          className="px-3 py-1.5 text-sm border rounded hover:bg-accent"
+          className="px-3 py-1.5 text-sm border rounded hover:bg-primary-accent"
         >
           Jump to 250
         </button>
         <button
           type="button"
           onClick={virtual.scrollToTop}
-          className="px-3 py-1.5 text-sm border rounded hover:bg-accent"
+          className="px-3 py-1.5 text-sm border rounded hover:bg-primary-accent"
         >
           Top
         </button>
         <button
           type="button"
           onClick={virtual.scrollToBottom}
-          className="px-3 py-1.5 text-sm border rounded hover:bg-accent"
+          className="px-3 py-1.5 text-sm border rounded hover:bg-primary-accent"
         >
           Bottom
         </button>

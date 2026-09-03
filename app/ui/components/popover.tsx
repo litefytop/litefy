@@ -38,8 +38,7 @@ export interface PopoverContentProps extends Omit<React.ComponentProps<"div">, "
 }
 
 export function PopoverContent({
-  open: controlledOpen,
-  defaultOpen = false,
+  open,
   onOpenChange,
   alignX = "center",
   className,
@@ -50,16 +49,11 @@ export function PopoverContent({
   ...props
 }: PopoverContentProps) {
   const panelRef = React.useRef<HTMLDivElement>(null);
-  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen);
-  const isControlled = controlledOpen !== undefined;
-  const open = isControlled ? controlledOpen : uncontrolledOpen;
-
   const handleOpenChange = React.useCallback(
     (next: boolean) => {
-      if (!isControlled) setUncontrolledOpen(next);
       onOpenChange?.(next);
     },
-    [isControlled, onOpenChange],
+    [onOpenChange],
   );
 
   React.useEffect(() => {
@@ -128,14 +122,13 @@ export type UsePopoverTriggerOptions = {
   hoverDelayClose?: number;
 };
 
-export function usePopoverTrigger(options: UsePopoverTriggerOptions) {
-  const {
-    open,
-    onOpenChange,
-    mode = { click: true, hover: false },
-    hoverDelayOpen = 0,
-    hoverDelayClose = 200,
-  } = options;
+export function usePopoverTrigger({
+  open,
+  onOpenChange,
+  mode = "click",
+  hoverDelayOpen = 0,
+  hoverDelayClose = 200,
+}: UsePopoverTriggerOptions) {
   const id = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const anchorName = `--popover-trigger-${id}`;
   const timerRef = React.useRef<number | null>(null);
@@ -180,6 +173,7 @@ export function usePopoverTrigger(options: UsePopoverTriggerOptions) {
       },
       onMouseLeave: () => {
         if (mode === "click") return;
+        clearTimer();
         scheduleClose();
       },
       onFocus: () => {
@@ -196,11 +190,27 @@ export function usePopoverTrigger(options: UsePopoverTriggerOptions) {
       },
     };
   }, [open, onOpenChange, mode, clearTimer, scheduleOpen, scheduleClose]);
-
-  return { triggerProps, clearTimer, scheduleClose, scheduleOpen, anchorName };
+  const contentProps = React.useMemo(() => {
+    return {
+      onMouseEnter: () => {
+        if (mode === "click") return;
+        clearTimer();
+      },
+      onMouseLeave: () => {
+        if (mode === "click") return;
+        clearTimer();
+        scheduleClose();
+      },
+    };
+  }, [clearTimer, scheduleClose, mode]);
+  React.useEffect(() => {
+    if (!open) clearTimer();
+    return () => clearTimer();
+  }, [open, clearTimer]);
+  return { triggerProps, contentProps, clearTimer, scheduleClose, scheduleOpen, anchorName };
 }
 
-export interface PopoverProps extends Omit<React.ComponentProps<"button">, "className"> {
+export interface PopoverProps {
   trigger: React.ReactNode;
   open?: boolean;
   defaultOpen?: boolean;
@@ -215,6 +225,7 @@ export interface PopoverProps extends Omit<React.ComponentProps<"button">, "clas
     trigger?: React.CSSProperties;
     content?: React.CSSProperties;
   };
+  mode?: "click" | "hover";
 }
 
 export function Popover({
@@ -226,6 +237,7 @@ export function Popover({
   classNames,
   styles,
   children,
+  mode = "click",
 }: PopoverProps) {
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen);
   const isControlled = open !== undefined;
@@ -239,9 +251,10 @@ export function Popover({
     [isControlled, onOpenChange],
   );
 
-  const { triggerProps, anchorName } = usePopoverTrigger({
+  const { triggerProps, contentProps, anchorName } = usePopoverTrigger({
     open: innerOpen,
     onOpenChange: handleOpenChange,
+    mode,
   });
 
   return (
@@ -255,11 +268,12 @@ export function Popover({
         {trigger}
       </button>
       <PopoverContent
+        {...contentProps}
         open={innerOpen}
         onOpenChange={handleOpenChange}
         alignX={alignX}
         className={classNames?.content}
-        style={{ anchorName, ...styles?.content }}
+        style={{ positionAnchor: anchorName, ...styles?.content }}
       >
         {children}
       </PopoverContent>

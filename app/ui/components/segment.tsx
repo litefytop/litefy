@@ -83,8 +83,8 @@ export function SegmentGroup({
           onClick={() => handleSelect(option.value)}
           className={cn(
             "border-y-0 border-r first:border-l-0 last:border-r-0",
-            "group-data-invalid:aria-checked:bg-destructive",
-            "group-data-invalid:text-destructive",
+            "group-data-invalid:aria-checked:bg-danger",
+            "group-data-invalid:text-danger",
             option.className ?? itemClassName,
           )}
         >

@@ -3,7 +3,8 @@
   --foreground: oklch(21% 0.034 264.665);
   --muted: oklch(92.8% 0.006 264.531);
   --muted-foreground: oklch(27.8% 0.033 256.848);
-  --neutral: oklch(87.2% 0.01 258.338);
+  --accent: oklch(87.2% 0.01 258.338);
+  --neutral: oklch(55.1% 0.027 264.364);
 }
 
 .dark[data-surface="gray"] {
@@ -11,5 +12,5 @@
   --background: oklch(21% 0.034 264.665);
   --muted: oklch(27.8% 0.033 256.848);
   --muted-foreground: oklch(92.8% 0.006 264.531);
-  --neutral: oklch(37.3% 0.034 259.733);
+  --accent: oklch(37.3% 0.034 259.733);
 }

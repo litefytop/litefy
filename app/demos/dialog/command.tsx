@@ -29,7 +29,7 @@ export default function Demo() {
       <Button
         onClick={() => {
           dialog.error({
-            title: <span className="flex gap-2"><CircleAlert className="fill-destructive text-background"/>Error</span>,
+            title: <span className="flex gap-2"><CircleAlert className="fill-danger text-background"/>Error</span>,
             children: "Something went wrong, please try again later.",
           });
         }}

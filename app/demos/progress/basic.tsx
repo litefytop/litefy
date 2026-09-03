@@ -118,7 +118,7 @@ export default function ProgressBasicDemo() {
       </p>
       <div className="flex gap-2">
         {phase === "running" ? (
-          <Button className={[Button.className.base, Button.className.variant.destructive]} onClick={abort}>
+          <Button className={[Button.className.base, Button.className.variant.danger]} onClick={abort}>
             Abort
           </Button>
         ) : (

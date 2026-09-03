@@ -43,7 +43,7 @@ export const Radio = ({
       className={cn(
         "inline-flex items-center justify-center gap-2 shrink-0 h-9 min-w-9 px-3 py-1 cursor-pointer select-none relative has-disabled:cursor-not-allowed has-disabled:opacity-50",
         "has-focus-visible:[&>*:first-child]:ring-2 has-focus-visible:[&>*:first-child]:ring-ring has-focus-visible:[&>*:first-child]:ring-offset-2",
-        "data-invalid:text-destructive",
+        "data-invalid:text-danger",
         className,
       )}
     >
@@ -60,7 +60,7 @@ export const Radio = ({
         checked={checked$}
         onChange={handleChange}
         data-hidden={Boolean(indicator) || undefined}
-        className={cn("accent-primary data-invalid:accent-destructive data-hidden:sr-only peer")}
+        className={cn("accent-primary data-invalid:accent-danger data-hidden:sr-only peer")}
       />
       {children}
     </label>

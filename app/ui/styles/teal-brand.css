@@ -1,11 +1,9 @@
 [data-brand="teal"] {
   --primary: oklch(51.1% 0.096 186.391);
-  --accent: oklch(43.7% 0.078 188.216);
-  --ring: oklch(70.4% 0.14 182.503);
+ --primary-accent: oklch(43.7% 0.078 188.216);
 }
 
 .dark[data-brand="teal"] {
   --primary: oklch(70.4% 0.14 182.503);
-  --accent: oklch(77.7% 0.152 181.912);
-  --ring: oklch(51.1% 0.096 186.391);
+ --primary-accent: oklch(77.7% 0.152 181.912);
 }

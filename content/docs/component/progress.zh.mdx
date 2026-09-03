@@ -34,7 +34,7 @@ Progress 是一个纯 UI 组件：宽度由 `current`（%）经 `duration`（毫
 实现要点：
 
 - 进度条宽度经 `transition-[width]` 过渡到 `current`%，过渡时长为 `duration` 毫秒 —— `current` 不变而 `duration` 变化不会重启正在进行的过渡，这是 CSS 过渡的固有行为。
-- `isAbort` 为 true 时 `transitionDuration` 归零、宽度冻结在中止前的位置（组件内部记录最后一个非中止宽度），并忽略后续的 `current` / `duration`，背景切换为 `bg-destructive`。
+- `isAbort` 为 true 时 `transitionDuration` 归零、宽度冻结在中止前的位置（组件内部记录最后一个非中止宽度），并忽略后续的 `current` / `duration`，背景切换为 `bg-danger`。
 - `isComplete` 为 true 时强制 100%，背景切换为 `bg-success`。
 - demo 演示了典型的异步任务驱动方式：启动 1s 后第一次采样计算速率与预估总耗时，设 `current=99.999`、`duration=预估总耗时`；在预估总时长的 1/4、1/2、3/4 时间点重新采样并修正 `duration`；预估时间走完后轮询模拟任务，真正完成才置 `isComplete`。UI 进度与后端真实进度允许存在偏差 —— 这是"用预估换平滑"的预期行为。
 

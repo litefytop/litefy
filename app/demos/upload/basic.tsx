@@ -70,7 +70,7 @@ export default function UploadBasicDemo() {
       />
 
       {rejects.length > 0 && (
-        <ul className="space-y-1 text-sm text-destructive">
+        <ul className="space-y-1 text-sm text-danger">
           {rejects.map((reject, index) => (
             <li key={index}>{reject.message}</li>
           ))}
@@ -91,7 +91,7 @@ export default function UploadBasicDemo() {
             </span>
             <button
               type="button"
-              className="text-destructive hover:underline"
+              className="text-danger hover:underline"
               onClick={() => actionsRef.current?.remove(item.uid)}
             >
               Remove

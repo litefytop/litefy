@@ -21,7 +21,7 @@ export default function Demo() {
       />
       <InputTrailing>
         {invalid ? (
-          <TriangleAlert className="text-destructive" />
+          <TriangleAlert className="text-danger" />
         ) : (
           <kbd className="font-mono text-xs">⌘+K</kbd>
         )}

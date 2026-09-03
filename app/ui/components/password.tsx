@@ -18,7 +18,7 @@ export function PasswordGroup({ className, invalid, ...props }: PasswordGroupPro
       className={cn(
         "flex w-full max-w-sm min-w-3xs items-center rounded-md border border-border shadow-xs transition-colors px-2 h-9",
         "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
-        "data-[invalid=true]:border-destructive data-[invalid=true]:ring-destructive/20",
+        "data-[invalid=true]:border-danger data-[invalid=true]:ring-danger/20",
         className,
       )}
     />

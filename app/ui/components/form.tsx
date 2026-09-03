@@ -288,7 +288,7 @@ export function FormHint({ className, ...props }: FormHintProps) {
       {...props}
       className={cn(
         "text-sm indent-2 h-5 text-muted-foreground",
-        "group-data-invalid:text-destructive",
+        "group-data-invalid:text-danger",
         "group-data-[direction=horizontal]:col-start-2",
         className,
       )}
@@ -640,7 +640,7 @@ function FormFieldset<T extends FieldsetMode = "multi">({
         id={describedBy}
         className={cn(
           "text-sm text-muted-foreground",
-          isInvalid && "text-destructive",
+          isInvalid && "text-danger",
           classNames?.hint,
         )}
         style={styles?.hint}

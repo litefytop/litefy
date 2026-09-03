@@ -1,15 +1,16 @@
 [data-surface="zinc"] {
   --background: oklch(96.7% 0.001 286.375);
   --foreground: oklch(21% 0.006 285.885);
-  --neutral: oklch(87.1% 0.006 286.286);
+  --accent: oklch(87.1% 0.006 286.286);
   --muted: oklch(92% 0.004 286.32);
   --muted-foreground: oklch(27.8% 0.033 256.848);
+  --neutral: oklch(55.2% 0.016 285.938);
 }
 
 .dark[data-surface="zinc"] {
   --foreground: oklch(96.7% 0.001 286.375);
   --background: oklch(21% 0.006 285.885);
-  --neutral: oklch(37% 0.013 285.805);
+  --accent: oklch(37% 0.013 285.805);
   --muted: oklch(27.4% 0.006 286.033);
   --muted-foreground: oklch(92.8% 0.006 264.531);
 }

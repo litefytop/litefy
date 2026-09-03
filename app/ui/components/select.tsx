@@ -34,7 +34,7 @@ export function SelectRoot({ className, invalid, ...props }: SelectRootProps) {
         "appearance-none border bg-background/75 rounded-md w-full min-w-3xs max-w-sm h-9 py-1 px-3 text-sm flex-1 items-center peer cursor-pointer",
         "focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20",
         "disabled:cursor-not-allowed disabled:opacity-50",
-        "data-[invalid=true]:border-destructive data-[invalid=true]:text-destructive",
+        "data-[invalid=true]:border-danger data-[invalid=true]:text-danger",
         className,
       )}
     />

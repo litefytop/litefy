@@ -22,7 +22,7 @@ export function Progress({ current, duration, isAbort, isComplete, className }: 
       <div
         className={cn(
           "h-full rounded-full transition-[width] ease-out",
-          isAbort ? "bg-destructive" : isComplete ? "bg-success" : "bg-primary",
+          isAbort ? "bg-danger" : isComplete ? "bg-success" : "bg-primary",
         )}
         style={{
           width: `${width}%`,

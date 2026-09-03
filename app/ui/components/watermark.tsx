@@ -11,7 +11,6 @@ export type WatermarkColor =
   | "secondary"
   | "secondary-foreground"
   | "accent"
-  | "accent-foreground"
   | (string & {});
 
 const COLOR_VAR_MAP: Record<string, string> = {
@@ -22,7 +21,6 @@ const COLOR_VAR_MAP: Record<string, string> = {
   secondary: "--secondary",
   "secondary-foreground": "--secondary-foreground",
   accent: "--accent",
-  "accent-foreground": "--accent-foreground",
 };
 
 export type WatermarkRootProps = React.ComponentProps<"div"> & {

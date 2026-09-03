@@ -174,7 +174,7 @@ export default function TransferPickerMultipleDemo() {
                 type="button"
                 disabled={checked.size === 0}
                 onClick={removeChecked}
-                className="ml-auto cursor-pointer rounded-sm px-2 py-1 text-xs font-semibold text-destructive transition-colors hover:bg-hover disabled:pointer-events-none disabled:opacity-50"
+                className="ml-auto cursor-pointer rounded-sm px-2 py-1 text-xs font-semibold text-danger transition-colors hover:bg-hover disabled:pointer-events-none disabled:opacity-50"
               >
                 Remove
               </button>

@@ -1,11 +1,9 @@
 [data-brand="sky"] {
   --primary: oklch(50% 0.134 242.749);
-  --accent: oklch(44.3% 0.11 240.79);
-  --ring: oklch(74.6% 0.16 232.661);
+ --primary-accent: oklch(44.3% 0.11 240.79);
 }
 
 .dark[data-brand="sky"] {
   --primary: oklch(74.6% 0.16 232.661);
-  --accent: oklch(82.8% 0.111 230.318);
-  --ring: oklch(50% 0.134 242.749);
+ --primary-accent: oklch(82.8% 0.111 230.318);
 }

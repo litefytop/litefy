@@ -17,7 +17,7 @@ export default function Demo() {
         Click Me
       </Button>
       <Button
-        variant="destructive"
+        variant="danger"
         loadingConfig={{ loading }}
         onClick={handleClick}
       >

@@ -13,7 +13,7 @@ export function NumberGroup({ className, ...props }: NumberGroupProps) {
       className={cn(
         "flex max-w-3xs w-full items-center rounded-full ",
         "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
-        "data-invalid:border-destructive-accent data-invalid:ring-destructive data-invalid:text-destructive",
+        "data-invalid:border-danger-accent data-invalid:ring-danger data-invalid:text-danger",
         className,
       )}
     />

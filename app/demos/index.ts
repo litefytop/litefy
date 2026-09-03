@@ -7,8 +7,6 @@ import BreadcrumbBasicDemo from "./breadcrumb/basic";
 import breadcrumbBasicCode from "./breadcrumb/basic.tsx?raw";
 import BreadcrumbCustomDemo from "./breadcrumb/custom";
 import breadcrumbCustomCode from "./breadcrumb/custom.tsx?raw";
-import BreadcrumbHoverMenuDemo from "./breadcrumb/hover-menu";
-import breadcrumbHoverMenuCode from "./breadcrumb/hover-menu.tsx?raw";
 import ChartLineDemo from "./chart/line";
 import chartLineCode from "./chart/line.tsx?raw";
 import ChartAreaDemo from "./chart/area";
@@ -482,10 +480,6 @@ export const demos: Record<string, DemoItem> = {
   "breadcrumb-custom": {
     component: BreadcrumbCustomDemo,
     code: breadcrumbCustomCode,
-  },
-  "breadcrumb-hover-menu": {
-    component: BreadcrumbHoverMenuDemo,
-    code: breadcrumbHoverMenuCode,
   },
   "cascader-basic": {
     component: CascaderBasicDemo,

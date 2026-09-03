@@ -26,7 +26,7 @@ export default function Demo() {
         invalid={invalid}
         onChange={handleChange}
       />
-      {invalid && <span className="text-destructive text-sm">Please enter a valid email address</span>}
+      {invalid && <span className="text-danger text-sm">Please enter a valid email address</span>}
     </div>
   );
 }

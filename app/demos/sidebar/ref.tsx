@@ -12,21 +12,21 @@ export default function SidebarRefDemo() {
         <button
           type="button"
           onClick={() => sidebarRef.current?.toggle()}
-          className="px-3 py-1.5 text-sm border rounded hover:bg-accent"
+          className="px-3 py-1.5 text-sm border rounded hover:bg-primary-accent"
         >
           Toggle
         </button>
         <button
           type="button"
           onClick={() => sidebarRef.current?.open()}
-          className="px-3 py-1.5 text-sm border rounded hover:bg-accent"
+          className="px-3 py-1.5 text-sm border rounded hover:bg-primary-accent"
         >
           Open
         </button>
         <button
           type="button"
           onClick={() => sidebarRef.current?.close()}
-          className="px-3 py-1.5 text-sm border rounded hover:bg-accent"
+          className="px-3 py-1.5 text-sm border rounded hover:bg-primary-accent"
         >
           Close
         </button>
