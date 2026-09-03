@@ -13,7 +13,6 @@ export function NumberGroup({ className, ...props }: NumberGroupProps) {
       className={cn(
         "flex max-w-3xs w-full items-center rounded-full ",
         "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
-        "data-invalid:border-danger-accent data-invalid:ring-danger data-invalid:text-danger",
         className,
       )}
     />
@@ -31,7 +30,6 @@ export function NumberDecrement({ className, ...props }: NumberDecrementProps) {
       {...props}
       className={cn(
         "flex size-9 shrink-0 items-center justify-center rounded-l-full hover:text-primary",
-        "disabled:opacity-50 disabled:cursor-not-allowed",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
         className,
       )}
@@ -50,7 +48,6 @@ export function NumberIncrement({ className, ...props }: NumberIncrementProps) {
       {...props}
       className={cn(
         "flex size-9 shrink-0 items-center justify-center rounded-r-full hover:text-primary",
-        "disabled:opacity-50 disabled:cursor-not-allowed",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
         className,
       )}

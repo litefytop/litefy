@@ -20,7 +20,7 @@ export function Segment({ className, checked, ...props }: SegmentProps) {
         "bg-muted text-muted-foreground border-y border-r first:border-l border-border",
         "first:rounded-l-md last:rounded-r-md",
         "transition-colors duration-200",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset focus-visible:z-10",
+        "focus-visible:ring-inset focus-visible:z-10",
         "aria-checked:bg-primary aria-checked:text-primary-foreground",
         "disabled:cursor-not-allowed disabled:opacity-50",
         className,
@@ -83,8 +83,7 @@ export function SegmentGroup({
           onClick={() => handleSelect(option.value)}
           className={cn(
             "border-y-0 border-r first:border-l-0 last:border-r-0",
-            "group-data-invalid:aria-checked:bg-danger",
-            "group-data-invalid:text-danger",
+
             option.className ?? itemClassName,
           )}
         >

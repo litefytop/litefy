@@ -61,7 +61,7 @@ export function PasswordToggle({ className, visible, children, ...props }: Passw
       aria-pressed={visible}
       aria-label={visible ? "Hide password" : "Show password"}
       className={cn(
-        "hover:text-foreground/80 rounded-md p-1 text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "hover:text-foreground/80 rounded-md p-1 text-muted-foreground transition-colors",
         className,
       )}
     >

@@ -14,7 +14,7 @@ export function InputGroup({ className, ...props }: InputGroupProps) {
       className={cn(
         "flex h-9 w-full max-w-sm rounded-md px-2 border bg-muted items-center",
         "focus-within:ring-inset focus-within:ring-ring focus-within:ring-1",
-        "data-invalid:border-danger-accent data-invalid:ring-danger-accent",
+        "data-invalid:ring-danger",
         className,
       )}
     />

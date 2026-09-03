@@ -44,8 +44,7 @@ export const Toggle = ({
         "transition-colors duration-200",
         "aria-checked:bg-primary aria-checked:text-primary-foreground aria-checked:border-primary",
         "hover:not-aria-checked:bg-muted/50",
-        "disabled:opacity-50 disabled:cursor-not-allowed",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         className,
       )}
     >

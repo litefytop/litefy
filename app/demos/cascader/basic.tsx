@@ -88,10 +88,7 @@ export default function CascaderBasicDemo() {
   const triggerRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
   const panelRefs = React.useRef<(HTMLDivElement | null)[]>([]);
 
-  const levels = React.useMemo(
-    () => [tree, ...path.map((node) => node.children ?? [])],
-    [path],
-  );
+  const levels = React.useMemo(() => [tree, ...path.map((node) => node.children ?? [])], [path]);
 
   React.useEffect(() => {
     panelRefs.current.forEach((el, i) => {
@@ -130,7 +127,7 @@ export default function CascaderBasicDemo() {
   };
 
   const trigger = (
-    <div className="flex min-w-0 items-center gap-1.5">
+    <div className="flex min-w-0 items-center gap-1.5 ">
       {path.length === 0 ? (
         <button
           type="button"
@@ -139,9 +136,7 @@ export default function CascaderBasicDemo() {
           }}
           aria-expanded={openLevel === 0}
           onClick={() => handleTriggerClick(0)}
-          className={`min-w-0 flex-1 truncate text-muted-foreground transition-colors hover:text-foreground${
-            openLevel === 0 ? " text-foreground" : ""
-          }`}
+          className={`min-w-0 flex-1 truncate text-muted-foreground transition-colors px-3 py-2`}
         >
           Select your location
         </button>
@@ -157,9 +152,7 @@ export default function CascaderBasicDemo() {
                 }}
                 aria-expanded={openLevel === i}
                 onClick={() => handleTriggerClick(i)}
-                className={`min-w-0 flex-1 truncate text-muted-foreground transition-colors hover:text-foreground${
-                  openLevel === i ? " text-foreground" : ""
-                }`}
+                className={`min-w-0 flex-1 truncate text-muted-foreground transition-colors px-3 py-2`}
               >
                 {node.label}
               </button>
@@ -222,8 +215,8 @@ export default function CascaderBasicDemo() {
   return (
     <div className="flex flex-col items-center gap-3">
       <div
-        className="w-72 rounded-md border bg-background px-3 py-2 text-sm"
-        style={{ anchorName: containerAnchor } as React.CSSProperties}
+        className="w-72 rounded-md border bg-background  text-sm"
+        style={{ anchorName: containerAnchor }}
       >
         {trigger}
       </div>

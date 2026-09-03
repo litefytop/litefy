@@ -21,6 +21,7 @@
 @import "./gray-surface.css";
 @import "./mist-surface.css";
 @import "./mauve-surface.css";
+@import "./interactive.css";
 
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";

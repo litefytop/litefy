@@ -191,7 +191,7 @@ export function TabsTrigger({
       onClick={() => !disabled && onValueChange?.(value)}
       onKeyDown={handleKeyDown}
       className={cn(
-        "px-4 py-2 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "px-4 py-2 text-sm font-medium",
         triggerStyles[variant],
         className,
       )}

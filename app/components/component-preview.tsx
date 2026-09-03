@@ -1,20 +1,17 @@
 "use client";
 
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useParams } from "react-router";
 import { demos } from "@/demos";
-import { cn } from "@/ui";
+import { cn, Collapse } from "@/ui";
 import { i18n } from "@/lib/i18n";
 
-export interface ComponentPreviewProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
   className?: string;
   hideCode?: boolean;
   description?: string;
-  defaultExpanded?: boolean;
   codeLabel?: string;
 }
 
@@ -23,11 +20,9 @@ export function ComponentPreview({
   className,
   hideCode = false,
   description,
-  defaultExpanded = false,
   codeLabel,
   ...props
 }: ComponentPreviewProps) {
-  const [isCodeExpanded, setIsCodeExpanded] = useState(defaultExpanded);
   const params = useParams<{ lang?: string }>();
   const locale = params.lang || i18n.defaultLanguage;
 
@@ -38,12 +33,7 @@ export function ComponentPreview({
 
   if (!demo) {
     return (
-      <div
-        className={cn(
-          "my-4 rounded-md border border-red-200 bg-red-50 p-4",
-          className,
-        )}
-      >
+      <div className={cn("my-4 rounded-md border border-red-200 bg-red-50 p-4", className)}>
         <p className="text-sm text-red-600">
           Demo "{name}" not found. Make sure the demo is registered.
         </p>
@@ -55,16 +45,11 @@ export function ComponentPreview({
 
   return (
     <div
-      className={cn(
-        "component-preview-container group relative my-4 w-full",
-        className,
-      )}
+      className={cn("component-preview-container group relative my-4 w-full", className)}
       data-name={name}
       {...props}
     >
-      {description && (
-        <p className="text-muted-foreground mb-2 text-sm">{description}</p>
-      )}
+      {description && <p className="text-muted-foreground mb-2 text-sm">{description}</p>}
 
       <div className="overflow-hidden rounded-xl border">
         <div
@@ -80,26 +65,17 @@ export function ComponentPreview({
 
         {!hideCode && (
           <>
-            <button
-              type="button"
-              onClick={() => setIsCodeExpanded(!isCodeExpanded)}
-              className="flex w-full items-center justify-between border-t border-separator bg-fd-muted/50 px-4 py-3 text-sm font-medium transition-colors hover:bg-fd-muted/70"
+            <Collapse
+              label={displayLabel}
+              classNames={{
+                root: "border",
+                trigger: "text-md font-medium",
+              }}
             >
-              <span className="flex items-center gap-2">
-                {isCodeExpanded ? (
-                  <ChevronUp className="h-4 w-4" />
-                ) : (
-                  <ChevronDown className="h-4 w-4" />
-                )}
-                {displayLabel}
-              </span>
-            </button>
-
-            {isCodeExpanded && (
               <div className="code-section relative border-t border-separator bg-transparent">
                 <DynamicCodeBlock lang="tsx" code={demo.code} />
               </div>
-            )}
+            </Collapse>
           </>
         )}
       </div>

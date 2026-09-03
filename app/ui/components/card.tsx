@@ -12,17 +12,13 @@ export function Card({ children, className, ...props }: CardProps) {
     <div
       {...props}
       className={cn(
-        "group relative overflow-hidden rounded-2xl border border-border bg-card/70 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl",
+        "group relative overflow-hidden rounded-2xl border border-border backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl",
         className,
       )}
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-        style={{
-          background:
-            "radial-gradient(ellipse at 30% 20%, var(--card-glow, oklch(0.55 0.12 250 / 0.12)) 0%, transparent 70%)",
-        }}
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100  bg-radial-[at_25%_25%] from-primary/15 to-transparent to-75%"
       />
       {children}
     </div>

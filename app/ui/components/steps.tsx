@@ -66,7 +66,6 @@ export function StepsItem({
         onClick={() => onSelect?.(index)}
         className={cn(
           "relative z-10 flex size-6 shrink-0 items-center justify-center rounded-full border text-xs font-medium transition-colors",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
           "disabled:pointer-events-none disabled:cursor-not-allowed",
           state === "completed" && "border-primary bg-primary text-primary-foreground",
           state === "current" && "border-primary bg-background text-primary",

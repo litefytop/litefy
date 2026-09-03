@@ -78,7 +78,6 @@ function DotButton({
       onClick={onClick}
       className={cn(
         "size-5 cursor-pointer rounded-full transition-transform hover:scale-110",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         active && "ring-2 ring-ring ring-offset-2 ring-offset-background",
       )}
       style={{ backgroundColor: color }}
@@ -112,7 +111,7 @@ export function ThemeSwitcher({ lang = "en", className }: { lang?: Lang; classNa
         classNames={{
           content: "w-64 p-3",
           trigger:
-            "inline-flex size-8 items-center justify-center rounded-full border text-fd-muted-foreground transition-colors hover:text-fd-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+            "inline-flex size-8 items-center justify-center rounded-full border text-fd-muted-foreground transition-colors hover:text-fd-foreground",
         }}
         trigger={
           <>
@@ -134,7 +133,6 @@ export function ThemeSwitcher({ lang = "en", className }: { lang?: Lang; classNa
                   title={mode.label}
                   className={cn(
                     "flex flex-1 items-center justify-center gap-1.5 rounded-md p-1.5 text-xs whitespace-nowrap text-muted-foreground hover:bg-muted",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                     theme.theme === mode.value && "bg-muted text-foreground",
                   )}
                 >

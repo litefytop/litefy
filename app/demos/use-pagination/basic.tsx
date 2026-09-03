@@ -35,7 +35,7 @@ export default function PaginationDemo() {
           type="button"
           onClick={() => goTo(0)}
           disabled={isFirst}
-          className="px-3 py-1 text-sm border rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-3 py-1 text-sm border rounded hover:bg-gray-100"
         >
           <ChevronsLeft className="size-4" />
         </button>
@@ -44,7 +44,7 @@ export default function PaginationDemo() {
           type="button"
           onClick={previous}
           disabled={isFirst}
-          className="px-3 py-1 text-sm border rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-3 py-1 text-sm border rounded hover:bg-gray-100"
         >
           <ChevronLeft className="size-4" />
         </button>
@@ -65,7 +65,7 @@ export default function PaginationDemo() {
           type="button"
           onClick={next}
           disabled={isEnd}
-          className="px-3 py-1 text-sm border rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-3 py-1 text-sm border rounded hover:bg-gray-100"
         >
           <ChevronRight className="size-4" />
         </button>
@@ -74,7 +74,7 @@ export default function PaginationDemo() {
           type="button"
           onClick={() => goTo(totalPages - 1)}
           disabled={isEnd}
-          className="px-3 py-1 text-sm border rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-3 py-1 text-sm border rounded hover:bg-gray-100"
         >
           <ChevronsRight className="size-4" />
         </button>

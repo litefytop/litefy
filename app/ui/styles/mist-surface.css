@@ -13,4 +13,5 @@
   --muted: oklch(28.6% 0.016 107.4);
   --muted-foreground: oklch(93% 0.007 106.5);
   --accent: oklch(37.8% 0.015 216);
+  --neutral: oklch(72.3% 0.014 214.4);
 }

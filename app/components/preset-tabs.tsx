@@ -32,7 +32,6 @@ export function PresetTabs({ items }: PresetTabsProps) {
               onClick={() => setActive(name)}
               className={cn(
                 "rounded-md px-3 py-1.5 text-sm text-start text-muted-foreground transition-colors hover:bg-muted",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 selected && "bg-muted font-medium text-foreground",
               )}
             >

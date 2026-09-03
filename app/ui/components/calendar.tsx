@@ -43,7 +43,7 @@ export function CalendarHeader({
         type="button"
         onClick={onPrevious}
         aria-label="Previous month"
-        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-muted-foreground cursor-pointer transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-muted-foreground cursor-pointer transition-colors hover:bg-muted hover:text-foreground"
       >
         <ChevronLeft className="size-4" />
       </button>
@@ -52,7 +52,7 @@ export function CalendarHeader({
         type="button"
         onClick={onNext}
         aria-label="Next month"
-        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-muted-foreground cursor-pointer transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-muted-foreground cursor-pointer transition-colors hover:bg-muted hover:text-foreground"
       >
         <ChevronRight className="size-4" />
       </button>
@@ -232,7 +232,7 @@ export function CalendarGridCell({
       onKeyDown={handleKeyDown}
       className={cn(
         "inline-flex h-8 w-8 items-center justify-center rounded-md text-sm tabular-nums cursor-pointer select-none",
-        "transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "transition-colors hover:bg-muted",
         "aria-selected:bg-primary aria-selected:text-primary-foreground aria-selected:hover:bg-primary",
         "disabled:pointer-events-none disabled:opacity-50",
         "data-outside-month:opacity-40",
