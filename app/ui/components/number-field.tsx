@@ -64,7 +64,7 @@ export function NumberRoot({ className, ...props }: NumberRootProps) {
     <input
       {...props}
       className={cn(
-        "h-8 w-full min-w-0 flex-1 border-0 bg-transparent px-2 text-center text-sm ring-0 outline-none",
+        "h-8 w-full  flex-1 border-0 bg-transparent px-2 text-center text-sm ring-0 outline-none",
         "placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground",
         "disabled:cursor-not-allowed disabled:opacity-50",
         className,

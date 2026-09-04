@@ -270,7 +270,7 @@ export function FormLabel({ className, ...props }: FormLabelProps) {
     <label
       {...props}
       className={cn(
-        "text-sm font-medium leading-none indent-2 py-1 select-none min-w-16",
+        "text-sm font-medium leading-none indent-2 py-1 select-none",
         "group-data-[direction=horizontal]:text-end",
         className,
       )}

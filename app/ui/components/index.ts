@@ -1,6 +1,7 @@
 export * from "./avatar";
 export * from "./badge";
 export * from "./breadcrumb";
+export * from "./cascader";
 export * from "./capsule";
 export * from "./card";
 export * from "./collapse‑accordion";

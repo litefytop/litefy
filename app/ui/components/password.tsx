@@ -39,7 +39,7 @@ export function PasswordRoot({ className, visible, ...props }: PasswordRootProps
       {...props}
       type={visible ? "text" : "password"}
       className={cn(
-        "appearance-none border-0 bg-transparent px-2 py-1 text-sm flex-1 min-w-0 outline-none",
+        "appearance-none border-0 bg-transparent px-2 py-1 text-sm flex-1 outline-none",
         "placeholder:text-muted-foreground",
         "selection:bg-primary selection:text-primary-foreground ring-0",
         className,

@@ -6,9 +6,10 @@ const buttonClass = {
   base: "cursor-pointer inline-flex items-center justify-center gap-2 h-8 min-w-8 px-3 rounded-lg text-sm text-center [&_svg:not([class*='size-'])]:size-4",
   variant: {
     primary: "bg-primary text-primary-foreground hover:bg-primary-accent",
-    danger: "bg-danger/15 hover:bg-danger/20 text-danger",
-    outline: "border border-border hover:bg-primary hover:text-primary-foreground",
-    text: "hover:text-muted-foreground",
+    danger:
+      "bg-danger/15 hover:bg-danger/20 text-danger border hover:border-danger/20 focus-visible:outline-none focus-visible:border-danger focus-visible:ring-danger/50 focus-visible:ring-3",
+    outline: "border border-border hover:bg-hover",
+    text: "hover:text-muted-foreground/75",
   },
 };
 

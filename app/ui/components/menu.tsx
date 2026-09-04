@@ -11,9 +11,7 @@ export interface MenuRootProps extends HTMLAttrs<React.ComponentProps<"ul">> {
   className?: ClassNameValue;
 }
 export function MenuRoot({ className, ...props }: MenuRootProps) {
-  return (
-    <ul role="menu" {...props} className={cn("m-0 list-none p-0", className)} />
-  );
+  return <ul role="menu" {...props} className={cn("m-0 list-none p-0", className)} />;
 }
 
 export interface MenuItemProps extends HTMLAttrs<React.ComponentProps<"li">> {
@@ -29,10 +27,7 @@ export interface MenuLabelProps extends HTMLAttrs<React.ComponentProps<"li">> {
 export function MenuLabel({ className, ...props }: MenuLabelProps) {
   return (
     <li
-      className={cn(
-        "m-0 not-last:border-b px-2 py-1.5 text-xs text-muted-foreground",
-        className,
-      )}
+      className={cn("m-0 not-last:border-b px-2 py-1.5 text-xs text-muted-foreground", className)}
       {...props}
     />
   );
@@ -42,14 +37,19 @@ export interface MenuSubContentProps extends HTMLAttrs<React.ComponentProps<"div
   positionAnchor?: string;
   className?: ClassNameValue;
 }
-export function MenuSubContent({ positionAnchor, className, style, ...props }: MenuSubContentProps) {
+export function MenuSubContent({
+  positionAnchor,
+  className,
+  style,
+  ...props
+}: MenuSubContentProps) {
   return (
     <div
       {...props}
       popover="manual"
       tabIndex={-1}
       className={cn(
-        "bg-background text-foreground min-w-32 max-h-96 overflow-auto rounded-md border p-1 shadow-md",
+        "bg-background text-foreground w-3xs h-96 overflow-auto rounded-md border p-1 shadow-md",
         className,
       )}
       style={{
@@ -273,11 +273,7 @@ function MenuList({
     const itemUid = `${uid}-${idx}`;
     if ("items" in item) {
       nodes.push(
-        <MenuLabel
-          key={`${itemUid}-label`}
-          className={classNames?.label}
-          style={styles?.label}
-        >
+        <MenuLabel key={`${itemUid}-label`} className={classNames?.label} style={styles?.label}>
           {item.group}
         </MenuLabel>,
       );

@@ -43,7 +43,7 @@ export interface ToastContentProps extends Omit<React.ComponentProps<"div">, "cl
 }
 
 export function ToastContent({ className, ...props }: ToastContentProps) {
-  return <div {...props} className={cn("flex-1 min-w-0", className)} />;
+  return <div {...props} className={cn("flex-1", className)} />;
 }
 
 export interface ToastTitleProps extends Omit<React.ComponentProps<"div">, "className"> {

@@ -53,7 +53,7 @@ export function TimelineItem({
           <span aria-hidden className={cn("w-px flex-1 bg-border", classNames?.connector)} />
         )}
       </span>
-      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+      <div className="flex flex-1 flex-col gap-0.5">
         {time && (
           <span className={cn("text-xs tabular-nums text-muted-foreground", classNames?.time)}>
             {time}

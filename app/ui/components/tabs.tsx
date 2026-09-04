@@ -92,7 +92,7 @@ export function TabsList({
           ref={listRef}
           role="tablist"
           aria-orientation={orientation}
-          className="flex-1 min-w-0 flex items-center gap-2 overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden border-b border-border"
+          className="flex-1 flex items-center gap-2 overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden border-b border-border"
         >
           {children}
         </div>
@@ -190,11 +190,7 @@ export function TabsTrigger({
       disabled={disabled}
       onClick={() => !disabled && onValueChange?.(value)}
       onKeyDown={handleKeyDown}
-      className={cn(
-        "px-4 py-2 text-sm font-medium",
-        triggerStyles[variant],
-        className,
-      )}
+      className={cn("px-4 py-2 text-sm font-medium", triggerStyles[variant], className)}
     >
       {children}
     </button>

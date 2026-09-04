@@ -14,19 +14,14 @@ export interface BreadcrumbListProps extends Omit<React.ComponentProps<"ol">, "c
   className?: ClassNameValue;
 }
 export function BreadcrumbList({ className, ...props }: BreadcrumbListProps) {
-  return (
-    <ol
-      {...props}
-      className={cn("flex min-w-0 flex-wrap items-center gap-1.5 text-sm", className)}
-    />
-  );
+  return <ol {...props} className={cn("flex flex-wrap items-center gap-1.5 text-sm", className)} />;
 }
 
 export interface BreadcrumbItemProps extends Omit<React.ComponentProps<"li">, "className"> {
   className?: ClassNameValue;
 }
 export function BreadcrumbItem({ className, ...props }: BreadcrumbItemProps) {
-  return <li {...props} className={cn("flex min-w-0 items-center", className)} />;
+  return <li {...props} className={cn("flex items-center", className)} />;
 }
 
 export interface BreadcrumbLinkProps extends Omit<React.ComponentProps<"a">, "className"> {
@@ -37,7 +32,7 @@ export function BreadcrumbLink({ className, ...props }: BreadcrumbLinkProps) {
     <a
       {...props}
       className={cn(
-        "min-w-0 truncate rounded-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:underline focus-visible:text-ring",
+        "rounded-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:underline focus-visible:text-ring",
         className,
       )}
     />
@@ -54,7 +49,7 @@ export function BreadcrumbPage({ className, ...props }: BreadcrumbPageProps) {
       aria-disabled="true"
       role="link"
       {...props}
-      className={cn("min-w-0 truncate font-medium text-foreground", className)}
+      className={cn("font-medium text-foreground", className)}
     />
   );
 }

@@ -58,8 +58,8 @@ export function CollapsePanel({ children, className, open, ...props }: CollapseP
         "grid transition-[grid-template-rows] duration-300 ease-in-out data-[open=false]:grid-rows-[0fr] data-[open=true]:grid-rows-[1fr]",
       )}
     >
-      <div className="overflow-hidden min-h-0">
-        <div className={cn("min-h-0 p-4 pt-0 text-sm font-medium", className)}>{children}</div>
+      <div className="overflow-hidden ">
+        <div className={cn(" p-4 pt-0 text-sm font-medium", className)}>{children}</div>
       </div>
     </section>
   );

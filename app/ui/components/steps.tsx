@@ -48,7 +48,7 @@ export function StepsItem({
     <li
       aria-current={state === "current" ? "step" : undefined}
       {...props}
-      className={cn("relative flex min-w-0 flex-1 flex-col items-center gap-1.5", className)}
+      className={cn("relative flex flex-1 flex-col items-center gap-1.5", className)}
     >
       {index > 0 && (
         <span
