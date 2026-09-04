@@ -1,9 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { CalendarGrid, CalendarHeader, CalendarRoot } from "@/ui";
+import {
+  type CalendarView,
+  CalendarGrid,
+  CalendarHeader,
+  CalendarMonthGrid,
+  CalendarNavButton,
+  CalendarRoot,
+  CalendarTitleButton,
+  CalendarYearGrid,
+  calendarMonthLabels,
+} from "@/ui";
 
 export default function Demo() {
+  const [view, setView] = useState<CalendarView>("days");
   const [visibleMonth, setVisibleMonth] = useState(() => Temporal.Now.plainDateISO());
   const [selectedDate, setSelectedDate] = useState<Temporal.PlainDate | null>(() =>
     Temporal.Now.plainDateISO(),
@@ -22,20 +33,77 @@ export default function Demo() {
     setSelectedDate(date);
   };
 
+  const handleMonthSelect = (month: Temporal.PlainDate) => {
+    setVisibleMonth(month);
+    setView("days");
+  };
+
+  const handleYearSelect = (year: Temporal.PlainDate) => {
+    setVisibleMonth(visibleMonth.with({ year: year.year, day: 1 }));
+    setView("months");
+  };
+
+  const handlePrevious = () => {
+    if (view === "days") setVisibleMonth(visibleMonth.subtract({ months: 1 }));
+    else if (view === "months") setVisibleMonth(visibleMonth.subtract({ years: 1 }));
+    else setVisibleMonth(visibleMonth.subtract({ years: 12 }));
+  };
+
+  const handleNext = () => {
+    if (view === "days") setVisibleMonth(visibleMonth.add({ months: 1 }));
+    else if (view === "months") setVisibleMonth(visibleMonth.add({ years: 1 }));
+    else setVisibleMonth(visibleMonth.add({ years: 12 }));
+  };
+
+  const navUnit = view === "days" ? "month" : view === "months" ? "year" : "years";
+
   return (
     <CalendarRoot className="rounded-md border-2 border-primary p-4">
-      <CalendarHeader
-        title={`${visibleMonth.year} / ${visibleMonth.month}`}
-        onPrevious={() => setVisibleMonth(visibleMonth.subtract({ months: 1 }))}
-        onNext={() => setVisibleMonth(visibleMonth.add({ months: 1 }))}
-      />
-      <CalendarGrid
-        weeks={weeks}
-        visibleMonth={visibleMonth}
-        value={selectedDate}
-        onSelect={handleSelect}
-        firstDayOfWeek={0}
-      />
+      <CalendarHeader>
+        <CalendarNavButton
+          direction="previous"
+          label={`Previous ${navUnit}`}
+          onClick={handlePrevious}
+        />
+        <div className="flex flex-1 items-center justify-center gap-1">
+          <CalendarTitleButton
+            data-active={view === "years" || undefined}
+            onClick={() => setView("years")}
+          >
+            {visibleMonth.year}
+          </CalendarTitleButton>
+          <CalendarTitleButton
+            data-active={view === "months" || undefined}
+            onClick={() => setView("months")}
+          >
+            {calendarMonthLabels[visibleMonth.month - 1]}
+          </CalendarTitleButton>
+        </div>
+        <CalendarNavButton direction="next" label={`Next ${navUnit}`} onClick={handleNext} />
+      </CalendarHeader>
+      {view === "days" && (
+        <CalendarGrid
+          weeks={weeks}
+          visibleMonth={visibleMonth}
+          value={selectedDate}
+          onSelect={handleSelect}
+          firstDayOfWeek={0}
+        />
+      )}
+      {view === "months" && (
+        <CalendarMonthGrid
+          visibleMonth={visibleMonth}
+          value={selectedDate}
+          onSelect={handleMonthSelect}
+        />
+      )}
+      {view === "years" && (
+        <CalendarYearGrid
+          visibleMonth={visibleMonth}
+          value={selectedDate}
+          onSelect={handleYearSelect}
+        />
+      )}
     </CalendarRoot>
   );
 }

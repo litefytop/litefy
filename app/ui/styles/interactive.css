@@ -9,10 +9,9 @@
     box-shadow: 0 0 3px 3px var(--color-ring);
   }
 
-:where(button, input, select, textarea, a[href]):where(:active) {
-  box-shadow: inset 0 2px 4px 0 var(--color-ring);
-  filter: brightness(0.95);
-  transform: scale(0.95);
-}
-
+  :where(button, a[href]):where(:active) {
+    box-shadow: inset 0 2px 4px 0 var(--color-ring);
+    filter: brightness(0.95);
+    transform: scale(0.95);
+  }
 }

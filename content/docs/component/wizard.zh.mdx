@@ -1,31 +1,73 @@
 ---
-title: Wizard
-description: Steps + Pager 组合的向导表单 —— 已到达步骤可回退，未来步骤不可跳过
+title: Wizard 向导
+description: Steps + Pager 组合的向导组件，内部管理索引状态 —— 已到达步骤可回退，未来步骤不可跳过
 ---
 
-Wizard 不是发布组件 —— 它是 `Steps` 和 `Pager` 加普通标记的组合。从示例（View Code）复制完整实现到项目中，自由调整。
+## 安装
 
-> 前置依赖：先安装 `Steps` 和 `Pager`（`litefy@latest add steps pager`）。
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add wizard" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="wizard" />
+
+</Tab>
+
+</Tabs>
 
 ## 用法
 
 ### 基础用法
 
-分页表单：`Steps` 指示器与 `Pager` 内容区共享同一个受控索引，Back / Next 按钮同时驱动两者，最后一步将 Next 替换为 Submit。
+传入 `steps` 作为进度指示器，`children` 作为 Pager 内容——每个子元素对应一步。Wizard 内部管理 `index` 和 `maxIndex`；已到达的步骤可通过 Steps 指示器回退，未来步骤不能跳过。
 
 <ComponentPreview
   name="wizard-basic"
 />
 
-组合要点：
+```tsx
+import { Wizard } from "@/ui";
 
-- 一个 `index` 状态同时驱动两个组件：`<Steps index={index} onChange={go} />` 与 `<Pager index={index} onChange={go}>`。
-- 一个 `maxIndex` 状态记录已到达的最远步骤，传给 `Steps` 的 `maxIndex` —— 已到达步骤可回退，未来步骤不能跳过。
-- `go` 同时作为 Pager 的翻页处理器，步骤点击、按钮翻页、页面切换三者保持同步。
-- 表单场景给 Pager 设置 `gesture={false}` 防止误滑提交，并保持 `loop` 关闭 —— 流程的起点和终点就是边界。
+const steps = [
+  { title: "Account" },
+  { title: "Profile" },
+  { title: "Confirm" },
+];
 
-## 结构
+export default function Demo() {
+  return (
+    <Wizard steps={steps} onFinish={() => alert("Submitted")}>
+      <form>...</form>
+      <form>...</form>
+      <div>Ready to submit</div>
+    </Wizard>
+  );
+}
+```
 
-- `<Steps>` 传 `index` + `maxIndex` —— 进度指示与回退导航
-- `<Pager>` 传 `gesture={false}` —— 每个步骤只挂载一页 DOM，步骤间以 View-Transition 动画切换
-- 底部 Back / Next（最后一步为 Submit），全部调用同一个 `go` 处理器：夹取索引并增长 `maxIndex`
+## 注意
+
+- Wizard 内部使用 [Steps](/docs/component/steps) 和 [Pager](/docs/component/pager)——CLI 安装时请一并添加：`litefy add wizard steps pager`。
+- Pager 配置为 `gesture={false}` 和 `transition="view-transition"`，防止误滑提交并为步骤切换提供动画。
+- `maxIndex` 记录已到达的最远步骤并传给 Steps——已到达步骤可点击回退，未来步骤锁定。
+- 最后一步将 Next 按钮替换为 Submit，点击时触发 `onFinish`。
+
+## API 参考
+
+### Wizard
+
+向导组件，管理步骤导航状态，渲染 Steps 指示器、Pager 内容区和底部按钮。
+
+| 属性        | 类型                | 默认值 | 描述                              |
+| :---------- | :------------------ | :----- | :------------------------------- |
+| `steps`     | `StepsItemConfig[]` | -      | 进度指示器的步骤配置              |
+| `children`  | `React.ReactNode[]` | -      | 页面内容，每个子元素对应一步       |
+| `onFinish`  | `() => void`        | -      | 点击 Submit 按钮时触发            |
+| `className` | `ClassNameValue`    | -      | 自定义类名，应用于根元素          |
+| `classNames`| `{ root? / steps? / pager? / footer? }` | - | 按插槽自定义类名 |

@@ -1,8 +1,7 @@
 "use client";
 import * as React from "react";
 import { ChevronRight } from "lucide-react";
-import { List } from "@/ui";
-import { PopoverContent } from "@/ui";
+import { List, PopoverContent } from "..";
 
 export type CascaderNode = {
   value: string;

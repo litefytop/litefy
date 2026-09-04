@@ -5,7 +5,10 @@
   },
   "badge": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/badge.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/badge.tsx",
+    "dependence": [
+      "tag"
+    ]
   },
   "breadcrumb": {
     "type": "component",
@@ -26,6 +29,14 @@
   "card": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/card.tsx"
+  },
+  "cascader": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/cascader.tsx",
+    "dependence": [
+      "list",
+      "popover"
+    ]
   },
   "checkbox": {
     "type": "component",
@@ -171,6 +182,13 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/tooltip.tsx"
   },
+  "transfer": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/transfer.tsx",
+    "dependence": [
+      "checkbox"
+    ]
+  },
   "typography": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/typography.tsx"
@@ -182,6 +200,14 @@
   "watermark": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/watermark.tsx"
+  },
+  "wizard": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/wizard.tsx",
+    "dependence": [
+      "pager",
+      "steps"
+    ]
   },
   "cn": {
     "type": "util",
@@ -238,6 +264,10 @@
   "style-indigo-brand": {
     "type": "css",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/indigo-brand.css"
+  },
+  "style-interactive": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/interactive.css"
   },
   "style-lime-brand": {
     "type": "css",

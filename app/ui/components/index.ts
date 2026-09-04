@@ -42,6 +42,8 @@ export * from "./timeline";
 export * from "./toast";
 export * from "./toggle";
 export * from "./tooltip";
+export * from "./transfer";
 export * from "./typography";
 export * from "./upload";
 export * from "./watermark";
+export * from "./wizard";

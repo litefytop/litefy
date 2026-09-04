@@ -1,19 +1,107 @@
 ---
 title: Cascader
-description: A cascader assembled from a breadcrumb-styled trigger and List via CSS anchor positioning — not a shipped component, only a composition guide with demos
+description: A cascading selector that displays a breadcrumb-style trigger and shows panel overlays via CSS anchor positioning
 ---
 
-Cascader is not a shipped component with source code. Common cascaders pop up parallel columns after the first selection, which takes space and looks clumsy at depth. The approach here: **the trigger is styled like a breadcrumb but does not reuse the [Breadcrumb](/docs/component/breadcrumb) component** — a breadcrumb is a `<nav>` page-navigation landmark, which would mislead assistive tech in a cascader trigger, so the same look is assembled from plain buttons plus `ChevronRight` icons. It initially renders a `placeholder` ("Select your birthplace"); clicking it shows the province-level [List](/docs/component/list) panel right below the field. Each level selection appends the breadcrumb entry and continues to the next level; to correct any level — including the already-selected leaf — click it and that level's selection panel re-opens beneath the field. No Popover component is involved — panels are driven by the native `popover` attribute. Assemble it directly in your page — the demo below is the complete implementation.
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add cascader" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="cascader" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Pass a tree structure to `tree`; clicking a level opens the corresponding panel beneath the field, while clicking a leaf closes the panel and completes the selection.
 
 <ComponentPreview
   name="cascader-basic"
 />
 
-Key points of the implementation:
+```tsx
+import { Cascader, type CascaderNode } from "@/ui";
 
-- **A single container anchor**: the field container registers a single anchor via inline `anchor-name` (made unique with `useId()`); all panels render inline with `popover="manual"` (the top layer escapes ancestor `overflow` clipping, so no portal is needed), bound uniformly via `position-anchor`, shown right below the container with `position-area: bottom span-all`, and auto-flip at viewport edges via `position-try-fallbacks: flip-block` — the panel stays fixed and never jumps between level switches.
-- **A single source of truth**: two states — `path` (the drilled branch array) and `selected` (the leaf) — drive all interactions. Clicking entry `i` truncates `path` to `slice(0, i)` and opens that level's panel — i.e. "click the province to restart province selection". The selected leaf is clickable too (`slice(0, i)` happens to truncate nothing), re-opening the leaf's level panel for a different pick.
-- **The trigger does not reuse Breadcrumb**: a breadcrumb is a `<nav>` page-navigation landmark; the trigger is assembled from plain buttons (each with `aria-expanded`) plus `ChevronRight` icons.
-- The List `onSelect` distinguishes two kinds of entries: ones with `children` append to `path` and auto-open the next-level panel, otherwise the node is a leaf — write `selected`, close the panel, and append the leaf as highlighted text at the end of the breadcrumb.
-- Panels use the native `popover="manual"` attribute; a single `openLevel` state drives `showPopover()` / `hidePopover()` — at most one panel is open at any time; a `mousedown` outside the panels collapses them.
+const tree: CascaderNode[] = [
+  {
+    value: "california",
+    label: "California",
+    children: [
+      {
+        value: "los-angeles",
+        label: "Los Angeles",
+        children: [
+          { value: "downtown", label: "Downtown" },
+          { value: "hollywood", label: "Hollywood" },
+          { value: "pasadena", label: "Pasadena" },
+        ],
+      },
+      {
+        value: "san-francisco",
+        label: "San Francisco",
+        children: [
+          { value: "soma", label: "SoMa" },
+          { value: "richmond", label: "Richmond" },
+          { value: "sunset", label: "Sunset" },
+        ],
+      },
+    ],
+  },
+  {
+    value: "new-york",
+    label: "New York",
+    children: [
+      {
+        value: "new-york-city",
+        label: "New York City",
+        children: [
+          { value: "manhattan", label: "Manhattan" },
+          { value: "brooklyn", label: "Brooklyn" },
+        ],
+      },
+    ],
+  },
+];
+
+export default function Demo() {
+  return <Cascader tree={tree} />;
+}
+```
+
+## Notes
+
+- The trigger is styled like a breadcrumb but uses plain buttons with `ChevronRight` instead of the Breadcrumb component, since breadcrumb semantics are for page navigation.
+- Panels render inline with `popover="manual"` (the top layer escapes ancestor `overflow` clipping) and are anchored to their corresponding trigger buttons via CSS anchor positioning.
 - Chrome 125+ is required for CSS anchor positioning.
+
+## API Reference
+
+### Cascader
+
+A cascading selector component that manages the selection state and renders breadcrumb-style triggers with panel overlays.
+
+| Prop  | Type             | Default | Description                    |
+| :---- | :--------------- | :------ | :----------------------------- |
+| `tree` | `CascaderNode[]` | -       | Tree structure for cascading selection |
+
+### CascaderNode
+
+Node structure for the cascader tree.
+
+| Field     | Type              | Default | Description                   |
+| :-------- | :---------------- | :------ | :---------------------------- |
+| `value`   | `string`          | -       | Unique value for the node     |
+| `label`   | `string`          | -       | Display text for the node     |
+| `children` | `CascaderNode[]` | -       | Child nodes for the next level |

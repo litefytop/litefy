@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { Button, Popover, Menu, type MenuConfig } from "@/ui";
 
 const items: MenuConfig[] = [
@@ -20,12 +20,10 @@ const items: MenuConfig[] = [
 export default function Demo() {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<ReactNode | null>(null);
-  const popoverRef = useRef<HTMLButtonElement>(null);
 
   return (
     <div className="flex flex-col items-center gap-3">
       <Popover
-        ref={popoverRef}
         open={open}
         onOpenChange={setOpen}
         trigger="Open Menu"
@@ -37,7 +35,6 @@ export default function Demo() {
           onSelect={(item) => {
             setSelected(item.label);
             setOpen(false);
-            popoverRef.current?.focus();
           }}
         />
       </Popover>

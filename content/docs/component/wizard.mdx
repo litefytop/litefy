@@ -1,31 +1,73 @@
 ---
 title: Wizard
-description: A steps + pager composition for wizard forms — visited steps can be revisited, future steps are locked
+description: A steps + pager wizard that manages index state internally — visited steps can be revisited, future steps are locked
 ---
 
-Wizard is not a shipped component — it is a composition of `Steps` and `Pager` plus plain markup. Copy the full implementation from the demo (View Code) into your project and adapt it freely.
+## Installation
 
-> Prerequisite: install `Steps` and `Pager` first (`litefy@latest add steps pager`).
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add wizard" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="wizard" />
+
+</Tab>
+
+</Tabs>
 
 ## Usage
 
 ### Basic Usage
 
-A paged form: the `Steps` indicator and the `Pager` body share one controlled index, Back / Next buttons drive both, and the last step swaps the Next button for Submit.
+Pass `steps` for the progress indicator and `children` for the pager body — one child per step. The Wizard manages `index` and `maxIndex` internally; visited steps can be revisited via the Steps indicator, future steps cannot be skipped ahead.
 
 <ComponentPreview
   name="wizard-basic"
 />
 
-Key points of the composition:
+```tsx
+import { Wizard } from "@/ui";
 
-- One `index` state drives both components: `<Steps index={index} onChange={go} />` and `<Pager index={index} onChange={go}>`.
-- A `maxIndex` state records the highest visited step and is passed as `Steps`' `maxIndex` — visited steps can be revisited (back), future steps cannot be skipped ahead.
-- The pager body turns `go` into the paging handler, so step clicks, buttons and page switches stay in sync.
-- Use `gesture={false}` on the Pager in form flows to prevent accidental swipe submission, and keep `loop` off — the boundaries are the flow's start and end.
+const steps = [
+  { title: "Account" },
+  { title: "Profile" },
+  { title: "Confirm" },
+];
 
-## Anatomy
+export default function Demo() {
+  return (
+    <Wizard steps={steps} onFinish={() => alert("Submitted")}>
+      <form>...</form>
+      <form>...</form>
+      <div>Ready to submit</div>
+    </Wizard>
+  );
+}
+```
 
-- `<Steps>` with `index` + `maxIndex` — the progress indicator and backward navigation
-- `<Pager>` with `gesture={false}` — one mounted page per step, View-Transition animation between steps
-- A footer with Back / Next (or Submit on the last step), all calling the same `go` handler that clamps the index and grows `maxIndex`
+## Notes
+
+- Wizard internally uses [Steps](/docs/component/steps) and [Pager](/docs/component/pager) — when installing via CLI, add all: `litefy add wizard steps pager`.
+- The Pager is configured with `gesture={false}` and `transition="view-transition"` to prevent accidental swipe submission and animate step transitions.
+- `maxIndex` tracks the highest visited step and is passed to Steps — visited steps are clickable for backward navigation, future steps are locked.
+- The last step swaps the Next button for Submit, which fires `onFinish`.
+
+## API Reference
+
+### Wizard
+
+A wizard component that manages step navigation state and renders Steps indicator, Pager body, and footer buttons.
+
+| Prop        | Type                | Default | Description                                    |
+| :---------- | :------------------ | :------ | :--------------------------------------------- |
+| `steps`     | `StepsItemConfig[]` | -       | Step configurations for the progress indicator |
+| `children`  | `React.ReactNode[]` | -       | Page content, one child per step               |
+| `onFinish`  | `() => void`        | -       | Fired when the Submit button is clicked        |
+| `className` | `ClassNameValue`    | -       | Custom class names, applied to the root        |
+| `classNames`| `{ root? / steps? / pager? / footer? }` | - | Custom class names per slot |

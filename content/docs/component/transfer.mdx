@@ -1,32 +1,73 @@
 ---
 title: Transfer
-description: A dual-panel transfer composition for moving items between source and target lists with checkbox selection
+description: A dual-panel transfer that moves items between source and target lists with checkbox selection
 ---
 
-Transfer is not a shipped component — it is a composition of `Checkbox` plus plain markup. Copy the full implementation from the demo (View Code) into your project and adapt it freely.
+## Installation
 
-> Prerequisite: install `Checkbox` first (`npx shadcn@latest add checkbox` style, or `litefy@latest add checkbox`).
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add transfer" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="transfer" />
+
+</Tab>
+
+</Tabs>
 
 ## Usage
 
 ### Basic Usage
 
-Fully controlled `value`: the array holds the items currently in the target panel. Disabled items stay in the source panel and cannot be moved. `renderItem` is not required — plain `label` items render as text.
+Pass `dataSource` with all available items and `value` for the ones currently in the target panel. Items with `disabled: true` stay in the source and cannot be checked or moved.
 
 <ComponentPreview
   name="transfer-basic"
 />
 
-Key points of the implementation:
+```tsx
+import { Transfer, type TransferItemConfig } from "@/ui";
 
-- `value` / `defaultValue` / `onChange` follow the controlled/uncontrolled convention: `value` holds the item values currently in the target panel, `onChange` fires after moving in either direction, and the order stays stable in `dataSource` order.
-- Each panel owns its own checked state (`Set`). The move buttons apply the checked items and clear the panel's checked state; a direction is disabled while its panel has no checked items.
-- Rows are rendered with the `Checkbox` composite — native `input` gives keyboard access (Tab + Space) for free, and `disabled` items cannot be checked or moved.
-- `titles` / `renderItem` / `classNames` (root / panel / header / body / item / actions) are provided for customization.
+const dataSource: TransferItemConfig[] = [
+  { label: "JavaScript", value: "js" },
+  { label: "TypeScript", value: "ts" },
+  { label: "Rust", value: "rust" },
+  { label: "Go", value: "go" },
+  { label: "Python", value: "python", disabled: true },
+  { label: "Java", value: "java" },
+];
+
+export default function Demo() {
+  const [value, setValue] = React.useState<string[]>(["ts", "go"]);
+
+  return (
+    <Transfer
+      dataSource={dataSource}
+      value={value}
+      onChange={setValue}
+      titles={["Available", "Selected"]}
+    />
+  );
+}
+```
+
+## Notes
+
+- Transfer internally uses the [Checkbox](/docs/component/checkbox) component for each row — when installing via CLI, add both: `litefy add transfer checkbox`.
+- `renderItem` accepts a custom renderer applied in both panels; without it, the item's `label` is rendered as plain text.
+- Each panel owns its own checked state (`Set`). The move buttons apply the checked items and clear the panel's checked state; a direction button is disabled while its panel has no checked items.
 
 ## API Reference
 
 ### Transfer
+
+A dual-panel transfer component that manages controlled or uncontrolled value state and renders source/target panels with move buttons.
 
 | Prop           | Type                                            | Default             | Description                                                       |
 | :------------- | :---------------------------------------------- | :------------------ | :---------------------------------------------------------------- |
@@ -36,19 +77,15 @@ Key points of the implementation:
 | `onChange`     | `(value: string[]) => void`                     | -                   | Fired after moving items in either direction                      |
 | `titles`       | `[React.ReactNode, React.ReactNode]`            | `Source` / `Target` | Titles of the source and target panels                            |
 | `renderItem`   | `(item: TransferItemConfig) => React.ReactNode` | -                   | Custom item renderer, applied in both panels                      |
-| `className`    | `string`                                        | -                   | Custom class names, applied to the root                           |
+| `className`    | `ClassNameValue`                                | -                   | Custom class names, applied to the root                           |
 | `classNames`   | `root` / `panel` / `header` / `body` / `item` / `actions` | -         | Custom class names per slot                                       |
 
 ### TransferItemConfig
+
+Data structure for items in the transfer source list.
 
 | Field      | Type              | Default | Description                                                                     |
 | :--------- | :---------------- | :------ | :------------------------------------------------------------------------------ |
 | `label`    | `React.ReactNode` | -       | Item display content                                                            |
 | `value`    | `string`          | -       | Unique identifier value                                                         |
 | `disabled` | `boolean`         | `false` | Disable the item — it stays in the source panel and cannot be checked or moved  |
-
-### Anatomy
-
-- Two bordered panels, each with a header (`title` + `count` such as `1/3`) and a scrollable body (`max-h-64 overflow-auto`)
-- A middle actions column with two move buttons (`ArrowRight` / `ArrowLeft`), disabled when the corresponding panel has no checked items
-- Rows are `Checkbox` composites with a full-width clickable label; an empty panel renders a muted `No data` line
