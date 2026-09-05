@@ -9,13 +9,13 @@ description: 带有渐变阴影指示器的可滚动容器，提供更好的滚�
 
 <Tab value="CLI">
 
-<PackageManagerTabs command="litefy add scroll-shadow" />
+<PackageManagerTabs command="litefy@latest add scroll-shadow" />
 
 </Tab>
 
 <Tab value="Manual">
 
-<SourceCode component="scroll-shadow" />
+<Source type="component" name="scroll-shadow" />
 
 </Tab>
 
@@ -56,13 +56,43 @@ description: 带有渐变阴影指示器的可滚动容器，提供更好的滚�
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `React.ReactNode` | - | 可滚动内容 |
-| `position` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'bottom'` | 阴影指示器的位置 |
+| `edges` | `'top' \| 'bottom' \| 'left' \| 'right' \| Array<'top' \| 'bottom' \| 'left' \| 'right'>` | `'bottom'` | 显示阴影指示器的边缘（可传单个或数组） |
 | `size` | `string` | `'64px'` | 阴影渐变的大小 |
-| `slotProps` | `ScrollShadowSlotProps` | - | 用于自定义子元素的插槽属性 |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类。仅支持字符串、数组及各类假值。 |
+| `classNames` | `{ root?, viewport?, edge? }` | - | 容器、滚动视口与阴影覆盖层的自定义类 |
+| `styles` | `{ root?, viewport?, edge? }` | - | 容器、滚动视口与阴影覆盖层的内联样式 |
 
-### ScrollShadowSlotProps
+每个阴影覆盖层带有 `data-position` 属性（`top` / `bottom` / `left` / `right`），可用 `data-[position=top]:` 等变体单独定制某个边缘。
 
-| Slot | Type | Description |
-|------|------|-------------|
-| `shadow` | `React.ComponentProps<"div">` | 阴影覆盖层的属性 |
+### 组合零件
+
+#### ScrollShadowRoot
+
+外层容器，负责裁剪溢出内容并作为阴影覆盖层的定位锚点。
+
+| Prop        | Type             | Default | Description      |
+| ----------- | ---------------- | ------- | ---------------- |
+| `className` | `ClassNameValue` | -       | 自定义 CSS 类 |
+
+支持所有原生 `<div>` 属性。
+
+#### ScrollShadowViewport
+
+填满根容器的滚动视口。
+
+| Prop        | Type             | Default | Description      |
+| ----------- | ---------------- | ------- | ---------------- |
+| `className` | `ClassNameValue` | -       | 自定义 CSS 类 |
+
+支持所有原生 `<div>` 属性（含 `ref`）。
+
+#### ScrollShadowEdge
+
+单个边缘的渐变阴影覆盖层。
+
+| Prop        | Type             | Default     | Description      |
+| ----------- | ---------------- | ----------- | ---------------- |
+| `edge`      | `'top' \| 'bottom' \| 'left' \| 'right'` | `'bottom'` | 渐变起始的边缘 |
+| `size`      | `string`         | `'64px'`    | 沿滚动轴方向的渐变大小 |
+| `className` | `ClassNameValue` | -           | 自定义 CSS 类 |
+
+支持所有原生 `<div>` 属性。该零件自身不管理可见性；组合组件 `ScrollShadow` 会根据滚动位置控制其显示。

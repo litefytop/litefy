@@ -1,0 +1,70 @@
+---
+title: Date Picker 日期选择器
+description: 基于原生 Temporal API 的日期选择器 —— 可编辑输入框、月份面板与指针锚定弹层合为一个正式组件
+---
+
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add date-picker" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="date-picker" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+输入框完全可编辑，`Enter` 和关闭面板时都会触发校验：
+
+- 分隔符宽松 —— 空格、`-`、`/`、`,` 都可以使用，校验通过后自动格式化为标准的 `YYYY-MM-DD` 形式（`2026/8/5` 会变成 `2026-08-05`）；
+- 完整日期直接提交 —— 回填输入框并关闭面板；
+- 只输入年份（`2026`）会打开该年的月份面板，输入年月（`2026-08`）会打开该月日面板 —— 补选缺失的部分后即提交；
+- 非法输入（如出现字母、月份超范围）直接清空输入框。
+
+键入完整日期时，校验发生之前也会实时预览选中值与显示月份。
+
+<ComponentPreview
+  name="date-picker-basic"
+/>
+
+## 说明
+
+- 依赖原生 [Temporal API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal)（Chrome 136+、Firefox 139+、Safari 26+）。当前浏览器缺失时站点会显示横幅提醒。
+- 基于 [Picker](/docs/component/picker) 和 [Calendar](/docs/component/calendar) 组件构建 —— 需要完全控制时可直接拼装这两个零件（参见 [DatePicker 拼装指南](/docs/component/picker#datepicker-assembly)）。
+
+## API 参考
+
+### 高阶组件
+
+#### DatePicker
+
+受控/非受控皆可。可见月份与面板开关状态由组件内部管理；选中值可通过 `value` / `onValueChange` 受控。
+
+| Prop              | Type                                           | Default                     | Description                                                                                   |
+| :---------------- | :--------------------------------------------- | :-------------------------- | :-------------------------------------------------------------------------------------------- |
+| `value`           | `Temporal.PlainDate \| null`                   | -                           | 受控的选中日期                                                                                  |
+| `defaultValue`    | `Temporal.PlainDate \| null`                   | -                           | 初始选中日期（非受控）                                                                           |
+| `onValueChange`   | `(date: Temporal.PlainDate) => void`           | -                           | 日期提交时触发 —— 面板选中，或输入完整日期后按 `Enter`                                            |
+| `placeholder`     | `string`                                       | `"Select or type a date"`   | 输入框占位文本                                                                                   |
+| `disabled`        | `boolean`                                      | -                           | 禁用输入框与面板                                                                                  |
+| `firstDayOfWeek`  | `0 \| 1`                                       | `0`                         | 每周第一天（`0` = 周日，`1` = 周一）                                                              |
+| `isDateDisabled`  | `(date: Temporal.PlainDate) => boolean`        | -                           | 禁用日历中日期的判断函数                                                                          |
+| `trailing`        | `React.ReactNode`                              | 日历图标                     | 输入框尾部装饰                                                                                    |
+| `onKeyDown`       | `React.KeyboardEventHandler<HTMLInputElement>` | -                           | 在内置的 `Enter` 提交之前执行；`preventDefault()` 可取消提交                                       |
+| `classNames`      | `{ input?; trailing?; panel? }` —— 值均为 `ClassNameValue` | -                | 输入框、尾部装饰与日历面板的自定义类名                                                             |
+| `styles`          | `{ input?; trailing? }` —— 值均为 `React.CSSProperties`    | -                | 输入框与尾部装饰的内联样式                                                                          |
+
+键入行为：每次键入都会镜像到输入框，完整日期会实时预览选中值与显示月份。空格、`-`、`/`、`,` 都可以作为分隔符，校验时自动归一化为 `YYYY-MM-DD`。校验在 `Enter` 和关闭面板时触发 —— 完整日期直接提交；只有年份打开月份面板、只有年月打开日面板，补选缺失部分后提交；非法输入直接清空输入框。
+
+键盘：面板打开期间，`ArrowDown` 将焦点移入日历的第一个控件，`ArrowUp` 移入最后一个（通过 [`usePanelFocus`](/docs/utils/use-panel-focus)）—— 键入与日历导航不会争抢输入框焦点。`Escape` 关闭面板并把焦点交还输入框。

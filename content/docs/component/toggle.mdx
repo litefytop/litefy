@@ -1,0 +1,86 @@
+---
+title: Toggle
+description: A toggle button component supporting controlled, uncontrolled and group multi-select modes
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add toggle" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="toggle" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Simple toggles with icon content, supporting uncontrolled mode and disabled state.
+
+<ComponentPreview
+  name="toggle-basic"
+/>
+
+### Group
+
+Data-driven group mode supporting multi-select.
+
+<ComponentPreview
+  name="toggle-group"
+/>
+
+### Custom
+
+Style `Toggle` through `className` for custom shapes and colors — e.g. a pill shape, a dashed border, or custom `aria-checked:` colors — while keeping the checked state controlled.
+
+<ComponentPreview
+  name="toggle-custom"
+/>
+
+## API Reference
+
+### Toggle
+
+| Prop              | Type                           | Default | Description                                                                                                  |
+| :---------------- | :----------------------------- | :------ | :----------------------------------------------------------------------------------------------------------- |
+| `children`        | `React.ReactNode`              | -       | The toggle content                                                                                            |
+| `checked`         | `boolean`                      | -       | Controlled checked state                                                                                      |
+| `defaultChecked`  | `boolean`                      | `false` | Default checked state (uncontrolled)                                                                          |
+| `onCheckedChange` | `(checked: boolean) => void`   | -       | Callback when the checked state changes                                                                       |
+| `value`           | `string`                       | -       | Value forwarded to the native button; in `Toggle.Group` it identifies each option                             |
+| `disabled`        | `boolean`                      | `false` | Disable the toggle                                                                                            |
+| `className`       | `ClassNameValue`               | -       | Custom class names                                                                                            |
+| `...props`        | `React.ComponentProps<"button">` | -     | Supports all native button props (except `type`, `className`, `aria-checked`), such as `name`, `form`, `autofocus` |
+
+Pressing a disabled toggle does nothing. A custom `onClick` handler runs before the internal toggle logic; call `e.preventDefault()` inside it to prevent the checked state from changing.
+
+### Toggle.Group
+
+| Prop             | Type                         | Default | Description                                        |
+| :--------------- | :--------------------------- | :------ | :------------------------------------------------- |
+| `options`        | `ToggleOptionConfig[]`       | -       | Options data array                                 |
+| `value`          | `string[]`                   | -       | Controlled selected values                         |
+| `defaultValue`   | `string[]`                   | `[]`    | Default selected values (uncontrolled)             |
+| `onChange`       | `(values: string[]) => void` | -       | Callback when values change                        |
+| `disabled`       | `boolean`                    | `false` | Disable all options                                |
+| `className`      | `ClassNameValue`             | -       | Custom class names, applied to the container       |
+| `itemClassName`  | `ClassNameValue`             | -       | Custom class names, applied to each toggle         |
+
+### ToggleOptionConfig
+
+| Field       | Type              | Default | Description                                       |
+| :---------- | :---------------- | :------ | :------------------------------------------------ |
+| `label`     | `string`          | -       | Option display text                               |
+| `value`     | `string`          | -       | Unique identifier value                           |
+| `disabled`  | `boolean`         | `false` | Disable the option                                |
+| `className` | `ClassNameValue`  | -       | Custom class names, overrides `itemClassName`     |

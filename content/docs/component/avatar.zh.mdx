@@ -1,0 +1,83 @@
+---
+title: Avatar 头像
+description: 头像组件，支持图片加载状态、骨架屏和回退内容
+---
+
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add avatar" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="avatar" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+处理图片加载中、成功和失败状态的头像组件，支持骨架屏和回退内容。
+
+<ComponentPreview 
+  name="avatar-basic"
+/>
+
+### 自定义
+
+直接组合 `AvatarRoot` 和 `AvatarImage`，内置与组合组件 `Avatar` 相同的默认样式，可自由拼装并通过 `className` 覆盖。
+
+<ComponentPreview 
+  name="avatar-custom"
+/>
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Avatar
+
+自动管理图片预加载的头像组件，在骨架屏、图片和回退内容三种状态之间切换。
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|---------|-------------|
+| `src` | `string` | - | 图片源地址，必填 |
+| `skeleton` | `React.ReactNode` | - | 图片加载中时显示的内容 |
+| `fallback` | `React.ReactNode` | - | 图片加载失败时显示的内容 |
+| `classNames` | `{ root?: ClassNameValue; image?: ClassNameValue }` | - | 根容器和图片的自定义类名 |
+| `styles` | `{ root?: React.CSSProperties; image?: React.CSSProperties }` | - | 根容器和图片的内联样式 |
+
+支持所有原生 `<img>` 属性（如 `alt`），但不支持 `className` 和 `style`。
+
+### 可组合组件
+
+#### AvatarRoot
+
+容器元素，渲染为默认 `size-12` 的正方形，内容居中且溢出隐藏。
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+
+支持所有原生 `<div>` 属性。
+
+#### AvatarImage
+
+图片元素，默认启用懒加载和异步解码。
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|---------|-------------|
+| `src` | `string` | - | 图片源地址，必填 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+
+支持所有原生 `<img>` 属性。

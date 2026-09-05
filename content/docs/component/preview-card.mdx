@@ -1,0 +1,30 @@
+---
+title: Preview Card
+description: A preview card assembled from the card style, Image and Tooltip — not a shipped component, only a composition guide with demos
+---
+
+Preview Card is not a shipped component with source code. It uses the [Card](/docs/component/card) component as the container: an [Image](/docs/component/image) on top and text below form an image card; placing that image card inside a [Tooltip](/docs/component/tooltip) content area turns it into a rich hover preview. Assemble it directly in your page — the demos below are the complete implementation.
+
+## Usage
+
+### Image Card
+
+<ComponentPreview
+  name="preview-card-image"
+/>
+
+Key points of the assembly:
+
+- `.card` ships with `overflow-hidden rounded-2xl`, so the top image is clipped to the rounded corners automatically.
+- [Image](/docs/component/image) controls the image area height via `classNames.root`, and the text below uses regular typography classes.
+
+### Preview Card
+
+<ComponentPreview
+  name="preview-card-basic"
+/>
+
+Key points of the assembly:
+
+- The [Tooltip](/docs/component/tooltip) `content` is the same image-card JSX as the image card demo, only narrowed to `w-72`.
+- The trigger is a plain `<a>` element — `Tooltip` attaches the popover positioning and show/hide wiring automatically.

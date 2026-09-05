@@ -1,0 +1,88 @@
+---
+title: Sidebar
+description: A collapsible sidebar with ref-based external control
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add sidebar" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="sidebar" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+A sidebar rendered as an `aside`. When closed, it collapses to zero width through the `data-close` attribute.
+
+<ComponentPreview
+  name="sidebar-basic"
+/>
+
+### Ref Control
+
+The sidebar exposes an imperative handle through `ref`, so sibling nodes or any external code can control it without lifting state.
+
+<ComponentPreview
+  name="sidebar-ref"
+/>
+
+```tsx
+import { useRef } from "react";
+import { Sidebar, type SidebarHandle } from "@/ui";
+
+function Layout() {
+  const sidebarRef = useRef<SidebarHandle>(null);
+
+  return (
+    <div className="flex">
+      <Sidebar ref={sidebarRef} defaultOpen className="w-48">
+        <nav>Sidebar content</nav>
+      </Sidebar>
+      <main>
+        <button type="button" onClick={() => sidebarRef.current?.toggle()}>
+          Toggle
+        </button>
+      </main>
+    </div>
+  );
+}
+```
+
+## API Reference
+
+### High-level Components
+
+#### Sidebar
+
+An `aside` element with internal open state, collapsed via the `data-close` attribute.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `ref` | `React.Ref<SidebarHandle>` | - | Imperative handle with `toggle`, `open`, `close` and `isOpen` for external control |
+| `defaultOpen` | `boolean` | `true` | Initial open state |
+| `className` | `ClassNameValue` | - | Custom CSS class |
+| `...props` | `React.ComponentProps<"aside">` | - | Supports all native aside props (except `className`, `ref`) |
+
+#### SidebarHandle
+
+The imperative handle attached to `ref`.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `toggle` | `() => void` | Toggle the open state |
+| `open` | `() => void` | Open the sidebar |
+| `close` | `() => void` | Close the sidebar |
+| `isOpen` | `boolean` | Current open state |

@@ -1,0 +1,110 @@
+---
+title: Banner 横幅
+description: 自动滚动播放的横幅组件，无缝循环、悬停暂停、支持方向与速度控制
+---
+
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add banner" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="banner" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+数据驱动的公告横幅。条目会自动重复填满宽度并无缝循环；悬停时暂停滚动。
+
+<ComponentPreview
+  name="banner-basic"
+/>
+
+### 自定义拼装
+
+手动拼装零件以获得完全控制：自定义样式的视口、自拟的轨道速度与方向，以及用于无缝循环的重复副本（多余副本为 `aria-hidden`）。零件模式下两份副本由你自己渲染 —— 轨道位移恰好是 `-50%`，所以两半内容必须完全一致。
+
+<ComponentPreview
+  name="banner-custom"
+/>
+
+## API 参考
+
+### 高阶组件
+
+#### Banner
+
+数据驱动的跑马灯横幅。组件会测量视口宽度，把条目集合重复足够次数填满两倍宽度，并用 Web Animations API 驱动轨道动画 —— 无需全局 keyframes。第一份之外的内容副本均为 `aria-hidden`。
+
+| Prop           | Type                                   | Default | Description                                                                              |
+| :------------- | :------------------------------------- | :------ | :--------------------------------------------------------------------------------------- |
+| `items`        | `BannerItem[]`                         | -       | 滚动的内容；每项渲染在一个 `BannerItem` 内                                                 |
+| `speed`        | `number`                               | `30`    | 循环一周（轨道位移 `-50%`）所需的秒数                                                      |
+| `direction`    | `"left" \| "right"`                    | `left`  | 滚动方向                                                                                   |
+| `pauseOnHover` | `boolean`                              | `true`  | 指针悬停在横幅上时暂停动画                                                                  |
+| `className`    | `ClassNameValue`                       | -       | 视口的自定义类名                                                                            |
+| `classNames`   | `{ viewport?; track?; item? }` —— 值均为 `ClassNameValue` | - | 各零件的自定义类名                                              |
+| `styles`       | `{ viewport?; track?; item? }` —— 值均为 `React.CSSProperties` | - | 各零件的内联样式                                                  |
+| `...props`     | `React.ComponentProps<"div">`          | -       | 原生 div 属性透传到视口（不含 `children`）；你自己的 `onMouseEnter` / `onMouseLeave` 会与悬停暂停组合 |
+
+#### BannerItem
+
+单个滚动条目。
+
+| Field     | Type                 | Description   |
+| :-------- | :------------------- | :------------ |
+| `key`     | `string \| number`   | 可选 React key |
+| `content` | `React.ReactNode`    | 渲染的内容     |
+
+#### 静态属性
+
+| Static             | Type              | Description      |
+| :----------------- | :---------------- | :--------------- |
+| `Banner.Viewport`  | `BannerViewport`  | 裁剪容器零件      |
+| `Banner.Track`     | `BannerTrack`     | 动画轨道零件      |
+| `Banner.Item`      | `BannerItem`      | 单个条目零件      |
+
+---
+
+### 可组合组件
+
+#### BannerViewport
+
+裁剪容器。渲染全宽的 `overflow-hidden` div，带 `aria-roledescription="marquee"`。
+
+| Prop       | Type                          | Description       |
+| :--------- | :---------------------------- | :---------------- |
+| `className`| `ClassNameValue`              | 自定义类名         |
+| `...props` | `React.ComponentProps<"div">` | 支持所有原生 div 属性 |
+
+#### BannerTrack
+
+动画轨道。通过 Web Animations API 运行线性无限 `translateX(0 → -50%)` 动画（`direction="right"` 时反向），并在系统开启 `prefers-reduced-motion: reduce` 时自动暂停。无缝循环要求轨道包含完全相同的两半 —— `-50%` 的位移正是循环衔接点。
+
+| Prop        | Type                          | Default | Description                                              |
+| :---------- | :---------------------------- | :------ | :------------------------------------------------------- |
+| `duration`  | `number`                      | `30`    | 循环一周所需的秒数                                        |
+| `direction` | `"left" \| "right"`           | `left`  | 滚动方向                                                   |
+| `playing`   | `boolean`                     | `true`  | 播放或暂停动画                                             |
+| `className` | `ClassNameValue`              | -       | 自定义类名（内置 `flex w-max`）                             |
+| `...props`  | `React.ComponentProps<"div">` | -       | 支持所有原生 div 属性                                       |
+
+#### BannerItem
+
+单个条目单元（内置 `flex shrink-0 items-center`）。
+
+| Prop       | Type                          | Description       |
+| :--------- | :---------------------------- | :---------------- |
+| `className`| `ClassNameValue`              | 自定义类名         |
+| `...props` | `React.ComponentProps<"div">` | 支持所有原生 div 属性 |

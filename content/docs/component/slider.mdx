@@ -1,0 +1,98 @@
+---
+title: Slider
+description: A simulated slider with horizontal and vertical orientations, pointer dragging and keyboard support
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add slider" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="slider" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+A simulated slider (track, filled range and thumb) supporting pointer dragging and keyboard arrows, Home and End.
+
+<ComponentPreview
+  name="slider-basic"
+/>
+
+### Orientation
+
+Vertical sliders are fully rendered by layout with the minimum value at the bottom.
+
+<ComponentPreview
+  name="slider-orientation"
+/>
+
+### Invalid
+
+Marks the slider with `data-invalid` for form validation states.
+
+<ComponentPreview
+  name="slider-invalid"
+/>
+
+## API Reference
+
+### High-level Components
+
+#### Slider
+
+A simulated slider built with the parts below, encapsulating all state and interaction logic.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `number` | - | Current value (controlled) |
+| `defaultValue` | `number` | `0` | Initial value (uncontrolled) |
+| `onChange` | `(val: number) => void` | - | Called when the value changes by dragging, track click or keyboard |
+| `min` | `number` | `0` | Minimum value |
+| `max` | `number` | `100` | Maximum value |
+| `step` | `number` | `1` | Increment between values; decimals are preserved based on the step precision |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Track orientation; vertical is fully computed in JS (min at the bottom) |
+| `disabled` | `boolean` | `false` | Disables pointer and keyboard interaction |
+| `name` | `string` | - | Renders a hidden input for form submission |
+| `invalid` | `boolean` | - | Sets `data-invalid` on the root, tinting the thumb, fill and track |
+| `aria-label` | `string` | - | Accessible label applied to the thumb |
+| `className` | `ClassNameValue` | - | Custom class for the root |
+| `style` | `React.CSSProperties` | - | Custom inline style for the root |
+| `classNames` | `{ root?; track?; fill?; thumb? }` | - | Custom classes for each part |
+| `styles` | `{ root?; track?; fill?; thumb? }` | - | Custom inline styles for each part |
+
+Keyboard support follows WAI-ARIA slider: arrow keys, PageUp/PageDown, Home and End.
+
+---
+
+### Composable Components
+
+Pure display parts with no built-in state or interaction, for advanced custom assembly.
+
+#### SliderRoot
+
+The outermost container.
+
+#### SliderTrack
+
+The sliding track; sized and colored by the consumer (e.g. `h-2 w-3xs rounded-full bg-muted`).
+
+#### SliderFill
+
+The filled portion; positioned entirely by inline styles from the consumer.
+
+#### SliderThumb
+
+The thumb, rendered as a `<button>`; the consumer wires events and `role="slider"` aria attributes.

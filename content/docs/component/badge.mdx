@@ -1,0 +1,67 @@
+---
+title: Badge
+description: A square surface slot with a corner marker — drop an icon inside and attach a Tag-style label to the top-right corner.
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add badge" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="badge" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+`Badge` is a fixed-size surface (a `size-12` muted square by default) whose corner marker is rendered through the [Tag](/docs/component/tag) component — pass `label` to attach a numeric or text marker at the top-right corner.
+
+<ComponentPreview
+  name="badge-basic"
+/>
+
+### Sizing
+
+The surface shape comes entirely from utilities, so reshape it with `className` — the marker re-anchors itself automatically:
+
+```tsx
+<Badge className="size-8 rounded-full" label={3}>
+  <Bell className="size-5" />
+</Badge>
+```
+
+### Marker coloring
+
+`label` renders as a Tag — color it the same way, via the `label` slot:
+
+```tsx
+<Badge label="New" classNames={{ label: "bg-emerald-600 text-white" }} />
+```
+
+## Notes
+
+- The marker uses the [Tag](/docs/component/tag) component internally — when installing via CLI, add both: `litefy add badge tag`.
+
+## API Reference
+
+### Badge
+
+| Prop        | Type                              | Default | Description                                              |
+| :---------- | :-------------------------------- | :------ | :------------------------------------------------------- |
+| `children`  | `React.ReactNode`                 | -       | Surface content, typically an icon                       |
+| `label`     | `React.ReactNode`                 | -       | Corner marker content, rendered as a Tag at the top-right |
+| `classNames`| `{ label?: ClassNameValue }`      | -       | Custom class names per slot                              |
+| `styles`    | `{ label?: React.CSSProperties }` | -       | Custom styles per slot                                   |
+| `className` | `ClassNameValue`                  | -       | Custom class names of the surface                        |
+| `...props`  | `React.ComponentProps<"div">`     | -       | Native div props                                         |

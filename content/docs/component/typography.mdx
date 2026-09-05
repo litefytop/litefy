@@ -1,0 +1,56 @@
+---
+title: Typography
+description: Heading, headline, description and inline code styles for a consistent typographic hierarchy.
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add typography" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="typography" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Headings
+
+Responsive headings from `h1` to `h6` variants with semibold weight and tight tracking.
+
+<ComponentPreview name="typography-headings" />
+
+### Text
+
+Headline, description and inline code variants for page content.
+
+<ComponentPreview name="typography-text" />
+
+## API Reference
+
+### Typography
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `'h1' \| 'h2' \| 'h3' \| 'h4' \| 'h5' \| 'h6' \| 'headline' \| 'description' \| 'heading-code' \| 'description-code'` | `'description'` | Typographic variant; also decides the rendered tag (`h1`~`h6`, `p` or `code`) |
+| `className` | `ClassNameValue` | - | Custom CSS class |
+| `...props` | `React.ComponentProps<"p">` | - | Supports all native paragraph props |
+
+#### Variants
+
+| Variant | Rendered tag | Description |
+|---------|--------------|-------------|
+| `h1` ~ `h6` | `h1` ~ `h6` | Responsive headings, decreasing size per level |
+| `headline` | `h1` | Bold page-level headline with vertical spacing |
+| `description` | `p` | Muted body text |
+| `heading-code` | `code` | Inline code styled for headings |
+| `description-code` | `code` | Inline code styled for body text |

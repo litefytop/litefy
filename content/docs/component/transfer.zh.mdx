@@ -1,0 +1,91 @@
+---
+title: Transfer 穿梭框
+description: 双面板穿梭框，通过复选框勾选在来源与目标列表之间移动条目
+---
+
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add transfer" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="transfer" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+传入 `dataSource` 包含所有可用条目，`value` 为当前位于目标面板的条目。`disabled: true` 的条目会留在来源面板，无法勾选或移动。
+
+<ComponentPreview
+  name="transfer-basic"
+/>
+
+```tsx
+import { Transfer, type TransferItemConfig } from "@/ui";
+
+const dataSource: TransferItemConfig[] = [
+  { label: "JavaScript", value: "js" },
+  { label: "TypeScript", value: "ts" },
+  { label: "Rust", value: "rust" },
+  { label: "Go", value: "go" },
+  { label: "Python", value: "python", disabled: true },
+  { label: "Java", value: "java" },
+];
+
+export default function Demo() {
+  const [value, setValue] = React.useState<string[]>(["ts", "go"]);
+
+  return (
+    <Transfer
+      dataSource={dataSource}
+      value={value}
+      onChange={setValue}
+      titles={["Available", "Selected"]}
+    />
+  );
+}
+```
+
+## 注意
+
+- Transfer 内部使用 [Checkbox](/docs/component/checkbox) 组件渲染每一行——CLI 安装时请一并添加：`litefy add transfer checkbox`。
+- `renderItem` 接受自定义渲染器，两个面板同时生效；不传时直接渲染条目 `label` 文本。
+- 每个面板独立维护勾选状态（`Set`）。移动按钮应用勾选项并清空该面板的勾选状态；面板没有勾选项时对应方向按钮禁用。
+
+## API 参考
+
+### Transfer
+
+双面板穿梭框组件，管理受控/非受控值状态，渲染来源/目标面板与移动按钮。
+
+| 属性           | 类型                                            | 默认值              | 描述                                          |
+| :------------- | :---------------------------------------------- | :------------------ | :-------------------------------------------- |
+| `dataSource`   | `TransferItemConfig[]`                          | -                   | 所有可用条目                                  |
+| `value`        | `string[]`                                      | -                   | 受控值 —— 当前位于目标面板的条目值            |
+| `defaultValue` | `string[]`                                      | `[]`                | 默认目标值（非受控）                          |
+| `onChange`     | `(value: string[]) => void`                     | -                   | 任一方向移动条目后触发                        |
+| `titles`       | `[React.ReactNode, React.ReactNode]`            | `Source` / `Target` | 来源与目标面板的标题                          |
+| `renderItem`   | `(item: TransferItemConfig) => React.ReactNode` | -                   | 自定义条目渲染，两个面板同时生效              |
+| `className`    | `ClassNameValue`                                | -                   | 自定义类名，应用于根元素                      |
+| `classNames`   | `root` / `panel` / `header` / `body` / `item` / `actions` | -         | 按插槽自定义类名                              |
+
+### TransferItemConfig
+
+穿梭框来源条目的数据结构。
+
+| 字段       | 类型              | 默认值  | 描述                                                    |
+| :--------- | :---------------- | :------ | :------------------------------------------------------ |
+| `label`    | `React.ReactNode` | -       | 条目显示内容                                            |
+| `value`    | `string`          | -       | 唯一标识值                                              |
+| `disabled` | `boolean`         | `false` | 禁用条目 —— 留在来源面板，无法勾选或移动                |

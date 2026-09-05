@@ -1,0 +1,90 @@
+---
+title: use-theme
+description: 全局主题状态 hook，品牌、表面与颜色模式持久化到 localStorage
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add use-theme" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="hook" name="use-theme" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+通过 `useSyncExternalStore` 共享的模块级全局状态。加载时从 localStorage 读取 `brand` / `surface` / `theme`，应用到 `document.documentElement`（`data-brand`、`data-surface`、`.dark`、`color-scheme`），`theme` 为 `"system"` 时跟随系统配色。
+
+<ComponentPreview
+  name="use-theme-basic"
+/>
+
+```tsx
+import { useTheme } from "@/ui";
+
+function ThemeToggle() {
+  const theme = useTheme();
+  return <button onClick={theme.toggleTheme}>切换</button>;
+}
+```
+
+## 主题 token
+
+`surface` 和 `brand` 切换 `app/ui/styles/*-surface.css` 与 `app/ui/styles/*-brand.css` 中定义的 CSS 变量集。上方预览可以实时切换。如需静态安装预设色板，请参阅[主题](/docs/theming)。
+
+### Surface（表面）
+
+Surface 是用于容器的中性色系：
+
+| Token | 用途 |
+|------|------|
+| `--background` / `--foreground` | 承载内容的容器，如 popover、sidebar、card、paper |
+| `--muted` | 不需要过分关注的区域，比如应用的整体背景；容器使用更显眼的 `--background`，对比之下用户更容易关注承载内容的容器 |
+| `--muted-foreground` | 描述类文字，比正文弱一级 |
+| `--accent` | hover 色、骨架屏背景色 |
+
+### Brand（品牌）
+
+Brand 是主题色，除默认黑白主题外都是彩色的：
+
+| Token | 用途 |
+|------|------|
+| `--primary` | 品牌主色，用于重点操作与强调状态 |
+| `--accent` | primary 的加强色，用于 hover 场景 |
+| `--ring` | 用于 border 和外边框（焦点环），同属品牌色系 |
+
+## API 参考
+
+### useTheme
+
+```ts
+function useTheme(): ThemeState
+```
+
+返回 `ThemeState`：
+
+| 属性 | 类型 | 说明 |
+|------|------|------|
+| `brand` | `string` | 当前品牌 token，映射到根元素的 `data-brand` |
+| `surface` | `string` | 当前表面 token，映射到根元素的 `data-surface` |
+| `theme` | `'light' \| 'dark' \| 'system'` | 当前颜色模式 |
+| `setBrand` | `(brand: string) => void` | 设置品牌 token，持久化并应用 |
+| `setSurface` | `(surface: string) => void` | 设置表面 token，持久化并应用 |
+| `setTheme` | `(mode: ThemeMode) => void` | 设置颜色模式，持久化并应用 |
+| `toggleTheme` | `() => void` | 在亮色与暗色之间切换（`system` 时先解析实际模式） |
+
+**注意事项：**
+
+- 状态保存在 React 之外，多处调用 `useTheme` 共享同一份 store 并同步更新。
+- 持久化到 localStorage 的 `theme-storage` 键。
+- `theme` 为 `"system"` 时保留存储值，实际应用的模式实时跟随 `prefers-color-scheme` 变化。

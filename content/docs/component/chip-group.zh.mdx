@@ -1,0 +1,73 @@
+---
+title: Chip Group 折叠标签组
+description: 自动折叠溢出标签的原生组件，隐藏集合通过 renderMore / onOverflowChange 传出，展示方式由业务方拼装
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add chip-group" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="chip-group" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+组件是纯原生组件，只负责两件事：渲染 chip 和溢出折叠测量。它不内置 `+N` 触发器，也不内置弹层——溢出集合通过 `onOverflowChange` 回调传出，`renderMore(hidden)` 在行内渲染自定义触发器（示例用 `Popover` 拼装 `+N` 弹层）：
+
+<ComponentPreview
+  name="chip-group-basic"
+/>
+
+实现要点：
+
+- 测量方案是"影子容器 + 循环累加"：全部 chip 在绝对定位移出视口的影子容器中渲染，逐个累加 `offsetWidth`（含间距），下一个 chip 会超出可用宽度时停止；溢出且存在 `renderMore` 触发器时，可用宽度先扣减触发器实际宽度（取真实行内元素的 `offsetWidth`）再重新计算。
+- 到达停止规则的 chip 即为可见项，剩余 items 通过 `renderMore(hidden)` 与 `onOverflowChange(hidden)` 交给业务方。
+- 宽度变化（窗口缩放、容器拖拽、字体加载）由 `ResizeObserver` 触发重算，无需业务方干预。
+- 代价是少量 JS 测量；换来的是逻辑稳定与布局自由度，UI 宽度与可见数量始终一致。
+- chip 默认带 `max-w-40 truncate`，单个超长标签不会撑破布局；所有 chip `shrink-0` 保证测量与实际渲染宽度一致。
+- `renderMore` 是唯一的行内挂载点：`+N` 必须参与行内宽度预留，因此不能完全由外部渲染，组件用 render prop 保留其行内位置，展示形式（Popover、Tooltip、纯文本）完全由业务方决定。
+
+### Tooltip 组合
+
+`renderMore` 返回 `Tooltip` 包裹的按钮即可实现 hover 预览折叠内容：
+
+<ComponentPreview
+  name="chip-group-tooltip"
+/>
+
+实现要点：
+
+- 触发器样式与展示内容完全由业务方控制，示例展示被隐藏的 items。
+- 组件不关心 `renderMore` 内部是什么组件，只负责为其保留行内位置并测量其宽度。
+
+## API 参考
+
+### ChipGroup
+
+| 属性                | 类型                                          | 默认值 | 描述                                   |
+| :------------------ | :-------------------------------------------- | :----- | :------------------------------------- |
+| `items`             | `ChipItem[]`                                  | -      | 全部标签项                             |
+| `onOverflowChange`  | `(hidden: ChipItem[]) => void`                | -      | 折叠集合变化时回调，携带被隐藏的 items |
+| `renderMore`        | `(hidden: ChipItem[]) => React.ReactNode`     | -      | 行内渲染自定义触发器，`hidden` 为被折叠的 items |
+| `className`         | `ClassNameValue`                              | -      | 自定义类名，应用于外层容器（在此设置 `max-width`） |
+| `classNames`        | `chip`                                        | -      | 按插槽自定义类名                       |
+
+### ChipItem
+
+| 字段    | 类型              | 默认值 | 描述       |
+| :------ | :---------------- | :----- | :--------- |
+| `value` | `string`          | -      | 唯一标识   |
+| `label` | `React.ReactNode` | -      | 标签文本   |

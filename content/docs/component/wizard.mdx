@@ -1,0 +1,73 @@
+---
+title: Wizard
+description: A steps + pager wizard that manages index state internally — visited steps can be revisited, future steps are locked
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add wizard" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="wizard" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Pass `steps` for the progress indicator and `children` for the pager body — one child per step. The Wizard manages `index` and `maxIndex` internally; visited steps can be revisited via the Steps indicator, future steps cannot be skipped ahead.
+
+<ComponentPreview
+  name="wizard-basic"
+/>
+
+```tsx
+import { Wizard } from "@/ui";
+
+const steps = [
+  { title: "Account" },
+  { title: "Profile" },
+  { title: "Confirm" },
+];
+
+export default function Demo() {
+  return (
+    <Wizard steps={steps} onFinish={() => alert("Submitted")}>
+      <form>...</form>
+      <form>...</form>
+      <div>Ready to submit</div>
+    </Wizard>
+  );
+}
+```
+
+## Notes
+
+- Wizard internally uses [Steps](/docs/component/steps) and [Pager](/docs/component/pager) — when installing via CLI, add all: `litefy add wizard steps pager`.
+- The Pager is configured with `gesture={false}` and `transition="view-transition"` to prevent accidental swipe submission and animate step transitions.
+- `maxIndex` tracks the highest visited step and is passed to Steps — visited steps are clickable for backward navigation, future steps are locked.
+- The last step swaps the Next button for Submit, which fires `onFinish`.
+
+## API Reference
+
+### Wizard
+
+A wizard component that manages step navigation state and renders Steps indicator, Pager body, and footer buttons.
+
+| Prop        | Type                | Default | Description                                    |
+| :---------- | :------------------ | :------ | :--------------------------------------------- |
+| `steps`     | `StepsItemConfig[]` | -       | Step configurations for the progress indicator |
+| `children`  | `React.ReactNode[]` | -       | Page content, one child per step               |
+| `onFinish`  | `() => void`        | -       | Fired when the Submit button is clicked        |
+| `className` | `ClassNameValue`    | -       | Custom class names, applied to the root        |
+| `classNames`| `{ root? / steps? / pager? / footer? }` | - | Custom class names per slot |

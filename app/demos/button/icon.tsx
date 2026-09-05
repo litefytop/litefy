@@ -1,0 +1,26 @@
+"use client";
+
+import { Heart, Settings, Star } from "lucide-react";
+import { Button } from "@/ui";
+
+export default function Demo() {
+  return (
+    <div className="flex flex-wrap gap-3">
+      <Button>
+        <Heart className="size-4" />
+        Like
+      </Button>
+      <Button variant="outline">
+        <Star className="size-4" />
+        Favorite
+      </Button>
+      <Button variant="text">
+        <Settings className="size-4" />
+        Settings
+      </Button>
+      <Button>
+        <Heart className="size-4" />
+      </Button>
+    </div>
+  );
+}

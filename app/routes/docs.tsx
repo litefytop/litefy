@@ -15,7 +15,7 @@ import { Link, useParams } from "react-router";
 import { getMDXComponents } from "@/components/mdx";
 import { pageTrees } from "@/generated/page-trees";
 import { i18n } from "@/lib/i18n";
-import { baseOptions } from "@/lib/layout.shared";
+import { baseOptions } from "@/components/layout-shared";
 import { buildMarkdownUrl } from "@/lib/markdown-url";
 import { gitConfig } from "@/lib/shared";
 import type { Route } from "./+types/docs";
@@ -25,15 +25,14 @@ type Locale = keyof typeof pageTrees;
 const docsIndexI18n = {
   en: {
     title: "Overview",
-    description:
-      "Browse every component, CSS utility, and hook available in Litefy UI.",
+    description: "Browse every component, CSS utility, and hook available in Litefy UI.",
     categoryDefaultDescription: "View related documentation",
     footerText:
       "Can't find what you need? Try the [Registry Directory](/docs/directory) for community-maintained components.",
   },
   zh: {
     title: "总览",
-    description: "浏览 Litefy UI 中所有可用的组件、CSS 工具类与钩子。",
+    description: "浏览 Litefy UI 中所有可用的组件、CSS 工具类与工具函数。",
     categoryDefaultDescription: "查看相关文档",
   },
 } as const;
@@ -82,37 +81,29 @@ function ComponentsList({
   return (
     <div className="space-y-12">
       {categories.map((folder, index) => {
-        const items = folder.children.filter(
-          (child): child is Item => child.type === "page",
-        );
+        const items = folder.children.filter((child): child is Item => child.type === "page");
 
         if (items.length === 0) return null;
 
-        const key =
-          typeof folder.name === "string" ? folder.name : (folder.$id ?? index);
+        const key = typeof folder.name === "string" ? folder.name : (folder.$id ?? index);
 
         return (
           <div key={String(key)} className="space-y-4">
             <h2 className="text-2xl font-bold">{folder.name}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
               {items.map((item, itemIndex) => {
                 const url = item.url || `/${locale}/docs/${item.name}`;
-                const itemKey =
-                  typeof item.name === "string"
-                    ? item.name
-                    : (item.$id ?? itemIndex);
+                const itemKey = typeof item.name === "string" ? item.name : (item.$id ?? itemIndex);
 
                 return (
                   <Link
                     key={String(itemKey)}
                     to={typeof url === "string" ? url : `/${locale}/docs`}
-                    className="group p-6 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
+                    className="group p-4 lg:p-6 rounded-lg border  hover:bg-hover transition-colors"
                   >
                     <div>
-                      <h3 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">
-                        {item.name}
-                      </h3>
-                      <p className="text-sm text-fd-muted-foreground line-clamp-2">
+                      <h3 className="font-semibold text-base lg:text-lg mb-1 transition-colors">{item.name}</h3>
+                      <p className="text-sm text-muted-foreground line-clamp-2">
                         {item.description || t.categoryDefaultDescription}
                       </p>
                     </div>
@@ -134,13 +125,9 @@ function resolveLocale(input: string | undefined): Locale {
 
 export default function Docs({ params }: Route.ComponentProps) {
   const routeParams = useParams<{ lang: string; "*"?: string }>();
-  const locale = resolveLocale(
-    (params as { lang?: string }).lang ?? routeParams.lang,
-  );
+  const locale = resolveLocale((params as { lang?: string }).lang ?? routeParams.lang);
   const wildcard = (params as { "*"?: string })["*"] ?? routeParams["*"] ?? "";
-  const slugs = wildcard
-    ? wildcard.split("/").filter((v: string) => v.length > 0)
-    : [];
+  const slugs = wildcard ? wildcard.split("/").filter((v: string) => v.length > 0) : [];
 
   const t = docsIndexI18n[locale] || docsIndexI18n.en;
   const tree = useMemo(() => {
@@ -159,10 +146,7 @@ export default function Docs({ params }: Route.ComponentProps) {
     const PageContent = clientLoader.getComponent(fullPath);
 
     if (PageContent) {
-      const markdownUrl = buildMarkdownUrl(
-        locale,
-        isIndexRoot ? [] : slugs,
-      ).url;
+      const markdownUrl = buildMarkdownUrl(locale, isIndexRoot ? [] : slugs).url;
       return (
         <DocsLayout {...baseOptions(locale)} tree={tree}>
           <PageContent markdownUrl={markdownUrl} path={fullPath} />
@@ -171,13 +155,11 @@ export default function Docs({ params }: Route.ComponentProps) {
     }
   }
 
-  const categories = tree.children.filter(
-    (node): node is Folder => node.type === "folder",
-  );
+  const categories = tree.children.filter((node): node is Folder => node.type === "folder");
 
   return (
     <DocsLayout {...baseOptions(locale)} tree={tree}>
-      <div className="max-w-5xl mx-auto px-4 py-12">
+      <div className="max-w-5xl mx-auto px-4 py-12 [grid-area:main]">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">{t.title}</h1>
           <p className="text-lg text-fd-muted-foreground">{t.description}</p>

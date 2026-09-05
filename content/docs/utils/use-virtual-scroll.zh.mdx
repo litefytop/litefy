@@ -1,0 +1,84 @@
+---
+title: use-virtual-scroll
+description: 固定行高列表虚拟滚动 hook，返回容器属性、渲染窗口与滚动命令
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add use-virtual-scroll" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="hook" name="use-virtual-scroll" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+无 UI 的 headless hook：将 `containerProps` 展开到滚动容器，用 `totalHeight` 撑起内部占位层，按 `visibleItems` 列表绝对定位行元素。只有窗口内（外加 overscan）的行会被渲染。
+
+<ComponentPreview
+  name="virtual-scroll-basic"
+/>
+
+```tsx
+import { useVirtualScroll } from "@/ui";
+
+function List({ rows }: { rows: string[] }) {
+  const virtual = useVirtualScroll({ itemCount: rows.length, itemHeight: 40, visibleCount: 8 });
+
+  return (
+    <div {...virtual.containerProps} className="overflow-auto">
+      <div style={{ height: virtual.totalHeight }} className="relative">
+        {virtual.visibleItems.map(({ index, top }) => (
+          <div key={index} style={{ position: "absolute", top: 0, width: "100%", height: 40, transform: `translateY(${top}px)` }}>
+            {rows[index]}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+## API 参考
+
+### useVirtualScroll
+
+```ts
+function useVirtualScroll(opts: UseVirtualScrollOptions): UseVirtualScrollResult
+```
+
+#### UseVirtualScrollOptions
+
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `itemCount` | `number` | - | 条目总数 |
+| `itemHeight` | `number` | - | 固定行高（像素） |
+| `visibleCount` | `number` | `5` | 同时可见的行数；容器高度为 `visibleCount * itemHeight` |
+| `overscan` | `number` | `5` | 窗口上下额外渲染的行数 |
+| `onScroll` | `(scrollTop: number) => void` | - | 滚动回调 |
+
+#### UseVirtualScrollResult
+
+| 属性 | 类型 | 说明 |
+|------|------|------|
+| `containerProps` | `{ ref, style, onScroll }` | 展开到滚动容器；`style` 设置固定高度 |
+| `totalHeight` | `number` | 占位层高度，`itemCount * itemHeight` |
+| `visibleItems` | `{ index: number; top: number }[]` | 渲染窗口内的行及其 Y 偏移 |
+| `scrollToIndex` | `(index: number, align?: 'start' \| 'center' \| 'end') => void` | 将某行滚动到可视区 |
+| `scrollToTop` | `() => void` | 滚动到第一行 |
+| `scrollToBottom` | `() => void` | 滚动到最后一行 |
+
+**注意事项：**
+
+- 仅支持固定行高，不支持动态测量行高。
+- 容器高度由 `visibleCount * itemHeight` 推导；如需自行控制容器高度，展开 `containerProps` 后覆盖 `style.height` 即可。

@@ -3,20 +3,19 @@ title: Button 按钮
 description: 支持多种变体和加载状态的按钮组件
 ---
 
-
 ## 安装
 
 <Tabs items={['CLI', 'Manual']} >
 
 <Tab value="CLI">
 
-<PackageManagerTabs command="litefy add button" />
+<PackageManagerTabs command="litefy@latest add button" />
 
 </Tab>
 
 <Tab value="Manual">
 
-<SourceCode component="button" />
+<Source type="component" name="button" />
 
 </Tab>
 
@@ -54,15 +53,16 @@ description: 支持多种变体和加载状态的按钮组件
 
 按钮组件。
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `variant` | `'primary' \| 'destructive' \| 'outline' \| 'text'` | `'primary'` | 按钮视觉变体 |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类，支持字符串、数组、对象、布尔值等多种格式。 |
-| `loadingConfig` | `ButtonLoadingConfig` | - | 加载状态配置 |
+| Prop            | Type                                                | Default     | Description                                               |
+| --------------- | --------------------------------------------------- | ----------- | --------------------------------------------------------- |
+| `variant`       | `'primary' \| 'danger' \| 'outline' \| 'text'` | `'primary'` | 按钮视觉变体                                              |
+| `className`     | `ClassNameValue`                                    | -           | 自定义 CSS 类，接受字符串、数组以及所有假值（false、null、undefined、0、0n）；不支持 true 和对象。 |
+| `loadingConfig` | `ButtonLoadingConfig`                               | -           | 加载状态配置                                              |
+| `...props`      | `React.ComponentProps<"button">`                    | -           | 支持全部 button 原生属性（除 `className`），如 `type`、`disabled`                                                  |
 
 ### ButtonLoadingConfig
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `loading` | `boolean` | `false` | 按钮是否处于加载状态 |
-| `icon` | `React.ReactNode` | - | 自定义加载图标 |
+| Prop      | Type              | Default | Description          |
+| --------- | ----------------- | ------- | -------------------- |
+| `loading` | `boolean`         | `false` | 按钮是否处于加载状态 |
+| `icon`    | `React.ReactNode` | -       | 自定义加载图标       |

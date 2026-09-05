@@ -1,38 +1,15 @@
 ---
 title: Introduction
-description: A zero-runtime-dependency React component library. Open code, composition-first.
+description: Litefy is a source-localized, modern React UI toolkit.
 ---
 
-Litefy is a toolset built around these ideas:
+**Litefy** is a **source-localized** modern React UI toolkit. With no black-box remote dependencies, components, Hooks, and styles can be copied directly into your project for full control.
 
-## Open Code
+Unlike the assembly approach of mainstream UI libraries, Litefy **fully builds its own foundation with zero third-party UI dependencies**, and follows a lightweight-first strategy: purely presentational views are implemented with **CSS-only** to avoid redundant JS overhead, and only interactive components ship TSX implementations.
 
-All component source code is delivered directly. No black boxes, no irreversible abstraction layers. Want to change a button? Open `ui/button.tsx` and edit it.
+The library provides a two-layer component model that balances efficiency and customization:
 
-## Composition-First
+- **Prebuilt components**: complete accessibility built in, fixed structure, ready to use out of the box, suitable for most business scenarios.
+- **Low-level atomic components**: no default styles, freely composable, satisfying deep customization needs.
 
-Every component shares a consistent API design, making behavior and interfaces predictable. You don't need to learn a new set of rules for each component.
-
-## Lightweight Distribution
-
-Components are installed into your project via CLI as source code. You own the code, not a dependency on an external package. No version pinning, no worries about upstream breaking changes. Your UI, your rules.
-
-## Native-First
-
-Interactive components like popovers and menus are built using native browser APIs (`popover`, `anchor-position`) rather than wrapping third-party libraries.
-
-For features like `anchor-position` that have Limited availability, we provide fallback mechanisms. However, for features like `popover` that have entered Baseline, we do not provide polyfills or compatibility workarounds. This means Litefy does not support legacy browsers.
-
-Our principle is: once a feature reaches Baseline, we ship it as-is without fallbacks. We don't want to bloat the codebase with compatibility hacks for a minority of use cases, as that would contradict our lightweight philosophy.
-
-If your target audience still requires support for older browsers, Litefy may not be the right choice for you.
-
-## Pure Style Components Are Not Distributed via CLI
-
-For components that have no interaction logic and are purely style-based (e.g., separators, cards, containers), Litefy does not package them as TypeScript components. Instead, we provide copyable style code directly.
-
-We explored multiple automation approaches: generating a fixed CSS file—but we cannot predict the location or naming of the user's CSS files; using regex injection—which can fail if the user adds comments or other content that breaks the pattern; and having the CLI auto-locate and insert—which faces the same issues.
-
-After trying various automated solutions, we concluded that for these purely stylistic components, **manual copying is the most reliable method**. It doesn't assume anything about the user's directory structure, won't break due to custom configurations, and avoids the problem of unloading extra CSS files. It's not the most "automated" approach, but it's robust enough.
-
-If you have a better idea, feel free to [open an issue](https://github.com/litefytop/litefy/issues).
+**Compatibility note**: targeting modern browsers and React 19+, following Web Baseline standards, not compatible with legacy environments. Better suited for internal systems and controlled browser scenarios.

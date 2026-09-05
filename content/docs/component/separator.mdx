@@ -1,0 +1,82 @@
+---
+title: Separator
+description: A separator component supporting horizontal and vertical orientations, with text label and composable assembly
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add separator" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="separator" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Plain lines and separators with a text label, in both orientations.
+
+<ComponentPreview
+  name="separator-basic"
+/>
+
+### Custom
+
+Assemble separators with dashed lines and styled text using the composable components.
+
+<ComponentPreview
+  name="separator-custom"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite component.
+
+#### Separator
+
+Without `children`, renders a single line. With `children`, renders a line, the text label, and a line.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Text label rendered between two lines |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Orientation of the separator |
+| `className` | `ClassNameValue` | - | Custom class names, applied to the line or the wrapper |
+| `classNames` | `{ line?, text?: ClassNameValue }` | - | Custom classes for the lines and the text label |
+| `styles` | `{ line?, text?: React.CSSProperties }` | - | Inline styles for the lines and the text label |
+
+---
+
+### Composable Components
+
+#### SeparatorLine
+
+The line part carrying its own `data-orientation` sizing.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Orientation of the line |
+| `className` | `ClassNameValue` | - | Custom CSS class |
+| `...props` | `React.ComponentProps<"div">` | - | Supports all native div props, such as `role` |
+
+#### SeparatorText
+
+The text label part carrying its own `data-orientation` writing mode.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Orientation of the text |
+| `className` | `ClassNameValue` | - | Custom CSS class |
+| `...props` | `React.ComponentProps<"span">` | - | Supports all native span props, such as `children` |

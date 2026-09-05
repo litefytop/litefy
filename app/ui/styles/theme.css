@@ -1,0 +1,66 @@
+:root {
+  color-scheme: light;
+
+  --background: oklch(97% 0 0);
+  --foreground: oklch(20.5% 0 none);
+  --muted: oklch(92.2% 0 none);
+  --muted-foreground: oklch(26.9% 0 none);
+  --accent: oklch(87% 0 none);
+  --neutral: oklch(55.6% 0 none);
+
+  --outline: oklch(55.6% 0 none);
+  --ring: oklch(55.6% 0 none/0.5);
+
+  --primary: oklch(14.5% 0 none);
+  --primary-accent: oklch(37.1% 0 0);
+
+  --danger: oklch(44.4% 0.177 26.899);
+  --info: oklch(54.6% 0.245 262.881);
+  --success: oklch(62.7% 0.194 149.214);
+  --warning: oklch(79.5% 0.184 86.047);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --background: oklch(20.5% 0 none);
+  --foreground: oklch(97% 0 0);
+  --muted: oklch(26.9% 0 none);
+  --muted-foreground: oklch(92.2% 0 none);
+  --accent: oklch(37.1% 0 none);
+  --neutral: oklch(70.8% 0 none);
+  --outline: oklch(70.8% 0 none);
+  --ring: oklch(70.8% 0 none/0.5);
+
+  --primary: oklch(98.5% 0 none);
+  --primary-accent: oklch(87% 0 0);
+
+  --danger: oklch(70.4% 0.191 22.216);
+  --info: oklch(70.7% 0.165 254.624);
+  --success: oklch(79.2% 0.209 151.711);
+  --warning: oklch(85.2% 0.199 91.936);
+}
+
+@theme inline {
+  --breakpoint-3xl: 1920px;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-hover: var(--accent);
+  --color-accent: var(--accent);
+  --color-neutral: var(--neutral);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--background);
+  --color-primary-accent: var(--primary-accent);
+
+  --color-border: var(--ring);
+  --color-ring: var(--ring);
+  --color-outline: var(--outline);
+
+  --color-info: var(--info);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+}

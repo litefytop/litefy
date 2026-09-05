@@ -1,0 +1,110 @@
+---
+title: Picker 拾取器
+description: 通用的 input + popover 容器组件，基于原生 popover 和 CSS 锚点定位构建，可用于拼装日期选择器等各类拾取场景
+---
+
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add picker" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="picker" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+点击输入框切换弹出面板。打开状态和输入值各自支持受控（`open` / `value`）和非受控（`defaultOpen` / `defaultValue`）模式。
+
+<ComponentPreview
+  name="picker-basic"
+/>
+
+### 拼装 DatePicker
+
+Picker 是一个积木组件，而不是成品组件。将它与 [Calendar](/docs/component/calendar) 组合，即可直接在页面中拼装出日期选择器 —— 也可以直接使用已提供的 [DatePicker](/docs/component/datepicker) 组件，它就是这个组装的成品形态。选中日期后更新输入框的值，并通过 `onOpenChange` 关闭面板。
+
+<ComponentPreview
+  name="picker-datepicker"
+/>
+
+同样的拼装模式也适用于其他拾取场景：在 `children` 插槽中放入任意面板内容（列表、色板、树等）即可。
+
+## API 参考
+
+### 高级组件
+
+#### Picker
+
+| 属性            | 类型                              | 默认值  | 描述                                                                |
+| --------------- | --------------------------------- | ------- | ------------------------------------------------------------------- |
+| `value`         | `string`                          | -       | 受控的输入值                                                        |
+| `defaultValue`  | `string`                          | `""`    | 非受控模式下的默认输入值                                            |
+| `onValueChange` | `(value: string) => void`         | -       | 输入值变化时触发                                                    |
+| `open`          | `boolean`                         | -       | 受控的弹出面板打开状态                                              |
+| `defaultOpen`   | `boolean`                         | `false` | 初始打开状态（非受控）                                              |
+| `onOpenChange`  | `(open: boolean) => void`         | -       | 面板应当打开或关闭时触发（点击、点击外部、Escape）                  |
+| `trailing`      | `React.ReactNode`                 | -       | 渲染在输入框尾部的图标                                              |
+| `children`      | `React.ReactNode`                 | -       | 弹出面板内容                                                        |
+| `panelRef`      | `React.Ref<HTMLDivElement>`       | -       | 接收面板元素，配合 [`usePanelFocus`](/docs/utils/use-panel-focus) 使用 |
+| `classNames`    | `PickerClassNames`                | -       | 分区类名覆盖：`root`、`input`、`trailing`、`popover`                |
+| `styles`        | `PickerStyles`                    | -       | 分区样式覆盖：`root`、`input`、`trailing`、`popover`                |
+| `...props`      | `React.ComponentProps<"input">`   | -       | 其余原生 input 属性，如 `placeholder`、`disabled`                   |
+
+行为说明：
+
+- 弹出面板是原生 `popover="manual"` 元素，使用 CSS 锚点定位：锚定在输入框上，底边起始对齐，`min-width: anchor-size(width)`，并带有 `flip-block` 回退。
+- 点击输入框切换面板；按下 `Escape` 或在输入框和面板之外按下鼠标时关闭。
+- 键盘：面板关闭时按 `ArrowDown` 打开面板，按 `Escape` 关闭 —— 内置行为，无需接线。
+- 消费者传入的 `onKeyDown` / `onClick` 与内部行为组合调用，不会被覆盖；当消费者调用 `preventDefault` 时跳过内部的打开与 Escape 关闭。
+- 受控模式下父组件必须响应 `onValueChange` 更新 `value`，否则输入框无法键入。
+- 面板定位依赖 CSS 锚点定位支持 —— 请确保目标环境支持该特性。
+
+Picker 面板有两种键盘形态，用 hook 按需接线 —— 根据面板内容选择：
+
+- **虚拟焦点**（高亮列表）：使用 [`useCombobox`](/docs/utils/use-combobox)。面板打开期间输入框保持焦点，`ArrowDown` / `ArrowUp` 移动高亮项，`Enter` 选中。
+- **真实焦点**（网格、表单等由真实可聚焦控件构成的面板）：使用 [`usePanelFocus`](/docs/utils/use-panel-focus) 配合 `panelRef` 属性。面板打开期间，`ArrowDown` / `ArrowUp` 将焦点移入面板的第一个 / 最后一个可聚焦元素。
+
+面板关闭时，如果焦点即将丢失（例如焦点在面板内时按下 `Escape`），焦点会自动交还给输入框。
+
+---
+
+### 可组合组件
+
+#### PickerRoot
+
+输入框的包裹容器，承载面板消费的锚点名称。继承所有原生 `div` 属性。
+
+| 属性       | 类型                          | 默认值  | 描述         |
+| ---------- | ----------------------------- | ------- | ------------ |
+| `className`| `ClassNameValue`              | -       | 自定义类名   |
+| `...props` | `React.ComponentProps<"div">` | -       | 原生 div 属性|
+
+#### PickerInput
+
+触发输入框。继承所有原生 `input` 属性（除 `className` 外）。
+
+| 属性       | 类型                           | 默认值  | 描述          |
+| ---------- | ------------------------------ | ------- | ------------- |
+| `className`| `ClassNameValue`               | -       | 自定义类名    |
+| `...props` | `React.ComponentProps<"input">`| -       | 原生 input 属性|
+
+#### PickerContent
+
+弹出面板。原生 `popover="manual"` 元素；可命令式调用 `showPopover()` / `hidePopover()`，并通过 `style={{ positionAnchor: ... }}` 手动定位（锚点名为对应 `PickerRoot` 上设置的锚点名称）；它没有 `positionAnchor` 属性。
+
+| 属性       | 类型                          | 默认值  | 描述          |
+| ---------- | ----------------------------- | ------- | ------------- |
+| `className`| `ClassNameValue`              | -       | 自定义类名    |
+| `...props` | `React.ComponentProps<"div">` | -       | 原生 div 属性 |

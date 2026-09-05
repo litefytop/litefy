@@ -1,6 +1,6 @@
 ---
 title: Tabs 标签页
-description: 支持多种变体和方向设置的标签页组件
+description: 基于 options 驱动、支持多种变体和方向设置的标签页组件
 ---
 
 ## 安装
@@ -9,13 +9,13 @@ description: 支持多种变体和方向设置的标签页组件
 
 <Tab value="CLI">
 
-<PackageManagerTabs command="litefy add tabs" />
+<PackageManagerTabs command="litefy@latest add tabs" />
 
 </Tab>
 
-<Tab value="Manual">
+<Tab value="手动">
 
-<SourceCode component="tabs" />
+<Source type="component" name="tabs" />
 
 </Tab>
 
@@ -25,9 +25,9 @@ description: 支持多种变体和方向设置的标签页组件
 
 ### 基础用法
 
-带有非受控状态的基础标签页实现。
+带有非受控状态的基础标签页实现。Tabs 采用 options 驱动：通过 `value`、`label` 和 `content` 声明每个标签。
 
-<ComponentPreview 
+<ComponentPreview
   name="tabs-basic"
 />
 
@@ -35,7 +35,7 @@ description: 支持多种变体和方向设置的标签页组件
 
 在线条和按钮变体之间切换，以获得不同的视觉样式。
 
-<ComponentPreview 
+<ComponentPreview
   name="tabs-variant"
 />
 
@@ -43,7 +43,7 @@ description: 支持多种变体和方向设置的标签页组件
 
 支持水平和垂直标签页布局。
 
-<ComponentPreview 
+<ComponentPreview
   name="tabs-orientation"
 />
 
@@ -51,72 +51,102 @@ description: 支持多种变体和方向设置的标签页组件
 
 通过受控状态外部管理活动标签。
 
-<ComponentPreview 
+<ComponentPreview
   name="tabs-controlled"
 />
 
 ## API 参考
 
-### Tabs
+### 高级组件
 
-标签页的主要容器组件。
+#### Tabs
+
+options 驱动的容器组件，管理活动值并以参数形式向 `TabsList`、`TabsTrigger` 和 `TabsContent` 传递全部状态，不使用 context。
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `defaultValue` | `string` | - | 初始活动标签值（非受控模式） |
+| `options` | `TabsOptionConfig[]` | - | 标签定义 |
+| `defaultValue` | `string` | - | 初始活动标签值（非受控模式），缺省时取第一个选项的值 |
 | `value` | `string` | - | 活动标签值（受控模式） |
 | `onValueChange` | `(value: string) => void` | - | 活动标签变化时的回调 |
 | `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | 布局方向 |
 | `variant` | `'button' \| 'line'` | `'line'` | 视觉样式变体 |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类。仅支持字符串、数组及各类假值。 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类，作用于根元素 |
+| `...props` | `React.ComponentProps<"div">` | - | 支持所有原生 div 属性（除 `className` 外） |
 
-### TabsList
+#### TabsOptionConfig
 
-标签触发按钮的容器。
+| Property | Type | Description |
+|----------|------|-------------|
+| `value` | `string` | 标签的唯一标识符 |
+| `label` | `React.ReactNode` | 标签触发器的内容 |
+| `content` | `React.ReactNode` | 标签面板的内容 |
+| `disabled` | `boolean` | 禁用该标签 |
+
+---
+
+### 可组合组件
+
+#### TabsList
+
+标签触发按钮的容器，仅通过参数通信。
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `className` | `ClassNameValue` | - | 自定义 CSS 类。仅支持字符串、数组及各类假值。 |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | 布局方向 |
+| `autoScroll` | `boolean` | `false` | 渲染左右滚动按钮并隐藏滚动条（仅水平方向） |
+| `activeValue` | `string` | - | 当前活动值；变化时将活动触发器滚动到可视区域 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+| `...props` | `React.ComponentProps<"div">` | - | 支持所有原生 div 属性（除 `className` 外） |
 
-### TabsTrigger
+#### TabsTrigger
 
-单个标签按钮。通过共享的 `value` 与 `TabsContent` 配对。
+单个标签按钮。激活状态与回调完全通过参数传入。
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `string` | - | 标签的唯一标识符 |
+| `active` | `boolean` | `false` | 是否激活，驱动 `data-state` 和 `aria-selected` |
+| `onValueChange` | `(value: string) => void` | - | 点击或按 Enter/Space 时以自身 `value` 调用 |
+| `variant` | `'button' \| 'line'` | `'line'` | 视觉样式变体 |
 | `disabled` | `boolean` | `false` | 禁用该标签 |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类。仅支持字符串、数组及各类假值。 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+| `...props` | `React.ComponentProps<"button">` | - | 支持所有原生 button 属性（除 `className` 外） |
 
-### TabsContent
+#### TabsContent
 
-当其 `value` 与活动标签匹配时渲染的面板。配合 `React.lazy()` 包裹子节点，可在标签被激活前延迟加载。
+`active` 为 true 时渲染的面板，否则返回 `null`。配合 `React.lazy()` 包裹内容，可在标签被激活前延迟加载。
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `string` | - | 与 `TabsTrigger` 匹配的唯一标识符 |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类。仅支持字符串、数组及各类假值。 |
+| `value` | `string` | - | 唯一标识符，用于派生面板 id 和 `aria-labelledby` |
+| `active` | `boolean` | `false` | 面板是否可见 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+| `...props` | `React.ComponentProps<"div">` | - | 支持所有原生 div 属性（除 `className` 外） |
 
-### 懒加载
+## 懒加载
 
-`TabsContent` 在非激活时返回 `null`，因此用 `lazy()` 包裹子节点可以延迟 import：
+`TabsContent` 在非激活时返回 `null`，因此用 `lazy()` 包裹内容可以延迟 import：
 
 ```tsx
 import { lazy, Suspense } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs";
+import { Tabs } from "@/ui";
 
 const LazySettings = lazy(() => import("./settings"));
 
-<Tabs defaultValue="profile">
-  <TabsList>
-    <TabsTrigger value="profile">个人资料</TabsTrigger>
-    <TabsTrigger value="settings">设置</TabsTrigger>
-  </TabsList>
-  <TabsContent value="profile">个人资料内容</TabsContent>
-  <TabsContent value="settings">
-    <Suspense fallback={null}>
-      <LazySettings />
-    </Suspense>
-  </TabsContent>
-</Tabs>
+<Tabs
+  defaultValue="profile"
+  options={[
+    { value: "profile", label: "个人资料", content: "个人资料内容" },
+    {
+      value: "settings",
+      label: "设置",
+      content: (
+        <Suspense fallback={null}>
+          <LazySettings />
+        </Suspense>
+      ),
+    },
+  ]}
+/>
 ```

@@ -1,6 +1,6 @@
 ---
 title: Image
-description: An image component with loading states, placeholder support, and error handling
+description: An image component with loading state, loading placeholder, and error handling
 ---
 
 ## Installation
@@ -9,13 +9,13 @@ description: An image component with loading states, placeholder support, and er
 
 <Tab value="CLI">
 
-<PackageManagerTabs command="litefy add image" />
+<PackageManagerTabs command="litefy@latest add image" />
 
 </Tab>
 
 <Tab value="Manual">
 
-<SourceCode component="image" />
+<Source type="component" name="image" />
 
 </Tab>
 
@@ -25,7 +25,7 @@ description: An image component with loading states, placeholder support, and er
 
 ### Basic Usage
 
-Display images with proper styling and aspect ratio.
+Preloads the image and manages the loading state, rendering the image on success.
 
 <ComponentPreview 
   name="image-basic"
@@ -33,22 +33,57 @@ Display images with proper styling and aspect ratio.
 
 ### Loading States
 
-Handle loading and error states with placeholder and fallback support.
+Customize the loading placeholder via `loadingNode`, commonly used for blurred-thumbnail progressive loading; shows `fallback` on failure.
 
 <ComponentPreview 
   name="image-loading"
 />
 
+### Custom
+
+Build a fully custom image using the low-level atomic components `ImageRoot` and `ImageImage`.
+
+<ComponentPreview 
+  name="image-custom"
+/>
+
 ## API Reference
 
-### Image
+### High-level Components
 
-The image component with loading state management.
+Ready-to-use composite components.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `src` | `string` | - | Image source URL |
-| `alt` | `string` | - | Alternative text for the image |
-| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
-| `fallback` | `React.ReactNode` | - | Custom fallback element when image fails to load |
-| `placeholderSrc` | `string` | - | Progressive loading of thumbnail URL |
+#### Image
+
+An image component with preload state management; the outer container has built-in `relative` and `overflow-hidden` styles.
+
+| Prop          | Type                                            | Default      | Description                                                                 |
+| ------------- | ----------------------------------------------- | ------------ | ---------------------------------------------------------------------------- |
+| `src`         | `string`                                        | - (required) | Image source URL                                                             |
+| `alt`         | `string`                                        | -            | Alternative text for the image                                               |
+| `fallback`    | `React.ReactNode`                               | -            | Custom fallback element shown when the image fails to load                   |
+| `loadingNode` | `React.ReactNode`                               | -            | Placeholder element shown while loading, commonly used for progressive blurred thumbnails |
+| `classNames`  | `{ root?: ClassNameValue; image?: ClassNameValue }` | -        | Custom classes for the root container and image                              |
+| `styles`      | `{ root?: React.CSSProperties; image?: React.CSSProperties }` | - | Inline styles for the root container and image                          |
+
+---
+
+### Composable Components
+
+#### ImageRoot
+
+Outer container with built-in `relative` and `overflow-hidden`.
+
+| Prop        | Type                          | Default | Description                    |
+| ----------- | ------------------------------ | ------- | -------------------------------- |
+| `className` | `ClassNameValue`               | -       | Custom class name                |
+| `...props`  | `React.ComponentProps<"div">`  | -       | Supports all native div props    |
+
+#### ImageImage
+
+The image element with built-in `size-full`, `object-cover`, `loading="lazy"` and `decoding="async"`.
+
+| Prop        | Type                          | Default | Description                    |
+| ----------- | ------------------------------ | ------- | -------------------------------- |
+| `className` | `ClassNameValue`               | -       | Custom class name                |
+| `...props`  | `React.ComponentProps<"img">`  | -       | Supports all native img props    |

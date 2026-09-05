@@ -9,13 +9,13 @@ description: 带有增减控制按钮的数字输入字段
 
 <Tab value="CLI">
 
-<PackageManagerTabs command="litefy add number-field" />
+<PackageManagerTabs command="litefy@latest add number-field" />
 
 </Tab>
 
 <Tab value="Manual">
 
-<SourceCode component="number-field" />
+<Source type="component" name="number-field" />
 
 </Tab>
 
@@ -47,29 +47,77 @@ description: 带有增减控制按钮的数字输入字段
   name="number-field-controlled"
 />
 
+### 自定义
+
+使用 `NumberGroup`、`NumberDecrement`、`NumberRoot`、`NumberIncrement` 拼装，`focus-within` 焦点环自动生效（会设置 `data-invalid` 属性，但默认无对应样式）。
+
+<ComponentPreview 
+  name="number-field-custom"
+/>
+
 ## API 参考
 
-### NumberField
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### NumberField
 
 带有内置增减按钮的数字输入字段。
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `defaultValue` | `number \| string` | - | 初始值（非受控模式） |
-| `value` | `number \| string \| null` | - | 当前值（受控模式） |
-| `onValueChange` | `(value: number \| null) => void \| (value: string) => void` | - | 值变化处理器。当 `positiveInteger=true` 时返回 `number \| null`，否则返回 `string` |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类。仅支持字符串、数组及各类假值。 |
-| `invalid` | `boolean` | `false` | 是否处于无效状态 |
+| `value` | `number \| string \| undefined` | - | 当前值（受控模式） |
+| `onValueChange` | `(value?: number) => void \| (value?: string) => void` | - | 值变化处理器。当 `positiveInteger=true` 时返回 `number \| undefined`，否则返回 `string` |
+| `invalid` | `boolean` | - | 是否处于无效状态 |
 | `min` | `number` | `0`（positiveInteger）或 `-Infinity` | 允许的最小值 |
 | `max` | `number` | `Infinity` | 允许的最大值 |
 | `step` | `number` | `1` | 增减步长 |
-| `positiveInteger` | `boolean` | `false` | 限制为正整数。将值类型更改为 `number \| null` |
+| `positiveInteger` | `boolean` | `false` | 限制为正整数。将值类型更改为 `number \| undefined` |
+| `classNames` | `{ group?: ClassNameValue; decrement?: ClassNameValue; increment?: ClassNameValue; root?: ClassNameValue }` | - | 内部元素的自定义类名 |
+| `styles` | `{ group?: React.CSSProperties; decrement?: React.CSSProperties; increment?: React.CSSProperties; root?: React.CSSProperties }` | - | 内部元素的内联样式 |
 | `disabled` | `boolean` | `false` | 禁用整个字段 |
-| `onBlur` | `React.FocusEventHandler<HTMLInputElement>` | - | 失去焦点事件处理器 |
+| `...props` | `React.ComponentProps<"input">` | - | 支持全部 input 原生属性（除 `type`、`className`），如 `onBlur` |
 
-### slotProps
+---
 
-| Slot | Type | Description |
-|------|------|-------------|
-| `group` | `React.ComponentProps<"div">` | 包装 div 的属性 |
-| `step` | `React.ComponentProps<"button">` | 增减按钮的属性 |
+### 可组合组件
+
+#### NumberGroup
+
+外层容器，内置完整输入框样式：尺寸（`max-w-3xs w-full`）、圆角（rounded-full）、`focus-within` 焦点环；设置 `invalid` 时会添加 `data-invalid` 属性，但默认没有对应样式。
+
+| Prop        | Type                          | Default | Description                               |
+| ----------- | ----------------------------- | ------- | ----------------------------------------- |
+| `className` | `ClassNameValue`              | -       | 自定义类名                                |
+| `...props`  | `React.ComponentProps<"div">` | -       | 支持全部 div 原生属性（含 `data-*` 属性） |
+
+#### NumberDecrement
+
+减号按钮，内置左半圆样式与禁用态。
+
+| Prop        | Type                             | Default | Description                                  |
+| ----------- | -------------------------------- | ------- | -------------------------------------------- |
+| `className` | `ClassNameValue`                 | -       | 自定义类名                                   |
+| `children`  | `React.ReactNode`                | -       | 按钮内容                                     |
+| `...props`  | `React.ComponentProps<"button">` | -       | 支持全部 button 原生属性（除 `className`）   |
+
+#### NumberIncrement
+
+加号按钮，内置右半圆样式与禁用态。
+
+| Prop        | Type                             | Default | Description                                  |
+| ----------- | -------------------------------- | ------- | -------------------------------------------- |
+| `className` | `ClassNameValue`                 | -       | 自定义类名                                   |
+| `children`  | `React.ReactNode`                | -       | 按钮内容                                     |
+| `...props`  | `React.ComponentProps<"button">` | -       | 支持全部 button 原生属性（除 `className`）   |
+
+#### NumberRoot
+
+承载状态的文本输入框，内置居中数字排版样式。
+
+| Prop        | Type                            | Default | Description                                                    |
+| ----------- | ------------------------------- | ------- | -------------------------------------------------------------- |
+| `className` | `ClassNameValue`                | -       | 自定义类名                                                     |
+| `...props`  | `React.ComponentProps<"input">` | -       | 支持全部 input 原生属性（除 `className`），如 `value`、`onChange` 和 `role="spinbutton"` 相关 aria 属性 |

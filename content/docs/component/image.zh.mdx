@@ -1,6 +1,6 @@
 ---
 title: Image 图片
-description: 支持加载状态、占位符和错误处理的图片组件
+description: 支持加载状态、加载占位与错误处理的图片组件
 ---
 
 ## 安装
@@ -9,13 +9,13 @@ description: 支持加载状态、占位符和错误处理的图片组件
 
 <Tab value="CLI">
 
-<PackageManagerTabs command="litefy add image" />
+<PackageManagerTabs command="litefy@latest add image" />
 
 </Tab>
 
 <Tab value="Manual">
 
-<SourceCode component="image" />
+<Source type="component" name="image" />
 
 </Tab>
 
@@ -25,7 +25,7 @@ description: 支持加载状态、占位符和错误处理的图片组件
 
 ### 基础用法
 
-显示具有适当样式和宽高比的图片。
+预加载图片并管理加载状态，加载成功后渲染图片。
 
 <ComponentPreview 
   name="image-basic"
@@ -33,22 +33,57 @@ description: 支持加载状态、占位符和错误处理的图片组件
 
 ### 加载状态
 
-处理加载和错误状态，支持占位符和回退元素。
+通过 `loadingNode` 自定义加载中占位内容，常用于模糊缩略图渐进加载；加载失败显示 `fallback`。
 
 <ComponentPreview 
   name="image-loading"
 />
 
+### 自定义
+
+直接使用可组合组件实现高度自定义。
+
+<ComponentPreview 
+  name="image-custom"
+/>
+
 ## API 参考
 
-### Image
+### 高阶组件
 
-带有加载状态管理的图片组件。
+开箱即用的成品组件。
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `src` | `string` | - | 图片源 URL |
-| `alt` | `string` | - | 图片的替代文本 |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类，支持字符串、数组、对象、布尔值等多种格式。 |
-| `fallback` | `React.ReactNode` | - | 图片加载失败时显示的自定义回退元素 |
-| `placeholderSrc` | `string` | - | 渐进加载缩略图 URL |
+#### Image
+
+预加载管理的图片组件，外层容器内置 `relative`、`overflow-hidden` 样式。
+
+| Prop          | Type                                            | Default   | Description                                                             |
+| ------------- | ----------------------------------------------- | --------- | ------------------------------------------------------------------------ |
+| `src`         | `string`                                        | -（必填） | 图片源 URL                                                               |
+| `alt`         | `string`                                        | -         | 图片的替代文本                                                           |
+| `fallback`    | `React.ReactNode`                               | -         | 图片加载失败时显示的自定义回退元素                                       |
+| `loadingNode` | `React.ReactNode`                               | -         | 加载中显示的占位元素，可用于渐进式模糊缩略图                             |
+| `classNames`  | `{ root?: ClassNameValue; image?: ClassNameValue }` | -     | 根容器和图片的自定义类名                                                 |
+| `styles`      | `{ root?: React.CSSProperties; image?: React.CSSProperties }` | - | 根容器和图片的内联样式                                        |
+
+---
+
+### 可组合组件
+
+#### ImageRoot
+
+外层容器，内置 `relative`、`overflow-hidden`。
+
+| Prop        | Type                          | Default | Description           |
+| ----------- | ----------------------------- | ------- | --------------------- |
+| `className` | `ClassNameValue`              | -       | 自定义类名            |
+| `...props`  | `React.ComponentProps<"div">` | -       | 支持全部 div 原生属性 |
+
+#### ImageImage
+
+图片元素，内置 `size-full`、`object-cover`、`loading="lazy"` 和 `decoding="async"`。
+
+| Prop        | Type                          | Default | Description           |
+| ----------- | ----------------------------- | ------- | --------------------- |
+| `className` | `ClassNameValue`              | -       | 自定义类名            |
+| `...props`  | `React.ComponentProps<"img">` | -       | 支持全部 img 原生属性 |

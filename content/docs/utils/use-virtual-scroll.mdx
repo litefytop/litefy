@@ -1,0 +1,84 @@
+---
+title: use-virtual-scroll
+description: Fixed-height list virtualization hook returning container props, the render window and scroll commands
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add use-virtual-scroll" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="hook" name="use-virtual-scroll" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+A headless hook: spread `containerProps` onto the scroll container, size an inner spacer with `totalHeight`, and absolutely position the rows listed in `visibleItems`. Only rows inside the window (plus overscan) are rendered.
+
+<ComponentPreview
+  name="virtual-scroll-basic"
+/>
+
+```tsx
+import { useVirtualScroll } from "@/ui";
+
+function List({ rows }: { rows: string[] }) {
+  const virtual = useVirtualScroll({ itemCount: rows.length, itemHeight: 40, visibleCount: 8 });
+
+  return (
+    <div {...virtual.containerProps} className="overflow-auto">
+      <div style={{ height: virtual.totalHeight }} className="relative">
+        {virtual.visibleItems.map(({ index, top }) => (
+          <div key={index} style={{ position: "absolute", top: 0, width: "100%", height: 40, transform: `translateY(${top}px)` }}>
+            {rows[index]}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+## API Reference
+
+### useVirtualScroll
+
+```ts
+function useVirtualScroll(opts: UseVirtualScrollOptions): UseVirtualScrollResult
+```
+
+#### UseVirtualScrollOptions
+
+| Property | Type | Default | Description |
+|------|------|---------|-------------|
+| `itemCount` | `number` | - | Total number of items |
+| `itemHeight` | `number` | - | Fixed row height in pixels |
+| `visibleCount` | `number` | `5` | Rows visible at once; the container height is `visibleCount * itemHeight` |
+| `overscan` | `number` | `5` | Extra rows rendered above and below the window |
+| `onScroll` | `(scrollTop: number) => void` | - | Scroll callback |
+
+#### UseVirtualScrollResult
+
+| Property | Type | Description |
+|------|------|-------------|
+| `containerProps` | `{ ref, style, onScroll }` | Spread onto the scroll container; `style` sets the fixed height |
+| `totalHeight` | `number` | Spacer height, `itemCount * itemHeight` |
+| `visibleItems` | `{ index: number; top: number }[]` | Rows in the render window with their Y offsets |
+| `scrollToIndex` | `(index: number, align?: 'start' \| 'center' \| 'end') => void` | Scroll a row into view |
+| `scrollToTop` | `() => void` | Scroll to the first row |
+| `scrollToBottom` | `() => void` | Scroll to the last row |
+
+**Notes:**
+
+- Fixed row heights only; measured variable heights are not supported.
+- The container height is derived from `visibleCount * itemHeight`; to size the container yourself, override `containerProps.style.height` after spreading.

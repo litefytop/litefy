@@ -1,0 +1,82 @@
+---
+title: Separator 分隔符
+description: 支持水平和垂直方向、带文本标签和可自由拼装的分隔符组件
+---
+
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add separator" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="separator" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+纯分割线与带文本标签的分隔符，覆盖水平和垂直方向。
+
+<ComponentPreview
+  name="separator-basic"
+/>
+
+### 自定义拼装
+
+使用可组合组件拼装虚线与自定义文本样式的分隔符。
+
+<ComponentPreview
+  name="separator-custom"
+/>
+
+## API 参考
+
+### 高级组件
+
+开箱即用的组合组件。
+
+#### Separator
+
+不传 `children` 时渲染单条分割线；传入 `children` 时渲染"线 - 文本 - 线"结构。
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | 渲染在两条线之间的文本标签 |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | 分隔符方向 |
+| `className` | `ClassNameValue` | - | 自定义类名，应用于分割线或包装容器 |
+| `classNames` | `{ line?, text?: ClassNameValue }` | - | 定制分割线和文本标签的自定义类名 |
+| `styles` | `{ line?, text?: React.CSSProperties }` | - | 定制分割线和文本标签的内联样式 |
+
+---
+
+### 可组合组件
+
+#### SeparatorLine
+
+自带 `data-orientation` 尺寸样式的分割线零件。
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|---------|-------------|
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | 分割线方向 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+| `...props` | `React.ComponentProps<"div">` | - | 支持所有原生 div 属性，如 `role` |
+
+#### SeparatorText
+
+自带 `data-orientation` 书写模式的文本标签零件。
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|---------|-------------|
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | 文本方向 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+| `...props` | `React.ComponentProps<"span">` | - | 支持所有原生 span 属性，如 `children` |

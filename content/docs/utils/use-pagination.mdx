@@ -1,0 +1,60 @@
+---
+title: use-pagination
+description: A headless pagination state hook with looping, dynamic totals and change callbacks
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add use-pagination" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="hook" name="use-pagination" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Basic pagination usage with navigation controls and page indicators.
+
+<ComponentPreview 
+  name="pagination-basic"
+/>
+
+## API Reference
+
+### usePagination
+
+A headless hook that manages pagination state; pair it with your own navigation controls (see the demo above).
+
+#### Options
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `base` | `number` | `0` | First page number; `index` is offset by this value |
+| `total` | `number \| (() => number)` | - | Total page count, or a getter for dynamic totals. **Required** |
+| `loop` | `boolean` | `false` | Wraps to the other end when navigating past the first or last page |
+| `onChange` | `(page: number) => void` | - | Fired with the new page whenever it changes |
+
+#### Returns
+
+- `index`: Current page number (starts at `base`)
+- `total`: Current total page count
+- `setIndex(page | (prevPage) => page)`: Set the page directly or with an updater; it is normalized into the valid range
+- `goTo(page)`: Navigate to a specific page
+- `next()`: Go to the next page
+- `previous()`: Go to the previous page
+- `toFirst()`: Go to the first page (`base`)
+- `toEnd()`: Go to the last page
+- `isFirst`: `true` when on the first page (always `false` when `loop` is enabled)
+- `isEnd`: `true` when on the last page (always `false` when `loop` is enabled)

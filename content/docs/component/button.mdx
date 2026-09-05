@@ -9,13 +9,13 @@ description: A button component with multiple variants and loading states
 
 <Tab value="CLI">
 
-<PackageManagerTabs command="litefy add button" />
+<PackageManagerTabs command="litefy@latest add button" />
 
 </Tab>
 
 <Tab value="Manual">
 
-<SourceCode component="button" />
+<Source type="component" name="button" />
 
 </Tab>
 
@@ -53,15 +53,16 @@ Buttons with icon support for enhanced visual feedback.
 
 The button component.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `variant` | `'primary' \| 'destructive' \| 'outline' \| 'text'` | `'primary'` | Button visual variant |
-| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
-| `loadingConfig` | `ButtonLoadingConfig` | - | Loading state configuration |
+| Prop            | Type                                                | Default     | Description                                                                                                        |
+| --------------- | --------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------ |
+| `variant`       | `'primary' \| 'danger' \| 'outline' \| 'text'` | `'primary'` | Button visual variant                                                                                              |
+| `className`     | `ClassNameValue`                                    | -           | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| `loadingConfig` | `ButtonLoadingConfig`                               | -           | Loading state configuration                                                                                        |
+| `...props`      | `React.ComponentProps<"button">`                    | -           | Supports all native button props (except `className`), such as `type`, `disabled`                                  |
 
 ### ButtonLoadingConfig
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `loading` | `boolean` | `false` | Whether the button is loading |
-| `icon` | `React.ReactNode` | - | Custom loading icon |
+| Prop      | Type              | Default | Description                   |
+| --------- | ----------------- | ------- | ----------------------------- |
+| `loading` | `boolean`         | `false` | Whether the button is loading |
+| `icon`    | `React.ReactNode` | -       | Custom loading icon           |

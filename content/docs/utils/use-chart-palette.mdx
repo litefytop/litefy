@@ -1,0 +1,81 @@
+---
+title: use-chart-palette
+description: Hook that generates 8 high-contrast chart colors from the current theme primary, with color-wheel and same-hue modes
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add use-chart-palette" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="hook" name="use-chart-palette" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+The hook reads the theme's `--color-primary` and `--color-background`, then produces 8 OKLCH colors with contrast of at least 3:1. Theme switches (class / style / theme data attributes) trigger automatic recomputation via a MutationObserver — no manual refresh needed. When the primary is achromatic, it falls back to a blue hue (250°).
+
+```tsx
+import { useChartPalette } from "@/ui";
+
+function Swatches() {
+  const palette = useChartPalette();
+
+  return (
+    <div className="flex gap-2">
+      {palette.map((color) => (
+        <div key={color} className="size-8 rounded-md" style={{ background: color }} />
+      ))}
+    </div>
+  );
+}
+```
+
+A typical use case is explicitly coloring Chart data series (when omitted, Chart picks palette colors by index automatically):
+
+```tsx
+const palette = useChartPalette({ mode: "mono" });
+
+const series = [
+  { label: "Returning", stroke: palette[0], fill: palette[0] },
+  { label: "New", stroke: palette[1], fill: palette[1] },
+];
+```
+
+**Notes:**
+
+- To avoid SSR hydration mismatches, the first render returns a default palette which syncs to the current theme after mount.
+- Chained theme CSS variables (e.g. `--color-primary: var(--brand)`) are resolved to their final color via a probe element.
+
+## API Reference
+
+### useChartPalette
+
+```ts
+function useChartPalette(options?: ChartPaletteOptions): string[]
+```
+
+Returns an array of 8 color strings in `oklch(L C H)` format.
+
+#### ChartPaletteOptions
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `mode` | `"wheel" \| "mono"` | `"wheel"` | Picking mode |
+
+#### Modes
+
+| Mode | Behavior |
+|------|----------|
+| `"wheel"` | Picks one color every 45° around the wheel starting from the primary hue — best for multi-series line charts needing high distinction |
+| `"mono"` | Locks to the primary hue and distinguishes series by lightness steps plus two chroma levels — best for theme-consistent bar/area charts |

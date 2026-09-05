@@ -1,0 +1,71 @@
+---
+title: Pager
+description: A controlled single-DOM pager with touch gesture dragging, loop and View-Transition page switching, built for manga-style readers and paged content
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add pager" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="pager" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Size contract
+
+The component never adapts to its content — you must provide width and height via `className` (or `style`). The root clips with `overflow-hidden`, so an exact size prevents layout jitter entirely.
+
+### DOM strategy
+
+Only the current page is mounted. During a touch drag the adjacent pages are mounted temporarily for the real-time `transform` follow, and they are unmounted as soon as the settle animation finishes. Programmatic jumps never mount more than one page.
+
+### Basic Usage
+
+Fully controlled `index` / `onChange` — the demo drives it with navigation buttons and uses the default `transition="view-transition"`. Browsers without `document.startViewTransition` fall back to an instant swap.
+
+<ComponentPreview
+  name="pager-basic"
+/>
+
+### Gesture + Loop
+
+Touch drag with a 25%-of-width threshold: pass it and the page commits, otherwise it snaps back. Beyond the boundary (with `loop` off) the drag gets rubber-band resistance. With `loop` on, indices wrap around modulo the page count.
+
+<ComponentPreview
+  name="pager-gesture"
+/>
+
+## Behavior notes
+
+- Programmatic jumps with `transition="view-transition"` run inside `document.startViewTransition`; a new jump while a transition is still running skips the animation and swaps directly, so concurrent transitions never start.
+- Each instance generates a unique `view-transition-name` via `useId`, so multiple Pager instances can coexist without snapshot conflicts.
+- The gesture path never uses View-Transition — it is pure `transform` displacement while dragging plus a 200ms settle animation.
+- Use `transition="none"` to disable programmatic animations entirely; `gesture={false}` disables touch handling.
+- `onChange` always receives the normalized index — wrapped modulo when `loop` is on, clamped otherwise.
+
+## API Reference
+
+### Pager
+
+| Prop         | Type                            | Default           | Description                                                             |
+| :----------- | :------------------------------ | :---------------- | :---------------------------------------------------------------------- |
+| `index`      | `number`                        | -                 | Controlled current page index                                           |
+| `onChange`   | `(nextIndex: number) => void`   | -                 | Fired after a gesture commit; the parent updates `index`                |
+| `children`   | `React.ReactNode[]`             | -                 | One child per page; only the active page is mounted                     |
+| `loop`       | `boolean`                       | `false`           | Wrap around at both boundaries                                          |
+| `transition` | `"none" \| "view-transition"`   | `"view-transition"` | Animation strategy for programmatic jumps (gesture drags are unaffected) |
+| `gesture`    | `boolean`                       | `true`            | Enable touch drag paging                                                |
+| `className`  | `ClassNameValue`                | -                 | Custom class names — must include the width and height                  |
+| `...props`   | `React.ComponentProps<"div">`   | -                 | Native div props, spread on the root container                          |

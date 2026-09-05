@@ -1,15 +1,7 @@
 ---
 title: Collapse 折叠面板
-description: 独立的可折叠内容组件，带有平滑动画
+description: 支持单面板、多选与手风琴互斥模式的折叠面板组件
 ---
-
-## 概述
-
-Collapse 是一个独立的可折叠组件，专为 Accordion 固定布局过于严格的场景而设计。Accordion 强制使用带有项目的严格垂直列表布局，而 Collapse 提供灵活的、独立的可折叠区域，可以单独使用或用于自定义布局。
-
-**何时使用 Collapse vs Accordion：**
-- 使用 **Accordion** 当你需要具有一致样式的可折叠项目结构化列表时
-- 使用 **Collapse** 当你需要独立的可折叠区域、自定义布局或不需要固定手风琴结构的单个可折叠元素时
 
 ## 安装
 
@@ -17,13 +9,13 @@ Collapse 是一个独立的可折叠组件，专为 Accordion 固定布局过于
 
 <Tab value="CLI">
 
-<PackageManagerTabs command="litefy add collapse" />
+<PackageManagerTabs command="litefy@latest add collapse" />
 
 </Tab>
 
 <Tab value="Manual">
 
-<SourceCode component="collapse" />
+<Source type="component" name="collapse" />
 
 </Tab>
 
@@ -31,79 +23,112 @@ Collapse 是一个独立的可折叠组件，专为 Accordion 固定布局过于
 
 ## 用法
 
-### 基础用法
+### 折叠面板
 
-带有触发器和面板的基础折叠组件。
+单个折叠面板。
 
-<ComponentPreview 
+<ComponentPreview
   name="collapse-basic"
 />
 
-### 受控模式
+### 手风琴折叠面板
 
-通过受控状态管理折叠的打开/关闭。
+`Accordion` 默认互斥模式（最多展开一个），开启 `multiple` 后支持多选，多个面板可以同时展开。
 
-<ComponentPreview 
-  name="collapse-controlled"
+<ComponentPreview
+  name="collapse-accordion"
 />
 
-### 禁用状态
+### 自定义
 
-禁用折叠组件以阻止用户交互。
+使用可组合组件构建互斥手风琴。
 
-<ComponentPreview 
-  name="collapse-disabled"
+<ComponentPreview
+  name="collapse-custom"
 />
 
 ## API 参考
 
-### Collapse
+### 高阶组件
 
-折叠组件的根容器。
+开箱即用的成品组件。
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | 必须包含Collapse.Header（含Collapse.Trigger和可选的Collapse.Action），以及Collapse.Panel |
-| `open` | `boolean` | - | 受控的打开状态 |
-| `defaultOpen` | `boolean` | `false` | 默认打开状态（非受控） |
-| `onValueChange` | `(open: boolean) => void` | - | 打开状态变化时的回调 |
-| `disabled` | `boolean` | `false` | 禁用折叠交互 |
-| `className` | `string` | - | 根容器的自定义CSS类 |
+#### Collapse
 
-### Collapse.Header
+单体折叠面板，内置触发器与折叠动画面板。
 
-折叠触发器和操作按钮的容器，提供布局结构。
+| 属性           | 类型                                                      | 默认值        | 描述                                       |
+| -------------- | --------------------------------------------------------- | ------------- | ------------------------------------------ |
+| `label`        | `React.ReactNode \| ((open: boolean) => React.ReactNode)` | -             | 头部触发器显示内容，支持函数接收 open 状态 |
+| `icon`         | `React.ReactNode \| ((open: boolean) => React.ReactNode)` | `ChevronDown` | 展开收起图标，支持函数接收 open 状态       |
+| `open`         | `boolean`                                                 | -             | 受控展开状态                               |
+| `defaultOpen`  | `boolean`                                                 | `false`       | 初始展开状态（非受控）                     |
+| `onOpenChange` | `(open: boolean) => void`                                 | -             | 展开状态变化回调                           |
+| `itemKey`      | `string`                                                  | -             | 触发器与面板 id 的后缀，用于无障碍关联     |
+| `classNames`   | `{ root?: ClassNameValue; trigger?: ClassNameValue; panel?: ClassNameValue }` | - | 根容器、触发器和面板的自定义类名    |
+| `styles`       | `{ root?: React.CSSProperties; trigger?: React.CSSProperties; panel?: React.CSSProperties }` | - | 根容器、触发器和面板的内联样式      |
+| `children`     | `React.ReactNode`                                         | -             | 面板内容                                   |
+| `...props`     | `React.ComponentProps<"div">`                             | -             | 支持全部 div 原生属性                      |
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | 必须包含Collapse.Trigger，可选Collapse.Action |
-| `className` | `string` | - | 头部的自定义CSS类 |
+#### Accordion
 
-### Collapse.Trigger
+折叠面板组。默认互斥模式（同一时间最多展开一个面板）；添加 `multiple` 属性后切换为多选模式。`activeKeys` 类型随模式切换：互斥为 `string`，多选为 `string[]`。
 
-切换折叠打开/关闭状态的按钮。
+| 属性                | 类型                                                                   | 默认值 | 描述                                                   |
+| ------------------- | ---------------------------------------------------------------------- | ------- | ------------------------------------------------------ |
+| `items`             | `CollapseItemConfig[]`                                                 | -       | 折叠面板配置项数组 **必填**                            |
+| `multiple`          | `boolean`                                                              | `false` | 开启多选模式，多个面板可以同时展开                     |
+| `defaultActiveKeys` | `string` \| `string[]`                                                 | -       | 默认展开项（非受控）。互斥：`string`；多选：`string[]` |
+| `activeKeys`        | `string` \| `string[]`                                                 | -       | 当前展开项（受控）。互斥：`string`；多选：`string[]`   |
+| `onKeyChange`       | `(value: string \| undefined) => void` \| `(values: string[]) => void` | -       | 展开项变化回调                                         |
+| `common`            | `{ classNames?: { root?: ClassNameValue; trigger?: ClassNameValue; panel?: ClassNameValue }; icon?: React.ReactNode \| ((open: boolean) => React.ReactNode) }` | - | 统一应用到每个选项的配置，子项自身的 `classNames`/`icon` 优先 |
+| `className`         | `ClassNameValue`                                                       | -       | 容器自定义样式                                         |
+| `...props`          | `React.ComponentProps<"div">`                                          | -       | 支持全部 div 原生属性                                  |
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode \| (open: boolean) => React.ReactNode` | - | 自定义触发器内容或渲染函数（默认为chevron图标） |
-| `icon` | `React.ReactNode \| (open: boolean) => React.ReactNode` | - | 自定义图标或触发器的渲染函数 |
-| `className` | `string` | - | 触发按钮的自定义CSS类 |
+> 子项之间默认以 `not-last:border-b` 分隔，可通过 `common.classNames.root` 覆盖。
 
-### Collapse.Action
+#### CollapseItemConfig
 
-可以放置在头部触发器旁边的操作按钮。这允许在头部放置多个交互元素，这是Accordion无法实现的。
+继承除 `children`、`open`、`onOpenChange`、`itemKey` 外的所有 `Collapse` 属性。
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | 操作按钮内容（如复制图标、删除图标） |
-| `className` | `string` | - | 操作按钮的自定义CSS类 |
-| `onClick` | `(e: React.MouseEvent) => void` | - | 操作的点击处理函数 |
+| 字段      | 类型                                                      | 默认值        | 描述                                       |
+| --------- | --------------------------------------------------------- | ------------- | ------------------------------------------ |
+| `itemKey` | `string`                                                  | -             | 项目唯一标识符 **必填**                    |
+| `panel`   | `React.ReactNode`                                         | -             | 内容面板显示内容 **必填**                  |
+| `label`   | `React.ReactNode \| ((open: boolean) => React.ReactNode)` | -             | 头部触发器显示内容，支持函数接收 open 状态 |
+| `icon`    | `React.ReactNode \| ((open: boolean) => React.ReactNode)` | `ChevronDown` | 展开收起图标，支持函数接收 open 状态       |
 
-### Collapse.Panel
+---
 
-带有平滑动画的可折叠内容面板。
+### 可组合组件
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | 可折叠的内容 |
-| `className` | `string` | - | 面板内容的自定义CSS类 |
+#### CollapseRoot
+
+外层容器，垂直排布子项并以 `not-last:border-b` 分隔。
+
+| 属性        | 类型                          | 默认值 | 描述                  |
+| ----------- | ----------------------------- | ------ | --------------------- |
+| `className` | `ClassNameValue`              | -      | 自定义样式            |
+| `...props`  | `React.ComponentProps<"div">` | -      | 支持全部 div 原生属性 |
+
+#### CollapseTrigger
+
+触发器按钮；`open` 属性驱动 `aria-expanded`，收起状态下显示悬停样式。
+
+> 在 `Collapse` 内部时自动联动 `aria-expanded`、`aria-controls` 与展开切换；独立使用时传入 `open` 并通过 `onClick` 自行控制。
+
+| 属性        | 类型                             | 默认值 | 描述                     |
+| ----------- | -------------------------------- | ------ | ------------------------ |
+| `open`      | `boolean`                        | -      | 驱动 `aria-expanded`     |
+| `className` | `ClassNameValue`                 | -      | 自定义样式               |
+| `...props`  | `React.ComponentProps<"button">` | -      | 支持全部 button 原生属性 |
+
+#### CollapsePanel
+
+> DOM：外层 `<section>` 负责基于 grid rows 的折叠动画与无障碍属性；`className` 作用于内层内容容器，内层已内置 `p-4 pt-0`。在 `Collapse` 内部时自动传入展开状态。
+
+| 属性        | 类型                              | 默认值 | 描述                                  |
+| ----------- | --------------------------------- | ------ | ------------------------------------- |
+| `open`      | `boolean`                         | -      | 是否展开，驱动折叠动画                |
+| `className` | `ClassNameValue`                  | -      | 自定义样式，作用于内层内容容器        |
+| `...props`  | `React.ComponentProps<"section">` | -      | section 原生属性，用于无障碍、data‑\* |

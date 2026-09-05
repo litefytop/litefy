@@ -1,6 +1,6 @@
 ---
 title: Radio 单选框
-description: 支持segment变体的单选按钮组件
+description: 支持受控、非受控和分组模式的单选按钮组件
 ---
 
 ## 安装
@@ -9,13 +9,13 @@ description: 支持segment变体的单选按钮组件
 
 <Tab value="CLI">
 
-<PackageManagerTabs command="litefy add radio" />
+<PackageManagerTabs command="litefy@latest add radio" />
 
 </Tab>
 
 <Tab value="Manual">
 
-<SourceCode component="radio" />
+<Source type="component" name="radio" />
 
 </Tab>
 
@@ -29,14 +29,6 @@ description: 支持segment变体的单选按钮组件
 
 <ComponentPreview 
   name="radio-basic"
-/>
-
-### Segment变体
-
-使用segment变体实现分段控制器效果。
-
-<ComponentPreview 
-  name="radio-segment"
 />
 
 ### 受控模式
@@ -62,26 +54,35 @@ description: 支持segment变体的单选按钮组件
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | `React.ReactNode` | - | 单选框内容 |
-| `checked` | `boolean` | - | 受控选中状态 |
-| `onValueChange` | `(checked: boolean) => void` | - | 选中状态变化时的回调 |
-| `value` | `string` | - | 分组模式下的值 |
-| `variant` | `'radio' \| 'segment'` | `'radio'` | 视觉变体 |
+| `checked` | `boolean` | `false` | 受控选中状态 |
+| `defaultChecked` | `boolean` | `false` | 非受控模式下的默认选中状态 |
+| `onCheckedChange` | `(checked: boolean) => void` | - | 选中状态变化时的回调 |
 | `indicator` | `(checked: boolean, wrapperClassName?: string) => React.ReactNode` | - | 自定义指示器渲染函数，包含包装器className |
-| `disabled` | `boolean` | `false` | 禁用单选框 |
-| `name` | `string` | - | 输入框名称 |
 | `invalid` | `boolean` | `false` | 标记为无效 |
 | `className` | `ClassNameValue` | - | 自定义 CSS 类。仅支持字符串、数组及各类假值。 |
+| `...props` | `React.ComponentProps<"input">` | - | 支持所有原生 input 属性（除 `type`、`className` 外），如 `name`、`value`、`disabled` |
+
+### RadioOptionConfig
+
+| Field | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | - | 选项显示文本 |
+| `value` | `string` | - | 唯一标识值 |
+| `disabled` | `boolean` | `false` | 禁用该选项 |
+| `invalid` | `boolean` | `false` | 标记该选项为无效 |
+| `indicator` | `(checked: boolean, wrapperClassName?: string) => React.ReactNode` | - | 自定义指示器，优先级高于 `common.indicator` |
+| `className` | `ClassNameValue` | - | 自定义类名，优先级高于 `common.className` |
 
 ### Radio.Group
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | 单选框子项 |
-| `value` | `T` | - | 受控值 |
-| `defaultValue` | `T` | - | 默认值（非受控） |
-| `onValueChange` | `(value: T) => void` | - | 值变化时的回调 |
-| `disabled` | `boolean` | `false` | 禁用所有子项 |
+| `options` | `RadioOptionConfig[]` | - | 选项数据数组 |
+| `value` | `string` | - | 受控选中值 |
+| `defaultValue` | `string` | - | 非受控模式下的默认选中值 |
+| `onValueChange` | `(value: string) => void` | - | 选中值变化时的回调 |
+| `disabled` | `boolean` | `false` | 禁用所有选项 |
 | `invalid` | `boolean` | `false` | 标记为无效 |
 | `name` | `string` | - | 分组名称 |
-| `variant` | `'radio' \| 'segment'` | `'radio'` | 所有子项的视觉变体 |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类。仅支持字符串、数组及各类假值。 |
+| `className` | `ClassNameValue` | - | 自定义类名，应用于容器 |
+| `common` | `{ className?, indicator? }` | - | 应用于所有选项的通用配置 |

@@ -1,0 +1,17 @@
+[data-surface="mist"] {
+  --background: oklch(98.7% 0.002 197.1);
+  --foreground: oklch(14.8% 0.004 228.8);
+  --muted: oklch(93% 0.007 106.5);
+  --muted-foreground: oklch(28.6% 0.016 107.4);
+  --accent: oklch(87.2% 0.007 219.6);
+  --neutral: oklch(56% 0.021 213.5);
+}
+
+.dark[data-surface="mist"] {
+  --foreground: oklch(98.7% 0.002 197.1);
+  --background: oklch(14.8% 0.004 228.8);
+  --muted: oklch(28.6% 0.016 107.4);
+  --muted-foreground: oklch(93% 0.007 106.5);
+  --accent: oklch(37.8% 0.015 216);
+  --neutral: oklch(72.3% 0.014 214.4);
+}

@@ -2,156 +2,138 @@ import path from "node:path";
 import axios from "axios";
 import fs from "fs-extra";
 import logger from "../utils/logger";
+import { getFileNameFromUrl, loadRegistry } from "../utils/registry";
+import { writeBarrelIndex } from "../utils/barrel";
+import init from "../commands/init";
 
 interface AddOptions {
   overwrite?: boolean;
-  docs?: boolean;
-  config?: string;
-  componentsDir?: string;
 }
 
 interface LitefyConfig {
-  components: string;
-  installed: string[];
-  aliases?: {
-    ui: string;
-    hooks: string;
-    utils: string;
+  sourceRoot: string;
+  components: {
+    path: string;
+    installed: string[];
   };
-  docs?: string;
+  utils: {
+    path: string;
+    installed: string[];
+  };
+  styles: {
+    path: string;
+    installed: string[];
+  };
 }
 
-interface RegistryEntry {
+export type RegistryEntry = {
+  type: "component" | "hook" | "util" | "css";
   url: string;
   docs?: string;
-}
+  dependence?: string[];
+};
 
-type Registry = Record<string, RegistryEntry>;
+export type Registry = Record<string, RegistryEntry>;
 
-const REGISTRY_URL =
-  "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/registry.json";
-
-async function fetchRegistry(): Promise<Registry> {
-  try {
-    const response = await axios.get<Registry>(REGISTRY_URL);
-    return response.data;
-  } catch (error) {
-    logger.error(`Failed to fetch component registry from ${REGISTRY_URL}`);
-    logger.error(error instanceof Error ? error.message : String(error));
-    process.exit(1);
-  }
-}
-
-async function add(components: string[], options: AddOptions): Promise<void> {
-  logger.step(`Preparing to add components: ${components.join(", ")}`);
+async function add(selectNames: string[], options: AddOptions): Promise<void> {
+  logger.step(`Preparing to add: ${selectNames.join(", ")}`);
 
   const cwd = process.cwd();
-  const configPath = options.config
-    ? path.resolve(cwd, options.config)
-    : path.join(cwd, "litefy.json");
+  const configPath = path.join(cwd, "litefy.json");
 
   if (!(await fs.pathExists(configPath))) {
-    logger.warn(`litefy.json not found at ${configPath}`);
-    logger.info("Please run `litefy init` first.");
-    return;
+    logger.info("litefy.json not found, running init automatically...");
+    await init({ yes: true });
   }
 
   const config = (await fs.readJson(configPath)) as LitefyConfig;
+  const registry: Registry = await loadRegistry();
 
-  const componentsDirRaw =
-    options.componentsDir || config.components || "./src/ui";
-  const componentsDir = path.resolve(cwd, componentsDirRaw);
-  await fs.ensureDir(componentsDir);
+  const targetDirFor = (entry: RegistryEntry) =>
+    entry.type === "component"
+      ? config.components.path
+      : entry.type === "css"
+        ? config.styles.path
+        : config.utils.path;
 
-  const registry = await fetchRegistry();
+  const installedListFor = (entry: RegistryEntry) =>
+    entry.type === "component"
+      ? config.components.installed
+      : entry.type === "css"
+        ? config.styles.installed
+        : config.utils.installed;
 
-  for (const component of components) {
-    await addSingleComponent(
-      component,
-      componentsDir,
-      options,
-      config,
-      registry,
-    );
+  const processed = new Set<string>();
+  const queue = [...selectNames];
+
+  while (queue.length) {
+    const name = queue.shift()!;
+    if (processed.has(name)) continue;
+    processed.add(name);
+
+    const entry = registry[name];
+    if (!entry) {
+      logger.error(`Not found in registry: ${name}`);
+      continue;
+    }
+
+    const ok = await addSingle(name, entry, targetDirFor(entry), cwd, options);
+    if (!ok) continue;
+
+    const installedList = installedListFor(entry);
+    if (!installedList.includes(name)) installedList.push(name);
+
+    for (const dep of entry.dependence ?? []) {
+      if (processed.has(dep)) continue;
+      if (!registry[dep]) {
+        logger.warn(`Dependency "${dep}" of ${name} not found in registry, skip`);
+        continue;
+      }
+      logger.info(`Resolving dependency "${dep}" required by ${name}`);
+      queue.push(dep);
+    }
   }
 
-  const newInstalled = [...new Set([...config.installed, ...components])];
-  config.installed = newInstalled;
-  await fs.writeJson(configPath, config, { spaces: 2 });
+  const compIndex = path.resolve(cwd, config.components.path, "index.ts");
+  await writeBarrelIndex(compIndex, config.components.installed);
 
-  logger.success("All components added successfully!");
+  const utilIndex = path.resolve(cwd, config.utils.path, "index.ts");
+  await writeBarrelIndex(utilIndex, config.utils.installed);
+
+  await fs.writeJson(configPath, config, { spaces: 2 });
+  logger.success("Process finished.");
 }
 
-async function addSingleComponent(
-  componentName: string,
-  targetDir: string,
+export async function addSingle(
+  itemName: string,
+  entry: RegistryEntry,
+  relTargetDir: string,
+  cwd: string,
   options: AddOptions,
-  config: LitefyConfig,
-  registry: Registry,
-): Promise<void> {
-  const componentInfo = registry[componentName];
-  if (!componentInfo) {
-    logger.error(`Component not found: ${componentName}`);
-    return;
+): Promise<boolean> {
+  const targetDir = path.resolve(cwd, relTargetDir);
+  await fs.ensureDir(targetDir);
+
+  const fileName = getFileNameFromUrl(entry.url);
+  const outFile = path.join(targetDir, fileName);
+  const exists = await fs.pathExists(outFile);
+
+  if (exists && !options.overwrite) {
+    logger.warn(`${fileName} exists, skip. Use --overwrite to replace.`);
+    return true;
   }
 
-  const targetFilePath = path.join(targetDir, `${componentName}.tsx`);
-  const componentExists = await fs.pathExists(targetFilePath);
-  const alreadyInstalled = config.installed.includes(componentName);
-
-  let downloadComponent = true;
-  if (alreadyInstalled && !options.overwrite) {
-    logger.warn(
-      `${componentName} already installed in config, skipping. Use --overwrite to force.`,
-    );
-    downloadComponent = false;
-  } else if (componentExists && !options.overwrite) {
-    logger.warn(
-      `${componentName}.tsx already exists, skipping. Use --overwrite to force.`,
-    );
-    downloadComponent = false;
+  logger.step(`Download ${itemName} → ${path.relative(cwd, outFile)}`);
+  try {
+    const res = await axios.get<string>(entry.url, { timeout: 10000 });
+    await fs.writeFile(outFile, res.data, "utf-8");
+    logger.success(`Saved ${fileName}`);
+  } catch (e) {
+    logger.error(`Download failed ${itemName}: ${e instanceof Error ? e.message : String(e)}`);
+    return false;
   }
 
-  if (downloadComponent) {
-    logger.step(`Downloading ${componentName}.tsx...`);
-    try {
-      const response = await axios.get<string>(componentInfo.url);
-      await fs.writeFile(targetFilePath, response.data);
-      logger.success(`${componentName}.tsx saved to ${targetFilePath}`);
-    } catch (err) {
-      logger.error(
-        `Failed to download ${componentName}.tsx: ${err instanceof Error ? err.message : String(err)}`,
-      );
-    }
-  }
-
-  if (options.docs && componentInfo.docs) {
-    const docsDir = config.docs
-      ? path.resolve(process.cwd(), config.docs)
-      : path.join(process.cwd(), "docs");
-    await fs.ensureDir(docsDir);
-    const docsPath = path.join(docsDir, `${componentName}.md`);
-    const docsExists = await fs.pathExists(docsPath);
-    if (docsExists && !options.overwrite) {
-      logger.warn(
-        `Documentation ${componentName}.md already exists, skipped. Use --overwrite to force.`,
-      );
-    } else {
-      try {
-        const docsResponse = await axios.get<string>(componentInfo.docs);
-        await fs.writeFile(docsPath, docsResponse.data);
-        logger.success(`Documentation saved to ${docsPath}`);
-      } catch (err) {
-        logger.error(
-          `Failed to download ${componentName} docs: ${err instanceof Error ? err.message : String(err)}`,
-        );
-      }
-    }
-  } else if (options.docs && !componentInfo.docs) {
-    logger.warn(
-      `No documentation URL configured for ${componentName} in registry.`,
-    );
-  }
+  return true;
 }
 
 export default add;

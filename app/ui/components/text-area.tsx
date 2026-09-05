@@ -1,0 +1,38 @@
+"use client";
+
+import { type ClassNameValue, cn } from "..";
+
+export type TextareaProps = Omit<React.ComponentProps<"textarea">, "value" | "onChange"> & {
+  value?: string;
+  className?: ClassNameValue;
+
+  invalid?: boolean;
+
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => undefined | { invalid?: string };
+};
+
+export function Textarea({
+  className,
+
+  invalid,
+
+  ...props
+}: TextareaProps) {
+  return (
+    <textarea
+      {...props}
+      aria-invalid={invalid}
+      data-invalid={invalid ? true : undefined}
+      className={cn(
+        "flex w-full rounded-lg border border-border shadow-xs transition-colors px-2 py-2 text-sm",
+        "min-h-20 resize-y",
+        "focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20",
+        "data-[invalid=true]:border-danger data-[invalid=true]:ring-danger/20",
+        "disabled:cursor-not-allowed disabled:opacity-50",
+        "placeholder:text-muted-foreground",
+        "selection:bg-primary selection:text-primary-foreground",
+        className,
+      )}
+    />
+  );
+}

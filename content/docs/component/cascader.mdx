@@ -1,0 +1,129 @@
+---
+title: Cascader
+description: A multi-level cascading selector driven by a tree, built from a breadcrumb-style trigger and popover panels positioned via CSS anchor positioning
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add cascader" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="cascader" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Pass a tree structure to `tree`; clicking a level opens the corresponding panel beneath the field, while clicking a leaf closes the panel and completes the selection.
+
+<ComponentPreview
+  name="cascader-basic"
+/>
+
+```tsx
+import { Cascader, type CascaderNode } from "@/ui";
+
+const tree: CascaderNode[] = [
+  {
+    value: "california",
+    label: "California",
+    children: [
+      {
+        value: "los-angeles",
+        label: "Los Angeles",
+        children: [
+          { value: "downtown", label: "Downtown" },
+          { value: "hollywood", label: "Hollywood" },
+          { value: "pasadena", label: "Pasadena" },
+        ],
+      },
+      {
+        value: "san-francisco",
+        label: "San Francisco",
+        children: [
+          { value: "soma", label: "SoMa" },
+          { value: "richmond", label: "Richmond" },
+          { value: "sunset", label: "Sunset" },
+        ],
+      },
+    ],
+  },
+  {
+    value: "new-york",
+    label: "New York",
+    children: [
+      {
+        value: "new-york-city",
+        label: "New York City",
+        children: [
+          { value: "manhattan", label: "Manhattan" },
+          { value: "brooklyn", label: "Brooklyn" },
+        ],
+      },
+    ],
+  },
+];
+
+export default function Demo() {
+  return <Cascader tree={tree} />;
+}
+```
+
+## Notes
+
+- The trigger is styled like a breadcrumb but uses plain buttons with `ChevronRight` instead of the Breadcrumb component, since breadcrumb semantics are for page navigation.
+- Panels render inline with `popover="manual"` (the top layer escapes ancestor `overflow` clipping) and are anchored to their corresponding trigger buttons via CSS anchor positioning.
+- Chrome 125+ is required for CSS anchor positioning.
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Cascader
+
+A multi-level cascading selector driven by a tree. It renders one breadcrumb-style trigger per level and anchors each level's panel to its trigger via CSS anchor positioning. Clicking a parent level opens the next level's panel below the field; selecting a leaf closes the panels and the full path is shown across the triggers. Panel sizing is customizable via `styles.panel` (default width `18rem`) and `classNames.panel`. The anchor props (`anchorName` / `positionAnchor`) are managed internally and always take precedence over `styles`.
+
+| Prop         | Type                                                                     | Default                  | Description                                                                                    |
+| :----------- | :----------------------------------------------------------------------- | :----------------------- | :--------------------------------------------------------------------------------------------- |
+| `tree`       | `CascaderNode[]`                                                         | -                        | Tree data driving the cascading selection                                                      |
+| `placeholder` | `string`                                                                | `"Select your location"` | Trigger text shown before anything is selected                                                 |
+| `className`  | `ClassNameValue`                                                         | -                        | Custom classes for the root container                                                          |
+| `classNames` | `{ trigger?: ClassNameValue; panel?: ClassNameValue }`                   | -                        | Custom classes for the triggers and panels                                                     |
+| `styles`     | `{ trigger?: React.CSSProperties; panel?: React.CSSProperties }`         | -                        | Inline styles for the triggers and panels                                                      |
+| `...props`   | `React.ComponentProps<"div">`                                            | -                        | Supports all native div props (except `children`, `className`), spread onto the root container |
+
+#### CascaderNode
+
+Node structure for the cascader tree.
+
+| Field     | Type              | Default | Description                     |
+| :-------- | :---------------- | :------ | :------------------------------ |
+| `value`   | `string`          | -       | Unique value for the node       |
+| `label`   | `string`          | -       | Display text for the node       |
+| `children` | `CascaderNode[]` | -       | Child nodes for the next level  |
+
+---
+
+### Composable Components
+
+#### CascaderTrigger
+
+A breadcrumb-style trigger button; the composite renders one per level and anchors the matching panel to it via CSS anchor positioning.
+
+| Prop       | Type                              | Default | Description                      |
+| :--------- | :-------------------------------- | :------ | :------------------------------- |
+| `className` | `ClassNameValue`                 | -       | Custom CSS class                 |
+| `...props` | `React.ComponentProps<"button">`  | -       | Supports all native button props |

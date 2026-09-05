@@ -1,0 +1,90 @@
+---
+title: use-theme
+description: Global theme state hook with localStorage persistence for brand, surface and color mode
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add use-theme" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="hook" name="use-theme" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+A module-level store shared across components via `useSyncExternalStore`. Reads `brand` / `surface` / `theme` from localStorage on load, applies them to `document.documentElement` (`data-brand`, `data-surface`, `.dark`, `color-scheme`) and follows the system color scheme when `theme` is `"system"`.
+
+<ComponentPreview
+  name="use-theme-basic"
+/>
+
+```tsx
+import { useTheme } from "@/ui";
+
+function ThemeToggle() {
+  const theme = useTheme();
+  return <button onClick={theme.toggleTheme}>Toggle</button>;
+}
+```
+
+## Theming tokens
+
+`surface` and `brand` switch the CSS variable sets defined in `app/ui/styles/*-surface.css` and `app/ui/styles/*-brand.css`. The preview above lets you switch them live. To install a preset palette statically, see [Theming](/docs/theming).
+
+### Surface
+
+The surface palette is a neutral color system for containers:
+
+| Token | Purpose |
+|------|-------------|
+| `--background` / `--foreground` | Containers that carry content, e.g. popover, sidebar, card, paper |
+| `--muted` | Areas that should not draw attention, e.g. the app-level background; content containers are painted with the more prominent `--background`, so users focus on them against the muted backdrop |
+| `--muted-foreground` | Description text, one step weaker than body text |
+| `--accent` | Hover states and skeleton backgrounds |
+
+### Brand
+
+The brand palette is the theme color system. Except for the default black-and-white theme, brands are colorful:
+
+| Token | Purpose |
+|------|-------------|
+| `--primary` | The main brand color, used for emphasized actions and states |
+| `--accent` | The reinforced primary color, used for hover scenarios |
+| `--ring` | Borders and focus outlines, also part of the brand color family |
+
+## API Reference
+
+### useTheme
+
+```ts
+function useTheme(): ThemeState
+```
+
+Returns a `ThemeState`:
+
+| Property | Type | Description |
+|------|------|-------------|
+| `brand` | `string` | Current brand token, mapped to `data-brand` on the root element |
+| `surface` | `string` | Current surface token, mapped to `data-surface` on the root element |
+| `theme` | `'light' \| 'dark' \| 'system'` | Current color mode |
+| `setBrand` | `(brand: string) => void` | Set the brand token, persists and applies it |
+| `setSurface` | `(surface: string) => void` | Set the surface token, persists and applies it |
+| `setTheme` | `(mode: ThemeMode) => void` | Set the color mode, persists and applies it |
+| `toggleTheme` | `() => void` | Switch between light and dark (resolves system first) |
+
+**Notes:**
+
+- All state lives outside React; multiple components calling `useTheme` share one store and re-render together.
+- Persisted under the `theme-storage` localStorage key.
+- When `theme` is `"system"`, the stored value is kept and the applied mode follows `prefers-color-scheme` changes live.

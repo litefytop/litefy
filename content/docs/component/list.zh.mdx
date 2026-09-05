@@ -1,0 +1,107 @@
+---
+title: List
+description: 支持键盘导航、高亮、选中与滚动到底回调的滚动列表容器
+---
+
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add list" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="list" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+由 `items` 驱动的滚动容器，行内容通过 `renderItem` 渲染。需要分页时搭配 [`usePagination`](/docs/utils/use-pagination) hook。
+
+<ComponentPreview
+  name="list-basic"
+/>
+
+```tsx
+import { List } from "@/ui";
+
+<List
+  className="h-40 rounded-md border"
+  items={tasks}
+  getKey={(task) => task.id}
+  empty={<div className="px-3 py-4 text-center text-muted-foreground">暂无数据</div>}
+  renderItem={(task) => (
+    <>
+      <span className="flex-1 truncate">{task.title}</span>
+      <span className="text-muted-foreground">{task.status}</span>
+    </>
+  )}
+/>
+```
+
+键盘导航是内置的：根节点可聚焦（`tabIndex={0}`），`ArrowUp` / `ArrowDown` 移动高亮（到达两端后停止）并自动滚动到可视区域，`Enter` 或点击行触发 `onSelect`。高亮项携带 `data-highlighted`（样式为 `bg-hover`）。对于焦点需要留在别处的容器 —— 如 combobox 输入框 —— 传入 `highlightIndex` / `onHighlightChange` 从外部受控高亮，参见 [Combobox](/docs/component/combobox) 指南。
+
+### 分组
+
+提供 `getGroup` 为每项派生分组标签；标签变化时渲染一行组标题。组标题是普通行 —— 不可聚焦、不会被键盘导航高亮、也不可选中，因此 `ArrowUp` / `ArrowDown` / `Enter` 只作用于数据项。通过 `renderGroupHeader` 自定义标题渲染。
+
+<ComponentPreview
+  name="list-grouped"
+/>
+
+## API 参考
+
+### 高级组件
+
+#### List
+
+支持滚动与键盘导航的列表；尺寸完全由使用者指定（如 `h-40 rounded-md border`）。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `T[]` | - | 要渲染的数据数组 |
+| `renderItem` | `(item: T, index: number) => ReactNode` | - | 行内容渲染函数 |
+| `getKey` | `(item: T, index: number) => Key` | - | 行 key 提取函数；默认使用索引 |
+| `empty` | `React.ReactNode` | - | `items` 为空时渲染的内容 |
+| `highlightIndex` | `number \| null` | - | 受控高亮索引；省略时使用内部键盘导航 |
+| `onHighlightChange` | `(index: number \| null) => void` | - | 高亮变化时触发 |
+| `getGroup` | `(item: T, index: number) => string` | - | 分组标签提取函数；仅当 `getGroup` 与 `renderGroupHeader` 同时提供时启用分组 |
+| `renderGroupHeader` | `(groupName: string) => ReactNode` | - | 组标题渲染函数；仅当 `getGroup` 与 `renderGroupHeader` 同时提供时启用分组 |
+| `onSelect` | `(item: T, index: number) => void` | - | 点击行或键盘导航期间按下 `Enter` 确认时触发 |
+| `onScrollBottom` | `() => void` | - | 列表滚动到底部 16px 以内时触发，用于加载更多场景 |
+| `ref` | `React.Ref<HTMLUListElement \| HTMLDivElement>` | - | 根元素 ref —— 平铺模式为 `ul`，分组模式为 `div`，例如用于把焦点移入列表 |
+| `className` | `ClassNameValue` | - | 根节点自定义类 |
+| `style` | `React.CSSProperties` | - | 根节点自定义内联样式 |
+| `classNames` | `{ root?: ClassNameValue; item?: ClassNameValue; groupHeader?: ClassNameValue }` | - | 根节点、行与组标题的自定义类 |
+| `styles` | `{ root?: React.CSSProperties; item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | - | 根节点、行与组标题的内联样式 |
+
+根节点在行之间应用 `divide-y divide-border`，通过 `overflow-y-auto` 提供滚动，并带有 `outline-none`（没有内置聚焦描边）。
+
+#### Order
+
+有序列表变体，根节点渲染为带十进制编号（`list-decimal pl-6`）的 `<ol>`。它接受除分组 API（`getGroup` / `renderGroupHeader`）外的所有 `List` 属性，`ref` 类型为 `React.Ref<HTMLOListElement>`。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `T[]` | - | 要渲染的数据数组 |
+| `renderItem` | `(item: T, index: number) => ReactNode` | - | 行内容渲染函数 |
+| `getKey` | `(item: T, index: number) => Key` | - | 行 key 提取函数；默认使用索引 |
+| `empty` | `React.ReactNode` | - | `items` 为空时渲染的内容 |
+| `highlightIndex` | `number \| null` | - | 受控高亮索引；省略时使用内部键盘导航 |
+| `onHighlightChange` | `(index: number \| null) => void` | - | 高亮变化时触发 |
+| `onSelect` | `(item: T, index: number) => void` | - | 点击行或键盘导航期间按下 `Enter` 确认时触发 |
+| `onScrollBottom` | `() => void` | - | 列表滚动到底部 16px 以内时触发，用于加载更多场景 |
+| `ref` | `React.Ref<HTMLOListElement>` | - | 根 `<ol>` 元素的 ref |
+| `className` | `ClassNameValue` | - | 根节点自定义类 |
+| `style` | `React.CSSProperties` | - | 根节点自定义内联样式 |
+| `classNames` | `{ root?: ClassNameValue; item?: ClassNameValue; groupHeader?: ClassNameValue }` | - | 各部分自定义类（`Order` 中不会用到 `groupHeader`） |
+| `styles` | `{ root?: React.CSSProperties; item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | - | 各部分自定义内联样式（`Order` 中不会用到 `groupHeader`） |

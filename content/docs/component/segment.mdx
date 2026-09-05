@@ -1,0 +1,83 @@
+---
+title: Segment
+description: A segmented control component for single-select, supporting controlled, uncontrolled and options-driven modes
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add segment" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="segment" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Data-driven segmented control for single-select, supporting controlled and uncontrolled modes.
+
+<ComponentPreview
+  name="segment-basic"
+/>
+
+### Custom
+
+Assemble segments manually with controlled parts; the composite uses a pure color transition by default and ships without a sliding indicator — add one yourself if needed.
+
+<ComponentPreview
+  name="segment-custom"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite component.
+
+#### SegmentGroup
+
+| Prop             | Type                          | Default | Description                                        |
+| :--------------- | :---------------------------- | :------ | :------------------------------------------------- |
+| `options`        | `SegmentOptionConfig[]`       | -       | Options data array                                 |
+| `value`          | `string`                      | -       | Controlled selected value                          |
+| `defaultValue`   | `string`                      | -       | Default selected value (uncontrolled)              |
+| `onValueChange`  | `(value: string) => void`     | -       | Callback when the selected value changes           |
+| `disabled`       | `boolean`                     | `false` | Disable all options                                |
+| `invalid`        | `boolean`                     | `false` | Mark the group as invalid                          |
+| `className`      | `ClassNameValue`              | -       | Custom class names, applied to the container       |
+| `itemClassName`  | `ClassNameValue`              | -       | Custom class names, applied to each segment        |
+
+### SegmentOptionConfig
+
+| Field       | Type              | Default | Description                                       |
+| :---------- | :---------------- | :------ | :------------------------------------------------ |
+| `label`     | `string`          | -       | Option display text                               |
+| `value`     | `string`          | -       | Unique identifier value                           |
+| `disabled`  | `boolean`         | `false` | Disable the option                                |
+| `className` | `ClassNameValue`  | -       | Custom class names, overrides `itemClassName`     |
+
+---
+
+### Composable Components
+
+#### Segment
+
+A single segment part with radio semantics: once checked, clicking again does not uncheck it. It carries no internal state — the `checked` state must be provided from outside, so it is only meaningful inside a `SegmentGroup` or a manually assembled group container.
+
+| Prop       | Type                             | Default | Description                                                       |
+| :--------- | :------------------------------- | :------ | :---------------------------------------------------------------- |
+| `children` | `React.ReactNode`                | -       | The segment content                                               |
+| `checked`  | `boolean`                        | `false` | Checked state, drives `aria-checked` and the checked styles       |
+| `className` | `ClassNameValue`                | -       | Custom class names                                                |
+| `...props` | `React.ComponentProps<"button">` | -       | Supports all native button props (except `type`), such as `onClick`, `disabled` |

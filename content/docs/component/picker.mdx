@@ -1,0 +1,110 @@
+---
+title: Picker
+description: A generic input + popover container component for building pickers such as a date picker, powered by native popover and CSS anchor positioning
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add picker" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="picker" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Click the input to toggle the popover panel. The open state and the input value each support controlled (`open` / `value`) and uncontrolled (`defaultOpen` / `defaultValue`) modes.
+
+<ComponentPreview
+  name="picker-basic"
+/>
+
+### DatePicker Assembly
+
+Picker is a building block, not a finished widget. Compose it with [Calendar](/docs/component/calendar) to assemble a date picker directly in your page — or use the shipped [DatePicker](/docs/component/datepicker) component, which is this exact assembly. Selecting a date updates the input value and closes the panel via `onOpenChange`.
+
+<ComponentPreview
+  name="picker-datepicker"
+/>
+
+The same assembly model applies to other pickers: combine Picker with any panel content (a list, a color grid, a tree) inside the `children` slot.
+
+## API Reference
+
+### High-level Components
+
+#### Picker
+
+| Prop            | Type                              | Default | Description                                                                 |
+| :-------------- | :-------------------------------- | :------ | :-------------------------------------------------------------------------- |
+| `value`         | `string`                          | -       | Controlled input value                                                      |
+| `defaultValue`  | `string`                          | `""`    | Default input value (uncontrolled)                                          |
+| `onValueChange` | `(value: string) => void`         | -       | Fired when the input value changes                                          |
+| `open`          | `boolean`                         | -       | Controlled popover open state                                               |
+| `defaultOpen`   | `boolean`                         | `false` | Initial open state (uncontrolled)                                           |
+| `onOpenChange`  | `(open: boolean) => void`         | -       | Fired when the popover should open or close (click, outside press, Escape)  |
+| `trailing`      | `React.ReactNode`                 | -       | Icon rendered at the input's trailing edge                                  |
+| `children`      | `React.ReactNode`                 | -       | Popover panel content                                                       |
+| `panelRef`      | `React.Ref<HTMLDivElement>`       | -       | Receives the panel element, for [`usePanelFocus`](/docs/utils/use-panel-focus) |
+| `classNames`    | `PickerClassNames`                | -       | Per-part class name overrides: `root`, `input`, `trailing`, `popover`       |
+| `styles`        | `PickerStyles`                    | -       | Per-part style overrides: `root`, `input`, `trailing`, `popover`            |
+| `...props`      | `React.ComponentProps<"input">`   | -       | Remaining native input props, such as `placeholder` and `disabled`          |
+
+Behavior notes:
+
+- The popover is a native `popover="manual"` element positioned with CSS anchor positioning; the panel is anchored to the input, aligned to the bottom-start edge, with `min-width: anchor-size(width)` and a `flip-block` fallback.
+- Clicking the input toggles the panel. Pressing `Escape` or pressing outside both the input and the panel closes it.
+- Keyboard: `ArrowDown` opens the panel when it is closed, and `Escape` closes it — built in, no wiring needed.
+- Consumer `onKeyDown` / `onClick` handlers are composed with the internal behavior, not overridden; the internal open and Escape-close are skipped when the consumer calls `preventDefault`.
+- In controlled mode the parent must respond to `onValueChange` by updating `value`, otherwise typing in the input is blocked.
+- The popover positioning depends on CSS anchor positioning support — make sure the target environment supports it.
+
+Picker panels come in two keyboard flavors, wired with hooks — pick the one matching the panel content:
+
+- **Virtual focus** (highlighted lists): use [`useCombobox`](/docs/utils/use-combobox). The input keeps focus while the panel is open; `ArrowDown` / `ArrowUp` move the highlight and `Enter` selects.
+- **Real focus** (grids, forms, any panel of real focusable controls): use [`usePanelFocus`](/docs/utils/use-panel-focus) with the `panelRef` prop. `ArrowDown` / `ArrowUp` move focus into the panel's first / last focusable element while the panel is open.
+
+When the panel closes, focus returns to the input if it would otherwise be lost (e.g. `Escape` while the focus is inside the panel).
+
+---
+
+### Composable Components
+
+#### PickerRoot
+
+Wrapper around the input; carries the anchor name consumed by the panel. Extends all native `div` props.
+
+| Prop       | Type                          | Default | Description        |
+| :--------- | :---------------------------- | :------ | :----------------- |
+| `className`| `ClassNameValue`              | -       | Custom class names |
+| `...props` | `React.ComponentProps<"div">` | -       | Native div props   |
+
+#### PickerInput
+
+The trigger input. Extends all native `input` props (except `className`).
+
+| Prop       | Type                           | Default | Description         |
+| :--------- | :----------------------------- | :------ | :------------------ |
+| `className`| `ClassNameValue`               | -       | Custom class names  |
+| `...props` | `React.ComponentProps<"input">`| -       | Native input props  |
+
+#### PickerContent
+
+The popover panel. A native `popover="manual"` element; call `showPopover()` / `hidePopover()` imperatively, and position it manually via `style={{ positionAnchor: ... }}` (the anchor name set on the corresponding `PickerRoot`); it has no `positionAnchor` prop.
+
+| Prop       | Type                          | Default | Description         |
+| :--------- | :---------------------------- | :------ | :------------------ |
+| `className`| `ClassNameValue`              | -       | Custom class names  |
+| `...props` | `React.ComponentProps<"div">` | -       | Native div props    |

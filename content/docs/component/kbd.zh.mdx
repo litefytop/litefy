@@ -1,0 +1,45 @@
+---
+title: Kbd 键盘按键
+description: 键盘按键视觉元素，带可按压的悬停与激活状态。
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add kbd" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="kbd" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+单个按键。
+
+<ComponentPreview name="kbd-basic" />
+
+### 组合键
+
+将多个按键组合成快捷键。
+
+<ComponentPreview name="kbd-combination" />
+
+## API 参考
+
+### Kbd
+
+键盘按键视觉元素。圆角跟随 `--radius`，边框与阴影颜色来自 `--color-neutral` 与 `--color-ring` 主题 token。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+| `...props` | `React.ComponentProps<"kbd">` | - | 支持所有原生 kbd 属性 |

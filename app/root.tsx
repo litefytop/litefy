@@ -10,12 +10,13 @@ import {
   useParams,
 } from "react-router";
 import type { Route } from "./+types/root";
-import "./assets/styles/index.css";
+import "./ui/styles/index.css";
 import { Suspense } from "react";
-import SearchDialog from "@/components/search";
+import SearchDialog from "./components/search";
 import { i18n } from "@/lib/i18n";
-import { translations } from "@/lib/layout.shared";
+import { translations } from "@/components/layout-shared";
 import { HydrateFallback } from "./components/hydrate-fallback";
+import { BrowserSupportNotice } from "./components/browser-support-notice";
 import NotFound from "./routes/not-found";
 
 export function Layout(
@@ -23,7 +24,7 @@ export function Layout(
 ) {
   const { lang = i18n.defaultLanguage } = useParams<{ lang?: string }>();
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={lang} suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -31,8 +32,10 @@ export function Layout(
         <Links />
       </head>
       <body className="flex flex-col min-h-screen">
+        <BrowserSupportNotice />
         <Suspense fallback={<HydrateFallback />}>
           <RootProvider
+            theme={{ enabled: false }}
             search={{ SearchDialog }}
             i18n={i18nProvider(translations, lang)}
           >
@@ -52,6 +55,14 @@ const serverMiddleware: Route.MiddlewareFunction = async (
 ) => {
   const url = new URL(request.url);
   const pathname = url.pathname;
+
+  const segments = pathname.split("/").filter(Boolean);
+  if (segments.length > 0) {
+    const lang = segments[0];
+    if (lang !== "en" && lang !== "zh") {
+      return new Response("Not Found", { status: 404 });
+    }
+  }
 
   const langMatch = pathname.match(/^\/([a-z]{2})\/docs\/(.+)\.md$/);
   if (langMatch) {

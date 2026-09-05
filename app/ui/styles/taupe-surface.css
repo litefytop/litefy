@@ -1,0 +1,17 @@
+[data-surface="taupe"] {
+  --background: oklch(98.6% 0.002 67.8);
+  --foreground: oklch(14.7% 0.004 49.3);
+  --muted: oklch(92.2% 0.005 34.3);
+  --muted-foreground: oklch(26.8% 0.024 320.12);
+  --accent: oklch(86.8% 0.007 39.5);
+  --neutral: oklch(54.7% 0.021 43.1);
+}
+
+.dark[data-surface="taupe"] {
+  --foreground: oklch(98.6% 0.002 67.8);
+  --background: oklch(14.7% 0.004 49.3);
+  --muted: oklch(26.8% 0.011 36.5);
+  --muted-foreground: oklch(92.2% 0.005 34.3);
+  --accent: oklch(36.7% 0.016 35.7);
+  --neutral: oklch(71.4% 0.014 41.2);
+}

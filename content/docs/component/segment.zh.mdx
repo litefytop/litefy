@@ -1,0 +1,83 @@
+---
+title: Segment 分段控制器
+description: 支持受控、非受控和 options 驱动模式的单选分段控制组件
+---
+
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add segment" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="segment" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+数据驱动的分段控制器，用于单选，支持受控和非受控模式。
+
+<ComponentPreview
+  name="segment-basic"
+/>
+
+### 自定义拼装
+
+使用受控零件手动拼装分段控制器；组合组件默认使用纯颜色过渡，不内置滑动指示器，需要时可自行添加。
+
+<ComponentPreview
+  name="segment-custom"
+/>
+
+## API 参考
+
+### 高级组件
+
+开箱即用的组合组件。
+
+#### SegmentGroup
+
+| 属性             | 类型                          | 默认值  | 描述                                       |
+| ---------------- | ----------------------------- | ------- | ------------------------------------------ |
+| `options`        | `SegmentOptionConfig[]`       | -       | 选项数据数组                               |
+| `value`          | `string`                      | -       | 受控的选中值                               |
+| `defaultValue`   | `string`                      | -       | 非受控模式下的默认选中值                   |
+| `onValueChange`  | `(value: string) => void`     | -       | 选中值变化时触发的回调函数                 |
+| `disabled`       | `boolean`                     | `false` | 禁用所有选项                               |
+| `invalid`        | `boolean`                     | `false` | 标记分组为无效状态                         |
+| `className`      | `ClassNameValue`              | -       | 自定义类名，应用于容器                     |
+| `itemClassName`  | `ClassNameValue`              | -       | 自定义类名，应用于每个分段按钮             |
+
+### SegmentOptionConfig
+
+| 字段        | 类型              | 默认值  | 描述                                        |
+| ----------- | ----------------- | ------- | ------------------------------------------- |
+| `label`     | `string`          | -       | 选项显示文本                                |
+| `value`     | `string`          | -       | 唯一标识值                                  |
+| `disabled`  | `boolean`         | `false` | 禁用该选项                                  |
+| `className` | `ClassNameValue`  | -       | 自定义类名，优先级高于 `itemClassName`      |
+
+---
+
+### 可组合组件
+
+#### Segment
+
+单个分段零件，具有单选语义：选中后再次点击不会取消选中。它不持有内部状态，`checked` 状态必须由外部提供，因此只在 `SegmentGroup` 或手动拼装的分组容器中才有意义。
+
+| 属性       | 类型                             | 默认值  | 描述                                                          |
+| ---------- | -------------------------------- | ------- | ------------------------------------------------------------- |
+| `children` | `React.ReactNode`                | -       | 分段按钮的内容                                                |
+| `checked`  | `boolean`                        | `false` | 选中状态，驱动 `aria-checked` 和选中样式                      |
+| `className` | `ClassNameValue`                | -       | 自定义类名                                                    |
+| `...props` | `React.ComponentProps<"button">` | -       | 支持所有原生 button 属性（除 `type` 外），如 `onClick`、`disabled` |

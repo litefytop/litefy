@@ -1,0 +1,83 @@
+---
+title: Avatar
+description: An avatar component with image loading states, skeleton and fallback support
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add avatar" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="avatar" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Avatar component handling image loading, success, and failure states with skeleton and fallback.
+
+<ComponentPreview 
+  name="avatar-basic"
+/>
+
+### Custom
+
+Compose `AvatarRoot` and `AvatarImage` directly. They carry the same default styles as the composite `Avatar` and can be freely assembled and overridden via `className`.
+
+<ComponentPreview 
+  name="avatar-custom"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Avatar
+
+A self-managing avatar component that preloads the image and switches between skeleton, image, and fallback states.
+
+| Prop         | Type                                                          | Default | Description                                     |
+| ------------ | ------------------------------------------------------------- | ------- | ----------------------------------------------- |
+| `src`        | `string`                                                      | -       | Image source URL, required                      |
+| `skeleton`   | `React.ReactNode`                                             | -       | Content shown while the image is loading        |
+| `fallback`   | `React.ReactNode`                                             | -       | Content shown when the image fails to load      |
+| `classNames` | `{ root?: ClassNameValue; image?: ClassNameValue }`           | -       | Custom classes for the root container and image |
+| `styles`     | `{ root?: React.CSSProperties; image?: React.CSSProperties }` | -       | Inline styles for the root container and image  |
+
+Supports all native `<img>` attributes (such as `alt`) except `className` and `style`.
+
+### Composable Components
+
+#### AvatarRoot
+
+The container element rendered as a square with default `size-12`, centered content and hidden overflow.
+
+| Prop        | Type             | Default | Description      |
+| ----------- | ---------------- | ------- | ---------------- |
+| `className` | `ClassNameValue` | -       | Custom CSS class |
+
+Supports all native `<div>` attributes.
+
+#### AvatarImage
+
+The image element rendered with lazy loading and async decoding.
+
+| Prop        | Type             | Default | Description                |
+| ----------- | ---------------- | ------- | -------------------------- |
+| `src`       | `string`         | -       | Image source URL, required |
+| `className` | `ClassNameValue` | -       | Custom CSS class           |
+
+Supports all native `<img>` attributes.

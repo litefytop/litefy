@@ -1,6 +1,6 @@
 ---
 title: Checkbox 复选框
-description: 支持toggle变体的复选框组件
+description: 复选框组件，支持受控、非受控、分组和自定义指示器。
 ---
 
 ## 安装
@@ -9,13 +9,13 @@ description: 支持toggle变体的复选框组件
 
 <Tab value="CLI">
 
-<PackageManagerTabs command="litefy add checkbox" />
+<PackageManagerTabs command="litefy@latest add checkbox" />
 
 </Tab>
 
 <Tab value="Manual">
 
-<SourceCode component="checkbox" />
+<Source type="component" name="checkbox" />
 
 </Tab>
 
@@ -25,61 +25,110 @@ description: 支持toggle变体的复选框组件
 
 ### 基础用法
 
-基础复选框，支持受控和分组模式。
+基础复选框，支持受控和非受控模式。
 
 <ComponentPreview 
   name="checkbox-basic"
 />
 
-### Toggle变体
+### 组受控模式
 
-使用toggle变体实现开关效果。
+数据驱动的分组模式，支持全选/半选状态。
 
 <ComponentPreview 
-  name="checkbox-toggle"
+  name="checkbox-group"
 />
 
-### 受控与自定义图标
+### 自定义
 
-演示受控复选框配合自定义图标指示器，包括单个受控状态和受控分组状态。
-
-<ComponentPreview 
-  name="checkbox-controlled"
-/>
-
-### 禁用状态
-
-展示单个复选框禁用和复选框组禁用的效果。
+使用可组合组件构建带全选/半选状态的分组。注意 `CheckboxRoot` 必须放在 `CheckboxIndicator` 内部 —— 聚焦环样式依赖 `has-focus-visible:` 选择器匹配指示器的后代元素，root 放在外面会导致键盘聚焦时样式失效。
 
 <ComponentPreview 
-  name="checkbox-disabled"
+  name="checkbox-custom"
 />
 
 ## API 参考
 
-### Checkbox
+### 高阶组件
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | 复选框内容 |
-| `checked` | `boolean` | - | 受控选中状态 |
-| `onValueChange` | `(checked: boolean) => void` | - | 选中状态变化时的回调 |
-| `value` | `string` | - | 分组模式下的值 |
-| `variant` | `'checkbox' \| 'toggle'` | `'checkbox'` | 视觉变体 |
-| `indicator` | `(checked: boolean, wrapperClassName?: string) => React.ReactNode` | - | 自定义指示器渲染函数，包含包装器className |
-| `disabled` | `boolean` | `false` | 禁用复选框 |
-| `name` | `string` | - | 输入框名称 |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类，支持字符串、数组、对象、布尔值等多种格式。 |
+开箱即用的成品组件。
 
-### Checkbox.Group
+#### Checkbox
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | 复选框子项 |
-| `value` | `T[]` | - | 受控值 |
-| `defaultValue` | `T[]` | `[]` | 默认值（非受控） |
-| `onValueChange` | `(value: T[]) => void` | - | 值变化时的回调 |
-| `disabled` | `boolean` | `false` | 禁用所有子项 |
-| `invalid` | `boolean` | `false` | 标记为无效 |
-| `name` | `string` | - | 分组名称 |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类名，支持字符串、数组、对象、布尔值等多种格式。 |
+| 属性              | 类型                                                               | 默认值  | 描述                                                                                       |
+| :---------------- | :----------------------------------------------------------------- | :------ | :----------------------------------------------------------------------------------------- |
+| `children`        | `React.ReactNode`                                                  | -       | 复选框标签文本                                                                             |
+| `checked`         | `boolean`                                                          | -       | 受控选中状态                                                                               |
+| `defaultChecked`  | `boolean`                                                          | -       | 默认选中状态（非受控）                                                                     |
+| `onChange`        | `(e: React.ChangeEvent<HTMLInputElement>) => void`                 | -       | 原生 change 回调                                                                           |
+| `onCheckedChange` | `(checked: boolean) => void`                                       | -       | 选中状态变化回调                                                                           |
+| `indicator`       | `React.ReactNode`                                                  | -       | 自定义指示器内容，替换默认图标                                                             |
+| `classNames`      | `{ indicator?: ClassNameValue; label?: ClassNameValue }`           | -       | 指示器和 label 的自定义类名                                                                |
+| `styles`          | `{ indicator?: React.CSSProperties; label?: React.CSSProperties }` | -       | 指示器和 label 的内联样式                                                                  |
+| `disabled`        | `boolean`                                                          | `false` | 禁用复选框                                                                                 |
+| `...props`        | `React.ComponentProps<"input">`                                    | -       | 支持全部 input 原生属性（除 `type`、`className`、`value`），如 `name`、`value`、`required` |
+
+#### Checkbox.Group
+
+| 属性           | 类型                                                                                                                                                                              | 默认值  | 描述                       |
+| :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------ | :------------------------- |
+| `options`      | `(CheckboxOptionConfig \| CheckboxOptionGroup)[]`                                                                                                                                 | -       | 选项数据数组，支持平铺或分组 |
+| `value`        | `string[]`                                                                                                                                                                        | -       | 受控选中值                 |
+| `defaultValue` | `string[]`                                                                                                                                                                        | `[]`    | 默认选中值（非受控）       |
+| `onChange`     | `(values: string[]) => void`                                                                                                                                                      | -       | 值变化回调                 |
+| `name`         | `string`                                                                                                                                                                          | -       | 分组名称，作用于每个 input |
+| `disabled`     | `boolean`                                                                                                                                                                         | `false` | 禁用所有选项               |
+| `className`    | `ClassNameValue`                                                                                                                                                                  | -       | 自定义类名，作用于容器     |
+| `common`       | `{ classNames?: { indicator?: ClassNameValue; label?: ClassNameValue }; styles?: { indicator?: React.CSSProperties; label?: React.CSSProperties }; indicator?: React.ReactNode }` | -       | 统一应用到每个选项的配置   |
+
+#### CheckboxOptionConfig
+
+继承除 `children` 外的所有 `Checkbox` 属性。
+
+| 字段        | 类型              | 默认值 | 描述             |
+| :---------- | :---------------- | :----- | :--------------- |
+| `label`     | `string`          | -      | 选项显示文本     |
+| `value`     | `string`          | -      | 唯一标识值       |
+| `indicator` | `React.ReactNode` | -      | 子项自定义指示器 |
+
+#### CheckboxOptionGroup
+
+分组选项，渲染带标题的分组。
+
+| 字段      | 类型                    | 默认值 | 描述         |
+| :-------- | :---------------------- | :----- | :----------- |
+| `group`   | `string`                | -      | 分组标题     |
+| `options` | `CheckboxOptionConfig[]`| -      | 组内选项数组 |
+
+---
+
+### 可组合组件
+
+#### CheckboxRoot
+
+视觉上隐藏的原生 input（`sr-only`），承载状态、焦点和表单语义。
+
+| 属性        | 类型                            | 默认值 | 描述                                                       |
+| :---------- | :------------------------------ | :----- | :--------------------------------------------------------- |
+| `className` | `ClassNameValue`                | -      | 自定义 CSS 类                                              |
+| `...props`  | `React.ComponentProps<"input">` | -      | 支持全部 input 原生属性（除 `type`、`className`、`value`） |
+
+#### CheckboxIndicator
+
+视觉指示器，渲染为带 `role="checkbox"` 和 `aria-checked` 的 `span`，选中样式自动应用。
+
+| 属性        | 类型                           | 默认值 | 描述                                 |
+| :---------- | :----------------------------- | :----- | :----------------------------------- |
+| `checked`   | `boolean`                      | -      | 驱动 `aria-checked` 和选中样式       |
+| `className` | `ClassNameValue`               | -      | 自定义 CSS 类                        |
+| `children`  | `React.ReactNode`              | -      | 指示器内容，组合组件中默认为对勾图标 |
+| `...props`  | `React.ComponentProps<"span">` | -      | 支持全部 span 原生属性               |
+
+#### CheckboxLabel
+
+label 包装器，将 input 与指示器和文本关联起来。
+
+| 属性        | 类型                            | 默认值 | 描述                    |
+| :---------- | :------------------------------ | :----- | :---------------------- |
+| `className` | `ClassNameValue`                | -      | 自定义 CSS 类           |
+| `...props`  | `React.ComponentProps<"label">` | -      | 支持全部 label 原生属性 |

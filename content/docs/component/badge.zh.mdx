@@ -1,0 +1,67 @@
+---
+title: Badge 徽标
+description: 带角标的方形承载位——内部放图标，右上角通过 Tag 渲染标记。
+---
+
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add badge" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="badge" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+`Badge` 是一个固定尺寸的承载面（默认 `size-12` 的 muted 方块），角标通过 [Tag](/docs/component/tag) 组件渲染——传 `label` 即可在右上角挂上数字或文本标记。
+
+<ComponentPreview
+  name="badge-basic"
+/>
+
+### 尺寸
+
+承载面的形状完全来自工具类，用 `className` 即可改造——角标会自动重新锚定：
+
+```tsx
+<Badge className="size-8 rounded-full" label={3}>
+  <Bell className="size-5" />
+</Badge>
+```
+
+### 角标配色
+
+`label` 渲染为 Tag，用 `label` 插槽以同样的方式着色：
+
+```tsx
+<Badge label="New" classNames={{ label: "bg-emerald-600 text-white" }} />
+```
+
+## 注意
+
+- 角标内部使用 [Tag](/docs/component/tag) 组件——CLI 安装时请一并添加：`litefy add badge tag`。
+
+## API 参考
+
+### Badge
+
+| 属性       | 类型                              | 默认值 | 描述                                       |
+| :--------- | :-------------------------------- | :----- | :----------------------------------------- |
+| `children` | `React.ReactNode`                 | -      | 承载面内容，通常放图标                     |
+| `label`    | `React.ReactNode`                 | -      | 角标内容，以 Tag 渲染在右上角              |
+| `classNames`| `{ label?: ClassNameValue }`     | -      | 按插槽自定义类名                           |
+| `styles`   | `{ label?: React.CSSProperties }` | -      | 按插槽自定义样式                           |
+| `className`| `ClassNameValue`                  | -      | 承载面的自定义类名                         |
+| `...props` | `React.ComponentProps<"div">`     | -      | 原生 div 属性                              |

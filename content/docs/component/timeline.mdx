@@ -1,0 +1,85 @@
+---
+title: Timeline
+description: A vertical timeline — a display-only component of markers, connector lines, times, titles and descriptions
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add timeline" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="timeline" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+A display-only component with no controlled state — entries are defined via `items`, and the connector line automatically stops at the last entry.
+
+<ComponentPreview
+  name="timeline-basic"
+/>
+
+Key points:
+
+- Each entry renders `time` (tabular numerals), `heading` (medium weight) and optional `description` (muted text) top to bottom — all `React.ReactNode`.
+- The marker defaults to a primary-colored dot; passing `marker` (e.g. an icon) automatically enlarges it into a bordered circular container.
+- The connector line is managed by `Timeline`: the last entry renders none; when using `TimelineItem` standalone, turn it off via `connector={false}`.
+
+## API Reference
+
+### Timeline
+
+| Prop        | Type                            | Default | Description                            |
+| :---------- | :------------------------------ | :------ | :------------------------------------- |
+| `items`     | `TimelineItemConfig[]`          | -       | Timeline entry definitions             |
+| `className` | `ClassNameValue`                | -       | Custom class names, applied to the root |
+| `classNames` | `marker` / `connector` / `time` / `heading` / `description` | - | Custom class names per slot |
+
+### TimelineItemConfig
+
+| Field         | Type              | Default | Description                                                |
+| :------------ | :---------------- | :------ | :--------------------------------------------------------- |
+| `marker`      | `React.ReactNode` | -       | Optional custom marker content (e.g. an icon), defaults to a primary dot |
+| `time`        | `React.ReactNode` | -       | Optional time text                                         |
+| `heading`     | `React.ReactNode` | -       | Entry title                                                |
+| `description` | `React.ReactNode` | -       | Optional description text                                  |
+
+### Composable Components
+
+The parts extend native DOM props and merge their built-in `className` through `cn` — passing `className` extends the defaults instead of replacing them.
+
+#### TimelineRoot
+
+The outer `<ol>` flex container (list semantics come from the native element).
+
+| Prop       | Type                         | Default | Description      |
+| :--------- | :--------------------------- | :------ | :--------------- |
+| `className` | `ClassNameValue`            | -       | Custom class names |
+| `...props` | `React.ComponentProps<"ol">` | -       | Native ol props  |
+
+#### TimelineItem
+
+A single entry: marker, connector line (controlled by `connector`), time, title and optional description.
+
+| Prop          | Type                                                      | Default | Description                                        |
+| :------------ | :-------------------------------------------------------- | :------ | :------------------------------------------------- |
+| `connector`   | `boolean`                                                 | `true`  | Whether to render the connector below the marker   |
+| `marker`      | `React.ReactNode`                                         | -       | Optional custom marker content, defaults to a primary dot |
+| `time`        | `React.ReactNode`                                         | -       | Optional time text                                 |
+| `heading`     | `React.ReactNode`                                         | -       | Entry title                                        |
+| `description` | `React.ReactNode`                                         | -       | Optional description text                          |
+| `className`   | `ClassNameValue`                                          | -       | Custom class names, applied to the item            |
+| `classNames`  | `marker` / `connector` / `time` / `heading` / `description` | -       | Custom class names per slot                        |
+| `...props`    | `React.ComponentProps<"li">`                              | -       | Native li props                                    |

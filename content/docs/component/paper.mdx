@@ -1,0 +1,44 @@
+---
+title: Paper
+description: A print-ready page surface with A4/A5 variants in portrait or landscape orientation.
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add paper" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="paper" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+Without a `variant` the paper renders as a full-width scrollable sheet that grows with its content. Pick one of the fixed print variants for paged documents: `a4`, `a5`, `a4-landscape` or `a5-landscape`.
+
+<ComponentPreview
+  name="paper-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+#### Paper
+
+A print-ready page surface.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `'a4' \| 'a5' \| 'a4-landscape' \| 'a5-landscape'` | - | Fixed paper size; omit for the default full-width scrollable sheet |
+| `className` | `ClassNameValue` | - | Custom CSS class |
+| `...props` | `React.ComponentProps<"div">` | - | Supports all native div props |

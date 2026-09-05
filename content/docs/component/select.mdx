@@ -9,13 +9,13 @@ description: A flexible select component with support for option groups and vali
 
 <Tab value="CLI">
 
-<PackageManagerTabs command="litefy add select" />
+<PackageManagerTabs command="litefy@latest add select" />
 
 </Tab>
 
 <Tab value="Manual">
 
-<SourceCode component="select" />
+<Source type="component" name="select" />
 
 </Tab>
 
@@ -43,25 +43,73 @@ Select component with grouped options for better organization.
 
 Select component showing invalid state for form validation.
 
-<ComponentPreview 
+<ComponentPreview
   name="select-invalid"
+/>
+
+### Custom
+
+Assemble a select with custom styling using the composable components.
+
+<ComponentPreview
+  name="select-custom"
 />
 
 ## API Reference
 
-### Select
+### High-level Components
+
+Ready-to-use composite component.
+
+#### Select
 
 A styled select component with support for controlled/uncontrolled state, option groups, and validation.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `className` | `ClassNameValue` | - | Custom CSS class |
 | `invalid` | `boolean` | `false` | Marks the select as invalid for form validation |
-| `options` | `(SelectOption | SelectOptionGroup)[]` | - | Array of options or option groups to display |
+| `options` | `(SelectOption \| SelectOptionGroup)[]` | - | Array of options or option groups to display |
 | `placeholder` | `string` | - | Placeholder text shown when no option is selected |
+| `classNames` | `{ group?, root?, icon?: ClassNameValue }` | - | Custom classes for the group, select and icon |
+| `styles` | `{ group?, root?, icon?: React.CSSProperties }` | - | Inline styles for the group, select and icon |
 | `value` | `string` | - | Controlled selected value |
-| `defaultValue` | `string` | - | Default selected value for uncontrolled state |
+| `defaultValue` | `string` | `""` | Default selected value for uncontrolled state |
 | `onChange` | `(e: React.ChangeEvent<HTMLSelectElement>) => void` | - | Callback triggered when selection changes |
+| `...props` | `React.ComponentProps<"select">` | - | Supports all native select props (except `className`), such as `name`, `disabled`, `required` |
+
+---
+
+### Composable Components
+
+#### SelectGroup
+
+The positioning wrapper for the select and icon.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | - | Custom CSS class |
+| `...props` | `React.ComponentProps<"div">` | - | Supports all native div props |
+
+#### SelectRoot
+
+The native select element with built-in base styles. Carries state, focus and form semantics.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `invalid` | `boolean` | `false` | Applies `data-invalid` and `aria-invalid` |
+| `className` | `ClassNameValue` | - | Custom CSS class |
+| `children` | `React.ReactNode` | - | The select content, typically `<option>` and `<optgroup>` elements |
+| `...props` | `React.ComponentProps<"select">` | - | Supports all native select props (except `className`) |
+
+#### SelectIcon
+
+The chevron indicator positioned after the select. The select uses the `peer` class, so `peer-focus` variants work on the default icon.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Custom icon content, replaces the default chevron |
+| `className` | `ClassNameValue` | - | Custom CSS class |
+| `...props` | `React.ComponentProps<"span">` | - | Supports all native span props |
 
 ### SelectOption
 

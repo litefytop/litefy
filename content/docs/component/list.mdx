@@ -1,0 +1,107 @@
+---
+title: List
+description: A scrollable list container with keyboard navigation, highlight, selection and scroll-bottom callbacks
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add list" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="list" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+A scroll container driven by `items`; rows are rendered via `renderItem`. Pair it with the [`usePagination`](/docs/utils/use-pagination) hook when paging is needed.
+
+<ComponentPreview
+  name="list-basic"
+/>
+
+```tsx
+import { List } from "@/ui";
+
+<List
+  className="h-40 rounded-md border"
+  items={tasks}
+  getKey={(task) => task.id}
+  empty={<div className="px-3 py-4 text-center text-muted-foreground">No data</div>}
+  renderItem={(task) => (
+    <>
+      <span className="flex-1 truncate">{task.title}</span>
+      <span className="text-muted-foreground">{task.status}</span>
+    </>
+  )}
+/>
+```
+
+Keyboard navigation is built in: the root is focusable (`tabIndex={0}`), `ArrowUp` / `ArrowDown` move the highlight (clamped at both ends) and scroll it into view automatically, and `Enter` or a click on a row fires `onSelect`. The highlighted item carries `data-highlighted` (styled as `bg-hover`). For containers that keep focus elsewhere — such as a combobox input — pass `highlightIndex` / `onHighlightChange` to control the highlight externally; see the [Combobox](/docs/component/combobox) guide.
+
+### Grouping
+
+Provide `getGroup` to derive a group label per item; a header row is rendered when the label changes. Group headers are plain rows — they are not focusable, not highlighted by keyboard navigation and not selectable, so `ArrowUp` / `ArrowDown` / `Enter` only ever operate on data items. Customize the header via `renderGroupHeader`.
+
+<ComponentPreview
+  name="list-grouped"
+/>
+
+## API Reference
+
+### High-level Components
+
+#### List
+
+A scrollable, keyboard-navigable list; sizing is fully controlled by the consumer (e.g. `h-40 rounded-md border`).
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `T[]` | - | Data array to render |
+| `renderItem` | `(item: T, index: number) => ReactNode` | - | Row content renderer |
+| `getKey` | `(item: T, index: number) => Key` | - | Row key extractor; defaults to the index |
+| `empty` | `React.ReactNode` | - | Rendered when `items` is empty |
+| `highlightIndex` | `number \| null` | - | Controlled highlight index; omit for internal keyboard navigation |
+| `onHighlightChange` | `(index: number \| null) => void` | - | Fired when the highlight changes |
+| `getGroup` | `(item: T, index: number) => string` | - | Group label extractor; grouping is enabled only when both `getGroup` and `renderGroupHeader` are provided |
+| `renderGroupHeader` | `(groupName: string) => ReactNode` | - | Group header renderer; grouping is enabled only when both `getGroup` and `renderGroupHeader` are provided |
+| `onSelect` | `(item: T, index: number) => void` | - | Fired when a row is clicked or confirmed with `Enter` during keyboard navigation |
+| `onScrollBottom` | `() => void` | - | Fired when the list is scrolled to within 16px of the bottom, for load-more scenarios |
+| `ref` | `React.Ref<HTMLUListElement \| HTMLDivElement>` | - | Ref to the root element — a `ul` in flat mode, a `div` when grouped, e.g. to move focus into the list |
+| `className` | `ClassNameValue` | - | Custom class for the root |
+| `style` | `React.CSSProperties` | - | Custom inline style for the root |
+| `classNames` | `{ root?: ClassNameValue; item?: ClassNameValue; groupHeader?: ClassNameValue }` | - | Custom classes for the root, rows, and group headers |
+| `styles` | `{ root?: React.CSSProperties; item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | - | Custom inline styles for the root, rows, and group headers |
+
+The root applies `divide-y divide-border` between rows and `overflow-y-auto` for scrolling, with `outline-none` and no built-in focus ring.
+
+#### Order
+
+An ordered-list variant that renders the root as an `<ol>` with decimal numbering (`list-decimal pl-6`). It accepts all `List` props except the grouping API (`getGroup` / `renderGroupHeader`), and its `ref` is `React.Ref<HTMLOListElement>`.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `T[]` | - | Data array to render |
+| `renderItem` | `(item: T, index: number) => ReactNode` | - | Row content renderer |
+| `getKey` | `(item: T, index: number) => Key` | - | Row key extractor; defaults to the index |
+| `empty` | `React.ReactNode` | - | Rendered when `items` is empty |
+| `highlightIndex` | `number \| null` | - | Controlled highlight index; omit for internal keyboard navigation |
+| `onHighlightChange` | `(index: number \| null) => void` | - | Fired when the highlight changes |
+| `onSelect` | `(item: T, index: number) => void` | - | Fired when a row is clicked or confirmed with `Enter` during keyboard navigation |
+| `onScrollBottom` | `() => void` | - | Fired when the list is scrolled to within 16px of the bottom, for load-more scenarios |
+| `ref` | `React.Ref<HTMLOListElement>` | - | Ref to the root `<ol>` element |
+| `className` | `ClassNameValue` | - | Custom class for the root |
+| `style` | `React.CSSProperties` | - | Custom inline style for the root |
+| `classNames` | `{ root?: ClassNameValue; item?: ClassNameValue; groupHeader?: ClassNameValue }` | - | Custom classes for each part (`groupHeader` is unused in `Order`) |
+| `styles` | `{ root?: React.CSSProperties; item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | - | Custom inline styles for each part (`groupHeader` is unused in `Order`) |

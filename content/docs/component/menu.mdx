@@ -1,0 +1,148 @@
+---
+title: Menu
+description: A menu component usable directly in the document flow, with grouping, two-level submenus and keyboard navigation
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add menu" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="menu" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Menu is a real menu component that renders directly in the document flow — no trigger or popover wrapper required. Items are driven by the `items` config: they can be grouped with labels, disabled, and any item can open a two-level submenu (max two levels). Since there is no panel container in the flow, provide the container styling yourself (e.g. `w-48 rounded-md border p-1 shadow-md`).
+
+<ComponentPreview
+  name="menu-basic"
+/>
+
+```tsx
+import { Menu, type MenuConfig } from "@/ui";
+
+const items: MenuConfig[] = [
+  {
+    group: "Account",
+    items: [
+      { label: "Profile" },
+      { label: "Preferences", children: [{ label: "Theme" }, { label: "Language" }] },
+    ],
+  },
+  {
+    group: "System",
+    items: [{ label: "Notifications" }, { label: "Settings" }, { label: "Logout" }],
+  },
+];
+
+<Menu
+  className="w-48 rounded-md border p-1 shadow-md"
+  items={items}
+  onSelect={(item) => setSelected(item.label)}
+/>
+```
+
+#### Keyboard Navigation
+
+| Key          | Behavior                                        |
+| ------------ | ------------------------------------------------ |
+| `ArrowDown` / `ArrowUp` | Move between enabled items (wraps around) |
+| `ArrowRight` | Open the submenu of the current item             |
+| `ArrowLeft`  | Close the submenu and return to the parent item  |
+| `Enter`      | Select the focused item                     |
+| `Escape`     | Calls `onEscape` and closes the submenu          |
+
+Submenus open on hover with a short close delay, or persistently via `ArrowRight`. A click outside the menu closes any open submenu; `Escape` forwards to your `onEscape` handler so a wrapping popover (e.g. Popover) can close itself.
+
+#### Composition
+
+`Popover + Menu` builds a dropdown menu: use Popover for the trigger and the floating panel, put `Menu` inside the panel content, set `autoFocus={open}` so the first item is focused on each open, and pass `onEscape` to close the panel. See the [Dropdown Menu](/docs/component/dropdown-menu) guide for the complete assembly. For a right-click menu anchored to the pointer, see [Context Menu](/docs/component/context-menu).
+
+## API Reference
+
+### Menu
+
+| Prop           | Type                              | Default | Description                                                                 |
+| -------------- | ---------------------------------- | ------- | ---------------------------------------------------------------------------- |
+| `items`        | `MenuConfig[]`                     | -       | Menu item config, see [items](#items) below. **Required**                    |
+| `autoFocus`    | `boolean`                          | -       | Focuses the first enabled item whenever it turns `true`; pass `open` of a wrapping popover to focus on each open |
+| `onSelect`     | `(item: MenuItemConfig) => void`   | -       | Fired when an item is selected via click or keyboard                         |
+| `onEscape`     | `() => void`                       | -       | Fired when `Escape` is pressed inside the menu                               |
+| `className`    | `ClassNameValue`                   | -       | Custom class for the root list; container styling belongs here in the document flow |
+| `style`        | `React.CSSProperties`              | -       | Inline style for the root list                                               |
+| `itemClassName`| `ClassNameValue`                   | -       | Class applied to every item button                                           |
+| `classNames`   | `{ root?; item?; label?; sub? }`   | -       | Custom classes for each part                                                 |
+| `styles`       | `{ root?; item?; label?; sub? }`   | -       | Custom inline styles for each part                                           |
+
+#### items
+
+```ts
+type MenuItemConfig = {
+  label: React.ReactNode;
+  disabled?: boolean;
+  className?: ClassNameValue;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  children?: Omit<MenuItemConfig, "children">[];
+};
+
+type MenuGroupConfig = {
+  group: React.ReactNode;
+  items: MenuItemConfig[];
+};
+
+type MenuConfig = MenuGroupConfig | MenuItemConfig;
+```
+
+---
+
+### Composable Components
+
+#### MenuRoot
+
+The root list (`ul` with `role="menu"`), built-in `m-0 list-none p-0`.
+
+| Prop        | Type                       | Default | Description                    |
+| ----------- | --------------------------- | ------- | ------------------------------- |
+| `className` | `ClassNameValue`            | -       | Custom class name               |
+| `...props`  | `React.ComponentProps<"ul">` | -      | Supports all native ul props    |
+
+#### MenuItem
+
+Menu item wrapper (`li`) with built-in `m-0 not-last:border-b`. The composite renders a `role="menuitem"` button inside and anchors submenus to it via `anchor-name`.
+
+| Prop        | Type                       | Default | Description                    |
+| ----------- | --------------------------- | ------- | ------------------------------- |
+| `className` | `ClassNameValue`            | -       | Custom class name               |
+| `...props`  | `React.ComponentProps<"li">` | -      | Supports all native li props    |
+
+#### MenuLabel
+
+Group label row (`li`) with built-in muted label styling.
+
+| Prop        | Type                       | Default | Description                    |
+| ----------- | --------------------------- | ------- | ------------------------------- |
+| `className` | `ClassNameValue`            | -       | Custom class name               |
+| `...props`  | `React.ComponentProps<"li">` | -      | Supports all native li props    |
+
+#### MenuSubContent
+
+Submenu panel container rendered as a `popover="manual"` div with built-in submenu positioning (`position-area: right span-bottom` and flip fallbacks). Anchor it to the parent item via `positionAnchor` (each item's `anchor-name` is `--menu-sub-{entryId}`).
+
+| Prop             | Type                          | Default | Description                          |
+| ---------------- | ------------------------------ | ------- | -------------------------------------- |
+| `positionAnchor` | `string`                       | -       | `anchor-name` of the parent menu item  |
+| `className`      | `ClassNameValue`               | -       | Custom class name                      |
+| `...props`       | `React.ComponentProps<"div">`  | -       | Supports all native div props          |

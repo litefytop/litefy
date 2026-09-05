@@ -1,0 +1,99 @@
+---
+title: Input OTP
+description: A one-time-code input with auto-advance, paste support, keyboard navigation and mask mode.
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add input-otp" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="input-otp" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+An OTP input with auto-advance, backspace navigation, arrow keys and clipboard paste.
+
+<ComponentPreview
+  name="input-otp-basic"
+/>
+
+### Mask
+
+Render slots as password inputs for PIN-style codes.
+
+<ComponentPreview
+  name="input-otp-mask"
+/>
+
+### Controlled
+
+Control the value externally and receive updates via `onValueChange`.
+
+<ComponentPreview
+  name="input-otp-controlled"
+/>
+
+## API Reference
+
+### High-level Components
+
+#### InputOtp
+
+An OTP input built with the parts below, encapsulating value state and interaction logic.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `length` | `number` | `6` | Number of slots |
+| `value` | `string` | - | Current value (controlled) |
+| `defaultValue` | `string` | `""` | Initial value (uncontrolled) |
+| `onValueChange` | `(value: string) => void` | - | Called when the value changes |
+| `disabled` | `boolean` | `false` | Disables all slots |
+| `invalid` | `boolean` | - | Sets `data-invalid` on the group and `aria-invalid` on each slot |
+| `mask` | `boolean` | `false` | Renders slots as password inputs |
+| `name` | `string` | - | Renders a hidden input for form submission |
+| `aria-label` | `string` | - | Accessible label, suffixed with the slot index per slot |
+| `className` | `ClassNameValue` | - | Custom class for the group |
+| `style` | `React.CSSProperties` | - | Custom inline style for the group |
+| `classNames` | `{ group?; slot? }` | - | Custom classes for each part |
+| `styles` | `{ group?; slot? }` | - | Custom inline styles for each part |
+
+Typing advances focus, `Backspace` moves back when the slot is empty, arrow keys navigate between slots, and pasting fills from the current slot. The first slot uses `autoComplete='one-time-code'`.
+
+---
+
+### Composable Components
+
+Pure display parts with no built-in state or interaction, for advanced custom assembly.
+
+#### InputOtpGroup
+
+The outermost container, rendered as a `div` with built-in `flex items-center gap-2`.
+
+| Prop        | Type                          | Default | Description                                        |
+| ----------- | ----------------------------- | ------- | -------------------------------------------------- |
+| `className` | `ClassNameValue`              | -       | Custom class name                                  |
+| `...props`  | `React.ComponentProps<"div">` | -       | Supports all native div props (except `className`) |
+
+#### InputOtpSlot
+
+A single slot rendered as an `<input>`; value, events and aria attributes are wired by the consumer.
+
+| Prop        | Type                            | Default | Description                                                  |
+| ----------- | ------------------------------- | ------- | ------------------------------------------------------------ |
+| `className` | `ClassNameValue`                | -       | Custom class name                                            |
+| `ref`       | `React.Ref<HTMLInputElement>`   | -       | Forwarded to the native input element                        |
+| `...props`  | `React.ComponentProps<"input">` | -       | Supports all native input props (except `className` and `ref`) |

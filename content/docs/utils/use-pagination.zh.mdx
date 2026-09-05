@@ -1,0 +1,60 @@
+---
+title: use-pagination
+description: 无头分页状态 Hook，支持循环翻页、动态总页数与变化回调
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add use-pagination" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="hook" name="use-pagination" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+带有导航控制和页面指示器的基础分页用法。
+
+<ComponentPreview 
+  name="pagination-basic"
+/>
+
+## API 参考
+
+### usePagination
+
+无头分页状态 Hook，管理翻页逻辑；配合自定义导航控件使用（见上方示例）。
+
+#### 参数
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `base` | `number` | `0` | 起始页码；`index` 会基于该值偏移 |
+| `total` | `number \| (() => number)` | - | 总页数，或返回总页数的函数（用于动态总数）。**必填** |
+| `loop` | `boolean` | `false` | 越过首页或末页时循环到另一端 |
+| `onChange` | `(page: number) => void` | - | 页码变化时触发，携带新页码 |
+
+#### 返回值
+
+- `index`：当前页码（从 `base` 开始）
+- `total`：当前总页数
+- `setIndex(page | (prevPage) => page)`：直接设置页码或使用更新函数；会自动归一化到有效范围
+- `goTo(page)`：跳转到指定页面
+- `next()`：下一页
+- `previous()`：上一页
+- `toFirst()`：回到第一页（`base`）
+- `toEnd()`：跳转到最后一页
+- `isFirst`：处于第一页时为 `true`（开启 `loop` 时始终为 `false`）
+- `isEnd`：处于最后一页时为 `true`（开启 `loop` 时始终为 `false`）

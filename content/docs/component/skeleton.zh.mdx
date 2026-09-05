@@ -1,0 +1,45 @@
+---
+title: Skeleton 骨架屏
+description: 带脉冲动画的加载占位块。
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add skeleton" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="skeleton" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+文本行占位。
+
+<ComponentPreview name="skeleton-text" />
+
+### 头像
+
+圆形块与文本行组合，勾勒用户信息行。
+
+<ComponentPreview name="skeleton-avatar" />
+
+## API 参考
+
+### Skeleton
+
+带脉冲动画的占位块，默认填满容器（`size-full`），通过 `className` 调整形状。基色跟随 `--color-neutral` 主题 token。
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | - | 自定义 CSS 类，如 `h-4 w-1/2 rounded-full` |
+| `...props` | `React.ComponentProps<"div">` | - | 支持所有原生 div 属性 |

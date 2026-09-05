@@ -1,0 +1,129 @@
+---
+title: Cascader 级联选择器
+description: 由树形数据驱动的多级级联选择器，由面包屑样式的触发器和通过 CSS 锚点定位的弹出面板组成
+---
+
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add cascader" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="cascader" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+传递树形结构给 `tree`，点击某一级会在选择框下方打开对应的面板，点击叶子节点则关闭面板并完成选择。
+
+<ComponentPreview
+  name="cascader-basic"
+/>
+
+```tsx
+import { Cascader, type CascaderNode } from "@/ui";
+
+const tree: CascaderNode[] = [
+  {
+    value: "california",
+    label: "California",
+    children: [
+      {
+        value: "los-angeles",
+        label: "Los Angeles",
+        children: [
+          { value: "downtown", label: "Downtown" },
+          { value: "hollywood", label: "Hollywood" },
+          { value: "pasadena", label: "Pasadena" },
+        ],
+      },
+      {
+        value: "san-francisco",
+        label: "San Francisco",
+        children: [
+          { value: "soma", label: "SoMa" },
+          { value: "richmond", label: "Richmond" },
+          { value: "sunset", label: "Sunset" },
+        ],
+      },
+    ],
+  },
+  {
+    value: "new-york",
+    label: "New York",
+    children: [
+      {
+        value: "new-york-city",
+        label: "New York City",
+        children: [
+          { value: "manhattan", label: "Manhattan" },
+          { value: "brooklyn", label: "Brooklyn" },
+        ],
+      },
+    ],
+  },
+];
+
+export default function Demo() {
+  return <Cascader tree={tree} />;
+}
+```
+
+## 注意
+
+- 触发器样式像面包屑，但使用普通按钮配合 `ChevronRight` 而不是 Breadcrumb 组件，因为面包屑的语义用于页面导航。
+- 面板内联渲染并声明 `popover="manual"`（top layer 不受祖先 `overflow` 裁剪），通过 CSS 锚点定位锚定到对应的触发器按钮。
+- 需要 Chrome 125+ 以支持 CSS 锚点定位。
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Cascader
+
+由树形数据驱动的多级级联选择器。它为每一级渲染一个面包屑样式的触发器，并通过 CSS 锚点定位把每一级的面板锚定到对应触发器。点击父级会在选择框下方打开下一级面板；选中叶子节点会关闭面板，并在触发器上显示完整路径。面板尺寸可通过 `styles.panel`（默认宽度 `18rem`）与 `classNames.panel` 自定义。锚点属性（`anchorName` / `positionAnchor`）由组件内部管理，始终优先于 `styles`。
+
+| 属性         | 类型                                                                     | 默认值                   | 描述                                                                                           |
+| :----------- | :----------------------------------------------------------------------- | :----------------------- | :--------------------------------------------------------------------------------------------- |
+| `tree`       | `CascaderNode[]`                                                         | -                        | 驱动级联选择的树形数据                                                                         |
+| `placeholder` | `string`                                                                | `"Select your location"` | 未选择任何项时触发器显示的占位文本                                                             |
+| `className`  | `ClassNameValue`                                                         | -                        | 根容器的自定义类名                                                                             |
+| `classNames` | `{ trigger?: ClassNameValue; panel?: ClassNameValue }`                   | -                        | 触发器与面板的自定义类名                                                                       |
+| `styles`     | `{ trigger?: React.CSSProperties; panel?: React.CSSProperties }`         | -                        | 触发器与面板的内联样式                                                                         |
+| `...props`   | `React.ComponentProps<"div">`                                            | -                        | 支持全部 div 原生属性（除 `children`、`className` 外），展开到根容器                            |
+
+#### CascaderNode
+
+级联选择器树节点的数据结构。
+
+| 字段     | 类型              | 默认值 | 描述                      |
+| :-------- | :---------------- | :----- | :----------------------- |
+| `value`   | `string`          | -      | 节点的唯一值              |
+| `label`   | `string`          | -      | 节点的显示文本            |
+| `children` | `CascaderNode[]` | -      | 下一级的子节点数组        |
+
+---
+
+### 可组合组件
+
+#### CascaderTrigger
+
+面包屑样式的触发器按钮；组合组件会为每一级渲染一个，并通过 CSS 锚点定位把对应面板锚定到它。
+
+| 属性        | 类型                              | 默认值 | 描述                    |
+| :--------- | :-------------------------------- | :----- | :----------------------- |
+| `className` | `ClassNameValue`                 | -      | 自定义 CSS 类            |
+| `...props` | `React.ComponentProps<"button">`  | -      | 支持全部 button 原生属性 |

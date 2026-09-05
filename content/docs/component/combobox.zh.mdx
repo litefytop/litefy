@@ -1,69 +1,33 @@
 ---
 title: Combobox 组合框
-description: 支持自动补全的选项选择组件
+description: 由 Picker 和 List 拼装而成的组合框 —— 不提供组件源码，仅提供组合示范
 ---
 
-## 安装
-
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy add combobox" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<SourceCode component="combobox" />
-
-</Tab>
-
-</Tabs>
+Combobox 不是一个提供源码的组件。它是两个基础零件的组合：[Picker](/docs/component/picker) 提供输入框触发器和弹出面板，[List](/docs/component/list) 提供支持键盘导航和高亮的选项列表。直接在页面中拼装即可 —— 下面的示例就是完整的实现。
 
 ## 用法
 
 ### 基础用法
 
-基础组合框，使用静态选项。
+客户端过滤逻辑保存在你自己的状态中：`onValueChange` 镜像键入的文本，选项由它过滤得出，列表聚焦后由 `List` 内置的键盘导航接管。
 
-<ComponentPreview 
+<ComponentPreview
   name="combobox-basic"
 />
 
+拼装要点：
+
+- 焦点始终留在输入框。`ArrowDown` 打开面板（Picker 内置），随后 `ArrowDown` / `ArrowUp` 通过 `List` 受控的 `highlightIndex` 驱动高亮，键入和方向键导航可以同时进行。
+- `List` 通过 `data-highlighted` 渲染高亮并自动滚动到可视区域；输入框按 `Enter`（或点击行）经 `onSelect` 选中。
+- `onSelect` 把选中的选项写回输入框文本，并通过 `onOpenChange` 关闭面板；关闭时同时清空高亮。
+- 过滤后的选项耗尽时渲染 `empty` 节点。
 
 ### 异步搜索
 
-支持异步选项获取和自动切片/分页的组合框。
+数据量大或来源为远程接口时，在 `onValueChange` 中调用 `remote.search` 发起搜索，并在列表滚动到底部时通过 `onScrollBottom` 加载更多 —— [`useRemotePagination`](/docs/utils/use-remote-pagination) hook 提供防抖请求、数据和加载控制。
 
-<ComponentPreview 
+<ComponentPreview
   name="combobox-async"
 />
 
-## API 参考
-
-### Combobox
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string` | - | 受控值 |
-| `defaultValue` | `string` | - | 默认值（非受控） |
-| `onChange` | `(e: ComboboxChangeEvent) => void` | - | 值变化时的回调 |
-| `onBlur` | `React.FocusEventHandler<HTMLInputElement>` | - | 输入框失焦时的回调 |
-| `onSelect` | `(option: string) => void` | - | 选项被选中时的回调 |
-| `options` | `string[] \| `<br/> `({page: number; size: number; keyword: string}) => Promise<{list: string[]; total: number}>` | - | 静态选项或带分页的异步获取函数 |
-| `placeholder` | `string` | - | 输入框占位符 |
-| `disabled` | `boolean` | `false` | 禁用组合框 |
-| `invalid` | `boolean` | `false` | 标记为无效 |
-| `debounceMs` | `number` | `300` | 异步搜索的防抖延迟 |
-| `skeleton` | `React.ReactNode` | - | 自定义加载骨架 |
-| `pageSize` | `number` | `20` | 分页每页加载的数据条数 |
-
-### slotProps
-
-| Slot | Type | Description |
-|------|------|-------------|
-| `container` | `HTMLAttrs<Omit<React.ComponentProps<"div">, "ref">>` | 容器 div 的属性 |
-| `input` | `HTMLAttrs<Omit<React.ComponentProps<"input">, "disabled" \| "placeholder" \| "ref" \| "value" \| "defaultValue">>` | 输入框的属性 |
-| `list` | `HTMLAttrs<Omit<React.ComponentProps<"ul">, "ref">>` | 下拉列表的属性 |
-| `option` | `HTMLAttrs<React.ComponentProps<"li">>` | 每个选项的属性 |
+两个零件的完整属性表请参阅 [Picker API](/docs/component/picker) 和 [List API](/docs/component/list)。

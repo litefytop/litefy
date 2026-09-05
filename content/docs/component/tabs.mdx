@@ -1,6 +1,6 @@
 ---
 title: Tabs
-description: A tabs component with multiple variants and orientation support
+description: An options-driven tabs component with multiple variants and orientation support
 ---
 
 ## Installation
@@ -9,13 +9,13 @@ description: A tabs component with multiple variants and orientation support
 
 <Tab value="CLI">
 
-<PackageManagerTabs command="litefy add tabs" />
+<PackageManagerTabs command="litefy@latest add tabs" />
 
 </Tab>
 
 <Tab value="Manual">
 
-<SourceCode component="tabs" />
+<Source type="component" name="tabs" />
 
 </Tab>
 
@@ -25,9 +25,9 @@ description: A tabs component with multiple variants and orientation support
 
 ### Basic Usage
 
-The basic tabs implementation with uncontrolled state.
+The basic tabs implementation with uncontrolled state. Tabs is options-driven: declare each tab with `value`, `label` and `content`.
 
-<ComponentPreview 
+<ComponentPreview
   name="tabs-basic"
 />
 
@@ -35,7 +35,7 @@ The basic tabs implementation with uncontrolled state.
 
 Switch between line and button variants for different visual styles.
 
-<ComponentPreview 
+<ComponentPreview
   name="tabs-variant"
 />
 
@@ -43,7 +43,7 @@ Switch between line and button variants for different visual styles.
 
 Support for both horizontal and vertical tab layouts.
 
-<ComponentPreview 
+<ComponentPreview
   name="tabs-orientation"
 />
 
@@ -51,72 +51,102 @@ Support for both horizontal and vertical tab layouts.
 
 Manage the active tab externally with controlled state.
 
-<ComponentPreview 
+<ComponentPreview
   name="tabs-controlled"
 />
 
 ## API Reference
 
-### Tabs
+### High-level Components
 
-The main container component for the tabs.
+#### Tabs
+
+Options-driven container managing the active value and rendering `TabsList`, `TabsTrigger` and `TabsContent` parts with all state passed as parameters — no context.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `defaultValue` | `string` | - | Initial active tab value (uncontrolled mode) |
+| `options` | `TabsOptionConfig[]` | - | Tab definitions |
+| `defaultValue` | `string` | - | Initial active tab value (uncontrolled mode). Falls back to the first option's value |
 | `value` | `string` | - | Active tab value (controlled mode) |
 | `onValueChange` | `(value: string) => void` | - | Callback when active tab changes |
 | `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Layout orientation |
 | `variant` | `'button' \| 'line'` | `'line'` | Visual style variant |
-| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| `className` | `ClassNameValue` | - | Custom CSS class, applied to the root |
+| `...props` | `React.ComponentProps<"div">` | - | Supports all native div props (except `className`) |
 
-### TabsList
+#### TabsOptionConfig
 
-Container for the tab trigger buttons.
+| Property | Type | Description |
+|----------|------|-------------|
+| `value` | `string` | Unique identifier for the tab |
+| `label` | `React.ReactNode` | Content of the tab trigger |
+| `content` | `React.ReactNode` | Content of the tab panel |
+| `disabled` | `boolean` | Disable the tab |
+
+---
+
+### Composable Components
+
+#### TabsList
+
+Container for the tab trigger buttons. Communicates only through parameters.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Layout orientation |
+| `autoScroll` | `boolean` | `false` | Renders prev/next scroll buttons and hides the scrollbar (horizontal only) |
+| `activeValue` | `string` | - | Currently active value; scrolls the active trigger into view when it changes |
+| `className` | `ClassNameValue` | - | Custom CSS class |
+| `...props` | `React.ComponentProps<"div">` | - | Supports all native div props (except `className`) |
 
-### TabsTrigger
+#### TabsTrigger
 
-Individual tab button. Pair with `TabsContent` via the shared `value`.
+Individual tab button. Receives its active state and change callback purely as parameters.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `string` | - | Unique identifier for the tab |
+| `active` | `boolean` | `false` | Whether the tab is active, drives `data-state` and `aria-selected` |
+| `onValueChange` | `(value: string) => void` | - | Called with the tab's own `value` on click or Enter/Space |
+| `variant` | `'button' \| 'line'` | `'line'` | Visual style variant |
 | `disabled` | `boolean` | `false` | Disable the tab |
-| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| `className` | `ClassNameValue` | - | Custom CSS class |
+| `...props` | `React.ComponentProps<"button">` | - | Supports all native button props (except `className`) |
 
-### TabsContent
+#### TabsContent
 
-Panel rendered when its `value` matches the active tab. Wrap children in `React.lazy()` to defer the import until the tab becomes active.
+Panel rendered when `active` is true; returns `null` otherwise. Wrap content in `React.lazy()` to defer the import until the tab becomes active.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `string` | - | Unique identifier matching a `TabsTrigger` |
-| `className` | `ClassNameValue` | - | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
+| `value` | `string` | - | Unique identifier, used to derive the panel id and `aria-labelledby` |
+| `active` | `boolean` | `false` | Whether the panel is visible |
+| `className` | `ClassNameValue` | - | Custom CSS class |
+| `...props` | `React.ComponentProps<"div">` | - | Supports all native div props (except `className`) |
 
-### Lazy Loading
+## Lazy Loading
 
-`TabsContent` returns `null` while inactive, so wrapping children in `lazy()` defers the import:
+`TabsContent` returns `null` while inactive, so wrapping the content in `lazy()` defers the import:
 
 ```tsx
 import { lazy, Suspense } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs";
+import { Tabs } from "@/ui";
 
 const LazySettings = lazy(() => import("./settings"));
 
-<Tabs defaultValue="profile">
-  <TabsList>
-    <TabsTrigger value="profile">Profile</TabsTrigger>
-    <TabsTrigger value="settings">Settings</TabsTrigger>
-  </TabsList>
-  <TabsContent value="profile">Profile content</TabsContent>
-  <TabsContent value="settings">
-    <Suspense fallback={null}>
-      <LazySettings />
-    </Suspense>
-  </TabsContent>
-</Tabs>
+<Tabs
+  defaultValue="profile"
+  options={[
+    { value: "profile", label: "Profile", content: "Profile content" },
+    {
+      value: "settings",
+      label: "Settings",
+      content: (
+        <Suspense fallback={null}>
+          <LazySettings />
+        </Suspense>
+      ),
+    },
+  ]}
+/>
 ```

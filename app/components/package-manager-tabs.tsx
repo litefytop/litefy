@@ -15,15 +15,14 @@ export function PackageManagerTabs({ command }: PackageManagerTabsProps) {
   };
 
   const list = [
-    { key: "npm", cmd: `npm ${command}` },
-    { key: "pnpm", cmd: `pnpm ${command}` },
-    { key: "yarn", cmd: `yarn ${command}` },
-    { key: "bun", cmd: `bun ${command}` },
+    { key: "npm", cmd: `npx ${command}` },
+    { key: "pnpm", cmd: `pnpm dlx ${command}` },
+    { key: "yarn", cmd: `yarn dlx ${command}` },
+    { key: "bun", cmd: `bun --bun ${command}` },
   ];
 
   return (
-    <div className="bg-muted rounded-lg p-4 -m-4! text-foreground font-mono">
-      <div className="text-muted-foreground text-sm mb-3">Terminal</div>
+    <div className="bg-muted rounded-lg p-4 -m-4! font-mono">
       <div className="flex flex-col gap-2">
         {list.map((item) => (
           <div key={item.key} className="relative group">

@@ -1,0 +1,9 @@
+[data-brand="emerald"] {
+  --primary: oklch(50.8% 0.118 165.612);
+ --primary-accent: oklch(43.2% 0.095 166.913);
+}
+
+.dark[data-brand="emerald"] {
+  --primary: oklch(76.5% 0.177 163.223);
+ --primary-accent: oklch(84.5% 0.143 164.978);
+}

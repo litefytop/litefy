@@ -1,0 +1,45 @@
+---
+title: Kbd
+description: A keyboard key visual with pressable hover and active states.
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add kbd" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="kbd" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+Single keys.
+
+<ComponentPreview name="kbd-basic" />
+
+### Combinations
+
+Group multiple keys to represent shortcuts.
+
+<ComponentPreview name="kbd-combination" />
+
+## API Reference
+
+### Kbd
+
+A keyboard key visual. Radius follows `--radius`; border and shadow colors come from the `--color-neutral` and `--color-ring` theme tokens.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `className` | `ClassNameValue` | - | Custom CSS class |
+| `...props` | `React.ComponentProps<"kbd">` | - | Supports all native kbd props |

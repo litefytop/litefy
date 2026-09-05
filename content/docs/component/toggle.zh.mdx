@@ -1,0 +1,86 @@
+---
+title: Toggle 切换按钮
+description: 支持受控、非受控以及分组多选模式的切换按钮组件
+---
+
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add toggle" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="toggle" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+带图标内容的简单切换按钮，支持非受控模式和禁用状态。
+
+<ComponentPreview
+  name="toggle-basic"
+/>
+
+### 分组
+
+数据驱动的分组模式，支持多选。
+
+<ComponentPreview
+  name="toggle-group"
+/>
+
+### 自定义样式
+
+通过 `className` 定制 `Toggle` 的形状和配色 —— 例如胶囊形状、虚线边框或自定义 `aria-checked:` 颜色 —— 同时保持选中状态受控。
+
+<ComponentPreview
+  name="toggle-custom"
+/>
+
+## API 参考
+
+### Toggle
+
+| 属性              | 类型                           | 默认值  | 描述                                                                               |
+| ----------------- | ------------------------------ | ------- | ---------------------------------------------------------------------------------- |
+| `children`        | `React.ReactNode`              | -       | 切换按钮的内容                                                                     |
+| `checked`         | `boolean`                      | -       | 受控的选中状态                                                                     |
+| `defaultChecked`  | `boolean`                      | `false` | 非受控模式下的默认选中状态                                                         |
+| `onCheckedChange` | `(checked: boolean) => void`   | -       | 选中状态变化时触发的回调函数                                                       |
+| `value`           | `string`                       | -       | 转发给原生 button 的 value；在 `Toggle.Group` 中用于标识每个选项                   |
+| `disabled`        | `boolean`                      | `false` | 禁用切换按钮                                                                       |
+| `className`       | `ClassNameValue`               | -       | 自定义类名                                                                         |
+| `...props`        | `React.ComponentProps<"button">` | -     | 支持所有原生 button 属性（除 `type`、`className`、`aria-checked` 外），如 `name`、`form`、`autofocus` |
+
+禁用状态下点击切换按钮不会有任何效果。自定义的 `onClick` 会在内部切换逻辑之前执行；在其中调用 `e.preventDefault()` 可以阻止选中状态变化。
+
+### Toggle.Group
+
+| 属性             | 类型                         | 默认值  | 描述                                       |
+| ---------------- | ---------------------------- | ------- | ------------------------------------------ |
+| `options`        | `ToggleOptionConfig[]`       | -       | 选项数据数组                               |
+| `value`          | `string[]`                   | -       | 受控的选中值                               |
+| `defaultValue`   | `string[]`                   | `[]`    | 非受控模式下的默认选中值                   |
+| `onChange`       | `(values: string[]) => void` | -       | 选中值变化时触发的回调函数                 |
+| `disabled`       | `boolean`                    | `false` | 禁用所有选项                               |
+| `className`      | `ClassNameValue`             | -       | 自定义类名，应用于容器                     |
+| `itemClassName`  | `ClassNameValue`             | -       | 自定义类名，应用于每个切换按钮             |
+
+### ToggleOptionConfig
+
+| 字段        | 类型              | 默认值  | 描述                                        |
+| ----------- | ----------------- | ------- | ------------------------------------------- |
+| `label`     | `string`          | -       | 选项显示文本                                |
+| `value`     | `string`          | -       | 唯一标识值                                  |
+| `disabled`  | `boolean`         | `false` | 禁用该选项                                  |
+| `className` | `ClassNameValue`  | -       | 自定义类名，优先级高于 `itemClassName`      |
