@@ -374,7 +374,7 @@ export function CalendarMonthGrid({
                 "disabled:pointer-events-none disabled:opacity-50",
               )}
             >
-              {calendarMonthLabels[month.month - 1]}
+              {Calendar.calendarMonthLabels[month.month - 1]}
             </button>
           ))}
         </div>
@@ -575,9 +575,21 @@ export function Calendar({
 
   const navUnit = view === "days" ? "month" : view === "months" ? "year" : "years";
 
+  // ArrowDown from the header jumps straight into the active view's grid,
+  // landing on its roving-tabstop cell (selected / current month / year) —
+  // no Tabbing through the header controls required.
+  const handleHeaderKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.defaultPrevented || e.key !== "ArrowDown") return;
+    const grid = rootRef.current?.querySelector<HTMLElement>('[role="grid"]');
+    if (!grid) return;
+    e.preventDefault();
+    const tabStop = grid.querySelector<HTMLElement>('button[tabindex="0"]');
+    (tabStop ?? grid).focus();
+  };
+
   return (
     <CalendarRoot ref={rootRef} className={className}>
-      <CalendarHeader>
+      <CalendarHeader onKeyDown={handleHeaderKeyDown}>
         <CalendarNavButton
           direction="previous"
           label={`Previous ${navUnit}`}
@@ -594,7 +606,7 @@ export function Calendar({
             data-active={view === "months" || undefined}
             onClick={() => handleViewChange("months")}
           >
-            {calendarMonthLabels[visibleMonth.month - 1]}
+            {Calendar.calendarMonthLabels[visibleMonth.month - 1]}
           </CalendarTitleButton>
         </div>
         <CalendarNavButton direction="next" label={`Next ${navUnit}`} onClick={handleNext} />
@@ -629,3 +641,7 @@ export function Calendar({
     </CalendarRoot>
   );
 }
+
+// Mutable static: override for i18n (e.g. Calendar.calendarMonthLabels = ["一月", ...])
+// before rendering. Kept as a property so every calendar instance picks it up.
+Calendar.calendarMonthLabels = calendarMonthLabels as readonly string[];

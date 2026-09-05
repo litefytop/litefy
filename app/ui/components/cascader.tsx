@@ -9,8 +9,7 @@ export type CascaderNode = {
   children?: CascaderNode[];
 };
 
-export interface CascaderTriggerProps
-  extends Omit<React.ComponentProps<"button">, "className"> {
+export interface CascaderTriggerProps extends Omit<React.ComponentProps<"button">, "className"> {
   className?: ClassNameValue;
 }
 
@@ -27,8 +26,7 @@ export function CascaderTrigger({ className, ...props }: CascaderTriggerProps) {
   );
 }
 
-export interface CascaderProps
-  extends Omit<React.ComponentProps<"div">, "children" | "className"> {
+export interface CascaderProps extends Omit<React.ComponentProps<"div">, "children" | "className"> {
   tree: CascaderNode[];
   placeholder?: string;
   className?: ClassNameValue;
@@ -88,7 +86,7 @@ export function Cascader({
           aria-expanded={openLevel === 0}
           onClick={() => handleTriggerClick(0)}
           className={cn("text-muted-foreground", classNames?.trigger)}
-          style={{ anchorName: `--cascader-${uid}-level-0`, ...styles?.trigger }}
+          style={{ ...styles?.trigger, anchorName: `--cascader-${uid}-level-0` }}
         >
           {placeholder}
         </CascaderTrigger>
@@ -104,7 +102,10 @@ export function Cascader({
                 aria-expanded={openLevel === i}
                 onClick={() => handleTriggerClick(i)}
                 className={cn("text-muted-foreground", classNames?.trigger)}
-                style={{ anchorName: `--cascader-${uid}-level-${i}`, ...styles?.trigger }}
+                style={{
+                  ...styles?.trigger,
+                  anchorName: `--cascader-${uid}-level-${i + 1}`,
+                }}
               >
                 {node.label}
               </CascaderTrigger>
@@ -124,8 +125,8 @@ export function Cascader({
                   classNames?.trigger,
                 )}
                 style={{
-                  anchorName: `--cascader-${uid}-level-${path.length}`,
                   ...styles?.trigger,
+                  anchorName: `--cascader-${uid}-level-${path.length + 1}`,
                 }}
               >
                 {selected.label}
@@ -146,12 +147,11 @@ export function Cascader({
         onOpenChange={(v) => {
           if (!v) setOpenLevel(null);
         }}
-        alignX="start"
         className={classNames?.panel}
         style={{
-          positionAnchor: `--cascader-${uid}-level-${level}`,
           width: "18rem",
           ...styles?.panel,
+          positionAnchor: `--cascader-${uid}-level-${level}`,
         }}
       >
         <List
@@ -171,15 +171,11 @@ export function Cascader({
   });
 
   return (
-    <div
-      {...props}
-      className={cn(
-        "w-72 rounded-md border bg-background text-sm",
-        "flex min-w-0 items-center",
-        className,
-      )}
-    >
-      {trigger}
-    </div>
+    <>
+      <div {...props} className={cn("w-72 rounded-md border bg-background text-sm", className)}>
+        {trigger}
+      </div>
+      {panels}
+    </>
   );
 }

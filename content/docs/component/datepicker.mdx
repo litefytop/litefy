@@ -1,26 +1,69 @@
 ---
 title: Date Picker
-description: A date picker assembled from Picker and Calendar — not a shipped component, only a composition guide with demos
+description: A date picker built on the native Temporal API — an editable input, a month panel and pointer-anchored popover in one shipped component
 ---
 
-Date Picker is not a shipped component with source code. It is a composition of two primitives: [Picker](/docs/component/picker) provides the input trigger and the popover panel, and [Calendar](/docs/component/calendar) provides the month panel view. Assemble them directly in your page — the demo below is the complete implementation.
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add date-picker" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="date-picker" />
+
+</Tab>
+
+</Tabs>
 
 ## Usage
 
-### DatePicker Assembly
+### Basic Usage
 
-Hold the popover open state and the selected date in your own state. The input is fully editable: `onValueChange` mirrors every keystroke into a text state, and typing a complete ISO date (`2026-08-31`) syncs the selection and the visible month — so a wrongly picked date can be corrected by typing. Selecting from the panel updates the text and closes it via `onOpenChange`.
+The input is fully editable, and validation runs on `Enter` and when the panel closes:
+
+- separators are flexible — space, `-`, `/` and `,` all work, and accepted input is auto-formatted to the canonical `YYYY-MM-DD` form (`2026/8/5` becomes `2026-08-05`);
+- a complete date commits — the value fills the input and the panel closes;
+- a bare year (`2026`) opens that year's month panel, and a year-month (`2026-08`) opens that month's day grid — pick the missing part and it commits;
+- anything invalid (e.g. letters, an out-of-range month) clears the input.
+
+Typing a complete date also previews the selection and the visible month live, before validation runs.
 
 <ComponentPreview
-  name="picker-datepicker"
+  name="date-picker-basic"
 />
 
-Key points of the assembly:
+## Notes
 
-- Picker's `open` / `onOpenChange` control the panel, so the demo can close it when a date is picked. `ArrowDown` opens the panel (built into Picker), and `Enter` in the input commits a complete typed date and closes the panel.
-- The input `value` mirrors a text state updated on every keystroke via `onValueChange`. In controlled mode the parent must respond to `onValueChange`, otherwise typing is blocked.
-- Typing a complete ISO date (`2026-08-31`) parses to a `Temporal.PlainDate` and syncs both the selection and `visibleMonth`; partial or invalid input leaves the selection untouched.
-- The panel keeps the visible month in your state via `onVisibleMonthChange`, so it reopens on the month you were browsing.
-- `trailing={<CalendarIcon />}` decorates the input; pass any icon you like.
+- Requires the native [Temporal API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal) (Chrome 136+, Firefox 139+, Safari 26). The site shows a banner when the current browser lacks it.
+- Built on the [Picker](/docs/component/picker) and [Calendar](/docs/component/calendar) components — assemble those directly when you need full control (see the [DatePicker Assembly](/docs/component/picker#datepicker-assembly) guide).
 
-Refer to the [Picker API](/docs/component/picker) and [Calendar API](/docs/component/calendar) for the full prop tables of both parts.
+## API Reference
+
+### High-level Components
+
+#### DatePicker
+
+A controlled-or-uncontrolled date field. The visible month and panel open state are managed internally; the value can be controlled via `value` / `onValueChange`.
+
+| Prop              | Type                                           | Default                     | Description                                                                                   |
+| :---------------- | :--------------------------------------------- | :-------------------------- | :-------------------------------------------------------------------------------------------- |
+| `value`           | `Temporal.PlainDate \| null`                   | -                           | Controlled selected date                                                                      |
+| `defaultValue`    | `Temporal.PlainDate \| null`                   | -                           | Initial selected date (uncontrolled)                                                          |
+| `onValueChange`   | `(date: Temporal.PlainDate) => void`           | -                           | Fired when a date is committed — picked from the panel, or `Enter` on a complete typed date   || `placeholder`     | `string`                                       | `"Select or type a date"`   | Input placeholder                                                                             |
+| `disabled`        | `boolean`                                      | -                           | Disables the input and the panel                                                              |
+| `firstDayOfWeek`  | `0 \| 1`                                       | `0`                         | First day of the calendar week (`0` = Sunday, `1` = Monday)                                   |
+| `isDateDisabled`  | `(date: Temporal.PlainDate) => boolean`        | -                           | Predicate disabling calendar dates                                                            |
+| `trailing`        | `React.ReactNode`                              | calendar icon               | Trailing decoration inside the input                                                          |
+| `onKeyDown`       | `React.KeyboardEventHandler<HTMLInputElement>` | -                           | Runs before the built-in `Enter` commit; `preventDefault()` cancels it                        |
+| `classNames`      | `{ input?; trailing?; panel? }` — each `ClassNameValue` | -                  | Custom classes for the input, its trailing decoration and the calendar panel                  |
+| `styles`          | `{ input?; trailing? }` — each `React.CSSProperties`    | -                  | Inline styles for the input and trailing decoration                                           |
+
+Typing behavior: every keystroke mirrors into the input, and a complete date previews the selection and the visible month live. Space, `-`, `/` and `,` are accepted as separators and normalized to `YYYY-MM-DD` on validation. Validation runs on `Enter` and when the panel closes — a complete date commits; a bare year opens the month panel and a year-month opens the day grid so the missing part can be picked; anything invalid clears the input.
+
+Keyboard: while the panel is open, `ArrowDown` moves focus into the calendar's first control and `ArrowUp` into its last (via [`usePanelFocus`](/docs/utils/use-panel-focus)) — typing and calendar navigation never compete for the input. `Escape` closes the panel and hands focus back to the input.

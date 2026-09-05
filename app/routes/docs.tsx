@@ -90,7 +90,7 @@ function ComponentsList({
         return (
           <div key={String(key)} className="space-y-4">
             <h2 className="text-2xl font-bold">{folder.name}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
               {items.map((item, itemIndex) => {
                 const url = item.url || `/${locale}/docs/${item.name}`;
                 const itemKey = typeof item.name === "string" ? item.name : (item.$id ?? itemIndex);
@@ -99,10 +99,10 @@ function ComponentsList({
                   <Link
                     key={String(itemKey)}
                     to={typeof url === "string" ? url : `/${locale}/docs`}
-                    className="group p-6 rounded-lg border  hover:bg-hover transition-colors"
+                    className="group p-4 lg:p-6 rounded-lg border  hover:bg-hover transition-colors"
                   >
                     <div>
-                      <h3 className="font-semibold text-lg mb-1 transition-colors">{item.name}</h3>
+                      <h3 className="font-semibold text-base lg:text-lg mb-1 transition-colors">{item.name}</h3>
                       <p className="text-sm text-muted-foreground line-clamp-2">
                         {item.description || t.categoryDefaultDescription}
                       </p>
@@ -159,7 +159,7 @@ export default function Docs({ params }: Route.ComponentProps) {
 
   return (
     <DocsLayout {...baseOptions(locale)} tree={tree}>
-      <div className="max-w-5xl mx-auto px-4 py-12">
+      <div className="max-w-5xl mx-auto px-4 py-12 [grid-area:main]">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">{t.title}</h1>
           <p className="text-lg text-fd-muted-foreground">{t.description}</p>

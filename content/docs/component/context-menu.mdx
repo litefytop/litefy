@@ -1,25 +1,105 @@
 ---
 title: Context Menu
-description: A right-click menu assembled from Menu with native popover and pointer anchoring — not a shipped component, only a composition guide with demos
+description: A right-click context menu with pointer anchoring, grouping and submenus — a data-driven composite built on Menu and native popover
 ---
 
-Context Menu is not a shipped component with source code. It composes [Menu](/docs/component/menu) with a native `popover="manual"` panel anchored to the pointer through CSS anchor positioning. A context menu is just a different trigger: `onContextMenu` to suppress the browser menu, a zero-size anchor element moved to the cursor, and a manually shown popover.
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add context-menu" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="context-menu" />
+
+</Tab>
+
+</Tabs>
 
 ## Usage
 
 ### Basic Usage
 
+Right-click the target area to open the menu at the pointer; selecting an item closes it. Right-clicking again while the menu is open re-anchors it to the new cursor position.
+
 <ComponentPreview
   name="context-menu-basic"
 />
 
-Key points of the assembly:
+### Custom
 
-- The target area calls `e.preventDefault()` in `onContextMenu`, records `clientX` / `clientY`, and opens the panel.
-- A zero-size `fixed` div with `anchorName` is rendered at the pointer position — this is the anchor the panel attaches to.
-- The panel uses `positionArea: "bottom right"` so its top-left corner sits at the cursor, plus a small margin offset; `positionTryFallbacks: "flip-block, flip-inline"` keeps it inside the viewport near edges.
-- Show and hide are manual (`panel.showPopover()` / `hidePopover()` in an effect). `manual` popovers have no light dismiss, so a document `mousedown` listener closes the panel on outside clicks.
-- Right-clicking again while the menu is open re-anchors it to the new cursor position.
-- `Menu` provides items, grouping, submenus and keyboard navigation; `autoFocus={open}` focuses the first item on open and `onEscape` closes the panel.
+Assemble the parts manually for full control: a custom-styled trigger, your own anchor name, and a panel with custom width and classes. The `anchorName` passed to `ContextMenuAnchor` and `ContextMenuContent` must match — it is the link the panel positions itself with.
 
-Refer to the [Menu API](/docs/component/menu) for the full prop table of the menu part.
+<ComponentPreview
+  name="context-menu-custom"
+/>
+
+## API Reference
+
+### High-level Components
+
+#### ContextMenu
+
+A data-driven context menu. It renders the trigger area you provide, tracks the pointer position on right-click, and opens the menu panel anchored to the cursor. Outside clicks and `Escape` close the panel; right-clicks inside the panel are suppressed so the browser menu never appears.
+
+| Prop         | Type                                   | Default | Description                                                                 |
+| :----------- | :------------------------------------- | :------ | :-------------------------------------------------------------------------- |
+| `children`   | `React.ReactNode`                      | -       | The trigger area; right-clicking it opens the menu                          |
+| `items`      | `MenuConfig[]`                         | -       | Menu items, flat or grouped — same shape as the [Menu](/docs/component/menu) component |
+| `disabled`   | `boolean`                              | -       | Suppresses the custom menu; the native browser menu shows instead            |
+| `onSelect`   | `(item: MenuItemConfig) => void`       | -       | Fired when a menu item is activated; the menu closes afterwards              |
+| `classNames` | `{ content?: ClassNameValue }`         | -       | Custom classes for the panel                                                 |
+| `styles`     | `{ content?: React.CSSProperties }`    | -       | Inline styles for the panel; anchor positioning props are managed internally |
+
+#### Statics
+
+| Static             | Type                  | Description                          |
+| :----------------- | :-------------------- | :----------------------------------- |
+| `ContextMenu.Trigger` | `ContextMenuTrigger` | The right-click trigger area part    |
+| `ContextMenu.Anchor`  | `ContextMenuAnchor`  | The zero-size pointer anchor part    |
+| `ContextMenu.Content` | `ContextMenuContent` | The floating menu panel part         |
+
+---
+
+### Composable Components
+
+#### ContextMenuTrigger
+
+A behavior-only wrapper: right-clicking it reports the pointer position via `onOpenMenu` after calling `e.preventDefault()`. Renders a plain `div` with no built-in styling.
+
+| Prop          | Type                                            | Default | Description                                                                                     |
+| :------------ | :---------------------------------------------- | :------ | :---------------------------------------------------------------------------------------------- |
+| `disabled`    | `boolean`                                       | -       | When true, right-click does nothing (the native menu shows)                                      |
+| `onOpenMenu`  | `(position: { x: number; y: number }) => void`  | -       | Called with the cursor position when the area is right-clicked                                   |
+| `className`   | `ClassNameValue`                                | -       | Custom CSS class                                                                                 |
+| `...props`    | `React.ComponentProps<"div">`                   | -       | Supports all native div props; your own `onContextMenu` runs first and can `preventDefault()` to cancel opening |
+
+#### ContextMenuAnchor
+
+A zero-size `fixed` div placed at the pointer position — the anchor the panel attaches to via CSS anchor positioning.
+
+| Prop        | Type                            | Default | Description                                        |
+| :---------- | :------------------------------ | :------ | :------------------------------------------------- |
+| `position`  | `{ x: number; y: number }`      | -       | Viewport coordinates for the anchor point          |
+| `anchorName`| `string`                        | -       | Required. The CSS anchor name; applied last so it cannot be overridden by `style` |
+| `className` | `ClassNameValue`                | -       | Custom CSS class                                   |
+| `...props`  | `React.ComponentProps<"div">`   | -       | Supports all native div props                      |
+
+#### ContextMenuContent
+
+The floating panel, built on `PopoverContent` with `popover="manual"`. Positions its top-left corner at the anchor with a small offset, and flips via `positionTryFallbacks` near viewport edges. Closes on outside `mousedown` and `Escape`.
+
+| Prop           | Type                           | Default | Description                                                                        |
+| :------------- | :----------------------------- | :------ | :--------------------------------------------------------------------------------- |
+| `open`         | `boolean`                      | -       | Controlled panel state                                                             |
+| `onOpenChange` | `(open: boolean) => void`      | -       | Fired when the panel opens or closes                                               |
+| `anchorName`   | `string`                       | -       | Required. The anchor to position against; applied last so it cannot be overridden by `style` |
+| `className`    | `ClassNameValue`               | -       | Custom CSS class (`w-48` by default)                                               |
+| `...props`     | `React.ComponentProps<"div">`  | -       | Supports all native div props, spread on the panel                                 |
+
+The menu items themselves (grouping, submenus, keyboard navigation) come from the [Menu](/docs/component/menu) component — refer to its API for `MenuConfig` and `MenuItemConfig`.

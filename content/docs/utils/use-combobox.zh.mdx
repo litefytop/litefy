@@ -1,0 +1,93 @@
+---
+title: use-combobox
+description: Picker 面板的虚拟焦点键盘接线 —— 输入框保持焦点，方向键移动高亮项
+---
+
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add use-combobox" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="hook" name="use-combobox" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+Picker 面板分两种形态。当面板是**虚拟焦点**组件（例如 [List](/docs/component/list)，通过 `data-highlighted` 高亮条目而非真实聚焦）时，使用 `useCombobox`：输入框保持焦点，`ArrowDown` / `ArrowUp` 移动高亮索引，`Enter` 选中高亮项。
+
+```tsx
+import { List, Picker, useCombobox } from "@/ui";
+
+function CountryPicker() {
+  const [open, setOpen] = useState(false);
+  const [text, setText] = useState("");
+  const filtered = countries.filter((c) => c.toLowerCase().includes(text.toLowerCase()));
+
+  const { highlightIndex, setHighlightIndex, handleKeyDown, reset } = useCombobox({
+    open,
+    items: filtered,
+    onSelect: (item) => {
+      setText(item);
+      setOpen(false);
+      reset();
+    },
+  });
+
+  return (
+    <Picker
+      open={open}
+      onOpenChange={(next) => {
+        setOpen(next);
+        if (!next) reset();
+      }}
+      value={text}
+      onValueChange={(next) => {
+        setText(next);
+        reset();
+      }}
+      onKeyDown={handleKeyDown}
+    >
+      <List
+        highlightIndex={highlightIndex}
+        onHighlightChange={setHighlightIndex}
+        items={filtered}
+        renderItem={(item) => item}
+      />
+    </Picker>
+  );
+}
+```
+
+文本变化或面板关闭时记得 `reset()`，避免高亮指向已不存在的行。
+
+## API 参考
+
+### 选项（`UseComboboxOptions<T>`）
+
+| Option           | Type                                  | Default | Description                              |
+| :--------------- | :------------------------------------ | :------ | :--------------------------------------- |
+| `open`           | `boolean`                             | -       | Picker 面板是否打开                        |
+| `items`          | `T[]`                                 | -       | （已过滤的）条目列表，高亮在其中移动        |
+| `isItemDisabled` | `(item: T) => boolean`                | -       | 高亮时跳过、`Enter` 时拦截的禁用项          |
+| `onSelect`       | `(item: T, index: number) => void`    | -       | 在高亮项上按 `Enter` 时触发                |
+
+### 返回值（`UseComboboxReturn<T>`）
+
+| Member             | Type                                       | Description                                            |
+| :----------------- | :----------------------------------------- | :----------------------------------------------------- |
+| `highlightIndex`   | `number \| null`                           | 当前高亮索引（首次 `ArrowDown` 前为 `null`）             |
+| `setHighlightIndex`| `React.Dispatch<SetStateAction<number \| null>>` | 直传 List 的 `highlightIndex` / `onHighlightChange` |
+| `handleKeyDown`    | `(e: React.KeyboardEvent<HTMLInputElement>) => void` | 接到 Picker 的 `onKeyDown` 上                    |
+| `reset`            | `() => void`                               | 清除高亮（关闭面板 / 文本变化时调用）                     |
+
+面板由**真实可聚焦控件**（网格、表单等）构成时，请改用 [`usePanelFocus`](/docs/utils/use-panel-focus)。

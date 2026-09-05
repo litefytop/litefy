@@ -1,6 +1,12 @@
 import type { ComponentType } from "react";
 import AvatarBasicDemo from "./avatar/basic";
 import avatarBasicCode from "./avatar/basic.tsx?raw";
+import BannerBasicDemo from "./banner/basic";
+import bannerBasicCode from "./banner/basic.tsx?raw";
+import BannerCustomDemo from "./banner/custom";
+import bannerCustomCode from "./banner/custom.tsx?raw";
+import DatePickerBasicDemo from "./date-picker/basic";
+import datePickerBasicCode from "./date-picker/basic.tsx?raw";
 import BadgeBasicDemo from "./badge/basic";
 import badgeBasicCode from "./badge/basic.tsx?raw";
 import BreadcrumbBasicDemo from "./breadcrumb/basic";
@@ -89,6 +95,8 @@ import DropdownMenuBasicDemo from "./dropdown-menu/basic";
 import dropdownMenuBasicCode from "./dropdown-menu/basic.tsx?raw";
 import ContextMenuBasicDemo from "./context-menu/basic";
 import contextMenuBasicCode from "./context-menu/basic.tsx?raw";
+import ContextMenuCustomDemo from "./context-menu/custom";
+import contextMenuCustomCode from "./context-menu/custom.tsx?raw";
 import PopoverBasicDemo from "./popover/basic";
 import popoverBasicCode from "./popover/basic.tsx?raw";
 import ProgressBasicDemo from "./progress/basic";
@@ -435,6 +443,10 @@ export const demos: Record<string, DemoItem> = {
     component: ContextMenuBasicDemo,
     code: contextMenuBasicCode,
   },
+  "context-menu-custom": {
+    component: ContextMenuCustomDemo,
+    code: contextMenuCustomCode,
+  },
   "popover-alignment": {
     component: PopoverAlignmentDemo,
     code: popoverAlignmentCode,
@@ -474,6 +486,18 @@ export const demos: Record<string, DemoItem> = {
   "avatar-basic": {
     component: AvatarBasicDemo,
     code: avatarBasicCode,
+  },
+  "banner-basic": {
+    component: BannerBasicDemo,
+    code: bannerBasicCode,
+  },
+  "banner-custom": {
+    component: BannerCustomDemo,
+    code: bannerCustomCode,
+  },
+  "date-picker-basic": {
+    component: DatePickerBasicDemo,
+    code: datePickerBasicCode,
   },
   "badge-basic": {
     component: BadgeBasicDemo,

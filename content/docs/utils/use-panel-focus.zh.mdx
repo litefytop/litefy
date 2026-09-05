@@ -1,0 +1,66 @@
+---
+title: use-panel-focus
+description: Picker 面板的真实焦点键盘接线 —— ArrowDown / ArrowUp 将焦点移入面板的第一个或最后一个可聚焦元素
+---
+
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add use-panel-focus" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="hook" name="use-panel-focus" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+当 Picker 面板由**真实可聚焦控件**（日历网格、工具栏、表单等）构成时，使用 `usePanelFocus`：面板打开期间，`ArrowDown` 将焦点移入面板的第一个可聚焦元素，`ArrowUp` 移入最后一个。通过 Picker 的 `panelRef` 属性把面板 ref 传给 hook。
+
+```tsx
+import { Picker, usePanelFocus } from "@/ui";
+
+function PanelPicker() {
+  const [open, setOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const handlePanelArrowKeys = usePanelFocus({ open, panelRef });
+
+  return (
+    <Picker
+      open={open}
+      onOpenChange={setOpen}
+      panelRef={panelRef}
+      onKeyDown={handlePanelArrowKeys}
+    >
+      {/* 真实可聚焦控件 */}
+    </Picker>
+  );
+}
+```
+
+把输入框自身的处理器放在前面并尊重 `defaultPrevented`，消费方就能继续在其上组合行为。[DatePicker](/docs/component/datepicker) 使用的就是这个分支：键入在面板关闭时进行，面板打开后方向键把焦点交给日历自身的按钮。
+
+**虚拟焦点**面板（高亮列表）请使用 [`useCombobox`](/docs/utils/use-combobox)。
+
+## API 参考
+
+### 选项（`UsePanelFocusOptions`）
+
+| Option     | Type                                     | Default | Description                                     |
+| :--------- | :--------------------------------------- | :------ | :---------------------------------------------- |
+| `open`     | `boolean`                                | -       | Picker 面板是否打开                              |
+| `panelRef` | `React.RefObject<HTMLElement \| null>`   | -       | 面板元素的 ref（即 Picker 的 `panelRef`）         |
+
+### 返回值
+
+| Member          | Type                                                  | Description                                              |
+| :-------------- | :---------------------------------------------------- | :------------------------------------------------------- |
+| `handleKeyDown` | `(e: React.KeyboardEvent<HTMLInputElement>) => void`  | 接到 Picker 的 `onKeyDown` 上；`ArrowDown` → 第一个元素，`ArrowUp` → 最后一个；面板内无可聚焦元素时回落到面板本身 |

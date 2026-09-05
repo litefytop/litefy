@@ -49,7 +49,7 @@ export function MenuSubContent({
       popover="manual"
       tabIndex={-1}
       className={cn(
-        "bg-background text-foreground w-3xs h-96 overflow-auto rounded-md border p-1 shadow-md",
+        "bg-background text-foreground w-3xs overflow-auto rounded-md border p-1 shadow-md",
         className,
       )}
       style={{

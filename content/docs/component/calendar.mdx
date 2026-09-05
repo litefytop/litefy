@@ -32,7 +32,17 @@ The visible month is fully controlled: hold it in state and update it via `onVis
 
 The panel switches between three views: days, months and years. In the header the year and the month are two independent title buttons — click the year to open the year panel, click the month to open the month panel. Both panels are 3 × 4 grids: the month panel lists the 12 months of the visible year, the year panel lists a 12-year window centered on the visible year. Picking a year drills down into the month panel; picking a month returns to the day panel. The previous / next buttons step by one month on the day panel, one year on the month panel and a 12-year page on the year panel.
 
-Keyboard navigation: the grid has a single tab stop (the selected date, or day 1 when nothing is selected), and `ArrowRight` / `ArrowLeft` / `ArrowDown` / `ArrowUp` move the cursor by one day or one week — only focus moves, the value does not change until `Enter` / `Space` confirms. Disabled days are skipped; when the target date is outside the current grid, the visible month switches automatically and the target date is focused. The month and year panels follow the same pattern with one cell / one row steps.
+Keyboard navigation: the grid has a single tab stop (the selected date, or day 1 when nothing is selected), and `ArrowRight` / `ArrowLeft` / `ArrowDown` / `ArrowUp` move the cursor by one day or one week — only focus moves, the value does not change until `Enter` / `Space` confirms. Disabled days are skipped; when the target date is outside the current grid, the visible month switches automatically and the target date is focused. The month and year panels follow the same pattern with one cell / one row steps. `ArrowDown` on any header control (previous / next, year / month title) jumps straight into the active view's grid, so the header never traps the focus.
+
+### Localizing the Month Labels
+
+Month names come from the mutable static `Calendar.calendarMonthLabels` (English abbreviations by default). Override it once at your app's entry point and every calendar — including the one inside [DatePicker](/docs/component/datepicker) — picks it up:
+
+```tsx
+import { Calendar } from "@/ui";
+
+Calendar.calendarMonthLabels = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
+```
 
 <ComponentPreview
   name="calendar-basic"

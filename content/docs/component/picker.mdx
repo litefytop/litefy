@@ -33,7 +33,7 @@ Click the input to toggle the popover panel. The open state and the input value 
 
 ### DatePicker Assembly
 
-Picker is a building block, not a finished widget. Compose it with [Calendar](/docs/component/calendar) to assemble a date picker directly in your page — no dedicated DatePicker component is needed. Selecting a date updates the input value and closes the panel via `onOpenChange`.
+Picker is a building block, not a finished widget. Compose it with [Calendar](/docs/component/calendar) to assemble a date picker directly in your page — or use the shipped [DatePicker](/docs/component/datepicker) component, which is this exact assembly. Selecting a date updates the input value and closes the panel via `onOpenChange`.
 
 <ComponentPreview
   name="picker-datepicker"
@@ -57,6 +57,7 @@ The same assembly model applies to other pickers: combine Picker with any panel 
 | `onOpenChange`  | `(open: boolean) => void`         | -       | Fired when the popover should open or close (click, outside press, Escape)  |
 | `trailing`      | `React.ReactNode`                 | -       | Icon rendered at the input's trailing edge                                  |
 | `children`      | `React.ReactNode`                 | -       | Popover panel content                                                       |
+| `panelRef`      | `React.Ref<HTMLDivElement>`       | -       | Receives the panel element, for [`usePanelFocus`](/docs/utils/use-panel-focus) |
 | `classNames`    | `PickerClassNames`                | -       | Per-part class name overrides: `root`, `input`, `trailing`, `popover`       |
 | `styles`        | `PickerStyles`                    | -       | Per-part style overrides: `root`, `input`, `trailing`, `popover`            |
 | `...props`      | `React.ComponentProps<"input">`   | -       | Remaining native input props, such as `placeholder` and `disabled`          |
@@ -69,6 +70,13 @@ Behavior notes:
 - Consumer `onKeyDown` / `onClick` handlers are composed with the internal behavior, not overridden; the internal open and Escape-close are skipped when the consumer calls `preventDefault`.
 - In controlled mode the parent must respond to `onValueChange` by updating `value`, otherwise typing in the input is blocked.
 - The popover positioning depends on CSS anchor positioning support — make sure the target environment supports it.
+
+Picker panels come in two keyboard flavors, wired with hooks — pick the one matching the panel content:
+
+- **Virtual focus** (highlighted lists): use [`useCombobox`](/docs/utils/use-combobox). The input keeps focus while the panel is open; `ArrowDown` / `ArrowUp` move the highlight and `Enter` selects.
+- **Real focus** (grids, forms, any panel of real focusable controls): use [`usePanelFocus`](/docs/utils/use-panel-focus) with the `panelRef` prop. `ArrowDown` / `ArrowUp` move focus into the panel's first / last focusable element while the panel is open.
+
+When the panel closes, focus returns to the input if it would otherwise be lost (e.g. `Escape` while the focus is inside the panel).
 
 ---
 

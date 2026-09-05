@@ -32,6 +32,7 @@ export interface PopoverContentProps extends Omit<React.ComponentProps<"div">, "
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   alignX?: PopoverAlignX;
+  autofocus?: boolean;
   className?: ClassNameValue;
   style?: React.CSSProperties;
 }
@@ -40,6 +41,7 @@ export function PopoverContent({
   open,
   onOpenChange,
   alignX = "center",
+  autofocus = true,
   className,
   style,
   onKeyDown: onKeyDownProp,
@@ -48,6 +50,7 @@ export function PopoverContent({
   ...props
 }: PopoverContentProps) {
   const panelRef = React.useRef<HTMLDivElement>(null);
+  const previouslyFocusedRef = React.useRef<HTMLElement | null>(null);
   const handleOpenChange = React.useCallback(
     (next: boolean) => {
       onOpenChange?.(next);
@@ -60,10 +63,25 @@ export function PopoverContent({
     if (!panel) return;
     if (open) {
       panel.showPopover();
+      if (autofocus) {
+        previouslyFocusedRef.current =
+          document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        const focusables = panel.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        );
+        (focusables[0] ?? panel).focus();
+      }
     } else {
       panel.hidePopover();
+      if (autofocus) {
+        const active = document.activeElement;
+        const focusWouldBeLost =
+          active === null || active === document.body || panel.contains(active);
+        if (focusWouldBeLost) previouslyFocusedRef.current?.focus?.();
+        previouslyFocusedRef.current = null;
+      }
     }
-  }, [open]);
+  }, [open, autofocus]);
 
   React.useEffect(() => {
     if (!open) return;
@@ -97,6 +115,7 @@ export function PopoverContent({
       ref={setRefs}
       {...props}
       popover="manual"
+      tabIndex={-1}
       onKeyDown={handleContentKeyDown}
       className={cn(
         "bg-background text-foreground min-w-32 max-h-96 overflow-auto rounded-md border p-1 shadow-md",
@@ -271,6 +290,7 @@ export function Popover({
         open={innerOpen}
         onOpenChange={handleOpenChange}
         alignX={alignX}
+        autofocus={mode !== "hover"}
         className={classNames?.content}
         style={{ positionAnchor: anchorName, ...styles?.content }}
       >

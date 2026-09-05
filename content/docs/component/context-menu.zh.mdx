@@ -1,25 +1,105 @@
 ---
 title: Context Menu 右键菜单
-description: 由 Menu 配合原生 popover 与指针锚点拼装而成的右键菜单 —— 不提供组件源码，仅提供组合示范
+description: 支持指针锚定、分组与子菜单的右键菜单 —— 基于 Menu 与原生 popover 构建的数据驱动组件
 ---
 
-Context Menu 不是一个提供源码的组件。它由 [Menu](/docs/component/menu) 配合原生 `popover="manual"` 面板，通过 CSS anchor positioning 锚定到指针位置拼装而成。右键菜单只是换了触发方式：`onContextMenu` 阻止浏览器默认菜单，一个零尺寸锚点元素跟随鼠标，再手动打开 popover。
+## 安装
+
+<Tabs items={['CLI', '手动']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add context-menu" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="context-menu" />
+
+</Tab>
+
+</Tabs>
 
 ## 用法
 
 ### 基础用法
 
+右键点击目标区域，菜单会在指针位置打开；选中菜单项后自动关闭。菜单已打开时再次右键，会重新锚定到新的光标位置。
+
 <ComponentPreview
   name="context-menu-basic"
 />
 
-拼装要点：
+### 自定义拼装
 
-- 目标区域在 `onContextMenu` 中调用 `e.preventDefault()`，记录 `clientX` / `clientY` 并打开面板。
-- 在指针位置渲染一个零尺寸的 `fixed` div，并设置 `anchorName` —— 它就是面板的锚点。
-- 面板使用 `positionArea: "bottom right"`，让左上角贴合光标，再配合少量 margin 偏移；`positionTryFallbacks: "flip-block, flip-inline"` 保证靠近边缘时不溢出视口。
-- 显示与关闭都是手动控制（effect 中调用 `panel.showPopover()` / `hidePopover()`）。`manual` popover 没有轻关闭行为，需要 document 级 `mousedown` 监听在点击面板外部时关闭。
-- 菜单已打开时再次右键，会把菜单重新锚定到新的光标位置。
-- `Menu` 提供菜单项、分组、子菜单和键盘导航；`autoFocus={open}` 在打开时聚焦第一项，`onEscape` 负责关闭面板。
+手动拼装零件以获得完全控制：自定义样式的触发区域、自拟的锚点名称，以及自定义宽度和类名的面板。传给 `ContextMenuAnchor` 和 `ContextMenuContent` 的 `anchorName` 必须一致 —— 它是面板定位所依赖的链接。
 
-菜单零件的完整属性表请参阅 [Menu API](/docs/component/menu)。
+<ComponentPreview
+  name="context-menu-custom"
+/>
+
+## API 参考
+
+### 高阶组件
+
+#### ContextMenu
+
+数据驱动的右键菜单。渲染你提供的触发区域，右键时记录指针位置，并把菜单面板锚定到光标处。点击外部与 `Escape` 会关闭面板；面板内部的右键会被屏蔽，不会弹出浏览器菜单。
+
+| Prop         | Type                                   | Default | Description                                                                 |
+| :----------- | :------------------------------------- | :------ | :-------------------------------------------------------------------------- |
+| `children`   | `React.ReactNode`                      | -       | 触发区域，右键点击它打开菜单                                                 |
+| `items`      | `MenuConfig[]`                         | -       | 菜单项，扁平或分组 —— 与 [Menu](/docs/component/menu) 组件的形状一致          |
+| `disabled`   | `boolean`                              | -       | 禁用自定义菜单，此时显示浏览器原生菜单                                        |
+| `onSelect`   | `(item: MenuItemConfig) => void`       | -       | 菜单项激活时触发，随后菜单关闭                                                |
+| `classNames` | `{ content?: ClassNameValue }`         | -       | 面板的自定义类名                                                              |
+| `styles`     | `{ content?: React.CSSProperties }`    | -       | 面板的内联样式；锚点定位属性由组件内部管理                                    |
+
+#### 静态属性
+
+| Static                | Type                  | Description        |
+| :-------------------- | :-------------------- | :----------------- |
+| `ContextMenu.Trigger` | `ContextMenuTrigger`  | 右键触发区域零件    |
+| `ContextMenu.Anchor`  | `ContextMenuAnchor`   | 零尺寸指针锚点零件  |
+| `ContextMenu.Content` | `ContextMenuContent`  | 浮动菜单面板零件    |
+
+---
+
+### 可组合组件
+
+#### ContextMenuTrigger
+
+只承载行为的包装器：右键点击时先执行 `e.preventDefault()`，再通过 `onOpenMenu` 上报指针位置。渲染普通的 `div`，不内置任何样式。
+
+| Prop          | Type                                            | Default | Description                                                                                     |
+| :------------ | :---------------------------------------------- | :------ | :---------------------------------------------------------------------------------------------- |
+| `disabled`    | `boolean`                                       | -       | 为 true 时右键无响应（显示浏览器原生菜单）                                                        |
+| `onOpenMenu`  | `(position: { x: number; y: number }) => void`  | -       | 右键点击区域时以光标坐标调用                                                                      |
+| `className`   | `ClassNameValue`                                | -       | 自定义类名                                                                                       |
+| `...props`    | `React.ComponentProps<"div">`                   | -       | 支持所有原生 div 属性；你自己的 `onContextMenu` 会先执行，可以 `preventDefault()` 阻止打开菜单     |
+
+#### ContextMenuAnchor
+
+放置在指针位置的零尺寸 `fixed` div —— 面板通过 CSS 锚点定位依附于它。
+
+| Prop        | Type                            | Default | Description                                        |
+| :---------- | :------------------------------ | :------ | :------------------------------------------------- |
+| `position`  | `{ x: number; y: number }`      | -       | 锚点点的视口坐标                                    |
+| `anchorName`| `string`                        | -       | 必填。CSS 锚点名称；最后写入，不会被 `style` 覆盖    |
+| `className` | `ClassNameValue`                | -       | 自定义类名                                          |
+| `...props`  | `React.ComponentProps<"div">`   | -       | 支持所有原生 div 属性                                |
+
+#### ContextMenuContent
+
+浮动面板，基于 `PopoverContent` 以 `popover="manual"` 构建。面板左上角贴合锚点并带少量偏移，靠近视口边缘时通过 `positionTryFallbacks` 自动翻转。点击外部 `mousedown` 与 `Escape` 时关闭。
+
+| Prop           | Type                           | Default | Description                                                                        |
+| :------------- | :----------------------------- | :------ | :--------------------------------------------------------------------------------- |
+| `open`         | `boolean`                      | -       | 受控的面板状态                                                                       |
+| `onOpenChange` | `(open: boolean) => void`      | -       | 面板打开或关闭时触发                                                                  |
+| `anchorName`   | `string`                       | -       | 必填。定位所依赖的锚点；最后写入，不会被 `style` 覆盖                                 |
+| `className`    | `ClassNameValue`               | -       | 自定义类名（默认 `w-48`）                                                            |
+| `...props`     | `React.ComponentProps<"div">`  | -       | 支持所有原生 div 属性，透传到面板上                                                   |
+
+菜单项本身（分组、子菜单、键盘导航）由 [Menu](/docs/component/menu) 组件提供 —— `MenuConfig` 与 `MenuItemConfig` 请参阅其 API。

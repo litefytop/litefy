@@ -6,6 +6,13 @@ export default {
       zh: "头像",
     },
   },
+  banner: {
+    name: "Banner",
+    displayName: {
+      en: "Banner",
+      zh: "横幅",
+    },
+  },
   badge: {
     name: "Badge",
     displayName: {

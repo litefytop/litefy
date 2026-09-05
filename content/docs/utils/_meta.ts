@@ -21,6 +21,20 @@ export default {
       zh: "图表色板",
     },
   },
+  "use-combobox": {
+    name: "Combobox",
+    displayName: {
+      en: "use-combobox",
+      zh: "组合框键盘",
+    },
+  },
+  "use-panel-focus": {
+    name: "Panel Focus",
+    displayName: {
+      en: "use-panel-focus",
+      zh: "面板焦点",
+    },
+  },
   "use-drag": {
     name: "Drag",
     displayName: {

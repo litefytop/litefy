@@ -37,6 +37,7 @@ export function PickerContent({ className, ...props }: PickerContentProps) {
   return (
     <div
       popover="manual"
+      tabIndex={-1}
       {...props}
       className={cn("bg-background text-foreground border shadow-lg rounded-md", className)}
     />
@@ -69,6 +70,7 @@ export interface PickerProps extends Omit<
   onOpenChange?: (open: boolean) => void;
   trailing?: React.ReactNode;
   children?: React.ReactNode;
+  panelRef?: React.Ref<HTMLDivElement>;
   classNames?: PickerClassNames;
   styles?: PickerStyles;
 }
@@ -82,6 +84,7 @@ export function Picker({
   onOpenChange,
   trailing,
   children,
+  panelRef,
   classNames,
   styles,
   onClick: onClickProp,
@@ -90,6 +93,13 @@ export function Picker({
 }: PickerProps) {
   const anchorName = `--picker-${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
   const popoverRef = React.useRef<HTMLDivElement>(null);
+  const previouslyFocusedRef = React.useRef<HTMLElement | null>(null);
+
+  const setPanelRefs = (el: HTMLDivElement | null) => {
+    popoverRef.current = el;
+    if (typeof panelRef === "function") panelRef(el);
+    else if (panelRef) panelRef.current = el;
+  };
 
   const [uncontrolledValue, setValue] = React.useState(defaultValue);
   const [uncontrolledOpen, setOpen] = React.useState(defaultOpen);
@@ -106,13 +116,25 @@ export function Picker({
     [isOpenControlled, onOpenChange],
   );
 
+  // On close, hand focus back to the trigger when it would otherwise be lost
+  // (e.g. Escape while the focus is inside the panel).
   React.useEffect(() => {
     const popover = popoverRef.current;
     if (!popover) return;
     if (open) {
+      previouslyFocusedRef.current =
+        document.activeElement instanceof HTMLElement ? document.activeElement : null;
       popover.showPopover();
     } else {
       popover.hidePopover();
+      const active = document.activeElement;
+      if (
+        (active === null || active === document.body || popover.contains(active)) &&
+        previouslyFocusedRef.current
+      ) {
+        previouslyFocusedRef.current.focus?.();
+      }
+      previouslyFocusedRef.current = null;
     }
   }, [open]);
 
@@ -176,7 +198,13 @@ export function Picker({
         )}
       </PickerRoot>
       <PickerContent
-        ref={popoverRef}
+        ref={setPanelRefs}
+        onKeyDown={(e) => {
+          if (e.key === "Escape") {
+            e.preventDefault();
+            handleOpenChange(false);
+          }
+        }}
         style={{
           margin: "4px 0 0",
           positionAnchor: anchorName,

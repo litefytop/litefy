@@ -215,6 +215,7 @@ export function Watermark({
 }: WatermarkProps) {
   return (
     <WatermarkRoot {...props} className={cn(className, classNames?.root)} style={style}>
+      {children}
       <WatermarkCanvas
         text={text}
         fontSize={fontSize}
@@ -227,7 +228,6 @@ export function Watermark({
         className={classNames?.canvas}
         style={styles?.canvas}
       />
-      {children}
     </WatermarkRoot>
   );
 }

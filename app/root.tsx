@@ -16,6 +16,7 @@ import SearchDialog from "./components/search";
 import { i18n } from "@/lib/i18n";
 import { translations } from "@/components/layout-shared";
 import { HydrateFallback } from "./components/hydrate-fallback";
+import { BrowserSupportNotice } from "./components/browser-support-notice";
 import NotFound from "./routes/not-found";
 
 export function Layout(
@@ -31,6 +32,7 @@ export function Layout(
         <Links />
       </head>
       <body className="flex flex-col min-h-screen">
+        <BrowserSupportNotice />
         <Suspense fallback={<HydrateFallback />}>
           <RootProvider
             theme={{ enabled: false }}

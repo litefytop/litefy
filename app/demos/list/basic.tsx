@@ -24,6 +24,7 @@ export default function ListBasicDemo() {
       items={tasks}
       getKey={(task) => task.id}
       empty={<div className="px-3 py-4 text-center text-muted-foreground">No data</div>}
+      classNames={{ item: "flex items-center gap-2" }}
       renderItem={(task) => (
         <>
           <span className="flex-1 truncate">{task.title}</span>

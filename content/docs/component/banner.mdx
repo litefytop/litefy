@@ -1,0 +1,110 @@
+---
+title: Banner
+description: An auto-scrolling marquee banner with seamless looping, hover pause and direction control
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add banner" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="banner" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+A data-driven announcement banner. Items repeat automatically to fill the width and loop seamlessly; hovering pauses the scroll.
+
+<ComponentPreview
+  name="banner-basic"
+/>
+
+### Custom
+
+Assemble the parts manually for full control: a custom-styled viewport, your own track speed and direction, and duplicated copies for the seamless loop (the extra copy is `aria-hidden`). In parts mode you render the two copies yourself — the track shifts by exactly `-50%`, so both halves must be identical.
+
+<ComponentPreview
+  name="banner-custom"
+/>
+
+## API Reference
+
+### High-level Components
+
+#### Banner
+
+A data-driven marquee banner. It measures the viewport, repeats the item set enough times to fill twice the width, and animates the track with the Web Animations API — no global keyframes required. Content copies beyond the first are `aria-hidden`.
+
+| Prop           | Type                                   | Default | Description                                                                              |
+| :------------- | :------------------------------------- | :------ | :--------------------------------------------------------------------------------------- |
+| `items`        | `BannerItem[]`                         | -       | The scrolling content; each item renders inside a `BannerItem`                            |
+| `speed`        | `number`                               | `30`    | Seconds per full loop (one `-50%` track shift)                                            |
+| `direction`    | `"left" \| "right"`                    | `left`  | Scroll direction                                                                          |
+| `pauseOnHover` | `boolean`                              | `true`  | Pause the animation while the pointer is over the banner                                  |
+| `className`    | `ClassNameValue`                       | -       | Custom classes for the viewport                                                           |
+| `classNames`   | `{ viewport?; track?; item? }` — each `ClassNameValue` | - | Custom classes per part                                         |
+| `styles`       | `{ viewport?; track?; item? }` — each `React.CSSProperties` | - | Inline styles per part                                                  |
+| `...props`     | `React.ComponentProps<"div">`          | -       | Native div props spread on the viewport (except `children`); your own `onMouseEnter` / `onMouseLeave` compose with the hover pause |
+
+#### BannerItem
+
+A single scrolling entry.
+
+| Field     | Type                 | Description                   |
+| :-------- | :------------------- | :---------------------------- |
+| `key`     | `string \| number`   | Optional React key            |
+| `content` | `React.ReactNode`    | The rendered content          |
+
+#### Statics
+
+| Static             | Type              | Description                        |
+| :----------------- | :---------------- | :--------------------------------- |
+| `Banner.Viewport`  | `BannerViewport`  | The clipping container part        |
+| `Banner.Track`     | `BannerTrack`     | The animated strip part            |
+| `Banner.Item`      | `BannerItem`      | The single entry part              |
+
+---
+
+### Composable Components
+
+#### BannerViewport
+
+The clipping container. Renders a full-width `overflow-hidden` div with `aria-roledescription="marquee"`.
+
+| Prop       | Type                          | Description                     |
+| :--------- | :---------------------------- | :------------------------------ |
+| `className`| `ClassNameValue`              | Custom CSS class                |
+| `...props` | `React.ComponentProps<"div">` | Supports all native div props   |
+
+#### BannerTrack
+
+The animated strip. Runs a linear infinite `translateX(0 → -50%)` (reversed for `direction="right"`) via the Web Animations API, and pauses automatically under `prefers-reduced-motion: reduce`. For a seamless loop the track must contain two identical halves — the `-50%` shift is what makes the loop seamless.
+
+| Prop        | Type                          | Default | Description                                              |
+| :---------- | :---------------------------- | :------ | :------------------------------------------------------- |
+| `duration`  | `number`                      | `30`    | Seconds per full loop                                    |
+| `direction` | `"left" \| "right"`           | `left`  | Scroll direction                                          |
+| `playing`   | `boolean`                     | `true`  | Plays or pauses the animation                             |
+| `className` | `ClassNameValue`              | -       | Custom CSS class (`flex w-max` built in)                  |
+| `...props`  | `React.ComponentProps<"div">` | -       | Supports all native div props                             |
+
+#### BannerItem
+
+A single entry cell (`flex shrink-0 items-center` built in).
+
+| Prop       | Type                          | Description                     |
+| :--------- | :---------------------------- | :------------------------------ |
+| `className`| `ClassNameValue`              | Custom CSS class                |
+| `...props` | `React.ComponentProps<"div">` | Supports all native div props   |

@@ -1,0 +1,93 @@
+---
+title: use-combobox
+description: Virtual-focus keyboard wiring for Picker panels — the input keeps focus while ArrowDown / ArrowUp move a highlight through the items
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add use-combobox" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="hook" name="use-combobox" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+Picker panels come in two flavors. When the panel is a **virtual-focus** component (like [List](/docs/component/list), which highlights items via `data-highlighted` instead of real focus), use `useCombobox`: the input keeps focus, `ArrowDown` / `ArrowUp` move the highlight index, and `Enter` selects the highlighted item.
+
+```tsx
+import { List, Picker, useCombobox } from "@/ui";
+
+function CountryPicker() {
+  const [open, setOpen] = useState(false);
+  const [text, setText] = useState("");
+  const filtered = countries.filter((c) => c.toLowerCase().includes(text.toLowerCase()));
+
+  const { highlightIndex, setHighlightIndex, handleKeyDown, reset } = useCombobox({
+    open,
+    items: filtered,
+    onSelect: (item) => {
+      setText(item);
+      setOpen(false);
+      reset();
+    },
+  });
+
+  return (
+    <Picker
+      open={open}
+      onOpenChange={(next) => {
+        setOpen(next);
+        if (!next) reset();
+      }}
+      value={text}
+      onValueChange={(next) => {
+        setText(next);
+        reset();
+      }}
+      onKeyDown={handleKeyDown}
+    >
+      <List
+        highlightIndex={highlightIndex}
+        onHighlightChange={setHighlightIndex}
+        items={filtered}
+        renderItem={(item) => item}
+      />
+    </Picker>
+  );
+}
+```
+
+Reset the highlight whenever the text changes or the panel closes so it never points at a stale row.
+
+## API Reference
+
+### Options (`UseComboboxOptions<T>`)
+
+| Option           | Type                                  | Default | Description                                                |
+| :--------------- | :------------------------------------ | :------ | :--------------------------------------------------------- |
+| `open`           | `boolean`                             | -       | Whether the Picker panel is open                            |
+| `items`          | `T[]`                                 | -       | The (already filtered) item list the highlight walks through |
+| `isItemDisabled` | `(item: T) => boolean`                | -       | Skips items while highlighting and guards `Enter`           |
+| `onSelect`       | `(item: T, index: number) => void`    | -       | Fired on `Enter` over a highlighted item                    |
+
+### Returns (`UseComboboxReturn<T>`)
+
+| Member             | Type                                       | Description                                                          |
+| :----------------- | :----------------------------------------- | :------------------------------------------------------------------- |
+| `highlightIndex`   | `number \| null`                           | Currently highlighted index (`null` before the first `ArrowDown`)    |
+| `setHighlightIndex`| `React.Dispatch<SetStateAction<number \| null>>` | Pass straight to List's `highlightIndex` / `onHighlightChange`   |
+| `handleKeyDown`    | `(e: React.KeyboardEvent<HTMLInputElement>) => void` | Wire to Picker's `onKeyDown`                               |
+| `reset`            | `() => void`                               | Clears the highlight (call on close / text change)                   |
+
+For panels built from **real focusable controls** (grids, forms), use [`usePanelFocus`](/docs/utils/use-panel-focus) instead.

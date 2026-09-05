@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { List, Picker } from "@/ui";
+import { List, Picker, useCombobox } from "@/ui";
 
 const countries = [
   "China",
@@ -20,53 +20,36 @@ const countries = [
 export default function Demo() {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
-  const [highlightIndex, setHighlightIndex] = useState<number | null>(null);
 
   const filtered = text.trim()
     ? countries.filter((country) => country.toLowerCase().includes(text.toLowerCase()))
     : countries;
 
-  const handleSelect = (item: string) => {
-    setText(item);
-    setHighlightIndex(null);
-    setOpen(false);
-  };
+  const { highlightIndex, setHighlightIndex, handleKeyDown, reset } = useCombobox({
+    open,
+    items: filtered,
+    onSelect: (item) => {
+      setText(item);
+      setOpen(false);
+      reset();
+    },
+  });
 
   return (
     <Picker
       open={open}
       onOpenChange={(next) => {
         setOpen(next);
-        if (!next) setHighlightIndex(null);
+        if (!next) reset();
       }}
       value={text}
-      onValueChange={(text) => {
-        setText(text);
-        setHighlightIndex(null);
+      onValueChange={(next) => {
+        setText(next);
+        reset();
       }}
       placeholder="Select a country"
       trailing={<ChevronDown />}
-      onKeyDown={(e) => {
-        if (!open) return;
-        if (e.key === "ArrowDown") {
-          e.preventDefault();
-          setHighlightIndex(
-            highlightIndex === null || highlightIndex >= filtered.length - 1
-              ? 0
-              : highlightIndex + 1,
-          );
-        } else if (e.key === "ArrowUp") {
-          e.preventDefault();
-          setHighlightIndex(
-            highlightIndex === null || highlightIndex <= 0
-              ? filtered.length - 1
-              : highlightIndex - 1,
-          );
-        } else if (e.key === "Enter" && highlightIndex !== null) {
-          e.preventDefault();
-          handleSelect(filtered[highlightIndex]);
-        }
-      }}
+      onKeyDown={handleKeyDown}
     >
       <div className="p-1">
         <List
@@ -80,7 +63,11 @@ export default function Demo() {
               No data
             </div>
           }
-          onSelect={handleSelect}
+          onSelect={(item) => {
+            setText(item);
+            setOpen(false);
+            reset();
+          }}
           className="max-h-64"
         />
       </div>

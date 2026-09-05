@@ -94,7 +94,7 @@ Ready-to-use composite components.
 
 #### Cascader
 
-A multi-level cascading selector driven by a tree. It renders one breadcrumb-style trigger per level and anchors each level's panel to its trigger via CSS anchor positioning. Clicking a parent level opens the next level's panel below the field; selecting a leaf closes the panels and the full path is shown across the triggers. Panel sizing is customizable via `styles.panel` (default width `18rem`) and `classNames.panel`.
+A multi-level cascading selector driven by a tree. It renders one breadcrumb-style trigger per level and anchors each level's panel to its trigger via CSS anchor positioning. Clicking a parent level opens the next level's panel below the field; selecting a leaf closes the panels and the full path is shown across the triggers. Panel sizing is customizable via `styles.panel` (default width `18rem`) and `classNames.panel`. The anchor props (`anchorName` / `positionAnchor`) are managed internally and always take precedence over `styles`.
 
 | Prop         | Type                                                                     | Default                  | Description                                                                                    |
 | :----------- | :----------------------------------------------------------------------- | :----------------------- | :--------------------------------------------------------------------------------------------- |

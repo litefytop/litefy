@@ -6,3 +6,5 @@ export * from "./use-remote-pagination";
 export * from "./use-drag";
 export * from "./use-virtual-scroll";
 export * from "./use-upload-monitor";
+export * from "./use-combobox";
+export * from "./use-panel-focus";

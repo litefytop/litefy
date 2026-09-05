@@ -9,6 +9,11 @@ export default function Demo() {
   return (
     <div className="flex w-full max-w-sm flex-col gap-3">
       <Watermark.Root className="rounded-xl border bg-background p-6">
+        <h3 className="text-lg font-semibold">Internal Document</h3>
+        <p className="text-muted-foreground mt-2 text-sm">
+          Assemble Watermark.Root and Watermark.Canvas to control every canvas
+          option. The canvas redraws when props or the container size change.
+        </p>
         <Watermark.Canvas
           text="CONFIDENTIAL"
           fontSize={14}
@@ -18,11 +23,6 @@ export default function Demo() {
           padding={16}
           opacity={0.15}
         />
-        <h3 className="text-lg font-semibold">Internal Document</h3>
-        <p className="text-muted-foreground mt-2 text-sm">
-          Assemble Watermark.Root and Watermark.Canvas to control every canvas
-          option. The canvas redraws when props or the container size change.
-        </p>
       </Watermark.Root>
       <label className="flex items-center gap-3 text-sm">
         <span className="text-muted-foreground">Rotate</span>

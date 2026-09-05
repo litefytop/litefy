@@ -10,6 +10,10 @@
       "tag"
     ]
   },
+  "banner": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/banner.tsx"
+  },
   "breadcrumb": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/breadcrumb.tsx"
@@ -49,6 +53,26 @@
   "collapse-accordion": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/collapse-accordion.tsx"
+  },
+  "collapse‑accordion": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/collapse‑accordion.tsx"
+  },
+  "context-menu": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/context-menu.tsx",
+    "dependence": [
+      "menu",
+      "popover"
+    ]
+  },
+  "date-picker": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/date-picker.tsx",
+    "dependence": [
+      "calendar",
+      "picker"
+    ]
   },
   "dialog": {
     "type": "component",
@@ -217,6 +241,10 @@
     "type": "hook",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-chart-palette.ts"
   },
+  "use-combobox": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-combobox.ts"
+  },
   "use-drag": {
     "type": "hook",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-drag.ts"
@@ -224,6 +252,10 @@
   "use-pagination": {
     "type": "hook",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-pagination.ts"
+  },
+  "use-panel-focus": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-panel-focus.ts"
   },
   "use-remote-pagination": {
     "type": "hook",

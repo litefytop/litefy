@@ -1,0 +1,66 @@
+---
+title: use-panel-focus
+description: Real-focus keyboard wiring for Picker panels — ArrowDown / ArrowUp move focus into the panel's first or last focusable element
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add use-panel-focus" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="hook" name="use-panel-focus" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+When the Picker panel is built from **real focusable controls** (a calendar grid, a toolbar, a form), use `usePanelFocus`: while the panel is open, `ArrowDown` moves focus into the panel's first focusable element and `ArrowUp` into its last. Pass a ref to the panel via Picker's `panelRef` prop.
+
+```tsx
+import { Picker, usePanelFocus } from "@/ui";
+
+function PanelPicker() {
+  const [open, setOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const handlePanelArrowKeys = usePanelFocus({ open, panelRef });
+
+  return (
+    <Picker
+      open={open}
+      onOpenChange={setOpen}
+      panelRef={panelRef}
+      onKeyDown={handlePanelArrowKeys}
+    >
+      {/* real focusable controls */}
+    </Picker>
+  );
+}
+```
+
+Keep the input's own handlers first and respect `defaultPrevented`, so consumers can still compose behavior on top. The [DatePicker](/docs/component/datepicker) uses this branch: typing happens with the panel closed, and once the panel is open the arrow keys hand focus to the calendar's own buttons.
+
+For **virtual-focus** panels (highlighted lists), use [`useCombobox`](/docs/utils/use-combobox) instead.
+
+## API Reference
+
+### Options (`UsePanelFocusOptions`)
+
+| Option     | Type                                     | Default | Description                                     |
+| :--------- | :--------------------------------------- | :------ | :---------------------------------------------- |
+| `open`     | `boolean`                                | -       | Whether the Picker panel is open                |
+| `panelRef` | `React.RefObject<HTMLElement \| null>`   | -       | Ref to the panel element (Picker's `panelRef`)  |
+
+### Returns
+
+| Member          | Type                                                  | Description                                              |
+| :-------------- | :---------------------------------------------------- | :------------------------------------------------------- |
+| `handleKeyDown` | `(e: React.KeyboardEvent<HTMLInputElement>) => void`  | Wire to Picker's `onKeyDown`; `ArrowDown` → first element, `ArrowUp` → last; falls back to the panel itself |
