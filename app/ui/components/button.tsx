@@ -7,7 +7,7 @@ const buttonClass = {
   variant: {
     primary: "bg-primary text-primary-foreground hover:bg-primary-accent",
     danger:
-      "bg-danger/15 hover:bg-danger/20 text-danger border hover:border-danger/20 focus-visible:outline-none focus-visible:border-danger focus-visible:ring-danger/50 focus-visible:ring-3",
+      "bg-danger/15 hover:bg-danger/20 text-danger border hover:border-danger/20 focus-visible:outline-1 focus-visible:outline-danger focus-visible:ring-danger/50 focus-visible:ring-3",
     outline: "border border-border hover:bg-hover",
     text: "hover:text-muted-foreground/75",
   },
