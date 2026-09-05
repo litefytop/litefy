@@ -29,7 +29,7 @@ description: 胶囊容器，将两个标签拼成 shields-io 风格双色徽章�
 
 ### 组合
 
-左侧标签作为标签名，右侧作为值。颜色是每个标签上的普通工具类。用 `as` 属性将容器渲染为 `span`（默认）或 `a`（链接）。
+左侧标签作为标签名，右侧作为值。颜色是每个标签上的普通工具类。`Capsule` 始终渲染为 `div`——没有 `as` 属性。需要可点击徽章时，在容器内嵌套原生 `<a>`（或 `button`）：
 
 ```tsx
 <Capsule>
@@ -37,9 +37,9 @@ description: 胶囊容器，将两个标签拼成 shields-io 风格双色徽章�
   <Tag className="rounded-none px-2.5 py-1 bg-emerald-600 text-white">passing</Tag>
 </Capsule>
 
-<Capsule as="a" href="#">
+<Capsule>
   <Tag className="rounded-none px-2.5 py-1 bg-neutral-600 text-white">docs</Tag>
-  <Tag className="rounded-none px-2.5 py-1 bg-violet-600 text-white">litefy.dev</Tag>
+  <a href="#" className="rounded-none px-2.5 py-1 bg-violet-600 text-white">litefy.dev</a>
 </Capsule>
 ```
 
@@ -47,6 +47,7 @@ description: 胶囊容器，将两个标签拼成 shields-io 风格双色徽章�
 
 - 标签上的 `rounded-none px-2.5 py-1` 会去掉其圆角并增大内边距，形成徽章比例。
 - 支持两个以上标签：容器会裁剪任意内容。
+- `Capsule.className` 是胶囊容器的静态基础类名字符串——当胶囊本身需要承载语义时，可将其应用到原生 `a` / `button` 上。
 
 ## API 参考
 
@@ -54,6 +55,11 @@ description: 胶囊容器，将两个标签拼成 shields-io 风格双色徽章�
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `as` | `'span' \| 'a'` | `'span'` | 渲染的元素类型 |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
-| `...props` | `React.ComponentProps<E>` | - | 由 `as` 决定的元素原生属性 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类，与基础 `Capsule.className` 合并 |
+| `...props` | `React.ComponentProps<"div">` | - | 支持所有原生 div 属性（`className` 除外） |
+
+### Statics
+
+| Member | Type | Description |
+|--------|------|-------------|
+| `Capsule.className` | `string` | 胶囊容器的基础类名字符串，可在原生元素上复用 |

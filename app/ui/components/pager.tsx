@@ -7,7 +7,8 @@ import { type ClassNameValue, cn } from "..";
 
 export type PagerTransition = "none" | "view-transition";
 
-export interface PagerProps {
+export interface PagerProps
+  extends Omit<React.ComponentProps<"div">, "children" | "className" | "onChange"> {
   index: number;
   onChange: (nextIndex: number) => void;
   children: React.ReactNode[];
@@ -38,6 +39,7 @@ export function Pager({
   transition = "view-transition",
   gesture = true,
   className,
+  ...props
 }: PagerProps) {
   const id = React.useId();
   const slides = Children.toArray(children).filter(isValidElement);
@@ -152,7 +154,7 @@ export function Pager({
     : {};
 
   return (
-    <div className={cn("overflow-hidden", className)}>
+    <div {...props} className={cn("overflow-hidden", className)}>
       <div
         ref={viewportRef}
         className="relative h-full w-full touch-pan-y select-none"

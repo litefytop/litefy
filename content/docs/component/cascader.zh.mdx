@@ -1,6 +1,6 @@
 ---
 title: Cascader 级联选择器
-description: 级联选择器，显示面包屑样式的触发器并通过 CSS 锚点定位显示面板覆盖层
+description: 由树形数据驱动的多级级联选择器，由面包屑样式的触发器和通过 CSS 锚点定位的弹出面板组成
 ---
 
 ## 安装
@@ -88,15 +88,24 @@ export default function Demo() {
 
 ## API 参考
 
-### Cascader
+### 高阶组件
 
-级联选择器组件，管理选择状态并渲染面包屑样式的触发器与面板覆盖层。
+开箱即用的成品组件。
 
-| 属性  | 类型             | 默认值 | 描述                          |
-| :---- | :--------------- | :----- | :--------------------------- |
-| `tree` | `CascaderNode[]` | -      | 级联选择的树形结构            |
+#### Cascader
 
-### CascaderNode
+由树形数据驱动的多级级联选择器。它为每一级渲染一个面包屑样式的触发器，并通过 CSS 锚点定位把每一级的面板锚定到对应触发器。点击父级会在选择框下方打开下一级面板；选中叶子节点会关闭面板，并在触发器上显示完整路径。面板尺寸可通过 `styles.panel`（默认宽度 `18rem`）与 `classNames.panel` 自定义。
+
+| 属性         | 类型                                                                     | 默认值                   | 描述                                                                                           |
+| :----------- | :----------------------------------------------------------------------- | :----------------------- | :--------------------------------------------------------------------------------------------- |
+| `tree`       | `CascaderNode[]`                                                         | -                        | 驱动级联选择的树形数据                                                                         |
+| `placeholder` | `string`                                                                | `"Select your location"` | 未选择任何项时触发器显示的占位文本                                                             |
+| `className`  | `ClassNameValue`                                                         | -                        | 根容器的自定义类名                                                                             |
+| `classNames` | `{ trigger?: ClassNameValue; panel?: ClassNameValue }`                   | -                        | 触发器与面板的自定义类名                                                                       |
+| `styles`     | `{ trigger?: React.CSSProperties; panel?: React.CSSProperties }`         | -                        | 触发器与面板的内联样式                                                                         |
+| `...props`   | `React.ComponentProps<"div">`                                            | -                        | 支持全部 div 原生属性（除 `children`、`className` 外），展开到根容器                            |
+
+#### CascaderNode
 
 级联选择器树节点的数据结构。
 
@@ -105,3 +114,16 @@ export default function Demo() {
 | `value`   | `string`          | -      | 节点的唯一值              |
 | `label`   | `string`          | -      | 节点的显示文本            |
 | `children` | `CascaderNode[]` | -      | 下一级的子节点数组        |
+
+---
+
+### 可组合组件
+
+#### CascaderTrigger
+
+面包屑样式的触发器按钮；组合组件会为每一级渲染一个，并通过 CSS 锚点定位把对应面板锚定到它。
+
+| 属性        | 类型                              | 默认值 | 描述                    |
+| :--------- | :-------------------------------- | :----- | :----------------------- |
+| `className` | `ClassNameValue`                 | -      | 自定义 CSS 类            |
+| `...props` | `React.ComponentProps<"button">`  | -      | 支持全部 button 原生属性 |

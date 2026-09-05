@@ -56,8 +56,9 @@ description: 支持多种变体和加载状态的按钮组件
 | Prop            | Type                                                | Default     | Description                                               |
 | --------------- | --------------------------------------------------- | ----------- | --------------------------------------------------------- |
 | `variant`       | `'primary' \| 'danger' \| 'outline' \| 'text'` | `'primary'` | 按钮视觉变体                                              |
-| `className`     | `ClassNameValue`                                    | -           | 自定义 CSS 类，支持字符串、数组、对象、布尔值等多种格式。 |
+| `className`     | `ClassNameValue`                                    | -           | 自定义 CSS 类，接受字符串、数组以及所有假值（false、null、undefined、0、0n）；不支持 true 和对象。 |
 | `loadingConfig` | `ButtonLoadingConfig`                               | -           | 加载状态配置                                              |
+| `...props`      | `React.ComponentProps<"button">`                    | -           | 支持全部 button 原生属性（除 `className`），如 `type`、`disabled`                                                  |
 
 ### ButtonLoadingConfig
 

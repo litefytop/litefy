@@ -1,12 +1,4 @@
 export default {
-  index: {
-    name: "Utils Overview",
-    displayName: {
-      en: "Overview",
-      zh: "概览",
-    },
-  },
-
   cn: {
     name: "Class Merge",
     displayName: {

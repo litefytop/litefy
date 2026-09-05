@@ -41,7 +41,7 @@ Data-driven group mode supporting multi-select.
 
 ### Custom
 
-Assemble toggles manually with controlled parts for custom shapes and colors.
+Style `Toggle` through `className` for custom shapes and colors — e.g. a pill shape, a dashed border, or custom `aria-checked:` colors — while keeping the checked state controlled.
 
 <ComponentPreview
   name="toggle-custom"
@@ -57,9 +57,12 @@ Assemble toggles manually with controlled parts for custom shapes and colors.
 | `checked`         | `boolean`                      | -       | Controlled checked state                                                                                      |
 | `defaultChecked`  | `boolean`                      | `false` | Default checked state (uncontrolled)                                                                          |
 | `onCheckedChange` | `(checked: boolean) => void`   | -       | Callback when the checked state changes                                                                       |
+| `value`           | `string`                       | -       | Value forwarded to the native button; in `Toggle.Group` it identifies each option                             |
 | `disabled`        | `boolean`                      | `false` | Disable the toggle                                                                                            |
 | `className`       | `ClassNameValue`               | -       | Custom class names                                                                                            |
-| `...props`        | `React.ComponentProps<"button">` | -     | Supports all native button props (except `type`, `aria-checked`), such as `name`, `value`, `form`, `autofocus` |
+| `...props`        | `React.ComponentProps<"button">` | -     | Supports all native button props (except `type`, `className`, `aria-checked`), such as `name`, `form`, `autofocus` |
+
+Pressing a disabled toggle does nothing. A custom `onClick` handler runs before the internal toggle logic; call `e.preventDefault()` inside it to prevent the checked state from changing.
 
 ### Toggle.Group
 

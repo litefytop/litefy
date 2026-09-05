@@ -49,7 +49,7 @@ Manage the value externally with controlled state.
 
 ### Custom
 
-Compose `NumberGroup`, `NumberDecrement`, `NumberRoot`, `NumberIncrement`; the `focus-within` focus ring and `data-invalid` invalid styles apply automatically.
+Compose `NumberGroup`, `NumberDecrement`, `NumberRoot`, `NumberIncrement`; the `focus-within` focus ring applies automatically (`data-invalid` is set but has no default styles).
 
 <ComponentPreview 
   name="number-field-custom"
@@ -68,13 +68,13 @@ A numeric input field with built-in increment and decrement buttons.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `defaultValue` | `number \| string` | - | Initial value (uncontrolled mode) |
-| `value` | `number \| string \| null` | - | Current value (controlled mode) |
-| `onValueChange` | `(value: number \| null) => void \| (value: string) => void` | - | Value change handler. Returns `number \| null` when `positiveInteger=true`, otherwise `string` |
-| `invalid` | `boolean` | `false` | Whether the field is in an invalid state |
+| `value` | `number \| string \| undefined` | - | Current value (controlled mode) |
+| `onValueChange` | `(value?: number) => void \| (value?: string) => void` | - | Value change handler. Returns `number \| undefined` when `positiveInteger=true`, otherwise `string` |
+| `invalid` | `boolean` | - | Whether the field is in an invalid state |
 | `min` | `number` | `0` (positiveInteger) or `-Infinity` | Minimum allowed value |
 | `max` | `number` | `Infinity` | Maximum allowed value |
 | `step` | `number` | `1` | Increment/decrement step size |
-| `positiveInteger` | `boolean` | `false` | Restrict to positive integers only. Changes value type to `number \| null` |
+| `positiveInteger` | `boolean` | `false` | Restrict to positive integers only. Changes value type to `number \| undefined` |
 | `classNames` | `{ group?: ClassNameValue; decrement?: ClassNameValue; increment?: ClassNameValue; root?: ClassNameValue }` | - | Custom classes for the internal elements |
 | `styles` | `{ group?: React.CSSProperties; decrement?: React.CSSProperties; increment?: React.CSSProperties; root?: React.CSSProperties }` | - | Inline styles for the internal elements |
 | `disabled` | `boolean` | `false` | Disable the entire field |
@@ -86,7 +86,7 @@ A numeric input field with built-in increment and decrement buttons.
 
 #### NumberGroup
 
-Outer container with the complete input styles built in: size (`w-3xs`), rounded border, `focus-within` focus ring, and the `data-invalid` invalid state styles.
+Outer container with the complete input styles built in: size (`max-w-3xs w-full`), rounded-full shape, and the `focus-within` focus ring; `data-invalid` is set when invalid but has no built-in styling.
 
 | Prop        | Type                          | Default | Description                                                   |
 | ----------- | ----------------------------- | ------- | ------------------------------------------------------------- |

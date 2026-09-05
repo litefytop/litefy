@@ -41,7 +41,7 @@ description: 支持水平和垂直方向的模拟滑块，支持指针拖拽与�
 
 ### 校验错误
 
-通过 `data-invalid` 和 `aria-invalid` 标记滑块的表单校验错误状态。
+通过 `data-invalid` 标记滑块的表单校验错误状态。
 
 <ComponentPreview
   name="slider-invalid"
@@ -66,7 +66,7 @@ description: 支持水平和垂直方向的模拟滑块，支持指针拖拽与�
 | `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | 轨道方向；垂直方向完全由 JS 计算定位（最小值在底部） |
 | `disabled` | `boolean` | `false` | 禁用指针与键盘交互 |
 | `name` | `string` | - | 渲染 hidden input 用于表单提交 |
-| `invalid` | `boolean` | `false` | 在根节点设置 `data-invalid`，滑块、填充与轨道显示错误色 |
+| `invalid` | `boolean` | - | 在根节点设置 `data-invalid`，滑块、填充与轨道显示错误色 |
 | `aria-label` | `string` | - | 应用到滑块的无障碍标签 |
 | `className` | `ClassNameValue` | - | 根节点自定义类 |
 | `style` | `React.CSSProperties` | - | 根节点自定义内联样式 |

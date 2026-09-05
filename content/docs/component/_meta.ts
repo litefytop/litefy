@@ -331,6 +331,13 @@ export default {
       zh: "标签",
     },
   },
+  "text-area": {
+    name: "Text Area",
+    displayName: {
+      en: "Text Area",
+      zh: "文本域",
+    },
+  },
   timeline: {
     name: "Timeline",
     displayName: {
@@ -385,6 +392,13 @@ export default {
     displayName: {
       en: "Upload",
       zh: "上传",
+    },
+  },
+  watermark: {
+    name: "Watermark",
+    displayName: {
+      en: "Watermark",
+      zh: "水印",
     },
   },
   wizard: {

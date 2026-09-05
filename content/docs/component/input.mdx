@@ -59,12 +59,12 @@ The input component with slot and validation support.
 
 | Prop         | Type                                              | Default  | Description                                               |
 | ------------ | ------------------------------------------------- | -------- | --------------------------------------------------------- |
-| `type`       | `'text' \| 'email' \| 'url' \| 'tel' \| 'search'` | `'text'` | Input type                                                |
+| `type`       | `'text' \| 'email' \| 'url' \| 'tel' \| 'search'` | -        | Input type                                                |
 | `leading`    | `ReactNode`                                       | -        | Leading slot content (e.g., icons)                        |
 | `trailing`   | `ReactNode`                                       | -        | Trailing slot content (e.g., buttons, icons)              |
-| `invalid`    | `boolean`                                         | `false`  | Whether the input is in an invalid state                  |
-| `classNames` | `{ group?: ClassNameValue; leading?: ClassNameValue; trailing?: ClassNameValue; root?: ClassNameValue }` | - | Custom classes for the group, slots and input |
-| `styles` | `{ group?: React.CSSProperties; leading?: React.CSSProperties; trailing?: React.CSSProperties; root?: React.CSSProperties }` | - | Inline styles for the group, slots and input |
+| `invalid`    | `boolean`                                         | -        | Whether the input is in an invalid state                  |
+| `classNames` | `{ group?: ClassNameValue; leading?: ClassNameValue; trailing?: ClassNameValue; root?: ClassNameValue }` | - | Custom classes for the group, leading/trailing areas and input |
+| `styles` | `{ group?: React.CSSProperties; leading?: React.CSSProperties; trailing?: React.CSSProperties; root?: React.CSSProperties }` | - | Inline styles for the group, leading/trailing areas and input |
 | `...props`   | `React.ComponentProps<"input">`                   | -        | Supports all native input props (except `type`, `className`) |
 
 ---
@@ -73,7 +73,7 @@ The input component with slot and validation support.
 
 #### InputGroup
 
-Outer container with the complete input styles built in: size (`h-9 w-sm`), rounded border, background, `focus-within` focus ring, and the `data-invalid` invalid state styles.
+Outer container with the complete input styles built in: size (`h-9 w-full max-w-sm`), rounded border, background, `focus-within` focus ring, and the `data-invalid` invalid state styles.
 
 | Prop        | Type                          | Default | Description                                                   |
 | ----------- | ----------------------------- | ------- | ------------------------------------------------------------- |

@@ -159,6 +159,7 @@ Weekday header row plus the weeks body. Expects a two-dimensional `weeks` array 
 | `value`          | `Temporal.PlainDate \| null`            | -       | Selected date, drives the highlighted cell                    |
 | `isDateDisabled` | `(date: Temporal.PlainDate) => boolean` | -       | Return `true` to disable the date                             |
 | `onSelect`       | `(date: Temporal.PlainDate) => void`    | -       | Fired on cell click; the composite filters out-of-month dates |
+| `onNavigate`     | `(date: Temporal.PlainDate) => void`    | -       | Fired when arrowing to a date not present in the grid         |
 | `firstDayOfWeek` | `0 \| 1`                                | `0`     | Weekday header order                                          |
 | `className`      | `ClassNameValue`                        | -       | Custom class names                                            |
 | `...props`       | `React.ComponentProps<"div">`           | -       | Native div props                                              |
@@ -174,6 +175,7 @@ A single week row. Usually rendered by `CalendarGrid`, but can be composed manua
 | `value`          | `Temporal.PlainDate \| null`            | -       | Selected date                                                                                |
 | `isDateDisabled` | `(date: Temporal.PlainDate) => boolean` | -       | Return `true` to disable the date                                                            |
 | `onSelect`       | `(date: Temporal.PlainDate) => void`    | -       | Fired on cell click                                                                          |
+| `onNavigate`     | `(date: Temporal.PlainDate) => void`    | -       | Fired when arrowing to a date not present in the grid                                        |
 | `tabStopDate`    | `string`                                | -       | ISO date string of the single tab stop in the grid; omit to keep all cells natively tabbable |
 | `className`      | `ClassNameValue`                        | -       | Custom class names                                                                           |
 | `...props`       | `React.ComponentProps<"div">`           | -       | Native div props                                                                             |
@@ -188,5 +190,6 @@ A single date cell rendered as a button. `aria-selected` drives the selected sty
 | `outsideMonth` | `boolean`                        | `false` | Grays out cells not belonging to the visible month                                         |
 | `selected`     | `boolean`                        | `false` | Highlights the cell as selected                                                            |
 | `tabStop`      | `boolean`                        | -       | Roving tabindex: `true` makes the cell the only tab stop; omit to keep native tab behavior |
+| `onNavigate`   | `(date: Temporal.PlainDate) => void` | -   | Fired when arrowing to a date not present in the grid                                       |
 | `className`    | `ClassNameValue`                 | -       | Custom class names                                                                         |
 | `...props`     | `React.ComponentProps<"button">` | -       | Native button props (except `type`), such as `disabled`                                    |

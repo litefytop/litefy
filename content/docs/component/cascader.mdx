@@ -1,6 +1,6 @@
 ---
 title: Cascader
-description: A cascading selector that displays a breadcrumb-style trigger and shows panel overlays via CSS anchor positioning
+description: A multi-level cascading selector driven by a tree, built from a breadcrumb-style trigger and popover panels positioned via CSS anchor positioning
 ---
 
 ## Installation
@@ -88,20 +88,42 @@ export default function Demo() {
 
 ## API Reference
 
-### Cascader
+### High-level Components
 
-A cascading selector component that manages the selection state and renders breadcrumb-style triggers with panel overlays.
+Ready-to-use composite components.
 
-| Prop  | Type             | Default | Description                    |
-| :---- | :--------------- | :------ | :----------------------------- |
-| `tree` | `CascaderNode[]` | -       | Tree structure for cascading selection |
+#### Cascader
 
-### CascaderNode
+A multi-level cascading selector driven by a tree. It renders one breadcrumb-style trigger per level and anchors each level's panel to its trigger via CSS anchor positioning. Clicking a parent level opens the next level's panel below the field; selecting a leaf closes the panels and the full path is shown across the triggers. Panel sizing is customizable via `styles.panel` (default width `18rem`) and `classNames.panel`.
+
+| Prop         | Type                                                                     | Default                  | Description                                                                                    |
+| :----------- | :----------------------------------------------------------------------- | :----------------------- | :--------------------------------------------------------------------------------------------- |
+| `tree`       | `CascaderNode[]`                                                         | -                        | Tree data driving the cascading selection                                                      |
+| `placeholder` | `string`                                                                | `"Select your location"` | Trigger text shown before anything is selected                                                 |
+| `className`  | `ClassNameValue`                                                         | -                        | Custom classes for the root container                                                          |
+| `classNames` | `{ trigger?: ClassNameValue; panel?: ClassNameValue }`                   | -                        | Custom classes for the triggers and panels                                                     |
+| `styles`     | `{ trigger?: React.CSSProperties; panel?: React.CSSProperties }`         | -                        | Inline styles for the triggers and panels                                                      |
+| `...props`   | `React.ComponentProps<"div">`                                            | -                        | Supports all native div props (except `children`, `className`), spread onto the root container |
+
+#### CascaderNode
 
 Node structure for the cascader tree.
 
-| Field     | Type              | Default | Description                   |
-| :-------- | :---------------- | :------ | :---------------------------- |
-| `value`   | `string`          | -       | Unique value for the node     |
-| `label`   | `string`          | -       | Display text for the node     |
-| `children` | `CascaderNode[]` | -       | Child nodes for the next level |
+| Field     | Type              | Default | Description                     |
+| :-------- | :---------------- | :------ | :------------------------------ |
+| `value`   | `string`          | -       | Unique value for the node       |
+| `label`   | `string`          | -       | Display text for the node       |
+| `children` | `CascaderNode[]` | -       | Child nodes for the next level  |
+
+---
+
+### Composable Components
+
+#### CascaderTrigger
+
+A breadcrumb-style trigger button; the composite renders one per level and anchors the matching panel to it via CSS anchor positioning.
+
+| Prop       | Type                              | Default | Description                      |
+| :--------- | :-------------------------------- | :------ | :------------------------------- |
+| `className` | `ClassNameValue`                 | -       | Custom CSS class                 |
+| `...props` | `React.ComponentProps<"button">`  | -       | Supports all native button props |

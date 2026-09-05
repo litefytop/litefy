@@ -1,6 +1,6 @@
 ---
 title: use-pagination
-description: A flexible pagination component with multiple sub-components for navigation, sizing, and page jumping
+description: A headless pagination state hook with looping, dynamic totals and change callbacks
 ---
 
 ## Installation
@@ -9,13 +9,13 @@ description: A flexible pagination component with multiple sub-components for na
 
 <Tab value="CLI">
 
-<PackageManagerTabs command="litefy@latest add pagination" />
+<PackageManagerTabs command="litefy@latest add use-pagination" />
 
 </Tab>
 
 <Tab value="Manual">
 
-<Source type="hook" name="pagination" />
+<Source type="hook" name="use-pagination" />
 
 </Tab>
 
@@ -33,83 +33,28 @@ Basic pagination usage with navigation controls and page indicators.
 
 ## API Reference
 
-### Pagination
-
-The root pagination container that provides context to all sub-components.
-
-| Prop               | Type                     | Default | Description                                                                                                        |
-| ------------------ | ------------------------ | ------- | ------------------------------------------------------------------------------------------------------------------ |
-| `current`          | `number`                 | -       | Current page number                                                                                                |
-| `pageSize`         | `number`                 | -       | Number of items per page                                                                                           |
-| `total`            | `number`                 | -       | Total number of items                                                                                              |
-| `onPageChange`     | `(page: number) => void` | -       | Callback when page changes                                                                                         |
-| `onPageSizeChange` | `(size: number) => void` | -       | Callback when page size changes                                                                                    |
-| `children`         | `React.ReactNode`        | -       | Pagination sub-components                                                                                          |
-| `className`        | `ClassNameValue`         | -       | Accepts strings, arrays, and all falsy values (false, null, undefined, 0, 0n). True and objects are not supported. |
-
-### Pagination.Description
-
-Displays pagination description text.
-
-| Prop     | Type                                                             | Default | Description            |
-| -------- | ---------------------------------------------------------------- | ------- | ---------------------- |
-| `format` | `(total: number, current: number, totalPages: number) => string` | -       | Custom format function |
-
-### Pagination.Sizer
-
-Select dropdown for changing page size.
-
-| Prop      | Type                       | Default             | Description                             |
-| --------- | -------------------------- | ------------------- | --------------------------------------- |
-| `options` | `number[]`                 | `[10, 20, 50, 100]` | Available page size options             |
-| `format`  | `(size: number) => string` | -                   | Custom format function for size display |
-
-### Pagination.Controls
-
-Navigation buttons for first, previous, next, and last page.
-
-| Prop      | Type                                    | Default | Description               |
-| --------- | --------------------------------------- | ------- | ------------------------- |
-| `variant` | `'first' \| 'prev' \| 'next' \| 'last'` | -       | Navigation button variant |
-
-### Pagination.Jumper
-
-Select dropdown for jumping to a specific page.
-
-| Prop     | Type                       | Default | Description                             |
-| -------- | -------------------------- | ------- | --------------------------------------- |
-| `format` | `(page: number) => string` | -       | Custom format function for page display |
-
-### Pagination.Indicator
-
-Visual page indicator with multiple variants.
-
-| Prop           | Type                           | Default    | Description                             |
-| -------------- | ------------------------------ | ---------- | --------------------------------------- |
-| `variant`      | `'number' \| 'dot' \| 'bar'`   | `'number'` | Visual variant for page indicators      |
-| `visibleCount` | `number`                       | `5`        | Number of visible page indicators       |
-| `slotProps`    | `PaginationIndicatorSlotProps` | -          | Slot props for customizing sub-elements |
-
-### PaginationIndicatorSlotProps
-
-| Slot   | Type                             | Description                          |
-| ------ | -------------------------------- | ------------------------------------ |
-| `root` | `React.ComponentProps<"div">`    | Props for the root container         |
-| `item` | `React.ComponentProps<"button">` | Props for each page indicator button |
-
 ### usePagination
 
-Hook to access pagination context from within Pagination component tree.
+A headless hook that manages pagination state; pair it with your own navigation controls (see the demo above).
 
-Returns:
+#### Options
 
-- `current`: Current page number
-- `pageSize`: Items per page
-- `total`: Total items
-- `totalPages`: Total pages
-- `goTo(page)`: Navigate to specific page
-- `goPrev()`: Go to previous page
-- `goNext()`: Go to next page
-- `goFirst()`: Go to first page
-- `goLast()`: Go to last page
-- `setPageSize(size)`: Change page size
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `base` | `number` | `0` | First page number; `index` is offset by this value |
+| `total` | `number \| (() => number)` | - | Total page count, or a getter for dynamic totals. **Required** |
+| `loop` | `boolean` | `false` | Wraps to the other end when navigating past the first or last page |
+| `onChange` | `(page: number) => void` | - | Fired with the new page whenever it changes |
+
+#### Returns
+
+- `index`: Current page number (starts at `base`)
+- `total`: Current total page count
+- `setIndex(page | (prevPage) => page)`: Set the page directly or with an updater; it is normalized into the valid range
+- `goTo(page)`: Navigate to a specific page
+- `next()`: Go to the next page
+- `previous()`: Go to the previous page
+- `toFirst()`: Go to the first page (`base`)
+- `toEnd()`: Go to the last page
+- `isFirst`: `true` when on the first page (always `false` when `loop` is enabled)
+- `isEnd`: `true` when on the last page (always `false` when `loop` is enabled)

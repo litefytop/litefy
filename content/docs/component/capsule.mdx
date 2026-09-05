@@ -29,7 +29,7 @@ description: A pill container that turns two tags into a shields-io style two-co
 
 ### Composition
 
-The left tag acts as the label, the right one as the value. Colors are plain utilities on each tag. Use the `as` prop to render the container as `span` (default) or `a` (link).
+The left tag acts as the label, the right one as the value. Colors are plain utilities on each tag. `Capsule` always renders a `div` — there is no `as` prop. For a clickable badge, nest a native `<a>` (or `button`) inside the container:
 
 ```tsx
 <Capsule>
@@ -37,9 +37,9 @@ The left tag acts as the label, the right one as the value. Colors are plain uti
   <Tag className="rounded-none px-2.5 py-1 bg-emerald-600 text-white">passing</Tag>
 </Capsule>
 
-<Capsule as="a" href="#">
+<Capsule>
   <Tag className="rounded-none px-2.5 py-1 bg-neutral-600 text-white">docs</Tag>
-  <Tag className="rounded-none px-2.5 py-1 bg-violet-600 text-white">litefy.dev</Tag>
+  <a href="#" className="rounded-none px-2.5 py-1 bg-violet-600 text-white">litefy.dev</a>
 </Capsule>
 ```
 
@@ -47,6 +47,7 @@ The left tag acts as the label, the right one as the value. Colors are plain uti
 
 - `rounded-none px-2.5 py-1` on the tags neutralizes their radius and bumps padding for badge proportions.
 - More than two tags work too: the container just clips whatever is inside.
+- `Capsule.className` is the static base class string of the pill container — apply it to a native `a` / `button` when the capsule itself must carry the semantics.
 
 ## API Reference
 
@@ -54,6 +55,11 @@ The left tag acts as the label, the right one as the value. Colors are plain uti
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `as` | `'span' \| 'a'` | `'span'` | Rendered element type |
-| `className` | `ClassNameValue` | - | Custom CSS class |
-| `...props` | `React.ComponentProps<E>` | - | Native props of the element selected by `as` |
+| `className` | `ClassNameValue` | - | Custom CSS class, merged with the base `Capsule.className` |
+| `...props` | `React.ComponentProps<"div">` | - | Supports all native div props (except `className`) |
+
+### Statics
+
+| Member | Type | Description |
+|--------|------|-------------|
+| `Capsule.className` | `string` | Base class string of the pill container, for reuse on native elements |

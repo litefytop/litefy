@@ -62,7 +62,7 @@ An OTP input built with the parts below, encapsulating value state and interacti
 | `defaultValue` | `string` | `""` | Initial value (uncontrolled) |
 | `onValueChange` | `(value: string) => void` | - | Called when the value changes |
 | `disabled` | `boolean` | `false` | Disables all slots |
-| `invalid` | `boolean` | `false` | Sets `data-invalid` on the group and `aria-invalid` on each slot |
+| `invalid` | `boolean` | - | Sets `data-invalid` on the group and `aria-invalid` on each slot |
 | `mask` | `boolean` | `false` | Renders slots as password inputs |
 | `name` | `string` | - | Renders a hidden input for form submission |
 | `aria-label` | `string` | - | Accessible label, suffixed with the slot index per slot |
@@ -81,8 +81,19 @@ Pure display parts with no built-in state or interaction, for advanced custom as
 
 #### InputOtpGroup
 
-The outermost container.
+The outermost container, rendered as a `div` with built-in `flex items-center gap-2`.
+
+| Prop        | Type                          | Default | Description                                        |
+| ----------- | ----------------------------- | ------- | -------------------------------------------------- |
+| `className` | `ClassNameValue`              | -       | Custom class name                                  |
+| `...props`  | `React.ComponentProps<"div">` | -       | Supports all native div props (except `className`) |
 
 #### InputOtpSlot
 
 A single slot rendered as an `<input>`; value, events and aria attributes are wired by the consumer.
+
+| Prop        | Type                            | Default | Description                                                  |
+| ----------- | ------------------------------- | ------- | ------------------------------------------------------------ |
+| `className` | `ClassNameValue`                | -       | Custom class name                                            |
+| `ref`       | `React.Ref<HTMLInputElement>`   | -       | Forwarded to the native input element                        |
+| `...props`  | `React.ComponentProps<"input">` | -       | Supports all native input props (except `className` and `ref`) |

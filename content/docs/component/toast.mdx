@@ -69,11 +69,11 @@ Imperative methods:
 
 | Method    | Type                                                                          | Description                                                       |
 | --------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| `success` | `(options: ToastItemProps) => string \| number`                               | Shows a success toast, returns the toast id                       |
-| `error`   | `(options: ToastItemProps) => string \| number`                               | Shows an error toast, returns the toast id                        |
-| `warning` | `(options: ToastItemProps) => string \| number`                               | Shows a warning toast, returns the toast id                       |
-| `info`    | `(options: ToastItemProps) => string \| number`                               | Shows an info toast, returns the toast id                         |
-| `loading` | `(options: ToastItemProps) => string \| number`                               | Shows a persistent loading toast (never auto-dismisses)           |
+| `success` | `(options: ToastItemProps) => number`                                         | Shows a success toast, returns the toast id                       |
+| `error`   | `(options: ToastItemProps) => number`                                         | Shows an error toast, returns the toast id                        |
+| `warning` | `(options: ToastItemProps) => number`                                         | Shows a warning toast, returns the toast id                       |
+| `info`    | `(options: ToastItemProps) => number`                                         | Shows an info toast, returns the toast id                         |
+| `loading` | `(options: ToastItemProps) => number`                                         | Shows a persistent loading toast (never auto-dismisses)           |
 | `dismiss` | `(id?: string \| number) => void`                                             | Dismisses a toast by id; without an id, dismisses all toasts      |
 | `promise` | `<T>(promise: () => Promise<T>, data: PromiseData<T>) => void`                | Loading toast that upgrades to success/error on settle            |
 
@@ -83,6 +83,7 @@ Options accepted by every imperative method.
 
 | Prop          | Type                                    | Default    | Description                                                                                     |
 | ------------- | --------------------------------------- | ---------- | ----------------------------------------------------------------------------------------------- |
+| `id`          | `string \| number`                      | -          | Toast id; auto-assigned by the store when the toast is created                                   |
 | `title`       | `React.ReactNode`                       | -          | Toast title                                                                                     |
 | `description` | `React.ReactNode`                       | -          | Secondary text below the title                                                                  |
 | `type`        | `"success" \| "error" \| "warning" \| "info" \| "loading"` | -       | Icon type; set automatically by the semantic methods                          |

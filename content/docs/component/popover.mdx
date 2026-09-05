@@ -25,7 +25,7 @@ description: A button-triggered popover panel built on popover + CSS Anchor Posi
 
 ### Basic Usage
 
-Popover is a button + popover base, not a menu: the `trigger` opens a panel whose content is entirely yours. Clicking the trigger toggles the panel; focus moves to the first focusable element inside the panel when it opens (falling back to the panel itself when none exists), and `Escape` (from the trigger or inside the panel) or a click outside both closes it. Compose it with [Menu](/docs/component/menu) to build a dropdown menu, or with [Checkbox](/docs/component/checkbox) to build a [MultiSelect](/docs/component/multi-select).
+Popover is a button + popover base, not a menu: the `trigger` opens a panel whose content is entirely yours. In the default `click` mode, clicking the trigger toggles the panel (`ArrowDown` / `Space` on the trigger also open it). The panel closes on `Escape` pressed while focus is inside it, or on `mousedown` outside it. With `mode="hover"`, the panel opens on pointer enter or trigger focus and closes after a short delay once the pointer leaves both. Compose it with [Menu](/docs/component/menu) to build a dropdown menu, or with [Checkbox](/docs/component/checkbox) to build a [MultiSelect](/docs/component/multi-select).
 
 <ComponentPreview
   name="popover-basic"
@@ -41,7 +41,7 @@ Beyond the built-in `alignX` (`start` / `center` / `end`), any CSS Anchor Positi
 
 ### Composable Components
 
-Assemble the parts manually for full control over the trigger wiring — the demo replicates the composite's lifecycle: `showPopover()` / `hidePopover()` on open changes, outside `mousedown` to close, `Escape` handling.
+Assemble the parts manually for full control over the trigger wiring — the demo drives `showPopover()` / `hidePopover()` on open changes and closes on outside `mousedown`, while the `Escape` handling comes built into `PopoverContent`.
 
 <ComponentPreview
   name="popover-custom"
@@ -49,37 +49,69 @@ Assemble the parts manually for full control over the trigger wiring — the dem
 
 ## API Reference
 
-### Popover
+### High-level Components
 
-| Prop           | Type                           | Default  | Description                                                                                     |
-| :------------- | :----------------------------- | :------- | :---------------------------------------------------------------------------------------------- |
-| `trigger`      | `React.ReactNode`              | -        | Content of the trigger button                                                                   |
-| `open`         | `boolean`                      | -        | Controlled panel state                                                                          |
-| `defaultOpen`  | `boolean`                      | `false`  | Initial panel state (uncontrolled)                                                              |
-| `onOpenChange` | `(open: boolean) => void`      | -        | Fired whenever the panel wants to open or close                                                 |
-| `ref`          | `React.Ref<HTMLButtonElement>` | -        | Forwards to the trigger button (e.g. to restore focus after closing)                            |
-| `alignX`       | `"start" \| "center" \| "end"` | `center` | Horizontal alignment of the panel relative to the trigger                                       |
-| `className`    | `ClassNameValue`               | -        | Custom class names, applied to the panel                                                        |
-| `classNames`   | `trigger` / `content`          | -        | Custom class names per slot                                                                     |
-| `styles`       | `trigger` / `content`          | -        | Inline styles per slot — e.g. `styles.content.positionArea` overrides `alignX`                  |
-| `...props`     | `PopoverContentProps`          | -        | Rest props spread on the panel; consumer `onKeyDown` composes with the built-in Escape handling |
+#### Popover
 
-Closing paths: trigger click toggles, `Escape` (trigger or panel) closes and refocuses the trigger, `mousedown` outside both closes. Consumer `preventDefault()` inside `onKeyDown` skips the built-in behavior.
+Renders a native trigger button (`type="button"`, `aria-haspopup`, `aria-expanded`) plus the floating panel, positioned with CSS Anchor Positioning.
 
-### PopoverTrigger
+| Prop           | Type                                                                              | Default  | Description                                                                                 |
+| :------------- | :-------------------------------------------------------------------------------- | :------- | :------------------------------------------------------------------------------------------ |
+| `trigger`      | `React.ReactNode`                                                                 | -        | Content of the trigger button                                                                |
+| `children`     | `React.ReactNode`                                                                 | -        | Panel content                                                                                |
+| `open`         | `boolean`                                                                         | -        | Controlled panel state                                                                       |
+| `defaultOpen`  | `boolean`                                                                         | `false`  | Initial panel state (uncontrolled)                                                           |
+| `onOpenChange` | `(open: boolean) => void`                                                         | -        | Fired whenever the panel opens or closes                                                     |
+| `alignX`       | `"start" \| "end" \| "center"`                                                    | `center` | Horizontal alignment of the panel relative to the trigger                                    |
+| `mode`         | `"click" \| "hover"`                                                              | `click`  | Trigger interaction mode; `hover` opens on pointer enter / trigger focus and closes after a delayed pointer leave |
+| `classNames`   | `{ trigger?: ClassNameValue; content?: ClassNameValue }`                          | -        | Custom class names per slot                                                                  |
+| `styles`       | `{ trigger?: React.CSSProperties; content?: React.CSSProperties }`                | -        | Inline styles per slot — e.g. `styles.content.positionArea` overrides `alignX`               |
 
-The trigger button with built-in `type="button"`. The composite `Popover` sets `anchor-name` on it via inline style, wires the toggle click and closes on `Escape`.
+Closing paths: in `click` mode the trigger click toggles the panel; the panel closes on `Escape` (while focus is inside the panel) and on `mousedown` outside it; in `hover` mode the panel closes after `hoverDelayClose` ms once the pointer leaves both trigger and panel.
 
-| Prop        | Type                             | Default | Description         |
-| :---------- | :------------------------------- | :------ | :------------------ |
-| `className` | `ClassNameValue`                 | -       | Custom class names  |
-| `...props`  | `React.ComponentProps<"button">` | -       | Native button props |
+---
 
-### PopoverContent
+### Hooks
 
-The floating panel. A `popover="manual"` div with `tabIndex={-1}`, pre-wired panel look ( border, shadow, scrollable up to `max-h-96`).
+#### usePopoverTrigger
 
-| Prop        | Type                          | Default | Description        |
-| :---------- | :---------------------------- | :------ | :----------------- |
-| `className` | `ClassNameValue`              | -       | Custom class names |
-| `...props`  | `React.ComponentProps<"div">` | -       | Native div props   |
+Wires a custom trigger element and panel to the popover state — the composite `Popover` is built on it. Apply `anchorName` as the trigger's `anchor-name` style and as the panel's `positionAnchor` so the panel aligns to the trigger.
+
+Options (`UsePopoverTriggerOptions`):
+
+| Option            | Type                   | Default | Description                                            |
+| :---------------- | :--------------------- | :------ | :----------------------------------------------------- |
+| `open`            | `boolean`              | -       | Current panel state                                    |
+| `onOpenChange`    | `(v: boolean) => void` | -       | State updater the hook calls to open or close          |
+| `mode`            | `"click" \| "hover"`   | `click` | Interaction mode                                       |
+| `hoverDelayOpen`  | `number`               | `0`     | Delay in ms before opening after pointer enter (hover) |
+| `hoverDelayClose` | `number`               | `200`   | Delay in ms before closing after the pointer leaves    |
+
+Returns:
+
+| Member          | Type         | Description                                                                                        |
+| :-------------- | :----------- | :------------------------------------------------------------------------------------------------- |
+| `triggerProps`  | `object`     | Spread on the trigger element: `aria-haspopup`, `aria-expanded`, the `anchor-name` style, and click / hover / focus / keyboard handlers |
+| `contentProps`  | `object`     | Spread on the panel: cancels the pending close timer on pointer enter and schedules it on pointer leave (hover mode) |
+| `clearTimer`    | `() => void` | Cancels any pending hover open/close timer                                                          |
+| `scheduleOpen`  | `() => void` | Opens the panel, honoring `hoverDelayOpen`                                                          |
+| `scheduleClose` | `() => void` | Closes the panel after `hoverDelayClose` ms                                                         |
+| `anchorName`    | `string`     | Generated CSS anchor name (e.g. `--popover-trigger-abc123`)                                         |
+
+---
+
+### Composable Components
+
+#### PopoverContent
+
+The floating panel: a `popover="manual"` div with pre-wired panel look (border, shadow, scrollable up to `max-h-96`). Toggling `open` runs `showPopover()` / `hidePopover()`; `Escape` inside the panel or a `mousedown` outside it calls `onOpenChange(false)`. A consumer `onKeyDown` composes with the built-in Escape handling — call `preventDefault()` to skip it.
+
+| Prop           | Type                             | Default  | Description                                                                               |
+| :------------- | :------------------------------- | :------- | :---------------------------------------------------------------------------------------- |
+| `open`         | `boolean`                        | -        | Controls the panel; `true` calls `showPopover()`, `false` calls `hidePopover()`           |
+| `onOpenChange` | `(open: boolean) => void`        | -        | Called when `Escape` is pressed inside the panel or a `mousedown` lands outside it        |
+| `alignX`       | `"start" \| "end" \| "center"`   | `center` | Horizontal alignment via CSS Anchor Positioning `positionArea`                            |
+| `className`    | `ClassNameValue`                 | -        | Custom class names                                                                        |
+| `style`        | `React.CSSProperties`            | -        | Inline styles merged over the built-in anchor styles (`positionTryFallbacks: "flip-block, flip-inline"`) |
+| `ref`          | `React.Ref<HTMLDivElement>`      | -        | Forwards to the panel div                                                                 |
+| `...props`     | `React.ComponentProps<"div">`    | -        | Supports all native div props (except `className`), such as `role`, `id`, `onKeyDown`     |

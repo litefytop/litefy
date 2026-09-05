@@ -1,0 +1,50 @@
+---
+title: Text Area
+description: A multi-line text input with built-in invalid state support and a form-friendly onChange signature
+---
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add text-area" />
+
+</Tab>
+
+<Tab value="Manual">
+
+<Source type="component" name="text-area" />
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Basic textarea with default, invalid and disabled states.
+
+<ComponentPreview 
+  name="text-area-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Textarea
+
+The native textarea element with built-in styles: full width, rounded border and focus ring, `min-h-20` with `resize-y`, and invalid styles driven by `data-invalid`.
+
+| Prop       | Type                                                                        | Default | Description                                                                                         |
+| :--------- | :-------------------------------------------------------------------------- | :------ | :-------------------------------------------------------------------------------------------------- |
+| `value`    | `string`                                                                    | -       | Controlled value (narrowed to `string`, unlike the native `value`)                                   |
+| `className` | `ClassNameValue`                                                           | -       | Custom class name                                                                                    |
+| `invalid`  | `boolean`                                                                   | -       | Marks the textarea invalid; sets `aria-invalid` and `data-invalid`, applying the invalid border/ring styles |
+| `onChange` | `(e: React.ChangeEvent<HTMLTextAreaElement>) => undefined \| { invalid?: string }` | - | Native change callback; may return `{ invalid?: string }` for form integration                      |
+| `...props` | `React.ComponentProps<"textarea">`                                          | -       | Supports all native textarea props (except `value` and `onChange`, which are overridden above)        |

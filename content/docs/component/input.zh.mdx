@@ -59,12 +59,12 @@ description: 支持前后置插槽和验证状态的输入框组件
 
 | Prop         | Type                                              | Default  | Description                           |
 | ------------ | ------------------------------------------------- | -------- | ------------------------------------- |
-| `type`       | `'text' \| 'email' \| 'url' \| 'tel' \| 'search'` | `'text'` | 输入类型                              |
+| `type`       | `'text' \| 'email' \| 'url' \| 'tel' \| 'search'` | -        | 输入类型                              |
 | `leading`    | `ReactNode`                                       | -        | 前置插槽内容（如图标）                |
 | `trailing`   | `ReactNode`                                       | -        | 后置插槽内容（如按钮、图标）          |
-| `invalid`    | `boolean`                                         | `false`  | 输入框是否处于无效状态                |
-| `classNames` | `{ group?: ClassNameValue; leading?: ClassNameValue; trailing?: ClassNameValue; root?: ClassNameValue }` | - | 容器、插槽与输入框的自定义类名 |
-| `styles` | `{ group?: React.CSSProperties; leading?: React.CSSProperties; trailing?: React.CSSProperties; root?: React.CSSProperties }` | - | 容器、插槽与输入框的内联样式 |
+| `invalid`    | `boolean`                                         | -        | 输入框是否处于无效状态                |
+| `classNames` | `{ group?: ClassNameValue; leading?: ClassNameValue; trailing?: ClassNameValue; root?: ClassNameValue }` | - | 容器、前后置插槽与输入框的自定义类名 |
+| `styles` | `{ group?: React.CSSProperties; leading?: React.CSSProperties; trailing?: React.CSSProperties; root?: React.CSSProperties }` | - | 容器、前后置插槽与输入框的内联样式 |
 | `...props`   | `React.ComponentProps<"input">`                   | -        | 支持全部 input 原生属性（除 `type`、`className`） |
 
 ---
@@ -73,7 +73,7 @@ description: 支持前后置插槽和验证状态的输入框组件
 
 #### InputGroup
 
-外层容器，内置完整输入框样式：尺寸（`h-9 w-sm`）、圆角边框、背景、`focus-within` 焦点环，以及 `data-invalid` 无效状态样式。
+外层容器，内置完整输入框样式：尺寸（`h-9 w-full max-w-sm`）、圆角边框、背景、`focus-within` 焦点环，以及 `data-invalid` 无效状态样式。
 
 | Prop        | Type                          | Default | Description                               |
 | ----------- | ----------------------------- | ------- | ----------------------------------------- |

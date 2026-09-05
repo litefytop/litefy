@@ -62,7 +62,7 @@ const items: MenuConfig[] = [
 | `ArrowDown` / `ArrowUp` | 在可用菜单项之间移动（循环）     |
 | `ArrowRight`       | 打开当前菜单项的子菜单                |
 | `ArrowLeft`        | 关闭子菜单并回到父级菜单项            |
-| `Enter` / `Space`  | 选中当前聚焦的菜单项                  |
+| `Enter`            | 选中当前聚焦的菜单项                  |
 | `Escape`           | 触发 `onEscape` 并关闭子菜单          |
 
 子菜单在悬停时打开（带短延迟关闭），或通过 `ArrowRight` 持续打开。在菜单之外点击会关闭已打开的子菜单；`Escape` 会转发给你的 `onEscape` 处理器，以便包装它的弹出面板（如 Popover）自行关闭。
@@ -77,7 +77,7 @@ const items: MenuConfig[] = [
 
 | Prop           | Type                              | Default | Description                                                                 |
 | -------------- | ---------------------------------- | ------- | ---------------------------------------------------------------------------- |
-| `items`        | `MenuConfig[]`                     | `[]`    | 菜单项配置，见下方 [items](#items)                                           |
+| `items`        | `MenuConfig[]`                     | -       | 菜单项配置，见下方 [items](#items) **必填**                                  |
 | `autoFocus`    | `boolean`                          | -       | 每次变为 `true` 时聚焦第一个可用菜单项；传入包装弹出面板的 `open` 即可每次打开时聚焦 |
 | `onSelect`     | `(item: MenuItemConfig) => void`   | -       | 点击或键盘选中菜单项时触发                                                   |
 | `onEscape`     | `() => void`                       | -       | 菜单内按下 `Escape` 时触发                                                   |

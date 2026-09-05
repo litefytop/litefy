@@ -94,7 +94,7 @@ Picker 是一个积木组件，而不是成品组件。将它与 [Calendar](/doc
 
 #### PickerContent
 
-弹出面板。原生 `popover="manual"` 元素；可命令式调用 `showPopover()` / `hidePopover()`，或将 `positionAnchor` 设置为对应 `PickerRoot` 的锚点名称来定位。
+弹出面板。原生 `popover="manual"` 元素；可命令式调用 `showPopover()` / `hidePopover()`，并通过 `style={{ positionAnchor: ... }}` 手动定位（锚点名为对应 `PickerRoot` 上设置的锚点名称）；它没有 `positionAnchor` 属性。
 
 | 属性       | 类型                          | 默认值  | 描述          |
 | ---------- | ----------------------------- | ------- | ------------- |

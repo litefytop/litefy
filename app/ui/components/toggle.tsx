@@ -1,7 +1,7 @@
 import * as React from "react";
 import { type ClassNameValue, cn } from "..";
 
-export interface ToggleProps {
+export interface ToggleProps extends Omit<React.ComponentProps<"button">, "type" | "className"> {
   checked?: boolean;
   defaultChecked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
@@ -18,14 +18,16 @@ export const Toggle = ({
   disabled,
   className,
   children,
+  onClick,
   ...props
 }: ToggleProps) => {
   const [uncontrolledChecked, setUncontrolledChecked] = React.useState(defaultChecked);
   const isControlled = controlledChecked !== undefined;
   const checked = isControlled ? controlledChecked : uncontrolledChecked;
 
-  const handleClick = () => {
-    if (disabled) return;
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    onClick?.(e);
+    if (e.defaultPrevented || disabled) return;
     const next = !checked;
     if (!isControlled) setUncontrolledChecked(next);
     onCheckedChange?.(next);

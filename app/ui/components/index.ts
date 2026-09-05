@@ -4,7 +4,7 @@ export * from "./breadcrumb";
 export * from "./cascader";
 export * from "./capsule";
 export * from "./card";
-export * from "./collapse‑accordion";
+export * from "./collapse-accordion";
 export * from "./button";
 export * from "./calendar";
 export * from "./checkbox";

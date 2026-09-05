@@ -39,9 +39,9 @@ description: 支持受控、非受控以及分组多选模式的切换按钮组�
   name="toggle-group"
 />
 
-### 自定义拼装
+### 自定义样式
 
-使用受控零件手动拼装自定义形状和颜色的切换按钮。
+通过 `className` 定制 `Toggle` 的形状和配色 —— 例如胶囊形状、虚线边框或自定义 `aria-checked:` 颜色 —— 同时保持选中状态受控。
 
 <ComponentPreview
   name="toggle-custom"
@@ -57,9 +57,12 @@ description: 支持受控、非受控以及分组多选模式的切换按钮组�
 | `checked`         | `boolean`                      | -       | 受控的选中状态                                                                     |
 | `defaultChecked`  | `boolean`                      | `false` | 非受控模式下的默认选中状态                                                         |
 | `onCheckedChange` | `(checked: boolean) => void`   | -       | 选中状态变化时触发的回调函数                                                       |
+| `value`           | `string`                       | -       | 转发给原生 button 的 value；在 `Toggle.Group` 中用于标识每个选项                   |
 | `disabled`        | `boolean`                      | `false` | 禁用切换按钮                                                                       |
 | `className`       | `ClassNameValue`               | -       | 自定义类名                                                                         |
-| `...props`        | `React.ComponentProps<"button">` | -     | 支持所有原生 button 属性（除 `type`、`aria-checked` 外），如 `name`、`value`、`form`、`autofocus` |
+| `...props`        | `React.ComponentProps<"button">` | -     | 支持所有原生 button 属性（除 `type`、`className`、`aria-checked` 外），如 `name`、`form`、`autofocus` |
+
+禁用状态下点击切换按钮不会有任何效果。自定义的 `onClick` 会在内部切换逻辑之前执行；在其中调用 `e.preventDefault()` 可以阻止选中状态变化。
 
 ### Toggle.Group
 

@@ -62,7 +62,7 @@ description: 一次性验证码输入框，支持自动跳格、粘贴填充、�
 | `defaultValue` | `string` | `""` | 初始值（非受控） |
 | `onValueChange` | `(value: string) => void` | - | 值变化时的回调 |
 | `disabled` | `boolean` | `false` | 禁用所有格子 |
-| `invalid` | `boolean` | `false` | 在容器设置 `data-invalid`，每个格子设置 `aria-invalid` |
+| `invalid` | `boolean` | - | 在容器设置 `data-invalid`，每个格子设置 `aria-invalid` |
 | `mask` | `boolean` | `false` | 将格子渲染为密码输入 |
 | `name` | `string` | - | 渲染 hidden input 用于表单提交 |
 | `aria-label` | `string` | - | 无障碍标签，每个格子会附加序号后缀 |
@@ -81,8 +81,19 @@ description: 一次性验证码输入框，支持自动跳格、粘贴填充、�
 
 #### InputOtpGroup
 
-最外层容器。
+最外层容器，渲染为 `div`，内置 `flex items-center gap-2`。
+
+| Prop        | Type                          | Default | Description                             |
+| ----------- | ----------------------------- | ------- | --------------------------------------- |
+| `className` | `ClassNameValue`              | -       | 自定义类名                              |
+| `...props`  | `React.ComponentProps<"div">` | -       | 支持全部 div 原生属性（除 `className`） |
 
 #### InputOtpSlot
 
 单个格子，渲染为 `<input>`；值、事件与 aria 属性由使用者接入。
+
+| Prop        | Type                            | Default | Description                                      |
+| ----------- | ------------------------------- | ------- | ------------------------------------------------ |
+| `className` | `ClassNameValue`                | -       | 自定义类名                                       |
+| `ref`       | `React.Ref<HTMLInputElement>`   | -       | 转发到原生 input 元素                            |
+| `...props`  | `React.ComponentProps<"input">` | -       | 支持全部 input 原生属性（除 `className`、`ref`） |

@@ -60,9 +60,9 @@ description: 支持多种位置选项的滑入面板组件
 | 属性              | 类型                                     | 默认值 | 描述                                                                       |
 | ----------------- | ---------------------------------------- | ------ | -------------------------------------------------------------------------- |
 | `ref`             | `React.Ref<HTMLDivElement>`              | -      | 转发到 `DrawerWrapper`（抽屉面板主体），用于拖拽调整尺寸等命令式需求        |
-| `placement`       | `'left' \| 'right' \| 'top' \| 'bottom'` | -      | 抽屉的位置 **必填**                                                        |
+| `placement`       | `'left' \| 'right' \| 'top' \| 'bottom'` | `"right"` | 抽屉的位置                                                              |
 | `open`            | `boolean`                                | -      | 控制抽屉打开关闭                                                           |
-| `onOpenChange`    | `(open: boolean) => void`                | -      | 抽屉状态变更回调                                                           |
+| `onOpenChange`    | `(open: boolean) => void`                | -      | 抽屉状态变更回调 **必填**                                                  |
 | `onBackdropClick` | `(e: React.MouseEvent<HTMLDialogElement>) => void` | - | 点击 dialog 遮罩时的回调；通过调用 `onOpenChange(false)` 关闭        |
 | `onCancel`        | `(e: React.SyntheticEvent<HTMLDialogElement>) => void` | - | dialog 被取消（Esc）时的额外回调；默认关闭行为始终先执行        |
 | `drag`            | `DrawerDragApi`                          | -      | 拖拽手势对象，用于实现可调整尺寸抽屉                                       |
@@ -111,7 +111,7 @@ dialog 元素，渲染为无内置样式与行为的原生 `dialog`。
 
 | Prop           | Type                          | Default | Description                             |
 | -------------- | ----------------------------- | ------- | --------------------------------------- |
-| `isHorizontal` | `boolean`                     | -       | 是否水平方向，为 true 时内容居中        |
+| `isHorizontal` | `boolean`                     | -       | 是否水平方向，影响宽度与朝向；垂直时内容居中 |
 | `className`    | `ClassNameValue`              | -       | 自定义类名                              |
 | `children`     | `React.ReactNode`             | -       | 面板内容                                |
 | `...props`     | `React.ComponentProps<"div">` | -       | 支持全部 div 原生属性（除 `className`） |

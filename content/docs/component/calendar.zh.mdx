@@ -159,6 +159,7 @@ description: 基于浏览器原生 Temporal API 的日历面板组件，支持�
 | `value`          | `Temporal.PlainDate \| null`            | -      | 选中日期，驱动高亮格子                   |
 | `isDateDisabled` | `(date: Temporal.PlainDate) => boolean` | -      | 返回 `true` 禁用该日期                   |
 | `onSelect`       | `(date: Temporal.PlainDate) => void`    | -      | 格子点击时触发；组合组件会过滤非当月日期 |
+| `onNavigate`     | `(date: Temporal.PlainDate) => void`    | -      | 方向键移动到网格中不存在的日期时触发     |
 | `firstDayOfWeek` | `0 \| 1`                                | `0`    | 星期表头顺序                             |
 | `className`      | `ClassNameValue`                        | -      | 自定义类名                               |
 | `...props`       | `React.ComponentProps<"div">`           | -      | 原生 div 属性                            |
@@ -174,6 +175,7 @@ description: 基于浏览器原生 Temporal API 的日历面板组件，支持�
 | `value`          | `Temporal.PlainDate \| null`            | -      | 选中日期                                                                |
 | `isDateDisabled` | `(date: Temporal.PlainDate) => boolean` | -      | 返回 `true` 禁用该日期                                                  |
 | `onSelect`       | `(date: Temporal.PlainDate) => void`    | -      | 格子点击时触发                                                          |
+| `onNavigate`     | `(date: Temporal.PlainDate) => void`    | -      | 方向键移动到网格中不存在的日期时触发                                    |
 | `tabStopDate`    | `string`                                | -      | 网格中唯一 Tab 停靠点的 ISO 日期字符串；省略则所有格子保持原生 Tab 行为 |
 | `className`      | `ClassNameValue`                        | -      | 自定义类名                                                              |
 | `...props`       | `React.ComponentProps<"div">`           | -      | 原生 div 属性                                                           |
@@ -188,5 +190,6 @@ description: 基于浏览器原生 Temporal API 的日历面板组件，支持�
 | `outsideMonth` | `boolean`                        | `false` | 置灰弱化不属于可见月份的格子                                                 |
 | `selected`     | `boolean`                        | `false` | 将格子高亮为选中状态                                                         |
 | `tabStop`      | `boolean`                        | -       | Roving tabindex：`true` 使该格子成为唯一 Tab 停靠点；省略则保持原生 Tab 行为 |
+| `onNavigate`   | `(date: Temporal.PlainDate) => void` | -   | 方向键移动到网格中不存在的日期时触发                                        |
 | `className`    | `ClassNameValue`                 | -       | 自定义类名                                                                   |
 | `...props`     | `React.ComponentProps<"button">` | -       | 原生 button 属性（除 `type` 外），如 `disabled`                              |

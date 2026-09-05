@@ -94,7 +94,7 @@ The trigger input. Extends all native `input` props (except `className`).
 
 #### PickerContent
 
-The popover panel. A native `popover="manual"` element; call `showPopover()` / `hidePopover()` imperatively, or position it by setting `positionAnchor` to the anchor name of the corresponding `PickerRoot`.
+The popover panel. A native `popover="manual"` element; call `showPopover()` / `hidePopover()` imperatively, and position it manually via `style={{ positionAnchor: ... }}` (the anchor name set on the corresponding `PickerRoot`); it has no `positionAnchor` prop.
 
 | Prop       | Type                          | Default | Description         |
 | :--------- | :---------------------------- | :------ | :------------------ |

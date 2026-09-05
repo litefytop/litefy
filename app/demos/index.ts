@@ -261,6 +261,12 @@ import UploadCustomDemo from "./upload/custom";
 import uploadCustomCode from "./upload/custom.tsx?raw";
 import UploadMultipleDemo from "./upload/multiple";
 import uploadMultipleCode from "./upload/multiple.tsx?raw";
+import WatermarkBasicDemo from "./watermark/basic";
+import watermarkBasicCode from "./watermark/basic.tsx?raw";
+import WatermarkCustomDemo from "./watermark/custom";
+import watermarkCustomCode from "./watermark/custom.tsx?raw";
+import TextAreaBasicDemo from "./text-area/basic";
+import textAreaBasicCode from "./text-area/basic.tsx?raw";
 
 export interface DemoItem {
   component: ComponentType;
@@ -696,6 +702,18 @@ export const demos: Record<string, DemoItem> = {
   "wizard-basic": {
     component: WizardBasicDemo,
     code: wizardBasicCode,
+  },
+  "watermark-basic": {
+    component: WatermarkBasicDemo,
+    code: watermarkBasicCode,
+  },
+  "watermark-custom": {
+    component: WatermarkCustomDemo,
+    code: watermarkCustomCode,
+  },
+  "text-area-basic": {
+    component: TextAreaBasicDemo,
+    code: textAreaBasicCode,
   },
   "radio-basic": {
     component: RadioBasicDemo,

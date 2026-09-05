@@ -62,7 +62,7 @@ const items: MenuConfig[] = [
 | `ArrowDown` / `ArrowUp` | Move between enabled items (wraps around) |
 | `ArrowRight` | Open the submenu of the current item             |
 | `ArrowLeft`  | Close the submenu and return to the parent item  |
-| `Enter` / `Space` | Select the focused item                     |
+| `Enter`      | Select the focused item                     |
 | `Escape`     | Calls `onEscape` and closes the submenu          |
 
 Submenus open on hover with a short close delay, or persistently via `ArrowRight`. A click outside the menu closes any open submenu; `Escape` forwards to your `onEscape` handler so a wrapping popover (e.g. Popover) can close itself.
@@ -77,7 +77,7 @@ Submenus open on hover with a short close delay, or persistently via `ArrowRight
 
 | Prop           | Type                              | Default | Description                                                                 |
 | -------------- | ---------------------------------- | ------- | ---------------------------------------------------------------------------- |
-| `items`        | `MenuConfig[]`                     | `[]`    | Menu item config, see [items](#items) below                                  |
+| `items`        | `MenuConfig[]`                     | -       | Menu item config, see [items](#items) below. **Required**                    |
 | `autoFocus`    | `boolean`                          | -       | Focuses the first enabled item whenever it turns `true`; pass `open` of a wrapping popover to focus on each open |
 | `onSelect`     | `(item: MenuItemConfig) => void`   | -       | Fired when an item is selected via click or keyboard                         |
 | `onEscape`     | `() => void`                       | -       | Fired when `Escape` is pressed inside the menu                               |

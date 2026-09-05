@@ -54,7 +54,6 @@ export type FormRef = {
 type FormProps = Omit<React.ComponentProps<"form">, "onSubmit" | "ref"> & {
   onSubmit: (values: FormValues) => Promise<boolean>;
   autoReset?: boolean;
-  autoResetOnError?: boolean;
   onReset?: () => void;
   ref?: React.Ref<FormRef>;
 };
@@ -313,7 +312,6 @@ export type FormFieldProps = Omit<
   label?: React.ReactNode;
   description?: React.ReactNode;
   invalid?: React.ReactNode;
-  disabled?: boolean;
   direction?: "vertical" | "horizontal";
   classNames?: {
     root?: ClassNameValue;

@@ -1,0 +1,50 @@
+---
+title: 文本域
+description: 多行文本输入框，内置校验错误状态支持，并提供对表单友好的 onChange 签名
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add text-area" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="text-area" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+基础文本域，展示默认、错误和禁用状态。
+
+<ComponentPreview 
+  name="text-area-basic"
+/>
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Textarea
+
+原生 textarea 元素，内置完整样式：全宽、圆角边框与聚焦环、`min-h-20` 且支持 `resize-y`，并通过 `data-invalid` 驱动错误状态样式。
+
+| 属性       | 类型                                                                        | 默认值 | 描述                                                       |
+| :--------- | :-------------------------------------------------------------------------- | :----- | :--------------------------------------------------------- |
+| `value`    | `string`                                                                    | -      | 受控值（收窄为 `string`，与原生 `value` 不同）             |
+| `className` | `ClassNameValue`                                                           | -      | 自定义类名                                                 |
+| `invalid`  | `boolean`                                                                   | -      | 标记文本域为错误状态；设置 `aria-invalid` 和 `data-invalid`，应用错误边框/聚焦环样式 |
+| `onChange` | `(e: React.ChangeEvent<HTMLTextAreaElement>) => undefined \| { invalid?: string }` | - | 原生 change 回调；可返回 `{ invalid?: string }` 用于表单集成 |
+| `...props` | `React.ComponentProps<"textarea">`                                          | -      | 支持全部 textarea 原生属性（除上方已覆盖的 `value` 和 `onChange`） |

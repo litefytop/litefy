@@ -1,0 +1,103 @@
+---
+title: 水印
+description: 基于 canvas 的水印组件，将文本平铺覆盖在内容之上，提供可组合的两段式 API
+---
+
+## 安装
+
+<Tabs items={['CLI', 'Manual']} >
+
+<Tab value="CLI">
+
+<PackageManagerTabs command="litefy@latest add watermark" />
+
+</Tab>
+
+<Tab value="手动">
+
+<Source type="component" name="watermark" />
+
+</Tab>
+
+</Tabs>
+
+## 用法
+
+### 基础用法
+
+用 `Watermark` 包裹任意内容，文本平铺的水印会绘制在内容之上。canvas 会测量容器大小并在尺寸变化时自动重绘，同时按设备像素比渲染以保证文字清晰。
+
+<ComponentPreview 
+  name="watermark-basic"
+/>
+
+### 自定义
+
+直接组合 `Watermark.Root` 和 `Watermark.Canvas`，完全控制每个 canvas 选项（`fontSize`、`color`、`fontFamily`、`rotate`、`gap`、`padding`、`opacity`）。属性变化时 canvas 会自动重绘。
+
+<ComponentPreview 
+  name="watermark-custom"
+/>
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Watermark
+
+组合式水印：相对定位的 root 容器、平铺的 canvas 覆盖层以及你的内容。
+
+| 属性         | 类型                                                       | 默认值             | 描述                                                       |
+| :----------- | :--------------------------------------------------------- | :----------------- | :--------------------------------------------------------- |
+| `text`       | `string`                                                   | -                  | 水印文本内容                                               |
+| `fontSize`   | `number`                                                   | `16`               | 水印文字字号（px）                                         |
+| `color`      | `WatermarkColor`                                            | `"muted-foreground"` | 水印文字颜色                                             |
+| `fontFamily` | `string`                                                   | `"sans-serif"`     | 水印文字字体                                               |
+| `rotate`     | `number`                                                   | `-30`              | 旋转角度（度）                                             |
+| `gap`        | `number`                                                   | `100`              | 相邻水印块之间的最小间距（px）                             |
+| `padding`    | `number`                                                   | `20`               | 每个水印块四周的额外内边距（px）                           |
+| `opacity`    | `number`                                                   | `0.3`              | 水印透明度（0–1）                                          |
+| `children`   | `React.ReactNode`                                          | -                  | 被水印覆盖的内容                                           |
+| `className`  | `ClassNameValue`                                           | -                  | 自定义类名，作用于 root                                    |
+| `style`      | `React.CSSProperties`                                      | -                  | 内联样式，作用于 root                                      |
+| `classNames` | `{ root?: ClassNameValue; canvas?: ClassNameValue }`        | -                  | root 和 canvas 的自定义类名                                |
+| `styles`     | `{ root?: React.CSSProperties; canvas?: React.CSSProperties }` | -               | root 和 canvas 的内联样式                                  |
+| `...props`   | `React.ComponentProps<"div">`                              | -                  | 支持全部 div 原生属性（除 `className`、`style`），透传给 root |
+
+`WatermarkColor` 支持语义 token `"muted" \| "muted-foreground" \| "primary" \| "primary-foreground" \| "secondary" \| "secondary-foreground" \| "accent"` —— 通过 CSS 变量解析并响应明暗模式切换 —— 也支持任意自定义 CSS 颜色字符串。
+
+---
+
+### 可组合组件
+
+#### WatermarkRoot
+
+水印容器，渲染为内置 `relative` 类名的 `div`。canvas 会测量并填满其父元素，因此 root 提供定位上下文。
+
+| 属性        | 类型                          | 默认值 | 描述                   |
+| :---------- | :---------------------------- | :----- | :--------------------- |
+| `className` | `ClassNameValue`              | -      | 自定义 CSS 类          |
+| `...props`  | `React.ComponentProps<"div">` | -      | 支持全部 div 原生属性  |
+
+#### WatermarkCanvas
+
+绘制平铺水印文字的 `canvas` 元素。它根据父元素（应为定位元素，如 `WatermarkRoot`）确定自身尺寸，在容器尺寸变化和 `prefers-color-scheme` 变化时自动重绘，并按设备像素比渲染。
+
+| 属性         | 类型                                              | 默认值               | 描述                                                       |
+| :----------- | :------------------------------------------------ | :------------------- | :--------------------------------------------------------- |
+| `text`       | `string`                                          | -                    | 水印文本内容                                               |
+| `fontSize`   | `number`                                          | `16`                 | 水印文字字号（px）                                         |
+| `color`      | `WatermarkColor`                                  | `"muted-foreground"` | 水印文字颜色                                               |
+| `fontFamily` | `string`                                          | `"sans-serif"`       | 水印文字字体                                               |
+| `rotate`     | `number`                                          | `-30`                | 旋转角度（度）                                             |
+| `gap`        | `number`                                          | `100`                | 相邻水印块之间的最小间距（px）                             |
+| `padding`    | `number`                                          | `20`                 | 每个水印块四周的额外内边距（px）                           |
+| `opacity`    | `number`                                          | `0.3`                | 水印透明度（0–1）                                          |
+| `className`  | `ClassNameValue`                                  | -                    | 自定义 CSS 类；内置 `absolute inset-0 pointer-events-none select-none block size-full` |
+| `...props`   | `React.ComponentProps<"canvas">`                  | -                    | 支持全部 canvas 原生属性（除 `className`、`ref`）          |
+
+#### 静态属性
+
+`Watermark.Root` 是 `WatermarkRoot` 的别名，`Watermark.Canvas` 是 `WatermarkCanvas` 的别名，用于组合式装配。

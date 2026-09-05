@@ -31,7 +31,15 @@ export interface ImageProps extends Omit<ImageImageProps, "className" | "style">
   styles?: { root?: React.CSSProperties; image?: React.CSSProperties };
 }
 
-export function Image({ src, alt, fallback, loadingNode, classNames, styles }: ImageProps) {
+export function Image({
+  src,
+  alt,
+  fallback,
+  loadingNode,
+  classNames,
+  styles,
+  ...props
+}: ImageProps) {
   const [status, setStatus] = React.useState<"loading" | "success" | "failure">("loading");
 
   React.useEffect(() => {
@@ -61,7 +69,13 @@ export function Image({ src, alt, fallback, loadingNode, classNames, styles }: I
       {status === "loading" && loadingNode}
       {status === "failure" && fallback}
       {status === "success" && (
-        <ImageImage src={src} alt={alt} className={classNames?.image} style={styles?.image} />
+        <ImageImage
+          {...props}
+          src={src}
+          alt={alt}
+          className={classNames?.image}
+          style={styles?.image}
+        />
       )}
     </ImageRoot>
   );

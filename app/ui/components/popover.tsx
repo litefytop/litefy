@@ -30,7 +30,6 @@ const alignXMap: Record<
 
 export interface PopoverContentProps extends Omit<React.ComponentProps<"div">, "className"> {
   open?: boolean;
-  defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   alignX?: PopoverAlignX;
   className?: ClassNameValue;

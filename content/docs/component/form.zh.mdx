@@ -25,7 +25,7 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 
 ### 基础用法
 
-使用 `Form`、`Form.Field` 和 `Form.Submit` 组合出一个表单。字段通过 render prop 暴露底层输入属性，便于完全控制。
+使用 `Form`、`Form.Field`、`Form.Fieldset` 和 `Form.Submit` 组合出一个表单。字段与字段集通过 render prop 暴露底层控件属性，便于完全控制。
 
 <ComponentPreview 
   name="form-basic"
@@ -33,7 +33,7 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 
 ### 校验
 
-通过 `validConfig` 添加客户端校验。校验在 `onChange` 或 `onBlur` 触发，返回的字符串会作为错误信息渲染。
+通过 `validConfig` 添加客户端校验。校验在 `onChange` 或 `onBlur` 触发，返回的字符串会作为错误信息渲染。当 `trigger` 为 `"onChange"` 时，可通过 `debounceMs` 进行防抖。
 
 <ComponentPreview 
   name="form-validation"
@@ -49,7 +49,7 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 
 ### 命令式控制
 
-通过 `ref` 获取表单实例，从外部调用 `setValues`、`setValue`、`reset` 和 `submit`。
+通过 `ref` 获取表单实例，从外部调用 `setValues`、`reset` 和 `submit`。
 
 <ComponentPreview 
   name="form-imperative"
@@ -57,7 +57,11 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 
 ## API 参考
 
-### Form
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Form
 
 构建在原生 `<form>` 元素之上的根表单组件。
 
@@ -65,34 +69,34 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 | ----------- | ------------------------------------------ | ------ | ------------------------------------------------------------------------------------------ |
 | `onSubmit`  | `(values: FormValues) => Promise<boolean>` | -      | 异步提交处理器。接收已预处理的对象，多值字段为数组。返回 `true` 表示成功并触发 `autoReset` |
 | `autoReset` | `boolean`                                  | `true` | 当 `onSubmit` 解析为 `true` 时自动重置表单                                                 |
-| `ref`       | `React.Ref<FormRef>`                       | -      | 提供 `setValue`、`setValues`、`reset`、`submit` 的命令式句柄                               |
-| `children`  | `React.ReactNode`                          | -      | 表单内容，通常为 `Form.Field` 与 `Form.Submit`                                             |
+| `onReset`   | `() => void`                               | -      | 表单重置时触发 —— 包括 `autoReset` 在提交成功后的重置，以及通过 `ref.reset()` 触发的重置    |
+| `ref`       | `React.Ref<FormRef>`                       | -      | 暴露 `setValues`、`reset`、`submit` 的命令式句柄                                           |
+| `children`  | `React.ReactNode`                          | -      | 表单内容，通常为 `Form.Field`、`Form.Fieldset` 与 `Form.Submit`                            |
+| `...props`  | `React.ComponentProps<"form">`             | -      | 支持全部 form 原生属性（除 `onSubmit`、`ref` 外），展开到底层 form 元素                     |
 
-此外，其他原生 `<form>` 属性（除 `onSubmit` 和 `ref` 外）会展开到底层 form 元素。
+#### FormRef
 
-### FormRef
+通过 `ref` 属性获取的命令式句柄，其中 `FormValue = string | number | string[] | number[] | null`。
 
-通过 `ref` 属性获取的命令式句柄。
+| 方法        | 类型                                          | 描述                                                             |
+| ----------- | --------------------------------------------- | ------------------------------------------------------------------ |
+| `setValues` | `(values: Record<string, FormValue>) => void` | 更新一个或多个字段的值，并在每个被修改的输入上派发 `change` 事件 |
+| `reset`     | `() => void`                                  | 重置表单并清空所有已注册的输入                                     |
+| `submit`    | `() => void`                                  | 触发一次程序化表单提交                                             |
 
-| 方法        | 类型                                                 | 描述                                 |
-| ----------- | ---------------------------------------------------- | ------------------------------------ |
-| `setValue`  | `(name: string, value: string \| number) => void`    | 更新单个字段的值并派发 `change` 事件 |
-| `setValues` | `(values: Record<string, string \| number>) => void` | 一次性更新多个字段                   |
-| `reset`     | `() => void`                                         | 重置表单并清空所有已注册的输入       |
-| `submit`    | `() => void`                                         | 触发一次程序化表单提交               |
-
-### Form.Submit
+#### Form.Submit
 
 自动反映表单提交状态的提交按钮。在表单提交过程中会被禁用，并可渲染自定义加载图标。
 
 | 属性          | 类型              | 默认值 | 描述                                               |
 | ------------- | ----------------- | ------ | -------------------------------------------------- |
 | `loadingIcon` | `React.ReactNode` | -      | 表单提交时显示的自定义图标，默认为旋转的 `Loader2` |
+| `className`   | `string`          | -      | 自定义 CSS 类，与内置按钮样式合并                  |
 | `children`    | `React.ReactNode` | -      | 按钮文案                                           |
 
-其他原生 `<button>` 属性（除被强制为 `submit` 的 `type` 外）均受支持。
+支持其余所有原生 `<button>` 属性；`type` 被强制为 `submit`。
 
-### Form.Field
+#### Form.Field
 
 将标签、控件和辅助文字包装为单一可访问的字段。控件通过 render prop 提供。
 
@@ -104,52 +108,84 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 | `invalid`     | `React.ReactNode`                          | -            | 受控的错误信息。传入字符串时会渲染为错误并设置 `aria-invalid` |
 | `direction`   | `"vertical" \| "horizontal"`               | `"vertical"` | 标签与控件的排列方向                                          |
 | `inputId`     | `string`                                   | -            | 底层控件的自定义 id                                           |
-| `classNames`  | `{ root?, label?, hint? }`                 | -            | 字段容器、标签与提示文字的自定义类                            |
-| `styles`      | `{ root?, label?, hint? }`                 | -            | 字段容器、标签与提示文字的内联样式                            |
-| `validConfig` | `FormFieldValidConfig<T>`                  | -            | 客户端校验配置                                                |
+| `classNames`  | `{ root?: ClassNameValue; label?: ClassNameValue; hint?: ClassNameValue }` | - | 字段容器、标签与提示文字的自定义类 |
+| `styles`      | `{ root?: React.CSSProperties; label?: React.CSSProperties; hint?: React.CSSProperties }` | - | 字段容器、标签与提示文字的内联样式 |
+| `validConfig` | `{ validate?: (value: string) => string \| boolean \| null \| undefined \| Promise<string \| boolean \| null \| undefined>; trigger?: "onChange" \| "onBlur"; debounceMs?: number }` | - | 客户端校验配置，字段说明见下表 |
 | `children`    | `(field: FormFieldArg) => React.ReactNode` | -            | 接收输入属性并渲染控件的 render prop                          |
+| `...props`    | `React.ComponentProps<"div">`              | -            | 支持全部 div 原生属性（除 `children`、`className`、`style` 外），展开到字段容器 |
 
-此外，其他原生 `<div>` 属性会展开到字段容器。
+`validConfig` 字段说明：
 
-### FormFieldArg
+| 字段         | 描述                                                                                            |
+| ------------ | ------------------------------------------------------------------------------------------------- |
+| `validate`   | 校验函数，接收字段当前的字符串值。返回字符串会作为错误信息展示；返回 `true` 则标记字段无效 |
+| `trigger`    | 校验函数的触发时机                                                                                |
+| `debounceMs` | 防抖延迟（毫秒），在 `trigger` 为 `"onChange"` 时生效                                             |
 
-提供给 `Form.Field` 子元素的 render prop。
+#### FormFieldArg
 
-| 属性               | 类型                                               | 描述                                                          |
-| ------------------ | -------------------------------------------------- | ------------------------------------------------------------- |
-| `id`               | `string`                                           | 为底层输入生成的 id，转发到控件的 `id`                        |
-| `name`             | `string`                                           | 字段的 `name`，转发到控件的 `name`                            |
-| `ref`              | `(el: HTMLInputElement \| null) => void`           | 用于在表单中注册输入的 ref 回调                               |
-| `onChange`         | `(e: React.ChangeEvent<HTMLInputElement>) => void` | 变更处理器，当 `trigger` 为 `"onChange"` 时触发 `validConfig` |
-| `onBlur`           | `(e: React.FocusEvent<HTMLInputElement>) => void`  | 失焦处理器，当 `trigger` 为 `"onBlur"` 时触发 `validConfig`   |
-| `invalid`          | `boolean`                                          | 字段当前是否处于无效状态                                      |
-| `aria-describedby` | `string`                                           | 描述文字或错误文字的 id，用于无障碍访问                       |
+提供给 `Form.Field` 子元素的 render prop，其中 `FormElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement`。
 
-### FormLabel
+| 属性               | Type                                                     | 描述                                                          |
+| ------------------ | ---------------------------------------------------------- | --------------------------------------------------------------- |
+| `id`               | `string`                                                   | 为底层输入生成的 id，转发到控件的 `id`                        |
+| `name`             | `string`                                                   | 字段的 `name`，转发到控件的 `name`                            |
+| `ref`              | `(el: FormElement \| null) => void`                        | 用于在表单中注册输入的 ref 回调                               |
+| `onChange`         | `(e: React.ChangeEvent<FormElement>) => void`              | 变更处理器，当 `trigger` 为 `"onChange"` 时触发 `validConfig` |
+| `onBlur`           | `(e: React.FocusEvent<HTMLElement>) => void`               | 失焦处理器，当 `trigger` 为 `"onBlur"` 时触发 `validConfig`   |
+| `invalid`          | `boolean`                                                  | 字段当前是否处于无效状态                                      |
+| `aria-describedby` | `string`                                                   | 描述文字或错误文字的 id，用于无障碍访问                       |
+
+#### Form.Fieldset
+
+将一组相关控件（如复选框组、单选组）包装为单一可注册的字段。`type="multi"`（默认）时组值为 `string[]`；`type="single"` 时为 `string`。
+
+| 属性          | 类型                                            | 默认值    | 描述                                                                              |
+| ------------- | ----------------------------------------------- | --------- | ------------------------------------------------------------------------------------ |
+| `name`        | `string`                                        | -         | 分组名称，用于在表单中注册字段集的值                                                 |
+| `type`        | `"single" \| "multi"`                           | `"multi"` | `"multi"` 以 `string[]` 收集值，`"single"` 以 `string` 收集                          |
+| `legend`      | `React.ReactNode`                               | -         | 渲染在 fieldset `<legend>` 中的标题内容                                              |
+| `description` | `React.ReactNode`                               | -         | 渲染在分组下方的辅助文字，校验失败时会被错误信息替代                                 |
+| `invalid`     | `React.ReactNode`                               | -         | 受控的错误信息。传入字符串时会渲染为错误并设置 `aria-invalid`                        |
+| `disabled`    | `boolean`                                       | `false`   | 禁用字段集内的所有控件                                                               |
+| `classNames`  | `{ root?: ClassNameValue; legend?: ClassNameValue; hint?: ClassNameValue }` | - | 字段集、legend 与提示文字的自定义类 |
+| `styles`      | `{ root?: React.CSSProperties; legend?: React.CSSProperties; hint?: React.CSSProperties }` | - | 字段集、legend 与提示文字的内联样式 |
+| `validConfig` | `{ validate?: (value: string[] \| string) => string \| boolean \| undefined \| Promise<string \| boolean \| undefined>; trigger?: "onChange" \| "onBlur"; debounceMs?: number }` | - | 客户端校验配置，与 `Form.Field` 的结构相同，但 `validate` 接收分组值 |
+| `children`    | `(field: FieldsetRenderArg) => React.ReactNode` | -         | 接收分组值与处理函数的 render prop                                                   |
+| `...props`    | `React.ComponentPropsWithRef<"fieldset">`       | -         | 支持全部 fieldset 原生属性（除 `children`、`className`、`style` 外），展开到 fieldset 元素 |
+
+render prop 接收：
+
+| 属性               | 类型                                          | 描述                                                                              |
+| ------------------ | ----------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `id`               | `string`                                        | 为字段集生成的 id                                                                    |
+| `name`             | `string`                                        | 字段集的 `name`                                                                      |
+| `value`            | `string[] \| string \| undefined`               | 当前分组值 —— `type="multi"` 时为 `string[]`，`type="single"` 时为 `string`          |
+| `onValueChange`    | `(value: string[] \| string) => void`           | 更新分组值，当 `trigger` 为 `"onChange"` 时触发 `validConfig`                        |
+| `onBlur`           | `(e: React.FocusEvent<HTMLElement>) => void`    | 失焦处理器，当 `trigger` 为 `"onBlur"` 时触发 `validConfig`                          |
+| `invalid`          | `boolean`                                       | 字段集当前是否处于无效状态                                                           |
+| `aria-describedby` | `string`                                        | 描述文字或错误文字的 id，用于无障碍访问                                              |
+
+---
+
+### 可组合组件
+
+#### FormLabel
 
 字段标签，渲染为 `<label>`。
 
-| Prop        | Type             | Default | Description      |
-| ----------- | ---------------- | ------- | ---------------- |
-| `className` | `ClassNameValue` | -       | 自定义 CSS 类 |
+| 属性        | 类型             | 默认值 | 描述          |
+| ----------- | ---------------- | ------ | ------------- |
+| `className` | `ClassNameValue` | -      | 自定义 CSS 类 |
 
 支持所有原生 `<label>` 属性。
 
-### FormHint
+#### FormHint
 
 提示文字，渲染为 `<small>`。正常时显示描述文字，字段无效时显示错误信息（带 `role="alert"`）。
 
-| Prop        | Type             | Default | Description      |
-| ----------- | ---------------- | ------- | ---------------- |
-| `className` | `ClassNameValue` | -       | 自定义 CSS 类 |
+| 属性        | 类型             | 默认值 | 描述          |
+| ----------- | ---------------- | ------ | ------------- |
+| `className` | `ClassNameValue` | -      | 自定义 CSS 类 |
 
 支持所有原生 `<small>` 属性。
-
-### FormFieldValidConfig
-
-泛型 `T` 表示 change 事件的类型，通常为 `React.ChangeEvent<HTMLInputElement>`。
-
-| 属性       | 类型                                                   | 默认值 | 描述                                                           |
-| ---------- | ------------------------------------------------------ | ------ | -------------------------------------------------------------- |
-| `validate` | `(event: T) => string \| boolean \| null \| undefined` | -      | 校验函数。返回字符串会作为错误信息展示；返回真值则标记字段无效 |
-| `trigger`  | `"onChange" \| "onBlur"`                               | -      | 校验函数的触发时机                                             |

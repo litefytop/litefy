@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { cn } from "..";
+import { type ClassNameValue, cn } from "..";
 
 export type ListControllerProps<T> = {
   items: T[];
@@ -64,9 +64,9 @@ function useListController<T>(props: ListControllerProps<T>) {
 }
 
 export interface ListClassNames {
-  root?: string;
-  item?: string;
-  groupHeader?: string;
+  root?: ClassNameValue;
+  item?: ClassNameValue;
+  groupHeader?: ClassNameValue;
 }
 
 export interface ListStyles {
@@ -87,7 +87,7 @@ export interface ListProps<T> {
   onHighlightChange?: (index: number | null) => void;
   onSelect?: (item: T, index: number) => void;
   onScrollBottom?: () => void;
-  className?: string;
+  className?: ClassNameValue;
   style?: React.CSSProperties;
   classNames?: ListClassNames;
   styles?: ListStyles;
