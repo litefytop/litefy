@@ -1,0 +1,62 @@
+---
+title: use-load-more
+description: Scroll-driven paging for local data — grows the visible slice as a sentinel approaches the viewport
+---
+
+## Installation
+
+<Installation name="use-load-more" />
+
+## Usage
+
+`useLoadMore` pages through local (in-memory) data: keep the full array, render only `items.slice(0, visibleCount)`, and attach `sentinelRef` to an empty element after the list. When the sentinel comes within `rootMargin` of the viewport, the next page is revealed automatically. The observer re-arms after every growth, so a short page keeps loading until the sentinel is pushed out of range.
+
+```tsx
+import { useLoadMore } from "@/ui";
+
+function PhotoFeed({ photos }: { photos: Photo[] }) {
+  const { visibleCount, hasMore, loadMore, sentinelRef } = useLoadMore({
+    total: photos.length,
+    pageSize: 12,
+  });
+  const visible = photos.slice(0, visibleCount);
+
+  return (
+    <>
+      {visible.map((photo) => (
+        <PhotoCard key={photo.id} photo={photo} />
+      ))}
+      {hasMore ? (
+        <div ref={sentinelRef} aria-hidden className="h-px" />
+      ) : (
+        <p>All {photos.length} loaded</p>
+      )}
+    </>
+  );
+}
+```
+
+To load inside a scrollable container instead of the page, pass the container as `root` and shrink `rootMargin` accordingly. Pair it with [Masonry](/docs/component/masonry) for a load-more waterfall.
+
+## API Reference
+
+### Options (`UseLoadMoreOptions`)
+
+| Option         | Type                                        | Default   | Description                                                                       |
+| :------------- | :------------------------------------------ | :-------- | :-------------------------------------------------------------------------------- |
+| `total`        | `number`                                    | -         | Total number of items in the local dataset                                         |
+| `pageSize`     | `number`                                    | `12`      | Items revealed per step                                                            |
+| `initialCount` | `number`                                    | `pageSize`| Initial visible count                                                              |
+| `onLoadMore`   | `(visibleCount: number) => void`            | -         | Called after the visible count grows                                               |
+| `rootMargin`   | `string`                                    | `"400px"` | Distance from the root at which the sentinel triggers                              |
+| `enabled`      | `boolean`                                   | `true`    | Set to `false` to pause automatic loading (call `loadMore` manually instead)       |
+| `root`         | `React.RefObject<HTMLElement \| null>`      | viewport  | Observation root; pass a scrollable element to scope loading to an inner container |
+
+### Returns (`UseLoadMoreReturn`)
+
+| Member         | Type                                     | Description                                                                 |
+| :------------- | :--------------------------------------- | :-------------------------------------------------------------------------- |
+| `visibleCount` | `number`                                 | How many items are visible — slice with `items.slice(0, visibleCount)`      |
+| `hasMore`      | `boolean`                                | Whether hidden items remain                                                 |
+| `loadMore`     | `() => void`                             | Reveal the next page manually                                               |
+| `sentinelRef`  | `React.RefCallback<HTMLElement>`         | Attach to the sentinel element placed after the list                        |

@@ -1,55 +1,41 @@
 ---
 title: Select 选择器
-description: 灵活的选择器组件，支持选项分组和验证状态
+description: 基于原生 popover 与 listbox 面板的选择器，面板跟随主题配色 —— 支持选项分组、键盘导航与验证状态
 ---
 
 ## 安装
 
-<Tabs items={['CLI', '手动']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add select" />
-
-</Tab>
-
-<Tab value="手动">
-
-<Source type="component" name="select" />
-
-</Tab>
-
-</Tabs>
+<Installation name="select" />
 
 ## 用法
 
 ### 基础用法
 
-带有占位符和选项的基础选择器组件。
+带占位文本与选项的基础选择器。面板是普通 DOM，会跟随主题配色 —— 这一点与原生 `<select>` 的下拉不同。
 
 <ComponentPreview 
   name="select-basic"
 />
 
-### 分组选项
+### 选项分组
 
-带有分组选项的选择器组件，用于更好地组织选项。
+使用分组选项更好地组织内容。
 
 <ComponentPreview 
   name="select-grouped"
 />
 
-### 无效状态
+### 校验状态
 
-显示表单验证无效状态的选择器组件。
+用于表单验证的无效状态展示。
 
 <ComponentPreview
   name="select-invalid"
 />
 
-### 自定义拼装
+### 自定义
 
-使用可组合组件拼装自定义样式的选择器。
+触发器是显示当前选中项的按钮；面板是锚点定位的弹层。通过 `classNames` 组合样式。
 
 <ComponentPreview
   name="select-custom"
@@ -57,70 +43,43 @@ description: 灵活的选择器组件，支持选项分组和验证状态
 
 ## API 参考
 
-### 高级组件
-
-开箱即用的组合组件。
+### 高阶组件
 
 #### Select
 
-一个样式化的选择器组件，支持受控/非受控状态、选项分组和验证。
+基于原生 popover API 与 CSS 锚点定位的选择器：触发按钮显示选中项的文本，listbox 面板跟随主题配色。键盘：`ArrowDown` / `ArrowUp` 打开面板并移动高亮（首尾环绕），`Home` / `End` 跳到第一个 / 最后一个选项，`Enter` / `Space` 选中高亮项，`Escape` 不选择直接关闭，`Tab` 关闭。
 
-| 属性 | 类型 | 默认值 | 描述 |
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `invalid` | `boolean` | `false` | 将选择器标记为无效状态，用于表单验证 |
-| `options` | `(SelectOption \| SelectOptionGroup)[]` | - | 要显示的选项或选项组数组 |
-| `placeholder` | `string` | - | 未选择任何选项时显示的占位符文本 |
-| `classNames` | `{ group?, root?, icon?: ClassNameValue }` | - | 定制容器、选择框和图标的自定义类名 |
-| `styles` | `{ group?, root?, icon?: React.CSSProperties }` | - | 定制容器、选择框和图标的内联样式 |
-| `value` | `string` | - | 受控模式下的选中值 |
-| `defaultValue` | `string` | `""` | 非受控模式下的默认选中值 |
-| `onChange` | `(e: React.ChangeEvent<HTMLSelectElement>) => void` | - | 选择变化时触发的回调函数 |
-| `...props` | `React.ComponentProps<"select">` | - | 支持所有原生 select 属性（除 `className` 外），如 `name`、`disabled`、`required` |
+| `options` | `(SelectOption \| SelectOptionGroup)[]` | - | 要展示的选项或选项分组数组 |
+| `value` | `string` | - | 受控的选中值 |
+| `defaultValue` | `string` | `""` | 非受控模式的默认选中值 |
+| `onValueChange` | `(value: string) => void` | - | 选中选项时触发 |
+| `placeholder` | `string` | - | 未选中任何选项时显示的占位文本 |
+| `invalid` | `boolean` | - | 通过 `aria-invalid` 应用 danger 边框 / 焦点环 |
+| `required` | `boolean` | - | 在触发器上设置 `aria-required` |
+| `name` | `string` | - | 渲染携带该 name 的隐藏 input，使值参与原生表单提交 |
+| `disabled` | `boolean` | - | 禁用触发器 |
+| `classNames` | `{ trigger?; panel?; label?; option? }` —— 值均为 `ClassNameValue` | - | 触发器、面板、分组标签与选项的自定义类名 |
+| `styles` | `{ trigger?; panel? }` —— 值均为 `React.CSSProperties` | - | 触发器与面板的内联样式 |
+| `...props` | `React.ComponentProps<"button">` | - | 其余原生 button 属性透传到触发器上，如 `id`、`aria-describedby` |
 
----
+行为说明：
 
-### 可组合组件
-
-#### SelectGroup
-
-用于定位选择框和图标的包装容器。
-
-| 属性 | 类型 | 默认值 | 描述 |
-|------|------|---------|-------------|
-| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
-| `...props` | `React.ComponentProps<"div">` | - | 支持所有原生 div 属性 |
-
-#### SelectRoot
-
-带有内置基础样式的原生 select 元素，承载状态、焦点和表单语义。
-
-| 属性 | 类型 | 默认值 | 描述 |
-|------|------|---------|-------------|
-| `invalid` | `boolean` | `false` | 应用 `data-invalid` 和 `aria-invalid` |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
-| `children` | `React.ReactNode` | - | select 内容，通常为 `<option>` 和 `<optgroup>` 元素 |
-| `...props` | `React.ComponentProps<"select">` | - | 支持所有原生 select 属性（除 `className` 外） |
-
-#### SelectIcon
-
-定位在选择框之后的箭头指示图标。选择框带有 `peer` 类，默认图标支持 `peer-focus` 变体。
-
-| 属性 | 类型 | 默认值 | 描述 |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | 自定义图标内容，替换默认的箭头图标 |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
-| `...props` | `React.ComponentProps<"span">` | - | 支持所有原生 span 属性 |
+- 选中选项后面板关闭、值更新、焦点回到触发器。
+- 面板通过 top layer 逃逸祖先的 `overflow` 裁剪，靠近视口边缘时通过 `positionTryFallbacks` 自动翻转，并以 `min-width: anchor-size(width)` 匹配触发器宽度。
+- 面板打开时，高亮从当前选中的选项开始。
 
 ### SelectOption
 
-| 属性 | 类型 | 默认值 | 描述 |
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `label` | `string` | - | 选项的显示文本 |
 | `value` | `string` | - | 选项关联的值 |
 
 ### SelectOptionGroup
 
-| 属性 | 类型 | 默认值 | 描述 |
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `group` | `string` | - | 分组标签文本 |
-| `options` | `SelectOption[]` | - | 分组中的选项数组 |
+| `options` | `SelectOption[]` | - | 分组内的选项数组 |

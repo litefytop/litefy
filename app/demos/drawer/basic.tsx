@@ -21,7 +21,7 @@ export default function DrawerBasicDemo() {
           <div className="flex flex-col gap-2">
             <h3 className="text-lg font-semibold">Drawer</h3>
             <p className="text-sm text-muted-foreground">
-              A slide‑in panel component supporting four placement positions, built on native HTML
+              A slide-in panel component supporting four placement positions, built on native HTML
               dialog element. Includes focus trap, keyboard navigation and backdrop click close
               behavior.
             </p>

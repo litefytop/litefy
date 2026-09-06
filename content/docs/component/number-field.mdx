@@ -1,31 +1,17 @@
 ---
 title: NumberField
-description: A numeric input field with increment and decrement controls
+description: A numeric input with keyboard stepping (ArrowUp / ArrowDown), thousands separators and prefix / suffix slots
 ---
 
 ## Installation
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add number-field" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="number-field" />
-
-</Tab>
-
-</Tabs>
+<Installation name="number-field" />
 
 ## Usage
 
 ### Basic Usage
 
-Basic number input with default values, range limits, and decimal steps.
+The up/down cue in the trailing area is a non-interactive hint — the value changes with the keyboard (`ArrowUp` / `ArrowDown`), honoring `step`, `min` and `max`.
 
 <ComponentPreview 
   name="number-field-basic"
@@ -49,7 +35,7 @@ Manage the value externally with controlled state.
 
 ### Custom
 
-Compose `NumberGroup`, `NumberDecrement`, `NumberRoot`, `NumberIncrement`; the `focus-within` focus ring applies automatically (`data-invalid` is set but has no default styles).
+The composite owns the distinguishing features (stepping cue, thousands separators, prefix / suffix). For a fully custom panel, assemble the [Input](/docs/component/input) parts (`InputGroup`, `NumberRoot`, plain content) and drive the value yourself — the standard shell styles come from `InputGroup`.
 
 <ComponentPreview 
   name="number-field-custom"
@@ -63,7 +49,7 @@ Ready-to-use composite components.
 
 #### NumberField
 
-A numeric input field with built-in increment and decrement buttons.
+A numeric input with keyboard stepping (`ArrowUp` / `ArrowDown`, no clickable buttons), thousands-separator display and prefix / suffix slots.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
@@ -73,10 +59,14 @@ A numeric input field with built-in increment and decrement buttons.
 | `invalid` | `boolean` | - | Whether the field is in an invalid state |
 | `min` | `number` | `0` (positiveInteger) or `-Infinity` | Minimum allowed value |
 | `max` | `number` | `Infinity` | Maximum allowed value |
-| `step` | `number` | `1` | Increment/decrement step size |
+| `step` | `number` | `1` | Step size for `ArrowUp` / `ArrowDown` |
 | `positiveInteger` | `boolean` | `false` | Restrict to positive integers only. Changes value type to `number \| undefined` |
-| `classNames` | `{ group?: ClassNameValue; decrement?: ClassNameValue; increment?: ClassNameValue; root?: ClassNameValue }` | - | Custom classes for the internal elements |
-| `styles` | `{ group?: React.CSSProperties; decrement?: React.CSSProperties; increment?: React.CSSProperties; root?: React.CSSProperties }` | - | Inline styles for the internal elements |
+| `prefix` | `React.ReactNode` | - | Content rendered before the number (e.g. a currency symbol) |
+| `suffix` | `React.ReactNode` | - | Content rendered after the number — replaces the stepping cue when set |
+| `thousands` | `boolean` | `false` | Group the integer part with thousands separators while the input is not focused; the committed value stays unformatted |
+| `indicator` | `boolean` | `true` | Show the non-interactive up/down cue in the trailing area (no effect while a `suffix` is set) |
+| `classNames` | `{ group?; leading?; trailing?; root? }` — each `ClassNameValue` | - | Custom classes per part |
+| `styles` | `{ group?; leading?; trailing?; root? }` — each `React.CSSProperties` | - | Inline styles per part |
 | `disabled` | `boolean` | `false` | Disable the entire field |
 | `...props` | `React.ComponentProps<"input">` | - | Supports all native input props (except `type`, `className`), such as `onBlur` |
 
@@ -84,40 +74,15 @@ A numeric input field with built-in increment and decrement buttons.
 
 ### Composable Components
 
-#### NumberGroup
-
-Outer container with the complete input styles built in: size (`max-w-3xs w-full`), rounded-full shape, and the `focus-within` focus ring; `data-invalid` is set when invalid but has no built-in styling.
-
-| Prop        | Type                          | Default | Description                                                   |
-| ----------- | ----------------------------- | ------- | ------------------------------------------------------------- |
-| `className` | `ClassNameValue`              | -       | Custom class name                                             |
-| `...props`  | `React.ComponentProps<"div">` | -       | Supports all native div props (including `data-*` attributes) |
-
-#### NumberDecrement
-
-The decrement button with built-in left semicircle styling and disabled state.
-
-| Prop        | Type                             | Default | Description                                     |
-| ----------- | -------------------------------- | ------- | ----------------------------------------------- |
-| `className` | `ClassNameValue`                 | -       | Custom class name                               |
-| `children`  | `React.ReactNode`                | -       | Button content                                  |
-| `...props`  | `React.ComponentProps<"button">` | -       | Supports all native button props (except `className`) |
-
-#### NumberIncrement
-
-The increment button with built-in right semicircle styling and disabled state.
-
-| Prop        | Type                             | Default | Description                                     |
-| ----------- | -------------------------------- | ------- | ----------------------------------------------- |
-| `className` | `ClassNameValue`                 | -       | Custom class name                               |
-| `children`  | `React.ReactNode`                | -       | Button content                                  |
-| `...props`  | `React.ComponentProps<"button">` | -       | Supports all native button props (except `className`) |
-
 #### NumberRoot
 
-The state-carrying text input with centered numeric styling built in.
+The state-carrying text input, borderless by design (the wrapper carries the border and ring). Use it with `InputGroup` for custom assemblies.
 
 | Prop        | Type                           | Default | Description                                            |
 | ----------- | ------------------------------ | ------- | ------------------------------------------------------ |
 | `className` | `ClassNameValue`               | -       | Custom class name                                      |
 | `...props`  | `React.ComponentProps<"input">` | -      | Supports all native input props (except `className`), such as `value`, `onChange` and `role="spinbutton"` aria attributes |
+
+#### Custom Assembly
+
+The container and slots are the shared [Input](/docs/component/input) parts — `InputGroup`, `InputLeading` and `InputTrailing` carry the standard shell styles (including the danger treatment driven by `data-invalid` / `aria-invalid`); place `NumberRoot` between them and drive the value with your own state.

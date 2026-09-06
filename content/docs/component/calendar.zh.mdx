@@ -5,21 +5,7 @@ description: 基于浏览器原生 Temporal API 的日历面板组件，支持�
 
 ## 安装
 
-<Tabs items={['CLI', '手动']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add calendar" />
-
-</Tab>
-
-<Tab value="手动">
-
-<Source type="component" name="calendar" />
-
-</Tab>
-
-</Tabs>
+<Installation name="calendar" />
 
 > [!TIP]
 > 组件使用浏览器原生 `Temporal.PlainDate` API，不打包任何日期库，也不提供 polyfill —— 请确保目标环境支持 Temporal API（Chrome 139+，或自行安装 polyfill）。

@@ -9,7 +9,6 @@ export interface WizardProps {
   onFinish?: () => void;
   className?: ClassNameValue;
   classNames?: {
-    root?: ClassNameValue;
     steps?: ClassNameValue;
     pager?: ClassNameValue;
     footer?: ClassNameValue;
@@ -38,7 +37,7 @@ export function Wizard({
   const isLast = index === steps.length - 1;
 
   return (
-    <div className={cn("w-full space-y-6", className, classNames?.root)}>
+    <div className={cn("w-full space-y-6", className)}>
       <Steps
         items={steps}
         index={index}

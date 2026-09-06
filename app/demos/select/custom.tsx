@@ -1,25 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { SelectGroup, SelectIcon, SelectRoot } from "@/ui";
+import { Select } from "@/ui";
+
+const options = [
+  { label: "Red", value: "red" },
+  { label: "Green", value: "green" },
+  { label: "Blue", value: "blue" },
+];
 
 export default function Demo() {
   const [value, setValue] = useState("");
+
   return (
-    <SelectGroup className="max-w-xs">
-      <SelectRoot
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        className="rounded-full bg-muted"
-      >
-        <option value="" disabled hidden>
-          Pick a color...
-        </option>
-        <option value="red">Red</option>
-        <option value="green">Green</option>
-        <option value="blue">Blue</option>
-      </SelectRoot>
-      <SelectIcon className="right-3 text-primary" />
-    </SelectGroup>
+    <div className="flex w-full max-w-xs flex-col gap-2">
+      <Select options={options} placeholder="Pick a color..." onValueChange={setValue} />
+      <p className="text-sm text-muted-foreground">
+        The panel is plain DOM — it follows theme colors, unlike a native select dropdown.
+      </p>
+    </div>
   );
 }

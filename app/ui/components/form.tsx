@@ -29,6 +29,42 @@ const FormContext = React.createContext<FormContextType>({
 
 export type FormValues = Record<string, string | string[]>;
 
+export interface UseFieldValidityReturn {
+  /** Current error map: field name → `string` message, `false` (invalid, no message) or `null` (valid). */
+  validity: Record<string, string | boolean | null>;
+  /** Record an error for a field; `null` clears it. */
+  setFieldError: (name: string, error: string | boolean | null) => void;
+  /** Clear one field's error. */
+  clearFieldError: (name: string) => void;
+  /** Clear every field's error. */
+  clearAll: () => void;
+  /** True while no field holds an error. */
+  isValid: boolean;
+}
+
+// Parts-mode validation store: no wrapper components — call `setFieldError` /
+// `clearFieldError` from your own control handlers, pass `Boolean(errors.email)`
+// into the control's `aria-invalid`, and conditionally render the message.
+export function useFieldValidity(): UseFieldValidityReturn {
+  const [validity, setValidity] = React.useState<Record<string, string | boolean | null>>({});
+
+  const setFieldError = React.useCallback(
+    (name: string, error: string | boolean | null) => {
+      setValidity((prev) => (prev[name] === error ? prev : { ...prev, [name]: error }));
+    },
+    [],
+  );
+
+  const clearFieldError = React.useCallback((name: string) => {
+    setValidity((prev) => (name in prev ? { ...prev, [name]: null } : prev));
+  }, []);
+
+  const clearAll = React.useCallback(() => setValidity({}), []);
+
+  const isValid = !Object.values(validity).some(Boolean);
+
+  return { validity, setFieldError, clearFieldError, clearAll, isValid };
+}
 const processFormData = (formData: FormData): FormValues => {
   const result: FormValues = {};
   for (const [key, value] of formData.entries()) {
@@ -307,19 +343,19 @@ type FormFieldArg = {
 
 export type FormFieldProps = Omit<
   React.ComponentProps<"div">,
-  "children" | "className" | "style"
+  "children"
 > & {
+  className?: ClassNameValue;
+  style?: React.CSSProperties;
   label?: React.ReactNode;
   description?: React.ReactNode;
   invalid?: React.ReactNode;
   direction?: "vertical" | "horizontal";
   classNames?: {
-    root?: ClassNameValue;
     label?: ClassNameValue;
     hint?: ClassNameValue;
   };
   styles?: {
-    root?: React.CSSProperties;
     label?: React.CSSProperties;
     hint?: React.CSSProperties;
   };
@@ -336,6 +372,8 @@ export type FormFieldProps = Omit<
 };
 
 function FormField({
+  className,
+  style,
   label,
   name,
   description,
@@ -429,9 +467,9 @@ function FormField({
         "grid gap-1 group items-center",
         "data-[direction=vertical]:grid-cols-1",
         "data-[direction=horizontal]:grid-cols-[auto_1fr]",
-        classNames?.root,
+        className,
       )}
-      style={styles?.root}
+      style={style}
     >
       {label && (
         <FormLabel htmlFor={id} className={classNames?.label} style={styles?.label}>
@@ -477,17 +515,17 @@ type FieldsetRenderArg<T extends FieldsetMode = "multi"> = Omit<
 type FormFieldsetProps<T extends FieldsetMode = "multi"> = {
   type?: T;
   name: string;
+  className?: ClassNameValue;
+  style?: React.CSSProperties;
   legend?: React.ReactNode;
   description?: React.ReactNode;
   invalid?: React.ReactNode;
   disabled?: boolean;
   classNames?: {
-    root?: ClassNameValue;
     legend?: ClassNameValue;
     hint?: ClassNameValue;
   };
   styles?: {
-    root?: React.CSSProperties;
     legend?: React.CSSProperties;
     hint?: React.CSSProperties;
   };
@@ -502,6 +540,8 @@ type FormFieldsetProps<T extends FieldsetMode = "multi"> = {
 } & Omit<React.ComponentPropsWithRef<"fieldset">, "className" | "children" | "style">;
 
 function FormFieldset<T extends FieldsetMode = "multi">({
+  className,
+  style,
   type = "multi" as T,
   name,
   legend,
@@ -625,8 +665,8 @@ function FormFieldset<T extends FieldsetMode = "multi">({
       disabled={disabled}
       aria-invalid={isInvalid}
       aria-describedby={describedBy}
-      className={cn("space-y-1", classNames?.root)}
-      style={styles?.root}
+      className={cn("space-y-1", className)}
+      style={style}
     >
       {legend && (
         <legend className={cn(classNames?.legend)} style={styles?.legend}>

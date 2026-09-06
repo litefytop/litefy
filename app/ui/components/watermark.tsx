@@ -23,7 +23,7 @@ const COLOR_VAR_MAP: Record<string, string> = {
   accent: "--accent",
 };
 
-export type WatermarkRootProps = React.ComponentProps<"div"> & {
+export type WatermarkRootProps = Omit<React.ComponentProps<"div">, "className"> & {
   className?: ClassNameValue;
 };
 
@@ -188,11 +188,9 @@ export type WatermarkProps = Omit<React.ComponentProps<"div">, "className" | "st
   className?: ClassNameValue;
   style?: React.CSSProperties;
   classNames?: {
-    root?: ClassNameValue;
     canvas?: ClassNameValue;
   };
   styles?: {
-    root?: React.CSSProperties;
     canvas?: React.CSSProperties;
   };
 };
@@ -214,7 +212,7 @@ export function Watermark({
   ...props
 }: WatermarkProps) {
   return (
-    <WatermarkRoot {...props} className={cn(className, classNames?.root)} style={style}>
+    <WatermarkRoot {...props} className={className} style={style}>
       {children}
       <WatermarkCanvas
         text={text}

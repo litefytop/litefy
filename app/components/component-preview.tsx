@@ -54,7 +54,7 @@ export function ComponentPreview({
       <div className="overflow-hidden rounded-xl border">
         <div
           className={cn(
-            "preview not-prose relative min-h-151 w-full overflow-hidden border-separator p-4 sm:p-10",
+            "preview not-prose relative min-h-151 w-full overflow-hidden border-separator bg-muted/50 p-4 sm:p-10",
             "flex items-center justify-center",
           )}
         >

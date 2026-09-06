@@ -5,21 +5,7 @@ description: A complete form composition with fields, submit, validation, and im
 
 ## Installation
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add form" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="form" />
-
-</Tab>
-
-</Tabs>
+<Installation name="form" />
 
 ## Usage
 
@@ -54,6 +40,28 @@ Access the form instance through a `ref` to call `setValues`, `reset`, and `subm
 <ComponentPreview 
   name="form-imperative"
 />
+
+### FormItem (Component Mode)
+
+`FormItem` — shipped as an optional, standalone module — renders a finished control per `variant` (`input`, `textarea`, `select`, `password`, `number-field`) with label, required marker, description and built-in validation. It registers with the surrounding `Form`, shows errors in a danger hint, and works standalone too.
+
+<ComponentPreview 
+  name="form-item"
+/>
+
+### Parts Mode (useFieldValidity)
+
+No wrapper components: keep a `useFieldValidity` store (built into the Form module), set/clear errors from your own handlers, pass `aria-invalid` into the control, and conditionally render the message. Every input control ships danger styling (`border-danger` / `text-danger` and a danger focus ring) that activates from the `aria-invalid` attribute alone.
+
+<ComponentPreview 
+  name="form-parts"
+/>
+
+### Invalid Control Styling
+
+All field controls (Input, Textarea, Select, Password, NumberField, Picker, InputOtp) style themselves from the `aria-invalid` attribute — no extra props needed:
+
+`aria-invalid:border-danger aria-invalid:text-danger` plus, when focused, `aria-invalid:focus-visible:outline-1 aria-invalid:focus-visible:outline-danger aria-invalid:focus-visible:ring-3 aria-invalid:focus-visible:ring-danger/50`. Composite wrappers (InputGroup, PasswordGroup) key the same treatment off their `data-invalid` state.
 
 ## API Reference
 

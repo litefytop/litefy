@@ -62,7 +62,9 @@ export function CheckboxLabel({ className, children, ...props }: CheckboxLabelPr
   );
 }
 
-export interface CheckboxProps extends Omit<CheckboxRootProps, "className" | "styles"> {
+export interface CheckboxProps extends Omit<CheckboxRootProps, "className" | "style" | "styles"> {
+  className?: ClassNameValue;
+  style?: React.CSSProperties;
   onCheckedChange?: (checked: boolean) => void;
   indicator?: React.ReactNode;
   classNames?: {
@@ -76,6 +78,8 @@ export interface CheckboxProps extends Omit<CheckboxRootProps, "className" | "st
 }
 
 export const Checkbox = ({
+  className,
+  style,
   children,
   checked,
   defaultChecked,
@@ -99,7 +103,7 @@ export const Checkbox = ({
     onCheckedChange?.(next);
   };
   return (
-    <CheckboxLabel className={classNames?.label} style={styles?.label}>
+    <CheckboxLabel className={cn(classNames?.label, className)} style={style}>
       <CheckboxIndicator
         checked={checked$}
         aria-disabled={disabled}

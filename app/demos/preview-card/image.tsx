@@ -8,7 +8,7 @@ export default function PreviewCardImageDemo() {
       <Image
         src="https://picsum.photos/seed/preview-card/1200/800"
         alt="Preview"
-        classNames={{ root: "h-44 w-full" }}
+        className={"h-44 w-full"}
       />
       <div className="p-4">
         <h3 className="text-lg font-semibold">Litefy Preview Card</h3>

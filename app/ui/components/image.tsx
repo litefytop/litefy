@@ -25,15 +25,19 @@ export function ImageImage({ className, ...props }: ImageImageProps) {
 }
 
 export interface ImageProps extends Omit<ImageImageProps, "className" | "style"> {
+  className?: ClassNameValue;
+  style?: React.CSSProperties;
   fallback?: React.ReactNode;
   loadingNode?: React.ReactNode;
-  classNames?: { root?: ClassNameValue; image?: ClassNameValue };
-  styles?: { root?: React.CSSProperties; image?: React.CSSProperties };
+  classNames?: { image?: ClassNameValue };
+  styles?: { image?: React.CSSProperties };
 }
 
 export function Image({
   src,
   alt,
+  className,
+  style,
   fallback,
   loadingNode,
   classNames,
@@ -65,7 +69,7 @@ export function Image({
   }, [src]);
 
   return (
-    <ImageRoot className={classNames?.root} style={styles?.root}>
+    <ImageRoot className={className} style={style}>
       {status === "loading" && loadingNode}
       {status === "failure" && fallback}
       {status === "success" && (

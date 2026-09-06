@@ -31,13 +31,24 @@ export function AvatarImage({ className, ...props }: AvatarImageProps) {
 }
 
 export interface AvatarProps extends Omit<AvatarImageProps, "className" | "style"> {
+  className?: ClassNameValue;
+  style?: React.CSSProperties;
   skeleton?: React.ReactNode;
   fallback?: React.ReactNode;
-  classNames?: { root?: ClassNameValue; image?: ClassNameValue };
-  styles?: { root?: React.CSSProperties; image?: React.CSSProperties };
+  classNames?: { image?: ClassNameValue };
+  styles?: { image?: React.CSSProperties };
 }
 
-export function Avatar({ skeleton, fallback, src, classNames, styles, ...props }: AvatarProps) {
+export function Avatar({
+  className,
+  style,
+  skeleton,
+  fallback,
+  src,
+  classNames,
+  styles,
+  ...props
+}: AvatarProps) {
   const [status, setStatus] = React.useState<"loading" | "success" | "failure">("loading");
 
   React.useEffect(() => {
@@ -67,7 +78,7 @@ export function Avatar({ skeleton, fallback, src, classNames, styles, ...props }
   }, [src]);
 
   return (
-    <AvatarRoot className={classNames?.root} style={styles?.root}>
+    <AvatarRoot className={className} style={style}>
       {status === "loading" && skeleton}
       {status === "failure" && fallback}
       {status === "success" && (

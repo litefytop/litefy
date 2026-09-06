@@ -1,0 +1,74 @@
+---
+title: Masonry
+description: A masonry layout that balances items across equal-width columns by measured height, with responsive column counts
+---
+
+## Installation
+
+<Installation name="masonry" />
+
+## Usage
+
+### Basic Usage
+
+Items are distributed across equal-width columns with a greedy shortest-column strategy measured from the real DOM, so columns stay visually balanced. The column count responds to the container width by default (`1 / sm:2 / lg:3 / xl:4`).
+
+<ComponentPreview
+  name="masonry-basic"
+/>
+
+### Custom
+
+Pass a fixed `columns` count and pair the layout with [`useLoadMore`](/docs/utils/use-load-more) to grow the list while scrolling an inner container. Prefix items keep their column placement as the list grows, so existing content never jumps.
+
+<ComponentPreview
+  name="masonry-custom"
+/>
+
+## API Reference
+
+### High-level Components
+
+#### Masonry
+
+A data-driven masonry layout. After each render it measures the rendered items and rebalances the distribution; the measurement converges (heights do not depend on the assignment because all columns share the same width). Async content that grows after mount (images, lazy demos) is not re-measured automatically — give such items a min-height close to their final size.
+
+| Prop         | Type                                              | Default                        | Description                                                                   |
+| :----------- | :------------------------------------------------ | :----------------------------- | :---------------------------------------------------------------------------- |
+| `items`      | `T[]`                                             | -                              | The data list                                                                 |
+| `renderItem` | `(item: T, index: number) => React.ReactNode`     | -                              | Renders one cell                                                              |
+| `getKey`     | `(item: T, index: number) => React.Key`           | index                          | Stable key per item; also drives the internal measurement cache               |
+| `columns`    | `number \| { base?; sm?; md?; lg?; xl?; 2xl? }`   | `{ base: 1, sm: 2, lg: 3, xl: 4 }` | Fixed count, or counts resolved against the container width (Tailwind breakpoints: sm 640 / md 768 / lg 1024 / xl 1280 / 2xl 1536) |
+| `gap`        | `number`                                          | `16`                           | Vertical and horizontal gap in px                                             |
+| `className`  | `ClassNameValue`                                  | -                              | Custom classes for the root                                                   |
+| `classNames` | `{ column?; item? }` — each `ClassNameValue`      | -                              | Custom classes per part                                                        |
+| `styles`     | `{ column?; item? }` — each `React.CSSProperties` | -                              | Inline styles per part                                                         |
+
+#### Statics
+
+| Static            | Type             | Description             |
+| :---------------- | :--------------- | :---------------------- |
+| `Masonry.Column`  | `MasonryColumn`  | A single column stack   |
+| `Masonry.Item`    | `MasonryItem`    | A measured cell wrapper |
+
+---
+
+### Composable Components
+
+#### MasonryColumn
+
+One equal-width column stack (`flex min-w-0 flex-col`).
+
+| Prop       | Type                          | Description                     |
+| :--------- | :---------------------------- | :------------------------------ |
+| `className`| `ClassNameValue`              | Custom CSS class                |
+| `...props` | `React.ComponentProps<"div">` | Supports all native div props   |
+
+#### MasonryItem
+
+The cell wrapper each item renders into (`min-w-0`), tagged with internal `data-masonry-*` attributes used for measuring.
+
+| Prop       | Type                          | Description                     |
+| :--------- | :---------------------------- | :------------------------------ |
+| `className`| `ClassNameValue`              | Custom CSS class                |
+| `...props` | `React.ComponentProps<"div">` | Supports all native div props   |

@@ -89,7 +89,6 @@ export interface BannerProps
   pauseOnHover?: boolean;
   className?: ClassNameValue;
   classNames?: {
-    viewport?: ClassNameValue;
     track?: ClassNameValue;
     item?: ClassNameValue;
   };
@@ -156,7 +155,7 @@ export function Banner({
     <BannerViewport
       {...props}
       ref={viewportRef}
-      className={cn(className, classNames?.viewport)}
+      className={className}
       style={styles?.viewport}
       onMouseEnter={(e) => {
         onMouseEnter?.(e);

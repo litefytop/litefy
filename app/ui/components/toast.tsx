@@ -108,7 +108,6 @@ export type ToastItemProps = Omit<React.ComponentProps<"div">, "className" | "st
   }>;
   isExpanded?: boolean;
   classNames?: {
-    root?: ClassNameValue;
     icon?: ClassNameValue;
     content?: ClassNameValue;
     title?: ClassNameValue;
@@ -116,7 +115,6 @@ export type ToastItemProps = Omit<React.ComponentProps<"div">, "className" | "st
     actions?: ClassNameValue;
   };
   styles?: {
-    root?: React.CSSProperties;
     icon?: React.CSSProperties;
     content?: React.CSSProperties;
     title?: React.CSSProperties;
@@ -259,8 +257,6 @@ function ToastItem({
       {...restProps}
       data-expanded={isExpanded}
       data-exiting={isExiting}
-      className={classNames?.root}
-      style={styles?.root}
     >
       {icon && (
         <ToastIcon className={classNames?.icon} style={styles?.icon}>

@@ -1,59 +1,9 @@
 "use client";
 
 import * as React from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { type ClassNameValue, cn } from "..";
-
-export type NumberGroupProps = Omit<React.ComponentProps<"div">, "className"> & {
-  className?: ClassNameValue;
-};
-export function NumberGroup({ className, ...props }: NumberGroupProps) {
-  return (
-    <div
-      {...props}
-      className={cn(
-        "flex max-w-3xs w-full items-center rounded-full ",
-        "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
-        className,
-      )}
-    />
-  );
-}
-
-export type NumberDecrementProps = Omit<React.ComponentProps<"button">, "className"> & {
-  className?: ClassNameValue;
-};
-export function NumberDecrement({ className, ...props }: NumberDecrementProps) {
-  return (
-    <button
-      type="button"
-      aria-label="Decrease"
-      {...props}
-      className={cn(
-        "flex size-9 shrink-0 items-center justify-center rounded-l-full hover:text-primary",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
-        className,
-      )}
-    />
-  );
-}
-
-export type NumberIncrementProps = Omit<React.ComponentProps<"button">, "className"> & {
-  className?: ClassNameValue;
-};
-export function NumberIncrement({ className, ...props }: NumberIncrementProps) {
-  return (
-    <button
-      type="button"
-      aria-label="Increase"
-      {...props}
-      className={cn(
-        "flex size-9 shrink-0 items-center justify-center rounded-r-full hover:text-primary",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
-        className,
-      )}
-    />
-  );
-}
+import { InputGroup, InputLeading, InputRoot, InputTrailing } from "./input";
 
 export type NumberRootProps = Omit<React.ComponentProps<"input">, "className"> & {
   className?: ClassNameValue;
@@ -64,8 +14,10 @@ export function NumberRoot({ className, ...props }: NumberRootProps) {
     <input
       {...props}
       className={cn(
-        "h-8 w-full  flex-1 border-0 bg-transparent px-2 text-center text-sm ring-0 outline-none",
+        "h-8 w-full min-w-0 flex-1 border-0 bg-transparent px-2 text-left text-sm ring-0 outline-none",
         "placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground",
+        // The group carries the invalid border/ring; the input itself stays bare.
+        "aria-invalid:text-danger",
         "disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
@@ -73,24 +25,40 @@ export function NumberRoot({ className, ...props }: NumberRootProps) {
   );
 }
 
+export function groupThousands(numStr: string): string {
+  if (numStr === "" || !/^-?\d+(\.\d*)?$/.test(numStr)) return numStr;
+  const negative = numStr.startsWith("-");
+  const body = negative ? numStr.slice(1) : numStr;
+  const [intPart, decPart] = body.split(".");
+  const grouped = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return `${negative ? "-" : ""}${grouped}${decPart !== undefined ? `.${decPart}` : ""}`;
+}
+
 type BaseNumberFieldProps = Omit<
   React.ComponentProps<"input">,
   "className" | "value" | "defaultValue" | "type" | "onChange"
 > & {
+  className?: ClassNameValue;
   invalid?: boolean;
   min?: number;
   max?: number;
   step?: number;
+  /** Non-interactive up/down cue in the trailing area — signals keyboard stepping. Always shown. */
+  indicator?: boolean;
+  /** Content rendered before the number (e.g. a currency symbol). */
+  prefix?: React.ReactNode;
+  /** Content rendered after the number, before the stepping cue. */
+  suffix?: React.ReactNode;
+  /** Group the integer part with thousands separators while the input is not focused. */
+  thousands?: boolean;
   classNames?: {
-    group?: ClassNameValue;
-    decrement?: ClassNameValue;
-    increment?: ClassNameValue;
+    leading?: ClassNameValue;
+    trailing?: ClassNameValue;
     root?: ClassNameValue;
   };
   styles?: {
-    group?: React.CSSProperties;
-    decrement?: React.CSSProperties;
-    increment?: React.CSSProperties;
+    leading?: React.CSSProperties;
+    trailing?: React.CSSProperties;
     root?: React.CSSProperties;
   };
 };
@@ -118,6 +86,12 @@ export function NumberField(props: NumberFieldProps) {
     min = positiveInteger ? 0 : -Infinity,
     max = Infinity,
     step = 1,
+    indicator = true,
+    prefix,
+    suffix,
+    thousands = false,
+    className,
+    style,
     classNames,
     styles,
     disabled,
@@ -132,6 +106,7 @@ export function NumberField(props: NumberFieldProps) {
   const [uncontrolledValue, setUncontrolledValue] = React.useState<string>(
     String(defaultValue ?? ""),
   );
+  const [focused, setFocused] = React.useState(false);
 
   const value = isControlled ? String(controlledValue ?? "") : uncontrolledValue;
 
@@ -169,7 +144,7 @@ export function NumberField(props: NumberFieldProps) {
   );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value;
+    const raw = e.target.value.replace(/,/g, "");
     if (positiveInteger) {
       if (!/^\d*$/.test(raw)) return;
     } else {
@@ -180,6 +155,7 @@ export function NumberField(props: NumberFieldProps) {
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    setFocused(false);
     const normalized = normalize(value);
     if (normalized !== value) {
       emitChange(normalized);
@@ -213,22 +189,18 @@ export function NumberField(props: NumberFieldProps) {
       if (newNum < min) newNum = min;
       if (newNum > max) newNum = max;
 
-      const newStr = String(newNum);
-      emitChange(newStr);
+      emitChange(String(newNum));
     },
     [value, min, max, positiveInteger, step, emitChange],
   );
 
-  const handleMinus = () => stepDelta(-step);
-  const handlePlus = () => stepDelta(step);
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "ArrowUp") {
       e.preventDefault();
-      handlePlus();
+      stepDelta(step);
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
-      handleMinus();
+      stepDelta(-step);
     }
     rest.onKeyDown?.(e);
   };
@@ -237,31 +209,32 @@ export function NumberField(props: NumberFieldProps) {
   const safeMax = Number.isFinite(max) ? max : undefined;
   const numValue = value === "" ? undefined : parseFloat(value);
   const valuenow = numValue !== undefined && !Number.isNaN(numValue) ? numValue : undefined;
+  const displayValue = thousands && !focused ? groupThousands(value) : value;
 
   return (
-    <NumberGroup
+    <InputGroup
       data-invalid={invalid || undefined}
-      className={classNames?.group}
-      style={styles?.group}
+      className={className}
+      style={style}
     >
-      <NumberDecrement
-        disabled={disabled || valuenow === min}
-        onClick={handleMinus}
-        className={classNames?.decrement}
-        style={styles?.decrement}
-      >
-        −
-      </NumberDecrement>
-      <NumberRoot
+      {(prefix || classNames?.leading || styles?.leading) && (
+        <InputLeading className={classNames?.leading} style={styles?.leading}>
+          {prefix}
+        </InputLeading>
+      )}
+      <InputRoot
         {...rest}
         type="text"
         inputMode={positiveInteger ? "numeric" : "decimal"}
-        pattern={positiveInteger ? "[0-9]*" : "-?[0-9]*\\.?[0-9]*"}
         aria-invalid={invalid}
         role="spinbutton"
         disabled={disabled}
-        value={value}
+        value={displayValue}
         onChange={handleChange}
+        onFocus={(e) => {
+          setFocused(true);
+          rest.onFocus?.(e);
+        }}
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
         className={classNames?.root}
@@ -270,14 +243,21 @@ export function NumberField(props: NumberFieldProps) {
         aria-valuemax={safeMax}
         aria-valuenow={valuenow}
       />
-      <NumberIncrement
-        disabled={disabled || valuenow === max}
-        onClick={handlePlus}
-        className={classNames?.increment}
-        style={styles?.increment}
-      >
-        +
-      </NumberIncrement>
-    </NumberGroup>
+      <InputTrailing className={cn("gap-1.5 pr-1", classNames?.trailing)} style={styles?.trailing}>
+        {suffix ? (
+          <span className="text-sm text-muted-foreground">{suffix}</span>
+        ) : (
+          indicator && (
+            <span
+              aria-hidden
+              className="pointer-events-none flex shrink-0 select-none flex-col items-center justify-center leading-none text-muted-foreground/80"
+            >
+              <ChevronUp className="size-3 -mb-0.5" />
+              <ChevronDown className="size-3" />
+            </span>
+          )
+        )}
+      </InputTrailing>
+    </InputGroup>
   );
 }

@@ -474,6 +474,10 @@ export interface CalendarProps {
   onChange?: (date: Temporal.PlainDate) => void;
   onVisibleMonthChange?: (month: Temporal.PlainDate) => void;
   onViewChange?: (view: CalendarView) => void;
+  /** Fired when a month is picked in the months view (before switching to days). */
+  onMonthSelect?: (month: Temporal.PlainDate) => void;
+  /** Fired when a year is picked in the years view (before switching to months). */
+  onYearSelect?: (year: Temporal.PlainDate) => void;
   isDateDisabled?: (date: Temporal.PlainDate) => boolean;
   firstDayOfWeek?: 0 | 1;
   className?: ClassNameValue;
@@ -488,6 +492,8 @@ export function Calendar({
   onChange,
   onVisibleMonthChange,
   onViewChange,
+  onMonthSelect,
+  onYearSelect,
   isDateDisabled,
   firstDayOfWeek = 0,
   className,
@@ -531,6 +537,7 @@ export function Calendar({
     const inMonth =
       value && value.year === month.year && value.month === month.month ? value : month;
     pendingFocusRef.current = { attribute: "data-date", value: inMonth.toString() };
+    onMonthSelect?.(month);
     onVisibleMonthChange?.(month);
     handleViewChange("days");
   };
@@ -543,7 +550,8 @@ export function Calendar({
   const handleYearSelect = (year: Temporal.PlainDate) => {
     const next = visibleMonth.with({ year: year.year, day: 1 });
     pendingFocusRef.current = { attribute: "data-month", value: next.toString() };
-    onVisibleMonthChange?.(next);
+    onYearSelect?.(year);
+    onVisibleMonthChange?.(visibleMonth.with({ year: year.year, day: 1 }));
     handleViewChange("months");
   };
 

@@ -5,21 +5,7 @@ description: 基于原生 Temporal API 的日期选择器 —— 可编辑输入
 
 ## 安装
 
-<Tabs items={['CLI', '手动']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add date-picker" />
-
-</Tab>
-
-<Tab value="手动">
-
-<Source type="component" name="date-picker" />
-
-</Tab>
-
-</Tabs>
+<Installation name="date-picker" />
 
 ## 用法
 
@@ -29,8 +15,8 @@ description: 基于原生 Temporal API 的日期选择器 —— 可编辑输入
 
 - 分隔符宽松 —— 空格、`-`、`/`、`,` 都可以使用，校验通过后自动格式化为标准的 `YYYY-MM-DD` 形式（`2026/8/5` 会变成 `2026-08-05`）；
 - 完整日期直接提交 —— 回填输入框并关闭面板；
-- 只输入年份（`2026`）会打开该年的月份面板，输入年月（`2026-08`）会打开该月日面板 —— 补选缺失的部分后即提交；
-- 非法输入（如出现字母、月份超范围）直接清空输入框。
+- 只输入年份（`2026`）会打开该年的月份面板，输入年月（`2026-08`）会打开该月日面板 —— 每选中一部分就立即回填输入框（`2026` → `2026-08` → 选中日期后提交）；
+- 非法输入（如出现字母、月份超范围）直接清空输入框，并显示 danger 边框，再次键入时恢复。
 
 键入完整日期时，校验发生之前也会实时预览选中值与显示月份。
 
@@ -58,6 +44,7 @@ description: 基于原生 Temporal API 的日期选择器 —— 可编辑输入
 | `onValueChange`   | `(date: Temporal.PlainDate) => void`           | -                           | 日期提交时触发 —— 面板选中，或输入完整日期后按 `Enter`                                            |
 | `placeholder`     | `string`                                       | `"Select or type a date"`   | 输入框占位文本                                                                                   |
 | `disabled`        | `boolean`                                      | -                           | 禁用输入框与面板                                                                                  |
+| `invalid`         | `boolean`                                      | -                           | 外部校验失败状态 —— 显示 danger 边框（校验清空输入时组件内部也会设置）                                |
 | `firstDayOfWeek`  | `0 \| 1`                                       | `0`                         | 每周第一天（`0` = 周日，`1` = 周一）                                                              |
 | `isDateDisabled`  | `(date: Temporal.PlainDate) => boolean`        | -                           | 禁用日历中日期的判断函数                                                                          |
 | `trailing`        | `React.ReactNode`                              | 日历图标                     | 输入框尾部装饰                                                                                    |

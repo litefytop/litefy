@@ -2,13 +2,13 @@
 
 import { NumberField } from "@/ui";
 
-export default function NumberFieldBasicDemo() {
+export default function Demo() {
   return (
-    <div className="flex flex-col gap-4">
-      <NumberField defaultValue={0} />
-      <NumberField defaultValue={10} min={0} max={100} />
-      <NumberField defaultValue={3.14} step={0.01} />
-      <NumberField defaultValue={5} positiveInteger />
+    <div className="flex w-full max-w-md flex-col gap-4">
+      <NumberField defaultValue={2026} thousands prefix="$" suffix="USD" />
+      <NumberField defaultValue={5} min={0} max={100} step={5} thousands />
+      <NumberField defaultValue={3.14} step={0.01} thousands placeholder="0.00" />
+      <NumberField defaultValue={5} positiveInteger indicator={false} />
     </div>
   );
 }

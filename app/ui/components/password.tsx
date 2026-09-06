@@ -16,9 +16,10 @@ export function PasswordGroup({ className, invalid, ...props }: PasswordGroupPro
       data-invalid={invalid ? true : undefined}
       aria-invalid={invalid}
       className={cn(
-        "flex w-full max-w-sm min-w-3xs items-center rounded-md border border-border shadow-xs transition-colors px-2 h-9",
+        "flex w-full max-w-sm min-w-3xs items-center rounded-md border border-border shadow-xs bg-background/90 transition-colors px-2 h-9",
         "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
-        "data-[invalid=true]:border-danger data-[invalid=true]:ring-danger/20",
+        "data-invalid:border-danger",
+        "data-invalid:focus-within:outline-1 data-invalid:focus-within:outline-danger data-invalid:focus-within:ring-3 data-invalid:focus-within:ring-danger/50",
         className,
       )}
     />
@@ -75,19 +76,20 @@ export interface PasswordProps extends Omit<PasswordRootProps, "className" | "vi
   defaultVisible?: boolean;
   onVisibleChange?: (visible: boolean) => void;
   invalid?: boolean;
+  className?: ClassNameValue;
   classNames?: {
-    group?: ClassNameValue;
     root?: ClassNameValue;
     toggle?: ClassNameValue;
   };
   styles?: {
-    group?: React.CSSProperties;
     root?: React.CSSProperties;
     toggle?: React.CSSProperties;
   };
 }
 
 export const Password = ({
+  className,
+  style,
   visible: controlledVisible,
   defaultVisible = false,
   onVisibleChange,
@@ -108,7 +110,7 @@ export const Password = ({
   };
 
   return (
-    <PasswordGroup invalid={invalid} className={classNames?.group} style={styles?.group}>
+    <PasswordGroup invalid={invalid} className={className} style={style}>
       <PasswordRoot
         {...props}
         disabled={disabled}

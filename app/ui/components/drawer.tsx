@@ -97,13 +97,11 @@ export interface DrawerDragApi {
 export interface DrawerProps extends Omit<DrawerWrapperProps, "classNames" | "styles"> {
   drag?: DrawerDragApi;
   classNames?: {
-    root?: ClassNameValue;
     wrapper?: ClassNameValue;
     drag?: ClassNameValue;
     content?: ClassNameValue;
   };
   styles?: {
-    root?: React.CSSProperties;
     wrapper?: React.CSSProperties;
     drag?: React.CSSProperties;
     content?: React.CSSProperties;
@@ -115,6 +113,8 @@ export interface DrawerProps extends Omit<DrawerWrapperProps, "classNames" | "st
 }
 
 export function Drawer({
+  className,
+  style,
   classNames,
   styles,
   placement = "right",
@@ -213,8 +213,8 @@ export function Drawer({
   return (
     <DrawerRoot
       ref={dialogRef}
-      className={classNames?.root}
-      style={styles?.root}
+      className={className}
+      style={style}
       onKeyDown={handleKeyDown}
       onCancel={handleCancel}
       onClick={(e) => {

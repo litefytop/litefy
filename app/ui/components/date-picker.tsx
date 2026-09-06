@@ -59,6 +59,8 @@ export interface DatePickerProps {
   onValueChange?: (date: Temporal.PlainDate) => void;
   placeholder?: string;
   disabled?: boolean;
+  /** External invalid state — shows the danger border (also set internally when Enter validation clears the input). */
+  invalid?: boolean;
   firstDayOfWeek?: 0 | 1;
   isDateDisabled?: (date: Temporal.PlainDate) => boolean;
   trailing?: React.ReactNode;
@@ -80,6 +82,7 @@ export function DatePicker({
   onValueChange,
   placeholder = "Select or type a date",
   disabled,
+  invalid,
   firstDayOfWeek = 0,
   isDateDisabled,
   trailing = <CalendarIcon className="size-4 text-muted-foreground" />,
@@ -96,6 +99,9 @@ export function DatePicker({
     (value ?? defaultValue ?? Temporal.Now.plainDateISO()).with({ day: 1 }),
   );
   const [view, setView] = React.useState<CalendarView>("days");
+  // Set when Enter validation rejects the input (cleared) — drives the danger
+  // border via aria-invalid and clears as soon as the user types again.
+  const [hasError, setHasError] = React.useState(false);
   // The last value reported through onValueChange — typing previews update the
   // selection without committing, so dedup must compare against this, not selected.
   const committedRef = React.useRef<string | null>(defaultValue?.toString() ?? null);
@@ -130,6 +136,7 @@ export function DatePicker({
   // selection and the visible month before any validation runs.
   const handleTextChange = (next: string) => {
     setText(next);
+    setHasError(false);
     const parsed = parseInput(next);
     if (parsed.kind === "full") {
       setSelected(parsed.date);
@@ -140,19 +147,23 @@ export function DatePicker({
   const applyParsed = (parsed: ParsedInput) => {
     switch (parsed.kind) {
       case "empty":
+        setHasError(false);
         return;
       case "invalid":
         setText("");
+        setHasError(true);
         return;
       case "year":
         setVisibleMonth(Temporal.PlainDate.from(`${parsed.year}-01-01`));
         setView("months");
         setText(parsed.year);
+        setOpen(true);
         return;
       case "yearMonth":
         setVisibleMonth(parsed.firstOfMonth);
         setView("days");
         setText(parsed.normalized);
+        setOpen(true);
         return;
       case "full":
         if (parsed.normalized === committedRef.current) {
@@ -189,6 +200,18 @@ export function DatePicker({
     }
   };
 
+  // Progressive selection: picking a part fills it into the input immediately;
+  // the value only commits when the full date is picked.
+  const handleMonthSelect = (month: Temporal.PlainDate) => {
+    setHasError(false);
+    setText(`${month.year}-${String(month.month).padStart(2, "0")}`);
+  };
+
+  const handleYearSelect = (year: Temporal.PlainDate) => {
+    setHasError(false);
+    setText(String(year.year));
+  };
+
   return (
     <Picker
       open={open}
@@ -198,6 +221,7 @@ export function DatePicker({
       onValueChange={handleTextChange}
       placeholder={placeholder}
       disabled={disabled}
+      aria-invalid={(hasError || invalid) || undefined}
       trailing={trailing}
       onKeyDown={handleKeyDown}
       classNames={{ input: classNames?.input, trailing: classNames?.trailing }}
@@ -210,6 +234,8 @@ export function DatePicker({
         onChange={commit}
         view={view}
         onViewChange={setView}
+        onMonthSelect={handleMonthSelect}
+        onYearSelect={handleYearSelect}
         isDateDisabled={isDateDisabled}
         firstDayOfWeek={firstDayOfWeek}
         className={cn(classNames?.panel)}

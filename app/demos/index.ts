@@ -7,6 +7,14 @@ import BannerCustomDemo from "./banner/custom";
 import bannerCustomCode from "./banner/custom.tsx?raw";
 import DatePickerBasicDemo from "./date-picker/basic";
 import datePickerBasicCode from "./date-picker/basic.tsx?raw";
+import MasonryBasicDemo from "./masonry/basic";
+import masonryBasicCode from "./masonry/basic.tsx?raw";
+import MasonryCustomDemo from "./masonry/custom";
+import masonryCustomCode from "./masonry/custom.tsx?raw";
+import FormItemDemo from "./form/item";
+import formItemCode from "./form/item.tsx?raw";
+import FormPartsDemo from "./form/parts";
+import formPartsCode from "./form/parts.tsx?raw";
 import BadgeBasicDemo from "./badge/basic";
 import badgeBasicCode from "./badge/basic.tsx?raw";
 import BreadcrumbBasicDemo from "./breadcrumb/basic";
@@ -483,6 +491,14 @@ export const demos: Record<string, DemoItem> = {
     component: FormValidationDemo,
     code: formValidationCode,
   },
+  "form-item": {
+    component: FormItemDemo,
+    code: formItemCode,
+  },
+  "form-parts": {
+    component: FormPartsDemo,
+    code: formPartsCode,
+  },
   "avatar-basic": {
     component: AvatarBasicDemo,
     code: avatarBasicCode,
@@ -498,6 +514,14 @@ export const demos: Record<string, DemoItem> = {
   "date-picker-basic": {
     component: DatePickerBasicDemo,
     code: datePickerBasicCode,
+  },
+  "masonry-basic": {
+    component: MasonryBasicDemo,
+    code: masonryBasicCode,
+  },
+  "masonry-custom": {
+    component: MasonryCustomDemo,
+    code: masonryCustomCode,
   },
   "badge-basic": {
     component: BadgeBasicDemo,

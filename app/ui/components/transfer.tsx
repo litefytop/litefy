@@ -19,7 +19,6 @@ export interface TransferProps {
   renderItem?: (item: TransferItemConfig) => React.ReactNode;
   className?: ClassNameValue;
   classNames?: {
-    root?: ClassNameValue;
     panel?: ClassNameValue;
     header?: ClassNameValue;
     body?: ClassNameValue;
@@ -110,7 +109,7 @@ export function Transfer({
   };
 
   return (
-    <div className={cn("flex items-center gap-3", className, classNames?.root)}>
+    <div className={cn("flex items-center gap-3", className)}>
       <div
         className={cn(
           "flex min-w-0 flex-1 flex-col rounded-md border bg-background",

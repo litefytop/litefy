@@ -54,10 +54,6 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/collapse-accordion.tsx"
   },
-  "collapse‑accordion": {
-    "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/collapse‑accordion.tsx"
-  },
   "context-menu": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/context-menu.tsx",
@@ -106,13 +102,20 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/list.tsx"
   },
+  "masonry": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/masonry.tsx"
+  },
   "menu": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/menu.tsx"
   },
   "number-field": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/number-field.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/number-field.tsx",
+    "dependence": [
+      "input"
+    ]
   },
   "pager": {
     "type": "component",
@@ -233,6 +236,19 @@
       "steps"
     ]
   },
+  "form-item": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/form-item/index.tsx",
+    "dependence": [
+      "cn",
+      "input",
+      "text-area",
+      "select",
+      "password",
+      "number-field",
+      "form"
+    ]
+  },
   "cn": {
     "type": "util",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/cn.ts"
@@ -248,6 +264,10 @@
   "use-drag": {
     "type": "hook",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-drag.ts"
+  },
+  "use-load-more": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-load-more.ts"
   },
   "use-pagination": {
     "type": "hook",

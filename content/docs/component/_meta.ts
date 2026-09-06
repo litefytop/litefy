@@ -184,6 +184,13 @@ export default {
       zh: "列表",
     },
   },
+  masonry: {
+    name: "Masonry",
+    displayName: {
+      en: "Masonry",
+      zh: "瀑布流",
+    },
+  },
   menu: {
     name: "Menu",
     displayName: {

@@ -1,37 +1,23 @@
 ---
 title: NumberField 数字输入框
-description: 带有增减控制按钮的数字输入字段
+description: 支持键盘步进（ArrowUp / ArrowDown）、千分位分隔与前后缀插槽的数字输入框
 ---
 
 ## 安装
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add number-field" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="number-field" />
-
-</Tab>
-
-</Tabs>
+<Installation name="number-field" />
 
 ## 用法
 
 ### 基础用法
 
-带有默认值、范围限制和小数步骤的基础数字输入。
+尾部区域的上下图标是非交互提示 —— 数值通过键盘（`ArrowUp` / `ArrowDown`）改变，遵循 `step`、`min` 与 `max`。
 
 <ComponentPreview 
   name="number-field-basic"
 />
 
-### 无效状态
+### 校验状态
 
 使用 `invalid` 属性显示验证错误。
 
@@ -41,7 +27,7 @@ description: 带有增减控制按钮的数字输入字段
 
 ### 受控模式
 
-通过受控状态外部管理值。
+通过受控状态在外部管理数值。
 
 <ComponentPreview 
   name="number-field-controlled"
@@ -49,7 +35,7 @@ description: 带有增减控制按钮的数字输入字段
 
 ### 自定义
 
-使用 `NumberGroup`、`NumberDecrement`、`NumberRoot`、`NumberIncrement` 拼装，`focus-within` 焦点环自动生效（会设置 `data-invalid` 属性，但默认无对应样式）。
+步进提示、千分位分隔与前后缀是成品专属特性。需要完全自定义面板时，用 [Input](/docs/component/input) 的零件（`InputGroup`、`NumberRoot`、普通内容）自行拼装并自管数值 —— 标准外壳样式来自 `InputGroup`。
 
 <ComponentPreview 
   name="number-field-custom"
@@ -59,65 +45,44 @@ description: 带有增减控制按钮的数字输入字段
 
 ### 高阶组件
 
-开箱即用的成品组件。
+即用型成品组件。
 
 #### NumberField
 
-带有内置增减按钮的数字输入字段。
+支持键盘步进（`ArrowUp` / `ArrowDown`，无可点击按钮）、千分位显示与前后缀插槽的数字输入框。
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `defaultValue` | `number \| string` | - | 初始值（非受控模式） |
 | `value` | `number \| string \| undefined` | - | 当前值（受控模式） |
-| `onValueChange` | `(value?: number) => void \| (value?: string) => void` | - | 值变化处理器。当 `positiveInteger=true` 时返回 `number \| undefined`，否则返回 `string` |
+| `onValueChange` | `(value?: number) => void \| (value?: string) => void` | - | 值变化处理。`positiveInteger=true` 时返回 `number \| undefined`，否则返回 `string` |
 | `invalid` | `boolean` | - | 是否处于无效状态 |
 | `min` | `number` | `0`（positiveInteger）或 `-Infinity` | 允许的最小值 |
 | `max` | `number` | `Infinity` | 允许的最大值 |
-| `step` | `number` | `1` | 增减步长 |
-| `positiveInteger` | `boolean` | `false` | 限制为正整数。将值类型更改为 `number \| undefined` |
-| `classNames` | `{ group?: ClassNameValue; decrement?: ClassNameValue; increment?: ClassNameValue; root?: ClassNameValue }` | - | 内部元素的自定义类名 |
-| `styles` | `{ group?: React.CSSProperties; decrement?: React.CSSProperties; increment?: React.CSSProperties; root?: React.CSSProperties }` | - | 内部元素的内联样式 |
+| `step` | `number` | `1` | `ArrowUp` / `ArrowDown` 的步长 |
+| `positiveInteger` | `boolean` | `false` | 仅允许正整数。值类型变为 `number \| undefined` |
+| `prefix` | `React.ReactNode` | - | 渲染在数字前的内容（如货币符号） |
+| `suffix` | `React.ReactNode` | - | 渲染在数字后的内容 —— 设置时取代步进提示 |
+| `thousands` | `boolean` | `false` | 未聚焦时整数部分按千分位分组显示；提交值始终不带分隔符 |
+| `indicator` | `boolean` | `true` | 是否在尾部区域显示非交互的上下提示图标（设置 `suffix` 时不显示） |
+| `classNames` | `{ group?; leading?; trailing?; root? }` —— 值均为 `ClassNameValue` | - | 各零件的自定义类名 |
+| `styles` | `{ group?; leading?; trailing?; root? }` —— 值均为 `React.CSSProperties` | - | 各零件的内联样式 |
 | `disabled` | `boolean` | `false` | 禁用整个字段 |
-| `...props` | `React.ComponentProps<"input">` | - | 支持全部 input 原生属性（除 `type`、`className`），如 `onBlur` |
+| `...props` | `React.ComponentProps<"input">` | - | 支持所有原生 input 属性（除 `type`、`className`），如 `onBlur` |
 
 ---
 
 ### 可组合组件
 
-#### NumberGroup
-
-外层容器，内置完整输入框样式：尺寸（`max-w-3xs w-full`）、圆角（rounded-full）、`focus-within` 焦点环；设置 `invalid` 时会添加 `data-invalid` 属性，但默认没有对应样式。
-
-| Prop        | Type                          | Default | Description                               |
-| ----------- | ----------------------------- | ------- | ----------------------------------------- |
-| `className` | `ClassNameValue`              | -       | 自定义类名                                |
-| `...props`  | `React.ComponentProps<"div">` | -       | 支持全部 div 原生属性（含 `data-*` 属性） |
-
-#### NumberDecrement
-
-减号按钮，内置左半圆样式与禁用态。
-
-| Prop        | Type                             | Default | Description                                  |
-| ----------- | -------------------------------- | ------- | -------------------------------------------- |
-| `className` | `ClassNameValue`                 | -       | 自定义类名                                   |
-| `children`  | `React.ReactNode`                | -       | 按钮内容                                     |
-| `...props`  | `React.ComponentProps<"button">` | -       | 支持全部 button 原生属性（除 `className`）   |
-
-#### NumberIncrement
-
-加号按钮，内置右半圆样式与禁用态。
-
-| Prop        | Type                             | Default | Description                                  |
-| ----------- | -------------------------------- | ------- | -------------------------------------------- |
-| `className` | `ClassNameValue`                 | -       | 自定义类名                                   |
-| `children`  | `React.ReactNode`                | -       | 按钮内容                                     |
-| `...props`  | `React.ComponentProps<"button">` | -       | 支持全部 button 原生属性（除 `className`）   |
-
 #### NumberRoot
 
-承载状态的文本输入框，内置居中数字排版样式。
+承载数值的文本输入框，设计上无边框（边框与焦点环由外壳承担）。配合 `InputGroup` 用于自定义拼装。
 
-| Prop        | Type                            | Default | Description                                                    |
-| ----------- | ------------------------------- | ------- | -------------------------------------------------------------- |
-| `className` | `ClassNameValue`                | -       | 自定义类名                                                     |
-| `...props`  | `React.ComponentProps<"input">` | -       | 支持全部 input 原生属性（除 `className`），如 `value`、`onChange` 和 `role="spinbutton"` 相关 aria 属性 |
+| Prop        | Type                           | Default | Description                                            |
+| ----------- | ------------------------------ | ------- | ------------------------------------------------------ |
+| `className` | `ClassNameValue`               | -       | 自定义类名                                              |
+| `...props`  | `React.ComponentProps<"input">` | -      | 支持所有原生 input 属性（除 `className`），如 `value`、`onChange` 与 `role="spinbutton"` 的 aria 属性 |
+
+#### 自定义拼装
+
+容器与插槽是共享的 [Input](/docs/component/input) 零件 —— `InputGroup`、`InputLeading`、`InputTrailing` 自带标准外壳样式（包括由 `data-invalid` / `aria-invalid` 驱动的 danger 效果）；把 `NumberRoot` 放在中间，用你自己的状态驱动数值即可。

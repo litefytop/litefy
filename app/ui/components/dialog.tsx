@@ -50,19 +50,21 @@ export interface DialogProps extends Omit<DialogContentProps, "className" | "sty
   open: boolean;
   onOpenChange?: (open: boolean) => void;
   onBackdropClick?: (e: React.MouseEvent<HTMLDialogElement>) => void;
+  className?: ClassNameValue;
+  style?: React.CSSProperties;
   classNames?: {
-    root?: ClassNameValue;
     content?: ClassNameValue;
     close?: ClassNameValue;
   };
   styles?: {
-    root?: React.CSSProperties;
     content?: React.CSSProperties;
     close?: React.CSSProperties;
   };
 }
 
 export function Dialog({
+  className,
+  style,
   classNames,
   styles,
   children,
@@ -132,8 +134,8 @@ export function Dialog({
       onClick={(e) => {
         if (e.target === e.currentTarget) onBackdropClick?.(e);
       }}
-      className={classNames?.root}
-      style={styles?.root}
+      className={className}
+      style={style}
     >
       <DialogContent {...props} style={styles?.content} className={classNames?.content}>
         <DialogClose

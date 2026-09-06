@@ -4,7 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import componentMeta from "../../content/docs/component/_meta";
-import { cn } from "@/ui";
+import { Masonry, cn, useLoadMore } from "@/ui";
 
 type DemoModule = { default: React.ComponentType };
 type MetaEntry = { name?: string; displayName?: { en: string; zh: string } };
@@ -141,7 +141,7 @@ function WallCard({
   return (
     <div
       ref={ref}
-      className="mb-4 break-inside-avoid overflow-hidden rounded-xl border bg-fd-background transition-shadow hover:shadow-md"
+      className="overflow-hidden rounded-xl border bg-background transition-shadow hover:shadow-md"
     >
       <Link
         to={item.href(locale)}
@@ -180,6 +180,10 @@ const wallContent = {
 export function ExampleWall({ locale }: { locale: "en" | "zh" }) {
   const t = wallContent[locale] ?? wallContent.en;
   const { ref, near } = useNearViewport<HTMLDivElement>("400px");
+  const { visibleCount, hasMore, sentinelRef } = useLoadMore({
+    total: wallItems.length,
+    pageSize: 12,
+  });
 
   return (
     <div ref={ref} className="mt-20 w-full max-w-6xl text-left">
@@ -200,11 +204,21 @@ export function ExampleWall({ locale }: { locale: "en" | "zh" }) {
         </Link>
       </div>
       {near && (
-        <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4">
-          {wallItems.map((item) => (
-            <WallCard key={item.path} item={item} locale={locale} />
-          ))}
-        </div>
+        <Masonry
+          items={wallItems.slice(0, visibleCount)}
+          getKey={(item) => item.path}
+          renderItem={(item) => <WallCard key={item.path} item={item} locale={locale} />}
+        />
+      )}
+      {near && hasMore && (
+        <div ref={sentinelRef} aria-hidden className="h-px w-full" />
+      )}
+      {near && !hasMore && (
+        <p className="mt-6 text-center text-xs text-fd-muted-foreground">
+          {locale === "zh"
+            ? `已展示全部 ${wallItems.length} 个示例`
+            : `All ${wallItems.length} examples shown`}
+        </p>
       )}
     </div>
   );

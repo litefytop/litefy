@@ -72,13 +72,13 @@ export interface ScrollShadowProps {
   children: React.ReactNode;
   edges?: EdgesProp;
   size?: string;
+  className?: ClassNameValue;
+  style?: React.CSSProperties;
   classNames?: {
-    root?: ClassNameValue;
     viewport?: ClassNameValue;
     edge?: ClassNameValue;
   };
   styles?: {
-    root?: React.CSSProperties;
     viewport?: React.CSSProperties;
     edge?: React.CSSProperties;
   };
@@ -88,6 +88,8 @@ export function ScrollShadow({
   children,
   edges: edgesProp = ["bottom"],
   size = "64px",
+  className,
+  style,
   classNames,
   styles,
 }: ScrollShadowProps) {
@@ -132,7 +134,7 @@ export function ScrollShadow({
   }, [updateVisibility]);
 
   return (
-    <ScrollShadowRoot className={classNames?.root} style={styles?.root}>
+    <ScrollShadowRoot className={className} style={style}>
       <ScrollShadowViewport
         ref={scrollRef}
         className={classNames?.viewport}

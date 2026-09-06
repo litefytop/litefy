@@ -12,9 +12,12 @@ export function InputGroup({ className, ...props }: InputGroupProps) {
     <div
       {...props}
       className={cn(
-        "flex h-9 w-full max-w-sm rounded-md px-2 border bg-muted items-center",
+        "flex h-9 w-full max-w-sm rounded-md px-2 border bg-background/90 items-center",
         "focus-within:ring-inset focus-within:ring-ring focus-within:ring-1",
-        "data-invalid:ring-danger",
+        "data-invalid:border-danger",
+        "data-invalid:focus-within:outline-1 data-invalid:focus-within:outline-danger data-invalid:focus-within:ring-3 data-invalid:focus-within:ring-danger/50",
+        "has-[[aria-invalid=true]]:border-danger",
+        "has-[[aria-invalid=true]]:focus-within:outline-1 has-[[aria-invalid=true]]:focus-within:outline-danger has-[[aria-invalid=true]]:focus-within:ring-3 has-[[aria-invalid=true]]:focus-within:ring-danger/50",
         className,
       )}
     />
@@ -41,6 +44,8 @@ export function InputRoot({ className, ...props }: InputRootProps) {
       {...props}
       className={cn(
         "flex-1 border-0 ring-0 bg-transparent px-2 py-1 text-sm outline-none placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground",
+        "aria-invalid:border-danger aria-invalid:text-danger",
+        "aria-invalid:focus-visible:outline-1 aria-invalid:focus-visible:outline-danger aria-invalid:focus-visible:ring-3 aria-invalid:focus-visible:ring-danger/50",
         "disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
@@ -61,11 +66,11 @@ export function InputTrailing({ className, ...props }: InputTrailingProps) {
 export type InputProps = Omit<React.ComponentProps<"input">, "type" | "className"> & {
   type?: "text" | "email" | "url" | "tel" | "search";
   value?: string;
+  className?: ClassNameValue;
   leading?: ReactNode;
   trailing?: ReactNode;
   invalid?: boolean;
   classNames?: {
-    group?: ClassNameValue;
     leading?: ClassNameValue;
     trailing?: ClassNameValue;
     root?: ClassNameValue;
@@ -78,10 +83,10 @@ export type InputProps = Omit<React.ComponentProps<"input">, "type" | "className
   };
 };
 
-export function Input({ classNames, styles, leading, trailing, invalid, ...props }: InputProps) {
+export function Input({ classNames, styles, leading, trailing, invalid, className, ...props }: InputProps) {
   return (
     <InputGroup
-      className={classNames?.group}
+      className={className}
       style={styles?.group}
       data-invalid={invalid || undefined}
     >

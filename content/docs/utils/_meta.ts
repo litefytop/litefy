@@ -28,6 +28,13 @@ export default {
       zh: "组合框键盘",
     },
   },
+  "use-load-more": {
+    name: "Load More",
+    displayName: {
+      en: "use-load-more",
+      zh: "滚动加载",
+    },
+  },
   "use-panel-focus": {
     name: "Panel Focus",
     displayName: {

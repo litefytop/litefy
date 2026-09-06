@@ -43,6 +43,7 @@ function buildExportMap(dirPath) {
   for (const fname of files) {
     if (fname === "index.ts" || fname === "index.tsx") continue;
     const filePath = path.join(dirPath, fname);
+    if (!fs.statSync(filePath).isFile()) continue;
     const source = fs.readFileSync(filePath, "utf8");
     const kind = filePath.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS;
     const sf = ts.createSourceFile(filePath, source, ts.ScriptTarget.Latest, true, kind);
@@ -138,6 +139,23 @@ async function generateRegistry() {
     registry[name] = {
       type: "component",
       url: `https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/${fname}`,
+      ...(deps.size ? { dependence: [...deps] } : {}),
+    };
+    counts.component += 1;
+  }
+
+  // Optional modules shipped as folders with an index.tsx (e.g. form-item/).
+  const compEntries = await fs.readdir(compDir, { withFileTypes: true });
+  for (const entry of compEntries) {
+    if (!entry.isDirectory()) continue;
+    const indexPath = path.join(compDir, entry.name, "index.tsx");
+    if (!fs.pathExists(indexPath)) continue;
+    const deps = new Set();
+    for (const d of scanLocalImports(indexPath)) deps.add(d);
+    for (const d of scanBarrelImports(indexPath, compExportMap)) deps.add(d);
+    registry[entry.name] = {
+      type: "component",
+      url: `https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/${entry.name}/index.tsx`,
       ...(deps.size ? { dependence: [...deps] } : {}),
     };
     counts.component += 1;

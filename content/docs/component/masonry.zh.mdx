@@ -1,0 +1,74 @@
+---
+title: Masonry 瀑布流
+description: 按实测高度把条目均衡分配到等宽列的瀑布流布局，支持响应式列数
+---
+
+## 安装
+
+<Installation name="masonry" />
+
+## 用法
+
+### 基础用法
+
+条目按"最短列优先"的贪心策略分配到等宽列，列高基于真实 DOM 测量，视觉上保持均衡。列数默认随容器宽度响应（`1 / sm:2 / lg:3 / xl:4`）。
+
+<ComponentPreview
+  name="masonry-basic"
+/>
+
+### 自定义
+
+传入固定 `columns`，并与 [`useLoadMore`](/docs/utils/use-load-more) 搭配，在内部容器滚动时增长列表。列表增长时已有条目保持原列不变，内容不会跳动。
+
+<ComponentPreview
+  name="masonry-custom"
+/>
+
+## API 参考
+
+### 高阶组件
+
+#### Masonry
+
+数据驱动的瀑布流布局。每轮渲染后测量已渲染条目并重新均衡分配；测量会收敛（列宽一致，条目高度与所在列无关）。挂载后才增高的异步内容（图片、懒加载示例）不会自动重新测量 —— 请给这类条目设置接近最终尺寸的 min-height。
+
+| Prop         | Type                                              | Default                        | Description                                                                   |
+| :----------- | :------------------------------------------------ | :----------------------------- | :---------------------------------------------------------------------------- |
+| `items`      | `T[]`                                             | -                              | 数据列表                                                                       |
+| `renderItem` | `(item: T, index: number) => React.ReactNode`     | -                              | 渲染单个单元格                                                                   |
+| `getKey`     | `(item: T, index: number) => React.Key`           | index                          | 每项的稳定 key，同时驱动内部测量缓存                                                              |
+| `columns`    | `number \| { base?; sm?; md?; lg?; xl?; 2xl? }`   | `{ base: 1, sm: 2, lg: 3, xl: 4 }` | 固定列数，或按容器宽度解析的断点列数（对应 Tailwind 断点：sm 640 / md 768 / lg 1024 / xl 1280 / 2xl 1536） |
+| `gap`        | `number`                                          | `16`                           | 横向与纵向间距（px）                                                              |
+| `className`  | `ClassNameValue`                                  | -                              | 根元素自定义类名                                                                  |
+| `classNames` | `{ column?; item? }` —— 值均为 `ClassNameValue`    | -                              | 各零件的自定义类名                                                                |
+| `styles`     | `{ column?; item? }` —— 值均为 `React.CSSProperties` | -                           | 各零件的内联样式                                                                  |
+
+#### 静态属性
+
+| Static            | Type             | Description   |
+| :---------------- | :--------------- | :------------ |
+| `Masonry.Column`  | `MasonryColumn`  | 单个列容器零件  |
+| `Masonry.Item`    | `MasonryItem`    | 测量用单元格零件 |
+
+---
+
+### 可组合组件
+
+#### MasonryColumn
+
+等宽列容器（内置 `flex min-w-0 flex-col`）。
+
+| Prop       | Type                          | Description       |
+| :--------- | :---------------------------- | :---------------- |
+| `className`| `ClassNameValue`              | 自定义类名         |
+| `...props` | `React.ComponentProps<"div">` | 支持所有原生 div 属性 |
+
+#### MasonryItem
+
+每个条目渲染进的单元格包装器（内置 `min-w-0`），带有用于测量的内部 `data-masonry-*` 属性。
+
+| Prop       | Type                          | Description       |
+| :--------- | :---------------------------- | :---------------- |
+| `className`| `ClassNameValue`              | 自定义类名         |
+| `...props` | `React.ComponentProps<"div">` | 支持所有原生 div 属性 |

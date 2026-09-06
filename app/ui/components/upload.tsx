@@ -252,7 +252,7 @@ export function Upload({
   return (
     <UploadRoot
       data-invalid={invalid || undefined}
-      className={cn(className, classNames?.root)}
+      className={className}
       style={{ ...style, ...styles?.root }}
     >
       <UploadHiddenInput

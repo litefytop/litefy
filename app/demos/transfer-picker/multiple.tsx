@@ -203,7 +203,7 @@ export default function TransferPickerMultipleDemo() {
                       max={99}
                       value={entry.count}
                       onValueChange={(value) => updateCount(entry.value, value ?? 1)}
-                      classNames={{ group: "w-28 shrink-0" }}
+                      className="w-28 shrink-0"
                     />
                   </div>
                 ))

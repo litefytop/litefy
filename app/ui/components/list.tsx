@@ -64,13 +64,11 @@ function useListController<T>(props: ListControllerProps<T>) {
 }
 
 export interface ListClassNames {
-  root?: ClassNameValue;
   item?: ClassNameValue;
   groupHeader?: ClassNameValue;
 }
 
 export interface ListStyles {
-  root?: React.CSSProperties;
   item?: React.CSSProperties;
   groupHeader?: React.CSSProperties;
 }
@@ -140,8 +138,8 @@ export function List<T>(props: ListProps<T>) {
         tabIndex={0}
         onKeyDown={controller.handleKeyDown}
         onScroll={controller.handleScroll}
-        className={cn("overflow-y-auto outline-none list-none", className, classNames.root)}
-        style={{ ...style, ...styles.root }}
+        className={cn("overflow-y-auto outline-none list-none", className)}
+        style={style}
       >
         <li className="px-3 py-2 text-sm text-neutral-500">{empty}</li>
       </ul>
@@ -158,9 +156,8 @@ export function List<T>(props: ListProps<T>) {
         className={cn(
           "overflow-y-auto outline-none list-none divide-y divide-border",
           className,
-          classNames.root,
         )}
-        style={{ ...style, ...styles.root }}
+        style={style}
       >
         {items.map((item, index) => (
           <li
@@ -188,8 +185,8 @@ export function List<T>(props: ListProps<T>) {
       tabIndex={0}
       onKeyDown={controller.handleKeyDown}
       onScroll={controller.handleScroll}
-      className={cn("overflow-y-auto outline-none", className, classNames.root)}
-      style={{ ...style, ...styles.root }}
+      className={cn("overflow-y-auto outline-none", className)}
+      style={style}
     >
       {grouped.map(([groupName, groupItemsList]) => (
         <div key={groupName}>
@@ -255,8 +252,8 @@ export function Order<T>(props: OrderProps<T>) {
         tabIndex={0}
         onKeyDown={controller.handleKeyDown}
         onScroll={controller.handleScroll}
-        className={cn("overflow-y-auto outline-none list-decimal pl-6", className, classNames.root)}
-        style={{ ...style, ...styles.root }}
+        className={cn("overflow-y-auto outline-none list-decimal pl-6", className)}
+        style={style}
       >
         <li className="px-3 py-2 text-sm text-neutral-500">{empty}</li>
       </ol>
@@ -272,9 +269,8 @@ export function Order<T>(props: OrderProps<T>) {
       className={cn(
         "overflow-y-auto outline-none list-decimal pl-6 divide-y divide-border",
         className,
-        classNames.root,
       )}
-      style={{ ...style, ...styles.root }}
+      style={style}
     >
       {items.map((item, index) => (
         <li

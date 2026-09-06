@@ -22,7 +22,7 @@ export function PackageManagerTabs({ command }: PackageManagerTabsProps) {
   ];
 
   return (
-    <div className="bg-muted rounded-lg p-4 -m-4! font-mono">
+    <div className="rounded-lg p-4 font-mono bg-muted/50 border">
       <div className="flex flex-col gap-2">
         {list.map((item) => (
           <div key={item.key} className="relative group">
