@@ -20,18 +20,16 @@ The panel switches between three views: days, months and years. In the header th
 
 Keyboard navigation: the grid has a single tab stop (the selected date, or day 1 when nothing is selected), and `ArrowRight` / `ArrowLeft` / `ArrowDown` / `ArrowUp` move the cursor by one day or one week — only focus moves, the value does not change until `Enter` / `Space` confirms. Disabled days are skipped; when the target date is outside the current grid, the visible month switches automatically and the target date is focused. The month and year panels follow the same pattern with one cell / one row steps. `ArrowDown` on any header control (previous / next, year / month title) jumps straight into the active view's grid, so the header never traps the focus.
 
+<ComponentPreview
+  name="calendar-basic"
+/>
+
 ### Localizing the Month Labels
 
 Month names come from the mutable static `Calendar.calendarMonthLabels` (English abbreviations by default). Override it once at your app's entry point and every calendar — including the one inside [DatePicker](/docs/component/datepicker) — picks it up:
 
-```tsx
-import { Calendar } from "@/ui";
-
-Calendar.calendarMonthLabels = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
-```
-
 <ComponentPreview
-  name="calendar-basic"
+  name="calendar-i18n"
 />
 
 ### Disabled Dates

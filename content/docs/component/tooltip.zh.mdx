@@ -72,37 +72,7 @@ description: 基于原生 Popover API 和 CSS 锚点定位构建的提示框组�
 | `ref` | `React.Ref<HTMLDivElement>` | - | 指向弹出层元素的 ref，用于命令式 `showPopover()` 和 `hidePopover()` 调用 |
 | `...props` | `React.ComponentProps<"div">` | - | 支持所有原生 div 属性（除 `className`、`style`、`id` 外） |
 
-## 命令式 API
-
-在引导步骤或全局事件联动等高级场景中，手动拼装零件并使用命令式方式控制弹出层：
-
-```tsx
-import { useRef } from 'react';
-import { TooltipContent, TooltipTrigger } from "@/ui";
-
-function MyComponent() {
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  return (
-    <>
-      <TooltipTrigger popoverId="my-tip" anchorName="--my-tip">
-        悬停触发
-      </TooltipTrigger>
-      <TooltipContent id="my-tip" anchorName="--my-tip" ref={contentRef}>
-        提示内容
-      </TooltipContent>
-      <button type="button" onClick={() => contentRef.current?.showPopover()}>
-        手动打开
-      </button>
-      <button type="button" onClick={() => contentRef.current?.hidePopover()}>
-        手动关闭
-      </button>
-    </>
-  );
-}
-```
-
-**注意事项：**
+## 注意事项
 
 - 基于原生 Popover API 和 CSS 锚点定位（`anchor-name` / `position-anchor` / `position-area`）构建，无手动定位回退。
 - 默认锚定在触发元素上方，通过 `position-try-fallbacks: flip-block, flip-inline` 自动处理溢出翻转，无需方向属性。

@@ -11,12 +11,16 @@ import MasonryBasicDemo from "./masonry/basic";
 import masonryBasicCode from "./masonry/basic.tsx?raw";
 import MasonryCustomDemo from "./masonry/custom";
 import masonryCustomCode from "./masonry/custom.tsx?raw";
-import FormItemDemo from "./form/item";
-import formItemCode from "./form/item.tsx?raw";
+import FormItemDemo from "./form-item/basic";
+import formItemCode from "./form-item/basic.tsx?raw";
 import FormPartsDemo from "./form/parts";
 import formPartsCode from "./form/parts.tsx?raw";
 import BadgeBasicDemo from "./badge/basic";
 import badgeBasicCode from "./badge/basic.tsx?raw";
+import BadgeSizingDemo from "./badge/sizing";
+import badgeSizingCode from "./badge/sizing.tsx?raw";
+import BadgeMarkerColorDemo from "./badge/marker-color";
+import badgeMarkerColorCode from "./badge/marker-color.tsx?raw";
 import BreadcrumbBasicDemo from "./breadcrumb/basic";
 import breadcrumbBasicCode from "./breadcrumb/basic.tsx?raw";
 import BreadcrumbCustomDemo from "./breadcrumb/custom";
@@ -51,6 +55,8 @@ import CalendarCustomDemo from "./calendar/custom";
 import calendarCustomCode from "./calendar/custom.tsx?raw";
 import CalendarDisabledDemo from "./calendar/disabled";
 import calendarDisabledCode from "./calendar/disabled.tsx?raw";
+import CalendarI18nDemo from "./calendar/i18n";
+import calendarI18nCode from "./calendar/i18n.tsx?raw";
 import CheckboxBasicDemo from "./checkbox/basic";
 import checkboxBasicCode from "./checkbox/basic.tsx?raw";
 import CheckboxGroupDemo from "./checkbox/group";
@@ -71,6 +77,8 @@ import CardGroupDemo from "./card/group";
 import cardGroupCode from "./card/group.tsx?raw";
 import CapsuleBadgeDemo from "./capsule/badge";
 import capsuleBadgeCode from "./capsule/badge.tsx?raw";
+import CapsuleLinkDemo from "./capsule/link";
+import capsuleLinkCode from "./capsule/link.tsx?raw";
 import TypographyHeadingsDemo from "./typography/headings";
 import typographyHeadingsCode from "./typography/headings.tsx?raw";
 import TypographyTextDemo from "./typography/text";
@@ -79,6 +87,8 @@ import PaperBasicDemo from "./paper/basic";
 import paperBasicCode from "./paper/basic.tsx?raw";
 import TagBasicDemo from "./tag/basic";
 import tagBasicCode from "./tag/basic.tsx?raw";
+import TagVariantsDemo from "./tag/variants";
+import tagVariantsCode from "./tag/variants.tsx?raw";
 import KbdBasicDemo from "./kbd/basic";
 import kbdBasicCode from "./kbd/basic.tsx?raw";
 import KbdCombinationDemo from "./kbd/combination";
@@ -247,6 +257,8 @@ import TabsOrientationDemo from "./tabs/orientation";
 import tabsOrientationCode from "./tabs/orientation.tsx?raw";
 import TabsVariantDemo from "./tabs/variant";
 import tabsVariantCode from "./tabs/variant.tsx?raw";
+import TabsLazyDemo from "./tabs/lazy";
+import tabsLazyCode from "./tabs/lazy.tsx?raw";
 import ToggleBasicDemo from "./toggle/basic";
 import toggleBasicCode from "./toggle/basic.tsx?raw";
 import ToggleGroupDemo from "./toggle/group";
@@ -298,7 +310,7 @@ export const demos: Record<string, DemoItem> = {
     component: CollapseCustomDemo,
     code: collapseCustomCode,
   },
-  "collapse-accordion": {
+  "collapse": {
     component: CollapseAccordionDemo,
     code: collapseAccordionCode,
   },
@@ -341,6 +353,10 @@ export const demos: Record<string, DemoItem> = {
   "calendar-custom": {
     component: CalendarCustomDemo,
     code: calendarCustomCode,
+  },
+  "calendar-i18n": {
+    component: CalendarI18nDemo,
+    code: calendarI18nCode,
   },
 
   "checkbox-basic": {
@@ -395,9 +411,17 @@ export const demos: Record<string, DemoItem> = {
     component: TagBasicDemo,
     code: tagBasicCode,
   },
+  "tag-variants": {
+    component: TagVariantsDemo,
+    code: tagVariantsCode,
+  },
   "capsule-badge": {
     component: CapsuleBadgeDemo,
     code: capsuleBadgeCode,
+  },
+  "capsule-link": {
+    component: CapsuleLinkDemo,
+    code: capsuleLinkCode,
   },
   "card-group": {
     component: CardGroupDemo,
@@ -527,6 +551,14 @@ export const demos: Record<string, DemoItem> = {
     component: BadgeBasicDemo,
     code: badgeBasicCode,
   },
+  "badge-sizing": {
+    component: BadgeSizingDemo,
+    code: badgeSizingCode,
+  },
+  "badge-marker-color": {
+    component: BadgeMarkerColorDemo,
+    code: badgeMarkerColorCode,
+  },
   "breadcrumb-basic": {
     component: BreadcrumbBasicDemo,
     code: breadcrumbBasicCode,
@@ -598,6 +630,10 @@ export const demos: Record<string, DemoItem> = {
   "tabs-basic": {
     component: TabsBasicDemo,
     code: tabsBasicCode,
+  },
+  "tabs-lazy": {
+    component: TabsLazyDemo,
+    code: tabsLazyCode,
   },
   "tabs-variant": {
     component: TabsVariantDemo,

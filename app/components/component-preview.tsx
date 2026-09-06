@@ -54,7 +54,7 @@ export function ComponentPreview({
       <div className="overflow-hidden rounded-xl border">
         <div
           className={cn(
-            "preview not-prose relative min-h-151 w-full overflow-hidden border-separator bg-muted/50 p-4 sm:p-10",
+            "preview not-prose relative min-h-151 w-full overflow-hidden border-separator bg-background p-4 sm:p-10",
             "flex items-center justify-center",
           )}
         >
@@ -72,9 +72,7 @@ export function ComponentPreview({
                 trigger: "text-md font-medium",
               }}
             >
-              <div className="code-section relative border-t border-separator bg-transparent">
-                <DynamicCodeBlock lang="tsx" code={demo.code} />
-              </div>
+              <DynamicCodeBlock lang="tsx" code={demo.code} />
             </Collapse>
           </>
         )}

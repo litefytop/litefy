@@ -62,16 +62,13 @@ function SourceContent({ type, name, className }: SourceProps) {
   const { lang, suffix } = getMeta(type);
 
   if (loading) {
-    return (
-      <div className={cn("bg-muted rounded-lg p-4 text-muted-foreground", className)}>
-        Loading source…
-      </div>
-    );
+    return <div className={cn("rounded-lg p-4", className)}>Loading source…</div>;
   }
   if (!content) {
     return (
-      <div className={cn("bg-muted rounded-lg p-4 text-muted-foreground", className)}>
-        Not found: {name}{suffix}
+      <div className={cn("rounded-lg p-4", className)}>
+        Not found: {name}
+        {suffix}
       </div>
     );
   }
@@ -81,13 +78,7 @@ function SourceContent({ type, name, className }: SourceProps) {
 
 export function Source({ type, name, className }: SourceProps) {
   return (
-    <Suspense
-      fallback={
-        <div className={cn("bg-muted rounded-lg p-4 text-muted-foreground", className)}>
-          Loading source…
-        </div>
-      }
-    >
+    <Suspense fallback={<div className={cn("rounded-lg p-4", className)}>Loading source…</div>}>
       <SourceContent type={type} name={name} className={className} />
     </Suspense>
   );

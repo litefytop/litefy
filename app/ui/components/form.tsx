@@ -30,21 +30,13 @@ const FormContext = React.createContext<FormContextType>({
 export type FormValues = Record<string, string | string[]>;
 
 export interface UseFieldValidityReturn {
-  /** Current error map: field name → `string` message, `false` (invalid, no message) or `null` (valid). */
   validity: Record<string, string | boolean | null>;
-  /** Record an error for a field; `null` clears it. */
   setFieldError: (name: string, error: string | boolean | null) => void;
-  /** Clear one field's error. */
   clearFieldError: (name: string) => void;
-  /** Clear every field's error. */
   clearAll: () => void;
-  /** True while no field holds an error. */
   isValid: boolean;
 }
 
-// Parts-mode validation store: no wrapper components — call `setFieldError` /
-// `clearFieldError` from your own control handlers, pass `Boolean(errors.email)`
-// into the control's `aria-invalid`, and conditionally render the message.
 export function useFieldValidity(): UseFieldValidityReturn {
   const [validity, setValidity] = React.useState<Record<string, string | boolean | null>>({});
 

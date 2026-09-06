@@ -114,25 +114,6 @@ Panel rendered when `active` is true; returns `null` otherwise. Wrap content in 
 
 `TabsContent` returns `null` while inactive, so wrapping the content in `lazy()` defers the import:
 
-```tsx
-import { lazy, Suspense } from "react";
-import { Tabs } from "@/ui";
-
-const LazySettings = lazy(() => import("./settings"));
-
-<Tabs
-  defaultValue="profile"
-  options={[
-    { value: "profile", label: "Profile", content: "Profile content" },
-    {
-      value: "settings",
-      label: "Settings",
-      content: (
-        <Suspense fallback={null}>
-          <LazySettings />
-        </Suspense>
-      ),
-    },
-  ]}
+<ComponentPreview
+  name="tabs-lazy"
 />
-```

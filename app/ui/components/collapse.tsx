@@ -59,7 +59,7 @@ export function CollapsePanel({ children, className, open, ...props }: CollapseP
       )}
     >
       <div className="overflow-hidden ">
-        <div className={cn(" p-4 pt-0 text-sm font-medium", className)}>{children}</div>
+        <div className={cn(" p-4 text-sm font-medium", className)}>{children}</div>
       </div>
     </section>
   );
@@ -229,7 +229,7 @@ export function Accordion({
     if (multiple) {
       (onKeyChange as MultipleAccordionProps["onKeyChange"])?.(nextKeys);
     } else {
-      (onKeyChange as SingleAccordionProps["onKeyChange"])?.(nextKeys[0]);
+      (onKeyChange as SingleAccordionProps["onKeyChange"])?.(nextKeys[0] || "");
     }
   };
 

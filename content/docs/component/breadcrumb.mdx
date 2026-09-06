@@ -17,18 +17,6 @@ For simple trails, the composite `Breadcrumb` renders `items` in order — the l
   name="breadcrumb-basic"
 />
 
-```tsx
-import { Breadcrumb } from "@/ui";
-
-<Breadcrumb
-  items={[
-    { label: "Home", href: "/" },
-    { label: "Project", href: "/project" },
-    { label: "Current Page" },
-  ]}
-/>
-```
-
 ### Parts composition
 
 Every layer is exported as a part — compose them freely for full control over items, icons and separators:

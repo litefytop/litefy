@@ -474,9 +474,7 @@ export interface CalendarProps {
   onChange?: (date: Temporal.PlainDate) => void;
   onVisibleMonthChange?: (month: Temporal.PlainDate) => void;
   onViewChange?: (view: CalendarView) => void;
-  /** Fired when a month is picked in the months view (before switching to days). */
   onMonthSelect?: (month: Temporal.PlainDate) => void;
-  /** Fired when a year is picked in the years view (before switching to months). */
   onYearSelect?: (year: Temporal.PlainDate) => void;
   isDateDisabled?: (date: Temporal.PlainDate) => boolean;
   firstDayOfWeek?: 0 | 1;
@@ -583,9 +581,6 @@ export function Calendar({
 
   const navUnit = view === "days" ? "month" : view === "months" ? "year" : "years";
 
-  // ArrowDown from the header jumps straight into the active view's grid,
-  // landing on its roving-tabstop cell (selected / current month / year) —
-  // no Tabbing through the header controls required.
   const handleHeaderKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.defaultPrevented || e.key !== "ArrowDown") return;
     const grid = rootRef.current?.querySelector<HTMLElement>('[role="grid"]');
@@ -650,6 +645,4 @@ export function Calendar({
   );
 }
 
-// Mutable static: override for i18n (e.g. Calendar.calendarMonthLabels = ["一月", ...])
-// before rendering. Kept as a property so every calendar instance picks it up.
 Calendar.calendarMonthLabels = calendarMonthLabels as readonly string[];

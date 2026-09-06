@@ -17,17 +17,9 @@ description: 胶囊容器，将两个标签拼成 shields-io 风格双色徽章�
 
 左侧标签作为标签名，右侧作为值。颜色是每个标签上的普通工具类。`Capsule` 始终渲染为 `div`——没有 `as` 属性。需要可点击徽章时，在容器内嵌套原生 `<a>`（或 `button`）：
 
-```tsx
-<Capsule>
-  <Tag className="rounded-none px-2.5 py-1 bg-neutral-600 text-white">build</Tag>
-  <Tag className="rounded-none px-2.5 py-1 bg-emerald-600 text-white">passing</Tag>
-</Capsule>
-
-<Capsule>
-  <Tag className="rounded-none px-2.5 py-1 bg-neutral-600 text-white">docs</Tag>
-  <a href="#" className="rounded-none px-2.5 py-1 bg-violet-600 text-white">litefy.dev</a>
-</Capsule>
-```
+<ComponentPreview
+  name="capsule-link"
+/>
 
 ## 注意
 

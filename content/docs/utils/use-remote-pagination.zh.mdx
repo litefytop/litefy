@@ -15,29 +15,6 @@ description: 关键词防抖搜索加分页追加，用于远程数据源
   name="use-remote-pagination-basic"
 />
 
-```tsx
-import { useRemotePagination } from "@/ui";
-
-const fetcher = async ({ page, size, keyword }: { page: number; size: number; keyword: string }) => {
-  const res = await fetch(`/api/items?page=${page}&size=${size}&keyword=${keyword}`);
-  return res.json();
-};
-
-function ItemList() {
-  const remote = useRemotePagination({ fetcher });
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    if (!remote.hasMore || remote.loading) return;
-    const el = e.currentTarget;
-    if (el.scrollHeight - el.scrollTop - el.clientHeight < 40) remote.loadMore();
-  };
-  return (
-    <div onScroll={handleScroll} className="h-64 overflow-y-auto">
-      {remote.data.map((item) => <li key={item}>{item}</li>)}
-    </div>
-  );
-}
-```
-
 ## API 参考
 
 ### useRemotePagination

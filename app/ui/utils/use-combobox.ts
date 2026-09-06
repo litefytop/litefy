@@ -15,9 +15,6 @@ export interface UseComboboxReturn<T> {
   reset: () => void;
 }
 
-// Virtual-focus branch for Picker panels: the input keeps focus while the
-// panel is open, and ArrowDown / ArrowUp move a highlight index through the
-// items. Pair with List's `highlightIndex` / `onHighlightChange`.
 export function useCombobox<T>({
   open,
   items,

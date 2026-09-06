@@ -47,6 +47,7 @@ export function PickerContent({ className, ...props }: PickerContentProps) {
 }
 
 export interface PickerClassNames {
+  root?: ClassNameValue;
   input?: ClassNameValue;
   trailing?: ClassNameValue;
   popover?: ClassNameValue;
@@ -89,6 +90,7 @@ export function Picker({
   panelRef,
   classNames,
   styles,
+  style,
   onClick: onClickProp,
   onKeyDown: onKeyDownProp,
   ...props
@@ -118,8 +120,6 @@ export function Picker({
     [isOpenControlled, onOpenChange],
   );
 
-  // On close, hand focus back to the trigger when it would otherwise be lost
-  // (e.g. Escape while the focus is inside the panel).
   React.useEffect(() => {
     const popover = popoverRef.current;
     if (!popover) return;

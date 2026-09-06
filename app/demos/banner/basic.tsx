@@ -19,7 +19,7 @@ const messages = [
 
 export default function BannerBasicDemo() {
   return (
-    <div className="w-full max-w-md overflow-hidden rounded-md bg-primary text-primary-foreground">
+    <div className="w-full max-w-md overflow-hidden rounded-md">
       <Banner
         items={messages}
         speed={20}

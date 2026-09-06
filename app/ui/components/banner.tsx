@@ -7,8 +7,7 @@ export interface BannerItem {
   content: React.ReactNode;
 }
 
-export interface BannerViewportProps
-  extends Omit<React.ComponentProps<"div">, "className"> {
+export interface BannerViewportProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
 }
 
@@ -16,14 +15,13 @@ export function BannerViewport({ className, ...props }: BannerViewportProps) {
   return (
     <div
       {...props}
-      className={cn("w-full overflow-hidden", className)}
+      className={cn("w-full overflow-hidden bg-background border-y", className)}
       aria-roledescription="marquee"
     />
   );
 }
 
-export interface BannerTrackProps
-  extends Omit<React.ComponentProps<"div">, "className"> {
+export interface BannerTrackProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
   duration?: number;
   direction?: "left" | "right";
@@ -63,17 +61,10 @@ export function BannerTrack({
     else anim.pause();
   }, [playing]);
 
-  return (
-    <div
-      {...props}
-      ref={trackRef}
-      className={cn("flex w-max items-center", className)}
-    />
-  );
+  return <div {...props} ref={trackRef} className={cn("flex w-max items-center", className)} />;
 }
 
-export interface BannerItemProps
-  extends Omit<React.ComponentProps<"div">, "className"> {
+export interface BannerItemProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
 }
 
@@ -81,8 +72,7 @@ export function BannerItem({ className, ...props }: BannerItemProps) {
   return <div {...props} className={cn("flex shrink-0 items-center", className)} />;
 }
 
-export interface BannerProps
-  extends Omit<React.ComponentProps<"div">, "children" | "className"> {
+export interface BannerProps extends Omit<React.ComponentProps<"div">, "children" | "className"> {
   items: BannerItem[];
   speed?: number;
   direction?: "left" | "right";
@@ -140,11 +130,7 @@ export function Banner({
       className="flex shrink-0 items-center"
     >
       {items.map((item, itemIndex) => (
-        <BannerItem
-          key={item.key ?? itemIndex}
-          className={classNames?.item}
-          style={styles?.item}
-        >
+        <BannerItem key={item.key ?? itemIndex} className={classNames?.item} style={styles?.item}>
           {item.content}
         </BannerItem>
       ))}

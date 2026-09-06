@@ -17,32 +17,6 @@ description: 双面板穿梭框，通过复选框勾选在来源与目标列表�
   name="transfer-basic"
 />
 
-```tsx
-import { Transfer, type TransferItemConfig } from "@/ui";
-
-const dataSource: TransferItemConfig[] = [
-  { label: "JavaScript", value: "js" },
-  { label: "TypeScript", value: "ts" },
-  { label: "Rust", value: "rust" },
-  { label: "Go", value: "go" },
-  { label: "Python", value: "python", disabled: true },
-  { label: "Java", value: "java" },
-];
-
-export default function Demo() {
-  const [value, setValue] = React.useState<string[]>(["ts", "go"]);
-
-  return (
-    <Transfer
-      dataSource={dataSource}
-      value={value}
-      onChange={setValue}
-      titles={["Available", "Selected"]}
-    />
-  );
-}
-```
-
 ## 注意
 
 - Transfer 内部使用 [Checkbox](/docs/component/checkbox) 组件渲染每一行——CLI 安装时请一并添加：`litefy add transfer checkbox`。

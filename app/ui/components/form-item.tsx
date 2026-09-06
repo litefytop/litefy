@@ -1,28 +1,24 @@
 "use client";
 import * as React from "react";
-import { type ClassNameValue, cn } from "../../utils/cn";
-import { Input, type InputProps } from "../input";
-import { Textarea, type TextareaProps } from "../text-area";
-import { Select, type SelectOption, type SelectOptionGroup, type SelectProps } from "../select";
-import { Password, type PasswordProps } from "../password";
-import { NumberField, type NumberFieldProps } from "../number-field";
-import { FormContext } from "../form";
+import { type ClassNameValue, cn } from "../utils/cn";
+import { Input, type InputProps } from "./input";
+import { Textarea, type TextareaProps } from "./text-area";
+import { Select, type SelectOption, type SelectOptionGroup, type SelectProps } from "./select";
+import { Password, type PasswordProps } from "./password";
+import { NumberField, type NumberFieldProps } from "./number-field";
+import { FormContext } from "./form";
 
 type ValidationResult = string | boolean | null | undefined;
 
 export type FormItemVariant = "input" | "textarea" | "select" | "password" | "number-field";
 
 export interface FormItemBaseProps {
-  /** Field name — also the key Form uses to collect values. */
   name: string;
   className?: ClassNameValue;
   label?: React.ReactNode;
   description?: React.ReactNode;
-  /** Marks the label and makes the control `required`. */
   required?: boolean;
-  /** Returns an error message (string), `false` for a bare invalid state, or `null`/`undefined`/`true` when valid. */
   validate?: (value: string) => ValidationResult | Promise<ValidationResult>;
-  /** When `validate` runs. Default `"onBlur"`. */
   validateTrigger?: "onChange" | "onBlur";
   disabled?: boolean;
   classNames?: {
@@ -48,10 +44,6 @@ export type FormItemProps =
       controlProps?: Omit<NumberFieldProps, "ref">;
     });
 
-// Component-mode form field: renders the finished control matching `variant`,
-// wires label / required / description / validation and shows the error in a
-// danger hint. Registers the control with the surrounding Form so values are
-// collected on submit — but also works standalone.
 export function FormItem(props: FormItemProps) {
   const {
     variant,
@@ -73,8 +65,6 @@ export function FormItem(props: FormItemProps) {
   const [error, setError] = React.useState<string | boolean | null>(null);
   const errorRef = React.useRef<string | boolean | null>(null);
   const elementRef = React.useRef<FieldElement | null>(null);
-  // Select variant: the composite is popover-based, so the value lives in state
-  // and a hidden input carries it into native form submission.
   const [selectValue, setSelectValue] = React.useState(
     () => (controlProps as { defaultValue?: string }).defaultValue ?? "",
   );
@@ -83,8 +73,6 @@ export function FormItem(props: FormItemProps) {
   const isInvalid = Boolean(error);
 
   const setFieldRef = (el: HTMLElement | null) => {
-    // Composites like NumberField hand back their wrapper — resolve the real
-    // form element inside so Form can read values from the DOM.
     const target =
       el &&
       !(

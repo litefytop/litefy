@@ -8,10 +8,10 @@ export type TabsOrientation = "horizontal" | "vertical";
 
 export type TabsVariant = "button" | "line";
 
-const triggerStyles: Record<TabsVariant, string> = {
+const triggerClassNames: Record<TabsVariant, string> = {
   button:
-    "rounded-md text-muted-foreground hover:bg-muted/50 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm",
-  line: "bg-transparent text-muted-foreground border-b-2 border-transparent data-[state=active]:text-primary data-[state=active]:border-primary",
+    "rounded-md hover:bg-accent data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm",
+  line: "border-b-2 border-transparent data-[state=active]:text-primary data-[state=active]:border-primary",
 };
 
 export interface TabsListProps extends Omit<React.ComponentProps<"div">, "className"> {
@@ -190,7 +190,7 @@ export function TabsTrigger({
       disabled={disabled}
       onClick={() => !disabled && onValueChange?.(value)}
       onKeyDown={handleKeyDown}
-      className={cn("px-4 py-2 text-sm font-medium", triggerStyles[variant], className)}
+      className={cn("px-4 py-2 text-sm font-medium", triggerClassNames[variant], className)}
     >
       {children}
     </button>
@@ -219,7 +219,7 @@ export function TabsContent({
       role="tabpanel"
       aria-labelledby={`tabs-trigger-${value}`}
       data-state="active"
-      className={cn("w-full p-4 rounded-md bg-background", className)}
+      className={cn("w-full p-4 rounded-md", className)}
     >
       {children}
     </div>

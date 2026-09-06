@@ -17,32 +17,6 @@ Pass `dataSource` with all available items and `value` for the ones currently in
   name="transfer-basic"
 />
 
-```tsx
-import { Transfer, type TransferItemConfig } from "@/ui";
-
-const dataSource: TransferItemConfig[] = [
-  { label: "JavaScript", value: "js" },
-  { label: "TypeScript", value: "ts" },
-  { label: "Rust", value: "rust" },
-  { label: "Go", value: "go" },
-  { label: "Python", value: "python", disabled: true },
-  { label: "Java", value: "java" },
-];
-
-export default function Demo() {
-  const [value, setValue] = React.useState<string[]>(["ts", "go"]);
-
-  return (
-    <Transfer
-      dataSource={dataSource}
-      value={value}
-      onChange={setValue}
-      titles={["Available", "Selected"]}
-    />
-  );
-}
-```
-
 ## Notes
 
 - Transfer internally uses the [Checkbox](/docs/component/checkbox) component for each row — when installing via CLI, add both: `litefy add transfer checkbox`.

@@ -50,9 +50,9 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/chip-group.tsx"
   },
-  "collapse-accordion": {
+  "collapse": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/collapse-accordion.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/collapse.tsx"
   },
   "context-menu": {
     "type": "component",
@@ -238,7 +238,7 @@
   },
   "form-item": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/form-item/index.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/form-item.tsx",
     "dependence": [
       "cn",
       "input",

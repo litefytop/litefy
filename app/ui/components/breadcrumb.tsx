@@ -32,7 +32,7 @@ export function BreadcrumbLink({ className, ...props }: BreadcrumbLinkProps) {
     <a
       {...props}
       className={cn(
-        "rounded-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:underline focus-visible:text-ring",
+        "rounded-sm text-foreground transition-colors hover:text-foreground/80 focus-visible:underline p-1 cursor-pointer",
         className,
       )}
     />

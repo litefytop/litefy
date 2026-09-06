@@ -17,23 +17,6 @@ description: 支持键盘导航、高亮、选中与滚动到底回调的滚动�
   name="list-basic"
 />
 
-```tsx
-import { List } from "@/ui";
-
-<List
-  className="h-40 rounded-md border"
-  items={tasks}
-  getKey={(task) => task.id}
-  empty={<div className="px-3 py-4 text-center text-muted-foreground">暂无数据</div>}
-  renderItem={(task) => (
-    <>
-      <span className="flex-1 truncate">{task.title}</span>
-      <span className="text-muted-foreground">{task.status}</span>
-    </>
-  )}
-/>
-```
-
 键盘导航是内置的：根节点可聚焦（`tabIndex={0}`），`ArrowUp` / `ArrowDown` 移动高亮（到达两端后停止）并自动滚动到可视区域，`Enter` 或点击行触发 `onSelect`。高亮项携带 `data-highlighted`（样式为 `bg-hover`）。对于焦点需要留在别处的容器 —— 如 combobox 输入框 —— 传入 `highlightIndex` / `onHighlightChange` 从外部受控高亮，参见 [Combobox](/docs/component/combobox) 指南。
 
 ### 分组

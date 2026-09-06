@@ -10,14 +10,14 @@ import {
 
 export default function BreadcrumbBasicDemo() {
   return (
-    <BreadcrumbRoot inert>
+    <BreadcrumbRoot>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          <BreadcrumbLink>Home</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbLink href="/project">Project</BreadcrumbLink>
+          <BreadcrumbLink>Project</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>

@@ -76,7 +76,7 @@ export function BrowserSupportNotice() {
   return (
     <div
       role="alert"
-      className="fixed inset-x-0 top-0 z-[100] flex items-center gap-2 border-b bg-muted/95 px-4 py-1.5 backdrop-blur"
+      className="fixed inset-x-0 top-0 z-100 flex items-center gap-2 border-b bg-muted/95 px-4 py-1.5 backdrop-blur"
     >
       <div className="min-w-0 flex-1">
         <Banner

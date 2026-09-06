@@ -149,6 +149,13 @@ export default {
       zh: "表单",
     },
   },
+  "form-item": {
+    name: "Form Item",
+    displayName: {
+      en: "Form Item",
+      zh: "表单项",
+    },
+  },
   image: {
     name: "Image",
     displayName: {

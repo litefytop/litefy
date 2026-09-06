@@ -6,10 +6,6 @@ export interface UsePanelFocusOptions {
   panelRef: React.RefObject<HTMLElement | null>;
 }
 
-// Real-focus branch for Picker panels: when the panel is open, ArrowDown
-// moves focus into its first focusable element and ArrowUp into its last —
-// for panels built from real focusable controls (grids, toolbars, forms).
-// The panel itself is the fallback target when nothing inside is focusable.
 export function usePanelFocus({ open, panelRef }: UsePanelFocusOptions) {
   return React.useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {

@@ -17,17 +17,9 @@ description: A pill container that turns two tags into a shields-io style two-co
 
 The left tag acts as the label, the right one as the value. Colors are plain utilities on each tag. `Capsule` always renders a `div` — there is no `as` prop. For a clickable badge, nest a native `<a>` (or `button`) inside the container:
 
-```tsx
-<Capsule>
-  <Tag className="rounded-none px-2.5 py-1 bg-neutral-600 text-white">build</Tag>
-  <Tag className="rounded-none px-2.5 py-1 bg-emerald-600 text-white">passing</Tag>
-</Capsule>
-
-<Capsule>
-  <Tag className="rounded-none px-2.5 py-1 bg-neutral-600 text-white">docs</Tag>
-  <a href="#" className="rounded-none px-2.5 py-1 bg-violet-600 text-white">litefy.dev</a>
-</Capsule>
-```
+<ComponentPreview
+  name="capsule-link"
+/>
 
 ## Notes
 

@@ -1,0 +1,48 @@
+---
+title: Form Item
+description: A self-managing form field that renders a finished control per variant with label, description, and built-in validation
+---
+
+## Installation
+
+<Installation name="form-item" />
+
+## Usage
+
+`FormItem` renders a finished control per `variant` (`input`, `textarea`, `select`, `password`, `number-field`) with label, required marker, description and built-in validation. It registers with the surrounding `Form` so its value is collected on submit, shows errors in a danger hint, and works standalone too.
+
+<ComponentPreview
+  name="form-item"
+/>
+
+## API Reference
+
+### FormItem
+
+A form field rendered as a finished control. The prop set is a discriminated union on `variant`: every variant shares `FormItemBaseProps`, and `controlProps` is typed by the selected variant.
+
+| Prop             | Type                                                                                                                                                              | Default    | Description                                                                                        |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | -------------------------------------------------------------------------------------------------- |
+| `variant`        | `"input" \| "textarea" \| "select" \| "password" \| "number-field"`                                                                                               | -          | Which finished control to render. **Required**                                                     |
+| `name`           | `string`                                                                                                                                                          | -          | Field name — also the key the surrounding `Form` uses to collect values. **Required**              |
+| `label`          | `React.ReactNode`                                                                                                                                                 | -          | Label rendered above the control                                                                   |
+| `description`    | `React.ReactNode`                                                                                                                                                 | -          | Helper text below the control; replaced by the error message when validation fails                 |
+| `required`       | `boolean`                                                                                                                                                         | -          | Marks the label and makes the control `required`                                                   |
+| `validate`       | `(value: string) => string \| boolean \| null \| undefined \| Promise<string \| boolean \| null \| undefined>`                                                    | -          | Returns an error message (string), `false` for a bare invalid state, or `null`/`undefined`/`true` when valid |
+| `validateTrigger` | `"onChange" \| "onBlur"`                                                                                                                                         | `"onBlur"` | When `validate` runs. Once the field is invalid, it also re-validates on every change              |
+| `disabled`       | `boolean`                                                                                                                                                         | -          | Disables the control                                                                               |
+| `className`      | `ClassNameValue`                                                                                                                                                  | -          | Root container custom styles                                                                       |
+| `classNames`     | `{ label?: ClassNameValue; hint?: ClassNameValue }`                                                                                                               | -          | Custom classes for the label and the hint text                                                     |
+| `controlProps`   | Per variant, see below                                                                                                                                            | `{}`       | Props forwarded to the underlying control                                                          |
+
+`controlProps` by `variant`:
+
+| Variant        | `controlProps` type                                                                                |
+| -------------- | -------------------------------------------------------------------------------------------------- |
+| `input`        | `Omit<InputProps, "ref">`                                                                          |
+| `textarea`     | `Omit<TextareaProps, "ref">`                                                                       |
+| `select`       | `Omit<SelectProps, "ref"> & { options: (SelectOption \| SelectOptionGroup)[] }`                    |
+| `password`     | `Omit<PasswordProps, "ref">`                                                                       |
+| `number-field` | `Omit<NumberFieldProps, "ref">`                                                                    |
+
+> Custom `onChange` / `onBlur` in `controlProps` are preserved — `FormItem` wraps them, so validation still runs alongside your handlers. For the `select` variant the value lives in component state and a hidden input carries it into native form submission.

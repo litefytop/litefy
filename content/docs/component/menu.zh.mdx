@@ -17,30 +17,6 @@ Menu 是真正的菜单组件，直接在文档流中渲染 —— 无需触发�
   name="menu-basic"
 />
 
-```tsx
-import { Menu, type MenuConfig } from "@/ui";
-
-const items: MenuConfig[] = [
-  {
-    group: "Account",
-    items: [
-      { label: "Profile" },
-      { label: "Preferences", children: [{ label: "Theme" }, { label: "Language" }] },
-    ],
-  },
-  {
-    group: "System",
-    items: [{ label: "Notifications" }, { label: "Settings" }, { label: "Logout" }],
-  },
-];
-
-<Menu
-  className="w-48 rounded-md border p-1 shadow-md"
-  items={items}
-  onSelect={(item) => setSelected(item.label)}
-/>
-```
-
 #### 键盘导航
 
 | 按键               | 行为                                 |

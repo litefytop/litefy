@@ -10,8 +10,6 @@ type ParsedInput =
   | { kind: "yearMonth"; normalized: string; firstOfMonth: Temporal.PlainDate }
   | { kind: "full"; normalized: string; date: Temporal.PlainDate };
 
-// Accepts space, "-", "/", "," (and full-width comma) as date separators;
-// normalizes to the canonical YYYY-MM-DD form, padding 1-digit parts.
 function parseInput(raw: string): ParsedInput {
   const normalized = raw
     .trim()
@@ -59,7 +57,6 @@ export interface DatePickerProps {
   onValueChange?: (date: Temporal.PlainDate) => void;
   placeholder?: string;
   disabled?: boolean;
-  /** External invalid state — shows the danger border (also set internally when Enter validation clears the input). */
   invalid?: boolean;
   firstDayOfWeek?: 0 | 1;
   isDateDisabled?: (date: Temporal.PlainDate) => boolean;
@@ -99,15 +96,8 @@ export function DatePicker({
     (value ?? defaultValue ?? Temporal.Now.plainDateISO()).with({ day: 1 }),
   );
   const [view, setView] = React.useState<CalendarView>("days");
-  // Set when Enter validation rejects the input (cleared) — drives the danger
-  // border via aria-invalid and clears as soon as the user types again.
   const [hasError, setHasError] = React.useState(false);
-  // The last value reported through onValueChange — typing previews update the
-  // selection without committing, so dedup must compare against this, not selected.
   const committedRef = React.useRef<string | null>(defaultValue?.toString() ?? null);
-  // Real-focus branch: when the panel is open, ArrowDown / ArrowUp hand focus
-  // to the calendar's own buttons, so typing and calendar navigation never
-  // compete for the input.
   const panelRef = React.useRef<HTMLDivElement | null>(null);
   const handlePanelArrowKeys = usePanelFocus({ open, panelRef });
 
@@ -132,8 +122,6 @@ export function DatePicker({
     onValueChange?.(date);
   };
 
-  // Typing previews live: separators are tolerated, a complete date syncs the
-  // selection and the visible month before any validation runs.
   const handleTextChange = (next: string) => {
     setText(next);
     setHasError(false);
@@ -176,14 +164,10 @@ export function DatePicker({
     }
   };
 
-  // Enter validates the typed text: a complete date commits, a partial one
-  // opens the matching calendar view, invalid clears the input.
   const handleEnter = () => {
     applyParsed(parseInput(text));
   };
 
-  // Closing the panel (outside click / Escape) validates the same way, so a
-  // half-typed date never survives as garbage in the input.
   const handleOpenChange = (next: boolean) => {
     setOpen(next);
     if (!next) applyParsed(parseInput(text));
@@ -200,8 +184,6 @@ export function DatePicker({
     }
   };
 
-  // Progressive selection: picking a part fills it into the input immediately;
-  // the value only commits when the full date is picked.
   const handleMonthSelect = (month: Temporal.PlainDate) => {
     setHasError(false);
     setText(`${month.year}-${String(month.month).padStart(2, "0")}`);

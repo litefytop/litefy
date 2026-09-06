@@ -25,7 +25,6 @@ export interface SelectProps
   placeholder?: string;
   invalid?: boolean;
   required?: boolean;
-  /** Renders a hidden input with this name, so the value joins native form submission. */
   name?: string;
   classNames?: {
     trigger?: ClassNameValue;
@@ -138,7 +137,6 @@ export function Select({
     }
   };
 
-  // Popover lifecycle (manual popover + CSS anchor positioning, same recipe as Picker).
   React.useEffect(() => {
     const panel = panelRef.current;
     if (!panel) return;
@@ -158,7 +156,6 @@ export function Select({
     return () => document.removeEventListener("mousedown", handleDocumentMouseDown);
   }, [open]);
 
-  // Keep the highlighted option in view while moving through the list.
   React.useEffect(() => {
     if (!open || highlightIndex === null) return;
     panelRef.current

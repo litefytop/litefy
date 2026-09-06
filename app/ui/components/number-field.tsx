@@ -16,7 +16,6 @@ export function NumberRoot({ className, ...props }: NumberRootProps) {
       className={cn(
         "h-8 w-full min-w-0 flex-1 border-0 bg-transparent px-2 text-left text-sm ring-0 outline-none",
         "placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground",
-        // The group carries the invalid border/ring; the input itself stays bare.
         "aria-invalid:text-danger",
         "disabled:cursor-not-allowed disabled:opacity-50",
         className,
@@ -43,13 +42,9 @@ type BaseNumberFieldProps = Omit<
   min?: number;
   max?: number;
   step?: number;
-  /** Non-interactive up/down cue in the trailing area — signals keyboard stepping. Always shown. */
   indicator?: boolean;
-  /** Content rendered before the number (e.g. a currency symbol). */
   prefix?: React.ReactNode;
-  /** Content rendered after the number, before the stepping cue. */
   suffix?: React.ReactNode;
-  /** Group the integer part with thousands separators while the input is not focused. */
   thousands?: boolean;
   classNames?: {
     leading?: ClassNameValue;

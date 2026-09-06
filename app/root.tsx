@@ -19,9 +19,7 @@ import { HydrateFallback } from "./components/hydrate-fallback";
 import { BrowserSupportNotice } from "./components/browser-support-notice";
 import NotFound from "./routes/not-found";
 
-export function Layout(
-  { children }: { children: React.ReactNode } = { children: undefined },
-) {
+export function Layout({ children }: { children: React.ReactNode } = { children: undefined }) {
   const { lang = i18n.defaultLanguage } = useParams<{ lang?: string }>();
   return (
     <html lang={lang} suppressHydrationWarning>
@@ -31,7 +29,7 @@ export function Layout(
         <Meta />
         <Links />
       </head>
-      <body className="flex flex-col min-h-screen">
+      <body className="flex flex-col min-h-screen bg-muted">
         <BrowserSupportNotice />
         <Suspense fallback={<HydrateFallback />}>
           <RootProvider
@@ -49,10 +47,7 @@ export function Layout(
   );
 }
 
-const serverMiddleware: Route.MiddlewareFunction = async (
-  { request },
-  next,
-) => {
+const serverMiddleware: Route.MiddlewareFunction = async ({ request }, next) => {
   const url = new URL(request.url);
   const pathname = url.pathname;
 
@@ -104,9 +99,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   const homeHref =
-    typeof window !== "undefined"
-      ? `/${window.location.pathname.split("/")[1] || ""}`
-      : "/";
+    typeof window !== "undefined" ? `/${window.location.pathname.split("/")[1] || ""}` : "/";
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-fd-background text-fd-foreground">
@@ -115,9 +108,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
           Something went wrong
         </span>
         <h1 className="text-3xl sm:text-4xl font-bold">{message}</h1>
-        <p className="text-fd-muted-foreground max-w-md wrap-break-word">
-          {details}
-        </p>
+        <p className="text-fd-muted-foreground max-w-md wrap-break-word">{details}</p>
         <a
           href={homeHref}
           className="mt-4 inline-flex items-center gap-2 text-sm bg-fd-primary text-fd-primary-foreground hover:bg-fd-primary/90 transition-colors rounded-full font-medium px-5 py-2.5"

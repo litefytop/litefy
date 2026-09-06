@@ -21,19 +21,17 @@ description: A square surface slot with a corner marker — drop an icon inside 
 
 The surface shape comes entirely from utilities, so reshape it with `className` — the marker re-anchors itself automatically:
 
-```tsx
-<Badge className="size-8 rounded-full" label={3}>
-  <Bell className="size-5" />
-</Badge>
-```
+<ComponentPreview
+  name="badge-sizing"
+/>
 
 ### Marker coloring
 
 `label` renders as a Tag — color it the same way, via the `label` slot:
 
-```tsx
-<Badge label="New" classNames={{ label: "bg-emerald-600 text-white" }} />
-```
+<ComponentPreview
+  name="badge-marker-color"
+/>
 
 ## Notes
 

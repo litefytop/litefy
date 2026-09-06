@@ -17,26 +17,6 @@ Pass `steps` for the progress indicator and `children` for the pager body — on
   name="wizard-basic"
 />
 
-```tsx
-import { Wizard } from "@/ui";
-
-const steps = [
-  { title: "Account" },
-  { title: "Profile" },
-  { title: "Confirm" },
-];
-
-export default function Demo() {
-  return (
-    <Wizard steps={steps} onFinish={() => alert("Submitted")}>
-      <form>...</form>
-      <form>...</form>
-      <div>Ready to submit</div>
-    </Wizard>
-  );
-}
-```
-
 ## Notes
 
 - Wizard internally uses [Steps](/docs/component/steps) and [Pager](/docs/component/pager) — when installing via CLI, add all: `litefy add wizard steps pager`.

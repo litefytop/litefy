@@ -34,5 +34,5 @@ export function Installation({ name, type }: InstallationProps) {
     },
   ];
 
-  return <Tabs options={items} />;
+  return <Tabs options={items} className="border" />;
 }

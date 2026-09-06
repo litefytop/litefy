@@ -17,26 +17,6 @@ description: Steps + Pager 组合的向导组件，内部管理索引状态 —�
   name="wizard-basic"
 />
 
-```tsx
-import { Wizard } from "@/ui";
-
-const steps = [
-  { title: "Account" },
-  { title: "Profile" },
-  { title: "Confirm" },
-];
-
-export default function Demo() {
-  return (
-    <Wizard steps={steps} onFinish={() => alert("Submitted")}>
-      <form>...</form>
-      <form>...</form>
-      <div>Ready to submit</div>
-    </Wizard>
-  );
-}
-```
-
 ## 注意
 
 - Wizard 内部使用 [Steps](/docs/component/steps) 和 [Pager](/docs/component/pager)——CLI 安装时请一并添加：`litefy add wizard steps pager`。

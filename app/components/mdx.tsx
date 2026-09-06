@@ -16,12 +16,10 @@ export function getMDXComponents(components?: MDXComponents) {
     ComponentPreview,
     PackageManagerTabs,
     PresetTabs,
-
     Source,
     CssSource,
     Installation,
     Link,
-
     ...components,
   } satisfies MDXComponents;
 }

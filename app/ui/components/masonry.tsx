@@ -26,8 +26,6 @@ function resolveColumnCount(columns: MasonryColumns, width: number): number {
   return Math.max(1, Math.floor(count));
 }
 
-// Greedy shortest-column assignment. Unknown heights count as 1, which makes
-// the first pass degrade to round-robin until real heights are measured.
 function distribute(count: number, columns: number, heights: number[]): number[][] {
   const cols: number[][] = Array.from({ length: columns }, () => []);
   const colHeights = new Array<number>(columns).fill(0);
@@ -68,9 +66,7 @@ export interface MasonryProps<T> {
   items: T[];
   renderItem: (item: T, index: number) => React.ReactNode;
   getKey?: (item: T, index: number) => React.Key;
-  /** Fixed count, or per-breakpoint counts resolved against the container width. Default `{ base: 1, sm: 2, lg: 3, xl: 4 }`. */
   columns?: MasonryColumns;
-  /** Vertical and horizontal gap in px. Default `16`. */
   gap?: number;
   className?: ClassNameValue;
   classNames?: {
@@ -107,7 +103,6 @@ export function Masonry<T>({
   );
   const columnsKey = JSON.stringify(columns);
 
-  // Resolve the responsive column count against the container width.
   React.useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -119,9 +114,6 @@ export function Masonry<T>({
     return () => observer.disconnect();
   }, [columnsKey]);
 
-  // After every render, measure the rendered items and rebalance. Heights do
-  // not depend on the assignment (columns share the same width), so this
-  // converges: once distribution stops changing, setAssignment bails out.
   React.useLayoutEffect(() => {
     const root = containerRef.current;
     if (!root) return;

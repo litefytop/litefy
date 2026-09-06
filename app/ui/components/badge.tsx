@@ -18,7 +18,10 @@ export function Badge({ children, className, label, classNames, styles, ...props
   return (
     <div
       {...props}
-      className={cn("relative flex items-center justify-center size-12 rounded-md", className)}
+      className={cn(
+        "relative flex items-center justify-center size-12 rounded-md shadow-md",
+        className,
+      )}
     >
       <Tag
         children={label}

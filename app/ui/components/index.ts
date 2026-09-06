@@ -6,7 +6,7 @@ export * from "./cascader";
 export * from "./capsule";
 export * from "./card";
 export * from "./date-picker";
-export * from "./collapse-accordion";
+export * from "./collapse";
 export * from "./button";
 export * from "./calendar";
 export * from "./checkbox";
