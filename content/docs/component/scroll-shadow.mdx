@@ -44,6 +44,8 @@ A scrollable container with gradient shadow indicators.
 | `children` | `React.ReactNode` | - | Scrollable content |
 | `edges` | `'top' \| 'bottom' \| 'left' \| 'right' \| Array<'top' \| 'bottom' \| 'left' \| 'right'>` | `'bottom'` | Edge(s) where the shadow indicator appears |
 | `size` | `string` | `'64px'` | Size of the shadow gradient |
+| `arrow` | `boolean` | `true` | Render a directional chevron centered on each visible shadow edge |
+| `onScroll` | `React.UIEventHandler<HTMLDivElement>` | - | Attached to the viewport — e.g. for infinite-scroll triggers |
 | `className` | `ClassNameValue` | - | Custom classes, applied to the root container |
 | `style` | `React.CSSProperties` | - | Inline styles, applied to the root container |
 | `classNames` | `{ viewport?, edge? }` | - | Custom classes for the scroll viewport and shadow overlays |

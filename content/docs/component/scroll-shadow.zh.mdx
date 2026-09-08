@@ -75,12 +75,13 @@ description: 带有渐变阴影指示器的可滚动容器，提供更好的滚�
 
 #### ScrollShadowEdge
 
-单个边缘的渐变阴影覆盖层。
+单个边缘的渐变阴影覆盖层，中央带有方向箭头。
 
 | Prop        | Type             | Default     | Description      |
 | ----------- | ---------------- | ----------- | ---------------- |
 | `edge`      | `'top' \| 'bottom' \| 'left' \| 'right'` | `'bottom'` | 渐变起始的边缘 |
 | `size`      | `string`         | `'64px'`    | 沿滚动轴方向的渐变大小 |
+| `arrow`     | `boolean`        | `true`      | 渲染方向箭头（Up/Down/Left/Right 跟随 `edge`） |
 | `className` | `ClassNameValue` | -           | 自定义 CSS 类 |
 
 支持所有原生 `<div>` 属性。该零件自身不管理可见性；组合组件 `ScrollShadow` 会根据滚动位置控制其显示。

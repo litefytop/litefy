@@ -1,4 +1,4 @@
-import { type ClassNameValue, cn } from "../..";
+import { type ClassNameValue, cn } from "..";
 
 type HTMLAttrs<T> = Omit<T, "className"> & {
   [key: `data-${string}`]: string | number | null | undefined | true;
@@ -9,12 +9,6 @@ export interface InputGroupProps extends HTMLAttrs<React.ComponentProps<"div">> 
   invalid?: boolean;
 }
 
-/**
- * The shell that owns focus and invalid styling for a wrapped control.
- * The inner input carries `aria-invalid` for accessibility only — all
- * invalid/focus visuals (border, ring) live here, so the two never
- * produce a double focus ring.
- */
 export function InputGroup({ className, invalid, ...props }: InputGroupProps) {
   return (
     <div

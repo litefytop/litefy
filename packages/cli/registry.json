@@ -257,7 +257,7 @@
   },
   "input-group": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/input-group/index.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/input-group.tsx",
     "dependence": [
       ".."
     ]

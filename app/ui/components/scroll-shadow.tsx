@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, type LucideIcon } from "lucide-react";
 import { type ClassNameValue, cn } from "..";
 
 type Edge = "top" | "bottom" | "left" | "right";
@@ -26,6 +27,7 @@ export interface ScrollShadowEdgeProps extends Omit<React.ComponentProps<"div">,
   className?: ClassNameValue;
   edge?: Edge;
   size?: string;
+  arrow?: boolean;
 }
 
 const edgeClasses: Record<Edge, string> = {
@@ -35,25 +37,40 @@ const edgeClasses: Record<Edge, string> = {
   right: "right-0 inset-y-0 bg-linear-to-l from-background to-transparent",
 };
 
+const edgeArrow: Record<Edge, LucideIcon> = {
+  top: ChevronUp,
+  bottom: ChevronDown,
+  left: ChevronLeft,
+  right: ChevronRight,
+};
+
 export function ScrollShadowEdge({
   className,
   edge = "bottom",
   size = "64px",
+  arrow = true,
   style,
   ...props
 }: ScrollShadowEdgeProps) {
+  const Icon = edgeArrow[edge];
   return (
     <div
       {...props}
       data-position={edge}
-      className={cn("pointer-events-none absolute", edgeClasses[edge], className)}
+      className={cn(
+        "pointer-events-none absolute flex items-center justify-center text-muted-foreground",
+        edgeClasses[edge],
+        className,
+      )}
       style={
         {
           [edge === "top" || edge === "bottom" ? "height" : "width"]: size,
           ...style,
         } as React.CSSProperties
       }
-    />
+    >
+      {arrow && <Icon className="size-4" />}
+    </div>
   );
 }
 
@@ -72,6 +89,8 @@ export interface ScrollShadowProps {
   children: React.ReactNode;
   edges?: EdgesProp;
   size?: string;
+  arrow?: boolean;
+  onScroll?: React.UIEventHandler<HTMLDivElement>;
   className?: ClassNameValue;
   style?: React.CSSProperties;
   classNames?: {
@@ -88,6 +107,8 @@ export function ScrollShadow({
   children,
   edges: edgesProp = ["bottom"],
   size = "64px",
+  arrow = true,
+  onScroll,
   className,
   style,
   classNames,
@@ -137,6 +158,7 @@ export function ScrollShadow({
     <ScrollShadowRoot className={className} style={style}>
       <ScrollShadowViewport
         ref={scrollRef}
+        onScroll={onScroll}
         className={classNames?.viewport}
         style={styles?.viewport}
       >
@@ -148,6 +170,7 @@ export function ScrollShadow({
             key={edge}
             edge={edge}
             size={size}
+            arrow={arrow}
             className={classNames?.edge}
             style={styles?.edge}
           />
