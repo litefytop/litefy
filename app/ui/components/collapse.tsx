@@ -66,6 +66,8 @@ export function CollapsePanel({ children, className, open, ...props }: CollapseP
 }
 
 export interface CollapseProps extends Omit<CollapseRootProps, "className" | "style"> {
+  className?: ClassNameValue;
+  style?: React.CSSProperties;
   label?: React.ReactNode | ((open: boolean) => React.ReactNode);
   icon?: React.ReactNode | ((open: boolean) => React.ReactNode);
   open?: boolean;
@@ -75,12 +77,10 @@ export interface CollapseProps extends Omit<CollapseRootProps, "className" | "st
   classNames?: {
     trigger?: ClassNameValue;
     panel?: ClassNameValue;
-    root?: ClassNameValue;
   };
   styles?: {
     trigger?: React.CSSProperties;
     panel?: React.CSSProperties;
-    root?: React.CSSProperties;
   };
 }
 
@@ -92,6 +92,8 @@ export function Collapse({
   children,
   itemKey,
   onOpenChange,
+  className,
+  style,
   styles,
   classNames,
   ...props
@@ -112,7 +114,7 @@ export function Collapse({
   const labelNode = typeof label === "function" ? label(open$) : label;
   const iconNode = typeof icon === "function" ? icon(open$) : icon;
   return (
-    <CollapseRoot {...props} className={classNames?.root} style={styles?.root}>
+    <CollapseRoot {...props} className={cn(className)} style={style}>
       <CollapseTrigger
         open={open$}
         id={triggerId}
@@ -154,8 +156,8 @@ export interface CollapseItemConfig extends Omit<
 export interface AccordionRootProps extends CollapseRootProps {
   items: CollapseItemConfig[];
   common?: {
+    className?: ClassNameValue;
     classNames?: {
-      root?: ClassNameValue;
       trigger?: ClassNameValue;
       panel?: ClassNameValue;
     };
@@ -240,8 +242,8 @@ export function Accordion({
           <Collapse
             {...cfg}
             key={cfg.itemKey}
+            className={cfg.className ?? common?.className}
             classNames={{
-              root: cfg.classNames?.root ?? common?.classNames?.root,
               trigger: cfg.classNames?.trigger ?? common?.classNames?.trigger,
               panel: cfg.classNames?.panel ?? common?.classNames?.panel,
             }}

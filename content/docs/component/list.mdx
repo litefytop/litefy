@@ -50,10 +50,10 @@ A scrollable, keyboard-navigable list; sizing is fully controlled by the consume
 | `ref` | `React.Ref<HTMLUListElement \| HTMLDivElement>` | - | Ref to the root element — a `ul` in flat mode, a `div` when grouped, e.g. to move focus into the list |
 | `className` | `ClassNameValue` | - | Custom class for the root |
 | `style` | `React.CSSProperties` | - | Custom inline style for the root |
-| `classNames` | `{ root?: ClassNameValue; item?: ClassNameValue; groupHeader?: ClassNameValue }` | - | Custom classes for the root, rows, and group headers |
-| `styles` | `{ root?: React.CSSProperties; item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | - | Custom inline styles for the root, rows, and group headers |
+| `classNames` | `{ item?: ClassNameValue; groupHeader?: ClassNameValue }` | - | Custom classes for the rows and group headers |
+| `styles` | `{ item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | - | Custom inline styles for the rows and group headers |
 
-The root applies `divide-y divide-border` between rows and `overflow-y-auto` for scrolling, with `outline-none` and no built-in focus ring.
+Rows are contiguous — no built-in dividers (add `divide-y divide-border` via `className` if you want them). The root applies `overflow-y-auto` for scrolling, with `outline-none` and no built-in focus ring. Keyboard: `ArrowUp` / `ArrowDown` move the highlight, `Enter` or `Space` selects it.
 
 #### Order
 
@@ -72,5 +72,5 @@ An ordered-list variant that renders the root as an `<ol>` with decimal numberin
 | `ref` | `React.Ref<HTMLOListElement>` | - | Ref to the root `<ol>` element |
 | `className` | `ClassNameValue` | - | Custom class for the root |
 | `style` | `React.CSSProperties` | - | Custom inline style for the root |
-| `classNames` | `{ root?: ClassNameValue; item?: ClassNameValue; groupHeader?: ClassNameValue }` | - | Custom classes for each part (`groupHeader` is unused in `Order`) |
-| `styles` | `{ root?: React.CSSProperties; item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | - | Custom inline styles for each part (`groupHeader` is unused in `Order`) |
+| `classNames` | `{ item?: ClassNameValue; groupHeader?: ClassNameValue }` | - | Custom classes for each part (`groupHeader` is unused in `Order`) |
+| `styles` | `{ item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | - | Custom inline styles for each part (`groupHeader` is unused in `Order`) |

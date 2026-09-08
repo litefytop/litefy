@@ -33,6 +33,37 @@ Every shipped component follows one architecture. Understand it before documenti
 
 Some components are atomic (badge, card, kbd, paper...) and ship as a single component with a `className` static exposing base classes—acceptable when there is nothing to split.
 
+### Root styling convention
+
+Every composite has a root (the outermost rendered element; Collapse's root is `CollapseRoot`, not trigger/panel):
+
+1. `className` / `style` ALWAYS apply to the root.
+2. `classNames` / `styles` list only non-root parts — a `root` key is forbidden.
+3. Fragment composites that render trigger + panel as siblings (Popover, Select, DatePicker, ContextMenu) have no single root element: `className`/`style` apply to the trigger; `classNames`/`styles` cover the panel and inner parts.
+4. When a part is itself a root (e.g. `WatermarkRoot`), merge `className`/`style` onto it directly.
+
+## Visual design conventions
+
+Background layering:
+
+- Out-of-flow components (dialog, drawer, toast, banner, popover, menu, tooltip, select/cascader/date-picker panels) carry `bg-background text-foreground`.
+- Attention containers (sidebar, card, paper) also carry `bg-background text-foreground`.
+- Everything else follows its parent — no self-carried `bg-background`/`bg-muted` on ordinary components. `bg-*` stays only for brand/semantic colors (`bg-primary`, danger fills), functional tracks (slider/progress/segment), occluding markers over connector lines (slider thumb, steps/timeline markers), and `hover:bg-*` feedback.
+- Demo containers use `bg-background`; docs pages keep their default page background.
+
+Border-radius scale (by element size/role):
+
+- `rounded-lg` — containers: card, dialog, drawer panel, toast, calendar, tabs content, transfer panels, floating popover/menu/select panels.
+- `rounded-md` — standard controls: button, inputs, triggers, toggle, calendar cells.
+- `rounded-sm` — components-within-components: input prefix/suffix area, checkbox box, breadcrumb link hover, transfer rows, kbd, inner icon buttons (dialog close, password eye).
+- Identity shapes are exempt: pills/avatars/chips/switches keep `rounded-full`.
+
+## Interaction & state conventions
+
+- Disabled styling is GLOBAL: the base stylesheet dims `:disabled`, `[data-disabled]`, `[inert]` and `label:has(:disabled)`. Components carry NO built-in `disabled:` utilities — do not add them when generating components or demos.
+- Toast is notification-only: no action buttons, ever. Anything needing interaction (confirm / retry / details) belongs to Dialog. `Toaster.loading` returns an id — dismiss exactly that id, since bare `Toaster.dismiss()` clears every toast.
+- Keyboard completeness: virtual-focus listboxes (List-driven panels) support ArrowUp/Down + Enter AND Space to select; real-focus checkboxes toggle with Space natively and Enter via CheckboxRoot; SegmentGroup is a roving-tabindex radio group (arrows + Home/End).
+
 ## Doc categories
 
 There are TWO kinds of pages under `content/docs/component/`. Decide which one you are writing:

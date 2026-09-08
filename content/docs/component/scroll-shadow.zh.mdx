@@ -44,8 +44,10 @@ description: 带有渐变阴影指示器的可滚动容器，提供更好的滚�
 | `children` | `React.ReactNode` | - | 可滚动内容 |
 | `edges` | `'top' \| 'bottom' \| 'left' \| 'right' \| Array<'top' \| 'bottom' \| 'left' \| 'right'>` | `'bottom'` | 显示阴影指示器的边缘（可传单个或数组） |
 | `size` | `string` | `'64px'` | 阴影渐变的大小 |
-| `classNames` | `{ root?, viewport?, edge? }` | - | 容器、滚动视口与阴影覆盖层的自定义类 |
-| `styles` | `{ root?, viewport?, edge? }` | - | 容器、滚动视口与阴影覆盖层的内联样式 |
+| `className` | `ClassNameValue` | - | 自定义类名，作用于根容器 |
+| `style` | `React.CSSProperties` | - | 内联样式，作用于根容器 |
+| `classNames` | `{ viewport?, edge? }` | - | 滚动视口与阴影覆盖层的自定义类 |
+| `styles` | `{ viewport?, edge? }` | - | 滚动视口与阴影覆盖层的内联样式 |
 
 每个阴影覆盖层带有 `data-position` 属性（`top` / `bottom` / `left` / `right`），可用 `data-[position=top]:` 等变体单独定制某个边缘。
 

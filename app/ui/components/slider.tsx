@@ -235,7 +235,6 @@ export function Slider({
             "size-5 touch-none rounded-full border-2 border-primary bg-background shadow-sm",
             "cursor-grab active:cursor-grabbing",
             "group-data-invalid:border-danger",
-            "disabled:pointer-events-none disabled:opacity-60 disabled:cursor-not-allowed",
             classNames?.thumb,
           )}
           style={{ ...thumbStyle, ...styles?.thumb }}

@@ -1,6 +1,6 @@
 ---
 title: Capsule
-description: A pill container that turns two tags into a shields-io style two-color badge.
+description: A pill-shaped overflow-hidden container that joins arbitrary children — tags, toggles, segments, links — into one capsule.
 ---
 
 ## Installation
@@ -9,13 +9,13 @@ description: A pill container that turns two tags into a shields-io style two-co
 
 ## Usage
 
-`Capsule` is a pill-shaped overflow-hidden container. Put two [Tag](/docs/component/tag) children inside — pass `rounded-none px-2.5 py-1` to each tag for badge proportions — and you get a shields-io style two-color badge in seconds.
+`Capsule` is a pill-shaped overflow-hidden container: whatever you put inside is joined and clipped into one capsule. It normalizes children with `*:rounded-none *:px-2 *:py-1`, so typical children like [Tag](/docs/component/tag) only need their color utilities.
 
 <ComponentPreview name="capsule-badge" />
 
 ### Composition
 
-The left tag acts as the label, the right one as the value. Colors are plain utilities on each tag. `Capsule` always renders a `div` — there is no `as` prop. For a clickable badge, nest a native `<a>` (or `button`) inside the container:
+`Capsule` is a plain container — it always renders a `div`, with no `as` prop. What goes inside is up to you: two tags form a badge, but toggle groups, segment groups or any other content work just the same. When the whole capsule should be clickable, wrap the `<Capsule>` in a native `<a>` (or `button`) so every child shares the same click target, instead of nesting the link on a single child:
 
 <ComponentPreview
   name="capsule-link"
@@ -23,9 +23,9 @@ The left tag acts as the label, the right one as the value. Colors are plain uti
 
 ## Notes
 
-- `rounded-none px-2.5 py-1` on the tags neutralizes their radius and bumps padding for badge proportions.
-- More than two tags work too: the container just clips whatever is inside.
-- `Capsule.className` is the static base class string of the pill container — apply it to a native `a` / `button` when the capsule itself must carry the semantics.
+- The container applies `*:rounded-none *:px-2 *:py-1` to every child, so typical children only need their color utilities — no per-child radius/padding resets required.
+- Any number of children works: the container just clips whatever is inside.
+- `Capsule.className` is the static base class string of the pill container, handy when styling a wrapper element or reusing the pill look elsewhere.
 
 ## API Reference
 

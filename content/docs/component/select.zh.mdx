@@ -60,8 +60,10 @@ description: 基于原生 popover 与 listbox 面板的选择器，面板跟随�
 | `required` | `boolean` | - | 在触发器上设置 `aria-required` |
 | `name` | `string` | - | 渲染携带该 name 的隐藏 input，使值参与原生表单提交 |
 | `disabled` | `boolean` | - | 禁用触发器 |
-| `classNames` | `{ trigger?; panel?; label?; option? }` —— 值均为 `ClassNameValue` | - | 触发器、面板、分组标签与选项的自定义类名 |
-| `styles` | `{ trigger?; panel? }` —— 值均为 `React.CSSProperties` | - | 触发器与面板的内联样式 |
+| `className` | `ClassNameValue` | - | 自定义类名，作用于触发器 |
+| `style` | `React.CSSProperties` | - | 内联样式，作用于触发器 |
+| `classNames` | `{ panel?; label?; option? }` —— 值均为 `ClassNameValue` | - | 面板、分组标签与选项的自定义类名 |
+| `styles` | `{ panel? }` —— 值均为 `React.CSSProperties` | - | 面板的内联样式 |
 | `...props` | `React.ComponentProps<"button">` | - | 其余原生 button 属性透传到触发器上，如 `id`、`aria-describedby` |
 
 行为说明：

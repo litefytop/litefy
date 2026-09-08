@@ -8,7 +8,12 @@ import { Password, type PasswordProps } from "./password";
 import { NumberField, type NumberFieldProps } from "./number-field";
 import { FormContext } from "./form";
 
-type ValidationResult = string | boolean | null | undefined;
+type ValidationResult =
+  | string
+  | { message: string; invalid?: boolean }
+  | boolean
+  | null
+  | undefined;
 
 export type FormItemVariant = "input" | "textarea" | "select" | "password" | "number-field";
 
@@ -18,6 +23,11 @@ export interface FormItemBaseProps {
   label?: React.ReactNode;
   description?: React.ReactNode;
   required?: boolean;
+  /**
+   * Return a string to mark the control invalid with an error message,
+   * or `{ message, invalid: false }` to show the message without styling
+   * the control as invalid (e.g. soft "required" errors on empty fields).
+   */
   validate?: (value: string) => ValidationResult | Promise<ValidationResult>;
   validateTrigger?: "onChange" | "onBlur";
   disabled?: boolean;
@@ -62,15 +72,15 @@ export function FormItem(props: FormItemProps) {
   const { register } = React.useContext(FormContext);
   const id = React.useId();
   const hintId = `${id}-hint`;
-  const [error, setError] = React.useState<string | boolean | null>(null);
-  const errorRef = React.useRef<string | boolean | null>(null);
+  const [error, setError] = React.useState<{ text: string; markInvalid: boolean } | null>(null);
+  const errorRef = React.useRef<{ text: string; markInvalid: boolean } | null>(null);
   const elementRef = React.useRef<FieldElement | null>(null);
   const [selectValue, setSelectValue] = React.useState(
     () => (controlProps as { defaultValue?: string }).defaultValue ?? "",
   );
 
   errorRef.current = error;
-  const isInvalid = Boolean(error);
+  const isInvalid = error?.markInvalid === true;
 
   const setFieldRef = (el: HTMLElement | null) => {
     const target =
@@ -89,7 +99,16 @@ export function FormItem(props: FormItemProps) {
   const readValue = () => elementRef.current?.value ?? "";
 
   const applyResult = (result: ValidationResult) => {
-    setError(result === true || result === null || result === undefined ? null : result);
+    if (result === true || result === null || result === undefined) {
+      setError(null);
+    } else if (typeof result === "string") {
+      setError({ text: result, markInvalid: true });
+    } else if (typeof result === "boolean") {
+      // false — bare invalid state without a message
+      setError({ text: "", markInvalid: true });
+    } else {
+      setError({ text: result.message, markInvalid: result.invalid !== false });
+    }
   };
 
   const runValidate = (value: string) => {
@@ -116,7 +135,6 @@ export function FormItem(props: FormItemProps) {
     id,
     disabled,
     required,
-    "aria-invalid": isInvalid || undefined,
     "aria-describedby": error || description ? hintId : undefined,
   };
 
@@ -128,6 +146,7 @@ export function FormItem(props: FormItemProps) {
         <Input
           {...common}
           {...rest}
+          invalid={isInvalid}
           ref={setFieldRef}
           defaultValue={(rest as { defaultValue?: string }).defaultValue}
           onChange={(e) => {
@@ -148,6 +167,7 @@ export function FormItem(props: FormItemProps) {
         <Textarea
           {...common}
           {...rest}
+          invalid={isInvalid}
           ref={setFieldRef}
           onChange={(e) => {
             onChange?.(e);
@@ -195,6 +215,7 @@ export function FormItem(props: FormItemProps) {
         <Password
           {...common}
           {...rest}
+          invalid={isInvalid}
           ref={setFieldRef}
           onChange={(e) => {
             onChange?.(e);
@@ -215,6 +236,7 @@ export function FormItem(props: FormItemProps) {
         <NumberField
           {...(rest as object)}
           {...(common as object)}
+          invalid={isInvalid}
           ref={setFieldRef}
           onValueChange={(value) => {
             emitChange?.(value);
@@ -244,14 +266,14 @@ export function FormItem(props: FormItemProps) {
       {control}
       <small
         id={hintId}
-        role={typeof error === "string" && error ? "alert" : undefined}
+        role={error ? "alert" : undefined}
         className={cn(
           "block h-5 text-sm indent-2",
           error ? "text-danger" : "text-muted-foreground",
           classNames?.hint,
         )}
       >
-        {error ?? description}
+        {error?.text ?? description}
       </small>
     </div>
   );

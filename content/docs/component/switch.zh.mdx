@@ -33,14 +33,6 @@ description: 支持受控状态和可自由拼装的开关组件
   name="switch-disabled"
 />
 
-### 自定义样式
-
-通过 `classNames` 独立定制滑轨和滑块，改变尺寸和颜色。
-
-<ComponentPreview
-  name="switch-custom-styling"
-/>
-
 ### 自定义拼装
 
 使用可组合组件拼装自定义尺寸和颜色的开关。
@@ -57,16 +49,16 @@ description: 支持受控状态和可自由拼装的开关组件
 
 #### Switch
 
-| 属性              | 类型                         | 默认值  | 描述                                                                               |
-| ----------------- | ---------------------------- | ------- | ---------------------------------------------------------------------------------- |
-| `children`        | `React.ReactNode`            | -       | 渲染在开关旁边的标签内容                                                           |
-| `checked`         | `boolean`                    | -       | 受控的选中状态                                                                     |
-| `defaultChecked`  | `boolean`                    | `false` | 非受控模式下的默认选中状态                                                         |
-| `onCheckedChange` | `(checked: boolean) => void` | -       | 选中状态变化时触发的回调函数                                                       |
-| `classNames`      | `{ label?, track?, thumb?: ClassNameValue }` | - | 定制 label、滑轨和滑块的自定义类名                                     |
-| `styles`          | `{ label?, track?, thumb?: React.CSSProperties }` | - | 定制 label、滑轨和滑块的内联样式                                      |
-| `disabled`        | `boolean`                    | `false` | 禁用开关                                                                           |
-| `...props`        | `React.ComponentProps<"input">` | -    | 支持所有原生 input 属性（除 `type`、`className` 外），如 `name`、`value`、`required` |
+| 属性              | 类型                                              | 默认值  | 描述                                                                                 |
+| ----------------- | ------------------------------------------------- | ------- | ------------------------------------------------------------------------------------ |
+| `children`        | `React.ReactNode`                                 | -       | 渲染在开关旁边的标签内容                                                             |
+| `checked`         | `boolean`                                         | -       | 受控的选中状态                                                                       |
+| `defaultChecked`  | `boolean`                                         | `false` | 非受控模式下的默认选中状态                                                           |
+| `onCheckedChange` | `(checked: boolean) => void`                      | -       | 选中状态变化时触发的回调函数                                                         |
+| `classNames`      | `{ label?, track?, thumb?: ClassNameValue }`      | -       | 定制 label、滑轨和滑块的自定义类名                                                   |
+| `styles`          | `{ label?, track?, thumb?: React.CSSProperties }` | -       | 定制 label、滑轨和滑块的内联样式                                                     |
+| `disabled`        | `boolean`                                         | `false` | 禁用开关                                                                             |
+| `...props`        | `React.ComponentProps<"input">`                   | -       | 支持所有原生 input 属性（除 `type`、`className` 外），如 `name`、`value`、`required` |
 
 ---
 
@@ -76,37 +68,37 @@ description: 支持受控状态和可自由拼装的开关组件
 
 视觉隐藏的原生复选框输入（`sr-only`），承载状态、焦点和表单语义。
 
-| 属性       | 类型                            | 默认值  | 描述                                                          |
-| ---------- | ------------------------------- | ------- | ------------------------------------------------------------- |
-| `className` | `ClassNameValue`               | -       | 自定义 CSS 类                                                 |
-| `...props` | `React.ComponentProps<"input">` | -       | 支持所有原生 input 属性（除 `type`、`className` 外）          |
+| 属性        | 类型                            | 默认值 | 描述                                                 |
+| ----------- | ------------------------------- | ------ | ---------------------------------------------------- |
+| `className` | `ClassNameValue`                | -      | 自定义 CSS 类                                        |
+| `...props`  | `React.ComponentProps<"input">` | -      | 支持所有原生 input 属性（除 `type`、`className` 外） |
 
 #### SwitchTrack
 
 渲染为 `span` 的视觉滑轨，带 `data-checked` 样式和 `has-focus-visible` 焦点环。
 
-| 属性       | 类型                           | 默认值  | 描述                                           |
-| ---------- | ------------------------------ | ------- | ---------------------------------------------- |
-| `checked`  | `boolean`                      | `false` | 驱动 `data-checked` 属性和样式                 |
-| `className` | `ClassNameValue`              | -       | 自定义 CSS 类                                  |
-| `children` | `React.ReactNode`              | -       | 滑轨内容，通常为 `SwitchRoot` 和 `SwitchThumb` |
-| `...props` | `React.ComponentProps<"span">` | -       | 支持所有原生 span 属性                         |
+| 属性        | 类型                           | 默认值  | 描述                                           |
+| ----------- | ------------------------------ | ------- | ---------------------------------------------- |
+| `checked`   | `boolean`                      | `false` | 驱动 `data-checked` 属性和样式                 |
+| `className` | `ClassNameValue`               | -       | 自定义 CSS 类                                  |
+| `children`  | `React.ReactNode`              | -       | 滑轨内容，通常为 `SwitchRoot` 和 `SwitchThumb` |
+| `...props`  | `React.ComponentProps<"span">` | -       | 支持所有原生 span 属性                         |
 
 #### SwitchThumb
 
 渲染为 `span` 的视觉滑块，通过 `data-checked` 样式滑动。
 
-| 属性       | 类型                           | 默认值  | 描述                           |
-| ---------- | ------------------------------ | ------- | ------------------------------ |
-| `checked`  | `boolean`                      | `false` | 驱动 `data-checked` 位移       |
-| `className` | `ClassNameValue`              | -       | 自定义 CSS 类                  |
-| `...props` | `React.ComponentProps<"span">` | -       | 支持所有原生 span 属性         |
+| 属性        | 类型                           | 默认值  | 描述                     |
+| ----------- | ------------------------------ | ------- | ------------------------ |
+| `checked`   | `boolean`                      | `false` | 驱动 `data-checked` 位移 |
+| `className` | `ClassNameValue`               | -       | 自定义 CSS 类            |
+| `...props`  | `React.ComponentProps<"span">` | -       | 支持所有原生 span 属性   |
 
 #### SwitchLabel
 
 将输入与滑轨和文本关联起来的标签包装器。
 
-| 属性       | 类型                            | 默认值  | 描述                       |
-| ---------- | ------------------------------- | ------- | -------------------------- |
-| `className` | `ClassNameValue`               | -       | 自定义 CSS 类              |
-| `...props` | `React.ComponentProps<"label">` | -       | 支持所有原生 label 属性    |
+| 属性        | 类型                            | 默认值 | 描述                    |
+| ----------- | ------------------------------- | ------ | ----------------------- |
+| `className` | `ClassNameValue`                | -      | 自定义 CSS 类           |
+| `...props`  | `React.ComponentProps<"label">` | -      | 支持所有原生 label 属性 |

@@ -60,8 +60,10 @@ A select built on the native popover API and CSS anchor positioning: the trigger
 | `required` | `boolean` | - | Sets `aria-required` on the trigger |
 | `name` | `string` | - | Renders a hidden input with this name, so the value joins native form submission |
 | `disabled` | `boolean` | - | Disables the trigger |
-| `classNames` | `{ trigger?; panel?; label?; option? }` — each `ClassNameValue` | - | Custom classes for the trigger, panel, group labels and options |
-| `styles` | `{ trigger?; panel? }` — each `React.CSSProperties` | - | Inline styles for the trigger and panel |
+| `className` | `ClassNameValue` | - | Custom classes, applied to the trigger |
+| `style` | `React.CSSProperties` | - | Inline styles, applied to the trigger |
+| `classNames` | `{ panel?; label?; option? }` — each `ClassNameValue` | - | Custom classes for the panel, group labels and options |
+| `styles` | `{ panel? }` — each `React.CSSProperties` | - | Inline styles for the panel |
 | `...props` | `React.ComponentProps<"button">` | - | Remaining native button props spread on the trigger, such as `id` and `aria-describedby` |
 
 Behavior notes:

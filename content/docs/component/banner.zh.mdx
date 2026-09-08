@@ -40,8 +40,9 @@ description: 自动滚动播放的横幅组件，无缝循环、悬停暂停、�
 | `direction`    | `"left" \| "right"`                    | `left`  | 滚动方向                                                                                   |
 | `pauseOnHover` | `boolean`                              | `true`  | 指针悬停在横幅上时暂停动画                                                                  |
 | `className`    | `ClassNameValue`                       | -       | 视口的自定义类名                                                                            |
-| `classNames`   | `{ viewport?; track?; item? }` —— 值均为 `ClassNameValue` | - | 各零件的自定义类名                                              |
-| `styles`       | `{ viewport?; track?; item? }` —— 值均为 `React.CSSProperties` | - | 各零件的内联样式                                                  |
+| `style`        | `React.CSSProperties`                  | -       | 视口的内联样式                                                                              |
+| `classNames`   | `{ track?; item? }` —— 值均为 `ClassNameValue` | - | 轨道与条目的自定义类名                                          |
+| `styles`       | `{ track?; item? }` —— 值均为 `React.CSSProperties` | - | 轨道与条目的内联样式                                            |
 | `...props`     | `React.ComponentProps<"div">`          | -       | 原生 div 属性透传到视口（不含 `children`）；你自己的 `onMouseEnter` / `onMouseLeave` 会与悬停暂停组合 |
 
 #### BannerItem

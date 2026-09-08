@@ -16,7 +16,7 @@ import SearchDialog from "./components/search";
 import { i18n } from "@/lib/i18n";
 import { translations } from "@/components/layout-shared";
 import { HydrateFallback } from "./components/hydrate-fallback";
-import { BrowserSupportNotice } from "./components/browser-support-notice";
+import { BrowserSupportGate } from "./components/browser-support-notice";
 import NotFound from "./routes/not-found";
 
 export function Layout({ children }: { children: React.ReactNode } = { children: undefined }) {
@@ -30,16 +30,17 @@ export function Layout({ children }: { children: React.ReactNode } = { children:
         <Links />
       </head>
       <body className="flex flex-col min-h-screen bg-muted">
-        <BrowserSupportNotice />
-        <Suspense fallback={<HydrateFallback />}>
-          <RootProvider
-            theme={{ enabled: false }}
-            search={{ SearchDialog }}
-            i18n={i18nProvider(translations, lang)}
-          >
-            {children}
-          </RootProvider>
-        </Suspense>
+        <BrowserSupportGate>
+          <Suspense fallback={<HydrateFallback />}>
+            <RootProvider
+              theme={{ enabled: false }}
+              search={{ SearchDialog }}
+              i18n={i18nProvider(translations, lang)}
+            >
+              {children}
+            </RootProvider>
+          </Suspense>
+        </BrowserSupportGate>
         <ScrollRestoration />
         <Scripts />
       </body>

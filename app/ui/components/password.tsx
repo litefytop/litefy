@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { type ClassNameValue, cn } from "..";
+import { InputGroup } from "./input-group";
 
 export interface PasswordGroupProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
@@ -10,20 +11,7 @@ export interface PasswordGroupProps extends Omit<React.ComponentProps<"div">, "c
 }
 
 export function PasswordGroup({ className, invalid, ...props }: PasswordGroupProps) {
-  return (
-    <div
-      {...props}
-      data-invalid={invalid ? true : undefined}
-      aria-invalid={invalid}
-      className={cn(
-        "flex w-full max-w-sm min-w-3xs items-center rounded-md border border-border shadow-xs bg-background/90 transition-colors px-2 h-9",
-        "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
-        "data-invalid:border-danger",
-        "data-invalid:focus-within:outline-1 data-invalid:focus-within:outline-danger data-invalid:focus-within:ring-3 data-invalid:focus-within:ring-danger/50",
-        className,
-      )}
-    />
-  );
+  return <InputGroup {...props} invalid={invalid} className={className} />;
 }
 
 export interface PasswordRootProps extends Omit<
@@ -62,7 +50,7 @@ export function PasswordToggle({ className, visible, children, ...props }: Passw
       aria-pressed={visible}
       aria-label={visible ? "Hide password" : "Show password"}
       className={cn(
-        "hover:text-foreground/80 rounded-md p-1 text-muted-foreground transition-colors",
+        "hover:text-foreground/80 rounded-sm p-1 text-muted-foreground transition-colors",
         className,
       )}
     >
@@ -115,6 +103,7 @@ export const Password = ({
         {...props}
         disabled={disabled}
         visible={visible}
+        aria-invalid={invalid || undefined}
         className={classNames?.root}
         style={styles?.root}
       />

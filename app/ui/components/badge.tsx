@@ -26,7 +26,7 @@ export function Badge({ children, className, label, classNames, styles, ...props
       <Tag
         children={label}
         className={[
-          "absolute top-0 right-0 translate-x-[50%] translate-y-[-50%]",
+          "absolute top-0 right-0 rounded-full translate-x-[50%] translate-y-[-50%]",
           classNames?.label,
         ]}
         style={styles?.label}

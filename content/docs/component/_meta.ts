@@ -38,7 +38,7 @@ export default {
     name: "Capsule",
     displayName: {
       en: "Capsule",
-      zh: "胶囊徽章",
+      zh: "胶囊",
     },
   },
   card: {
@@ -168,6 +168,13 @@ export default {
     displayName: {
       en: "Input",
       zh: "输入框",
+    },
+  },
+  "input-group": {
+    name: "Input Group",
+    displayName: {
+      en: "Input Group",
+      zh: "输入组",
     },
   },
   "input-otp": {

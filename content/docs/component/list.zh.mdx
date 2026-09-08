@@ -50,10 +50,10 @@ description: 支持键盘导航、高亮、选中与滚动到底回调的滚动�
 | `ref` | `React.Ref<HTMLUListElement \| HTMLDivElement>` | - | 根元素 ref —— 平铺模式为 `ul`，分组模式为 `div`，例如用于把焦点移入列表 |
 | `className` | `ClassNameValue` | - | 根节点自定义类 |
 | `style` | `React.CSSProperties` | - | 根节点自定义内联样式 |
-| `classNames` | `{ root?: ClassNameValue; item?: ClassNameValue; groupHeader?: ClassNameValue }` | - | 根节点、行与组标题的自定义类 |
-| `styles` | `{ root?: React.CSSProperties; item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | - | 根节点、行与组标题的内联样式 |
+| `classNames` | `{ item?: ClassNameValue; groupHeader?: ClassNameValue }` | - | 行与组标题的自定义类 |
+| `styles` | `{ item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | - | 行与组标题的内联样式 |
 
-根节点在行之间应用 `divide-y divide-border`，通过 `overflow-y-auto` 提供滚动，并带有 `outline-none`（没有内置聚焦描边）。
+行与行紧密相连——默认不带分隔线（需要时可通过 `className` 加 `divide-y divide-border`）。根节点通过 `overflow-y-auto` 提供滚动，并带有 `outline-none`（没有内置聚焦描边）。键盘：`ArrowUp` / `ArrowDown` 移动高亮，`Enter` 或 `Space` 选中。
 
 #### Order
 
@@ -72,5 +72,5 @@ description: 支持键盘导航、高亮、选中与滚动到底回调的滚动�
 | `ref` | `React.Ref<HTMLOListElement>` | - | 根 `<ol>` 元素的 ref |
 | `className` | `ClassNameValue` | - | 根节点自定义类 |
 | `style` | `React.CSSProperties` | - | 根节点自定义内联样式 |
-| `classNames` | `{ root?: ClassNameValue; item?: ClassNameValue; groupHeader?: ClassNameValue }` | - | 各部分自定义类（`Order` 中不会用到 `groupHeader`） |
-| `styles` | `{ root?: React.CSSProperties; item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | - | 各部分自定义内联样式（`Order` 中不会用到 `groupHeader`） |
+| `classNames` | `{ item?: ClassNameValue; groupHeader?: ClassNameValue }` | - | 各部分自定义类（`Order` 中不会用到 `groupHeader`） |
+| `styles` | `{ item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | - | 各部分自定义内联样式（`Order` 中不会用到 `groupHeader`） |

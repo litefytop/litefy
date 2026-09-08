@@ -44,8 +44,10 @@ A scrollable container with gradient shadow indicators.
 | `children` | `React.ReactNode` | - | Scrollable content |
 | `edges` | `'top' \| 'bottom' \| 'left' \| 'right' \| Array<'top' \| 'bottom' \| 'left' \| 'right'>` | `'bottom'` | Edge(s) where the shadow indicator appears |
 | `size` | `string` | `'64px'` | Size of the shadow gradient |
-| `classNames` | `{ root?, viewport?, edge? }` | - | Custom classes for the container, scroll viewport and shadow overlays |
-| `styles` | `{ root?, viewport?, edge? }` | - | Inline styles for the container, scroll viewport and shadow overlays |
+| `className` | `ClassNameValue` | - | Custom classes, applied to the root container |
+| `style` | `React.CSSProperties` | - | Inline styles, applied to the root container |
+| `classNames` | `{ viewport?, edge? }` | - | Custom classes for the scroll viewport and shadow overlays |
+| `styles` | `{ viewport?, edge? }` | - | Inline styles for the scroll viewport and shadow overlays |
 
 Each shadow overlay carries a `data-position` attribute (`top` / `bottom` / `left` / `right`), so single edges can be targeted with variants like `data-[position=top]:`.
 

@@ -54,8 +54,10 @@ An OTP input built with the parts below, encapsulating value state and interacti
 | `aria-label` | `string` | - | Accessible label, suffixed with the slot index per slot |
 | `className` | `ClassNameValue` | - | Custom class for the group |
 | `style` | `React.CSSProperties` | - | Custom inline style for the group |
-| `classNames` | `{ group?; slot? }` | - | Custom classes for each part |
-| `styles` | `{ group?; slot? }` | - | Custom inline styles for each part |
+| `className` | `ClassNameValue` | - | Custom classes, applied to the group shell |
+| `style` | `React.CSSProperties` | - | Inline styles, applied to the group shell |
+| `classNames` | `{ slot? }` | - | Custom classes for the slot |
+| `styles` | `{ slot? }` | - | Custom inline styles for the slot |
 
 Typing advances focus, `Backspace` moves back when the slot is empty, arrow keys navigate between slots, and pasting fills from the current slot. The first slot uses `autoComplete='one-time-code'`.
 

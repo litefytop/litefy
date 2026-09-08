@@ -43,7 +43,6 @@ export function UploadDropzone({ className, ...props }: UploadDropzoneProps) {
         "hover:border-primary/50 hover:bg-muted/50",
         "focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none",
         "data-dragging:border-primary data-dragging:bg-primary/5",
-        "data-disabled:pointer-events-none data-disabled:opacity-50",
         className,
       )}
     />
@@ -65,7 +64,6 @@ export interface UploadClassNames {
 }
 
 export interface UploadStyles {
-  root?: React.CSSProperties;
   dropzone?: React.CSSProperties;
   hiddenInput?: React.CSSProperties;
 }
@@ -253,7 +251,7 @@ export function Upload({
     <UploadRoot
       data-invalid={invalid || undefined}
       className={className}
-      style={{ ...style, ...styles?.root }}
+      style={style}
     >
       <UploadHiddenInput
         ref={inputRef}

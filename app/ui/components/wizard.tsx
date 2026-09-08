@@ -59,7 +59,7 @@ export function Wizard({
           type="button"
           onClick={() => go(index - 1)}
           disabled={index === 0}
-          className="h-9 cursor-pointer rounded-md border bg-background px-4 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
+          className="h-9 cursor-pointer rounded-md border px-4 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         >
           Back
         </button>

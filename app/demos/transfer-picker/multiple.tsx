@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Check } from "lucide-react";
-import { Button, Checkbox, Input, List, NumberField, Popover, useRemotePagination } from "@/ui";
+import { Checkbox, Input, List, NumberField, useRemotePagination } from "@/ui";
 
 type SelectedEntry = {
   value: string;
@@ -38,7 +38,6 @@ export default function TransferPickerMultipleDemo() {
     debounceMs: 300,
     pageSize: 20,
   });
-  const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
   const [highlightIndex, setHighlightIndex] = useState<number | null>(null);
   const [selected, setSelected] = useState<SelectedEntry[]>([]);
@@ -86,140 +85,119 @@ export default function TransferPickerMultipleDemo() {
 
   return (
     <div className="flex flex-col items-center gap-3">
-      <Popover
-        open={open}
-        onOpenChange={(next) => {
-          setOpen(next);
-          if (!next) setHighlightIndex(null);
-        }}
-        trigger={`Options (${selected.length})`}
-        classNames={{
-          trigger: [Button.className.base, Button.className.variant.primary],
-          content: "w-xl max-w-[90vw]",
-        }}
-      >
-        <div className="flex gap-3">
-          <div className="flex min-w-0 flex-1 flex-col gap-2">
-            <Input
-              value={text}
-              onChange={(e) => {
-                setText(e.target.value);
-                setHighlightIndex(null);
-                remote.search(e.target.value);
-              }}
-              onKeyDown={(e) => {
-                if (!open) return;
-                if (e.key === "ArrowDown") {
-                  e.preventDefault();
-                  setHighlightIndex(
-                    highlightIndex === null || highlightIndex >= remote.data.length - 1
-                      ? 0
-                      : highlightIndex + 1,
-                  );
-                } else if (e.key === "ArrowUp") {
-                  e.preventDefault();
-                  setHighlightIndex(
-                    highlightIndex === null || highlightIndex <= 0
-                      ? remote.data.length - 1
-                      : highlightIndex - 1,
-                  );
-                } else if (e.key === "Enter" && highlightIndex !== null) {
-                  e.preventDefault();
-                  addToSelected(remote.data[highlightIndex]);
-                }
-              }}
-              placeholder="Type to search remotely"
-            />
-            <List
-              highlightIndex={highlightIndex}
-              onHighlightChange={setHighlightIndex}
-              items={remote.data}
-              renderItem={(item) => (
-                <span className="flex items-center justify-between gap-2">
-                  <span>{item}</span>
-                  {selectedValues.has(item) && <Check className="size-3.5 text-primary" />}
-                </span>
-              )}
-              getKey={(item) => item}
-              empty={
-                <div className="pointer-events-none px-3 py-2 text-sm text-muted-foreground">
-                  {remote.loading ? "Loading..." : "No data"}
-                </div>
+      <div className="flex w-xl max-w-[90vw] gap-3">
+        <div className="flex min-w-0 flex-1 flex-col gap-2">
+          <Input
+            value={text}
+            onChange={(e) => {
+              setText(e.target.value);
+              setHighlightIndex(null);
+              remote.search(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowDown") {
+                e.preventDefault();
+                setHighlightIndex(
+                  highlightIndex === null || highlightIndex >= remote.data.length - 1
+                    ? 0
+                    : highlightIndex + 1,
+                );
+              } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                setHighlightIndex(
+                  highlightIndex === null || highlightIndex <= 0
+                    ? remote.data.length - 1
+                    : highlightIndex - 1,
+                );
+              } else if (e.key === "Enter" && highlightIndex !== null) {
+                e.preventDefault();
+                addToSelected(remote.data[highlightIndex]);
               }
-              onSelect={(item) => addToSelected(item)}
-              onScrollBottom={() => {
-                if (remote.hasMore && !remote.loading) remote.loadMore();
-              }}
-              className="max-h-56 rounded-md border"
-            />
-            <p className="px-1 text-xs text-muted-foreground">
-              Click or press Enter to move an item to the right — use the number field to adjust its
-              count.
-            </p>
+            }}
+            placeholder="Type to search remotely"
+          />
+          <List
+            highlightIndex={highlightIndex}
+            onHighlightChange={setHighlightIndex}
+            items={remote.data}
+            renderItem={(item) => (
+              <span className="flex items-center justify-between gap-2">
+                <span>{item}</span>
+                {selectedValues.has(item) && <Check className="size-3.5 text-primary" />}
+              </span>
+            )}
+            getKey={(item) => item}
+            empty={
+              <div className="pointer-events-none px-3 py-2 text-sm text-muted-foreground">
+                {remote.loading ? "Loading..." : "No data"}
+              </div>
+            }
+            onSelect={(item) => addToSelected(item)}
+            onScrollBottom={() => {
+              if (remote.hasMore && !remote.loading) remote.loadMore();
+            }}
+            className="max-h-56 rounded-md border"
+          />
+          <p className="px-1 text-xs text-muted-foreground">
+            Click or press Enter to move an item to the right — use the embedded number field to
+            adjust its count.
+          </p>
+        </div>
+        <div className="flex min-w-0 flex-1 flex-col rounded-md border">
+          <div className="flex items-center gap-2 border-b px-2 py-2">
+            <Checkbox
+              checked={selected.length > 0 && selected.every((entry) => checked.has(entry.value))}
+              disabled={selected.length === 0}
+              onCheckedChange={(next) =>
+                setChecked(next ? new Set(selected.map((entry) => entry.value)) : new Set())
+              }
+              classNames={{ label: "gap-2 text-sm font-medium cursor-pointer" }}
+            >
+              <span>Selected</span>
+              <span className="text-xs font-normal text-muted-foreground">{totalCount}</span>
+            </Checkbox>
+            <button
+              type="button"
+              disabled={checked.size === 0}
+              onClick={removeChecked}
+              className="ml-auto cursor-pointer rounded-sm px-2 py-1 text-xs font-semibold text-danger transition-colors hover:bg-hover disabled:pointer-events-none disabled:opacity-50"
+            >
+              Remove
+            </button>
           </div>
-          <div className="flex min-w-0 flex-1 flex-col rounded-md border">
-            <div className="flex items-center gap-2 border-b px-2 py-2">
-              <Checkbox
-                checked={selected.length > 0 && selected.every((entry) => checked.has(entry.value))}
-                disabled={selected.length === 0}
-                onCheckedChange={(next) =>
-                  setChecked(next ? new Set(selected.map((entry) => entry.value)) : new Set())
-                }
-                classNames={{ label: "gap-2 text-sm font-medium cursor-pointer" }}
-              >
-                <span>Selected</span>
-                <span className="text-xs font-normal text-muted-foreground">{totalCount}</span>
-              </Checkbox>
-              <button
-                type="button"
-                disabled={checked.size === 0}
-                onClick={removeChecked}
-                className="ml-auto cursor-pointer rounded-sm px-2 py-1 text-xs font-semibold text-danger transition-colors hover:bg-hover disabled:pointer-events-none disabled:opacity-50"
-              >
-                Remove
-              </button>
-            </div>
-            <div className="flex max-h-56 min-h-24 flex-1 flex-col overflow-auto p-1">
-              {selected.length === 0 ? (
-                <p className="px-3 py-2 text-sm text-muted-foreground">No data</p>
-              ) : (
-                selected.map((entry) => (
-                  <div
-                    key={entry.value}
-                    className="flex items-center gap-1 rounded-sm pr-1 hover:bg-hover"
+          <div className="flex max-h-56 min-h-24 flex-1 flex-col overflow-auto p-1">
+            {selected.length === 0 ? (
+              <p className="px-3 py-2 text-sm text-muted-foreground">No data</p>
+            ) : (
+              selected.map((entry) => (
+                <div
+                  key={entry.value}
+                  className="flex items-center gap-1 rounded-sm pr-1 hover:bg-hover"
+                >
+                  <Checkbox
+                    checked={checked.has(entry.value)}
+                    onCheckedChange={(next) => toggleChecked(entry.value, next)}
+                    classNames={{
+                      label: "min-w-0 flex-1 gap-2 px-3 py-2 text-sm font-normal cursor-pointer",
+                    }}
                   >
-                    <Checkbox
-                      checked={checked.has(entry.value)}
-                      onCheckedChange={(next) => toggleChecked(entry.value, next)}
-                      classNames={{
-                        label: "min-w-0 flex-1 gap-2 px-3 py-2 text-sm font-normal cursor-pointer",
-                      }}
-                    >
-                      <span className="truncate">{entry.label}</span>
-                    </Checkbox>
-                    <NumberField
-                      positiveInteger
-                      min={1}
-                      max={99}
-                      value={entry.count}
-                      onValueChange={(value) => updateCount(entry.value, value ?? 1)}
-                      className="w-28 shrink-0"
-                    />
-                  </div>
-                ))
-              )}
-            </div>
-            <div className="flex gap-2 border-t p-2">
-              <Button variant="outline" className="flex-1" onClick={() => setOpen(false)}>
-                Stash
-              </Button>
-              <Button className="flex-1" onClick={() => setOpen(false)}>
-                Confirm
-              </Button>
-            </div>
+                    <span className="truncate">{entry.label}</span>
+                  </Checkbox>
+                  <NumberField
+                    variant="embedded"
+                    positiveInteger
+                    min={1}
+                    max={99}
+                    value={entry.count}
+                    onValueChange={(value) => updateCount(entry.value, value ?? 1)}
+                    className="shrink-0"
+                  />
+                </div>
+              ))
+            )}
           </div>
         </div>
-      </Popover>
+      </div>
       <p className="text-sm text-muted-foreground">
         Selected:{" "}
         {selected.length > 0

@@ -1,0 +1,43 @@
+---
+title: Input Group
+description: An input shell that owns focus and invalid styling for a wrapped control — leading/trailing slots plus the inner input, never a double focus ring.
+---
+
+## Installation
+
+<Installation name="input-group" />
+
+## Usage
+
+`InputGroup` is the shell around a wrapped control. It owns all focus (`focus-within`) and invalid (`data-invalid`) visuals — border, ring and outline — while the inner `InputRoot` stays visually bare, so the group and the input can never produce a double focus ring. `InputLeading` / `InputTrailing` are the prefix/suffix slots.
+
+<ComponentPreview name="input-group-basic" />
+
+### Invalid state
+
+Set the `invalid` prop (or `data-invalid`) on the group — not `aria-invalid` styling on the input. The inner input still carries `aria-invalid` for accessibility, and its danger text color is driven by the group through `group-data-invalid`.
+
+<ComponentPreview name="input-basic" />
+
+## Notes
+
+- Disabled styling is global: `:disabled` elements are dimmed by the base stylesheet — components carry no built-in `disabled:` utilities.
+- `Input`, `Password` and `NumberField` are built on this group internally.
+
+## API Reference
+
+### InputGroup
+
+| Prop        | Type                              | Default | Description                                                                 |
+| ----------- | --------------------------------- | ------- | --------------------------------------------------------------------------- |
+| `invalid`   | `boolean`                         | -       | Marks the shell invalid (`data-invalid`), switching border/focus to danger  |
+| `className` | `ClassNameValue`                  | -       | Custom classes, applied to the shell                                        |
+| `...props`  | `React.ComponentProps<"div">`     | -       | Supports all native div props (except `className`)                          |
+
+### InputLeading / InputTrailing
+
+Prefix/suffix slots. Support all native `<span>` attributes (except `className`), plus `className`.
+
+### InputRoot
+
+The bare inner input. Supports all native `<input>` attributes (except `className`), plus `className`. Carries `aria-invalid` for accessibility only — invalid and focus visuals belong to the group.

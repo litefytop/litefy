@@ -20,9 +20,8 @@ export function ToastRoot({ className, ...props }: ToastRootProps) {
     <div
       {...props}
       className={cn(
-        "pointer-events-auto flex w-full items-center justify-between gap-3 rounded-lg border p-4 shadow-lg text-foreground bg-background",
-        "data-[expanded=true]:scale-100",
-        "data-[exiting=true]:animate-out data-[exiting=true]:slide-out-to-top data-[exiting=true]:duration-300",
+        "relative pointer-events-auto flex w-full items-center justify-between gap-3 rounded-lg border p-4 shadow-lg text-foreground bg-background",
+        "data-[exiting=true]:animate-out data-[exiting=true]:slide-out-to-top data-[exiting=true]:duration-500",
         "transition-all duration-400",
         className,
       )}
@@ -62,34 +61,23 @@ export function ToastDescription({ className, ...props }: ToastDescriptionProps)
   return <div {...props} className={cn("text-sm text-muted-foreground mt-1", className)} />;
 }
 
-export interface ToastActionsProps extends Omit<React.ComponentProps<"div">, "className"> {
+export interface ToastCloseProps extends Omit<React.ComponentProps<"button">, "className" | "type"> {
   className?: ClassNameValue;
 }
 
-export function ToastActions({ className, ...props }: ToastActionsProps) {
-  return <div {...props} className={cn("flex gap-2", className)} />;
-}
-
-export interface ToastActionProps extends Omit<
-  React.ComponentProps<"button">,
-  "className" | "type"
-> {
-  className?: ClassNameValue;
-}
-
-export function ToastAction({ className, ...props }: ToastActionProps) {
+export function ToastClose({ className, children, ...props }: ToastCloseProps) {
   return (
     <button
       {...props}
       type="button"
+      aria-label="Dismiss notification"
       className={cn(
-        "inline-flex items-center justify-center rounded-md text-sm font-medium",
-        "disabled:pointer-events-none disabled:opacity-50",
-        "h-8 px-3 py-1",
-        "hover:bg-primary-accent hover:text-primary-foreground",
+        "absolute right-2 top-2 shrink-0 rounded-sm p-1 text-muted-foreground transition-colors hover:bg-hover hover:text-foreground cursor-pointer",
         className,
       )}
-    />
+    >
+      {children ?? <X className="size-4" />}
+    </button>
   );
 }
 
@@ -100,26 +88,22 @@ export type ToastItemProps = Omit<React.ComponentProps<"div">, "className" | "st
   description?: React.ReactNode;
   icon?: React.ReactNode;
   duration?: number;
+  closable?: boolean;
   onClose?: (event: CloseEvent) => void;
-  actions?: Array<{
-    children: React.ReactNode;
-    onClick?: (dismiss: () => void) => void;
-    className?: ClassNameValue;
-  }>;
   isExpanded?: boolean;
   classNames?: {
     icon?: ClassNameValue;
     content?: ClassNameValue;
     title?: ClassNameValue;
     description?: ClassNameValue;
-    actions?: ClassNameValue;
+    close?: ClassNameValue;
   };
   styles?: {
     icon?: React.CSSProperties;
     content?: React.CSSProperties;
     title?: React.CSSProperties;
     description?: React.CSSProperties;
-    actions?: React.CSSProperties;
+    close?: React.CSSProperties;
   };
 };
 
@@ -163,7 +147,7 @@ const toastObserver = new ToastObserver();
 const dismissHandlers = new Map<string | number, () => void>();
 
 const removeWithExit = (id: string | number) => {
-  const handler = dismissHandlers.get(id);
+  const handler = dismissHandlers.get(String(id));
   if (handler) {
     handler();
     return;
@@ -192,32 +176,59 @@ const toastIcons: Record<ToastType, React.ReactNode> = {
   loading: <Loader2 className="size-4 animate-spin" />,
 };
 
+/**
+ * Exit timeline: the card stays mounted while a 500ms animation slides it out
+ * AND collapses its box (height + the flex gap slot), so the toasts below
+ * glide up continuously. Only after the animation finishes is the toast
+ * removed from the store — by then it is a 0-height element, so the unmount
+ * itself can never cause a layout jump. Skipped under prefers-reduced-motion.
+ */
+const EXIT_MS = 500;
+
 function ToastItem({
   isExpanded = false,
   id,
   type,
   duration,
+  closable,
   onClose,
   icon: customIcon,
   title,
   description,
-  actions,
   classNames,
   styles,
   ...restProps
 }: ToastItemProps) {
   const [isExiting, setIsExiting] = useState(false);
+  const rootRef = React.useRef<HTMLDivElement>(null);
+  const exitingRef = React.useRef(false);
   const remainingRef = React.useRef<number | undefined>(undefined);
 
   const handleDismiss = useCallback(
     (closeType: "auto" | "manual" = "manual") => {
+      if (exitingRef.current) return;
+      exitingRef.current = true;
       setIsExiting(true);
       onClose?.({ type: closeType, id });
+
+      const el = rootRef.current;
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (el && !reduced) {
+        const gap = parseFloat(getComputedStyle(el.parentElement ?? el).rowGap || "0");
+        el.style.overflow = "hidden";
+        el.animate(
+          [
+            { height: `${el.offsetHeight}px`, marginBottom: "0px", opacity: "1" },
+            { height: "0px", marginBottom: `${-gap}px`, opacity: "0" },
+          ],
+          { duration: EXIT_MS, easing: "ease-out", fill: "forwards" },
+        );
+      }
 
       setTimeout(() => {
         onClose?.({ type: "complete", id });
         toastObserver.removeToast(id!);
-      }, 300);
+      }, EXIT_MS);
     },
     [id, onClose],
   );
@@ -255,6 +266,7 @@ function ToastItem({
   return (
     <ToastRoot
       {...restProps}
+      ref={rootRef}
       data-expanded={isExpanded}
       data-exiting={isExiting}
     >
@@ -263,7 +275,7 @@ function ToastItem({
           {icon}
         </ToastIcon>
       )}
-      <ToastContent className={classNames?.content} style={styles?.content}>
+      <ToastContent className={cn(closable && "pr-5", classNames?.content)} style={styles?.content}>
         <ToastTitle className={classNames?.title} style={styles?.title}>
           {title}
         </ToastTitle>
@@ -273,21 +285,15 @@ function ToastItem({
           </ToastDescription>
         )}
       </ToastContent>
-      {actions && (
-        <ToastActions className={classNames?.actions} style={styles?.actions}>
-          {actions.map((action, idx) => (
-            <ToastAction
-              key={idx}
-              className={action.className}
-              onClick={(e) => {
-                e.stopPropagation();
-                action.onClick?.(handleDismiss);
-              }}
-            >
-              {action.children}
-            </ToastAction>
-          ))}
-        </ToastActions>
+      {closable && (
+        <ToastClose
+          className={classNames?.close}
+          style={styles?.close}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleDismiss("manual");
+          }}
+        />
       )}
     </ToastRoot>
   );
@@ -385,10 +391,6 @@ function ToastContainer({ visibleToasts = 3, className, ...props }: ToastContain
         "data-[expanded=false]:[&>*:nth-child(2)]:translate-y-2",
         "data-[expanded=false]:[&>*:nth-child(3)]:translate-y-4",
         "data-[expanded=false]:[&>*:nth-child(n+4)]:translate-y-6",
-        "data-[expanded=false]:[&>*:nth-child(1)]:scale-80",
-        "data-[expanded=false]:[&>*:nth-child(2)]:scale-85",
-        "data-[expanded=false]:[&>*:nth-child(3)]:scale-90",
-        "data-[expanded=false]:[&>*:nth-child(n+4)]:scale-100",
         className,
       )}
       aria-label="Notifications"

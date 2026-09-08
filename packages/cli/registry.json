@@ -78,6 +78,19 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/drawer.tsx"
   },
+  "form-item": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/form-item.tsx",
+    "dependence": [
+      "cn",
+      "input",
+      "text-area",
+      "select",
+      "password",
+      "number-field",
+      "form"
+    ]
+  },
   "form": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/form.tsx"
@@ -92,7 +105,10 @@
   },
   "input": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/input.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/input.tsx",
+    "dependence": [
+      "input-group"
+    ]
   },
   "kbd": {
     "type": "component",
@@ -114,7 +130,7 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/number-field.tsx",
     "dependence": [
-      "input"
+      "input-group"
     ]
   },
   "pager": {
@@ -127,7 +143,10 @@
   },
   "password": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/password.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/password.tsx",
+    "dependence": [
+      "input-group"
+    ]
   },
   "picker": {
     "type": "component",
@@ -236,17 +255,11 @@
       "steps"
     ]
   },
-  "form-item": {
+  "input-group": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/form-item.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/input-group/index.tsx",
     "dependence": [
-      "cn",
-      "input",
-      "text-area",
-      "select",
-      "password",
-      "number-field",
-      "form"
+      ".."
     ]
   },
   "cn": {

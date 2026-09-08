@@ -112,8 +112,10 @@ Wraps a label, control, and helper text into a single accessible field. The cont
 | `invalid`     | `React.ReactNode`                          | -            | Controlled error message. A string value is rendered as an error and sets `aria-invalid` |
 | `direction`   | `"vertical" \| "horizontal"`               | `"vertical"` | Layout direction of label and control                                                    |
 | `inputId`     | `string`                                   | -            | Custom id for the underlying control                                                     |
-| `classNames`  | `{ root?: ClassNameValue; label?: ClassNameValue; hint?: ClassNameValue }` | - | Custom classes for the field container, label, and hint text |
-| `styles`      | `{ root?: React.CSSProperties; label?: React.CSSProperties; hint?: React.CSSProperties }` | - | Inline styles for the field container, label, and hint text |
+| `className`   | `ClassNameValue`                           | -            | Custom classes, applied to the field container                            |
+| `style`       | `React.CSSProperties`                      | -            | Inline styles, applied to the field container                             |
+| `classNames`  | `{ label?: ClassNameValue; hint?: ClassNameValue }` | -   | Custom classes for the label and hint text                  |
+| `styles`      | `{ label?: React.CSSProperties; hint?: React.CSSProperties }` | - | Inline styles for the label and hint text                   |
 | `validConfig` | `{ validate?: (value: string) => string \| boolean \| null \| undefined \| Promise<string \| boolean \| null \| undefined>; trigger?: "onChange" \| "onBlur"; debounceMs?: number }` | - | Client-side validation configuration, see the table below |
 | `children`    | `(field: FormFieldArg) => React.ReactNode` | -            | Render prop that receives the input props for the underlying control                     |
 | `...props`    | `React.ComponentProps<"div">`              | -            | Supports all native div props (except `children`, `className`, `style`), spread onto the field container |
@@ -152,8 +154,10 @@ Groups related controls — e.g. a checkbox or radio group — into a single reg
 | `description` | `React.ReactNode`                               | -         | Helper text shown below the group. Replaced by the error message when invalid             |
 | `invalid`     | `React.ReactNode`                               | -         | Controlled error message. A string value is rendered as an error and sets `aria-invalid`  |
 | `disabled`    | `boolean`                                       | `false`   | Disable every control inside the fieldset                                                 |
-| `classNames`  | `{ root?: ClassNameValue; legend?: ClassNameValue; hint?: ClassNameValue }` | - | Custom classes for the fieldset, legend, and hint text |
-| `styles`      | `{ root?: React.CSSProperties; legend?: React.CSSProperties; hint?: React.CSSProperties }` | - | Inline styles for the fieldset, legend, and hint text |
+| `className`   | `ClassNameValue`                                | -         | Custom classes, applied to the fieldset element                     |
+| `style`       | `React.CSSProperties`                           | -         | Inline styles, applied to the fieldset element                      |
+| `classNames`  | `{ legend?: ClassNameValue; hint?: ClassNameValue }` | -    | Custom classes for the legend and hint text             |
+| `styles`      | `{ legend?: React.CSSProperties; hint?: React.CSSProperties }` | - | Inline styles for the legend and hint text              |
 | `validConfig` | `{ validate?: (value: string[] \| string) => string \| boolean \| undefined \| Promise<string \| boolean \| undefined>; trigger?: "onChange" \| "onBlur"; debounceMs?: number }` | - | Client-side validation configuration, same shape as `Form.Field`'s, except `validate` receives the group value |
 | `children`    | `(field: FieldsetRenderArg) => React.ReactNode` | -         | Render prop that receives the group value and handlers                                    |
 | `...props`    | `React.ComponentPropsWithRef<"fieldset">`       | -         | Supports all native fieldset props (except `children`, `className`, `style`), spread onto the fieldset element |

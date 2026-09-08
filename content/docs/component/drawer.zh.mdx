@@ -52,8 +52,10 @@ description: 支持多种位置选项的滑入面板组件
 | `onBackdropClick` | `(e: React.MouseEvent<HTMLDialogElement>) => void` | - | 点击 dialog 遮罩时的回调；通过调用 `onOpenChange(false)` 关闭        |
 | `onCancel`        | `(e: React.SyntheticEvent<HTMLDialogElement>) => void` | - | dialog 被取消（Esc）时的额外回调；默认关闭行为始终先执行        |
 | `drag`            | `DrawerDragApi`                          | -      | 拖拽手势对象，用于实现可调整尺寸抽屉                                       |
-| `classNames`      | `{ root?: ClassNameValue; wrapper?: ClassNameValue; drag?: ClassNameValue; content?: ClassNameValue }` | - | 内部元素的自定义类名 |
-| `styles`          | `{ root?: React.CSSProperties; wrapper?: React.CSSProperties; drag?: React.CSSProperties; content?: React.CSSProperties }` | - | 内部元素的内联样式 |
+| `className`       | `ClassNameValue`                         | -      | 自定义类名，作用于原生 `<dialog>` 元素                                     |
+| `style`           | `React.CSSProperties`                    | -      | 内联样式，作用于原生 `<dialog>` 元素                                       |
+| `classNames`      | `{ wrapper?: ClassNameValue; drag?: ClassNameValue; content?: ClassNameValue }` | - | 内部元素的自定义类名 |
+| `styles`          | `{ wrapper?: React.CSSProperties; drag?: React.CSSProperties; content?: React.CSSProperties }` | - | 内部元素的内联样式 |
 | `children`        | `React.ReactNode`                        | -      | 抽屉面板内容                                                               |
 | `...props`        | `React.ComponentProps<"div">`            | -      | 透传到 `DrawerWrapper`，支持全部 div 原生属性                              |
 

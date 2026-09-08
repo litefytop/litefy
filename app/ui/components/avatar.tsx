@@ -10,7 +10,7 @@ export function AvatarRoot({ className, ...props }: AvatarRootProps) {
     <div
       {...props}
       className={cn(
-        "flex aspect-square overflow-hidden items-center justify-center size-12 text-2xl rounded-full",
+        "flex aspect-square overflow-hidden items-center justify-center size-12 text-2xl rounded-md",
         className,
       )}
     />

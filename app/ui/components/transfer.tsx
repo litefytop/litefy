@@ -112,7 +112,7 @@ export function Transfer({
     <div className={cn("flex items-center gap-3", className)}>
       <div
         className={cn(
-          "flex min-w-0 flex-1 flex-col rounded-md border bg-background",
+          "flex min-w-0 flex-1 flex-col rounded-lg border",
           classNames?.panel,
         )}
       >
@@ -137,7 +137,7 @@ export function Transfer({
           aria-label="Move right"
           disabled={sourceChecked.size === 0}
           onClick={moveRight}
-          className="inline-flex size-8 cursor-pointer items-center justify-center rounded-md border bg-background text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
+          className="inline-flex size-8 cursor-pointer items-center justify-center rounded-md border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         >
           <ArrowRight className="size-4" />
         </button>
@@ -146,14 +146,14 @@ export function Transfer({
           aria-label="Move left"
           disabled={targetChecked.size === 0}
           onClick={moveLeft}
-          className="inline-flex size-8 cursor-pointer items-center justify-center rounded-md border bg-background text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
+          className="inline-flex size-8 cursor-pointer items-center justify-center rounded-md border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         >
           <ArrowLeft className="size-4" />
         </button>
       </div>
       <div
         className={cn(
-          "flex min-w-0 flex-1 flex-col rounded-md border bg-background",
+          "flex min-w-0 flex-1 flex-col rounded-lg border",
           classNames?.panel,
         )}
       >

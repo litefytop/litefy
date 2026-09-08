@@ -15,6 +15,14 @@ description: 按 variant 渲染成品控件的表单字段，内置标签、描�
   name="form-item"
 />
 
+### 校验
+
+`validate` 支持两种错误形态：返回**字符串**是硬错误（显示文案，同时控件出现 danger 边框 / `aria-invalid`）；返回 **`{ message, invalid: false }`** 则只显示文案、不标记控件——适合必填项为空时的提示：空值只出错误文字，等真正填入了错误的值才出现控件错误样式。
+
+<ComponentPreview
+  name="form-item-validation"
+/>
+
 ## API 参考
 
 ### FormItem
@@ -28,7 +36,7 @@ description: 按 variant 渲染成品控件的表单字段，内置标签、描�
 | `label`           | `React.ReactNode`                                                                                                                                                 | -          | 渲染在控件上方的标签                                                                      |
 | `description`     | `React.ReactNode`                                                                                                                                                 | -          | 渲染在控件下方的辅助文字，校验失败时会被错误信息替代                                      |
 | `required`        | `boolean`                                                                                                                                                         | -          | 标记标签必填并使控件变为 `required`                                                       |
-| `validate`        | `(value: string) => string \| boolean \| null \| undefined \| Promise<string \| boolean \| null \| undefined>`                                                    | -          | 返回错误信息（字符串）、`false` 表示无效但不显示文案，`null`/`undefined`/`true` 表示通过 |
+| `validate`        | `(value: string) => string \| { message: string; invalid?: boolean } \| boolean \| null \| undefined \| Promise<...>`                                             | -          | 字符串是硬错误（文案 + 控件 `aria-invalid`）；`{ message, invalid: false }` 只显示文案、不标记控件；`false` 表示无效但不显示文案；`null`/`undefined`/`true` 表示通过 |
 | `validateTrigger` | `"onChange" \| "onBlur"`                                                                                                                                          | `"onBlur"` | 校验触发时机。字段已处于无效状态时，每次变更也会重新校验                                  |
 | `disabled`        | `boolean`                                                                                                                                                         | -          | 禁用控件                                                                                  |
 | `className`       | `ClassNameValue`                                                                                                                                                  | -          | 根容器自定义样式                                                                          |

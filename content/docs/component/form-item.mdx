@@ -15,6 +15,14 @@ description: A self-managing form field that renders a finished control per vari
   name="form-item"
 />
 
+### Validation
+
+`validate` supports two error shapes: return a **string** for a hard error (message plus the danger border / `aria-invalid` on the control), or **`{ message, invalid: false }`** for a message-only error — handy for empty required fields, where the hint text should appear but the control keeps its normal style until a wrong value is actually entered.
+
+<ComponentPreview
+  name="form-item-validation"
+/>
+
 ## API Reference
 
 ### FormItem
@@ -28,7 +36,7 @@ A form field rendered as a finished control. The prop set is a discriminated uni
 | `label`          | `React.ReactNode`                                                                                                                                                 | -          | Label rendered above the control                                                                   |
 | `description`    | `React.ReactNode`                                                                                                                                                 | -          | Helper text below the control; replaced by the error message when validation fails                 |
 | `required`       | `boolean`                                                                                                                                                         | -          | Marks the label and makes the control `required`                                                   |
-| `validate`       | `(value: string) => string \| boolean \| null \| undefined \| Promise<string \| boolean \| null \| undefined>`                                                    | -          | Returns an error message (string), `false` for a bare invalid state, or `null`/`undefined`/`true` when valid |
+| `validate`       | `(value: string) => string \| { message: string; invalid?: boolean } \| boolean \| null \| undefined \| Promise<...>`                                             | -          | A string is a hard error (message + `aria-invalid` on the control); `{ message, invalid: false }` shows the message without styling the control; `false` is a bare invalid state; `null`/`undefined`/`true` pass |
 | `validateTrigger` | `"onChange" \| "onBlur"`                                                                                                                                         | `"onBlur"` | When `validate` runs. Once the field is invalid, it also re-validates on every change              |
 | `disabled`       | `boolean`                                                                                                                                                         | -          | Disables the control                                                                               |
 | `className`      | `ClassNameValue`                                                                                                                                                  | -          | Root container custom styles                                                                       |

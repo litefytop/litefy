@@ -58,8 +58,8 @@ A dropzone built with the parts below, encapsulating validation and file item li
 | `actionsRef` | `React.Ref<UploadActions>` | - | Imperative handle exposing `remove(uid)` and `clear()`; `remove` aborts the item's controller before firing `onFileRemove` |
 | `className` | `ClassNameValue` | - | Custom class for the root |
 | `style` | `React.CSSProperties` | - | Custom inline style for the root |
-| `classNames` | `{ root?; dropzone?; hiddenInput? }` | - | Custom classes for each part |
-| `styles` | `{ root?; dropzone?; hiddenInput? }` | - | Custom inline styles for each part |
+| `classNames` | `{ dropzone?; hiddenInput? }` | - | Custom classes for each part |
+| `styles` | `{ dropzone?; hiddenInput? }` | - | Custom inline styles for each part |
 
 All controllers are aborted when the component unmounts.
 

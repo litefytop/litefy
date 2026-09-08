@@ -13,7 +13,7 @@ export function CalendarRoot({ className, ...props }: CalendarRootProps) {
     <div
       {...props}
       className={cn(
-        "inline-flex flex-col gap-2 rounded-lg border border-border bg-background p-3",
+        "inline-flex flex-col gap-2 rounded-lg border border-border bg-background text-foreground p-3",
         className,
       )}
     />
@@ -292,7 +292,6 @@ export function CalendarGridCell({
         "inline-flex h-8 w-8 items-center justify-center rounded-md text-sm tabular-nums cursor-pointer select-none",
         "transition-colors hover:bg-muted",
         "aria-selected:bg-primary aria-selected:text-primary-foreground aria-selected:hover:bg-primary",
-        "disabled:pointer-events-none disabled:opacity-50",
         "data-outside-month:opacity-40",
         className,
       )}
@@ -371,8 +370,7 @@ export function CalendarMonthGrid({
                 "inline-flex h-8 items-center justify-center rounded-md text-sm tabular-nums cursor-pointer select-none",
                 "transition-colors hover:bg-muted",
                 "aria-selected:bg-primary aria-selected:text-primary-foreground aria-selected:hover:bg-primary",
-                "disabled:pointer-events-none disabled:opacity-50",
-              )}
+                      )}
             >
               {Calendar.calendarMonthLabels[month.month - 1]}
             </button>
@@ -451,8 +449,7 @@ export function CalendarYearGrid({
                 "inline-flex h-8 items-center justify-center rounded-md text-sm tabular-nums cursor-pointer select-none",
                 "transition-colors hover:bg-muted",
                 "aria-selected:bg-primary aria-selected:text-primary-foreground aria-selected:hover:bg-primary",
-                "disabled:pointer-events-none disabled:opacity-50",
-              )}
+                      )}
             >
               {year.year}
             </button>

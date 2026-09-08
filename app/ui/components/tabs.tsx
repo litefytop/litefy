@@ -83,7 +83,7 @@ export function TabsList({
           onClick={handleScrollPrev}
           disabled={!canScrollLeft}
           aria-label="Scroll tabs left"
-          className="size-8 flex items-center justify-center rounded-md hover:text-primary disabled:opacity-25 disabled:cursor-not-allowed shrink-0"
+          className="size-8 flex items-center justify-center rounded-md hover:text-primary shrink-0"
         >
           <ChevronLeft className="size-4" />
         </button>
@@ -102,7 +102,7 @@ export function TabsList({
           onClick={handleScrollNext}
           disabled={!canScrollRight}
           aria-label="Scroll tabs right"
-          className="size-8 flex items-center justify-center rounded-md hover:text-primary disabled:opacity-25 disabled:cursor-not-allowed shrink-0"
+          className="size-8 flex items-center justify-center rounded-md hover:text-primary shrink-0"
         >
           <ChevronRight className="size-4" />
         </button>
@@ -219,7 +219,7 @@ export function TabsContent({
       role="tabpanel"
       aria-labelledby={`tabs-trigger-${value}`}
       data-state="active"
-      className={cn("w-full p-4 rounded-md", className)}
+      className={cn("w-full p-4 rounded-lg", className)}
     >
       {children}
     </div>

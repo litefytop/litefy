@@ -33,6 +33,14 @@ description: 支持键盘步进（ArrowUp / ArrowDown）、千分位分隔与前
   name="number-field-controlled"
 />
 
+### 内嵌
+
+无边框的内联变体，两侧是可点击的 Minus / Plus 步进按钮——适合放在工具栏、表格单元格、卡片底部等紧凑场景。步进器是真实的按钮（`NumberStepper` 零件）；输入框上的键盘步进依然可用。该模式下 `prefix`、`suffix`、`indicator` 不生效，外壳仅在无效状态时出现边框。
+
+<ComponentPreview 
+  name="number-field-embedded"
+/>
+
 ### 自定义
 
 步进提示、千分位分隔与前后缀是成品专属特性。需要完全自定义面板时，用 [Input](/docs/component/input) 的零件（`InputGroup`、`NumberRoot`、普通内容）自行拼装并自管数值 —— 标准外壳样式来自 `InputGroup`。
@@ -64,9 +72,12 @@ description: 支持键盘步进（ArrowUp / ArrowDown）、千分位分隔与前
 | `prefix` | `React.ReactNode` | - | 渲染在数字前的内容（如货币符号） |
 | `suffix` | `React.ReactNode` | - | 渲染在数字后的内容 —— 设置时取代步进提示 |
 | `thousands` | `boolean` | `false` | 未聚焦时整数部分按千分位分组显示；提交值始终不带分隔符 |
-| `indicator` | `boolean` | `true` | 是否在尾部区域显示非交互的上下提示图标（设置 `suffix` 时不显示） |
-| `classNames` | `{ group?; leading?; trailing?; root? }` —— 值均为 `ClassNameValue` | - | 各零件的自定义类名 |
-| `styles` | `{ group?; leading?; trailing?; root? }` —— 值均为 `React.CSSProperties` | - | 各零件的内联样式 |
+| `indicator` | `boolean` | `true` | 是否在尾部区域显示非交互的上下提示图标（设置 `suffix` 时不显示；`embedded` 下忽略） |
+| `variant` | `"default" \| "embedded"` | `"default"` | `"embedded"` 渲染带可点击步进器的无边框内联输入框 |
+| `className` | `ClassNameValue` | - | 自定义类名，作用于外壳容器 |
+| `style` | `React.CSSProperties` | - | 内联样式，作用于外壳容器 |
+| `classNames` | `{ leading?; trailing?; root? }` —— 值均为 `ClassNameValue` | - | 前后缀插槽与内部输入框（`root`）的自定义类名 |
+| `styles` | `{ leading?; trailing?; root? }` —— 值均为 `React.CSSProperties` | - | 前后缀插槽与内部输入框（`root`）的内联样式 |
 | `disabled` | `boolean` | `false` | 禁用整个字段 |
 | `...props` | `React.ComponentProps<"input">` | - | 支持所有原生 input 属性（除 `type`、`className`），如 `onBlur` |
 
@@ -82,6 +93,18 @@ description: 支持键盘步进（ArrowUp / ArrowDown）、千分位分隔与前
 | ----------- | ------------------------------ | ------- | ------------------------------------------------------ |
 | `className` | `ClassNameValue`               | -       | 自定义类名                                              |
 | `...props`  | `React.ComponentProps<"input">` | -      | 支持所有原生 input 属性（除 `className`），如 `value`、`onChange` 与 `role="spinbutton"` 的 aria 属性 |
+
+#### NumberStepper
+
+`embedded` 变体使用的可点击步进按钮——`direction="up"` 渲染 Plus 图标、`direction="down"` 渲染 Minus 图标；`children` 可覆盖图标。
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `direction` | `"up" \| "down"` | `"up"` | 图标与无障碍标签（`Increase` / `Decrease`） |
+| `className` | `ClassNameValue` | - | 自定义类名 |
+| `children` | `React.ReactNode` | - | 自定义图标内容，替换默认图标 |
+
+支持所有原生 `<button>` 属性（`type` 除外）。
 
 #### 自定义拼装
 

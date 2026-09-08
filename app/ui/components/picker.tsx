@@ -20,11 +20,10 @@ export function PickerInput({ className, ...props }: PickerInputProps) {
     <input
       {...props}
       className={cn(
-        "h-9 w-full px-3 py-2 text-sm border rounded-md bg-background/90 outline-none cursor-pointer",
+        "h-9 w-full px-3 py-2 text-sm border rounded-md outline-none cursor-pointer",
         "placeholder:text-muted-foreground focus:ring-inset focus:ring-1 focus:ring-ring",
         "aria-invalid:border-danger aria-invalid:text-danger",
         "aria-invalid:focus-visible:outline-1 aria-invalid:focus-visible:outline-danger aria-invalid:focus-visible:ring-3 aria-invalid:focus-visible:ring-danger/50",
-        "disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
     />
@@ -41,13 +40,12 @@ export function PickerContent({ className, ...props }: PickerContentProps) {
       popover="manual"
       tabIndex={-1}
       {...props}
-      className={cn("bg-background text-foreground border shadow-lg rounded-md", className)}
+      className={cn("bg-background text-foreground border shadow-lg rounded-lg", className)}
     />
   );
 }
 
 export interface PickerClassNames {
-  root?: ClassNameValue;
   input?: ClassNameValue;
   trailing?: ClassNameValue;
   popover?: ClassNameValue;
@@ -160,7 +158,7 @@ export function Picker({
     <>
       <PickerRoot
         style={{ anchorName, ...style }}
-        className={cn(className, classNames?.root)}
+        className={cn(className)}
         data-open={open || undefined}
       >
         <PickerInput

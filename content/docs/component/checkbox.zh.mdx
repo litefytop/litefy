@@ -49,6 +49,8 @@ description: 复选框组件，支持受控、非受控、分组和自定义指�
 | `onChange`        | `(e: React.ChangeEvent<HTMLInputElement>) => void`                 | -       | 原生 change 回调                                                                           |
 | `onCheckedChange` | `(checked: boolean) => void`                                       | -       | 选中状态变化回调                                                                           |
 | `indicator`       | `React.ReactNode`                                                  | -       | 自定义指示器内容，替换默认图标                                                             |
+| `className`       | `ClassNameValue`                                                   | -       | 自定义类名，作用于复选框方块                                                               |
+| `style`           | `React.CSSProperties`                                              | -       | 内联样式，作用于复选框方块                                                                 |
 | `classNames`      | `{ indicator?: ClassNameValue; label?: ClassNameValue }`           | -       | 指示器和 label 的自定义类名                                                                |
 | `styles`          | `{ indicator?: React.CSSProperties; label?: React.CSSProperties }` | -       | 指示器和 label 的内联样式                                                                  |
 | `disabled`        | `boolean`                                                          | `false` | 禁用复选框                                                                                 |

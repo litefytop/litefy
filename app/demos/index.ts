@@ -13,6 +13,10 @@ import MasonryCustomDemo from "./masonry/custom";
 import masonryCustomCode from "./masonry/custom.tsx?raw";
 import FormItemDemo from "./form-item/basic";
 import formItemCode from "./form-item/basic.tsx?raw";
+import FormItemValidationDemo from "./form-item/validation";
+import formItemValidationCode from "./form-item/validation.tsx?raw";
+import InputGroupDemo from "./input-group/basic";
+import inputGroupCode from "./input-group/basic.tsx?raw";
 import FormPartsDemo from "./form/parts";
 import formPartsCode from "./form/parts.tsx?raw";
 import BadgeBasicDemo from "./badge/basic";
@@ -163,6 +167,8 @@ import NumberFieldControlledDemo from "./number-field/controlled";
 import numberFieldControlledCode from "./number-field/controlled.tsx?raw";
 import NumberFieldCustomDemo from "./number-field/custom";
 import numberFieldCustomCode from "./number-field/custom.tsx?raw";
+import NumberFieldEmbeddedDemo from "./number-field/embedded";
+import numberFieldEmbeddedCode from "./number-field/embedded.tsx?raw";
 import NumberFieldInvalidDemo from "./number-field/invalid";
 import numberFieldInvalidCode from "./number-field/invalid.tsx?raw";
 import PagerBasicDemo from "./pager/basic";
@@ -225,8 +231,6 @@ import TimelineBasicDemo from "./timeline/basic";
 import timelineBasicCode from "./timeline/basic.tsx?raw";
 import ToastBasicDemo from "./toast/basic";
 import toastBasicCode from "./toast/basic.tsx?raw";
-import ToastActionsDemo from "./toast/actions";
-import toastActionsCode from "./toast/actions.tsx?raw";
 import ToastPromiseDemo from "./toast/promise";
 import toastPromiseCode from "./toast/promise.tsx?raw";
 import WizardBasicDemo from "./wizard/basic";
@@ -243,8 +247,6 @@ import SwitchBasicDemo from "./switch/basic";
 import switchBasicCode from "./switch/basic.tsx?raw";
 import SwitchControlledDemo from "./switch/controlled";
 import switchControlledCode from "./switch/controlled.tsx?raw";
-import SwitchCustomStylingDemo from "./switch/custom-styling";
-import switchCustomStylingCode from "./switch/custom-styling.tsx?raw";
 import SwitchCustomDemo from "./switch/custom";
 import switchCustomCode from "./switch/custom.tsx?raw";
 import SwitchDisabledDemo from "./switch/disabled";
@@ -275,6 +277,8 @@ import TransferPickerBasicDemo from "./transfer-picker/basic";
 import transferPickerBasicCode from "./transfer-picker/basic.tsx?raw";
 import TransferPickerMultipleDemo from "./transfer-picker/multiple";
 import transferPickerMultipleCode from "./transfer-picker/multiple.tsx?raw";
+import TransferPickerPopoverDemo from "./transfer-picker/popover";
+import transferPickerPopoverCode from "./transfer-picker/popover.tsx?raw";
 import UseDragBasicDemo from "./use-drag/basic";
 import useDragBasicCode from "./use-drag/basic.tsx?raw";
 import UseRemotePaginationBasicDemo from "./use-remote-pagination/basic";
@@ -310,7 +314,7 @@ export const demos: Record<string, DemoItem> = {
     component: CollapseCustomDemo,
     code: collapseCustomCode,
   },
-  "collapse": {
+  collapse: {
     component: CollapseAccordionDemo,
     code: collapseAccordionCode,
   },
@@ -519,6 +523,14 @@ export const demos: Record<string, DemoItem> = {
     component: FormItemDemo,
     code: formItemCode,
   },
+  "form-item-validation": {
+    component: FormItemValidationDemo,
+    code: formItemValidationCode,
+  },
+  "input-group-basic": {
+    component: InputGroupDemo,
+    code: inputGroupCode,
+  },
   "form-parts": {
     component: FormPartsDemo,
     code: formPartsCode,
@@ -622,6 +634,10 @@ export const demos: Record<string, DemoItem> = {
   "number-field-controlled": {
     component: NumberFieldControlledDemo,
     code: numberFieldControlledCode,
+  },
+  "number-field-embedded": {
+    component: NumberFieldEmbeddedDemo,
+    code: numberFieldEmbeddedCode,
   },
   "number-field-custom": {
     component: NumberFieldCustomDemo,
@@ -775,10 +791,6 @@ export const demos: Record<string, DemoItem> = {
     component: ToastBasicDemo,
     code: toastBasicCode,
   },
-  "toast-actions": {
-    component: ToastActionsDemo,
-    code: toastActionsCode,
-  },
   "toast-promise": {
     component: ToastPromiseDemo,
     code: toastPromiseCode,
@@ -836,10 +848,6 @@ export const demos: Record<string, DemoItem> = {
     component: SwitchControlledDemo,
     code: switchControlledCode,
   },
-  "switch-custom-styling": {
-    component: SwitchCustomStylingDemo,
-    code: switchCustomStylingCode,
-  },
   "switch-custom": {
     component: SwitchCustomDemo,
     code: switchCustomCode,
@@ -867,6 +875,10 @@ export const demos: Record<string, DemoItem> = {
   "transfer-picker-multiple": {
     component: TransferPickerMultipleDemo,
     code: transferPickerMultipleCode,
+  },
+  "transfer-picker-popover": {
+    component: TransferPickerPopoverDemo,
+    code: transferPickerPopoverCode,
   },
   "upload-basic": {
     component: UploadBasicDemo,

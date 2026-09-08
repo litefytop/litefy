@@ -77,15 +77,15 @@ export interface BreadcrumbDataItem {
 
 export interface BreadcrumbProps extends Omit<BreadcrumbRootProps, "className"> {
   items: BreadcrumbDataItem[];
+  className?: ClassNameValue;
+  style?: React.CSSProperties;
   classNames?: {
-    root?: ClassNameValue;
     list?: ClassNameValue;
     link?: ClassNameValue;
     page?: ClassNameValue;
     separator?: ClassNameValue;
   };
   styles?: {
-    root?: React.CSSProperties;
     list?: React.CSSProperties;
     link?: React.CSSProperties;
     page?: React.CSSProperties;
@@ -93,9 +93,16 @@ export interface BreadcrumbProps extends Omit<BreadcrumbRootProps, "className"> 
   };
 }
 
-export function Breadcrumb({ items, classNames, styles, ...props }: BreadcrumbProps) {
+export function Breadcrumb({
+  items,
+  className,
+  style,
+  classNames,
+  styles,
+  ...props
+}: BreadcrumbProps) {
   return (
-    <BreadcrumbRoot {...props} className={cn(classNames?.root)} style={styles?.root}>
+    <BreadcrumbRoot {...props} className={cn(className)} style={style}>
       <BreadcrumbList className={classNames?.list} style={styles?.list}>
         {items.map((item, index) => {
           const isLast = index === items.length - 1;

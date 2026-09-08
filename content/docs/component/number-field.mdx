@@ -33,6 +33,14 @@ Manage the value externally with controlled state.
   name="number-field-controlled"
 />
 
+### Embedded
+
+A borderless inline variant with clickable Minus / Plus steppers on both sides — for compact placement inside toolbars, table cells and card footers. The steppers are real buttons (`NumberStepper` parts); keyboard stepping still works on the input. `prefix`, `suffix` and `indicator` are ignored in this mode, and the shell only gains a border in the invalid state.
+
+<ComponentPreview 
+  name="number-field-embedded"
+/>
+
 ### Custom
 
 The composite owns the distinguishing features (stepping cue, thousands separators, prefix / suffix). For a fully custom panel, assemble the [Input](/docs/component/input) parts (`InputGroup`, `NumberRoot`, plain content) and drive the value yourself — the standard shell styles come from `InputGroup`.
@@ -49,7 +57,10 @@ Ready-to-use composite components.
 
 #### NumberField
 
-A numeric input with keyboard stepping (`ArrowUp` / `ArrowDown`, no clickable buttons), thousands-separator display and prefix / suffix slots.
+A numeric input with keyboard stepping (`ArrowUp` / `ArrowDown`), thousands-separator display and prefix / suffix slots. Two variants:
+
+- `default` — bordered shell; the trailing area shows the non-interactive step cue or a suffix.
+- `embedded` — borderless inline field with clickable Minus / Plus steppers.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
@@ -64,9 +75,12 @@ A numeric input with keyboard stepping (`ArrowUp` / `ArrowDown`, no clickable bu
 | `prefix` | `React.ReactNode` | - | Content rendered before the number (e.g. a currency symbol) |
 | `suffix` | `React.ReactNode` | - | Content rendered after the number — replaces the stepping cue when set |
 | `thousands` | `boolean` | `false` | Group the integer part with thousands separators while the input is not focused; the committed value stays unformatted |
-| `indicator` | `boolean` | `true` | Show the non-interactive up/down cue in the trailing area (no effect while a `suffix` is set) |
-| `classNames` | `{ group?; leading?; trailing?; root? }` — each `ClassNameValue` | - | Custom classes per part |
-| `styles` | `{ group?; leading?; trailing?; root? }` — each `React.CSSProperties` | - | Inline styles per part |
+| `indicator` | `boolean` | `true` | Show the non-interactive up/down cue in the trailing area (no effect while a `suffix` is set; ignored in `embedded`) |
+| `variant` | `"default" \| "embedded"` | `"default"` | `"embedded"` renders the borderless inline field with clickable steppers |
+| `className` | `ClassNameValue` | - | Custom classes, applied to the group shell |
+| `style` | `React.CSSProperties` | - | Inline styles, applied to the group shell |
+| `classNames` | `{ leading?; trailing?; root? }` — each `ClassNameValue` | - | Custom classes for the prefix/suffix slots and the inner input (`root`) |
+| `styles` | `{ leading?; trailing?; root? }` — each `React.CSSProperties` | - | Inline styles for the prefix/suffix slots and the inner input (`root`) |
 | `disabled` | `boolean` | `false` | Disable the entire field |
 | `...props` | `React.ComponentProps<"input">` | - | Supports all native input props (except `type`, `className`), such as `onBlur` |
 
@@ -82,6 +96,18 @@ The state-carrying text input, borderless by design (the wrapper carries the bor
 | ----------- | ------------------------------ | ------- | ------------------------------------------------------ |
 | `className` | `ClassNameValue`               | -       | Custom class name                                      |
 | `...props`  | `React.ComponentProps<"input">` | -      | Supports all native input props (except `className`), such as `value`, `onChange` and `role="spinbutton"` aria attributes |
+
+#### NumberStepper
+
+The clickable step button used by the `embedded` variant — renders a Plus (`direction="up"`) or Minus (`direction="down"`) icon; `children` overrides the icon.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `direction` | `"up" \| "down"` | `"up"` | Icon and accessible label (`Increase` / `Decrease`) |
+| `className` | `ClassNameValue` | - | Custom CSS class |
+| `children` | `React.ReactNode` | - | Custom icon content, replaces the default icon |
+
+Supports all native `<button>` attributes (except `type`).
 
 #### Custom Assembly
 

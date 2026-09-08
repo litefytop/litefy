@@ -67,8 +67,8 @@ export function ComponentPreview({
           <>
             <Collapse
               label={displayLabel}
+              className="border"
               classNames={{
-                root: "border",
                 trigger: "text-md font-medium",
               }}
             >

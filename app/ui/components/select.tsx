@@ -16,7 +16,7 @@ export type SelectOptionGroup = {
 export interface SelectProps
   extends Omit<
     React.ComponentProps<"button">,
-    "onChange" | "value" | "defaultValue" | "children" | "type"
+    "onChange" | "value" | "defaultValue" | "children" | "type" | "className" | "style"
   > {
   options: (SelectOption | SelectOptionGroup)[];
   value?: string;
@@ -26,14 +26,14 @@ export interface SelectProps
   invalid?: boolean;
   required?: boolean;
   name?: string;
+  className?: ClassNameValue;
+  style?: React.CSSProperties;
   classNames?: {
-    trigger?: ClassNameValue;
     panel?: ClassNameValue;
     label?: ClassNameValue;
     option?: ClassNameValue;
   };
   styles?: {
-    trigger?: React.CSSProperties;
     panel?: React.CSSProperties;
   };
 }
@@ -48,6 +48,8 @@ export function Select({
   disabled,
   required,
   name,
+  className,
+  style,
   classNames,
   styles,
   ...props
@@ -199,15 +201,14 @@ export function Select({
         onKeyDown={handleTriggerKeyDown}
         data-open={open || undefined}
         className={cn(
-          "flex h-9 w-full min-w-3xs max-w-sm items-center justify-between gap-2 rounded-md border bg-background/90 px-3 py-1 text-sm cursor-pointer",
+          "flex h-9 w-full min-w-3xs max-w-sm items-center justify-between gap-2 rounded-md border px-3 py-1 text-sm cursor-pointer",
           "focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20",
           "aria-invalid:border-danger aria-invalid:text-danger",
           "aria-invalid:focus-visible:outline-1 aria-invalid:focus-visible:outline-danger aria-invalid:focus-visible:ring-3 aria-invalid:focus-visible:ring-danger/50",
-          disabled && "cursor-not-allowed opacity-50",
           !selectedLabel && "text-muted-foreground",
-          classNames?.trigger,
+          className,
         )}
-        style={{ anchorName, ...styles?.trigger }}
+        style={{ anchorName, ...style }}
       >
         <span className="truncate">{selectedLabel ?? placeholder ?? ""}</span>
         <ChevronDown
@@ -223,7 +224,7 @@ export function Select({
         role="listbox"
         aria-label={placeholder}
         className={cn(
-          "bg-background text-foreground max-h-64 overflow-y-auto rounded-md border p-1 shadow-lg",
+          "bg-background text-foreground max-h-64 overflow-y-auto rounded-lg border p-1 shadow-lg",
           classNames?.panel,
         )}
         style={{

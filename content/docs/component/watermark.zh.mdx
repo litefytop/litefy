@@ -48,8 +48,8 @@ description: 基于 canvas 的水印组件，将文本平铺覆盖在内容之�
 | `children`   | `React.ReactNode`                                          | -                  | 被水印覆盖的内容                                           |
 | `className`  | `ClassNameValue`                                           | -                  | 自定义类名，作用于 root                                    |
 | `style`      | `React.CSSProperties`                                      | -                  | 内联样式，作用于 root                                      |
-| `classNames` | `{ root?: ClassNameValue; canvas?: ClassNameValue }`        | -                  | root 和 canvas 的自定义类名                                |
-| `styles`     | `{ root?: React.CSSProperties; canvas?: React.CSSProperties }` | -               | root 和 canvas 的内联样式                                  |
+| `classNames` | `{ canvas?: ClassNameValue }` | - | canvas 的自定义类名 |
+| `styles` | `{ canvas?: React.CSSProperties }` | - | canvas 的内联样式 |
 | `...props`   | `React.ComponentProps<"div">`                              | -                  | 支持全部 div 原生属性（除 `className`、`style`），透传给 root |
 
 `WatermarkColor` 支持语义 token `"muted" \| "muted-foreground" \| "primary" \| "primary-foreground" \| "secondary" \| "secondary-foreground" \| "accent"` —— 通过 CSS 变量解析并响应明暗模式切换 —— 也支持任意自定义 CSS 颜色字符串。

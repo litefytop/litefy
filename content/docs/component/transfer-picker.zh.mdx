@@ -1,15 +1,17 @@
 ---
 title: Transfer Picker 穿梭选择器
-description: 由 Popover、Input、List 和 Checkbox 拼装而成的穿梭选择器 —— 不提供组件源码，仅提供组合示范
+description: 由 Input、List 和 Checkbox 拼装而成的穿梭选择器 —— 不提供组件源码，仅提供组合示范
 ---
 
-Transfer Picker 不是一个提供源码的组件。它是现有基础零件的组合：[Popover](/docs/component/popover) 的触发器与 [MultiSelect](/docs/component/multi-select) 一样显示选中数量，但面板打开的是穿梭式布局 —— 左侧是远程搜索的 `Input + List`（即 Combobox 拼装），选中的值会移动到右侧已选列表，支持批量删除。直接在页面中拼装即可 —— 下面的示例就是完整的实现。
+Transfer Picker 不是一个提供源码的组件。它是现有基础零件的组合：穿梭式双栏布局，左侧是远程搜索的 `Input + List`（即 Combobox 拼装），选中的值会移动到右侧已选列表，支持批量删除。直接在页面中拼装即可 —— 每个示例都是完整的实现。
 
 这个组件存在的意义在于数据量。分组版 [MultiSelect](/docs/component/multi-select) 适合数据量已知、可枚举的数据集（如地级市）；当数据在服务器上、总量未知时，分组已无意义，键入搜索是唯一可行的筛选方式 —— 所以左侧面板是远程列表，不渲染任何分组。
 
 ## 用法
 
-### 基础用法
+### 双栏选择
+
+基础变体：点击列表项或按 `Enter` 将其切换到右侧面板，左侧列表中已选中的项会打勾标记。
 
 <ComponentPreview
   name="transfer-picker-basic"
@@ -17,20 +19,36 @@ Transfer Picker 不是一个提供源码的组件。它是现有基础零件的�
 
 拼装要点：
 
-- [Popover](/docs/component/popover) 的触发器渲染形状恒定的文案 `` `Options (${selected.length})` ``，宽度稳定，避免布局抖动。
 - 左侧面板是受控 [Input](/docs/component/input) + [List](/docs/component/list)，由 `useRemotePagination` hook 驱动：键入防抖触发 `remote.search`，滚动到底触发 `remote.loadMore`，键盘导航采用受控 `highlightIndex` 模式（焦点始终留在输入框，`ArrowDown`/`ArrowUp` 移动高亮，`Enter` 确认）。
-- 点击列表项或按 `Enter` 在选中与取消之间切换 —— 已选条目在左侧列表以 √ 标记，右侧已选列表不显示数量。
-- 右侧已选列表的每个条目是 [Checkbox](/docs/component/checkbox)；表头提供全选框，勾选若干后点击表头 `Remove` 按钮批量删除（按钮不显示计数）。
+- 右侧已选列表的每个条目是 [Checkbox](/docs/component/checkbox)；表头复选框全选，`Remove` 按钮批量删除勾选项 —— 对应穿梭框"多选后反向移动"的交互。
 - 左侧列表刻意不分组 —— 对于服务器端总量未知的数据，用户已经用文字筛选了，分组失去意义。
 
-### 多选计数
+### 双栏多选
 
-需要每个条目携带数量时，在基础用法之上为右侧每个条目增加 [NumberField](/docs/component/number-field) 控制数量，表头展示所有条目的总数：
+计数变体：右侧每个条目携带一个由内嵌 `NumberField` 调整的数量，同一个值不会产生重复项 —— 需要多少直接调数量。
 
 <ComponentPreview
   name="transfer-picker-multiple"
 />
 
-该模式下点击列表项只做添加（已选条目在左侧打 √，重复点击无副作用），数量完全由 `NumberField` 调整；单选模式用不到 `NumberField`，因此拆成两个独立示例。
+拼装要点：
 
-各零件的完整属性表请参阅 [Popover API](/docs/component/popover)、[List API](/docs/component/list)、[Input API](/docs/component/input)、[Checkbox API](/docs/component/checkbox) 与 `useRemotePagination` hook。
+- 选中已存在的值不会重复添加；数量通过 `<NumberField variant="embedded">` 逐条调整（正整数，限制在 `1–99`）—— 无边框的内嵌步进器保持行内紧凑。
+- 表头复选框在标签旁显示总数量（`Selected (总数)`），为所有条目数量之和。
+- 其余与基础变体一致 —— 相同的远程左侧面板，相同的批量删除。
+
+### 配合 Popover
+
+把面板包进 [Popover](/docs/component/popover) 即可得到 MultiSelect 式的交付形态：触发按钮显示选中数量，面板在其下方打开，`Stash` / `Confirm` 关闭面板。
+
+<ComponentPreview
+  name="transfer-picker-popover"
+/>
+
+拼装要点：
+
+- Popover 的触发器渲染形状恒定的文案 `` `Options (${selected.length})` ``，宽度稳定，避免布局抖动。
+- Popover 的 `open` / `onOpenChange` 控制面板；关闭时重置 `highlightIndex`，`Stash` / `Confirm` 调用 `setOpen(false)`。
+- 键盘处理以 `open` 为守卫，面板不可见时方向键不导航。
+
+各零件的完整属性表请参阅 [List API](/docs/component/list)、[Input API](/docs/component/input)、[Checkbox API](/docs/component/checkbox)、[NumberField API](/docs/component/number-field)、[Popover API](/docs/component/popover) 与 `useRemotePagination` hook。

@@ -112,8 +112,10 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 | `invalid`     | `React.ReactNode`                          | -            | 受控的错误信息。传入字符串时会渲染为错误并设置 `aria-invalid` |
 | `direction`   | `"vertical" \| "horizontal"`               | `"vertical"` | 标签与控件的排列方向                                          |
 | `inputId`     | `string`                                   | -            | 底层控件的自定义 id                                           |
-| `classNames`  | `{ root?: ClassNameValue; label?: ClassNameValue; hint?: ClassNameValue }` | - | 字段容器、标签与提示文字的自定义类 |
-| `styles`      | `{ root?: React.CSSProperties; label?: React.CSSProperties; hint?: React.CSSProperties }` | - | 字段容器、标签与提示文字的内联样式 |
+| `className` | `ClassNameValue` | - | 自定义类名，作用于字段容器 |
+| `style` | `React.CSSProperties` | - | 内联样式，作用于字段容器 |
+| `classNames`  | `{ label?: ClassNameValue; hint?: ClassNameValue }` | - | 标签与提示文字的自定义类 |
+| `styles`      | `{ label?: React.CSSProperties; hint?: React.CSSProperties }` | - | 标签与提示文字的内联样式 |
 | `validConfig` | `{ validate?: (value: string) => string \| boolean \| null \| undefined \| Promise<string \| boolean \| null \| undefined>; trigger?: "onChange" \| "onBlur"; debounceMs?: number }` | - | 客户端校验配置，字段说明见下表 |
 | `children`    | `(field: FormFieldArg) => React.ReactNode` | -            | 接收输入属性并渲染控件的 render prop                          |
 | `...props`    | `React.ComponentProps<"div">`              | -            | 支持全部 div 原生属性（除 `children`、`className`、`style` 外），展开到字段容器 |
@@ -152,8 +154,10 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 | `description` | `React.ReactNode`                               | -         | 渲染在分组下方的辅助文字，校验失败时会被错误信息替代                                 |
 | `invalid`     | `React.ReactNode`                               | -         | 受控的错误信息。传入字符串时会渲染为错误并设置 `aria-invalid`                        |
 | `disabled`    | `boolean`                                       | `false`   | 禁用字段集内的所有控件                                                               |
-| `classNames`  | `{ root?: ClassNameValue; legend?: ClassNameValue; hint?: ClassNameValue }` | - | 字段集、legend 与提示文字的自定义类 |
-| `styles`      | `{ root?: React.CSSProperties; legend?: React.CSSProperties; hint?: React.CSSProperties }` | - | 字段集、legend 与提示文字的内联样式 |
+| `className` | `ClassNameValue` | - | 自定义类名，作用于 fieldset 元素 |
+| `style` | `React.CSSProperties` | - | 内联样式，作用于 fieldset 元素 |
+| `classNames`  | `{ legend?: ClassNameValue; hint?: ClassNameValue }` | - | legend 与提示文字的自定义类 |
+| `styles`      | `{ legend?: React.CSSProperties; hint?: React.CSSProperties }` | - | legend 与提示文字的内联样式 |
 | `validConfig` | `{ validate?: (value: string[] \| string) => string \| boolean \| undefined \| Promise<string \| boolean \| undefined>; trigger?: "onChange" \| "onBlur"; debounceMs?: number }` | - | 客户端校验配置，与 `Form.Field` 的结构相同，但 `validate` 接收分组值 |
 | `children`    | `(field: FieldsetRenderArg) => React.ReactNode` | -         | 接收分组值与处理函数的 render prop                                                   |
 | `...props`    | `React.ComponentPropsWithRef<"fieldset">`       | -         | 支持全部 fieldset 原生属性（除 `children`、`className`、`style` 外），展开到 fieldset 元素 |

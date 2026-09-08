@@ -18,6 +18,7 @@ export * from "./form";
 export * from "./form-item";
 export * from "./image";
 export * from "./input";
+export * from "./input-group";
 export * from "./input-otp";
 export * from "./kbd";
 export * from "./list";

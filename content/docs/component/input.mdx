@@ -49,8 +49,10 @@ The input component with slot and validation support.
 | `leading`    | `ReactNode`                                       | -        | Leading slot content (e.g., icons)                        |
 | `trailing`   | `ReactNode`                                       | -        | Trailing slot content (e.g., buttons, icons)              |
 | `invalid`    | `boolean`                                         | -        | Whether the input is in an invalid state                  |
-| `classNames` | `{ group?: ClassNameValue; leading?: ClassNameValue; trailing?: ClassNameValue; root?: ClassNameValue }` | - | Custom classes for the group, leading/trailing areas and input |
-| `styles` | `{ group?: React.CSSProperties; leading?: React.CSSProperties; trailing?: React.CSSProperties; root?: React.CSSProperties }` | - | Inline styles for the group, leading/trailing areas and input |
+| `className`  | `ClassNameValue`                                  | -        | Custom classes, applied to the group shell               |
+| `style`      | `React.CSSProperties`                             | -        | Inline styles, applied to the group shell                |
+| `classNames` | `{ leading?: ClassNameValue; trailing?: ClassNameValue; root?: ClassNameValue }` | - | Custom classes for the leading/trailing slots and the inner input (`root`) |
+| `styles` | `{ leading?: React.CSSProperties; trailing?: React.CSSProperties; root?: React.CSSProperties }` | - | Inline styles for the leading/trailing slots and the inner input (`root`) |
 | `...props`   | `React.ComponentProps<"input">`                   | -        | Supports all native input props (except `type`, `className`) |
 
 ---

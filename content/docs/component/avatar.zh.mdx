@@ -40,10 +40,12 @@ description: 头像组件，支持图片加载状态、骨架屏和回退内容
 | `src` | `string` | - | 图片源地址，必填 |
 | `skeleton` | `React.ReactNode` | - | 图片加载中时显示的内容 |
 | `fallback` | `React.ReactNode` | - | 图片加载失败时显示的内容 |
-| `classNames` | `{ root?: ClassNameValue; image?: ClassNameValue }` | - | 根容器和图片的自定义类名 |
-| `styles` | `{ root?: React.CSSProperties; image?: React.CSSProperties }` | - | 根容器和图片的内联样式 |
+| `className` | `ClassNameValue` | - | 自定义类名，作用于根容器 |
+| `style` | `React.CSSProperties` | - | 内联样式，作用于根容器 |
+| `classNames` | `{ image?: ClassNameValue }` | - | 图片的自定义类名 |
+| `styles` | `{ image?: React.CSSProperties }` | - | 图片的内联样式 |
 
-支持所有原生 `<img>` 属性（如 `alt`），但不支持 `className` 和 `style`。
+支持所有原生 `<img>` 属性（如 `alt`）；`className` 和 `style` 作用于根容器。
 
 ### 可组合组件
 

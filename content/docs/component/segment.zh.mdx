@@ -44,6 +44,8 @@ description: 支持受控、非受控和 options 驱动模式的单选分段控�
 | `className`      | `ClassNameValue`              | -       | 自定义类名，应用于容器                     |
 | `itemClassName`  | `ClassNameValue`              | -       | 自定义类名，应用于每个分段按钮             |
 
+键盘：分组是带 roving tabindex 的单选组 —— `ArrowRight` / `ArrowDown` / `ArrowLeft` / `ArrowUp` 移动到（并选中）下一个/上一个可用选项，`Home` / `End` 跳到第一个/最后一个，`Enter` / `Space` 激活聚焦的选项。
+
 ### SegmentOptionConfig
 
 | 字段        | 类型              | 默认值  | 描述                                        |

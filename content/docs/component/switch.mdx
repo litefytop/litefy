@@ -33,14 +33,6 @@ Shows the switch in a disabled state for both on and off positions.
   name="switch-disabled"
 />
 
-### Custom Styling
-
-Customize the track and thumb independently through `classNames` to change size and colors.
-
-<ComponentPreview
-  name="switch-custom-styling"
-/>
-
 ### Custom
 
 Assemble a switch with custom size and colors using the composable components.
@@ -57,16 +49,16 @@ Ready-to-use composite component.
 
 #### Switch
 
-| Prop              | Type                         | Default | Description                                                                                                  |
-| :---------------- | :--------------------------- | :------ | :----------------------------------------------------------------------------------------------------------- |
-| `children`        | `React.ReactNode`            | -       | Label content rendered next to the switch                                                                     |
-| `checked`         | `boolean`                    | -       | Controlled checked state                                                                                      |
-| `defaultChecked`  | `boolean`                    | `false` | Default checked state for uncontrolled mode                                                                   |
-| `onCheckedChange` | `(checked: boolean) => void` | -       | Callback triggered when the checked state changes                                                             |
-| `classNames`      | `{ label?, track?, thumb?: ClassNameValue }` | - | Custom classes for the label, track and thumb                                                       |
-| `styles`          | `{ label?, track?, thumb?: React.CSSProperties }` | - | Inline styles for the label, track and thumb                                                        |
-| `disabled`        | `boolean`                    | `false` | Disable the switch                                                                                            |
-| `...props`        | `React.ComponentProps<"input">` | -    | Supports all native input props (except `type`, `className`), such as `name`, `value`, `required`             |
+| Prop              | Type                                              | Default | Description                                                                                       |
+| :---------------- | :------------------------------------------------ | :------ | :------------------------------------------------------------------------------------------------ |
+| `children`        | `React.ReactNode`                                 | -       | Label content rendered next to the switch                                                         |
+| `checked`         | `boolean`                                         | -       | Controlled checked state                                                                          |
+| `defaultChecked`  | `boolean`                                         | `false` | Default checked state for uncontrolled mode                                                       |
+| `onCheckedChange` | `(checked: boolean) => void`                      | -       | Callback triggered when the checked state changes                                                 |
+| `classNames`      | `{ label?, track?, thumb?: ClassNameValue }`      | -       | Custom classes for the label, track and thumb                                                     |
+| `styles`          | `{ label?, track?, thumb?: React.CSSProperties }` | -       | Inline styles for the label, track and thumb                                                      |
+| `disabled`        | `boolean`                                         | `false` | Disable the switch                                                                                |
+| `...props`        | `React.ComponentProps<"input">`                   | -       | Supports all native input props (except `type`, `className`), such as `name`, `value`, `required` |
 
 ---
 
@@ -76,37 +68,37 @@ Ready-to-use composite component.
 
 The visually hidden native checkbox input (`sr-only`) that carries state, focus and form semantics.
 
-| Prop       | Type                            | Default | Description                                                           |
-| :--------- | :------------------------------ | :------ | :-------------------------------------------------------------------- |
-| `className` | `ClassNameValue`               | -       | Custom CSS class                                                      |
-| `...props` | `React.ComponentProps<"input">` | -       | Supports all native input props (except `type`, `className`)          |
+| Prop        | Type                            | Default | Description                                                  |
+| :---------- | :------------------------------ | :------ | :----------------------------------------------------------- |
+| `className` | `ClassNameValue`                | -       | Custom CSS class                                             |
+| `...props`  | `React.ComponentProps<"input">` | -       | Supports all native input props (except `type`, `className`) |
 
 #### SwitchTrack
 
 The visual track rendered as a `span` with `data-checked` styling and a `has-focus-visible` focus ring.
 
-| Prop       | Type                           | Default | Description                                  |
-| :--------- | :----------------------------- | :------ | :------------------------------------------- |
-| `checked`  | `boolean`                      | `false` | Drives the `data-checked` attribute and styles |
-| `className` | `ClassNameValue`              | -       | Custom CSS class                             |
-| `children` | `React.ReactNode`              | -       | Track content, typically `SwitchRoot` and `SwitchThumb` |
-| `...props` | `React.ComponentProps<"span">` | -       | Supports all native span props               |
+| Prop        | Type                           | Default | Description                                             |
+| :---------- | :----------------------------- | :------ | :------------------------------------------------------ |
+| `checked`   | `boolean`                      | `false` | Drives the `data-checked` attribute and styles          |
+| `className` | `ClassNameValue`               | -       | Custom CSS class                                        |
+| `children`  | `React.ReactNode`              | -       | Track content, typically `SwitchRoot` and `SwitchThumb` |
+| `...props`  | `React.ComponentProps<"span">` | -       | Supports all native span props                          |
 
 #### SwitchThumb
 
 The visual thumb rendered as a `span` that slides via `data-checked` styling.
 
-| Prop       | Type                           | Default | Description                                    |
-| :--------- | :----------------------------- | :------ | :--------------------------------------------- |
-| `checked`  | `boolean`                      | `false` | Drives the `data-checked` translate            |
-| `className` | `ClassNameValue`              | -       | Custom CSS class                               |
-| `...props` | `React.ComponentProps<"span">` | -       | Supports all native span props                 |
+| Prop        | Type                           | Default | Description                         |
+| :---------- | :----------------------------- | :------ | :---------------------------------- |
+| `checked`   | `boolean`                      | `false` | Drives the `data-checked` translate |
+| `className` | `ClassNameValue`               | -       | Custom CSS class                    |
+| `...props`  | `React.ComponentProps<"span">` | -       | Supports all native span props      |
 
 #### SwitchLabel
 
 The label wrapper that associates the input with the track and text.
 
-| Prop       | Type                            | Default | Description                      |
-| :--------- | :------------------------------ | :------ | :------------------------------- |
-| `className` | `ClassNameValue`               | -       | Custom CSS class                 |
-| `...props` | `React.ComponentProps<"label">` | -       | Supports all native label props  |
+| Prop        | Type                            | Default | Description                     |
+| :---------- | :------------------------------ | :------ | :------------------------------ |
+| `className` | `ClassNameValue`                | -       | Custom CSS class                |
+| `...props`  | `React.ComponentProps<"label">` | -       | Supports all native label props |

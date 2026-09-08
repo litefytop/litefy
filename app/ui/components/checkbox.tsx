@@ -10,8 +10,23 @@ export interface CheckboxRootProps extends Omit<
   value?: string;
 }
 
-export function CheckboxRoot({ className, ...props }: CheckboxRootProps) {
-  return <input {...props} type="checkbox" className={cn("sr-only", className)} />;
+export function CheckboxRoot({ className, onKeyDown, ...props }: CheckboxRootProps) {
+  return (
+    <input
+      {...props}
+      type="checkbox"
+      className={cn("sr-only", className)}
+      onKeyDown={(e) => {
+        // Real-focus checkboxes toggle with Space natively; add Enter so
+        // popover-hosted checkbox groups (multi-select) can select too.
+        if (e.key === "Enter") {
+          e.preventDefault();
+          e.currentTarget.click();
+        }
+        onKeyDown?.(e);
+      }}
+    />
+  );
 }
 
 export interface CheckboxIndicatorProps extends Omit<React.ComponentProps<"span">, "className"> {
@@ -34,7 +49,7 @@ export function CheckboxIndicator({
         "inline-flex items-center justify-center min-w-3 min-h-3",
         "has-focus-visible:ring-2 has-focus-visible:ring-ring ",
         "[&_svg:not([class*='size-'])]:size-3 [&_svg]:stroke-4 ",
-        "transition-colors duration-300 aria-checked:bg-primary text-background bg-background",
+        "transition-colors duration-300 aria-checked:bg-primary text-background",
         "border border-border rounded-sm",
         className,
       )}
@@ -53,7 +68,7 @@ export function CheckboxLabel({ className, children, ...props }: CheckboxLabelPr
     <label
       {...props}
       className={cn(
-        "flex items-center gap-4 select-none has-disabled:opacity-50 has-disabled:cursor-not-allowed font-medium",
+        "flex items-center gap-4 select-none font-medium",
         className,
       )}
     >

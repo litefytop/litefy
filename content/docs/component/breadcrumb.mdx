@@ -32,8 +32,10 @@ Every layer is exported as a part — compose them freely for full control over 
 | Prop         | Type                                            | Default | Description                                                |
 | :----------- | :---------------------------------------------- | :------ | :--------------------------------------------------------- |
 | `items`      | `BreadcrumbDataItem[]`                          | -       | Trail entries in hierarchy order; the last renders as page |
-| `classNames` | `root` / `list` / `link` / `page` / `separator` | -       | Custom class names per slot                                |
-| `styles`     | `root` / `list` / `link` / `page` / `separator` | -       | Custom styles per slot                                     |
+| `className`  | `ClassNameValue`                                | -       | Custom class names, applied to the root `<nav>`            |
+| `style`      | `React.CSSProperties`                           | -       | Inline styles, applied to the root `<nav>`                 |
+| `classNames` | `list` / `link` / `page` / `separator`          | -       | Custom class names per slot                                |
+| `styles`     | `list` / `link` / `page` / `separator`          | -       | Custom styles per slot                                     |
 | `...props`   | `React.ComponentProps<"nav">`                   | -       | Native nav props, spread onto the root                     |
 
 ### BreadcrumbDataItem

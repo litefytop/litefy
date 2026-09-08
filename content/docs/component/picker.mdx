@@ -44,8 +44,10 @@ The same assembly model applies to other pickers: combine Picker with any panel 
 | `trailing`      | `React.ReactNode`                 | -       | Icon rendered at the input's trailing edge                                  |
 | `children`      | `React.ReactNode`                 | -       | Popover panel content                                                       |
 | `panelRef`      | `React.Ref<HTMLDivElement>`       | -       | Receives the panel element, for [`usePanelFocus`](/docs/utils/use-panel-focus) |
-| `classNames`    | `PickerClassNames`                | -       | Per-part class name overrides: `root`, `input`, `trailing`, `popover`       |
-| `styles`        | `PickerStyles`                    | -       | Per-part style overrides: `root`, `input`, `trailing`, `popover`            |
+| `className`     | `ClassNameValue`                  | -       | Custom classes, applied to the root wrapper                                 |
+| `style`         | `React.CSSProperties`             | -       | Inline styles, applied to the root wrapper                                  |
+| `classNames`    | `PickerClassNames`                | -       | Per-part class name overrides: `input`, `trailing`, `popover`               |
+| `styles`        | `PickerStyles`                    | -       | Per-part style overrides: `input`, `trailing`, `popover`                    |
 | `...props`      | `React.ComponentProps<"input">`   | -       | Remaining native input props, such as `placeholder` and `disabled`          |
 
 Behavior notes:

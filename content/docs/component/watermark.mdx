@@ -48,9 +48,9 @@ The composite watermark: a relatively positioned root with a tiled canvas overla
 | `children`   | `React.ReactNode`                                          | -                  | The content covered by the watermark                                               |
 | `className`  | `ClassNameValue`                                           | -                  | Custom class name, applied to the root                                             |
 | `style`      | `React.CSSProperties`                                      | -                  | Inline style, applied to the root                                                  |
-| `classNames` | `{ root?: ClassNameValue; canvas?: ClassNameValue }`        | -                  | Custom classes for the root and canvas                                             |
-| `styles`     | `{ root?: React.CSSProperties; canvas?: React.CSSProperties }` | -               | Inline styles for the root and canvas                                              |
-| `...props`   | `React.ComponentProps<"div">`                              | -                  | Supports all native div props (except `className`, `style`), passed to the root    |
+| `classNames` | `{ canvas?: ClassNameValue }`                               | -                  | Custom classes for the canvas                                       |
+| `styles`     | `{ canvas?: React.CSSProperties }`                          | -                  | Inline styles for the canvas                                        |
+| `...props`   | `React.ComponentProps<"div">`                               | -                  | Supports all native div props (except `className`, `style`), passed to the root    |
 
 `WatermarkColor` accepts the semantic tokens `"muted" \| "muted-foreground" \| "primary" \| "primary-foreground" \| "secondary" \| "secondary-foreground" \| "accent"` — resolved from CSS variables and reactive to light/dark mode — or any custom CSS color string.
 

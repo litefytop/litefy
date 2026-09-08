@@ -21,7 +21,7 @@ export function DialogClose({ className, ...props }: DialogCloseProps) {
       type="button"
       {...props}
       className={cn(
-        "absolute right-4 top-4 h-6 w-8 rounded-md border text-xs font-mono font-medium text-muted-foreground transition-colors hover:bg-hover select-none",
+        "absolute right-4 top-4 h-6 w-8 rounded-sm border text-xs font-mono font-medium text-muted-foreground transition-colors hover:bg-hover select-none",
         className,
       )}
     />
@@ -39,7 +39,7 @@ export function DialogContent({ className, ...props }: DialogContentProps) {
       className={cn(
         "fixed min-w-70 max-w-md",
         "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 m-0",
-        "rounded-lg border p-6 shadow-lg bg-background",
+        "rounded-lg border p-6 shadow-lg bg-background text-foreground",
         className,
       )}
     />

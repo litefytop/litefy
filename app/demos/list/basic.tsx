@@ -20,7 +20,7 @@ const tasks: Task[] = [
 export default function ListBasicDemo() {
   return (
     <List
-      className="h-40 w-full max-w-md rounded-md border"
+      className="h-40 w-full max-w-md border"
       items={tasks}
       getKey={(task) => task.id}
       empty={<div className="px-3 py-4 text-center text-muted-foreground">No data</div>}

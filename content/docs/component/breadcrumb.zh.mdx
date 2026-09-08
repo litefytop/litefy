@@ -32,8 +32,10 @@ description: 由零件组合而成的导航路径——nav、list、item、link�
 | 属性         | 类型                                            | 默认值 | 描述                                           |
 | :----------- | :---------------------------------------------- | :----- | :--------------------------------------------- |
 | `items`      | `BreadcrumbDataItem[]`                          | -      | 路径条目，按层级顺序排列；最后一条渲染为当前页 |
-| `classNames` | `root` / `list` / `link` / `page` / `separator` | -      | 按插槽自定义类名                               |
-| `styles`     | `root` / `list` / `link` / `page` / `separator` | -      | 按插槽自定义样式                               |
+| `className`  | `ClassNameValue`                                | -      | 自定义类名，作用于根 `<nav>` 元素              |
+| `style`      | `React.CSSProperties`                           | -      | 内联样式，作用于根 `<nav>` 元素                |
+| `classNames` | `list` / `link` / `page` / `separator`          | -      | 按插槽自定义类名                               |
+| `styles`     | `list` / `link` / `page` / `separator`          | -      | 按插槽自定义样式                               |
 | `...props`   | `React.ComponentProps<"nav">`                   | -      | 原生 nav 属性，展开到根元素                    |
 
 ### BreadcrumbDataItem

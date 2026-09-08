@@ -45,9 +45,11 @@ function useListController<T>(props: ListControllerProps<T>) {
       e.preventDefault();
       const next = highlightIndex === null ? items.length - 1 : Math.max(highlightIndex - 1, 0);
       setHighlightIndex(next);
-    } else if (e.key === "Enter" && highlightIndex !== null) {
-      e.preventDefault();
-      onSelect?.(items[highlightIndex], highlightIndex);
+    } else if (e.key === "Enter" || e.key === " ") {
+      if (highlightIndex !== null) {
+        e.preventDefault();
+        onSelect?.(items[highlightIndex], highlightIndex);
+      }
     }
   };
 
@@ -74,7 +76,6 @@ export interface ListStyles {
 }
 
 export interface ListProps<T> {
-  ref?: React.Ref<HTMLUListElement | HTMLDivElement>;
   items: T[];
   getKey?: (item: T, index: number) => React.Key;
   getGroup?: (item: T, index: number) => string;
@@ -141,7 +142,7 @@ export function List<T>(props: ListProps<T>) {
         className={cn("overflow-y-auto outline-none list-none", className)}
         style={style}
       >
-        <li className="px-3 py-2 text-sm text-neutral-500">{empty}</li>
+        <li className="px-3 py-2 text-sm text-neutral">{empty}</li>
       </ul>
     );
   }
@@ -153,10 +154,7 @@ export function List<T>(props: ListProps<T>) {
         tabIndex={0}
         onKeyDown={controller.handleKeyDown}
         onScroll={controller.handleScroll}
-        className={cn(
-          "overflow-y-auto outline-none list-none divide-y divide-border",
-          className,
-        )}
+        className={cn("overflow-y-auto outline-none list-none", className)}
         style={style}
       >
         {items.map((item, index) => (
@@ -199,7 +197,7 @@ export function List<T>(props: ListProps<T>) {
           >
             {renderGroupHeader!(groupName)}
           </div>
-          <ul className="list-none divide-y divide-border">
+          <ul className="list-none">
             {groupItemsList.map(({ item, index }) => (
               <li
                 key={getKey?.(item, index) ?? index}
@@ -255,7 +253,7 @@ export function Order<T>(props: OrderProps<T>) {
         className={cn("overflow-y-auto outline-none list-decimal pl-6", className)}
         style={style}
       >
-        <li className="px-3 py-2 text-sm text-neutral-500">{empty}</li>
+        <li className="px-3 py-2 text-sm text-neutral">{empty}</li>
       </ol>
     );
   }
@@ -267,7 +265,7 @@ export function Order<T>(props: OrderProps<T>) {
       onKeyDown={controller.handleKeyDown}
       onScroll={controller.handleScroll}
       className={cn(
-        "overflow-y-auto outline-none list-decimal pl-6 divide-y divide-border",
+        "overflow-y-auto outline-none list-decimal pl-6",
         className,
       )}
       style={style}

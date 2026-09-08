@@ -15,7 +15,7 @@ export function BannerViewport({ className, ...props }: BannerViewportProps) {
   return (
     <div
       {...props}
-      className={cn("w-full overflow-hidden bg-background border-y", className)}
+      className={cn("w-full overflow-hidden bg-background text-foreground border-y", className)}
       aria-roledescription="marquee"
     />
   );
@@ -83,7 +83,6 @@ export interface BannerProps extends Omit<React.ComponentProps<"div">, "children
     item?: ClassNameValue;
   };
   styles?: {
-    viewport?: React.CSSProperties;
     track?: React.CSSProperties;
     item?: React.CSSProperties;
   };
@@ -95,6 +94,7 @@ export function Banner({
   direction = "left",
   pauseOnHover = true,
   className,
+  style,
   classNames,
   styles,
   onMouseEnter,
@@ -142,7 +142,7 @@ export function Banner({
       {...props}
       ref={viewportRef}
       className={className}
-      style={styles?.viewport}
+      style={style}
       onMouseEnter={(e) => {
         onMouseEnter?.(e);
         if (pauseOnHover) setHovering(true);
