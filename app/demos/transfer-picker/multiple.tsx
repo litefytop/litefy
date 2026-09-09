@@ -184,12 +184,11 @@ export default function TransferPickerMultipleDemo() {
                     <span className="truncate">{entry.label}</span>
                   </Checkbox>
                   <NumberField
-                    variant="embedded"
                     positiveInteger
                     min={1}
                     max={99}
                     value={entry.count}
-                    onValueChange={(value) => updateCount(entry.value, value ?? 1)}
+                    onValueChange={(value?: string | number) => updateCount(entry.value, Number(value ?? 1))}
                     className="shrink-0"
                   />
                 </div>

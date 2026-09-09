@@ -47,7 +47,7 @@ export default function Demo() {
         }}
       />
       <FormItem
-        variant="number-field"
+        variant="number-input"
         name="age"
         label="Age"
         validateTrigger="onChange"

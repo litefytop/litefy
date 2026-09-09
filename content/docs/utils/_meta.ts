@@ -56,6 +56,13 @@ export default {
       zh: "远程分页",
     },
   },
+  "use-remote-sort": {
+    name: "Remote Sort",
+    displayName: {
+      en: "use-remote-sort",
+      zh: "远程排序",
+    },
+  },
   "use-virtual-scroll": {
     name: "Virtual Scroll",
     displayName: {

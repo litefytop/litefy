@@ -1,9 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { ChevronDown, ChevronUp, Minus, Plus } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 import { type ClassNameValue, cn } from "..";
-import { InputGroup, InputLeading, InputRoot, InputTrailing } from "./input-group";
 
 export type NumberVariant = "default" | "embedded";
 
@@ -13,10 +12,6 @@ export interface NumberStepperProps
   direction?: "up" | "down";
 }
 
-/**
- * Step button for the embedded NumberField. Renders a Plus (up) or Minus
- * (down) icon by default; `children` overrides the icon.
- */
 export function NumberStepper({ className, direction = "up", children, ...props }: NumberStepperProps) {
   return (
     <button
@@ -61,77 +56,38 @@ export function groupThousands(numStr: string): string {
   return `${negative ? "-" : ""}${grouped}${decPart !== undefined ? `.${decPart}` : ""}`;
 }
 
-type BaseNumberFieldProps = Omit<
-  React.ComponentProps<"input">,
-  "className" | "value" | "defaultValue" | "type" | "onChange"
-> & {
-  className?: ClassNameValue;
-  invalid?: boolean;
-  min?: number;
-  max?: number;
-  step?: number;
-  indicator?: boolean;
-  prefix?: React.ReactNode;
-  suffix?: React.ReactNode;
-  thousands?: boolean;
-  /**
-   * `"default"` — bordered shell with a trailing step cue / suffix.
-   * `"embedded"` — borderless inline field with clickable leading/trailing
-   * steppers (Minus / Plus); `prefix`, `suffix` and `indicator` are ignored.
-   */
-  variant?: NumberVariant;
-  classNames?: {
-    leading?: ClassNameValue;
-    trailing?: ClassNameValue;
-    root?: ClassNameValue;
-  };
-  styles?: {
-    leading?: React.CSSProperties;
-    trailing?: React.CSSProperties;
-    root?: React.CSSProperties;
+type NumberCoreOptions = {
+  positiveInteger: boolean;
+  min: number;
+  max: number;
+  step: number;
+  thousands: boolean;
+  disabled?: boolean;
+  defaultValue: string;
+  onValueChange: ((value?: number) => void) | ((value?: string) => void) | undefined;
+  controlledValue: string | number | undefined;
+  isControlled: boolean;
+  rest: Record<string, unknown> & {
+    onBlur?: React.FocusEventHandler<HTMLInputElement>;
+    onFocus?: React.FocusEventHandler<HTMLInputElement>;
+    onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
   };
 };
 
-type PositiveIntegerMode = BaseNumberFieldProps & {
-  positiveInteger: true;
-  value?: number;
-  defaultValue?: number;
-  onValueChange?: (value?: number) => void;
-};
-
-type NormalMode = BaseNumberFieldProps & {
-  positiveInteger?: false;
-  value?: string | number;
-  defaultValue?: string | number;
-  onValueChange?: (value?: string) => void;
-};
-
-export type NumberFieldProps = PositiveIntegerMode | NormalMode;
-
-export function NumberField(props: NumberFieldProps) {
+export function useNumberCore(opts: NumberCoreOptions) {
   const {
-    positiveInteger = false,
-    invalid,
-    min = positiveInteger ? 0 : -Infinity,
-    max = Infinity,
-    step = 1,
-    indicator = true,
-    prefix,
-    suffix,
-    thousands = false,
-    variant = "default",
-    className,
-    style,
-    classNames,
-    styles,
+    positiveInteger,
+    min,
+    max,
+    step,
+    thousands,
     disabled,
-    defaultValue = "",
+    defaultValue,
     onValueChange,
-    value: controlledValue,
-    ...rest
-  } = props;
-
-  const isControlled = "value" in props;
+    controlledValue,
+    isControlled,
+    rest,
+  } = opts;
 
   const [uncontrolledValue, setUncontrolledValue] = React.useState<string>(
     String(defaultValue ?? ""),
@@ -140,9 +96,9 @@ export function NumberField(props: NumberFieldProps) {
 
   const value = isControlled ? String(controlledValue ?? "") : uncontrolledValue;
 
-  // Authoritative latest value for imperative stepping: synchronous stepper
-  // clicks re-render asynchronously, so the `value` closure goes stale between
-  // rapid clicks and would swallow steps.
+  
+  
+  
   const valueRef = React.useRef(value);
   React.useEffect(() => {
     valueRef.current = value;
@@ -173,10 +129,10 @@ export function NumberField(props: NumberFieldProps) {
       }
       if (positiveInteger) {
         const num = newRawValue === "" ? undefined : parseInt(newRawValue, 10);
-        (onValueChange as PositiveIntegerMode["onValueChange"])?.(num);
+        (onValueChange as (value?: number) => void)?.(num);
       } else {
         const val = newRawValue === "" ? undefined : newRawValue;
-        (onValueChange as NormalMode["onValueChange"])?.(val);
+        (onValueChange as (value?: string) => void)?.(val);
       }
     },
     [isControlled, positiveInteger, onValueChange],
@@ -271,71 +227,108 @@ export function NumberField(props: NumberFieldProps) {
     "aria-valuenow": valuenow,
   };
 
-  if (variant === "embedded") {
-    return (
-      <div
-        data-invalid={invalid || undefined}
-        className={cn(
-          "group/input inline-flex h-9 items-center overflow-hidden rounded-md",
-          "data-invalid:border data-invalid:border-danger",
-          className,
-        )}
-        style={style}
-      >
-        <NumberStepper
-          direction="down"
-          aria-label="Decrease"
-          disabled={disabled}
-          onClick={() => stepDelta(-step)}
-        />
-        <NumberRoot
-          {...inputProps}
-          aria-invalid={invalid}
-          className={cn("w-16 text-center px-1", classNames?.root)}
-          style={styles?.root}
-        />
-        <NumberStepper
-          direction="up"
-          aria-label="Increase"
-          disabled={disabled}
-          onClick={() => stepDelta(step)}
-        />
-      </div>
-    );
-  }
+  return { inputProps, stepDelta };
+}
+
+type PositiveIntegerMode = {
+  positiveInteger: true;
+  value?: number;
+  defaultValue?: number;
+  onValueChange?: (value?: number) => void;
+};
+
+type NormalMode = {
+  positiveInteger?: false;
+  value?: string | number;
+  defaultValue?: string | number;
+  onValueChange?: (value?: string) => void;
+};
+
+export type NumberFieldProps = Omit<
+  React.ComponentProps<"input">,
+  "className" | "value" | "defaultValue" | "type" | "onChange" | "size" | "prefix"
+> & {
+  value?: number | string;
+  defaultValue?: number | string;
+  invalid?: boolean;
+  min?: number;
+  max?: number;
+  step?: number;
+  thousands?: boolean;
+  positiveInteger?: boolean;
+  className?: ClassNameValue;
+  style?: React.CSSProperties;
+  classNames?: {
+    root?: ClassNameValue;
+  };
+  styles?: {
+    root?: React.CSSProperties;
+  };
+  disabled?: boolean;
+  onValueChange?: ((value?: number) => void) | ((value?: string) => void);
+};
+
+export function NumberField(props: NumberFieldProps) {
+  const {
+    positiveInteger = false,
+    invalid,
+    min = positiveInteger ? 0 : -Infinity,
+    max = Infinity,
+    step = 1,
+    thousands = false,
+    className,
+    style,
+    classNames,
+    styles,
+    disabled,
+    defaultValue = "",
+    onValueChange,
+    value: controlledValue,
+    ...rest
+  } = props;
+
+  const { inputProps, stepDelta } = useNumberCore({
+    positiveInteger,
+    min,
+    max,
+    step,
+    thousands,
+    disabled,
+    defaultValue: String(defaultValue ?? ""),
+    onValueChange: onValueChange as NumberCoreOptions["onValueChange"],
+    controlledValue,
+    isControlled: "value" in props,
+    rest: rest as NumberCoreOptions["rest"],
+  });
 
   return (
-    <InputGroup
+    <div
       data-invalid={invalid || undefined}
-      className={className}
+      className={cn(
+        "group/input inline-flex h-9 items-center overflow-hidden rounded-md",
+        "data-invalid:border data-invalid:border-danger",
+        className,
+      )}
       style={style}
     >
-      {(prefix || classNames?.leading || styles?.leading) && (
-        <InputLeading className={classNames?.leading} style={styles?.leading}>
-          {prefix}
-        </InputLeading>
-      )}
-      <InputRoot
+      <NumberStepper
+        direction="down"
+        aria-label="Decrease"
+        disabled={disabled}
+        onClick={() => stepDelta(-step)}
+      />
+      <NumberRoot
         {...inputProps}
         aria-invalid={invalid}
-        className={classNames?.root}
+        className={cn("w-16 text-center px-1", classNames?.root)}
         style={styles?.root}
       />
-      <InputTrailing className={cn("gap-1.5 pr-1", classNames?.trailing)} style={styles?.trailing}>
-        {suffix ? (
-          <span className="text-sm text-muted-foreground">{suffix}</span>
-        ) : (
-          indicator && (
-            <span
-              aria-hidden
-              className="pointer-events-none flex shrink-0 select-none flex-col items-center justify-center leading-none text-muted-foreground/80"
-            >
-              <ChevronUp className="size-3 -mb-0.5" />
-              <ChevronDown className="size-3" />
-            </span>
-          )
-        )}
-      </InputTrailing>
-    </InputGroup>
+      <NumberStepper
+        direction="up"
+        aria-label="Increase"
+        disabled={disabled}
+        onClick={() => stepDelta(step)}
+      />
+    </div>
   );
 }

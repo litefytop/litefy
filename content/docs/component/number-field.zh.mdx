@@ -1,6 +1,6 @@
 ---
-title: NumberField 数字输入框
-description: 支持键盘步进（ArrowUp / ArrowDown）、千分位分隔与前后缀插槽的数字输入框
+title: Number Field 数字字段
+description: 带前导 Minus 与尾部 Plus 步进按钮的紧凑数字字段——无边框，支持键盘步进与千分位分隔。
 ---
 
 ## 安装
@@ -9,94 +9,43 @@ description: 支持键盘步进（ArrowUp / ArrowDown）、千分位分隔与前
 
 ## 用法
 
-### 基础用法
+`NumberField` 是步进器形态的数字字段：前导 Minus 与尾部 Plus 按钮按 `step` 步进数值（受 `min` / `max` 约束）。字段本身无边框——仅在无效状态出现危险色边框。输入框聚焦时依然支持键盘步进。
 
-尾部区域的上下图标是非交互提示 —— 数值通过键盘（`ArrowUp` / `ArrowDown`）改变，遵循 `step`、`min` 与 `max`。
+<ComponentPreview name="number-field-basic" />
 
-<ComponentPreview 
-  name="number-field-basic"
-/>
+### 受控
 
-### 校验状态
-
-使用 `invalid` 属性显示验证错误。
-
-<ComponentPreview 
-  name="number-field-invalid"
-/>
-
-### 受控模式
-
-通过受控状态在外部管理数值。
-
-<ComponentPreview 
-  name="number-field-controlled"
-/>
-
-### 内嵌
-
-无边框的内联变体，两侧是可点击的 Minus / Plus 步进按钮——适合放在工具栏、表格单元格、卡片底部等紧凑场景。步进器是真实的按钮（`NumberStepper` 零件）；输入框上的键盘步进依然可用。该模式下 `prefix`、`suffix`、`indicator` 不生效，外壳仅在无效状态时出现边框。
-
-<ComponentPreview 
-  name="number-field-embedded"
-/>
-
-### 自定义
-
-步进提示、千分位分隔与前后缀是成品专属特性。需要完全自定义面板时，用 [Input](/docs/component/input) 的零件（`InputGroup`、`NumberRoot`、普通内容）自行拼装并自管数值 —— 标准外壳样式来自 `InputGroup`。
-
-<ComponentPreview 
-  name="number-field-custom"
-/>
+<ComponentPreview name="number-field-controlled" />
 
 ## API 参考
 
-### 高阶组件
+### NumberField
 
-即用型成品组件。
-
-#### NumberField
-
-支持键盘步进（`ArrowUp` / `ArrowDown`，无可点击按钮）、千分位显示与前后缀插槽的数字输入框。
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
 | `defaultValue` | `number \| string` | - | 初始值（非受控模式） |
 | `value` | `number \| string \| undefined` | - | 当前值（受控模式） |
-| `onValueChange` | `(value?: number) => void \| (value?: string) => void` | - | 值变化处理。`positiveInteger=true` 时返回 `number \| undefined`，否则返回 `string` |
-| `invalid` | `boolean` | - | 是否处于无效状态 |
+| `onValueChange` | `(value?: number) => void \| (value?: string) => void` | - | 值变化回调。`positiveInteger=true` 时为 `number \| undefined`，否则为 `string` |
+| `invalid` | `boolean` | - | 字段外围显示危险色边框 |
 | `min` | `number` | `0`（positiveInteger）或 `-Infinity` | 允许的最小值 |
 | `max` | `number` | `Infinity` | 允许的最大值 |
-| `step` | `number` | `1` | `ArrowUp` / `ArrowDown` 的步长 |
+| `step` | `number` | `1` | 步进按钮与 `ArrowUp` / `ArrowDown` 的步长 |
 | `positiveInteger` | `boolean` | `false` | 仅允许正整数。值类型变为 `number \| undefined` |
-| `prefix` | `React.ReactNode` | - | 渲染在数字前的内容（如货币符号） |
-| `suffix` | `React.ReactNode` | - | 渲染在数字后的内容 —— 设置时取代步进提示 |
 | `thousands` | `boolean` | `false` | 未聚焦时整数部分按千分位分组显示；提交值始终不带分隔符 |
-| `indicator` | `boolean` | `true` | 是否在尾部区域显示非交互的上下提示图标（设置 `suffix` 时不显示；`embedded` 下忽略） |
-| `variant` | `"default" \| "embedded"` | `"default"` | `"embedded"` 渲染带可点击步进器的无边框内联输入框 |
-| `className` | `ClassNameValue` | - | 自定义类名，作用于外壳容器 |
-| `style` | `React.CSSProperties` | - | 内联样式，作用于外壳容器 |
-| `classNames` | `{ leading?; trailing?; root? }` —— 值均为 `ClassNameValue` | - | 前后缀插槽与内部输入框（`root`）的自定义类名 |
-| `styles` | `{ leading?; trailing?; root? }` —— 值均为 `React.CSSProperties` | - | 前后缀插槽与内部输入框（`root`）的内联样式 |
-| `disabled` | `boolean` | `false` | 禁用整个字段 |
-| `...props` | `React.ComponentProps<"input">` | - | 支持所有原生 input 属性（除 `type`、`className`），如 `onBlur` |
+| `className` | `ClassNameValue` | - | 自定义类名，作用于外壳 |
+| `style` | `React.CSSProperties` | - | 内联样式，作用于外壳 |
+| `classNames` | `{ root? }` | - | 内部输入框的自定义类名 |
+| `styles` | `{ root? }` | - | 内部输入框的内联样式 |
+| `disabled` | `boolean` | `false` | 禁用字段与两个步进按钮 |
+| `...props` | `React.ComponentProps<"input">` | - | 支持所有原生 input 属性（除 `type`），如 `onBlur` |
 
 ---
 
 ### 可组合组件
 
-#### NumberRoot
-
-承载数值的文本输入框，设计上无边框（边框与焦点环由外壳承担）。配合 `InputGroup` 用于自定义拼装。
-
-| Prop        | Type                           | Default | Description                                            |
-| ----------- | ------------------------------ | ------- | ------------------------------------------------------ |
-| `className` | `ClassNameValue`               | -       | 自定义类名                                              |
-| `...props`  | `React.ComponentProps<"input">` | -      | 支持所有原生 input 属性（除 `className`），如 `value`、`onChange` 与 `role="spinbutton"` 的 aria 属性 |
-
 #### NumberStepper
 
-`embedded` 变体使用的可点击步进按钮——`direction="up"` 渲染 Plus 图标、`direction="down"` 渲染 Minus 图标；`children` 可覆盖图标。
+可点击的步进按钮——`direction="up"` 渲染 Plus 图标、`direction="down"` 渲染 Minus 图标；`children` 可覆盖图标。
 
 | 属性 | 类型 | 默认值 | 描述 |
 |------|------|--------|------|
@@ -106,6 +55,8 @@ description: 支持键盘步进（ArrowUp / ArrowDown）、千分位分隔与前
 
 支持所有原生 `<button>` 属性（`type` 除外）。
 
-#### 自定义拼装
+#### NumberRoot
 
-容器与插槽是共享的 [Input](/docs/component/input) 零件 —— `InputGroup`、`InputLeading`、`InputTrailing` 自带标准外壳样式（包括由 `data-invalid` / `aria-invalid` 驱动的 danger 效果）；把 `NumberRoot` 放在中间，用你自己的状态驱动数值即可。
+裸的内部输入框。支持所有原生 `<input>` 属性（`className` 除外），另有 `className`。
+
+带边框、尾部为非交互提示图标的形式请看 [NumberInput](/zh/docs/component/number-input)。

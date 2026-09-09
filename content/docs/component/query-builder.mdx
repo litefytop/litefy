@@ -1,0 +1,58 @@
+---
+title: Query Builder
+description: A collapsible folder tree of unique field nodes and nested and/or groups, with a live read-only logic-expression preview and Submit/Reset — react-querybuilder data transformations, our UI.
+---
+
+## Installation
+
+<Installation name="query-builder" />
+
+:::note
+This component depends on [`react-querybuilder`](https://react-querybuilder.js.org/) — the UI is our own, the package provides the query tree format and data transformations (`formatQuery`, `parseSQL`, …).
+:::
+
+## Usage
+
+`QueryBuilder` renders the query as a **tree with two node types**: field nodes and group nodes. Every field appears **exactly once** per group — a field folder with several sub-conditions replaces repeating the same field row after row. Top-right holds the root **AND / OR** segment and the **+ Group** button; the folder tree scrolls inside a fixed-height body. Below it, a read-only **preview panel** shows the complete logic expression, and **Submit / Reset** sit at the very bottom.
+
+<ComponentPreview name="query-builder-basic" />
+
+- **text / number / date** — expand the field folder and press **+ Condition** to add sub-conditions; each sub-condition is an operator dropdown plus a value input.
+- **Group** — a nested root: the same collapsible folder list, with its own AND / OR segment and add/remove controls.
+
+### Enum fields
+
+`valueKind: "select"` fields expand to a checkbox list with a **select-all** checkbox. Checking and unchecking options directly creates and removes the condition; the checked options merge into a **single `IN` condition** (never split into `OR`ed equals). Only forward `IN` is offered — no `NOT IN`; to invert a selection, check everything and uncheck what you don't need.
+
+### Submit and Reset
+
+The tree is a draft: edits update the live preview only. **Submit** emits the query tree through `onSubmit` / `onQueryChange` in the react-querybuilder `RuleGroupType` format — hand it to `formatQuery` for SQL, MongoDB, CEL and more, and `parseSQL` hydrates a stored condition string back through `defaultValue`. **Reset** restores the draft to `defaultValue` (or an empty tree).
+
+## API Reference
+
+### QueryBuilder
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `fields` | `QueryFieldConfig[]` | - | Available fields; each renders as one unique folder node. **Required** |
+| `defaultValue` | `RuleGroupType` | empty `and` tree | Initial query (react-querybuilder format); also what Reset restores |
+| `onSubmit` | `(query: RuleGroupType) => void` | - | Fired by the Submit button |
+| `onQueryChange` | `(query: RuleGroupType) => void` | - | Alias of `onSubmit` |
+| `onReset` | `() => void` | - | Fired by the Reset button |
+| `showPreview` | `boolean` | `true` | Show the read-only logic-expression preview panel |
+| `showConvert` | `boolean` | `true` | Show the format selector inside the preview panel |
+| `convertFormats` | `string[]` | `sql, parameterized, parameterized_named, mongodb, cel, spel, json, jsonlogic` | Formats offered by the selector |
+| `maxDepth` | `number` | `2` | Maximum group nesting depth |
+| `height` | `number \| string` | `"24rem"` | Fixed container height |
+| `disabled` | `boolean` | `false` | Disable the builder |
+| `className` | `ClassNameValue` | - | Custom classes, applied to the root |
+
+### QueryFieldConfig
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `name` | `string` | - | Field identifier written into the query. **Required** |
+| `label` | `string` | `name` | Field label shown on its folder node |
+| `operators` | `string[]` | per `valueKind` | Operators offered for sub-conditions |
+| `valueKind` | `"text" \| "number" \| "date" \| "select"` | `"text"` | Value editor type |
+| `options` | `{ label, value }[]` | - | Options when `valueKind: "select"` |

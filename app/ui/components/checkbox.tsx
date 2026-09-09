@@ -17,8 +17,8 @@ export function CheckboxRoot({ className, onKeyDown, ...props }: CheckboxRootPro
       type="checkbox"
       className={cn("sr-only", className)}
       onKeyDown={(e) => {
-        // Real-focus checkboxes toggle with Space natively; add Enter so
-        // popover-hosted checkbox groups (multi-select) can select too.
+        
+        
         if (e.key === "Enter") {
           e.preventDefault();
           e.currentTarget.click();

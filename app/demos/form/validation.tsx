@@ -1,6 +1,6 @@
 "use client";
 
-import { Form, Input } from "@/ui";
+import { Form, FormItem } from "@/ui";
 
 export default function FormValidationDemo() {
   return (
@@ -11,37 +11,29 @@ export default function FormValidationDemo() {
         return true;
       }}
     >
-      <Form.Field
+      <FormItem
         name="username"
         label="Username"
         description="At least 3 characters"
-        validConfig={{
-          validate: (value) => {
-            if (value.length === 0) return "Username is required";
-            if (value.length < 3) return "Must be at least 3 characters";
-            return null;
-          },
-          trigger: "onChange",
+        controlProps={{ placeholder: "Pick a username" }}
+        validate={(value) => {
+          if (value.length === 0) return "Username is required";
+          if (value.length < 3) return "Must be at least 3 characters";
+          return null;
         }}
-      >
-        {(field) => <Input {...field} placeholder="Pick a username" />}
-      </Form.Field>
-      <Form.Field
+        validateTrigger="onChange"
+      />
+      <FormItem
         name="email"
         label="Email"
-        validConfig={{
-          validate: (value) => {
-            if (value.length === 0) return "Email is required";
-            if (!/.+@.+\..+/.test(value)) return "Enter a valid email";
-            return null;
-          },
-          trigger: "onBlur",
+        controlProps={{ type: "email", placeholder: "you@example.com" }}
+        validate={(value) => {
+          if (value.length === 0) return "Email is required";
+          if (!/.+@.+\..+/.test(value)) return "Enter a valid email";
+          return null;
         }}
-      >
-        {(field) => (
-          <Input {...field} type="email" placeholder="you@example.com" />
-        )}
-      </Form.Field>
+        validateTrigger="onBlur"
+      />
       <Form.Submit>Sign up</Form.Submit>
     </Form>
   );

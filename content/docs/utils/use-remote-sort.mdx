@@ -1,0 +1,53 @@
+---
+title: use-remote-sort
+description: Sort-state manager for database-backed tables — cycles asc / desc / cleared, builds the query string and debounces the refetch callback.
+---
+
+## Installation
+
+```bash
+npx litefy@latest add use-remote-sort
+```
+
+## Usage
+
+`useRemoteSort` manages the sort state for a database-backed table. Pair it with [Table](/docs/component/table) in remote mode: pass `sort` down, wire `toggleSort` (or the Table's own `onSortChange`) and refetch inside `onSortChange` using `queryString`.
+
+```tsx
+const remote = useRemoteSort({
+  sortableKeys: ["name", "price", "stock"],
+  onSortChange: (sort) => {
+    // fetch(`/api/products?${remote.queryString}`) — refetch here
+  },
+});
+
+<Table
+  data={rows}
+  sort={remote.sort}
+  onSortChange={remote.setSort}
+  columns={[{ key: "name", header: "Name", sortable: true }]}
+/>;
+```
+
+## API Reference
+
+### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `sortableKeys` | `readonly K[]` | - | Column keys the database may sort by. **Required** |
+| `onSortChange` | `(sort: { key: K; direction }) => void` | - | Refetch callback, debounced by `debounceMs` |
+| `debounceMs` | `number` | `0` | Debounce for `onSortChange` |
+| `cycle` | `"asc-desc" \| "asc-only"` | `"asc-desc"` | Click cycle: asc → desc → cleared, or asc → cleared |
+| `initialSort` | `RemoteSortState<K>` | `null` | Initial sort state |
+
+### Return
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `sort` | `RemoteSortState<K>` | Current sort state (`null` when unsorted) |
+| `toggleSort` | `(key: K) => void` | Header click handler; ignores keys outside `sortableKeys` |
+| `setSort` | `(sort: RemoteSortState<K>) => void` | Set the state directly |
+| `clearSort` | `() => void` | Clear sorting |
+| `queryParams` | `{ sortKey?, sortOrder? }` | Ready-to-spread query params |
+| `queryString` | `string` | `"sortKey=...&sortOrder=..."` (empty when unsorted) |

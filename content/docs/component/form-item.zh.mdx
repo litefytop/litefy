@@ -1,6 +1,6 @@
 ---
 title: Form Item 表单项
-description: 按 variant 渲染成品控件的表单字段，内置标签、描述与校验
+description: 按 variant 渲染成品控件的表单字段——label、描述、输入框、错误信息固定垂直排布，内置校验
 ---
 
 ## 安装
@@ -9,7 +9,7 @@ description: 按 variant 渲染成品控件的表单字段，内置标签、描�
 
 ## 用法
 
-`FormItem` 按 `variant`（`input`、`textarea`、`select`、`password`、`number-field`）渲染对应的成品控件，内置 label、必填标记、描述与校验。它会向周围的 `Form` 注册自身以便提交时收集值，在 danger 提示中展示错误，单独使用也可以。
+`FormItem` 按 `variant`（`input`、`textarea`、`select`、`password`、`number-input`）渲染对应的成品控件，布局固定为：**label → 描述（可选）→ 输入框 → 错误信息**。它会向周围的 `Form` 注册自身以便提交时收集值，校验错误以 danger 文本显示在输入框下方，单独使用也可以。
 
 <ComponentPreview
   name="form-item"
@@ -31,7 +31,7 @@ description: 按 variant 渲染成品控件的表单字段，内置标签、描�
 
 | 属性              | 类型                                                                                                                                                              | 默认值     | 描述                                                                                      |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ----------------------------------------------------------------------------------------- |
-| `variant`         | `"input" \| "textarea" \| "select" \| "password" \| "number-field"`                                                                                               | -          | 渲染哪种成品控件 **必填**                                                                 |
+| `variant`         | `"input" \| "textarea" \| "select" \| "password" \| "number-input"`                                                                                              | `"input"`  | 渲染哪种成品控件                                                                           |
 | `name`            | `string`                                                                                                                                                          | -          | 字段名称，也是周围 `Form` 收集值时使用的键 **必填**                                       |
 | `label`           | `React.ReactNode`                                                                                                                                                 | -          | 渲染在控件上方的标签                                                                      |
 | `description`     | `React.ReactNode`                                                                                                                                                 | -          | 渲染在控件下方的辅助文字，校验失败时会被错误信息替代                                      |
@@ -40,7 +40,7 @@ description: 按 variant 渲染成品控件的表单字段，内置标签、描�
 | `validateTrigger` | `"onChange" \| "onBlur"`                                                                                                                                          | `"onBlur"` | 校验触发时机。字段已处于无效状态时，每次变更也会重新校验                                  |
 | `disabled`        | `boolean`                                                                                                                                                         | -          | 禁用控件                                                                                  |
 | `className`       | `ClassNameValue`                                                                                                                                                  | -          | 根容器自定义样式                                                                          |
-| `classNames`      | `{ label?: ClassNameValue; hint?: ClassNameValue }`                                                                                                               | -          | 标签与提示文字的自定义类名                                                                |
+| `classNames`      | `{ label?; description?; error? }` —— 值均为 `ClassNameValue`                                                                                                      | -          | 标签、描述与错误行的自定义类名                                                            |
 | `controlProps`    | 随 variant 变化，见下表                                                                                                                                           | `{}`       | 透传给底层控件的属性                                                                      |
 
 `controlProps` 随 `variant` 的类型：
@@ -51,6 +51,6 @@ description: 按 variant 渲染成品控件的表单字段，内置标签、描�
 | `textarea`     | `Omit<TextareaProps, "ref">`                                                                       |
 | `select`       | `Omit<SelectProps, "ref"> & { options: (SelectOption \| SelectOptionGroup)[] }`                    |
 | `password`     | `Omit<PasswordProps, "ref">`                                                                       |
-| `number-field` | `Omit<NumberFieldProps, "ref">`                                                                    |
+| `number-input` | `Omit<NumberInputProps, "ref">`                                                                   |
 
 > `controlProps` 中自定义的 `onChange` / `onBlur` 会被保留 —— `FormItem` 对其做包装，校验与你的处理器都会执行。`select` variant 的值保存在组件状态中，并由隐藏 input 携带参与原生表单提交。

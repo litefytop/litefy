@@ -63,13 +63,15 @@ Border-radius scale (by element size/role):
 - Disabled styling is GLOBAL: the base stylesheet dims `:disabled`, `[data-disabled]`, `[inert]` and `label:has(:disabled)`. Components carry NO built-in `disabled:` utilities — do not add them when generating components or demos.
 - Toast is notification-only: no action buttons, ever. Anything needing interaction (confirm / retry / details) belongs to Dialog. `Toaster.loading` returns an id — dismiss exactly that id, since bare `Toaster.dismiss()` clears every toast.
 - Keyboard completeness: virtual-focus listboxes (List-driven panels) support ArrowUp/Down + Enter AND Space to select; real-focus checkboxes toggle with Space natively and Enter via CheckboxRoot; SegmentGroup is a roving-tabindex radio group (arrows + Home/End).
+- Form architecture: `Form` + `FormItem` (fixed vertical layout: label → description → input → error) + `Form.Submit`; there are NO `FormField` / `FormFieldset` wrappers and no `direction` prop. Wrapper-free fields use the `useFieldValidity` hook and render their own description/error lines.
+- Numeric inputs: `NumberField` = borderless with clickable Minus/Plus steppers; `NumberInput` = bordered shell with the non-interactive suffix cue (used inside `FormItem`).
 
 ## Doc categories
 
 There are TWO kinds of pages under `content/docs/component/`. Decide which one you are writing:
 
 1. **Shipped component docs** (most pages): the component source exists at `app/ui/components/<name>.tsx` and is exported from `app/ui/components/index.ts`. Full structure below.
-2. **Pattern docs** (composition guides, e.g. chart, combobox, datepicker, dropdown-menu, context-menu, multi-select, preview-card, transfer-picker, chat-input): there is **no shipped source**; the page documents how to compose real exported components into a pattern. State this explicitly in the frontmatter description (e.g. "not a shipped component, only a composition guide with demos"), skip the Installation section, and reference registered demos.
+2. **Pattern docs** (composition guides, e.g. chart, combobox, datepicker, dropdown-menu, context-menu, multi-select, preview-card): there is **no shipped source**; the page documents how to compose real exported components into a pattern. State this explicitly in the frontmatter description (e.g. "not a shipped component, only a composition guide with demos"), skip the Installation section, and reference registered demos. (`chat-input` and `dual-picker` used to be patterns — both are shipped components now.)
 
 ## Workflow
 

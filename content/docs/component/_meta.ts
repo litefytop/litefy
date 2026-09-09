@@ -226,6 +226,13 @@ export default {
       zh: "数字输入框",
     },
   },
+  "number-input": {
+    name: "Number Input",
+    displayName: {
+      en: "Number Input",
+      zh: "数字输入",
+    },
+  },
   pager: {
     name: "Pager",
     displayName: {
@@ -266,6 +273,13 @@ export default {
     displayName: {
       en: "Preview Card",
       zh: "预览卡片",
+    },
+  },
+  "query-builder": {
+    name: "Query Builder",
+    displayName: {
+      en: "Query Builder",
+      zh: "查询构建器",
     },
   },
   progress: {
@@ -338,6 +352,13 @@ export default {
       zh: "步骤条",
     },
   },
+  table: {
+    name: "Table",
+    displayName: {
+      en: "Table",
+      zh: "表格",
+    },
+  },
   switch: {
     name: "Switch",
     displayName: {
@@ -408,11 +429,11 @@ export default {
       zh: "穿梭框",
     },
   },
-  "transfer-picker": {
-    name: "Transfer Picker",
+  "dual-picker": {
+    name: "Dual Picker",
     displayName: {
-      en: "Transfer Picker",
-      zh: "穿梭选择器",
+      en: "Dual Picker",
+      zh: "双栏选择器",
     },
   },
   upload: {

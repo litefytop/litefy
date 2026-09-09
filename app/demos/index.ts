@@ -1,4 +1,18 @@
 import type { ComponentType } from "react";
+import TableBasicDemo from "./table/basic";
+import tableBasicCode from "./table/basic.tsx?raw";
+import TableRemoteDemo from "./table/remote";
+import tableRemoteCode from "./table/remote.tsx?raw";
+import InlineWizardBasicDemo from "./inline-wizard/basic";
+import inlineWizardBasicCode from "./inline-wizard/basic.tsx?raw";
+import DualPickerBasicDemo from "./dual-picker/basic";
+import dualPickerBasicCode from "./dual-picker/basic.tsx?raw";
+import DualPickerSingleDemo from "./dual-picker/single";
+import dualPickerSingleCode from "./dual-picker/single.tsx?raw";
+import QueryBuilderBasicDemo from "./query-builder/basic";
+import queryBuilderBasicCode from "./query-builder/basic.tsx?raw";
+import StepsVerticalDemo from "./steps/vertical";
+import stepsVerticalCode from "./steps/vertical.tsx?raw";
 import AvatarBasicDemo from "./avatar/basic";
 import avatarBasicCode from "./avatar/basic.tsx?raw";
 import BannerBasicDemo from "./banner/basic";
@@ -133,8 +147,6 @@ import PreviewCardBasicDemo from "./preview-card/basic";
 import previewCardBasicCode from "./preview-card/basic.tsx?raw";
 import FormBasicDemo from "./form/basic";
 import formBasicCode from "./form/basic.tsx?raw";
-import FormHorizontalDemo from "./form/horizontal";
-import formHorizontalCode from "./form/horizontal.tsx?raw";
 import FormImperativeDemo from "./form/imperative";
 import formImperativeCode from "./form/imperative.tsx?raw";
 import FormValidationDemo from "./form/validation";
@@ -165,12 +177,12 @@ import NumberFieldBasicDemo from "./number-field/basic";
 import numberFieldBasicCode from "./number-field/basic.tsx?raw";
 import NumberFieldControlledDemo from "./number-field/controlled";
 import numberFieldControlledCode from "./number-field/controlled.tsx?raw";
-import NumberFieldCustomDemo from "./number-field/custom";
-import numberFieldCustomCode from "./number-field/custom.tsx?raw";
-import NumberFieldEmbeddedDemo from "./number-field/embedded";
-import numberFieldEmbeddedCode from "./number-field/embedded.tsx?raw";
 import NumberFieldInvalidDemo from "./number-field/invalid";
 import numberFieldInvalidCode from "./number-field/invalid.tsx?raw";
+import NumberInputBasicDemo from "./number-input/basic";
+import numberInputBasicCode from "./number-input/basic.tsx?raw";
+import NumberInputCustomDemo from "./number-input/custom";
+import numberInputCustomCode from "./number-input/custom.tsx?raw";
 import PagerBasicDemo from "./pager/basic";
 import pagerBasicCode from "./pager/basic.tsx?raw";
 import PagerGestureDemo from "./pager/gesture";
@@ -507,10 +519,6 @@ export const demos: Record<string, DemoItem> = {
     component: FormBasicDemo,
     code: formBasicCode,
   },
-  "form-horizontal": {
-    component: FormHorizontalDemo,
-    code: formHorizontalCode,
-  },
   "form-imperative": {
     component: FormImperativeDemo,
     code: formImperativeCode,
@@ -631,17 +639,17 @@ export const demos: Record<string, DemoItem> = {
     component: NumberFieldInvalidDemo,
     code: numberFieldInvalidCode,
   },
+  "number-input-basic": {
+    component: NumberInputBasicDemo,
+    code: numberInputBasicCode,
+  },
+  "number-input-custom": {
+    component: NumberInputCustomDemo,
+    code: numberInputCustomCode,
+  },
   "number-field-controlled": {
     component: NumberFieldControlledDemo,
     code: numberFieldControlledCode,
-  },
-  "number-field-embedded": {
-    component: NumberFieldEmbeddedDemo,
-    code: numberFieldEmbeddedCode,
-  },
-  "number-field-custom": {
-    component: NumberFieldCustomDemo,
-    code: numberFieldCustomCode,
   },
   "tabs-basic": {
     component: TabsBasicDemo,
@@ -786,6 +794,34 @@ export const demos: Record<string, DemoItem> = {
   "timeline-basic": {
     component: TimelineBasicDemo,
     code: timelineBasicCode,
+  },
+  "table-basic": {
+    component: TableBasicDemo,
+    code: tableBasicCode,
+  },
+  "table-remote": {
+    component: TableRemoteDemo,
+    code: tableRemoteCode,
+  },
+  "inline-wizard-basic": {
+    component: InlineWizardBasicDemo,
+    code: inlineWizardBasicCode,
+  },
+  "dual-picker-basic": {
+    component: DualPickerBasicDemo,
+    code: dualPickerBasicCode,
+  },
+  "dual-picker-single": {
+    component: DualPickerSingleDemo,
+    code: dualPickerSingleCode,
+  },
+  "query-builder-basic": {
+    component: QueryBuilderBasicDemo,
+    code: queryBuilderBasicCode,
+  },
+  "steps-vertical": {
+    component: StepsVerticalDemo,
+    code: stepsVerticalCode,
   },
   "toast-basic": {
     component: ToastBasicDemo,

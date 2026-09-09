@@ -1,0 +1,45 @@
+---
+title: Number Input
+description: A bordered numeric input with a non-interactive up/down cue in the trailing area — stepping is keyboard-only. The form-friendly sibling of NumberField.
+---
+
+## Installation
+
+<Installation name="number-input" />
+
+## Usage
+
+`NumberInput` is the classic bordered numeric field: an `InputGroup` shell, optional `prefix` / `suffix`, and a non-interactive up/down cue in the trailing area (`suffix` replaces the cue when set). Stepping is keyboard-only — `ArrowUp` / `ArrowDown` on the focused input. For clickable Minus / Plus steppers use [NumberField](/docs/component/number-field).
+
+<ComponentPreview name="number-input-basic" />
+
+### Custom
+
+The cue, thousands separators and prefix/suffix are composite features. For a fully custom panel, combine `InputGroup`, `NumberRoot` and plain content, driving the value yourself.
+
+<ComponentPreview name="number-input-custom" />
+
+## API Reference
+
+### NumberInput
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `defaultValue` | `number \| string` | - | Initial value (uncontrolled mode) |
+| `value` | `number \| string \| undefined` | - | Current value (controlled mode) |
+| `onValueChange` | `(value?: number) => void \| (value?: string) => void` | - | Value change handler. Returns `number \| undefined` when `positiveInteger=true`, otherwise `string` |
+| `invalid` | `boolean` | - | Whether the field is in an invalid state |
+| `min` | `number` | `0` (positiveInteger) or `-Infinity` | Minimum allowed value |
+| `max` | `number` | `Infinity` | Maximum allowed value |
+| `step` | `number` | `1` | Step size for `ArrowUp` / `ArrowDown` |
+| `positiveInteger` | `boolean` | `false` | Restrict to positive integers only. Changes value type to `number \| undefined` |
+| `prefix` | `React.ReactNode` | - | Content rendered before the number (e.g. a currency symbol) |
+| `suffix` | `React.ReactNode` | - | Content rendered after the number — replaces the stepping cue when set |
+| `thousands` | `boolean` | `false` | Group the integer part with thousands separators while the input is not focused; the committed value stays unformatted |
+| `indicator` | `boolean` | `true` | Show the non-interactive up/down cue in the trailing area (no effect while a `suffix` is set) |
+| `className` | `ClassNameValue` | - | Custom classes, applied to the group shell |
+| `style` | `React.CSSProperties` | - | Inline styles, applied to the group shell |
+| `classNames` | `{ leading?; trailing?; root? }` — each `ClassNameValue` | - | Custom classes for the prefix/suffix slots and the inner input (`root`) |
+| `styles` | `{ leading?; trailing?; root? }` — each `React.CSSProperties` | - | Inline styles for the prefix/suffix slots and the inner input (`root`) |
+| `disabled` | `boolean` | `false` | Disable the entire field |
+| `...props` | `React.ComponentProps<"input">` | - | Supports all native input props (except `type`, `className`), such as `onBlur` |

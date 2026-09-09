@@ -23,6 +23,12 @@ Key points:
 - Clicking a clickable step fires `onChange(nextIndex)`; the current step is never clickable.
 - States are derived: `completed` shows a `Check` icon and a primary connector line up to the current step, `current` gets `aria-current="step"`.
 
+### Vertical
+
+Set `orientation="vertical"` to stack the steps — titles and descriptions render beside the markers with a continuous connector line, matching the [Timeline](/docs/component/timeline) look.
+
+<ComponentPreview name="steps-vertical" />
+
 ## API Reference
 
 ### Steps
@@ -33,6 +39,7 @@ Key points:
 | `index`     | `number`                      | -                   | Controlled current step index                      |
 | `onChange`  | `(nextIndex: number) => void` | -                   | Fired when a clickable step is selected            |
 | `maxIndex`  | `number`                      | `items.length - 1`  | Highest selectable index — steps beyond it are disabled |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"`      | `"vertical"` stacks the steps with titles beside the markers |
 | `className` | `ClassNameValue`              | -                   | Custom class names, applied to the root            |
 | `classNames` | `marker` / `title` / `description` / `connector` | - | Custom class names per slot      |
 

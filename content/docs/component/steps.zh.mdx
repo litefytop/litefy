@@ -23,6 +23,12 @@ description: 受控步骤条，区分已完成、当前与未到达状态，并�
 - 点击可点击的步骤触发 `onChange(nextIndex)`；当前步骤不可点击。
 - 状态自动推导：`completed` 显示 `Check` 图标，连接线到当前步骤为止为主题色；`current` 带 `aria-current="step"`。
 
+### 垂直布局
+
+设置 `orientation="vertical"` 即可纵向排列步骤——标题与描述显示在圆点旁，连接线纵向贯穿，外观与 [Timeline](/zh/docs/component/timeline) 一致。
+
+<ComponentPreview name="steps-vertical" />
+
 ## API 参考
 
 ### Steps
@@ -33,6 +39,7 @@ description: 受控步骤条，区分已完成、当前与未到达状态，并�
 | `index`     | `number`                      | -                   | 受控当前步骤索引                            |
 | `onChange`  | `(nextIndex: number) => void` | -                   | 点击可点击步骤时触发                        |
 | `maxIndex`  | `number`                      | `items.length - 1`  | 可选中的最大索引 —— 超出部分禁用            |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"`      | `"vertical"` 时步骤纵向排列，标题显示在圆点旁 |
 | `className` | `ClassNameValue`              | -                   | 自定义类名，应用于根元素                    |
 | `classNames` | `marker` / `title` / `description` / `connector` | - | 按插槽自定义类名         |
 

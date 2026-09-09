@@ -11,7 +11,7 @@ description: A complete form composition with fields, submit, validation, and im
 
 ### Basic Usage
 
-Compose a form using `Form`, `Form.Field`, `Form.Fieldset`, and `Form.Submit`. Fields and fieldsets expose a render prop with the underlying control attributes for full control.
+Compose a form from `Form` + [FormItem](/docs/component/form-item) + `Form.Submit`. Group controls without a wrapper (checkbox / radio groups) submit natively — give them a `name` and they join the payload.
 
 <ComponentPreview 
   name="form-basic"
@@ -19,18 +19,10 @@ Compose a form using `Form`, `Form.Field`, `Form.Fieldset`, and `Form.Submit`. F
 
 ### Validation
 
-Use `validConfig` to add client-side validation. Validation runs on `onChange` or `onBlur` and renders the returned string as the error message. When `trigger` is `"onChange"`, validation can be debounced with `debounceMs`.
+Wrapped fields validate through `FormItem`'s `validate` / `validateTrigger`. Validation runs on `onChange` or `onBlur` and the returned string renders as the error message below the input.
 
 <ComponentPreview 
   name="form-validation"
-/>
-
-### Horizontal Layout
-
-Set `direction="horizontal"` on a field for a side-by-side label/control layout. Combine with `classNames` to style the label.
-
-<ComponentPreview 
-  name="form-horizontal"
 />
 
 ### Imperative Control
@@ -47,7 +39,7 @@ The `FormItem` component mode has moved to its own page: [Form Item](/docs/compo
 
 ### Parts Mode (useFieldValidity)
 
-No wrapper components: keep a `useFieldValidity` store (built into the Form module), set/clear errors from your own handlers, pass `aria-invalid` into the control, and conditionally render the message. Every input control ships danger styling (`border-danger` / `text-danger` and a danger focus ring) that activates from the `aria-invalid` attribute alone.
+When `FormItem` is too much, skip wrappers entirely: keep a `useFieldValidity` store (built into the Form module), set/clear errors from your own handlers, pass `aria-invalid` into the control, and render your own description / error text. Every input control ships danger styling (`border-danger` / `text-danger` and a danger focus ring) that activates from the `aria-invalid` attribute alone.
 
 <ComponentPreview 
   name="form-parts"
@@ -55,7 +47,7 @@ No wrapper components: keep a `useFieldValidity` store (built into the Form modu
 
 ### Invalid Control Styling
 
-All field controls (Input, Textarea, Select, Password, NumberField, Picker, InputOtp) style themselves from the `aria-invalid` attribute — no extra props needed:
+All field controls (Input, Textarea, Select, Password, NumberInput, Picker, InputOtp) style themselves from the `aria-invalid` attribute — no extra props needed:
 
 `aria-invalid:border-danger aria-invalid:text-danger` plus, when focused, `aria-invalid:focus-visible:outline-1 aria-invalid:focus-visible:outline-danger aria-invalid:focus-visible:ring-3 aria-invalid:focus-visible:ring-danger/50`. Composite wrappers (InputGroup, PasswordGroup) key the same treatment off their `data-invalid` state.
 
@@ -75,7 +67,7 @@ The root form component built on top of the native `<form>` element.
 | `autoReset` | `boolean`                                  | `true`  | Reset the form when `onSubmit` resolves to `true`                                               |
 | `onReset`   | `() => void`                               | -       | Called whenever the form resets — after a successful submit with `autoReset`, or via `ref.reset()` |
 | `ref`       | `React.Ref<FormRef>`                       | -       | Imperative handle exposing `setValues`, `reset`, `submit`                                       |
-| `children`  | `React.ReactNode`                          | -       | Form contents, typically `Form.Field`, `Form.Fieldset`, and `Form.Submit`                        |
+| `children`  | `React.ReactNode`                          | -       | Form contents, typically `FormItem` and `Form.Submit`                        |
 | `...props`  | `React.ComponentProps<"form">`             | -       | Supports all native form props (except `onSubmit`, `ref`), spread onto the underlying form element |
 
 #### FormRef
@@ -99,82 +91,6 @@ A submit button that automatically reflects the pending state of the form. It is
 | `children`    | `React.ReactNode` | -       | Button label                                                                     |
 
 All other native `<button>` props are supported; `type` is forced to `submit`.
-
-#### Form.Field
-
-Wraps a label, control, and helper text into a single accessible field. The control is provided through a render prop.
-
-| Prop          | Type                                       | Default      | Description                                                                              |
-| ------------- | ------------------------------------------ | ------------ | ---------------------------------------------------------------------------------------- |
-| `name`        | `string`                                   | -            | Field name. Used to register the input with the form                                     |
-| `label`       | `React.ReactNode`                          | -            | Label content rendered above the control                                                 |
-| `description` | `React.ReactNode`                          | -            | Helper text shown below the control. Replaced by the error message when invalid          |
-| `invalid`     | `React.ReactNode`                          | -            | Controlled error message. A string value is rendered as an error and sets `aria-invalid` |
-| `direction`   | `"vertical" \| "horizontal"`               | `"vertical"` | Layout direction of label and control                                                    |
-| `inputId`     | `string`                                   | -            | Custom id for the underlying control                                                     |
-| `className`   | `ClassNameValue`                           | -            | Custom classes, applied to the field container                            |
-| `style`       | `React.CSSProperties`                      | -            | Inline styles, applied to the field container                             |
-| `classNames`  | `{ label?: ClassNameValue; hint?: ClassNameValue }` | -   | Custom classes for the label and hint text                  |
-| `styles`      | `{ label?: React.CSSProperties; hint?: React.CSSProperties }` | - | Inline styles for the label and hint text                   |
-| `validConfig` | `{ validate?: (value: string) => string \| boolean \| null \| undefined \| Promise<string \| boolean \| null \| undefined>; trigger?: "onChange" \| "onBlur"; debounceMs?: number }` | - | Client-side validation configuration, see the table below |
-| `children`    | `(field: FormFieldArg) => React.ReactNode` | -            | Render prop that receives the input props for the underlying control                     |
-| `...props`    | `React.ComponentProps<"div">`              | -            | Supports all native div props (except `children`, `className`, `style`), spread onto the field container |
-
-`validConfig` fields:
-
-| Field        | Description                                                                                                                        |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `validate`   | Validator receiving the field's current string value. Returning a string renders it as the error message; returning `true` marks the field invalid |
-| `trigger`    | When to run the validator                                                                                                             |
-| `debounceMs` | Debounce delay in milliseconds, applied when `trigger` is `"onChange"`                                                                |
-
-#### FormFieldArg
-
-Render prop provided to `Form.Field` children, where `FormElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement`.
-
-| Prop               | Type                                                    | Description                                                            |
-| ------------------ | -------------------------------------------------------- | ---------------------------------------------------------------------- |
-| `id`               | `string`                                                 | Generated id for the underlying input. Forwarded to the control's `id` |
-| `name`             | `string`                                                 | The field's `name`. Forwarded to the control's `name`                  |
-| `ref`              | `(el: FormElement \| null) => void`                      | Ref callback to register the input with the form                       |
-| `onChange`         | `(e: React.ChangeEvent<FormElement>) => void`            | Change handler. Triggers `validConfig` when `trigger` is `"onChange"`  |
-| `onBlur`           | `(e: React.FocusEvent<HTMLElement>) => void`             | Blur handler. Triggers `validConfig` when `trigger` is `"onBlur"`      |
-| `invalid`          | `boolean`                                                | Whether the field is currently invalid                                 |
-| `aria-describedby` | `string`                                                 | Id of the description or error message, for accessibility              |
-
-#### Form.Fieldset
-
-Groups related controls — e.g. a checkbox or radio group — into a single registrable field. With `type="multi"` (default) the group value is a `string[]`; with `type="single"` it is a `string`.
-
-| Prop          | Type                                            | Default   | Description                                                                             |
-| ------------- | ----------------------------------------------- | --------- | ---------------------------------------------------------------------------------------- |
-| `name`        | `string`                                        | -         | Group name. Used to register the fieldset value with the form                             |
-| `type`        | `"single" \| "multi"`                           | `"multi"` | `"multi"` collects the value as `string[]`, `"single"` as `string`                        |
-| `legend`      | `React.ReactNode`                               | -         | Legend content rendered in the fieldset's `<legend>`                                      |
-| `description` | `React.ReactNode`                               | -         | Helper text shown below the group. Replaced by the error message when invalid             |
-| `invalid`     | `React.ReactNode`                               | -         | Controlled error message. A string value is rendered as an error and sets `aria-invalid`  |
-| `disabled`    | `boolean`                                       | `false`   | Disable every control inside the fieldset                                                 |
-| `className`   | `ClassNameValue`                                | -         | Custom classes, applied to the fieldset element                     |
-| `style`       | `React.CSSProperties`                           | -         | Inline styles, applied to the fieldset element                      |
-| `classNames`  | `{ legend?: ClassNameValue; hint?: ClassNameValue }` | -    | Custom classes for the legend and hint text             |
-| `styles`      | `{ legend?: React.CSSProperties; hint?: React.CSSProperties }` | - | Inline styles for the legend and hint text              |
-| `validConfig` | `{ validate?: (value: string[] \| string) => string \| boolean \| undefined \| Promise<string \| boolean \| undefined>; trigger?: "onChange" \| "onBlur"; debounceMs?: number }` | - | Client-side validation configuration, same shape as `Form.Field`'s, except `validate` receives the group value |
-| `children`    | `(field: FieldsetRenderArg) => React.ReactNode` | -         | Render prop that receives the group value and handlers                                    |
-| `...props`    | `React.ComponentPropsWithRef<"fieldset">`       | -         | Supports all native fieldset props (except `children`, `className`, `style`), spread onto the fieldset element |
-
-The render prop receives:
-
-| Prop               | Type                                          | Description                                                                         |
-| ------------------ | ----------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `id`               | `string`                                        | Generated id of the fieldset                                                         |
-| `name`             | `string`                                        | The fieldset's `name`                                                                |
-| `value`            | `string[] \| string \| undefined`               | Current group value — `string[]` when `type="multi"`, `string` when `type="single"`  |
-| `onValueChange`    | `(value: string[] \| string) => void`           | Update the group value. Triggers `validConfig` when `trigger` is `"onChange"`        |
-| `onBlur`           | `(e: React.FocusEvent<HTMLElement>) => void`    | Blur handler. Triggers `validConfig` when `trigger` is `"onBlur"`                    |
-| `invalid`          | `boolean`                                       | Whether the fieldset is currently invalid                                            |
-| `aria-describedby` | `string`                                        | Id of the description or error message, for accessibility                            |
-
----
 
 ### Composable Components
 

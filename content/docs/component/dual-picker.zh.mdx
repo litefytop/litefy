@@ -1,0 +1,45 @@
+---
+title: Dual Picker 双栏选择器
+description: 单选/多选通用的双栏选择器——选项行与已选项均为 render prop 驱动，支持任意内容格式。
+---
+
+## 安装
+
+<Installation name="dual-picker" />
+
+## 用法
+
+`DualPicker` 是双栏选择器（来源栏 + 已选栏）。点击选项即选中——`"multiple"` 模式为切换，`"single"` 模式替换上一次选择。点击已选项将其移除。搜索输入框过滤来源栏。
+
+### 自定义内容（如带图片的商品）
+
+选项行与已选项都是 render prop 驱动——通过 `renderOption` / `renderSelected` 使用任意格式，例如带图片的商品卡片：
+
+<ComponentPreview name="dual-picker-basic" />
+
+### 单选模式
+
+<ComponentPreview name="dual-picker-single" />
+
+## API 参考
+
+### DualPicker&lt;T&gt;
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `options` | `{ value: string; option: T }[]` | - | 来源选项；`value` 为选中键，`option` 为原始业务数据 **必填** |
+| `mode` | `"single" \| "multiple"` | `"multiple"` | `"single"` 最多保留一条选中 |
+| `value` | `string[]` | - | 受控选中值（单选模式为 0 或 1 条） |
+| `defaultValue` | `string[]` | `[]` | 初始选中（非受控） |
+| `onValueChange` | `(values: string[]) => void` | - | 选中变化回调 |
+| `renderOption` | `(option: T, { selected }) => React.ReactNode` | label | 自定义选项行格式 |
+| `renderSelected` | `(option: T, { selected, onRemove }) => React.ReactNode` | label + X | 自定义已选项格式 |
+| `getLabel` | `(option: T) => string` | `String(option)` | 默认渲染与搜索过滤使用的文案 |
+| `searchPlaceholder` | `string` | `"Search..."` | 搜索框占位文案 |
+| `sourceTitle` / `targetTitle` | `React.ReactNode` | `"Options"` / `"Selected"` | 面板标题 |
+| `disabled` | `boolean` | `false` | 禁用两个面板 |
+| `className` | `ClassNameValue` | - | 自定义类名，作用于根元素 |
+| `classNames` | `panel` / `header` / `body` / `item` / `selected` | - | 各部分自定义类名 |
+| `styles` | `{ panel?, body? }` | - | 面板内联样式 |
+
+异步加载选项（远程搜索 + 分页）时，`DualPicker` 只负责选择界面——用 [useRemotePagination](/zh/docs/utils/use-remote-pagination) 组合，搜索状态与选项列表由业务侧喂入。

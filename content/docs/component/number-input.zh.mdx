@@ -1,0 +1,45 @@
+---
+title: Number Input 数字输入
+description: 带边框的数字输入框，尾部为非交互的上下提示图标——仅键盘步进，是 NumberField 的表单形态兄弟组件。
+---
+
+## 安装
+
+<Installation name="number-input" />
+
+## 用法
+
+`NumberInput` 是经典带边框的数字输入框：`InputGroup` 外壳、可选 `prefix` / `suffix`，尾部区域为非交互的上下提示图标（设置 `suffix` 时替换提示图标）。步进仅通过键盘——聚焦后按 `ArrowUp` / `ArrowDown`。需要可点击的 Minus / Plus 步进器请使用 [NumberField](/zh/docs/component/number-field)。
+
+<ComponentPreview name="number-input-basic" />
+
+### 自定义
+
+提示图标、千分位分隔与前后缀是成品特性。需要完全自定义面板时，用 `InputGroup`、`NumberRoot` 和普通内容自行拼装并自管数值。
+
+<ComponentPreview name="number-input-custom" />
+
+## API 参考
+
+### NumberInput
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `defaultValue` | `number \| string` | - | 初始值（非受控模式） |
+| `value` | `number \| string \| undefined` | - | 当前值（受控模式） |
+| `onValueChange` | `(value?: number) => void \| (value?: string) => void` | - | 值变化回调。`positiveInteger=true` 时为 `number \| undefined`，否则为 `string` |
+| `invalid` | `boolean` | - | 输入框是否处于无效状态 |
+| `min` | `number` | `0`（positiveInteger）或 `-Infinity` | 允许的最小值 |
+| `max` | `number` | `Infinity` | 允许的最大值 |
+| `step` | `number` | `1` | `ArrowUp` / `ArrowDown` 的步长 |
+| `positiveInteger` | `boolean` | `false` | 仅允许正整数。值类型变为 `number \| undefined` |
+| `prefix` | `React.ReactNode` | - | 渲染在数字前的内容（如货币符号） |
+| `suffix` | `React.ReactNode` | - | 渲染在数字后的内容 —— 设置时取代步进提示 |
+| `thousands` | `boolean` | `false` | 未聚焦时整数部分按千分位分组显示；提交值始终不带分隔符 |
+| `indicator` | `boolean` | `true` | 是否在尾部区域显示非交互的上下提示图标（设置 `suffix` 时不显示） |
+| `className` | `ClassNameValue` | - | 自定义类名，作用于外壳 |
+| `style` | `React.CSSProperties` | - | 内联样式，作用于外壳 |
+| `classNames` | `{ leading?; trailing?; root? }` —— 值均为 `ClassNameValue` | - | 前后缀插槽与内部输入框（`root`）的自定义类名 |
+| `styles` | `{ leading?; trailing?; root? }` —— 值均为 `React.CSSProperties` | - | 前后缀插槽与内部输入框（`root`）的内联样式 |
+| `disabled` | `boolean` | `false` | 禁用整个字段 |
+| `...props` | `React.ComponentProps<"input">` | - | 支持所有原生 input 属性（除 `type`、`className`），如 `onBlur` |

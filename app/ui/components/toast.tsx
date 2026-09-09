@@ -176,13 +176,6 @@ const toastIcons: Record<ToastType, React.ReactNode> = {
   loading: <Loader2 className="size-4 animate-spin" />,
 };
 
-/**
- * Exit timeline: the card stays mounted while a 500ms animation slides it out
- * AND collapses its box (height + the flex gap slot), so the toasts below
- * glide up continuously. Only after the animation finishes is the toast
- * removed from the store — by then it is a 0-height element, so the unmount
- * itself can never cause a layout jump. Skipped under prefers-reduced-motion.
- */
 const EXIT_MS = 500;
 
 function ToastItem({

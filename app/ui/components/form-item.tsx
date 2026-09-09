@@ -5,7 +5,7 @@ import { Input, type InputProps } from "./input";
 import { Textarea, type TextareaProps } from "./text-area";
 import { Select, type SelectOption, type SelectOptionGroup, type SelectProps } from "./select";
 import { Password, type PasswordProps } from "./password";
-import { NumberField, type NumberFieldProps } from "./number-field";
+import { NumberInput, type NumberInputProps } from "./number-input";
 import { FormContext } from "./form";
 
 type ValidationResult =
@@ -15,7 +15,12 @@ type ValidationResult =
   | null
   | undefined;
 
-export type FormItemVariant = "input" | "textarea" | "select" | "password" | "number-field";
+export type FormItemVariant =
+  | "input"
+  | "textarea"
+  | "select"
+  | "password"
+  | "number-input";
 
 export interface FormItemBaseProps {
   name: string;
@@ -23,24 +28,26 @@ export interface FormItemBaseProps {
   label?: React.ReactNode;
   description?: React.ReactNode;
   required?: boolean;
-  /**
-   * Return a string to mark the control invalid with an error message,
-   * or `{ message, invalid: false }` to show the message without styling
-   * the control as invalid (e.g. soft "required" errors on empty fields).
-   */
+  
   validate?: (value: string) => ValidationResult | Promise<ValidationResult>;
   validateTrigger?: "onChange" | "onBlur";
   disabled?: boolean;
   classNames?: {
     label?: ClassNameValue;
-    hint?: ClassNameValue;
+    description?: ClassNameValue;
+    error?: ClassNameValue;
+  };
+  styles?: {
+    label?: React.CSSProperties;
+    description?: React.CSSProperties;
+    error?: React.CSSProperties;
   };
 }
 
 type FieldElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
 export type FormItemProps =
-  | (FormItemBaseProps & { variant: "input"; controlProps?: Omit<InputProps, "ref"> })
+  | (FormItemBaseProps & { variant?: "input"; controlProps?: Omit<InputProps, "ref"> })
   | (FormItemBaseProps & { variant: "textarea"; controlProps?: Omit<TextareaProps, "ref"> })
   | (FormItemBaseProps & {
       variant: "select";
@@ -50,13 +57,13 @@ export type FormItemProps =
     })
   | (FormItemBaseProps & { variant: "password"; controlProps?: Omit<PasswordProps, "ref"> })
   | (FormItemBaseProps & {
-      variant: "number-field";
-      controlProps?: Omit<NumberFieldProps, "ref">;
+      variant?: "number-input";
+      controlProps?: Omit<NumberInputProps, "ref">;
     });
 
 export function FormItem(props: FormItemProps) {
   const {
-    variant,
+    variant = "input",
     name,
     className,
     label,
@@ -66,12 +73,14 @@ export function FormItem(props: FormItemProps) {
     validateTrigger = "onBlur",
     disabled,
     classNames,
+    styles,
     controlProps = {},
   } = props;
 
   const { register } = React.useContext(FormContext);
   const id = React.useId();
-  const hintId = `${id}-hint`;
+  const descriptionId = `${id}-description`;
+  const errorId = `${id}-error`;
   const [error, setError] = React.useState<{ text: string; markInvalid: boolean } | null>(null);
   const errorRef = React.useRef<{ text: string; markInvalid: boolean } | null>(null);
   const elementRef = React.useRef<FieldElement | null>(null);
@@ -104,7 +113,7 @@ export function FormItem(props: FormItemProps) {
     } else if (typeof result === "string") {
       setError({ text: result, markInvalid: true });
     } else if (typeof result === "boolean") {
-      // false — bare invalid state without a message
+      
       setError({ text: "", markInvalid: true });
     } else {
       setError({ text: result.message, markInvalid: result.invalid !== false });
@@ -135,7 +144,10 @@ export function FormItem(props: FormItemProps) {
     id,
     disabled,
     required,
-    "aria-describedby": error || description ? hintId : undefined,
+    "aria-describedby":
+      [description ? descriptionId : undefined, error ? errorId : undefined]
+        .filter(Boolean)
+        .join(" ") || undefined,
   };
 
   let control: React.ReactNode;
@@ -192,7 +204,11 @@ export function FormItem(props: FormItemProps) {
             disabled={disabled}
             required={required}
             aria-invalid={isInvalid || undefined}
-            aria-describedby={error || description ? hintId : undefined}
+            aria-describedby={
+              [description ? descriptionId : undefined, error ? errorId : undefined]
+                .filter(Boolean)
+                .join(" ") || undefined
+            }
             options={options}
             defaultValue={defaultValue}
             value={selectValue}
@@ -229,16 +245,16 @@ export function FormItem(props: FormItemProps) {
       );
       break;
     }
-    case "number-field": {
-      const { onValueChange, onBlur, ...rest } = controlProps as NumberFieldProps;
+    case "number-input": {
+      const { onValueChange, onBlur, ...rest } = controlProps as NumberInputProps;
       const emitChange = onValueChange as ((value?: string | number) => void) | undefined;
       control = (
-        <NumberField
+        <NumberInput
           {...(rest as object)}
           {...(common as object)}
           invalid={isInvalid}
           ref={setFieldRef}
-          onValueChange={(value) => {
+          onValueChange={(value?: string | number) => {
             emitChange?.(value);
             handleChange(String(value ?? ""));
           }}
@@ -258,22 +274,29 @@ export function FormItem(props: FormItemProps) {
       className={cn("space-y-1", className)}
     >
       {label && (
-        <label htmlFor={id} className={cn("block py-1 text-sm font-medium indent-2 select-none", classNames?.label)}>
+        <label
+          htmlFor={id}
+          className={cn("block text-sm font-medium indent-2 select-none", classNames?.label)}
+          style={styles?.label}
+        >
           {label}
           {required && <span aria-hidden className="text-danger"> *</span>}
         </label>
       )}
+      {description && (
+        <small id={descriptionId} className={cn("block text-sm indent-2 text-muted-foreground", classNames?.description)} style={styles?.description}>
+          {description}
+        </small>
+      )}
       {control}
       <small
-        id={hintId}
+        id={errorId}
         role={error ? "alert" : undefined}
-        className={cn(
-          "block h-5 text-sm indent-2",
-          error ? "text-danger" : "text-muted-foreground",
-          classNames?.hint,
-        )}
+        className={cn("block h-5 text-sm indent-2", error ? "text-danger" : "text-transparent", classNames?.error)}
+        style={styles?.error}
+        aria-live="polite"
       >
-        {error?.text ?? description}
+        {error?.text}
       </small>
     </div>
   );

@@ -1,22 +1,42 @@
 ---
 title: Chat Input
-description: A chat input composed from Textarea, screenshot paste handling and a bottom action bar — no component source, composition guide only
+description: A chat composer with pasted-screenshot thumbnails, a capability-toggle slot and an icon-only send button — mobile-ready out of the box.
 ---
 
-Chat Input is not a component with shipped source. Its core is the promise that [Textarea](/docs/component/text-area) stays a pure primitive: paste handling, previews and buttons are all composed on the business side. `Textarea` passes through the native `onPaste`, where `clipboardData` yields the pasted screenshots; image previews render in a thumbnail strip outside the Textarea (`<textarea>` cannot display images inside its text flow — a natural boundary that forces composition); the action bar is plain flex layout. Compose it directly in your page — the example below is the complete implementation.
+## Installation
+
+<Installation name="chat-input" />
 
 ## Usage
 
-### Basic Usage
+`ChatInput` manages the text and pasted-image state for you: screenshots pasted into the textarea become a thumbnail strip (`URL.createObjectURL` handled internally), and the send button emits the collected payload through `onSend`, clearing the composer afterwards.
 
-<ComponentPreview
-  name="chat-input-basic"
-/>
+Capability toggles go into the `actions` slot — compose them from [Toggle](/docs/component/toggle) yourself.
 
-Key points:
+<ComponentPreview name="chat-input-basic" />
 
-- Screenshot paste: in `onPaste`, filter `clipboardData.items` for entries whose `type` starts with `image/`, then `e.preventDefault()` to stop image paths from landing in the text; text paste is unaffected (early return when there are no images).
-- Thumbnail strip: `URL.createObjectURL(file)` creates each thumbnail URL; call `URL.revokeObjectURL` on remove or send to release memory.
-- Bottom action bar: a flex row sibling to the Textarea — [Toggle](/docs/component/toggle) capability switches on the left (deep think, web search), send button on the right; sending is allowed when there is text or screenshots.
-- `Textarea` is overridden via `className` to be borderless and shadowless (`border-0 shadow-none focus:ring-0`) so it blends into the outer container, which owns the overall border.
-- Enter-to-send, drafts and @mentions are likewise business-layer concerns — extend via `onKeyDown` as needed; the primitive stays out of it.
+### Mobile adaptation
+
+- **Enter behavior**: on fine pointers (mouse) Enter sends and Shift+Enter inserts a newline; on coarse pointers (touch) Enter always inserts a newline — the send button is the send affordance, so virtual keyboards never cause accidental sends. Control with `enterToSend: "auto" | boolean`.
+- **No focus zoom**: the textarea renders at 16px on small screens (iOS Safari zooms focusable inputs below that size).
+- **Attach button**: set `attach` to show an image-picker button (`accept="image/*"`), which on mobile surfaces the camera/gallery chooser.
+
+## API Reference
+
+### ChatInput
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | Controlled text |
+| `defaultValue` | `string` | `""` | Initial text (uncontrolled) |
+| `onValueChange` | `(text: string) => void` | - | Text change callback |
+| `onSend` | `(payload: { text: string; images: File[] }) => void` | - | Send callback; the input clears itself afterwards |
+| `placeholder` | `string` | - | Textarea placeholder |
+| `disabled` | `boolean` | `false` | Disable the composer |
+| `autoPaste` | `boolean` | `true` | Turn pasted images into thumbnails |
+| `attach` | `boolean` | `false` | Show the image attach button |
+| `enterToSend` | `"auto" \| boolean` | `"auto"` | Enter-to-send behavior |
+| `actions` | `React.ReactNode` | - | Left side of the action bar |
+| `className` | `ClassNameValue` | - | Custom classes, applied to the container |
+| `classNames` | `container` / `textarea` / `images` / `actions` / `send` | - | Custom classes per part |
+| `styles` | `{ container?, textarea?, actions?, send? }` | - | Inline styles per part |
