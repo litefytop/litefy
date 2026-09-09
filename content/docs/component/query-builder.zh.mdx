@@ -13,12 +13,12 @@ description: 字段节点唯一的树形可折叠列表与嵌套 and/or 组，�
 
 ## 用法
 
-`QueryBuilder` 把查询渲染为一棵**只有两种节点的树**：字段节点与 Group 节点。每个字段在每组中**只出现一次**——一个字段文件夹里的多条子条件，取代了过去同一字段一行行重复的写法。右上角是根 **AND / OR** 分段选择器和 **+ Group** 按钮；文件夹树在固定高度的主体内纵向滚动。下方是只读的**条件预览面板**，展示完整逻辑表达式；**提交 / 重置**位于最底部。
+`QueryBuilder` 把查询渲染为一棵**只有两种节点的树**：字段节点与 Group 节点。每个字段在每组中**只出现一次**——一个字段文件夹里的多条子条件，取代了过去同一字段一行行重复的写法。布局完全递归：根组与新增的组共用同一个首行——折叠箭头、**AND / OR** 分段选择器和 **+ Group** 按钮——其下是带参考线缩进的组内容，在固定高度的框架内滚动。下方是只读的**条件预览面板**，默认以自然语言展示查询；居中的**提交 / 重置**位于最底部。
 
 <ComponentPreview name="query-builder-basic" />
 
 - **text / number / date** — 展开字段文件夹，点击 **+ Condition** 新增子条件；每条子条件是一个操作符下拉加一个 value 输入框。
-- **Group** — 嵌套的根节点：同样是一棵可折叠的文件夹列表，自带 AND / OR 分段选择器和添加/删除控件。
+- **Group** — 嵌套的根节点：与根组完全相同的布局——相同的首行、相同的文件夹列表——嵌套读起来就是一个递归模式。
 
 ### 枚举字段
 
@@ -26,7 +26,7 @@ description: 字段节点唯一的树形可折叠列表与嵌套 and/or 组，�
 
 ### 提交与重置
 
-树是草稿态：编辑只更新实时预览。**提交**通过 `onSubmit` / `onQueryChange` 以 react-querybuilder 的 `RuleGroupType` 格式输出查询树——交给 `formatQuery` 可转换为 SQL、MongoDB、CEL 等格式；`parseSQL` 可以把数据库中存储的条件字符串通过 `defaultValue` 回填。**重置**将草稿恢复为 `defaultValue`（或空树）。
+树是草稿态：编辑只更新实时预览。预览默认输出**自然语言**（"Name contains …"），基于字段标签生成，面向用户阅读；通过格式选择器可切换到 SQL、MongoDB、CEL 等格式。**提交**通过 `onSubmit` / `onQueryChange` 以 react-querybuilder 的 `RuleGroupType` 格式输出查询树——交给 `formatQuery` 可做同样的格式转换；`parseSQL` 可以把数据库中存储的条件字符串通过 `defaultValue` 回填。**重置**将草稿恢复为 `defaultValue`（或空树）。
 
 ## API 参考
 
@@ -41,9 +41,8 @@ description: 字段节点唯一的树形可折叠列表与嵌套 and/or 组，�
 | `onReset` | `() => void` | - | 重置按钮触发 |
 | `showPreview` | `boolean` | `true` | 显示只读逻辑表达式预览面板 |
 | `showConvert` | `boolean` | `true` | 在预览面板内显示格式选择器 |
-| `convertFormats` | `string[]` | `sql, parameterized, parameterized_named, mongodb, cel, spel, json, jsonlogic` | 选择器提供的格式 |
+| `convertFormats` | `string[]` | `natural_language, sql, parameterized, parameterized_named, mongodb, cel, spel, json, jsonlogic` | 选择器提供的格式 |
 | `maxDepth` | `number` | `2` | 最大组嵌套深度 |
-| `height` | `number \| string` | `"24rem"` | 容器固定高度 |
 | `disabled` | `boolean` | `false` | 禁用构建器 |
 | `className` | `ClassNameValue` | - | 自定义类名，作用于根元素 |
 

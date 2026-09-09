@@ -17,33 +17,21 @@ export type QueryCombinator = "and" | "or";
 export interface QueryFieldConfig {
   name: string;
   label: string;
-  /** Operators offered for this field's sub-conditions. Defaults follow the field's value kind. */
   operators?: string[];
   valueKind?: QueryValueKind;
-  /** Options for `valueKind: "select"` — enum fields merge every checked option into one `IN` condition. */
   options?: { label: string; value: string }[];
 }
 
 export interface QueryBuilderProps {
   fields: QueryFieldConfig[];
-  /** Initial query in react-querybuilder format; also the target Reset restores. */
   defaultValue?: RuleGroupType;
-  /** Fired by the Submit button with the query tree in react-querybuilder format. */
   onSubmit?: (query: RuleGroupType) => void;
-  /** Alias of `onSubmit`, fired on Submit. */
   onQueryChange?: (query: RuleGroupType) => void;
-  /** Fired by the Reset button. */
   onReset?: () => void;
-  /** Show the read-only logic-expression preview panel. Default `true`. */
   showPreview?: boolean;
-  /** Show the format selector inside the preview panel. Default `true`. */
   showConvert?: boolean;
-  /** Formats offered by the preview format selector. */
   convertFormats?: string[];
-  /** Maximum group nesting depth. Default `2`. */
   maxDepth?: number;
-  /** Fixed container height. Default `"24rem"`. */
-  height?: number | string;
   disabled?: boolean;
   className?: ClassNameValue;
 }
@@ -56,6 +44,7 @@ const KIND_OPERATORS: Record<QueryValueKind, string[]> = {
 };
 
 const CONVERT_FORMATS = [
+  "natural_language",
   "sql",
   "parameterized",
   "parameterized_named",
@@ -67,6 +56,7 @@ const CONVERT_FORMATS = [
 ];
 
 const CONVERT_LABELS: Record<string, string> = {
+  natural_language: "Natural Language",
   sql: "SQL",
   parameterized: "Parameterized",
   parameterized_named: "Parameterized (named)",
@@ -151,7 +141,10 @@ function toQueryGroup(group: DraftGroup, fields: QueryFieldConfig[]): RuleGroupT
       rules.push({ field: field.name, operator: condition.operator, value: condition.value });
     }
   }
-  for (const nested of group.groups) rules.push(toQueryGroup(nested, fields));
+  for (const nested of group.groups) {
+    const query = toQueryGroup(nested, fields);
+    if (query.rules.length > 0) rules.push(query);
+  }
   return { combinator: group.combinator, rules };
 }
 
@@ -177,14 +170,6 @@ function parsePlainDate(value: unknown): Temporal.PlainDate | null {
   }
 }
 
-/**
- * A collapsible folder tree of unique field nodes and nestable and/or groups.
- * Top-right holds the root AND/OR segment and the Add-Group button; folders
- * scroll inside a fixed-height body. Enum fields expand to a checkbox list
- * (with select-all) that merges into a single `IN` condition. A read-only
- * preview panel shows the logic expression via `formatQuery`, and Submit /
- * Reset sit at the bottom.
- */
 export function QueryBuilder({
   fields,
   defaultValue,
@@ -195,14 +180,13 @@ export function QueryBuilder({
   showConvert = true,
   convertFormats = CONVERT_FORMATS,
   maxDepth = 2,
-  height = "24rem",
   disabled,
   className,
 }: QueryBuilderProps) {
   const [draft, setDraft] = React.useState<DraftGroup>(() =>
     defaultValue ? fromQueryGroup(defaultValue, fields) : newDraftGroup(fields),
   );
-  const [format, setFormat] = React.useState("sql");
+  const [format, setFormat] = React.useState("natural_language");
 
   const editGroup = (path: number[], updater: (g: DraftGroup) => DraftGroup) =>
     setDraft((root) => updateGroupAt(root, path, updater));
@@ -257,7 +241,14 @@ export function QueryBuilder({
   const preview = React.useMemo(() => {
     if (!showPreview) return "";
     try {
-      const result: unknown = formatQuery(toQueryGroup(draft, fields), format as never);
+      const result: unknown = formatQuery(toQueryGroup(draft, fields), {
+        format: format as never,
+        fields: fields.map(({ name, label }) => ({ name, label })),
+        ...(format === "natural_language" && {
+          translations: { groupSuffix: "" },
+          fallbackExpression: "No conditions yet",
+        }),
+      });
       return typeof result === "string" ? result : JSON.stringify(result, null, 2);
     } catch (error) {
       return String(error);
@@ -270,14 +261,16 @@ export function QueryBuilder({
     const ops = config.operators ?? KIND_OPERATORS[kind];
     const options = config.options ?? [];
     const allSelected =
-      kind === "select" && options.length > 0 && options.every((o) => state.enumValues.includes(o.value));
+      kind === "select" &&
+      options.length > 0 &&
+      options.every((o) => state.enumValues.includes(o.value));
     const summary =
       kind === "select"
         ? state.enumValues.length > 0 && `${state.enumValues.length} selected`
         : state.conditions.length > 0 &&
           `${state.conditions.length} condition${state.conditions.length > 1 ? "s" : ""}`;
     return (
-      <div className="rounded-lg border border-border bg-muted/40">
+      <div className="rounded-lg">
         <button
           type="button"
           disabled={disabled}
@@ -298,7 +291,7 @@ export function QueryBuilder({
           )}
         </button>
         {!state.collapsed && (
-          <div className="border-t border-border p-2">
+          <div className="p-2">
             {kind === "select" ? (
               <div className="flex flex-col gap-1">
                 <Checkbox
@@ -346,7 +339,9 @@ export function QueryBuilder({
                         options={ops.map((op) => ({ label: op, value: op }))}
                         value={condition.operator}
                         disabled={disabled}
-                        onValueChange={(v) => updateCondition(path, config.name, i, { operator: v })}
+                        onValueChange={(v) =>
+                          updateCondition(path, config.name, i, { operator: v })
+                        }
                       />
                     </div>
                     <div className="min-w-0">
@@ -381,17 +376,15 @@ export function QueryBuilder({
                     </button>
                   </div>
                 ))}
-                <div>
-                  <button
-                    type="button"
-                    disabled={disabled}
-                    onClick={() => addCondition(path, config.name, ops[0])}
-                    className="inline-flex h-7 cursor-pointer items-center gap-1 rounded-md px-2 text-xs text-muted-foreground transition-colors hover:bg-hover hover:text-foreground"
-                  >
-                    <Plus className="size-3.5" />
-                    Condition
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  disabled={disabled}
+                  onClick={() => addCondition(path, config.name, ops[0])}
+                  className="inline-flex h-7 cursor-pointer items-center justify-center gap-1 rounded-md px-2 text-xs text-muted-foreground"
+                >
+                  <Plus className="size-3.5" />
+                  Condition
+                </button>
               </div>
             )}
           </div>
@@ -400,49 +393,43 @@ export function QueryBuilder({
     );
   };
 
-  const renderNestedGroup = (group: DraftGroup, path: number[]) => (
-    <div className="rounded-lg border border-border bg-muted/40">
-      <div className="flex items-center gap-1.5 border-b border-border px-2 py-1">
-        <button
-          type="button"
-          aria-label={group.collapsed ? "Expand group" : "Collapse group"}
-          disabled={disabled}
-          onClick={() => editGroup(path, (g) => ({ ...g, collapsed: !g.collapsed }))}
-          className="inline-flex size-6 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-hover hover:text-foreground"
-        >
-          {group.collapsed ? (
-            <ChevronRight className="size-4" />
-          ) : (
-            <ChevronDown className="size-4" />
-          )}
-        </button>
-        <SegmentGroup
-          value={group.combinator}
-          disabled={disabled}
-          onValueChange={(v) =>
-            editGroup(path, (g) => ({ ...g, combinator: v as QueryCombinator }))
-          }
-          options={[
-            { label: "AND", value: "and" },
-            { label: "OR", value: "or" },
-          ]}
-          itemClassName="px-2 py-0.5 text-xs"
-        />
-        <span className="text-xs text-muted-foreground">Group</span>
-        <div className="ml-auto flex items-center gap-0.5">
-          {path.length + 1 < maxDepth && (
-            <button
-              type="button"
-              disabled={disabled}
-              onClick={() =>
-                editGroup(path, (g) => ({ ...g, groups: [...g.groups, newDraftGroup(fields)] }))
-              }
-              className="inline-flex h-7 cursor-pointer items-center gap-1 rounded-md px-2 text-xs text-muted-foreground transition-colors hover:bg-hover hover:text-foreground"
-            >
-              <Plus className="size-3.5" />
-              Group
-            </button>
-          )}
+  const renderGroupHeader = (group: DraftGroup, path: number[]) => (
+    <>
+      <button
+        type="button"
+        aria-label={group.collapsed ? "Expand group" : "Collapse group"}
+        disabled={disabled}
+        onClick={() => editGroup(path, (g) => ({ ...g, collapsed: !g.collapsed }))}
+        className="inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-hover hover:text-foreground"
+      >
+        {group.collapsed ? <ChevronRight className="size-4" /> : <ChevronDown className="size-4" />}
+      </button>
+      <SegmentGroup
+        value={group.combinator}
+        disabled={disabled}
+        onValueChange={(v) => editGroup(path, (g) => ({ ...g, combinator: v as QueryCombinator }))}
+        options={[
+          { label: "AND", value: "and" },
+          { label: "OR", value: "or" },
+        ]}
+        itemClassName="h-7 px-2 text-xs"
+      />
+      <span className="text-xs text-muted-foreground">Group</span>
+      <div className="ml-auto flex items-center gap-0.5">
+        {path.length + 1 < maxDepth && (
+          <button
+            type="button"
+            disabled={disabled}
+            onClick={() =>
+              editGroup(path, (g) => ({ ...g, groups: [...g.groups, newDraftGroup(fields)] }))
+            }
+            className="inline-flex h-7 cursor-pointer items-center gap-1 rounded-md px-2 text-xs text-muted-foreground transition-colors hover:bg-hover hover:text-foreground"
+          >
+            <Plus className="size-3.5" />
+            Group
+          </button>
+        )}
+        {path.length > 0 && (
           <button
             type="button"
             aria-label="Remove group"
@@ -457,63 +444,43 @@ export function QueryBuilder({
           >
             <Trash2 className="size-4" />
           </button>
-        </div>
+        )}
       </div>
-      {!group.collapsed && (
-        <div className="ml-3 flex flex-col gap-2 border-l border-border p-2">
-          {fields.map((config) => (
-            <React.Fragment key={config.name}>
-              {renderFieldNode(group, path, config)}
-            </React.Fragment>
-          ))}
-        </div>
-      )}
+    </>
+  );
+
+  const renderGroupContent = (group: DraftGroup, path: number[]) => (
+    <div className="ml-3 flex flex-col gap-2 border-l border-border p-2">
+      {fields.map((config) => (
+        <React.Fragment key={config.name}>{renderFieldNode(group, path, config)}</React.Fragment>
+      ))}
+      {group.groups.map((nested, i) => (
+        <React.Fragment key={i}>{renderNestedGroup(nested, [...path, i])}</React.Fragment>
+      ))}
+    </div>
+  );
+
+  const renderNestedGroup = (group: DraftGroup, path: number[]) => (
+    <div className="rounded-lg border border-border">
+      <div className="flex items-center gap-1.5 border-b border-border px-2 py-1">
+        {renderGroupHeader(group, path)}
+      </div>
+      {!group.collapsed && renderGroupContent(group, path)}
     </div>
   );
 
   return (
     <div
       className={cn(
-        "flex w-full flex-col overflow-hidden rounded-lg border bg-background text-foreground",
+        "flex h-96 w-full flex-col overflow-hidden overscroll-contain rounded-lg border bg-background text-foreground",
         className,
       )}
-      style={{ height }}
     >
-      <div className="flex shrink-0 items-center gap-2 border-b bg-background px-3 py-2">
-        <div className="ml-auto flex items-center gap-2">
-          <SegmentGroup
-            value={draft.combinator}
-            disabled={disabled}
-            onValueChange={(v) =>
-              setDraft((root) => ({ ...root, combinator: v as QueryCombinator }))
-            }
-            options={[
-              { label: "AND", value: "and" },
-              { label: "OR", value: "or" },
-            ]}
-            itemClassName="px-2.5 py-1 text-xs"
-          />
-          {maxDepth > 1 && (
-            <Button
-              variant="outline"
-              disabled={disabled}
-              onClick={() =>
-                setDraft((root) => ({ ...root, groups: [...root.groups, newDraftGroup(fields)] }))
-              }
-            >
-              <Plus className="size-4" />
-              Group
-            </Button>
-          )}
-        </div>
+      <div className="flex shrink-0 items-center gap-1.5 border-b border-border px-2 py-1">
+        {renderGroupHeader(draft, [])}
       </div>
-      <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto p-3">
-        {fields.map((config) => (
-          <React.Fragment key={config.name}>{renderFieldNode(draft, [], config)}</React.Fragment>
-        ))}
-        {draft.groups.map((group, i) => (
-          <React.Fragment key={i}>{renderNestedGroup(group, [i])}</React.Fragment>
-        ))}
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        {!draft.collapsed && renderGroupContent(draft, [])}
       </div>
       {showPreview && (
         <div className="shrink-0 border-t bg-muted/30 px-3 py-2">
@@ -531,12 +498,12 @@ export function QueryBuilder({
               />
             )}
           </div>
-          <pre className="mt-1 max-h-20 overflow-auto text-xs whitespace-pre-wrap break-words text-muted-foreground">
+          <pre className="mt-1 max-h-20 overflow-auto text-xs whitespace-pre-wrap wrap-break-word text-muted-foreground">
             {preview}
           </pre>
         </div>
       )}
-      <div className="flex shrink-0 items-center justify-end gap-2 border-t bg-background px-3 py-2">
+      <div className="flex shrink-0 items-center justify-center gap-2 border-t bg-background px-3 py-2">
         <Button variant="outline" disabled={disabled} onClick={handleReset}>
           Reset
         </Button>

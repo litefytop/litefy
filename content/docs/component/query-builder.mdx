@@ -13,12 +13,12 @@ This component depends on [`react-querybuilder`](https://react-querybuilder.js.o
 
 ## Usage
 
-`QueryBuilder` renders the query as a **tree with two node types**: field nodes and group nodes. Every field appears **exactly once** per group — a field folder with several sub-conditions replaces repeating the same field row after row. Top-right holds the root **AND / OR** segment and the **+ Group** button; the folder tree scrolls inside a fixed-height body. Below it, a read-only **preview panel** shows the complete logic expression, and **Submit / Reset** sit at the very bottom.
+`QueryBuilder` renders the query as a **tree with two node types**: field nodes and group nodes. Every field appears **exactly once** per group — a field folder with several sub-conditions replaces repeating the same field row after row. The layout is fully recursive: the root group and every added group share the same first row — collapse chevron, **AND / OR** segment and the **+ Group** button — above a guide-line indented body that scrolls inside a fixed-height frame. Below it, a read-only **preview panel** shows the query in natural language by default, and centered **Submit / Reset** buttons sit at the very bottom.
 
 <ComponentPreview name="query-builder-basic" />
 
 - **text / number / date** — expand the field folder and press **+ Condition** to add sub-conditions; each sub-condition is an operator dropdown plus a value input.
-- **Group** — a nested root: the same collapsible folder list, with its own AND / OR segment and add/remove controls.
+- **Group** — a nested root: exactly the same layout as the root group — same first row, same folder list — so nesting reads as one recursive pattern.
 
 ### Enum fields
 
@@ -26,7 +26,7 @@ This component depends on [`react-querybuilder`](https://react-querybuilder.js.o
 
 ### Submit and Reset
 
-The tree is a draft: edits update the live preview only. **Submit** emits the query tree through `onSubmit` / `onQueryChange` in the react-querybuilder `RuleGroupType` format — hand it to `formatQuery` for SQL, MongoDB, CEL and more, and `parseSQL` hydrates a stored condition string back through `defaultValue`. **Reset** restores the draft to `defaultValue` (or an empty tree).
+The tree is a draft: edits update the live preview only. The preview defaults to **natural language** ("Name contains …"), built from field labels so it reads for humans; switch it to SQL, MongoDB, CEL and more with the format selector. **Submit** emits the query tree through `onSubmit` / `onQueryChange` in the react-querybuilder `RuleGroupType` format — hand it to `formatQuery` for those same transformations, and `parseSQL` hydrates a stored condition string back through `defaultValue`. **Reset** restores the draft to `defaultValue` (or an empty tree).
 
 ## API Reference
 
@@ -41,9 +41,8 @@ The tree is a draft: edits update the live preview only. **Submit** emits the qu
 | `onReset` | `() => void` | - | Fired by the Reset button |
 | `showPreview` | `boolean` | `true` | Show the read-only logic-expression preview panel |
 | `showConvert` | `boolean` | `true` | Show the format selector inside the preview panel |
-| `convertFormats` | `string[]` | `sql, parameterized, parameterized_named, mongodb, cel, spel, json, jsonlogic` | Formats offered by the selector |
+| `convertFormats` | `string[]` | `natural_language, sql, parameterized, parameterized_named, mongodb, cel, spel, json, jsonlogic` | Formats offered by the selector |
 | `maxDepth` | `number` | `2` | Maximum group nesting depth |
-| `height` | `number \| string` | `"24rem"` | Fixed container height |
 | `disabled` | `boolean` | `false` | Disable the builder |
 | `className` | `ClassNameValue` | - | Custom classes, applied to the root |
 
