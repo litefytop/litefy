@@ -3,8 +3,8 @@ import TableBasicDemo from "./table/basic";
 import tableBasicCode from "./table/basic.tsx?raw";
 import TableRemoteDemo from "./table/remote";
 import tableRemoteCode from "./table/remote.tsx?raw";
-import InlineWizardBasicDemo from "./inline-wizard/basic";
-import inlineWizardBasicCode from "./inline-wizard/basic.tsx?raw";
+import WizardInlineDemo from "./wizard/inline";
+import wizardInlineCode from "./wizard/inline.tsx?raw";
 import DualPickerBasicDemo from "./dual-picker/basic";
 import dualPickerBasicCode from "./dual-picker/basic.tsx?raw";
 import DualPickerSingleDemo from "./dual-picker/single";
@@ -219,6 +219,8 @@ import ScrollShadowPositionDemo from "./scroll-shadow/position";
 import scrollShadowPositionCode from "./scroll-shadow/position.tsx?raw";
 import ScrollShadowSizeDemo from "./scroll-shadow/size";
 import scrollShadowSizeCode from "./scroll-shadow/size.tsx?raw";
+import ScrollShadowArrowDemo from "./scroll-shadow/arrow";
+import scrollShadowArrowCode from "./scroll-shadow/arrow.tsx?raw";
 import SeparatorBasicDemo from "./separator/basic";
 import separatorBasicCode from "./separator/basic.tsx?raw";
 import SeparatorCustomDemo from "./separator/custom";
@@ -751,6 +753,10 @@ export const demos: Record<string, DemoItem> = {
     component: ScrollShadowSizeDemo,
     code: scrollShadowSizeCode,
   },
+  "scroll-shadow-arrow": {
+    component: ScrollShadowArrowDemo,
+    code: scrollShadowArrowCode,
+  },
   "separator-basic": {
     component: SeparatorBasicDemo,
     code: separatorBasicCode,
@@ -803,9 +809,9 @@ export const demos: Record<string, DemoItem> = {
     component: TableRemoteDemo,
     code: tableRemoteCode,
   },
-  "inline-wizard-basic": {
-    component: InlineWizardBasicDemo,
-    code: inlineWizardBasicCode,
+  "wizard-inline": {
+    component: WizardInlineDemo,
+    code: wizardInlineCode,
   },
   "dual-picker-basic": {
     component: DualPickerBasicDemo,

@@ -1,6 +1,6 @@
 ---
 title: Form Item
-description: A self-managing form field that renders a finished control per variant — label, description, input and error in a fixed vertical layout with built-in validation
+description: A self-managing form field that renders a finished control per variant — label, input and a description / error line in a fixed vertical layout with built-in validation
 ---
 
 ## Installation
@@ -9,7 +9,7 @@ description: A self-managing form field that renders a finished control per vari
 
 ## Usage
 
-`FormItem` renders a finished control per `variant` (`input`, `textarea`, `select`, `password`, `number-input`) with a fixed vertical layout: **label → description (optional) → input → error**. It registers with the surrounding `Form` so its value is collected on submit, shows validation errors in a danger line below the input, and works standalone too.
+`FormItem` renders a finished control per `variant` (`input`, `textarea`, `select`, `password`, `number-input`) with a fixed vertical layout: **label → input → description / error** (the two lines share one slot — the description shows by default and is replaced by the error while the field is invalid). It registers with the surrounding `Form` so its value is collected on submit, shows validation errors in a danger line below the input, and works standalone too.
 
 <ComponentPreview
   name="form-item"
@@ -34,7 +34,7 @@ A form field rendered as a finished control. The prop set is a discriminated uni
 | `variant`        | `"input" \| "textarea" \| "select" \| "password" \| "number-input"`                                                                                              | `"input"`  | Which finished control to render                                                                   |
 | `name`           | `string`                                                                                                                                                          | -          | Field name — also the key the surrounding `Form` uses to collect values. **Required**              |
 | `label`          | `React.ReactNode`                                                                                                                                                 | -          | Label rendered above the control                                                                   |
-| `description`    | `React.ReactNode`                                                                                                                                                 | -          | Helper text rendered between the label and the input                                               |
+| `description`    | `React.ReactNode`                                                                                                                                                 | -          | Helper text rendered below the control; replaced by the error message while the field is invalid   |
 | `required`       | `boolean`                                                                                                                                                         | -          | Marks the label and makes the control `required`                                                   |
 | `validate`       | `(value: string) => string \| { message: string; invalid?: boolean } \| boolean \| null \| undefined \| Promise<...>`                                             | -          | A string is a hard error (message + `aria-invalid` on the control); `{ message, invalid: false }` shows the message without styling the control; `false` is a bare invalid state; `null`/`undefined`/`true` pass |
 | `validateTrigger` | `"onChange" \| "onBlur"`                                                                                                                                         | `"onBlur"` | When `validate` runs. Once the field is invalid, it also re-validates on every change              |

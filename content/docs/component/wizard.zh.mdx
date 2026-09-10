@@ -28,7 +28,7 @@ description: Steps + Pager 组合的向导组件，内部管理索引状态 —�
 
 `Wizard.Inline`（亦导出为 `InlineWizard`）用同一套状态机驱动纵向步骤手风琴：只有当前步骤展开显示内容与它自己的 Back / Continue 按钮，其余步骤折叠为标题行。点击已访问步骤即可回跳。
 
-<ComponentPreview name="inline-wizard-basic" />
+<ComponentPreview name="wizard-inline" />
 
 | 属性 | 类型 | 默认值 | 描述 |
 |------|------|--------|------|
@@ -46,7 +46,7 @@ description: Steps + Pager 组合的向导组件，内部管理索引状态 —�
 
 ### useWizardNavigation
 
-向导状态机（钳位导航 + 最远到达锁定）以 `useWizardNavigation({ count, defaultIndex?, index?, maxIndex?, onIndexChange? })` 导出——返回 `{ index, maxVisited, maxReachable, isFirst, isLast, isReachable, go }`。[Wizard](/zh/docs/component/wizard) 与 [Inline Wizard](/zh/docs/component/inline-wizard) 都由它驱动，你也可以用它构建自定义向导外壳。
+向导状态机（钳位导航 + 最远到达锁定）以 `useWizardNavigation({ count, defaultIndex?, index?, maxIndex?, onIndexChange? })` 导出——返回 `{ index, maxVisited, maxReachable, isFirst, isLast, isReachable, go }`。上方的分页式 Wizard 与下方的内联变体都由它驱动，你也可以用它构建自定义向导外壳。
 
 ### Wizard
 

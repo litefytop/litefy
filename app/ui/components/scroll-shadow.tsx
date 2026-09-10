@@ -20,7 +20,7 @@ export interface ScrollShadowViewportProps extends Omit<React.ComponentProps<"di
 }
 
 export function ScrollShadowViewport({ className, ...props }: ScrollShadowViewportProps) {
-  return <div {...props} className={cn("size-full overflow-auto", className)} />;
+  return <div {...props} className={cn("size-full overflow-auto overscroll-contain", className)} />;
 }
 
 export interface ScrollShadowEdgeProps extends Omit<React.ComponentProps<"div">, "className"> {
@@ -44,18 +44,28 @@ const edgeArrow: Record<Edge, LucideIcon> = {
   right: ChevronRight,
 };
 
+const arrowHit: Record<Edge, string> = {
+  top: "top-0 inset-x-0 h-5",
+  bottom: "bottom-0 inset-x-0 h-5",
+  left: "left-0 inset-y-0 w-5",
+  right: "right-0 inset-y-0 w-5",
+};
+
 export function ScrollShadowEdge({
   className,
   edge = "bottom",
   size = "64px",
   arrow = true,
   style,
+  onClick,
   ...props
 }: ScrollShadowEdgeProps) {
   const Icon = edgeArrow[edge];
+  const interactive = typeof onClick === "function";
+  const { "aria-label": ariaLabel, ...rest } = props;
   return (
     <div
-      {...props}
+      {...rest}
       data-position={edge}
       className={cn(
         "pointer-events-none absolute flex items-center justify-center text-muted-foreground",
@@ -69,7 +79,22 @@ export function ScrollShadowEdge({
         } as React.CSSProperties
       }
     >
-      {arrow && <Icon className="size-4" />}
+      {arrow &&
+        (interactive ? (
+          <span
+            role="button"
+            aria-label={ariaLabel}
+            onClick={onClick}
+            className={cn(
+              "pointer-events-auto absolute flex cursor-pointer select-none items-center justify-center transition-colors hover:text-foreground",
+              arrowHit[edge],
+            )}
+          >
+            <Icon className="size-4" />
+          </span>
+        ) : (
+          <Icon className="size-4" />
+        ))}
     </div>
   );
 }
@@ -154,6 +179,15 @@ export function ScrollShadow({
     };
   }, [updateVisibility]);
 
+  const scrollToEdge = useCallback((edge: Edge) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    if (edge === "top") el.scrollTo({ top: 0 });
+    else if (edge === "bottom") el.scrollTo({ top: el.scrollHeight });
+    else if (edge === "left") el.scrollTo({ left: 0 });
+    else el.scrollTo({ left: el.scrollWidth });
+  }, []);
+
   return (
     <ScrollShadowRoot className={className} style={style}>
       <ScrollShadowViewport
@@ -171,6 +205,8 @@ export function ScrollShadow({
             edge={edge}
             size={size}
             arrow={arrow}
+            onClick={arrow ? () => scrollToEdge(edge) : undefined}
+            aria-label={arrow ? `Scroll to ${edge}` : undefined}
             className={classNames?.edge}
             style={styles?.edge}
           />

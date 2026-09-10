@@ -28,7 +28,7 @@ Pass `steps` for the progress indicator and `children` for the pager body — on
 
 `Wizard.Inline` (also exported as `InlineWizard`) drives the same state machine as a vertical steps accordion: only the current step expands to show its content with its own Back / Continue controls, while the other steps stay collapsed to their title rows. Click a visited step to return to it.
 
-<ComponentPreview name="inline-wizard-basic" />
+<ComponentPreview name="wizard-inline" />
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
@@ -46,7 +46,7 @@ Pass `steps` for the progress indicator and `children` for the pager body — on
 
 ### useWizardNavigation
 
-The wizard state machine (clamped navigation + max-visited lock) is exported as `useWizardNavigation({ count, defaultIndex?, index?, maxIndex?, onIndexChange? })` — it returns `{ index, maxVisited, maxReachable, isFirst, isLast, isReachable, go }`. It powers both [Wizard](/docs/component/wizard) and [Inline Wizard](/docs/component/inline-wizard), and you can use it to build custom wizard shells.
+The wizard state machine (clamped navigation + max-visited lock) is exported as `useWizardNavigation({ count, defaultIndex?, index?, maxIndex?, onIndexChange? })` — it returns `{ index, maxVisited, maxReachable, isFirst, isLast, isReachable, go }`. It powers both the pager-based Wizard above and the inline variant below, and you can use it to build custom wizard shells.
 
 ### Wizard
 

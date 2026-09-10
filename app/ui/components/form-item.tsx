@@ -79,8 +79,7 @@ export function FormItem(props: FormItemProps) {
 
   const { register } = React.useContext(FormContext);
   const id = React.useId();
-  const descriptionId = `${id}-description`;
-  const errorId = `${id}-error`;
+  const hintId = `${id}-hint`;
   const [error, setError] = React.useState<{ text: string; markInvalid: boolean } | null>(null);
   const errorRef = React.useRef<{ text: string; markInvalid: boolean } | null>(null);
   const elementRef = React.useRef<FieldElement | null>(null);
@@ -90,6 +89,7 @@ export function FormItem(props: FormItemProps) {
 
   errorRef.current = error;
   const isInvalid = error?.markInvalid === true;
+  const hint = error ? error.text || null : description;
 
   const setFieldRef = (el: HTMLElement | null) => {
     const target =
@@ -144,10 +144,7 @@ export function FormItem(props: FormItemProps) {
     id,
     disabled,
     required,
-    "aria-describedby":
-      [description ? descriptionId : undefined, error ? errorId : undefined]
-        .filter(Boolean)
-        .join(" ") || undefined,
+    "aria-describedby": hint ? hintId : undefined,
   };
 
   let control: React.ReactNode;
@@ -204,11 +201,7 @@ export function FormItem(props: FormItemProps) {
             disabled={disabled}
             required={required}
             aria-invalid={isInvalid || undefined}
-            aria-describedby={
-              [description ? descriptionId : undefined, error ? errorId : undefined]
-                .filter(Boolean)
-                .join(" ") || undefined
-            }
+            aria-describedby={hint ? hintId : undefined}
             options={options}
             defaultValue={defaultValue}
             value={selectValue}
@@ -283,21 +276,22 @@ export function FormItem(props: FormItemProps) {
           {required && <span aria-hidden className="text-danger"> *</span>}
         </label>
       )}
-      {description && (
-        <small id={descriptionId} className={cn("block text-sm indent-2 text-muted-foreground", classNames?.description)} style={styles?.description}>
-          {description}
+      {control}
+      {hint && (
+        <small
+          id={hintId}
+          role={error ? "alert" : undefined}
+          className={cn(
+            "block h-5 text-sm indent-2",
+            error ? "text-danger" : "text-muted-foreground",
+            error ? classNames?.error : classNames?.description,
+          )}
+          style={error ? styles?.error : styles?.description}
+          aria-live="polite"
+        >
+          {hint}
         </small>
       )}
-      {control}
-      <small
-        id={errorId}
-        role={error ? "alert" : undefined}
-        className={cn("block h-5 text-sm indent-2", error ? "text-danger" : "text-transparent", classNames?.error)}
-        style={styles?.error}
-        aria-live="polite"
-      >
-        {error?.text}
-      </small>
     </div>
   );
 }
