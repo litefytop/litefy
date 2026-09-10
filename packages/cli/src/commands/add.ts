@@ -2,7 +2,12 @@ import path from "node:path";
 import axios from "axios";
 import fs from "fs-extra";
 import logger from "../utils/logger";
-import { getFileNameFromUrl, loadRegistry } from "../utils/registry";
+import {
+  getFileNameFromUrl,
+  loadRegistry,
+  readPkgSource,
+  resolveRegistryName,
+} from "../utils/registry";
 import { writeBarrelIndex } from "../utils/barrel";
 import init from "../commands/init";
 
@@ -67,16 +72,16 @@ async function add(selectNames: string[], options: AddOptions): Promise<void> {
   const queue = [...selectNames];
 
   while (queue.length) {
-    const name = queue.shift()!;
+    const raw = queue.shift()!;
+    const name = resolveRegistryName(registry, raw);
+    if (!name) {
+      logger.error(`Not found in registry: ${raw}`);
+      continue;
+    }
     if (processed.has(name)) continue;
     processed.add(name);
 
     const entry = registry[name];
-    if (!entry) {
-      logger.error(`Not found in registry: ${name}`);
-      continue;
-    }
-
     const ok = await addSingle(name, entry, targetDirFor(entry), cwd, options);
     if (!ok) continue;
 
@@ -128,8 +133,14 @@ export async function addSingle(
     const res = await axios.get<string>(entry.url, { timeout: 10000 });
     await fs.writeFile(outFile, res.data, "utf-8");
     logger.success(`Saved ${fileName}`);
-  } catch (e) {
-    logger.error(`Download failed ${itemName}: ${e instanceof Error ? e.message : String(e)}`);
+  } catch {
+    const pkgSource = await readPkgSource(entry);
+    if (pkgSource !== null) {
+      await fs.writeFile(outFile, pkgSource, "utf-8");
+      logger.success(`Saved ${fileName} (from package sources)`);
+      return true;
+    }
+    logger.error(`Download failed ${itemName}: CDN unreachable and no package source fallback`);
     return false;
   }
 

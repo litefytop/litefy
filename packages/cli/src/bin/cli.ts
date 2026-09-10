@@ -3,6 +3,7 @@
 import { program } from "commander";
 import packageJson from "../../package.json";
 import add from "../commands/add";
+import install from "../commands/install";
 import init from "../commands/init";
 import rm from "../commands/rm";
 import repair from "../commands/repair";
@@ -30,6 +31,14 @@ program
   .option("-o, --overwrite", "Overwrite existing files")
   .action(async (components: string[], opts) => {
     await add(components, opts);
+  });
+
+program
+  .command("install")
+  .description("Install every component, hook, util, and style from the registry")
+  .option("-o, --overwrite", "Overwrite existing files")
+  .action(async (opts) => {
+    await install(opts);
   });
 
 program
