@@ -1,7 +1,7 @@
 import path from "node:path";
 import fs from "fs-extra";
 import logger from "../utils/logger";
-import { getFileNameFromUrl, loadRegistry } from "../utils/registry";
+import { getFileNameFromUrl, loadRegistry, resolveRegistryName } from "../utils/registry";
 import { writeBarrelIndex } from "../utils/barrel";
 import type { Registry, RegistryEntry } from "./add";
 
@@ -33,13 +33,13 @@ async function rm(names: string[]): Promise<void> {
   const config = (await fs.readJson(configPath)) as LitefyConfig;
   const registry: Registry = await loadRegistry();
 
-  for (const name of names) {
-    const entry = registry[name];
-    if (!entry) {
-      logger.error(`"${name}" not found in local registry, skip`);
+  for (const raw of names) {
+    const name = resolveRegistryName(registry, raw);
+    if (!name) {
+      logger.error(`"${raw}" not found in local registry, skip`);
       continue;
     }
-    await removeSingle(name, entry, config, cwd);
+    await removeSingle(name, registry[name], config, cwd);
   }
 
   const compIndex = path.resolve(cwd, config.components.path, "index.ts");

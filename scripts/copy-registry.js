@@ -1,4 +1,4 @@
-import path from "node:path";
+﻿import path from "node:path";
 import { fileURLToPath } from "node:url";
 import fs from "fs-extra";
 import ts from "typescript";
@@ -143,7 +143,7 @@ async function generateRegistry() {
     }
     registry[name] = {
       type: "component",
-      url: `https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/${fname}`,
+      url: `https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/${fname}`,
       ...(deps.size ? { dependence: [...deps] } : {}),
     };
     counts.component += 1;
@@ -160,7 +160,7 @@ async function generateRegistry() {
     for (const d of scanBarrelImports(indexPath, compExportMap)) deps.add(d);
     registry[entry.name] = {
       type: "component",
-      url: `https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/${entry.name}/index.tsx`,
+      url: `https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/${entry.name}/index.tsx`,
       ...(deps.size ? { dependence: [...deps] } : {}),
     };
     counts.component += 1;
@@ -173,7 +173,7 @@ async function generateRegistry() {
     const deps = scanLocalImports(path.join(utilDir, fname));
     registry[name] = {
       type,
-      url: `https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/${fname}`,
+      url: `https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/${fname}`,
       ...(deps.size ? { dependence: [...deps] } : {}),
     };
     counts[type] += 1;
@@ -185,7 +185,7 @@ async function generateRegistry() {
     const key = `style-${base}`;
     registry[key] = {
       type: "css",
-      url: `https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/${fname}`,
+      url: `https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/${fname}`,
     };
     counts.css += 1;
   }

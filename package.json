@@ -9,7 +9,10 @@
     "types:check": "react-router typegen && fumadocs-mdx && tsc --noEmit",
     "postinstall": "fumadocs-mdx",
     "cli:build": "pnpm --filter=litefy run build",
+    "cli:dev": "pnpm --filter=litefy run dev",
+    "cli:sync": "pnpm --filter=litefy run sync-sources",
     "cli:link": "pnpm --filter=litefy exec npm link",
+    "cli:publish": "pnpm --filter=litefy publish",
     "preview": "vite preview"
   },
   "dependencies": {

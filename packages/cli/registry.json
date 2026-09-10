@@ -1,42 +1,42 @@
 {
   "avatar": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/avatar.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/avatar.tsx"
   },
   "badge": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/badge.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/badge.tsx",
     "dependence": [
       "tag"
     ]
   },
   "banner": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/banner.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/banner.tsx"
   },
   "breadcrumb": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/breadcrumb.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/breadcrumb.tsx"
   },
   "button": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/button.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/button.tsx"
   },
   "calendar": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/calendar.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/calendar.tsx"
   },
   "capsule": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/capsule.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/capsule.tsx"
   },
   "card": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/card.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/card.tsx"
   },
   "cascader": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/cascader.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/cascader.tsx",
     "dependence": [
       "list",
       "popover"
@@ -44,33 +44,33 @@
   },
   "chart": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/chart.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/chart.tsx",
     "dependence": [
       "use-chart-palette"
     ]
   },
   "chat-input": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/chat-input.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/chat-input.tsx",
     "dependence": [
       "text-area"
     ]
   },
   "checkbox": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/checkbox.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/checkbox.tsx"
   },
   "chip-group": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/chip-group.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/chip-group.tsx"
   },
   "collapse": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/collapse.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/collapse.tsx"
   },
   "combobox": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/combobox.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/combobox.tsx",
     "dependence": [
       "list",
       "picker",
@@ -80,7 +80,7 @@
   },
   "context-menu": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/context-menu.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/context-menu.tsx",
     "dependence": [
       "menu",
       "popover"
@@ -88,7 +88,7 @@
   },
   "date-picker": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/date-picker.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/date-picker.tsx",
     "dependence": [
       "calendar",
       "picker",
@@ -97,15 +97,15 @@
   },
   "dialog": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/dialog.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/dialog.tsx"
   },
   "drawer": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/drawer.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/drawer.tsx"
   },
   "dropdown-menu": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/dropdown-menu.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/dropdown-menu.tsx",
     "dependence": [
       "button",
       "menu",
@@ -114,14 +114,14 @@
   },
   "dual-picker": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/dual-picker.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/dual-picker.tsx",
     "dependence": [
       "input-group"
     ]
   },
   "form-item": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/form-item.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/form-item.tsx",
     "dependence": [
       "input",
       "text-area",
@@ -133,49 +133,49 @@
   },
   "form": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/form.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/form.tsx"
   },
   "image": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/image.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/image.tsx"
   },
   "input-group": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/input-group.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/input-group.tsx"
   },
   "input-otp": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/input-otp.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/input-otp.tsx"
   },
   "input": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/input.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/input.tsx",
     "dependence": [
       "input-group"
     ]
   },
   "kbd": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/kbd.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/kbd.tsx"
   },
   "list": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/list.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/list.tsx",
     "dependence": [
       "scroll-shadow"
     ]
   },
   "masonry": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/masonry.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/masonry.tsx"
   },
   "menu": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/menu.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/menu.tsx"
   },
   "multi-select": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/multi-select.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/multi-select.tsx",
     "dependence": [
       "button",
       "checkbox",
@@ -184,11 +184,11 @@
   },
   "number-field": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/number-field.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/number-field.tsx"
   },
   "number-input": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/number-input.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/number-input.tsx",
     "dependence": [
       "input-group",
       "number-field"
@@ -196,30 +196,30 @@
   },
   "pager": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/pager.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/pager.tsx"
   },
   "paper": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/paper.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/paper.tsx"
   },
   "password": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/password.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/password.tsx",
     "dependence": [
       "input-group"
     ]
   },
   "picker": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/picker.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/picker.tsx"
   },
   "popover": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/popover.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/popover.tsx"
   },
   "preview-card": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/preview-card.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/preview-card.tsx",
     "dependence": [
       "card",
       "image",
@@ -228,11 +228,11 @@
   },
   "progress": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/progress.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/progress.tsx"
   },
   "query-builder": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/query-builder.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/query-builder.tsx",
     "dependence": [
       "button",
       "checkbox",
@@ -244,98 +244,98 @@
   },
   "radio": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/radio.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/radio.tsx"
   },
   "scroll-shadow": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/scroll-shadow.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/scroll-shadow.tsx"
   },
   "segment": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/segment.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/segment.tsx"
   },
   "select": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/select.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/select.tsx"
   },
   "separator": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/separator.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/separator.tsx"
   },
   "sidebar": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/sidebar.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/sidebar.tsx"
   },
   "skeleton": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/skeleton.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/skeleton.tsx"
   },
   "slider": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/slider.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/slider.tsx"
   },
   "steps": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/steps.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/steps.tsx"
   },
   "switch": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/switch.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/switch.tsx"
   },
   "table": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/table.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/table.tsx"
   },
   "tabs": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/tabs.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/tabs.tsx"
   },
   "tag": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/tag.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/tag.tsx"
   },
   "text-area": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/text-area.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/text-area.tsx"
   },
   "timeline": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/timeline.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/timeline.tsx"
   },
   "toast": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/toast.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/toast.tsx"
   },
   "toggle": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/toggle.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/toggle.tsx"
   },
   "tooltip": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/tooltip.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/tooltip.tsx"
   },
   "transfer": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/transfer.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/transfer.tsx",
     "dependence": [
       "checkbox"
     ]
   },
   "typography": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/typography.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/typography.tsx"
   },
   "upload": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/upload.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/upload.tsx"
   },
   "watermark": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/watermark.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/watermark.tsx"
   },
   "wizard": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/wizard.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/wizard.tsx",
     "dependence": [
       "pager",
       "steps"
@@ -343,142 +343,142 @@
   },
   "cn": {
     "type": "util",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/cn.ts"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/cn.ts"
   },
   "use-chart-palette": {
     "type": "hook",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-chart-palette.ts"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-chart-palette.ts"
   },
   "use-combobox": {
     "type": "hook",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-combobox.ts"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-combobox.ts"
   },
   "use-drag": {
     "type": "hook",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-drag.ts"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-drag.ts"
   },
   "use-load-more": {
     "type": "hook",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-load-more.ts"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-load-more.ts"
   },
   "use-pagination": {
     "type": "hook",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-pagination.ts"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-pagination.ts"
   },
   "use-panel-focus": {
     "type": "hook",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-panel-focus.ts"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-panel-focus.ts"
   },
   "use-remote-pagination": {
     "type": "hook",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-remote-pagination.ts"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-remote-pagination.ts"
   },
   "use-remote-sort": {
     "type": "hook",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-remote-sort.ts"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-remote-sort.ts"
   },
   "use-theme": {
     "type": "hook",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-theme.ts"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-theme.ts"
   },
   "use-upload-monitor": {
     "type": "hook",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-upload-monitor.ts"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-upload-monitor.ts"
   },
   "use-virtual-scroll": {
     "type": "hook",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-virtual-scroll.ts"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-virtual-scroll.ts"
   },
   "style-amber-brand": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/amber-brand.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/amber-brand.css"
   },
   "style-cyan-brand": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/cyan-brand.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/cyan-brand.css"
   },
   "style-emerald-brand": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/emerald-brand.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/emerald-brand.css"
   },
   "style-fuchsia-brand": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/fuchsia-brand.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/fuchsia-brand.css"
   },
   "style-gray-surface": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/gray-surface.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/gray-surface.css"
   },
   "style-indigo-brand": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/indigo-brand.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/indigo-brand.css"
   },
   "style-interactive": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/interactive.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/interactive.css"
   },
   "style-lime-brand": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/lime-brand.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/lime-brand.css"
   },
   "style-mauve-surface": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/mauve-surface.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/mauve-surface.css"
   },
   "style-mist-surface": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/mist-surface.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/mist-surface.css"
   },
   "style-olive-surface": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/olive-surface.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/olive-surface.css"
   },
   "style-orange-brand": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/orange-brand.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/orange-brand.css"
   },
   "style-pink-brand": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/pink-brand.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/pink-brand.css"
   },
   "style-purple-brand": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/purple-brand.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/purple-brand.css"
   },
   "style-rose-brand": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/rose-brand.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/rose-brand.css"
   },
   "style-sky-brand": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/sky-brand.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/sky-brand.css"
   },
   "style-slate-surface": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/slate-surface.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/slate-surface.css"
   },
   "style-stone-surface": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/stone-surface.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/stone-surface.css"
   },
   "style-taupe-surface": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/taupe-surface.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/taupe-surface.css"
   },
   "style-teal-brand": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/teal-brand.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/teal-brand.css"
   },
   "style-theme": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/theme.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/theme.css"
   },
   "style-violet-brand": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/violet-brand.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/violet-brand.css"
   },
   "style-zinc-surface": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/styles/zinc-surface.css"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/zinc-surface.css"
   }
 }

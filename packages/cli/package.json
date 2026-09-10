@@ -1,16 +1,22 @@
 {
   "name": "litefy",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Litefy UI - A lightweight React component library and CLI tool",
   "bin": {
     "litefy": "./dist/bin/cli.js"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "registry.json",
+    "sources"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/bin/cli.ts",
-    "prepublishOnly": "npm run build",
+    "sync-sources": "node ../../scripts/sync-sources.mjs",
+    "prepublishOnly": "npm run sync-sources && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
