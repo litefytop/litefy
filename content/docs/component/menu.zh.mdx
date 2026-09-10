@@ -5,21 +5,7 @@ description: 可直接在文档流中使用的菜单组件，支持分组、二�
 
 ## 安装
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add menu" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="menu" />
-
-</Tab>
-
-</Tabs>
+<Installation name="menu" />
 
 ## 用法
 
@@ -30,30 +16,6 @@ Menu 是真正的菜单组件，直接在文档流中渲染 —— 无需触发�
 <ComponentPreview
   name="menu-basic"
 />
-
-```tsx
-import { Menu, type MenuConfig } from "@/ui";
-
-const items: MenuConfig[] = [
-  {
-    group: "Account",
-    items: [
-      { label: "Profile" },
-      { label: "Preferences", children: [{ label: "Theme" }, { label: "Language" }] },
-    ],
-  },
-  {
-    group: "System",
-    items: [{ label: "Notifications" }, { label: "Settings" }, { label: "Logout" }],
-  },
-];
-
-<Menu
-  className="w-48 rounded-md border p-1 shadow-md"
-  items={items}
-  onSelect={(item) => setSelected(item.label)}
-/>
-```
 
 #### 键盘导航
 
@@ -84,8 +46,8 @@ const items: MenuConfig[] = [
 | `className`    | `ClassNameValue`                   | -       | 根列表自定义类名；文档流中的容器样式放在这里                                 |
 | `style`        | `React.CSSProperties`              | -       | 根列表内联样式                                                               |
 | `itemClassName`| `ClassNameValue`                   | -       | 应用到每个菜单项按钮的类名                                                   |
-| `classNames`   | `{ root?; item?; label?; sub? }`   | -       | 各零件自定义类名                                                             |
-| `styles`       | `{ root?; item?; label?; sub? }`   | -       | 各零件自定义内联样式                                                         |
+| `classNames`   | `{ item?; label?; sub? }`          | -       | 各零件自定义类名                                                             |
+| `styles`       | `{ item?; label?; sub? }`          | -       | 各零件自定义内联样式                                                         |
 
 #### items
 

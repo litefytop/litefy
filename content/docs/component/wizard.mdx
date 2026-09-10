@@ -5,21 +5,7 @@ description: A steps + pager wizard that manages index state internally — visi
 
 ## Installation
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add wizard" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="wizard" />
-
-</Tab>
-
-</Tabs>
+<Installation name="wizard" />
 
 ## Usage
 
@@ -31,26 +17,6 @@ Pass `steps` for the progress indicator and `children` for the pager body — on
   name="wizard-basic"
 />
 
-```tsx
-import { Wizard } from "@/ui";
-
-const steps = [
-  { title: "Account" },
-  { title: "Profile" },
-  { title: "Confirm" },
-];
-
-export default function Demo() {
-  return (
-    <Wizard steps={steps} onFinish={() => alert("Submitted")}>
-      <form>...</form>
-      <form>...</form>
-      <div>Ready to submit</div>
-    </Wizard>
-  );
-}
-```
-
 ## Notes
 
 - Wizard internally uses [Steps](/docs/component/steps) and [Pager](/docs/component/pager) — when installing via CLI, add all: `litefy add wizard steps pager`.
@@ -58,7 +24,29 @@ export default function Demo() {
 - `maxIndex` tracks the highest visited step and is passed to Steps — visited steps are clickable for backward navigation, future steps are locked.
 - The last step swaps the Next button for Submit, which fires `onFinish`.
 
+### Inline Variant
+
+`Wizard.Inline` (also exported as `InlineWizard`) drives the same state machine as a vertical steps accordion: only the current step expands to show its content with its own Back / Continue controls, while the other steps stay collapsed to their title rows. Click a visited step to return to it.
+
+<ComponentPreview name="wizard-inline" />
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `steps` | `{ title?; description?; content: React.ReactNode }[]` | - | Step definitions. **Required** |
+| `defaultIndex` / `index` | `number` | `0` | Step index (uncontrolled / controlled) |
+| `onIndexChange` | `(index: number) => void` | - | Step change callback |
+| `onFinish` | `() => void` | - | Finish button callback on the last step |
+| `maxIndex` | `number` | last step | Furthest reachable step |
+| `backLabel` / `nextLabel` / `finishLabel` | `React.ReactNode` | `"Back"` / `"Continue"` / `"Finish"` | Button labels |
+| `disabled` | `boolean` | `false` | Disable navigation |
+| `className` | `ClassNameValue` | - | Custom classes, applied to the list |
+| `classNames` | `marker` / `title` / `description` / `connector` / `content` / `footer` / `button` / `primaryButton` | - | Custom classes per part |
+
 ## API Reference
+
+### useWizardNavigation
+
+The wizard state machine (clamped navigation + max-visited lock) is exported as `useWizardNavigation({ count, defaultIndex?, index?, maxIndex?, onIndexChange? })` — it returns `{ index, maxVisited, maxReachable, isFirst, isLast, isReachable, go }`. It powers both the pager-based Wizard above and the inline variant below, and you can use it to build custom wizard shells.
 
 ### Wizard
 

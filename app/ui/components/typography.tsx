@@ -24,8 +24,8 @@ const variantClasses: Record<TypographyVariant, string> = {
   h6: "font-semibold tracking-tight text-base sm:text-lg lg:text-xl",
   headline: "font-bold tracking-tight text-4xl py-4 mb-4",
   description: "text-muted-foreground text-base sm:text-lg",
-  "heading-code": "font-mono font-medium text-primary bg-muted/50 px-2 py-0.5 rounded-md",
-  "description-code": "font-mono text-sm bg-muted/50 px-1.5 py-0.5 rounded",
+  "heading-code": "font-mono font-medium text-primary px-2 py-0.5 rounded-md",
+  "description-code": "font-mono text-sm px-1.5 py-0.5 rounded",
 };
 
 const variantTags: Record<TypographyVariant, string> = {

@@ -1,35 +1,45 @@
 ---
 title: MultiSelect
-description: A multi-select assembled from Popover and Checkbox — not a shipped component, only a composition guide with demos
+description: A multi-select dropdown composed of Popover and CheckboxGroup — flat or grouped options, keyboard navigation, controlled value
 ---
 
-MultiSelect is not a shipped component with source code. It is a composition of two primitives: [Popover](/docs/component/popover) provides the trigger and the floating panel, and [CheckboxGroup](/docs/component/checkbox) provides the option list with multi-select state. Assemble them directly in your page — the demo below is the complete implementation.
+## Installation
+
+<Installation name="multi-select" />
 
 ## Usage
 
-### Basic Usage
-
-Hold the selected values in your own state, put `CheckboxGroup` inside the Popover content, and show the selection count on the trigger.
+### Basic
 
 <ComponentPreview
   name="multi-select-basic"
 />
 
-Key points of the assembly:
+### Grouped
 
-- Popover's `open` / `onOpenChange` control the panel; `PopoverContent` already carries the panel look, so the checkbox list needs no extra container styling.
-- Clicks inside the panel never close it — Popover only closes on outside mousedown or `Escape` — so users can toggle several checkboxes freely.
-- `CheckboxGroup` is controlled (`value` / `onChange` with `string[]`); write the values back to your page state and derive the trigger label from them. Always render the count (e.g. `` `Categories (${values.length})` ``) instead of switching between different labels, so the trigger keeps a stable width and avoids layout shift.
-- Focus lands on the first checkbox when the panel opens; `Tab` walks through checkboxes, `Space` toggles, and `Escape` closes the panel. Arrow keys cycle focus between options inside a `Checkbox.Group` (disabled options are skipped).
-
-Refer to the [Popover API](/docs/component/popover) and [Checkbox API](/docs/component/checkbox) for the full prop tables of both parts.
-
-### Grouped Usage
-
-`CheckboxGroup`'s `options` also accepts the `{ group, options }` form, rendering a grouped list with headers.
+`options` also accepts `{ group, options }` items for titled groups.
 
 <ComponentPreview
   name="multi-select-grouped"
 />
 
-Grouping is purely presentational — every option's `value` still flows into the same `string[]` state, exactly like the basic usage.
+## Notes
+
+- MultiSelect is composed internally from [Popover](/docs/component/popover) and [CheckboxGroup](/docs/component/checkbox) — installing via CLI resolves them automatically.
+- The trigger always shows the selection count (e.g. `Categories (3)`) to keep width stable and avoid layout shift.
+- Panel clicks never close it — only outside mousedown or Escape does — so users can toggle freely.
+- `ArrowDown` / `ArrowUp` (or `ArrowRight` / `ArrowLeft`) cycle through checkboxes, skipping disabled items; `Space` toggles; `Escape` closes the panel.
+
+## API Reference
+
+### MultiSelect
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :------ | :---------- |
+| `options` | `(CheckboxOptionConfig \| CheckboxOptionGroup)[]` | - | Flat or grouped checkbox options |
+| `value` / `defaultValue` | `string[]` | `[]` | Selected values (controlled / uncontrolled) |
+| `onChange` | `(values: string[]) => void` | - | Fired when selection changes |
+| `trigger` | `React.ReactNode` | - | Custom trigger node (defaults to `placeholder (count)`) |
+| `placeholder` | `string` | `"Select options"` | Label shown when no custom `trigger` is provided |
+| `className` | `ClassNameValue` | - | Custom classes on the trigger button |
+| `classNames` | `{ content? }` | - | Custom classes for the panel content |

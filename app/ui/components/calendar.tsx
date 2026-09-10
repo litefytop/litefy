@@ -13,7 +13,7 @@ export function CalendarRoot({ className, ...props }: CalendarRootProps) {
     <div
       {...props}
       className={cn(
-        "inline-flex flex-col gap-2 rounded-lg border border-border bg-background p-3",
+        "inline-flex flex-col gap-2 rounded-lg border border-border bg-background text-foreground p-3",
         className,
       )}
     />
@@ -292,7 +292,6 @@ export function CalendarGridCell({
         "inline-flex h-8 w-8 items-center justify-center rounded-md text-sm tabular-nums cursor-pointer select-none",
         "transition-colors hover:bg-muted",
         "aria-selected:bg-primary aria-selected:text-primary-foreground aria-selected:hover:bg-primary",
-        "disabled:pointer-events-none disabled:opacity-50",
         "data-outside-month:opacity-40",
         className,
       )}
@@ -371,8 +370,7 @@ export function CalendarMonthGrid({
                 "inline-flex h-8 items-center justify-center rounded-md text-sm tabular-nums cursor-pointer select-none",
                 "transition-colors hover:bg-muted",
                 "aria-selected:bg-primary aria-selected:text-primary-foreground aria-selected:hover:bg-primary",
-                "disabled:pointer-events-none disabled:opacity-50",
-              )}
+                      )}
             >
               {Calendar.calendarMonthLabels[month.month - 1]}
             </button>
@@ -451,8 +449,7 @@ export function CalendarYearGrid({
                 "inline-flex h-8 items-center justify-center rounded-md text-sm tabular-nums cursor-pointer select-none",
                 "transition-colors hover:bg-muted",
                 "aria-selected:bg-primary aria-selected:text-primary-foreground aria-selected:hover:bg-primary",
-                "disabled:pointer-events-none disabled:opacity-50",
-              )}
+                      )}
             >
               {year.year}
             </button>
@@ -474,6 +471,8 @@ export interface CalendarProps {
   onChange?: (date: Temporal.PlainDate) => void;
   onVisibleMonthChange?: (month: Temporal.PlainDate) => void;
   onViewChange?: (view: CalendarView) => void;
+  onMonthSelect?: (month: Temporal.PlainDate) => void;
+  onYearSelect?: (year: Temporal.PlainDate) => void;
   isDateDisabled?: (date: Temporal.PlainDate) => boolean;
   firstDayOfWeek?: 0 | 1;
   className?: ClassNameValue;
@@ -488,6 +487,8 @@ export function Calendar({
   onChange,
   onVisibleMonthChange,
   onViewChange,
+  onMonthSelect,
+  onYearSelect,
   isDateDisabled,
   firstDayOfWeek = 0,
   className,
@@ -531,6 +532,7 @@ export function Calendar({
     const inMonth =
       value && value.year === month.year && value.month === month.month ? value : month;
     pendingFocusRef.current = { attribute: "data-date", value: inMonth.toString() };
+    onMonthSelect?.(month);
     onVisibleMonthChange?.(month);
     handleViewChange("days");
   };
@@ -543,7 +545,8 @@ export function Calendar({
   const handleYearSelect = (year: Temporal.PlainDate) => {
     const next = visibleMonth.with({ year: year.year, day: 1 });
     pendingFocusRef.current = { attribute: "data-month", value: next.toString() };
-    onVisibleMonthChange?.(next);
+    onYearSelect?.(year);
+    onVisibleMonthChange?.(visibleMonth.with({ year: year.year, day: 1 }));
     handleViewChange("months");
   };
 
@@ -575,9 +578,6 @@ export function Calendar({
 
   const navUnit = view === "days" ? "month" : view === "months" ? "year" : "years";
 
-  // ArrowDown from the header jumps straight into the active view's grid,
-  // landing on its roving-tabstop cell (selected / current month / year) —
-  // no Tabbing through the header controls required.
   const handleHeaderKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.defaultPrevented || e.key !== "ArrowDown") return;
     const grid = rootRef.current?.querySelector<HTMLElement>('[role="grid"]');
@@ -642,6 +642,4 @@ export function Calendar({
   );
 }
 
-// Mutable static: override for i18n (e.g. Calendar.calendarMonthLabels = ["一月", ...])
-// before rendering. Kept as a property so every calendar instance picks it up.
 Calendar.calendarMonthLabels = calendarMonthLabels as readonly string[];

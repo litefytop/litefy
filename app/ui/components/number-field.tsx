@@ -1,57 +1,31 @@
 "use client";
 
 import * as React from "react";
+import { Minus, Plus } from "lucide-react";
 import { type ClassNameValue, cn } from "..";
 
-export type NumberGroupProps = Omit<React.ComponentProps<"div">, "className"> & {
+export type NumberVariant = "default" | "embedded";
+
+export interface NumberStepperProps
+  extends Omit<React.ComponentProps<"button">, "className" | "type"> {
   className?: ClassNameValue;
-};
-export function NumberGroup({ className, ...props }: NumberGroupProps) {
-  return (
-    <div
-      {...props}
-      className={cn(
-        "flex max-w-3xs w-full items-center rounded-full ",
-        "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
-        className,
-      )}
-    />
-  );
+  direction?: "up" | "down";
 }
 
-export type NumberDecrementProps = Omit<React.ComponentProps<"button">, "className"> & {
-  className?: ClassNameValue;
-};
-export function NumberDecrement({ className, ...props }: NumberDecrementProps) {
+export function NumberStepper({ className, direction = "up", children, ...props }: NumberStepperProps) {
   return (
     <button
-      type="button"
-      aria-label="Decrease"
       {...props}
+      type="button"
+      tabIndex={-1}
+      aria-label={direction === "up" ? "Increase" : "Decrease"}
       className={cn(
-        "flex size-9 shrink-0 items-center justify-center rounded-l-full hover:text-primary",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
+        "inline-flex size-8 shrink-0 cursor-pointer items-center justify-center text-muted-foreground transition-colors hover:bg-hover hover:text-foreground",
         className,
       )}
-    />
-  );
-}
-
-export type NumberIncrementProps = Omit<React.ComponentProps<"button">, "className"> & {
-  className?: ClassNameValue;
-};
-export function NumberIncrement({ className, ...props }: NumberIncrementProps) {
-  return (
-    <button
-      type="button"
-      aria-label="Increase"
-      {...props}
-      className={cn(
-        "flex size-9 shrink-0 items-center justify-center rounded-r-full hover:text-primary",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
-        className,
-      )}
-    />
+    >
+      {children ?? (direction === "up" ? <Plus className="size-4" /> : <Minus className="size-4" />)}
+    </button>
   );
 }
 
@@ -64,76 +38,71 @@ export function NumberRoot({ className, ...props }: NumberRootProps) {
     <input
       {...props}
       className={cn(
-        "h-8 w-full  flex-1 border-0 bg-transparent px-2 text-center text-sm ring-0 outline-none",
+        "h-8 w-full min-w-0 flex-1 border-0 bg-transparent px-2 text-left text-sm ring-0 outline-none",
         "placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground",
-        "disabled:cursor-not-allowed disabled:opacity-50",
+        "group-data-invalid/input:text-danger",
         className,
       )}
     />
   );
 }
 
-type BaseNumberFieldProps = Omit<
-  React.ComponentProps<"input">,
-  "className" | "value" | "defaultValue" | "type" | "onChange"
-> & {
-  invalid?: boolean;
-  min?: number;
-  max?: number;
-  step?: number;
-  classNames?: {
-    group?: ClassNameValue;
-    decrement?: ClassNameValue;
-    increment?: ClassNameValue;
-    root?: ClassNameValue;
+export function groupThousands(numStr: string): string {
+  if (numStr === "" || !/^-?\d+(\.\d*)?$/.test(numStr)) return numStr;
+  const negative = numStr.startsWith("-");
+  const body = negative ? numStr.slice(1) : numStr;
+  const [intPart, decPart] = body.split(".");
+  const grouped = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return `${negative ? "-" : ""}${grouped}${decPart !== undefined ? `.${decPart}` : ""}`;
+}
+
+type NumberCoreOptions = {
+  positiveInteger: boolean;
+  min: number;
+  max: number;
+  step: number;
+  thousands: boolean;
+  disabled?: boolean;
+  defaultValue: string;
+  onValueChange: ((value?: number) => void) | ((value?: string) => void) | undefined;
+  controlledValue: string | number | undefined;
+  isControlled: boolean;
+  rest: Record<string, unknown> & {
+    onBlur?: React.FocusEventHandler<HTMLInputElement>;
+    onFocus?: React.FocusEventHandler<HTMLInputElement>;
+    onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
   };
-  styles?: {
-    group?: React.CSSProperties;
-    decrement?: React.CSSProperties;
-    increment?: React.CSSProperties;
-    root?: React.CSSProperties;
-  };
 };
 
-type PositiveIntegerMode = BaseNumberFieldProps & {
-  positiveInteger: true;
-  value?: number;
-  defaultValue?: number;
-  onValueChange?: (value?: number) => void;
-};
-
-type NormalMode = BaseNumberFieldProps & {
-  positiveInteger?: false;
-  value?: string | number;
-  defaultValue?: string | number;
-  onValueChange?: (value?: string) => void;
-};
-
-export type NumberFieldProps = PositiveIntegerMode | NormalMode;
-
-export function NumberField(props: NumberFieldProps) {
+export function useNumberCore(opts: NumberCoreOptions) {
   const {
-    positiveInteger = false,
-    invalid,
-    min = positiveInteger ? 0 : -Infinity,
-    max = Infinity,
-    step = 1,
-    classNames,
-    styles,
+    positiveInteger,
+    min,
+    max,
+    step,
+    thousands,
     disabled,
-    defaultValue = "",
+    defaultValue,
     onValueChange,
-    value: controlledValue,
-    ...rest
-  } = props;
-
-  const isControlled = "value" in props;
+    controlledValue,
+    isControlled,
+    rest,
+  } = opts;
 
   const [uncontrolledValue, setUncontrolledValue] = React.useState<string>(
     String(defaultValue ?? ""),
   );
+  const [focused, setFocused] = React.useState(false);
 
   const value = isControlled ? String(controlledValue ?? "") : uncontrolledValue;
+
+  
+  
+  
+  const valueRef = React.useRef(value);
+  React.useEffect(() => {
+    valueRef.current = value;
+  }, [value]);
 
   const normalize = React.useCallback(
     (str: string): string => {
@@ -154,22 +123,23 @@ export function NumberField(props: NumberFieldProps) {
 
   const emitChange = React.useCallback(
     (newRawValue: string) => {
+      valueRef.current = newRawValue;
       if (!isControlled) {
         setUncontrolledValue(newRawValue);
       }
       if (positiveInteger) {
         const num = newRawValue === "" ? undefined : parseInt(newRawValue, 10);
-        (onValueChange as PositiveIntegerMode["onValueChange"])?.(num);
+        (onValueChange as (value?: number) => void)?.(num);
       } else {
         const val = newRawValue === "" ? undefined : newRawValue;
-        (onValueChange as NormalMode["onValueChange"])?.(val);
+        (onValueChange as (value?: string) => void)?.(val);
       }
     },
     [isControlled, positiveInteger, onValueChange],
   );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value;
+    const raw = e.target.value.replace(/,/g, "");
     if (positiveInteger) {
       if (!/^\d*$/.test(raw)) return;
     } else {
@@ -180,8 +150,10 @@ export function NumberField(props: NumberFieldProps) {
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    const normalized = normalize(value);
-    if (normalized !== value) {
+    setFocused(false);
+    const current = valueRef.current;
+    const normalized = normalize(current);
+    if (normalized !== current) {
       emitChange(normalized);
     }
     rest.onBlur?.(e);
@@ -189,11 +161,12 @@ export function NumberField(props: NumberFieldProps) {
 
   const stepDelta = React.useCallback(
     (delta: number) => {
+      const current = valueRef.current;
       let currentNum: number;
       if (positiveInteger) {
-        currentNum = value === "" ? 0 : parseInt(value, 10);
+        currentNum = current === "" ? 0 : parseInt(current, 10);
       } else {
-        currentNum = parseFloat(value);
+        currentNum = parseFloat(current);
         if (Number.isNaN(currentNum)) currentNum = 0;
       }
 
@@ -213,22 +186,18 @@ export function NumberField(props: NumberFieldProps) {
       if (newNum < min) newNum = min;
       if (newNum > max) newNum = max;
 
-      const newStr = String(newNum);
-      emitChange(newStr);
+      emitChange(String(newNum));
     },
-    [value, min, max, positiveInteger, step, emitChange],
+    [min, max, positiveInteger, step, emitChange],
   );
-
-  const handleMinus = () => stepDelta(-step);
-  const handlePlus = () => stepDelta(step);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "ArrowUp") {
       e.preventDefault();
-      handlePlus();
+      stepDelta(step);
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
-      handleMinus();
+      stepDelta(-step);
     }
     rest.onKeyDown?.(e);
   };
@@ -237,47 +206,129 @@ export function NumberField(props: NumberFieldProps) {
   const safeMax = Number.isFinite(max) ? max : undefined;
   const numValue = value === "" ? undefined : parseFloat(value);
   const valuenow = numValue !== undefined && !Number.isNaN(numValue) ? numValue : undefined;
+  const displayValue = thousands && !focused ? groupThousands(value) : value;
+
+  const inputProps = {
+    ...rest,
+    type: "text" as const,
+    inputMode: positiveInteger ? ("numeric" as const) : ("decimal" as const),
+    role: "spinbutton" as const,
+    disabled,
+    value: displayValue,
+    onChange: handleChange,
+    onFocus: (e: React.FocusEvent<HTMLInputElement>) => {
+      setFocused(true);
+      rest.onFocus?.(e);
+    },
+    onBlur: handleBlur,
+    onKeyDown: handleKeyDown,
+    "aria-valuemin": safeMin,
+    "aria-valuemax": safeMax,
+    "aria-valuenow": valuenow,
+  };
+
+  return { inputProps, stepDelta };
+}
+
+type PositiveIntegerMode = {
+  positiveInteger: true;
+  value?: number;
+  defaultValue?: number;
+  onValueChange?: (value?: number) => void;
+};
+
+type NormalMode = {
+  positiveInteger?: false;
+  value?: string | number;
+  defaultValue?: string | number;
+  onValueChange?: (value?: string) => void;
+};
+
+export type NumberFieldProps = Omit<
+  React.ComponentProps<"input">,
+  "className" | "value" | "defaultValue" | "type" | "onChange" | "size" | "prefix"
+> & {
+  value?: number | string;
+  defaultValue?: number | string;
+  invalid?: boolean;
+  min?: number;
+  max?: number;
+  step?: number;
+  thousands?: boolean;
+  positiveInteger?: boolean;
+  className?: ClassNameValue;
+  style?: React.CSSProperties;
+  classNames?: {
+    root?: ClassNameValue;
+  };
+  styles?: {
+    root?: React.CSSProperties;
+  };
+  disabled?: boolean;
+  onValueChange?: ((value?: number) => void) | ((value?: string) => void);
+};
+
+export function NumberField(props: NumberFieldProps) {
+  const {
+    positiveInteger = false,
+    invalid,
+    min = positiveInteger ? 0 : -Infinity,
+    max = Infinity,
+    step = 1,
+    thousands = false,
+    className,
+    style,
+    classNames,
+    styles,
+    disabled,
+    defaultValue = "",
+    onValueChange,
+    value: controlledValue,
+    ...rest
+  } = props;
+
+  const { inputProps, stepDelta } = useNumberCore({
+    positiveInteger,
+    min,
+    max,
+    step,
+    thousands,
+    disabled,
+    defaultValue: String(defaultValue ?? ""),
+    onValueChange: onValueChange as NumberCoreOptions["onValueChange"],
+    controlledValue,
+    isControlled: "value" in props,
+    rest: rest as NumberCoreOptions["rest"],
+  });
 
   return (
-    <NumberGroup
+    <div
       data-invalid={invalid || undefined}
-      className={classNames?.group}
-      style={styles?.group}
+      className={cn(
+        "group/input inline-flex h-9 items-center overflow-hidden rounded-md",
+        "data-invalid:border data-invalid:border-danger",
+        className,
+      )}
+      style={style}
     >
-      <NumberDecrement
-        disabled={disabled || valuenow === min}
-        onClick={handleMinus}
-        className={classNames?.decrement}
-        style={styles?.decrement}
-      >
-        −
-      </NumberDecrement>
-      <NumberRoot
-        {...rest}
-        type="text"
-        inputMode={positiveInteger ? "numeric" : "decimal"}
-        pattern={positiveInteger ? "[0-9]*" : "-?[0-9]*\\.?[0-9]*"}
-        aria-invalid={invalid}
-        role="spinbutton"
+      <NumberStepper
+        direction="down"
+        aria-label="Decrease"
         disabled={disabled}
-        value={value}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        onKeyDown={handleKeyDown}
-        className={classNames?.root}
-        style={styles?.root}
-        aria-valuemin={safeMin}
-        aria-valuemax={safeMax}
-        aria-valuenow={valuenow}
+        onClick={() => stepDelta(-step)}
       />
-      <NumberIncrement
-        disabled={disabled || valuenow === max}
-        onClick={handlePlus}
-        className={classNames?.increment}
-        style={styles?.increment}
-      >
-        +
-      </NumberIncrement>
-    </NumberGroup>
+      <NumberRoot
+        {...inputProps}
+        aria-invalid={invalid}
+        className={cn("w-16 text-center px-1", classNames?.root)}
+        style={styles?.root}
+      />
+      <NumberStepper
+        direction="up"
+        aria-label="Increase"
+        disabled={disabled}
+        onClick={() => stepDelta(step)}
+      />
+    </div>
   );
 }

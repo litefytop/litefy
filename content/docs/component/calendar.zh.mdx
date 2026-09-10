@@ -5,21 +5,7 @@ description: 基于浏览器原生 Temporal API 的日历面板组件，支持�
 
 ## 安装
 
-<Tabs items={['CLI', '手动']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add calendar" />
-
-</Tab>
-
-<Tab value="手动">
-
-<Source type="component" name="calendar" />
-
-</Tab>
-
-</Tabs>
+<Installation name="calendar" />
 
 > [!TIP]
 > 组件使用浏览器原生 `Temporal.PlainDate` API，不打包任何日期库，也不提供 polyfill —— 请确保目标环境支持 Temporal API（Chrome 139+，或自行安装 polyfill）。
@@ -34,18 +20,16 @@ description: 基于浏览器原生 Temporal API 的日历面板组件，支持�
 
 键盘导航：整个网格只有一个 Tab 停靠点（选中日期，未选中时为 1 号），`ArrowRight` / `ArrowLeft` / `ArrowDown` / `ArrowUp` 按一天或一周移动光标 —— 只移动焦点，选中值不变，按 `Enter` / `Space` 才确认。禁用日期会被跳过；目标日期不在当前网格内时自动切换到相邻月份并聚焦该日期。月面板和年面板遵循同样的模式，按一格 / 一行步进。在头部的任意控件（前后翻页、年份 / 月份标题）上按 `ArrowDown`，会直接跳入当前视图的网格，无需在头部多次 Tab。
 
+<ComponentPreview
+  name="calendar-basic"
+/>
+
 ### 月份标签国际化
 
 月份名称来自可变的静态属性 `Calendar.calendarMonthLabels`（默认英文缩写）。在应用入口处覆盖一次，所有日历 —— 包括 [DatePicker](/docs/component/datepicker) 内部的日历 —— 都会生效：
 
-```tsx
-import { Calendar } from "@/ui";
-
-Calendar.calendarMonthLabels = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
-```
-
 <ComponentPreview
-  name="calendar-basic"
+  name="calendar-i18n"
 />
 
 ### 禁用日期

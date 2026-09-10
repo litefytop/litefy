@@ -5,21 +5,7 @@ description: Global theme state hook with localStorage persistence for brand, su
 
 ## Installation
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add use-theme" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="hook" name="use-theme" />
-
-</Tab>
-
-</Tabs>
+<Installation name="use-theme" />
 
 ## Usage
 
@@ -28,15 +14,6 @@ A module-level store shared across components via `useSyncExternalStore`. Reads 
 <ComponentPreview
   name="use-theme-basic"
 />
-
-```tsx
-import { useTheme } from "@/ui";
-
-function ThemeToggle() {
-  const theme = useTheme();
-  return <button onClick={theme.toggleTheme}>Toggle</button>;
-}
-```
 
 ## Theming tokens
 

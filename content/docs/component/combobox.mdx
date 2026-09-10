@@ -1,33 +1,51 @@
 ---
 title: Combobox
-description: A combobox assembled from Picker and List — not a shipped component, only a composition guide with demos
+description: An input with a filterable dropdown list — local options with client-side filtering, or async remote search with debounced fetching and scroll-to-load-more
 ---
 
-Combobox is not a shipped component with source code. It is a composition of two primitives: [Picker](/docs/component/picker) provides the input trigger and the popover panel, and [List](/docs/component/list) provides the keyboard-navigable option list with highlight support. Assemble them directly in your page — the demos below are the complete implementations.
+## Installation
+
+<Installation name="combobox" />
 
 ## Usage
 
 ### Basic Usage
 
-Client-side filtering lives in your own state: `onValueChange` mirrors the typed text, the options are filtered from it, and `List`'s built-in keyboard navigation takes over once the list is focused.
+Pass `options` as local string options — typing filters them case-insensitively, `ArrowDown` / `ArrowUp` move the highlight, `Enter` or a click on a row selects.
 
 <ComponentPreview
   name="combobox-basic"
 />
 
-Key points of the assembly:
-
-- Focus never leaves the input. `ArrowDown` opens the panel (built into Picker), then `ArrowDown` / `ArrowUp` drive the highlight through `List`'s controlled `highlightIndex`, so typing and arrow-key navigation coexist.
-- `List` renders the highlight with `data-highlighted` and scrolls it into view automatically; `Enter` in the input (or a click on a row) selects through `onSelect`.
-- `onSelect` writes the chosen option back into the input text and closes the panel via `onOpenChange`; closing also clears the highlight.
-- The `empty` node renders when the filtered options are exhausted.
-
 ### Async Search
 
-For large or remote datasets, call `remote.search` from `onValueChange` and page through results with `onScrollBottom` as the list is scrolled to the bottom — the [`useRemotePagination`](/docs/utils/use-remote-pagination) hook provides the debounced fetching, data and load-more controls.
+Pass `fetcher` instead of `options` for large or remote datasets — keyword search is debounced and `loadMore` fires when the list is scrolled to the bottom.
 
 <ComponentPreview
   name="combobox-async"
 />
 
-Refer to the [Picker API](/docs/component/picker) and [List API](/docs/component/list) for the full prop tables of both parts.
+## Notes
+
+- Combobox is composed internally from [Picker](/docs/component/picker), [List](/docs/component/list), and the [useCombobox](/docs/utils/use-combobox) / [useRemotePagination](/docs/utils/use-remote-pagination) utils — installing via CLI resolves them automatically.
+- `fetcher` takes precedence over `options` when both are provided.
+- Async mode searches on mount and on every keystroke (debounced); the empty state shows "Loading..." while a request is in flight.
+- Focus never leaves the input: `ArrowDown` opens the panel, then arrows drive the highlight and `Enter` selects; the panel closes on selection, outside mousedown, or Escape.
+- After selecting, the input text equals the chosen option — the list filters against it on reopen; clear the text to see all options again.
+
+## API Reference
+
+### Combobox
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :------ | :---------- |
+| `options` | `string[]` | - | Local options for client-side filtering |
+| `fetcher` | `({ page, size, keyword }) => Promise<{ list: string[]; total: number }>` | - | Remote fetcher for async mode |
+| `defaultValue` / `value` | `string` | `""` | Input text (uncontrolled / controlled) |
+| `onValueChange` | `(value: string) => void` | - | Fired on typing and on selection |
+| `invalid` | `boolean` | `false` | Invalid state styling on the input |
+| `empty` | `React.ReactNode` | `"No data"` / `"Loading..."` | Empty-state node rendered in the list |
+| `pageSize` | `number` | `20` | Page size for async fetching |
+| `debounceMs` | `number` | `300` | Debounce delay for async keyword search |
+| `className` | `ClassNameValue` | - | Custom classes, applied to the input wrapper |
+| `classNames` | `{ panel? / item? }` | - | Custom classes for the panel and list items |

@@ -1,0 +1,45 @@
+---
+title: Dual Picker
+description: A two-panel picker for single or multiple selection — option rows and selected rows are render-prop driven, so any content format works.
+---
+
+## Installation
+
+<Installation name="dual-picker" />
+
+## Usage
+
+`DualPicker` is the two-panel picker (source + selected). Click an option to select it — in `"multiple"` mode it toggles, in `"single"` mode it replaces the previous pick. Click a selected entry to remove it. The search input filters the source panel.
+
+### Custom content (e.g. products with images)
+
+Option rows and selected rows are render-prop driven — pass `renderOption` / `renderSelected` to use any format, such as product cards with images:
+
+<ComponentPreview name="dual-picker-basic" />
+
+### Single mode
+
+<ComponentPreview name="dual-picker-single" />
+
+## API Reference
+
+### DualPicker&lt;T&gt;
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `options` | `{ value: string; option: T }[]` | - | Source options; `value` is the selection key, `option` is the raw business item. **Required** |
+| `mode` | `"single" \| "multiple"` | `"multiple"` | `"single"` keeps at most one selection |
+| `value` | `string[]` | - | Controlled selection (single mode holds 0 or 1 entries) |
+| `defaultValue` | `string[]` | `[]` | Initial selection (uncontrolled) |
+| `onValueChange` | `(values: string[]) => void` | - | Fired when the selection changes |
+| `renderOption` | `(option: T, { selected }) => React.ReactNode` | label | Custom option row format |
+| `renderSelected` | `(option: T, { selected, onRemove }) => React.ReactNode` | label + X | Custom selected row format |
+| `getLabel` | `(option: T) => string` | `String(option)` | Label used by the default renderers and the search filter |
+| `searchPlaceholder` | `string` | `"Search..."` | Search input placeholder |
+| `sourceTitle` / `targetTitle` | `React.ReactNode` | `"Options"` / `"Selected"` | Panel titles |
+| `disabled` | `boolean` | `false` | Disable both panels |
+| `className` | `ClassNameValue` | - | Custom classes, applied to the root |
+| `classNames` | `panel` / `header` / `body` / `item` / `selected` | - | Custom classes per part |
+| `styles` | `{ panel?, body? }` | - | Inline styles for the panels |
+
+For async option loading (remote search + pagination), keep `DualPicker` for the selection UI and compose it with [useRemotePagination](/docs/utils/use-remote-pagination) — the search input state and option list are yours to feed in.

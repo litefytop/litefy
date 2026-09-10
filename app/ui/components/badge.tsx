@@ -19,14 +19,14 @@ export function Badge({ children, className, label, classNames, styles, ...props
     <div
       {...props}
       className={cn(
-        "relative flex items-center justify-center size-12 bg-muted rounded-md",
+        "relative flex items-center justify-center size-12 rounded-md shadow-md",
         className,
       )}
     >
       <Tag
         children={label}
         className={[
-          "absolute top-0 right-0 translate-x-[50%] translate-y-[-50%]",
+          "absolute top-0 right-0 rounded-full translate-x-[50%] translate-y-[-50%]",
           classNames?.label,
         ]}
         style={styles?.label}

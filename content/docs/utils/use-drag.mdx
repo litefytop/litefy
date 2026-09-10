@@ -5,21 +5,7 @@ description: Pointer-based drag hook with pointer capture, drag info callbacks a
 
 ## Installation
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add use-drag" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="hook" name="use-drag" />
-
-</Tab>
-
-</Tabs>
+<Installation name="use-drag" />
 
 ## Usage
 
@@ -28,26 +14,6 @@ Bind `handlePointerDown` to the drag handle. The hook captures the pointer, trac
 <ComponentPreview
   name="use-drag-basic"
 />
-
-```tsx
-import { useDrag } from "@/ui";
-
-function DraggableBox() {
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const startRef = useRef({ x: 0, y: 0 });
-
-  const drag = useDrag({
-    onDragStart: () => {
-      startRef.current = offset;
-    },
-    onDragMove: ({ dx, dy }) => {
-      setOffset({ x: startRef.current.x + dx, y: startRef.current.y + dy });
-    },
-  });
-
-  return <div onPointerDown={drag.handlePointerDown} style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }} />;
-}
-```
 
 ## API Reference
 

@@ -5,21 +5,7 @@ description: 一次性验证码输入框，支持自动跳格、粘贴填充、�
 
 ## 安装
 
-<Tabs items={['CLI', '手动']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add input-otp" />
-
-</Tab>
-
-<Tab value="手动">
-
-<Source type="component" name="input-otp" />
-
-</Tab>
-
-</Tabs>
+<Installation name="input-otp" />
 
 ## 用法
 
@@ -68,8 +54,10 @@ description: 一次性验证码输入框，支持自动跳格、粘贴填充、�
 | `aria-label` | `string` | - | 无障碍标签，每个格子会附加序号后缀 |
 | `className` | `ClassNameValue` | - | 容器自定义类 |
 | `style` | `React.CSSProperties` | - | 容器自定义内联样式 |
-| `classNames` | `{ group?; slot? }` | - | 各零件自定义类 |
-| `styles` | `{ group?; slot? }` | - | 各零件自定义内联样式 |
+| `className` | `ClassNameValue` | - | 自定义类名，作用于外壳容器 |
+| `style` | `React.CSSProperties` | - | 内联样式，作用于外壳容器 |
+| `classNames` | `{ slot? }` | - | 单元格的自定义类 |
+| `styles` | `{ slot? }` | - | 单元格的内联样式 |
 
 输入后自动跳到下一格，空格子按 `Backspace` 回退并删除上一格，方向键在格子间移动，粘贴从当前格起填充。首个格子使用 `autoComplete='one-time-code'`。
 

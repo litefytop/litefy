@@ -7,29 +7,9 @@ Chart is a composition example built on [uPlot](https://github.com/leeoniya/uPlo
 
 ## Installation
 
-Chart depends on uPlot — install it first:
+Chart depends on uPlot (`pnpm add uplot`). It also depends on the `useChartPalette` hook — install both:
 
-```bash
-pnpm add uplot
-```
-
-It also depends on the `useChartPalette` hook — install both:
-
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add use-chart-palette" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="hook" name="use-chart-palette" />
-
-</Tab>
-
-</Tabs>
+<Installation name="use-chart-palette" />
 
 `useChartPalette` can also be used standalone for custom visualizations — call `useChartPalette({ mode: "wheel" | "mono" })` to get 8 theme-synced colors. See [use-chart-palette](/docs/utils/use-chart-palette) for details.
 

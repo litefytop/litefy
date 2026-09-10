@@ -4,3 +4,5 @@ export * from "./package-manager-tabs";
 export * from "./search";
 export * from "./source";
 export * from "./layout-shared";
+export * from "./browser-support-notice";
+export * from "./css-source";

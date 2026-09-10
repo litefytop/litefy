@@ -1,0 +1,53 @@
+---
+title: use-remote-sort 远程排序
+description: 面向数据库表格的排序状态管理——升/降/清除循环、生成查询字符串并防抖触发重取。
+---
+
+## 安装
+
+```bash
+npx litefy@latest add use-remote-sort
+```
+
+## 用法
+
+`useRemoteSort` 为数据库驱动的表格管理排序状态。与远程模式的 [Table](/zh/docs/component/table) 搭配：把 `sort` 传给表格，把 `toggleSort`（或表格自身的 `onSortChange`）接上，并在 `onSortChange` 里用 `queryString` 重新拉取数据。
+
+```tsx
+const remote = useRemoteSort({
+  sortableKeys: ["name", "price", "stock"],
+  onSortChange: (sort) => {
+    // fetch(`/api/products?${remote.queryString}`) — 在这里重取
+  },
+});
+
+<Table
+  data={rows}
+  sort={remote.sort}
+  onSortChange={remote.setSort}
+  columns={[{ key: "name", header: "Name", sortable: true }]}
+/>;
+```
+
+## API 参考
+
+### Options
+
+| 选项 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `sortableKeys` | `readonly K[]` | - | 允许数据库排序的列 key **必填** |
+| `onSortChange` | `(sort: { key: K; direction }) => void` | - | 重取回调，按 `debounceMs` 防抖 |
+| `debounceMs` | `number` | `0` | `onSortChange` 的防抖毫秒数 |
+| `cycle` | `"asc-desc" \| "asc-only"` | `"asc-desc"` | 点击循环：升 → 降 → 清除，或升 → 清除 |
+| `initialSort` | `RemoteSortState<K>` | `null` | 初始排序状态 |
+
+### Return
+
+| 字段 | 类型 | 描述 |
+|------|------|------|
+| `sort` | `RemoteSortState<K>` | 当前排序状态（未排序为 `null`） |
+| `toggleSort` | `(key: K) => void` | 表头点击处理器；`sortableKeys` 之外的 key 被忽略 |
+| `setSort` | `(sort: RemoteSortState<K>) => void` | 直接设置状态 |
+| `clearSort` | `() => void` | 清除排序 |
+| `queryParams` | `{ sortKey?, sortOrder? }` | 可直接展开的查询参数 |
+| `queryString` | `string` | `"sortKey=...&sortOrder=..."`（未排序为空） |

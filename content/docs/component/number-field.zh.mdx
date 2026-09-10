@@ -1,123 +1,62 @@
 ---
-title: NumberField 数字输入框
-description: 带有增减控制按钮的数字输入字段
+title: Number Field 数字字段
+description: 带前导 Minus 与尾部 Plus 步进按钮的紧凑数字字段——无边框，支持键盘步进与千分位分隔。
 ---
 
 ## 安装
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add number-field" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="number-field" />
-
-</Tab>
-
-</Tabs>
+<Installation name="number-field" />
 
 ## 用法
 
-### 基础用法
+`NumberField` 是步进器形态的数字字段：前导 Minus 与尾部 Plus 按钮按 `step` 步进数值（受 `min` / `max` 约束）。字段本身无边框——仅在无效状态出现危险色边框。输入框聚焦时依然支持键盘步进。
 
-带有默认值、范围限制和小数步骤的基础数字输入。
+<ComponentPreview name="number-field-basic" />
 
-<ComponentPreview 
-  name="number-field-basic"
-/>
+### 受控
 
-### 无效状态
-
-使用 `invalid` 属性显示验证错误。
-
-<ComponentPreview 
-  name="number-field-invalid"
-/>
-
-### 受控模式
-
-通过受控状态外部管理值。
-
-<ComponentPreview 
-  name="number-field-controlled"
-/>
-
-### 自定义
-
-使用 `NumberGroup`、`NumberDecrement`、`NumberRoot`、`NumberIncrement` 拼装，`focus-within` 焦点环自动生效（会设置 `data-invalid` 属性，但默认无对应样式）。
-
-<ComponentPreview 
-  name="number-field-custom"
-/>
+<ComponentPreview name="number-field-controlled" />
 
 ## API 参考
 
-### 高阶组件
+### NumberField
 
-开箱即用的成品组件。
-
-#### NumberField
-
-带有内置增减按钮的数字输入字段。
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
 | `defaultValue` | `number \| string` | - | 初始值（非受控模式） |
 | `value` | `number \| string \| undefined` | - | 当前值（受控模式） |
-| `onValueChange` | `(value?: number) => void \| (value?: string) => void` | - | 值变化处理器。当 `positiveInteger=true` 时返回 `number \| undefined`，否则返回 `string` |
-| `invalid` | `boolean` | - | 是否处于无效状态 |
+| `onValueChange` | `(value?: number) => void \| (value?: string) => void` | - | 值变化回调。`positiveInteger=true` 时为 `number \| undefined`，否则为 `string` |
+| `invalid` | `boolean` | - | 字段外围显示危险色边框 |
 | `min` | `number` | `0`（positiveInteger）或 `-Infinity` | 允许的最小值 |
 | `max` | `number` | `Infinity` | 允许的最大值 |
-| `step` | `number` | `1` | 增减步长 |
-| `positiveInteger` | `boolean` | `false` | 限制为正整数。将值类型更改为 `number \| undefined` |
-| `classNames` | `{ group?: ClassNameValue; decrement?: ClassNameValue; increment?: ClassNameValue; root?: ClassNameValue }` | - | 内部元素的自定义类名 |
-| `styles` | `{ group?: React.CSSProperties; decrement?: React.CSSProperties; increment?: React.CSSProperties; root?: React.CSSProperties }` | - | 内部元素的内联样式 |
-| `disabled` | `boolean` | `false` | 禁用整个字段 |
-| `...props` | `React.ComponentProps<"input">` | - | 支持全部 input 原生属性（除 `type`、`className`），如 `onBlur` |
+| `step` | `number` | `1` | 步进按钮与 `ArrowUp` / `ArrowDown` 的步长 |
+| `positiveInteger` | `boolean` | `false` | 仅允许正整数。值类型变为 `number \| undefined` |
+| `thousands` | `boolean` | `false` | 未聚焦时整数部分按千分位分组显示；提交值始终不带分隔符 |
+| `className` | `ClassNameValue` | - | 自定义类名，作用于外壳 |
+| `style` | `React.CSSProperties` | - | 内联样式，作用于外壳 |
+| `classNames` | `{ root? }` | - | 内部输入框的自定义类名 |
+| `styles` | `{ root? }` | - | 内部输入框的内联样式 |
+| `disabled` | `boolean` | `false` | 禁用字段与两个步进按钮 |
+| `...props` | `React.ComponentProps<"input">` | - | 支持所有原生 input 属性（除 `type`），如 `onBlur` |
 
 ---
 
 ### 可组合组件
 
-#### NumberGroup
+#### NumberStepper
 
-外层容器，内置完整输入框样式：尺寸（`max-w-3xs w-full`）、圆角（rounded-full）、`focus-within` 焦点环；设置 `invalid` 时会添加 `data-invalid` 属性，但默认没有对应样式。
+可点击的步进按钮——`direction="up"` 渲染 Plus 图标、`direction="down"` 渲染 Minus 图标；`children` 可覆盖图标。
 
-| Prop        | Type                          | Default | Description                               |
-| ----------- | ----------------------------- | ------- | ----------------------------------------- |
-| `className` | `ClassNameValue`              | -       | 自定义类名                                |
-| `...props`  | `React.ComponentProps<"div">` | -       | 支持全部 div 原生属性（含 `data-*` 属性） |
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `direction` | `"up" \| "down"` | `"up"` | 图标与无障碍标签（`Increase` / `Decrease`） |
+| `className` | `ClassNameValue` | - | 自定义类名 |
+| `children` | `React.ReactNode` | - | 自定义图标内容，替换默认图标 |
 
-#### NumberDecrement
-
-减号按钮，内置左半圆样式与禁用态。
-
-| Prop        | Type                             | Default | Description                                  |
-| ----------- | -------------------------------- | ------- | -------------------------------------------- |
-| `className` | `ClassNameValue`                 | -       | 自定义类名                                   |
-| `children`  | `React.ReactNode`                | -       | 按钮内容                                     |
-| `...props`  | `React.ComponentProps<"button">` | -       | 支持全部 button 原生属性（除 `className`）   |
-
-#### NumberIncrement
-
-加号按钮，内置右半圆样式与禁用态。
-
-| Prop        | Type                             | Default | Description                                  |
-| ----------- | -------------------------------- | ------- | -------------------------------------------- |
-| `className` | `ClassNameValue`                 | -       | 自定义类名                                   |
-| `children`  | `React.ReactNode`                | -       | 按钮内容                                     |
-| `...props`  | `React.ComponentProps<"button">` | -       | 支持全部 button 原生属性（除 `className`）   |
+支持所有原生 `<button>` 属性（`type` 除外）。
 
 #### NumberRoot
 
-承载状态的文本输入框，内置居中数字排版样式。
+裸的内部输入框。支持所有原生 `<input>` 属性（`className` 除外），另有 `className`。
 
-| Prop        | Type                            | Default | Description                                                    |
-| ----------- | ------------------------------- | ------- | -------------------------------------------------------------- |
-| `className` | `ClassNameValue`                | -       | 自定义类名                                                     |
-| `...props`  | `React.ComponentProps<"input">` | -       | 支持全部 input 原生属性（除 `className`），如 `value`、`onChange` 和 `role="spinbutton"` 相关 aria 属性 |
+带边框、尾部为非交互提示图标的形式请看 [NumberInput](/zh/docs/component/number-input)。

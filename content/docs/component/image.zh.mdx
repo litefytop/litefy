@@ -5,21 +5,7 @@ description: 支持加载状态、加载占位与错误处理的图片组件
 
 ## 安装
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add image" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="image" />
-
-</Tab>
-
-</Tabs>
+<Installation name="image" />
 
 ## 用法
 
@@ -63,8 +49,10 @@ description: 支持加载状态、加载占位与错误处理的图片组件
 | `alt`         | `string`                                        | -         | 图片的替代文本                                                           |
 | `fallback`    | `React.ReactNode`                               | -         | 图片加载失败时显示的自定义回退元素                                       |
 | `loadingNode` | `React.ReactNode`                               | -         | 加载中显示的占位元素，可用于渐进式模糊缩略图                             |
-| `classNames`  | `{ root?: ClassNameValue; image?: ClassNameValue }` | -     | 根容器和图片的自定义类名                                                 |
-| `styles`      | `{ root?: React.CSSProperties; image?: React.CSSProperties }` | - | 根容器和图片的内联样式                                        |
+| `className` | `ClassNameValue` | - | 自定义类名，作用于根容器 |
+| `style` | `React.CSSProperties` | - | 内联样式，作用于根容器 |
+| `classNames` | `{ image?: ClassNameValue }` | - | 图片的自定义类名 |
+| `styles` | `{ image?: React.CSSProperties }` | - | 图片的内联样式 |
 
 ---
 

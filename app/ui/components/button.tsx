@@ -3,7 +3,7 @@ import React from "react";
 import { type ClassNameValue, cn } from "..";
 
 const buttonClass = {
-  base: "cursor-pointer inline-flex items-center justify-center gap-2 h-8 min-w-8 px-3 rounded-lg text-sm text-center [&_svg:not([class*='size-'])]:size-4",
+  base: "cursor-pointer inline-flex items-center justify-center gap-2 h-8 min-w-8 px-3 rounded-md text-sm text-center [&_svg:not([class*='size-'])]:size-4",
   variant: {
     primary: "bg-primary text-primary-foreground hover:bg-primary-accent",
     danger:

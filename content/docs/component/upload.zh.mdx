@@ -5,21 +5,7 @@ description: 拖拽上传区域组件，支持本地校验、拖拽上传，并�
 
 ## 安装
 
-<Tabs items={['CLI', '手动']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add upload" />
-
-</Tab>
-
-<Tab value="手动">
-
-<Source type="component" name="upload" />
-
-</Tab>
-
-</Tabs>
+<Installation name="upload" />
 
 ## 用法
 
@@ -72,8 +58,8 @@ Upload 组件只处理选择、拖拽与本地校验——不发起网络请求�
 | `actionsRef` | `React.Ref<UploadActions>` | - | 命令式句柄，暴露 `remove(uid)` 与 `clear()`；`remove` 会先中止对应 controller 再触发 `onFileRemove` |
 | `className` | `ClassNameValue` | - | 根节点自定义类 |
 | `style` | `React.CSSProperties` | - | 根节点自定义内联样式 |
-| `classNames` | `{ root?; dropzone?; hiddenInput? }` | - | 各零件自定义类 |
-| `styles` | `{ root?; dropzone?; hiddenInput? }` | - | 各零件自定义内联样式 |
+| `classNames` | `{ dropzone?; hiddenInput? }` | - | 各零件自定义类 |
+| `styles` | `{ dropzone?; hiddenInput? }` | - | 各零件自定义内联样式 |
 
 组件卸载时中止全部 controller。
 

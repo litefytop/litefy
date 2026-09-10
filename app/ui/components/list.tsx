@@ -1,6 +1,9 @@
 "use client";
 import * as React from "react";
 import { type ClassNameValue, cn } from "..";
+import { ScrollShadow } from "./scroll-shadow";
+
+const viewportClasses = "scrollbar-none [&::-webkit-scrollbar]:hidden";
 
 export type ListControllerProps<T> = {
   items: T[];
@@ -45,13 +48,15 @@ function useListController<T>(props: ListControllerProps<T>) {
       e.preventDefault();
       const next = highlightIndex === null ? items.length - 1 : Math.max(highlightIndex - 1, 0);
       setHighlightIndex(next);
-    } else if (e.key === "Enter" && highlightIndex !== null) {
-      e.preventDefault();
-      onSelect?.(items[highlightIndex], highlightIndex);
+    } else if (e.key === "Enter" || e.key === " ") {
+      if (highlightIndex !== null) {
+        e.preventDefault();
+        onSelect?.(items[highlightIndex], highlightIndex);
+      }
     }
   };
 
-  const handleScroll = (e: React.UIEvent<HTMLUListElement | HTMLDivElement>) => {
+  const handleScroll = (e: React.UIEvent<HTMLElement>) => {
     if (!onScrollBottom) return;
     const target = e.currentTarget;
     const threshold = 16;
@@ -64,19 +69,16 @@ function useListController<T>(props: ListControllerProps<T>) {
 }
 
 export interface ListClassNames {
-  root?: ClassNameValue;
   item?: ClassNameValue;
   groupHeader?: ClassNameValue;
 }
 
 export interface ListStyles {
-  root?: React.CSSProperties;
   item?: React.CSSProperties;
   groupHeader?: React.CSSProperties;
 }
 
 export interface ListProps<T> {
-  ref?: React.Ref<HTMLUListElement | HTMLDivElement>;
   items: T[];
   getKey?: (item: T, index: number) => React.Key;
   getGroup?: (item: T, index: number) => string;
@@ -135,92 +137,106 @@ export function List<T>(props: ListProps<T>) {
 
   if (items.length === 0 && empty !== undefined) {
     return (
-      <ul
-        ref={controller.rootRef as React.Ref<HTMLUListElement>}
-        tabIndex={0}
-        onKeyDown={controller.handleKeyDown}
+      <ScrollShadow
+        edges={["top", "bottom"]}
+        className={className}
+        style={style}
         onScroll={controller.handleScroll}
-        className={cn("overflow-y-auto outline-none list-none", className, classNames.root)}
-        style={{ ...style, ...styles.root }}
+        classNames={{ viewport: viewportClasses }}
       >
-        <li className="px-3 py-2 text-sm text-neutral-500">{empty}</li>
-      </ul>
+        <ul
+          ref={controller.rootRef as React.Ref<HTMLUListElement>}
+          tabIndex={0}
+          onKeyDown={controller.handleKeyDown}
+          className="outline-none list-none"
+        >
+          <li className="px-3 py-2 text-sm text-neutral">{empty}</li>
+        </ul>
+      </ScrollShadow>
     );
   }
 
   if (!hasGroup) {
     return (
-      <ul
-        ref={controller.rootRef as React.Ref<HTMLUListElement>}
-        tabIndex={0}
-        onKeyDown={controller.handleKeyDown}
+      <ScrollShadow
+        edges={["top", "bottom"]}
+        className={className}
+        style={style}
         onScroll={controller.handleScroll}
-        className={cn(
-          "overflow-y-auto outline-none list-none divide-y divide-border",
-          className,
-          classNames.root,
-        )}
-        style={{ ...style, ...styles.root }}
+        classNames={{ viewport: viewportClasses }}
       >
-        {items.map((item, index) => (
-          <li
-            key={getKey?.(item, index) ?? index}
-            data-highlighted={controller.highlightIndex === index}
-            onClick={() => onSelect?.(item, index)}
-            className={cn(
-              "px-3 py-2 text-sm cursor-pointer transition-colors hover:bg-hover data-[highlighted=true]:bg-hover",
-              classNames.item,
-            )}
-            style={styles.item}
-          >
-            {renderItem(item, index)}
-          </li>
-        ))}
-      </ul>
+        <ul
+          ref={controller.rootRef as React.Ref<HTMLUListElement>}
+          tabIndex={0}
+          onKeyDown={controller.handleKeyDown}
+          className="outline-none list-none"
+        >
+          {items.map((item, index) => (
+            <li
+              key={getKey?.(item, index) ?? index}
+              data-highlighted={controller.highlightIndex === index}
+              onClick={() => onSelect?.(item, index)}
+              className={cn(
+                "px-3 py-2 text-sm cursor-pointer transition-colors hover:bg-hover data-[highlighted=true]:bg-hover",
+                classNames.item,
+              )}
+              style={styles.item}
+            >
+              {renderItem(item, index)}
+            </li>
+          ))}
+        </ul>
+      </ScrollShadow>
     );
   }
 
   const grouped = groupItems(items, getGroup!);
 
   return (
-    <div
-      ref={controller.rootRef as React.Ref<HTMLDivElement>}
-      tabIndex={0}
-      onKeyDown={controller.handleKeyDown}
+    <ScrollShadow
+      edges={["top", "bottom"]}
+      className={className}
+      style={style}
       onScroll={controller.handleScroll}
-      className={cn("overflow-y-auto outline-none", className, classNames.root)}
-      style={{ ...style, ...styles.root }}
+      classNames={{ viewport: viewportClasses }}
     >
-      {grouped.map(([groupName, groupItemsList]) => (
-        <div key={groupName}>
-          <div
-            className={cn(
-              "px-3 py-1.5 text-xs font-medium text-muted-foreground",
-              classNames.groupHeader,
-            )}
-            style={styles.groupHeader}
-          >
-            {renderGroupHeader!(groupName)}
+      <div
+        ref={controller.rootRef as React.Ref<HTMLDivElement>}
+        tabIndex={0}
+        onKeyDown={controller.handleKeyDown}
+        className="outline-none"
+      >
+        {grouped.map(([groupName, groupItemsList]) => (
+          <div key={groupName}>
+            <div
+              className={cn(
+                "px-3 py-1.5 text-xs font-medium text-muted-foreground",
+                classNames.groupHeader,
+              )}
+              style={styles.groupHeader}
+            >
+              {renderGroupHeader!(groupName)}
+            </div>
+            <ul className="list-none">
+              {groupItemsList.map(({ item, index }) => (
+                <li
+                  key={getKey?.(item, index) ?? index}
+                  data-highlighted={controller.highlightIndex === index}
+                  onClick={() => onSelect?.(item, index)}
+                  className={cn(
+                    "px-3 py-2 text-sm cursor-pointer transition-colors hover:bg-hover data-[highlighted=true]:bg-hover",
+                    classNames.item,
+                  )}
+                  style={styles.item}
+                >
+                  {renderItem(item, index)}
+                </li>
+              ))}
+            </ul>
           </div>
-          <ul className="list-none divide-y divide-border">
-            {groupItemsList.map(({ item, index }) => (
-              <li
-                key={getKey?.(item, index) ?? index}
-                data-highlighted={controller.highlightIndex === index}
-                onClick={() => onSelect?.(item, index)}
-                className={cn(
-                  "px-3 py-2 text-sm cursor-pointer transition-colors hover:bg-hover data-[highlighted=true]:bg-hover",
-                  classNames.item,
-                )}
-                style={styles.item}
-              >
-                {renderItem(item, index)}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </ScrollShadow>
   );
 }
 
@@ -250,46 +266,54 @@ export function Order<T>(props: OrderProps<T>) {
 
   if (items.length === 0 && empty !== undefined) {
     return (
-      <ol
-        ref={controller.rootRef as React.Ref<HTMLOListElement>}
-        tabIndex={0}
-        onKeyDown={controller.handleKeyDown}
+      <ScrollShadow
+        edges={["top", "bottom"]}
+        className={className}
+        style={style}
         onScroll={controller.handleScroll}
-        className={cn("overflow-y-auto outline-none list-decimal pl-6", className, classNames.root)}
-        style={{ ...style, ...styles.root }}
+        classNames={{ viewport: viewportClasses }}
       >
-        <li className="px-3 py-2 text-sm text-neutral-500">{empty}</li>
-      </ol>
+        <ol
+          ref={controller.rootRef as React.Ref<HTMLOListElement>}
+          tabIndex={0}
+          onKeyDown={controller.handleKeyDown}
+          className="outline-none list-decimal pl-6"
+        >
+          <li className="px-3 py-2 text-sm text-neutral">{empty}</li>
+        </ol>
+      </ScrollShadow>
     );
   }
 
   return (
-    <ol
-      ref={controller.rootRef as React.Ref<HTMLOListElement>}
-      tabIndex={0}
-      onKeyDown={controller.handleKeyDown}
+    <ScrollShadow
+      edges={["top", "bottom"]}
+      className={className}
+      style={style}
       onScroll={controller.handleScroll}
-      className={cn(
-        "overflow-y-auto outline-none list-decimal pl-6 divide-y divide-border",
-        className,
-        classNames.root,
-      )}
-      style={{ ...style, ...styles.root }}
+      classNames={{ viewport: viewportClasses }}
     >
-      {items.map((item, index) => (
-        <li
-          key={getKey?.(item, index) ?? index}
-          data-highlighted={controller.highlightIndex === index}
-          onClick={() => onSelect?.(item, index)}
-          className={cn(
-            "px-3 py-2 text-sm cursor-pointer transition-colors hover:bg-hover data-[highlighted=true]:bg-hover",
-            classNames.item,
-          )}
-          style={styles.item}
-        >
-          {renderItem(item, index)}
-        </li>
-      ))}
-    </ol>
+      <ol
+        ref={controller.rootRef as React.Ref<HTMLOListElement>}
+        tabIndex={0}
+        onKeyDown={controller.handleKeyDown}
+        className="outline-none list-decimal pl-6"
+      >
+        {items.map((item, index) => (
+          <li
+            key={getKey?.(item, index) ?? index}
+            data-highlighted={controller.highlightIndex === index}
+            onClick={() => onSelect?.(item, index)}
+            className={cn(
+              "px-3 py-2 text-sm cursor-pointer transition-colors hover:bg-hover data-[highlighted=true]:bg-hover",
+              classNames.item,
+            )}
+            style={styles.item}
+          >
+            {renderItem(item, index)}
+          </li>
+        ))}
+      </ol>
+    </ScrollShadow>
   );
 }

@@ -48,11 +48,22 @@ export default function Demo() {
         </Button>
         <Button
           onClick={() => {
-            Toaster.loading({ title: "Loading data..." });
-            setTimeout(() => Toaster.dismiss(), 3000);
+            const id = Toaster.loading({ title: "Loading data..." });
+            setTimeout(() => Toaster.dismiss(id), 3000);
           }}
         >
           Loading
+        </Button>
+        <Button
+          onClick={() =>
+            Toaster.info({
+              title: "New version available",
+              description: "Reload to update to v2.4.0.",
+              closable: true,
+            })
+          }
+        >
+          Closable
         </Button>
       </div>
     </div>

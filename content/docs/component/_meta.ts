@@ -38,7 +38,7 @@ export default {
     name: "Capsule",
     displayName: {
       en: "Capsule",
-      zh: "胶囊徽章",
+      zh: "胶囊",
     },
   },
   card: {
@@ -149,6 +149,13 @@ export default {
       zh: "表单",
     },
   },
+  "form-item": {
+    name: "Form Item",
+    displayName: {
+      en: "Form Item",
+      zh: "表单项",
+    },
+  },
   image: {
     name: "Image",
     displayName: {
@@ -161,6 +168,13 @@ export default {
     displayName: {
       en: "Input",
       zh: "输入框",
+    },
+  },
+  "input-group": {
+    name: "Input Group",
+    displayName: {
+      en: "Input Group",
+      zh: "输入组",
     },
   },
   "input-otp": {
@@ -184,6 +198,13 @@ export default {
       zh: "列表",
     },
   },
+  masonry: {
+    name: "Masonry",
+    displayName: {
+      en: "Masonry",
+      zh: "瀑布流",
+    },
+  },
   menu: {
     name: "Menu",
     displayName: {
@@ -203,6 +224,13 @@ export default {
     displayName: {
       en: "Number Field",
       zh: "数字输入框",
+    },
+  },
+  "number-input": {
+    name: "Number Input",
+    displayName: {
+      en: "Number Input",
+      zh: "数字输入",
     },
   },
   pager: {
@@ -245,6 +273,13 @@ export default {
     displayName: {
       en: "Preview Card",
       zh: "预览卡片",
+    },
+  },
+  "query-builder": {
+    name: "Query Builder",
+    displayName: {
+      en: "Query Builder",
+      zh: "查询构建器",
     },
   },
   progress: {
@@ -317,6 +352,13 @@ export default {
       zh: "步骤条",
     },
   },
+  table: {
+    name: "Table",
+    displayName: {
+      en: "Table",
+      zh: "表格",
+    },
+  },
   switch: {
     name: "Switch",
     displayName: {
@@ -387,11 +429,11 @@ export default {
       zh: "穿梭框",
     },
   },
-  "transfer-picker": {
-    name: "Transfer Picker",
+  "dual-picker": {
+    name: "Dual Picker",
     displayName: {
-      en: "Transfer Picker",
-      zh: "穿梭选择器",
+      en: "Dual Picker",
+      zh: "双栏选择器",
     },
   },
   upload: {

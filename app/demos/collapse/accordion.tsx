@@ -10,8 +10,8 @@ const items = [
     label: "Mode",
     panel: (
       <p className="text-muted-foreground">
-        Toggle the <code>multiple</code> prop to switch between single‑select and multi‑select
-        modes. Single‑select allows only one panel open at a time, while multi‑select supports
+        Toggle the <code>multiple</code> prop to switch between single-select and multi-select
+        modes. Single-select allows only one panel open at a time, while multi-select supports
         expanding multiple panels simultaneously.
       </p>
     ),
@@ -40,12 +40,12 @@ const items = [
   },
   {
     itemKey: "item-4",
-    label: "Data‑driven API",
+    label: "Data-driven API",
     panel: (
       <p className="text-muted-foreground">
-        This component adopts a pure data‑driven pattern. All accordion items are configured via the
+        This component adopts a pure data-driven pattern. All accordion items are configured via the
         items array. Keeping a single consistent paradigm avoids messy rendering inconsistencies
-        that often occur when mixing data‑driven definitions with nested child elements.
+        that often occur when mixing data-driven definitions with nested child elements.
       </p>
     ),
   },

@@ -5,21 +5,7 @@ description: A tooltip component built on the native Popover API and CSS anchor 
 
 ## Installation
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add tooltip" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="tooltip" />
-
-</Tab>
-
-</Tabs>
+<Installation name="tooltip" />
 
 ## Usage
 
@@ -86,37 +72,7 @@ The tooltip bubble rendered inline with `popover="manual"` (the top layer escape
 | `ref` | `React.Ref<HTMLDivElement>` | - | Ref to the popover element for imperative `showPopover()` and `hidePopover()` calls |
 | `...props` | `React.ComponentProps<"div">` | - | Supports all native div props (except `className`, `style`, `id`) |
 
-## Imperative API
-
-For advanced use cases like guided tours or global event coordination, wire the parts manually and control the popover imperatively:
-
-```tsx
-import { useRef } from 'react';
-import { TooltipContent, TooltipTrigger } from "@/ui";
-
-function MyComponent() {
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  return (
-    <>
-      <TooltipTrigger popoverId="my-tip" anchorName="--my-tip">
-        Hover Trigger
-      </TooltipTrigger>
-      <TooltipContent id="my-tip" anchorName="--my-tip" ref={contentRef}>
-        Tooltip content
-      </TooltipContent>
-      <button type="button" onClick={() => contentRef.current?.showPopover()}>
-        Open
-      </button>
-      <button type="button" onClick={() => contentRef.current?.hidePopover()}>
-        Close
-      </button>
-    </>
-  );
-}
-```
-
-**Important Notes:**
+## Notes
 
 - Built on the native Popover API and CSS anchor positioning (`anchor-name` / `position-anchor` / `position-area`), with no manual positioning fallback.
 - Anchored above the trigger by default, with `position-try-fallbacks: flip-block, flip-inline` handling overflow automatically — no direction prop needed.

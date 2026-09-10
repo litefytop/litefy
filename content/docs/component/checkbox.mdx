@@ -5,21 +5,7 @@ description: A checkbox component supporting controlled, uncontrolled, group and
 
 ## Installation
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add checkbox" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="checkbox" />
-
-</Tab>
-
-</Tabs>
+<Installation name="checkbox" />
 
 ## Usage
 
@@ -40,6 +26,8 @@ Data-driven group mode with select-all / indeterminate states.
 />
 
 ### Custom
+
+Real-focus checkboxes toggle with `Space` natively; `CheckboxRoot` also toggles on `Enter`, so popover-hosted groups (multi-select) can be operated entirely from the keyboard.
 
 Build a select-all group with indeterminate state using the composable components. Note that `CheckboxRoot` must be nested inside `CheckboxIndicator` — the focus ring relies on `has-focus-visible:` matching a descendant of the indicator, so placing the root outside breaks the visible focus style on keyboard focus.
 
@@ -63,6 +51,8 @@ Ready-to-use composite components.
 | `onChange`        | `(e: React.ChangeEvent<HTMLInputElement>) => void` | -    | Native change callback                          |
 | `onCheckedChange` | `(checked: boolean) => void`                    | -       | Callback when the checked state changes         |
 | `indicator`       | `React.ReactNode`                               | -       | Custom indicator content, replaces default icon |
+| `className`       | `ClassNameValue`                                | -       | Custom classes, applied to the checkbox box  |
+| `style`           | `React.CSSProperties`                           | -       | Inline styles, applied to the checkbox box   |
 | `classNames`      | `{ indicator?: ClassNameValue; label?: ClassNameValue }` | - | Custom classes for the indicator and label  |
 | `styles`          | `{ indicator?: React.CSSProperties; label?: React.CSSProperties }` | - | Inline styles for the indicator and label |
 | `disabled`        | `boolean`                                       | `false` | Disable the checkbox                            |

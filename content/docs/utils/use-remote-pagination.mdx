@@ -5,21 +5,7 @@ description: Debounced keyword search plus append-based pagination for remote da
 
 ## Installation
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add use-remote-pagination" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="hook" name="use-remote-pagination" />
-
-</Tab>
-
-</Tabs>
+<Installation name="use-remote-pagination" />
 
 ## Usage
 
@@ -28,29 +14,6 @@ Pair a debounced `search` with `loadMore` to query remote sources. The same fetc
 <ComponentPreview
   name="use-remote-pagination-basic"
 />
-
-```tsx
-import { useRemotePagination } from "@/ui";
-
-const fetcher = async ({ page, size, keyword }: { page: number; size: number; keyword: string }) => {
-  const res = await fetch(`/api/items?page=${page}&size=${size}&keyword=${keyword}`);
-  return res.json();
-};
-
-function ItemList() {
-  const remote = useRemotePagination({ fetcher });
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    if (!remote.hasMore || remote.loading) return;
-    const el = e.currentTarget;
-    if (el.scrollHeight - el.scrollTop - el.clientHeight < 40) remote.loadMore();
-  };
-  return (
-    <div onScroll={handleScroll} className="h-64 overflow-y-auto">
-      {remote.data.map((item) => <li key={item}>{item}</li>)}
-    </div>
-  );
-}
-```
 
 ## API Reference
 

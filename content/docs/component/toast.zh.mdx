@@ -5,21 +5,7 @@ description: 基于 store 命令式 API 的全局轻提示组件
 
 ## 安装
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add toast" />
-
-</Tab>
-
-<Tab value="手动">
-
-<Source type="component" name="toast" />
-
-</Tab>
-
-</Tabs>
+<Installation name="toast" />
 
 ## 用法
 
@@ -31,13 +17,14 @@ description: 基于 store 命令式 API 的全局轻提示组件
   name="toast-basic"
 />
 
-### 操作按钮
+### 关闭轻提示
 
-轻提示可以携带操作按钮。传入 `duration: Infinity` 让轻提示保持打开直到用户手动关闭，并使用 `Toaster.dismiss()` 按 id 关闭指定轻提示或一次关闭全部。
+轻提示只承担通知职责——不携带任何操作按钮；需要交互（确认、重试、查看详情）时请使用 [Dialog](/docs/component/dialog)。
 
-<ComponentPreview
-  name="toast-actions"
-/>
+关闭一条轻提示有两种方式：
+
+- 传入 `closable`，在轻提示右上角渲染关闭按钮。
+- `Toaster.loading`（以及所有方法）都会返回轻提示 id：把 id 传给 `Toaster.dismiss(id)` 即可在工作结束时只关闭这一条。不带 id 的 `Toaster.dismiss()` 会关闭全部轻提示。
 
 ### Promise
 
@@ -57,7 +44,7 @@ description: 基于 store 命令式 API 的全局轻提示组件
 
 如果挂载了多个 `<Toaster />` 实例，只有第一个会作为宿主渲染轻提示，其余实例不渲染任何内容，因此意外的重复挂载不会导致轻提示重复或悬停暂停行为不一致。
 
-折叠的轻提示以缩放/偏移的视觉效果堆叠；悬停时展开为垂直列表并暂停自动关闭。
+折叠的轻提示以轻微垂直偏移的效果堆叠；悬停时展开为垂直列表并暂停自动关闭。
 
 | 属性            | 类型                                    | 默认值  | 描述                                                       |
 | --------------- | --------------------------------------- | ------- | ---------------------------------------------------------- |
@@ -89,10 +76,10 @@ description: 基于 store 命令式 API 的全局轻提示组件
 | `type`        | `"success" \| "error" \| "warning" \| "info" \| "loading"` | -       | 图标类型；由语义化方法自动设置                                                           |
 | `icon`        | `React.ReactNode`                       | type icon  | 自定义图标，覆盖内置的类型图标                                                           |
 | `duration`    | `number`                                | `5000`     | 自动关闭延迟（毫秒）；`Infinity` 表示不自动关闭（loading 轻提示始终持久显示）            |
+| `closable`    | `boolean`                               | `false`    | 在轻提示右上角渲染关闭按钮                                                              |
 | `onClose`     | `(event: CloseEvent) => void`           | -          | 关闭开始时以 `type: "auto" \| "manual"` 触发，移除完成后以 `type: "complete"` 触发       |
-| `actions`     | `Array<{ children, onClick?, className? }>` | -      | 操作按钮；`onClick` 接收一个关闭该轻提示的 `dismiss` 回调                                |
-| `classNames`  | `{ root?, icon?, content?, title?, description?, actions? }` | - | 轻提示卡片各部分的自定义类名                                                  |
-| `styles`      | `{ root?, icon?, content?, title?, description?, actions? }` | - | 轻提示卡片各部分的内联样式                                                    |
+| `classNames`  | `{ root?, icon?, content?, title?, description?, close? }` | - | 轻提示卡片各部分的自定义类名                                                  |
+| `styles`      | `{ root?, icon?, content?, title?, description?, close? }` | - | 轻提示卡片各部分的内联样式                                                    |
 
 #### CloseEvent
 
@@ -162,23 +149,13 @@ description: 基于 store 命令式 API 的全局轻提示组件
 | `className` | `ClassNameValue` | -      | 自定义 CSS 类 |
 
 支持全部原生 `<div>` 属性。
+#### ToastClose
 
-#### ToastActions
+`closable` 开启时渲染在右上角的关闭按钮。
 
-操作按钮组的包装容器。
+| Prop        | Type             | Default | Description      |
+| ----------- | ---------------- | ------- | ---------------- |
+| `className` | `ClassNameValue` | -       | 自定义类名       |
 
-| 属性        | 类型             | 默认值 | 描述          |
-| ----------- | ---------------- | ------ | ------------- |
-| `className` | `ClassNameValue` | -      | 自定义 CSS 类 |
+支持所有原生 `<button>` 属性。
 
-支持全部原生 `<div>` 属性。
-
-#### ToastAction
-
-单个操作按钮，渲染为 `<button type="button">`。
-
-| 属性        | 类型             | 默认值 | 描述          |
-| ----------- | ---------------- | ------ | ------------- |
-| `className` | `ClassNameValue` | -      | 自定义 CSS 类 |
-
-支持全部原生 `<button>` 属性。

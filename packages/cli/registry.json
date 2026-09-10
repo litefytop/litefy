@@ -42,6 +42,20 @@
       "popover"
     ]
   },
+  "chart": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/chart.tsx",
+    "dependence": [
+      "use-chart-palette"
+    ]
+  },
+  "chat-input": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/chat-input.tsx",
+    "dependence": [
+      "text-area"
+    ]
+  },
   "checkbox": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/checkbox.tsx"
@@ -50,13 +64,19 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/chip-group.tsx"
   },
-  "collapse-accordion": {
+  "collapse": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/collapse-accordion.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/collapse.tsx"
   },
-  "collapse‑accordion": {
+  "combobox": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/collapse‑accordion.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/combobox.tsx",
+    "dependence": [
+      "list",
+      "picker",
+      "use-combobox",
+      "use-remote-pagination"
+    ]
   },
   "context-menu": {
     "type": "component",
@@ -71,7 +91,8 @@
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/date-picker.tsx",
     "dependence": [
       "calendar",
-      "picker"
+      "picker",
+      "use-panel-focus"
     ]
   },
   "dialog": {
@@ -82,6 +103,34 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/drawer.tsx"
   },
+  "dropdown-menu": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/dropdown-menu.tsx",
+    "dependence": [
+      "button",
+      "menu",
+      "popover"
+    ]
+  },
+  "dual-picker": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/dual-picker.tsx",
+    "dependence": [
+      "input-group"
+    ]
+  },
+  "form-item": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/form-item.tsx",
+    "dependence": [
+      "input",
+      "text-area",
+      "select",
+      "password",
+      "number-input",
+      "form"
+    ]
+  },
   "form": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/form.tsx"
@@ -90,13 +139,20 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/image.tsx"
   },
+  "input-group": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/input-group.tsx"
+  },
   "input-otp": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/input-otp.tsx"
   },
   "input": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/input.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/input.tsx",
+    "dependence": [
+      "input-group"
+    ]
   },
   "kbd": {
     "type": "component",
@@ -104,15 +160,39 @@
   },
   "list": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/list.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/list.tsx",
+    "dependence": [
+      "scroll-shadow"
+    ]
+  },
+  "masonry": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/masonry.tsx"
   },
   "menu": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/menu.tsx"
   },
+  "multi-select": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/multi-select.tsx",
+    "dependence": [
+      "button",
+      "checkbox",
+      "popover"
+    ]
+  },
   "number-field": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/number-field.tsx"
+  },
+  "number-input": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/number-input.tsx",
+    "dependence": [
+      "input-group",
+      "number-field"
+    ]
   },
   "pager": {
     "type": "component",
@@ -124,7 +204,10 @@
   },
   "password": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/password.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/password.tsx",
+    "dependence": [
+      "input-group"
+    ]
   },
   "picker": {
     "type": "component",
@@ -134,9 +217,30 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/popover.tsx"
   },
+  "preview-card": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/preview-card.tsx",
+    "dependence": [
+      "card",
+      "image",
+      "tooltip"
+    ]
+  },
   "progress": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/progress.tsx"
+  },
+  "query-builder": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/query-builder.tsx",
+    "dependence": [
+      "button",
+      "checkbox",
+      "date-picker",
+      "input",
+      "segment",
+      "select"
+    ]
   },
   "radio": {
     "type": "component",
@@ -177,6 +281,10 @@
   "switch": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/switch.tsx"
+  },
+  "table": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/table.tsx"
   },
   "tabs": {
     "type": "component",
@@ -249,6 +357,10 @@
     "type": "hook",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-drag.ts"
   },
+  "use-load-more": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-load-more.ts"
+  },
   "use-pagination": {
     "type": "hook",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-pagination.ts"
@@ -260,6 +372,10 @@
   "use-remote-pagination": {
     "type": "hook",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-remote-pagination.ts"
+  },
+  "use-remote-sort": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/utils/use-remote-sort.ts"
   },
   "use-theme": {
     "type": "hook",

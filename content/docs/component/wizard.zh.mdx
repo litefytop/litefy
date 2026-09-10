@@ -5,21 +5,7 @@ description: Steps + Pager 组合的向导组件，内部管理索引状态 —�
 
 ## 安装
 
-<Tabs items={['CLI', '手动']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add wizard" />
-
-</Tab>
-
-<Tab value="手动">
-
-<Source type="component" name="wizard" />
-
-</Tab>
-
-</Tabs>
+<Installation name="wizard" />
 
 ## 用法
 
@@ -31,26 +17,6 @@ description: Steps + Pager 组合的向导组件，内部管理索引状态 —�
   name="wizard-basic"
 />
 
-```tsx
-import { Wizard } from "@/ui";
-
-const steps = [
-  { title: "Account" },
-  { title: "Profile" },
-  { title: "Confirm" },
-];
-
-export default function Demo() {
-  return (
-    <Wizard steps={steps} onFinish={() => alert("Submitted")}>
-      <form>...</form>
-      <form>...</form>
-      <div>Ready to submit</div>
-    </Wizard>
-  );
-}
-```
-
 ## 注意
 
 - Wizard 内部使用 [Steps](/docs/component/steps) 和 [Pager](/docs/component/pager)——CLI 安装时请一并添加：`litefy add wizard steps pager`。
@@ -58,7 +24,29 @@ export default function Demo() {
 - `maxIndex` 记录已到达的最远步骤并传给 Steps——已到达步骤可点击回退，未来步骤锁定。
 - 最后一步将 Next 按钮替换为 Submit，点击时触发 `onFinish`。
 
+### 内联变体
+
+`Wizard.Inline`（亦导出为 `InlineWizard`）用同一套状态机驱动纵向步骤手风琴：只有当前步骤展开显示内容与它自己的 Back / Continue 按钮，其余步骤折叠为标题行。点击已访问步骤即可回跳。
+
+<ComponentPreview name="wizard-inline" />
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `steps` | `{ title?; description?; content: React.ReactNode }[]` | - | 步骤定义 **必填** |
+| `defaultIndex` / `index` | `number` | `0` | 步骤索引（非受控 / 受控） |
+| `onIndexChange` | `(index: number) => void` | - | 步骤变化回调 |
+| `onFinish` | `() => void` | - | 最后一步的 Finish 按钮回调 |
+| `maxIndex` | `number` | 最后一步 | 最远可达步骤 |
+| `backLabel` / `nextLabel` / `finishLabel` | `React.ReactNode` | `"Back"` / `"Continue"` / `"Finish"` | 按钮文案 |
+| `disabled` | `boolean` | `false` | 禁用导航 |
+| `className` | `ClassNameValue` | - | 自定义类名，作用于列表 |
+| `classNames` | `marker` / `title` / `description` / `connector` / `content` / `footer` / `button` / `primaryButton` | - | 各部分自定义类名 |
+
 ## API 参考
+
+### useWizardNavigation
+
+向导状态机（钳位导航 + 最远到达锁定）以 `useWizardNavigation({ count, defaultIndex?, index?, maxIndex?, onIndexChange? })` 导出——返回 `{ index, maxVisited, maxReachable, isFirst, isLast, isReachable, go }`。上方的分页式 Wizard 与下方的内联变体都由它驱动，你也可以用它构建自定义向导外壳。
 
 ### Wizard
 

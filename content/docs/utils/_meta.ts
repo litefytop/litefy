@@ -28,6 +28,13 @@ export default {
       zh: "组合框键盘",
     },
   },
+  "use-load-more": {
+    name: "Load More",
+    displayName: {
+      en: "use-load-more",
+      zh: "滚动加载",
+    },
+  },
   "use-panel-focus": {
     name: "Panel Focus",
     displayName: {
@@ -47,6 +54,13 @@ export default {
     displayName: {
       en: "use-remote-pagination",
       zh: "远程分页",
+    },
+  },
+  "use-remote-sort": {
+    name: "Remote Sort",
+    displayName: {
+      en: "use-remote-sort",
+      zh: "远程排序",
     },
   },
   "use-virtual-scroll": {

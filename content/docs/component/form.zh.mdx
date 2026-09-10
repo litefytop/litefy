@@ -5,27 +5,13 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 
 ## 安装
 
-<Tabs items={['CLI', '手动']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add form" />
-
-</Tab>
-
-<Tab value="手动">
-
-<Source type="component" name="form" />
-
-</Tab>
-
-</Tabs>
+<Installation name="form" />
 
 ## 用法
 
 ### 基础用法
 
-使用 `Form`、`Form.Field`、`Form.Fieldset` 和 `Form.Submit` 组合出一个表单。字段与字段集通过 render prop 暴露底层控件属性，便于完全控制。
+用 `Form` + [FormItem](/zh/docs/component/form-item) + `Form.Submit` 组合表单。不带包装的分组控件（复选/单选组）原生提交即可——给它们 `name` 属性，值会自动进入提交数据。
 
 <ComponentPreview 
   name="form-basic"
@@ -33,18 +19,10 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 
 ### 校验
 
-通过 `validConfig` 添加客户端校验。校验在 `onChange` 或 `onBlur` 触发，返回的字符串会作为错误信息渲染。当 `trigger` 为 `"onChange"` 时，可通过 `debounceMs` 进行防抖。
+包装字段通过 `FormItem` 的 `validate` / `validateTrigger` 做校验。校验在 `onChange` 或 `onBlur` 时执行，返回的字符串渲染为输入框下方的错误信息。
 
 <ComponentPreview 
   name="form-validation"
-/>
-
-### 横向布局
-
-将字段的 `direction` 设为 `"horizontal"`，即可让标签与控件并排显示。结合 `classNames` 可以进一步定制标签样式。
-
-<ComponentPreview 
-  name="form-horizontal"
 />
 
 ### 命令式控制
@@ -54,6 +32,24 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 <ComponentPreview 
   name="form-imperative"
 />
+
+### 表单项
+
+`FormItem` 组件用法已拆分为独立页面：[Form Item 表单项](/zh/docs/component/form-item)。
+
+### 零件用法（useFieldValidity）
+
+不使用任何包装组件：自持一个 `useFieldValidity` 状态（内置于 Form 模块），在自己的处理器里设置/清除错误，把 `aria-invalid` 传给控件，并条件渲染错误信息。所有输入类控件都内置危险样式（`border-danger` / `text-danger` 与危险焦点环），仅凭 `aria-invalid` 属性即可生效。
+
+<ComponentPreview 
+  name="form-parts"
+/>
+
+### 控件校验样式
+
+所有字段控件（Input、Textarea、Select、Password、NumberField、Picker、InputOtp）直接由 `aria-invalid` 属性驱动样式 —— 无需额外属性：
+
+`aria-invalid:border-danger aria-invalid:text-danger`，聚焦时叠加 `aria-invalid:focus-visible:outline-1 aria-invalid:focus-visible:outline-danger aria-invalid:focus-visible:ring-3 aria-invalid:focus-visible:ring-danger/50`。组合包装器（InputGroup、PasswordGroup）通过自身的 `data-invalid` 状态应用同样的效果。
 
 ## API 参考
 
@@ -71,7 +67,7 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 | `autoReset` | `boolean`                                  | `true` | 当 `onSubmit` 解析为 `true` 时自动重置表单                                                 |
 | `onReset`   | `() => void`                               | -      | 表单重置时触发 —— 包括 `autoReset` 在提交成功后的重置，以及通过 `ref.reset()` 触发的重置    |
 | `ref`       | `React.Ref<FormRef>`                       | -      | 暴露 `setValues`、`reset`、`submit` 的命令式句柄                                           |
-| `children`  | `React.ReactNode`                          | -      | 表单内容，通常为 `Form.Field`、`Form.Fieldset` 与 `Form.Submit`                            |
+| `children`  | `React.ReactNode`                          | -      | 表单内容，通常为 `FormItem` 与 `Form.Submit`                            |
 | `...props`  | `React.ComponentProps<"form">`             | -      | 支持全部 form 原生属性（除 `onSubmit`、`ref` 外），展开到底层 form 元素                     |
 
 #### FormRef
@@ -95,78 +91,6 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 | `children`    | `React.ReactNode` | -      | 按钮文案                                           |
 
 支持其余所有原生 `<button>` 属性；`type` 被强制为 `submit`。
-
-#### Form.Field
-
-将标签、控件和辅助文字包装为单一可访问的字段。控件通过 render prop 提供。
-
-| 属性          | 类型                                       | 默认值       | 描述                                                          |
-| ------------- | ------------------------------------------ | ------------ | ------------------------------------------------------------- |
-| `name`        | `string`                                   | -            | 字段名称，用于在表单中注册输入                                |
-| `label`       | `React.ReactNode`                          | -            | 渲染在控件上方的标签内容                                      |
-| `description` | `React.ReactNode`                          | -            | 渲染在控件下方的辅助文字，校验失败时会被错误信息替代          |
-| `invalid`     | `React.ReactNode`                          | -            | 受控的错误信息。传入字符串时会渲染为错误并设置 `aria-invalid` |
-| `direction`   | `"vertical" \| "horizontal"`               | `"vertical"` | 标签与控件的排列方向                                          |
-| `inputId`     | `string`                                   | -            | 底层控件的自定义 id                                           |
-| `classNames`  | `{ root?: ClassNameValue; label?: ClassNameValue; hint?: ClassNameValue }` | - | 字段容器、标签与提示文字的自定义类 |
-| `styles`      | `{ root?: React.CSSProperties; label?: React.CSSProperties; hint?: React.CSSProperties }` | - | 字段容器、标签与提示文字的内联样式 |
-| `validConfig` | `{ validate?: (value: string) => string \| boolean \| null \| undefined \| Promise<string \| boolean \| null \| undefined>; trigger?: "onChange" \| "onBlur"; debounceMs?: number }` | - | 客户端校验配置，字段说明见下表 |
-| `children`    | `(field: FormFieldArg) => React.ReactNode` | -            | 接收输入属性并渲染控件的 render prop                          |
-| `...props`    | `React.ComponentProps<"div">`              | -            | 支持全部 div 原生属性（除 `children`、`className`、`style` 外），展开到字段容器 |
-
-`validConfig` 字段说明：
-
-| 字段         | 描述                                                                                            |
-| ------------ | ------------------------------------------------------------------------------------------------- |
-| `validate`   | 校验函数，接收字段当前的字符串值。返回字符串会作为错误信息展示；返回 `true` 则标记字段无效 |
-| `trigger`    | 校验函数的触发时机                                                                                |
-| `debounceMs` | 防抖延迟（毫秒），在 `trigger` 为 `"onChange"` 时生效                                             |
-
-#### FormFieldArg
-
-提供给 `Form.Field` 子元素的 render prop，其中 `FormElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement`。
-
-| 属性               | Type                                                     | 描述                                                          |
-| ------------------ | ---------------------------------------------------------- | --------------------------------------------------------------- |
-| `id`               | `string`                                                   | 为底层输入生成的 id，转发到控件的 `id`                        |
-| `name`             | `string`                                                   | 字段的 `name`，转发到控件的 `name`                            |
-| `ref`              | `(el: FormElement \| null) => void`                        | 用于在表单中注册输入的 ref 回调                               |
-| `onChange`         | `(e: React.ChangeEvent<FormElement>) => void`              | 变更处理器，当 `trigger` 为 `"onChange"` 时触发 `validConfig` |
-| `onBlur`           | `(e: React.FocusEvent<HTMLElement>) => void`               | 失焦处理器，当 `trigger` 为 `"onBlur"` 时触发 `validConfig`   |
-| `invalid`          | `boolean`                                                  | 字段当前是否处于无效状态                                      |
-| `aria-describedby` | `string`                                                   | 描述文字或错误文字的 id，用于无障碍访问                       |
-
-#### Form.Fieldset
-
-将一组相关控件（如复选框组、单选组）包装为单一可注册的字段。`type="multi"`（默认）时组值为 `string[]`；`type="single"` 时为 `string`。
-
-| 属性          | 类型                                            | 默认值    | 描述                                                                              |
-| ------------- | ----------------------------------------------- | --------- | ------------------------------------------------------------------------------------ |
-| `name`        | `string`                                        | -         | 分组名称，用于在表单中注册字段集的值                                                 |
-| `type`        | `"single" \| "multi"`                           | `"multi"` | `"multi"` 以 `string[]` 收集值，`"single"` 以 `string` 收集                          |
-| `legend`      | `React.ReactNode`                               | -         | 渲染在 fieldset `<legend>` 中的标题内容                                              |
-| `description` | `React.ReactNode`                               | -         | 渲染在分组下方的辅助文字，校验失败时会被错误信息替代                                 |
-| `invalid`     | `React.ReactNode`                               | -         | 受控的错误信息。传入字符串时会渲染为错误并设置 `aria-invalid`                        |
-| `disabled`    | `boolean`                                       | `false`   | 禁用字段集内的所有控件                                                               |
-| `classNames`  | `{ root?: ClassNameValue; legend?: ClassNameValue; hint?: ClassNameValue }` | - | 字段集、legend 与提示文字的自定义类 |
-| `styles`      | `{ root?: React.CSSProperties; legend?: React.CSSProperties; hint?: React.CSSProperties }` | - | 字段集、legend 与提示文字的内联样式 |
-| `validConfig` | `{ validate?: (value: string[] \| string) => string \| boolean \| undefined \| Promise<string \| boolean \| undefined>; trigger?: "onChange" \| "onBlur"; debounceMs?: number }` | - | 客户端校验配置，与 `Form.Field` 的结构相同，但 `validate` 接收分组值 |
-| `children`    | `(field: FieldsetRenderArg) => React.ReactNode` | -         | 接收分组值与处理函数的 render prop                                                   |
-| `...props`    | `React.ComponentPropsWithRef<"fieldset">`       | -         | 支持全部 fieldset 原生属性（除 `children`、`className`、`style` 外），展开到 fieldset 元素 |
-
-render prop 接收：
-
-| 属性               | 类型                                          | 描述                                                                              |
-| ------------------ | ----------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `id`               | `string`                                        | 为字段集生成的 id                                                                    |
-| `name`             | `string`                                        | 字段集的 `name`                                                                      |
-| `value`            | `string[] \| string \| undefined`               | 当前分组值 —— `type="multi"` 时为 `string[]`，`type="single"` 时为 `string`          |
-| `onValueChange`    | `(value: string[] \| string) => void`           | 更新分组值，当 `trigger` 为 `"onChange"` 时触发 `validConfig`                        |
-| `onBlur`           | `(e: React.FocusEvent<HTMLElement>) => void`    | 失焦处理器，当 `trigger` 为 `"onBlur"` 时触发 `validConfig`                          |
-| `invalid`          | `boolean`                                       | 字段集当前是否处于无效状态                                                           |
-| `aria-describedby` | `string`                                        | 描述文字或错误文字的 id，用于无障碍访问                                              |
-
----
 
 ### 可组合组件
 

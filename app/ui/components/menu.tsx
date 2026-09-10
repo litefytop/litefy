@@ -49,7 +49,7 @@ export function MenuSubContent({
       popover="manual"
       tabIndex={-1}
       className={cn(
-        "bg-background text-foreground w-3xs overflow-auto rounded-md border p-1 shadow-md",
+        "bg-background text-foreground w-3xs overflow-auto rounded-lg border p-1 shadow-md",
         className,
       )}
       style={{
@@ -89,13 +89,11 @@ export interface MenuProps {
   style?: React.CSSProperties;
   itemClassName?: ClassNameValue;
   classNames?: {
-    root?: ClassNameValue;
     item?: ClassNameValue;
     label?: ClassNameValue;
     sub?: ClassNameValue;
   };
   styles?: {
-    root?: React.CSSProperties;
     item?: React.CSSProperties;
     label?: React.CSSProperties;
     sub?: React.CSSProperties;
@@ -253,7 +251,6 @@ function MenuList({
           className={cn(
             "w-full text-left px-2 py-1.5 text-sm font-semibold cursor-pointer",
             "focus-visible:ring-inset",
-            "disabled:cursor-not-allowed disabled:opacity-50",
             hasSub && "flex items-center justify-between cursor-default",
             activeEntry === entryId && "bg-hover",
             itemClassName,
@@ -401,8 +398,8 @@ export function Menu({
         items={items}
         uid={`${id}-root`}
         autoFocus={autoFocus}
-        className={cn(className, classNames?.root)}
-        style={{ ...style, ...styles?.root }}
+        className={cn(className)}
+        style={style}
         itemClassName={itemClassName}
         classNames={{ item: classNames?.item, label: classNames?.label }}
         styles={{ item: styles?.item, label: styles?.label }}

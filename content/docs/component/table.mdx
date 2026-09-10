@@ -1,0 +1,53 @@
+---
+title: Table
+description: A generic data table with clickable sortable headers for local data, or remote mode that delegates sorting to your database.
+---
+
+## Installation
+
+<Installation name="table" />
+
+## Usage
+
+`Table` is data-driven: pass `data` plus a `columns` config. Set `sortable: true` on a column to make its header clickable — the sort cycles **asc → desc → cleared** and applies locally to `data`.
+
+<ComponentPreview name="table-basic" />
+
+### Remote sorting (database)
+
+Pass a controlled `sort` + `onSortChange` to enter **remote mode**: the Table stops sorting internally and only reports header clicks, so the query can run against your database. Pair with [useRemoteSort](/docs/utils/use-remote-sort), which manages the state and builds the query string.
+
+<ComponentPreview name="table-remote" />
+
+## API Reference
+
+### Table
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `T[]` | - | Row data. **Required** |
+| `columns` | `TableColumn<T>[]` | - | Column config. **Required** |
+| `getKey` | `(row: T, index: number) => React.Key` | index | Row key extractor |
+| `sort` | `SortState<T> \| null` | - | Controlled sort state; enables remote mode |
+| `onSortChange` | `(sort: SortState<T>) => void` | - | Fired on header clicks (both modes) |
+| `initialSortDirection` | `"asc" \| "desc"` | `"asc"` | Direction used on the first click of a column |
+| `empty` | `React.ReactNode` | `"No data"` | Rendered when `data` is empty |
+| `className` | `ClassNameValue` | - | Custom classes, applied to the wrapper |
+| `classNames` | `wrapper` / `table` / `head` / `headRow` / `headCell` / `body` / `row` / `cell` | - | Custom classes per part |
+| `styles` | `{ wrapper?, table? }` | - | Inline styles for the wrapper and table |
+
+### TableColumn&lt;T&gt;
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `key` | `keyof T & string` | - | Row field to display. **Required** |
+| `header` | `React.ReactNode` | `key` | Header label |
+| `render` | `(row: T) => React.ReactNode` | raw value | Custom cell renderer |
+| `sortable` | `boolean` | `false` | Make the header click-to-sort |
+| `compare` | `(a: T, b: T) => number` | `<` / `>` | Custom comparator used by local sorting |
+| `align` | `"left" \| "right" \| "center"` | `"left"` | Cell alignment |
+| `className` | `ClassNameValue` | - | Custom classes for the column cells |
+
+### SortState&lt;T&gt;
+
+`{ key: keyof T & string; direction: "asc" | "desc" } | null`

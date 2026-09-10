@@ -11,8 +11,11 @@ const messages = [
 
 export default function BannerCustomDemo() {
   return (
-    <div className="w-full max-w-md rounded-md border bg-muted/50">
-      <BannerViewport className="py-2" aria-label="Announcements">
+    <div className="w-full max-w-md rounded-md">
+      <BannerViewport
+        className="py-2 bg-primary text-primary-foreground"
+        aria-label="Announcements"
+      >
         <BannerTrack duration={12} direction="right" playing>
           {[0, 1].map((copy) => (
             <div

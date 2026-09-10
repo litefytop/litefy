@@ -5,21 +5,7 @@ description: A collapsible component that supports single panel, accordion, and 
 
 ## Installation
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add collapse" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="collapse" />
-
-</Tab>
-
-</Tabs>
+<Installation name="collapse" />
 
 ## Usage
 
@@ -36,7 +22,7 @@ A single collapsible panel.
 `Accordion` uses mutually exclusive mode by default (at most one panel open); enable `multiple` to allow several panels to be open at the same time.
 
 <ComponentPreview
-  name="collapse-accordion"
+  name="collapse"
 />
 
 ### Custom
@@ -65,8 +51,10 @@ A single collapsible panel with a built-in trigger and animated panel.
 | `defaultOpen`  | `boolean`                                                                                    | `false`       | Initial open state (uncontrolled)                                                     |
 | `onOpenChange` | `(open: boolean) => void`                                                                    | -             | Callback when the open state changes                                                  |
 | `itemKey`      | `string`                                                                                     | -             | Suffix for trigger and panel ids, used for accessibility association                  |
-| `classNames`   | `{ root?: ClassNameValue; trigger?: ClassNameValue; panel?: ClassNameValue }`                | -             | Custom classes for the root, trigger, and panel                                       |
-| `styles`       | `{ root?: React.CSSProperties; trigger?: React.CSSProperties; panel?: React.CSSProperties }` | -             | Inline styles for the root, trigger, and panel                                        |
+| `className`    | `ClassNameValue`                                                                             | -             | Custom classes, applied to the root                                                  |
+| `style`        | `React.CSSProperties`                                                                        | -             | Inline styles, applied to the root                                                   |
+| `classNames`   | `{ trigger?: ClassNameValue; panel?: ClassNameValue }`                                       | -             | Custom classes for the trigger and panel                                             |
+| `styles`       | `{ trigger?: React.CSSProperties; panel?: React.CSSProperties }`                             | -             | Inline styles for the trigger and panel                                              |
 | `children`     | `React.ReactNode`                                                                            | -             | Panel content                                                                         |
 | `...props`     | `React.ComponentProps<"div">`                                                                | -             | All native div props supported                                                        |
 
@@ -81,11 +69,11 @@ A group of collapsible panels. Mutually exclusive mode by default (at most one p
 | `defaultActiveKeys` | `string` \| `string[]`                                                                                                                                         | -       | Initial open keys (uncontrolled). Exclusive: `string`; multiple: `string[]`                    |
 | `activeKeys`        | `string` \| `string[]`                                                                                                                                         | -       | Current open keys (controlled). Exclusive: `string`; multiple: `string[]`                      |
 | `onKeyChange`       | `(value: string \| undefined) => void` \| `(values: string[]) => void`                                                                                         | -       | Callback when the open keys change                                                             |
-| `common`            | `{ classNames?: { root?: ClassNameValue; trigger?: ClassNameValue; panel?: ClassNameValue }; icon?: React.ReactNode \| ((open: boolean) => React.ReactNode) }` | -       | Uniform configuration applied to each item; the item's own `classNames`/`icon` take precedence |
+| `common`            | `{ className?: ClassNameValue; classNames?: { trigger?: ClassNameValue; panel?: ClassNameValue }; icon?: React.ReactNode \| ((open: boolean) => React.ReactNode) }` | -       | Uniform configuration applied to each item; the item's own `className`/`classNames`/`icon` take precedence |
 | `className`         | `ClassNameValue`                                                                                                                                               | -       | Container custom styles                                                                        |
 | `...props`          | `React.ComponentProps<"div">`                                                                                                                                  | -       | All native div props supported                                                                 |
 
-> Items are separated by `not-last:border-b` by default, which can be overridden via `common.classNames.root`.
+> Items are separated by `not-last:border-b` by default, which can be overridden via `common.className`.
 
 #### CollapseItemConfig
 

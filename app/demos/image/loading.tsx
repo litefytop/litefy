@@ -7,7 +7,7 @@ export default function ImageLoadingDemo() {
     <Image
       src="https://picsum.photos/seed/3/1200/800"
       alt="Random image"
-      classNames={{ root: "w-160 h-80 border" }}
+      className={"w-160 h-80 border"}
       loadingNode={
         <div className="relative size-full bg-neutral animate-pulse">
           <img

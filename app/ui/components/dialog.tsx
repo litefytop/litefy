@@ -21,7 +21,7 @@ export function DialogClose({ className, ...props }: DialogCloseProps) {
       type="button"
       {...props}
       className={cn(
-        "absolute right-4 top-4 h-6 w-8 rounded-md border text-xs font-mono font-medium text-muted-foreground transition-colors hover:bg-hover select-none",
+        "absolute right-4 top-4 h-6 w-8 rounded-sm border text-xs font-mono font-medium text-muted-foreground transition-colors hover:bg-hover select-none",
         className,
       )}
     />
@@ -39,7 +39,7 @@ export function DialogContent({ className, ...props }: DialogContentProps) {
       className={cn(
         "fixed min-w-70 max-w-md",
         "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 m-0",
-        "rounded-lg border p-6 shadow-lg bg-background",
+        "rounded-lg border p-6 shadow-lg bg-background text-foreground",
         className,
       )}
     />
@@ -50,19 +50,21 @@ export interface DialogProps extends Omit<DialogContentProps, "className" | "sty
   open: boolean;
   onOpenChange?: (open: boolean) => void;
   onBackdropClick?: (e: React.MouseEvent<HTMLDialogElement>) => void;
+  className?: ClassNameValue;
+  style?: React.CSSProperties;
   classNames?: {
-    root?: ClassNameValue;
     content?: ClassNameValue;
     close?: ClassNameValue;
   };
   styles?: {
-    root?: React.CSSProperties;
     content?: React.CSSProperties;
     close?: React.CSSProperties;
   };
 }
 
 export function Dialog({
+  className,
+  style,
   classNames,
   styles,
   children,
@@ -132,8 +134,8 @@ export function Dialog({
       onClick={(e) => {
         if (e.target === e.currentTarget) onBackdropClick?.(e);
       }}
-      className={classNames?.root}
-      style={styles?.root}
+      className={className}
+      style={style}
     >
       <DialogContent {...props} style={styles?.content} className={classNames?.content}>
         <DialogClose

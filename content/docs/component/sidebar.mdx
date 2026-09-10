@@ -5,21 +5,7 @@ description: A collapsible sidebar with ref-based external control
 
 ## Installation
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add sidebar" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="sidebar" />
-
-</Tab>
-
-</Tabs>
+<Installation name="sidebar" />
 
 ## Usage
 
@@ -38,28 +24,6 @@ The sidebar exposes an imperative handle through `ref`, so sibling nodes or any 
 <ComponentPreview
   name="sidebar-ref"
 />
-
-```tsx
-import { useRef } from "react";
-import { Sidebar, type SidebarHandle } from "@/ui";
-
-function Layout() {
-  const sidebarRef = useRef<SidebarHandle>(null);
-
-  return (
-    <div className="flex">
-      <Sidebar ref={sidebarRef} defaultOpen className="w-48">
-        <nav>Sidebar content</nav>
-      </Sidebar>
-      <main>
-        <button type="button" onClick={() => sidebarRef.current?.toggle()}>
-          Toggle
-        </button>
-      </main>
-    </div>
-  );
-}
-```
 
 ## API Reference
 

@@ -5,21 +5,7 @@ description: 通用的 input + popover 容器组件，基于原生 popover 和 C
 
 ## 安装
 
-<Tabs items={['CLI', '手动']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add picker" />
-
-</Tab>
-
-<Tab value="手动">
-
-<Source type="component" name="picker" />
-
-</Tab>
-
-</Tabs>
+<Installation name="picker" />
 
 ## 用法
 
@@ -58,8 +44,10 @@ Picker 是一个积木组件，而不是成品组件。将它与 [Calendar](/doc
 | `trailing`      | `React.ReactNode`                 | -       | 渲染在输入框尾部的图标                                              |
 | `children`      | `React.ReactNode`                 | -       | 弹出面板内容                                                        |
 | `panelRef`      | `React.Ref<HTMLDivElement>`       | -       | 接收面板元素，配合 [`usePanelFocus`](/docs/utils/use-panel-focus) 使用 |
-| `classNames`    | `PickerClassNames`                | -       | 分区类名覆盖：`root`、`input`、`trailing`、`popover`                |
-| `styles`        | `PickerStyles`                    | -       | 分区样式覆盖：`root`、`input`、`trailing`、`popover`                |
+| `className`     | `ClassNameValue`                  | -       | 自定义类名，作用于根容器                                           |
+| `style`         | `React.CSSProperties`             | -       | 内联样式，作用于根容器                                             |
+| `classNames`    | `PickerClassNames`                | -       | 分区类名覆盖：`input`、`trailing`、`popover`                |
+| `styles`        | `PickerStyles`                    | -       | 分区样式覆盖：`input`、`trailing`、`popover`                |
 | `...props`      | `React.ComponentProps<"input">`   | -       | 其余原生 input 属性，如 `placeholder`、`disabled`                   |
 
 行为说明：

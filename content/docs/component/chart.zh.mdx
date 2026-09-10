@@ -1,35 +1,29 @@
 ---
 title: Chart 图表
-description: 基于 uPlot 与 useChartPalette 的图表组合示范 —— 自动画布与主题色集成、自适应宽度、可交互图例与悬浮提示
+description: 基于 uPlot 的通用图表组件 —— 自动画布与主题色集成、自适应宽度、可交互图例与悬浮提示
 ---
 
-Chart 是基于 [uPlot](https://github.com/leeoniya/uPlot) 与 `useChartPalette` 的组合示范，不提供源码分发，完整实现见下方各 demo 的源码（每个 demo 内含可直接复制的 `Chart` 封装）。它自动使用色板生成的 8 色为各数据系列着色，网格与坐标轴文字跟随主题变量（`--color-border` / `--color-muted-foreground`），容器宽度变化时通过 ResizeObserver 自适应重绘，并内置可点击隐藏系列的图例与跟随光标的悬浮提示。
+Chart 是基于 [uPlot](https://github.com/leeoniya/uPlot) 的通用图表组件，自动使用色板生成的 8 色为各数据系列着色，网格与坐标轴文字跟随主题变量（`--color-border` / `--color-muted-foreground`），容器宽度变化时通过 ResizeObserver 自适应重绘，并内置可点击隐藏系列的图例与跟随光标的悬浮提示。
 
 ## 安装
 
-Chart 依赖 uPlot，请先安装：
-
-```bash
-pnpm add uplot
-```
-
-同时依赖 `useChartPalette` 色板 hook，请一并安装：
-
-<Tabs items={['CLI', 'Manual']} >
+<Tabs items={['CLI', '手动']} >
 
 <Tab value="CLI">
 
-<PackageManagerTabs command="litefy@latest add use-chart-palette" />
+<PackageManagerTabs command="litefy@latest add chart" />
 
 </Tab>
 
-<Tab value="Manual">
+<Tab value="手动">
 
-<Source type="hook" name="use-chart-palette" />
+<Source type="component" name="chart" />
 
 </Tab>
 
 </Tabs>
+
+Chart 依赖 uPlot（`pnpm add uplot`），同时依赖 `useChartPalette` 色板 hook，请一并安装：
 
 `useChartPalette` 也可以独立用于自定义可视化——调用 `useChartPalette({ mode: "wheel" | "mono" })` 返回 8 个与主题联动的颜色值，详见 [use-chart-palette](/docs/utils/use-chart-palette)。
 

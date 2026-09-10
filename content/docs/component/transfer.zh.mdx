@@ -5,21 +5,7 @@ description: 双面板穿梭框，通过复选框勾选在来源与目标列表�
 
 ## 安装
 
-<Tabs items={['CLI', '手动']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add transfer" />
-
-</Tab>
-
-<Tab value="手动">
-
-<Source type="component" name="transfer" />
-
-</Tab>
-
-</Tabs>
+<Installation name="transfer" />
 
 ## 用法
 
@@ -30,32 +16,6 @@ description: 双面板穿梭框，通过复选框勾选在来源与目标列表�
 <ComponentPreview
   name="transfer-basic"
 />
-
-```tsx
-import { Transfer, type TransferItemConfig } from "@/ui";
-
-const dataSource: TransferItemConfig[] = [
-  { label: "JavaScript", value: "js" },
-  { label: "TypeScript", value: "ts" },
-  { label: "Rust", value: "rust" },
-  { label: "Go", value: "go" },
-  { label: "Python", value: "python", disabled: true },
-  { label: "Java", value: "java" },
-];
-
-export default function Demo() {
-  const [value, setValue] = React.useState<string[]>(["ts", "go"]);
-
-  return (
-    <Transfer
-      dataSource={dataSource}
-      value={value}
-      onChange={setValue}
-      titles={["Available", "Selected"]}
-    />
-  );
-}
-```
 
 ## 注意
 
@@ -78,7 +38,7 @@ export default function Demo() {
 | `titles`       | `[React.ReactNode, React.ReactNode]`            | `Source` / `Target` | 来源与目标面板的标题                          |
 | `renderItem`   | `(item: TransferItemConfig) => React.ReactNode` | -                   | 自定义条目渲染，两个面板同时生效              |
 | `className`    | `ClassNameValue`                                | -                   | 自定义类名，应用于根元素                      |
-| `classNames`   | `root` / `panel` / `header` / `body` / `item` / `actions` | -         | 按插槽自定义类名                              |
+| `classNames`   | `panel` / `header` / `body` / `item` / `actions` | -         | 按插槽自定义类名                              |
 
 ### TransferItemConfig
 

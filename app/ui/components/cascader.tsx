@@ -172,7 +172,7 @@ export function Cascader({
 
   return (
     <>
-      <div {...props} className={cn("w-72 rounded-md border bg-background text-sm", className)}>
+      <div {...props} className={cn("w-72 rounded-md border text-sm", className)}>
         {trigger}
       </div>
       {panels}

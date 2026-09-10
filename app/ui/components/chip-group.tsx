@@ -19,7 +19,7 @@ export interface ChipGroupProps {
 }
 
 const chipClass =
-  "max-w-40 shrink-0 truncate rounded-full bg-muted px-2.5 py-0.5 text-xs whitespace-nowrap";
+  "max-w-40 shrink-0 truncate rounded-full px-2.5 py-0.5 text-xs whitespace-nowrap";
 
 export function ChipGroup({
   items,

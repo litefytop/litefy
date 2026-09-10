@@ -1,0 +1,43 @@
+---
+title: Input Group 输入组
+description: 承载控件焦点与无效样式的输入外壳——前后置插槽加内部输入框，不会产生双重焦点环。
+---
+
+## 安装
+
+<Installation name="input-group" />
+
+## 用法
+
+`InputGroup` 是包裹控件的输入外壳。所有焦点（`focus-within`）与无效（`data-invalid`）视觉——边框、光圈、描边——都由外壳负责，内部的 `InputRoot` 视觉上是"裸"的，因此外壳与输入框永远不会产生双重焦点环。`InputLeading` / `InputTrailing` 是前后置插槽。
+
+<ComponentPreview name="input-group-basic" />
+
+### 无效状态
+
+在外壳上设置 `invalid` 属性（或 `data-invalid`），而不是在输入框上做 `aria-invalid` 样式。内部输入框仍会携带 `aria-invalid` 以满足无障碍语义，其危险色文字由外壳通过 `group-data-invalid` 驱动。
+
+<ComponentPreview name="input-basic" />
+
+## 注意
+
+- disabled 样式由全局 CSS 控制：`:disabled` 元素由基础样式表统一置灰，组件不内置 `disabled:` 工具类。
+- `Input`、`Password`、`NumberField` 内部都构建在这个外壳之上。
+
+## API 参考
+
+### InputGroup
+
+| 属性        | 类型                              | 默认值 | 描述                                                                 |
+| ----------- | --------------------------------- | ------ | -------------------------------------------------------------------- |
+| `invalid`   | `boolean`                         | -      | 标记外壳为无效（`data-invalid`），边框与焦点环切换为危险色             |
+| `className` | `ClassNameValue`                  | -      | 自定义类名，作用于外壳                                               |
+| `...props`  | `React.ComponentProps<"div">`     | -      | 支持所有原生 div 属性（`className` 除外）                            |
+
+### InputLeading / InputTrailing
+
+前后置插槽。支持所有原生 `<span>` 属性（`className` 除外），另有 `className`。
+
+### InputRoot
+
+裸的内部输入框。支持所有原生 `<input>` 属性（`className` 除外），另有 `className`。仅承载 `aria-invalid` 无障碍语义——无效与焦点视觉归属于外壳。

@@ -10,7 +10,7 @@
     "postinstall": "fumadocs-mdx",
     "cli:build": "pnpm --filter=litefy run build",
     "cli:link": "pnpm --filter=litefy exec npm link",
-    "preview":"vite preview"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@orama/orama": "^3.1.18",
@@ -24,6 +24,7 @@
     "lucide-react": "^1.37.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-querybuilder": "^8.23.1",
     "react-router": "^7.18.3",
     "tailwind-merge": "^3.6.0",
     "uplot": "^1.6.32"

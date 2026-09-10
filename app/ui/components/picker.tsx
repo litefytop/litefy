@@ -20,9 +20,10 @@ export function PickerInput({ className, ...props }: PickerInputProps) {
     <input
       {...props}
       className={cn(
-        "h-9 w-full px-3 py-2 text-sm border rounded-md bg-muted outline-none cursor-pointer",
+        "h-9 w-full px-3 py-2 text-sm border rounded-md outline-none cursor-pointer",
         "placeholder:text-muted-foreground focus:ring-inset focus:ring-1 focus:ring-ring",
-        "disabled:cursor-not-allowed disabled:opacity-50",
+        "aria-invalid:border-danger aria-invalid:text-danger",
+        "aria-invalid:focus-visible:outline-1 aria-invalid:focus-visible:outline-danger aria-invalid:focus-visible:ring-3 aria-invalid:focus-visible:ring-danger/50",
         className,
       )}
     />
@@ -39,20 +40,18 @@ export function PickerContent({ className, ...props }: PickerContentProps) {
       popover="manual"
       tabIndex={-1}
       {...props}
-      className={cn("bg-background text-foreground border shadow-lg rounded-md", className)}
+      className={cn("bg-background text-foreground border shadow-lg rounded-lg", className)}
     />
   );
 }
 
 export interface PickerClassNames {
-  root?: ClassNameValue;
   input?: ClassNameValue;
   trailing?: ClassNameValue;
   popover?: ClassNameValue;
 }
 
 export interface PickerStyles {
-  root?: React.CSSProperties;
   input?: React.CSSProperties;
   trailing?: React.CSSProperties;
   popover?: React.CSSProperties;
@@ -62,6 +61,7 @@ export interface PickerProps extends Omit<
   PickerInputProps,
   "value" | "defaultValue" | "onChange" | "className"
 > {
+  className?: ClassNameValue;
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
@@ -76,6 +76,7 @@ export interface PickerProps extends Omit<
 }
 
 export function Picker({
+  className,
   value: controlledValue,
   defaultValue = "",
   onValueChange,
@@ -87,6 +88,7 @@ export function Picker({
   panelRef,
   classNames,
   styles,
+  style,
   onClick: onClickProp,
   onKeyDown: onKeyDownProp,
   ...props
@@ -116,8 +118,6 @@ export function Picker({
     [isOpenControlled, onOpenChange],
   );
 
-  // On close, hand focus back to the trigger when it would otherwise be lost
-  // (e.g. Escape while the focus is inside the panel).
   React.useEffect(() => {
     const popover = popoverRef.current;
     if (!popover) return;
@@ -157,8 +157,8 @@ export function Picker({
   return (
     <>
       <PickerRoot
-        style={{ anchorName, ...styles?.root }}
-        className={classNames?.root}
+        style={{ anchorName, ...style }}
+        className={cn(className)}
         data-open={open || undefined}
       >
         <PickerInput

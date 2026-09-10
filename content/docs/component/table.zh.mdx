@@ -1,0 +1,53 @@
+---
+title: Table 表格
+description: 通用数据表格，表头可点击排序（本地数据），也可切换远程模式把排序交给数据库。
+---
+
+## 安装
+
+<Installation name="table" />
+
+## 用法
+
+`Table` 是数据驱动的：传入 `data` 与 `columns` 配置即可。给列设置 `sortable: true` 后表头可点击——排序按 **升序 → 降序 → 清除** 循环，并直接作用于本地 `data`。
+
+<ComponentPreview name="table-basic" />
+
+### 远程排序（数据库）
+
+传入受控的 `sort` + `onSortChange` 即进入**远程模式**：Table 不再做内部排序，只上报表头点击，由你拿排序参数查询数据库。搭配 [useRemoteSort](/zh/docs/utils/use-remote-sort) 使用，它负责管理排序状态并生成查询字符串。
+
+<ComponentPreview name="table-remote" />
+
+## API 参考
+
+### Table
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `data` | `T[]` | - | 行数据 **必填** |
+| `columns` | `TableColumn<T>[]` | - | 列配置 **必填** |
+| `getKey` | `(row: T, index: number) => React.Key` | index | 行 key 提取器 |
+| `sort` | `SortState<T> \| null` | - | 受控排序状态；传入即进入远程模式 |
+| `onSortChange` | `(sort: SortState<T>) => void` | - | 表头点击回调（两种模式均触发） |
+| `initialSortDirection` | `"asc" \| "desc"` | `"asc"` | 首次点击某列使用的方向 |
+| `empty` | `React.ReactNode` | `"No data"` | 数据为空时渲染的内容 |
+| `className` | `ClassNameValue` | - | 自定义类名，作用于外层容器 |
+| `classNames` | `wrapper` / `table` / `head` / `headRow` / `headCell` / `body` / `row` / `cell` | - | 各部分自定义类名 |
+| `styles` | `{ wrapper?, table? }` | - | 外层容器与 table 的内联样式 |
+
+### TableColumn&lt;T&gt;
+
+| 字段 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `key` | `keyof T & string` | - | 展示的行字段 **必填** |
+| `header` | `React.ReactNode` | `key` | 表头文案 |
+| `render` | `(row: T) => React.ReactNode` | 原始值 | 自定义单元格渲染 |
+| `sortable` | `boolean` | `false` | 表头可点击排序 |
+| `compare` | `(a: T, b: T) => number` | `<` / `>` | 本地排序使用的自定义比较器 |
+| `align` | `"left" \| "right" \| "center"` | `"left"` | 单元格对齐 |
+| `className` | `ClassNameValue` | - | 该列单元格的自定义类名 |
+
+### SortState&lt;T&gt;
+
+`{ key: keyof T & string; direction: "asc" | "desc" } | null`

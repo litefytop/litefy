@@ -38,7 +38,7 @@ export function DrawerWrapper({
     <div
       {...props}
       className={cn(
-        "fixed transition-transform duration-300 ease-out flex shadow-lg max-h-full max-w-full min-w-1/4 min-h-1/3",
+        "fixed transition-transform duration-300 ease-out flex shadow-lg max-h-full max-w-full min-w-1/4 min-h-1/3 bg-background text-foreground",
         isHorizontal ? "w-1/4 h-full" : "h-1/3 w-full",
         placementStyles[placement],
         className,
@@ -56,7 +56,7 @@ export function DrawerDrag({ className, isHorizontal, ...props }: DrawerDragProp
   return (
     <div
       className={cn(
-        "shrink-0 flex items-center justify-center border-border bg-muted",
+        "shrink-0 flex items-center justify-center border-border",
         isHorizontal ? "w-4 h-full border-x" : "h-4 w-full border-y",
         className,
       )}
@@ -78,7 +78,7 @@ export function DrawerContent({ className, isHorizontal, children, ...props }: D
   return (
     <div
       className={cn(
-        "flex flex-col flex-1 overflow-auto bg-muted p-4",
+        "flex flex-col flex-1 overflow-auto p-4",
         !isHorizontal && "items-center",
         className,
       )}
@@ -97,13 +97,11 @@ export interface DrawerDragApi {
 export interface DrawerProps extends Omit<DrawerWrapperProps, "classNames" | "styles"> {
   drag?: DrawerDragApi;
   classNames?: {
-    root?: ClassNameValue;
     wrapper?: ClassNameValue;
     drag?: ClassNameValue;
     content?: ClassNameValue;
   };
   styles?: {
-    root?: React.CSSProperties;
     wrapper?: React.CSSProperties;
     drag?: React.CSSProperties;
     content?: React.CSSProperties;
@@ -115,6 +113,8 @@ export interface DrawerProps extends Omit<DrawerWrapperProps, "classNames" | "st
 }
 
 export function Drawer({
+  className,
+  style,
   classNames,
   styles,
   placement = "right",
@@ -213,8 +213,8 @@ export function Drawer({
   return (
     <DrawerRoot
       ref={dialogRef}
-      className={classNames?.root}
-      style={styles?.root}
+      className={className}
+      style={style}
       onKeyDown={handleKeyDown}
       onCancel={handleCancel}
       onClick={(e) => {

@@ -1,4 +1,4 @@
-import { type ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { Select } from "@/ui";
 
 const options = [
@@ -21,14 +21,11 @@ const options = [
 ];
 
 export default function SelectGroupedDemo() {
-  const [selectedValues, setSelectedValues] = useState<string>("");
-  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedValues(e.target.value);
-  };
+  const [selectedValue, setSelectedValue] = useState<string>("");
   return (
     <Select
-      value={selectedValues}
-      onChange={handleChange}
+      value={selectedValue}
+      onValueChange={setSelectedValue}
       options={options}
       placeholder="Select a technology..."
     />

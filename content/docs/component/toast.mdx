@@ -5,21 +5,7 @@ description: A global toast notification component with a store-based imperative
 
 ## Installation
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add toast" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="toast" />
-
-</Tab>
-
-</Tabs>
+<Installation name="toast" />
 
 ## Usage
 
@@ -31,13 +17,14 @@ Call `Toaster.success` / `Toaster.error` / `Toaster.warning` / `Toaster.info` / 
   name="toast-basic"
 />
 
-### Actions
+### Closing toasts
 
-Toasts can carry action buttons. Pass `duration: Infinity` to keep the toast open until the user dismisses it, and use `Toaster.dismiss()` to close a specific toast by id or all toasts at once.
+Toasts are notifications only — they never carry action buttons. When an interaction is required (confirm, retry, open details), use the [Dialog](/docs/component/dialog) instead.
 
-<ComponentPreview
-  name="toast-actions"
-/>
+Two ways to close a toast:
+
+- Pass `closable` to render a close button in the toast's top-right corner.
+- `Toaster.loading` (and every other method) returns a toast id: pass it to `Toaster.dismiss(id)` to close exactly that toast when the work finishes. Calling `Toaster.dismiss()` without an id dismisses every toast.
 
 ### Promise
 
@@ -57,7 +44,7 @@ The toast host. Render it once in your application; it subscribes to the global 
 
 If multiple `<Toaster />` instances are mounted, only the first one acts as the host and renders toasts; the rest render nothing, so accidental duplicate mounts can never cause duplicated toasts or inconsistent hover pausing.
 
-Collapsed toasts stack with a scale/offset visual; hovering expands them into a vertical list and pauses auto-dismiss.
+Collapsed toasts stack with a slight vertical offset; hovering expands them into a vertical list and pauses auto-dismiss.
 
 | Prop            | Type                                    | Default | Description                                                                |
 | --------------- | --------------------------------------- | ------- | -------------------------------------------------------------------------- |
@@ -89,10 +76,10 @@ Options accepted by every imperative method.
 | `type`        | `"success" \| "error" \| "warning" \| "info" \| "loading"` | -       | Icon type; set automatically by the semantic methods                          |
 | `icon`        | `React.ReactNode`                       | type icon  | Custom icon, overrides the built-in type icon                                                   |
 | `duration`    | `number`                                | `5000`     | Auto-dismiss delay in ms; `Infinity` disables auto-dismiss (loading toasts always persist)      |
+| `closable`    | `boolean`                               | `false`    | Renders a close button in the toast's top-right corner                                          |
 | `onClose`     | `(event: CloseEvent) => void`           | -          | Fired with `type: "auto" \| "manual"` on dismiss start and `type: "complete"` after removal     |
-| `actions`     | `Array<{ children, onClick?, className? }>` | -      | Action buttons; `onClick` receives a `dismiss` callback that closes the toast                    |
-| `classNames`  | `{ root?, icon?, content?, title?, description?, actions? }` | - | Custom classes for each part of the toast card                                                  |
-| `styles`      | `{ root?, icon?, content?, title?, description?, actions? }` | - | Inline styles for each part of the toast card                                                   |
+| `classNames`  | `{ root?, icon?, content?, title?, description?, close? }` | - | Custom classes for each part of the toast card                                                  |
+| `styles`      | `{ root?, icon?, content?, title?, description?, close? }` | - | Inline styles for each part of the toast card                                                   |
 
 #### CloseEvent
 
@@ -163,22 +150,13 @@ The secondary text below the title.
 
 Supports all native `<div>` attributes.
 
-#### ToastActions
+#### ToastClose
 
-Wrapper for a group of action buttons.
-
-| Prop        | Type             | Default | Description      |
-| ----------- | ---------------- | ------- | ---------------- |
-| `className` | `ClassNameValue` | -       | Custom CSS class |
-
-Supports all native `<div>` attributes.
-
-#### ToastAction
-
-A single action button rendered as `<button type="button">`.
+The top-right close button, rendered by the composite when `closable` is set.
 
 | Prop        | Type             | Default | Description      |
 | ----------- | ---------------- | ------- | ---------------- |
 | `className` | `ClassNameValue` | -       | Custom CSS class |
 
 Supports all native `<button>` attributes.
+

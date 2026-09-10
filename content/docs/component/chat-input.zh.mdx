@@ -1,22 +1,42 @@
 ---
 title: Chat Input 聊天输入框
-description: 由 Textarea、截图粘贴与底部按钮栏拼装而成的聊天输入框 —— 不提供组件源码，仅提供组合示范
+description: 聊天输入组件——粘贴截图自动生成缩略图、能力开关插槽、纯图标发送按钮，移动端开箱即用。
 ---
 
-Chat Input 不是一个提供源码的组件。它的核心是[Textarea](/docs/component/text-area) 保持纯粹的承诺：粘贴、预览、按钮全部在业务侧拼装。`Textarea` 的 props 透传原生 `onPaste`，在事件里读取 `clipboardData` 即可拿到截图文件；图片预览渲染在 Textarea 外部的缩略图条（`<textarea>` 无法在文本流内显示图片，这是组合方案的天然边界）；按钮栏是普通的 flex 布局。直接在页面中拼装即可 —— 下面的示例就是完整的实现。
+## 安装
+
+<Installation name="chat-input" />
 
 ## 用法
 
-### 基础用法
+`ChatInput` 替你管理文字与粘贴图片的状态：粘贴进文本域的截图自动生成缩略图条（内部处理 `URL.createObjectURL`），发送按钮通过 `onSend` 把收集到的内容整包发出，并自动清空输入。
 
-<ComponentPreview
-  name="chat-input-basic"
-/>
+能力开关放在 `actions` 插槽里——用 [Toggle](/zh/docs/component/toggle) 自行组合。
 
-拼装要点：
+<ComponentPreview name="chat-input-basic" />
 
-- 截图粘贴：在 `onPaste` 里过滤 `clipboardData.items` 中 `type` 以 `image/` 开头的文件项，`e.preventDefault()` 阻止图片以路径形式落入文本；文本粘贴不受影响（无图片时提前返回）。
-- 预览条：`URL.createObjectURL(file)` 生成缩略图地址，删除或发送时 `URL.revokeObjectURL` 释放内存。
-- 底部按钮栏：与 Textarea 平级的 flex 行，左侧是 [Toggle](/docs/component/toggle) 能力开关（深度思考、联网搜索），右侧发送按钮；发送条件为「有文本或有截图」。
-- `Textarea` 通过 `className` 覆盖为无边框无阴影（`border-0 shadow-none focus:ring-0`），视觉上融入外层容器，外层容器负责整体边框。
-- Enter 发送、草稿、@提及等行为同样属于业务层，按需在 `onKeyDown` 中扩展，组件本身不参与。
+### 移动端适配
+
+- **回车行为**：精确指针（鼠标）下 Enter 发送、Shift+Enter 换行；粗糙指针（触摸）下 Enter 始终换行——发送只通过按钮，虚拟键盘不会误触发送。可用 `enterToSend: "auto" | boolean` 控制。
+- **聚焦不缩放**：小屏下文本域字号为 16px（iOS Safari 会缩放聚焦时字号小于该值的输入框）。
+- **附件按钮**：设置 `attach` 显示图片选择按钮（`accept="image/*"`），移动端会唤起相机/相册选择器。
+
+## API 参考
+
+### ChatInput
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `value` | `string` | - | 受控文字 |
+| `defaultValue` | `string` | `""` | 初始文字（非受控） |
+| `onValueChange` | `(text: string) => void` | - | 文字变化回调 |
+| `onSend` | `(payload: { text: string; images: File[] }) => void` | - | 发送回调；发送后组件自动清空 |
+| `placeholder` | `string` | - | 文本域占位文案 |
+| `disabled` | `boolean` | `false` | 禁用整个输入框 |
+| `autoPaste` | `boolean` | `true` | 粘贴的图片转为缩略图 |
+| `attach` | `boolean` | `false` | 显示图片附件按钮 |
+| `enterToSend` | `"auto" \| boolean` | `"auto"` | 回车发送行为 |
+| `actions` | `React.ReactNode` | - | 操作栏左侧插槽 |
+| `className` | `ClassNameValue` | - | 自定义类名，作用于容器 |
+| `classNames` | `container` / `textarea` / `images` / `actions` / `send` | - | 各部分自定义类名 |
+| `styles` | `{ container?, textarea?, actions?, send? }` | - | 各部分内联样式 |

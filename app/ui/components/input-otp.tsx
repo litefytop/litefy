@@ -25,10 +25,10 @@ export function InputOtpSlot({ className, ref, ...props }: InputOtpSlotProps) {
       {...props}
       ref={ref}
       className={cn(
-        "size-9 rounded-md border border-border bg-muted text-center text-sm font-medium outline-none transition-colors",
+        "size-9 rounded-md border border-border text-center text-sm font-medium outline-none transition-colors",
         "focus:border-primary focus:ring-2 focus:ring-ring/50",
-        "aria-invalid:border-danger aria-invalid:ring-danger/20",
-        "disabled:cursor-not-allowed disabled:opacity-50",
+        "aria-invalid:border-danger aria-invalid:text-danger",
+        "aria-invalid:focus-visible:outline-1 aria-invalid:focus-visible:outline-danger aria-invalid:focus-visible:ring-3 aria-invalid:focus-visible:ring-danger/50",
         className,
       )}
     />
@@ -36,12 +36,10 @@ export function InputOtpSlot({ className, ref, ...props }: InputOtpSlotProps) {
 }
 
 export interface InputOtpClassNames {
-  group?: ClassNameValue;
   slot?: ClassNameValue;
 }
 
 export interface InputOtpStyles {
-  group?: React.CSSProperties;
   slot?: React.CSSProperties;
 }
 
@@ -142,8 +140,8 @@ export function InputOtp({
     <InputOtpGroup
       onPointerDown={handleGroupPointerDown}
       data-invalid={invalid || undefined}
-      className={cn(className, classNames?.group)}
-      style={{ ...style, ...styles?.group }}
+      className={cn(className)}
+      style={style}
     >
       {chars.map((char, index) => (
         <InputOtpSlot

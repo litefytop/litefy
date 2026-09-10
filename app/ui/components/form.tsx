@@ -29,6 +29,34 @@ const FormContext = React.createContext<FormContextType>({
 
 export type FormValues = Record<string, string | string[]>;
 
+export interface UseFieldValidityReturn {
+  validity: Record<string, string | boolean | null>;
+  setFieldError: (name: string, error: string | boolean | null) => void;
+  clearFieldError: (name: string) => void;
+  clearAll: () => void;
+  isValid: boolean;
+}
+
+export function useFieldValidity(): UseFieldValidityReturn {
+  const [validity, setValidity] = React.useState<Record<string, string | boolean | null>>({});
+
+  const setFieldError = React.useCallback(
+    (name: string, error: string | boolean | null) => {
+      setValidity((prev) => (prev[name] === error ? prev : { ...prev, [name]: error }));
+    },
+    [],
+  );
+
+  const clearFieldError = React.useCallback((name: string) => {
+    setValidity((prev) => (name in prev ? { ...prev, [name]: null } : prev));
+  }, []);
+
+  const clearAll = React.useCallback(() => setValidity({}), []);
+
+  const isValid = !Object.values(validity).some(Boolean);
+
+  return { validity, setFieldError, clearFieldError, clearAll, isValid };
+}
 const processFormData = (formData: FormData): FormValues => {
   const result: FormValues = {};
   for (const [key, value] of formData.entries()) {
@@ -247,7 +275,7 @@ function FormSubmit({ children, className, ref, loadingIcon, ...props }: FormSub
       disabled={isPending}
       ref={ref}
       className={cn(
-        "border border-border cursor-pointer  inline-flex items-center justify-center shrink-0 select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 h-9 min-w-9 px-3 py-1 has-[>svg]:px-2 gap-1 rounded-md",
+        "border border-border cursor-pointer  inline-flex items-center justify-center shrink-0 select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] h-9 min-w-9 px-3 py-1 has-[>svg]:px-2 gap-1 rounded-md",
         className,
       )}
       {...props}
@@ -268,11 +296,7 @@ export function FormLabel({ className, ...props }: FormLabelProps) {
   return (
     <label
       {...props}
-      className={cn(
-        "text-sm font-medium leading-none indent-2 py-1 select-none",
-        "group-data-[direction=horizontal]:text-end",
-        className,
-      )}
+      className={cn("text-sm font-medium leading-none indent-2 py-1 select-none", className)}
     />
   );
 }
@@ -285,370 +309,9 @@ export function FormHint({ className, ...props }: FormHintProps) {
   return (
     <small
       {...props}
-      className={cn(
-        "text-sm indent-2 h-5 text-muted-foreground",
-        "group-data-invalid:text-danger",
-        "group-data-[direction=horizontal]:col-start-2",
-        className,
-      )}
+      className={cn("text-sm indent-2 h-5 text-muted-foreground group-data-invalid:text-danger", className)}
     />
   );
 }
-
-type FormFieldArg = {
-  id: string;
-  name: string;
-  ref: (el: FormElement | null) => void;
-  onChange?: React.ChangeEventHandler<FormElement>;
-  onBlur?: React.FocusEventHandler<HTMLElement>;
-  invalid: boolean;
-  "aria-describedby"?: string;
-};
-
-export type FormFieldProps = Omit<
-  React.ComponentProps<"div">,
-  "children" | "className" | "style"
-> & {
-  label?: React.ReactNode;
-  description?: React.ReactNode;
-  invalid?: React.ReactNode;
-  direction?: "vertical" | "horizontal";
-  classNames?: {
-    root?: ClassNameValue;
-    label?: ClassNameValue;
-    hint?: ClassNameValue;
-  };
-  styles?: {
-    root?: React.CSSProperties;
-    label?: React.CSSProperties;
-    hint?: React.CSSProperties;
-  };
-  inputId?: string;
-  name: string;
-  children?: (field: FormFieldArg) => React.ReactNode;
-  validConfig?: {
-    validate?: (
-      value: string,
-    ) => string | boolean | null | undefined | Promise<string | boolean | null | undefined>;
-    trigger?: "onChange" | "onBlur";
-    debounceMs?: number;
-  };
-};
-
-function FormField({
-  label,
-  name,
-  description,
-  invalid: externalInvalid,
-  direction = "vertical",
-  classNames,
-  styles,
-  children,
-  validConfig,
-  inputId,
-  ...props
-}: FormFieldProps) {
-  const { register, unregister } = React.useContext(FormContext);
-  const [internalInvalid, setInternalInvalid] = React.useState<
-    string | boolean | null | undefined
-  >();
-  const finalInvalid = externalInvalid ?? internalInvalid;
-  const isInvalid = Boolean(finalInvalid);
-  const hasInvalidContent = typeof finalInvalid === "string";
-
-  const internalId = React.useId();
-  const id = inputId ?? internalId;
-  const baseId = React.useId();
-  const descriptionId = generateId(baseId, "desc");
-  const invalidId = generateId(baseId, "error");
-  const currentDescribedById = hasInvalidContent ? invalidId : descriptionId;
-
-  const inputRef = React.useCallback(
-    (el: FormElement | null) => {
-      register(name, el);
-    },
-    [register, name],
-  );
-
-  React.useEffect(() => {
-    return () => {
-      unregister(name);
-    };
-  }, [unregister, name]);
-
-  const debounceTimer = React.useRef<NodeJS.Timeout | null>(null);
-
-  const runValidation = React.useCallback(
-    async (value: string) => {
-      if (!validConfig?.validate) return;
-      const result = await validConfig.validate(value);
-      setInternalInvalid(result);
-    },
-    [validConfig],
-  );
-
-  const onChange = React.useCallback(
-    (e: React.ChangeEvent<FormElement>) => {
-      const value = e.target.value;
-      if (validConfig?.trigger === "onChange" && validConfig.validate) {
-        if (validConfig.debounceMs) {
-          if (debounceTimer.current) clearTimeout(debounceTimer.current);
-          debounceTimer.current = setTimeout(() => {
-            runValidation(value);
-          }, validConfig.debounceMs);
-        } else {
-          runValidation(value);
-        }
-      }
-    },
-    [validConfig, runValidation],
-  );
-
-  const onBlur = React.useCallback(
-    (e: React.FocusEvent<FormElement>) => {
-      const value = (e.target as FormElement).value;
-      if (validConfig?.trigger === "onBlur" && validConfig.validate) {
-        runValidation(value);
-      }
-    },
-    [validConfig, runValidation],
-  );
-
-  React.useEffect(() => {
-    return () => {
-      if (debounceTimer.current) clearTimeout(debounceTimer.current);
-    };
-  }, []);
-
-  return (
-    <div
-      {...props}
-      data-invalid={isInvalid ? true : undefined}
-      data-direction={direction}
-      className={cn(
-        "grid gap-1 group items-center",
-        "data-[direction=vertical]:grid-cols-1",
-        "data-[direction=horizontal]:grid-cols-[auto_1fr]",
-        classNames?.root,
-      )}
-      style={styles?.root}
-    >
-      {label && (
-        <FormLabel htmlFor={id} className={classNames?.label} style={styles?.label}>
-          {label}
-        </FormLabel>
-      )}
-      {children?.({
-        id,
-        name,
-        ref: inputRef,
-        onChange,
-        onBlur,
-        invalid: isInvalid,
-        "aria-describedby": currentDescribedById,
-      })}
-      <FormHint
-        id={currentDescribedById}
-        className={classNames?.hint}
-        style={styles?.hint}
-        role={hasInvalidContent ? "alert" : undefined}
-      >
-        {hasInvalidContent ? finalInvalid : description}
-      </FormHint>
-    </div>
-  );
-}
-
-Form.Field = FormField;
-
-type FieldsetMode = "single" | "multi";
-
-type FieldsetValue<T extends FieldsetMode> = T extends "multi" ? string[] : string;
-
-type FieldsetRenderArg<T extends FieldsetMode = "multi"> = Omit<
-  FormFieldArg,
-  "ref" | "onChange"
-> & {
-  value: FieldsetValue<T> | undefined;
-  onValueChange: (val: FieldsetValue<T>) => void;
-  onBlur: React.FocusEventHandler<HTMLElement>;
-};
-
-type FormFieldsetProps<T extends FieldsetMode = "multi"> = {
-  type?: T;
-  name: string;
-  legend?: React.ReactNode;
-  description?: React.ReactNode;
-  invalid?: React.ReactNode;
-  disabled?: boolean;
-  classNames?: {
-    root?: ClassNameValue;
-    legend?: ClassNameValue;
-    hint?: ClassNameValue;
-  };
-  styles?: {
-    root?: React.CSSProperties;
-    legend?: React.CSSProperties;
-    hint?: React.CSSProperties;
-  };
-  children?: (field: FieldsetRenderArg<T>) => React.ReactNode;
-  validConfig?: {
-    validate?: (
-      value: FieldsetValue<T>,
-    ) => string | boolean | undefined | Promise<string | boolean | undefined>;
-    trigger?: "onChange" | "onBlur";
-    debounceMs?: number;
-  };
-} & Omit<React.ComponentPropsWithRef<"fieldset">, "className" | "children" | "style">;
-
-function FormFieldset<T extends FieldsetMode = "multi">({
-  type = "multi" as T,
-  name,
-  legend,
-  description,
-  invalid: externalInvalid,
-  disabled,
-  classNames,
-  styles,
-  children,
-  validConfig,
-  ...props
-}: FormFieldsetProps<T>) {
-  const { register, unregister, formValues, setFormValues } = React.useContext(FormContext);
-  const [internalInvalid, setInternalInvalid] = React.useState<string | boolean | undefined>();
-  const finalInvalid = externalInvalid ?? internalInvalid;
-  const isInvalid = Boolean(finalInvalid);
-  const hasInvalidContent = typeof finalInvalid === "string";
-
-  const id = React.useId();
-  const descriptionId = generateId(id, "desc");
-  const invalidId = generateId(id, "error");
-  const describedBy = hasInvalidContent ? invalidId : descriptionId;
-
-  const groupSetter = React.useCallback(
-    (value: FieldsetValue<T>) => {
-      setFormValues((prev) => ({ ...prev, [name]: value }));
-    },
-    [name, setFormValues],
-  );
-
-  React.useEffect(() => {
-    register(name, null, (value: FormValue) => {
-      if (type === "multi") {
-        const arr = Array.isArray(value) ? value.map(String) : [];
-        groupSetter(arr as FieldsetValue<T>);
-      } else {
-        const str = Array.isArray(value) ? String(value[0]) : String(value);
-        groupSetter(str as FieldsetValue<T>);
-      }
-    });
-    return () => {
-      unregister(name);
-    };
-  }, [register, unregister, name, groupSetter, type]);
-
-  const runValidation = React.useCallback(
-    async (value: FieldsetValue<T>) => {
-      if (!validConfig?.validate) return;
-      const result = await validConfig.validate(value);
-      setInternalInvalid(result);
-    },
-    [validConfig],
-  );
-
-  const debounceTimer = React.useRef<NodeJS.Timeout | null>(null);
-
-  const onValueChange = React.useCallback(
-    (val: FieldsetValue<T>) => {
-      groupSetter(val);
-      if (validConfig?.trigger === "onChange" && validConfig.validate) {
-        if (validConfig.debounceMs) {
-          if (debounceTimer.current) clearTimeout(debounceTimer.current);
-          debounceTimer.current = setTimeout(() => {
-            runValidation(val);
-          }, validConfig.debounceMs);
-        } else {
-          runValidation(val);
-        }
-      }
-    },
-    [groupSetter, validConfig, runValidation],
-  );
-
-  const onBlur = React.useCallback(
-    (_e: React.FocusEvent<HTMLElement>) => {
-      if (validConfig?.trigger === "onBlur" && validConfig.validate) {
-        const raw = formValues[name];
-        const current = (
-          type === "multi"
-            ? Array.isArray(raw)
-              ? raw.map(String)
-              : []
-            : Array.isArray(raw)
-              ? raw[0]
-              : raw
-        ) as FieldsetValue<T>;
-        runValidation(current);
-      }
-    },
-    [validConfig, formValues, name, runValidation, type],
-  );
-
-  React.useEffect(() => {
-    return () => {
-      if (debounceTimer.current) clearTimeout(debounceTimer.current);
-    };
-  }, []);
-
-  const currentValue: FieldsetValue<T> | undefined =
-    type === "multi"
-      ? Array.isArray(formValues[name])
-        ? (formValues[name].map(String) as FieldsetValue<T>)
-        : ([] as unknown as FieldsetValue<T>)
-      : (formValues[name] as FieldsetValue<T> | undefined);
-
-  const renderArg = React.useMemo<FieldsetRenderArg<T>>(
-    () => ({
-      id,
-      name,
-      value: currentValue,
-      onBlur,
-      invalid: isInvalid,
-      onValueChange,
-    }),
-    [id, name, currentValue, onBlur, isInvalid, onValueChange],
-  );
-
-  return (
-    <fieldset
-      {...props}
-      disabled={disabled}
-      aria-invalid={isInvalid}
-      aria-describedby={describedBy}
-      className={cn("space-y-1", classNames?.root)}
-      style={styles?.root}
-    >
-      {legend && (
-        <legend className={cn(classNames?.legend)} style={styles?.legend}>
-          {legend}
-        </legend>
-      )}
-      {children?.(renderArg)}
-      <small
-        id={describedBy}
-        className={cn(
-          "text-sm text-muted-foreground",
-          isInvalid && "text-danger",
-          classNames?.hint,
-        )}
-        style={styles?.hint}
-        role={hasInvalidContent ? "alert" : undefined}
-      >
-        {hasInvalidContent ? finalInvalid : description}
-      </small>
-    </fieldset>
-  );
-}
-Form.Fieldset = FormFieldset;
 
 export { FormContext };

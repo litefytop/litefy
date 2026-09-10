@@ -5,21 +5,7 @@ description: A segmented control component for single-select, supporting control
 
 ## Installation
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add segment" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="segment" />
-
-</Tab>
-
-</Tabs>
+<Installation name="segment" />
 
 ## Usage
 
@@ -57,6 +43,8 @@ Ready-to-use composite component.
 | `invalid`        | `boolean`                     | `false` | Mark the group as invalid                          |
 | `className`      | `ClassNameValue`              | -       | Custom class names, applied to the container       |
 | `itemClassName`  | `ClassNameValue`              | -       | Custom class names, applied to each segment        |
+
+Keyboard: the group is a radio group with roving tabindex — `ArrowRight` / `ArrowDown` / `ArrowLeft` / `ArrowUp` move to (and select) the next / previous enabled option, `Home` / `End` jump to the first / last one, `Enter` / `Space` activate the focused option.
 
 ### SegmentOptionConfig
 

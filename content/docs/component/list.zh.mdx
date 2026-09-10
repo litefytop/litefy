@@ -5,21 +5,7 @@ description: 支持键盘导航、高亮、选中与滚动到底回调的滚动�
 
 ## 安装
 
-<Tabs items={['CLI', '手动']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add list" />
-
-</Tab>
-
-<Tab value="手动">
-
-<Source type="component" name="list" />
-
-</Tab>
-
-</Tabs>
+<Installation name="list" />
 
 ## 用法
 
@@ -30,23 +16,6 @@ description: 支持键盘导航、高亮、选中与滚动到底回调的滚动�
 <ComponentPreview
   name="list-basic"
 />
-
-```tsx
-import { List } from "@/ui";
-
-<List
-  className="h-40 rounded-md border"
-  items={tasks}
-  getKey={(task) => task.id}
-  empty={<div className="px-3 py-4 text-center text-muted-foreground">暂无数据</div>}
-  renderItem={(task) => (
-    <>
-      <span className="flex-1 truncate">{task.title}</span>
-      <span className="text-muted-foreground">{task.status}</span>
-    </>
-  )}
-/>
-```
 
 键盘导航是内置的：根节点可聚焦（`tabIndex={0}`），`ArrowUp` / `ArrowDown` 移动高亮（到达两端后停止）并自动滚动到可视区域，`Enter` 或点击行触发 `onSelect`。高亮项携带 `data-highlighted`（样式为 `bg-hover`）。对于焦点需要留在别处的容器 —— 如 combobox 输入框 —— 传入 `highlightIndex` / `onHighlightChange` 从外部受控高亮，参见 [Combobox](/docs/component/combobox) 指南。
 
@@ -81,10 +50,10 @@ import { List } from "@/ui";
 | `ref` | `React.Ref<HTMLUListElement \| HTMLDivElement>` | - | 根元素 ref —— 平铺模式为 `ul`，分组模式为 `div`，例如用于把焦点移入列表 |
 | `className` | `ClassNameValue` | - | 根节点自定义类 |
 | `style` | `React.CSSProperties` | - | 根节点自定义内联样式 |
-| `classNames` | `{ root?: ClassNameValue; item?: ClassNameValue; groupHeader?: ClassNameValue }` | - | 根节点、行与组标题的自定义类 |
-| `styles` | `{ root?: React.CSSProperties; item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | - | 根节点、行与组标题的内联样式 |
+| `classNames` | `{ item?: ClassNameValue; groupHeader?: ClassNameValue }` | - | 行与组标题的自定义类 |
+| `styles` | `{ item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | - | 行与组标题的内联样式 |
 
-根节点在行之间应用 `divide-y divide-border`，通过 `overflow-y-auto` 提供滚动，并带有 `outline-none`（没有内置聚焦描边）。
+行与行紧密相连——默认不带分隔线（需要时可通过 `className` 加 `divide-y divide-border`）。滚动由内置的 [ScrollShadow](/docs/component/scroll-shadow) 包装管理：隐藏原生滚动条，当对应方向还有更多内容时，顶部/底部显示带方向箭头的渐变阴影；可聚焦的列表本身带 `outline-none`，没有内置聚焦描边。键盘：`ArrowUp` / `ArrowDown` 移动高亮，`Enter` 或 `Space` 选中。
 
 #### Order
 
@@ -103,5 +72,5 @@ import { List } from "@/ui";
 | `ref` | `React.Ref<HTMLOListElement>` | - | 根 `<ol>` 元素的 ref |
 | `className` | `ClassNameValue` | - | 根节点自定义类 |
 | `style` | `React.CSSProperties` | - | 根节点自定义内联样式 |
-| `classNames` | `{ root?: ClassNameValue; item?: ClassNameValue; groupHeader?: ClassNameValue }` | - | 各部分自定义类（`Order` 中不会用到 `groupHeader`） |
-| `styles` | `{ root?: React.CSSProperties; item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | - | 各部分自定义内联样式（`Order` 中不会用到 `groupHeader`） |
+| `classNames` | `{ item?: ClassNameValue; groupHeader?: ClassNameValue }` | - | 各部分自定义类（`Order` 中不会用到 `groupHeader`） |
+| `styles` | `{ item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | - | 各部分自定义内联样式（`Order` 中不会用到 `groupHeader`） |

@@ -5,21 +5,7 @@ description: A date picker built on the native Temporal API — an editable inpu
 
 ## Installation
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add date-picker" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="date-picker" />
-
-</Tab>
-
-</Tabs>
+<Installation name="date-picker" />
 
 ## Usage
 
@@ -29,8 +15,8 @@ The input is fully editable, and validation runs on `Enter` and when the panel c
 
 - separators are flexible — space, `-`, `/` and `,` all work, and accepted input is auto-formatted to the canonical `YYYY-MM-DD` form (`2026/8/5` becomes `2026-08-05`);
 - a complete date commits — the value fills the input and the panel closes;
-- a bare year (`2026`) opens that year's month panel, and a year-month (`2026-08`) opens that month's day grid — pick the missing part and it commits;
-- anything invalid (e.g. letters, an out-of-range month) clears the input.
+- a bare year (`2026`) opens that year's month panel, and a year-month (`2026-08`) opens that month's day grid — each picked part fills the input progressively (`2026` → `2026-08` → commit on the day pick);
+- anything invalid (e.g. letters, an out-of-range month) clears the input and shows the danger border until you type again.
 
 Typing a complete date also previews the selection and the visible month live, before validation runs.
 
@@ -57,6 +43,7 @@ A controlled-or-uncontrolled date field. The visible month and panel open state 
 | `defaultValue`    | `Temporal.PlainDate \| null`                   | -                           | Initial selected date (uncontrolled)                                                          |
 | `onValueChange`   | `(date: Temporal.PlainDate) => void`           | -                           | Fired when a date is committed — picked from the panel, or `Enter` on a complete typed date   || `placeholder`     | `string`                                       | `"Select or type a date"`   | Input placeholder                                                                             |
 | `disabled`        | `boolean`                                      | -                           | Disables the input and the panel                                                              |
+| `invalid`         | `boolean`                                      | -                           | External invalid state — shows the danger border (also set internally when validation clears the input) |
 | `firstDayOfWeek`  | `0 \| 1`                                       | `0`                         | First day of the calendar week (`0` = Sunday, `1` = Monday)                                   |
 | `isDateDisabled`  | `(date: Temporal.PlainDate) => boolean`        | -                           | Predicate disabling calendar dates                                                            |
 | `trailing`        | `React.ReactNode`                              | calendar icon               | Trailing decoration inside the input                                                          |

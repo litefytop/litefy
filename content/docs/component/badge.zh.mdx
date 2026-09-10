@@ -5,21 +5,7 @@ description: 带角标的方形承载位——内部放图标，右上角通过 
 
 ## 安装
 
-<Tabs items={['CLI', '手动']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add badge" />
-
-</Tab>
-
-<Tab value="手动">
-
-<Source type="component" name="badge" />
-
-</Tab>
-
-</Tabs>
+<Installation name="badge" />
 
 ## 用法
 
@@ -35,19 +21,17 @@ description: 带角标的方形承载位——内部放图标，右上角通过 
 
 承载面的形状完全来自工具类，用 `className` 即可改造——角标会自动重新锚定：
 
-```tsx
-<Badge className="size-8 rounded-full" label={3}>
-  <Bell className="size-5" />
-</Badge>
-```
+<ComponentPreview
+  name="badge-sizing"
+/>
 
 ### 角标配色
 
 `label` 渲染为 Tag，用 `label` 插槽以同样的方式着色：
 
-```tsx
-<Badge label="New" classNames={{ label: "bg-emerald-600 text-white" }} />
-```
+<ComponentPreview
+  name="badge-marker-color"
+/>
 
 ## 注意
 

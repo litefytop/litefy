@@ -5,21 +5,7 @@ description: A multi-level cascading selector driven by a tree, built from a bre
 
 ## Installation
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add cascader" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="cascader" />
-
-</Tab>
-
-</Tabs>
+<Installation name="cascader" />
 
 ## Usage
 
@@ -30,55 +16,6 @@ Pass a tree structure to `tree`; clicking a level opens the corresponding panel 
 <ComponentPreview
   name="cascader-basic"
 />
-
-```tsx
-import { Cascader, type CascaderNode } from "@/ui";
-
-const tree: CascaderNode[] = [
-  {
-    value: "california",
-    label: "California",
-    children: [
-      {
-        value: "los-angeles",
-        label: "Los Angeles",
-        children: [
-          { value: "downtown", label: "Downtown" },
-          { value: "hollywood", label: "Hollywood" },
-          { value: "pasadena", label: "Pasadena" },
-        ],
-      },
-      {
-        value: "san-francisco",
-        label: "San Francisco",
-        children: [
-          { value: "soma", label: "SoMa" },
-          { value: "richmond", label: "Richmond" },
-          { value: "sunset", label: "Sunset" },
-        ],
-      },
-    ],
-  },
-  {
-    value: "new-york",
-    label: "New York",
-    children: [
-      {
-        value: "new-york-city",
-        label: "New York City",
-        children: [
-          { value: "manhattan", label: "Manhattan" },
-          { value: "brooklyn", label: "Brooklyn" },
-        ],
-      },
-    ],
-  },
-];
-
-export default function Demo() {
-  return <Cascader tree={tree} />;
-}
-```
 
 ## Notes
 

@@ -1,53 +1,31 @@
 ---
-title: Capsule 胶囊徽章
-description: 胶囊容器，将两个标签拼成 shields-io 风格双色徽章。
+title: Capsule 胶囊
+description: 胶囊形容器，将任意子元素——标签、toggle 组、segment 组、链接等——拼接为一个整体胶囊。
 ---
 
 ## 安装
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add capsule" />
-
-</Tab>
-
-<Tab value="手动">
-
-<Source type="component" name="capsule" />
-
-</Tab>
-
-</Tabs>
+<Installation name="capsule" />
 
 ## 用法
 
-`Capsule` 是胶囊形 overflow-hidden 容器。放入两个 [Tag](/docs/component/tag) 子元素——给每个标签传 `rounded-none px-2.5 py-1` 获得徽章比例——即可快速拼出 shields-io 风格双色徽章。
+`Capsule` 是胶囊形 overflow-hidden 容器：放入的任意内容都会被拼接、裁剪为一个整体胶囊。容器通过 `*:rounded-none *:px-2 *:py-1` 统一子元素样式，像 [Tag](/docs/component/tag) 这类典型子元素只需写颜色工具类。
 
 <ComponentPreview name="capsule-badge" />
 
 ### 组合
 
-左侧标签作为标签名，右侧作为值。颜色是每个标签上的普通工具类。`Capsule` 始终渲染为 `div`——没有 `as` 属性。需要可点击徽章时，在容器内嵌套原生 `<a>`（或 `button`）：
+`Capsule` 就是一个普通容器——始终渲染为 `div`，没有 `as` 属性。里面放什么都可以：两个标签可以拼成徽章，toggle 组、segment 组或任意其他内容同样适用。当整个胶囊需要可点击时，应将 `<Capsule>` 包在原生 `<a>`（或 `button`）里，让所有子元素共享同一个点击目标，而不是把链接只嵌在某个子元素上：
 
-```tsx
-<Capsule>
-  <Tag className="rounded-none px-2.5 py-1 bg-neutral-600 text-white">build</Tag>
-  <Tag className="rounded-none px-2.5 py-1 bg-emerald-600 text-white">passing</Tag>
-</Capsule>
-
-<Capsule>
-  <Tag className="rounded-none px-2.5 py-1 bg-neutral-600 text-white">docs</Tag>
-  <a href="#" className="rounded-none px-2.5 py-1 bg-violet-600 text-white">litefy.dev</a>
-</Capsule>
-```
+<ComponentPreview
+  name="capsule-link"
+/>
 
 ## 注意
 
-- 标签上的 `rounded-none px-2.5 py-1` 会去掉其圆角并增大内边距，形成徽章比例。
-- 支持两个以上标签：容器会裁剪任意内容。
-- `Capsule.className` 是胶囊容器的静态基础类名字符串——当胶囊本身需要承载语义时，可将其应用到原生 `a` / `button` 上。
+- 容器通过 `*:rounded-none *:px-2 *:py-1` 对所有子元素统一处理圆角与内边距，典型子元素只需写颜色工具类即可。
+- 子元素数量不限：容器会裁剪任意内容。
+- `Capsule.className` 是胶囊容器的静态基础类名字符串，可用于样式化包裹元素或在其他地方复用胶囊外观。
 
 ## API 参考
 

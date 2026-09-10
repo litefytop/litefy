@@ -48,14 +48,12 @@ export function SliderThumb({ className, ref, ...props }: SliderThumbProps) {
 }
 
 export interface SliderClassNames {
-  root?: ClassNameValue;
   track?: ClassNameValue;
   fill?: ClassNameValue;
   thumb?: ClassNameValue;
 }
 
 export interface SliderStyles {
-  root?: React.CSSProperties;
   track?: React.CSSProperties;
   fill?: React.CSSProperties;
   thumb?: React.CSSProperties;
@@ -201,8 +199,8 @@ export function Slider({
 
   return (
     <SliderRoot
-      className={cn("group", className, classNames?.root)}
-      style={{ ...style, ...styles?.root }}
+      className={cn("group", className)}
+      style={style}
       data-invalid={invalid || undefined}
     >
       <SliderTrack
@@ -237,7 +235,6 @@ export function Slider({
             "size-5 touch-none rounded-full border-2 border-primary bg-background shadow-sm",
             "cursor-grab active:cursor-grabbing",
             "group-data-invalid:border-danger",
-            "disabled:pointer-events-none disabled:opacity-60 disabled:cursor-not-allowed",
             classNames?.thumb,
           )}
           style={{ ...thumbStyle, ...styles?.thumb }}

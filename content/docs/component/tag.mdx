@@ -5,21 +5,7 @@ description: A single-color chip with no interaction logic — color it with any
 
 ## Installation
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add tag" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="tag" />
-
-</Tab>
-
-</Tabs>
+<Installation name="tag" />
 
 ## Usage
 
@@ -31,21 +17,13 @@ description: A single-color chip with no interaction logic — color it with any
 
 The chip is one flat color — pass any Tailwind background utility plus a contrasting text color.
 
-```tsx
-<Tag>default</Tag>
-<Tag className="bg-emerald-600 text-white">stable</Tag>
-```
-
 ### Link and button variants
 
 `Tag` always renders a `span` and does not provide an `as` prop. For link or button scenarios, apply `Tag.className` to a native element directly:
 
-```tsx
-import { cn, Tag } from "@/ui";
-
-<a href="#" className={cn(Tag.className, "bg-violet-600 text-white")}>link tag</a>
-<button type="button" className={cn(Tag.className, "bg-emerald-600 text-white")}>button tag</button>
-```
+<ComponentPreview
+  name="tag-variants"
+/>
 
 ## Notes
 

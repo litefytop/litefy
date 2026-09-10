@@ -5,21 +5,7 @@ description: An avatar component with image loading states, skeleton and fallbac
 
 ## Installation
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add avatar" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="avatar" />
-
-</Tab>
-
-</Tabs>
+<Installation name="avatar" />
 
 ## Usage
 
@@ -54,10 +40,12 @@ A self-managing avatar component that preloads the image and switches between sk
 | `src`        | `string`                                                      | -       | Image source URL, required                      |
 | `skeleton`   | `React.ReactNode`                                             | -       | Content shown while the image is loading        |
 | `fallback`   | `React.ReactNode`                                             | -       | Content shown when the image fails to load      |
-| `classNames` | `{ root?: ClassNameValue; image?: ClassNameValue }`           | -       | Custom classes for the root container and image |
-| `styles`     | `{ root?: React.CSSProperties; image?: React.CSSProperties }` | -       | Inline styles for the root container and image  |
+| `className`  | `ClassNameValue`                                              | -       | Custom classes, applied to the root container   |
+| `style`      | `React.CSSProperties`                                         | -       | Inline styles, applied to the root container    |
+| `classNames` | `{ image?: ClassNameValue }`                                  | -       | Custom classes for the image                    |
+| `styles`     | `{ image?: React.CSSProperties }`                             | -       | Inline styles for the image                     |
 
-Supports all native `<img>` attributes (such as `alt`) except `className` and `style`.
+Supports all native `<img>` attributes (such as `alt`); `className` and `style` apply to the root container.
 
 ### Composable Components
 

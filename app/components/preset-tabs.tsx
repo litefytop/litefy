@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+import { Tabs } from "@/ui";
 import { cn } from "@/ui";
 import { PackageManagerTabs } from "./package-manager-tabs";
-import { Source } from "./source";
+import { CssSource } from "./css-source";
 
 export interface PresetTabsProps {
   items: string[];
@@ -41,14 +41,20 @@ export function PresetTabs({ items }: PresetTabsProps) {
         })}
       </div>
       <div className="min-w-0">
-        <Tabs items={["Manual", "CLI"]}>
-          <Tab value="Manual">
-            <Source type="css" name={active} />
-          </Tab>
-          <Tab value="CLI">
-            <PackageManagerTabs command={`litefy@latest add style-${active}`} />
-          </Tab>
-        </Tabs>
+        <Tabs
+          options={[
+            {
+              value: "manual",
+              label: "Manual",
+              content: <CssSource name={active} />,
+            },
+            {
+              value: "cli",
+              label: "CLI",
+              content: <PackageManagerTabs command={`litefy@latest add style-${active}`} />,
+            },
+          ]}
+        />
       </div>
     </div>
   );

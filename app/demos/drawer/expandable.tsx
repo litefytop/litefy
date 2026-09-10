@@ -47,8 +47,8 @@ export default function DrawerResizableDemo() {
       >
         <div className="flex flex-col gap-4 pt-2">
           <h3 className="text-lg font-semibold">Bottom placement</h3>
-          <p>Drag upward: expand, capped by max‑height</p>
-          <p>Drag downward: shrink. Close drawer when calculated size drops below min‑height</p>
+          <p>Drag upward: expand, capped by max-height</p>
+          <p>Drag downward: shrink. Close drawer when calculated size drops below min-height</p>
           <Button onClick={() => setOpen(false)}>Close</Button>
         </div>
       </Drawer>

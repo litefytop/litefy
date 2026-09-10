@@ -49,7 +49,7 @@ const clientLoader = browserCollections.docs.createClientLoader({
     },
   ) {
     return (
-      <DocsPage toc={toc}>
+      <DocsPage toc={toc} className="bg-background">
         <title>{frontmatter.title}</title>
         <meta name="description" content={frontmatter.description} />
         <DocsTitle>{frontmatter.title}</DocsTitle>
@@ -102,7 +102,9 @@ function ComponentsList({
                     className="group p-4 lg:p-6 rounded-lg border  hover:bg-hover transition-colors"
                   >
                     <div>
-                      <h3 className="font-semibold text-base lg:text-lg mb-1 transition-colors">{item.name}</h3>
+                      <h3 className="font-semibold text-base lg:text-lg mb-1 transition-colors">
+                        {item.name}
+                      </h3>
                       <p className="text-sm text-muted-foreground line-clamp-2">
                         {item.description || t.categoryDefaultDescription}
                       </p>
@@ -159,7 +161,7 @@ export default function Docs({ params }: Route.ComponentProps) {
 
   return (
     <DocsLayout {...baseOptions(locale)} tree={tree}>
-      <div className="max-w-5xl mx-auto px-4 py-12 [grid-area:main]">
+      <div className="max-w-5xl mx-auto px-4 py-12 [grid-area:main] bg-background">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">{t.title}</h1>
           <p className="text-lg text-fd-muted-foreground">{t.description}</p>

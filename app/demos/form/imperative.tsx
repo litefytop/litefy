@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { Button, Form, Input } from "@/ui";
+import { Button, Form, FormItem } from "@/ui";
 
 export default function FormImperativeDemo() {
   const formRef = useRef<React.ComponentRef<typeof Form>>(null);
@@ -46,12 +46,8 @@ export default function FormImperativeDemo() {
           return true;
         }}
       >
-        <Form.Field name="name" label="Name">
-          {(field) => <Input {...field} />}
-        </Form.Field>
-        <Form.Field name="email" label="Email">
-          {(field) => <Input {...field} type="email" />}
-        </Form.Field>
+        <FormItem name="name" label="Name" />
+        <FormItem name="email" label="Email" controlProps={{ type: "email" }} />
         <Form.Submit>Save</Form.Submit>
       </Form>
     </div>

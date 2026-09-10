@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { type ClassNameValue, cn } from "..";
+import { InputGroup } from "./input-group";
 
 export interface PasswordGroupProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
@@ -10,19 +11,7 @@ export interface PasswordGroupProps extends Omit<React.ComponentProps<"div">, "c
 }
 
 export function PasswordGroup({ className, invalid, ...props }: PasswordGroupProps) {
-  return (
-    <div
-      {...props}
-      data-invalid={invalid ? true : undefined}
-      aria-invalid={invalid}
-      className={cn(
-        "flex w-full max-w-sm min-w-3xs items-center rounded-md border border-border shadow-xs transition-colors px-2 h-9",
-        "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
-        "data-[invalid=true]:border-danger data-[invalid=true]:ring-danger/20",
-        className,
-      )}
-    />
-  );
+  return <InputGroup {...props} invalid={invalid} className={className} />;
 }
 
 export interface PasswordRootProps extends Omit<
@@ -61,7 +50,7 @@ export function PasswordToggle({ className, visible, children, ...props }: Passw
       aria-pressed={visible}
       aria-label={visible ? "Hide password" : "Show password"}
       className={cn(
-        "hover:text-foreground/80 rounded-md p-1 text-muted-foreground transition-colors",
+        "hover:text-foreground/80 rounded-sm p-1 text-muted-foreground transition-colors",
         className,
       )}
     >
@@ -75,19 +64,20 @@ export interface PasswordProps extends Omit<PasswordRootProps, "className" | "vi
   defaultVisible?: boolean;
   onVisibleChange?: (visible: boolean) => void;
   invalid?: boolean;
+  className?: ClassNameValue;
   classNames?: {
-    group?: ClassNameValue;
     root?: ClassNameValue;
     toggle?: ClassNameValue;
   };
   styles?: {
-    group?: React.CSSProperties;
     root?: React.CSSProperties;
     toggle?: React.CSSProperties;
   };
 }
 
 export const Password = ({
+  className,
+  style,
   visible: controlledVisible,
   defaultVisible = false,
   onVisibleChange,
@@ -108,11 +98,12 @@ export const Password = ({
   };
 
   return (
-    <PasswordGroup invalid={invalid} className={classNames?.group} style={styles?.group}>
+    <PasswordGroup invalid={invalid} className={className} style={style}>
       <PasswordRoot
         {...props}
         disabled={disabled}
         visible={visible}
+        aria-invalid={invalid || undefined}
         className={classNames?.root}
         style={styles?.root}
       />

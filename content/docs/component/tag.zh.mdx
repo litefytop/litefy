@@ -5,21 +5,7 @@ description: 无交互逻辑的单色标签——用任意背景工具类着色�
 
 ## 安装
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add tag" />
-
-</Tab>
-
-<Tab value="手动">
-
-<Source type="component" name="tag" />
-
-</Tab>
-
-</Tabs>
+<Installation name="tag" />
 
 ## 用法
 
@@ -31,22 +17,13 @@ description: 无交互逻辑的单色标签——用任意背景工具类着色�
 
 标签是单一平面色——传入任意 Tailwind 背景工具类加对比文本色即可。
 
-```tsx
-<Tag>default</Tag>
-<Tag className="bg-emerald-600 text-white">stable</Tag>
-<Tag className="bg-amber-500 text-white">beta</Tag>
-```
-
 ### 链接与按钮
 
 `Tag` 始终渲染为 `<span>`，不提供 `as` 属性。需要链接或按钮时，把 `Tag.className`（基础类名）组合到原生元素上：
 
-```tsx
-import { cn, Tag } from "@/ui";
-
-<a href="#" className={cn(Tag.className, "bg-violet-600 text-white")}>link tag</a>
-<button type="button" className={cn(Tag.className, "bg-emerald-600 text-white")}>button tag</button>
-```
+<ComponentPreview
+  name="tag-variants"
+/>
 
 ## 注意
 

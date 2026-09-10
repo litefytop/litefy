@@ -10,8 +10,23 @@ export interface CheckboxRootProps extends Omit<
   value?: string;
 }
 
-export function CheckboxRoot({ className, ...props }: CheckboxRootProps) {
-  return <input {...props} type="checkbox" className={cn("sr-only", className)} />;
+export function CheckboxRoot({ className, onKeyDown, ...props }: CheckboxRootProps) {
+  return (
+    <input
+      {...props}
+      type="checkbox"
+      className={cn("sr-only", className)}
+      onKeyDown={(e) => {
+        
+        
+        if (e.key === "Enter") {
+          e.preventDefault();
+          e.currentTarget.click();
+        }
+        onKeyDown?.(e);
+      }}
+    />
+  );
 }
 
 export interface CheckboxIndicatorProps extends Omit<React.ComponentProps<"span">, "className"> {
@@ -34,7 +49,7 @@ export function CheckboxIndicator({
         "inline-flex items-center justify-center min-w-3 min-h-3",
         "has-focus-visible:ring-2 has-focus-visible:ring-ring ",
         "[&_svg:not([class*='size-'])]:size-3 [&_svg]:stroke-4 ",
-        "transition-colors duration-300 aria-checked:bg-primary text-background bg-background",
+        "transition-colors duration-300 aria-checked:bg-primary text-background",
         "border border-border rounded-sm",
         className,
       )}
@@ -53,7 +68,7 @@ export function CheckboxLabel({ className, children, ...props }: CheckboxLabelPr
     <label
       {...props}
       className={cn(
-        "flex items-center gap-4 select-none has-disabled:opacity-50 has-disabled:cursor-not-allowed font-medium",
+        "flex items-center gap-4 select-none font-medium",
         className,
       )}
     >
@@ -62,7 +77,9 @@ export function CheckboxLabel({ className, children, ...props }: CheckboxLabelPr
   );
 }
 
-export interface CheckboxProps extends Omit<CheckboxRootProps, "className" | "styles"> {
+export interface CheckboxProps extends Omit<CheckboxRootProps, "className" | "style" | "styles"> {
+  className?: ClassNameValue;
+  style?: React.CSSProperties;
   onCheckedChange?: (checked: boolean) => void;
   indicator?: React.ReactNode;
   classNames?: {
@@ -76,6 +93,8 @@ export interface CheckboxProps extends Omit<CheckboxRootProps, "className" | "st
 }
 
 export const Checkbox = ({
+  className,
+  style,
   children,
   checked,
   defaultChecked,
@@ -99,7 +118,7 @@ export const Checkbox = ({
     onCheckedChange?.(next);
   };
   return (
-    <CheckboxLabel className={classNames?.label} style={styles?.label}>
+    <CheckboxLabel className={cn(classNames?.label, className)} style={style}>
       <CheckboxIndicator
         checked={checked$}
         aria-disabled={disabled}

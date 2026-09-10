@@ -5,10 +5,9 @@ export default function BreadcrumbDataDemo() {
   return (
     <div className="p-4">
       <Breadcrumb
-        inert
         items={[
-          { label: "Home", href: "/" },
-          { label: "Project", href: "/project" },
+          { label: "Home", href: "#" },
+          { label: "Project", href: "#" },
           { label: "Current Page" },
         ]}
       />

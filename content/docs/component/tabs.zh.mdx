@@ -5,21 +5,7 @@ description: 基于 options 驱动、支持多种变体和方向设置的标签�
 
 ## 安装
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add tabs" />
-
-</Tab>
-
-<Tab value="手动">
-
-<Source type="component" name="tabs" />
-
-</Tab>
-
-</Tabs>
+<Installation name="tabs" />
 
 ## 用法
 
@@ -128,25 +114,6 @@ options 驱动的容器组件，管理活动值并以参数形式向 `TabsList`�
 
 `TabsContent` 在非激活时返回 `null`，因此用 `lazy()` 包裹内容可以延迟 import：
 
-```tsx
-import { lazy, Suspense } from "react";
-import { Tabs } from "@/ui";
-
-const LazySettings = lazy(() => import("./settings"));
-
-<Tabs
-  defaultValue="profile"
-  options={[
-    { value: "profile", label: "个人资料", content: "个人资料内容" },
-    {
-      value: "settings",
-      label: "设置",
-      content: (
-        <Suspense fallback={null}>
-          <LazySettings />
-        </Suspense>
-      ),
-    },
-  ]}
+<ComponentPreview
+  name="tabs-lazy"
 />
-```

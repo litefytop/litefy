@@ -5,21 +5,7 @@ description: An auto-scrolling marquee banner with seamless looping, hover pause
 
 ## Installation
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add banner" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="banner" />
-
-</Tab>
-
-</Tabs>
+<Installation name="banner" />
 
 ## Usage
 
@@ -53,9 +39,10 @@ A data-driven marquee banner. It measures the viewport, repeats the item set eno
 | `speed`        | `number`                               | `30`    | Seconds per full loop (one `-50%` track shift)                                            |
 | `direction`    | `"left" \| "right"`                    | `left`  | Scroll direction                                                                          |
 | `pauseOnHover` | `boolean`                              | `true`  | Pause the animation while the pointer is over the banner                                  |
-| `className`    | `ClassNameValue`                       | -       | Custom classes for the viewport                                                           |
-| `classNames`   | `{ viewport?; track?; item? }` — each `ClassNameValue` | - | Custom classes per part                                         |
-| `styles`       | `{ viewport?; track?; item? }` — each `React.CSSProperties` | - | Inline styles per part                                                  |
+| `className`    | `ClassNameValue`                       | -       | Custom classes for the viewport strip                                                     |
+| `style`        | `React.CSSProperties`                  | -       | Inline styles for the viewport strip                                                      |
+| `classNames`   | `{ track?; item? }` — each `ClassNameValue`            | - | Custom classes for the track and items                          |
+| `styles`       | `{ track?; item? }` — each `React.CSSProperties`       | - | Inline styles for the track and items                                   |
 | `...props`     | `React.ComponentProps<"div">`          | -       | Native div props spread on the viewport (except `children`); your own `onMouseEnter` / `onMouseLeave` compose with the hover pause |
 
 #### BannerItem

@@ -5,21 +5,7 @@ description: A slide-in panel component with multiple placement options
 
 ## Installation
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add drawer" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="drawer" />
-
-</Tab>
-
-</Tabs>
+<Installation name="drawer" />
 
 ## Usage
 
@@ -66,8 +52,10 @@ A slide-in panel component with focus management and keyboard navigation.
 | `onBackdropClick` | `(e: React.MouseEvent<HTMLDialogElement>) => void` | - | Click on the dialog backdrop; close by calling `onOpenChange(false)`                   |
 | `onCancel`        | `(e: React.SyntheticEvent<HTMLDialogElement>) => void` | - | Extra callback when the dialog is cancelled (Esc); the default close is always applied first |
 | `drag`            | `DrawerDragApi`                          | -       | Drag gesture object used to implement a resizable drawer                                      |
-| `classNames`      | `{ root?: ClassNameValue; wrapper?: ClassNameValue; drag?: ClassNameValue; content?: ClassNameValue }` | - | Custom classes for the internal elements |
-| `styles`          | `{ root?: React.CSSProperties; wrapper?: React.CSSProperties; drag?: React.CSSProperties; content?: React.CSSProperties }` | - | Inline styles for the internal elements |
+| `className`       | `ClassNameValue`                         | -       | Custom classes, applied to the native `<dialog>` element                                      |
+| `style`           | `React.CSSProperties`                    | -       | Inline styles, applied to the native `<dialog>` element                                       |
+| `classNames`      | `{ wrapper?: ClassNameValue; drag?: ClassNameValue; content?: ClassNameValue }` | - | Custom classes for the internal elements |
+| `styles`          | `{ wrapper?: React.CSSProperties; drag?: React.CSSProperties; content?: React.CSSProperties }` | - | Inline styles for the internal elements |
 | `children`        | `React.ReactNode`                        | -       | Drawer panel content                                                                          |
 | `...props`        | `React.ComponentProps<"div">`            | -       | Forwarded to `DrawerWrapper`; supports all native div props                                   |
 

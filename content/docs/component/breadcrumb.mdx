@@ -5,21 +5,7 @@ description: A navigation trail of composable parts — nav, list, item, link, p
 
 ## Installation
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add breadcrumb" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="breadcrumb" />
-
-</Tab>
-
-</Tabs>
+<Installation name="breadcrumb" />
 
 ## Usage
 
@@ -30,18 +16,6 @@ For simple trails, the composite `Breadcrumb` renders `items` in order — the l
 <ComponentPreview
   name="breadcrumb-basic"
 />
-
-```tsx
-import { Breadcrumb } from "@/ui";
-
-<Breadcrumb
-  items={[
-    { label: "Home", href: "/" },
-    { label: "Project", href: "/project" },
-    { label: "Current Page" },
-  ]}
-/>
-```
 
 ### Parts composition
 
@@ -58,8 +32,10 @@ Every layer is exported as a part — compose them freely for full control over 
 | Prop         | Type                                            | Default | Description                                                |
 | :----------- | :---------------------------------------------- | :------ | :--------------------------------------------------------- |
 | `items`      | `BreadcrumbDataItem[]`                          | -       | Trail entries in hierarchy order; the last renders as page |
-| `classNames` | `root` / `list` / `link` / `page` / `separator` | -       | Custom class names per slot                                |
-| `styles`     | `root` / `list` / `link` / `page` / `separator` | -       | Custom styles per slot                                     |
+| `className`  | `ClassNameValue`                                | -       | Custom class names, applied to the root `<nav>`            |
+| `style`      | `React.CSSProperties`                           | -       | Inline styles, applied to the root `<nav>`                 |
+| `classNames` | `list` / `link` / `page` / `separator`          | -       | Custom class names per slot                                |
+| `styles`     | `list` / `link` / `page` / `separator`          | -       | Custom styles per slot                                     |
 | `...props`   | `React.ComponentProps<"nav">`                   | -       | Native nav props, spread onto the root                     |
 
 ### BreadcrumbDataItem

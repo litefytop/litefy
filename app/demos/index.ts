@@ -1,4 +1,18 @@
 import type { ComponentType } from "react";
+import TableBasicDemo from "./table/basic";
+import tableBasicCode from "./table/basic.tsx?raw";
+import TableRemoteDemo from "./table/remote";
+import tableRemoteCode from "./table/remote.tsx?raw";
+import WizardInlineDemo from "./wizard/inline";
+import wizardInlineCode from "./wizard/inline.tsx?raw";
+import DualPickerBasicDemo from "./dual-picker/basic";
+import dualPickerBasicCode from "./dual-picker/basic.tsx?raw";
+import DualPickerSingleDemo from "./dual-picker/single";
+import dualPickerSingleCode from "./dual-picker/single.tsx?raw";
+import QueryBuilderBasicDemo from "./query-builder/basic";
+import queryBuilderBasicCode from "./query-builder/basic.tsx?raw";
+import StepsVerticalDemo from "./steps/vertical";
+import stepsVerticalCode from "./steps/vertical.tsx?raw";
 import AvatarBasicDemo from "./avatar/basic";
 import avatarBasicCode from "./avatar/basic.tsx?raw";
 import BannerBasicDemo from "./banner/basic";
@@ -7,8 +21,24 @@ import BannerCustomDemo from "./banner/custom";
 import bannerCustomCode from "./banner/custom.tsx?raw";
 import DatePickerBasicDemo from "./date-picker/basic";
 import datePickerBasicCode from "./date-picker/basic.tsx?raw";
+import MasonryBasicDemo from "./masonry/basic";
+import masonryBasicCode from "./masonry/basic.tsx?raw";
+import MasonryCustomDemo from "./masonry/custom";
+import masonryCustomCode from "./masonry/custom.tsx?raw";
+import FormItemDemo from "./form-item/basic";
+import formItemCode from "./form-item/basic.tsx?raw";
+import FormItemValidationDemo from "./form-item/validation";
+import formItemValidationCode from "./form-item/validation.tsx?raw";
+import InputGroupDemo from "./input-group/basic";
+import inputGroupCode from "./input-group/basic.tsx?raw";
+import FormPartsDemo from "./form/parts";
+import formPartsCode from "./form/parts.tsx?raw";
 import BadgeBasicDemo from "./badge/basic";
 import badgeBasicCode from "./badge/basic.tsx?raw";
+import BadgeSizingDemo from "./badge/sizing";
+import badgeSizingCode from "./badge/sizing.tsx?raw";
+import BadgeMarkerColorDemo from "./badge/marker-color";
+import badgeMarkerColorCode from "./badge/marker-color.tsx?raw";
 import BreadcrumbBasicDemo from "./breadcrumb/basic";
 import breadcrumbBasicCode from "./breadcrumb/basic.tsx?raw";
 import BreadcrumbCustomDemo from "./breadcrumb/custom";
@@ -43,6 +73,8 @@ import CalendarCustomDemo from "./calendar/custom";
 import calendarCustomCode from "./calendar/custom.tsx?raw";
 import CalendarDisabledDemo from "./calendar/disabled";
 import calendarDisabledCode from "./calendar/disabled.tsx?raw";
+import CalendarI18nDemo from "./calendar/i18n";
+import calendarI18nCode from "./calendar/i18n.tsx?raw";
 import CheckboxBasicDemo from "./checkbox/basic";
 import checkboxBasicCode from "./checkbox/basic.tsx?raw";
 import CheckboxGroupDemo from "./checkbox/group";
@@ -63,6 +95,8 @@ import CardGroupDemo from "./card/group";
 import cardGroupCode from "./card/group.tsx?raw";
 import CapsuleBadgeDemo from "./capsule/badge";
 import capsuleBadgeCode from "./capsule/badge.tsx?raw";
+import CapsuleLinkDemo from "./capsule/link";
+import capsuleLinkCode from "./capsule/link.tsx?raw";
 import TypographyHeadingsDemo from "./typography/headings";
 import typographyHeadingsCode from "./typography/headings.tsx?raw";
 import TypographyTextDemo from "./typography/text";
@@ -71,6 +105,8 @@ import PaperBasicDemo from "./paper/basic";
 import paperBasicCode from "./paper/basic.tsx?raw";
 import TagBasicDemo from "./tag/basic";
 import tagBasicCode from "./tag/basic.tsx?raw";
+import TagVariantsDemo from "./tag/variants";
+import tagVariantsCode from "./tag/variants.tsx?raw";
 import KbdBasicDemo from "./kbd/basic";
 import kbdBasicCode from "./kbd/basic.tsx?raw";
 import KbdCombinationDemo from "./kbd/combination";
@@ -111,8 +147,6 @@ import PreviewCardBasicDemo from "./preview-card/basic";
 import previewCardBasicCode from "./preview-card/basic.tsx?raw";
 import FormBasicDemo from "./form/basic";
 import formBasicCode from "./form/basic.tsx?raw";
-import FormHorizontalDemo from "./form/horizontal";
-import formHorizontalCode from "./form/horizontal.tsx?raw";
 import FormImperativeDemo from "./form/imperative";
 import formImperativeCode from "./form/imperative.tsx?raw";
 import FormValidationDemo from "./form/validation";
@@ -143,10 +177,12 @@ import NumberFieldBasicDemo from "./number-field/basic";
 import numberFieldBasicCode from "./number-field/basic.tsx?raw";
 import NumberFieldControlledDemo from "./number-field/controlled";
 import numberFieldControlledCode from "./number-field/controlled.tsx?raw";
-import NumberFieldCustomDemo from "./number-field/custom";
-import numberFieldCustomCode from "./number-field/custom.tsx?raw";
 import NumberFieldInvalidDemo from "./number-field/invalid";
 import numberFieldInvalidCode from "./number-field/invalid.tsx?raw";
+import NumberInputBasicDemo from "./number-input/basic";
+import numberInputBasicCode from "./number-input/basic.tsx?raw";
+import NumberInputCustomDemo from "./number-input/custom";
+import numberInputCustomCode from "./number-input/custom.tsx?raw";
 import PagerBasicDemo from "./pager/basic";
 import pagerBasicCode from "./pager/basic.tsx?raw";
 import PagerGestureDemo from "./pager/gesture";
@@ -183,6 +219,8 @@ import ScrollShadowPositionDemo from "./scroll-shadow/position";
 import scrollShadowPositionCode from "./scroll-shadow/position.tsx?raw";
 import ScrollShadowSizeDemo from "./scroll-shadow/size";
 import scrollShadowSizeCode from "./scroll-shadow/size.tsx?raw";
+import ScrollShadowArrowDemo from "./scroll-shadow/arrow";
+import scrollShadowArrowCode from "./scroll-shadow/arrow.tsx?raw";
 import SeparatorBasicDemo from "./separator/basic";
 import separatorBasicCode from "./separator/basic.tsx?raw";
 import SeparatorCustomDemo from "./separator/custom";
@@ -207,8 +245,6 @@ import TimelineBasicDemo from "./timeline/basic";
 import timelineBasicCode from "./timeline/basic.tsx?raw";
 import ToastBasicDemo from "./toast/basic";
 import toastBasicCode from "./toast/basic.tsx?raw";
-import ToastActionsDemo from "./toast/actions";
-import toastActionsCode from "./toast/actions.tsx?raw";
 import ToastPromiseDemo from "./toast/promise";
 import toastPromiseCode from "./toast/promise.tsx?raw";
 import WizardBasicDemo from "./wizard/basic";
@@ -225,8 +261,6 @@ import SwitchBasicDemo from "./switch/basic";
 import switchBasicCode from "./switch/basic.tsx?raw";
 import SwitchControlledDemo from "./switch/controlled";
 import switchControlledCode from "./switch/controlled.tsx?raw";
-import SwitchCustomStylingDemo from "./switch/custom-styling";
-import switchCustomStylingCode from "./switch/custom-styling.tsx?raw";
 import SwitchCustomDemo from "./switch/custom";
 import switchCustomCode from "./switch/custom.tsx?raw";
 import SwitchDisabledDemo from "./switch/disabled";
@@ -239,6 +273,8 @@ import TabsOrientationDemo from "./tabs/orientation";
 import tabsOrientationCode from "./tabs/orientation.tsx?raw";
 import TabsVariantDemo from "./tabs/variant";
 import tabsVariantCode from "./tabs/variant.tsx?raw";
+import TabsLazyDemo from "./tabs/lazy";
+import tabsLazyCode from "./tabs/lazy.tsx?raw";
 import ToggleBasicDemo from "./toggle/basic";
 import toggleBasicCode from "./toggle/basic.tsx?raw";
 import ToggleGroupDemo from "./toggle/group";
@@ -251,10 +287,6 @@ import TooltipImperativeDemo from "./tooltip/imperative";
 import tooltipImperativeCode from "./tooltip/imperative.tsx?raw";
 import TransferBasicDemo from "./transfer/basic";
 import transferBasicCode from "./transfer/basic.tsx?raw";
-import TransferPickerBasicDemo from "./transfer-picker/basic";
-import transferPickerBasicCode from "./transfer-picker/basic.tsx?raw";
-import TransferPickerMultipleDemo from "./transfer-picker/multiple";
-import transferPickerMultipleCode from "./transfer-picker/multiple.tsx?raw";
 import UseDragBasicDemo from "./use-drag/basic";
 import useDragBasicCode from "./use-drag/basic.tsx?raw";
 import UseRemotePaginationBasicDemo from "./use-remote-pagination/basic";
@@ -290,7 +322,7 @@ export const demos: Record<string, DemoItem> = {
     component: CollapseCustomDemo,
     code: collapseCustomCode,
   },
-  "collapse-accordion": {
+  collapse: {
     component: CollapseAccordionDemo,
     code: collapseAccordionCode,
   },
@@ -333,6 +365,10 @@ export const demos: Record<string, DemoItem> = {
   "calendar-custom": {
     component: CalendarCustomDemo,
     code: calendarCustomCode,
+  },
+  "calendar-i18n": {
+    component: CalendarI18nDemo,
+    code: calendarI18nCode,
   },
 
   "checkbox-basic": {
@@ -387,9 +423,17 @@ export const demos: Record<string, DemoItem> = {
     component: TagBasicDemo,
     code: tagBasicCode,
   },
+  "tag-variants": {
+    component: TagVariantsDemo,
+    code: tagVariantsCode,
+  },
   "capsule-badge": {
     component: CapsuleBadgeDemo,
     code: capsuleBadgeCode,
+  },
+  "capsule-link": {
+    component: CapsuleLinkDemo,
+    code: capsuleLinkCode,
   },
   "card-group": {
     component: CardGroupDemo,
@@ -471,10 +515,6 @@ export const demos: Record<string, DemoItem> = {
     component: FormBasicDemo,
     code: formBasicCode,
   },
-  "form-horizontal": {
-    component: FormHorizontalDemo,
-    code: formHorizontalCode,
-  },
   "form-imperative": {
     component: FormImperativeDemo,
     code: formImperativeCode,
@@ -482,6 +522,22 @@ export const demos: Record<string, DemoItem> = {
   "form-validation": {
     component: FormValidationDemo,
     code: formValidationCode,
+  },
+  "form-item": {
+    component: FormItemDemo,
+    code: formItemCode,
+  },
+  "form-item-validation": {
+    component: FormItemValidationDemo,
+    code: formItemValidationCode,
+  },
+  "input-group-basic": {
+    component: InputGroupDemo,
+    code: inputGroupCode,
+  },
+  "form-parts": {
+    component: FormPartsDemo,
+    code: formPartsCode,
   },
   "avatar-basic": {
     component: AvatarBasicDemo,
@@ -499,9 +555,25 @@ export const demos: Record<string, DemoItem> = {
     component: DatePickerBasicDemo,
     code: datePickerBasicCode,
   },
+  "masonry-basic": {
+    component: MasonryBasicDemo,
+    code: masonryBasicCode,
+  },
+  "masonry-custom": {
+    component: MasonryCustomDemo,
+    code: masonryCustomCode,
+  },
   "badge-basic": {
     component: BadgeBasicDemo,
     code: badgeBasicCode,
+  },
+  "badge-sizing": {
+    component: BadgeSizingDemo,
+    code: badgeSizingCode,
+  },
+  "badge-marker-color": {
+    component: BadgeMarkerColorDemo,
+    code: badgeMarkerColorCode,
   },
   "breadcrumb-basic": {
     component: BreadcrumbBasicDemo,
@@ -563,17 +635,25 @@ export const demos: Record<string, DemoItem> = {
     component: NumberFieldInvalidDemo,
     code: numberFieldInvalidCode,
   },
+  "number-input-basic": {
+    component: NumberInputBasicDemo,
+    code: numberInputBasicCode,
+  },
+  "number-input-custom": {
+    component: NumberInputCustomDemo,
+    code: numberInputCustomCode,
+  },
   "number-field-controlled": {
     component: NumberFieldControlledDemo,
     code: numberFieldControlledCode,
   },
-  "number-field-custom": {
-    component: NumberFieldCustomDemo,
-    code: numberFieldCustomCode,
-  },
   "tabs-basic": {
     component: TabsBasicDemo,
     code: tabsBasicCode,
+  },
+  "tabs-lazy": {
+    component: TabsLazyDemo,
+    code: tabsLazyCode,
   },
   "tabs-variant": {
     component: TabsVariantDemo,
@@ -667,6 +747,10 @@ export const demos: Record<string, DemoItem> = {
     component: ScrollShadowSizeDemo,
     code: scrollShadowSizeCode,
   },
+  "scroll-shadow-arrow": {
+    component: ScrollShadowArrowDemo,
+    code: scrollShadowArrowCode,
+  },
   "separator-basic": {
     component: SeparatorBasicDemo,
     code: separatorBasicCode,
@@ -711,13 +795,37 @@ export const demos: Record<string, DemoItem> = {
     component: TimelineBasicDemo,
     code: timelineBasicCode,
   },
+  "table-basic": {
+    component: TableBasicDemo,
+    code: tableBasicCode,
+  },
+  "table-remote": {
+    component: TableRemoteDemo,
+    code: tableRemoteCode,
+  },
+  "wizard-inline": {
+    component: WizardInlineDemo,
+    code: wizardInlineCode,
+  },
+  "dual-picker-basic": {
+    component: DualPickerBasicDemo,
+    code: dualPickerBasicCode,
+  },
+  "dual-picker-single": {
+    component: DualPickerSingleDemo,
+    code: dualPickerSingleCode,
+  },
+  "query-builder-basic": {
+    component: QueryBuilderBasicDemo,
+    code: queryBuilderBasicCode,
+  },
+  "steps-vertical": {
+    component: StepsVerticalDemo,
+    code: stepsVerticalCode,
+  },
   "toast-basic": {
     component: ToastBasicDemo,
     code: toastBasicCode,
-  },
-  "toast-actions": {
-    component: ToastActionsDemo,
-    code: toastActionsCode,
   },
   "toast-promise": {
     component: ToastPromiseDemo,
@@ -776,10 +884,6 @@ export const demos: Record<string, DemoItem> = {
     component: SwitchControlledDemo,
     code: switchControlledCode,
   },
-  "switch-custom-styling": {
-    component: SwitchCustomStylingDemo,
-    code: switchCustomStylingCode,
-  },
   "switch-custom": {
     component: SwitchCustomDemo,
     code: switchCustomCode,
@@ -799,14 +903,6 @@ export const demos: Record<string, DemoItem> = {
   "transfer-basic": {
     component: TransferBasicDemo,
     code: transferBasicCode,
-  },
-  "transfer-picker-basic": {
-    component: TransferPickerBasicDemo,
-    code: transferPickerBasicCode,
-  },
-  "transfer-picker-multiple": {
-    component: TransferPickerMultipleDemo,
-    code: transferPickerMultipleCode,
   },
   "upload-basic": {
     component: UploadBasicDemo,

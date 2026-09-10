@@ -8,10 +8,10 @@ export type TabsOrientation = "horizontal" | "vertical";
 
 export type TabsVariant = "button" | "line";
 
-const triggerStyles: Record<TabsVariant, string> = {
+const triggerClassNames: Record<TabsVariant, string> = {
   button:
-    "rounded-md text-muted-foreground hover:bg-muted/50 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm",
-  line: "bg-transparent text-muted-foreground border-b-2 border-transparent data-[state=active]:text-primary data-[state=active]:border-primary",
+    "rounded-md hover:bg-accent data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm",
+  line: "border-b-2 border-transparent data-[state=active]:text-primary data-[state=active]:border-primary",
 };
 
 export interface TabsListProps extends Omit<React.ComponentProps<"div">, "className"> {
@@ -83,7 +83,7 @@ export function TabsList({
           onClick={handleScrollPrev}
           disabled={!canScrollLeft}
           aria-label="Scroll tabs left"
-          className="size-8 flex items-center justify-center rounded-md hover:text-primary disabled:opacity-25 disabled:cursor-not-allowed shrink-0"
+          className="size-8 flex items-center justify-center rounded-md hover:text-primary shrink-0"
         >
           <ChevronLeft className="size-4" />
         </button>
@@ -102,7 +102,7 @@ export function TabsList({
           onClick={handleScrollNext}
           disabled={!canScrollRight}
           aria-label="Scroll tabs right"
-          className="size-8 flex items-center justify-center rounded-md hover:text-primary disabled:opacity-25 disabled:cursor-not-allowed shrink-0"
+          className="size-8 flex items-center justify-center rounded-md hover:text-primary shrink-0"
         >
           <ChevronRight className="size-4" />
         </button>
@@ -190,7 +190,7 @@ export function TabsTrigger({
       disabled={disabled}
       onClick={() => !disabled && onValueChange?.(value)}
       onKeyDown={handleKeyDown}
-      className={cn("px-4 py-2 text-sm font-medium", triggerStyles[variant], className)}
+      className={cn("px-4 py-2 text-sm font-medium", triggerClassNames[variant], className)}
     >
       {children}
     </button>
@@ -219,7 +219,7 @@ export function TabsContent({
       role="tabpanel"
       aria-labelledby={`tabs-trigger-${value}`}
       data-state="active"
-      className={cn("w-full p-4 rounded-md bg-background", className)}
+      className={cn("w-full p-4 rounded-lg", className)}
     >
       {children}
     </div>

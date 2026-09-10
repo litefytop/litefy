@@ -5,21 +5,7 @@ description: 支持单面板、多选与手风琴互斥模式的折叠面板组�
 
 ## 安装
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add collapse" />
-
-</Tab>
-
-<Tab value="Manual">
-
-<Source type="component" name="collapse" />
-
-</Tab>
-
-</Tabs>
+<Installation name="collapse" />
 
 ## 用法
 
@@ -36,7 +22,7 @@ description: 支持单面板、多选与手风琴互斥模式的折叠面板组�
 `Accordion` 默认互斥模式（最多展开一个），开启 `multiple` 后支持多选，多个面板可以同时展开。
 
 <ComponentPreview
-  name="collapse-accordion"
+  name="collapse"
 />
 
 ### 自定义
@@ -65,8 +51,10 @@ description: 支持单面板、多选与手风琴互斥模式的折叠面板组�
 | `defaultOpen`  | `boolean`                                                 | `false`       | 初始展开状态（非受控）                     |
 | `onOpenChange` | `(open: boolean) => void`                                 | -             | 展开状态变化回调                           |
 | `itemKey`      | `string`                                                  | -             | 触发器与面板 id 的后缀，用于无障碍关联     |
-| `classNames`   | `{ root?: ClassNameValue; trigger?: ClassNameValue; panel?: ClassNameValue }` | - | 根容器、触发器和面板的自定义类名    |
-| `styles`       | `{ root?: React.CSSProperties; trigger?: React.CSSProperties; panel?: React.CSSProperties }` | - | 根容器、触发器和面板的内联样式      |
+| `className` | `ClassNameValue` | - | 自定义类名，作用于根容器 |
+| `style` | `React.CSSProperties` | - | 内联样式，作用于根容器 |
+| `classNames`   | `{ trigger?: ClassNameValue; panel?: ClassNameValue }` | - | 触发器和面板的自定义类名    |
+| `styles`       | `{ trigger?: React.CSSProperties; panel?: React.CSSProperties }` | - | 触发器和面板的内联样式      |
 | `children`     | `React.ReactNode`                                         | -             | 面板内容                                   |
 | `...props`     | `React.ComponentProps<"div">`                             | -             | 支持全部 div 原生属性                      |
 
@@ -81,11 +69,11 @@ description: 支持单面板、多选与手风琴互斥模式的折叠面板组�
 | `defaultActiveKeys` | `string` \| `string[]`                                                 | -       | 默认展开项（非受控）。互斥：`string`；多选：`string[]` |
 | `activeKeys`        | `string` \| `string[]`                                                 | -       | 当前展开项（受控）。互斥：`string`；多选：`string[]`   |
 | `onKeyChange`       | `(value: string \| undefined) => void` \| `(values: string[]) => void` | -       | 展开项变化回调                                         |
-| `common`            | `{ classNames?: { root?: ClassNameValue; trigger?: ClassNameValue; panel?: ClassNameValue }; icon?: React.ReactNode \| ((open: boolean) => React.ReactNode) }` | - | 统一应用到每个选项的配置，子项自身的 `classNames`/`icon` 优先 |
+| `common`            | `{ className?: ClassNameValue; classNames?: { trigger?: ClassNameValue; panel?: ClassNameValue }; icon?: React.ReactNode \| ((open: boolean) => React.ReactNode) }` | - | 统一应用到每个选项的配置，子项自身的 `className`/`classNames`/`icon` 优先 |
 | `className`         | `ClassNameValue`                                                       | -       | 容器自定义样式                                         |
 | `...props`          | `React.ComponentProps<"div">`                                          | -       | 支持全部 div 原生属性                                  |
 
-> 子项之间默认以 `not-last:border-b` 分隔，可通过 `common.classNames.root` 覆盖。
+> 子项之间默认以 `not-last:border-b` 分隔，可通过 `common.className` 覆盖。
 
 #### CollapseItemConfig
 
@@ -131,4 +119,4 @@ description: 支持单面板、多选与手风琴互斥模式的折叠面板组�
 | ----------- | --------------------------------- | ------ | ------------------------------------- |
 | `open`      | `boolean`                         | -      | 是否展开，驱动折叠动画                |
 | `className` | `ClassNameValue`                  | -      | 自定义样式，作用于内层内容容器        |
-| `...props`  | `React.ComponentProps<"section">` | -      | section 原生属性，用于无障碍、data‑\* |
+| `...props`  | `React.ComponentProps<"section">` | -      | section 原生属性，用于无障碍、data-\* |

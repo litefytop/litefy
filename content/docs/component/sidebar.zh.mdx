@@ -5,21 +5,7 @@ description: 支持通过 ref 外部控制的可折叠侧边栏
 
 ## 安装
 
-<Tabs items={['CLI', 'Manual']} >
-
-<Tab value="CLI">
-
-<PackageManagerTabs command="litefy@latest add sidebar" />
-
-</Tab>
-
-<Tab value="手动">
-
-<Source type="component" name="sidebar" />
-
-</Tab>
-
-</Tabs>
+<Installation name="sidebar" />
 
 ## 用法
 
@@ -38,28 +24,6 @@ description: 支持通过 ref 外部控制的可折叠侧边栏
 <ComponentPreview
   name="sidebar-ref"
 />
-
-```tsx
-import { useRef } from "react";
-import { Sidebar, type SidebarHandle } from "@/ui";
-
-function Layout() {
-  const sidebarRef = useRef<SidebarHandle>(null);
-
-  return (
-    <div className="flex">
-      <Sidebar ref={sidebarRef} defaultOpen className="w-48">
-        <nav>侧边栏内容</nav>
-      </Sidebar>
-      <main>
-        <button type="button" onClick={() => sidebarRef.current?.toggle()}>
-          切换
-        </button>
-      </main>
-    </div>
-  );
-}
-```
 
 ## API 参考
 

@@ -16,4 +16,4 @@ export function Tag({ children, className, ...props }: TagProps) {
 }
 
 Tag.className =
-  "inline-flex items-center justify-center min-h-2 min-w-2 rounded-full leading-none tabular-nums truncate text-xs text-background bg-primary";
+  "inline-flex items-center justify-center min-h-2 min-w-2 rounded-md leading-none tabular-nums truncate text-xs text-background bg-primary";
