@@ -1,9 +1,11 @@
 ---
 title: Preview Card 预览卡片
-description: 由卡片样式、Image 和 Tooltip 拼装而成的预览卡片 —— 不提供组件源码，仅提供组合示范
+description: 由 Card、Image 和 Tooltip 组合而成的预览卡片 —— 可独立展示图片卡片，或悬停链接时展示富预览
 ---
 
-Preview Card 不是一个提供源码的组件。它以[卡片](/docs/component/card)组件为容器：上方是 [Image](/docs/component/image)，下方是文字，构成图片卡片；再把图片卡片放进 [Tooltip](/docs/component/tooltip) 的内容区，悬停链接即可展示富预览。直接在页面中拼装即可 —— 下面的示例就是完整的实现。
+## 安装
+
+<Installation name="preview-card" />
 
 ## 用法
 
@@ -13,18 +15,33 @@ Preview Card 不是一个提供源码的组件。它以[卡片](/docs/component/
   name="preview-card-image"
 />
 
-拼装要点：
+### 悬停预览
 
-- `.card` 自带 `overflow-hidden rounded-2xl`，顶部图片会被自动裁出圆角，无需额外处理。
-- [Image](/docs/component/image) 通过 `className` 控制图片区域高度，下方文字区使用常规排印类。
-
-### 预览卡片
+传入 `trigger` 和 `href`，将卡片作为链接的悬停 Tooltip 展示。
 
 <ComponentPreview
   name="preview-card-basic"
 />
 
-拼装要点：
+## 注意
 
-- [Tooltip](/docs/component/tooltip) 的 `content` 就是图片卡片的 JSX —— 与图片卡片示例结构完全相同，只是宽度收窄为 `w-72`。
-- 触发器是普通 `<a>` 元素，`Tooltip` 会自动挂上 popover 定位与显隐所需属性。
+- PreviewCard 内部由 [Card](/docs/component/card)、[Image](/docs/component/image) 和 [Tooltip](/docs/component/tooltip) 组合而成——CLI 安装时会自动解析并安装这些依赖。
+- Card 的 `overflow-hidden rounded-lg` 会自动裁出顶部图片的圆角。
+- 传入 `trigger` 时，卡片作为 Tooltip 内容渲染（宽度 `w-72`）；不传 `trigger` 时，作为独立卡片渲染（`max-w-sm`）。
+- Image 的 `className` 控制图片区域高度（默认 `h-40`）。
+
+## API 参考
+
+### PreviewCard
+
+| 属性 | 类型 | 默认值 | 描述 |
+| :--- | :--- | :----- | :--- |
+| `src` | `string` | - | 图片地址 |
+| `alt` | `string` | - | 图片 alt 文本 |
+| `title` | `React.ReactNode` | - | 卡片标题 |
+| `description` | `React.ReactNode` | - | 卡片描述 |
+| `trigger` | `React.ReactNode` | - | 传入时作为链接的悬停 Tooltip 展示 |
+| `href` | `string` | `"#"` | 链接地址（仅在传入 `trigger` 时生效） |
+| `delay` | `number` | `200` | Tooltip 显示延迟（毫秒，仅与 `trigger` 配合） |
+| `className` | `ClassNameValue` | - | 卡片的自定义类名 |
+| `classNames` | `{ image? / body? / title? / description? }` | - | 子区域的自定义类名 |

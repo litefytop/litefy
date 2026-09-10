@@ -1,25 +1,35 @@
 ---
 title: Dropdown Menu
-description: A dropdown menu assembled from Popover and Menu — not a shipped component, only a composition guide with demos
+description: A dropdown menu composed of Popover and Menu — group items, nest submenus, and navigate with the keyboard
 ---
 
-Dropdown Menu is not a shipped component with source code. It is a composition of two primitives: [Popover](/docs/component/popover) provides the trigger and the floating panel, and [Menu](/docs/component/menu) provides the items, grouping, submenus and keyboard navigation. Assemble them directly in your page — the demo below is the complete implementation.
+## Installation
+
+<Installation name="dropdown-menu" />
 
 ## Usage
-
-### Basic Usage
-
-Hold the panel open state in your own state, put `Menu` inside the Popover content, and wire the closing paths together.
 
 <ComponentPreview
   name="dropdown-menu-basic"
 />
 
-Key points of the assembly:
+## Notes
 
-- Popover's `open` / `onOpenChange` control the panel; no extra container styling is needed since `PopoverContent` already carries the panel look.
-- Pass `autoFocus={open}` to `Menu` so the first enabled item is focused every time the panel opens — arrow keys work immediately.
-- `Escape` needs no wiring: Menu's `Escape` bubbles up to the Popover panel, which closes it and refocuses the trigger.
-- `onSelect` writes the chosen item back into your state, closes the panel via `onOpenChange`, and refocuses the trigger through Popover's `ref`.
+- DropdownMenu is composed internally from [Popover](/docs/component/popover) and [Menu](/docs/component/menu) — installing via CLI resolves them automatically.
+- The trigger is styled with Button's primary variant by default; pass a custom `trigger` node to override.
+- `Menu` receives `autoFocus={open}` so the first enabled item is focused on each open — arrow keys work immediately.
+- Selecting an item or pressing Escape closes the panel; focus returns to the trigger automatically (Popover's built-in behaviour).
+- Submenu hover, ArrowRight / ArrowLeft navigation, and outside-mousedown dismissal are handled by Menu internally.
 
-Refer to the [Popover API](/docs/component/popover) and [Menu API](/docs/component/menu) for the full prop tables of both parts.
+## API Reference
+
+### DropdownMenu
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :------ | :---------- |
+| `trigger` | `React.ReactNode` | - | Trigger label or node |
+| `items` | `MenuConfig[]` | - | Menu items (groups, submenus, leaf items) |
+| `onSelect` | `(item: MenuItemConfig) => void` | - | Fired when a leaf item is clicked |
+| `alignX` | `"start" \| "end" \| "center"` | `"start"` | Panel alignment relative to trigger |
+| `className` | `ClassNameValue` | - | Custom classes on the trigger button |
+| `classNames` | `{ content? / item? / label? / sub? }` | - | Custom classes for panel, items, labels, submenus |

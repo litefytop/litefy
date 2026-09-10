@@ -287,12 +287,6 @@ import TooltipImperativeDemo from "./tooltip/imperative";
 import tooltipImperativeCode from "./tooltip/imperative.tsx?raw";
 import TransferBasicDemo from "./transfer/basic";
 import transferBasicCode from "./transfer/basic.tsx?raw";
-import TransferPickerBasicDemo from "./transfer-picker/basic";
-import transferPickerBasicCode from "./transfer-picker/basic.tsx?raw";
-import TransferPickerMultipleDemo from "./transfer-picker/multiple";
-import transferPickerMultipleCode from "./transfer-picker/multiple.tsx?raw";
-import TransferPickerPopoverDemo from "./transfer-picker/popover";
-import transferPickerPopoverCode from "./transfer-picker/popover.tsx?raw";
 import UseDragBasicDemo from "./use-drag/basic";
 import useDragBasicCode from "./use-drag/basic.tsx?raw";
 import UseRemotePaginationBasicDemo from "./use-remote-pagination/basic";
@@ -909,18 +903,6 @@ export const demos: Record<string, DemoItem> = {
   "transfer-basic": {
     component: TransferBasicDemo,
     code: transferBasicCode,
-  },
-  "transfer-picker-basic": {
-    component: TransferPickerBasicDemo,
-    code: transferPickerBasicCode,
-  },
-  "transfer-picker-multiple": {
-    component: TransferPickerMultipleDemo,
-    code: transferPickerMultipleCode,
-  },
-  "transfer-picker-popover": {
-    component: TransferPickerPopoverDemo,
-    code: transferPickerPopoverCode,
   },
   "upload-basic": {
     component: UploadBasicDemo,

@@ -1,33 +1,51 @@
 ---
 title: Combobox 组合框
-description: 由 Picker 和 List 拼装而成的组合框 —— 不提供组件源码，仅提供组合示范
+description: 带可过滤下拉列表的输入框 —— 本地选项客户端过滤，或异步远程搜索（防抖请求 + 滚动加载更多）
 ---
 
-Combobox 不是一个提供源码的组件。它是两个基础零件的组合：[Picker](/docs/component/picker) 提供输入框触发器和弹出面板，[List](/docs/component/list) 提供支持键盘导航和高亮的选项列表。直接在页面中拼装即可 —— 下面的示例就是完整的实现。
+## 安装
+
+<Installation name="combobox" />
 
 ## 用法
 
 ### 基础用法
 
-客户端过滤逻辑保存在你自己的状态中：`onValueChange` 镜像键入的文本，选项由它过滤得出，列表聚焦后由 `List` 内置的键盘导航接管。
+传入 `options` 作为本地字符串选项——键入文本即时过滤（不区分大小写），`ArrowDown` / `ArrowUp` 移动高亮，`Enter` 或点击行选中。
 
 <ComponentPreview
   name="combobox-basic"
 />
 
-拼装要点：
-
-- 焦点始终留在输入框。`ArrowDown` 打开面板（Picker 内置），随后 `ArrowDown` / `ArrowUp` 通过 `List` 受控的 `highlightIndex` 驱动高亮，键入和方向键导航可以同时进行。
-- `List` 通过 `data-highlighted` 渲染高亮并自动滚动到可视区域；输入框按 `Enter`（或点击行）经 `onSelect` 选中。
-- `onSelect` 把选中的选项写回输入框文本，并通过 `onOpenChange` 关闭面板；关闭时同时清空高亮。
-- 过滤后的选项耗尽时渲染 `empty` 节点。
-
 ### 异步搜索
 
-数据量大或来源为远程接口时，在 `onValueChange` 中调用 `remote.search` 发起搜索，并在列表滚动到底部时通过 `onScrollBottom` 加载更多 —— [`useRemotePagination`](/docs/utils/use-remote-pagination) hook 提供防抖请求、数据和加载控制。
+数据量大或来源为远程接口时，传入 `fetcher` 代替 `options`——关键词搜索自动防抖，列表滚动到底部时触发 `loadMore` 加载更多。
 
 <ComponentPreview
   name="combobox-async"
 />
 
-两个零件的完整属性表请参阅 [Picker API](/docs/component/picker) 和 [List API](/docs/component/list)。
+## 注意
+
+- Combobox 内部由 [Picker](/docs/component/picker)、[List](/docs/component/list) 和 [useCombobox](/docs/utils/use-combobox) / [useRemotePagination](/docs/utils/use-remote-pagination) 工具组合而成——CLI 安装时会自动解析并安装这些依赖。
+- 同时传入 `fetcher` 和 `options` 时，`fetcher` 优先。
+- 异步模式在挂载时和每次键入（防抖）后发起搜索；请求进行中时空状态显示 "Loading..."。
+- 焦点始终留在输入框：`ArrowDown` 打开面板，随后方向键驱动高亮、`Enter` 选中；选中、点击面板外或 `Escape` 关闭面板。
+- 选中后输入框文本即所选选项——重新打开时列表会按它过滤；清空文本即可看到全部选项。
+
+## API 参考
+
+### Combobox
+
+| 属性 | 类型 | 默认值 | 描述 |
+| :--- | :--- | :----- | :--- |
+| `options` | `string[]` | - | 本地选项，客户端过滤 |
+| `fetcher` | `({ page, size, keyword }) => Promise<{ list: string[]; total: number }>` | - | 异步模式的远程请求函数 |
+| `defaultValue` / `value` | `string` | `""` | 输入框文本（非受控 / 受控） |
+| `onValueChange` | `(value: string) => void` | - | 键入和选中时触发 |
+| `invalid` | `boolean` | `false` | 输入框无效态样式 |
+| `empty` | `React.ReactNode` | `"No data"` / `"Loading..."` | 列表空状态节点 |
+| `pageSize` | `number` | `20` | 异步分页大小 |
+| `debounceMs` | `number` | `300` | 异步搜索防抖延迟 |
+| `className` | `ClassNameValue` | - | 自定义类名，应用于输入框容器 |
+| `classNames` | `{ panel? / item? }` | - | 面板与列表项的自定义类名 |

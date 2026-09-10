@@ -8,6 +8,7 @@ const __dirname = path.dirname(__filename);
 
 const srcComponentDir = path.resolve(__dirname, "../app/ui");
 const registryRoot = path.resolve(__dirname, "../packages/cli/registry.json");
+const PREINSTALLED_UTILS = new Set(["cn"]);
 
 async function scanDir(dirPath) {
   if (!(await fs.pathExists(dirPath))) return [];
@@ -134,8 +135,12 @@ async function generateRegistry() {
     const name = path.basename(fname, path.extname(fname));
     const filePath = path.join(compDir, fname);
     const deps = new Set();
-    for (const d of scanLocalImports(filePath)) deps.add(d);
-    for (const d of scanBarrelImports(filePath, compExportMap)) deps.add(d);
+    for (const d of scanLocalImports(filePath)) {
+      if (!PREINSTALLED_UTILS.has(d)) deps.add(d);
+    }
+    for (const d of scanBarrelImports(filePath, barrelExportMap, name)) {
+      if (!PREINSTALLED_UTILS.has(d)) deps.add(d);
+    }
     registry[name] = {
       type: "component",
       url: `https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/${fname}`,

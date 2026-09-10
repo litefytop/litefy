@@ -1,35 +1,45 @@
 ---
 title: MultiSelect 多选
-description: 由 Popover 和 Checkbox 拼装而成的多选 —— 不提供组件源码，仅提供组合示范
+description: 由 Popover 和 CheckboxGroup 组合而成的多选下拉 —— 支持平铺或分组选项、键盘导航、受控值
 ---
 
-MultiSelect 不是一个提供源码的组件。它是两个基础零件的组合：[Popover](/docs/component/popover) 提供触发器和浮动面板，[CheckboxGroup](/docs/component/checkbox) 提供带多选状态的选项列表。直接在页面中拼装即可 —— 下面的示例就是完整的实现。
+## 安装
+
+<Installation name="multi-select" />
 
 ## 用法
 
 ### 基础用法
 
-选中值保存在你自己的状态中，把 `CheckboxGroup` 放进 Popover 的面板内容里，并在触发器上显示选中数量。
-
 <ComponentPreview
   name="multi-select-basic"
 />
 
-拼装要点：
-
-- Popover 的 `open` / `onOpenChange` 控制面板；`PopoverContent` 已自带面板外观，勾选列表无需额外容器样式。
-- 面板内的点击永远不会关闭它 —— Popover 只在面板外按下鼠标或按 `Escape` 时关闭 —— 用户可以自由勾选多个选项。
-- `CheckboxGroup` 是受控的（`value` / `onChange`，类型为 `string[]`）；把值写回页面状态并从中派生触发器文案。始终渲染数量（例如 `` `Categories (${values.length})` ``）而不要在不同文案间切换，这样触发器宽度稳定，避免布局抖动。
-- 面板打开后焦点自动落在第一个复选框上，`Tab` 在复选框间移动、`Space` 切换、`Escape` 关闭面板；在 `Checkbox.Group` 内按方向键可在选项间循环移动焦点（跳过禁用项）。
-
-两个零件的完整属性表请参阅 [Popover API](/docs/component/popover) 和 [Checkbox API](/docs/component/checkbox)。
-
 ### 分组用法
 
-`CheckboxGroup` 的 `options` 也接受 `{ group, options }` 形式，渲染带标题的分组列表。
+`options` 也接受 `{ group, options }` 形式，渲染带标题的分组列表。
 
 <ComponentPreview
   name="multi-select-grouped"
 />
 
-分组只是展示结构 —— 所有选项的 `value` 仍汇聚在同一个 `string[]` 状态里，与基础用法完全一致。
+## 注意
+
+- MultiSelect 内部由 [Popover](/docs/component/popover) 和 [CheckboxGroup](/docs/component/checkbox) 组合而成——CLI 安装时会自动解析并安装这些依赖。
+- 触发器始终显示选中数量（如 `Categories (3)`），保持宽度稳定，避免布局抖动。
+- 面板内点击永远不会关闭它——只有面板外 mousedown 或 Escape 才会关闭——用户可以自由勾选。
+- `ArrowDown` / `ArrowUp`（或 `ArrowRight` / `ArrowLeft`）在复选框间循环移动焦点（跳过禁用项）；`Space` 切换；`Escape` 关闭面板。
+
+## API 参考
+
+### MultiSelect
+
+| 属性 | 类型 | 默认值 | 描述 |
+| :--- | :--- | :----- | :--- |
+| `options` | `(CheckboxOptionConfig \| CheckboxOptionGroup)[]` | - | 平铺或分组的复选框选项 |
+| `value` / `defaultValue` | `string[]` | `[]` | 选中值（受控 / 非受控） |
+| `onChange` | `(values: string[]) => void` | - | 选择变化时触发 |
+| `trigger` | `React.ReactNode` | - | 自定义触发器节点（默认为 `placeholder (count)`） |
+| `placeholder` | `string` | `"Select options"` | 未提供自定义 `trigger` 时显示的文案 |
+| `className` | `ClassNameValue` | - | 触发器按钮的自定义类名 |
+| `classNames` | `{ content? }` | - | 面板内容的自定义类名 |

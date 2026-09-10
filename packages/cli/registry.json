@@ -42,6 +42,13 @@
       "popover"
     ]
   },
+  "chart": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/chart.tsx",
+    "dependence": [
+      "use-chart-palette"
+    ]
+  },
   "chat-input": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/chat-input.tsx",
@@ -61,6 +68,16 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/collapse.tsx"
   },
+  "combobox": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/combobox.tsx",
+    "dependence": [
+      "list",
+      "picker",
+      "use-combobox",
+      "use-remote-pagination"
+    ]
+  },
   "context-menu": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/context-menu.tsx",
@@ -74,7 +91,8 @@
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/date-picker.tsx",
     "dependence": [
       "calendar",
-      "picker"
+      "picker",
+      "use-panel-focus"
     ]
   },
   "dialog": {
@@ -84,6 +102,15 @@
   "drawer": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/drawer.tsx"
+  },
+  "dropdown-menu": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/dropdown-menu.tsx",
+    "dependence": [
+      "button",
+      "menu",
+      "popover"
+    ]
   },
   "dual-picker": {
     "type": "component",
@@ -96,7 +123,6 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/form-item.tsx",
     "dependence": [
-      "cn",
       "input",
       "text-area",
       "select",
@@ -147,6 +173,15 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/menu.tsx"
   },
+  "multi-select": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/multi-select.tsx",
+    "dependence": [
+      "button",
+      "checkbox",
+      "popover"
+    ]
+  },
   "number-field": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/number-field.tsx"
@@ -181,6 +216,15 @@
   "popover": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/popover.tsx"
+  },
+  "preview-card": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy-fuma@main/app/ui/components/preview-card.tsx",
+    "dependence": [
+      "card",
+      "image",
+      "tooltip"
+    ]
   },
   "progress": {
     "type": "component",

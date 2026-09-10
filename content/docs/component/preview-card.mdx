@@ -1,9 +1,11 @@
 ---
 title: Preview Card
-description: A preview card assembled from the card style, Image and Tooltip — not a shipped component, only a composition guide with demos
+description: A preview card composed of Card, Image, and Tooltip — an image card on its own, or as a rich hover preview on a link
 ---
 
-Preview Card is not a shipped component with source code. It uses the [Card](/docs/component/card) component as the container: an [Image](/docs/component/image) on top and text below form an image card; placing that image card inside a [Tooltip](/docs/component/tooltip) content area turns it into a rich hover preview. Assemble it directly in your page — the demos below are the complete implementation.
+## Installation
+
+<Installation name="preview-card" />
 
 ## Usage
 
@@ -13,18 +15,33 @@ Preview Card is not a shipped component with source code. It uses the [Card](/do
   name="preview-card-image"
 />
 
-Key points of the assembly:
+### Hover Preview
 
-- `.card` ships with `overflow-hidden rounded-2xl`, so the top image is clipped to the rounded corners automatically.
-- [Image](/docs/component/image) controls the image area height via `className`, and the text below uses regular typography classes.
-
-### Preview Card
+Wrap a link with `trigger` and `href` to show the card as a tooltip on hover.
 
 <ComponentPreview
   name="preview-card-basic"
 />
 
-Key points of the assembly:
+## Notes
 
-- The [Tooltip](/docs/component/tooltip) `content` is the same image-card JSX as the image card demo, only narrowed to `w-72`.
-- The trigger is a plain `<a>` element — `Tooltip` attaches the popover positioning and show/hide wiring automatically.
+- PreviewCard is composed internally from [Card](/docs/component/card), [Image](/docs/component/image), and [Tooltip](/docs/component/tooltip) — installing via CLI resolves them automatically.
+- Card's `overflow-hidden rounded-lg` clips the top image to rounded corners automatically.
+- When `trigger` is provided, the card is rendered as a `Tooltip` content (width `w-72`); without `trigger`, it renders as a standalone card (`max-w-sm`).
+- Image `className` controls the image area height (default `h-40`).
+
+## API Reference
+
+### PreviewCard
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :------ | :---------- |
+| `src` | `string` | - | Image source URL |
+| `alt` | `string` | - | Image alt text |
+| `title` | `React.ReactNode` | - | Card title |
+| `description` | `React.ReactNode` | - | Card description |
+| `trigger` | `React.ReactNode` | - | If provided, renders as a hover tooltip on a link |
+| `href` | `string` | `"#"` | Link href (only used with `trigger`) |
+| `delay` | `number` | `200` | Tooltip show delay (ms, only with `trigger`) |
+| `className` | `ClassNameValue` | - | Custom classes on the card |
+| `classNames` | `{ image? / body? / title? / description? }` | - | Custom classes for sub-parts |

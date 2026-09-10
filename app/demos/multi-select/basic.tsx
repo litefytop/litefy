@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, CheckboxGroup, Popover, type CheckboxOptionConfig } from "@/ui";
+import { MultiSelect, type CheckboxOptionConfig } from "@/ui";
 
 const options: CheckboxOptionConfig[] = [
   { label: "Electronics", value: "electronics" },
@@ -15,15 +15,14 @@ export default function Demo() {
 
   return (
     <div className="flex flex-col items-center gap-3">
-      <Popover
-        trigger={`Categories (${values.length})`}
-        classNames={{
-          trigger: [Button.className.base, Button.className.variant.primary, "w-56"],
-          content: "w-56",
-        }}
-      >
-        <CheckboxGroup options={options} value={values} onChange={setValues} />
-      </Popover>
+      <MultiSelect
+        options={options}
+        value={values}
+        onChange={setValues}
+        placeholder="Categories"
+        className="w-56"
+        classNames={{ content: "w-56" }}
+      />
       <p className="text-sm text-muted-foreground">
         Selected: {values.length > 0 ? values.join(", ") : "-"}
       </p>
