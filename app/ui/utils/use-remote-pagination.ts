@@ -30,6 +30,8 @@ export function useRemotePagination({
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
   const fetchingRef = useRef(false);
   const mountedRef = useRef(true);
+  const fetcherRef = useRef(fetcher);
+  fetcherRef.current = fetcher;
 
   useEffect(() => {
     mountedRef.current = true;
@@ -48,7 +50,7 @@ export function useRemotePagination({
         setIsSearching(true);
       }
       try {
-        const res = await fetcher({ page: nextPage, size: pageSize, keyword });
+        const res = await fetcherRef.current({ page: nextPage, size: pageSize, keyword });
         setData((prev) => {
           const nextList = append ? [...prev, ...res.list] : res.list;
           setHasMore(nextList.length < res.total);
@@ -64,7 +66,7 @@ export function useRemotePagination({
         }
       }
     },
-    [fetcher, pageSize],
+    [pageSize],
   );
 
   const search = useCallback(

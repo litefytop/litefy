@@ -53,7 +53,7 @@ description: 支持键盘导航、高亮、选中与滚动到底回调的滚动�
 | `classNames` | `{ item?: ClassNameValue; groupHeader?: ClassNameValue }` | - | 行与组标题的自定义类 |
 | `styles` | `{ item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | - | 行与组标题的内联样式 |
 
-行与行紧密相连——默认不带分隔线（需要时可通过 `className` 加 `divide-y divide-border`）。滚动由内置的 [ScrollShadow](/docs/component/scroll-shadow) 包装管理：隐藏原生滚动条，当对应方向还有更多内容时，顶部/底部显示带方向箭头的渐变阴影；可聚焦的列表本身带 `outline-none`，没有内置聚焦描边。键盘：`ArrowUp` / `ArrowDown` 移动高亮，`Enter` 或 `Space` 选中。
+行与行紧密相连——默认不带分隔线（需要时可通过 `className` 加 `divide-y divide-border`）。列表本身是一个纯滚动容器：隐藏原生滚动条，滚动被contained（`overscroll-behavior: contain`）避免滚轮/键盘连锁滚动页面，容器可键盘聚焦。需要渐变阴影指示时自行搭配 [ScrollShadow](/docs/component/scroll-shadow) —— 通过 `className`/`children` 组合，列表不再内置阴影。键盘：`ArrowUp` / `ArrowDown` 移动高亮，`Enter` 或 `Space` 选中。
 
 #### Order
 

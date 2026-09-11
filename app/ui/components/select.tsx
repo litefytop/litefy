@@ -64,7 +64,6 @@ export function Select({
   const [uncontrolledValue, setValue] = React.useState(defaultValue);
   const [highlightIndex, setHighlightIndex] = React.useState<number | null>(null);
 
-  const isOpenControlled = controlledValue !== undefined;
   const value = isControlled ? controlledValue : uncontrolledValue;
   const open = uncontrolledOpen;
 

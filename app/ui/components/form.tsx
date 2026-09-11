@@ -71,8 +71,6 @@ const processFormData = (formData: FormData): FormValues => {
   return result;
 };
 
-const generateId = (base: string, suffix: string) => `${base}-${suffix}`;
-
 export type FormRef = {
   setValues: (values: Record<string, FormValue>) => void;
   reset: () => void;

@@ -55,3 +55,14 @@ The tree is a draft: edits update the live preview only. The preview defaults to
 | `operators` | `string[]` | per `valueKind` | Operators offered for sub-conditions |
 | `valueKind` | `"text" \| "number" \| "date" \| "select"` | `"text"` | Value editor type |
 | `options` | `{ label, value }[]` | - | Options when `valueKind: "select"` |
+
+### Security: the query leaves as JSON, never as SQL
+
+`onSubmit` / `onQueryChange` hand you the **structured query object** — never a SQL string. The dialect previews (SQL / MongoDB / CEL / Natural Language) are **display-only**, rendered in the browser for human reading. Do not send those strings to your backend for execution: client-generated SQL cannot be trusted or safely validated, and executing it would bypass parameterization as well as any row-level scoping.
+
+The safe backend flow is: receive the JSON object → validate it against a whitelist (allowed fields, allowed operators per field, value types and ranges) → convert it to **parameterized** SQL server-side, binding every value as a query parameter. The frontend's job is the editing experience; dialect correctness and safety both belong to the backend.
+
+`@react-querybuilder/core` stays a display dependency of this component — if your backend wants the same conversion, implement it server-side from the emitted JSON.
+
+ stays a display dependency of this component — if your backend wants the same conversion, prefer doing it server-side from the emitted JSON.
+

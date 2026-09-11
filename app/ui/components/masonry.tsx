@@ -28,7 +28,7 @@ function resolveColumnCount(columns: MasonryColumns, width: number): number {
 
 function distribute(count: number, columns: number, heights: number[]): number[][] {
   const cols: number[][] = Array.from({ length: columns }, () => []);
-  const colHeights = new Array<number>(columns).fill(0);
+  const colHeights = Array.from({ length: columns }, () => 0);
   for (let i = 0; i < count; i++) {
     let target = 0;
     for (let c = 1; c < columns; c++) {
@@ -117,7 +117,7 @@ export function Masonry<T>({
   React.useLayoutEffect(() => {
     const root = containerRef.current;
     if (!root) return;
-    const heights: number[] = new Array(items.length).fill(0);
+    const heights: number[] = Array.from({ length: items.length }, () => 0);
     for (const el of root.querySelectorAll<HTMLElement>("[data-masonry-key]")) {
       const index = Number(el.getAttribute("data-masonry-index"));
       if (index >= 0 && index < items.length) heights[index] = el.offsetHeight;

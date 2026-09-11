@@ -219,15 +219,15 @@ Renders chips and auto-collapses the overflow; exposes hidden items via `renderM
 
 ### List
 Scrollable list with keyboard navigation and selection:
-`items`, `renderItem`, `getKey`, `highlightIndex` / `onHighlightChange`, `onSelect`, `onScrollBottom` (infinite scroll), `getGroup` / `renderGroupHeader`, `empty`. Already wraps ScrollShadow; wraps the hidden scrollbar.
+`items`, `renderItem`, `getKey`, `highlightIndex` / `onHighlightChange`, `onSelect`, `onScrollBottom` (infinite scroll), `getGroup` / `renderGroupHeader`, `empty`. Renders a plain scroll container with hidden scrollbar (no built-in shadows — pair with ScrollShadow yourself).
 
 ## Scroll & Containers
 
 ### ScrollShadow
-Scrollable container with gradient shadows on `edges` (`"top" | "bottom" | "left" | "right" | [...]`, default bottom).
-- `size` (default `64px`) sets the gradient size; `arrow` (default `true`) renders a chevron as a **small clickable row at the shadow's outer edge — clicking jumps to that end**.
+Scrollable container with gradient shadows on `edges` (`"top" | "bottom" | "left" | "right" | [...]`, default bottom). Purely visual — no built-in navigation buttons.
+- `size` (default `64px`) sets the gradient size.
 - Inner scrolling is contained (`overscroll-behavior: contain`) so keyboard/wheel never chain-scrolls the page.
-- Parts: `ScrollShadowRoot` / `ScrollShadowViewport` / `ScrollShadowEdge` (pass `onClick` to make an edge interactive). Edges carry `data-position` for `data-[position=top]:` targeting.
+- Parts: `ScrollShadowRoot` / `ScrollShadowViewport` / `ScrollShadowEdge`. Edges carry `data-position` for `data-[position=top]:` targeting.
 
 ### Collapse
 `<Collapse defaultOpen>` or `items`-driven; `multiple` / accordion modes, `activeKeys` / `onKeyChange` for control. Parts: `CollapseRoot` / `CollapseTrigger` / `CollapsePanel`. `Accordion` is the items-driven convenience export.

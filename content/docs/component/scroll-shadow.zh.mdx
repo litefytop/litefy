@@ -33,14 +33,6 @@ description: 带有渐变阴影指示器的可滚动容器，提供更好的滚�
   name="scroll-shadow-size"
 />
 
-### 箭头
-
-箭头条在滚动区域外单独预留空间——箭头可见时视口会让出对应尺寸——并且可以点击：点击箭头直接跳转到该方向的尽头。
-
-<ComponentPreview 
-  name="scroll-shadow-arrow"
-/>
-
 ## API 参考
 
 ### ScrollShadow
@@ -52,16 +44,13 @@ description: 带有渐变阴影指示器的可滚动容器，提供更好的滚�
 | `children` | `React.ReactNode` | - | 可滚动内容 |
 | `edges` | `'top' \| 'bottom' \| 'left' \| 'right' \| Array<'top' \| 'bottom' \| 'left' \| 'right'>` | `'bottom'` | 显示阴影指示器的边缘（可传单个或数组） |
 | `size` | `string` | `'64px'` | 阴影渐变的大小 |
-| `arrow` | `boolean` | `true` | 在每个可见阴影边缘渲染方向箭头——箭头是阴影靠容器边缘的一小行可点击区域，点击跳转到该方向尽头 |
 | `onScroll` | `React.UIEventHandler<HTMLDivElement>` | - | 绑定到滚动视口——例如用于无限滚动触发 |
 | `className` | `ClassNameValue` | - | 自定义类名，作用于根容器 |
 | `style` | `React.CSSProperties` | - | 内联样式，作用于根容器 |
 | `classNames` | `{ viewport?, edge? }` | - | 滚动视口与阴影覆盖层的自定义类 |
 | `styles` | `{ viewport?, edge? }` | - | 滚动视口与阴影覆盖层的内联样式 |
 
-每个阴影覆盖层带有 `data-position` 属性（`top` / `bottom` / `left` / `right`），可用 `data-[position=top]:` 等变体单独定制某个边缘。
-
-`arrow` 开启（默认）时，每个可见阴影靠容器边缘的一侧渲染一小行（`h-5` / `w-5`）可点击的箭头区域，点击会将视口滚动到该方向的尽头。渐变覆盖层本身保持绝对定位且不可交互。
+每个阴影覆盖层带有 `data-position` 属性（`top` / `bottom` / `left` / `right`），可用 `data-[position=top]:` 等变体单独定制某个边缘。覆盖层是纯视觉元素——`pointer-events: none` 保证它们不阻挡滚动与点击。
 
 ### 组合零件
 
@@ -87,13 +76,12 @@ description: 带有渐变阴影指示器的可滚动容器，提供更好的滚�
 
 #### ScrollShadowEdge
 
-单个边缘的渐变阴影覆盖层，中央带有方向箭头。
+单个边缘的渐变阴影覆盖层。
 
 | Prop        | Type             | Default     | Description      |
 | ----------- | ---------------- | ----------- | ---------------- |
 | `edge`      | `'top' \| 'bottom' \| 'left' \| 'right'` | `'bottom'` | 渐变起始的边缘 |
 | `size`      | `string`         | `'64px'`    | 沿滚动轴方向的大小 |
-| `arrow`     | `boolean`        | `true`      | 渲染方向箭头（Up/Down/Left/Right 跟随 `edge`） |
 | `className` | `ClassNameValue` | -           | 自定义 CSS 类 |
 
-支持所有原生 `<div>` 属性。该零件自身不管理可见性；组合组件 `ScrollShadow` 会根据滚动位置控制其显示。传入 `onClick` 后，箭头变为阴影靠边缘处一小行可点击区域（`role="button"`）。
+支持所有原生 `<div>` 属性。该零件自身不管理可见性；组合组件 `ScrollShadow` 会根据滚动位置控制其显示。

@@ -230,20 +230,6 @@ export function useNumberCore(opts: NumberCoreOptions) {
   return { inputProps, stepDelta };
 }
 
-type PositiveIntegerMode = {
-  positiveInteger: true;
-  value?: number;
-  defaultValue?: number;
-  onValueChange?: (value?: number) => void;
-};
-
-type NormalMode = {
-  positiveInteger?: false;
-  value?: string | number;
-  defaultValue?: string | number;
-  onValueChange?: (value?: string) => void;
-};
-
 export type NumberFieldProps = Omit<
   React.ComponentProps<"input">,
   "className" | "value" | "defaultValue" | "type" | "onChange" | "size" | "prefix"

@@ -227,8 +227,6 @@ import ScrollShadowPositionDemo from "./scroll-shadow/position";
 import scrollShadowPositionCode from "./scroll-shadow/position.tsx?raw";
 import ScrollShadowSizeDemo from "./scroll-shadow/size";
 import scrollShadowSizeCode from "./scroll-shadow/size.tsx?raw";
-import ScrollShadowArrowDemo from "./scroll-shadow/arrow";
-import scrollShadowArrowCode from "./scroll-shadow/arrow.tsx?raw";
 import SeparatorBasicDemo from "./separator/basic";
 import separatorBasicCode from "./separator/basic.tsx?raw";
 import SeparatorCustomDemo from "./separator/custom";
@@ -770,10 +768,6 @@ export const demos: Record<string, DemoItem> = {
   "scroll-shadow-size": {
     component: ScrollShadowSizeDemo,
     code: scrollShadowSizeCode,
-  },
-  "scroll-shadow-arrow": {
-    component: ScrollShadowArrowDemo,
-    code: scrollShadowArrowCode,
   },
   "separator-basic": {
     component: SeparatorBasicDemo,

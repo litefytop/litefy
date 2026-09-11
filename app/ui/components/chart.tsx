@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import uPlot from "uplot";
+import "uplot/dist/uPlot.min.css";
 import { type ClassNameValue, cn } from "../utils/cn";
 import { useChartPalette } from "../utils/use-chart-palette";
 

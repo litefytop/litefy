@@ -1,7 +1,6 @@
 "use client";
 import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
-import { ScrollShadow } from "./scroll-shadow";
 
 const viewportClasses = "scrollbar-none [&::-webkit-scrollbar]:hidden";
 
@@ -137,40 +136,32 @@ export function List<T>(props: ListProps<T>) {
 
   if (items.length === 0 && empty !== undefined) {
     return (
-      <ScrollShadow
-        edges={["top", "bottom"]}
-        className={className}
-        style={style}
+      <div
+        ref={controller.rootRef as React.Ref<HTMLDivElement>}
+        tabIndex={0}
+        onKeyDown={controller.handleKeyDown}
         onScroll={controller.handleScroll}
-        classNames={{ viewport: viewportClasses }}
+        className={cn("overflow-auto overscroll-contain", viewportClasses, className)}
+        style={style}
       >
-        <ul
-          ref={controller.rootRef as React.Ref<HTMLUListElement>}
-          tabIndex={0}
-          onKeyDown={controller.handleKeyDown}
-          className="outline-none list-none"
-        >
+        <ul className="list-none">
           <li className="px-3 py-2 text-sm text-neutral">{empty}</li>
         </ul>
-      </ScrollShadow>
+      </div>
     );
   }
 
   if (!hasGroup) {
     return (
-      <ScrollShadow
-        edges={["top", "bottom"]}
-        className={className}
-        style={style}
+      <div
+        ref={controller.rootRef as React.Ref<HTMLDivElement>}
+        tabIndex={0}
+        onKeyDown={controller.handleKeyDown}
         onScroll={controller.handleScroll}
-        classNames={{ viewport: viewportClasses }}
+        className={cn("overflow-auto overscroll-contain", viewportClasses, className)}
+        style={style}
       >
-        <ul
-          ref={controller.rootRef as React.Ref<HTMLUListElement>}
-          tabIndex={0}
-          onKeyDown={controller.handleKeyDown}
-          className="outline-none list-none"
-        >
+        <ul className="list-none">
           {items.map((item, index) => (
             <li
               key={getKey?.(item, index) ?? index}
@@ -186,26 +177,22 @@ export function List<T>(props: ListProps<T>) {
             </li>
           ))}
         </ul>
-      </ScrollShadow>
+      </div>
     );
   }
 
   const grouped = groupItems(items, getGroup!);
 
   return (
-    <ScrollShadow
-      edges={["top", "bottom"]}
-      className={className}
-      style={style}
+    <div
+      ref={controller.rootRef as React.Ref<HTMLDivElement>}
+      tabIndex={0}
+      onKeyDown={controller.handleKeyDown}
       onScroll={controller.handleScroll}
-      classNames={{ viewport: viewportClasses }}
+      className={cn("overflow-auto overscroll-contain", viewportClasses, className)}
+      style={style}
     >
-      <div
-        ref={controller.rootRef as React.Ref<HTMLDivElement>}
-        tabIndex={0}
-        onKeyDown={controller.handleKeyDown}
-        className="outline-none"
-      >
+      <div className="outline-none">
         {grouped.map(([groupName, groupItemsList]) => (
           <div key={groupName}>
             <div
@@ -236,7 +223,7 @@ export function List<T>(props: ListProps<T>) {
           </div>
         ))}
       </div>
-    </ScrollShadow>
+    </div>
   );
 }
 
@@ -266,39 +253,31 @@ export function Order<T>(props: OrderProps<T>) {
 
   if (items.length === 0 && empty !== undefined) {
     return (
-      <ScrollShadow
-        edges={["top", "bottom"]}
-        className={className}
-        style={style}
+      <div
+        ref={controller.rootRef as React.Ref<HTMLDivElement>}
+        tabIndex={0}
+        onKeyDown={controller.handleKeyDown}
         onScroll={controller.handleScroll}
-        classNames={{ viewport: viewportClasses }}
+        className={cn("overflow-auto overscroll-contain", viewportClasses, className)}
+        style={style}
       >
-        <ol
-          ref={controller.rootRef as React.Ref<HTMLOListElement>}
-          tabIndex={0}
-          onKeyDown={controller.handleKeyDown}
-          className="outline-none list-decimal pl-6"
-        >
+        <ol className="list-decimal pl-6">
           <li className="px-3 py-2 text-sm text-neutral">{empty}</li>
         </ol>
-      </ScrollShadow>
+      </div>
     );
   }
 
   return (
-    <ScrollShadow
-      edges={["top", "bottom"]}
-      className={className}
-      style={style}
+    <div
+      ref={controller.rootRef as React.Ref<HTMLDivElement>}
+      tabIndex={0}
+      onKeyDown={controller.handleKeyDown}
       onScroll={controller.handleScroll}
-      classNames={{ viewport: viewportClasses }}
+      className={cn("overflow-auto overscroll-contain", viewportClasses, className)}
+      style={style}
     >
-      <ol
-        ref={controller.rootRef as React.Ref<HTMLOListElement>}
-        tabIndex={0}
-        onKeyDown={controller.handleKeyDown}
-        className="outline-none list-decimal pl-6"
-      >
+      <ol className="list-decimal pl-6">
         {items.map((item, index) => (
           <li
             key={getKey?.(item, index) ?? index}
@@ -314,6 +293,6 @@ export function Order<T>(props: OrderProps<T>) {
           </li>
         ))}
       </ol>
-    </ScrollShadow>
+    </div>
   );
 }

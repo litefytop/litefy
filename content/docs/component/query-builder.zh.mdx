@@ -55,3 +55,12 @@ description: 字段节点唯一的树形可折叠列表与嵌套 and/or 组，�
 | `operators` | `string[]` | 按 `valueKind` | 子条件可用的操作符 |
 | `valueKind` | `"text" \| "number" \| "date" \| "select"` | `"text"` | 值编辑器类型 |
 | `options` | `{ label, value }[]` | - | `valueKind: "select"` 时的选项 |
+
+### 安全：提交出去的是 JSON，不是 SQL
+
+`onSubmit` / `onQueryChange` 交给你的永远是**结构化查询对象**，而不是 SQL 字符串。方言预览（SQL / MongoDB / CEL / 自然语言）仅用于**浏览器内展示**，供人阅读。不要把这些字符串发到后端执行：客户端生成的 SQL 既不可信任也无法被可靠校验，直接执行还会绕过参数化与行级权限。
+
+安全的后端流程是：接收 JSON 对象 → 按白名单校验（允许的字段、字段可用的操作符、值类型与范围）→ 在服务端将其转换为**参数化** SQL，所有值绑定查询参数。前端的职责是编辑体验；方言正确性与安全性都归属后端。
+
+`@react-querybuilder/core` 是本组件的展示层依赖——后端如需同样的转换，请基于提交的 JSON 在服务端自行实现。
+

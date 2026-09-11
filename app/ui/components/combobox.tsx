@@ -64,9 +64,12 @@ export function Combobox({
     pageSize,
   });
 
+  const fetcherRef = React.useRef(fetcher);
+  fetcherRef.current = fetcher;
+
   React.useEffect(() => {
-    if (fetcher) remote.search("");
-  }, [fetcher, remote.search]);
+    if (fetcherRef.current) remote.search("");
+  }, [remote.search]);
 
   const localItems = React.useMemo(() => {
     if (!options) return [];

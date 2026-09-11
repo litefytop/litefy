@@ -11,10 +11,10 @@ export default {
       zh: "安装",
     },
   },
-  theming: {
+  styles: {
     displayName: {
-      en: "Theming",
-      zh: "主题",
+      en: "Styles",
+      zh: "样式",
     },
   },
   overview: {

@@ -53,7 +53,7 @@ A scrollable, keyboard-navigable list; sizing is fully controlled by the consume
 | `classNames` | `{ item?: ClassNameValue; groupHeader?: ClassNameValue }` | - | Custom classes for the rows and group headers |
 | `styles` | `{ item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | - | Custom inline styles for the rows and group headers |
 
-Rows are contiguous — no built-in dividers (add `divide-y divide-border` via `className` if you want them). Scrolling is managed by a built-in [ScrollShadow](/docs/component/scroll-shadow) wrapper: the native scrollbar is hidden and top/bottom gradient shadows with directional arrows appear while more content is available in that direction, with `outline-none` on the focusable list itself and no built-in focus ring. Keyboard: `ArrowUp` / `ArrowDown` move the highlight, `Enter` or `Space` selects it.
+Rows are contiguous — no built-in dividers (add `divide-y divide-border` via `className` if you want them). The list renders as a plain scroll container: the native scrollbar is hidden, scrolling is contained (`overscroll-behavior: contain`) so wheel/keyboard never chain-scrolls the page, and the container is keyboard-focusable. Pair it with [ScrollShadow](/docs/component/scroll-shadow) yourself when you want gradient edge indicators — compose them via `className`/`children`, the list ships no shadows. Keyboard: `ArrowUp` / `ArrowDown` move the highlight, `Enter` or `Space` selects it.
 
 #### Order
 
