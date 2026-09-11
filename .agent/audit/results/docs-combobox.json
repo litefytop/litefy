@@ -1,0 +1,19 @@
+{
+ "route": "combobox",
+ "url": "http://localhost:5199/en/docs/component/combobox",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "type",
+   "ms": 336
+  },
+  {
+   "action": "type",
+   "ms": 272
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

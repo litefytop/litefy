@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export interface ProgressProps {
   current: number;

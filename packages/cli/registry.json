@@ -47,6 +47,9 @@
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/chart.tsx",
     "dependence": [
       "use-chart-palette"
+    ],
+    "dependencies": [
+      "uplot"
     ]
   },
   "chat-input": {
@@ -240,6 +243,9 @@
       "input",
       "segment",
       "select"
+    ],
+    "dependencies": [
+      "react-querybuilder"
     ]
   },
   "radio": {

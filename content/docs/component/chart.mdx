@@ -5,6 +5,8 @@ description: A chart composition built on uPlot and useChartPalette — automati
 
 Chart is a composition example built on [uPlot](https://github.com/leeoniya/uPlot) and `useChartPalette` — it ships no installable source; the full implementation lives in each demo's source below (every demo contains a copy-paste-ready `Chart` wrapper). It colors data series automatically with the 8-color palette, follows theme variables (`--color-border` / `--color-muted-foreground`) for grid and axis text, redraws responsively via ResizeObserver when the container resizes, and ships an interactive legend (click to toggle series) plus a cursor-following tooltip.
 
+Within the chart family, Chart is the canvas-engine member: [Donut](/docs/component/donut), [Radar](/docs/component/radar) and [Sparkline](/docs/component/sparkline) are zero-dependency SVG components for categorical and small datasets, while Chart owns large time series — keep it whenever a series reaches thousands of points or needs box-zoom on a time axis.
+
 ## Installation
 
 Chart depends on uPlot (`pnpm add uplot`). It also depends on the `useChartPalette` hook — install both:

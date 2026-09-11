@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { ChevronDown, ChevronRight, Plus, Trash2 } from "lucide-react";
-import { formatQuery, type RuleGroupType, type RuleType } from "react-querybuilder";
-import { type ClassNameValue, cn } from "..";
+import { formatQuery, type RuleGroupType, type RuleType } from "@react-querybuilder/core";
+import { type ClassNameValue, cn } from "../utils/cn";
 import { Button } from "./button";
 import { Checkbox, CheckboxGroup } from "./checkbox";
 import { DatePicker } from "./date-picker";

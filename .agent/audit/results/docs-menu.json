@@ -1,0 +1,31 @@
+{
+ "route": "menu",
+ "url": "http://localhost:5199/en/docs/component/menu",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 184
+  },
+  {
+   "action": "click",
+   "ms": 183
+  },
+  {
+   "action": "click",
+   "ms": 184
+  },
+  {
+   "action": "click",
+   "ms": 187
+  },
+  {
+   "action": "click",
+   "ms": 199
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

@@ -5,6 +5,8 @@ description: 基于 uPlot 的通用图表组件 —— 自动画布与主题色�
 
 Chart 是基于 [uPlot](https://github.com/leeoniya/uPlot) 的通用图表组件，自动使用色板生成的 8 色为各数据系列着色，网格与坐标轴文字跟随主题变量（`--color-border` / `--color-muted-foreground`），容器宽度变化时通过 ResizeObserver 自适应重绘，并内置可点击隐藏系列的图例与跟随光标的悬浮提示。
 
+在图表家族中，Chart 是 canvas 引擎成员：[Donut](/zh/docs/component/donut)、[Radar](/zh/docs/component/radar) 与 [Sparkline](/zh/docs/component/sparkline) 是面向类目与小数据量的零依赖 SVG 组件，而 Chart 负责大数据量时序 —— 单系列达到数千点以上、或需要在时间轴上框选缩放时，仍然选它。
+
 ## 安装
 
 <Tabs items={['CLI', '手动']} >

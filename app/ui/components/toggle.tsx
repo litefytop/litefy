@@ -1,5 +1,5 @@
 import * as React from "react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export interface ToggleProps extends Omit<React.ComponentProps<"button">, "type" | "className"> {
   checked?: boolean;
@@ -37,15 +37,15 @@ export const Toggle = ({
     <button
       {...props}
       type="button"
-      aria-checked={checked}
+      aria-pressed={checked}
       disabled={disabled}
       onClick={handleClick}
       className={cn(
         "inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium",
         "border border-border text-foreground",
         "transition-colors duration-200",
-        "aria-checked:bg-primary aria-checked:text-primary-foreground aria-checked:border-primary",
-        "hover:not-aria-checked:bg-muted/50",
+        "aria-pressed:bg-primary aria-pressed:text-primary-foreground aria-pressed:border-primary",
+        "hover:not-aria-pressed:bg-muted/50",
         "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         className,
       )}
@@ -105,7 +105,7 @@ export function ToggleGroup({
           checked={selectedSet.has(option.value)}
           onCheckedChange={() => handleToggle(option.value)}
           className={cn(
-            "rounded-none border-y border-r border-l-0 border-border aria-checked:border-border first:border-l first:rounded-l-md last:rounded-r-md",
+            "rounded-none border-y border-r border-l-0 border-border aria-pressed:border-border first:border-l first:rounded-l-md last:rounded-r-md",
             option.className ?? itemClassName,
           )}
         >

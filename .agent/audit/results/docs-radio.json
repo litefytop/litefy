@@ -1,0 +1,35 @@
+{
+ "route": "radio",
+ "url": "http://localhost:5199/en/docs/component/radio",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "type",
+   "ms": 240
+  },
+  {
+   "action": "type",
+   "ms": 216
+  },
+  {
+   "action": "type",
+   "ms": 248
+  },
+  {
+   "action": "type",
+   "ms": 242
+  },
+  {
+   "action": "type",
+   "ms": 256
+  },
+  {
+   "action": "type",
+   "ms": 264
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

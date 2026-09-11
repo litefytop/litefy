@@ -2,7 +2,7 @@
 
 import { CircleCheck, CircleHelp, Loader2, TriangleAlert, X } from "lucide-react";
 import React, { useCallback, useEffect, useState, useSyncExternalStore } from "react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export type ToastType = "success" | "error" | "warning" | "info" | "loading";
 

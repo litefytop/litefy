@@ -1,7 +1,9 @@
 "use client";
 import * as React from "react";
 import { ChevronRight } from "lucide-react";
-import { type ClassNameValue, cn, List, PopoverContent } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
+import { List } from "./list";
+import { PopoverContent } from "./popover";
 
 export type CascaderNode = {
   value: string;

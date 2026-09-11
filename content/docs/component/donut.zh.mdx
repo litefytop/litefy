@@ -1,0 +1,50 @@
+---
+title: Donut 环形图
+description: 零依赖 SVG 饼图/环形图，色板跟随主题，悬停聚焦与中心读数，图例可点击切换
+---
+
+Donut 用纯 SVG 渲染类目占比 —— 底层不依赖任何图表库。扇形颜色来自 `useChartPalette`，品牌、表面与暗色模式切换时自动跟随。悬停扇形或图例会压暗其余项；donut 模式下中心显示悬停项的标签与数值（空闲时显示总数）。图例可点击隐藏或恢复扇形。
+
+## 安装
+
+<Installation name="donut" />
+
+## 用法
+
+### 环形图
+
+<ComponentPreview
+  name="donut-basic"
+/>
+
+每条数据为 `{ label, value, color? }`。未显式指定 `color` 时按索引从色板取色。负值与零值会被钳制；`gap` 以角度控制扇形间隔，保证细小扇形可读。
+
+### 饼图
+
+<ComponentPreview
+  name="donut-pie"
+/>
+
+`variant="pie"` 去掉中孔与中心读数。传入 `valueFormatter` 可控制组件中所有数值的显示格式。
+
+## API 参考
+
+### Donut
+
+| 属性 | 类型 | 默认值 | 说明 |
+| :--- | :--- | :----- | :--- |
+| `data` | `DonutDatum[]` | - | 扇形数据：`{ label, value, color? }` |
+| `variant` | `"pie" \| "donut"` | `"donut"` | `pie` 关闭中孔并隐藏中心读数 |
+| `gap` | `number` | `2` | 扇形之间的角度间隔（度） |
+| `valueFormatter` | `(value: number) => string` | `toLocaleString` | 中心读数的数值格式化 |
+| `showLegend` | `boolean` | `true` | 是否在图上方渲染可点击图例 |
+| `className` | `ClassNameValue` | - | 追加到根元素的类名 |
+| `classNames` | `DonutClassNames` | - | 槽位覆盖：`root` / `svg` / `segment` / `legend` |
+| `styles` | `DonutStyles` | - | 与 `classNames` 槽位对应的内联样式 |
+
+### 行为说明
+
+- **悬停聚焦**：悬停扇形或图例项时，其余扇形压暗到 35% 不透明度；环形中心从总数切换为悬停项的标签与数值。
+- **图例切换**：点击图例项隐藏或恢复对应扇形；隐藏项不计入总数。
+- **主题同步**：`data-brand`、`data-surface` 或暗色模式变化时扇形颜色自动重建，数据上的 `color` 始终优先于色板。
+- **尺寸**：图表为正方形，随容器伸展但不超过 `max-w-64` —— 通过 `classNames.svg` 覆盖；图例与布局在其上方。

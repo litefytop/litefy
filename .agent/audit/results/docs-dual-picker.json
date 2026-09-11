@@ -1,0 +1,19 @@
+{
+ "route": "dual-picker",
+ "url": "http://localhost:5199/en/docs/component/dual-picker",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "type",
+   "ms": 269
+  },
+  {
+   "action": "type",
+   "ms": 271
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

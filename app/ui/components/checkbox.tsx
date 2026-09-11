@@ -1,5 +1,5 @@
 import * as React from "react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 import { Check } from "lucide-react";
 
 export interface CheckboxRootProps extends Omit<
@@ -31,25 +31,21 @@ export function CheckboxRoot({ className, onKeyDown, ...props }: CheckboxRootPro
 
 export interface CheckboxIndicatorProps extends Omit<React.ComponentProps<"span">, "className"> {
   className?: ClassNameValue;
-  checked?: boolean;
 }
 
 export function CheckboxIndicator({
   className,
-  checked,
   children,
   ...props
 }: CheckboxIndicatorProps) {
   return (
     <span
       {...props}
-      role="checkbox"
-      aria-checked={checked}
       className={cn(
         "inline-flex items-center justify-center min-w-3 min-h-3",
         "has-focus-visible:ring-2 has-focus-visible:ring-ring ",
         "[&_svg:not([class*='size-'])]:size-3 [&_svg]:stroke-4 ",
-        "transition-colors duration-300 aria-checked:bg-primary text-background",
+        "transition-colors duration-300 has-checked:bg-primary text-background",
         "border border-border rounded-sm",
         className,
       )}
@@ -120,8 +116,6 @@ export const Checkbox = ({
   return (
     <CheckboxLabel className={cn(classNames?.label, className)} style={style}>
       <CheckboxIndicator
-        checked={checked$}
-        aria-disabled={disabled}
         className={classNames?.indicator}
         style={styles?.indicator}
       >

@@ -1,0 +1,31 @@
+{
+ "route": "steps",
+ "url": "http://localhost:5199/en/docs/component/steps",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 188
+  },
+  {
+   "action": "click",
+   "ms": 194
+  },
+  {
+   "action": "click",
+   "ms": 197
+  },
+  {
+   "action": "click",
+   "ms": 177
+  },
+  {
+   "action": "click",
+   "ms": 186
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

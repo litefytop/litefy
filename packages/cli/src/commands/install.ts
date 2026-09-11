@@ -4,6 +4,7 @@ import add from "../commands/add";
 
 interface InstallOptions {
   overwrite?: boolean;
+  yes?: boolean;
 }
 
 async function install(options: InstallOptions): Promise<void> {

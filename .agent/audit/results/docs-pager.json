@@ -1,0 +1,15 @@
+{
+ "route": "pager",
+ "url": "http://localhost:5199/en/docs/component/pager",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 189
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

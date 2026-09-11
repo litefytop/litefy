@@ -1,4 +1,4 @@
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 import { InputGroup, InputLeading, InputRoot, InputTrailing } from "./input-group";
 
 export { InputGroup, InputLeading, InputRoot, InputTrailing } from "./input-group";

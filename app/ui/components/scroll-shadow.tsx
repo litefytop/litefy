@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, type LucideIcon } from "lucide-react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 type Edge = "top" | "bottom" | "left" | "right";
 type EdgesProp = Edge | Edge[];
@@ -20,7 +20,13 @@ export interface ScrollShadowViewportProps extends Omit<React.ComponentProps<"di
 }
 
 export function ScrollShadowViewport({ className, ...props }: ScrollShadowViewportProps) {
-  return <div {...props} className={cn("size-full overflow-auto overscroll-contain", className)} />;
+  return (
+    <div
+      tabIndex={0}
+      {...props}
+      className={cn("size-full overflow-auto overscroll-contain", className)}
+    />
+  );
 }
 
 export interface ScrollShadowEdgeProps extends Omit<React.ComponentProps<"div">, "className"> {
@@ -152,11 +158,16 @@ export function ScrollShadow({
     const canScrollVertical = scrollHeight > clientHeight;
     const canScrollHorizontal = scrollWidth > clientWidth;
 
-    setVisibility({
-      top: canScrollVertical && scrollTop > 0,
-      bottom: canScrollVertical && scrollTop + clientHeight < scrollHeight - 1,
-      left: canScrollHorizontal && scrollLeft > 0,
-      right: canScrollHorizontal && scrollLeft + clientWidth < scrollWidth - 1,
+    const top = canScrollVertical && scrollTop > 0;
+    const bottom = canScrollVertical && scrollTop + clientHeight < scrollHeight - 1;
+    const left = canScrollHorizontal && scrollLeft > 0;
+    const right = canScrollHorizontal && scrollLeft + clientWidth < scrollWidth - 1;
+
+    setVisibility((prev) => {
+      if (prev.top === top && prev.bottom === bottom && prev.left === left && prev.right === right) {
+        return prev;
+      }
+      return { top, bottom, left, right };
     });
   }, []);
 

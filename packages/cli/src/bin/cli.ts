@@ -29,6 +29,7 @@ program
   .command("add <components...>")
   .description("Add components to your project")
   .option("-o, --overwrite", "Overwrite existing files")
+  .option("-y, --yes", "Skip prompts (auto-install npm dependencies)")
   .action(async (components: string[], opts) => {
     await add(components, opts);
   });
@@ -37,6 +38,7 @@ program
   .command("install")
   .description("Install every component, hook, util, and style from the registry")
   .option("-o, --overwrite", "Overwrite existing files")
+  .option("-y, --yes", "Skip prompts (auto-install npm dependencies)")
   .action(async (opts) => {
     await install(opts);
   });

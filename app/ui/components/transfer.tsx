@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { type ClassNameValue, cn, Checkbox } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
+import { Checkbox } from "./checkbox";
 
 export type TransferItemConfig = {
   label: React.ReactNode;

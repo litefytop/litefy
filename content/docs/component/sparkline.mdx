@@ -1,0 +1,38 @@
+---
+title: Sparkline
+description: Tiny axis-free trend line rendered in SVG — colored via currentColor so it themes like any text element
+---
+
+Sparkline draws a miniature trend from a plain number array — no axes, no legend, no tooltip, no chart library. The stroke is `currentColor`, so sizing and color are plain Tailwind classes (`className="h-8 w-32 text-primary"`), and the line follows theme changes like any text element.
+
+## Installation
+
+<Installation name="sparkline" />
+
+## Usage
+
+### Basic Usage
+
+<ComponentPreview
+  name="sparkline-basic"
+/>
+
+`variant` picks the shape: `"line"` (default), `"area"` (adds a translucent fill down to the baseline) or `"bar"` (a column per value). `smooth` switches the line to monotone-cubic interpolation, which never overshoots the data. A flat dataset renders as a centered horizontal line.
+
+## API Reference
+
+### Sparkline
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :------ | :---------- |
+| `data` | `number[]` | - | Raw values, mapped left to right |
+| `variant` | `"line" \| "area" \| "bar"` | `"line"` | Shape of the sparkline |
+| `smooth` | `boolean` | `false` | Monotone-cubic smoothing for line and area |
+| `className` | `ClassNameValue` | - | Size and color classes, e.g. `h-8 w-32 text-primary` |
+| `...props` | `React.ComponentProps<"svg">` | - | Spread onto the root `svg` element |
+
+### Behavior Notes
+
+- **Coloring**: everything draws with `currentColor` — set `text-primary`, `text-danger`, `text-success` etc. on `className`; no color props exist.
+- **Sizing**: defaults to `h-8 w-32`; override with `className`. The viewBox stretches non-uniformly while strokes stay crisp via `vector-effect: non-scaling-stroke`.
+- **Clamping**: values map to the observed min/max of the data, so any dataset fills the full height.

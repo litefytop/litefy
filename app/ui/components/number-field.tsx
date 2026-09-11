@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Minus, Plus } from "lucide-react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export type NumberVariant = "default" | "embedded";
 

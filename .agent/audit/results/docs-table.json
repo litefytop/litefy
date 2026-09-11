@@ -1,0 +1,10 @@
+{
+ "route": "table",
+ "url": "http://localhost:5199/en/docs/component/table",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [],
+ "consoleErrors": [],
+ "incomplete": 1
+}

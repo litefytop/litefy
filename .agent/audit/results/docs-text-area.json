@@ -1,0 +1,19 @@
+{
+ "route": "text-area",
+ "url": "http://localhost:5199/en/docs/component/text-area",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "type",
+   "ms": 266
+  },
+  {
+   "action": "type",
+   "ms": 278
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

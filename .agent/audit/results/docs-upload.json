@@ -1,0 +1,24 @@
+{
+ "route": "upload",
+ "url": "http://localhost:5199/en/docs/component/upload",
+ "axeError": null,
+ "violations": [
+  {
+   "id": "label",
+   "impact": "critical",
+   "help": "Form elements must have labels",
+   "wcag": [
+    "wcag2a",
+    "wcag412"
+   ],
+   "nodes": 1,
+   "sampleTargets": [
+    "input[accept=\"image/*\"]"
+   ]
+  }
+ ],
+ "longtasks": [],
+ "interactions": [],
+ "consoleErrors": [],
+ "incomplete": 1
+}

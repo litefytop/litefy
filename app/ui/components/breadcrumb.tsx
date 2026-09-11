@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { ChevronRight } from "lucide-react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export interface BreadcrumbRootProps extends Omit<React.ComponentProps<"nav">, "className"> {
   className?: ClassNameValue;

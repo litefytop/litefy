@@ -49,6 +49,14 @@ import ChartAreaDemo from "./chart/area";
 import chartAreaCode from "./chart/area.tsx?raw";
 import ChartBarsDemo from "./chart/bars";
 import chartBarsCode from "./chart/bars.tsx?raw";
+import DonutBasicDemo from "./donut/basic";
+import donutBasicCode from "./donut/basic.tsx?raw";
+import DonutPieDemo from "./donut/pie";
+import donutPieCode from "./donut/pie.tsx?raw";
+import RadarBasicDemo from "./radar/basic";
+import radarBasicCode from "./radar/basic.tsx?raw";
+import SparklineBasicDemo from "./sparkline/basic";
+import sparklineBasicCode from "./sparkline/basic.tsx?raw";
 import ChatInputBasicDemo from "./chat-input/basic";
 import chatInputBasicCode from "./chat-input/basic.tsx?raw";
 import CascaderBasicDemo from "./cascader/basic";
@@ -349,6 +357,22 @@ export const demos: Record<string, DemoItem> = {
   "chart-bars": {
     component: ChartBarsDemo,
     code: chartBarsCode,
+  },
+  "donut-basic": {
+    component: DonutBasicDemo,
+    code: donutBasicCode,
+  },
+  "donut-pie": {
+    component: DonutPieDemo,
+    code: donutPieCode,
+  },
+  "radar-basic": {
+    component: RadarBasicDemo,
+    code: radarBasicCode,
+  },
+  "sparkline-basic": {
+    component: SparklineBasicDemo,
+    code: sparklineBasicCode,
   },
   "button-icon": {
     component: ButtonIconDemo,

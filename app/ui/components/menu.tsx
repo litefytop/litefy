@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 type HTMLAttrs<T> = Omit<T, "className"> & {
   [key: `data-${string}`]: string | number | null | undefined | true;
@@ -18,7 +18,7 @@ export interface MenuItemProps extends HTMLAttrs<React.ComponentProps<"li">> {
   className?: ClassNameValue;
 }
 export function MenuItem({ className, ...props }: MenuItemProps) {
-  return <li className={cn("m-0 not-last:border-b", className)} {...props} />;
+  return <li role="none" className={cn("m-0 not-last:border-b", className)} {...props} />;
 }
 
 export interface MenuLabelProps extends HTMLAttrs<React.ComponentProps<"li">> {
@@ -27,6 +27,7 @@ export interface MenuLabelProps extends HTMLAttrs<React.ComponentProps<"li">> {
 export function MenuLabel({ className, ...props }: MenuLabelProps) {
   return (
     <li
+      role="group"
       className={cn("m-0 not-last:border-b px-2 py-1.5 text-xs text-muted-foreground", className)}
       {...props}
     />

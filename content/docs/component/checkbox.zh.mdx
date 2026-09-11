@@ -103,11 +103,10 @@ description: 复选框组件，支持受控、非受控、分组和自定义指�
 
 #### CheckboxIndicator
 
-视觉指示器，渲染为带 `role="checkbox"` 和 `aria-checked` 的 `span`，选中样式自动应用。
+视觉指示器，渲染为纯展示的 `span`；选中样式经 `has-checked:` 自动跟随内部的 `CheckboxRoot`，checkbox 语义由 input 本身承载。
 
 | 属性        | 类型                           | 默认值 | 描述                                 |
 | :---------- | :----------------------------- | :----- | :----------------------------------- |
-| `checked`   | `boolean`                      | -      | 驱动 `aria-checked` 和选中样式       |
 | `className` | `ClassNameValue`               | -      | 自定义 CSS 类                        |
 | `children`  | `React.ReactNode`              | -      | 指示器内容，组合组件中默认为对勾图标 |
 | `...props`  | `React.ComponentProps<"span">` | -      | 支持全部 span 原生属性               |

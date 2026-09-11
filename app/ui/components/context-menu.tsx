@@ -1,6 +1,8 @@
 "use client";
 import * as React from "react";
-import { type ClassNameValue, cn, Menu, PopoverContent } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
+import { Menu } from "./menu";
+import { PopoverContent } from "./popover";
 import type { MenuConfig, MenuItemConfig } from "./menu";
 
 export interface ContextMenuTriggerProps

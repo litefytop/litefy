@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Check } from "lucide-react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export interface StepsRootProps extends Omit<React.ComponentProps<"ol">, "className"> {
   className?: ClassNameValue;

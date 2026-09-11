@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export interface PickerRootProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
@@ -18,6 +18,7 @@ export interface PickerInputProps extends Omit<React.ComponentProps<"input">, "c
 export function PickerInput({ className, ...props }: PickerInputProps) {
   return (
     <input
+      role="combobox"
       {...props}
       className={cn(
         "h-9 w-full px-3 py-2 text-sm border rounded-md outline-none cursor-pointer",

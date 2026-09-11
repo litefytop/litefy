@@ -1,0 +1,410 @@
+[
+ {
+  "component": "avatar",
+  "rawMin": 27990,
+  "gzip": 8944,
+  "isolated": true
+ },
+ {
+  "component": "badge",
+  "rawMin": 27756,
+  "gzip": 8790,
+  "isolated": true
+ },
+ {
+  "component": "banner",
+  "rawMin": 29018,
+  "gzip": 9376,
+  "isolated": true
+ },
+ {
+  "component": "breadcrumb",
+  "rawMin": 28591,
+  "gzip": 9057,
+  "isolated": true
+ },
+ {
+  "component": "button",
+  "rawMin": 28239,
+  "gzip": 9087,
+  "isolated": true
+ },
+ {
+  "component": "calendar",
+  "rawMin": 35332,
+  "gzip": 11080,
+  "isolated": true
+ },
+ {
+  "component": "capsule",
+  "rawMin": 27294,
+  "gzip": 8632,
+  "isolated": true
+ },
+ {
+  "component": "card",
+  "rawMin": 27578,
+  "gzip": 8767,
+  "isolated": true
+ },
+ {
+  "component": "cascader",
+  "rawMin": 36588,
+  "gzip": 11835,
+  "isolated": true
+ },
+ {
+  "component": "chart",
+  "rawMin": 34447,
+  "gzip": 11993,
+  "isolated": true
+ },
+ {
+  "component": "chat-input",
+  "rawMin": 30943,
+  "gzip": 10093,
+  "isolated": true
+ },
+ {
+  "component": "checkbox",
+  "rawMin": 29733,
+  "gzip": 9603,
+  "isolated": true
+ },
+ {
+  "component": "chip-group",
+  "rawMin": 28509,
+  "gzip": 9210,
+  "isolated": true
+ },
+ {
+  "component": "collapse",
+  "rawMin": 29383,
+  "gzip": 9488,
+  "isolated": true
+ },
+ {
+  "component": "combobox",
+  "rawMin": 38075,
+  "gzip": 12568,
+  "isolated": true
+ },
+ {
+  "component": "context-menu",
+  "rawMin": 34783,
+  "gzip": 11307,
+  "isolated": true
+ },
+ {
+  "component": "date-picker",
+  "rawMin": 40894,
+  "gzip": 13096,
+  "isolated": true
+ },
+ {
+  "component": "dialog",
+  "rawMin": 29340,
+  "gzip": 9516,
+  "isolated": true
+ },
+ {
+  "component": "donut",
+  "rawMin": 33430,
+  "gzip": 11633,
+  "isolated": true
+ },
+ {
+  "component": "drawer",
+  "rawMin": 29937,
+  "gzip": 9687,
+  "isolated": true
+ },
+ {
+  "component": "dropdown-menu",
+  "rawMin": 36646,
+  "gzip": 11986,
+  "isolated": true
+ },
+ {
+  "component": "dual-picker",
+  "rawMin": 30690,
+  "gzip": 9840,
+  "isolated": true
+ },
+ {
+  "component": "form-item",
+  "rawMin": 43198,
+  "gzip": 14172,
+  "isolated": true
+ },
+ {
+  "component": "form",
+  "rawMin": 30741,
+  "gzip": 10134,
+  "isolated": true
+ },
+ {
+  "component": "image",
+  "rawMin": 27893,
+  "gzip": 8885,
+  "isolated": true
+ },
+ {
+  "component": "input-group",
+  "rawMin": 28107,
+  "gzip": 8849,
+  "isolated": true
+ },
+ {
+  "component": "input-otp",
+  "rawMin": 29125,
+  "gzip": 9504,
+  "isolated": true
+ },
+ {
+  "component": "input",
+  "rawMin": 28508,
+  "gzip": 8989,
+  "isolated": true
+ },
+ {
+  "component": "kbd",
+  "rawMin": 27558,
+  "gzip": 8742,
+  "isolated": true
+ },
+ {
+  "component": "list",
+  "rawMin": 33728,
+  "gzip": 10668,
+  "isolated": true
+ },
+ {
+  "component": "masonry",
+  "rawMin": 28999,
+  "gzip": 9437,
+  "isolated": true
+ },
+ {
+  "component": "menu",
+  "rawMin": 31793,
+  "gzip": 10394,
+  "isolated": true
+ },
+ {
+  "component": "multi-select",
+  "rawMin": 34579,
+  "gzip": 11351,
+  "isolated": true
+ },
+ {
+  "component": "number-field",
+  "rawMin": 30554,
+  "gzip": 10102,
+  "isolated": true
+ },
+ {
+  "component": "number-input",
+  "rawMin": 31125,
+  "gzip": 10201,
+  "isolated": true
+ },
+ {
+  "component": "pager",
+  "rawMin": 29488,
+  "gzip": 9596,
+  "isolated": true
+ },
+ {
+  "component": "paper",
+  "rawMin": 27929,
+  "gzip": 8803,
+  "isolated": true
+ },
+ {
+  "component": "password",
+  "rawMin": 28838,
+  "gzip": 9204,
+  "isolated": true
+ },
+ {
+  "component": "picker",
+  "rawMin": 29744,
+  "gzip": 9699,
+  "isolated": true
+ },
+ {
+  "component": "popover",
+  "rawMin": 30317,
+  "gzip": 9874,
+  "isolated": true
+ },
+ {
+  "component": "preview-card",
+  "rawMin": 31166,
+  "gzip": 10138,
+  "isolated": true
+ },
+ {
+  "component": "progress",
+  "rawMin": 27522,
+  "gzip": 8769,
+  "isolated": true
+ },
+ {
+  "component": "query-builder",
+  "rawMin": 60530,
+  "gzip": 18686,
+  "isolated": true
+ },
+ {
+  "component": "radar",
+  "rawMin": 33313,
+  "gzip": 11614,
+  "isolated": true
+ },
+ {
+  "component": "radio",
+  "rawMin": 28614,
+  "gzip": 9159,
+  "isolated": true
+ },
+ {
+  "component": "scroll-shadow",
+  "rawMin": 29866,
+  "gzip": 9652,
+  "isolated": true
+ },
+ {
+  "component": "segment",
+  "rawMin": 28861,
+  "gzip": 9385,
+  "isolated": true
+ },
+ {
+  "component": "select",
+  "rawMin": 30890,
+  "gzip": 10173,
+  "isolated": true
+ },
+ {
+  "component": "separator",
+  "rawMin": 28326,
+  "gzip": 8856,
+  "isolated": true
+ },
+ {
+  "component": "sidebar",
+  "rawMin": 27529,
+  "gzip": 8770,
+  "isolated": true
+ },
+ {
+  "component": "skeleton",
+  "rawMin": 27212,
+  "gzip": 8601,
+  "isolated": true
+ },
+ {
+  "component": "slider",
+  "rawMin": 30139,
+  "gzip": 9819,
+  "isolated": true
+ },
+ {
+  "component": "sparkline",
+  "rawMin": 28935,
+  "gzip": 9438,
+  "isolated": true
+ },
+ {
+  "component": "steps",
+  "rawMin": 30152,
+  "gzip": 9449,
+  "isolated": true
+ },
+ {
+  "component": "switch",
+  "rawMin": 28381,
+  "gzip": 9022,
+  "isolated": true
+ },
+ {
+  "component": "table",
+  "rawMin": 29185,
+  "gzip": 9446,
+  "isolated": true
+ },
+ {
+  "component": "tabs",
+  "rawMin": 30827,
+  "gzip": 9945,
+  "isolated": true
+ },
+ {
+  "component": "tag",
+  "rawMin": 27357,
+  "gzip": 8661,
+  "isolated": true
+ },
+ {
+  "component": "text-area",
+  "rawMin": 27702,
+  "gzip": 8752,
+  "isolated": true
+ },
+ {
+  "component": "timeline",
+  "rawMin": 28325,
+  "gzip": 8990,
+  "isolated": true
+ },
+ {
+  "component": "toast",
+  "rawMin": 32885,
+  "gzip": 10839,
+  "isolated": true
+ },
+ {
+  "component": "toggle",
+  "rawMin": 28407,
+  "gzip": 9106,
+  "isolated": true
+ },
+ {
+  "component": "tooltip",
+  "rawMin": 29178,
+  "gzip": 9401,
+  "isolated": true
+ },
+ {
+  "component": "transfer",
+  "rawMin": 32343,
+  "gzip": 10254,
+  "isolated": true
+ },
+ {
+  "component": "typography",
+  "rawMin": 28012,
+  "gzip": 8853,
+  "isolated": true
+ },
+ {
+  "component": "upload",
+  "rawMin": 30729,
+  "gzip": 9941,
+  "isolated": true
+ },
+ {
+  "component": "watermark",
+  "rawMin": 29644,
+  "gzip": 9727,
+  "isolated": true
+ },
+ {
+  "component": "wizard",
+  "rawMin": 35805,
+  "gzip": 11342,
+  "isolated": true
+ }
+]

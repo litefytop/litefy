@@ -1,0 +1,30 @@
+{
+ "route": "masonry",
+ "url": "http://localhost:5199/en/docs/component/masonry",
+ "axeError": null,
+ "violations": [
+  {
+   "id": "scrollable-region-focusable",
+   "impact": "serious",
+   "help": "Scrollable region must have keyboard access",
+   "wcag": [
+    "wcag2a",
+    "wcag211",
+    "wcag213"
+   ],
+   "nodes": 1,
+   "sampleTargets": [
+    ".h-72"
+   ]
+  }
+ ],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 205
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

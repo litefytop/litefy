@@ -1,4 +1,4 @@
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 type HTMLAttrs<T> = Omit<T, "className"> & {
   [key: `data-${string}`]: string | number | null | undefined | true;

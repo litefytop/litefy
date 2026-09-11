@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { ChevronDown } from "lucide-react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export type SelectOption = {
   label: string;

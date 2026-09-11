@@ -1,0 +1,31 @@
+{
+ "route": "slider",
+ "url": "http://localhost:5199/en/docs/component/slider",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 179
+  },
+  {
+   "action": "click",
+   "ms": 191
+  },
+  {
+   "action": "click",
+   "ms": 183
+  },
+  {
+   "action": "click",
+   "ms": 191
+  },
+  {
+   "action": "click",
+   "ms": 183
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 0
+}

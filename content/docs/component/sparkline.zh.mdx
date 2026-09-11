@@ -1,0 +1,38 @@
+---
+title: Sparkline 迷你图
+description: 无轴的 SVG 迷你趋势线 —— 用 currentColor 着色，像普通文本元素一样跟随主题
+---
+
+Sparkline 把一列纯数字画成微型趋势 —— 无轴、无图例、无悬浮提示、不依赖图表库。描边使用 `currentColor`，尺寸与颜色都是普通 Tailwind 类（`className="h-8 w-32 text-primary"`），主题切换时和文本一样自动跟随。
+
+## 安装
+
+<Installation name="sparkline" />
+
+## 用法
+
+### 基础用法
+
+<ComponentPreview
+  name="sparkline-basic"
+/>
+
+`variant` 决定形状：`"line"`（默认）、`"area"`（向下补半透明填充）、`"bar"`（每值一柱）。`smooth` 让折线切换为单调三次插值，不会越过数据点产生过冲。全平数据会渲染为居中的水平线。
+
+## API 参考
+
+### Sparkline
+
+| 属性 | 类型 | 默认值 | 说明 |
+| :--- | :--- | :----- | :--- |
+| `data` | `number[]` | - | 原始数值，从左到右映射 |
+| `variant` | `"line" \| "area" \| "bar"` | `"line"` | 迷你图形状 |
+| `smooth` | `boolean` | `false` | line 与 area 的单调三次平滑 |
+| `className` | `ClassNameValue` | - | 尺寸与颜色类，如 `h-8 w-32 text-primary` |
+| `...props` | `React.ComponentProps<"svg">` | - | 透传到根 `svg` 元素 |
+
+### 行为说明
+
+- **着色**：全部使用 `currentColor` 绘制 —— 在 `className` 上设置 `text-primary`、`text-danger`、`text-success` 等；不提供任何颜色 props。
+- **尺寸**：默认 `h-8 w-32`；通过 `className` 覆盖。viewBox 非等比拉伸，描边经 `vector-effect: non-scaling-stroke` 保持清晰。
+- **取值映射**：数值映射到数据的实际最小/最大值，任何数据都撑满整个高度。

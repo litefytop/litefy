@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 import { ScrollShadow } from "./scroll-shadow";
 
 const viewportClasses = "scrollbar-none [&::-webkit-scrollbar]:hidden";

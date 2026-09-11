@@ -1,0 +1,33 @@
+{
+ "route": "radar",
+ "url": "http://localhost:5199/en/docs/component/radar",
+ "axeError": null,
+ "violations": [
+  {
+   "id": "svg-img-alt",
+   "impact": "serious",
+   "help": "<svg> elements with an img or image role must have alternative text",
+   "wcag": [
+    "wcag2a",
+    "wcag111"
+   ],
+   "nodes": 1,
+   "sampleTargets": [
+    ".mt-2"
+   ]
+  }
+ ],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 202
+  },
+  {
+   "action": "click",
+   "ms": 201
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

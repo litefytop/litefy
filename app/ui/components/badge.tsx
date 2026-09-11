@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { type ClassNameValue, cn, Tag } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
+import { Tag } from "./tag";
 
 export interface BadgeProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;

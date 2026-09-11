@@ -2,7 +2,11 @@
 
 import * as React from "react";
 import { ChevronDown } from "lucide-react";
-import { type ClassNameValue, cn, List, Picker, useCombobox, useRemotePagination } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
+import { List } from "./list";
+import { Picker } from "./picker";
+import { useCombobox } from "../utils/use-combobox";
+import { useRemotePagination } from "../utils/use-remote-pagination";
 
 export type ComboboxFetcher = (params: {
   page: number;

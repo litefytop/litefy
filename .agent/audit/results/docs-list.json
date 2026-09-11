@@ -1,0 +1,10 @@
+{
+ "route": "list",
+ "url": "http://localhost:5199/en/docs/component/list",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [],
+ "consoleErrors": [],
+ "incomplete": 1
+}

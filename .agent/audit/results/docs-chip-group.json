@@ -1,0 +1,23 @@
+{
+ "route": "chip-group",
+ "url": "http://localhost:5199/en/docs/component/chip-group",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 200
+  },
+  {
+   "action": "click",
+   "ms": 215
+  },
+  {
+   "action": "click",
+   "ms": 191
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

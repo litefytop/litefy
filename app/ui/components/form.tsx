@@ -1,6 +1,6 @@
 import { Loader2 } from "lucide-react";
 import * as React from "react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 type FormElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 type FormValue = string | number | string[] | number[] | null;

@@ -1,0 +1,35 @@
+{
+ "route": "query-builder",
+ "url": "http://localhost:5199/en/docs/component/query-builder",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 194
+  },
+  {
+   "action": "click",
+   "ms": 183
+  },
+  {
+   "action": "click",
+   "ms": 182
+  },
+  {
+   "action": "click",
+   "ms": 186
+  },
+  {
+   "action": "click",
+   "ms": 189
+  },
+  {
+   "action": "click",
+   "ms": 199
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

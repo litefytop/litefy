@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export type MasonryBreakpoint = "sm" | "md" | "lg" | "xl" | "2xl";
 

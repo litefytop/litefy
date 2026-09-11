@@ -1,0 +1,27 @@
+{
+ "route": "chat-input",
+ "url": "http://localhost:5199/en/docs/component/chat-input",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 199
+  },
+  {
+   "action": "click",
+   "ms": 198
+  },
+  {
+   "action": "click",
+   "ms": 202
+  },
+  {
+   "action": "type",
+   "ms": 273
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

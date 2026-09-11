@@ -1,0 +1,31 @@
+{
+ "route": "tooltip",
+ "url": "http://localhost:5199/en/docs/component/tooltip",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 192
+  },
+  {
+   "action": "click",
+   "ms": 200
+  },
+  {
+   "action": "click",
+   "ms": 201
+  },
+  {
+   "action": "click",
+   "ms": 182
+  },
+  {
+   "action": "click",
+   "ms": 181
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import uPlot from "uplot";
-import { type ClassNameValue, cn } from "..";
-import { useChartPalette } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
+import { useChartPalette } from "../utils/use-chart-palette";
 
 export interface ChartSeriesConfig {
   label: string;

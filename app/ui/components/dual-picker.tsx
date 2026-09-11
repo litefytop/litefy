@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Search, X } from "lucide-react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 import { InputGroup, InputRoot, InputLeading } from "./input-group";
 
 export interface DualPickerOption<T> {
@@ -126,7 +126,12 @@ export function DualPicker<T>({
             />
           </InputGroup>
         </div>
-        <div className={cn(bodyClass, classNames?.body)} style={styles?.body} role="listbox">
+        <div
+          className={cn(bodyClass, classNames?.body)}
+          style={styles?.body}
+          role="listbox"
+          aria-label={typeof sourceTitle === "string" ? sourceTitle : undefined}
+        >
           {filtered.length === 0 && (
             <div className="px-3 py-2 text-sm text-muted-foreground">No options</div>
           )}

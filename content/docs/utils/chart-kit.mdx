@@ -1,0 +1,121 @@
+---
+title: chart-kit
+description: Pure-function math layer for SVG charts — polar paths, donut layout, linear scales and monotone-smoothed line/area paths, zero dependencies
+---
+
+chart-kit is the shared math layer behind the SVG chart components (Donut, Radar, Sparkline). It is a set of pure functions with zero dependencies — useful whenever you build a custom SVG visualization and only need the geometry: path strings, angle layouts and coordinate mapping. It owns no state, renders nothing, and never touches the DOM.
+
+## Installation
+
+<Installation name="chart-kit" />
+
+## Usage
+
+Angles are in degrees, in SVG screen coordinates (y points down): `0°` points right, `-90°` points up. The radar helpers are origin-centered — wrap them in a translated `<g>` and place labels yourself.
+
+```tsx
+import { arcPath, donutLayout, linePath, scaleLinear } from "@/ui";
+
+const segments = donutLayout([3, 2, 1], -90, 2);
+
+<path d={arcPath(100, 100, 62, 96, segments[0].start, segments[0].end)} />;
+
+const y = scaleLinear([0, 100], [29, 3]);
+const d = linePath(
+  [
+    { x: 0, y: y(10) },
+    { x: 50, y: y(40) },
+    { x: 100, y: y(25) },
+  ],
+  true,
+);
+```
+
+## API Reference
+
+### polar
+
+```ts
+function polar(cx: number, cy: number, r: number, deg: number): ChartPoint
+```
+
+Converts a polar coordinate to a cartesian point.
+
+### arcPath
+
+```ts
+function arcPath(cx: number, cy: number, r0: number, r1: number, a0: number, a1: number): string
+```
+
+Annular sector path from angle `a0` to `a1`. With `r0 = 0` it collapses to a pie wedge; a sweep of 360° or more produces a full ring. Returns `""` when the sweep is not positive.
+
+### donutLayout
+
+```ts
+function donutLayout(values: number[], startAngle?: number, gap?: number): DonutSegment[]
+```
+
+Turns raw values into angular segments starting at `startAngle` (default `-90`). Each segment carries `index`, `start`, `end`, `mid` (degrees) and `ratio`. Negative and zero values are clamped; the `gap` (degrees) shrinks automatically on thin slices so `end` never crosses `start`.
+
+### scaleLinear
+
+```ts
+function scaleLinear(domain: [number, number], range: [number, number]): (value: number) => number
+```
+
+Maps a value from domain to range. A flat domain maps everything to the range midpoint.
+
+### polygonPoints
+
+```ts
+function polygonPoints(points: ChartPoint[]): string
+```
+
+Joins points into an SVG `points` attribute string for `<polygon>`.
+
+### radarRings
+
+```ts
+function radarRings(count: number, radius: number, levels: number): ChartPoint[][]
+```
+
+`levels` concentric regular polygons with `count` vertices, radii evenly scaled up to `radius`, all centered on the origin.
+
+### radarSpokes
+
+```ts
+function radarSpokes(count: number, radius: number): ChartPoint[]
+```
+
+The `count` outer vertices — draw one line each from the origin for the spokes.
+
+### radarPolygon
+
+```ts
+function radarPolygon(values: number[], max: number, radius: number): ChartPoint[]
+```
+
+Maps data values onto radar vertices; each value is clamped to `[0, max]`.
+
+### linePath
+
+```ts
+function linePath(points: ChartPoint[], smooth?: boolean): string
+```
+
+SVG path for a polyline. With `smooth` it uses monotone-cubic interpolation (Fritsch–Carlson): the curve never overshoots the data.
+
+### areaPath
+
+```ts
+function areaPath(points: ChartPoint[], baseline: number, smooth?: boolean): string
+```
+
+`linePath` closed down to `baseline`, ready for a fill.
+
+### Types
+
+| Name | Shape |
+|------|-------|
+| `ChartPoint` | `{ x: number; y: number }` |
+| `DonutSegment` | `{ index: number; start: number; end: number; mid: number; ratio: number }` |

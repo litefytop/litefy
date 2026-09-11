@@ -1,0 +1,55 @@
+{
+ "route": "popover",
+ "url": "http://localhost:5199/en/docs/component/popover",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 199
+  },
+  {
+   "action": "click",
+   "ms": 184
+  },
+  {
+   "action": "click",
+   "ms": 184
+  },
+  {
+   "action": "click",
+   "ms": 186
+  },
+  {
+   "action": "click",
+   "ms": 189
+  },
+  {
+   "action": "click",
+   "ms": 182
+  },
+  {
+   "action": "click",
+   "ms": 188
+  },
+  {
+   "action": "click",
+   "ms": 183
+  },
+  {
+   "action": "click",
+   "ms": 183
+  },
+  {
+   "action": "click",
+   "ms": 197
+  },
+  {
+   "action": "click",
+   "ms": 194
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export interface ChipItem {
   value: string;
@@ -68,10 +68,6 @@ export function ChipGroup({
     observer.observe(container);
     return () => observer.disconnect();
   }, [measure, items]);
-
-  React.useEffect(() => {
-    measure();
-  });
 
   const hidden = items.slice(visibleCount);
   const hiddenKey = hidden.map((item) => item.value).join("\n");

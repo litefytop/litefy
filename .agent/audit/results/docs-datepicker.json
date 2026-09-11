@@ -1,0 +1,31 @@
+{
+ "route": "datepicker",
+ "url": "http://localhost:5199/en/docs/component/datepicker",
+ "axeError": null,
+ "violations": [
+  {
+   "id": "aria-allowed-attr",
+   "impact": "critical",
+   "help": "Elements must only use supported ARIA attributes",
+   "wcag": [
+    "wcag2a",
+    "wcag412"
+   ],
+   "nodes": 1,
+   "sampleTargets": [
+    "input"
+   ]
+  }
+ ],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "type",
+   "ms": 290
+  }
+ ],
+ "consoleErrors": [
+  "Failed to load resource: the server responded with a status of 500 ()"
+ ],
+ "incomplete": 1
+}

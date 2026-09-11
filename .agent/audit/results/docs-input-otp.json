@@ -1,0 +1,35 @@
+{
+ "route": "input-otp",
+ "url": "http://localhost:5199/en/docs/component/input-otp",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "type",
+   "ms": 272
+  },
+  {
+   "action": "type",
+   "ms": 274
+  },
+  {
+   "action": "type",
+   "ms": 268
+  },
+  {
+   "action": "type",
+   "ms": 279
+  },
+  {
+   "action": "type",
+   "ms": 271
+  },
+  {
+   "action": "type",
+   "ms": 261
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

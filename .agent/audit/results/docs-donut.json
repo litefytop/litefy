@@ -1,0 +1,62 @@
+{
+ "route": "donut",
+ "url": "http://localhost:5199/en/docs/component/donut",
+ "axeError": null,
+ "violations": [
+  {
+   "id": "svg-img-alt",
+   "impact": "serious",
+   "help": "<svg> elements with an img or image role must have alternative text",
+   "wcag": [
+    "wcag2a",
+    "wcag111"
+   ],
+   "nodes": 2,
+   "sampleTargets": [
+    "div[data-name=\"donut-basic\"] > .rounded-xl.overflow-hidden.border > .preview.min-h-151.border-separator > .w-full.justify-center > .max-w-xs.w-full > .mt-2.max-w-64.mx-auto > .overflow-visible.size-full[viewBox=\"0 0 200 200\"]",
+    "div[data-name=\"donut-pie\"] > .rounded-xl.overflow-hidden.border > .preview.min-h-151.border-separator > .w-full.justify-center > .max-w-xs.w-full > .mt-2.max-w-64.mx-auto > .overflow-visible.size-full[viewBox=\"0 0 200 200\"]"
+   ]
+  }
+ ],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 188
+  },
+  {
+   "action": "click",
+   "ms": 188
+  },
+  {
+   "action": "click",
+   "ms": 186
+  },
+  {
+   "action": "click",
+   "ms": 183
+  },
+  {
+   "action": "click",
+   "ms": 184
+  },
+  {
+   "action": "click",
+   "ms": 193
+  },
+  {
+   "action": "click",
+   "ms": 185
+  },
+  {
+   "action": "click",
+   "ms": 185
+  },
+  {
+   "action": "click",
+   "ms": 198
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

@@ -7,15 +7,20 @@ export default function Demo() {
     <div className="flex w-full max-w-md flex-col gap-4">
       <InputGroup>
         <InputLeading>$</InputLeading>
-        <InputRoot type="text" placeholder="0.00" />
+        <InputRoot type="text" placeholder="0.00" aria-label="Price in US dollars" />
         <InputTrailing>USD</InputTrailing>
       </InputGroup>
       <InputGroup invalid>
-        <InputRoot type="text" defaultValue="not-an-email" aria-invalid />
+        <InputRoot
+          type="text"
+          defaultValue="not-an-email"
+          aria-label="Email address"
+          aria-invalid
+        />
         <InputTrailing>Invalid</InputTrailing>
       </InputGroup>
       <InputGroup>
-        <InputRoot type="text" placeholder="Disabled" disabled />
+        <InputRoot type="text" placeholder="Disabled" aria-label="Disabled example" disabled />
       </InputGroup>
     </div>
   );

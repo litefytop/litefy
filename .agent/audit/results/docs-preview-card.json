@@ -1,0 +1,10 @@
+{
+ "route": "preview-card",
+ "url": "http://localhost:5199/en/docs/component/preview-card",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [],
+ "consoleErrors": [],
+ "incomplete": 1
+}

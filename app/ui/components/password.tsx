@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 import { InputGroup } from "./input-group";
 
 export interface PasswordGroupProps extends Omit<React.ComponentProps<"div">, "className"> {

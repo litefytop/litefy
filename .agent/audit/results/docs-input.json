@@ -1,0 +1,27 @@
+{
+ "route": "input",
+ "url": "http://localhost:5199/en/docs/component/input",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "type",
+   "ms": 278
+  },
+  {
+   "action": "type",
+   "ms": 263
+  },
+  {
+   "action": "type",
+   "ms": 266
+  },
+  {
+   "action": "type",
+   "ms": 267
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

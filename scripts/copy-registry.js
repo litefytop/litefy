@@ -1,4 +1,4 @@
-﻿import path from "node:path";
+import path from "node:path";
 import { fileURLToPath } from "node:url";
 import fs from "fs-extra";
 import ts from "typescript";
@@ -9,6 +9,7 @@ const __dirname = path.dirname(__filename);
 const srcComponentDir = path.resolve(__dirname, "../app/ui");
 const registryRoot = path.resolve(__dirname, "../packages/cli/registry.json");
 const PREINSTALLED_UTILS = new Set(["cn"]);
+const BASELINE_NPM_DEPS = new Set(["react", "react-dom", "lucide-react", "tailwindcss", "tailwind-merge"]);
 
 async function scanDir(dirPath) {
   if (!(await fs.pathExists(dirPath))) return [];
@@ -30,6 +31,27 @@ function scanLocalImports(filePath) {
       if (spec.startsWith(".") && spec !== "." && spec !== "..") {
         const base = path.basename(spec, path.extname(spec));
         if (base && base !== "index") deps.add(base);
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sf);
+  return deps;
+}
+
+function scanExternalImports(filePath) {
+  const source = fs.readFileSync(filePath, "utf8");
+  const kind = filePath.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS;
+  const sf = ts.createSourceFile(filePath, source, ts.ScriptTarget.Latest, true, kind);
+  const deps = new Set();
+  const visit = (node) => {
+    if (ts.isImportDeclaration(node) || (ts.isExportDeclaration(node) && node.moduleSpecifier)) {
+      const spec = node.moduleSpecifier.text;
+      if (!spec.startsWith(".") && !spec.startsWith("@/")) {
+        const pkg = spec.startsWith("@")
+          ? spec.split("/").slice(0, 2).join("/")
+          : spec.split("/")[0];
+        if (!BASELINE_NPM_DEPS.has(pkg)) deps.add(pkg);
       }
     }
     ts.forEachChild(node, visit);
@@ -141,10 +163,12 @@ async function generateRegistry() {
     for (const d of scanBarrelImports(filePath, barrelExportMap, name)) {
       if (!PREINSTALLED_UTILS.has(d)) deps.add(d);
     }
+    const npmDeps = [...scanExternalImports(filePath)];
     registry[name] = {
       type: "component",
       url: `https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/${fname}`,
       ...(deps.size ? { dependence: [...deps] } : {}),
+      ...(npmDeps.length ? { dependencies: npmDeps } : {}),
     };
     counts.component += 1;
   }
@@ -158,10 +182,12 @@ async function generateRegistry() {
     const deps = new Set();
     for (const d of scanLocalImports(indexPath)) deps.add(d);
     for (const d of scanBarrelImports(indexPath, compExportMap)) deps.add(d);
+    const npmDeps = [...scanExternalImports(indexPath)];
     registry[entry.name] = {
       type: "component",
       url: `https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/${entry.name}/index.tsx`,
       ...(deps.size ? { dependence: [...deps] } : {}),
+      ...(npmDeps.length ? { dependencies: npmDeps } : {}),
     };
     counts.component += 1;
   }
@@ -171,10 +197,12 @@ async function generateRegistry() {
     const name = path.basename(fname, path.extname(fname));
     const type = name.startsWith("use-") ? "hook" : "util";
     const deps = scanLocalImports(path.join(utilDir, fname));
+    const npmDeps = [...scanExternalImports(path.join(utilDir, fname))];
     registry[name] = {
       type,
       url: `https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/${fname}`,
       ...(deps.size ? { dependence: [...deps] } : {}),
+      ...(npmDeps.length ? { dependencies: npmDeps } : {}),
     };
     counts[type] += 1;
   }

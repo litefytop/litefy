@@ -1,0 +1,42 @@
+---
+title: Radar 雷达图
+description: 零依赖 SVG 雷达图，同心网格与类目轴，系列颜色跟随主题，图例可点击切换
+---
+
+Radar 将多维数据渲染为同心多边形网格上叠加的 SVG 多边形 —— 底层不依赖任何图表库。系列颜色来自 `useChartPalette`，品牌、表面与暗色模式切换时自动跟随。悬停多边形或图例会压暗其余系列；图例可点击隐藏或恢复某个系列。
+
+## 安装
+
+<Installation name="radar" />
+
+## 用法
+
+### 基础用法
+
+<ComponentPreview
+  name="radar-basic"
+/>
+
+`axes` 为每个轴一条类目标签；每个系列的 `values` 与 `axes` 一一对应。`max` 固定数值刻度 —— 省略时取所有可见系列中的最大值。`levels` 控制网格环数量。
+
+## API 参考
+
+### Radar
+
+| 属性 | 类型 | 默认值 | 说明 |
+| :--- | :--- | :----- | :--- |
+| `axes` | `string[]` | - | 类目标签，每轴一条 |
+| `series` | `RadarSeries[]` | - | 系列：`{ label, values, color? }`，`values` 与 `axes` 对齐 |
+| `max` | `number` | 可见值最大者 | 数值刻度上限，超出部分被钳制 |
+| `levels` | `number` | `4` | 同心网格环数量 |
+| `showLegend` | `boolean` | `true` | 是否在图上方渲染可点击图例 |
+| `className` | `ClassNameValue` | - | 追加到根元素的类名 |
+| `classNames` | `RadarClassNames` | - | 槽位覆盖：`root` / `svg` / `grid` / `label` / `polygon` / `legend` |
+| `styles` | `RadarStyles` | - | 与 `classNames` 槽位对应的内联样式 |
+
+### 行为说明
+
+- **悬停聚焦**：悬停多边形或图例项时，该系列填充加深，其余系列压暗到 35%。
+- **图例切换**：点击图例项隐藏或恢复系列；隐藏项不计入自动 `max` 的计算。
+- **主题同步**：描边与网格颜色跟随 `data-brand`、`data-surface` 与暗色模式 —— 网格使用 `border` token，轴标签使用 `muted-foreground` token。
+- **尺寸**：图表随容器伸展但不超过 `max-w-72`；轴标签可越出 viewBox 边缘 —— SVG 允许可见溢出。

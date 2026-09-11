@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export interface KbdProps extends Omit<React.ComponentProps<"kbd">, "className"> {
   className?: ClassNameValue;

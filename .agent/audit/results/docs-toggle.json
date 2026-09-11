@@ -1,0 +1,39 @@
+{
+ "route": "toggle",
+ "url": "http://localhost:5199/en/docs/component/toggle",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 192
+  },
+  {
+   "action": "click",
+   "ms": 205
+  },
+  {
+   "action": "click",
+   "ms": 206
+  },
+  {
+   "action": "click",
+   "ms": 199
+  },
+  {
+   "action": "click",
+   "ms": 202
+  },
+  {
+   "action": "click",
+   "ms": 209
+  },
+  {
+   "action": "click",
+   "ms": 204
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

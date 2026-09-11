@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 const placementStyles = {
   left: "left-0 top-0 bottom-0 flex-row-reverse",

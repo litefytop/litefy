@@ -26,6 +26,7 @@ export default function PagerBasicDemo() {
           type="button"
           onClick={() => setIndex((i) => Math.max(0, i - 1))}
           disabled={index === 0}
+          aria-label="Previous page"
           className="inline-flex size-8 cursor-pointer items-center justify-center rounded-md border bg-background text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
         >
           <ChevronLeft className="size-4" />
@@ -37,6 +38,7 @@ export default function PagerBasicDemo() {
           type="button"
           onClick={() => setIndex((i) => Math.min(pages.length - 1, i + 1))}
           disabled={index === pages.length - 1}
+          aria-label="Next page"
           className="inline-flex size-8 cursor-pointer items-center justify-center rounded-md border bg-background text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
         >
           <ChevronRight className="size-4" />

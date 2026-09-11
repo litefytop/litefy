@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export type TabsOrientation = "horizontal" | "vertical";
