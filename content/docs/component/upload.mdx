@@ -48,7 +48,6 @@ A dropzone built with the parts below, encapsulating validation and file item li
 | `maxCount` | `number` | - | Maximum number of simultaneously accepted items |
 | `maxSize` | `number` | - | Maximum file size in bytes |
 | `disabled` | `boolean` | `false` | Disables click, keyboard and drag interactions |
-| `invalid` | `boolean` | - | Sets `data-invalid` on the root and `aria-invalid` on the dropzone |
 | `children` | `React.ReactNode` | - | Custom dropzone content; defaults to a hint text |
 | `onFilesAccepted` | `(items: UploadItem[]) => void` | - | Called with validated items, each carrying `{ uid, file, signal }` |
 | `onFilesRejected` | `(rejects: UploadReject[]) => void` | - | Called with rejected files and reasons (`accept` / `maxSize` / `maxCount`) |

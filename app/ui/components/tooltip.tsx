@@ -39,6 +39,38 @@ function cancelHide(id: string) {
   }
 }
 
+interface TooltipContextValue {
+  popoverId?: string;
+  anchorName?: string;
+  delay?: number;
+}
+
+const TooltipContext = React.createContext<TooltipContextValue | null>(null);
+
+export interface TooltipWiringOptions {
+  popoverId?: string;
+  anchorName?: string;
+  delay?: number;
+}
+
+export function useTooltipWiring({ popoverId, anchorName, delay = 100 }: TooltipWiringOptions) {
+  return React.useMemo(
+    () => ({
+      show: () => {
+        if (popoverId) showTooltip(popoverId);
+      },
+      hide: () => {
+        if (popoverId) scheduleHide(popoverId, delay);
+      },
+      cancel: () => {
+        if (popoverId) cancelHide(popoverId);
+      },
+      anchorStyle: anchorName ? { anchorName } : undefined,
+    }),
+    [popoverId, anchorName, delay],
+  );
+}
+
 export interface TooltipTriggerProps extends Omit<
   React.ComponentProps<"button">,
   "className" | "style"
@@ -55,41 +87,45 @@ export function TooltipTrigger({
   style,
   popoverId,
   anchorName,
-  delay = 100,
+  delay,
   onPointerEnter,
   onPointerLeave,
   onFocus,
   onBlur,
   ...props
 }: TooltipTriggerProps) {
-  const handleShow = () => popoverId && showTooltip(popoverId);
-  const handleHide = () => popoverId && scheduleHide(popoverId, delay);
+  const ctx = React.useContext(TooltipContext);
+  const popoverId$ = popoverId ?? ctx?.popoverId;
+  const anchorName$ = anchorName ?? ctx?.anchorName;
+  const delay$ = delay ?? ctx?.delay ?? 100;
+  const wiring = useTooltipWiring({ popoverId: popoverId$, anchorName: anchorName$, delay: delay$ });
 
   return (
     <button
       {...props}
       type="button"
+      popoverTarget={popoverId$ || undefined}
       onPointerEnter={(e) => {
-        handleShow();
+        wiring.show();
         onPointerEnter?.(e);
       }}
       onPointerLeave={(e) => {
-        handleHide();
+        wiring.hide();
         onPointerLeave?.(e);
       }}
       onFocus={(e) => {
-        handleShow();
+        wiring.show();
         onFocus?.(e);
       }}
       onBlur={(e) => {
-        handleHide();
+        wiring.hide();
         onBlur?.(e);
       }}
       className={cn(
-        "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring",
+        "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring px-1",
         className,
       )}
-      style={anchorName ? { anchorName, ...style } : style}
+      style={anchorName$ ? { anchorName: anchorName$, ...style } : style}
     />
   );
 }
@@ -111,24 +147,29 @@ export function TooltipContent({
   style,
   id,
   anchorName,
-  delay = 100,
+  delay,
   ref,
   onPointerEnter,
   onPointerLeave,
   ...props
 }: TooltipContentProps) {
+  const ctx = React.useContext(TooltipContext);
+  const id$ = id ?? ctx?.popoverId;
+  const anchorName$ = anchorName ?? ctx?.anchorName;
+  const delay$ = delay ?? ctx?.delay ?? 100;
+
   return (
     <div
       ref={ref}
-      id={id}
+      id={id$}
       role="tooltip"
       popover="manual"
       onPointerEnter={(e) => {
-        if (id) cancelHide(id);
+        if (id$) cancelHide(id$);
         onPointerEnter?.(e);
       }}
       onPointerLeave={(e) => {
-        if (id) scheduleHide(id, delay);
+        if (id$) scheduleHide(id$, delay$);
         onPointerLeave?.(e);
       }}
       className={cn(
@@ -136,7 +177,7 @@ export function TooltipContent({
         className,
       )}
       style={{
-        positionAnchor: anchorName,
+        positionAnchor: anchorName$,
         positionArea: "top span-all",
         justifySelf: "anchor-center",
         alignSelf: "end",
@@ -150,55 +191,19 @@ export function TooltipContent({
   );
 }
 
-type TooltipChild = React.ReactElement<{
-  popoverTarget?: string;
-  style?: React.CSSProperties;
-  onPointerEnter?: React.PointerEventHandler<HTMLElement>;
-  onPointerLeave?: React.PointerEventHandler<HTMLElement>;
-  onFocus?: React.FocusEventHandler<HTMLElement>;
-  onBlur?: React.FocusEventHandler<HTMLElement>;
-}>;
-
 export interface TooltipProps {
-  children: TooltipChild;
-  content: React.ReactNode;
+  children?: React.ReactNode;
   delay?: number;
 }
 
-export function Tooltip({ children, content, delay = 100 }: TooltipProps) {
+export function Tooltip({ children, delay = 100 }: TooltipProps) {
   const id = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
-  const contentId = `tooltip-${id}`;
-  const anchorName = `--tooltip-${id}`;
-
-  const trigger = React.cloneElement(children, {
-    popoverTarget: contentId,
-    style: { ...children.props.style, anchorName },
-    onPointerEnter: (e) => {
-      showTooltip(contentId);
-      children.props.onPointerEnter?.(e);
-    },
-    onPointerLeave: (e) => {
-      scheduleHide(contentId, delay);
-      children.props.onPointerLeave?.(e);
-    },
-    onFocus: (e) => {
-      showTooltip(contentId);
-      children.props.onFocus?.(e);
-    },
-    onBlur: (e) => {
-      scheduleHide(contentId, delay);
-      children.props.onBlur?.(e);
-    },
-  });
-
-  return (
-    <>
-      {trigger}
-      <TooltipContent id={contentId} anchorName={anchorName} delay={delay}>
-        {content}
-      </TooltipContent>
-    </>
+  const value = React.useMemo(
+    () => ({ popoverId: `tooltip-${id}`, anchorName: `--tooltip-${id}`, delay }),
+    [delay],
   );
+
+  return <TooltipContext.Provider value={value}>{children}</TooltipContext.Provider>;
 }
 
 Tooltip.Trigger = TooltipTrigger;

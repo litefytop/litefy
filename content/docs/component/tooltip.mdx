@@ -11,7 +11,7 @@ description: A tooltip component built on the native Popover API and CSS anchor 
 
 ### Basic Usage
 
-A basic tooltip that appears on hover or focus. The composite accepts a single trigger element as `children` and a `content` prop.
+A basic tooltip that appears on hover or focus. `Tooltip` is a wiring container: it generates the content id, anchor name and delay, then provides them to `TooltipTrigger` / `TooltipContent` through context — no element cloning, the trigger is always an explicit `TooltipTrigger`.
 
 <ComponentPreview
   name="tooltip-basic"
@@ -33,12 +33,11 @@ Ready-to-use composite component.
 
 #### Tooltip
 
-Clones the single trigger child with the anchor wiring and hover/focus handlers, and renders the tooltip content inline.
+A wiring container: generates a content id and an anchor name, then provides them (plus `delay`) to `TooltipTrigger` / `TooltipContent` through context. Renders nothing itself and never clones children.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `React.ReactElement` | - | The trigger element, cloned with `popoverTarget`, `anchorName` styling and hover/focus handlers |
-| `content` | `React.ReactNode` | - | The tooltip content |
+| `children` | `React.ReactNode` | - | A `TooltipTrigger` and a `TooltipContent` pair |
 | `delay` | `number` | `100` | Delay in milliseconds before hiding tooltip |
 
 ---
@@ -47,13 +46,13 @@ Clones the single trigger child with the anchor wiring and hover/focus handlers,
 
 #### TooltipTrigger
 
-The trigger button with built-in hover and focus show/hide logic. Communicates with the content purely through DOM ids and anchor names.
+The trigger button with built-in hover and focus show/hide logic. Inside a `Tooltip` it inherits the wiring from context; standalone, pass `popoverId` / `anchorName` explicitly. Any element can be assembled from the parts instead — `TooltipTrigger` is just the ready-made button.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `popoverId` | `string` | - | The content element id to show/hide |
-| `anchorName` | `string` | - | CSS anchor name set on the trigger, matched by the content's `positionAnchor` |
-| `delay` | `number` | `100` | Hide delay in milliseconds |
+| `popoverId` | `string` | - | The content element id to show/hide; falls back to the `Tooltip` context |
+| `anchorName` | `string` | - | CSS anchor name set on the trigger, matched by the content's `positionAnchor`; falls back to the `Tooltip` context |
+| `delay` | `number` | `100` | Hide delay in milliseconds; falls back to the `Tooltip` context |
 | `className` | `ClassNameValue` | - | Custom CSS class |
 | `style` | `React.CSSProperties` | - | Custom inline styles, merged with the anchor name |
 | `...props` | `React.ComponentProps<"button">` | - | Supports all native button props (except `className`, `style`) |
@@ -64,9 +63,9 @@ The tooltip bubble rendered inline with `popover="manual"` (the top layer escape
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `id` | `string` | - | Element id referenced by the trigger's `popoverId` |
-| `anchorName` | `string` | - | Trigger's anchor name, applied as `positionAnchor` |
-| `delay` | `number` | `100` | Hide delay in milliseconds for pointer interactions |
+| `id` | `string` | - | Element id referenced by the trigger's `popoverId`; falls back to the `Tooltip` context |
+| `anchorName` | `string` | - | Trigger's anchor name, applied as `positionAnchor`; falls back to the `Tooltip` context |
+| `delay` | `number` | `100` | Hide delay in milliseconds for pointer interactions; falls back to the `Tooltip` context |
 | `className` | `ClassNameValue` | - | Custom CSS class |
 | `style` | `React.CSSProperties` | - | Custom inline styles, merged with the anchor styles |
 | `ref` | `React.Ref<HTMLDivElement>` | - | Ref to the popover element for imperative `showPopover()` and `hidePopover()` calls |

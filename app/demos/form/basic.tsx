@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { Button, Checkbox, Form, FormItem, type FormRef, type FormValues, Input, Radio } from "@/ui";
+import { Button, Checkbox, Form, FormItem, type FormRef, type FormValues, Radio } from "@/ui";
 
 export default function Demo() {
   const formRef = useRef<FormRef>(null);

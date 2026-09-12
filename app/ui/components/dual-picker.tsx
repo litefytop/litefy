@@ -106,7 +106,7 @@ export function DualPicker<T>({
 
   const defaultOption = (option: T) => getLabel(option);
   const panelClass = "flex min-w-0 flex-1 flex-col rounded-lg border";
-  const bodyClass = "flex max-h-64 flex-col overflow-auto p-1";
+  const bodyClass = "flex max-h-64 flex-col overflow-auto p-1 gap-1";
 
   return (
     <div className={cn("flex items-stretch gap-3", className)}>
@@ -144,8 +144,8 @@ export function DualPicker<T>({
                 aria-selected={selected}
                 onClick={() => select(v)}
                 className={cn(
-                  "flex cursor-pointer items-center gap-2 rounded-sm px-3 py-2 text-sm transition-colors",
-                  selected ? "bg-primary/10" : "hover:bg-hover",
+                  "flex cursor-pointer items-center gap-2 rounded-sm px-3 py-2 text-sm transition-colors hover:bg-hover",
+                  selected && "bg-accent" ,
                   disabled && "pointer-events-none opacity-50",
                   classNames?.item,
                 )}

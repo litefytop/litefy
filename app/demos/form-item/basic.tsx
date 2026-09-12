@@ -9,7 +9,7 @@ export default function Demo() {
   return (
     <Form
       ref={formRef}
-      className="w-full max-w-md space-y-4"
+      className="w-sm space-y-4"
       onSubmit={async (values) => {
         console.log(values);
         return true;
@@ -20,10 +20,10 @@ export default function Demo() {
         name="username"
         label="Username"
         required
-        description="3–16 characters"
+        description="3-16 characters"
         validate={(value) => {
           if (!value) return "Username is required";
-          if (value.length < 3 || value.length > 16) return "Must be 3–16 characters";
+          if (value.length < 3 || value.length > 16) return "Must be 3-16 characters";
           return null;
         }}
       />
@@ -54,7 +54,7 @@ export default function Demo() {
         validate={(value) => {
           if (!value) return null;
           const n = Number(value);
-          return Number.isFinite(n) && n >= 1 && n <= 120 ? null : "1–120";
+          return Number.isFinite(n) && n >= 1 && n <= 120 ? null : "1-120";
         }}
       />
       <div className="flex gap-2 pt-2">

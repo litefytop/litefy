@@ -6,6 +6,7 @@ import { Textarea, type TextareaProps } from "./text-area";
 import { Select, type SelectOption, type SelectOptionGroup, type SelectProps } from "./select";
 import { Password, type PasswordProps } from "./password";
 import { NumberInput, type NumberInputProps } from "./number-input";
+import { Error } from "./error";
 import { FormContext } from "./form";
 
 type ValidationResult =
@@ -200,7 +201,6 @@ export function FormItem(props: FormItemProps) {
             id={id}
             disabled={disabled}
             required={required}
-            aria-invalid={isInvalid || undefined}
             aria-describedby={hint ? hintId : undefined}
             options={options}
             defaultValue={defaultValue}
@@ -277,20 +277,25 @@ export function FormItem(props: FormItemProps) {
         </label>
       )}
       {control}
-      {hint && (
-        <small
+      {error ? (
+        <Error
           id={hintId}
-          role={error ? "alert" : undefined}
-          className={cn(
-            "block h-5 text-sm indent-2",
-            error ? "text-danger" : "text-muted-foreground",
-            error ? classNames?.error : classNames?.description,
-          )}
-          style={error ? styles?.error : styles?.description}
-          aria-live="polite"
+          className={cn("indent-2", classNames?.error)}
+          style={styles?.error}
         >
           {hint}
-        </small>
+        </Error>
+      ) : (
+        hint && (
+          <small
+            id={hintId}
+            className={cn("block h-5 text-sm indent-2 text-muted-foreground", classNames?.description)}
+            style={styles?.description}
+            aria-live="polite"
+          >
+            {hint}
+          </small>
+        )
       )}
     </div>
   );

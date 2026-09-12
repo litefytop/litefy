@@ -1,0 +1,4 @@
+radio     role=alert x1  "Please choose a notification channel."
+segment   role=alert x1  "Pick a layout before continuing."
+checkbox  role=alert x1  "Both documents must be accepted."
+upload    role=alert x1  "Upload a cover image to continue."

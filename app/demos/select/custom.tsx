@@ -10,7 +10,7 @@ const options = [
 ];
 
 export default function Demo() {
-  const [value, setValue] = useState("");
+  const [, setValue] = useState("");
 
   return (
     <div className="flex w-full max-w-xs flex-col gap-2">

@@ -1,6 +1,6 @@
 "use client";
 
-import { ChipGroup, Tooltip } from "@/ui";
+import { ChipGroup, Tooltip, TooltipContent, TooltipTrigger } from "@/ui";
 import type { ChipItem } from "@/ui";
 
 const tags: ChipItem[] = [
@@ -23,8 +23,11 @@ export default function ChipGroupTooltipDemo() {
       className="max-w-xs"
       renderMore={(hidden) =>
         hidden.length > 0 && (
-          <Tooltip
-            content={
+          <Tooltip>
+            <TooltipTrigger className="shrink-0 cursor-pointer rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium whitespace-nowrap">
+              +{hidden.length}
+            </TooltipTrigger>
+            <TooltipContent>
               <span className="flex max-w-60 flex-wrap gap-1">
                 {hidden.map((item) => (
                   <span
@@ -35,14 +38,7 @@ export default function ChipGroupTooltipDemo() {
                   </span>
                 ))}
               </span>
-            }
-          >
-            <button
-              type="button"
-              className="shrink-0 cursor-pointer rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium whitespace-nowrap"
-            >
-              +{hidden.length}
-            </button>
+            </TooltipContent>
           </Tooltip>
         )
       }

@@ -19,6 +19,7 @@ export * from "./context-menu";
 export * from "./dialog";
 export * from "./donut";
 export * from "./drawer";
+export * from "./error";
 export * from "./dropdown-menu";
 export * from "./dual-picker";
 export * from "./form";
