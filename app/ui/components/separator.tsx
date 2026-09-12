@@ -20,7 +20,7 @@ export function SeparatorLine({
       className={cn(
         "bg-border",
         "data-[orientation=horizontal]:w-full data-[orientation=horizontal]:h-px",
-        "data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px",
+        "data-[orientation=vertical]:w-px data-[orientation=vertical]:self-stretch",
         className,
       )}
     />
@@ -29,18 +29,12 @@ export function SeparatorLine({
 
 export interface SeparatorTextProps extends Omit<React.ComponentProps<"span">, "className"> {
   className?: ClassNameValue;
-  orientation?: "horizontal" | "vertical";
 }
 
-export function SeparatorText({
-  className,
-  orientation = "horizontal",
-  ...props
-}: SeparatorTextProps) {
+export function SeparatorText({ className, ...props }: SeparatorTextProps) {
   return (
     <span
       {...props}
-      data-orientation={orientation}
       className={cn("text-muted-foreground text-sm whitespace-nowrap", className)}
     />
   );
@@ -67,8 +61,16 @@ export function Separator({
   classNames,
   styles,
 }: SeparatorProps) {
+  const margin = orientation === "vertical" ? "" : "my-3";
+
   if (!children) {
-    return <SeparatorLine role="separator" orientation={orientation} className={className} />;
+    return (
+      <SeparatorLine
+        role="separator"
+        orientation={orientation}
+        className={cn(margin, className)}
+      />
+    );
   }
 
   return (
@@ -76,9 +78,10 @@ export function Separator({
       role="separator"
       data-orientation={orientation}
       className={cn(
-        "flex",
-        "data-[orientation=horizontal]:flex-row data-[orientation=horizontal]:items-center data-[orientation=horizontal]:gap-2 data-[orientation=horizontal]:w-full",
-        "data-[orientation=vertical]:flex-col data-[orientation=vertical]:items-center data-[orientation=vertical]:gap-2 data-[orientation=vertical]:h-full",
+        "flex gap-2",
+        "data-[orientation=horizontal]:flex-row data-[orientation=horizontal]:items-center data-[orientation=horizontal]:w-full",
+        "data-[orientation=vertical]:flex-col data-[orientation=vertical]:items-center data-[orientation=vertical]:self-stretch",
+        margin,
         className,
       )}
     >
@@ -87,7 +90,7 @@ export function Separator({
         className={cn("flex-1", classNames?.line)}
         style={styles?.line}
       />
-      <SeparatorText orientation={orientation} className={classNames?.text} style={styles?.text}>
+      <SeparatorText className={classNames?.text} style={styles?.text}>
         {children}
       </SeparatorText>
       <SeparatorLine

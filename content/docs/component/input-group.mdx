@@ -9,15 +9,17 @@ description: An input shell that owns focus and invalid styling for a wrapped co
 
 ## Usage
 
+### Basic Usage
+
 `InputGroup` is the shell around a wrapped control. It owns all focus (`focus-within`) and invalid (`data-invalid`) visuals — border, ring and outline — while the inner `InputRoot` stays visually bare, so the group and the input can never produce a double focus ring. `InputLeading` / `InputTrailing` are the prefix/suffix slots.
 
 <ComponentPreview name="input-group-basic" />
 
-### Invalid state
+### Invalid State
 
-Set the `invalid` prop (or `data-invalid`) on the group — not `aria-invalid` styling on the input. The inner input still carries `aria-invalid` for accessibility, and its danger text color is driven by the group through `group-data-invalid`.
+Set the `invalid` prop (or `data-invalid`) on the group — not `aria-invalid` styling on the input. The inner input still carries `aria-invalid` for accessibility, and its danger text color is driven by the group through `group-data-invalid`. The second row of the preview below shows the invalid group.
 
-<ComponentPreview name="input-basic" />
+<ComponentPreview name="input-group-basic" />
 
 ## Notes
 

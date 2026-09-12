@@ -132,12 +132,15 @@ export function PopoverContent({
   );
 }
 
+export type PopoverHasPopup = "menu" | "dialog" | "listbox" | "grid" | "tree";
+
 export type UsePopoverTriggerOptions = {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   mode?: "click" | "hover";
   hoverDelayOpen?: number;
   hoverDelayClose?: number;
+  hasPopup?: PopoverHasPopup;
 };
 
 export function usePopoverTrigger({
@@ -146,6 +149,7 @@ export function usePopoverTrigger({
   mode = "click",
   hoverDelayOpen = 0,
   hoverDelayClose = 200,
+  hasPopup = "menu",
 }: UsePopoverTriggerOptions) {
   const id = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const anchorName = `--popover-trigger-${id}`;
@@ -174,7 +178,7 @@ export function usePopoverTrigger({
 
   const triggerProps = React.useMemo(() => {
     return {
-      "aria-haspopup": "menu" as const,
+      "aria-haspopup": hasPopup,
       "aria-expanded": open,
       style: {
         anchorName: anchorName,
@@ -207,7 +211,7 @@ export function usePopoverTrigger({
         }
       },
     };
-  }, [open, onOpenChange, mode, clearTimer, scheduleOpen, scheduleClose]);
+  }, [open, onOpenChange, mode, clearTimer, scheduleOpen, scheduleClose, hasPopup]);
   const contentProps = React.useMemo(() => {
     return {
       onMouseEnter: () => {
@@ -234,6 +238,7 @@ export interface PopoverProps {
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   alignX?: PopoverAlignX;
+  hasPopup?: PopoverHasPopup;
   children: React.ReactNode;
   classNames?: {
     trigger?: ClassNameValue;
@@ -252,6 +257,7 @@ export function Popover({
   defaultOpen = false,
   onOpenChange,
   alignX = "center",
+  hasPopup = "menu",
   classNames,
   styles,
   children,
@@ -273,6 +279,7 @@ export function Popover({
     open: innerOpen,
     onOpenChange: handleOpenChange,
     mode,
+    hasPopup,
   });
 
   return (

@@ -20,7 +20,6 @@ export function Segment({ className, checked, ...props }: SegmentProps) {
         "bg-muted text-muted-foreground border-y border-r first:border-l border-border",
         "first:rounded-l-md last:rounded-r-md",
         "transition-colors duration-200",
-        "focus-visible:ring-inset focus-visible:z-10",
         "aria-checked:bg-primary aria-checked:text-primary-foreground",
         className,
       )}
@@ -85,10 +84,7 @@ export function SegmentGroup({
     } else {
       const delta = e.key === "ArrowRight" || e.key === "ArrowDown" ? 1 : -1;
       const from = position === -1 ? 0 : position;
-      next =
-        enabledIndexes[
-          (from + delta + enabledIndexes.length) % enabledIndexes.length
-        ];
+      next = enabledIndexes[(from + delta + enabledIndexes.length) % enabledIndexes.length];
     }
     const item = options[next];
     if (!item) return;
@@ -119,7 +115,12 @@ export function SegmentGroup({
           value={option.value}
           disabled={disabled || option.disabled}
           checked={selectedValue === option.value}
-          tabIndex={index === selectedEnabledIndex || (selectedEnabledIndex === -1 && index === enabledIndexes[0]) ? 0 : -1}
+          tabIndex={
+            index === selectedEnabledIndex ||
+            (selectedEnabledIndex === -1 && index === enabledIndexes[0])
+              ? 0
+              : -1
+          }
           onClick={() => handleSelect(option.value)}
           className={cn(
             "border-y-0 border-r first:border-l-0 last:border-r-0",

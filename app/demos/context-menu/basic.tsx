@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { ContextMenu, type MenuConfig } from "@/ui";
+import { ContextMenu, ContextMenuHost, type MenuConfig } from "@/ui";
 
 const items: MenuConfig[] = [
   {
@@ -19,11 +19,21 @@ export default function ContextMenuBasicDemo() {
 
   return (
     <div className="flex flex-col items-center gap-3">
-      <ContextMenu items={items} onSelect={(item) => setSelected(item.label)}>
-        <div className="flex h-64 w-full max-w-md select-none items-center justify-center rounded-md border border-dashed text-sm text-muted-foreground">
-          Right-click anywhere in this area
-        </div>
-      </ContextMenu>
+      <ContextMenuHost />
+      <div
+        className="flex h-64 w-full max-w-md select-none items-center justify-center rounded-md border border-dashed text-sm text-muted-foreground"
+        onContextMenu={(e) => {
+          e.preventDefault();
+          ContextMenu.open({
+            x: e.clientX,
+            y: e.clientY,
+            items,
+            onSelect: (item) => setSelected(item.label),
+          });
+        }}
+      >
+        Right-click anywhere in this area
+      </div>
       <p className="text-sm text-muted-foreground">Selected: {selected ?? "-"}</p>
     </div>
   );

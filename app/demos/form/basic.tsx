@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { Checkbox, Form, FormItem, type FormRef, type FormValues, Input, Radio } from "@/ui";
+import { Button, Checkbox, Form, FormItem, type FormRef, type FormValues, Input, Radio } from "@/ui";
 
 export default function Demo() {
   const formRef = useRef<FormRef>(null);
@@ -12,20 +12,31 @@ export default function Demo() {
     return true;
   };
 
-  const loadData = () => {
-    formRef.current?.setValues({
-      name: "John",
-      email: "john@example.com",
-      interests: ["reading", "music"],
-      contact: "email",
-    });
-  };
-
   return (
-    <div>
-      <button type="button" onClick={loadData} className="mb-4">
-        Load data
-      </button>
+    <div className="w-full max-w-md">
+      <div className="mb-4 flex gap-2">
+        <Button
+          variant="outline"
+          onClick={() => {
+            formRef.current?.setValues({
+              name: "Jane Doe",
+              email: "jane@example.com",
+              interests: ["reading", "music"],
+              contact: "email",
+            });
+          }}
+        >
+          Fill sample
+        </Button>
+        <Button
+          variant="outline"
+          onClick={() => {
+            formRef.current?.reset();
+          }}
+        >
+          Reset
+        </Button>
+      </div>
 
       <Form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
         <FormItem name="name" label="Name" controlProps={{ placeholder: "Enter your name" }} />
@@ -51,6 +62,7 @@ export default function Demo() {
           <span className="block text-sm font-medium indent-2 select-none">Contact preference</span>
           <Radio.Group
             name="contact"
+            className="flex-row"
             options={[
               { label: "Email", value: "email" },
               { label: "Phone", value: "phone" },

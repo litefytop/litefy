@@ -1,19 +1,15 @@
 ---
 title: Query Builder 查询构建器
-description: 字段节点唯一的树形可折叠列表与嵌套 and/or 组，实时只读逻辑表达式预览，底部提交/重置——react-querybuilder 负责数据转换，UI 是我们自己的。
+description: 字段节点唯一的树形可折叠列表与嵌套 and/or 组，实时自然语言预览，底部提交/重置——零外部依赖。
 ---
 
 ## 安装
 
 <Installation name="query-builder" />
 
-:::note
-该组件依赖 [`react-querybuilder`](https://react-querybuilder.js.org/)——UI 是我们自己的，该包提供查询树格式与数据转换（`formatQuery`、`parseSQL` 等）。
-:::
-
 ## 用法
 
-`QueryBuilder` 把查询渲染为一棵**只有两种节点的树**：字段节点与 Group 节点。每个字段在每组中**只出现一次**——一个字段文件夹里的多条子条件，取代了过去同一字段一行行重复的写法。布局完全递归：根组与新增的组共用同一个首行——折叠箭头、**AND / OR** 分段选择器和 **+ Group** 按钮——其下是带参考线缩进的组内容，在固定高度的框架内滚动。下方是只读的**条件预览面板**，默认以自然语言展示查询；居中的**提交 / 重置**位于最底部。
+`QueryBuilder` 把查询渲染为一棵**只有两种节点的树**：字段节点与 Group 节点。每个字段在每组中**只出现一次**——一个字段文件夹里的多条子条件，取代了过去同一字段一行行重复的写法。布局完全递归：根组与新增的组共用同一个首行——折叠箭头、**AND / OR** 分段选择器和 **+ Group** 按钮——其下是带参考线缩进的组内容，在固定高度的框架内滚动。下方是只读的**自然语言条件预览面板**；居中的**提交 / 重置**位于最底部。
 
 <ComponentPreview name="query-builder-basic" />
 
@@ -24,9 +20,36 @@ description: 字段节点唯一的树形可折叠列表与嵌套 and/or 组，�
 
 `valueKind: "select"` 的字段展开为带**全选**复选框的选项列表。勾选 / 取消勾选直接增删条件；选中的值合并为**单条 `IN` 条件**（不会拆成多条 `OR`）。只支持正向 `IN`，**不提供 `NOT IN`**——想反选，先全选再取消不需要的选项即可。
 
+### 自然语言预览
+
+预览基于字段标签生成、面向用户阅读：同级条件用组连接词（`and` / `or`）连接，嵌套组永远加括号，值按类型格式化——数字原样、文本与日期单引号包裹（值内单引号双写）、select 的 `IN` 渲染为 `('vip', 'beta')`。空树预览为 "No conditions yet"。
+
+操作符默认渲染为英文自然语言短语（对齐 react-querybuilder）：`Name is 'fung'`、`Price is greater than 30`、`Status is one of ('vip', 'beta')`。
+
+字段是 label/value 成对结构：`name` 写入查询，`label` 供人阅读——文件夹节点与预览始终渲染 label，同一棵查询树可以随意本地化。
+
+操作符通过**静态属性**做国际化（覆盖默认英文短语），同时作用于操作符下拉与自然语言预览：
+
+```tsx
+import { QueryBuilder } from "@/ui";
+
+QueryBuilder.operatorLabels = {
+  "=": "为",
+  "!=": "不为",
+  ">": "大于",
+  ">=": "大于等于",
+  "<": "小于",
+  "<=": "小于等于",
+  contains: "包含",
+  in: "属于",
+};
+```
+
+未配置的操作符回退为原始字符串，自定义操作符无需任何配置即可使用。
+
 ### 提交与重置
 
-树是草稿态：编辑只更新实时预览。预览默认输出**自然语言**（"Name contains …"），基于字段标签生成，面向用户阅读；通过格式选择器可切换到 SQL、MongoDB、CEL 等格式。**提交**通过 `onSubmit` / `onQueryChange` 以 react-querybuilder 的 `RuleGroupType` 格式输出查询树——交给 `formatQuery` 可做同样的格式转换；`parseSQL` 可以把数据库中存储的条件字符串通过 `defaultValue` 回填。**重置**将草稿恢复为 `defaultValue`（或空树）。
+树是草稿态：编辑只更新实时预览。**提交**通过 `onSubmit` / `onQueryChange` 以结构化 `QueryGroup` 对象输出查询树（`{ combinator: "and" | "or", rules: [{ field, operator, value } | QueryGroup] }`）。**重置**将草稿恢复为 `defaultValue`（或空树）。
 
 ## API 参考
 
@@ -35,13 +58,11 @@ description: 字段节点唯一的树形可折叠列表与嵌套 and/or 组，�
 | 属性 | 类型 | 默认值 | 描述 |
 |------|------|--------|------|
 | `fields` | `QueryFieldConfig[]` | - | 可用字段；每个字段渲染为一个唯一的文件夹节点 **必填** |
-| `defaultValue` | `RuleGroupType` | 空 `and` 树 | 初始查询（react-querybuilder 格式），也是重置的目标 |
-| `onSubmit` | `(query: RuleGroupType) => void` | - | 提交按钮触发 |
-| `onQueryChange` | `(query: RuleGroupType) => void` | - | `onSubmit` 的别名 |
+| `defaultValue` | `QueryGroup` | 空 `and` 树 | 初始查询，也是重置的目标 |
+| `onSubmit` | `(query: QueryGroup) => void` | - | 提交按钮触发 |
+| `onQueryChange` | `(query: QueryGroup) => void` | - | `onSubmit` 的别名 |
 | `onReset` | `() => void` | - | 重置按钮触发 |
-| `showPreview` | `boolean` | `true` | 显示只读逻辑表达式预览面板 |
-| `showConvert` | `boolean` | `true` | 在预览面板内显示格式选择器 |
-| `convertFormats` | `string[]` | `natural_language, sql, parameterized, parameterized_named, mongodb, cel, spel, json, jsonlogic` | 选择器提供的格式 |
+| `showPreview` | `boolean` | `true` | 显示只读自然语言预览面板 |
 | `maxDepth` | `number` | `2` | 最大组嵌套深度 |
 | `disabled` | `boolean` | `false` | 禁用构建器 |
 | `className` | `ClassNameValue` | - | 自定义类名，作用于根元素 |
@@ -51,16 +72,21 @@ description: 字段节点唯一的树形可折叠列表与嵌套 and/or 组，�
 | 字段 | 类型 | 默认值 | 描述 |
 |------|------|--------|------|
 | `name` | `string` | - | 写入查询的字段标识 **必填** |
-| `label` | `string` | `name` | 字段文件夹节点上显示的标签 |
+| `label` | `string` | `name` | 字段文件夹节点与预览中显示的标签 |
 | `operators` | `string[]` | 按 `valueKind` | 子条件可用的操作符 |
 | `valueKind` | `"text" \| "number" \| "date" \| "select"` | `"text"` | 值编辑器类型 |
 | `options` | `{ label, value }[]` | - | `valueKind: "select"` 时的选项 |
 
 ### 安全：提交出去的是 JSON，不是 SQL
 
-`onSubmit` / `onQueryChange` 交给你的永远是**结构化查询对象**，而不是 SQL 字符串。方言预览（SQL / MongoDB / CEL / 自然语言）仅用于**浏览器内展示**，供人阅读。不要把这些字符串发到后端执行：客户端生成的 SQL 既不可信任也无法被可靠校验，直接执行还会绕过参数化与行级权限。
+`onSubmit` / `onQueryChange` 交给你的永远是**结构化查询对象**，而不是 SQL 字符串。自然语言预览仅用于**浏览器内展示**，供人阅读。不要把任何预览字符串发到后端执行：客户端生成的 SQL 既不可信任也无法被可靠校验，直接执行还会绕过参数化与行级权限。
 
 安全的后端流程是：接收 JSON 对象 → 按白名单校验（允许的字段、字段可用的操作符、值类型与范围）→ 在服务端将其转换为**参数化** SQL，所有值绑定查询参数。前端的职责是编辑体验；方言正确性与安全性都归属后端。
 
-`@react-querybuilder/core` 是本组件的展示层依赖——后端如需同样的转换，请基于提交的 JSON 在服务端自行实现。
+本组件零外部依赖——SQL、MongoDB、CEL 等方言转换由后端基于提交的 JSON 自行实现。
 
+### 静态属性
+
+| 属性 | 类型 | 描述 |
+|------|------|------|
+| `QueryBuilder.operatorLabels` | `Record<string, string>` | 操作符在下拉与自然语言预览中的显示文案。默认为英文自然语言短语（`=` → "is"、`>` → "is greater than"、`in` → "is one of" 等），赋值可部分覆盖（如中文）——未配置的键回退为原始操作符 |

@@ -9,6 +9,8 @@ description: A self-managing form field that renders a finished control per vari
 
 ## Usage
 
+### Basic Usage
+
 `FormItem` renders a finished control per `variant` (`input`, `textarea`, `select`, `password`, `number-input`) with a fixed vertical layout: **label → input → description / error** (the two lines share one slot — the description shows by default and is replaced by the error while the field is invalid). It registers with the surrounding `Form` so its value is collected on submit, shows validation errors in a danger line below the input, and works standalone too.
 
 <ComponentPreview

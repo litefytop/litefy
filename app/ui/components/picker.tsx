@@ -209,8 +209,8 @@ export function Picker({
         style={{
           margin: "4px 0 0",
           positionAnchor: anchorName,
-          positionArea: "bottom span-right",
-          justifySelf: "start",
+          positionArea: "bottom span-all",
+          justifySelf: "anchor-center",
           minWidth: "anchor-size(width)",
           positionTryFallbacks: "flip-block",
           ...styles?.popover,

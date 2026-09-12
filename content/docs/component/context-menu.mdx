@@ -1,6 +1,6 @@
 ---
 title: Context Menu
-description: A right-click context menu with pointer anchoring, grouping and submenus — a data-driven composite built on Menu and native popover
+description: An imperative right-click context menu with pointer anchoring, grouping and submenus — built on Menu and native popover, opened with a single call
 ---
 
 ## Installation
@@ -11,15 +11,13 @@ description: A right-click context menu with pointer anchoring, grouping and sub
 
 ### Basic Usage
 
-Right-click the target area to open the menu at the pointer; selecting an item closes it. Right-clicking again while the menu is open re-anchors it to the new cursor position.
+Mount `<ContextMenuHost />` once, then call `ContextMenu.open()` from any element's `onContextMenu` — no wrapper component, no anchor plumbing. The menu opens at the pointer; selecting an item closes it; right-clicking again while open re-anchors to the new cursor position.
 
-<ComponentPreview
-  name="context-menu-basic"
-/>
+<ComponentPreview name="context-menu-basic" />
 
-### Custom
+### Custom Styling
 
-Assemble the parts manually for full control: a custom-styled trigger, your own anchor name, and a panel with custom width and classes. The `anchorName` passed to `ContextMenuAnchor` and `ContextMenuContent` must match — it is the link the panel positions itself with.
+Pass `classNames.content` / `styles.content` through `open()` to restyle the panel. The menu items themselves (grouping, submenus, keyboard navigation) come from the [Menu](/docs/component/menu) component — refer to its API for `MenuConfig` and `MenuItemConfig`.
 
 <ComponentPreview
   name="context-menu-custom"
@@ -27,65 +25,42 @@ Assemble the parts manually for full control: a custom-styled trigger, your own 
 
 ## API Reference
 
-### High-level Components
+### ContextMenuHost
 
-#### ContextMenu
+Renders the floating menu panel whenever `ContextMenu.open()` is active. Mount it once near the app root — it renders nothing until a menu is opened. Closing happens automatically on outside `mousedown` and `Escape`; right-clicks inside the panel are suppressed so the browser menu never appears.
 
-A data-driven context menu. It renders the trigger area you provide, tracks the pointer position on right-click, and opens the menu panel anchored to the cursor. Outside clicks and `Escape` close the panel; right-clicks inside the panel are suppressed so the browser menu never appears.
+| Prop        | Type              | Default | Description                      |
+| :---------- | :---------------- | :------ | :------------------------------- |
+| `className` | `ClassNameValue`  | -       | Custom class on the anchor wrapper |
 
-| Prop         | Type                                   | Default | Description                                                                 |
-| :----------- | :------------------------------------- | :------ | :-------------------------------------------------------------------------- |
-| `children`   | `React.ReactNode`                      | -       | The trigger area; right-clicking it opens the menu                          |
-| `items`      | `MenuConfig[]`                         | -       | Menu items, flat or grouped — same shape as the [Menu](/docs/component/menu) component |
-| `disabled`   | `boolean`                              | -       | Suppresses the custom menu; the native browser menu shows instead            |
-| `onSelect`   | `(item: MenuItemConfig) => void`       | -       | Fired when a menu item is activated; the menu closes afterwards              |
-| `classNames` | `{ content?: ClassNameValue }`         | -       | Custom classes for the panel                                                 |
-| `styles`     | `{ content?: React.CSSProperties }`    | -       | Inline styles for the panel; anchor positioning props are managed internally |
+### Statics
 
-#### Statics
+#### ContextMenu.open
 
-| Static             | Type                  | Description                          |
-| :----------------- | :-------------------- | :----------------------------------- |
-| `ContextMenu.Trigger` | `ContextMenuTrigger` | The right-click trigger area part    |
-| `ContextMenu.Anchor`  | `ContextMenuAnchor`  | The zero-size pointer anchor part    |
-| `ContextMenu.Content` | `ContextMenuContent` | The floating menu panel part         |
+```ts
+ContextMenu.open(options: ContextMenuOpenOptions): void
+```
 
----
+Opens the menu at the given viewport coordinates.
 
-### Composable Components
+| Option         | Type                                   | Default | Description                                                                 |
+| :------------- | :------------------------------------- | :------ | :-------------------------------------------------------------------------- |
+| `x`            | `number`                               | -       | Viewport x coordinate (usually `e.clientX`) **Required**                     |
+| `y`            | `number`                               | -       | Viewport y coordinate (usually `e.clientY`) **Required**                     |
+| `items`        | `MenuConfig[]`                         | -       | Menu items, flat or grouped — same shape as the [Menu](/docs/component/menu) component **Required** |
+| `onSelect`     | `(item: MenuItemConfig) => void`       | -       | Fired when a menu item is activated; the menu closes afterwards              |
+| `classNames`   | `{ content?: ClassNameValue }`         | -       | Custom classes for the panel                                                 |
+| `styles`       | `{ content?: React.CSSProperties }`    | -       | Inline styles for the panel; anchor positioning props are managed internally |
 
-#### ContextMenuTrigger
+#### ContextMenu.dismiss
 
-A behavior-only wrapper: right-clicking it reports the pointer position via `onOpenMenu` after calling `e.preventDefault()`. Renders a plain `div` with no built-in styling.
+```ts
+ContextMenu.dismiss(): void
+```
 
-| Prop          | Type                                            | Default | Description                                                                                     |
-| :------------ | :---------------------------------------------- | :------ | :---------------------------------------------------------------------------------------------- |
-| `disabled`    | `boolean`                                       | -       | When true, right-click does nothing (the native menu shows)                                      |
-| `onOpenMenu`  | `(position: { x: number; y: number }) => void`  | -       | Called with the cursor position when the area is right-clicked                                   |
-| `className`   | `ClassNameValue`                                | -       | Custom CSS class                                                                                 |
-| `...props`    | `React.ComponentProps<"div">`                   | -       | Supports all native div props; your own `onContextMenu` runs first and can `preventDefault()` to cancel opening |
+Closes the menu programmatically.
 
-#### ContextMenuAnchor
+### Notes
 
-A zero-size `fixed` div placed at the pointer position — the anchor the panel attaches to via CSS anchor positioning.
-
-| Prop        | Type                            | Default | Description                                        |
-| :---------- | :------------------------------ | :------ | :------------------------------------------------- |
-| `position`  | `{ x: number; y: number }`      | -       | Viewport coordinates for the anchor point          |
-| `anchorName`| `string`                        | -       | Required. The CSS anchor name; applied last so it cannot be overridden by `style` |
-| `className` | `ClassNameValue`                | -       | Custom CSS class                                   |
-| `...props`  | `React.ComponentProps<"div">`   | -       | Supports all native div props                      |
-
-#### ContextMenuContent
-
-The floating panel, built on `PopoverContent` with `popover="manual"`. Positions its top-left corner at the anchor with a small offset, and flips via `positionTryFallbacks` near viewport edges. Closes on outside `mousedown` and `Escape`.
-
-| Prop           | Type                           | Default | Description                                                                        |
-| :------------- | :----------------------------- | :------ | :--------------------------------------------------------------------------------- |
-| `open`         | `boolean`                      | -       | Controlled panel state                                                             |
-| `onOpenChange` | `(open: boolean) => void`      | -       | Fired when the panel opens or closes                                               |
-| `anchorName`   | `string`                       | -       | Required. The anchor to position against; applied last so it cannot be overridden by `style` |
-| `className`    | `ClassNameValue`               | -       | Custom CSS class (`w-48` by default)                                               |
-| `...props`     | `React.ComponentProps<"div">`  | -       | Supports all native div props, spread on the panel                                 |
-
-The menu items themselves (grouping, submenus, keyboard navigation) come from the [Menu](/docs/component/menu) component — refer to its API for `MenuConfig` and `MenuItemConfig`.
+- The panel anchors to a zero-size element placed at the pointer position and flips via `positionTryFallbacks` near viewport edges — both are internal details.
+- Because there is no wrapper, the trigger can be any element or event source: table rows, canvas, tree nodes, or even a non-right-click gesture.

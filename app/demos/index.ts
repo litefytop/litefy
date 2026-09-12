@@ -155,8 +155,6 @@ import PreviewCardBasicDemo from "./preview-card/basic";
 import previewCardBasicCode from "./preview-card/basic.tsx?raw";
 import FormBasicDemo from "./form/basic";
 import formBasicCode from "./form/basic.tsx?raw";
-import FormImperativeDemo from "./form/imperative";
-import formImperativeCode from "./form/imperative.tsx?raw";
 import FormValidationDemo from "./form/validation";
 import formValidationCode from "./form/validation.tsx?raw";
 import ImageBasicDemo from "./image/basic";
@@ -169,6 +167,8 @@ import InputBasicDemo from "./input/basic";
 import inputBasicCode from "./input/basic.tsx?raw";
 import InputOtpBasicDemo from "./input-otp/basic";
 import inputOtpBasicCode from "./input-otp/basic.tsx?raw";
+import InputOtpInvalidDemo from "./input-otp/invalid";
+import inputOtpInvalidCode from "./input-otp/invalid.tsx?raw";
 import InputOtpControlledDemo from "./input-otp/controlled";
 import inputOtpControlledCode from "./input-otp/controlled.tsx?raw";
 import InputOtpMaskDemo from "./input-otp/mask";
@@ -200,6 +200,8 @@ import paginationBasicCode from "./use-pagination/basic.tsx?raw";
 import ListBasicDemo from "./list/basic";
 import ListGroupedDemo from "./list/grouped";
 import listGroupedCode from "./list/grouped.tsx?raw";
+import ListOrderDemo from "./list/order";
+import listOrderCode from "./list/order.tsx?raw";
 import MenuBasicDemo from "./menu/basic";
 import menuBasicCode from "./menu/basic.tsx?raw";
 import listBasicCode from "./list/basic.tsx?raw";
@@ -229,22 +231,16 @@ import ScrollShadowSizeDemo from "./scroll-shadow/size";
 import scrollShadowSizeCode from "./scroll-shadow/size.tsx?raw";
 import SeparatorBasicDemo from "./separator/basic";
 import separatorBasicCode from "./separator/basic.tsx?raw";
-import SeparatorCustomDemo from "./separator/custom";
-import separatorCustomCode from "./separator/custom.tsx?raw";
 import SegmentBasicDemo from "./segment/basic";
 import segmentBasicCode from "./segment/basic.tsx?raw";
 import SegmentCustomDemo from "./segment/custom";
 import segmentCustomCode from "./segment/custom.tsx?raw";
 import SidebarBasicDemo from "./sidebar/basic";
 import sidebarBasicCode from "./sidebar/basic.tsx?raw";
-import SidebarRefDemo from "./sidebar/ref";
-import sidebarRefCode from "./sidebar/ref.tsx?raw";
 import SliderBasicDemo from "./slider/basic";
 import sliderBasicCode from "./slider/basic.tsx?raw";
 import SliderOrientationDemo from "./slider/orientation";
 import sliderOrientationCode from "./slider/orientation.tsx?raw";
-import SliderInvalidDemo from "./slider/invalid";
-import sliderInvalidCode from "./slider/invalid.tsx?raw";
 import StepsBasicDemo from "./steps/basic";
 import stepsBasicCode from "./steps/basic.tsx?raw";
 import TimelineBasicDemo from "./timeline/basic";
@@ -537,10 +533,6 @@ export const demos: Record<string, DemoItem> = {
     component: FormBasicDemo,
     code: formBasicCode,
   },
-  "form-imperative": {
-    component: FormImperativeDemo,
-    code: formImperativeCode,
-  },
   "form-validation": {
     component: FormValidationDemo,
     code: formValidationCode,
@@ -633,6 +625,10 @@ export const demos: Record<string, DemoItem> = {
     component: InputOtpBasicDemo,
     code: inputOtpBasicCode,
   },
+  "input-otp-invalid": {
+    component: InputOtpInvalidDemo,
+    code: inputOtpInvalidCode,
+  },
   "input-otp-controlled": {
     component: InputOtpControlledDemo,
     code: inputOtpControlledCode,
@@ -721,6 +717,10 @@ export const demos: Record<string, DemoItem> = {
     component: ListGroupedDemo,
     code: listGroupedCode,
   },
+  "list-order": {
+    component: ListOrderDemo,
+    code: listOrderCode,
+  },
   "menu-basic": {
     component: MenuBasicDemo,
     code: menuBasicCode,
@@ -773,10 +773,6 @@ export const demos: Record<string, DemoItem> = {
     component: SeparatorBasicDemo,
     code: separatorBasicCode,
   },
-  "separator-custom": {
-    component: SeparatorCustomDemo,
-    code: separatorCustomCode,
-  },
   "segment-basic": {
     component: SegmentBasicDemo,
     code: segmentBasicCode,
@@ -789,10 +785,6 @@ export const demos: Record<string, DemoItem> = {
     component: SidebarBasicDemo,
     code: sidebarBasicCode,
   },
-  "sidebar-ref": {
-    component: SidebarRefDemo,
-    code: sidebarRefCode,
-  },
   "slider-basic": {
     component: SliderBasicDemo,
     code: sliderBasicCode,
@@ -800,10 +792,6 @@ export const demos: Record<string, DemoItem> = {
   "slider-orientation": {
     component: SliderOrientationDemo,
     code: sliderOrientationCode,
-  },
-  "slider-invalid": {
-    component: SliderInvalidDemo,
-    code: sliderInvalidCode,
   },
   "steps-basic": {
     component: StepsBasicDemo,

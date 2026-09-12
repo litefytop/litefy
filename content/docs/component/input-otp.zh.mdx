@@ -17,6 +17,14 @@ description: 一次性验证码输入框，支持自动跳格、粘贴填充、�
   name="input-otp-basic"
 />
 
+### 无效状态
+
+设置 `invalid` 会在组上标记 `data-invalid`、在每个格子标记 `aria-invalid`——危险色边框与文字自动生效。填满后校验，修正后清除标记。
+
+<ComponentPreview
+  name="input-otp-invalid"
+/>
+
 ### 掩码
 
 将格子渲染为密码输入，适用于 PIN 码场景。
@@ -54,8 +62,6 @@ description: 一次性验证码输入框，支持自动跳格、粘贴填充、�
 | `aria-label` | `string` | - | 无障碍标签，每个格子会附加序号后缀 |
 | `className` | `ClassNameValue` | - | 容器自定义类 |
 | `style` | `React.CSSProperties` | - | 容器自定义内联样式 |
-| `className` | `ClassNameValue` | - | 自定义类名，作用于外壳容器 |
-| `style` | `React.CSSProperties` | - | 内联样式，作用于外壳容器 |
 | `classNames` | `{ slot? }` | - | 单元格的自定义类 |
 | `styles` | `{ slot? }` | - | 单元格的内联样式 |
 

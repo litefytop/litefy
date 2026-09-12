@@ -1,6 +1,6 @@
 import { Loader2 } from "lucide-react";
 import * as React from "react";
-import { type ClassNameValue, cn } from "../utils/cn";
+import { cn } from "../utils/cn";
 
 type FormElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 type FormValue = string | number | string[] | number[] | null;
@@ -40,12 +40,9 @@ export interface UseFieldValidityReturn {
 export function useFieldValidity(): UseFieldValidityReturn {
   const [validity, setValidity] = React.useState<Record<string, string | boolean | null>>({});
 
-  const setFieldError = React.useCallback(
-    (name: string, error: string | boolean | null) => {
-      setValidity((prev) => (prev[name] === error ? prev : { ...prev, [name]: error }));
-    },
-    [],
-  );
+  const setFieldError = React.useCallback((name: string, error: string | boolean | null) => {
+    setValidity((prev) => (prev[name] === error ? prev : { ...prev, [name]: error }));
+  }, []);
 
   const clearFieldError = React.useCallback((name: string) => {
     setValidity((prev) => (name in prev ? { ...prev, [name]: null } : prev));
@@ -273,7 +270,7 @@ function FormSubmit({ children, className, ref, loadingIcon, ...props }: FormSub
       disabled={isPending}
       ref={ref}
       className={cn(
-        "border border-border cursor-pointer  inline-flex items-center justify-center shrink-0 select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] h-9 min-w-9 px-3 py-1 has-[>svg]:px-2 gap-1 rounded-md",
+        "border border-border cursor-pointer  inline-flex items-center justify-center shrink-0 select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-3 h-9 min-w-9 px-3 py-1 has-[>svg]:px-2 gap-1 rounded-md",
         className,
       )}
       {...props}
@@ -285,31 +282,5 @@ function FormSubmit({ children, className, ref, loadingIcon, ...props }: FormSub
 }
 
 Form.Submit = FormSubmit;
-
-export interface FormLabelProps extends Omit<React.ComponentProps<"label">, "className"> {
-  className?: ClassNameValue;
-}
-
-export function FormLabel({ className, ...props }: FormLabelProps) {
-  return (
-    <label
-      {...props}
-      className={cn("text-sm font-medium leading-none indent-2 py-1 select-none", className)}
-    />
-  );
-}
-
-export interface FormHintProps extends Omit<React.ComponentProps<"small">, "className"> {
-  className?: ClassNameValue;
-}
-
-export function FormHint({ className, ...props }: FormHintProps) {
-  return (
-    <small
-      {...props}
-      className={cn("text-sm indent-2 h-5 text-muted-foreground group-data-invalid:text-danger", className)}
-    />
-  );
-}
 
 export { FormContext };

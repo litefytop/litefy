@@ -251,7 +251,6 @@ function MenuList({
           aria-haspopup={hasSub ? "menu" : undefined}
           className={cn(
             "w-full text-left px-2 py-1.5 text-sm font-semibold cursor-pointer",
-            "focus-visible:ring-inset",
             hasSub && "flex items-center justify-between cursor-default",
             activeEntry === entryId && "bg-hover",
             itemClassName,

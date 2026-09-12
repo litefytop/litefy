@@ -46,7 +46,6 @@ export const Toggle = ({
         "transition-colors duration-200",
         "aria-pressed:bg-primary aria-pressed:text-primary-foreground aria-pressed:border-primary",
         "hover:not-aria-pressed:bg-muted/50",
-        "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         className,
       )}
     >

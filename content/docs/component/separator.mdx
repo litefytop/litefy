@@ -11,18 +11,10 @@ description: A separator component supporting horizontal and vertical orientatio
 
 ### Basic Usage
 
-Plain lines and separators with a text label, in both orientations.
+A classic footer: brand block on top, a line, then a row of links with vertical separators between them. Pass `children` to render a text label between two lines — the usual "or continue with" divider on auth screens. Horizontal separators carry a small default vertical margin (`my-3`, override via `className`); vertical lines self-stretch to the flex row and rely on `gap` for spacing.
 
 <ComponentPreview
   name="separator-basic"
-/>
-
-### Custom
-
-Assemble separators with dashed lines and styled text using the composable components.
-
-<ComponentPreview
-  name="separator-custom"
 />
 
 ## API Reference
@@ -33,7 +25,7 @@ Ready-to-use composite component.
 
 #### Separator
 
-Without `children`, renders a single line. With `children`, renders a line, the text label, and a line.
+Renders a single line, or a line–text–line divider when `children` is passed.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
@@ -49,7 +41,7 @@ Without `children`, renders a single line. With `children`, renders a line, the 
 
 #### SeparatorLine
 
-The line part carrying its own `data-orientation` sizing.
+The line part carrying its own `data-orientation` sizing. Vertical lines stretch to the flex row (`self-stretch`), or pin them with a fixed `h-*`.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
@@ -59,10 +51,9 @@ The line part carrying its own `data-orientation` sizing.
 
 #### SeparatorText
 
-The text label part carrying its own `data-orientation` writing mode.
+The text label part, styled for sitting between two lines.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Orientation of the text |
 | `className` | `ClassNameValue` | - | Custom CSS class |
 | `...props` | `React.ComponentProps<"span">` | - | Supports all native span props, such as `children` |

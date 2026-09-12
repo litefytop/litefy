@@ -24,7 +24,7 @@ export function DropdownMenu({
   trigger,
   items,
   onSelect,
-  alignX = "start",
+  alignX = "center",
   className,
   classNames,
 }: DropdownMenuProps) {

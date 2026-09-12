@@ -179,3 +179,246 @@ export function areaPath(points: ChartPoint[], baseline: number, smooth = false)
   const first = points[0];
   return `${line}L${round(last.x)} ${round(baseline)}L${round(first.x)} ${round(baseline)}Z`;
 }
+
+export function niceTicks(min: number, max: number, count = 5): number[] {
+  if (!Number.isFinite(min) || !Number.isFinite(max) || min >= max) {
+    const base = Number.isFinite(min) ? min : 0;
+    return [base - 1, base, base + 1];
+  }
+  const rawStep = (max - min) / Math.max(1, count);
+  const magnitude = Math.pow(10, Math.floor(Math.log10(rawStep)));
+  const residual = rawStep / magnitude;
+  const step = (residual >= 5 ? 10 : residual >= 2 ? 5 : residual >= 1 ? 2 : 1) * magnitude;
+  const start = Math.ceil(min / step) * step;
+  const total = Math.floor((max - start) / step + 1e-9);
+  const ticks: number[] = [];
+  for (let i = 0; i <= total; i++) {
+    const value = Number((start + i * step).toFixed(10));
+    ticks.push(Object.is(value, -0) ? 0 : value);
+  }
+  return ticks;
+}
+
+export interface TimeTicks {
+  ticks: number[];
+  format: (value: number) => string;
+}
+
+const pad2 = (value: number) => String(value).padStart(2, "0");
+const formatClock = (d: Date) => `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+const formatClockSec = (d: Date) => `${formatClock(d)}:${pad2(d.getSeconds())}`;
+const formatDay = (d: Date) => `${d.getMonth() + 1}/${d.getDate()}`;
+const formatMonth = (d: Date) => `${d.getFullYear()}/${d.getMonth() + 1}`;
+
+const SUB_DAY_STEPS = [
+  1, 2, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800, 3600, 7200, 10800, 21600, 43200,
+];
+const DAY = 86400;
+
+function subDayTicks(min: number, max: number, step: number): TimeTicks {
+  const stepMs = step * 1000;
+  const start = Math.floor(min * 1000 / stepMs) * stepMs;
+  const ticks: number[] = [];
+  for (let ms = start; ms / 1000 <= max; ms += stepMs) {
+    ticks.push(ms / 1000);
+  }
+  return {
+    ticks,
+    format: (value) => {
+      const d = new Date(value * 1000);
+      if (d.getHours() === 0 && d.getMinutes() === 0 && d.getSeconds() === 0) return formatDay(d);
+      return step < 60 ? formatClockSec(d) : formatClock(d);
+    },
+  };
+}
+
+function dayTicks(min: number, max: number, stepDays: number): TimeTicks {
+  const first = new Date(min * 1000);
+  first.setHours(0, 0, 0, 0);
+  const epochDay = Math.round(first.getTime() / (DAY * 1000));
+  const startDay = Math.floor(epochDay / stepDays) * stepDays;
+  const ticks: number[] = [];
+  for (let day = startDay; day * DAY <= max; day += stepDays) {
+    if (day * DAY >= min - DAY) ticks.push(day * DAY);
+  }
+  return { ticks, format: (value) => formatDay(new Date(value * 1000)) };
+}
+
+function monthTicks(min: number, max: number, stepMonths: number): TimeTicks {
+  const first = new Date(min * 1000);
+  const totalMonths = first.getFullYear() * 12 + first.getMonth();
+  const aligned = totalMonths - (((totalMonths % stepMonths) + stepMonths) % stepMonths);
+  const ticks: number[] = [];
+  const cursor = new Date(first.getFullYear(), aligned - first.getFullYear() * 12, 1, 0, 0, 0, 0);
+  while (cursor.getTime() / 1000 <= max) {
+    ticks.push(cursor.getTime() / 1000);
+    cursor.setMonth(cursor.getMonth() + stepMonths);
+  }
+  return { ticks, format: (value) => formatMonth(new Date(value * 1000)) };
+}
+
+function yearTicks(min: number, max: number, stepYears: number): TimeTicks {
+  const first = new Date(min * 1000);
+  const start = Math.floor(first.getFullYear() / stepYears) * stepYears;
+  const ticks: number[] = [];
+  for (let year = start; new Date(year, 0, 1).getTime() / 1000 <= max; year += stepYears) {
+    ticks.push(new Date(year, 0, 1).getTime() / 1000);
+  }
+  return { ticks, format: (value) => String(new Date(value * 1000).getFullYear()) };
+}
+
+export function niceTimeTicks(min: number, max: number, count = 6): TimeTicks {
+  const span = max - min;
+  if (!(span > 0) || !Number.isFinite(span)) {
+    const base = Number.isFinite(min) ? min : 0;
+    return { ticks: [base], format: (value) => formatDay(new Date(value * 1000)) };
+  }
+  const target = span / Math.max(1, count);
+  if (target < DAY) {
+    const step = SUB_DAY_STEPS.find((s) => s >= target) ?? DAY;
+    return subDayTicks(min, max, step);
+  }
+  const targetDays = target / DAY;
+  if (targetDays < 28) {
+    const step = [1, 2, 7, 14].find((s) => s >= targetDays) ?? 28;
+    return dayTicks(min, max, step);
+  }
+  const targetMonths = targetDays / 30.4375;
+  if (targetMonths < 12) {
+    const step = [1, 2, 3, 6].find((s) => s >= targetMonths) ?? 12;
+    return monthTicks(min, max, step);
+  }
+  const targetYears = targetMonths / 12;
+  const step = [1, 2, 5, 10, 20, 25, 50, 100, 200, 500].find((s) => s >= targetYears) ?? 1000;
+  return yearTicks(min, max, step);
+}
+
+export function lttb(points: ChartPoint[], targetCount: number): ChartPoint[] {
+  const n = points.length;
+  if (targetCount >= n || targetCount < 3) return points;
+  const every = (n - 2) / (targetCount - 2);
+  const sampled: ChartPoint[] = [points[0]];
+  let a = 0;
+  for (let i = 0; i < targetCount - 2; i++) {
+    const avgStart = Math.floor((i + 1) * every) + 1;
+    const avgEnd = Math.min(Math.floor((i + 2) * every) + 1, n);
+    const avgLength = Math.max(1, avgEnd - avgStart);
+    let avgX = 0;
+    let avgY = 0;
+    for (let j = avgStart; j < avgEnd; j++) {
+      avgX += points[j].x;
+      avgY += points[j].y;
+    }
+    avgX /= avgLength;
+    avgY /= avgLength;
+    const rangeStart = Math.floor(i * every) + 1;
+    const rangeEnd = Math.min(Math.floor((i + 1) * every) + 1, n);
+    const anchor = points[a];
+    let maxArea = -1;
+    let nextA = rangeStart;
+    for (let j = rangeStart; j < rangeEnd; j++) {
+      const area = Math.abs(
+        (anchor.x - avgX) * (points[j].y - anchor.y) - (anchor.x - points[j].x) * (avgY - anchor.y),
+      );
+      if (area > maxArea) {
+        maxArea = area;
+        nextA = j;
+      }
+    }
+    sampled.push(points[nextA]);
+    a = nextA;
+  }
+  sampled.push(points[n - 1]);
+  return sampled;
+}
+
+export const LTTB_THRESHOLD = 2000;
+
+export function decimate(points: ChartPoint[], targetCount: number): ChartPoint[] {
+  return points.length > LTTB_THRESHOLD ? lttb(points, Math.max(3, targetCount)) : points;
+}
+
+function lowerBound(xs: number[], target: number): number {
+  let lo = 0;
+  let hi = xs.length;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (xs[mid] < target) lo = mid + 1;
+    else hi = mid;
+  }
+  return lo;
+}
+
+export function nearestIndex(xs: number[], target: number): number {
+  if (xs.length === 0) return -1;
+  let lo = 0;
+  let hi = xs.length;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (xs[mid] < target) lo = mid + 1;
+    else hi = mid;
+  }
+  if (lo === 0) return 0;
+  if (lo === xs.length) return xs.length - 1;
+  return Math.abs(xs[lo - 1] - target) <= Math.abs(xs[lo] - target) ? lo - 1 : lo;
+}
+
+export function dataWindow(
+  xs: number[],
+  xMin: number,
+  xMax: number,
+): { i0: number; i1: number } {
+  if (xs.length === 0) return { i0: 0, i1: 0 };
+  return {
+    i0: Math.max(0, lowerBound(xs, xMin) - 1),
+    i1: Math.min(xs.length - 1, lowerBound(xs, xMax)),
+  };
+}
+
+export function computeYDomain(
+  series: number[][],
+  i0: number,
+  i1: number,
+): [number, number] | null {
+  let min = Infinity;
+  let max = -Infinity;
+  for (const values of series) {
+    for (let i = i0; i <= i1; i++) {
+      const v = values[i];
+      if (v == null) continue;
+      if (v < min) min = v;
+      if (v > max) max = v;
+    }
+  }
+  if (!Number.isFinite(min) || !Number.isFinite(max)) return null;
+  if (min === max) return [min - 1, max + 1];
+  return [min, max];
+}
+
+export function seriesPoints(
+  values: number[],
+  xs: number[],
+  i0: number,
+  i1: number,
+  toX: (value: number) => number,
+  toY: (value: number) => number,
+): ChartPoint[] {
+  const points: ChartPoint[] = [];
+  const start = Math.max(0, i0 - 1);
+  const end = Math.min(xs.length - 1, i1 + 1);
+  for (let i = start; i <= end; i++) {
+    const v = values[i];
+    if (v == null) continue;
+    points.push({ x: toX(xs[i]), y: toY(v) });
+  }
+  return points;
+}
+
+export function minPositiveDelta(xs: number[], i0: number, i1: number): number {
+  let delta = Infinity;
+  for (let i = Math.max(1, i0); i <= i1; i++) {
+    const d = xs[i] - xs[i - 1];
+    if (d > 0 && d < delta) delta = d;
+  }
+  return delta;
+}

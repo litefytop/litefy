@@ -208,6 +208,9 @@ export function useNumberCore(opts: NumberCoreOptions) {
   const valuenow = numValue !== undefined && !Number.isNaN(numValue) ? numValue : undefined;
   const displayValue = thousands && !focused ? groupThousands(value) : value;
 
+  const canDecrement = !disabled && (valuenow ?? 0) > min;
+  const canIncrement = !disabled && (valuenow ?? 0) < max;
+
   const inputProps = {
     ...rest,
     type: "text" as const,
@@ -227,7 +230,7 @@ export function useNumberCore(opts: NumberCoreOptions) {
     "aria-valuenow": valuenow,
   };
 
-  return { inputProps, stepDelta };
+  return { inputProps, stepDelta, canDecrement, canIncrement };
 }
 
 export type NumberFieldProps = Omit<
@@ -237,6 +240,7 @@ export type NumberFieldProps = Omit<
   value?: number | string;
   defaultValue?: number | string;
   invalid?: boolean;
+  variant?: NumberVariant;
   min?: number;
   max?: number;
   step?: number;
@@ -258,6 +262,7 @@ export function NumberField(props: NumberFieldProps) {
   const {
     positiveInteger = false,
     invalid,
+    variant = "default",
     min = positiveInteger ? 0 : -Infinity,
     max = Infinity,
     step = 1,
@@ -273,7 +278,7 @@ export function NumberField(props: NumberFieldProps) {
     ...rest
   } = props;
 
-  const { inputProps, stepDelta } = useNumberCore({
+  const { inputProps, stepDelta, canDecrement, canIncrement } = useNumberCore({
     positiveInteger,
     min,
     max,
@@ -287,11 +292,14 @@ export function NumberField(props: NumberFieldProps) {
     rest: rest as NumberCoreOptions["rest"],
   });
 
+  const bordered = variant !== "embedded";
+
   return (
     <div
       data-invalid={invalid || undefined}
       className={cn(
         "group/input inline-flex h-9 items-center overflow-hidden rounded-md",
+        bordered && "border border-border",
         "data-invalid:border data-invalid:border-danger",
         className,
       )}
@@ -300,7 +308,7 @@ export function NumberField(props: NumberFieldProps) {
       <NumberStepper
         direction="down"
         aria-label="Decrease"
-        disabled={disabled}
+        disabled={disabled || !canDecrement}
         onClick={() => stepDelta(-step)}
       />
       <NumberRoot
@@ -312,7 +320,7 @@ export function NumberField(props: NumberFieldProps) {
       <NumberStepper
         direction="up"
         aria-label="Increase"
-        disabled={disabled}
+        disabled={disabled || !canIncrement}
         onClick={() => stepDelta(step)}
       />
     </div>

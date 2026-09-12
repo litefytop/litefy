@@ -31,7 +31,7 @@ export default function ChipGroupBasicDemo() {
               trigger={`+${hidden.length}`}
               classNames={{
                 trigger:
-                  "cursor-pointer rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium whitespace-nowrap transition-colors hover:bg-primary-accent",
+                  "cursor-pointer rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium whitespace-nowrap transition-colors hover:bg-primary hover:text-primary-foreground",
               }}
             >
               <ul className="flex max-w-60 flex-col">

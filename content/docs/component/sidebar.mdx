@@ -11,18 +11,10 @@ description: A collapsible sidebar with ref-based external control
 
 ### Basic Usage
 
-A sidebar rendered as an `aside`. When closed, it collapses to zero width through the `data-close` attribute.
+A sidebar rendered as an `aside` next to your content. When closed, it collapses to zero width through the `data-close` attribute. The sidebar exposes an imperative handle through `ref` — `toggle`, `open`, `close`, `isOpen` — so sibling nodes or any external code can control it without lifting state.
 
 <ComponentPreview
   name="sidebar-basic"
-/>
-
-### Ref Control
-
-The sidebar exposes an imperative handle through `ref`, so sibling nodes or any external code can control it without lifting state.
-
-<ComponentPreview
-  name="sidebar-ref"
 />
 
 ## API Reference

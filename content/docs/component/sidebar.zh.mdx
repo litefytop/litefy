@@ -11,18 +11,10 @@ description: 支持通过 ref 外部控制的可折叠侧边栏
 
 ### 基础用法
 
-以 `aside` 元素渲染的侧边栏。关闭时通过 `data-close` 属性收起为零宽度。
+以 `aside` 元素渲染的侧边栏，与内容并排。关闭时通过 `data-close` 属性收起为零宽度。侧边栏通过 `ref` 暴露命令式句柄——`toggle`、`open`、`close`、`isOpen`——兄弟节点或任意外部代码都能直接控制它，无需状态提升。
 
 <ComponentPreview
   name="sidebar-basic"
-/>
-
-### Ref 控制
-
-侧边栏通过 `ref` 暴露命令式句柄，兄弟节点或任意外部代码都能直接控制它，无需状态提升。
-
-<ComponentPreview
-  name="sidebar-ref"
 />
 
 ## API 参考

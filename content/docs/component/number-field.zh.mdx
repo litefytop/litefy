@@ -1,6 +1,6 @@
 ---
-title: Number Field 数字字段
-description: 带前导 Minus 与尾部 Plus 步进按钮的紧凑数字字段——无边框，支持键盘步进与千分位分隔。
+title: Number Field 数字步进器
+description: 带前导 Minus 与尾部 Plus 步进按钮的紧凑数字步进器——默认带边框，支持键盘步进与千分位分隔。
 ---
 
 ## 安装
@@ -9,7 +9,7 @@ description: 带前导 Minus 与尾部 Plus 步进按钮的紧凑数字字段—
 
 ## 用法
 
-`NumberField` 是步进器形态的数字字段：前导 Minus 与尾部 Plus 按钮按 `step` 步进数值（受 `min` / `max` 约束）。字段本身无边框——仅在无效状态出现危险色边框。输入框聚焦时依然支持键盘步进。
+`NumberField` 是步进器形态的数字输入组件：前导 Minus 与尾部 Plus 按钮按 `step` 步进数值（受 `min` / `max` 约束）。字段默认带边框；放在其他容器内部（工具栏、表格单元格、自定义外壳）时设置 `variant="embedded"` 去掉边框。数值到达某一侧边界后，该侧步进按钮自动禁用。输入框聚焦时依然支持键盘步进。
 
 <ComponentPreview name="number-field-basic" />
 
@@ -26,9 +26,10 @@ description: 带前导 Minus 与尾部 Plus 步进按钮的紧凑数字字段—
 | `defaultValue` | `number \| string` | - | 初始值（非受控模式） |
 | `value` | `number \| string \| undefined` | - | 当前值（受控模式） |
 | `onValueChange` | `(value?: number) => void \| (value?: string) => void` | - | 值变化回调。`positiveInteger=true` 时为 `number \| undefined`，否则为 `string` |
-| `invalid` | `boolean` | - | 字段外围显示危险色边框 |
-| `min` | `number` | `0`（positiveInteger）或 `-Infinity` | 允许的最小值 |
-| `max` | `number` | `Infinity` | 允许的最大值 |
+| `invalid` | `boolean` | - | 字段外围显示危险色边框；embedded 模式下切换文字为危险色 |
+| `variant` | `"default" \| "embedded"` | `"default"` | `"default"` 自带边框，适合独立使用；`"embedded"` 无边框，适合嵌入其他容器 |
+| `min` | `number` | `0`（positiveInteger）或 `-Infinity` | 允许的最小值——到达后 Minus 按钮禁用 |
+| `max` | `number` | `Infinity` | 允许的最大值——到达后 Plus 按钮禁用 |
 | `step` | `number` | `1` | 步进按钮与 `ArrowUp` / `ArrowDown` 的步长 |
 | `positiveInteger` | `boolean` | `false` | 仅允许正整数。值类型变为 `number \| undefined` |
 | `thousands` | `boolean` | `false` | 未聚焦时整数部分按千分位分组显示；提交值始终不带分隔符 |

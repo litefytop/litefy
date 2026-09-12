@@ -33,7 +33,7 @@ Multi-line input with `invalid` state support; form-friendly `onChange`.
 Bordered numeric input; stepping is keyboard-only (up/down), trailing cue is non-interactive. `value` / `defaultValue`, `min`, `max`, `step`, `invalid`. The form-friendly sibling of NumberField.
 
 ### NumberField
-Compact borderless stepper with a leading `−` and trailing `+` button. `value` / `defaultValue`, `min`, `max`, `step`, thousands separators, `direction`.
+Compact numeric stepper with a leading `−` and trailing `+` button; bordered by default, `variant="embedded"` drops the border for fields inside other containers. Stepper buttons auto-disable at `min` / `max`. `value` / `defaultValue`, `min`, `max`, `step`, thousands separators. The bordered, form-friendly sibling is NumberInput.
 
 ### Password
 Password input with visibility toggle. `visible` / `defaultVisible`, `onVisibleChange`, `invalid`. Parts: `PasswordRoot` / `PasswordToggle` / `PasswordGroup` for custom assembly.
@@ -49,13 +49,16 @@ Parts: `InputOtpSlot`, `InputOtpGroup`.
 `<Checkbox defaultChecked onCheckedChange={fn} label="..." />`. Parts: `CheckboxRoot` / `CheckboxIndicator` / `CheckboxLabel`. `CheckboxGroup` takes `options` (+ grouped options) and collects values.
 
 ### Radio
-Radio buttons with a `segment` variant option. `RadioGroup` is options-driven: `options`, `value` / `defaultValue`, `onValueChange`, `name`, `invalid`. Single `Radio` also works with raw inputs.
+Parts-based radio (`RadioRoot` / `RadioIndicator` / `RadioLabel` + composed `Radio`, mirroring Checkbox). `RadioGroup` is options-driven: `options`, `value` / `defaultValue` + `onValueChange`, `name` (also enables native arrow-key navigation), `invalid`. Single `Radio` also works with raw inputs.
 
 ### Switch
 Toggle switch. `checked` / `defaultChecked`, `onCheckedChange`, `disabled`. Parts: `SwitchRoot` / `SwitchTrack` / `SwitchThumb`.
 
 ### Toggle
 Toggle button; `ToggleGroup` supports multi-select via `options` + `value` / `onValueChange`.
+
+### MultiSelect
+Popover + CheckboxGroup multi-select: `options` (`CheckboxOptionConfig | CheckboxOptionGroup`), `value` / `defaultValue` + `onChange`, `trigger` / `placeholder`, panel styling via `classNames.content`.
 
 ### Segment
 Segmented single-select control. Options-driven: `options` (`{ label, value, disabled }`), `value` / `defaultValue`, `onValueChange`, `invalid`.
@@ -117,7 +120,7 @@ Full form composition: fields, submit handling, validation collection, imperativ
 ### Card — glassmorphic surface with hover lift and ambient glow.
 ### Paper — print-ready A4/A5 page surface, portrait or landscape (`variant="a4" | "a5" | "a4-landscape" | "a5-landscape"`).
 ### Separator
-Divider with optional label: `<Separator>or</Separator>`, `orientation="horizontal" | "vertical"`. Parts: `SeparatorLine` / `SeparatorText`.
+Line, or a line–text–line divider when `children` is passed (the auth "or" divider). Horizontal carries a default `my-3` (override via `className`); vertical lines self-stretch in flex rows and rely on `gap`. Parts: `SeparatorLine` / `SeparatorText`.
 ### Capsule — pill-shaped `overflow-hidden` container that visually joins arbitrary children (tags, segments, links) into one capsule.
 ### Masonry
 Equal-width masonry columns balanced by measured height: `items`, `renderItem`, `getKey`, `columns` (number or responsive config), `gap`.
@@ -147,6 +150,9 @@ Controlled steps indicator (completed / current / upcoming). `items`, `index`, `
 ### Menu
 Menu usable in normal document flow: `items` (groups, two-level submenus), keyboard navigation. Parts: `MenuRoot` / `MenuItem` / `MenuLabel` / `MenuSubContent`.
 
+### DropdownMenu
+Trigger + Popover + Menu composite: `trigger`, `items` (same shape as Menu), `onSelect`, `alignX` (default `"center"`), `classNames` (content / item / label / sub). Trigger is styled as a primary Button by default.
+
 ### Sidebar
 Collapsible sidebar controlled via ref (`SidebarHandle` — e.g. `ref.current.collapse()`).
 
@@ -165,7 +171,7 @@ Button-triggered floating panel on the native popover API + CSS anchor positioni
 `<Tooltip content="Hint"><Button /></Tooltip>` — native Popover API + anchor positioning, `delay`, `anchorName` for custom anchoring.
 
 ### ContextMenu
-Right-click menu: `items` (same shape as Menu), `onOpenMenu` / `onSelect` / `onOpenChange`, custom `anchorName`/`position`. Parts: `ContextMenuTrigger` / `ContextMenuAnchor` / `ContextMenuContent`.
+Imperative right-click menu: mount `<ContextMenuHost />` once, then call `ContextMenu.open({ x, y, items, onSelect, classNames?, styles? })` from any element's `onContextMenu` — no wrapper, works on table rows / canvas / any event source. `items` (same shape as Menu), `ContextMenu.dismiss()` to close programmatically. Outside mousedown and Escape close it.
 
 ### Toast
 Global notifications with a store-based imperative API. Mount `<Toaster />` **once** near the app root, then call methods from anywhere:
@@ -265,17 +271,17 @@ Same state machine as a vertical steps accordion — only the current step expan
 Dropzone upload with local validation: `accept`, `multiple`, `maxSize`, `maxCount`, `onFilesAccepted` / `onFilesRejected` / `onFileRemove`, `dropzone`, `invalid`. Parts: `UploadDropzone` / `UploadItem` / `UploadActions` / `UploadHiddenInput`. Monitoring actual network progress is decoupled — use the `use-upload-monitor` hook.
 
 ### Chart
-uPlot-based chart composition with automatic canvas theming, responsive width, interactive legend + hover tooltip. Pair with the `use-chart-palette` hook.
+Self-built canvas time-series chart on the `chart-kit` math layer (nice ticks, LTTB downsampling, `scaleLinear` / `linePath` / `areaPath`) + the `chart-paint` canvas helpers (grid / bars / line / crosshair painting) — automatic canvas theming, responsive width, interactive legend, hover tooltip, drag box-zoom with double-click reset. Series support `type: "line" | "area" | "bar"`. Pair with the `use-chart-palette` hook.
 
 ### QueryBuilder
-Collapsible folder tree of field nodes and nested and/or groups with a live read-only logic-expression preview and Submit/Reset. `fields`, `defaultValue`, `onQueryChange`, `onSubmit` / `onReset`, `showPreview`, `maxDepth`, plus output converters (`natural`, `mongodb`, `cel`, `parameterized`...). Data transforms come from `react-querybuilder`; this is the UI.
+Collapsible folder tree of field nodes and nested and/or groups with a live natural-language preview and Submit/Reset. `fields`, `defaultValue`, `onQueryChange`, `onSubmit` / `onReset`, `showPreview`, `maxDepth`. Emits a structured `QueryGroup` JSON object (`{ combinator, rules }`) — dialect conversion (SQL etc.) is the backend's job. Fields are label/value pairs (`name` + `label`); operators render as English phrases by default ("is", "is greater than", …) and localize via the `QueryBuilder.operatorLabels` static (Record<string, string>, consumed by both the operator dropdowns and the preview).
 
 ### ChatInput
 Chat composer: `value` / `defaultValue` + `onValueChange`, `onSend`, `enterToSend`, `attach` slot, `actions`, pasted-screenshot thumbnails (`autoPaste`), `placeholder`, `disabled`.
 
 ## Composition Guides (not shipped components)
 
-**Combobox**, **DropdownMenu**, **MultiSelect** and **PreviewCard** have docs pages and demos, but no shipped file — they teach how to assemble shipped primitives (Picker + List, Popover + Menu, Popover + Checkbox, Card + Image + Tooltip). Follow those recipes in `content/docs/component/<name>.mdx` instead of importing them.
+**Combobox** and **PreviewCard** have docs pages and demos, but no shipped file — they teach how to assemble shipped primitives (Picker + List, Card + Image + Tooltip). Follow those recipes in `content/docs/component/<name>.mdx` instead of importing them.
 
 ## Core Primitives worth knowing
 

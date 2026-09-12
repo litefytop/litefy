@@ -40,14 +40,19 @@ export function MultiSelect({
 
   return (
     <Popover
-      alignX="start"
+      hasPopup="dialog"
       trigger={trigger ?? `${placeholder} (${innerValue.length})`}
       classNames={{
         trigger: cn(Button.className.base, Button.className.variant.primary, className),
         content: classNames?.content,
       }}
     >
-      <CheckboxGroup options={options} value={innerValue} onChange={handleChange} />
+      <CheckboxGroup
+        options={options}
+        value={innerValue}
+        onChange={handleChange}
+        aria-label={placeholder}
+      />
     </Popover>
   );
 }

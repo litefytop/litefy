@@ -1,6 +1,6 @@
 ---
 title: Radio 单选框
-description: 支持受控、非受控和分组模式的单选按钮组件
+description: 零件化组装的单选按钮组件，分组由 options 驱动——方向键导航由共享 name 原生提供
 ---
 
 ## 安装
@@ -42,11 +42,27 @@ description: 支持受控、非受控和分组模式的单选按钮组件
 | `children` | `React.ReactNode` | - | 单选框内容 |
 | `checked` | `boolean` | `false` | 受控选中状态 |
 | `defaultChecked` | `boolean` | `false` | 非受控模式下的默认选中状态 |
-| `onCheckedChange` | `(checked: boolean) => void` | - | 选中状态变化时的回调 |
-| `indicator` | `(checked: boolean, wrapperClassName?: string) => React.ReactNode` | - | 自定义指示器渲染函数，包含包装器className |
-| `invalid` | `boolean` | `false` | 标记为无效 |
-| `className` | `ClassNameValue` | - | 自定义 CSS 类。仅支持字符串、数组及各类假值。 |
+| `onCheckedChange` | `(checked: boolean) => void` | - | 选中时的回调 |
+| `invalid` | `boolean` | `false` | 标记 label 与 input（`data-invalid` / `aria-invalid`） |
+| `indicator` | `React.ReactNode` | - | 自定义指示器内容，替换默认圆点 |
+| `classNames` | `{ indicator?; label? }` | - | 指示器与标签的自定义类名 |
+| `styles` | `{ indicator?; label? }` | - | 指示器与标签的内联样式 |
+| `className` | `ClassNameValue` | - | 自定义类名，作用于标签 |
 | `...props` | `React.ComponentProps<"input">` | - | 支持所有原生 input 属性（除 `type`、`className` 外），如 `name`、`value`、`disabled` |
+
+### 可组合组件
+
+#### RadioRoot
+
+裸的 radio 输入框（`sr-only peer`）——选中态通过 `has-checked:` / `peer-checked:` 变体读取。
+
+#### RadioIndicator
+
+圆形指示器。内置焦点环（`has-focus-visible:`）与选中边框（`has-checked:`）。
+
+#### RadioLabel
+
+标签包装层（点击即可切换选中）。
 
 ### RadioOptionConfig
 
@@ -56,8 +72,8 @@ description: 支持受控、非受控和分组模式的单选按钮组件
 | `value` | `string` | - | 唯一标识值 |
 | `disabled` | `boolean` | `false` | 禁用该选项 |
 | `invalid` | `boolean` | `false` | 标记该选项为无效 |
-| `indicator` | `(checked: boolean, wrapperClassName?: string) => React.ReactNode` | - | 自定义指示器，优先级高于 `common.indicator` |
-| `className` | `ClassNameValue` | - | 自定义类名，优先级高于 `common.className` |
+| `indicator` | `React.ReactNode` | - | 自定义指示器，优先级高于 `common.indicator` |
+| `classNames` / `styles` | - | - | 每个选项的零件样式，优先级高于 `common` |
 
 ### Radio.Group
 
@@ -69,6 +85,7 @@ description: 支持受控、非受控和分组模式的单选按钮组件
 | `onValueChange` | `(value: string) => void` | - | 选中值变化时的回调 |
 | `disabled` | `boolean` | `false` | 禁用所有选项 |
 | `invalid` | `boolean` | `false` | 标记为无效 |
-| `name` | `string` | - | 分组名称 |
+| `name` | `string` | - | 分组名称——同时启用选项间原生的方向键导航 |
 | `className` | `ClassNameValue` | - | 自定义类名，应用于容器 |
-| `common` | `{ className?, indicator? }` | - | 应用于所有选项的通用配置 |
+| `aria-label` | `string` | - | 组的无障碍标签 |
+| `common` | `{ classNames?, styles?, indicator? }` | - | 应用于所有选项的通用配置 |

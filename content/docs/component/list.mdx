@@ -19,6 +19,14 @@ A scroll container driven by `items`; rows are rendered via `renderItem`. Pair i
 
 Keyboard navigation is built in: the root is focusable (`tabIndex={0}`), `ArrowUp` / `ArrowDown` move the highlight (clamped at both ends) and scroll it into view automatically, and `Enter` or a click on a row fires `onSelect`. The highlighted item carries `data-highlighted` (styled as `bg-hover`). For containers that keep focus elsewhere — such as a combobox input — pass `highlightIndex` / `onHighlightChange` to control the highlight externally; see the [Combobox](/docs/component/combobox) guide.
 
+### Ordered List
+
+`Order` renders the same list as an `<ol>` with decimal numbering — for sequences where order is part of the meaning.
+
+<ComponentPreview
+  name="list-order"
+/>
+
 ### Grouping
 
 Provide `getGroup` to derive a group label per item; a header row is rendered when the label changes. Group headers are plain rows — they are not focusable, not highlighted by keyboard navigation and not selectable, so `ArrowUp` / `ArrowDown` / `Enter` only ever operate on data items. Customize the header via `renderGroupHeader`.

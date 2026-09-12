@@ -1,6 +1,6 @@
 ---
 title: Number Field
-description: A compact numeric field with a leading Minus and trailing Plus stepper button — borderless, with keyboard stepping and thousands separators.
+description: A compact numeric field with a leading Minus and trailing Plus stepper button — keyboard stepping, thousands separators and a border by default.
 ---
 
 ## Installation
@@ -9,7 +9,7 @@ description: A compact numeric field with a leading Minus and trailing Plus step
 
 ## Usage
 
-`NumberField` is the stepper-style numeric field: a leading Minus and trailing Plus button step the value by `step` (clamped to `min` / `max`). The field is borderless — it only gains a danger border in the invalid state. Keyboard stepping works while the input is focused.
+`NumberField` is the stepper-style numeric field: a leading Minus and trailing Plus button step the value by `step` (clamped to `min` / `max`). The field ships with a border by default; set `variant="embedded"` when it lives inside another container (toolbars, table cells, custom shells) and the border is dropped. Each stepper button disables itself once the value reaches its side's bound. Keyboard stepping works while the input is focused.
 
 <ComponentPreview name="number-field-basic" />
 
@@ -26,9 +26,10 @@ description: A compact numeric field with a leading Minus and trailing Plus step
 | `defaultValue` | `number \| string` | - | Initial value (uncontrolled mode) |
 | `value` | `number \| string \| undefined` | - | Current value (controlled mode) |
 | `onValueChange` | `(value?: number) => void \| (value?: string) => void` | - | Value change handler. Returns `number \| undefined` when `positiveInteger=true`, otherwise `string` |
-| `invalid` | `boolean` | - | Adds a danger border around the field |
-| `min` | `number` | `0` (positiveInteger) or `-Infinity` | Minimum allowed value |
-| `max` | `number` | `Infinity` | Maximum allowed value |
+| `invalid` | `boolean` | - | Switches the border (or the text in embedded mode) to danger |
+| `variant` | `"default" \| "embedded"` | `"default"` | `"default"` ships a border for standalone use; `"embedded"` drops it for fields inside other containers |
+| `min` | `number` | `0` (positiveInteger) or `-Infinity` | Minimum allowed value — the Minus button disables at it |
+| `max` | `number` | `Infinity` | Maximum allowed value — the Plus button disables at it |
 | `step` | `number` | `1` | Step size for the steppers and `ArrowUp` / `ArrowDown` |
 | `positiveInteger` | `boolean` | `false` | Restrict to positive integers only. Changes value type to `number \| undefined` |
 | `thousands` | `boolean` | `false` | Group the integer part with thousands separators while the input is not focused; the committed value stays unformatted |

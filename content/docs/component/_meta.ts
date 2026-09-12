@@ -230,7 +230,7 @@ export default {
     name: "Number Field",
     displayName: {
       en: "Number Field",
-      zh: "数字输入框",
+      zh: "数字步进器",
     },
   },
   "number-input": {
