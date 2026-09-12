@@ -1,7 +1,7 @@
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 import { InputGroup, InputLeading, InputRoot, InputTrailing } from "./input-group";
 
-export { InputGroup, InputLeading, InputRoot, InputTrailing } from "./input-group";
+
 
 export type InputProps = Omit<React.ComponentProps<"input">, "type" | "className"> & {
   type?: "text" | "email" | "url" | "tel" | "search";
@@ -25,7 +25,7 @@ export type InputProps = Omit<React.ComponentProps<"input">, "type" | "className
 export function Input({ classNames, styles, leading, trailing, invalid, className, style, ...props }: InputProps) {
   return (
     <InputGroup
-      className={className}
+      className={cn(className)}
       style={style}
       invalid={invalid}
     >

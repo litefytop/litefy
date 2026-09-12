@@ -3,7 +3,7 @@
 import * as React from "react";
 import { flushSync } from "react-dom";
 import { Children, isValidElement } from "react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export type PagerTransition = "none" | "view-transition";
 

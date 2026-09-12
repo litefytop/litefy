@@ -1,6 +1,6 @@
 import { Loader2 } from "lucide-react";
 import React from "react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 const buttonClass = {
   base: "cursor-pointer inline-flex items-center justify-center gap-2 h-8 min-w-8 px-3 rounded-md text-sm text-center [&_svg:not([class*='size-'])]:size-4",

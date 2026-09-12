@@ -105,11 +105,10 @@ The visually hidden native input (`sr-only`) that carries state, focus, and form
 
 #### CheckboxIndicator
 
-The visual indicator rendered as a `span` with `role="checkbox"` and `aria-checked`; checked styling is applied automatically.
+The visual indicator rendered as a presentational `span`; checked styling follows the nested `CheckboxRoot` via `has-checked:` automatically, and checkbox semantics come from the input itself.
 
 | Prop       | Type                           | Default | Description                                |
 | :--------- | :----------------------------- | :------ | :----------------------------------------- |
-| `checked`  | `boolean`                      | -       | Drives `aria-checked` and the checked styles |
 | `className` | `ClassNameValue`              | -       | Custom CSS class                           |
 | `children` | `React.ReactNode`              | -       | Indicator content, defaults to a check icon in the composite |
 | `...props` | `React.ComponentProps<"span">` | -       | Supports all native span props             |

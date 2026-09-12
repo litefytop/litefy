@@ -1,0 +1,39 @@
+{
+ "route": "number-input",
+ "url": "http://localhost:5199/en/docs/component/number-input",
+ "axeError": null,
+ "violations": [
+  {
+   "id": "label",
+   "impact": "critical",
+   "help": "Form elements must have labels",
+   "wcag": [
+    "wcag2a",
+    "wcag412"
+   ],
+   "nodes": 3,
+   "sampleTargets": [
+    "input[value=\"2,026\"]",
+    "input[aria-valuemax=\"100\"]",
+    "input[inputmode=\"numeric\"][value=\"5\"][aria-valuemin=\"0\"]"
+   ]
+  }
+ ],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "type",
+   "ms": 278
+  },
+  {
+   "action": "type",
+   "ms": 260
+  },
+  {
+   "action": "type",
+   "ms": 273
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

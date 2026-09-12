@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export interface InputOtpGroupProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
@@ -28,7 +28,7 @@ export function InputOtpSlot({ className, ref, ...props }: InputOtpSlotProps) {
         "size-9 rounded-md border border-border text-center text-sm font-medium outline-none transition-colors",
         "focus:border-primary focus:ring-2 focus:ring-ring/50",
         "aria-invalid:border-danger aria-invalid:text-danger",
-        "aria-invalid:focus-visible:outline-1 aria-invalid:focus-visible:outline-danger aria-invalid:focus-visible:ring-3 aria-invalid:focus-visible:ring-danger/50",
+        "aria-invalid:focus-visible:outline-none aria-invalid:focus-visible:ring-3 aria-invalid:focus-visible:ring-danger/50",
         className,
       )}
     />

@@ -1,15 +1,10 @@
 "use client";
 
 import * as React from "react";
-import {
-  Button,
-  CheckboxGroup,
-  Popover,
-  type CheckboxOptionConfig,
-  type CheckboxOptionGroup,
-  type ClassNameValue,
-  cn,
-} from "..";
+import { CheckboxGroup, type CheckboxOptionConfig, type CheckboxOptionGroup } from "./checkbox";
+import { Button } from "./button";
+import { Popover } from "./popover";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export interface MultiSelectProps {
   options: (CheckboxOptionConfig | CheckboxOptionGroup)[];
@@ -45,14 +40,19 @@ export function MultiSelect({
 
   return (
     <Popover
-      alignX="start"
+      hasPopup="dialog"
       trigger={trigger ?? `${placeholder} (${innerValue.length})`}
       classNames={{
         trigger: cn(Button.className.base, Button.className.variant.primary, className),
         content: classNames?.content,
       }}
     >
-      <CheckboxGroup options={options} value={innerValue} onChange={handleChange} />
+      <CheckboxGroup
+        options={options}
+        value={innerValue}
+        onChange={handleChange}
+        aria-label={placeholder}
+      />
     </Popover>
   );
 }

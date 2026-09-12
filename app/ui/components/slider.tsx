@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export interface SliderRootProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
@@ -69,7 +69,6 @@ export type SliderProps = {
   disabled?: boolean;
   name?: string;
   onChange?: (val: number) => void;
-  invalid?: boolean;
   "aria-label"?: string;
   className?: ClassNameValue;
   style?: React.CSSProperties;
@@ -87,7 +86,6 @@ export function Slider({
   disabled = false,
   name,
   onChange,
-  invalid,
   "aria-label": ariaLabel,
   className,
   style,
@@ -201,7 +199,6 @@ export function Slider({
     <SliderRoot
       className={cn("group", className)}
       style={style}
-      data-invalid={invalid || undefined}
     >
       <SliderTrack
         ref={trackRef}
@@ -234,7 +231,6 @@ export function Slider({
           className={cn(
             "size-5 touch-none rounded-full border-2 border-primary bg-background shadow-sm",
             "cursor-grab active:cursor-grabbing",
-            "group-data-invalid:border-danger",
             classNames?.thumb,
           )}
           style={{ ...thumbStyle, ...styles?.thumb }}

@@ -19,6 +19,14 @@ description: 支持键盘导航、高亮、选中与滚动到底回调的滚动�
 
 键盘导航是内置的：根节点可聚焦（`tabIndex={0}`），`ArrowUp` / `ArrowDown` 移动高亮（到达两端后停止）并自动滚动到可视区域，`Enter` 或点击行触发 `onSelect`。高亮项携带 `data-highlighted`（样式为 `bg-hover`）。对于焦点需要留在别处的容器 —— 如 combobox 输入框 —— 传入 `highlightIndex` / `onHighlightChange` 从外部受控高亮，参见 [Combobox](/docs/component/combobox) 指南。
 
+### 有序列表
+
+`Order` 把同样的列表渲染为带十进制编号的 `<ol>`——用于顺序本身有含义的序列。
+
+<ComponentPreview
+  name="list-order"
+/>
+
 ### 分组
 
 提供 `getGroup` 为每项派生分组标签；标签变化时渲染一行组标题。组标题是普通行 —— 不可聚焦、不会被键盘导航高亮、也不可选中，因此 `ArrowUp` / `ArrowDown` / `Enter` 只作用于数据项。通过 `renderGroupHeader` 自定义标题渲染。
@@ -53,7 +61,7 @@ description: 支持键盘导航、高亮、选中与滚动到底回调的滚动�
 | `classNames` | `{ item?: ClassNameValue; groupHeader?: ClassNameValue }` | - | 行与组标题的自定义类 |
 | `styles` | `{ item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | - | 行与组标题的内联样式 |
 
-行与行紧密相连——默认不带分隔线（需要时可通过 `className` 加 `divide-y divide-border`）。滚动由内置的 [ScrollShadow](/docs/component/scroll-shadow) 包装管理：隐藏原生滚动条，当对应方向还有更多内容时，顶部/底部显示带方向箭头的渐变阴影；可聚焦的列表本身带 `outline-none`，没有内置聚焦描边。键盘：`ArrowUp` / `ArrowDown` 移动高亮，`Enter` 或 `Space` 选中。
+行与行紧密相连——默认不带分隔线（需要时可通过 `className` 加 `divide-y divide-border`）。列表本身是一个纯滚动容器：隐藏原生滚动条，滚动被contained（`overscroll-behavior: contain`）避免滚轮/键盘连锁滚动页面，容器可键盘聚焦。需要渐变阴影指示时自行搭配 [ScrollShadow](/docs/component/scroll-shadow) —— 通过 `className`/`children` 组合，列表不再内置阴影。键盘：`ArrowUp` / `ArrowDown` 移动高亮，`Enter` 或 `Space` 选中。
 
 #### Order
 

@@ -1,0 +1,19 @@
+{
+ "route": "multi-select",
+ "url": "http://localhost:5199/en/docs/component/multi-select",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 188
+  },
+  {
+   "action": "click",
+   "ms": 177
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

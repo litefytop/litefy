@@ -1,0 +1,10 @@
+{
+ "route": "switch",
+ "url": "http://localhost:5199/en/docs/component/switch",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [],
+ "consoleErrors": [],
+ "incomplete": 1
+}

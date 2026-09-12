@@ -1,0 +1,44 @@
+---
+title: Radar
+description: Zero-dependency SVG radar chart with concentric grid, category axes, theme-synced series colors and legend toggling
+---
+
+Radar renders multivariate series as overlaid SVG polygons on a concentric polygon grid — no chart library underneath. Series colors come from `useChartPalette` and follow brand, surface and dark-mode changes. Hovering a polygon or its legend entry dims the others; legend entries are clickable to hide or restore a series.
+
+Part of the chart family: it shares the `chart-kit` math layer with [Chart](/docs/component/chart), [Donut](/docs/component/donut) and [Sparkline](/docs/component/sparkline) — reach for Chart when you need axes, tooltips or large time series. Each member installs independently.
+
+## Installation
+
+<Installation name="radar" />
+
+## Usage
+
+### Basic Usage
+
+<ComponentPreview
+  name="radar-basic"
+/>
+
+`axes` holds one category per spoke; each series' `values` maps one-to-one onto `axes`. `max` fixes the value scale — omit it to use the largest visible value across series. `levels` controls how many grid rings are drawn.
+
+## API Reference
+
+### Radar
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :------ | :---------- |
+| `axes` | `string[]` | - | Category labels, one per spoke |
+| `series` | `RadarSeries[]` | - | Series: `{ label, values, color? }`, `values` aligned with `axes` |
+| `max` | `number` | max of visible values | Value scale ceiling; values are clamped to it |
+| `levels` | `number` | `4` | Number of concentric grid rings |
+| `showLegend` | `boolean` | `true` | Renders the clickable legend above the chart |
+| `className` | `ClassNameValue` | - | Extra classes appended to the root element |
+| `classNames` | `RadarClassNames` | - | Slot overrides: `root` / `svg` / `grid` / `label` / `polygon` / `legend` |
+| `styles` | `RadarStyles` | - | Slot inline styles, matching the `classNames` slots |
+
+### Behavior Notes
+
+- **Hover focus**: hovering a polygon or its legend entry lifts that series' fill opacity and dims every other series to 35%.
+- **Legend toggle**: clicking a legend entry hides or restores a series; hidden series are excluded from the auto `max`.
+- **Theme sync**: stroke and grid colors follow `data-brand`, `data-surface` and dark mode — the grid uses the `border` token, axis labels the `muted-foreground` token.
+- **Sizing**: the chart fills the container up to `max-w-72`; labels may extend past the viewBox edge — the SVG allows visible overflow.

@@ -1,0 +1,23 @@
+{
+ "route": "sidebar",
+ "url": "http://localhost:5199/en/docs/component/sidebar",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 190
+  },
+  {
+   "action": "click",
+   "ms": 185
+  },
+  {
+   "action": "click",
+   "ms": 184
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

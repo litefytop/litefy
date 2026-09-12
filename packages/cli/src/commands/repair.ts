@@ -3,6 +3,7 @@ import fs from "fs-extra";
 import logger from "../utils/logger";
 import { getFileNameFromUrl, loadRegistry } from "../utils/registry";
 import { writeBarrelIndex } from "../utils/barrel";
+import { syncStyleImports } from "../utils/style-imports";
 import { addSingle } from "./add";
 import type { Registry, RegistryEntry } from "./add";
 
@@ -75,6 +76,8 @@ export async function repair() {
 
   const hookIndex = path.resolve(cwd, config.utils.path, "index.ts");
   await writeBarrelIndex(hookIndex, config.utils.installed);
+
+  await syncStyleImports(cwd, config.styles.path, config.styles.installed, registry);
 
   await fs.writeJson(configPath, config, { spaces: 2 });
   logger.success("Repair finished");

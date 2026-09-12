@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { type ClassNameValue, cn } from "..";
-import { InputGroup, InputLeading, InputRoot, InputTrailing } from "./input-group";
+import { type ClassNameValue, cn } from "../utils/cn";
+import { InputGroup, InputLeading, InputTrailing } from "./input-group";
 import { NumberRoot, useNumberCore } from "./number-field";
 
 export type NumberInputProps = Omit<

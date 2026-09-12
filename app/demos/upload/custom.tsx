@@ -12,6 +12,7 @@ export default function UploadCustomDemo() {
       <UploadHiddenInput
         ref={inputRef}
         accept="image/*"
+        aria-label="Upload image"
         onChange={(e) => setName(e.target.files?.[0]?.name ?? "")}
       />
       <UploadDropzone className="h-24" onClick={() => inputRef.current?.click()}>

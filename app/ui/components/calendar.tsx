@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export interface CalendarRootProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;

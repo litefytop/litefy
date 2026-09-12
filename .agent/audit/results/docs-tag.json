@@ -1,0 +1,15 @@
+{
+ "route": "tag",
+ "url": "http://localhost:5199/en/docs/component/tag",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 196
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

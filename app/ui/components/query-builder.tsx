@@ -2,8 +2,7 @@
 
 import * as React from "react";
 import { ChevronDown, ChevronRight, Plus, Trash2 } from "lucide-react";
-import { formatQuery, type RuleGroupType, type RuleType } from "react-querybuilder";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 import { Button } from "./button";
 import { Checkbox, CheckboxGroup } from "./checkbox";
 import { DatePicker } from "./date-picker";
@@ -13,6 +12,10 @@ import { Select } from "./select";
 
 export type QueryValueKind = "text" | "number" | "date" | "select";
 export type QueryCombinator = "and" | "or";
+
+export type QueryRule = { field: string; operator: string; value: string | string[] };
+
+export type QueryGroup = { combinator: QueryCombinator; rules: (QueryRule | QueryGroup)[] };
 
 export interface QueryFieldConfig {
   name: string;
@@ -24,13 +27,11 @@ export interface QueryFieldConfig {
 
 export interface QueryBuilderProps {
   fields: QueryFieldConfig[];
-  defaultValue?: RuleGroupType;
-  onSubmit?: (query: RuleGroupType) => void;
-  onQueryChange?: (query: RuleGroupType) => void;
+  defaultValue?: QueryGroup;
+  onSubmit?: (query: QueryGroup) => void;
+  onQueryChange?: (query: QueryGroup) => void;
   onReset?: () => void;
   showPreview?: boolean;
-  showConvert?: boolean;
-  convertFormats?: string[];
   maxDepth?: number;
   disabled?: boolean;
   className?: ClassNameValue;
@@ -43,28 +44,15 @@ const KIND_OPERATORS: Record<QueryValueKind, string[]> = {
   select: ["in"],
 };
 
-const CONVERT_FORMATS = [
-  "natural_language",
-  "sql",
-  "parameterized",
-  "parameterized_named",
-  "mongodb",
-  "cel",
-  "spel",
-  "json",
-  "jsonlogic",
-];
-
-const CONVERT_LABELS: Record<string, string> = {
-  natural_language: "Natural Language",
-  sql: "SQL",
-  parameterized: "Parameterized",
-  parameterized_named: "Parameterized (named)",
-  mongodb: "MongoDB",
-  cel: "CEL",
-  spel: "SpEL",
-  json: "JSON",
-  jsonlogic: "JSONLogic",
+const DEFAULT_OPERATOR_LABELS: Record<string, string> = {
+  "=": "is",
+  "!=": "is not",
+  ">": "is greater than",
+  ">=": "is greater than or equal to",
+  "<": "is less than",
+  "<=": "is less than or equal to",
+  contains: "contains",
+  in: "is one of",
 };
 
 interface DraftCondition {
@@ -91,7 +79,7 @@ function fieldConfig(fields: QueryFieldConfig[], name: string): QueryFieldConfig
   return { name, label: name, operators: KIND_OPERATORS.text, valueKind: "text" };
 }
 
-function isGroupNode(node: RuleType | RuleGroupType): node is RuleGroupType {
+function isGroupNode(node: QueryRule | QueryGroup): node is QueryGroup {
   return "combinator" in node;
 }
 
@@ -105,7 +93,7 @@ function newDraftGroup(fields: QueryFieldConfig[]): DraftGroup {
   return { combinator: "and", collapsed: false, fields: fieldStates, groups: [] };
 }
 
-function fromQueryGroup(group: RuleGroupType, fields: QueryFieldConfig[]): DraftGroup {
+function fromQueryGroup(group: QueryGroup, fields: QueryFieldConfig[]): DraftGroup {
   const draft = newDraftGroup(fields);
   draft.combinator = group.combinator === "or" ? "or" : "and";
   for (const node of group.rules) {
@@ -125,8 +113,8 @@ function fromQueryGroup(group: RuleGroupType, fields: QueryFieldConfig[]): Draft
   return draft;
 }
 
-function toQueryGroup(group: DraftGroup, fields: QueryFieldConfig[]): RuleGroupType {
-  const rules: (RuleType | RuleGroupType)[] = [];
+function toQueryGroup(group: DraftGroup, fields: QueryFieldConfig[]): QueryGroup {
+  const rules: (QueryRule | QueryGroup)[] = [];
   for (const field of fields) {
     const state = group.fields[field.name];
     if (!state) continue;
@@ -170,15 +158,44 @@ function parsePlainDate(value: unknown): Temporal.PlainDate | null {
   }
 }
 
-export function QueryBuilder({
+function toNaturalLanguage(group: QueryGroup, fields: QueryFieldConfig[]): string {
+  const quote = (value: string) => `'${value.replace(/'/g, "''")}'`;
+  const renderValue = (config: QueryFieldConfig, value: string | string[]): string => {
+    if (Array.isArray(value)) {
+      return `(${value.map((v) => quote(String(v))).join(", ")})`;
+    }
+    if ((config.valueKind ?? "text") === "number") return String(value);
+    return quote(String(value));
+  };
+  const renderRule = (rule: QueryRule): string => {
+    const config = fieldConfig(fields, rule.field);
+    const label = config.label || rule.field;
+    const operator = QueryBuilder.operatorLabels[rule.operator] ?? rule.operator;
+    return `${label} ${operator} ${renderValue(config, rule.value)}`;
+  };
+  const renderGroup = (node: QueryGroup): string => {
+    const parts: string[] = [];
+    for (const child of node.rules) {
+      if (isGroupNode(child)) {
+        const inner = renderGroup(child);
+        if (inner !== "") parts.push(`(${inner})`);
+      } else {
+        parts.push(renderRule(child));
+      }
+    }
+    if (parts.length === 0) return "";
+    return parts.join(node.combinator === "or" ? " or " : " and ");
+  };
+  return renderGroup(group) || "No conditions yet";
+}
+
+function QueryBuilderImpl({
   fields,
   defaultValue,
   onSubmit,
   onQueryChange,
   onReset,
   showPreview = true,
-  showConvert = true,
-  convertFormats = CONVERT_FORMATS,
   maxDepth = 2,
   disabled,
   className,
@@ -186,7 +203,6 @@ export function QueryBuilder({
   const [draft, setDraft] = React.useState<DraftGroup>(() =>
     defaultValue ? fromQueryGroup(defaultValue, fields) : newDraftGroup(fields),
   );
-  const [format, setFormat] = React.useState("natural_language");
 
   const editGroup = (path: number[], updater: (g: DraftGroup) => DraftGroup) =>
     setDraft((root) => updateGroupAt(root, path, updater));
@@ -240,20 +256,8 @@ export function QueryBuilder({
 
   const preview = React.useMemo(() => {
     if (!showPreview) return "";
-    try {
-      const result: unknown = formatQuery(toQueryGroup(draft, fields), {
-        format: format as never,
-        fields: fields.map(({ name, label }) => ({ name, label })),
-        ...(format === "natural_language" && {
-          translations: { groupSuffix: "" },
-          fallbackExpression: "No conditions yet",
-        }),
-      });
-      return typeof result === "string" ? result : JSON.stringify(result, null, 2);
-    } catch (error) {
-      return String(error);
-    }
-  }, [draft, fields, format, showPreview]);
+    return toNaturalLanguage(toQueryGroup(draft, fields), fields);
+  }, [draft, fields, showPreview]);
 
   const renderFieldNode = (group: DraftGroup, path: number[], config: QueryFieldConfig) => {
     const state = group.fields[config.name] ?? emptyFieldState();
@@ -336,7 +340,10 @@ export function QueryBuilder({
                     <div className="min-w-0">
                       <Select
                         className="min-w-0"
-                        options={ops.map((op) => ({ label: op, value: op }))}
+                        options={ops.map((op) => ({
+                          label: QueryBuilder.operatorLabels[op] ?? op,
+                          value: op,
+                        }))}
                         value={condition.operator}
                         disabled={disabled}
                         onValueChange={(v) =>
@@ -486,17 +493,6 @@ export function QueryBuilder({
         <div className="shrink-0 border-t bg-muted/30 px-3 py-2">
           <div className="flex items-center gap-2">
             <span className="text-xs font-medium text-muted-foreground">Preview</span>
-            {showConvert && (
-              <Select
-                className="ml-auto h-7 w-36 min-w-0 text-xs"
-                options={convertFormats.map((f) => ({
-                  label: CONVERT_LABELS[f] ?? f,
-                  value: f,
-                }))}
-                value={format}
-                onValueChange={setFormat}
-              />
-            )}
           </div>
           <pre className="mt-1 max-h-20 overflow-auto text-xs whitespace-pre-wrap wrap-break-word text-muted-foreground">
             {preview}
@@ -514,3 +510,7 @@ export function QueryBuilder({
     </div>
   );
 }
+
+export const QueryBuilder = Object.assign(QueryBuilderImpl, {
+  operatorLabels: DEFAULT_OPERATOR_LABELS,
+});

@@ -1,0 +1,79 @@
+---
+title: Styles
+description: Theme tokens, brand and surface palettes, and global interactive styles of Litefy UI.
+---
+
+Litefy's styling is layered CSS custom properties, all defined in OKLCH and mapped into Tailwind via `@theme inline` — every component reads semantic tokens (`bg-background`, `text-primary`, `border`…), so swapping a layer restyles the whole kit without touching component code.
+
+| Layer | File(s) | Registry | What it does |
+|---|---|---|---|
+| **Theme** (required) | `theme.css` | `style-theme` | Base token set: light + dark schemes, `@theme inline` mapping |
+| **Brand** (optional) | `*-brand.css` ×13 | `style-*-brand` | Overrides `--primary` / `--primary-accent` under `[data-brand]` |
+| **Surface** (optional) | `*-surface.css` ×9 | `style-*-surface` | Overrides `--background` / `--foreground` / `--muted` / `--muted-foreground` / `--accent` / `--neutral` under `[data-surface]` |
+| **Interactive** (required) | `interactive.css` | `style-interactive` | Global behavior styles: disabled, focus-visible, press feedback |
+
+Install `theme.css` and `interactive.css` first — they are the required base. Brand and Surface presets are optional add-ons, combinable freely (one brand + one surface at a time).
+
+## Theme
+
+<Installation name="style-theme" type="css" />
+
+`theme.css` includes both light and dark color schemes — the `.dark` class on `<html>` automatically applies dark mode. The variables use OKLCH color values, supported by all modern browsers.
+
+## Interactive Styles
+
+`interactive.css` is not a theme — it is the global behavioral layer every Litefy component expects. It adds four `@layer base` rules:
+
+- **Disabled controls** (`:disabled`, `[inert]`, `[data-disabled]`): dimmed to 50% opacity, neutral background, `not-allowed` cursor and no pointer events — including wrappers like `label:has(:disabled)` so composed checkboxes and uploads dim entirely.
+- **Focus-visible**: a `1px` outline (`--color-outline`) plus a `3px` soft ring (`--color-ring`) for keyboard navigation only — mouse clicks never show rings.
+- **Button press**: inset shadow + `brightness(0.95)` on `button:active` for tactile feedback.
+
+<Installation name="style-interactive" type="css" />
+
+## Theme Composition
+
+The Litefy theme consists of two freely combinable modules:
+
+- **Surface**: the neutral canvas palette that controls page background and text colors.
+- **Brand**: the interactive brand palette that controls buttons and accent controls.
+
+> To switch palettes at runtime with `useTheme`, see [`useTheme`](./utils/use-theme.mdx).
+
+## Surface Presets
+
+Each preset overrides the neutral variables (`--background`, `--foreground`, `--muted`, `--muted-foreground`, `--accent`, `--neutral`).
+
+<PresetTabs
+  items={[
+    "gray-surface",
+    "mauve-surface",
+    "mist-surface",
+    "olive-surface",
+    "slate-surface",
+    "stone-surface",
+    "taupe-surface",
+    "zinc-surface",
+  ]}
+/>
+
+## Brand Presets
+
+Each preset overrides the brand variables (`--primary` and `--primary-accent`).
+
+<PresetTabs
+  items={[
+    "amber-brand",
+    "cyan-brand",
+    "emerald-brand",
+    "fuchsia-brand",
+    "indigo-brand",
+    "lime-brand",
+    "orange-brand",
+    "pink-brand",
+    "purple-brand",
+    "rose-brand",
+    "sky-brand",
+    "teal-brand",
+    "violet-brand",
+  ]}
+/>

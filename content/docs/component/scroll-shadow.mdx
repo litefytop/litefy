@@ -29,16 +29,8 @@ Control where the shadow appears: top, bottom, left, or right.
 
 Adjust the shadow gradient size for different visual effects.
 
-<ComponentPreview 
+<ComponentPreview
   name="scroll-shadow-size"
-/>
-
-### Arrows
-
-Arrow strips reserve their own space outside the scroll area — the viewport shrinks while a strip is visible — and are clickable: clicking a strip jumps straight to that edge.
-
-<ComponentPreview 
-  name="scroll-shadow-arrow"
 />
 
 ## API Reference
@@ -52,16 +44,13 @@ A scrollable container with gradient shadow indicators.
 | `children` | `React.ReactNode` | - | Scrollable content |
 | `edges` | `'top' \| 'bottom' \| 'left' \| 'right' \| Array<'top' \| 'bottom' \| 'left' \| 'right'>` | `'bottom'` | Edge(s) where the shadow indicator appears |
 | `size` | `string` | `'64px'` | Size of the shadow gradient |
-| `arrow` | `boolean` | `true` | Render a directional chevron on each visible shadow edge, as a small clickable row at the shadow's outer edge — clicking it jumps to that end |
 | `onScroll` | `React.UIEventHandler<HTMLDivElement>` | - | Attached to the viewport — e.g. for infinite-scroll triggers |
 | `className` | `ClassNameValue` | - | Custom classes, applied to the root container |
 | `style` | `React.CSSProperties` | - | Inline styles, applied to the root container |
 | `classNames` | `{ viewport?, edge? }` | - | Custom classes for the scroll viewport and shadow overlays |
 | `styles` | `{ viewport?, edge? }` | - | Inline styles for the scroll viewport and shadow overlays |
 
-Each shadow overlay carries a `data-position` attribute (`top` / `bottom` / `left` / `right`), so single edges can be targeted with variants like `data-[position=top]:`.
-
-With `arrow` enabled (the default), each visible shadow carries a small clickable row (`h-5` / `w-5`) along its outer edge — clicking it scrolls the viewport to the far end of that direction. The gradient overlay itself stays absolutely positioned and non-interactive.
+Each shadow overlay carries a `data-position` attribute (`top` / `bottom` / `left` / `right`), so single edges can be targeted with variants like `data-[position=top]:`. The overlays are purely visual — `pointer-events: none` keeps them from blocking scroll or click interactions.
 
 ### Composable Components
 
@@ -93,7 +82,6 @@ A single gradient shadow overlay for one edge.
 | ----------- | ---------------- | ----------- | ---------------------------------------------- |
 | `edge`      | `'top' \| 'bottom' \| 'left' \| 'right'` | `'bottom'` | Edge the gradient points from    |
 | `size`      | `string`         | `'64px'`    | Size along the scroll axis       |
-| `arrow`     | `boolean`        | `true`      | Render a directional chevron (Up/Down/Left/Right follows `edge`) |
 | `className` | `ClassNameValue` | -           | Custom CSS class                 |
 
-Supports all native `<div>` attributes. Visibility is not managed by the part itself; the composite `ScrollShadow` toggles it based on scroll position. Passing `onClick` turns the chevron into a small clickable row (`role="button"`) at the shadow's outer edge.
+Supports all native `<div>` attributes. Visibility is not managed by the part itself; the composite `ScrollShadow` toggles it based on scroll position.

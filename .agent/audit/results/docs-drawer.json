@@ -1,0 +1,35 @@
+{
+ "route": "drawer",
+ "url": "http://localhost:5199/en/docs/component/drawer",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 207
+  },
+  {
+   "action": "click",
+   "ms": 355
+  },
+  {
+   "action": "click",
+   "ms": 398
+  },
+  {
+   "action": "click",
+   "ms": 361
+  },
+  {
+   "action": "click",
+   "ms": 382
+  },
+  {
+   "action": "click",
+   "ms": 355
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

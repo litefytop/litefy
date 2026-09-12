@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export interface AvatarRootProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
@@ -49,7 +49,9 @@ export function Avatar({
   styles,
   ...props
 }: AvatarProps) {
-  const [status, setStatus] = React.useState<"loading" | "success" | "failure">("loading");
+  const [status, setStatus] = React.useState<"loading" | "success" | "failure">(() =>
+    src ? "loading" : "failure",
+  );
 
   React.useEffect(() => {
     if (!src) {

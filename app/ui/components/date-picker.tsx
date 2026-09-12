@@ -1,7 +1,10 @@
 "use client";
 import * as React from "react";
 import { Calendar as CalendarIcon } from "lucide-react";
-import { type CalendarView, type ClassNameValue, cn, Calendar, Picker, usePanelFocus } from "..";
+import { type CalendarView, Calendar } from "./calendar";
+import { type ClassNameValue, cn } from "../utils/cn";
+import { Picker } from "./picker";
+import { usePanelFocus } from "../utils/use-panel-focus";
 
 type ParsedInput =
   | { kind: "empty" }

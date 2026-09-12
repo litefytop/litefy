@@ -1,0 +1,35 @@
+{
+ "route": "segment",
+ "url": "http://localhost:5199/en/docs/component/segment",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 187
+  },
+  {
+   "action": "click",
+   "ms": 201
+  },
+  {
+   "action": "click",
+   "ms": 186
+  },
+  {
+   "action": "click",
+   "ms": 190
+  },
+  {
+   "action": "click",
+   "ms": 181
+  },
+  {
+   "action": "click",
+   "ms": 199
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

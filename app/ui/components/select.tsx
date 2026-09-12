@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { ChevronDown } from "lucide-react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export type SelectOption = {
   label: string;
@@ -13,11 +13,10 @@ export type SelectOptionGroup = {
   options: SelectOption[];
 };
 
-export interface SelectProps
-  extends Omit<
-    React.ComponentProps<"button">,
-    "onChange" | "value" | "defaultValue" | "children" | "type" | "className" | "style"
-  > {
+export interface SelectProps extends Omit<
+  React.ComponentProps<"button">,
+  "onChange" | "value" | "defaultValue" | "children" | "type" | "className" | "style"
+> {
   options: (SelectOption | SelectOptionGroup)[];
   value?: string;
   defaultValue?: string;
@@ -64,7 +63,6 @@ export function Select({
   const [uncontrolledValue, setValue] = React.useState(defaultValue);
   const [highlightIndex, setHighlightIndex] = React.useState<number | null>(null);
 
-  const isOpenControlled = controlledValue !== undefined;
   const value = isControlled ? controlledValue : uncontrolledValue;
   const open = uncontrolledOpen;
 
@@ -213,7 +211,7 @@ export function Select({
         <span className="truncate">{selectedLabel ?? placeholder ?? ""}</span>
         <ChevronDown
           aria-hidden
-          className="size-4 shrink-0 text-muted-foreground transition-transform duration-200 group-data-[open]:rotate-180 data-[open=true]:rotate-180"
+          className="size-4 shrink-0 text-muted-foreground transition-transform duration-200 data-[open=true]:rotate-180"
           data-open={open || undefined}
         />
       </button>
@@ -230,8 +228,8 @@ export function Select({
         style={{
           margin: "4px 0 0",
           positionAnchor: anchorName,
-          positionArea: "bottom span-right",
-          justifySelf: "start",
+          positionArea: "bottom span-all",
+          justifySelf: "anchor-center",
           minWidth: "anchor-size(width)",
           positionTryFallbacks: "flip-block",
           ...styles?.panel,

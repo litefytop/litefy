@@ -1,9 +1,11 @@
 ---
 title: Chart 图表
-description: 基于 uPlot 的通用图表组件 —— 自动画布与主题色集成、自适应宽度、可交互图例与悬浮提示
+description: 自研 canvas 时序图引擎，共享 chart-kit 数学层 —— 自动画布与主题色集成、自适应宽度、可交互图例与悬浮提示
 ---
 
-Chart 是基于 [uPlot](https://github.com/leeoniya/uPlot) 的通用图表组件，自动使用色板生成的 8 色为各数据系列着色，网格与坐标轴文字跟随主题变量（`--color-border` / `--color-muted-foreground`），容器宽度变化时通过 ResizeObserver 自适应重绘，并内置可点击隐藏系列的图例与跟随光标的悬浮提示。
+Chart 是自研的 canvas 时序图组件，基于 `chart-kit` 数学层（`scaleLinear`、`linePath` / `areaPath`、单调平滑、nice 刻度、LTTB 降采样）与 `useChartPalette` 构建，自动使用色板生成的 8 色为各数据系列着色，网格与坐标轴文字跟随主题变量（`--color-border` / `--color-muted-foreground`），容器宽度变化时通过 ResizeObserver 自适应重绘，并内置可点击隐藏系列的图例与跟随光标的悬浮提示。
+
+在图表家族中，Chart 是 canvas 引擎成员：[Donut](/zh/docs/component/donut)、[Radar](/zh/docs/component/radar) 与 [Sparkline](/zh/docs/component/sparkline) 是面向类目与小数据量的零依赖 SVG 组件，而 Chart 负责大数据量时序 —— 单系列达到数千点以上、或需要在时间轴上框选缩放时，仍然选它。渲染为 DPR 感知的 canvas 2D，十字线与框选区全部绘制在画布内，组件无需任何外部 CSS。
 
 ## 安装
 
@@ -23,11 +25,9 @@ Chart 是基于 [uPlot](https://github.com/leeoniya/uPlot) 的通用图表组件
 
 </Tabs>
 
-Chart 依赖 uPlot（`pnpm add uplot`），同时依赖 `useChartPalette` 色板 hook，请一并安装：
+Chart 依赖 `useChartPalette` 色板 hook 与 `chart-kit` / `chart-paint` 工具，`litefy add chart` 会自动一并安装：
 
 `useChartPalette` 也可以独立用于自定义可视化——调用 `useChartPalette({ mode: "wheel" | "mono" })` 返回 8 个与主题联动的颜色值，详见 [use-chart-palette](/docs/utils/use-chart-palette)。
-
-`import "uplot/dist/uPlot.min.css"` 必须保留：uPlot 自带的样式是纯结构性布局规则（画布与覆盖层定位、光标线、选框），缺少会导致图表布局错乱。
 
 ## 用法
 
@@ -37,7 +37,7 @@ Chart 依赖 uPlot（`pnpm add uplot`），同时依赖 `useChartPalette` 色板
   name="chart-line"
 />
 
-`data` 是 uPlot 的 AlignedData：第一个数组是 x 值（`time` 默认为 `true`，传 Unix 秒时间戳），后续数组按顺序对应 `series` 中每个系列的 y 值。未显式指定 `stroke` 的系列自动从色板取色（按索引循环）。
+`data` 的类型是 `ChartData`（`[number[], ...number[][]]`）：第一个数组是 x 值（`time` 默认为 `true`，传 Unix 秒时间戳），后续数组按顺序对应 `series` 中每个系列的 y 值。未显式指定 `stroke` 的系列自动从色板取色（按索引循环）。
 
 ### 面积图
 
@@ -45,7 +45,7 @@ Chart 依赖 uPlot（`pnpm add uplot`），同时依赖 `useChartPalette` 色板
   name="chart-area"
 />
 
-`fill: true` 以零为基线向数据方向填充（`fillTo` 默认 0），因此正负值混合的温度类数据无需额外配置，负值区域自然向下填充。
+`fill: true`（或 `type: "area"`）从折线向下填充到绘图区下边缘，因此正负值混合的温度类数据无需额外配置。
 
 ### 柱状图
 
@@ -53,7 +53,7 @@ Chart 依赖 uPlot（`pnpm add uplot`），同时依赖 `useChartPalette` 色板
   name="chart-bars"
 />
 
-uPlot 没有内置柱状路径，通过 `series[].paths` 传入自定义 paths 构建器即可绘制柱状；柱体颜色通过 `useChartPalette` 显式取色赋给 `stroke` 与 `fill`。柱状图通常搭配 `time={false}` 使用数字 x 轴——此时组件会自动在 x 轴两端各扩展半个单位，保证边缘柱体不被裁剪。paths 构建器也可以完全自定义，实现散点、阶梯线等任意图型。
+柱状是原生系列类型：传 `type: "bar"` 即可绘制分组柱状（占每个 x 区间 70% 的宽度，在多个柱状系列间均分）。柱体颜色通过 `useChartPalette` 显式取色赋给 `stroke` 与 `fill`。柱状图通常搭配 `time={false}` 使用数字 x 轴——此时组件会自动在 x 轴两端各扩展半个单位，保证边缘柱体不被裁剪。
 
 ## API
 
@@ -61,30 +61,32 @@ uPlot 没有内置柱状路径，通过 `series[].paths` 传入自定义 paths �
 
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| data | uPlot.AlignedData | - | 对齐的图表数据，第一个数组为 x 值 |
+| data | ChartData（`[number[], ...number[][]]`） | - | 对齐的图表数据，第一个数组为 x 值 |
 | series | ChartSeriesConfig[] | - | 数据系列配置，顺序与 data 的 y 数组一一对应 |
 | height | number | 240 | 图表高度（像素），宽度始终随容器自适应 |
 | time | boolean | true | x 轴是否为时间刻度；为 false 时按普通数值处理 |
 | className | ClassNameValue | - | 追加到根元素的类名 |
-| onReady | (u: uPlot) => void | - | 图表实例创建后的回调，可用于访问原生 uPlot API |
+| onReady | () => void | - | 首次渲染完成后回调一次 |
 
 ### ChartSeriesConfig
 
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | label | string | - | 系列名称，显示在图例与悬浮提示中 |
+| type | `"line" \| "area" \| "bar"` | `"line"` | 系列的绘制方式 |
 | stroke | string | 色板自动取色 | 线条颜色，任意合法 CSS 颜色 |
-| width | number | 1.5 | 线宽（像素） |
+| width | number | 1.5 | 线宽（像素），仅折线/面积生效 |
 | fill | string \| boolean | - | 面积填充；true 时取线条色并加 18% 透明度，传字符串则为自定义填充色 |
 | value | (v: number) => string | - | 悬浮提示中的数值格式化函数 |
 | show | boolean | true | 初始是否显示该系列 |
-| paths | uPlot.Series["paths"] | - | 自定义路径构建器，用于柱状、散点等非折线图型 |
 
 ### 行为说明
 
 - **图例**：渲染在图表上方，点击可切换对应系列的显示/隐藏，再次点击恢复。
-- **缩放**：在绘图区拖拽框选可放大对应区域；**双击**还原为完整数据范围。
+- **缩放**：在绘图区拖拽框选可放大对应 x 区间（y 范围自动适配窗口内数据）；**双击**还原为完整数据范围。
 - **悬浮提示**：光标移入绘图区时显示各可见系列在该 x 位置的值，随光标移动并自动防溢出。
 - **主题联动**：主题切换导致主色/背景变化时，`useChartPalette` 触发重建，系列颜色与网格颜色随之更新。
 - **色板模式**：`useChartPalette()` 默认沿色环取色（高对比度）；`useChartPalette({ mode: "mono" })` 沿主色同一色系取色（靠明度区分系列，适合与主题保持一致的柱状/面积图）。主色为无彩色时两种模式均回退到蓝色系。
-- **数据更新**：仅 `data` 变化时调用 `uPlot.setData` 增量重绘，不会重建图表实例，适合轮询、实时推送等高频更新场景。
+- **时间轴**：刻度位置与文案由 `niceTimeTicks` 生成（秒/分/时/天/月/年边界对齐、本地化格式），缩放时自动重算。
+- **大数据量**：窗口内点数超过 2000 的系列自动按 LTTB 算法降采样到约每像素一个点，保证 hover 与拖拽流畅。
+- **数据更新**：`data` 变化时直接重绘画布，适合轮询、实时推送等高频更新场景。

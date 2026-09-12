@@ -1,6 +1,7 @@
 import * as React from "react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 import { Check } from "lucide-react";
+import { FormContext } from "./form";
 
 export interface CheckboxRootProps extends Omit<
   React.ComponentProps<"input">,
@@ -17,8 +18,6 @@ export function CheckboxRoot({ className, onKeyDown, ...props }: CheckboxRootPro
       type="checkbox"
       className={cn("sr-only", className)}
       onKeyDown={(e) => {
-        
-        
         if (e.key === "Enter") {
           e.preventDefault();
           e.currentTarget.click();
@@ -31,25 +30,17 @@ export function CheckboxRoot({ className, onKeyDown, ...props }: CheckboxRootPro
 
 export interface CheckboxIndicatorProps extends Omit<React.ComponentProps<"span">, "className"> {
   className?: ClassNameValue;
-  checked?: boolean;
 }
 
-export function CheckboxIndicator({
-  className,
-  checked,
-  children,
-  ...props
-}: CheckboxIndicatorProps) {
+export function CheckboxIndicator({ className, children, ...props }: CheckboxIndicatorProps) {
   return (
     <span
       {...props}
-      role="checkbox"
-      aria-checked={checked}
       className={cn(
         "inline-flex items-center justify-center min-w-3 min-h-3",
-        "has-focus-visible:ring-2 has-focus-visible:ring-ring ",
+        "has-focus-visible:ring-3 has-focus-visible:ring-ring has-focus-visible:outline-1 has-focus-visible:outline-outline",
         "[&_svg:not([class*='size-'])]:size-3 [&_svg]:stroke-4 ",
-        "transition-colors duration-300 aria-checked:bg-primary text-background",
+        "transition-colors duration-300 has-checked:bg-primary text-background",
         "border border-border rounded-sm",
         className,
       )}
@@ -65,13 +56,7 @@ export interface CheckboxLabelProps extends Omit<React.ComponentProps<"label">, 
 
 export function CheckboxLabel({ className, children, ...props }: CheckboxLabelProps) {
   return (
-    <label
-      {...props}
-      className={cn(
-        "flex items-center gap-4 select-none font-medium",
-        className,
-      )}
-    >
+    <label {...props} className={cn("flex items-center gap-4 select-none font-medium", className)}>
       {children}
     </label>
   );
@@ -119,12 +104,7 @@ export const Checkbox = ({
   };
   return (
     <CheckboxLabel className={cn(classNames?.label, className)} style={style}>
-      <CheckboxIndicator
-        checked={checked$}
-        aria-disabled={disabled}
-        className={classNames?.indicator}
-        style={styles?.indicator}
-      >
+      <CheckboxIndicator className={classNames?.indicator} style={styles?.indicator}>
         <CheckboxRoot {...props} disabled={disabled} checked={checked$} onChange={handleChange} />
         {indicator ?? <Check />}
       </CheckboxIndicator>
@@ -151,6 +131,7 @@ export interface CheckboxGroupProps {
   name?: string;
   disabled?: boolean;
   className?: ClassNameValue;
+  "aria-label"?: string;
   common?: {
     classNames?: {
       indicator?: ClassNameValue;
@@ -173,11 +154,27 @@ export function CheckboxGroup({
   disabled,
   className,
   common,
+  "aria-label": ariaLabel,
 }: CheckboxGroupProps) {
   const [_value, setValue] = React.useState<string[]>(defaultValue);
   const isControlled = value !== undefined;
   const value$ = isControlled ? value : _value;
   const selectedSet = React.useMemo(() => new Set(value$), [value$]);
+  const {
+    register: registerField,
+    unregister: unregisterField,
+    setFormValues,
+  } = React.useContext(FormContext);
+
+  React.useEffect(() => {
+    if (!name) return;
+    registerField(name, null, (v) => {
+      const next = v === null ? [] : Array.isArray(v) ? v.map(String) : [String(v)];
+      if (!isControlled) setValue(next);
+      onChange?.(next);
+    });
+    return () => unregisterField(name);
+  }, [name, isControlled, onChange, registerField, unregisterField]);
 
   const handleToggle = (val: string) => {
     const next = selectedSet.has(val) ? value$.filter((v) => v !== val) : [...value$, val];
@@ -186,6 +183,7 @@ export function CheckboxGroup({
       setValue(next);
     }
     onChange?.(next);
+    if (name) setFormValues((prev) => ({ ...prev, [name]: next }));
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -210,7 +208,12 @@ export function CheckboxGroup({
   };
 
   return (
-    <div className={cn("flex flex-col gap-2", className)} onKeyDown={handleKeyDown}>
+    <div
+      role="group"
+      aria-label={ariaLabel}
+      className={cn("flex flex-col gap-2", className)}
+      onKeyDown={handleKeyDown}
+    >
       {options.map((item) =>
         "group" in item ? (
           <div key={item.group} className="flex flex-col gap-2">

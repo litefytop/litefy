@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { ImagePlus, Send, X } from "lucide-react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 import { Textarea } from "./text-area";
 
 type PastedImage = { id: string; file: File; url: string };

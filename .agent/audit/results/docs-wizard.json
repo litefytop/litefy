@@ -1,0 +1,27 @@
+{
+ "route": "wizard",
+ "url": "http://localhost:5199/en/docs/component/wizard",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 193
+  },
+  {
+   "action": "type",
+   "ms": 473
+  },
+  {
+   "action": "type",
+   "ms": 246
+  },
+  {
+   "action": "click",
+   "ms": 195
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

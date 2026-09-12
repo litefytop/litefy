@@ -1,0 +1,19 @@
+{
+ "route": "progress",
+ "url": "http://localhost:5199/en/docs/component/progress",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 187
+  },
+  {
+   "action": "click",
+   "ms": 182
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

@@ -1,0 +1,91 @@
+{
+ "route": "tabs",
+ "url": "http://localhost:5199/en/docs/component/tabs",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 189
+  },
+  {
+   "action": "click",
+   "ms": 203
+  },
+  {
+   "action": "click",
+   "ms": 187
+  },
+  {
+   "action": "click",
+   "ms": 193
+  },
+  {
+   "action": "click",
+   "ms": 186
+  },
+  {
+   "action": "click",
+   "ms": 187
+  },
+  {
+   "action": "click",
+   "ms": 189
+  },
+  {
+   "action": "click",
+   "ms": 183
+  },
+  {
+   "action": "click",
+   "ms": 183
+  },
+  {
+   "action": "click",
+   "ms": 194
+  },
+  {
+   "action": "click",
+   "ms": 198
+  },
+  {
+   "action": "click",
+   "ms": 184
+  },
+  {
+   "action": "click",
+   "ms": 183
+  },
+  {
+   "action": "click",
+   "ms": 184
+  },
+  {
+   "action": "click",
+   "ms": 181
+  },
+  {
+   "action": "click",
+   "ms": 179
+  },
+  {
+   "action": "click",
+   "ms": 185
+  },
+  {
+   "action": "click",
+   "ms": 183
+  },
+  {
+   "action": "click",
+   "ms": 178
+  },
+  {
+   "action": "click",
+   "ms": 187
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 2
+}

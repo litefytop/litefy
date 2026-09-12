@@ -27,7 +27,7 @@ Input fields with validation error state.
 
 ### Custom
 
-Compose `InputGroup`, `InputLeading`, `InputRoot`, `InputTrailing`; the `focus-within` focus ring and `data-invalid` invalid styles apply automatically.
+Compose `InputGroup`, `InputLeading`, `InputRoot`, `InputTrailing` for full control — the parts belong to the [Input Group](/docs/component/input-group) component, see its page for the complete API. The `focus-within` focus ring and `data-invalid` invalid styles apply automatically.
 
 <ComponentPreview 
   name="input-custom"
@@ -54,43 +54,3 @@ The input component with slot and validation support.
 | `classNames` | `{ leading?: ClassNameValue; trailing?: ClassNameValue; root?: ClassNameValue }` | - | Custom classes for the leading/trailing slots and the inner input (`root`) |
 | `styles` | `{ leading?: React.CSSProperties; trailing?: React.CSSProperties; root?: React.CSSProperties }` | - | Inline styles for the leading/trailing slots and the inner input (`root`) |
 | `...props`   | `React.ComponentProps<"input">`                   | -        | Supports all native input props (except `type`, `className`) |
-
----
-
-### Composable Components
-
-#### InputGroup
-
-Outer container with the complete input styles built in: size (`h-9 w-full max-w-sm`), rounded border, background, `focus-within` focus ring, and the `data-invalid` invalid state styles.
-
-| Prop        | Type                          | Default | Description                                                   |
-| ----------- | ----------------------------- | ------- | ------------------------------------------------------------- |
-| `className` | `ClassNameValue`              | -       | Custom class name                                             |
-| `...props`  | `React.ComponentProps<"div">` | -       | Supports all native div props (including `data-*` attributes) |
-
-#### InputLeading
-
-Leading slot container rendered as a `span`, with built-in `shrink-0`, icon sizing and padding.
-
-| Prop        | Type                           | Default | Description                                                    |
-| ----------- | ------------------------------ | ------- | -------------------------------------------------------------- |
-| `className` | `ClassNameValue`               | -       | Custom class name                                              |
-| `...props`  | `React.ComponentProps<"span">` | -       | Supports all native span props (including `data-*` attributes) |
-
-#### InputRoot
-
-The native input element with built-in base styles: flexible width, borderless transparent background, placeholder and selection colors.
-
-| Prop        | Type                            | Default | Description                                                  |
-| ----------- | ------------------------------- | ------- | ------------------------------------------------------------ |
-| `className` | `ClassNameValue`                | -       | Custom class name                                            |
-| `...props`  | `React.ComponentProps<"input">` | -       | Supports all native input props (except `className`), such as `type`, `value`, `onChange` |
-
-#### InputTrailing
-
-Trailing slot container rendered as a `span`, with built-in `shrink-0`, icon sizing and padding.
-
-| Prop        | Type                           | Default | Description                                                    |
-| ----------- | ------------------------------ | ------- | -------------------------------------------------------------- |
-| `className` | `ClassNameValue`               | -       | Custom class name                                              |
-| `...props`  | `React.ComponentProps<"span">` | -       | Supports all native span props (including `data-*` attributes) |

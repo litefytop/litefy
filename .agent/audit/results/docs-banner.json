@@ -1,0 +1,10 @@
+{
+ "route": "banner",
+ "url": "http://localhost:5199/en/docs/component/banner",
+ "axeError": null,
+ "violations": [],
+ "incomplete": 2,
+ "longtasks": [],
+ "interactions": [],
+ "consoleErrors": []
+}

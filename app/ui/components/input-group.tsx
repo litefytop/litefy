@@ -1,4 +1,4 @@
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 type HTMLAttrs<T> = Omit<T, "className"> & {
   [key: `data-${string}`]: string | number | null | undefined | true;
@@ -16,9 +16,8 @@ export function InputGroup({ className, invalid, ...props }: InputGroupProps) {
       data-invalid={invalid || props["data-invalid"]}
       className={cn(
         "group/input flex h-9 w-full max-w-sm rounded-md px-2 border items-center",
-        "focus-within:ring-inset focus-within:ring-ring focus-within:ring-1",
         "data-invalid:border-danger",
-        "data-invalid:focus-within:outline-1 data-invalid:focus-within:outline-danger data-invalid:focus-within:ring-3 data-invalid:focus-within:ring-danger/50",
+        "data-invalid:focus-within:outline-none data-invalid:focus-within:ring-3 data-invalid:focus-within:ring-danger/50",
         className,
       )}
     />

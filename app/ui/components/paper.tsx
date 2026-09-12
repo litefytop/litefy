@@ -1,4 +1,4 @@
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export type PaperVariant = "a4" | "a5" | "a4-landscape" | "a5-landscape";
 

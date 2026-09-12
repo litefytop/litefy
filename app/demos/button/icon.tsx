@@ -18,7 +18,7 @@ export default function Demo() {
         <Settings className="size-4" />
         Settings
       </Button>
-      <Button>
+      <Button aria-label="Like">
         <Heart className="size-4" />
       </Button>
     </div>

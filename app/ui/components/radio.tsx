@@ -1,69 +1,117 @@
 "use client";
 
 import * as React from "react";
-import { type ClassNameValue, cn } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
+import { FormContext } from "./form";
 
-export interface RadioProps extends Omit<React.ComponentProps<"input">, "type" | "className"> {
+export interface RadioRootProps extends Omit<
+  React.ComponentProps<"input">,
+  "type" | "className"
+> {
   className?: ClassNameValue;
-  invalid?: boolean;
-  onCheckedChange?: (checked: boolean) => void;
-  indicator?: (checked: boolean, wrapperClassName?: string) => React.ReactNode;
 }
 
-export const Radio = ({
-  children,
-  checked: controlledChecked,
-  defaultChecked = false,
-  onCheckedChange,
-  indicator,
-  className,
-  style,
-  invalid,
-  id,
-  ...props
-}: RadioProps) => {
-  const fallbackId = React.useId();
-  const _id = id ?? fallbackId;
-  const [uncontrolledChecked, setUncontrolledChecked] = React.useState(defaultChecked);
-  const isControlled = controlledChecked !== undefined;
-  const checked$ = isControlled ? controlledChecked : uncontrolledChecked;
+export function RadioRoot({ className, ...props }: RadioRootProps) {
+  return <input {...props} type="radio" className={cn("sr-only peer", className)} />;
+}
 
-  const handleChange = () => {
-    if (checked$) return;
-    if (!isControlled) setUncontrolledChecked(true);
-    onCheckedChange?.(true);
-  };
+export interface RadioIndicatorProps extends Omit<React.ComponentProps<"span">, "className"> {
+  className?: ClassNameValue;
+}
 
+export function RadioIndicator({ className, children, ...props }: RadioIndicatorProps) {
   return (
-    <label
-      htmlFor={_id}
-      style={style}
-      aria-invalid={invalid}
-      data-invalid={invalid || undefined}
+    <span
+      {...props}
       className={cn(
-        "inline-flex items-center justify-center gap-2 shrink-0 h-9 min-w-9 px-3 py-1 cursor-pointer select-none relative",
-        "has-focus-visible:[&>*:first-child]:ring-2 has-focus-visible:[&>*:first-child]:ring-ring has-focus-visible:[&>*:first-child]:ring-offset-2",
-        "data-invalid:text-danger",
+        "inline-flex items-center justify-center min-w-4 min-h-4 rounded-full border border-border",
+        "has-focus-visible:ring-3 has-focus-visible:ring-ring has-focus-visible:outline-1 has-focus-visible:outline-outline",
+        "transition-colors duration-300 has-checked:border-primary",
         className,
       )}
     >
-      {indicator?.(
-        checked$,
-        "peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-2 flex items-center justify-center",
-      )}
+      {children}
+    </span>
+  );
+}
 
-      <input
-        {...props}
-        type="radio"
-        id={_id}
-        data-invalid={invalid || undefined}
-        checked={checked$}
-        onChange={handleChange}
-        data-hidden={Boolean(indicator) || undefined}
-        className={cn("accent-primary data-invalid:accent-danger data-hidden:sr-only peer")}
-      />
+export interface RadioLabelProps extends Omit<React.ComponentProps<"label">, "className"> {
+  className?: ClassNameValue;
+}
+
+export function RadioLabel({ className, children, ...props }: RadioLabelProps) {
+  return (
+    <label {...props} className={cn("flex items-center gap-2 select-none", className)}>
       {children}
     </label>
+  );
+}
+
+export interface RadioProps extends Omit<RadioRootProps, "className" | "style"> {
+  className?: ClassNameValue;
+  style?: React.CSSProperties;
+  invalid?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
+  indicator?: React.ReactNode;
+  classNames?: {
+    indicator?: ClassNameValue;
+    label?: ClassNameValue;
+  };
+  styles?: {
+    indicator?: React.CSSProperties;
+    label?: React.CSSProperties;
+  };
+}
+
+export const Radio = ({
+  className,
+  style,
+  children,
+  checked,
+  defaultChecked,
+  onChange,
+  onCheckedChange,
+  disabled,
+  invalid,
+  classNames,
+  styles,
+  indicator,
+  ...props
+}: RadioProps) => {
+  const [_checked, setChecked] = React.useState(defaultChecked ?? false);
+  const isControlled = checked !== undefined;
+  const checked$ = isControlled ? checked : _checked;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange?.(e);
+    if (e.target.checked) {
+      if (!isControlled) setChecked(true);
+      onCheckedChange?.(true);
+    }
+  };
+  return (
+    <RadioLabel
+      className={cn("data-invalid:text-danger", classNames?.label, className)}
+      style={style}
+      data-invalid={invalid || undefined}
+    >
+      <RadioIndicator
+        className={classNames?.indicator}
+        style={styles?.indicator}
+        data-invalid={invalid || undefined}
+      >
+        <RadioRoot
+          {...props}
+          disabled={disabled}
+          aria-invalid={invalid || undefined}
+          checked={checked$}
+          onChange={handleChange}
+        />
+        {indicator ?? (
+          <span className="size-2 scale-0 rounded-full bg-primary transition-transform duration-150 peer-checked:scale-100" />
+        )}
+      </RadioIndicator>
+      {children}
+    </RadioLabel>
   );
 };
 
@@ -81,9 +129,17 @@ export interface RadioGroupProps {
   disabled?: boolean;
   invalid?: boolean;
   className?: ClassNameValue;
+  "aria-label"?: string;
   common?: {
-    className?: ClassNameValue;
-    indicator?: RadioProps["indicator"];
+    classNames?: {
+      indicator?: ClassNameValue;
+      label?: ClassNameValue;
+    };
+    styles?: {
+      indicator?: React.CSSProperties;
+      label?: React.CSSProperties;
+    };
+    indicator?: React.ReactNode;
   };
 }
 
@@ -96,20 +152,43 @@ export function RadioGroup({
   disabled,
   invalid,
   className,
+  "aria-label": ariaLabel,
   common,
 }: RadioGroupProps) {
   const [_value, setValue] = React.useState<string | undefined>(defaultValue);
   const isControlled = value !== undefined;
   const value$ = isControlled ? value : _value;
+  const {
+    register: registerField,
+    unregister: unregisterField,
+    setFormValues,
+  } = React.useContext(FormContext);
+
+  React.useEffect(() => {
+    if (!name) return;
+    registerField(name, null, (v) => {
+      const next =
+        v === null || v === undefined
+          ? undefined
+          : Array.isArray(v)
+            ? String(v[0] ?? "")
+            : String(v);
+      if (!isControlled) setValue(next);
+      else if (next !== undefined) onValueChange?.(next);
+    });
+    return () => unregisterField(name);
+  }, [name, isControlled, onValueChange, registerField, unregisterField]);
 
   const handleSelect = (val: string) => {
     if (!isControlled) setValue(val);
     onValueChange?.(val);
+    if (name) setFormValues((prev) => ({ ...prev, [name]: val }));
   };
 
   return (
     <div
       role="radiogroup"
+      aria-label={ariaLabel}
       aria-invalid={invalid}
       data-invalid={invalid || undefined}
       className={cn("flex flex-col gap-2", className)}
@@ -123,8 +202,9 @@ export function RadioGroup({
           invalid={invalid || option.invalid}
           checked={value$ === option.value}
           onCheckedChange={() => handleSelect(option.value)}
+          classNames={option.classNames ?? common?.classNames}
+          styles={option.styles ?? common?.styles}
           indicator={option.indicator ?? common?.indicator}
-          className={option.className ?? common?.className}
         >
           {option.label}
         </Radio>

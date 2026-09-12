@@ -1,0 +1,19 @@
+{
+ "route": "card",
+ "url": "http://localhost:5199/en/docs/component/card",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 194
+  },
+  {
+   "action": "click",
+   "ms": 357
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

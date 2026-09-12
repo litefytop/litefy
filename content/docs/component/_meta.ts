@@ -121,6 +121,13 @@ export default {
       zh: "对话框",
     },
   },
+  donut: {
+    name: "Donut",
+    displayName: {
+      en: "Donut",
+      zh: "环形图",
+    },
+  },
   drawer: {
     name: "Drawer",
     displayName: {
@@ -223,7 +230,7 @@ export default {
     name: "Number Field",
     displayName: {
       en: "Number Field",
-      zh: "数字输入框",
+      zh: "数字步进器",
     },
   },
   "number-input": {
@@ -296,6 +303,13 @@ export default {
       zh: "单选框",
     },
   },
+  radar: {
+    name: "Radar",
+    displayName: {
+      en: "Radar",
+      zh: "雷达图",
+    },
+  },
   select: {
     name: "Select",
     displayName: {
@@ -336,6 +350,13 @@ export default {
     displayName: {
       en: "Skeleton",
       zh: "骨架屏",
+    },
+  },
+  sparkline: {
+    name: "Sparkline",
+    displayName: {
+      en: "Sparkline",
+      zh: "迷你图",
     },
   },
   slider: {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useLocation } from "react-router";
 import { Tabs } from "@/ui";
 import { cn } from "@/ui";
 import { PackageManagerTabs } from "./package-manager-tabs";
@@ -12,6 +13,8 @@ export interface PresetTabsProps {
 
 export function PresetTabs({ items }: PresetTabsProps) {
   const [active, setActive] = useState(items[0]);
+  const { pathname } = useLocation();
+  const zh = pathname.startsWith("/zh");
 
   return (
     <div className="grid gap-2 sm:grid-cols-[9rem_1fr]">
@@ -45,7 +48,7 @@ export function PresetTabs({ items }: PresetTabsProps) {
           options={[
             {
               value: "manual",
-              label: "Manual",
+              label: zh ? "手动" : "Manual",
               content: <CssSource name={active} />,
             },
             {

@@ -1,0 +1,31 @@
+{
+ "route": "select",
+ "url": "http://localhost:5199/en/docs/component/select",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 190
+  },
+  {
+   "action": "click",
+   "ms": 193
+  },
+  {
+   "action": "click",
+   "ms": 196
+  },
+  {
+   "action": "click",
+   "ms": 214
+  },
+  {
+   "action": "click",
+   "ms": 192
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

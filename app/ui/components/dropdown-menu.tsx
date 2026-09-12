@@ -1,7 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { Button, Menu, Popover, type MenuConfig, type MenuItemConfig, type ClassNameValue, cn } from "..";
+import { Menu, type MenuConfig, type MenuItemConfig } from "./menu";
+import { Button } from "./button";
+import { Popover } from "./popover";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export interface DropdownMenuProps {
   trigger: React.ReactNode;
@@ -21,7 +24,7 @@ export function DropdownMenu({
   trigger,
   items,
   onSelect,
-  alignX = "start",
+  alignX = "center",
   className,
   classNames,
 }: DropdownMenuProps) {

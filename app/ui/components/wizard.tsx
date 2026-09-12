@@ -2,7 +2,9 @@
 
 import * as React from "react";
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
-import { type ClassNameValue, cn, Pager, Steps, type StepsItemConfig } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
+import { Pager } from "./pager";
+import { Steps, type StepsItemConfig } from "./steps";
 
 export interface WizardProps {
   steps: StepsItemConfig[];

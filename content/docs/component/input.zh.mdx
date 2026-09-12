@@ -27,7 +27,7 @@ description: 支持前后置插槽和验证状态的输入框组件
 
 ### 自定义
 
-使用 `InputGroup`、`InputLeading`、`InputRoot`、`InputTrailing` 拼装，`focus-within` 焦点环与 `data-invalid` 无效状态样式自动生效。
+使用 `InputGroup`、`InputLeading`、`InputRoot`、`InputTrailing` 拼装——这些零件属于 [Input Group](/docs/component/input-group) 组件，完整 API 见其文档页。`focus-within` 焦点环与 `data-invalid` 无效状态样式自动生效。
 
 <ComponentPreview 
   name="input-custom"
@@ -55,42 +55,3 @@ description: 支持前后置插槽和验证状态的输入框组件
 | `styles` | `{ leading?: React.CSSProperties; trailing?: React.CSSProperties; root?: React.CSSProperties }` | - | 前后置插槽与内部输入框（`root`）的内联样式 |
 | `...props`   | `React.ComponentProps<"input">`                   | -        | 支持全部 input 原生属性（除 `type`、`className`） |
 
----
-
-### 可组合组件
-
-#### InputGroup
-
-外层容器，内置完整输入框样式：尺寸（`h-9 w-full max-w-sm`）、圆角边框、背景、`focus-within` 焦点环，以及 `data-invalid` 无效状态样式。
-
-| Prop        | Type                          | Default | Description                               |
-| ----------- | ----------------------------- | ------- | ----------------------------------------- |
-| `className` | `ClassNameValue`              | -       | 自定义类名                                |
-| `...props`  | `React.ComponentProps<"div">` | -       | 支持全部 div 原生属性（含 `data-*` 属性） |
-
-#### InputLeading
-
-前置插槽容器，渲染为 `span`，内置 `shrink-0`、图标尺寸与内边距。
-
-| Prop        | Type                           | Default | Description                                |
-| ----------- | ------------------------------ | ------- | ------------------------------------------ |
-| `className` | `ClassNameValue`               | -       | 自定义类名                                 |
-| `...props`  | `React.ComponentProps<"span">` | -       | 支持全部 span 原生属性（含 `data-*` 属性） |
-
-#### InputRoot
-
-原生 input 元素，内置基础样式：自适应宽度、无边框透明背景、placeholder 与选区颜色。
-
-| Prop        | Type                            | Default | Description                                        |
-| ----------- | ------------------------------- | ------- | -------------------------------------------------- |
-| `className` | `ClassNameValue`                | -       | 自定义类名                                         |
-| `...props`  | `React.ComponentProps<"input">` | -       | 支持全部 input 原生属性（除 `className`），如 `type`、`value`、`onChange` |
-
-#### InputTrailing
-
-后置插槽容器，渲染为 `span`，内置 `shrink-0`、图标尺寸与内边距。
-
-| Prop        | Type                           | Default | Description                                |
-| ----------- | ------------------------------ | ------- | ------------------------------------------ |
-| `className` | `ClassNameValue`               | -       | 自定义类名                                 |
-| `...props`  | `React.ComponentProps<"span">` | -       | 支持全部 span 原生属性（含 `data-*` 属性） |

@@ -1,7 +1,9 @@
 "use client";
 import * as React from "react";
 import { ChevronRight } from "lucide-react";
-import { type ClassNameValue, cn, List, PopoverContent } from "..";
+import { type ClassNameValue, cn } from "../utils/cn";
+import { List } from "./list";
+import { PopoverContent } from "./popover";
 
 export type CascaderNode = {
   value: string;
@@ -17,11 +19,7 @@ export function CascaderTrigger({ className, ...props }: CascaderTriggerProps) {
   return (
     <button
       {...props}
-      className={cn(
-        "min-w-0 flex-1 truncate transition-colors px-3 py-2",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ring-ring",
-        className,
-      )}
+      className={cn("min-w-0 flex-1 truncate transition-colors px-3 py-2", className)}
     />
   );
 }

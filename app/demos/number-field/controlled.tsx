@@ -19,6 +19,7 @@ export default function NumberFieldControlledDemo() {
           min={0}
           max={100}
           step={0.5}
+          aria-label="String value"
         />
         <p className="text-sm text-muted-foreground">
           Value: {stringValue} (type: {typeof stringValue})
@@ -35,6 +36,7 @@ export default function NumberFieldControlledDemo() {
           positiveInteger
           min={0}
           max={20}
+          aria-label="Integer value"
         />
         <p className="text-sm text-muted-foreground">
           Value: {numberValue} (type:{" "}

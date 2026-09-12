@@ -3,6 +3,7 @@ import fs from "fs-extra";
 import logger from "../utils/logger";
 import { getFileNameFromUrl, loadRegistry, resolveRegistryName } from "../utils/registry";
 import { writeBarrelIndex } from "../utils/barrel";
+import { syncStyleImports } from "../utils/style-imports";
 import type { Registry, RegistryEntry } from "./add";
 
 interface LitefyConfig {
@@ -47,6 +48,8 @@ async function rm(names: string[]): Promise<void> {
 
   const hookIndex = path.resolve(cwd, config.utils.path, "index.ts");
   await writeBarrelIndex(hookIndex, config.utils.installed);
+
+  await syncStyleImports(cwd, config.styles.path, config.styles.installed, registry);
 
   await fs.writeJson(configPath, config, { spaces: 2 });
   logger.success("Remove done, updated litefy.json");

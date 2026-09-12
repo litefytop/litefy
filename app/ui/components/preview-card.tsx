@@ -1,7 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { Card, Image, Tooltip, type ClassNameValue, cn } from "..";
+import { Card } from "./card";
+import { Image } from "./image";
+import { Tooltip } from "./tooltip";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export interface PreviewCardProps {
   src: string;

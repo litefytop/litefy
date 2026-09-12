@@ -25,21 +25,13 @@ Vertical sliders are fully rendered by layout with the minimum value at the bott
   name="slider-orientation"
 />
 
-### Invalid
-
-Marks the slider with `data-invalid` for form validation states.
-
-<ComponentPreview
-  name="slider-invalid"
-/>
-
 ## API Reference
 
 ### High-level Components
 
 #### Slider
 
-A simulated slider built with the parts below, encapsulating all state and interaction logic.
+A simulated slider built with the parts below, encapsulating all state and interaction logic. The value is structurally clamped to `min` / `max`, so there is no invalid state to validate.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
@@ -52,7 +44,6 @@ A simulated slider built with the parts below, encapsulating all state and inter
 | `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Track orientation; vertical is fully computed in JS (min at the bottom) |
 | `disabled` | `boolean` | `false` | Disables pointer and keyboard interaction |
 | `name` | `string` | - | Renders a hidden input for form submission |
-| `invalid` | `boolean` | - | Sets `data-invalid` on the root, tinting the thumb, fill and track |
 | `aria-label` | `string` | - | Accessible label applied to the thumb |
 | `className` | `ClassNameValue` | - | Custom class for the root |
 | `style` | `React.CSSProperties` | - | Custom inline style for the root |

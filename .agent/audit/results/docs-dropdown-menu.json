@@ -1,0 +1,19 @@
+{
+ "route": "dropdown-menu",
+ "url": "http://localhost:5199/en/docs/component/dropdown-menu",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 195
+  },
+  {
+   "action": "click",
+   "ms": 198
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

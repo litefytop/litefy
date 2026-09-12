@@ -1,0 +1,43 @@
+{
+ "route": "collapse",
+ "url": "http://localhost:5199/en/docs/component/collapse",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 188
+  },
+  {
+   "action": "click",
+   "ms": 193
+  },
+  {
+   "action": "click",
+   "ms": 372
+  },
+  {
+   "action": "click",
+   "ms": 385
+  },
+  {
+   "action": "click",
+   "ms": 258
+  },
+  {
+   "action": "click",
+   "ms": 221
+  },
+  {
+   "action": "click",
+   "ms": 371
+  },
+  {
+   "action": "click",
+   "ms": 366
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

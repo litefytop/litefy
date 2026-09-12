@@ -1,0 +1,83 @@
+{
+ "route": "form",
+ "url": "http://localhost:5199/en/docs/component/form",
+ "axeError": null,
+ "violations": [
+  {
+   "id": "nested-interactive",
+   "impact": "serious",
+   "help": "Interactive controls must not be nested",
+   "wcag": [
+    "wcag2a",
+    "wcag412"
+   ],
+   "nodes": 3,
+   "sampleTargets": [
+    ".gap-4:nth-child(1) > .min-w-3.min-h-3.has-focus-visible\\:ring-2",
+    ".gap-4:nth-child(2) > .min-w-3.min-h-3.has-focus-visible\\:ring-2",
+    ".gap-4:nth-child(3) > .min-w-3.min-h-3.has-focus-visible\\:ring-2"
+   ]
+  }
+ ],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 196
+  },
+  {
+   "action": "click",
+   "ms": 198
+  },
+  {
+   "action": "type",
+   "ms": 283
+  },
+  {
+   "action": "type",
+   "ms": 271
+  },
+  {
+   "action": "click",
+   "ms": 198
+  },
+  {
+   "action": "type",
+   "ms": 276
+  },
+  {
+   "action": "type",
+   "ms": 259
+  },
+  {
+   "action": "click",
+   "ms": 192
+  },
+  {
+   "action": "click",
+   "ms": 185
+  },
+  {
+   "action": "click",
+   "ms": 201
+  },
+  {
+   "action": "click",
+   "ms": 1006
+  },
+  {
+   "action": "type",
+   "ms": 256
+  },
+  {
+   "action": "type",
+   "ms": 275
+  },
+  {
+   "action": "type",
+   "ms": 270
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

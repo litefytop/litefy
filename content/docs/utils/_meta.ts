@@ -7,6 +7,13 @@ export default {
     },
   },
 
+  "chart-kit": {
+    name: "Chart Kit",
+    displayName: {
+      en: "chart-kit",
+      zh: "图表数学层",
+    },
+  },
   "use-theme": {
     name: "Theme",
     displayName: {

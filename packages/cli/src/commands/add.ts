@@ -1,6 +1,7 @@
 import path from "node:path";
 import axios from "axios";
 import fs from "fs-extra";
+import inquirer from "inquirer";
 import logger from "../utils/logger";
 import {
   getFileNameFromUrl,
@@ -9,10 +10,13 @@ import {
   resolveRegistryName,
 } from "../utils/registry";
 import { writeBarrelIndex } from "../utils/barrel";
+import { syncStyleImports } from "../utils/style-imports";
+import { detectPackageManager, installDependencies } from "../utils/pm";
 import init from "../commands/init";
 
 interface AddOptions {
   overwrite?: boolean;
+  yes?: boolean;
 }
 
 interface LitefyConfig {
@@ -36,6 +40,7 @@ export type RegistryEntry = {
   url: string;
   docs?: string;
   dependence?: string[];
+  dependencies?: string[];
 };
 
 export type Registry = Record<string, RegistryEntry>;
@@ -105,8 +110,69 @@ async function add(selectNames: string[], options: AddOptions): Promise<void> {
   const utilIndex = path.resolve(cwd, config.utils.path, "index.ts");
   await writeBarrelIndex(utilIndex, config.utils.installed);
 
+  await syncStyleImports(cwd, config.styles.path, config.styles.installed, registry);
+
   await fs.writeJson(configPath, config, { spaces: 2 });
+
+  await installNpmDependencies(registry, processed, cwd, options);
   logger.success("Process finished.");
+}
+
+async function installNpmDependencies(
+  registry: Registry,
+  processed: Set<string>,
+  cwd: string,
+  options: AddOptions,
+): Promise<void> {
+  const npmDeps = new Set<string>();
+  for (const name of processed) {
+    for (const dep of registry[name]?.dependencies ?? []) npmDeps.add(dep);
+  }
+  if (!npmDeps.size) return;
+
+  const pkgJsonPath = path.join(cwd, "package.json");
+  if (await fs.pathExists(pkgJsonPath)) {
+    const pkgJson = await fs.readJson(pkgJsonPath);
+    const have = new Set([
+      ...Object.keys(pkgJson.dependencies ?? {}),
+      ...Object.keys(pkgJson.devDependencies ?? {}),
+    ]);
+    for (const dep of npmDeps) {
+      if (have.has(dep)) npmDeps.delete(dep);
+    }
+  }
+  if (!npmDeps.size) return;
+
+  const list = [...npmDeps];
+  let proceed = true;
+  if (!options.yes) {
+    const res = await inquirer.prompt<{ ok: boolean }>([
+      {
+        type: "confirm",
+        name: "ok",
+        message: `Install npm dependencies: ${list.join(", ")}?`,
+        default: true,
+      },
+    ]);
+    proceed = res.ok;
+  }
+
+  if (!proceed) {
+    logger.info(`Skipped npm dependencies. Install manually with your package manager:`);
+    logger.info(`  ${list.join(" ")}`);
+    return;
+  }
+
+  const pm = await detectPackageManager(cwd);
+  logger.step(`Installing npm dependencies with ${pm}: ${list.join(", ")}`);
+  try {
+    await installDependencies(pm, list);
+    logger.success("npm dependencies installed successfully!");
+  } catch (error) {
+    logger.error(error instanceof Error ? error.message : String(error));
+    logger.warn("npm dependency installation failed, please install manually.");
+    logger.info(`  ${pm} add ${list.join(" ")}`);
+  }
 }
 
 export async function addSingle(

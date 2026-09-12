@@ -8,7 +8,7 @@ export interface UseComboboxOptions<T> {
   onSelect?: (item: T, index: number) => void;
 }
 
-export interface UseComboboxReturn<T> {
+export interface UseComboboxReturn {
   highlightIndex: number | null;
   setHighlightIndex: React.Dispatch<React.SetStateAction<number | null>>;
   handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -20,7 +20,7 @@ export function useCombobox<T>({
   items,
   isItemDisabled,
   onSelect,
-}: UseComboboxOptions<T>): UseComboboxReturn<T> {
+}: UseComboboxOptions<T>): UseComboboxReturn {
   const [highlightIndex, setHighlightIndex] = React.useState<number | null>(null);
 
   const move = (delta: 1 | -1) => {

@@ -1,0 +1,121 @@
+---
+title: chart-kit
+description: SVG 图表的纯函数数学层 —— 极坐标路径、环形布局、线性映射与单调平滑的折线/面积路径，零依赖
+---
+
+chart-kit 是 SVG 图表组件（Donut、Radar、Sparkline）背后的共享数学层。它是一组零依赖的纯函数 —— 当你需要自绘 SVG 可视化、只缺几何计算时使用：路径字符串、角度布局与坐标映射。它不持有状态、不渲染任何内容、不接触 DOM。
+
+## 安装
+
+<Installation name="chart-kit" />
+
+## 用法
+
+角度单位为度，采用 SVG 屏幕坐标系（y 轴向下）：`0°` 指向右，`-90°` 指向上。雷达系列函数以原点为中心 —— 用平移过的 `<g>` 包裹，轴标签自行放置。
+
+```tsx
+import { arcPath, donutLayout, linePath, scaleLinear } from "@/ui";
+
+const segments = donutLayout([3, 2, 1], -90, 2);
+
+<path d={arcPath(100, 100, 62, 96, segments[0].start, segments[0].end)} />;
+
+const y = scaleLinear([0, 100], [29, 3]);
+const d = linePath(
+  [
+    { x: 0, y: y(10) },
+    { x: 50, y: y(40) },
+    { x: 100, y: y(25) },
+  ],
+  true,
+);
+```
+
+## API 参考
+
+### polar
+
+```ts
+function polar(cx: number, cy: number, r: number, deg: number): ChartPoint
+```
+
+把极坐标转换为笛卡尔坐标点。
+
+### arcPath
+
+```ts
+function arcPath(cx: number, cy: number, r0: number, r1: number, a0: number, a1: number): string
+```
+
+从角度 `a0` 到 `a1` 的环形扇区路径。`r0 = 0` 时退化为饼形扇区；扫描角达到 360° 及以上时输出完整圆环。扫描角不为正时返回 `""`。
+
+### donutLayout
+
+```ts
+function donutLayout(values: number[], startAngle?: number, gap?: number): DonutSegment[]
+```
+
+把原始数值转换为角度段，从 `startAngle`（默认 `-90`）开始。每段携带 `index`、`start`、`end`、`mid`（度）与 `ratio`。负值与零值被钳制；`gap`（度）会在薄扇形上自动收缩，保证 `end` 不会越过 `start`。
+
+### scaleLinear
+
+```ts
+function scaleLinear(domain: [number, number], range: [number, number]): (value: number) => number
+```
+
+把值从定义域映射到值域。定义域两端相等时，一切值映射到值域中点。
+
+### polygonPoints
+
+```ts
+function polygonPoints(points: ChartPoint[]): string
+```
+
+把点集拼接为 `<polygon>` 使用的 SVG `points` 属性字符串。
+
+### radarRings
+
+```ts
+function radarRings(count: number, radius: number, levels: number): ChartPoint[][]
+```
+
+`levels` 层同心正多边形，每层 `count` 个顶点，半径均匀放大至 `radius`，全部以原点为中心。
+
+### radarSpokes
+
+```ts
+function radarSpokes(count: number, radius: number): ChartPoint[]
+```
+
+`count` 个外层顶点 —— 从原点各引一条线即为辐条。
+
+### radarPolygon
+
+```ts
+function radarPolygon(values: number[], max: number, radius: number): ChartPoint[]
+```
+
+把数据值映射到雷达顶点；每个值被钳制在 `[0, max]`。
+
+### linePath
+
+```ts
+function linePath(points: ChartPoint[], smooth?: boolean): string
+```
+
+折线的 SVG 路径。`smooth` 时使用单调三次插值（Fritsch–Carlson）：曲线永远不会过冲数据点。
+
+### areaPath
+
+```ts
+function areaPath(points: ChartPoint[], baseline: number, smooth?: boolean): string
+```
+
+`linePath` 向下闭合到 `baseline`，可直接填充。
+
+### 类型
+
+| 名称 | 结构 |
+| ---- | ---- |
+| `ChartPoint` | `{ x: number; y: number }` |
+| `DonutSegment` | `{ index: number; start: number; end: number; mid: number; ratio: number }` |

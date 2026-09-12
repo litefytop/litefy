@@ -1,0 +1,39 @@
+{
+ "route": "form-item",
+ "url": "http://localhost:5199/en/docs/component/form-item",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 188
+  },
+  {
+   "action": "click",
+   "ms": 201
+  },
+  {
+   "action": "click",
+   "ms": 215
+  },
+  {
+   "action": "click",
+   "ms": 201
+  },
+  {
+   "action": "type",
+   "ms": 270
+  },
+  {
+   "action": "type",
+   "ms": 261
+  },
+  {
+   "action": "type",
+   "ms": 256
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

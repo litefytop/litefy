@@ -4,7 +4,7 @@ import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 import { Suspense, useEffect, useState } from "react";
 import { type ClassNameValue, cn } from "@/ui";
 
-type SourceType = "component" | "util";
+type SourceType = "component" | "util" | "css";
 
 interface SourceProps {
   type: SourceType;
@@ -32,7 +32,18 @@ for (const [path, loader] of Object.entries(utilGlob)) {
   if (m) utilMap[m[1]] = loader as () => Promise<string>;
 }
 
+const cssGlob = import.meta.glob("../ui/styles/*.css", {
+  query: "?raw",
+  import: "default",
+});
+const cssMap: Record<string, () => Promise<string>> = {};
+for (const [path, loader] of Object.entries(cssGlob)) {
+  const m = path.match(/\/([^/]+)\.css$/);
+  if (m) cssMap[m[1]] = loader as () => Promise<string>;
+}
+
 function getMeta(type: SourceType) {
+  if (type === "css") return { lang: "css", suffix: ".css", map: cssMap };
   return type === "component"
     ? { lang: "tsx", suffix: ".tsx", map: componentMap }
     : { lang: "ts", suffix: ".ts", map: utilMap };

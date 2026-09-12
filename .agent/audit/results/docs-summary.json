@@ -1,0 +1,1167 @@
+[
+ {
+  "route": "avatar",
+  "url": "http://localhost:5199/en/docs/component/avatar",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "banner",
+  "url": "http://localhost:5199/en/docs/component/banner",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/banner\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/co",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "badge",
+  "url": "http://localhost:5199/en/docs/component/badge",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "breadcrumb",
+  "url": "http://localhost:5199/en/docs/component/breadcrumb",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/breadcrumb\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/doc",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "button",
+  "url": "http://localhost:5199/en/docs/component/button",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "click",
+    "ms": 186
+   },
+   {
+    "action": "click",
+    "ms": 188
+   },
+   {
+    "action": "click",
+    "ms": 189
+   },
+   {
+    "action": "click",
+    "ms": 182
+   },
+   {
+    "action": "click",
+    "ms": 190
+   },
+   {
+    "action": "click",
+    "ms": 1001
+   },
+   {
+    "action": "click",
+    "ms": 189
+   },
+   {
+    "action": "click",
+    "ms": 197
+   },
+   {
+    "action": "click",
+    "ms": 184
+   },
+   {
+    "action": "click",
+    "ms": 185
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "capsule",
+  "url": "http://localhost:5199/en/docs/component/capsule",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/capsule\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/c",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "card",
+  "url": "http://localhost:5199/en/docs/component/card",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "click",
+    "ms": 194
+   },
+   {
+    "action": "click",
+    "ms": 357
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "calendar",
+  "url": "http://localhost:5199/en/docs/component/calendar",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/calendar\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "cascader",
+  "url": "http://localhost:5199/en/docs/component/cascader",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "click",
+    "ms": 193
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "chart",
+  "url": "http://localhost:5199/en/docs/component/chart",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/chart\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/com",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "chat-input",
+  "url": "http://localhost:5199/en/docs/component/chat-input",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "click",
+    "ms": 199
+   },
+   {
+    "action": "click",
+    "ms": 198
+   },
+   {
+    "action": "click",
+    "ms": 202
+   },
+   {
+    "action": "type",
+    "ms": 273
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "collapse",
+  "url": "http://localhost:5199/en/docs/component/collapse",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/collapse\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "checkbox",
+  "url": "http://localhost:5199/en/docs/component/checkbox",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "chip-group",
+  "url": "http://localhost:5199/en/docs/component/chip-group",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/chip-group\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/doc",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "combobox",
+  "url": "http://localhost:5199/en/docs/component/combobox",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "type",
+    "ms": 336
+   },
+   {
+    "action": "type",
+    "ms": 272
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "datepicker",
+  "url": "http://localhost:5199/en/docs/component/datepicker",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/datepicker\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/doc",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "dialog",
+  "url": "http://localhost:5199/en/docs/component/dialog",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "click",
+    "ms": 218
+   },
+   {
+    "action": "click",
+    "ms": 199
+   },
+   {
+    "action": "click",
+    "ms": 193
+   },
+   {
+    "action": "click",
+    "ms": 200
+   },
+   {
+    "action": "click",
+    "ms": 196
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "donut",
+  "url": "http://localhost:5199/en/docs/component/donut",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/donut\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/com",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "drawer",
+  "url": "http://localhost:5199/en/docs/component/drawer",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "click",
+    "ms": 207
+   },
+   {
+    "action": "click",
+    "ms": 355
+   },
+   {
+    "action": "click",
+    "ms": 398
+   },
+   {
+    "action": "click",
+    "ms": 361
+   },
+   {
+    "action": "click",
+    "ms": 382
+   },
+   {
+    "action": "click",
+    "ms": 355
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "dropdown-menu",
+  "url": "http://localhost:5199/en/docs/component/dropdown-menu",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/dropdown-menu\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "context-menu",
+  "url": "http://localhost:5199/en/docs/component/context-menu",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "form",
+  "url": "http://localhost:5199/en/docs/component/form",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/form\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/comp",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "form-item",
+  "url": "http://localhost:5199/en/docs/component/form-item",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "click",
+    "ms": 188
+   },
+   {
+    "action": "click",
+    "ms": 201
+   },
+   {
+    "action": "click",
+    "ms": 215
+   },
+   {
+    "action": "click",
+    "ms": 201
+   },
+   {
+    "action": "type",
+    "ms": 270
+   },
+   {
+    "action": "type",
+    "ms": 261
+   },
+   {
+    "action": "type",
+    "ms": 256
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "image",
+  "url": "http://localhost:5199/en/docs/component/image",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/image\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/com",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "input",
+  "url": "http://localhost:5199/en/docs/component/input",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "type",
+    "ms": 278
+   },
+   {
+    "action": "type",
+    "ms": 263
+   },
+   {
+    "action": "type",
+    "ms": 266
+   },
+   {
+    "action": "type",
+    "ms": 267
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "input-group",
+  "url": "http://localhost:5199/en/docs/component/input-group",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/input-group\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/do",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "input-otp",
+  "url": "http://localhost:5199/en/docs/component/input-otp",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "type",
+    "ms": 272
+   },
+   {
+    "action": "type",
+    "ms": 274
+   },
+   {
+    "action": "type",
+    "ms": 268
+   },
+   {
+    "action": "type",
+    "ms": 279
+   },
+   {
+    "action": "type",
+    "ms": 271
+   },
+   {
+    "action": "type",
+    "ms": 261
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "kbd",
+  "url": "http://localhost:5199/en/docs/component/kbd",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/kbd\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/compo",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "list",
+  "url": "http://localhost:5199/en/docs/component/list",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "masonry",
+  "url": "http://localhost:5199/en/docs/component/masonry",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/masonry\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/c",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "menu",
+  "url": "http://localhost:5199/en/docs/component/menu",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "click",
+    "ms": 184
+   },
+   {
+    "action": "click",
+    "ms": 183
+   },
+   {
+    "action": "click",
+    "ms": 184
+   },
+   {
+    "action": "click",
+    "ms": 187
+   },
+   {
+    "action": "click",
+    "ms": 199
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "multi-select",
+  "url": "http://localhost:5199/en/docs/component/multi-select",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/multi-select\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/d",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "number-field",
+  "url": "http://localhost:5199/en/docs/component/number-field",
+  "axeError": null,
+  "violations": [
+   {
+    "id": "label",
+    "impact": "critical",
+    "help": "Form elements must have labels",
+    "wcag": [
+     "wcag2a",
+     "wcag412"
+    ],
+    "nodes": 2,
+    "sampleTargets": [
+     "input[aria-valuemax=\"100\"]",
+     "input[aria-valuemax=\"20\"]"
+    ]
+   }
+  ],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "click",
+    "ms": 192
+   },
+   {
+    "action": "click",
+    "ms": 186
+   },
+   {
+    "action": "click",
+    "ms": 189
+   },
+   {
+    "action": "click",
+    "ms": 183
+   },
+   {
+    "action": "type",
+    "ms": 271
+   },
+   {
+    "action": "type",
+    "ms": 280
+   },
+   {
+    "action": "click",
+    "ms": 195
+   },
+   {
+    "action": "click",
+    "ms": 187
+   },
+   {
+    "action": "click",
+    "ms": 187
+   },
+   {
+    "action": "click",
+    "ms": 186
+   },
+   {
+    "action": "type",
+    "ms": 276
+   },
+   {
+    "action": "type",
+    "ms": 267
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "number-input",
+  "url": "http://localhost:5199/en/docs/component/number-input",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/number-input\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/d",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "pager",
+  "url": "http://localhost:5199/en/docs/component/pager",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "click",
+    "ms": 189
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "paper",
+  "url": "http://localhost:5199/en/docs/component/paper",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/paper\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/com",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "password",
+  "url": "http://localhost:5199/en/docs/component/password",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "click",
+    "ms": 200
+   },
+   {
+    "action": "type",
+    "ms": 272
+   },
+   {
+    "action": "click",
+    "ms": 179
+   },
+   {
+    "action": "type",
+    "ms": 272
+   },
+   {
+    "action": "click",
+    "ms": 194
+   },
+   {
+    "action": "type",
+    "ms": 259
+   },
+   {
+    "action": "click",
+    "ms": 176
+   },
+   {
+    "action": "type",
+    "ms": 275
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "picker",
+  "url": "http://localhost:5199/en/docs/component/picker",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/picker\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/co",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "popover",
+  "url": "http://localhost:5199/en/docs/component/popover",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "click",
+    "ms": 199
+   },
+   {
+    "action": "click",
+    "ms": 184
+   },
+   {
+    "action": "click",
+    "ms": 184
+   },
+   {
+    "action": "click",
+    "ms": 186
+   },
+   {
+    "action": "click",
+    "ms": 189
+   },
+   {
+    "action": "click",
+    "ms": 182
+   },
+   {
+    "action": "click",
+    "ms": 188
+   },
+   {
+    "action": "click",
+    "ms": 183
+   },
+   {
+    "action": "click",
+    "ms": 183
+   },
+   {
+    "action": "click",
+    "ms": 197
+   },
+   {
+    "action": "click",
+    "ms": 194
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "preview-card",
+  "url": "http://localhost:5199/en/docs/component/preview-card",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/preview-card\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/d",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "query-builder",
+  "url": "http://localhost:5199/en/docs/component/query-builder",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "click",
+    "ms": 194
+   },
+   {
+    "action": "click",
+    "ms": 183
+   },
+   {
+    "action": "click",
+    "ms": 182
+   },
+   {
+    "action": "click",
+    "ms": 186
+   },
+   {
+    "action": "click",
+    "ms": 189
+   },
+   {
+    "action": "click",
+    "ms": 199
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "progress",
+  "url": "http://localhost:5199/en/docs/component/progress",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/progress\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "radio",
+  "url": "http://localhost:5199/en/docs/component/radio",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "type",
+    "ms": 240
+   },
+   {
+    "action": "type",
+    "ms": 216
+   },
+   {
+    "action": "type",
+    "ms": 248
+   },
+   {
+    "action": "type",
+    "ms": 242
+   },
+   {
+    "action": "type",
+    "ms": 256
+   },
+   {
+    "action": "type",
+    "ms": 264
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "radar",
+  "url": "http://localhost:5199/en/docs/component/radar",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/radar\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/com",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "select",
+  "url": "http://localhost:5199/en/docs/component/select",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "click",
+    "ms": 190
+   },
+   {
+    "action": "click",
+    "ms": 193
+   },
+   {
+    "action": "click",
+    "ms": 196
+   },
+   {
+    "action": "click",
+    "ms": 214
+   },
+   {
+    "action": "click",
+    "ms": 192
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "scroll-shadow",
+  "url": "http://localhost:5199/en/docs/component/scroll-shadow",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/scroll-shadow\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "separator",
+  "url": "http://localhost:5199/en/docs/component/separator",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "segment",
+  "url": "http://localhost:5199/en/docs/component/segment",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/segment\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/c",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "sidebar",
+  "url": "http://localhost:5199/en/docs/component/sidebar",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "click",
+    "ms": 190
+   },
+   {
+    "action": "click",
+    "ms": 185
+   },
+   {
+    "action": "click",
+    "ms": 184
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "skeleton",
+  "url": "http://localhost:5199/en/docs/component/skeleton",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/skeleton\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "sparkline",
+  "url": "http://localhost:5199/en/docs/component/sparkline",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "slider",
+  "url": "http://localhost:5199/en/docs/component/slider",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/slider\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/co",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "steps",
+  "url": "http://localhost:5199/en/docs/component/steps",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "click",
+    "ms": 188
+   },
+   {
+    "action": "click",
+    "ms": 194
+   },
+   {
+    "action": "click",
+    "ms": 197
+   },
+   {
+    "action": "click",
+    "ms": 177
+   },
+   {
+    "action": "click",
+    "ms": 186
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "table",
+  "url": "http://localhost:5199/en/docs/component/table",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/table\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/com",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "switch",
+  "url": "http://localhost:5199/en/docs/component/switch",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "tabs",
+  "url": "http://localhost:5199/en/docs/component/tabs",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/tabs\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/comp",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "tag",
+  "url": "http://localhost:5199/en/docs/component/tag",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "click",
+    "ms": 196
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "text-area",
+  "url": "http://localhost:5199/en/docs/component/text-area",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/text-area\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "timeline",
+  "url": "http://localhost:5199/en/docs/component/timeline",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "toast",
+  "url": "http://localhost:5199/en/docs/component/toast",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/toast\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/com",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "toggle",
+  "url": "http://localhost:5199/en/docs/component/toggle",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "click",
+    "ms": 192
+   },
+   {
+    "action": "click",
+    "ms": 205
+   },
+   {
+    "action": "click",
+    "ms": 206
+   },
+   {
+    "action": "click",
+    "ms": 199
+   },
+   {
+    "action": "click",
+    "ms": 202
+   },
+   {
+    "action": "click",
+    "ms": 209
+   },
+   {
+    "action": "click",
+    "ms": 204
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "tooltip",
+  "url": "http://localhost:5199/en/docs/component/tooltip",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/tooltip\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/c",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "typography",
+  "url": "http://localhost:5199/en/docs/component/typography",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "transfer",
+  "url": "http://localhost:5199/en/docs/component/transfer",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/transfer\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "dual-picker",
+  "url": "http://localhost:5199/en/docs/component/dual-picker",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "type",
+    "ms": 269
+   },
+   {
+    "action": "type",
+    "ms": 271
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "upload",
+  "url": "http://localhost:5199/en/docs/component/upload",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/upload\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/co",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ },
+ {
+  "route": "watermark",
+  "url": "http://localhost:5199/en/docs/component/watermark",
+  "axeError": null,
+  "violations": [],
+  "longtasks": [],
+  "interactions": [
+   {
+    "action": "type",
+    "ms": 275
+   }
+  ],
+  "consoleErrors": [],
+  "incomplete": 1
+ },
+ {
+  "route": "wizard",
+  "url": "http://localhost:5199/en/docs/component/wizard",
+  "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/wizard\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/co",
+  "violations": [],
+  "longtasks": [],
+  "interactions": [],
+  "consoleErrors": []
+ }
+]

@@ -34,6 +34,8 @@ export default function MasonryCustomDemo() {
       <div
         ref={containerRef}
         className="h-72 overflow-y-auto rounded-lg border p-2"
+        tabIndex={0}
+        aria-label="Photo gallery"
         data-testid="scroll-root"
       >
         <Masonry

@@ -1,0 +1,15 @@
+{
+ "route": "cascader",
+ "url": "http://localhost:5199/en/docs/component/cascader",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 193
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

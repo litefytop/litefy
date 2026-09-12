@@ -1,0 +1,31 @@
+{
+ "route": "dialog",
+ "url": "http://localhost:5199/en/docs/component/dialog",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 218
+  },
+  {
+   "action": "click",
+   "ms": 199
+  },
+  {
+   "action": "click",
+   "ms": 193
+  },
+  {
+   "action": "click",
+   "ms": 200
+  },
+  {
+   "action": "click",
+   "ms": 196
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

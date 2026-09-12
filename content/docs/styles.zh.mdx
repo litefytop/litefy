@@ -1,0 +1,79 @@
+---
+title: 样式
+description: Litefy UI 的主题令牌、品牌与表面色板，以及全局交互样式。
+---
+
+Litefy 的样式是分层的 CSS 自定义属性，全部使用 OKLCH 并经 `@theme inline` 映射进 Tailwind——每个组件只读语义令牌（`bg-background`、`text-primary`、`border`…），因此换掉任意一层样式即可整体换肤，无需触碰组件代码。
+
+| 层 | 文件 | Registry | 作用 |
+|---|---|---|---|
+| **Theme**（必装） | `theme.css` | `style-theme` | 基础令牌集：亮/暗两套配色、`@theme inline` 映射 |
+| **Brand**（可选） | `*-brand.css` ×13 | `style-*-brand` | 在 `[data-brand]` 下覆盖 `--primary` / `--primary-accent` |
+| **Surface**（可选） | `*-surface.css` ×9 | `style-*-surface` | 在 `[data-surface]` 下覆盖 `--background` / `--foreground` / `--muted` / `--muted-foreground` / `--accent` / `--neutral` |
+| **Interactive**（必装） | `interactive.css` | `style-interactive` | 全局行为样式：禁用态、focus-visible、按压反馈 |
+
+请先安装 `theme.css` 与 `interactive.css`——它们是必装的基础层。Brand 与 Surface 预设为可选扩展，可自由组合（同时使用一个 brand + 一个 surface）。
+
+## 主题令牌
+
+<Installation name="style-theme" type="css" />
+
+`theme.css` 包含亮色与暗色两套配色——`<html>` 上存在 `.dark` 类时自动应用暗色模式。变量使用 OKLCH 色值，现代浏览器均已支持。
+
+## 交互样式
+
+`interactive.css` 不是主题——它是所有 Litefy 组件依赖的全局行为层，通过四条 `@layer base` 规则生效：
+
+- **禁用控件**（`:disabled`、`[inert]`、`[data-disabled]`）：50% 透明度、中性背景、`not-allowed` 光标并屏蔽指针事件——同时覆盖 `label:has(:disabled)` 包装器，组合式 Checkbox、Upload 等会整体变灰。
+- **键盘焦点**：仅为 `:focus-visible` 提供 `1px` 描边（`--color-outline`）加 `3px` 柔和光晕（`--color-ring`）——鼠标点击不会出现焦点圈。
+- **按压反馈**：`button:active` 时的内阴影 + `brightness(0.95)` 亮度变化。
+
+<Installation name="style-interactive" type="css" />
+
+## 主题构成
+
+Litefy 主题由两个可自由组合的模块构成：
+
+- **Surface**：中性画布色板，控制页面背景与文字颜色。
+- **Brand**：交互品牌色板，控制按钮与强调控件。
+
+> 需要用 `useTheme` 在运行时切换色板，见 [`useTheme`](./utils/use-theme.zh.mdx)。
+
+## Surface 预设
+
+每个预设覆盖中性变量（`--background`、`--foreground`、`--muted`、`--muted-foreground`、`--accent`、`--neutral`）。
+
+<PresetTabs
+  items={[
+    "gray-surface",
+    "mauve-surface",
+    "mist-surface",
+    "olive-surface",
+    "slate-surface",
+    "stone-surface",
+    "taupe-surface",
+    "zinc-surface",
+  ]}
+/>
+
+## Brand 预设
+
+每个预设覆盖品牌变量（`--primary` 与 `--primary-accent`）。
+
+<PresetTabs
+  items={[
+    "amber-brand",
+    "cyan-brand",
+    "emerald-brand",
+    "fuchsia-brand",
+    "indigo-brand",
+    "lime-brand",
+    "orange-brand",
+    "pink-brand",
+    "purple-brand",
+    "rose-brand",
+    "sky-brand",
+    "teal-brand",
+    "violet-brand",
+  ]}
+/>

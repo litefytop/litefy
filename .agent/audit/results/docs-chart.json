@@ -1,0 +1,47 @@
+{
+ "route": "chart",
+ "url": "http://localhost:5199/en/docs/component/chart",
+ "axeError": null,
+ "violations": [],
+ "longtasks": [],
+ "interactions": [
+  {
+   "action": "click",
+   "ms": 195
+  },
+  {
+   "action": "click",
+   "ms": 186
+  },
+  {
+   "action": "click",
+   "ms": 199
+  },
+  {
+   "action": "click",
+   "ms": 183
+  },
+  {
+   "action": "click",
+   "ms": 191
+  },
+  {
+   "action": "click",
+   "ms": 197
+  },
+  {
+   "action": "click",
+   "ms": 187
+  },
+  {
+   "action": "click",
+   "ms": 193
+  },
+  {
+   "action": "click",
+   "ms": 199
+  }
+ ],
+ "consoleErrors": [],
+ "incomplete": 1
+}

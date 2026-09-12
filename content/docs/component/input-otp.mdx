@@ -17,6 +17,14 @@ An OTP input with auto-advance, backspace navigation, arrow keys and clipboard p
   name="input-otp-basic"
 />
 
+### Invalid State
+
+Set `invalid` to mark the group (`data-invalid`) and every slot (`aria-invalid`) — the danger border and text apply automatically. Validate on complete and clear the flag once the code is corrected.
+
+<ComponentPreview
+  name="input-otp-invalid"
+/>
+
 ### Mask
 
 Render slots as password inputs for PIN-style codes.
@@ -53,9 +61,7 @@ An OTP input built with the parts below, encapsulating value state and interacti
 | `name` | `string` | - | Renders a hidden input for form submission |
 | `aria-label` | `string` | - | Accessible label, suffixed with the slot index per slot |
 | `className` | `ClassNameValue` | - | Custom class for the group |
-| `style` | `React.CSSProperties` | - | Custom inline style for the group |
-| `className` | `ClassNameValue` | - | Custom classes, applied to the group shell |
-| `style` | `React.CSSProperties` | - | Inline styles, applied to the group shell |
+| `style` | `React.CSSProperties` | - | Inline styles for the group |
 | `classNames` | `{ slot? }` | - | Custom classes for the slot |
 | `styles` | `{ slot? }` | - | Custom inline styles for the slot |
 
