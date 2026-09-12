@@ -48,7 +48,6 @@ Upload 组件只处理选择、拖拽与本地校验——不发起网络请求�
 | `maxCount` | `number` | - | 同时接受的最大条目数量 |
 | `maxSize` | `number` | - | 单个文件最大字节数 |
 | `disabled` | `boolean` | `false` | 禁用点击、键盘与拖拽交互 |
-| `invalid` | `boolean` | - | 在根节点设置 `data-invalid`，dropzone 设置 `aria-invalid` |
 | `children` | `React.ReactNode` | - | 自定义 dropzone 内容；默认为提示文本 |
 | `onFilesAccepted` | `(items: UploadItem[]) => void` | - | 校验通过时触发，每项包含 `{ uid, file, signal }` |
 | `onFilesRejected` | `(rejects: UploadReject[]) => void` | - | 校验失败时触发，携带拒绝原因（`accept` / `maxSize` / `maxCount`） |

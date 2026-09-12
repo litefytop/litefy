@@ -142,6 +142,13 @@ export default {
       zh: "下拉菜单",
     },
   },
+  error: {
+    name: "Error",
+    displayName: {
+      en: "Error",
+      zh: "错误提示",
+    },
+  },
   "context-menu": {
     name: "Context Menu",
     displayName: {

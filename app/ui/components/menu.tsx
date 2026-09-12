@@ -252,7 +252,7 @@ function MenuList({
           className={cn(
             "w-full text-left px-2 py-1.5 text-sm font-semibold cursor-pointer",
             hasSub && "flex items-center justify-between cursor-default",
-            activeEntry === entryId && "bg-hover",
+            activeEntry === entryId && "bg-accent",
             itemClassName,
             mi.className,
           )}

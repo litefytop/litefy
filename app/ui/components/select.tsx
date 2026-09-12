@@ -22,7 +22,6 @@ export interface SelectProps extends Omit<
   defaultValue?: string;
   onValueChange?: (value: string) => void;
   placeholder?: string;
-  invalid?: boolean;
   required?: boolean;
   name?: string;
   className?: ClassNameValue;
@@ -43,7 +42,6 @@ export function Select({
   defaultValue = "",
   onValueChange,
   placeholder,
-  invalid,
   disabled,
   required,
   name,
@@ -173,7 +171,7 @@ export function Select({
       onClick={disabled ? undefined : () => commit(option)}
       className={cn(
         "cursor-pointer px-3 py-2 text-sm transition-colors select-none hover:bg-hover",
-        "data-[highlighted=true]:bg-hover",
+        "data-[highlighted=true]:bg-accent",
         option.value === value && "font-medium",
         disabled && "pointer-events-none opacity-50",
         classNames?.option,
@@ -191,7 +189,6 @@ export function Select({
         ref={triggerRef}
         type="button"
         disabled={disabled}
-        aria-invalid={invalid || undefined}
         aria-haspopup="listbox"
         aria-expanded={open || undefined}
         aria-required={required || undefined}
@@ -199,10 +196,7 @@ export function Select({
         onKeyDown={handleTriggerKeyDown}
         data-open={open || undefined}
         className={cn(
-          "flex h-9 w-full min-w-3xs max-w-sm items-center justify-between gap-2 rounded-md border px-3 py-1 text-sm cursor-pointer",
-          "focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20",
-          "aria-invalid:border-danger aria-invalid:text-danger",
-          "aria-invalid:focus-visible:outline-1 aria-invalid:focus-visible:outline-danger aria-invalid:focus-visible:ring-3 aria-invalid:focus-visible:ring-danger/50",
+          "flex h-9 w-full items-center justify-between gap-2 rounded-md border px-3 py-1 text-sm cursor-pointer",
           !selectedLabel && "text-muted-foreground",
           className,
         )}

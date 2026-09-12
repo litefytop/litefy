@@ -1,0 +1,38 @@
+---
+title: Error 错误提示
+description: 渲染在控件下方的 danger 色调消息容器，用于表单校验反馈
+---
+
+Error 在控件下方渲染校验消息：`bg-danger/15` 着色容器上的 `text-danger` 文本，通过 `role="alert"` 通知屏幕阅读器。它与自身不带 invalid 样式的交互组件搭配使用——Select、Radio、Checkbox、Segment、Upload 等非文本控件；而文本类输入（Input、Password、Textarea、NumberInput、NumberField、InputOtp）保留自己的 `invalid` 边框状态。
+
+## 安装
+
+<Installation name="error" />
+
+## 用法
+
+### 基础用法
+
+直接放在所描述控件的下方。外层预留宽度（demo 中的 `w-80`），避免块级的 Error 出现时把布局撑变形。
+
+<ComponentPreview
+  name="error-basic"
+/>
+
+`Form` / `FormItem` 内部也在使用它：校验失败时提示行会被替换为 `Error` 容器，`FormItem` 的 `styles.error` / `classNames.error` 即作用于它。
+
+## API 参考
+
+### Error
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `React.ReactNode` | - | 消息文本 |
+| `className` | `ClassNameValue` | - | 追加到容器的自定义类 |
+| `...props` | `React.ComponentProps<"div">` | - | 透传到根 `div`（如配合 `aria-describedby` 的 `id`） |
+
+### 行为说明
+
+- 渲染 `role="alert"`，消息出现时会被屏幕阅读器播报。
+- 纯展示组件——是否可见由你控制（条件渲染，或保持挂载后切换）。
+- `bg-danger/15` 基于主题令牌，在全部表面预设与暗色模式下都正确可读。

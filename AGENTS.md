@@ -11,7 +11,7 @@ import { Button, Input, Select } from "@/ui";   // the barrel — everything is 
 - `className` accepts a string or array and merges via `tailwind-merge` (`ClassNameValue`).
 - Most components expose per-part overrides: `classNames={{ slot: "..." }}` and `styles={{ slot: {} }}`.
 - Use **semantic tokens only** (never raw palette colors): `bg-background` `text-foreground` `text-muted-foreground` `bg-primary` `text-primary-foreground` `bg-primary-accent` `bg-muted` `bg-hover` `border` `text-danger` `text-success` `text-warning` `text-info` `ring` `outline` `text-neutral`.
-- Form controls follow the same conventions: `value` / `defaultValue` + `onValueChange` (or `checked` / `defaultChecked` + `onCheckedChange`), `disabled`, and `invalid` for the danger styling state.
+- Form controls follow the same conventions: `value` / `defaultValue` + `onValueChange` (or `checked` / `defaultChecked` + `onCheckedChange`) and `disabled`. `invalid` (danger border) exists only on text inputs (Input, Password, Textarea, NumberInput, NumberField, InputOtp, DatePicker) — non-text interactive components (Select, Radio, Checkbox, Segment, Upload…) take no `invalid`; render validation feedback below the control with the `Error` component.
 - Icons come from `lucide-react`, typically `className="size-4"`.
 - Full prop tables and behavior details live in `content/docs/component/<name>.mdx` (and `.zh.mdx`) — consult them when a prop you need isn't listed below.
 
@@ -49,7 +49,7 @@ Parts: `InputOtpSlot`, `InputOtpGroup`.
 `<Checkbox defaultChecked onCheckedChange={fn} label="..." />`. Parts: `CheckboxRoot` / `CheckboxIndicator` / `CheckboxLabel`. `CheckboxGroup` takes `options` (+ grouped options) and collects values.
 
 ### Radio
-Parts-based radio (`RadioRoot` / `RadioIndicator` / `RadioLabel` + composed `Radio`, mirroring Checkbox). `RadioGroup` is options-driven: `options`, `value` / `defaultValue` + `onValueChange`, `name` (also enables native arrow-key navigation), `invalid`. Single `Radio` also works with raw inputs.
+Parts-based radio (`RadioRoot` / `RadioIndicator` / `RadioLabel` + composed `Radio`, mirroring Checkbox). `RadioGroup` is options-driven: `options`, `value` / `defaultValue` + `onValueChange`, `name` (also enables native arrow-key navigation). Single `Radio` also works with raw inputs.
 
 ### Switch
 Toggle switch. `checked` / `defaultChecked`, `onCheckedChange`, `disabled`. Parts: `SwitchRoot` / `SwitchTrack` / `SwitchThumb`.
@@ -61,7 +61,7 @@ Toggle button; `ToggleGroup` supports multi-select via `options` + `value` / `on
 Popover + CheckboxGroup multi-select: `options` (`CheckboxOptionConfig | CheckboxOptionGroup`), `value` / `defaultValue` + `onChange`, `trigger` / `placeholder`, panel styling via `classNames.content`.
 
 ### Segment
-Segmented single-select control. Options-driven: `options` (`{ label, value, disabled }`), `value` / `defaultValue`, `onValueChange`, `invalid`.
+Segmented single-select control. Options-driven: `options` (`{ label, value, disabled }`), `value` / `defaultValue`, `onValueChange`.
 
 ### Slider
 Simulated slider (no native range input) with pointer drag + keyboard. `min`, `max`, `step`, `value` / `defaultValue`, `onChange`, `orientation="horizontal" | "vertical"`, `name` for forms. Parts: `SliderTrack` / `SliderFill` / `SliderThumb`.
@@ -71,7 +71,7 @@ Themeable select on the native popover API + listbox. Options-driven with groups
 ```tsx
 <Select
   options={[{ label: "A", value: "a" }, { label: "Group", options: [...] }]}
-  value={v} onValueChange={setV} placeholder="Pick one" invalid required
+  value={v} onValueChange={setV} placeholder="Pick one" required
 />
 ```
 The value lives in state; for native form submission pair it with `FormItem` (which adds the hidden input).
@@ -103,7 +103,7 @@ Self-managing form field: renders a finished control per `variant` (`"input" | "
   controlProps={{ placeholder: "you@example.com" }}
 />
 ```
-- Layout: label → control → one hint line. Description shows by default and is **replaced by the error** while invalid; no space is reserved when empty.
+- Layout: label → control → one hint line. Description shows by default and is **replaced by an Error container** while invalid; no space is reserved when empty.
 - `validate` returns `string` (hard error) | `{ message, invalid: false }` (message only) | `false` (bare invalid) | `null/undefined/true` (pass). Re-validates on change once invalid; `validateTrigger="onChange" | "onBlur"` (default onBlur).
 - Registers with the surrounding `Form`; `controlProps` forwards to the underlying control (custom `onChange`/`onBlur` are wrapped, not replaced). The select variant carries its value in a hidden input for native submission.
 
@@ -168,7 +168,7 @@ Slide-in panel: `open` / `onOpenChange`, `placement`, `onBackdropClick`, and tou
 Button-triggered floating panel on the native popover API + CSS anchor positioning. `trigger`, `open` / `defaultOpen` / `onOpenChange`, `alignX`, `mode`. `PopoverContent` and `usePopoverTrigger` are the building blocks for other popups.
 
 ### Tooltip
-`<Tooltip content="Hint"><Button /></Tooltip>` — native Popover API + anchor positioning, `delay`, `anchorName` for custom anchoring.
+Composition over cloning: `<Tooltip><TooltipTrigger>Hover</TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip>` — `Tooltip` is a wiring container that hands content id / anchor name / `delay` to its parts via context. Parts are also usable standalone with explicit `popoverId` / `anchorName` (native Popover API + anchor positioning).
 
 ### ContextMenu
 Imperative right-click menu: mount `<ContextMenuHost />` once, then call `ContextMenu.open({ x, y, items, onSelect, classNames?, styles? })` from any element's `onContextMenu` — no wrapper, works on table rows / canvas / any event source. `items` (same shape as Menu), `ContextMenu.dismiss()` to close programmatically. Outside mousedown and Escape close it.
@@ -268,7 +268,10 @@ Same state machine as a vertical steps accordion — only the current step expan
 ```
 
 ### Upload
-Dropzone upload with local validation: `accept`, `multiple`, `maxSize`, `maxCount`, `onFilesAccepted` / `onFilesRejected` / `onFileRemove`, `dropzone`, `invalid`. Parts: `UploadDropzone` / `UploadItem` / `UploadActions` / `UploadHiddenInput`. Monitoring actual network progress is decoupled — use the `use-upload-monitor` hook.
+Dropzone upload with local validation: `accept`, `multiple`, `maxSize`, `maxCount`, `onFilesAccepted` / `onFilesRejected` / `onFileRemove`, `dropzone`. Parts: `UploadDropzone` / `UploadItem` / `UploadActions` / `UploadHiddenInput`. Monitoring actual network progress is decoupled — use the `use-upload-monitor` hook.
+
+### Error
+Danger-tinted message container for validation feedback below a control: `text-danger` on `bg-danger/15`, renders `role="alert"`. Pair it with non-text interactive components (Select, Radio, Checkbox, Segment, Upload…) — text inputs keep their own `invalid` border instead. `Form` / `FormItem` use it internally for their error lines.
 
 ### Chart
 Self-built canvas time-series chart on the `chart-kit` math layer (nice ticks, LTTB downsampling, `scaleLinear` / `linePath` / `areaPath`) + the `chart-paint` canvas helpers (grid / bars / line / crosshair painting) — automatic canvas theming, responsive width, interactive legend, hover tooltip, drag box-zoom with double-click reset. Series support `type: "line" | "area" | "bar"`. Pair with the `use-chart-palette` hook.

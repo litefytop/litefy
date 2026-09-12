@@ -50,7 +50,6 @@ export function RadioLabel({ className, children, ...props }: RadioLabelProps) {
 export interface RadioProps extends Omit<RadioRootProps, "className" | "style"> {
   className?: ClassNameValue;
   style?: React.CSSProperties;
-  invalid?: boolean;
   onCheckedChange?: (checked: boolean) => void;
   indicator?: React.ReactNode;
   classNames?: {
@@ -72,7 +71,6 @@ export const Radio = ({
   onChange,
   onCheckedChange,
   disabled,
-  invalid,
   classNames,
   styles,
   indicator,
@@ -90,19 +88,16 @@ export const Radio = ({
   };
   return (
     <RadioLabel
-      className={cn("data-invalid:text-danger", classNames?.label, className)}
+      className={cn(classNames?.label, className)}
       style={style}
-      data-invalid={invalid || undefined}
     >
       <RadioIndicator
         className={classNames?.indicator}
         style={styles?.indicator}
-        data-invalid={invalid || undefined}
       >
         <RadioRoot
           {...props}
           disabled={disabled}
-          aria-invalid={invalid || undefined}
           checked={checked$}
           onChange={handleChange}
         />
@@ -127,7 +122,6 @@ export interface RadioGroupProps {
   onValueChange?: (value: string) => void;
   name?: string;
   disabled?: boolean;
-  invalid?: boolean;
   className?: ClassNameValue;
   "aria-label"?: string;
   common?: {
@@ -150,7 +144,6 @@ export function RadioGroup({
   onValueChange,
   name,
   disabled,
-  invalid,
   className,
   "aria-label": ariaLabel,
   common,
@@ -189,8 +182,6 @@ export function RadioGroup({
     <div
       role="radiogroup"
       aria-label={ariaLabel}
-      aria-invalid={invalid}
-      data-invalid={invalid || undefined}
       className={cn("flex flex-col gap-2", className)}
     >
       {options.map((option) => (
@@ -199,7 +190,6 @@ export function RadioGroup({
           value={option.value}
           name={name}
           disabled={disabled || option.disabled}
-          invalid={invalid || option.invalid}
           checked={value$ === option.value}
           onCheckedChange={() => handleSelect(option.value)}
           classNames={option.classNames ?? common?.classNames}

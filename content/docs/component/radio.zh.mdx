@@ -43,7 +43,6 @@ description: 零件化组装的单选按钮组件，分组由 options 驱动—�
 | `checked` | `boolean` | `false` | 受控选中状态 |
 | `defaultChecked` | `boolean` | `false` | 非受控模式下的默认选中状态 |
 | `onCheckedChange` | `(checked: boolean) => void` | - | 选中时的回调 |
-| `invalid` | `boolean` | `false` | 标记 label 与 input（`data-invalid` / `aria-invalid`） |
 | `indicator` | `React.ReactNode` | - | 自定义指示器内容，替换默认圆点 |
 | `classNames` | `{ indicator?; label? }` | - | 指示器与标签的自定义类名 |
 | `styles` | `{ indicator?; label? }` | - | 指示器与标签的内联样式 |
@@ -71,7 +70,6 @@ description: 零件化组装的单选按钮组件，分组由 options 驱动—�
 | `label` | `string` | - | 选项显示文本 |
 | `value` | `string` | - | 唯一标识值 |
 | `disabled` | `boolean` | `false` | 禁用该选项 |
-| `invalid` | `boolean` | `false` | 标记该选项为无效 |
 | `indicator` | `React.ReactNode` | - | 自定义指示器，优先级高于 `common.indicator` |
 | `classNames` / `styles` | - | - | 每个选项的零件样式，优先级高于 `common` |
 
@@ -84,7 +82,6 @@ description: 零件化组装的单选按钮组件，分组由 options 驱动—�
 | `defaultValue` | `string` | - | 非受控模式下的默认选中值 |
 | `onValueChange` | `(value: string) => void` | - | 选中值变化时的回调 |
 | `disabled` | `boolean` | `false` | 禁用所有选项 |
-| `invalid` | `boolean` | `false` | 标记为无效 |
 | `name` | `string` | - | 分组名称——同时启用选项间原生的方向键导航 |
 | `className` | `ClassNameValue` | - | 自定义类名，应用于容器 |
 | `aria-label` | `string` | - | 组的无障碍标签 |

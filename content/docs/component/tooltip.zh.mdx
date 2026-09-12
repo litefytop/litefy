@@ -11,7 +11,7 @@ description: 基于原生 Popover API 和 CSS 锚点定位构建的提示框组�
 
 ### 基础用法
 
-在悬停或聚焦时显示的基础提示框。组合组件接收单个触发元素作为 `children`，并通过 `content` 属性传入提示内容。
+在悬停或聚焦时显示的基础提示框。`Tooltip` 是接线容器：生成内容 id、锚点名称与延迟，经 context 提供给 `TooltipTrigger` / `TooltipContent` —— 不克隆任何元素，触发器永远是显式的 `TooltipTrigger`。
 
 <ComponentPreview
   name="tooltip-basic"
@@ -33,12 +33,11 @@ description: 基于原生 Popover API 和 CSS 锚点定位构建的提示框组�
 
 #### Tooltip
 
-克隆单个触发子元素并注入锚点关联与悬停/焦点处理器，提示内容内联渲染。
+接线容器：生成内容 id 与锚点名称，连同 `delay` 经 context 提供给 `TooltipTrigger` / `TooltipContent`。自身不渲染任何元素，也不克隆 children。
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `React.ReactElement` | - | 触发元素，会被克隆并注入 `popoverTarget`、`anchorName` 样式和悬停/焦点处理器 |
-| `content` | `React.ReactNode` | - | 提示内容 |
+| `children` | `React.ReactNode` | - | 一对 `TooltipTrigger` 与 `TooltipContent` |
 | `delay` | `number` | `100` | 隐藏提示框前的延迟时间（毫秒） |
 
 ---
@@ -47,13 +46,13 @@ description: 基于原生 Popover API 和 CSS 锚点定位构建的提示框组�
 
 #### TooltipTrigger
 
-带有内置悬停和焦点显隐逻辑的触发按钮。通过 DOM id 和锚点名称与内容组件解耦通信。
+带有内置悬停和焦点显隐逻辑的触发按钮。在 `Tooltip` 内经 context 继承接线；独立使用时显式传入 `popoverId` / `anchorName`。任何元素都可以改用零件自行拼装 —— `TooltipTrigger` 只是现成的按钮。
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `popoverId` | `string` | - | 要显隐的内容元素 id |
-| `anchorName` | `string` | - | 设置在触发元素上的 CSS 锚点名称，与内容的 `positionAnchor` 匹配 |
-| `delay` | `number` | `100` | 隐藏延迟时间（毫秒） |
+| `popoverId` | `string` | - | 要显隐的内容元素 id；缺省回退到 `Tooltip` context |
+| `anchorName` | `string` | - | 设置在触发元素上的 CSS 锚点名称，与内容的 `positionAnchor` 匹配；缺省回退到 `Tooltip` context |
+| `delay` | `number` | `100` | 隐藏延迟时间（毫秒）；缺省回退到 `Tooltip` context |
 | `className` | `ClassNameValue` | - | 自定义 CSS 类 |
 | `style` | `React.CSSProperties` | - | 自定义内联样式，与锚点名称合并 |
 | `...props` | `React.ComponentProps<"button">` | - | 支持所有原生 button 属性（除 `className`、`style` 外） |
@@ -64,9 +63,9 @@ description: 基于原生 Popover API 和 CSS 锚点定位构建的提示框组�
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `id` | `string` | - | 供触发元素 `popoverId` 引用的元素 id |
-| `anchorName` | `string` | - | 触发元素的锚点名称，应用为 `positionAnchor` |
-| `delay` | `number` | `100` | 指针交互的隐藏延迟时间（毫秒） |
+| `id` | `string` | - | 供触发元素 `popoverId` 引用的元素 id；缺省回退到 `Tooltip` context |
+| `anchorName` | `string` | - | 触发元素的锚点名称，应用为 `positionAnchor`；缺省回退到 `Tooltip` context |
+| `delay` | `number` | `100` | 指针交互的隐藏延迟时间（毫秒）；缺省回退到 `Tooltip` context |
 | `className` | `ClassNameValue` | - | 自定义 CSS 类 |
 | `style` | `React.CSSProperties` | - | 自定义内联样式，与锚点样式合并 |
 | `ref` | `React.Ref<HTMLDivElement>` | - | 指向弹出层元素的 ref，用于命令式 `showPopover()` 和 `hidePopover()` 调用 |

@@ -43,7 +43,6 @@ Shows disabled state for individual radio and radio group.
 | `checked` | `boolean` | `false` | Controlled checked state |
 | `defaultChecked` | `boolean` | `false` | Default checked state (uncontrolled) |
 | `onCheckedChange` | `(checked: boolean) => void` | - | Callback when the radio is checked |
-| `invalid` | `boolean` | `false` | Marks the label and input (`data-invalid` / `aria-invalid`) |
 | `indicator` | `React.ReactNode` | - | Custom indicator content, replacing the default dot |
 | `classNames` | `{ indicator?; label? }` | - | Custom classes for the indicator and label |
 | `styles` | `{ indicator?; label? }` | - | Inline styles for the indicator and label |
@@ -71,7 +70,6 @@ The label wrapper (clicking it toggles the radio).
 | `label` | `string` | - | Option display text |
 | `value` | `string` | - | Unique identifier value |
 | `disabled` | `boolean` | `false` | Disable the option |
-| `invalid` | `boolean` | `false` | Mark the option as invalid |
 | `indicator` | `React.ReactNode` | - | Custom indicator, overrides `common.indicator` |
 | `classNames` / `styles` | - | - | Per-option part styles, override `common` |
 
@@ -84,7 +82,6 @@ The label wrapper (clicking it toggles the radio).
 | `defaultValue` | `string` | - | Default selected value (uncontrolled) |
 | `onValueChange` | `(value: string) => void` | - | Callback when the selected value changes |
 | `disabled` | `boolean` | `false` | Disable all options |
-| `invalid` | `boolean` | `false` | Mark as invalid |
 | `name` | `string` | - | Group name — also enables the native arrow-key navigation between options |
 | `className` | `ClassNameValue` | - | Custom class names, applied to the container |
 | `aria-label` | `string` | - | Accessible group label |

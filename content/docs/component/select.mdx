@@ -27,7 +27,7 @@ Select component with grouped options for better organization.
 
 ### Invalid State
 
-Select component showing invalid state for form validation.
+Select component with an error message rendered below via the Error component.
 
 <ComponentPreview
   name="select-invalid"
@@ -56,7 +56,6 @@ A select built on the native popover API and CSS anchor positioning: the trigger
 | `defaultValue` | `string` | `""` | Default selected value for uncontrolled state |
 | `onValueChange` | `(value: string) => void` | - | Fired when an option is selected |
 | `placeholder` | `string` | - | Placeholder text shown when no option is selected |
-| `invalid` | `boolean` | - | Applies the danger border / ring via `aria-invalid` |
 | `required` | `boolean` | - | Sets `aria-required` on the trigger |
 | `name` | `string` | - | Renders a hidden input with this name, so the value joins native form submission |
 | `disabled` | `boolean` | - | Disables the trigger |

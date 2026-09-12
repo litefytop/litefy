@@ -40,7 +40,6 @@ export interface SegmentGroupProps {
   defaultValue?: string;
   onValueChange?: (value: string) => void;
   disabled?: boolean;
-  invalid?: boolean;
   className?: ClassNameValue;
   itemClassName?: ClassNameValue;
 }
@@ -51,7 +50,6 @@ export function SegmentGroup({
   defaultValue,
   onValueChange,
   disabled,
-  invalid,
   className,
   itemClassName,
 }: SegmentGroupProps) {
@@ -101,8 +99,6 @@ export function SegmentGroup({
   return (
     <div
       role="radiogroup"
-      aria-invalid={invalid}
-      data-invalid={invalid || undefined}
       onKeyDown={handleGroupKeyDown}
       className={cn("inline-flex rounded-md border border-border bg-muted group", className)}
     >

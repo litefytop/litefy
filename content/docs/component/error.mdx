@@ -1,0 +1,38 @@
+---
+title: Error
+description: A danger-tinted message container rendered below a control for form validation feedback
+---
+
+Error renders a validation message below a control: `text-danger` copy on a `bg-danger/15` tinted container, announced to screen readers via `role="alert"`. It pairs with interactive components that carry no invalid styling of their own — Select, Radio, Checkbox, Segment, Upload and the other non-text controls — while text inputs (Input, Password, Textarea, NumberInput, NumberField, InputOtp) keep their own `invalid` border state.
+
+## Installation
+
+<Installation name="error" />
+
+## Usage
+
+### Basic Usage
+
+Place it directly below the control it describes. Reserve a width on the wrapper (`w-80` in the demo) so the full-width Error never stretches the layout when it appears.
+
+<ComponentPreview
+  name="error-basic"
+/>
+
+`Form` / `FormItem` use it internally: when validation fails, the hint line is replaced by an `Error` container. `styles.error` / `classNames.error` on `FormItem` target it.
+
+## API Reference
+
+### Error
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `React.ReactNode` | - | The message text |
+| `className` | `ClassNameValue` | - | Custom classes appended to the container |
+| `...props` | `React.ComponentProps<"div">` | - | Spread onto the root `div` (e.g. `id` for `aria-describedby`) |
+
+### Behavior Notes
+
+- Renders `role="alert"` so the message is announced when it appears.
+- Purely presentational — visibility is yours to control (conditionally render it, or keep it mounted and toggle).
+- `bg-danger/15` reads correctly on every surface preset and in dark mode because both layers come from theme tokens.

@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Card } from "./card";
 import { Image } from "./image";
-import { Tooltip } from "./tooltip";
+import { TooltipContent, useTooltipWiring } from "./tooltip";
 import { type ClassNameValue, cn } from "../utils/cn";
 
 export interface PreviewCardProps {
@@ -34,6 +34,11 @@ export function PreviewCard({
   className,
   classNames,
 }: PreviewCardProps) {
+  const uid = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
+  const popoverId = `preview-${uid}`;
+  const anchorName = `--preview-${uid}`;
+  const wiring = useTooltipWiring({ popoverId, anchorName, delay });
+
   const card = (
     <Card className={cn(trigger ? "w-72" : "w-full max-w-sm", className)}>
       <Image src={src} alt={alt} className={cn("h-40 w-full", classNames?.image)} />
@@ -51,10 +56,21 @@ export function PreviewCard({
   if (!trigger) return card;
 
   return (
-    <Tooltip delay={delay} content={card}>
-      <a href={href} className="text-primary underline-offset-4 hover:text-accent hover:underline">
+    <>
+      <a
+        href={href}
+        onPointerEnter={wiring.show}
+        onPointerLeave={wiring.hide}
+        onFocus={wiring.show}
+        onBlur={wiring.hide}
+        style={wiring.anchorStyle}
+        className="text-primary underline-offset-4 hover:text-accent hover:underline"
+      >
         {trigger}
       </a>
-    </Tooltip>
+      <TooltipContent id={popoverId} anchorName={anchorName} delay={delay}>
+        {card}
+      </TooltipContent>
+    </>
   );
 }

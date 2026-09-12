@@ -74,7 +74,6 @@ export interface UploadProps {
   maxCount?: number;
   maxSize?: number;
   disabled?: boolean;
-  invalid?: boolean;
   children?: React.ReactNode;
   onFilesAccepted?: (items: UploadItem[]) => void;
   onFilesRejected?: (rejects: UploadReject[]) => void;
@@ -96,7 +95,6 @@ export function Upload({
   maxCount,
   maxSize,
   disabled = false,
-  invalid,
   children,
   onFilesAccepted,
   onFilesRejected,
@@ -249,7 +247,6 @@ export function Upload({
 
   return (
     <UploadRoot
-      data-invalid={invalid || undefined}
       className={className}
       style={style}
     >
@@ -268,7 +265,6 @@ export function Upload({
         role="button"
         tabIndex={disabled ? -1 : 0}
         aria-disabled={disabled || undefined}
-        aria-invalid={invalid}
         data-dragging={dragging || undefined}
         data-disabled={disabled || undefined}
         onClick={() => inputRef.current?.click()}
