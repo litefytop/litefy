@@ -1,33 +1,33 @@
 {
  "route": "query-builder",
  "url": "http://localhost:5199/en/docs/component/query-builder",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/query-builder\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 194
+   "ms": 206
   },
   {
    "action": "click",
-   "ms": 183
+   "ms": 203
   },
   {
    "action": "click",
-   "ms": 182
+   "ms": 211
   },
   {
    "action": "click",
-   "ms": 186
+   "ms": 200
   },
   {
    "action": "click",
-   "ms": 189
+   "ms": 206
   },
   {
    "action": "click",
-   "ms": 199
+   "ms": 200
   }
  ],
  "consoleErrors": [],

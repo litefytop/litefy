@@ -1,17 +1,17 @@
 {
  "route": "text-area",
  "url": "http://localhost:5199/en/docs/component/text-area",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/text-area\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "type",
-   "ms": 266
+   "ms": 256
   },
   {
    "action": "type",
-   "ms": 278
+   "ms": 279
   }
  ],
  "consoleErrors": [],

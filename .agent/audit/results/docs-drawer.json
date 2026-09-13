@@ -1,33 +1,33 @@
 {
  "route": "drawer",
  "url": "http://localhost:5199/en/docs/component/drawer",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/drawer\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/co",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 207
+   "ms": 213
   },
   {
    "action": "click",
-   "ms": 355
+   "ms": 437
   },
   {
    "action": "click",
-   "ms": 398
+   "ms": 445
   },
   {
    "action": "click",
-   "ms": 361
+   "ms": 437
   },
   {
    "action": "click",
-   "ms": 382
+   "ms": 443
   },
   {
    "action": "click",
-   "ms": 355
+   "ms": 437
   }
  ],
  "consoleErrors": [],

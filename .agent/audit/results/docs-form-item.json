@@ -1,37 +1,37 @@
 {
  "route": "form-item",
  "url": "http://localhost:5199/en/docs/component/form-item",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/form-item\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 188
+   "ms": 190
   },
   {
    "action": "click",
-   "ms": 201
+   "ms": 214
   },
   {
    "action": "click",
-   "ms": 215
+   "ms": 202
   },
   {
    "action": "click",
-   "ms": 201
+   "ms": 214
   },
   {
    "action": "type",
-   "ms": 270
+   "ms": 275
   },
   {
    "action": "type",
-   "ms": 261
+   "ms": 263
   },
   {
    "action": "type",
-   "ms": 256
+   "ms": 275
   }
  ],
  "consoleErrors": [],

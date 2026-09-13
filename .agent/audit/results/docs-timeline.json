@@ -1,7 +1,7 @@
 {
  "route": "timeline",
  "url": "http://localhost:5199/en/docs/component/timeline",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/timeline\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/",
  "violations": [],
  "longtasks": [],
  "interactions": [],

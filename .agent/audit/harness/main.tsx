@@ -1,5 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import "../../../app/ui/styles/index.css";
 
 const demos = import.meta.glob("../../../app/demos/**/*.tsx");
 

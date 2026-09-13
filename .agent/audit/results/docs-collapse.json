@@ -1,29 +1,13 @@
 {
  "route": "collapse",
  "url": "http://localhost:5199/en/docs/component/collapse",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/collapse\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 188
-  },
-  {
-   "action": "click",
-   "ms": 193
-  },
-  {
-   "action": "click",
-   "ms": 372
-  },
-  {
-   "action": "click",
-   "ms": 385
-  },
-  {
-   "action": "click",
-   "ms": 258
+   "ms": 210
   },
   {
    "action": "click",
@@ -31,11 +15,27 @@
   },
   {
    "action": "click",
-   "ms": 371
+   "ms": 434
   },
   {
    "action": "click",
-   "ms": 366
+   "ms": 308
+  },
+  {
+   "action": "click",
+   "ms": 216
+  },
+  {
+   "action": "click",
+   "ms": 205
+  },
+  {
+   "action": "click",
+   "ms": 423
+  },
+  {
+   "action": "click",
+   "ms": 445
   }
  ],
  "consoleErrors": [],

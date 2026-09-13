@@ -1,31 +1,17 @@
 {
  "route": "radar",
  "url": "http://localhost:5199/en/docs/component/radar",
- "axeError": null,
- "violations": [
-  {
-   "id": "svg-img-alt",
-   "impact": "serious",
-   "help": "<svg> elements with an img or image role must have alternative text",
-   "wcag": [
-    "wcag2a",
-    "wcag111"
-   ],
-   "nodes": 1,
-   "sampleTargets": [
-    ".mt-2"
-   ]
-  }
- ],
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/radar\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/com",
+ "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 202
+   "ms": 192
   },
   {
    "action": "click",
-   "ms": 201
+   "ms": 214
   }
  ],
  "consoleErrors": [],

@@ -1,17 +1,17 @@
 {
  "route": "progress",
  "url": "http://localhost:5199/en/docs/component/progress",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/progress\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 187
+   "ms": 202
   },
   {
    "action": "click",
-   "ms": 182
+   "ms": 202
   }
  ],
  "consoleErrors": [],

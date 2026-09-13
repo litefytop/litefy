@@ -4,7 +4,7 @@ import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
 const ts = require("typescript");
-const REPO = "D:/Documents/code/litefy-fuma";
+const REPO = path.resolve(import.meta.dirname, "../..");
 const UI = path.join(REPO, "app/ui");
 
 function exportedNames(file) {

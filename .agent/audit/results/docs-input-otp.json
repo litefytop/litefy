@@ -1,13 +1,33 @@
 {
  "route": "input-otp",
  "url": "http://localhost:5199/en/docs/component/input-otp",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/input-otp\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "type",
-   "ms": 272
+   "ms": 285
+  },
+  {
+   "action": "type",
+   "ms": 278
+  },
+  {
+   "action": "type",
+   "ms": 290
+  },
+  {
+   "action": "type",
+   "ms": 295
+  },
+  {
+   "action": "type",
+   "ms": 276
+  },
+  {
+   "action": "type",
+   "ms": 280
   },
   {
    "action": "type",
@@ -15,19 +35,7 @@
   },
   {
    "action": "type",
-   "ms": 268
-  },
-  {
-   "action": "type",
-   "ms": 279
-  },
-  {
-   "action": "type",
-   "ms": 271
-  },
-  {
-   "action": "type",
-   "ms": 261
+   "ms": 280
   }
  ],
  "consoleErrors": [],

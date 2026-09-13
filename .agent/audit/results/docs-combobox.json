@@ -1,17 +1,17 @@
 {
  "route": "combobox",
  "url": "http://localhost:5199/en/docs/component/combobox",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/combobox\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "type",
-   "ms": 336
+   "ms": 267
   },
   {
    "action": "type",
-   "ms": 272
+   "ms": 263
   }
  ],
  "consoleErrors": [],

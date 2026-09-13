@@ -1,21 +1,13 @@
 {
  "route": "calendar",
  "url": "http://localhost:5199/en/docs/component/calendar",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/calendar\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 213
-  },
-  {
-   "action": "click",
-   "ms": 200
-  },
-  {
-   "action": "click",
-   "ms": 187
+   "ms": 202
   },
   {
    "action": "click",
@@ -23,23 +15,7 @@
   },
   {
    "action": "click",
-   "ms": 185
-  },
-  {
-   "action": "click",
-   "ms": 196
-  },
-  {
-   "action": "click",
-   "ms": 200
-  },
-  {
-   "action": "click",
-   "ms": 201
-  },
-  {
-   "action": "click",
-   "ms": 201
+   "ms": 234
   },
   {
    "action": "click",
@@ -47,11 +23,23 @@
   },
   {
    "action": "click",
-   "ms": 199
+   "ms": 194
   },
   {
    "action": "click",
-   "ms": 186
+   "ms": 216
+  },
+  {
+   "action": "click",
+   "ms": 202
+  },
+  {
+   "action": "click",
+   "ms": 214
+  },
+  {
+   "action": "click",
+   "ms": 206
   },
   {
    "action": "click",
@@ -59,19 +47,29 @@
   },
   {
    "action": "click",
-   "ms": 185
+   "ms": 218
   },
   {
    "action": "click",
-   "ms": 199
+   "ms": 215
+  },
+  {
+   "action": "click",
+   "ms": 223
+  },
+  {
+   "action": "click",
+   "ms": 198
+  },
+  {
+   "action": "click",
+   "ms": 216
   },
   {
    "action": "click",
    "ms": 201
   }
  ],
- "consoleErrors": [
-  "Failed to load resource: the server responded with a status of 500 ()"
- ],
+ "consoleErrors": [],
  "incomplete": 1
 }

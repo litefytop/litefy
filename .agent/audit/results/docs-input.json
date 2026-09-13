@@ -1,25 +1,25 @@
 {
  "route": "input",
  "url": "http://localhost:5199/en/docs/component/input",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/input\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/com",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "type",
-   "ms": 278
+   "ms": 260
   },
   {
    "action": "type",
-   "ms": 263
+   "ms": 259
   },
   {
    "action": "type",
-   "ms": 266
+   "ms": 276
   },
   {
    "action": "type",
-   "ms": 267
+   "ms": 260
   }
  ],
  "consoleErrors": [],

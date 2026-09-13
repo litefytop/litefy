@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const UI = "D:/Documents/code/litefy-fuma/app/ui";
+const UI = path.resolve(import.meta.dirname, "../../app/ui");
 const files = [];
 for (const dir of ["components", "utils"]) {
   const abs = path.join(UI, dir);

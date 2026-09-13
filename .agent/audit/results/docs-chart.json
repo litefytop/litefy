@@ -1,45 +1,45 @@
 {
  "route": "chart",
  "url": "http://localhost:5199/en/docs/component/chart",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/chart\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/com",
  "violations": [],
  "longtasks": [],
  "interactions": [
-  {
-   "action": "click",
-   "ms": 195
-  },
-  {
-   "action": "click",
-   "ms": 186
-  },
-  {
-   "action": "click",
-   "ms": 199
-  },
-  {
-   "action": "click",
-   "ms": 183
-  },
-  {
-   "action": "click",
-   "ms": 191
-  },
-  {
-   "action": "click",
-   "ms": 197
-  },
-  {
-   "action": "click",
-   "ms": 187
-  },
   {
    "action": "click",
    "ms": 193
   },
   {
    "action": "click",
+   "ms": 201
+  },
+  {
+   "action": "click",
+   "ms": 215
+  },
+  {
+   "action": "click",
+   "ms": 202
+  },
+  {
+   "action": "click",
+   "ms": 211
+  },
+  {
+   "action": "click",
+   "ms": 203
+  },
+  {
+   "action": "click",
+   "ms": 217
+  },
+  {
+   "action": "click",
    "ms": 199
+  },
+  {
+   "action": "click",
+   "ms": 213
   }
  ],
  "consoleErrors": [],

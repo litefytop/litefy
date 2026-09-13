@@ -1,8 +1,8 @@
 .DS_Store
 node_modules/
-
-# React Router
 /.react-router/
 /build/
 /app/generated/
 .source
+.agent/audit/results
+.agent/audit/stubs

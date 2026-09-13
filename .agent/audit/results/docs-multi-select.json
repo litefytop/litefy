@@ -1,17 +1,17 @@
 {
  "route": "multi-select",
  "url": "http://localhost:5199/en/docs/component/multi-select",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/multi-select\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/d",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 188
+   "ms": 213
   },
   {
    "action": "click",
-   "ms": 177
+   "ms": 201
   }
  ],
  "consoleErrors": [],
