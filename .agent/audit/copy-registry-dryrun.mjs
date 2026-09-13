@@ -6,8 +6,8 @@ import ts from "typescript";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const srcComponentDir = path.resolve(__dirname, "D:/Documents/code/litefy-fuma/app/ui");
-const registryRoot = path.resolve(__dirname, "D:/Documents/code/litefy-fuma/.agent/audit/registry-dryrun.json");
+const srcComponentDir = path.resolve(import.meta.dirname, "../../app/ui");
+const registryRoot = path.resolve(import.meta.dirname, "registry-dryrun.json");
 const PREINSTALLED_UTILS = new Set(["cn"]);
 const BASELINE_NPM_DEPS = new Set(["react", "react-dom", "lucide-react", "tailwindcss", "tailwind-merge"]);
 

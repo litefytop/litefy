@@ -1,25 +1,25 @@
 {
  "route": "chat-input",
  "url": "http://localhost:5199/en/docs/component/chat-input",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/chat-input\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/doc",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 199
+   "ms": 182
   },
   {
    "action": "click",
-   "ms": 198
+   "ms": 214
   },
   {
    "action": "click",
-   "ms": 202
+   "ms": 201
   },
   {
    "action": "type",
-   "ms": 273
+   "ms": 290
   }
  ],
  "consoleErrors": [],

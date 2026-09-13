@@ -1,7 +1,7 @@
 {
  "route": "preview-card",
  "url": "http://localhost:5199/en/docs/component/preview-card",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/preview-card\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/d",
  "violations": [],
  "longtasks": [],
  "interactions": [],

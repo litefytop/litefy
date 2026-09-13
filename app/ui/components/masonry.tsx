@@ -102,29 +102,37 @@ export function Masonry<T>({
     [items, getKey],
   );
   const columnsKey = JSON.stringify(columns);
+  const parsedColumns = React.useMemo(() => JSON.parse(columnsKey) as MasonryColumns, [columnsKey]);
 
-  React.useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const parsed = JSON.parse(columnsKey) as MasonryColumns;
-    const update = () => setColumnCount(resolveColumnCount(parsed, el.clientWidth));
-    update();
-    const observer = new ResizeObserver(update);
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [columnsKey]);
-
-  React.useLayoutEffect(() => {
+  // One batched pass resolves both column count and item assignment, so a mount
+  // costs a single follow-up commit instead of width and assignment fighting
+  // across separate effect rounds.
+  const measureRef = React.useRef<() => void>(() => {});
+  measureRef.current = () => {
     const root = containerRef.current;
     if (!root) return;
+    const count = resolveColumnCount(parsedColumns, root.clientWidth);
     const heights: number[] = Array.from({ length: items.length }, () => 0);
     for (const el of root.querySelectorAll<HTMLElement>("[data-masonry-key]")) {
       const index = Number(el.getAttribute("data-masonry-index"));
       if (index >= 0 && index < items.length) heights[index] = el.offsetHeight;
     }
-    const next = distribute(items.length, columnCount, heights);
+    const next = distribute(items.length, count, heights);
+    setColumnCount(count);
     setAssignment((prev) => (sameAssignment(prev, next) ? prev : next));
+  };
+
+  React.useLayoutEffect(() => {
+    measureRef.current();
   });
+
+  React.useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new ResizeObserver(() => measureRef.current());
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const cols =
     assignment.length === columnCount

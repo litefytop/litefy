@@ -1,17 +1,17 @@
 {
  "route": "dual-picker",
  "url": "http://localhost:5199/en/docs/component/dual-picker",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/dual-picker\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/do",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "type",
-   "ms": 269
+   "ms": 266
   },
   {
    "action": "type",
-   "ms": 271
+   "ms": 275
   }
  ],
  "consoleErrors": [],

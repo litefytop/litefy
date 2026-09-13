@@ -1,35 +1,10 @@
 {
  "route": "radio",
  "url": "http://localhost:5199/en/docs/component/radio",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/radio\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/com",
  "violations": [],
  "longtasks": [],
- "interactions": [
-  {
-   "action": "type",
-   "ms": 240
-  },
-  {
-   "action": "type",
-   "ms": 216
-  },
-  {
-   "action": "type",
-   "ms": 248
-  },
-  {
-   "action": "type",
-   "ms": 242
-  },
-  {
-   "action": "type",
-   "ms": 256
-  },
-  {
-   "action": "type",
-   "ms": 264
-  }
- ],
+ "interactions": [],
  "consoleErrors": [],
  "incomplete": 1
 }

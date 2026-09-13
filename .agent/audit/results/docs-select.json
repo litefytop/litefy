@@ -1,7 +1,7 @@
 {
  "route": "select",
  "url": "http://localhost:5199/en/docs/component/select",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/select\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/co",
  "violations": [],
  "longtasks": [],
  "interactions": [
@@ -11,19 +11,19 @@
   },
   {
    "action": "click",
-   "ms": 193
+   "ms": 197
   },
   {
    "action": "click",
-   "ms": 196
+   "ms": 212
   },
   {
    "action": "click",
-   "ms": 214
+   "ms": 233
   },
   {
    "action": "click",
-   "ms": 192
+   "ms": 221
   }
  ],
  "consoleErrors": [],

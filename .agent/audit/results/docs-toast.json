@@ -1,29 +1,21 @@
 {
  "route": "toast",
  "url": "http://localhost:5199/en/docs/component/toast",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/toast\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/com",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 193
+   "ms": 192
   },
   {
    "action": "click",
-   "ms": 187
+   "ms": 200
   },
   {
    "action": "click",
-   "ms": 198
-  },
-  {
-   "action": "click",
-   "ms": 184
-  },
-  {
-   "action": "click",
-   "ms": 199
+   "ms": 200
   },
   {
    "action": "click",
@@ -31,7 +23,15 @@
   },
   {
    "action": "click",
-   "ms": 205
+   "ms": 215
+  },
+  {
+   "action": "click",
+   "ms": 203
+  },
+  {
+   "action": "click",
+   "ms": 211
   }
  ],
  "consoleErrors": [],

@@ -97,8 +97,8 @@
  },
  {
   "component": "cascader",
-  "rawMin": 36588,
-  "gzip": 11835,
+  "rawMin": 33712,
+  "gzip": 10884,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -109,8 +109,8 @@
  },
  {
   "component": "chart",
-  "rawMin": 34447,
-  "gzip": 11993,
+  "rawMin": 43917,
+  "gzip": 15630,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -133,8 +133,8 @@
  },
  {
   "component": "checkbox",
-  "rawMin": 29733,
-  "gzip": 9603,
+  "rawMin": 33038,
+  "gzip": 10908,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -157,8 +157,8 @@
  },
  {
   "component": "collapse",
-  "rawMin": 29383,
-  "gzip": 9488,
+  "rawMin": 29356,
+  "gzip": 9478,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -169,8 +169,8 @@
  },
  {
   "component": "combobox",
-  "rawMin": 38075,
-  "gzip": 12568,
+  "rawMin": 35354,
+  "gzip": 11684,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -181,8 +181,8 @@
  },
  {
   "component": "context-menu",
-  "rawMin": 34783,
-  "gzip": 11307,
+  "rawMin": 34399,
+  "gzip": 11249,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -193,8 +193,8 @@
  },
  {
   "component": "date-picker",
-  "rawMin": 40894,
-  "gzip": 13096,
+  "rawMin": 40900,
+  "gzip": 13098,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -218,7 +218,7 @@
  {
   "component": "donut",
   "rawMin": 33430,
-  "gzip": 11633,
+  "gzip": 11635,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -241,8 +241,8 @@
  },
  {
   "component": "dropdown-menu",
-  "rawMin": 36646,
-  "gzip": 11986,
+  "rawMin": 36665,
+  "gzip": 12002,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -253,8 +253,20 @@
  },
  {
   "component": "dual-picker",
-  "rawMin": 30690,
-  "gzip": 9840,
+  "rawMin": 30666,
+  "gzip": 9837,
+  "ownBytesIn": null,
+  "npmDeps": [
+   {
+    "name": "tailwind-merge@3.6.0",
+    "bytes": null
+   }
+  ]
+ },
+ {
+  "component": "error",
+  "rawMin": 27246,
+  "gzip": 8612,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -265,8 +277,8 @@
  },
  {
   "component": "form-item",
-  "rawMin": 43198,
-  "gzip": 14172,
+  "rawMin": 42949,
+  "gzip": 14162,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -277,8 +289,8 @@
  },
  {
   "component": "form",
-  "rawMin": 30741,
-  "gzip": 10134,
+  "rawMin": 30321,
+  "gzip": 9980,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -301,8 +313,8 @@
  },
  {
   "component": "input-group",
-  "rawMin": 28107,
-  "gzip": 8849,
+  "rawMin": 28082,
+  "gzip": 8838,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -313,8 +325,8 @@
  },
  {
   "component": "input-otp",
-  "rawMin": 29125,
-  "gzip": 9504,
+  "rawMin": 29086,
+  "gzip": 9498,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -325,8 +337,8 @@
  },
  {
   "component": "input",
-  "rawMin": 28508,
-  "gzip": 8989,
+  "rawMin": 28414,
+  "gzip": 8957,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -349,8 +361,8 @@
  },
  {
   "component": "list",
-  "rawMin": 33728,
-  "gzip": 10668,
+  "rawMin": 30909,
+  "gzip": 9654,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -361,8 +373,8 @@
  },
  {
   "component": "masonry",
-  "rawMin": 28999,
-  "gzip": 9437,
+  "rawMin": 29084,
+  "gzip": 9456,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -373,8 +385,8 @@
  },
  {
   "component": "menu",
-  "rawMin": 31793,
-  "gzip": 10394,
+  "rawMin": 31767,
+  "gzip": 10384,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -385,8 +397,8 @@
  },
  {
   "component": "multi-select",
-  "rawMin": 34579,
-  "gzip": 11351,
+  "rawMin": 37947,
+  "gzip": 12614,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -397,8 +409,8 @@
  },
  {
   "component": "number-field",
-  "rawMin": 30554,
-  "gzip": 10102,
+  "rawMin": 30713,
+  "gzip": 10176,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -409,8 +421,8 @@
  },
  {
   "component": "number-input",
-  "rawMin": 31125,
-  "gzip": 10201,
+  "rawMin": 31163,
+  "gzip": 10230,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -445,8 +457,8 @@
  },
  {
   "component": "password",
-  "rawMin": 28838,
-  "gzip": 9204,
+  "rawMin": 28813,
+  "gzip": 9193,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -457,8 +469,8 @@
  },
  {
   "component": "picker",
-  "rawMin": 29744,
-  "gzip": 9699,
+  "rawMin": 29750,
+  "gzip": 9701,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -469,8 +481,8 @@
  },
  {
   "component": "popover",
-  "rawMin": 30317,
-  "gzip": 9874,
+  "rawMin": 30361,
+  "gzip": 9896,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -481,8 +493,8 @@
  },
  {
   "component": "preview-card",
-  "rawMin": 31166,
-  "gzip": 10138,
+  "rawMin": 31573,
+  "gzip": 10267,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -505,22 +517,10 @@
  },
  {
   "component": "query-builder",
-  "rawMin": 142927,
-  "gzip": 44449,
+  "rawMin": 63241,
+  "gzip": 19720,
   "ownBytesIn": null,
   "npmDeps": [
-   {
-    "name": "numeric-quantity@3.3.1",
-    "bytes": null
-   },
-   {
-    "name": "immer@11.1.18",
-    "bytes": null
-   },
-   {
-    "name": "@react-querybuilder",
-    "bytes": null
-   },
    {
     "name": "tailwind-merge@3.6.0",
     "bytes": null
@@ -530,7 +530,7 @@
  {
   "component": "radar",
   "rawMin": 33313,
-  "gzip": 11614,
+  "gzip": 11611,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -541,8 +541,8 @@
  },
  {
   "component": "radio",
-  "rawMin": 28614,
-  "gzip": 9159,
+  "rawMin": 32075,
+  "gzip": 10572,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -553,8 +553,8 @@
  },
  {
   "component": "scroll-shadow",
-  "rawMin": 29866,
-  "gzip": 9652,
+  "rawMin": 28930,
+  "gzip": 9308,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -565,8 +565,8 @@
  },
  {
   "component": "segment",
-  "rawMin": 28861,
-  "gzip": 9385,
+  "rawMin": 28763,
+  "gzip": 9341,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -577,8 +577,8 @@
  },
  {
   "component": "select",
-  "rawMin": 30890,
-  "gzip": 10173,
+  "rawMin": 30509,
+  "gzip": 10060,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -589,8 +589,8 @@
  },
  {
   "component": "separator",
-  "rawMin": 28326,
-  "gzip": 8856,
+  "rawMin": 28250,
+  "gzip": 8883,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -625,8 +625,8 @@
  },
  {
   "component": "slider",
-  "rawMin": 30139,
-  "gzip": 9819,
+  "rawMin": 30066,
+  "gzip": 9786,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -638,7 +638,7 @@
  {
   "component": "sparkline",
   "rawMin": 28935,
-  "gzip": 9438,
+  "gzip": 9430,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -745,8 +745,8 @@
  },
  {
   "component": "toggle",
-  "rawMin": 28407,
-  "gzip": 9106,
+  "rawMin": 28340,
+  "gzip": 9088,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -757,8 +757,8 @@
  },
  {
   "component": "tooltip",
-  "rawMin": 29178,
-  "gzip": 9401,
+  "rawMin": 29338,
+  "gzip": 9467,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -769,8 +769,8 @@
  },
  {
   "component": "transfer",
-  "rawMin": 32343,
-  "gzip": 10254,
+  "rawMin": 35645,
+  "gzip": 11539,
   "ownBytesIn": null,
   "npmDeps": [
    {
@@ -793,8 +793,8 @@
  },
  {
   "component": "upload",
-  "rawMin": 30729,
-  "gzip": 9941,
+  "rawMin": 30677,
+  "gzip": 9918,
   "ownBytesIn": null,
   "npmDeps": [
    {

@@ -1,13 +1,21 @@
 {
  "route": "button",
  "url": "http://localhost:5199/en/docs/component/button",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/button\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/co",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 186
+   "ms": 209
+  },
+  {
+   "action": "click",
+   "ms": 202
+  },
+  {
+   "action": "click",
+   "ms": 199
   },
   {
    "action": "click",
@@ -15,35 +23,27 @@
   },
   {
    "action": "click",
-   "ms": 189
+   "ms": 195
   },
   {
    "action": "click",
-   "ms": 182
+   "ms": 558
   },
   {
    "action": "click",
-   "ms": 190
+   "ms": 206
   },
   {
    "action": "click",
-   "ms": 1001
+   "ms": 204
   },
   {
    "action": "click",
-   "ms": 189
+   "ms": 187
   },
   {
    "action": "click",
-   "ms": 197
-  },
-  {
-   "action": "click",
-   "ms": 184
-  },
-  {
-   "action": "click",
-   "ms": 185
+   "ms": 202
   }
  ],
  "consoleErrors": [],

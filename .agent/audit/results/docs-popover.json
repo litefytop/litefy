@@ -1,21 +1,33 @@
 {
  "route": "popover",
  "url": "http://localhost:5199/en/docs/component/popover",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/popover\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/c",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 199
+   "ms": 192
   },
   {
    "action": "click",
-   "ms": 184
+   "ms": 202
   },
   {
    "action": "click",
-   "ms": 184
+   "ms": 198
+  },
+  {
+   "action": "click",
+   "ms": 203
+  },
+  {
+   "action": "click",
+   "ms": 191
+  },
+  {
+   "action": "click",
+   "ms": 196
   },
   {
    "action": "click",
@@ -23,27 +35,15 @@
   },
   {
    "action": "click",
-   "ms": 189
+   "ms": 202
   },
   {
    "action": "click",
-   "ms": 182
+   "ms": 202
   },
   {
    "action": "click",
-   "ms": 188
-  },
-  {
-   "action": "click",
-   "ms": 183
-  },
-  {
-   "action": "click",
-   "ms": 183
-  },
-  {
-   "action": "click",
-   "ms": 197
+   "ms": 200
   },
   {
    "action": "click",

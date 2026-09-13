@@ -1,21 +1,21 @@
 {
  "route": "toggle",
  "url": "http://localhost:5199/en/docs/component/toggle",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/toggle\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/co",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 192
+   "ms": 221
   },
   {
    "action": "click",
-   "ms": 205
+   "ms": 202
   },
   {
    "action": "click",
-   "ms": 206
+   "ms": 210
   },
   {
    "action": "click",
@@ -27,7 +27,7 @@
   },
   {
    "action": "click",
-   "ms": 209
+   "ms": 206
   },
   {
    "action": "click",

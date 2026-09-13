@@ -3,11 +3,11 @@ import fs from "node:fs";
 import path from "node:path";
 import zlib from "node:zlib";
 
-const REPO = "D:/Documents/code/litefy-fuma";
+const REPO = path.resolve(import.meta.dirname, "../..");
 const COMP_DIR = path.join(REPO, "app/ui/components");
 const esbuild = createRequire(import.meta.url)("../../node_modules/.pnpm/esbuild@0.28.2/node_modules/esbuild");
 
-const EXTERNAL = ["react", "react-dom", "react/jsx-runtime", "react-dom/client", "uplot", "react-querybuilder", "lucide-react"];
+const EXTERNAL = ["react", "react-dom", "react/jsx-runtime", "react-dom/client", "lucide-react"];
 const NPM_MARKER = "node_modules/.pnpm/";
 
 function listEntries() {

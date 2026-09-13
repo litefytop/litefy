@@ -1,39 +1,17 @@
 {
  "route": "input-group",
  "url": "http://localhost:5199/en/docs/component/input-group",
- "axeError": null,
- "violations": [
-  {
-   "id": "label",
-   "impact": "critical",
-   "help": "Form elements must have labels",
-   "wcag": [
-    "wcag2a",
-    "wcag412"
-   ],
-   "nodes": 1,
-   "sampleTargets": [
-    "input[value=\"not-an-email\"]"
-   ]
-  }
- ],
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/input-group\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/do",
+ "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "type",
-   "ms": 279
+   "ms": 249
   },
   {
    "action": "type",
-   "ms": 258
-  },
-  {
-   "action": "type",
-   "ms": 268
-  },
-  {
-   "action": "type",
-   "ms": 264
+   "ms": 282
   }
  ],
  "consoleErrors": [],

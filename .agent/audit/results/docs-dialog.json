@@ -1,21 +1,21 @@
 {
  "route": "dialog",
  "url": "http://localhost:5199/en/docs/component/dialog",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/dialog\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/co",
  "violations": [],
  "longtasks": [],
  "interactions": [
+  {
+   "action": "click",
+   "ms": 209
+  },
   {
    "action": "click",
    "ms": 218
   },
   {
    "action": "click",
-   "ms": 199
-  },
-  {
-   "action": "click",
-   "ms": 193
+   "ms": 236
   },
   {
    "action": "click",
@@ -23,7 +23,7 @@
   },
   {
    "action": "click",
-   "ms": 196
+   "ms": 212
   }
  ],
  "consoleErrors": [],

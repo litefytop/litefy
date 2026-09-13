@@ -1,72 +1,57 @@
 {
  "route": "number-field",
  "url": "http://localhost:5199/en/docs/component/number-field",
- "axeError": null,
- "violations": [
-  {
-   "id": "label",
-   "impact": "critical",
-   "help": "Form elements must have labels",
-   "wcag": [
-    "wcag2a",
-    "wcag412"
-   ],
-   "nodes": 2,
-   "sampleTargets": [
-    "input[aria-valuemax=\"100\"]",
-    "input[aria-valuemax=\"20\"]"
-   ]
-  }
- ],
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/number-field\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/d",
+ "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 192
+   "ms": 206
   },
   {
    "action": "click",
-   "ms": 186
+   "ms": 202
   },
   {
    "action": "click",
-   "ms": 189
+   "ms": 217
   },
   {
    "action": "click",
-   "ms": 183
+   "ms": 201
   },
   {
    "action": "type",
-   "ms": 271
+   "ms": 292
   },
   {
    "action": "type",
-   "ms": 280
+   "ms": 281
   },
   {
    "action": "click",
-   "ms": 195
+   "ms": 194
   },
   {
    "action": "click",
-   "ms": 187
+   "ms": 242
   },
   {
    "action": "click",
-   "ms": 187
+   "ms": 201
   },
   {
    "action": "click",
-   "ms": 186
+   "ms": 202
   },
   {
    "action": "type",
-   "ms": 276
+   "ms": 277
   },
   {
    "action": "type",
-   "ms": 267
+   "ms": 294
   }
  ],
  "consoleErrors": [],

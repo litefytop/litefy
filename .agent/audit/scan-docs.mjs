@@ -45,16 +45,25 @@ for (const route of routes) {
   const url = `${BASE}/en/docs/component/${route}`;
   const record = { route, url, axeError: null, violations: [], longtasks: [], interactions: [], consoleErrors: [] };
   currentRecord = record;
-  try {
-    await page.goto(url, { waitUntil: "load", timeout: 45000 });
-    await page.waitForSelector(".preview", { timeout: 15000 });
-    await page.waitForTimeout(900);
-  } catch (e) {
-    record.axeError = "nav/selector: " + String(e).slice(0, 150);
+  // Dev servers recompile on demand and can abort the first navigation with a
+  // full-page reload (net::ERR_ABORTED); retry before giving up on the route.
+  let loaded = false;
+  for (let attempt = 0; attempt < 3 && !loaded; attempt++) {
+    try {
+      await page.goto(url, { waitUntil: "load", timeout: 45000 });
+      await page.waitForSelector(".preview", { timeout: 15000 });
+      loaded = true;
+    } catch (e) {
+      record.axeError = "nav/selector: " + String(e).slice(0, 150);
+      await page.waitForTimeout(1500);
+    }
+  }
+  if (!loaded) {
     summary.push(record);
     console.log(`SKIP ${route}: ${record.axeError}`);
     continue;
   }
+  await page.waitForTimeout(900);
 
   try {
     const axe = await new AxeBuilder({ page }).include(".preview").withTags(TAGS).analyze();
@@ -88,8 +97,8 @@ for (const route of routes) {
           if (!(await b.isVisible())) continue;
           const t0 = Date.now();
           await b.click({ timeout: 1500 });
-          await page.waitForTimeout(160);
           record.interactions.push({ action: "click", ms: Date.now() - t0 });
+          await page.waitForTimeout(160);
           clicks++;
         } catch {}
       }

@@ -1,6 +1,6 @@
 ---
 title: Query Builder
-description: A collapsible folder tree of unique field nodes and nested and/or groups, with a live natural-language preview and Submit/Reset — zero external dependencies.
+description: A tree list of field rows with always-visible operator/value rules, nested and/or groups, a live natural-language preview and Submit/Reset — zero external dependencies.
 ---
 
 ## Installation
@@ -9,16 +9,16 @@ description: A collapsible folder tree of unique field nodes and nested and/or g
 
 ## Usage
 
-`QueryBuilder` renders the query as a **tree with two node types**: field nodes and group nodes. Every field appears **exactly once** per group — a field folder with several sub-conditions replaces repeating the same field row after row. The layout is fully recursive: the root group and every added group share the same first row — collapse chevron, **AND / OR** segment and the **+ Group** button — above a guide-line indented body that scrolls inside a fixed-height frame. Below it, a read-only **natural-language preview panel** shows the query, and centered **Submit / Reset** buttons sit at the very bottom.
+`QueryBuilder` renders the query as a **flat tree list**. Every field appears **exactly once** per group as a row — label plus a kind badge — with the **add (`+`) button at the end of the row**. Its conditions render directly beneath it as child rows joined by tree guides (`├` for every child, `└` for the last), each child being an operator dropdown plus a value editor with the **remove button at the end** — the right edge is always the action area. A field with no conditions renders nothing extra. The layout is fully recursive: the root group and every added group share the same first row — collapse chevron, **AND / OR** segment and the **+ Group** button — above the tree list, which scrolls inside a fixed-height frame. Below it, a read-only **natural-language preview panel** shows the query, and centered **Submit / Reset** buttons sit at the very bottom.
 
 <ComponentPreview name="query-builder-basic" />
 
-- **text / number / date** — expand the field folder and press **+ Condition** to add sub-conditions; each sub-condition is an operator dropdown plus a value input.
-- **Group** — a nested root: exactly the same layout as the root group — same first row, same folder list — so nesting reads as one recursive pattern.
+- **text / number / date** — press the field row's **`+`** to append a condition row; each row is an operator dropdown plus a value input, and the trailing trash button removes it.
+- **Group** — a nested root: exactly the same layout as the root group — same first row, same tree list — so nesting reads as one recursive pattern.
 
 ### Enum fields
 
-`valueKind: "select"` fields expand to a checkbox list with a **select-all** checkbox. Checking and unchecking options directly creates and removes the condition; the checked options merge into a **single `IN` condition** (never split into `OR`ed equals). Only forward `IN` is offered — no `NOT IN`; to invert a selection, check everything and uncheck what you don't need.
+`valueKind: "select"` fields render their options **always visible** as child rows (tree-guided like any other child): a **select-all** row followed by one checkbox row per option. Checking and unchecking options directly creates and removes the condition; the checked options merge into a **single `IN` condition** (never split into `OR`ed equals). Only forward `IN` is offered — no `NOT IN`; to invert a selection, check everything and uncheck what you don't need.
 
 ### Natural-language preview
 
@@ -26,7 +26,7 @@ The preview is built from field labels and reads for humans: sibling rules are j
 
 Operators render as English phrases by default, RQB-style: `Name is 'fung'`, `Price is greater than 30`, `Status is one of ('vip', 'beta')`.
 
-Fields are label/value pairs: `name` is what gets written into the query, `label` is what humans read — folder nodes and the preview always render the label, so the same query tree localizes freely.
+Fields are label/value pairs: `name` is what gets written into the query, `label` is what humans read — field rows and the preview always render the label, so the same query tree localizes freely.
 
 Operators are localized through a static property — it feeds both the operator dropdowns and the preview:
 
@@ -57,7 +57,7 @@ The tree is a draft: edits update the live preview only. **Submit** emits the qu
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `fields` | `QueryFieldConfig[]` | - | Available fields; each renders as one unique folder node. **Required** |
+| `fields` | `QueryFieldConfig[]` | - | Available fields; each renders as one unique field row. **Required** |
 | `defaultValue` | `QueryGroup` | empty `and` tree | Initial query; also what Reset restores |
 | `onSubmit` | `(query: QueryGroup) => void` | - | Fired by the Submit button |
 | `onQueryChange` | `(query: QueryGroup) => void` | - | Alias of `onSubmit` |
@@ -72,7 +72,7 @@ The tree is a draft: edits update the live preview only. **Submit** emits the qu
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
 | `name` | `string` | - | Field identifier written into the query. **Required** |
-| `label` | `string` | `name` | Field label shown on its folder node and in the preview |
+| `label` | `string` | `name` | Field label shown on its field row and in the preview |
 | `operators` | `string[]` | per `valueKind` | Operators offered for sub-conditions |
 | `valueKind` | `"text" \| "number" \| "date" \| "select"` | `"text"` | Value editor type |
 | `options` | `{ label, value }[]` | - | Options when `valueKind: "select"` |

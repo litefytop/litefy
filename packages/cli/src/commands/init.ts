@@ -4,6 +4,7 @@ import inquirer from "inquirer";
 import logger from "../utils/logger";
 import { detectPackageManager, installDependencies, type PackageManager } from "../utils/pm";
 import { syncStyleImports } from "../utils/style-imports";
+import { UI_BARREL_INDEX_SOURCE } from "../utils/barrel";
 
 interface InitOptions {
   yes?: boolean;
@@ -106,10 +107,7 @@ async function init(options: InitOptions): Promise<void> {
 
   if (!(await fs.pathExists(barrelIndexTs))) {
     await fs.ensureDir(path.dirname(barrelIndexTs));
-    const indexSource = `export * from "./components";
-export * from "./utils";
-`;
-    await fs.writeFile(barrelIndexTs, indexSource, "utf-8");
+    await fs.writeFile(barrelIndexTs, UI_BARREL_INDEX_SOURCE, "utf-8");
     logger.info(`Created ${path.relative(cwd, barrelIndexTs)}`);
   } else {
     logger.info(`${path.relative(cwd, barrelIndexTs)} already exists, skipped`);

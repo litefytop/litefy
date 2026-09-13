@@ -3,7 +3,7 @@
   "demo": "avatar/basic",
   "mountError": null,
   "mountCommits": 1,
-  "interactionCommits": 3,
+  "interactionCommits": 1,
   "interactionDurations": [],
   "wdyr": [],
   "mountConsole": [],
@@ -45,18 +45,18 @@
   "mountCommits": 1,
   "interactionCommits": 1,
   "interactionDurations": [
-   173,
-   165,
-   166,
-   167
+   177,
+   168,
+   169,
+   171
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   173,
-   165,
-   166,
-   167
+   177,
+   168,
+   169,
+   171
   ]
  },
  {
@@ -65,18 +65,18 @@
   "mountCommits": 1,
   "interactionCommits": 5,
   "interactionDurations": [
-   178,
-   167,
-   167,
-   167
+   182,
+   188,
+   181,
+   188
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   178,
-   167,
-   167,
-   167
+   182,
+   188,
+   181,
+   188
   ]
  },
  {
@@ -95,28 +95,28 @@
   "mountCommits": 1,
   "interactionCommits": 1,
   "interactionDurations": [
-   161,
-   166
+   178,
+   433
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   161,
-   166
+   178,
+   433
   ]
  },
  {
   "demo": "cascader/basic",
   "mountError": null,
   "mountCommits": 1,
-  "interactionCommits": 3,
+  "interactionCommits": 2,
   "interactionDurations": [
-   177
+   180
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   177
+   180
   ]
  },
  {
@@ -125,16 +125,16 @@
   "mountCommits": 1,
   "interactionCommits": 5,
   "interactionDurations": [
-   173,
-   169,
-   169
+   179,
+   185,
+   186
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   173,
-   169,
-   169
+   179,
+   185,
+   186
   ]
  },
  {
@@ -143,48 +143,42 @@
   "mountCommits": 1,
   "interactionCommits": 12,
   "interactionDurations": [
-   174,
-   164,
-   154,
-   152
+   178,
+   184,
+   200,
+   168
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   174,
-   164,
-   154,
-   152
+   178,
+   184,
+   200,
+   168
   ]
  },
  {
   "demo": "checkbox/basic",
   "mountError": null,
   "mountCommits": 1,
-  "interactionCommits": 2,
-  "interactionDurations": [
-   155
-  ],
+  "interactionCommits": 1,
+  "interactionDurations": [],
   "wdyr": [],
   "mountConsole": [],
-  "interactionDurationsSample": [
-   155
-  ]
+  "interactionDurationsSample": []
  },
  {
   "demo": "chip-group/basic",
   "mountError": null,
-  "mountCommits": 3,
-  "interactionCommits": 7,
+  "mountCommits": 2,
+  "interactionCommits": 3,
   "interactionDurations": [
-   174,
-   169
+   179
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   174,
-   169
+   179
   ]
  },
  {
@@ -193,32 +187,32 @@
   "mountCommits": 1,
   "interactionCommits": 5,
   "interactionDurations": [
-   170,
-   168,
-   166,
-   169
+   177,
+   406,
+   185,
+   392
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   170,
-   168,
-   166,
-   169
+   177,
+   406,
+   185,
+   392
   ]
  },
  {
   "demo": "combobox/basic",
   "mountError": null,
   "mountCommits": 1,
-  "interactionCommits": 13,
+  "interactionCommits": 11,
   "interactionDurations": [
-   233
+   207
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   233
+   207
   ]
  },
  {
@@ -237,12 +231,12 @@
   "mountCommits": 1,
   "interactionCommits": 11,
   "interactionDurations": [
-   282
+   312
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   282
+   312
   ]
  },
  {
@@ -251,14 +245,14 @@
   "mountCommits": 1,
   "interactionCommits": 4,
   "interactionDurations": [
-   174,
-   167
+   206,
+   172
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   174,
-   167
+   206,
+   172
   ]
  },
  {
@@ -267,20 +261,20 @@
   "mountCommits": 1,
   "interactionCommits": 7,
   "interactionDurations": [
-   172,
-   153,
-   171,
-   168,
-   168
+   193,
+   169,
+   186,
+   187,
+   169
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   172,
-   153,
-   171,
-   168,
-   168
+   193,
+   169,
+   186,
+   187,
+   169
   ]
  },
  {
@@ -289,14 +283,14 @@
   "mountCommits": 1,
   "interactionCommits": 3,
   "interactionDurations": [
-   173,
-   166
+   195,
+   403
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   173,
-   166
+   195,
+   403
   ]
  },
  {
@@ -305,14 +299,14 @@
   "mountCommits": 1,
   "interactionCommits": 4,
   "interactionDurations": [
-   174,
-   166
+   193,
+   182
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   174,
-   166
+   193,
+   182
   ]
  },
  {
@@ -321,63 +315,79 @@
   "mountCommits": 1,
   "interactionCommits": 9,
   "interactionDurations": [
-   173
+   162
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   173
+   162
+  ]
+ },
+ {
+  "demo": "error/basic",
+  "mountError": null,
+  "mountCommits": 1,
+  "interactionCommits": 2,
+  "interactionDurations": [
+   177
+  ],
+  "wdyr": [],
+  "mountConsole": [],
+  "interactionDurationsSample": [
+   177
   ]
  },
  {
   "demo": "form/basic",
   "mountError": null,
   "mountCommits": 1,
-  "interactionCommits": 3,
+  "interactionCommits": 4,
   "interactionDurations": [
-   172,
-   169,
-   146,
-   151
+   179,
+   186,
+   185,
+   166,
+   180
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   172,
-   169,
-   146,
-   151
+   179,
+   186,
+   185,
+   166,
+   180
   ]
  },
  {
   "demo": "form-item/basic",
   "mountError": null,
   "mountCommits": 1,
-  "interactionCommits": 11,
+  "interactionCommits": 6,
   "interactionDurations": [
-   168,
-   168,
-   168,
-   168,
-   148,
-   153
+   176,
+   201,
+   186,
+   187,
+   165,
+   171
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   168,
-   168,
-   168,
-   168,
-   148,
-   153
+   176,
+   201,
+   186,
+   187,
+   165,
+   171
   ]
  },
  {
   "demo": "image/basic",
   "mountError": null,
-  "mountCommits": 3,
-  "interactionCommits": 3,
+  "mountCommits": 1,
+  "interactionCommits": 1,
   "interactionDurations": [],
   "wdyr": [],
   "mountConsole": [],
@@ -389,14 +399,14 @@
   "mountCommits": 1,
   "interactionCommits": 1,
   "interactionDurations": [
-   157,
-   153
+   172,
+   169
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   157,
-   153
+   172,
+   169
   ]
  },
  {
@@ -405,14 +415,14 @@
   "mountCommits": 1,
   "interactionCommits": 1,
   "interactionDurations": [
-   157,
-   149
+   165,
+   168
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   157,
-   149
+   165,
+   168
   ]
  },
  {
@@ -421,14 +431,14 @@
   "mountCommits": 1,
   "interactionCommits": 17,
   "interactionDurations": [
-   155,
-   151
+   161,
+   183
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   155,
-   151
+   161,
+   183
   ]
  },
  {
@@ -454,8 +464,8 @@
  {
   "demo": "masonry/basic",
   "mountError": null,
-  "mountCommits": 4,
-  "interactionCommits": 4,
+  "mountCommits": 3,
+  "interactionCommits": 3,
   "interactionDurations": [],
   "wdyr": [],
   "mountConsole": [],
@@ -467,60 +477,58 @@
   "mountCommits": 1,
   "interactionCommits": 6,
   "interactionDurations": [
-   174,
-   170,
-   166,
-   167,
-   168
+   176,
+   172,
+   171,
+   169,
+   171
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   174,
-   170,
-   166,
-   167,
-   168
+   176,
+   172,
+   171,
+   169,
+   171
   ]
  },
  {
   "demo": "multi-select/basic",
   "mountError": null,
   "mountCommits": 1,
-  "interactionCommits": 4,
+  "interactionCommits": 2,
   "interactionDurations": [
-   175,
-   148
+   180
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   175,
-   148
+   180
   ]
  },
  {
   "demo": "number-field/basic",
   "mountError": null,
   "mountCommits": 1,
-  "interactionCommits": 13,
+  "interactionCommits": 14,
   "interactionDurations": [
-   161,
-   166,
-   168,
-   167,
-   165,
-   151
+   177,
+   186,
+   185,
+   185,
+   196,
+   169
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   161,
-   166,
-   168,
-   167,
-   165,
-   151
+   177,
+   186,
+   185,
+   185,
+   196,
+   169
   ]
  },
  {
@@ -529,14 +537,14 @@
   "mountCommits": 1,
   "interactionCommits": 10,
   "interactionDurations": [
-   154,
-   150
+   158,
+   169
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   154,
-   150
+   158,
+   169
   ]
  },
  {
@@ -545,12 +553,12 @@
   "mountCommits": 1,
   "interactionCommits": 3,
   "interactionDurations": [
-   178
+   180
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   178
+   180
   ]
  },
  {
@@ -569,14 +577,14 @@
   "mountCommits": 1,
   "interactionCommits": 2,
   "interactionDurations": [
-   176,
-   149
+   178,
+   165
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   176,
-   149
+   178,
+   165
   ]
  },
  {
@@ -585,12 +593,12 @@
   "mountCommits": 1,
   "interactionCommits": 11,
   "interactionDurations": [
-   170
+   175
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   170
+   175
   ]
  },
  {
@@ -599,25 +607,25 @@
   "mountCommits": 1,
   "interactionCommits": 5,
   "interactionDurations": [
-   173,
-   168,
-   166,
-   161
+   177,
+   170,
+   170,
+   168
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   173,
-   168,
-   166,
-   161
+   177,
+   170,
+   170,
+   168
   ]
  },
  {
   "demo": "preview-card/basic",
   "mountError": null,
-  "mountCommits": 3,
-  "interactionCommits": 3,
+  "mountCommits": 1,
+  "interactionCommits": 1,
   "interactionDurations": [],
   "wdyr": [],
   "mountConsole": [],
@@ -629,14 +637,14 @@
   "mountCommits": 1,
   "interactionCommits": 3,
   "interactionDurations": [
-   172,
-   168
+   179,
+   171
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   172,
-   168
+   179,
+   171
   ]
  },
  {
@@ -645,20 +653,20 @@
   "mountCommits": 1,
   "interactionCommits": 5,
   "interactionDurations": [
+   177,
    171,
-   153,
-   164,
-   167,
-   157
+   187,
+   186,
+   196
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
+   177,
    171,
-   153,
-   164,
-   167,
-   157
+   187,
+   186,
+   196
   ]
  },
  {
@@ -667,37 +675,31 @@
   "mountCommits": 1,
   "interactionCommits": 4,
   "interactionDurations": [
-   173,
-   167
+   180,
+   186
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   173,
-   167
+   180,
+   186
   ]
  },
  {
   "demo": "radio/basic",
   "mountError": null,
   "mountCommits": 1,
-  "interactionCommits": 3,
-  "interactionDurations": [
-   157,
-   152
-  ],
+  "interactionCommits": 1,
+  "interactionDurations": [],
   "wdyr": [],
   "mountConsole": [],
-  "interactionDurationsSample": [
-   157,
-   152
-  ]
+  "interactionDurationsSample": []
  },
  {
   "demo": "scroll-shadow/basic",
   "mountError": null,
-  "mountCommits": 1,
-  "interactionCommits": 1,
+  "mountCommits": 3,
+  "interactionCommits": 3,
   "interactionDurations": [],
   "wdyr": [],
   "mountConsole": [],
@@ -709,16 +711,16 @@
   "mountCommits": 1,
   "interactionCommits": 3,
   "interactionDurations": [
-   157,
-   165,
-   166
+   177,
+   171,
+   185
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   157,
-   165,
-   166
+   177,
+   171,
+   185
   ]
  },
  {
@@ -727,12 +729,12 @@
   "mountCommits": 1,
   "interactionCommits": 2,
   "interactionDurations": [
-   176
+   178
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   176
+   178
   ]
  },
  {
@@ -749,6 +751,24 @@
   "demo": "sidebar/basic",
   "mountError": null,
   "mountCommits": 1,
+  "interactionCommits": 4,
+  "interactionDurations": [
+   178,
+   186,
+   186
+  ],
+  "wdyr": [],
+  "mountConsole": [],
+  "interactionDurationsSample": [
+   178,
+   186,
+   186
+  ]
+ },
+ {
+  "demo": "skeleton/avatar",
+  "mountError": null,
+  "mountCommits": 1,
   "interactionCommits": 1,
   "interactionDurations": [],
   "wdyr": [],
@@ -756,26 +776,17 @@
   "interactionDurationsSample": []
  },
  {
-  "demo": "skeleton/avatar",
-  "mountError": "TimeoutError: page.waitForSelector: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#root > *') to be visible\u001b[22m\n\u001b[2m    60 × locator resolved to hidden <div class=\"flex w-full max-",
-  "mountCommits": 0,
-  "interactionCommits": 0,
-  "interactionDurations": [],
-  "wdyr": [],
-  "mountConsole": []
- },
- {
   "demo": "slider/basic",
   "mountError": null,
   "mountCommits": 1,
-  "interactionCommits": 2,
+  "interactionCommits": 1,
   "interactionDurations": [
-   176
+   185
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   176
+   185
   ]
  },
  {
@@ -794,33 +805,27 @@
   "mountCommits": 1,
   "interactionCommits": 4,
   "interactionDurations": [
-   172,
-   168,
-   165
+   174,
+   198,
+   182
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   172,
-   168,
-   165
+   174,
+   198,
+   182
   ]
  },
  {
   "demo": "switch/basic",
   "mountError": null,
   "mountCommits": 1,
-  "interactionCommits": 3,
-  "interactionDurations": [
-   159,
-   150
-  ],
+  "interactionCommits": 1,
+  "interactionDurations": [],
   "wdyr": [],
   "mountConsole": [],
-  "interactionDurationsSample": [
-   159,
-   150
-  ]
+  "interactionDurationsSample": []
  },
  {
   "demo": "table/basic",
@@ -838,16 +843,16 @@
   "mountCommits": 1,
   "interactionCommits": 3,
   "interactionDurations": [
-   162,
-   168,
-   168
+   176,
+   169,
+   171
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   162,
-   168,
-   168
+   176,
+   169,
+   171
   ]
  },
  {
@@ -866,14 +871,14 @@
   "mountCommits": 1,
   "interactionCommits": 1,
   "interactionDurations": [
-   156,
-   150
+   162,
+   168
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   156,
-   150
+   162,
+   168
   ]
  },
  {
@@ -890,22 +895,14 @@
   "demo": "toast/basic",
   "mountError": null,
   "mountCommits": 2,
-  "interactionCommits": 12,
+  "interactionCommits": 4,
   "interactionDurations": [
-   170,
-   171,
-   167,
-   167,
-   168
+   179
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   170,
-   171,
-   167,
-   167,
-   168
+   179
   ]
  },
  {
@@ -914,14 +911,14 @@
   "mountCommits": 1,
   "interactionCommits": 3,
   "interactionDurations": [
-   175,
-   152
+   179,
+   183
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   175,
-   152
+   179,
+   183
   ]
  },
  {
@@ -930,31 +927,25 @@
   "mountCommits": 1,
   "interactionCommits": 1,
   "interactionDurations": [
-   158,
-   152
+   179,
+   169
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   158,
-   152
+   179,
+   169
   ]
  },
  {
   "demo": "transfer/basic",
   "mountError": null,
   "mountCommits": 1,
-  "interactionCommits": 3,
-  "interactionDurations": [
-   154,
-   149
-  ],
+  "interactionCommits": 1,
+  "interactionDurations": [],
   "wdyr": [],
   "mountConsole": [],
-  "interactionDurationsSample": [
-   154,
-   149
-  ]
+  "interactionDurationsSample": []
  },
  {
   "demo": "typography/headings",
@@ -971,14 +962,10 @@
   "mountError": null,
   "mountCommits": 1,
   "interactionCommits": 1,
-  "interactionDurations": [
-   157
-  ],
+  "interactionDurations": [],
   "wdyr": [],
   "mountConsole": [],
-  "interactionDurationsSample": [
-   157
-  ]
+  "interactionDurationsSample": []
  },
  {
   "demo": "watermark/basic",
@@ -996,16 +983,16 @@
   "mountCommits": 1,
   "interactionCommits": 3,
   "interactionDurations": [
-   176,
-   332,
-   150
+   177,
+   399,
+   169
   ],
   "wdyr": [],
   "mountConsole": [],
   "interactionDurationsSample": [
-   176,
-   332,
-   150
+   177,
+   399,
+   169
   ]
  }
 ]

@@ -1,17 +1,17 @@
 {
  "route": "card",
  "url": "http://localhost:5199/en/docs/component/card",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/card\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/comp",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 194
+   "ms": 193
   },
   {
    "action": "click",
-   "ms": 357
+   "ms": 434
   }
  ],
  "consoleErrors": [],

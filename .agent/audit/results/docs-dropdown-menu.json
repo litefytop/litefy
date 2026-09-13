@@ -1,17 +1,17 @@
 {
  "route": "dropdown-menu",
  "url": "http://localhost:5199/en/docs/component/dropdown-menu",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/dropdown-menu\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 195
+   "ms": 197
   },
   {
    "action": "click",
-   "ms": 198
+   "ms": 200
   }
  ],
  "consoleErrors": [],

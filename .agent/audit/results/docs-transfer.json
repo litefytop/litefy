@@ -1,24 +1,8 @@
 {
  "route": "transfer",
  "url": "http://localhost:5199/en/docs/component/transfer",
- "axeError": null,
- "violations": [
-  {
-   "id": "nested-interactive",
-   "impact": "serious",
-   "help": "Interactive controls must not be nested",
-   "wcag": [
-    "wcag2a",
-    "wcag412"
-   ],
-   "nodes": 5,
-   "sampleTargets": [
-    ".min-w-0.flex-1.flex-col:nth-child(1) > .max-h-64.overflow-auto.p-1 > label:nth-child(1) > .min-w-3.min-h-3.has-focus-visible\\:ring-2",
-    ".min-w-0.flex-1.flex-col:nth-child(1) > .max-h-64.overflow-auto.p-1 > label:nth-child(2) > .min-w-3.min-h-3.has-focus-visible\\:ring-2",
-    "label:nth-child(4) > .min-w-3.min-h-3.has-focus-visible\\:ring-2"
-   ]
-  }
- ],
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/transfer\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/",
+ "violations": [],
  "longtasks": [],
  "interactions": [],
  "consoleErrors": [],

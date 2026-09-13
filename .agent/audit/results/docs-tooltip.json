@@ -1,17 +1,13 @@
 {
  "route": "tooltip",
  "url": "http://localhost:5199/en/docs/component/tooltip",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/tooltip\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/c",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 192
-  },
-  {
-   "action": "click",
-   "ms": 200
+   "ms": 191
   },
   {
    "action": "click",
@@ -19,11 +15,15 @@
   },
   {
    "action": "click",
-   "ms": 182
+   "ms": 195
   },
   {
    "action": "click",
-   "ms": 181
+   "ms": 202
+  },
+  {
+   "action": "click",
+   "ms": 201
   }
  ],
  "consoleErrors": [],

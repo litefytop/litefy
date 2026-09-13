@@ -1,22 +1,8 @@
 {
  "route": "upload",
  "url": "http://localhost:5199/en/docs/component/upload",
- "axeError": null,
- "violations": [
-  {
-   "id": "label",
-   "impact": "critical",
-   "help": "Form elements must have labels",
-   "wcag": [
-    "wcag2a",
-    "wcag412"
-   ],
-   "nodes": 1,
-   "sampleTargets": [
-    "input[accept=\"image/*\"]"
-   ]
-  }
- ],
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/upload\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/co",
+ "violations": [],
  "longtasks": [],
  "interactions": [],
  "consoleErrors": [],

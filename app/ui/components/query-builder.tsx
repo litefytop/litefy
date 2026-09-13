@@ -4,7 +4,7 @@ import * as React from "react";
 import { ChevronDown, ChevronRight, Plus, Trash2 } from "lucide-react";
 import { type ClassNameValue, cn } from "../utils/cn";
 import { Button } from "./button";
-import { Checkbox, CheckboxGroup } from "./checkbox";
+import { Checkbox } from "./checkbox";
 import { DatePicker } from "./date-picker";
 import { Input } from "./input";
 import { SegmentGroup } from "./segment";
@@ -61,7 +61,6 @@ interface DraftCondition {
 }
 
 interface DraftFieldState {
-  collapsed: boolean;
   conditions: DraftCondition[];
   enumValues: string[];
 }
@@ -84,7 +83,7 @@ function isGroupNode(node: QueryRule | QueryGroup): node is QueryGroup {
 }
 
 function emptyFieldState(): DraftFieldState {
-  return { collapsed: true, conditions: [], enumValues: [] };
+  return { conditions: [], enumValues: [] };
 }
 
 function newDraftGroup(fields: QueryFieldConfig[]): DraftGroup {
@@ -158,6 +157,17 @@ function parsePlainDate(value: unknown): Temporal.PlainDate | null {
   }
 }
 
+// ├ / └ tree guide drawn with borders: the vertical line spans the whole row
+// for non-last children and stops at the horizontal stub for the last one.
+function TreeGuide({ last }: { last: boolean }) {
+  return (
+    <div aria-hidden className="relative h-full min-h-9 w-4 shrink-0">
+      <div className={cn("absolute top-0 left-1/2 w-px bg-border", last ? "h-1/2" : "h-full")} />
+      <div className="absolute top-1/2 left-1/2 h-px w-1/2 bg-border" />
+    </div>
+  );
+}
+
 function toNaturalLanguage(group: QueryGroup, fields: QueryFieldConfig[]): string {
   const quote = (value: string) => `'${value.replace(/'/g, "''")}'`;
   const renderValue = (config: QueryFieldConfig, value: string | string[]): string => {
@@ -222,7 +232,6 @@ function QueryBuilderImpl({
   const addCondition = (path: number[], name: string, operator: string) =>
     editField(path, name, (f) => ({
       ...f,
-      collapsed: false,
       conditions: [...f.conditions, { operator, value: "" }],
     }));
 
@@ -268,36 +277,39 @@ function QueryBuilderImpl({
       kind === "select" &&
       options.length > 0 &&
       options.every((o) => state.enumValues.includes(o.value));
-    const summary =
-      kind === "select"
-        ? state.enumValues.length > 0 && `${state.enumValues.length} selected`
-        : state.conditions.length > 0 &&
-          `${state.conditions.length} condition${state.conditions.length > 1 ? "s" : ""}`;
+    const toggleEnum = (value: string) =>
+      editField(path, config.name, (f) => ({
+        ...f,
+        enumValues: f.enumValues.includes(value)
+          ? f.enumValues.filter((v) => v !== value)
+          : [...f.enumValues, value],
+      }));
+    const checkboxClass =
+      "gap-2 cursor-pointer rounded px-1 py-0.5 text-sm font-normal hover:bg-hover";
     return (
       <div className="rounded-lg">
-        <button
-          type="button"
-          disabled={disabled}
-          onClick={() => editField(path, config.name, (f) => ({ ...f, collapsed: !f.collapsed }))}
-          className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 text-left transition-colors hover:bg-hover"
-        >
-          {state.collapsed ? (
-            <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
-          ) : (
-            <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
-          )}
+        <div className="flex items-center gap-2 rounded-lg px-2 py-1">
           <span className="truncate text-sm font-medium">{config.label}</span>
           <span className="rounded-sm bg-muted px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-muted-foreground">
             {kind}
           </span>
-          {summary && (
-            <span className="ml-auto shrink-0 text-xs text-muted-foreground">{summary}</span>
+          {kind !== "select" && (
+            <button
+              type="button"
+              aria-label={`Add condition to ${config.label}`}
+              disabled={disabled}
+              onClick={() => addCondition(path, config.name, ops[0])}
+              className="ml-auto inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-hover hover:text-foreground"
+            >
+              <Plus className="size-4" />
+            </button>
           )}
-        </button>
-        {!state.collapsed && (
-          <div className="p-2">
-            {kind === "select" ? (
-              <div className="flex flex-col gap-1">
+        </div>
+        {kind === "select" ? (
+          options.length > 0 && (
+            <div className="flex flex-col">
+              <div className="flex items-center py-0.5 pr-2">
+                <TreeGuide last={false} />
                 <Checkbox
                   checked={allSelected}
                   disabled={disabled}
@@ -307,93 +319,80 @@ function QueryBuilderImpl({
                       enumValues: allSelected ? [] : options.map((o) => o.value),
                     }))
                   }
-                  classNames={{
-                    label:
-                      "gap-2 cursor-pointer rounded px-1 py-0.5 text-sm font-normal hover:bg-hover",
-                  }}
+                  classNames={{ label: checkboxClass }}
                 >
                   All
                 </Checkbox>
-                <CheckboxGroup
-                  className="ml-4 gap-1"
-                  options={options.map((option) => ({
-                    label: option.label,
-                    value: option.value,
-                  }))}
-                  value={state.enumValues}
-                  disabled={disabled}
-                  onChange={(values) =>
-                    editField(path, config.name, (f) => ({ ...f, enumValues: values }))
-                  }
-                  common={{
-                    classNames: {
-                      label:
-                        "gap-2 cursor-pointer rounded px-1 py-0.5 text-sm font-normal hover:bg-hover",
-                    },
-                  }}
-                />
               </div>
-            ) : (
-              <div className="flex flex-col gap-2">
-                {state.conditions.map((condition, i) => (
-                  <div key={i} className="grid grid-cols-[1fr_2fr_auto] items-center gap-2">
-                    <div className="min-w-0">
-                      <Select
-                        className="min-w-0"
-                        options={ops.map((op) => ({
-                          label: QueryBuilder.operatorLabels[op] ?? op,
-                          value: op,
-                        }))}
-                        value={condition.operator}
-                        disabled={disabled}
-                        onValueChange={(v) =>
-                          updateCondition(path, config.name, i, { operator: v })
-                        }
-                      />
-                    </div>
-                    <div className="min-w-0">
-                      {kind === "date" ? (
-                        <DatePicker
-                          value={parsePlainDate(condition.value)}
-                          disabled={disabled}
-                          onValueChange={(date) =>
-                            updateCondition(path, config.name, i, { value: date.toString() })
-                          }
-                        />
-                      ) : (
-                        <Input
-                          inputMode={kind === "number" ? "decimal" : undefined}
-                          value={condition.value}
-                          disabled={disabled}
-                          placeholder="Value"
-                          onChange={(e) =>
-                            updateCondition(path, config.name, i, { value: e.target.value })
-                          }
-                        />
-                      )}
-                    </div>
-                    <button
-                      type="button"
-                      aria-label="Remove condition"
+              {options.map((option, i) => (
+                <div key={option.value} className="flex items-center py-0.5 pr-2">
+                  <TreeGuide last={i === options.length - 1} />
+                  <Checkbox
+                    checked={state.enumValues.includes(option.value)}
+                    disabled={disabled}
+                    onCheckedChange={() => toggleEnum(option.value)}
+                    classNames={{ label: checkboxClass }}
+                  >
+                    {option.label}
+                  </Checkbox>
+                </div>
+              ))}
+            </div>
+          )
+        ) : (
+          <div className="flex flex-col">
+            {state.conditions.map((condition, i) => (
+              <div
+                key={i}
+                className="grid grid-cols-[16px_minmax(0,1fr)_minmax(0,2fr)_auto] items-stretch gap-2 py-0.5 pr-2"
+              >
+                <TreeGuide last={i === state.conditions.length - 1} />
+                <div className="flex min-w-0 items-center">
+                  <Select
+                    className="min-w-0"
+                    options={ops.map((op) => ({
+                      label: QueryBuilder.operatorLabels[op] ?? op,
+                      value: op,
+                    }))}
+                    value={condition.operator}
+                    disabled={disabled}
+                    onValueChange={(v) => updateCondition(path, config.name, i, { operator: v })}
+                  />
+                </div>
+                <div className="flex min-w-0 items-center">
+                  {kind === "date" ? (
+                    <DatePicker
+                      value={parsePlainDate(condition.value)}
                       disabled={disabled}
-                      onClick={() => removeCondition(path, config.name, i)}
-                      className="inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-hover hover:text-danger"
-                    >
-                      <Trash2 className="size-4" />
-                    </button>
-                  </div>
-                ))}
-                <button
-                  type="button"
-                  disabled={disabled}
-                  onClick={() => addCondition(path, config.name, ops[0])}
-                  className="inline-flex h-7 cursor-pointer items-center justify-center gap-1 rounded-md px-2 text-xs text-muted-foreground"
-                >
-                  <Plus className="size-3.5" />
-                  Condition
-                </button>
+                      onValueChange={(date) =>
+                        updateCondition(path, config.name, i, { value: date.toString() })
+                      }
+                    />
+                  ) : (
+                    <Input
+                      inputMode={kind === "number" ? "decimal" : undefined}
+                      value={condition.value}
+                      disabled={disabled}
+                      placeholder="Value"
+                      onChange={(e) =>
+                        updateCondition(path, config.name, i, { value: e.target.value })
+                      }
+                    />
+                  )}
+                </div>
+                <div className="flex items-center">
+                  <button
+                    type="button"
+                    aria-label="Remove condition"
+                    disabled={disabled}
+                    onClick={() => removeCondition(path, config.name, i)}
+                    className="inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-hover hover:text-danger"
+                  >
+                    <Trash2 className="size-4" />
+                  </button>
+                </div>
               </div>
-            )}
+            ))}
           </div>
         )}
       </div>

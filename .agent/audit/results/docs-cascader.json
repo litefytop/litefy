@@ -1,13 +1,13 @@
 {
  "route": "cascader",
  "url": "http://localhost:5199/en/docs/component/cascader",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/cascader\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 193
+   "ms": 184
   }
  ],
  "consoleErrors": [],

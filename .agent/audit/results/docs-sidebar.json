@@ -1,21 +1,21 @@
 {
  "route": "sidebar",
  "url": "http://localhost:5199/en/docs/component/sidebar",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/sidebar\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/c",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 190
+   "ms": 197
   },
   {
    "action": "click",
-   "ms": 185
+   "ms": 214
   },
   {
    "action": "click",
-   "ms": 184
+   "ms": 201
   }
  ],
  "consoleErrors": [],

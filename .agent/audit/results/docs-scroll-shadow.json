@@ -1,25 +1,8 @@
 {
  "route": "scroll-shadow",
  "url": "http://localhost:5199/en/docs/component/scroll-shadow",
- "axeError": null,
- "violations": [
-  {
-   "id": "scrollable-region-focusable",
-   "impact": "serious",
-   "help": "Scrollable region must have keyboard access",
-   "wcag": [
-    "wcag2a",
-    "wcag211",
-    "wcag213"
-   ],
-   "nodes": 6,
-   "sampleTargets": [
-    "div[data-name=\"scroll-shadow-basic\"] > .rounded-xl.overflow-hidden.border > .preview.min-h-151.border-separator > .w-full.justify-center > .h-64.overflow-hidden.border > .size-full.overscroll-contain.overflow-auto",
-    "div[data-name=\"scroll-shadow-position\"] > .rounded-xl.overflow-hidden.border > .preview.min-h-151.border-separator > .w-full.justify-center > .grid-cols-2.gap-4.grid > div:nth-child(1) > .h-48.overflow-hidden.border > .size-full.overscroll-contain.overflow-auto",
-    "div[data-name=\"scroll-shadow-position\"] > .rounded-xl.overflow-hidden.border > .preview.min-h-151.border-separator > .w-full.justify-center > .grid-cols-2.gap-4.grid > div:nth-child(2) > .h-48.overflow-hidden.border > .size-full.overscroll-contain.overflow-auto"
-   ]
-  }
- ],
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/scroll-shadow\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/",
+ "violations": [],
  "longtasks": [],
  "interactions": [],
  "consoleErrors": [],

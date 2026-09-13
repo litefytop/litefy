@@ -1,8 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import { chromium } from "playwright";
+import { startHarnessServer } from "./harness-server.mjs";
 
-const REPO = "D:/Documents/code/litefy-fuma";
+const REPO = path.resolve(import.meta.dirname, "../..");
 const DEMOS_DIR = path.join(REPO, "app/demos");
 const SKIP_DIRS = new Set(["use-drag", "use-pagination", "use-remote-pagination", "use-theme", "virtual-scroll"]);
 const BASE = "http://localhost:5188";
@@ -44,23 +45,7 @@ function parseWdyr(raw) {
   return [...merged.values()].sort((a, b) => b.count - a.count);
 }
 
-const server = await import("vite").then((v) =>
-  v.createServer({
-    root: REPO,
-    configFile: false,
-    server: { port: 5188, strictPort: true, fs: { allow: [REPO] } },
-    logLevel: "error",
-    esbuild: { jsx: "automatic" },
-    resolve: {
-      dedupe: ["react", "react-dom"],
-      alias: [
-        { find: /^@\/ui$/, replacement: path.join(REPO, "app/ui/index.ts") },
-        { find: /^@\//, replacement: path.join(REPO, "app/") },
-      ],
-    },
-    define: { "process.env.NODE_ENV": JSON.stringify("development") },
-  }),
-);
+const server = await startHarnessServer(5188);
 await server.listen();
 console.log("harness up");
 
@@ -102,8 +87,8 @@ for (const item of manifest()) {
           if (!(await b.isVisible())) continue;
           const t0 = Date.now();
           await b.click({ timeout: 1500 });
-          await page.waitForTimeout(140);
           record.interactionDurations.push(Date.now() - t0);
+          await page.waitForTimeout(140);
           clicks++;
         } catch {}
       }

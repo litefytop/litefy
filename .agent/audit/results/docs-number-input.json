@@ -1,37 +1,21 @@
 {
  "route": "number-input",
  "url": "http://localhost:5199/en/docs/component/number-input",
- "axeError": null,
- "violations": [
-  {
-   "id": "label",
-   "impact": "critical",
-   "help": "Form elements must have labels",
-   "wcag": [
-    "wcag2a",
-    "wcag412"
-   ],
-   "nodes": 3,
-   "sampleTargets": [
-    "input[value=\"2,026\"]",
-    "input[aria-valuemax=\"100\"]",
-    "input[inputmode=\"numeric\"][value=\"5\"][aria-valuemin=\"0\"]"
-   ]
-  }
- ],
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/number-input\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/d",
+ "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "type",
-   "ms": 278
+   "ms": 259
   },
   {
    "action": "type",
-   "ms": 260
+   "ms": 262
   },
   {
    "action": "type",
-   "ms": 273
+   "ms": 244
   }
  ],
  "consoleErrors": [],

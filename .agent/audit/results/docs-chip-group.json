@@ -1,21 +1,21 @@
 {
  "route": "chip-group",
  "url": "http://localhost:5199/en/docs/component/chip-group",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/chip-group\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/doc",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 200
+   "ms": 194
   },
   {
    "action": "click",
-   "ms": 215
+   "ms": 235
   },
   {
    "action": "click",
-   "ms": 191
+   "ms": 210
   }
  ],
  "consoleErrors": [],

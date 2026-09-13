@@ -1,25 +1,25 @@
 {
  "route": "wizard",
  "url": "http://localhost:5199/en/docs/component/wizard",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/wizard\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/co",
  "violations": [],
  "longtasks": [],
  "interactions": [
   {
    "action": "click",
-   "ms": 193
+   "ms": 203
   },
   {
    "action": "type",
-   "ms": 473
+   "ms": 371
   },
   {
    "action": "type",
-   "ms": 246
+   "ms": 292
   },
   {
    "action": "click",
-   "ms": 195
+   "ms": 196
   }
  ],
  "consoleErrors": [],

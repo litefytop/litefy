@@ -1,6 +1,14 @@
-{
- "name": "litefy-full",
- "raw": 192089,
- "gzip": 59751,
- "warnings": 0
-}
+[
+ {
+  "name": "litefy-full",
+  "raw": 199882,
+  "gzip": 63259,
+  "warnings": 0
+ },
+ {
+  "name": "litefy-full-batteries",
+  "raw": 203748,
+  "gzip": 65026,
+  "warnings": 0
+ }
+]

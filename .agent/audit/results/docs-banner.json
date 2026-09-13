@@ -1,10 +1,10 @@
 {
  "route": "banner",
  "url": "http://localhost:5199/en/docs/component/banner",
- "axeError": null,
+ "axeError": "nav/selector: Error: page.goto: net::ERR_ABORTED at http://localhost:5199/en/docs/component/banner\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5199/en/docs/co",
  "violations": [],
- "incomplete": 2,
  "longtasks": [],
  "interactions": [],
- "consoleErrors": []
+ "consoleErrors": [],
+ "incomplete": 2
 }
