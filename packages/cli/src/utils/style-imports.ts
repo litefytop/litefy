@@ -22,7 +22,13 @@ export async function syncStyleImports(
     .map((entry) => getFileNameFromUrl(entry.url))
     .sort();
 
-  const imports = ['@import "tailwindcss";', ...files.map((f) => `@import "./${f}";`)];
+  const baseFiles = files.filter((f) => f === "theme.css");
+  const overrideFiles = files.filter((f) => f !== "theme.css");
+  const imports = [
+    '@import "tailwindcss";',
+    ...baseFiles.map((f) => `@import "./${f}";`),
+    ...overrideFiles.map((f) => `@import "./${f}";`),
+  ];
   const content = `${HEADER}${imports.join("\n")}\n`;
 
   const cssPath = path.resolve(cwd, stylesPath, "index.css");

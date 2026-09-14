@@ -123,7 +123,7 @@ Full form composition: fields, submit handling, validation collection, imperativ
 Line, or a line–text–line divider when `children` is passed (the auth "or" divider). Horizontal carries a default `my-3` (override via `className`); vertical lines self-stretch in flex rows and rely on `gap`. Parts: `SeparatorLine` / `SeparatorText`.
 ### Capsule — pill-shaped `overflow-hidden` container that visually joins arbitrary children (tags, segments, links) into one capsule.
 ### Masonry
-Equal-width masonry columns balanced by measured height: `items`, `renderItem`, `getKey`, `columns` (number or responsive config). Ships with `gap-4`; change spacing via `className`.
+Equal-width masonry columns balanced by measured height: `items`, `renderItem`, `getKey`, `columns` (number or responsive config). Ships with `gap-4`; change spacing via `className`. A Masonry nested inside another Masonry degrades to a static CSS-columns layout (no height balancing) — only the outermost instance measures.
 ### Skeleton — pulsing placeholder block for loading states.
 ### Typography — typographic hierarchy via `variant` (heading / headline / description / inline code).
 

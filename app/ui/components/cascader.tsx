@@ -44,14 +44,13 @@ export function Cascader({
   className,
   classNames,
   styles,
+  style,
   ...props
 }: CascaderProps) {
   const uid = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const [openLevel, setOpenLevel] = React.useState<number | null>(null);
   const [path, setPath] = React.useState<CascaderNode[]>([]);
   const [selected, setSelected] = React.useState<CascaderNode | null>(null);
-
-  const triggerRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
 
   const levels = React.useMemo(
     () => [tree, ...path.map((node) => node.children ?? [])],
@@ -78,13 +77,10 @@ export function Cascader({
     <div className="flex min-w-0 items-center">
       {path.length === 0 ? (
         <CascaderTrigger
-          ref={(el) => {
-            triggerRefs.current[0] = el;
-          }}
           aria-expanded={openLevel === 0}
           onClick={() => handleTriggerClick(0)}
           className={cn("text-muted-foreground", classNames?.trigger)}
-          style={{ ...styles?.trigger, anchorName: `--cascader-${uid}-level-0` }}
+          style={styles?.trigger}
         >
           {placeholder}
         </CascaderTrigger>
@@ -94,16 +90,10 @@ export function Cascader({
             <React.Fragment key={node.value}>
               {i > 0 && <ChevronRight className="size-3.5 shrink-0 text-muted-foreground" />}
               <CascaderTrigger
-                ref={(el) => {
-                  triggerRefs.current[i] = el;
-                }}
                 aria-expanded={openLevel === i}
                 onClick={() => handleTriggerClick(i)}
                 className={cn("text-muted-foreground", classNames?.trigger)}
-                style={{
-                  ...styles?.trigger,
-                  anchorName: `--cascader-${uid}-level-${i + 1}`,
-                }}
+                style={styles?.trigger}
               >
                 {node.label}
               </CascaderTrigger>
@@ -113,19 +103,13 @@ export function Cascader({
             <>
               <ChevronRight className="size-3.5 shrink-0 text-muted-foreground" />
               <CascaderTrigger
-                ref={(el) => {
-                  triggerRefs.current[path.length] = el;
-                }}
                 aria-expanded={openLevel === path.length}
                 onClick={() => handleTriggerClick(path.length)}
                 className={cn(
                   "font-medium text-foreground hover:text-foreground",
                   classNames?.trigger,
                 )}
-                style={{
-                  ...styles?.trigger,
-                  anchorName: `--cascader-${uid}-level-${path.length + 1}`,
-                }}
+                style={styles?.trigger}
               >
                 {selected.label}
               </CascaderTrigger>
@@ -149,7 +133,7 @@ export function Cascader({
         style={{
           width: "18rem",
           ...styles?.panel,
-          positionAnchor: `--cascader-${uid}-level-${level}`,
+          positionAnchor: `--cascader-${uid}-root`,
         }}
       >
         <List
@@ -170,7 +154,11 @@ export function Cascader({
 
   return (
     <>
-      <div {...props} className={cn("w-72 rounded-md border text-sm", className)}>
+      <div
+        {...props}
+        style={{ anchorName: `--cascader-${uid}-root`, ...style }}
+        className={cn("w-72 rounded-md border text-sm", className)}
+      >
         {trigger}
       </div>
       {panels}

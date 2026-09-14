@@ -24,23 +24,9 @@ export interface ButtonProps extends Omit<React.ComponentProps<"button">, "class
   loadingConfig?: ButtonLoadingConfig;
 }
 
-function hasTextChild(children: React.ReactNode): boolean {
-  if (typeof children === "string" || typeof children === "number") {
-    return true;
-  }
-  if (Array.isArray(children)) {
-    return children.some((child) => hasTextChild(child));
-  }
-  if (React.isValidElement(children)) {
-    return hasTextChild((children.props as { children?: React.ReactNode }).children);
-  }
-  return false;
-}
-
 function isIconOnly(children: React.ReactNode): boolean {
-  const count = React.Children.count(children);
-  if (count !== 1) return false;
-  return !hasTextChild(children);
+  const arr = React.Children.toArray(children);
+  return arr.length === 1 && React.isValidElement(arr[0]);
 }
 
 function Button({
