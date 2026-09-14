@@ -11,6 +11,8 @@ description: A two-panel picker for single or multiple selection — option rows
 
 `DualPicker` is the two-panel picker (source + selected). Click an option to select it — in `"multiple"` mode it toggles, in `"single"` mode it replaces the previous pick. Click a selected entry to remove it. The search input filters the source panel.
 
+Both list bodies keep a fixed height (`h-64`) so filtering never collapses the panels — override via `classNames={{ body: ... }}`.
+
 ### Custom content (e.g. products with images)
 
 Option rows and selected rows are render-prop driven — pass `renderOption` / `renderSelected` to use any format, such as product cards with images:

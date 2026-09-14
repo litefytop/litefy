@@ -99,6 +99,10 @@ import ComboboxAsyncDemo from "./combobox/async";
 import comboboxAsyncCode from "./combobox/async.tsx?raw";
 import ComboboxBasicDemo from "./combobox/basic";
 import comboboxBasicCode from "./combobox/basic.tsx?raw";
+import CommandBasicDemo from "./command/basic";
+import commandBasicCode from "./command/basic.tsx?raw";
+import CommandPartsDemo from "./command/parts";
+import commandPartsCode from "./command/parts.tsx?raw";
 import CardBasicDemo from "./card/basic";
 import cardBasicCode from "./card/basic.tsx?raw";
 import CardGroupDemo from "./card/group";
@@ -426,6 +430,14 @@ export const demos: Record<string, DemoItem> = {
   "combobox-basic": {
     component: ComboboxBasicDemo,
     code: comboboxBasicCode,
+  },
+  "command-basic": {
+    component: CommandBasicDemo,
+    code: commandBasicCode,
+  },
+  "command-parts": {
+    component: CommandPartsDemo,
+    code: commandPartsCode,
   },
   "kbd-basic": {
     component: KbdBasicDemo,

@@ -106,6 +106,14 @@ export default {
     },
   },
 
+  command: {
+    name: "Command",
+    displayName: {
+      en: "Command",
+      zh: "命令面板",
+    },
+  },
+
   datepicker: {
     name: "Date Picker",
     displayName: {

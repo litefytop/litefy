@@ -15,6 +15,7 @@ export * from "./chat-input";
 export * from "./checkbox";
 export * from "./chip-group";
 export * from "./combobox";
+export * from "./command";
 export * from "./context-menu";
 export * from "./dialog";
 export * from "./donut";

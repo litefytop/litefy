@@ -128,7 +128,7 @@ export function Transfer({
             {sourceChecked.size}/{sourceItems.length}
           </span>
         </div>
-        <div className={cn("flex max-h-64 flex-col overflow-auto p-1", classNames?.body)}>
+        <div className={cn("flex h-64 flex-col overflow-auto p-1", classNames?.body)}>
           {renderItems(sourceItems, sourceChecked, setSourceChecked)}
         </div>
       </div>
@@ -169,7 +169,7 @@ export function Transfer({
             {targetChecked.size}/{targetItems.length}
           </span>
         </div>
-        <div className={cn("flex max-h-64 flex-col overflow-auto p-1", classNames?.body)}>
+        <div className={cn("flex h-64 flex-col overflow-auto p-1", classNames?.body)}>
           {renderItems(targetItems, targetChecked, setTargetChecked)}
         </div>
       </div>

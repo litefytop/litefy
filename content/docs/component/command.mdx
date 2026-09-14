@@ -1,0 +1,64 @@
+---
+title: Command
+description: A dialog-based command palette — a trigger (or application hotkey) opens a dialog with a search input on top and a filtered, keyboard-navigable list below.
+---
+
+## Installation
+
+<Installation name="command" />
+
+## Usage
+
+### Basic
+
+<ComponentPreview name="command-basic" />
+
+### Parts
+
+<ComponentPreview name="command-parts" />
+
+## API Reference
+
+### Command
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `(CommandItemConfig \| CommandGroupConfig)[]` | - | Commands or grouped commands. **Required** |
+| `trigger` | `React.ReactNode` | - | Trigger content, rendered as a primary button that opens the dialog. Omit to control `open` yourself |
+| `open` | `boolean` | - | Controlled dialog state |
+| `defaultOpen` | `boolean` | `false` | Initial state (uncontrolled) |
+| `onOpenChange` | `(open: boolean) => void` | - | Dialog state callback |
+| `onSelect` | `(item: CommandItemConfig) => void` | - | Fired when a command is chosen; the dialog closes afterwards |
+| `filter` | `(item, keyword) => boolean` | substring match | Custom filter; default matches `value`, string `label` and `keywords` |
+| `renderItem` | `(item, { highlighted, disabled }) => React.ReactNode` | icon + label + shortcut | Custom row rendering |
+| `placeholder` | `string` | - | Search input placeholder |
+| `empty` | `React.ReactNode` | `"No results"` | Empty state node |
+| `className` | `ClassNameValue` | - | Custom classes, applied to the `<dialog>` element |
+| `classNames` | `trigger` / `content` / `input` / `list` / `item` / `label` | - | Custom classes per part |
+| `styles` | `content` / `list` / `item` / `label` | - | Inline styles per part |
+
+### CommandItemConfig
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `React.ReactNode` | - | Row label. **Required** |
+| `value` | `string` | - | Stable key and default filter text |
+| `icon` | `React.ReactNode` | - | Leading icon |
+| `shortcut` | `React.ReactNode` | - | Keyboard hint, rendered as a [Kbd](/docs/component/kbd) on the right |
+| `keywords` | `string[]` | - | Extra filter-only terms |
+| `disabled` | `boolean` | `false` | Not selectable; skipped by filtering and keyboard navigation |
+
+### CommandGroupConfig
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `group` | `string` | Group title, rendered as a section header. **Required** |
+| `items` | `CommandItemConfig[]` | Commands in the group. **Required** |
+
+### CommandRoot / CommandInput / CommandList
+
+| Part | Props | Description |
+|------|-------|-------------|
+| `CommandRoot` | `items`, `open?`, `filter?`, `onSelect?`, `className` | Context provider and panel container |
+| `CommandInput` | `placeholder?`, `autoFocus?`, `className` | Search input |
+| `CommandList` | `empty?`, `renderItem?`, `className`, `classNames` (`item` / `label`), `styles` | Filtered list |

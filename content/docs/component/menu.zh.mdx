@@ -29,10 +29,6 @@ Menu 是真正的菜单组件，直接在文档流中渲染 —— 无需触发�
 
 子菜单在悬停时打开（带短延迟关闭），或通过 `ArrowRight` 持续打开。在菜单之外点击会关闭已打开的子菜单；`Escape` 会转发给你的 `onEscape` 处理器，以便包装它的弹出面板（如 Popover）自行关闭。
 
-#### 组合
-
-`Popover + Menu` 可以拼装出下拉菜单：用 Popover 提供触发器和浮动面板，把 `Menu` 放进面板内容中，传入 `autoFocus={open}` 让每次打开时聚焦第一个菜单项，并通过 `onEscape` 关闭面板。完整拼装参见 [Dropdown Menu](/docs/component/dropdown-menu) 指南。锚定到指针位置的右键菜单参见 [Context Menu](/docs/component/context-menu)。
-
 ## API 参考
 
 ### Menu
