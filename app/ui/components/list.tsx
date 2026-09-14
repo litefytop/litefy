@@ -10,6 +10,8 @@ export type ListControllerProps<T> = {
   onHighlightChange?: (index: number | null) => void;
   onSelect?: (item: T, index: number) => void;
   onScrollBottom?: () => void;
+  /** Fired as the pointer moves over a row — pass it `setHighlightIndex` to let hover and keyboard share one highlight. */
+  onItemMouseMove?: (item: T, index: number) => void;
 };
 
 function useListController<T>(props: ListControllerProps<T>) {
@@ -88,6 +90,7 @@ export interface ListProps<T> {
   onHighlightChange?: (index: number | null) => void;
   onSelect?: (item: T, index: number) => void;
   onScrollBottom?: () => void;
+  onItemMouseMove?: (item: T, index: number) => void;
   className?: ClassNameValue;
   style?: React.CSSProperties;
   classNames?: ListClassNames;
@@ -118,6 +121,7 @@ export function List<T>(props: ListProps<T>) {
     onHighlightChange,
     onSelect,
     onScrollBottom,
+    onItemMouseMove,
     className,
     style,
     classNames = {},
@@ -167,6 +171,7 @@ export function List<T>(props: ListProps<T>) {
               key={getKey?.(item, index) ?? index}
               data-highlighted={controller.highlightIndex === index}
               onClick={() => onSelect?.(item, index)}
+              onMouseMove={onItemMouseMove ? () => onItemMouseMove(item, index) : undefined}
               className={cn(
                 "px-3 py-2 text-sm cursor-pointer transition-colors hover:bg-hover data-[highlighted=true]:bg-primary",
                 classNames.item,
@@ -210,6 +215,7 @@ export function List<T>(props: ListProps<T>) {
                   key={getKey?.(item, index) ?? index}
                   data-highlighted={controller.highlightIndex === index}
                   onClick={() => onSelect?.(item, index)}
+                  onMouseMove={onItemMouseMove ? () => onItemMouseMove(item, index) : undefined}
                   className={cn(
                     "px-3 py-2 text-sm cursor-pointer transition-colors hover:bg-hover data-[highlighted=true]:bg-accent",
                     classNames.item,
@@ -237,6 +243,7 @@ export function Order<T>(props: OrderProps<T>) {
     onHighlightChange,
     onSelect,
     onScrollBottom,
+    onItemMouseMove,
     className,
     style,
     classNames = {},
@@ -277,22 +284,23 @@ export function Order<T>(props: OrderProps<T>) {
       className={cn("overflow-auto overscroll-contain", viewportClasses, className)}
       style={style}
     >
-      <ol className="list-decimal pl-6">
-        {items.map((item, index) => (
-          <li
-            key={getKey?.(item, index) ?? index}
-            data-highlighted={controller.highlightIndex === index}
-            onClick={() => onSelect?.(item, index)}
-            className={cn(
-              "px-3 py-2 text-sm cursor-pointer transition-colors hover:bg-hover data-[highlighted=true]:bg-accent",
-              classNames.item,
-            )}
-            style={styles.item}
-          >
-            {renderItem(item, index)}
-          </li>
-        ))}
-      </ol>
+        <ol className="list-decimal pl-6">
+          {items.map((item, index) => (
+            <li
+              key={getKey?.(item, index) ?? index}
+              data-highlighted={controller.highlightIndex === index}
+              onClick={() => onSelect?.(item, index)}
+              onMouseMove={onItemMouseMove ? () => onItemMouseMove(item, index) : undefined}
+              className={cn(
+                "px-3 py-2 text-sm cursor-pointer transition-colors hover:bg-hover data-[highlighted=true]:bg-accent",
+                classNames.item,
+              )}
+              style={styles.item}
+            >
+              {renderItem(item, index)}
+            </li>
+          ))}
+        </ol>
     </div>
   );
 }

@@ -1,0 +1,64 @@
+---
+title: Command 命令面板
+description: 对话框式命令面板——点击触发器（或应用快捷键）唤起对话框，上方为搜索输入框，下方为可键盘导航的筛选列表。
+---
+
+## 安装
+
+<Installation name="command" />
+
+## 用法
+
+### 基础用法
+
+<ComponentPreview name="command-basic" />
+
+### 部件
+
+<ComponentPreview name="command-parts" />
+
+## API 参考
+
+### Command
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `items` | `(CommandItemConfig \| CommandGroupConfig)[]` | - | 命令或分组命令 **必填** |
+| `trigger` | `React.ReactNode` | - | 触发器内容，渲染为打开对话框的主色按钮；省略则自行控制 `open` |
+| `open` | `boolean` | - | 受控对话框状态 |
+| `defaultOpen` | `boolean` | `false` | 初始状态（非受控） |
+| `onOpenChange` | `(open: boolean) => void` | - | 对话框状态回调 |
+| `onSelect` | `(item: CommandItemConfig) => void` | - | 命令被选中时触发，随后对话框关闭 |
+| `filter` | `(item, keyword) => boolean` | 子串匹配 | 自定义筛选；默认匹配 `value`、字符串 `label` 和 `keywords` |
+| `renderItem` | `(item, { highlighted, disabled }) => React.ReactNode` | 图标 + label + 快捷键 | 自定义行渲染 |
+| `placeholder` | `string` | - | 搜索框占位文案 |
+| `empty` | `React.ReactNode` | `"No results"` | 空状态节点 |
+| `className` | `ClassNameValue` | - | 自定义类名，作用于 `<dialog>` 元素 |
+| `classNames` | `trigger` / `content` / `input` / `list` / `item` / `label` | - | 各部分自定义类名 |
+| `styles` | `content` / `list` / `item` / `label` | - | 各部分内联样式 |
+
+### CommandItemConfig
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `label` | `React.ReactNode` | - | 行标签 **必填** |
+| `value` | `string` | - | 稳定键名与默认筛选文案 |
+| `icon` | `React.ReactNode` | - | 行首图标 |
+| `shortcut` | `React.ReactNode` | - | 快捷键提示，渲染为右侧的 [Kbd](/zh/docs/component/kbd) |
+| `keywords` | `string[]` | - | 仅用于筛选的补充关键词 |
+| `disabled` | `boolean` | `false` | 不可选中；筛选与键盘导航均跳过 |
+
+### CommandGroupConfig
+
+| 属性 | 类型 | 描述 |
+|------|------|------|
+| `group` | `string` | 分组标题，渲染为分区头 **必填** |
+| `items` | `CommandItemConfig[]` | 分组内的命令 **必填** |
+
+### CommandRoot / CommandInput / CommandList
+
+| 部件 | 属性 | 描述 |
+|------|------|------|
+| `CommandRoot` | `items`、`open?`、`filter?`、`onSelect?`、`className` | Context 提供者与面板容器 |
+| `CommandInput` | `placeholder?`、`autoFocus?`、`className` | 搜索输入框 |
+| `CommandList` | `empty?`、`renderItem?`、`className`、`classNames`（`item` / `label`）、`styles` | 筛选列表 |

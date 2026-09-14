@@ -55,6 +55,7 @@ description: 支持键盘导航、高亮、选中与滚动到底回调的滚动�
 | `renderGroupHeader` | `(groupName: string) => ReactNode` | - | 组标题渲染函数；仅当 `getGroup` 与 `renderGroupHeader` 同时提供时启用分组 |
 | `onSelect` | `(item: T, index: number) => void` | - | 点击行或键盘导航期间按下 `Enter` 确认时触发 |
 | `onScrollBottom` | `() => void` | - | 列表滚动到底部 16px 以内时触发，用于加载更多场景 |
+| `onItemMouseMove` | `(item: T, index: number) => void` | - | 指针在行上移动时触发——把它接到 `setHighlightIndex` 可让 hover 与键盘共享同一高亮 |
 | `ref` | `React.Ref<HTMLUListElement \| HTMLDivElement>` | - | 根元素 ref —— 平铺模式为 `ul`，分组模式为 `div`，例如用于把焦点移入列表 |
 | `className` | `ClassNameValue` | - | 根节点自定义类 |
 | `style` | `React.CSSProperties` | - | 根节点自定义内联样式 |
@@ -77,6 +78,7 @@ description: 支持键盘导航、高亮、选中与滚动到底回调的滚动�
 | `onHighlightChange` | `(index: number \| null) => void` | - | 高亮变化时触发 |
 | `onSelect` | `(item: T, index: number) => void` | - | 点击行或键盘导航期间按下 `Enter` 确认时触发 |
 | `onScrollBottom` | `() => void` | - | 列表滚动到底部 16px 以内时触发，用于加载更多场景 |
+| `onItemMouseMove` | `(item: T, index: number) => void` | - | 指针在行上移动时触发 |
 | `ref` | `React.Ref<HTMLOListElement>` | - | 根 `<ol>` 元素的 ref |
 | `className` | `ClassNameValue` | - | 根节点自定义类 |
 | `style` | `React.CSSProperties` | - | 根节点自定义内联样式 |

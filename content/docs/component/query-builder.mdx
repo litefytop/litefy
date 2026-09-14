@@ -28,24 +28,7 @@ Operators render as English phrases by default, RQB-style: `Name is 'fung'`, `Pr
 
 Fields are label/value pairs: `name` is what gets written into the query, `label` is what humans read — field rows and the preview always render the label, so the same query tree localizes freely.
 
-Operators are localized through a static property — it feeds both the operator dropdowns and the preview:
-
-```tsx
-import { QueryBuilder } from "@/ui";
-
-QueryBuilder.operatorLabels = {
-  "=": "为",
-  "!=": "不为",
-  ">": "大于",
-  ">=": "大于等于",
-  "<": "小于",
-  "<=": "小于等于",
-  contains: "包含",
-  in: "属于",
-};
-```
-
-Unknown operators fall back to their raw string, so custom operators keep working without configuration.
+Operators are localized through the `QueryBuilder.operatorLabels` static — it feeds both the operator dropdowns and the preview. Unknown operators fall back to their raw string, so custom operators keep working without configuration.
 
 ### Submit and Reset
 

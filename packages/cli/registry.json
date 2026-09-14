@@ -83,6 +83,18 @@
       "use-remote-pagination"
     ]
   },
+  "command": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/command.tsx",
+    "dependence": [
+      "dialog",
+      "button",
+      "input-group",
+      "kbd",
+      "list",
+      "use-combobox"
+    ]
+  },
   "context-menu": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/context-menu.tsx",

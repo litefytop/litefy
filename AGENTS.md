@@ -164,6 +164,9 @@ Collapsible sidebar controlled via ref (`SidebarHandle` — e.g. `ref.current.co
 ### Dialog
 Modal on the native `<dialog>`: `open` / `onOpenChange`, `onBackdropClick`. Parts: `DialogRoot` / `DialogContent` / `DialogClose`.
 
+### Command
+Dialog-based command palette: `trigger` (or app-level ⌘K wiring via `open` / `onOpenChange`) opens a dialog with the search input on top and the filtered list below. Filters on `value` / string `label` / `keywords` (custom via `filter`), `↑`/`↓`+`Enter` keyboard navigation with the first match pre-highlighted, selecting closes the dialog. Items are config-driven — `{ label, value?, icon?, shortcut?, keywords?, disabled? }` plus `{ group, items }` groups; `renderItem` overrides row rendering. Parts `CommandRoot` / `CommandInput` / `CommandList` assemble the input + filtered list without the dialog (e.g. inside a Popover).
+
 ### Drawer
 Slide-in panel: `open` / `onOpenChange`, `placement`, `onBackdropClick`, and touch-drag support via the `DrawerDrag` part/API.
 
