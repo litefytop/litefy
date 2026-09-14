@@ -3,6 +3,8 @@ import TableBasicDemo from "./table/basic";
 import tableBasicCode from "./table/basic.tsx?raw";
 import TableRemoteDemo from "./table/remote";
 import tableRemoteCode from "./table/remote.tsx?raw";
+import TableScrollDemo from "./table/scroll";
+import tableScrollCode from "./table/scroll.tsx?raw";
 import WizardInlineDemo from "./wizard/inline";
 import wizardInlineCode from "./wizard/inline.tsx?raw";
 import DualPickerBasicDemo from "./dual-picker/basic";
@@ -193,6 +195,8 @@ import NumberInputBasicDemo from "./number-input/basic";
 import numberInputBasicCode from "./number-input/basic.tsx?raw";
 import NumberInputCustomDemo from "./number-input/custom";
 import numberInputCustomCode from "./number-input/custom.tsx?raw";
+import PaginationComponentDemo from "./pagination/basic";
+import paginationComponentCode from "./pagination/basic.tsx?raw";
 import PagerBasicDemo from "./pager/basic";
 import pagerBasicCode from "./pager/basic.tsx?raw";
 import PagerGestureDemo from "./pager/gesture";
@@ -261,6 +265,10 @@ import SelectInvalidDemo from "./select/invalid";
 import selectInvalidCode from "./select/invalid.tsx?raw";
 import SelectCustomDemo from "./select/custom";
 import selectCustomCode from "./select/custom.tsx?raw";
+import SelectableTableBasicDemo from "./selectable-table/basic";
+import selectableTableBasicCode from "./selectable-table/basic.tsx?raw";
+import SelectableTablePaginationDemo from "./selectable-table/pagination";
+import selectableTablePaginationCode from "./selectable-table/pagination.tsx?raw";
 import SwitchBasicDemo from "./switch/basic";
 import switchBasicCode from "./switch/basic.tsx?raw";
 import SwitchControlledDemo from "./switch/controlled";
@@ -703,6 +711,10 @@ export const demos: Record<string, DemoItem> = {
     component: ToggleCustomDemo,
     code: toggleCustomCode,
   },
+  "pagination-basic": {
+    component: PaginationComponentDemo,
+    code: paginationComponentCode,
+  },
   "pager-basic": {
     component: PagerBasicDemo,
     code: pagerBasicCode,
@@ -711,7 +723,7 @@ export const demos: Record<string, DemoItem> = {
     component: PagerGestureDemo,
     code: pagerGestureCode,
   },
-  "pagination-basic": {
+  "use-pagination-basic": {
     component: PaginationBasicDemo,
     code: paginationBasicCode,
   },
@@ -815,6 +827,10 @@ export const demos: Record<string, DemoItem> = {
     component: TableRemoteDemo,
     code: tableRemoteCode,
   },
+  "table-scroll": {
+    component: TableScrollDemo,
+    code: tableScrollCode,
+  },
   "wizard-inline": {
     component: WizardInlineDemo,
     code: wizardInlineCode,
@@ -887,6 +903,14 @@ export const demos: Record<string, DemoItem> = {
   "select-custom": {
     component: SelectCustomDemo,
     code: selectCustomCode,
+  },
+  "selectable-table-basic": {
+    component: SelectableTableBasicDemo,
+    code: selectableTableBasicCode,
+  },
+  "selectable-table-pagination": {
+    component: SelectableTablePaginationDemo,
+    code: selectableTablePaginationCode,
   },
   "switch-basic": {
     component: SwitchBasicDemo,

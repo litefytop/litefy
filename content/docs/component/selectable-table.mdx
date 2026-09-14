@@ -1,0 +1,48 @@
+---
+title: Selectable Table
+description: A table with a built-in checkbox column and select-all with indeterminate state. Pagination is composed externally with Pagination and usePagination.
+---
+
+## Installation
+
+<Installation name="selectable-table" />
+
+## Usage
+
+`SelectableTable` wraps [Table](/docs/component/table) and prepends a checkbox column. Selection is a plain array of row keys — pass `selected` + `onSelectionChange` for controlled usage, or `defaultSelected` alone. `rowKey` is required: it identifies rows and doubles as the selection key.
+
+Select-all only affects the current page and **preserves selections from other pages**, so cross-page accumulation is yours to manage (e.g. keep collecting keys across fetches).
+
+<ComponentPreview name="selectable-table-basic" />
+
+### Composition with Pagination
+
+The table renders whatever `data` holds; paging is composed externally. Let [usePagination](/docs/utils/use-pagination) own the page state, pass its `index` and `goTo` into [Pagination](/docs/component/pagination), fetch the current page into `data` yourself, and place the table, the status text and the pager inside your own footer layout. The live result is in the preview below — open its code for the exact wiring.
+
+<ComponentPreview name="selectable-table-pagination" />
+
+### Large datasets
+
+For row counts too large to render at once, pair the [TableBody](#parts) scroller with [useVirtualScroll](/docs/utils/use-virtual-scroll): the hook's container props attach to the scroller and its visible-window output drives which rows render.
+
+The selection column lives under the internal key `__selection` — avoid a data field with that name.
+
+## API Reference
+
+### SelectableTable&lt;T&gt;
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `T[]` | - | Row data (the current page). **Required** |
+| `columns` | `TableColumn<T>[]` | - | Column config, the checkbox column is prepended automatically. **Required** |
+| `rowKey` | `(row: T) => string` | - | Row key extractor and selection unit. **Required** |
+| `selected` | `string[]` | - | Controlled selection (row keys) |
+| `defaultSelected` | `string[]` | `[]` | Initial selection for uncontrolled usage |
+| `onSelectionChange` | `(selected: string[]) => void` | - | Fired on every row / select-all toggle |
+| `loading` | `boolean` | `false` | Default empty text becomes "Loading..." |
+| `empty` | `React.ReactNode` | `"No data"` | Rendered when `data` is empty |
+| `className` | `ClassNameValue` | - | Custom classes, forwarded to the inner Table |
+| `classNames` | Table slots | - | Custom classes per part |
+| `styles` | `{ wrapper?, table? }` | - | Forwarded to the inner Table |
+
+All remaining [Table](/docs/component/table) props (`sort` / `onSortChange`, `getKey`, …) are inherited; `getKey` is derived from `rowKey`.

@@ -1,0 +1,52 @@
+---
+title: Pagination 分页器
+description: 受控的页码导航——首页 / 上一页 / 页码（带省略号）/ 下一页 / 末页。纯视图组件，状态交给 usePagination。
+---
+
+## 安装
+
+<Installation name="pagination" />
+
+## 用法
+
+`Pagination` 是**完全受控的视图组件**：渲染 `page` 给定的一切，点击只通过 `onPageChange` 上报。它自己不持有状态——请搭配 [usePagination](/zh/docs/utils/use-pagination) 使用，由钩子持有页码、钳制边界，并提供 `goTo` / `next` / `previous` / `toFirst` / `toEnd`。
+
+以 1 为起始页、总页数创建钩子，把它的当前 index 作为 page、goTo 作为翻页回调传入，同一个 index 也用于展示当前页码。
+
+
+
+<ComponentPreview name="pagination-basic" />
+
+页码列表展示首页、末页、当前页及其 `siblingCount` 个邻居，其余折叠为省略号。点击页码或箭头只会调用 `onPageChange`，组件自己永远不会翻页。
+
+### 搭配 SelectableTable
+
+`Pagination` 不局限于表格。[SelectableTable](/zh/docs/component/selectable-table) 的[分页指南](/zh/docs/component/selectable-table#与-pagination-组合分页)给出了推荐组合：钩子驱动取数，表格保持纯展示，布局由你自己的容器拼接。
+
+## API 参考
+
+### Pagination
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `page` | `number` | - | 当前页（1 起） **必填** |
+| `totalPages` | `number` | - | 总页数 **必填** |
+| `onPageChange` | `(page: number) => void` | - | 任意按钮点击时触发 |
+| `siblingCount` | `number` | `1` | 当前页两侧展示的页码数量，超出部分折叠为省略号 |
+| `disabled` | `boolean` | `false` | 禁用全部按钮（例如翻页加载中） |
+| `className` | `ClassNameValue` | - | 自定义类名，作用于根 `nav` |
+| `classNames` | `{ pages? }` | - | 页码按钮组的自定义类名 |
+
+### 零件
+
+| 零件 | 元素 | 内置类 | 描述 |
+|------|------|--------|------|
+| `PaginationRoot` | `<nav>` | `flex items-center gap-1` | 行容器，`aria-label="pagination"` |
+| `PaginationFirst` | `Button` | text 变体，`px-0` | 跳转首页（`ChevronsLeft`） |
+| `PaginationPrev` | `Button` | text 变体，`px-0` | 上一页（`ChevronLeft`） |
+| `PaginationPages` | `<div>` | `flex items-center gap-1` | 页码按钮 + 省略号 |
+| `PaginationNext` | `Button` | text 变体，`px-0` | 下一页（`ChevronRight`） |
+| `PaginationLast` | `Button` | text 变体，`px-0` | 跳转末页（`ChevronsRight`） |
+| `PaginationEllipsis` | `<span>` | `size-8 text-muted-foreground` | 折叠页码标记（`MoreHorizontal`） |
+
+当前页渲染为 `outline` 变体并带 `aria-current="page"`；其余页码渲染为 `text` 变体。

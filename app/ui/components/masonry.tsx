@@ -67,7 +67,6 @@ export interface MasonryProps<T> {
   renderItem: (item: T, index: number) => React.ReactNode;
   getKey?: (item: T, index: number) => React.Key;
   columns?: MasonryColumns;
-  gap?: number;
   className?: ClassNameValue;
   classNames?: {
     column?: ClassNameValue;
@@ -84,7 +83,6 @@ export function Masonry<T>({
   renderItem,
   getKey,
   columns = { base: 1, sm: 2, lg: 3, xl: 4 },
-  gap = 16,
   className,
   classNames,
   styles,
@@ -104,9 +102,6 @@ export function Masonry<T>({
   const columnsKey = JSON.stringify(columns);
   const parsedColumns = React.useMemo(() => JSON.parse(columnsKey) as MasonryColumns, [columnsKey]);
 
-  // One batched pass resolves both column count and item assignment, so a mount
-  // costs a single follow-up commit instead of width and assignment fighting
-  // across separate effect rounds.
   const measureRef = React.useRef<() => void>(() => {});
   measureRef.current = () => {
     const root = containerRef.current;
@@ -140,23 +135,12 @@ export function Masonry<T>({
       : distribute(items.length, columnCount, []);
 
   return (
-    <div
-      ref={containerRef}
-      className={cn("w-full", className)}
-      style={{ display: "flex", gap }}
-    >
+    <div ref={containerRef} className={cn("flex w-full gap-4", className)}>
       {cols.map((columnItems, columnIndex) => (
         <MasonryColumn
           key={columnIndex}
-          className={classNames?.column}
-          style={{
-            flex: 1,
-            minWidth: 0,
-            display: "flex",
-            flexDirection: "column",
-            gap,
-            ...styles?.column,
-          }}
+          className={cn("flex-1 gap-4", classNames?.column)}
+          style={styles?.column}
         >
           {columnItems.map((itemIndex) => {
             const key = keys[itemIndex];

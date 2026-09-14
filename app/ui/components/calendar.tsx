@@ -94,7 +94,7 @@ export const calendarMonthLabels = [
   "Oct",
   "Nov",
   "Dec",
-] as const;
+];
 
 type CalendarGridUnit = "days" | "months" | "years";
 
@@ -370,7 +370,7 @@ export function CalendarMonthGrid({
                 "inline-flex h-8 items-center justify-center rounded-md text-sm tabular-nums cursor-pointer select-none",
                 "transition-colors hover:bg-muted",
                 "aria-selected:bg-primary aria-selected:text-primary-foreground aria-selected:hover:bg-primary",
-                      )}
+              )}
             >
               {Calendar.calendarMonthLabels[month.month - 1]}
             </button>
@@ -449,7 +449,7 @@ export function CalendarYearGrid({
                 "inline-flex h-8 items-center justify-center rounded-md text-sm tabular-nums cursor-pointer select-none",
                 "transition-colors hover:bg-muted",
                 "aria-selected:bg-primary aria-selected:text-primary-foreground aria-selected:hover:bg-primary",
-                      )}
+              )}
             >
               {year.year}
             </button>
@@ -642,4 +642,4 @@ export function Calendar({
   );
 }
 
-Calendar.calendarMonthLabels = calendarMonthLabels as readonly string[];
+Calendar.calendarMonthLabels = calendarMonthLabels;

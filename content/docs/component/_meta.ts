@@ -324,6 +324,13 @@ export default {
       zh: "选择器",
     },
   },
+  "selectable-table": {
+    name: "Selectable Table",
+    displayName: {
+      en: "Selectable Table",
+      zh: "可选表格",
+    },
+  },
   "scroll-shadow": {
     name: "Scroll Shadow",
     displayName: {

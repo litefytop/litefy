@@ -157,8 +157,6 @@ function parsePlainDate(value: unknown): Temporal.PlainDate | null {
   }
 }
 
-// ├ / └ tree guide drawn with borders: the vertical line spans the whole row
-// for non-last children and stops at the horizontal stub for the last one.
 function TreeGuide({ last }: { last: boolean }) {
   return (
     <div aria-hidden className="relative h-full min-h-9 w-4 shrink-0">
