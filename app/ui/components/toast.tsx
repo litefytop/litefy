@@ -61,7 +61,10 @@ export function ToastDescription({ className, ...props }: ToastDescriptionProps)
   return <div {...props} className={cn("text-sm text-muted-foreground mt-1", className)} />;
 }
 
-export interface ToastCloseProps extends Omit<React.ComponentProps<"button">, "className" | "type"> {
+export interface ToastCloseProps extends Omit<
+  React.ComponentProps<"button">,
+  "className" | "type"
+> {
   className?: ClassNameValue;
 }
 
@@ -257,12 +260,7 @@ function ToastItem({
   const icon = customIcon ?? toastIcons[type || "success"];
 
   return (
-    <ToastRoot
-      {...restProps}
-      ref={rootRef}
-      data-expanded={isExpanded}
-      data-exiting={isExiting}
-    >
+    <ToastRoot {...restProps} ref={rootRef} data-expanded={isExpanded} data-exiting={isExiting}>
       {icon && (
         <ToastIcon className={classNames?.icon} style={styles?.icon}>
           {icon}

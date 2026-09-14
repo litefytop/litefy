@@ -1,14 +1,5 @@
 @layer base {
-  :where(:disabled, [inert], [data-disabled]) {
-    opacity: 50%;
-    background-color: var(--color-neutral);
-    color: var(--color-muted-foreground);
-    cursor: not-allowed;
-    pointer-events: none;
-  }
-
-  /* wrappers around a disabled control (e.g. label > sr-only input) */
-  :where(label:has(:disabled)) {
+  :disabled, [inert] {
     opacity: 50%;
     cursor: not-allowed;
     pointer-events: none;

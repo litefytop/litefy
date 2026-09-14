@@ -195,7 +195,8 @@ export function CheckboxGroup({
     ) {
       return;
     }
-    const target = e.target as HTMLElement;
+    const target = e.target as HTMLInputElement;
+    if (!target) return;
     if (target.tagName !== "INPUT") return;
     const inputs = Array.from(
       e.currentTarget.querySelectorAll<HTMLInputElement>('input[type="checkbox"]:not(:disabled)'),

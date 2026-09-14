@@ -19,6 +19,18 @@ description: 通用数据表格，表头可点击排序（本地数据），也�
 
 <ComponentPreview name="table-remote" />
 
+### 表头固定 + 表体滚动
+
+表头与表体是**两个独立的表格**：表头条本身永不滚动（纯 `overflow-hidden`，无滚动条、无 gutter 预留），表体滚动容器在其下独立滚动，内置固定高度（`h-96`），翻页行数变少时表格不会坍塌。列宽采用 `table-fixed` 均分；需要自定义列宽时，把 `w-*` 类写进列的 `className`（会同时作用于表头单元格和表体单元格）。通过 `classNames.body` 覆盖（如 `h-48`，或 `h-auto` 加 `classNames.table` 的 `min-w-*` 支持宽表）。
+
+<ComponentPreview name="table-scroll" />
+
+### 可组装零件
+
+`Table` 由四个原子组装而成，自定义表格（额外表头内容、非数据表格、虚拟滚动行）可以复用同一套骨架：
+
+骨架永远相同：TableRoot 内是一个 TableHead 表头条（放带表头行的 TableBase）加一个 TableBody 滚动容器（放带 tbody 的 TableBase）。两个表格中的 `<colgroup>` 必须保持一致（`table-fixed` 下它决定共享的列宽）。
+
 ## API 参考
 
 ### Table
@@ -32,9 +44,9 @@ description: 通用数据表格，表头可点击排序（本地数据），也�
 | `onSortChange` | `(sort: SortState<T>) => void` | - | 表头点击回调（两种模式均触发） |
 | `initialSortDirection` | `"asc" \| "desc"` | `"asc"` | 首次点击某列使用的方向 |
 | `empty` | `React.ReactNode` | `"No data"` | 数据为空时渲染的内容 |
-| `className` | `ClassNameValue` | - | 自定义类名，作用于外层容器 |
-| `classNames` | `wrapper` / `table` / `head` / `headRow` / `headCell` / `body` / `row` / `cell` | - | 各部分自定义类名 |
-| `styles` | `{ wrapper?, table? }` | - | 外层容器与 table 的内联样式 |
+| `className` | `ClassNameValue` | - | 自定义类名，作用于外层框架 |
+| `classNames` | `wrapper` / `table` / `head` / `headRow` / `headCell` / `body` / `row` / `cell` | - | 各部分自定义类名（`head` / `body` 分别作用于表头条与表体滚动容器） |
+| `styles` | `{ wrapper?, table? }` | - | 外层容器与两个 table 的内联样式 |
 
 ### TableColumn&lt;T&gt;
 
@@ -46,7 +58,18 @@ description: 通用数据表格，表头可点击排序（本地数据），也�
 | `sortable` | `boolean` | `false` | 表头可点击排序 |
 | `compare` | `(a: T, b: T) => number` | `<` / `>` | 本地排序使用的自定义比较器 |
 | `align` | `"left" \| "right" \| "center"` | `"left"` | 单元格对齐 |
-| `className` | `ClassNameValue` | - | 该列单元格的自定义类名 |
+| `className` | `ClassNameValue` | - | 同时作用于该列表头单元格与表体单元格的自定义类名（如用 `w-*` 设列宽） |
+
+### 零件
+
+| 零件 | 元素 | 内置类 | 描述 |
+|------|------|--------|------|
+| `TableRoot` | `<div>` | `w-full overflow-hidden rounded-lg border` | 外层框架 |
+| `TableHead` | `<div>` | `overflow-hidden` | 表头条，永不滚动 |
+| `TableBody` | `<div>` | `h-96 overflow-y-auto` | 表体滚动容器 |
+| `TableBase` | `<table>` | `w-full table-fixed border-collapse text-sm` | 共享的 table 元素 |
+
+所有零件均接受原生元素属性与 `className`。
 
 ### SortState&lt;T&gt;
 

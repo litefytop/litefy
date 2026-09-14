@@ -19,6 +19,18 @@ Pass a controlled `sort` + `onSortChange` to enter **remote mode**: the Table st
 
 <ComponentPreview name="table-remote" />
 
+### Sticky header with a scrollable body
+
+The header and the body are **two separate tables**: the header strip never scrolls (plain `overflow-hidden`, no scrollbar, no gutter), and the body scroller sits below it with a built-in fixed height (`h-96`), so the table never collapses when a page has fewer rows. Columns use `table-fixed` with equal widths; give a column a width by putting a `w-*` class in its `className` (it applies to both the header cell and the body cells). Override it via `classNames.body` (e.g. `h-48`, or `h-auto` plus `min-w-*` on `classNames.table` for wide tables).
+
+<ComponentPreview name="table-scroll" />
+
+### Composable parts
+
+`Table` is assembled from four atoms, so custom tables (extra header content, non-data tables, virtualized rows) can reuse the same frame:
+
+The skeleton is always the same: TableRoot wraps a TableHead strip holding one TableBase with the header row, and a TableBody scroller holding one TableBase with the tbody. Keep the `<colgroup>` identical in both tables (with `table-fixed` it controls the shared column widths).
+
 ## API Reference
 
 ### Table
@@ -32,9 +44,9 @@ Pass a controlled `sort` + `onSortChange` to enter **remote mode**: the Table st
 | `onSortChange` | `(sort: SortState<T>) => void` | - | Fired on header clicks (both modes) |
 | `initialSortDirection` | `"asc" \| "desc"` | `"asc"` | Direction used on the first click of a column |
 | `empty` | `React.ReactNode` | `"No data"` | Rendered when `data` is empty |
-| `className` | `ClassNameValue` | - | Custom classes, applied to the wrapper |
-| `classNames` | `wrapper` / `table` / `head` / `headRow` / `headCell` / `body` / `row` / `cell` | - | Custom classes per part |
-| `styles` | `{ wrapper?, table? }` | - | Inline styles for the wrapper and table |
+| `className` | `ClassNameValue` | - | Custom classes, applied to the outer frame |
+| `classNames` | `wrapper` / `table` / `head` / `headRow` / `headCell` / `body` / `row` / `cell` | - | Custom classes per part (`head` / `body` target the header strip and the body scroller) |
+| `styles` | `{ wrapper?, table? }` | - | Inline styles for the wrapper and both tables |
 
 ### TableColumn&lt;T&gt;
 
@@ -46,7 +58,18 @@ Pass a controlled `sort` + `onSortChange` to enter **remote mode**: the Table st
 | `sortable` | `boolean` | `false` | Make the header click-to-sort |
 | `compare` | `(a: T, b: T) => number` | `<` / `>` | Custom comparator used by local sorting |
 | `align` | `"left" \| "right" \| "center"` | `"left"` | Cell alignment |
-| `className` | `ClassNameValue` | - | Custom classes for the column cells |
+| `className` | `ClassNameValue` | - | Custom classes applied to the column's header cell and body cells (e.g. `w-*` for column widths) |
+
+### Parts
+
+| Part | Element | Built-in classes | Description |
+|------|---------|------------------|-------------|
+| `TableRoot` | `<div>` | `w-full overflow-hidden rounded-lg border` | Outer frame |
+| `TableHead` | `<div>` | `overflow-hidden` | Header strip; never scrolls |
+| `TableBody` | `<div>` | `h-96 overflow-y-auto` | Body scroller |
+| `TableBase` | `<table>` | `w-full table-fixed border-collapse text-sm` | Shared table element |
+
+All parts accept native element props plus `className`.
 
 ### SortState&lt;T&gt;
 

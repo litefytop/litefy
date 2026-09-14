@@ -95,3 +95,36 @@
 - .agent/audit/：脚本修复+新增（harness-server/commit-probe/full-bundle/leak-scan）+
   results/ 基线刷新 + stubs/ 生成物
 - 用户尚未要求 commit；之前会话提过"需要的话我来 commit"，继续时先问一句。
+
+---
+
+## 五、维度④ 最终状态（本轮收尾）
+
+### 已确凿的结论
+1. **库组件无真实内存泄漏**。决定性证据：从"脏运行"（calendar 报 1274 detached）抓取的
+   完整堆快照（23.6MB，已强制全量 GC）解析后，整个 V8 堆只剩 **11 个** HTMLButtonElement
+   包装器——1274 个"泄漏"元素在完整收集后全部消失，不存在任何强引用保留链。
+2. **rawDetached 计数是测量伪影**：V8 对 WeakRef 的清理（weak-cleanup pass）不保证在
+   `HeapProfiler.collectGarbage` ×2 后完成；计数时 `deref()` 仍返回活节点 → 虚高。
+   takeHeapSnapshot 内部的完整 GC 会把它清干净（对照：快照后只剩 11）。
+3. 已排除的环境/脚本变量（逐项二分验证）：per-demo 隔离 context、headless、
+   三支 launch args、init 的监听器/observer 包装器、pre-loop GC、中点采样、分半循环、
+   retry-goto、迭代数（200/1000）。伪影在 scan 进程形态下稳定复现，独立进程下从不复现，
+   最终触发条件未定位（不再追）。
+4. **遗留候选（真实信号，值得后续查）**：
+   - query-builder/basic：listeners 净增 +1256 / 200 次（≈6.3/次，独立于 WeakRef 时序的
+     纯计数器）。疑与 Select/Picker 弹层的 document 级监听器开关有关。
+   - wizard/basic：listeners +162 / 200 次 + detached 690（确定性复现）。疑在 Pager/Steps
+     组合。二者建议在干净环境（或换 Chromium stable）下复查后再定性。
+
+### leak-scan.mjs 最终形态
+- 每 demo 独立 browser context；headless（有头窗口失焦会触发计时器节流和
+  WeakRef 清理冻结，曾导致扫描卡死）。
+- 计数体系：detached（WeakRef）+ 堆分段采样 + RO/MO 实例 + 监听器净增。
+- **canary 验证设计**：FinalizationRegistry 注册的金丝雀对象在挂载后即死亡；被标记的
+  demo 先循环 GC 直到金丝雀被回收（证明清理 pass 已执行），此时剩余 detached 计数才
+  可作为真实保留量；金丝雀始终未回收则判 UNVERIFIED。
+- 已知问题：canary 版在本机当前状态下会挂（独立等价脚本正常）；可用的裁决证据以
+  堆快照为准（本轮已留存解析结论）。若在 CI/其他机器运行正常，直接采用其判决。
+- 结果文件：results/leak-summary.json（全量原始计数，detached 列为上界）+
+  leak-snapshot.heapsnapshot（决定性证据，23.6MB）。

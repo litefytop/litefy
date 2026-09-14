@@ -1,0 +1,52 @@
+---
+title: Pagination
+description: A controlled page navigator — first / prev / numbered pages with ellipsis / next / last. Pure view, pair it with usePagination for state.
+---
+
+## Installation
+
+<Installation name="pagination" />
+
+## Usage
+
+`Pagination` is a **fully controlled view**: it renders whatever `page` says and reports clicks through `onPageChange`. It owns no state — pair it with [usePagination](/docs/utils/use-pagination), which owns the page number, clamps boundaries, and offers `goTo` / `next` / `previous` / `toFirst` / `toEnd`.
+
+Create the hook with a base of one and the total page count, pass its current index as the page and its goTo as the page change handler, and read the same index to label the view.
+
+
+
+<ComponentPreview name="pagination-basic" />
+
+The page list shows the first page, the last page, the current page with `siblingCount` neighbors, and collapses everything in between into ellipsis markers. Clicking a page number or any arrow calls `onPageChange`; the component never advances the page itself.
+
+### With SelectableTable
+
+`Pagination` is table-agnostic. The recommended composition for a paged [SelectableTable](/docs/component/selectable-table) is covered in its [Pagination guide](/docs/component/selectable-table#composition-with-pagination): the hook drives the fetch, the table stays presentation-only, and both sit side by side under your own layout.
+
+## API Reference
+
+### Pagination
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `page` | `number` | - | Current 1-based page. **Required** |
+| `totalPages` | `number` | - | Total page count. **Required** |
+| `onPageChange` | `(page: number) => void` | - | Fired by every button click |
+| `siblingCount` | `number` | `1` | Page numbers shown on each side of the current page before collapsing into ellipsis |
+| `disabled` | `boolean` | `false` | Disables every button (e.g. while a page is loading) |
+| `className` | `ClassNameValue` | - | Custom classes, applied to the root `nav` |
+| `classNames` | `{ pages? }` | - | Custom classes for the numbered-pages group |
+
+### Parts
+
+| Part | Element | Built-in classes | Description |
+|------|---------|------------------|-------------|
+| `PaginationRoot` | `<nav>` | `flex items-center gap-1` | Row container, `aria-label="pagination"` |
+| `PaginationFirst` | `Button` | text variant, `px-0` | Jump to page 1 (`ChevronsLeft`) |
+| `PaginationPrev` | `Button` | text variant, `px-0` | Previous page (`ChevronLeft`) |
+| `PaginationPages` | `<div>` | `flex items-center gap-1` | Numbered buttons + ellipsis markers |
+| `PaginationNext` | `Button` | text variant, `px-0` | Next page (`ChevronRight`) |
+| `PaginationLast` | `Button` | text variant, `px-0` | Jump to the last page (`ChevronsRight`) |
+| `PaginationEllipsis` | `<span>` | `size-8 text-muted-foreground` | Collapsed pages marker (`MoreHorizontal`) |
+
+The current page renders as an `outline` Button with `aria-current="page"`; all other page numbers render as `text` Buttons.

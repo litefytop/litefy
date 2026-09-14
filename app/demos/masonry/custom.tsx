@@ -41,7 +41,7 @@ export default function MasonryCustomDemo() {
         <Masonry
           items={visible}
           columns={2}
-          gap={8}
+          className="gap-2"
           getKey={(photo) => photo.id}
           renderItem={(photo) => (
             <div

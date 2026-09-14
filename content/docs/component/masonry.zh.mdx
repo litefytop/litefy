@@ -39,8 +39,7 @@ description: 按实测高度把条目均衡分配到等宽列的瀑布流布局�
 | `renderItem` | `(item: T, index: number) => React.ReactNode`     | -                              | 渲染单个单元格                                                                   |
 | `getKey`     | `(item: T, index: number) => React.Key`           | index                          | 每项的稳定 key，同时驱动内部测量缓存                                                              |
 | `columns`    | `number \| { base?; sm?; md?; lg?; xl?; 2xl? }`   | `{ base: 1, sm: 2, lg: 3, xl: 4 }` | 固定列数，或按容器宽度解析的断点列数（对应 Tailwind 断点：sm 640 / md 768 / lg 1024 / xl 1280 / 2xl 1536） |
-| `gap`        | `number`                                          | `16`                           | 横向与纵向间距（px）                                                              |
-| `className`  | `ClassNameValue`                                  | -                              | 根元素自定义类名                                                                  |
+| `className`  | `ClassNameValue`                                  | `gap-4` 内置（可通过 className 覆盖间距）        | 根元素自定义类名（内置 `gap-4`，可覆盖）
 | `classNames` | `{ column?; item? }` —— 值均为 `ClassNameValue`    | -                              | 各零件的自定义类名                                                                |
 | `styles`     | `{ column?; item? }` —— 值均为 `React.CSSProperties` | -                           | 各零件的内联样式                                                                  |
 

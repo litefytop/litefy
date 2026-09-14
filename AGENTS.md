@@ -123,7 +123,7 @@ Full form composition: fields, submit handling, validation collection, imperativ
 Line, or a line–text–line divider when `children` is passed (the auth "or" divider). Horizontal carries a default `my-3` (override via `className`); vertical lines self-stretch in flex rows and rely on `gap`. Parts: `SeparatorLine` / `SeparatorText`.
 ### Capsule — pill-shaped `overflow-hidden` container that visually joins arbitrary children (tags, segments, links) into one capsule.
 ### Masonry
-Equal-width masonry columns balanced by measured height: `items`, `renderItem`, `getKey`, `columns` (number or responsive config), `gap`.
+Equal-width masonry columns balanced by measured height: `items`, `renderItem`, `getKey`, `columns` (number or responsive config). Ships with `gap-4`; change spacing via `className`.
 ### Skeleton — pulsing placeholder block for loading states.
 ### Typography — typographic hierarchy via `variant` (heading / headline / description / inline code).
 
@@ -152,6 +152,9 @@ Menu usable in normal document flow: `items` (groups, two-level submenus), keybo
 
 ### DropdownMenu
 Trigger + Popover + Menu composite: `trigger`, `items` (same shape as Menu), `onSelect`, `alignX` (default `"center"`), `classNames` (content / item / label / sub). Trigger is styled as a primary Button by default.
+
+### Pagination
+Controlled page navigator: first / prev / numbered pages with ellipsis / next / last. Pure view — `page` + `totalPages` + `onPageChange` are required, state belongs to `usePagination` (`base: 1`). `siblingCount` (default `1`) controls neighbors before ellipsis collapse; `disabled` freezes all buttons while loading. Parts: `PaginationRoot` / `PaginationFirst` / `PaginationPrev` / `PaginationPages` / `PaginationNext` / `PaginationLast` / `PaginationEllipsis`.
 
 ### Sidebar
 Collapsible sidebar controlled via ref (`SidebarHandle` — e.g. `ref.current.collapse()`).
@@ -203,10 +206,20 @@ Square slot with a corner marker: put an icon as children, `label` renders a Tag
   columns={[{ key: "name", header: "Name", sortable: true }, ...]}
   data={rows}
   sort={{ key, direction }} onSortChange={fn}   // or omit for remote mode
-  empty="No rows" getKey={fn}
+  empty="No rows" getKey={fn} classNames={{ body: "h-48" }}   // body scroller ships a built-in h-96
 />
 ```
-Column: `{ key, header, render?, sortable?, compare?, align? }`. Clickable sortable headers for local data; remote mode delegates sorting to your backend (`onSortChange`).
+Column: `{ key, header, render?, sortable?, compare?, align? }`. Clickable sortable headers for local data; remote mode delegates sorting to your backend (`onSortChange`). Header and body are two separate tables (`table-fixed` equal columns, the header strip never scrolls): the body scroller ships a built-in fixed height `h-96` so paging never collapses it (override via `classNames.body`), per-column widths go in `column.className` (applies to th and td). Parts: `TableRoot` / `TableHead` / `TableBody` / `TableBase` for custom assembly (keep the `<colgroup>` identical in both tables).
+
+### SelectableTable
+Table with a built-in checkbox column (header select-all with indeterminate state; it only affects the current page and preserves cross-page selections):
+```tsx
+<SelectableTable
+  data={rows} rowKey={(r) => r.id}
+  selected={ids} onSelectionChange={setIds}    // string[] of row keys, or defaultSelected
+/>
+```
+`rowKey` is required and doubles as the selection unit; `sort` and the other Table props are inherited. Selection lives under the internal column key `__selection`. Pagination is external: compose with [Pagination](#pagination) + `usePagination` under your own footer layout.
 
 ### Timeline
 Vertical, display-only: `items` with `time` / `title` / `description` / `marker` / `connector`. Parts: `TimelineRoot` / `TimelineItem`.

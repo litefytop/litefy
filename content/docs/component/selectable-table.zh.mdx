@@ -1,0 +1,48 @@
+---
+title: Selectable Table 可选表格
+description: 内置复选框列的数据表格，支持全选半选状态。分页通过 Pagination 与 usePagination 在外部组合。
+---
+
+## 安装
+
+<Installation name="selectable-table" />
+
+## 用法
+
+`SelectableTable` 在 [Table](/zh/docs/component/table) 的基础上自动前置一列复选框。选中值就是行 key 数组——传 `selected` + `onSelectionChange` 进入受控模式，或只传 `defaultSelected` 非受控使用。`rowKey` 必填：它既是行标识，也是选中值。
+
+全选只作用于**当前页**，并且**保留其他页的已选项**——跨页累加选择由调用方管理（例如在每次查询后继续收集 key）。
+
+<ComponentPreview name="selectable-table-basic" />
+
+### 与 Pagination 组合分页
+
+表格只渲染 `data` 里的内容；分页在外部组合。让 [usePagination](/zh/docs/utils/use-pagination) 持有页状态，把它的 `index` 和 `goTo` 交给 [Pagination](/zh/docs/component/pagination)，当前页数据由你自己取好放进 `data`，表格、状态文字与分页器的页脚布局也由你拼接。下方预览就是完整效果，查看代码即可拿到接线方式。
+
+<ComponentPreview name="selectable-table-pagination" />
+
+### 大数据量
+
+行数多到无法一次性渲染时，把 [TableBody](#零件) 滚动容器与 [useVirtualScroll](/zh/docs/utils/use-virtual-scroll) 组合：钩子的容器属性挂到滚动容器上，可见窗口输出决定渲染哪些行。
+
+选择列占用内部列 key `__selection`——请避免数据里出现同名字段。
+
+## API 参考
+
+### SelectableTable&lt;T&gt;
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `data` | `T[]` | - | 行数据（当前页） **必填** |
+| `columns` | `TableColumn<T>[]` | - | 列配置，复选框列自动前置 **必填** |
+| `rowKey` | `(row: T) => string` | - | 行 key 提取器，同时是选中值的单位 **必填** |
+| `selected` | `string[]` | - | 受控选中集合（行 key 数组） |
+| `defaultSelected` | `string[]` | `[]` | 非受控时的初始选中 |
+| `onSelectionChange` | `(selected: string[]) => void` | - | 行勾选 / 全选变化时触发 |
+| `loading` | `boolean` | `false` | 空数据默认文案变为 "Loading..." |
+| `empty` | `React.ReactNode` | `"No data"` | 数据为空时渲染的内容 |
+| `className` | `ClassNameValue` | - | 自定义类名，透传给内部 Table |
+| `classNames` | Table 各插槽 | - | 各部分自定义类名 |
+| `styles` | `{ wrapper?, table? }` | - | 透传给内部 Table |
+
+其余 [Table](/zh/docs/component/table) 属性（`sort` / `onSortChange`、`getKey` 等）均被继承；`getKey` 由 `rowKey` 派生。

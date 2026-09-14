@@ -46,10 +46,9 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/chart.tsx",
     "dependence": [
+      "chart-kit",
+      "chart-paint",
       "use-chart-palette"
-    ],
-    "dependencies": [
-      "uplot"
     ]
   },
   "chat-input": {
@@ -61,7 +60,10 @@
   },
   "checkbox": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/checkbox.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/checkbox.tsx",
+    "dependence": [
+      "form"
+    ]
   },
   "chip-group": {
     "type": "component",
@@ -102,6 +104,14 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/dialog.tsx"
   },
+  "donut": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/donut.tsx",
+    "dependence": [
+      "use-chart-palette",
+      "chart-kit"
+    ]
+  },
   "drawer": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/drawer.tsx"
@@ -110,8 +120,8 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/dropdown-menu.tsx",
     "dependence": [
-      "button",
       "menu",
+      "button",
       "popover"
     ]
   },
@@ -122,6 +132,10 @@
       "input-group"
     ]
   },
+  "error": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/error.tsx"
+  },
   "form-item": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/form-item.tsx",
@@ -131,6 +145,7 @@
       "select",
       "password",
       "number-input",
+      "error",
       "form"
     ]
   },
@@ -163,10 +178,7 @@
   },
   "list": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/list.tsx",
-    "dependence": [
-      "scroll-shadow"
-    ]
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/list.tsx"
   },
   "masonry": {
     "type": "component",
@@ -180,8 +192,8 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/multi-select.tsx",
     "dependence": [
-      "button",
       "checkbox",
+      "button",
       "popover"
     ]
   },
@@ -200,6 +212,13 @@
   "pager": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/pager.tsx"
+  },
+  "pagination": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/pagination.tsx",
+    "dependence": [
+      "button"
+    ]
   },
   "paper": {
     "type": "component",
@@ -243,14 +262,22 @@
       "input",
       "segment",
       "select"
-    ],
-    "dependencies": [
-      "react-querybuilder"
+    ]
+  },
+  "radar": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/radar.tsx",
+    "dependence": [
+      "use-chart-palette",
+      "chart-kit"
     ]
   },
   "radio": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/radio.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/radio.tsx",
+    "dependence": [
+      "form"
+    ]
   },
   "scroll-shadow": {
     "type": "component",
@@ -263,6 +290,14 @@
   "select": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/select.tsx"
+  },
+  "selectable-table": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/selectable-table.tsx",
+    "dependence": [
+      "checkbox",
+      "table"
+    ]
   },
   "separator": {
     "type": "component",
@@ -279,6 +314,13 @@
   "slider": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/slider.tsx"
+  },
+  "sparkline": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/sparkline.tsx",
+    "dependence": [
+      "chart-kit"
+    ]
   },
   "steps": {
     "type": "component",
@@ -345,6 +387,17 @@
     "dependence": [
       "pager",
       "steps"
+    ]
+  },
+  "chart-kit": {
+    "type": "util",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/chart-kit.ts"
+  },
+  "chart-paint": {
+    "type": "util",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/chart-paint.ts",
+    "dependence": [
+      "chart-kit"
     ]
   },
   "cn": {

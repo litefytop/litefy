@@ -39,8 +39,7 @@ A data-driven masonry layout. After each render it measures the rendered items a
 | `renderItem` | `(item: T, index: number) => React.ReactNode`     | -                              | Renders one cell                                                              |
 | `getKey`     | `(item: T, index: number) => React.Key`           | index                          | Stable key per item; also drives the internal measurement cache               |
 | `columns`    | `number \| { base?; sm?; md?; lg?; xl?; 2xl? }`   | `{ base: 1, sm: 2, lg: 3, xl: 4 }` | Fixed count, or counts resolved against the container width (Tailwind breakpoints: sm 640 / md 768 / lg 1024 / xl 1280 / 2xl 1536) |
-| `gap`        | `number`                                          | `16`                           | Vertical and horizontal gap in px                                             |
-| `className`  | `ClassNameValue`                                  | -                              | Custom classes for the root                                                   |
+| `className`  | `ClassNameValue`                                  | built-in `gap-4` (override via className) | Custom classes for the root — built-in `gap-4`, override to change spacing |
 | `classNames` | `{ column?; item? }` — each `ClassNameValue`      | -                              | Custom classes per part                                                        |
 | `styles`     | `{ column?; item? }` — each `React.CSSProperties` | -                              | Inline styles per part                                                         |
 
