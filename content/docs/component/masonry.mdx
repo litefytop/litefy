@@ -25,13 +25,17 @@ Pass a fixed `columns` count and pair the layout with [`useLoadMore`](/docs/util
   name="masonry-custom"
 />
 
+### Nesting
+
+A `Masonry` rendered inside another `Masonry` (anywhere in the React tree) automatically degrades to a static CSS multi-columns layout: no measurement and no `ResizeObserver`, so the two levels cannot feed each other resize loops. The nested layout trades height balancing away — columns fill in source order (DOM order is preserved), `columns` breakpoints resolve via container queries, and counts are capped at 6. A dev-only `console.warn` announces the degradation. The composed parts (`Masonry.Column` / `Masonry.Item`) do no measuring and are unaffected.
+
 ## API Reference
 
 ### High-level Components
 
 #### Masonry
 
-A data-driven masonry layout. After each render it measures the rendered items and rebalances the distribution; the measurement converges (heights do not depend on the assignment because all columns share the same width). Async content that grows after mount (images, lazy demos) is not re-measured automatically — give such items a min-height close to their final size.
+A data-driven masonry layout. After each render it measures the rendered items and rebalances the distribution; the measurement converges (heights do not depend on the assignment because all columns share the same width). Async content that grows after mount (images, lazy demos) is not re-measured automatically — give such items a min-height close to their final size. Nested inside another Masonry it renders statically instead (see [Nesting](#nesting)).
 
 | Prop         | Type                                              | Default                        | Description                                                                   |
 | :----------- | :------------------------------------------------ | :----------------------------- | :---------------------------------------------------------------------------- |

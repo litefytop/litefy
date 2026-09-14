@@ -168,7 +168,7 @@ export function List<T>(props: ListProps<T>) {
               data-highlighted={controller.highlightIndex === index}
               onClick={() => onSelect?.(item, index)}
               className={cn(
-                "px-3 py-2 text-sm cursor-pointer transition-colors hover:bg-hover data-[highlighted=true]:bg-accent",
+                "px-3 py-2 text-sm cursor-pointer transition-colors hover:bg-hover data-[highlighted=true]:bg-primary",
                 classNames.item,
               )}
               style={styles.item}

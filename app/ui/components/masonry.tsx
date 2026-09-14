@@ -44,8 +44,81 @@ function sameAssignment(a: number[][], b: number[][]) {
   return a.length === b.length && a.every((col, i) => col.join(",") === b[i].join(","));
 }
 
-export interface MasonryColumnProps
-  extends Omit<React.ComponentProps<"div">, "className"> {
+// Nested masonry renders as static CSS columns, so every breakpoint/count pair
+// must appear as a literal class for Tailwind to generate it.
+const STATIC_COLUMN_CLASSES: Record<"base" | MasonryBreakpoint, string[]> = {
+  base: ["columns-1", "columns-2", "columns-3", "columns-4", "columns-5", "columns-6"],
+  sm: [
+    "@min-[640px]:columns-1",
+    "@min-[640px]:columns-2",
+    "@min-[640px]:columns-3",
+    "@min-[640px]:columns-4",
+    "@min-[640px]:columns-5",
+    "@min-[640px]:columns-6",
+  ],
+  md: [
+    "@min-[768px]:columns-1",
+    "@min-[768px]:columns-2",
+    "@min-[768px]:columns-3",
+    "@min-[768px]:columns-4",
+    "@min-[768px]:columns-5",
+    "@min-[768px]:columns-6",
+  ],
+  lg: [
+    "@min-[1024px]:columns-1",
+    "@min-[1024px]:columns-2",
+    "@min-[1024px]:columns-3",
+    "@min-[1024px]:columns-4",
+    "@min-[1024px]:columns-5",
+    "@min-[1024px]:columns-6",
+  ],
+  xl: [
+    "@min-[1280px]:columns-1",
+    "@min-[1280px]:columns-2",
+    "@min-[1280px]:columns-3",
+    "@min-[1280px]:columns-4",
+    "@min-[1280px]:columns-5",
+    "@min-[1280px]:columns-6",
+  ],
+  "2xl": [
+    "@min-[1536px]:columns-1",
+    "@min-[1536px]:columns-2",
+    "@min-[1536px]:columns-3",
+    "@min-[1536px]:columns-4",
+    "@min-[1536px]:columns-5",
+    "@min-[1536px]:columns-6",
+  ],
+};
+
+const MAX_STATIC_COLUMNS = STATIC_COLUMN_CLASSES.base.length;
+
+function staticColumnClass(slot: string[], count: number): string {
+  const index = Math.min(MAX_STATIC_COLUMNS, Math.max(1, Math.floor(count))) - 1;
+  return slot[index];
+}
+
+function resolveStaticColumnClasses(columns: MasonryColumns): string {
+  if (typeof columns === "number") {
+    return staticColumnClass(STATIC_COLUMN_CLASSES.base, columns);
+  }
+  const classes = [staticColumnClass(STATIC_COLUMN_CLASSES.base, columns.base ?? 1)];
+  for (const [bp] of BREAKPOINTS) {
+    const at = columns[bp];
+    if (at !== undefined) classes.push(staticColumnClass(STATIC_COLUMN_CLASSES[bp], at));
+  }
+  return classes.join(" ");
+}
+
+/**
+ * Tracks how many Masonry ancestors an item-driven Masonry has in the React
+ * tree. Nested instances render statically (StaticMasonry) so two measuring
+ * layouts cannot feed each other resize loops.
+ */
+const MasonryDepthContext = React.createContext(0);
+
+let warnedNested = false;
+
+export interface MasonryColumnProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
 }
 
@@ -53,8 +126,7 @@ export function MasonryColumn({ className, ...props }: MasonryColumnProps) {
   return <div {...props} className={cn("flex min-w-0 flex-col", className)} />;
 }
 
-export interface MasonryItemProps
-  extends Omit<React.ComponentProps<"div">, "className"> {
+export interface MasonryItemProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
 }
 
@@ -78,7 +150,55 @@ export interface MasonryProps<T> {
   };
 }
 
-export function Masonry<T>({
+/**
+ * Item-driven masonry. The outermost instance measures and balances columns;
+ * an instance nested inside another Masonry degrades to a static CSS columns
+ * layout — no measurement, no ResizeObserver, no feedback loop.
+ */
+export function Masonry<T>(props: MasonryProps<T>) {
+  const depth = React.useContext(MasonryDepthContext);
+  if (depth > 0) {
+    if (process.env.NODE_ENV !== "production" && !warnedNested) {
+      warnedNested = true;
+      console.warn(
+        "[masonry] Nested Masonry detected — rendering a static CSS columns layout (no height balancing). Only the outermost Masonry measures.",
+      );
+    }
+    return <StaticMasonry {...props} />;
+  }
+  return <MeasuredMasonry {...props} />;
+}
+
+function StaticMasonry<T>({
+  items,
+  renderItem,
+  getKey,
+  columns = { base: 1, sm: 2, lg: 3, xl: 4 },
+  className,
+  classNames,
+  styles,
+}: MasonryProps<T>) {
+  return (
+    <div className={cn("@container w-full", className)}>
+      <div
+        className={cn("gap-4", resolveStaticColumnClasses(columns), classNames?.column)}
+        style={styles?.column}
+      >
+        {items.map((item, index) => (
+          <div
+            key={String(getKey?.(item, index) ?? index)}
+            className={cn("mb-4 break-inside-avoid", classNames?.item)}
+            style={styles?.item}
+          >
+            {renderItem(item, index)}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MeasuredMasonry<T>({
   items,
   renderItem,
   getKey,
@@ -88,9 +208,8 @@ export function Masonry<T>({
   styles,
 }: MasonryProps<T>) {
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const [columnCount, setColumnCount] = React.useState(() =>
-    resolveColumnCount(columns, 0),
-  );
+  const depth = React.useContext(MasonryDepthContext);
+  const [columnCount, setColumnCount] = React.useState(() => resolveColumnCount(columns, 0));
   const [assignment, setAssignment] = React.useState<number[][]>(() =>
     distribute(items.length, columnCount, []),
   );
@@ -130,35 +249,35 @@ export function Masonry<T>({
   }, []);
 
   const cols =
-    assignment.length === columnCount
-      ? assignment
-      : distribute(items.length, columnCount, []);
+    assignment.length === columnCount ? assignment : distribute(items.length, columnCount, []);
 
   return (
-    <div ref={containerRef} className={cn("flex w-full gap-4", className)}>
-      {cols.map((columnItems, columnIndex) => (
-        <MasonryColumn
-          key={columnIndex}
-          className={cn("flex-1 gap-4", classNames?.column)}
-          style={styles?.column}
-        >
-          {columnItems.map((itemIndex) => {
-            const key = keys[itemIndex];
-            return (
-              <MasonryItem
-                key={key}
-                data-masonry-key={key}
-                data-masonry-index={itemIndex}
-                className={classNames?.item}
-                style={styles?.item}
-              >
-                {renderItem(items[itemIndex], itemIndex)}
-              </MasonryItem>
-            );
-          })}
-        </MasonryColumn>
-      ))}
-    </div>
+    <MasonryDepthContext.Provider value={depth + 1}>
+      <div ref={containerRef} className={cn("flex w-full gap-4", className)}>
+        {cols.map((columnItems, columnIndex) => (
+          <MasonryColumn
+            key={columnIndex}
+            className={cn("flex-1 gap-4", classNames?.column)}
+            style={styles?.column}
+          >
+            {columnItems.map((itemIndex) => {
+              const key = keys[itemIndex];
+              return (
+                <MasonryItem
+                  key={key}
+                  data-masonry-key={key}
+                  data-masonry-index={itemIndex}
+                  className={classNames?.item}
+                  style={styles?.item}
+                >
+                  {renderItem(items[itemIndex], itemIndex)}
+                </MasonryItem>
+              );
+            })}
+          </MasonryColumn>
+        ))}
+      </div>
+    </MasonryDepthContext.Provider>
   );
 }
 

@@ -171,7 +171,7 @@ export function Select({
       onClick={disabled ? undefined : () => commit(option)}
       className={cn(
         "cursor-pointer px-3 py-2 text-sm transition-colors select-none hover:bg-hover",
-        "data-[highlighted=true]:bg-accent",
+        "data-[highlighted=true]:bg-primary",
         option.value === value && "font-medium",
         disabled && "pointer-events-none opacity-50",
         classNames?.option,

@@ -59,6 +59,7 @@ const wallItems: WallItem[] = Object.entries(demoModules)
   });
 
 const lazyCache = new Map<string, React.LazyExoticComponent<React.ComponentType>>();
+const nearCache = new Set<string>();
 
 function getLazyDemo(path: string) {
   let component = lazyCache.get(path);
@@ -69,9 +70,9 @@ function getLazyDemo(path: string) {
   return component;
 }
 
-function useNearViewport<T extends HTMLElement>(rootMargin: string) {
+function useNearViewport<T extends HTMLElement>(rootMargin: string, initial = false) {
   const ref = useRef<T>(null);
-  const [near, setNear] = useState(false);
+  const [near, setNear] = useState(initial);
 
   useEffect(() => {
     const element = ref.current;
@@ -135,7 +136,12 @@ function WallCard({
   item: WallItem;
   locale: "en" | "zh";
 }) {
-  const { ref, near } = useNearViewport<HTMLDivElement>("200px");
+  const { ref, near } = useNearViewport<HTMLDivElement>("200px", nearCache.has(item.path));
+
+  useEffect(() => {
+    if (near) nearCache.add(item.path);
+  }, [near, item.path]);
+
   const Demo = near ? getLazyDemo(item.path) : null;
 
   return (

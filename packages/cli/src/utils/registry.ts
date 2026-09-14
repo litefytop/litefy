@@ -1,11 +1,19 @@
+import axios from "axios";
 import fs from "fs-extra";
 import path from "node:path";
 import type { Registry, RegistryEntry } from "../commands/add";
 
+const REGISTRY_CDN_URL =
+  "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/packages/cli/registry.json";
+
 export async function loadRegistry(): Promise<Registry> {
   const regPath = path.resolve(__dirname, "../../registry.json");
-  const raw = (await fs.readJson(regPath)) as Registry;
-  return raw;
+  try {
+    const res = await axios.get<Registry>(REGISTRY_CDN_URL, { timeout: 10000 });
+    return res.data;
+  } catch {
+    return (await fs.readJson(regPath)) as Registry;
+  }
 }
 
 export function getFileNameFromUrl(url: string): string {

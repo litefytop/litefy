@@ -60,7 +60,7 @@ export default function Demo() {
         multiple={false}
         activeKeys={value}
         onKeyChange={setValue}
-        className="w-md rounded-md border border-border"
+        className="max-w-md min-w-xs rounded-md border border-border"
         items={items}
         common={{
           icon: (open) => (
