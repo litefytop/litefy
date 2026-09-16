@@ -19,6 +19,14 @@ Create the hook with a base of one and the total page count, pass its current in
 
 The page list shows the first page, the last page, the current page with `siblingCount` neighbors, and collapses everything in between into ellipsis markers. Clicking a page number or any arrow calls `onPageChange`; the component never advances the page itself.
 
+### Summary text
+
+Pass `summary` to render a page-count text on the left with the controls pushed to the right — the text wraps automatically and never squeezes the controls. The content is plain text you compose, so it localizes freely:
+
+```tsx
+<Pagination page={page} totalPages={total} onPageChange={goTo} summary={`Page ${page} of ${total}`} />
+```
+
 ### With SelectableTable
 
 `Pagination` is table-agnostic. The recommended composition for a paged [SelectableTable](/docs/component/selectable-table) is covered in its [Pagination guide](/docs/component/selectable-table#composition-with-pagination): the hook drives the fetch, the table stays presentation-only, and both sit side by side under your own layout.
@@ -34,8 +42,10 @@ The page list shows the first page, the last page, the current page with `siblin
 | `onPageChange` | `(page: number) => void` | - | Fired by every button click |
 | `siblingCount` | `number` | `1` | Page numbers shown on each side of the current page before collapsing into ellipsis |
 | `disabled` | `boolean` | `false` | Disables every button (e.g. while a page is loading) |
+| `summary` | `React.ReactNode` | - | Page-count text rendered left of the controls; wraps automatically |
 | `className` | `ClassNameValue` | - | Custom classes, applied to the root `nav` |
-| `classNames` | `{ pages? }` | - | Custom classes for the numbered-pages group |
+| `classNames` | `{ pages?, summary? }` | - | Custom classes for the numbered-pages group and the summary text |
+| `styles` | `{ summary? }` | - | Custom styles for the summary text |
 
 ### Parts
 
@@ -48,5 +58,6 @@ The page list shows the first page, the last page, the current page with `siblin
 | `PaginationNext` | `Button` | text variant, `px-0` | Next page (`ChevronRight`) |
 | `PaginationLast` | `Button` | text variant, `px-0` | Jump to the last page (`ChevronsRight`) |
 | `PaginationEllipsis` | `<span>` | `size-8 text-muted-foreground` | Collapsed pages marker (`MoreHorizontal`) |
+| `PaginationSummary` | `<span>` | `min-w-0 text-sm text-muted-foreground` | Summary text slot, wraps automatically |
 
 The current page renders as an `outline` Button with `aria-current="page"`; all other page numbers render as `text` Buttons.

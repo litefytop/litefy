@@ -1,4 +1,4 @@
-import { Error, Select } from "@/ui";
+import { Callout, Select } from "@/ui";
 
 const options = [
   { label: "United States", value: "us" },
@@ -11,7 +11,7 @@ export default function SelectInvalidDemo() {
   return (
     <div className="flex w-full max-w-sm flex-col gap-2">
       <Select options={options} placeholder="Select your country..." />
-      <Error>Please select your country.</Error>
+      <Callout role="alert" variant="danger">Please select your country.</Callout>
       <Select options={options} placeholder="Valid selection" defaultValue="us" />
     </div>
   );

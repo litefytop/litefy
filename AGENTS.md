@@ -11,7 +11,7 @@ import { Button, Input, Select } from "@/ui";   // the barrel — everything is 
 - `className` accepts a string or array and merges via `tailwind-merge` (`ClassNameValue`).
 - Most components expose per-part overrides: `classNames={{ slot: "..." }}` and `styles={{ slot: {} }}`.
 - Use **semantic tokens only** (never raw palette colors): `bg-background` `text-foreground` `text-muted-foreground` `bg-primary` `text-primary-foreground` `bg-primary-accent` `bg-muted` `bg-hover` `border` `text-danger` `text-success` `text-warning` `text-info` `ring` `outline` `text-neutral`.
-- Form controls follow the same conventions: `value` / `defaultValue` + `onValueChange` (or `checked` / `defaultChecked` + `onCheckedChange`) and `disabled`. `invalid` (danger border) exists only on text inputs (Input, Password, Textarea, NumberInput, NumberField, InputOtp, DatePicker) — non-text interactive components (Select, Radio, Checkbox, Segment, Upload…) take no `invalid`; render validation feedback below the control with the `Error` component.
+- Form controls follow the same conventions: `value` / `defaultValue` + `onValueChange` (or `checked` / `defaultChecked` + `onCheckedChange`) and `disabled`. `invalid` (danger border) exists only on text inputs (Input, Password, Textarea, NumberInput, NumberField, InputOtp, DatePicker) — non-text interactive components (Select, Radio, Checkbox, Segment, Upload…) take no `invalid`; render validation feedback below the control with a Callout (`variant="danger"`, `role="alert"`).
 - Icons come from `lucide-react`, typically `className="size-4"`.
 - Full prop tables and behavior details live in `content/docs/component/<name>.mdx` (and `.zh.mdx`) — consult them when a prop you need isn't listed below.
 
@@ -103,7 +103,7 @@ Self-managing form field: renders a finished control per `variant` (`"input" | "
   controlProps={{ placeholder: "you@example.com" }}
 />
 ```
-- Layout: label → control → one hint line. Description shows by default and is **replaced by an Error container** while invalid; no space is reserved when empty.
+- Layout: label → control → one hint line. Description shows by default and is **replaced by a danger Callout (`role="alert"`)** while invalid; no space is reserved when empty.
 - `validate` returns `string` (hard error) | `{ message, invalid: false }` (message only) | `false` (bare invalid) | `null/undefined/true` (pass). Re-validates on change once invalid; `validateTrigger="onChange" | "onBlur"` (default onBlur).
 - Registers with the surrounding `Form`; `controlProps` forwards to the underlying control (custom `onChange`/`onBlur` are wrapped, not replaced). The select variant carries its value in a hidden input for native submission.
 
@@ -154,7 +154,10 @@ Menu usable in normal document flow: `items` (groups, two-level submenus), keybo
 Trigger + Popover + Menu composite: `trigger`, `items` (same shape as Menu), `onSelect`, `alignX` (default `"center"`), `classNames` (content / item / label / sub). Trigger is styled as a primary Button by default.
 
 ### Pagination
-Controlled page navigator: first / prev / numbered pages with ellipsis / next / last. Pure view — `page` + `totalPages` + `onPageChange` are required, state belongs to `usePagination` (`base: 1`). `siblingCount` (default `1`) controls neighbors before ellipsis collapse; `disabled` freezes all buttons while loading. Parts: `PaginationRoot` / `PaginationFirst` / `PaginationPrev` / `PaginationPages` / `PaginationNext` / `PaginationLast` / `PaginationEllipsis`.
+Controlled page navigator: first / prev / numbered pages with ellipsis / next / last. Pure view — `page` + `totalPages` + `onPageChange` are required, state belongs to `usePagination` (`base: 1`). `siblingCount` (default `1`) controls neighbors before ellipsis collapse; `disabled` freezes all buttons while loading. Optional `summary` renders a page-count text on the left with the controls pushed right (`ms-auto`); it wraps automatically and never squeezes the controls. Parts: `PaginationRoot` / `PaginationFirst` / `PaginationPrev` / `PaginationPages` / `PaginationNext` / `PaginationLast` / `PaginationEllipsis` / `PaginationSummary`.
+
+### Navigator
+Standalone filter-navigation bar, decoupled from Table: a wrapping flex container (auto line-wrap, vertically centered siblings) with an optional `title`. No pagination inside — compose with Table externally, never nest it inside Table. Filter state comes from `useNavigator` (`fields` defaults → `values` / `setValue` / `setValues` / `reset` / `activeKeys` / `activeCount`); use the component for the standard layout or the hook alone with custom DOM.
 
 ### Sidebar
 Collapsible sidebar controlled via ref (`SidebarHandle` — e.g. `ref.current.collapse()`).
@@ -198,9 +201,14 @@ Toasts never carry action buttons — use Dialog when interaction is needed. `cl
 `<Avatar src="..." fallback="FL" />` — image with skeleton + fallback states. Parts: `AvatarRoot` / `AvatarImage`.
 
 ### Badge
-Square slot with a corner marker: put an icon as children, `label` renders a Tag pinned to the top-right.
+Square slot with a corner marker: put an icon as children, `label` renders a standalone overlay span pinned to the top-right (not a Chip — attached markers and inline status labels are separate components). Zero dependencies.
 
-### Tag — plain single-color chip, zero interaction logic; color it with any `bg-*` utility.
+### Callout
+Block-level static feedback container: `variant` (`"info"` (default) | `"success" | "warning" | "danger"`) picks a soft semantic tinted background + matching text color. Static only — no interaction states. For inline state marks use Chip; short inline actions use a `text` Button.
+
+### Chip
+Inline status label, zero interaction logic: `variant` (`"primary"` (default) | `"outline" | "success" | "warning" | "danger" | "info"`) carries all system status color semantics — prefer it over hand-picking `bg-*` colors. To make a chip interactive, nest an `a` / `button` as its child (Chip owns visuals, child owns semantics) — no static class-string reuse.
+
 ### Kbd — keyboard key visual with pressable hover/active states.
 
 ### Table
@@ -286,9 +294,6 @@ Same state machine as a vertical steps accordion — only the current step expan
 ### Upload
 Dropzone upload with local validation: `accept`, `multiple`, `maxSize`, `maxCount`, `onFilesAccepted` / `onFilesRejected` / `onFileRemove`, `dropzone`. Parts: `UploadDropzone` / `UploadItem` / `UploadActions` / `UploadHiddenInput`. Monitoring actual network progress is decoupled — use the `use-upload-monitor` hook.
 
-### Error
-Danger-tinted message container for validation feedback below a control: `text-danger` on `bg-danger/15`, renders `role="alert"`. Pair it with non-text interactive components (Select, Radio, Checkbox, Segment, Upload…) — text inputs keep their own `invalid` border instead. `Form` / `FormItem` use it internally for their error lines.
-
 ### Chart
 Self-built canvas time-series chart on the `chart-kit` math layer (nice ticks, LTTB downsampling, `scaleLinear` / `linePath` / `areaPath`) + the `chart-paint` canvas helpers (grid / bars / line / crosshair painting) — automatic canvas theming, responsive width, interactive legend, hover tooltip, drag box-zoom with double-click reset. Series support `type: "line" | "area" | "bar"`. Pair with the `use-chart-palette` hook.
 
@@ -310,5 +315,6 @@ Chat composer: `value` / `defaultValue` + `onValueChange`, `onSend`, `enterToSen
 | `PickerRoot` / `PickerInput` / `PickerContent` | Its parts |
 | `PopoverContent` / `usePopoverTrigger` | Low-level popover building blocks |
 | `use-pagination` | Pagination state hook |
+| `use-navigator` | Filter-state hook: `fields` defaults → `values` / `setValue` / `setValues` / `reset` / `activeCount` |
 | `use-virtual-scroll`, `use-load-more`, `use-drag`, `use-combobox`, `use-panel-focus`, `use-upload-monitor`, `use-chart-palette`, `use-remote-pagination`, `use-remote-sort`, `use-theme` | Headless hooks in `@/ui/utils` |
 | `cn` | `tailwind-merge` itself; `ClassNameValue` is its accepted type |

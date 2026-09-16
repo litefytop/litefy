@@ -82,6 +82,17 @@ export function PaginationEllipsis({ className, ...props }: PaginationEllipsisPr
   );
 }
 
+export interface PaginationSummaryProps
+  extends Omit<React.ComponentProps<"span">, "className"> {
+  className?: ClassNameValue;
+}
+
+export function PaginationSummary({ className, ...props }: PaginationSummaryProps) {
+  return (
+    <span {...props} className={cn("min-w-0 text-sm text-muted-foreground", className)} />
+  );
+}
+
 export interface PaginationPagesProps {
   page: number;
   totalPages: number;
@@ -151,9 +162,14 @@ export interface PaginationProps {
   onPageChange?: (page: number) => void;
   siblingCount?: number;
   disabled?: boolean;
+  summary?: React.ReactNode;
   className?: ClassNameValue;
   classNames?: {
     pages?: ClassNameValue;
+    summary?: ClassNameValue;
+  };
+  styles?: {
+    summary?: React.CSSProperties;
   };
 }
 
@@ -163,25 +179,34 @@ export function Pagination({
   onPageChange,
   siblingCount = 1,
   disabled,
+  summary,
   className,
   classNames,
+  styles,
 }: PaginationProps) {
   const atStart = page <= 1;
   const atEnd = page >= totalPages;
   return (
-    <PaginationRoot className={className}>
-      <PaginationFirst disabled={disabled || atStart} onClick={() => onPageChange?.(1)} />
-      <PaginationPrev disabled={disabled || atStart} onClick={() => onPageChange?.(page - 1)} />
-      <PaginationPages
-        page={page}
-        totalPages={totalPages}
-        siblingCount={siblingCount}
-        onPageChange={onPageChange}
-        disabled={disabled}
-        className={classNames?.pages}
-      />
-      <PaginationNext disabled={disabled || atEnd} onClick={() => onPageChange?.(page + 1)} />
-      <PaginationLast disabled={disabled || atEnd} onClick={() => onPageChange?.(totalPages)} />
+    <PaginationRoot className={cn(summary != null && "flex-wrap gap-x-3 gap-y-2", className)}>
+      {summary != null && (
+        <PaginationSummary className={classNames?.summary} style={styles?.summary}>
+          {summary}
+        </PaginationSummary>
+      )}
+      <div className={cn("flex items-center gap-1", summary != null && "ms-auto")}>
+        <PaginationFirst disabled={disabled || atStart} onClick={() => onPageChange?.(1)} />
+        <PaginationPrev disabled={disabled || atStart} onClick={() => onPageChange?.(page - 1)} />
+        <PaginationPages
+          page={page}
+          totalPages={totalPages}
+          siblingCount={siblingCount}
+          onPageChange={onPageChange}
+          disabled={disabled}
+          className={classNames?.pages}
+        />
+        <PaginationNext disabled={disabled || atEnd} onClick={() => onPageChange?.(page + 1)} />
+        <PaginationLast disabled={disabled || atEnd} onClick={() => onPageChange?.(totalPages)} />
+      </div>
     </PaginationRoot>
   );
 }

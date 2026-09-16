@@ -9,14 +9,12 @@ export default function Demo() {
   const pagination = usePagination({ base: 1, total: TOTAL_PAGES });
 
   return (
-    <div className="flex w-full max-w-xl flex-col items-center gap-3">
-      <p className="text-sm text-muted-foreground">
-        Page {pagination.index} of {TOTAL_PAGES}
-      </p>
+    <div className="w-full max-w-xl">
       <Pagination
         page={pagination.index}
         totalPages={TOTAL_PAGES}
         onPageChange={pagination.goTo}
+        summary={`Page ${pagination.index} of ${TOTAL_PAGES}`}
       />
     </div>
   );

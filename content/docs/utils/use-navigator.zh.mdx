@@ -1,0 +1,40 @@
+---
+title: use-navigator
+description: 无头筛选状态 Hook——声明默认字段，返回值、更新方法、重置与激活计数
+---
+
+## 安装
+
+<Installation name="use-navigator" />
+
+## 用法
+
+### 基础用法
+
+声明默认筛选字段，把返回的状态接到任意控件上——[Navigator](/docs/component/navigator) 组件，或你自己的 DOM 结构。
+
+<ComponentPreview
+  name="use-navigator-basic"
+/>
+
+## API 参考
+
+### useNavigator
+
+无头筛选状态 Hook；搭配 [Navigator](/docs/component/navigator) 组件或完全自定义的工具栏使用。
+
+#### 参数
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `fields` | `Record<string, unknown>` | - | 初始筛选字段，每个 key 对应默认值。**必填** |
+| `onValuesChange` | `(values: T) => void` | - | 值变化时触发，携带最新值 |
+
+#### 返回值
+
+- `values`：当前筛选值
+- `setValue(key, value)`：更新单个字段
+- `setValues(patch)`：批量合并多个字段
+- `reset()`：恢复所有字段为默认值
+- `activeKeys`：与默认值不同的字段 key 列表
+- `activeCount`：激活（偏离默认）的筛选数量——可用于禁用重置按钮或显示激活徽标

@@ -91,4 +91,11 @@ export default {
       zh: "分页",
     },
   },
+  "use-navigator": {
+    name: "Navigator",
+    displayName: {
+      en: "use-navigator",
+      zh: "筛选状态",
+    },
+  },
 } as const;

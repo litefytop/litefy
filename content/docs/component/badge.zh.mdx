@@ -1,6 +1,6 @@
 ---
 title: Badge 徽标
-description: 带角标的方形承载位——内部放图标，右上角通过 Tag 渲染标记。
+description: 带角标的方形承载位——内部放图标，右上角通过标记层渲染标记。
 ---
 
 ## 安装
@@ -11,7 +11,7 @@ description: 带角标的方形承载位——内部放图标，右上角通过 
 
 ### 基础用法
 
-`Badge` 是一个固定尺寸的承载面（默认 `size-12` 的 muted 方块），角标通过 [Tag](/docs/component/tag) 组件渲染——传 `label` 即可在右上角挂上数字或文本标记。
+`Badge` 是一个固定尺寸的承载面（默认 `size-12` 的 muted 方块），角标是独立的叠加标记 span——传 `label` 即可在右上角挂上数字或文本标记。
 
 <ComponentPreview
   name="badge-basic"
@@ -27,7 +27,7 @@ description: 带角标的方形承载位——内部放图标，右上角通过 
 
 ### 角标配色
 
-`label` 渲染为 Tag，用 `label` 插槽以同样的方式着色：
+`label` 渲染为标记层，用 `label` 插槽以同样的方式着色：
 
 <ComponentPreview
   name="badge-marker-color"
@@ -35,7 +35,7 @@ description: 带角标的方形承载位——内部放图标，右上角通过 
 
 ## 注意
 
-- 角标内部使用 [Tag](/docs/component/tag) 组件——CLI 安装时请一并添加：`litefy add badge tag`。
+- 角标是独立的叠加标记 span，而非 [Chip](/docs/component/chip)——附属标记与行内状态标签刻意分离。`Badge` 无任何依赖。
 
 ## API 参考
 
@@ -44,7 +44,7 @@ description: 带角标的方形承载位——内部放图标，右上角通过 
 | 属性       | 类型                              | 默认值 | 描述                                       |
 | :--------- | :-------------------------------- | :----- | :----------------------------------------- |
 | `children` | `React.ReactNode`                 | -      | 承载面内容，通常放图标                     |
-| `label`    | `React.ReactNode`                 | -      | 角标内容，以 Tag 渲染在右上角              |
+| `label`    | `React.ReactNode`                 | -      | 角标内容，以叠加标记渲染在右上角            |
 | `classNames`| `{ label?: ClassNameValue }`     | -      | 按插槽自定义类名                           |
 | `styles`   | `{ label?: React.CSSProperties }` | -      | 按插槽自定义样式                           |
 | `className`| `ClassNameValue`                  | -      | 承载面的自定义类名                         |

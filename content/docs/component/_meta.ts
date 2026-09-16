@@ -34,6 +34,20 @@ export default {
       zh: "按钮",
     },
   },
+  callout: {
+    name: "Callout",
+    displayName: {
+      en: "Callout",
+      zh: "提示块",
+    },
+  },
+  chip: {
+    name: "Chip",
+    displayName: {
+      en: "Chip",
+      zh: "状态标签",
+    },
+  },
   capsule: {
     name: "Capsule",
     displayName: {
@@ -150,13 +164,6 @@ export default {
       zh: "下拉菜单",
     },
   },
-  error: {
-    name: "Error",
-    displayName: {
-      en: "Error",
-      zh: "错误提示",
-    },
-  },
   "context-menu": {
     name: "Context Menu",
     displayName: {
@@ -241,6 +248,13 @@ export default {
       zh: "多选框",
     },
   },
+  navigator: {
+    name: "Navigator",
+    displayName: {
+      en: "Navigator",
+      zh: "筛选导航",
+    },
+  },
   "number-field": {
     name: "Number Field",
     displayName: {
@@ -253,6 +267,13 @@ export default {
     displayName: {
       en: "Number Input",
       zh: "数字输入",
+    },
+  },
+  pagination: {
+    name: "Pagination",
+    displayName: {
+      en: "Pagination",
+      zh: "分页器",
     },
   },
   pager: {
@@ -414,13 +435,6 @@ export default {
     displayName: {
       en: "Tabs",
       zh: "标签页",
-    },
-  },
-  tag: {
-    name: "Tag",
-    displayName: {
-      en: "Tag",
-      zh: "标签",
     },
   },
   "text-area": {

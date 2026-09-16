@@ -6,7 +6,7 @@ import { Textarea, type TextareaProps } from "./text-area";
 import { Select, type SelectOption, type SelectOptionGroup, type SelectProps } from "./select";
 import { Password, type PasswordProps } from "./password";
 import { NumberInput, type NumberInputProps } from "./number-input";
-import { Error } from "./error";
+import { Callout } from "./callout";
 import { FormContext } from "./form";
 
 type ValidationResult =
@@ -278,13 +278,15 @@ export function FormItem(props: FormItemProps) {
       )}
       {control}
       {error ? (
-        <Error
+        <Callout
+          role="alert"
+          variant="danger"
           id={hintId}
           className={cn("indent-2", classNames?.error)}
           style={styles?.error}
         >
           {hint}
-        </Error>
+        </Callout>
       ) : (
         hint && (
           <small

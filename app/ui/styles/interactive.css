@@ -1,17 +1,19 @@
 @layer base {
-  :disabled, [inert] {
+  :disabled,
+  [inert] {
     opacity: 50%;
     cursor: not-allowed;
     pointer-events: none;
+    color: var(--muted-foreground);
   }
 
-  :where(:focus-visible) {
-    outline: 1px solid var(--color-outline);
-    box-shadow: 0 0 3px 3px var(--color-ring);
+  :focus-visible {
+    outline: 1px solid var(--primary-accent);
+    box-shadow: 0 0 3px 3px color-mix(in oklch, var(--primary-accent) 50%, transparent);
   }
 
-  :where(button:active) {
-    box-shadow: inset 0 2px 4px 0 var(--color-ring);
+  button:active {
+    box-shadow: inset 0 2px 4px 0 var(--accent);
     filter: brightness(0.95);
   }
 }

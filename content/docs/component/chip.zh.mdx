@@ -1,0 +1,43 @@
+---
+title: Chip 状态标签
+description: 行内状态标签，用于短文本标记、状态标识、筛选标签——统一承载系统所有状态色彩语义。
+---
+
+## 安装
+
+<Installation name="chip" />
+
+## 用法
+
+`Chip` 是纯展示标签，无交互逻辑。内置六种变体覆盖整个状态色彩体系——用 `variant` 选择语义色，不要再手挑颜色。
+
+<ComponentPreview name="chip-basic" />
+
+- `primary`（默认）— 品牌强调标签
+- `outline` — 边框型次要标签，轻量化展示
+- `success` / `warning` / `danger` / `info` — 标准系统语义状态色
+
+### 链接与按钮
+
+`Chip` 始终渲染为 `<span>`，不提供 `as` 属性。需要链接或按钮时，把原生元素作为子元素嵌套进 Chip——视觉由 `Chip` 负责，语义与交互由子元素负责。用 `text-current` 继承变体色，`no-underline` 去掉链接默认下划线：
+
+<ComponentPreview
+  name="chip-variants"
+/>
+
+## 注意
+
+- `Chip` 仅用作行内状态标记——禁止作为角标、悬浮标记；附属标记用 [Badge](/docs/component/badge)，区块级提示用 [Callout](/docs/component/callout)。
+- 让 chip 可交互时，把 `a` / `button` 作为子元素嵌套，不要组合静态类名字符串——保持单一视觉来源。
+- 仍可通过 `className` 传入工具类自定义颜色，会覆盖变体色。
+- 与 [Capsule](/docs/component/capsule) 组件组合可快速生成 shields-io 风格徽章。
+
+## API 参考
+
+### Chip
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `"outline" \| "primary" \| "success" \| "warning" \| "danger" \| "info"` | `"primary"` | 标签的色彩语义 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类，覆盖变体色 |
+| `...props` | `React.ComponentProps<"span">` | - | 支持所有原生 span 属性 |
