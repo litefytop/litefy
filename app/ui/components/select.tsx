@@ -196,7 +196,7 @@ export function Select({
         onKeyDown={handleTriggerKeyDown}
         data-open={open || undefined}
         className={cn(
-          "flex h-9 w-full items-center justify-between gap-2 rounded-md border px-3 py-1 text-sm cursor-pointer",
+          "flex h-9 w-full items-center justify-between gap-2 rounded-md border px-3 py-1 text-sm cursor-pointer shadow-base",
           !selectedLabel && "text-muted-foreground",
           className,
         )}
@@ -216,7 +216,7 @@ export function Select({
         role="listbox"
         aria-label={placeholder}
         className={cn(
-          "bg-background text-foreground max-h-64 overflow-y-auto rounded-lg border p-1 shadow-lg",
+          "bg-background text-foreground max-h-64 overflow-y-auto rounded-xl border p-1 shadow-elevated",
           classNames?.panel,
         )}
         style={{

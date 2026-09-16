@@ -28,7 +28,7 @@ export default function Demo() {
     <div className="flex flex-col items-center gap-4">
       <CommandRoot
         items={items}
-        className="w-80 rounded-lg border shadow-sm"
+        className="w-80 rounded-xl border shadow-elevated"
         onSelect={(item) => setLastRun(item.value ?? null)}
       >
         <CommandInput placeholder="Search…" />

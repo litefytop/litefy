@@ -226,7 +226,7 @@ export function Slider({
           onPointerDown={handleThumbPointerDown}
           onKeyDown={handleThumbKeyDown}
           className={cn(
-            "size-5 touch-none rounded-full border-2 border-primary bg-background shadow-sm",
+            "size-5 touch-none rounded-full border-2 border-primary bg-background shadow-subtle",
             "cursor-grab active:cursor-grabbing",
             classNames?.thumb,
           )}

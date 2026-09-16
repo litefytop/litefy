@@ -299,7 +299,7 @@ export function NumberField(props: NumberFieldProps) {
       data-invalid={invalid || undefined}
       className={cn(
         "group/input inline-flex h-9 items-center overflow-hidden rounded-md",
-        bordered && "border border-border",
+        bordered && "border border-border shadow-base",
         "data-invalid:border data-invalid:border-danger",
         className,
       )}

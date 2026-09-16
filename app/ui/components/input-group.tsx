@@ -15,7 +15,7 @@ export function InputGroup({ className, invalid, ...props }: InputGroupProps) {
       {...props}
       data-invalid={invalid || props["data-invalid"]}
       className={cn(
-        "group/input flex h-9 rounded-md px-2 border items-center",
+        "group/input flex h-9 rounded-md px-2 border shadow-base items-center",
         "focus-within:outline-1 focus-within:outline-outline focus-within:ring-ring/50 focus-within:ring-3",
         "data-invalid:border-danger data-invalid:focus-within:outline-none data-invalid:focus-within:ring-3 data-invalid:focus-within:ring-danger/50",
         className,

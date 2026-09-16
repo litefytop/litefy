@@ -1,3 +1,4 @@
+@custom-variant dark (&:where(.dark, .dark *));
 :root {
   color-scheme: light;
 
@@ -15,6 +16,12 @@
   --info: oklch(48.8% 0.243 264.376);
   --success: oklch(44.8% 0.119 151.328);
   --warning: oklch(47.6% 0.114 61.907);
+
+  /* 阴影四级（design.md §5）：faint / subtle / base / elevated，与圆角分级一一匹配 */
+  --elevation-faint: 0 1px 2px 0 oklch(0% 0 0 / 5%);
+  --elevation-subtle: 0 1px 2px 0 oklch(0% 0 0 / 6%), 0 2px 4px 0 oklch(0% 0 0 / 5%);
+  --elevation-base: 0 2px 4px -1px oklch(0% 0 0 / 8%), 0 4px 8px -2px oklch(0% 0 0 / 8%);
+  --elevation-elevated: 0 8px 16px -4px oklch(0% 0 0 / 12%), 0 20px 40px -8px oklch(0% 0 0 / 14%);
 }
 
 .dark {
@@ -34,10 +41,29 @@
   --info: oklch(70.7% 0.165 254.624);
   --success: oklch(72.3% 0.219 149.579);
   --warning: oklch(79.5% 0.184 86.047);
+
+  /* 暗色下黑色阴影被深底吞没，整体上调透明度（design.md §5 暗色自适应） */
+  --elevation-faint: 0 1px 2px 0 oklch(0% 0 0 / 30%);
+  --elevation-subtle: 0 1px 2px 0 oklch(0% 0 0 / 35%), 0 2px 4px 0 oklch(0% 0 0 / 30%);
+  --elevation-base: 0 2px 4px -1px oklch(0% 0 0 / 45%), 0 4px 8px -2px oklch(0% 0 0 / 45%);
+  --elevation-elevated: 0 8px 16px -4px oklch(0% 0 0 / 55%), 0 20px 40px -8px oklch(0% 0 0 / 60%);
 }
 
 @theme inline {
+  /* 圆角分级（design.md §5）：sm 行内/标签/小控件，md 输入框/按钮，lg 区块卡片，xl 大卡片/弹窗/Drawer */
   --radius: 4px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
+  /* 清除 Tailwind 默认阴影刻度，仅保留语义四级（design.md §5 严格分级） */
+  --shadow-*: initial;
+  --shadow-faint: var(--elevation-faint);
+  --shadow-subtle: var(--elevation-subtle);
+  --shadow-base: var(--elevation-base);
+  --shadow-elevated: var(--elevation-elevated);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);

@@ -117,7 +117,8 @@ Full form composition: fields, submit handling, validation collection, imperativ
 
 ## Layout & Surfaces
 
-### Card — glassmorphic surface with hover lift and ambient glow.
+### Card — glassmorphic **static** surface: `rounded-lg` + fixed `shadow-base`, no hover effects or lift (interaction belongs to CardButton).
+### CardButton — card-shaped interactive button inheriting the Card base: variants mirror Button (`"primary" | "danger" | "outline" | "text"`), rests at `shadow-base` and lifts to `hover:shadow-elevated`.
 ### Paper — print-ready A4/A5 page surface, portrait or landscape (`variant="a4" | "a5" | "a4-landscape" | "a5-landscape"`).
 ### Separator
 Line, or a line–text–line divider when `children` is passed (the auth "or" divider). Horizontal carries a default `my-3` (override via `className`); vertical lines self-stretch in flex rows and rely on `gap`. Parts: `SeparatorLine` / `SeparatorText`.

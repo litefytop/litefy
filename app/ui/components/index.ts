@@ -5,6 +5,7 @@ export * from "./breadcrumb";
 export * from "./calendar";
 export * from "./capsule";
 export * from "./card";
+export * from "./card-button";
 export * from "./cascader";
 export * from "./chart";
 export * from "./date-picker";

@@ -3,13 +3,13 @@ import React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
 
 const buttonClass = {
-  base: "cursor-pointer inline-flex items-center justify-center gap-2 h-8 min-w-8 px-3 rounded-md text-sm text-center [&_svg:not([class*='size-'])]:size-4",
+  base: "cursor-pointer inline-flex items-center justify-center gap-2 h-8 min-w-8 px-3 rounded-md text-sm text-center shadow-base focus-visible:outline-1 focus-visible:outline-outline focus-visible:ring-3 focus-visible:ring-ring/50 active:shadow-[inset_0_2px_4px_0_var(--accent)] [&_svg:not([class*='size-'])]:size-4",
   variant: {
     primary: "bg-primary text-primary-foreground hover:bg-primary-accent",
     danger:
-      "bg-danger/15 hover:bg-danger/20 text-danger border hover:border-danger/20 focus-visible:outline-1 focus-visible:outline-danger focus-visible:ring-danger/50 focus-visible:ring-3",
+      "bg-danger/15 hover:bg-danger/20 text-danger border hover:border-danger/20 focus-visible:outline-danger focus-visible:ring-danger/50",
     outline: "border border-border hover:bg-hover",
-    text: "hover:text-muted-foreground/75",
+    text: "hover:text-muted-foreground/75 shadow-none",
   },
 };
 

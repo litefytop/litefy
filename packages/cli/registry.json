@@ -31,6 +31,10 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/capsule.tsx"
   },
+  "card-button": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/card-button.tsx"
+  },
   "card": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/card.tsx"

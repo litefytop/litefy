@@ -3,7 +3,7 @@ import { type ClassNameValue, cn } from "../utils/cn";
 export type PaperVariant = "a4" | "a5" | "a4-landscape" | "a5-landscape";
 
 const paperBaseClass =
-  "mx-auto flex w-full h-fit flex-col overflow-y-auto bg-background text-foreground p-[10mm] shadow-lg border border-border print:bg-white print:text-black print:shadow-none print:border-0 print:mx-0 print:p-0 print:w-full print:h-fit print:overflow-visible";
+  "mx-auto flex w-full h-fit flex-col overflow-y-auto bg-background text-foreground rounded-lg p-[10mm] shadow-base border border-border print:bg-white print:text-black print:shadow-none print:border-0 print:mx-0 print:p-0 print:w-full print:h-fit print:overflow-visible";
 
 const paperVariantClass: Record<PaperVariant, string> = {
   a4: "block w-[210mm] h-[297mm] p-[10mm] overflow-visible break-after-page print:w-[210mm] print:h-[297mm] print:p-[10mm]",

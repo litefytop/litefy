@@ -19,7 +19,7 @@ export function Badge({ children, className, label, classNames, styles, ...props
     <div
       {...props}
       className={cn(
-        "relative flex items-center justify-center size-12 rounded-md shadow-md",
+        "relative flex items-center justify-center size-12 rounded-sm shadow-subtle",
         className,
       )}
     >
