@@ -10,16 +10,57 @@ Litefy 不提供完整项目脚手架，请在已有 React 项目中使用。
 项目需要满足：
 
 - **React 19+**（依赖 React 19 新特性，低版本不兼容）
+- **Tailwind CSS v4**（组件样式基于 Tailwind 工具类；无需 `tailwind.config`，设计令牌层以 CSS 形式提供）
 - 已开启 TypeScript
 - 配置路径别名 `@/*` 指向项目源码根目录
 
-> 组件模板内部使用 `@/lib` 导入 `cn` 工具函数，需要别名正常工作。使用 CLI 默认路径时，只需把 `@` 映射到源码目录即可，无需额外特殊配置。别名的具体配置方式请参考你的构建工具文档。
+> 组件模板内部通过相对 barrel `..` 导入 `cn` 与兄弟零件，且 `init` 会预先生成 `utils/cn.ts`——因此 `utils` 目录始终与 `components` 目录同级，无需额外别名配置。`@/*` 别名的具体配置方式请参考你的构建工具文档。
+
+## 快速开始
+
+四步：初始化 → 安装必装样式与首批组件 → 引入全局样式入口 → 使用。
+
+### 1. 初始化
+
+运行 `init` 命令（各包管理器变体见下方[命令](#命令)一节）。它会生成 `litefy.json` 配置，创建 `ui/litefy` 目录，安装 `react`、`react-dom`、`lucide-react`、`tailwindcss`、`tailwind-merge`，下载必装的 `style-theme` 基础样式，并写入自动生成的全局样式入口 `styles/index.css`。
+
+```txt
+src/ui/litefy/
+├── index.ts           # 聚合 barrel —— 组件从这里导入
+├── components/        # 已安装组件，每个都是独立单文件
+├── utils/             # cn 与 headless hooks
+└── styles/index.css   # 全局样式入口，由 CLI 自动维护
+```
+
+### 2. 安装可选样式与组件
+
+`theme.css`（必装的令牌层）已由 `init` 自动安装。`interactive.css`——全局禁用/焦点/按压行为层——推荐安装但属可选：想自行实现交互样式可以跳过。完整的层级说明与可选的 brand/surface 预设见 [Styles](/zh/docs/styles)。
+
+用 `add` 命令把它和首批组件一起装上，例如 `add style-interactive button`。
+
+每次 `add` 都会自动重写 `styles/index.css` 使其与已安装内容保持一致——无需手动编辑。
+
+### 3. 引入全局样式入口
+
+在 JS/TS 入口文件（如 `main.tsx`）中引入。缺了这一行，令牌层与交互行为层都不会生效：
+
+```ts
+import "@/ui/litefy/styles/index.css";
+```
+
+### 4. 使用
+
+```tsx
+import { Button } from "@/ui/litefy";
+
+<Button onClick={() => console.log("clicked")}>点我</Button>
+```
 
 ## 命令
 
 ### init
 
-初始化项目，生成 `litefy.json` 配置文件，创建 `ui/litefy` 目录结构，拉取 `cn.ts`，安装所需依赖。未初始化直接执行 add，会自动触发初始化流程。
+初始化项目：生成 `litefy.json` 配置文件，创建 `ui/litefy` 目录结构，生成 `utils/cn.ts` 与聚合 barrel，安装所需依赖，下载必装的 `style-theme` 基础样式，并初始化全局样式入口 `styles/index.css`。未初始化直接执行 add，会自动触发初始化流程。
 
 > ⚠️ 不要手动修改 `litefy.json` 中的路径字段。如果自行修改路径，你需要同步维护项目别名与导入语句，CLI 不会自动修复。
 
@@ -46,13 +87,13 @@ Litefy 不提供完整项目脚手架，请在已有 React 项目中使用。
   </Tab>
 </Tabs>
 
-**参数**
+**Options**
 
-- `-y, --yes`：跳过交互，使用全部默认配置
+- `-y, --yes`：跳过交互提示，使用全部默认配置
 
 ### add
 
-批量下载安装组件与对应 hooks，自动更新聚合导出文件。
+批量下载安装组件及其关联的 hooks 与 utils，自动解析每个条目的 `dependence`（构建时扫描模板的相对导入得出；`cn` 由 `init` 生成，无需解析），安装解析出的 npm 依赖，并更新聚合导出文件与 `styles/index.css` 样式入口。
 
 <Tabs items={["npm", "yarn", "pnpm", "bun"]}>
   <Tab value="npm">
@@ -77,13 +118,46 @@ Litefy 不提供完整项目脚手架，请在已有 React 项目中使用。
   </Tab>
 </Tabs>
 
-**参数**
+**Options**
 
 - `-o, --overwrite`：强制覆盖已存在的组件文件
+- `-y, --yes`：跳过交互提示
+
+### install
+
+一次性安装**全部** registry 条目——适合把整个组件库拉到本地。内部委托给 `add`，依赖解析与导出/样式更新逻辑完全一致。
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest install
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest install
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest install
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest install
+    ```
+  </Tab>
+</Tabs>
+
+**Options**
+
+- `-o, --overwrite`：强制覆盖已存在的组件文件
+- `-y, --yes`：跳过交互提示
 
 ### rm
 
-移除已安装组件，删除对应文件，更新配置清单与聚合导出。
+移除已安装组件：删除对应文件，并更新配置清单与聚合导出。
 
 <Tabs items={["npm", "yarn", "pnpm", "bun"]}>
   <Tab value="npm">
@@ -110,7 +184,7 @@ Litefy 不提供完整项目脚手架，请在已有 React 项目中使用。
 
 ### repair
 
-校验本地资源完整性，联网补全缺失组件、hooks，重新生成聚合导出。
+校验本地资源完整性，在线补拉缺失的组件与 hooks，并重新生成聚合导出。
 
 <Tabs items={["npm", "yarn", "pnpm", "bun"]}>
   <Tab value="npm">
@@ -137,7 +211,7 @@ Litefy 不提供完整项目脚手架，请在已有 React 项目中使用。
 
 ### clean
 
-离线清理，修剪配置内已经不存在的组件记录，不需要网络。
+离线清理：移除配置中本地已不存在的组件记录，不访问网络。
 
 <Tabs items={["npm", "yarn", "pnpm", "bun"]}>
   <Tab value="npm">
@@ -164,7 +238,7 @@ Litefy 不提供完整项目脚手架，请在已有 React 项目中使用。
 
 ### uninstall
 
-完全卸载：删除所有 Litefy 本地文件以及 `litefy.json`。不会自动删除业务代码中手写的 import，需要你手动清理。
+完全卸载：删除所有 Litefy 本地文件与 `litefy.json`。业务代码中的手写导入不会自动清除，需自行清理。
 
 <Tabs items={["npm", "yarn", "pnpm", "bun"]}>
   <Tab value="npm">

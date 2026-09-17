@@ -1,0 +1,50 @@
+---
+title: AI Skill
+description: Install the Litefy UI design skill so AI coding assistants write correct Litefy UI out of the box
+---
+
+## What is it
+
+The Litefy UI design skill (`litefy-design`) is a `SKILL.md` file that teaches AI coding assistants — Claude Code, Codex, Cursor, Gemini CLI and anything that reads the skills format — how to use Litefy UI correctly: the semantic token system, shadow/rounding levels, component selection rules (composite XOR parts), the anti-pattern library, and a validation checklist.
+
+With the skill loaded, the model stops hand-writing raw HTML + Tailwind and starts composing Litefy components with the right tokens — the same rules this documentation site teaches, but always in the model's context.
+
+## Download
+
+**[Download litefy-design-skill.md](/litefy-design-skill.md)** — the raw skill file, always synced from the repo's source of truth at build time.
+
+**[Download litefy-design-detect.mjs](/litefy-design-detect.mjs)** — the bundled validation script. Run it against your project's source root (`node litefy-design-detect.mjs src`); violations of the hardcoded-color, arbitrary-shadow and handwritten-focus rules exit non-zero so it can gate CI, while structural smells (3+ same-tag nesting) are reported as warnings.
+
+Both files are also viewable on [GitHub](https://github.com/litefytop/litefy/tree/main/.agents/skills/litefy-design).
+
+## Install
+
+### Claude Code (project skill)
+
+```bash
+mkdir -p .claude/skills/litefy-design
+curl -fsSL https://litefy.top/litefy-design-skill.md \
+  -o .claude/skills/litefy-design/SKILL.md
+```
+
+Committing it under `.claude/skills/` shares the skill with your whole team through the repo. Use `~/.claude/skills/litefy-design/SKILL.md` instead for a personal, machine-wide install.
+
+### Other agents with skills support
+
+Place the downloaded file at the skills location your agent scans (most follow the same `skills/<name>/SKILL.md` convention, e.g. `~/.codex/skills/`, `.cursor/skills/`).
+
+### Agents without skill support
+
+The file is plain Markdown — paste its content into your `AGENTS.md`, `CLAUDE.md` or `.cursorrules` and it works the same.
+
+## What's inside
+
+The skill version matches its `metadata.version` frontmatter field and carries a changelog. Current contents:
+
+- **Workflow** — component selection → token application → anti-pattern check → validation loop
+- **Token system** — surface/brand color palettes, border, focus ring, spacing, four-level shadow/rounding, motion rules
+- **Global constraints** — semantic tokens only, composite XOR parts, WCAG 2.2 AA baseline
+- **Anti-pattern library** — one-vote-veto items like hardcoded colors, ghost cards, layout-property animations
+- **Per-component specs** — design rationale for Button variants, Card vs CardButton, Chip vs Badge vs Callout, the Table column model
+- **Validation checklist** — static, accessibility and visual checks to run before shipping
+- **Bundled lint script** — `design-detect.mjs` deterministically flags hardcoded colors, arbitrary shadows, handwritten focus/disabled styles (when interactive.css is installed) and 3+ level same-tag nesting

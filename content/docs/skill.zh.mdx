@@ -1,0 +1,50 @@
+---
+title: AI Skill
+description: 安装 Litefy UI 设计规范技能，让 AI 编码助手开箱即用写出正确的 Litefy UI
+---
+
+## 它是什么
+
+Litefy UI 设计规范技能（`litefy-design`）是一个 `SKILL.md` 文件，教会 AI 编码助手——Claude Code、Codex、Cursor、Gemini CLI 以及一切支持 skills 格式的工具——正确使用 Litefy UI：语义 Token 体系、阴影/圆角分级、组件选型规则（成品与零件二选一）、反模式库和验证清单。
+
+加载技能后，模型不再手写裸 HTML + Tailwind，而是用正确的 Token 组合 Litefy 组件——与本站文档教的规则一致，且始终在模型上下文里。
+
+## 下载
+
+**[下载 litefy-design-skill.md](/litefy-design-skill.md)** —— 原始技能文件，构建时从仓库源文件自动同步，始终最新。
+
+**[下载 litefy-design-detect.mjs](/litefy-design-detect.mjs)** —— 随附的校验脚本。对你的项目源码目录运行（`node litefy-design-detect.mjs src`）：硬编码色值、任意值阴影、手写焦点/禁用样式为 error（非零退出码，可接 CI），结构坏味道（同标签三层以上嵌套）为 warn。
+
+两个文件也可以在 [GitHub](https://github.com/litefytop/litefy/tree/main/.agents/skills/litefy-design) 上查看。
+
+## 安装
+
+### Claude Code（项目级技能）
+
+```bash
+mkdir -p .claude/skills/litefy-design
+curl -fsSL https://litefy.top/litefy-design-skill.md \
+  -o .claude/skills/litefy-design/SKILL.md
+```
+
+放在 `.claude/skills/` 下随仓库提交，团队全员共享。个人全局安装则放到 `~/.claude/skills/litefy-design/SKILL.md`。
+
+### 其他支持 skills 的工具
+
+把下载的文件放到你的工具扫描的技能目录即可（多数遵循同样的 `skills/<name>/SKILL.md` 约定，如 `~/.codex/skills/`、`.cursor/skills/`）。
+
+### 不支持 skills 的工具
+
+文件就是纯 Markdown——把内容粘贴进你的 `AGENTS.md`、`CLAUDE.md` 或 `.cursorrules`，效果相同。
+
+## 内容一览
+
+技能版本记录在 frontmatter 的 `metadata.version` 字段，附 changelog。当前包含：
+
+- **工作流** —— 选组件 → 套 Token → 查反模式 → 验证闭环
+- **Token 体系** —— Surface/品牌双色板、边框、焦点环、间距、四级阴影/圆角、动效规则
+- **全局强制约束** —— 只用语义 Token、成品与零件二选一、WCAG 2.2 AA 基线
+- **反模式库** —— 硬编码色值、ghost card、动布局属性等一票否决项
+- **组件专项规范** —— Button 变体、Card 与 CardButton、Chip/Badge/Callout 划分、Table 列宽模型的设计 rationale
+- **验证清单** —— 发布前的静态、可访问性与视觉检查
+- **随附校验脚本** —— `design-detect.mjs` 确定性检查硬编码色值、任意值阴影、手写焦点/禁用样式（interactive.css 在场时）与同标签三层以上嵌套

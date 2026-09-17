@@ -27,7 +27,7 @@ export function PackageManagerTabs({ command }: PackageManagerTabsProps) {
         {list.map((item) => (
           <div key={item.key} className="relative group">
             <div className="pl-4 pr-12 py-2">
-              <span className="text-emerald-500 mr-2">$</span>
+              <span className="text-success mr-2">$</span>
               {item.cmd}
             </div>
             <button
@@ -37,7 +37,7 @@ export function PackageManagerTabs({ command }: PackageManagerTabsProps) {
               aria-label="Copy command"
             >
               {copied === item.key ? (
-                <CheckIcon className="size-4 text-green-500" />
+                <CheckIcon className="size-4 text-success" />
               ) : (
                 <CopyIcon className="size-4 text-muted-foreground" />
               )}

@@ -33,8 +33,11 @@ export function ComponentPreview({
 
   if (!demo) {
     return (
-      <div className={cn("my-4 rounded-md border border-red-200 bg-red-50 p-4", className)}>
-        <p className="text-sm text-red-600">
+      <div
+        role="alert"
+        className={cn("my-4 rounded-md border border-danger/20 bg-danger/15 p-4", className)}
+      >
+        <p className="text-sm text-danger">
           Demo "{name}" not found. Make sure the demo is registered.
         </p>
       </div>

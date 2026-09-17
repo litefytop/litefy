@@ -11,6 +11,12 @@ export default {
       zh: "安装",
     },
   },
+  skill: {
+    displayName: {
+      en: "AI Skill",
+      zh: "AI 技能",
+    },
+  },
   styles: {
     displayName: {
       en: "Styles",

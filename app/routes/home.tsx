@@ -103,9 +103,9 @@ function LandingHero({ locale }: { locale: Locale }) {
         <div className="absolute -inset-6 rounded-3xl bg-linear-to-br from-fd-primary/30 via-fd-primary/5 to-transparent blur-2xl" />
         <div className="relative rounded-2xl border border-fd-border bg-fd-background/80 p-4 shadow-elevated backdrop-blur">
           <div className="mb-3 flex items-center gap-1.5">
-            <div className="h-2.5 w-2.5 rounded-full bg-red-400" />
-            <div className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
-            <div className="h-2.5 w-2.5 rounded-full bg-green-400" />
+            <div className="h-2.5 w-2.5 rounded-full bg-danger" />
+            <div className="h-2.5 w-2.5 rounded-full bg-warning" />
+            <div className="h-2.5 w-2.5 rounded-full bg-success" />
           </div>
           <div className="space-y-2">
             <div className="h-2.5 w-3/4 rounded bg-fd-muted" />

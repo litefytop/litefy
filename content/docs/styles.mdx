@@ -7,12 +7,12 @@ Litefy's styling is layered CSS custom properties, all defined in OKLCH and mapp
 
 | Layer | File(s) | Registry | What it does |
 |---|---|---|---|
-| **Theme** (required) | `theme.css` | `style-theme` | Base token set: light + dark schemes, `@theme inline` mapping |
+| **Theme** (required, auto-installed by `init`) | `theme.css` | `style-theme` | Base token set: light + dark schemes, `@theme inline` mapping |
 | **Brand** (optional) | `*-brand.css` ×13 | `style-*-brand` | Overrides `--primary` / `--primary-accent` under `[data-brand]` |
 | **Surface** (optional) | `*-surface.css` ×9 | `style-*-surface` | Overrides `--background` / `--foreground` / `--muted` / `--muted-foreground` / `--accent` / `--neutral` under `[data-surface]` |
-| **Interactive** (required) | `interactive.css` | `style-interactive` | Global behavior styles: disabled, focus-visible, press feedback |
+| **Interactive** (optional, recommended) | `interactive.css` | `style-interactive` | Global behavior styles: disabled, focus-visible, press feedback |
 
-Install `theme.css` and `interactive.css` first — they are the required base. Brand and Surface presets are optional add-ons, combinable freely (one brand + one surface at a time).
+`theme.css` is the required base and comes preinstalled with `init`. `interactive.css` is recommended but optional — skip it if you would rather implement your own disabled/focus styles. Brand and Surface presets are optional add-ons, combinable freely (one brand + one surface at a time).
 
 ## Theme
 
@@ -40,6 +40,8 @@ Radius levels match shadow levels one-to-one: `rounded-sm` inline/labels, `round
 - **Disabled controls** (`:disabled`, `[inert]`, `[data-disabled]`): dimmed to 50% opacity, neutral background, `not-allowed` cursor and no pointer events — including wrappers like `label:has(:disabled)` so composed checkboxes and uploads dim entirely.
 - **Focus-visible**: a `1px` outline (`--color-outline`) plus a `3px` soft ring (`--color-ring`) for keyboard navigation only — mouse clicks never show rings.
 - **Button press**: inset shadow + `brightness(0.95)` on `button:active` for tactile feedback.
+
+This layer is optional: without it, components work, but disabled/focus/press feedback is yours to implement.
 
 <Installation name="style-interactive" type="css" />
 

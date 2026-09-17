@@ -7,12 +7,12 @@ Litefy 的样式是分层的 CSS 自定义属性，全部使用 OKLCH 并经 `@t
 
 | 层 | 文件 | Registry | 作用 |
 |---|---|---|---|
-| **Theme**（必装） | `theme.css` | `style-theme` | 基础令牌集：亮/暗两套配色、`@theme inline` 映射 |
+| **Theme**（必装，`init` 自动安装） | `theme.css` | `style-theme` | 基础令牌集：亮/暗两套配色、`@theme inline` 映射 |
 | **Brand**（可选） | `*-brand.css` ×13 | `style-*-brand` | 在 `[data-brand]` 下覆盖 `--primary` / `--primary-accent` |
 | **Surface**（可选） | `*-surface.css` ×9 | `style-*-surface` | 在 `[data-surface]` 下覆盖 `--background` / `--foreground` / `--muted` / `--muted-foreground` / `--accent` / `--neutral` |
-| **Interactive**（必装） | `interactive.css` | `style-interactive` | 全局行为样式：禁用态、focus-visible、按压反馈 |
+| **Interactive**（可选，推荐） | `interactive.css` | `style-interactive` | 全局行为样式：禁用态、focus-visible、按压反馈 |
 
-请先安装 `theme.css` 与 `interactive.css`——它们是必装的基础层。Brand 与 Surface 预设为可选扩展，可自由组合（同时使用一个 brand + 一个 surface）。
+`theme.css` 是必装基础层，`init` 时已自动安装。`interactive.css` 推荐安装但属可选——想自行实现禁用/焦点样式可以跳过。Brand 与 Surface 预设为可选扩展，可自由组合（同时使用一个 brand + 一个 surface）。
 
 ## 主题令牌
 
@@ -40,6 +40,8 @@ Litefy 的样式是分层的 CSS 自定义属性，全部使用 OKLCH 并经 `@t
 - **禁用控件**（`:disabled`、`[inert]`、`[data-disabled]`）：50% 透明度、中性背景、`not-allowed` 光标并屏蔽指针事件——同时覆盖 `label:has(:disabled)` 包装器，组合式 Checkbox、Upload 等会整体变灰。
 - **键盘焦点**：仅为 `:focus-visible` 提供 `1px` 描边（`--color-outline`）加 `3px` 柔和光晕（`--color-ring`）——鼠标点击不会出现焦点圈。
 - **按压反馈**：`button:active` 时的内阴影 + `brightness(0.95)` 亮度变化。
+
+该层为可选：不安装组件也能正常工作，但禁用/焦点/按压反馈需要自行实现。
 
 <Installation name="style-interactive" type="css" />
 

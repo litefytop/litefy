@@ -3,10 +3,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "prebuild": "pnpm node scripts/copy-registry.js && node scripts/build-page-trees.mjs",
+    "prebuild": "pnpm node scripts/copy-registry.js && pnpm node scripts/sync-skill.mjs && node scripts/build-page-trees.mjs",
     "build": "react-router build",
     "dev": "react-router dev",
     "types:check": "react-router typegen && fumadocs-mdx && tsc --noEmit",
+    "lint:design": "node scripts/design-detect.mjs",
     "postinstall": "fumadocs-mdx",
     "cli:build": "pnpm --filter=litefy run build",
     "cli:dev": "pnpm --filter=litefy run dev",

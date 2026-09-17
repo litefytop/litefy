@@ -2,11 +2,18 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import "../../../app/ui/styles/index.css";
 
-const demos = import.meta.glob("../../../app/demos/**/*.tsx");
+declare global {
+  interface Window {
+    __commits: { phase: string; actualDuration: number; commitTime: number; nInteractions: number }[];
+  }
+}
+
+const demos = import.meta.glob<{ default: React.ComponentType }>("../../../app/demos/**/*.tsx");
 
 async function start() {
   const name = new URLSearchParams(location.search).get("demo");
   const rootEl = document.getElementById("root");
+  if (!rootEl) return;
   if (!name) {
     rootEl.textContent = "NO DEMO";
     return;
@@ -22,12 +29,12 @@ async function start() {
     root.render(
       <React.Profiler
         id="demo"
-        onRender={(_id, phase, actualDuration, _base, _s, commitTime, interactions) => {
+        onRender={(_id, phase, actualDuration, _base, _start, commitTime) => {
           window.__commits.push({
             phase,
             actualDuration: Math.round(actualDuration * 100) / 100,
             commitTime: Math.round(commitTime),
-            nInteractions: interactions ? interactions.size : 0,
+            nInteractions: 0,
           });
         }}
       >
