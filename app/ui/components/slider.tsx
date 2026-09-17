@@ -196,13 +196,13 @@ export function Slider({
     : { left: percentStr, top: "50%", transform: "translate(-50%, -50%)" };
 
   return (
-    <SliderRoot className={cn("group", className)} style={style}>
+    <SliderRoot className={cn("group", className)} inert={disabled} style={style}>
       <SliderTrack
         ref={trackRef}
         onPointerDown={handleTrackPointerDown}
         className={cn(
           "rounded-full bg-muted",
-          isVertical ? "h-24 w-2" : "h-2 w-24",
+          isVertical ? "min-h-24 w-2" : "h-2 min-w-24",
 
           classNames?.track,
         )}
@@ -226,7 +226,7 @@ export function Slider({
           onPointerDown={handleThumbPointerDown}
           onKeyDown={handleThumbKeyDown}
           className={cn(
-            "size-5 touch-none rounded-full border-2 border-primary bg-background shadow-sm",
+            "size-5 touch-none rounded-full border-2 border-primary bg-background shadow-subtle",
             "cursor-grab active:cursor-grabbing",
             classNames?.thumb,
           )}

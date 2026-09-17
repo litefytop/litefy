@@ -22,6 +22,7 @@ export interface TableColumn<T> {
   compare?: (a: T, b: T) => number;
   align?: "left" | "right" | "center";
   className?: ClassNameValue;
+  width?: string;
 }
 
 export interface TableProps<T> {
@@ -84,7 +85,7 @@ export interface TableBaseProps extends Omit<React.ComponentProps<"table">, "cla
 
 export function TableBase({ className, ...props }: TableBaseProps) {
   return (
-    <table {...props} className={cn("w-full table-fixed border-collapse text-sm", className)} />
+    <table {...props} className={cn("w-full table-fixed border-collapse text-sm tabular-nums", className)} />
   );
 }
 
@@ -136,7 +137,7 @@ export function Table<T extends object>({
   const colGroup = (
     <colgroup>
       {columns.map((column) => (
-        <col key={column.key} />
+        <col key={column.key} style={column.width ? { width: column.width } : undefined} />
       ))}
     </colgroup>
   );

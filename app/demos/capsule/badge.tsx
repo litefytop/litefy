@@ -1,25 +1,25 @@
-import { Capsule, Tag } from "@/ui";
+import { Capsule, Chip } from "@/ui";
 
 export default function CapsuleBadgeDemo() {
   return (
     <div className="flex w-full max-w-md flex-col items-center gap-3">
       <div className="flex flex-wrap justify-center gap-3">
         <Capsule>
-          <Tag className={"bg-neutral"}>build</Tag>
-          <Tag className={"bg-success"}>passing</Tag>
+          <Chip variant="primary">build</Chip>
+          <Chip variant="success">passing</Chip>
         </Capsule>
         <Capsule>
-          <Tag className={"bg-neutral"}>npm</Tag>
-          <Tag className={"bg-danger"}>v1.2.3</Tag>
+          <Chip variant="primary">npm</Chip>
+          <Chip variant="danger">v1.2.3</Chip>
         </Capsule>
         <Capsule>
-          <Tag className={"bg-neutral"}>license</Tag>
-          <Tag className={"bg-info"}>MIT</Tag>
+          <Chip variant="primary">license</Chip>
+          <Chip variant="info">MIT</Chip>
         </Capsule>
       </div>
       <Capsule>
-        <Tag className={"bg-neutral"}>docs</Tag>
-        <Tag className={"bg-warning"}>litefy.dev</Tag>
+        <Chip variant="primary">docs</Chip>
+        <Chip variant="warning">litefy.dev</Chip>
       </Capsule>
     </div>
   );

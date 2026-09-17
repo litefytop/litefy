@@ -40,7 +40,7 @@ export function SwitchThumb({ className, checked, ...props }: SwitchThumbProps) 
       {...props}
       data-checked={checked || undefined}
       className={cn(
-        "pointer-events-none inline-block rounded-full bg-white shadow-lg ring-0 transition-transform duration-200",
+        "pointer-events-none inline-block rounded-full bg-white shadow-subtle ring-0 transition-transform duration-200",
         "data-checked:translate-x-5",
         "w-4 h-4",
         className,

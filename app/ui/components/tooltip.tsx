@@ -173,7 +173,7 @@ export function TooltipContent({
         onPointerLeave?.(e);
       }}
       className={cn(
-        "z-50 rounded-md bg-background px-3 py-1.5 text-xs text-foreground shadow-md border w-max max-w-sm m-1",
+        "z-50 rounded-xl bg-surface-raised px-3 py-1.5 text-xs text-foreground shadow-elevated border w-max max-w-sm m-1",
         className,
       )}
       style={{

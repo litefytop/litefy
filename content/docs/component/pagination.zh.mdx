@@ -19,6 +19,18 @@ description: 受控的页码导航——首页 / 上一页 / 页码（带省略�
 
 页码列表展示首页、末页、当前页及其 `siblingCount` 个邻居，其余折叠为省略号。点击页码或箭头只会调用 `onPageChange`，组件自己永远不会翻页。
 
+### 分页文本
+
+传入 `summary` 可实现左右布局：左侧页码统计文本占据剩余宽度、可换行，右侧控件同行保持不动、相对多行文本垂直居中。内容是业务自行拼装的纯文本，典型场景是展示总条数与选中数：
+
+```tsx
+<Pagination page={page} totalPages={total} onPageChange={goTo} summary="Showing 1–10 of 1,286 items · 3 selected" />
+```
+
+窄容器下的长 summary 文案——在自己的宽度内自动换行到多行，控件同行居中不受影响：
+
+<ComponentPreview name="pagination-long-summary" />
+
 ### 搭配 SelectableTable
 
 `Pagination` 不局限于表格。[SelectableTable](/zh/docs/component/selectable-table) 的[分页指南](/zh/docs/component/selectable-table#与-pagination-组合分页)给出了推荐组合：钩子驱动取数，表格保持纯展示，布局由你自己的容器拼接。
@@ -34,8 +46,10 @@ description: 受控的页码导航——首页 / 上一页 / 页码（带省略�
 | `onPageChange` | `(page: number) => void` | - | 任意按钮点击时触发 |
 | `siblingCount` | `number` | `1` | 当前页两侧展示的页码数量，超出部分折叠为省略号 |
 | `disabled` | `boolean` | `false` | 禁用全部按钮（例如翻页加载中） |
+| `summary` | `React.ReactNode` | - | 分页统计文本，占剩余宽度可换行；控件同行保持、垂直居中 |
 | `className` | `ClassNameValue` | - | 自定义类名，作用于根 `nav` |
-| `classNames` | `{ pages? }` | - | 页码按钮组的自定义类名 |
+| `classNames` | `{ pages?, summary? }` | - | 页码按钮组与分页文本的自定义类名 |
+| `styles` | `{ summary? }` | - | 分页文本的自定义样式 |
 
 ### 零件
 
@@ -48,5 +62,6 @@ description: 受控的页码导航——首页 / 上一页 / 页码（带省略�
 | `PaginationNext` | `Button` | text 变体，`px-0` | 下一页（`ChevronRight`） |
 | `PaginationLast` | `Button` | text 变体，`px-0` | 跳转末页（`ChevronsRight`） |
 | `PaginationEllipsis` | `<span>` | `size-8 text-muted-foreground` | 折叠页码标记（`MoreHorizontal`） |
+| `PaginationSummary` | `<span>` | `min-w-0 flex-1 text-sm text-muted-foreground` | 分页文本插槽，占剩余宽度可换行 |
 
 当前页渲染为 `outline` 变体并带 `aria-current="page"`；其余页码渲染为 `text` 变体。

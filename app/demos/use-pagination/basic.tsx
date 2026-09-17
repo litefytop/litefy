@@ -6,7 +6,7 @@ import {
   ChevronsLeft,
   ChevronsRight,
 } from "lucide-react";
-import { usePagination } from "@/ui";
+import { Button, usePagination } from "@/ui";
 
 export default function PaginationDemo() {
   const totalRecords = 128;
@@ -26,33 +26,28 @@ export default function PaginationDemo() {
 
   return (
     <div className="flex items-center justify-between gap-4 px-4 py-3 border rounded-md w-full">
-      <div className="text-sm text-gray-600">
+      <div className="text-sm text-muted-foreground">
         {startRecord} - {endRecord} of {Math.ceil(totalRecords / pageSize)} pages
       </div>
 
       <div className="flex items-center gap-2">
-        <button
-          type="button"
+        <Button
+          variant="outline"
           onClick={() => goTo(0)}
           disabled={isFirst}
-          className="px-3 py-1 text-sm border rounded hover:bg-gray-100"
+          aria-label="First page"
         >
           <ChevronsLeft className="size-4" />
-        </button>
+        </Button>
 
-        <button
-          type="button"
-          onClick={previous}
-          disabled={isFirst}
-          className="px-3 py-1 text-sm border rounded hover:bg-gray-100"
-        >
+        <Button variant="outline" onClick={previous} disabled={isFirst} aria-label="Previous page">
           <ChevronLeft className="size-4" />
-        </button>
+        </Button>
 
         <select
           value={currentPage}
           onChange={(e) => goTo(Number(e.target.value) - 1)}
-          className="px-2 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="px-2 py-1 text-sm border rounded"
         >
           {pageOptions.map((page) => (
             <option key={page} value={page}>
@@ -61,23 +56,18 @@ export default function PaginationDemo() {
           ))}
         </select>
 
-        <button
-          type="button"
-          onClick={next}
-          disabled={isEnd}
-          className="px-3 py-1 text-sm border rounded hover:bg-gray-100"
-        >
+        <Button variant="outline" onClick={next} disabled={isEnd} aria-label="Next page">
           <ChevronRight className="size-4" />
-        </button>
+        </Button>
 
-        <button
-          type="button"
+        <Button
+          variant="outline"
           onClick={() => goTo(totalPages - 1)}
           disabled={isEnd}
-          className="px-3 py-1 text-sm border rounded hover:bg-gray-100"
+          aria-label="Last page"
         >
           <ChevronsRight className="size-4" />
-        </button>
+        </Button>
       </div>
     </div>
   );

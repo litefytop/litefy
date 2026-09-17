@@ -319,7 +319,7 @@ export function Command({
           aria-haspopup="dialog"
           aria-expanded={open}
           onClick={() => setOpen(true)}
-          className={cn(Button.className.base, Button.className.variant.primary, classNames?.trigger)}
+          className={cn(Button.className.primary, classNames?.trigger)}
         >
           {trigger}
         </button>

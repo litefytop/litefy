@@ -1,3 +1,4 @@
+@custom-variant dark (&:where(.dark, .dark *));
 :root {
   color-scheme: light;
 
@@ -7,17 +8,22 @@
   --muted-foreground: oklch(26.9% 0 none);
   --accent: oklch(87% 0 none);
   --neutral: oklch(55.6% 0 none);
-
-  --outline: oklch(55.6% 0 none);
-  --ring: oklch(55.6% 0 none/0.5);
+  /* 浮层表面：亮色与画布同色（层次交给投影），暗色由 .dark 提亮 */
+  --surface-raised: var(--background);
 
   --primary: oklch(14.5% 0 none);
   --primary-accent: oklch(37.1% 0 0);
 
   --danger: oklch(44.4% 0.177 26.899);
-  --info: oklch(54.6% 0.245 262.881);
-  --success: oklch(62.7% 0.194 149.214);
-  --warning: oklch(79.5% 0.184 86.047);
+  --info: oklch(48.8% 0.243 264.376);
+  --success: oklch(44.8% 0.119 151.328);
+  --warning: oklch(47.6% 0.114 61.907);
+
+  /* 阴影四级（design.md §5）：faint / subtle / base / elevated，与圆角分级一一匹配 */
+  --elevation-faint: 0 1px 2px 0 oklch(0% 0 0 / 5%);
+  --elevation-subtle: 0 1px 2px 0 oklch(0% 0 0 / 6%), 0 2px 4px 0 oklch(0% 0 0 / 5%);
+  --elevation-base: 0 2px 4px -1px oklch(0% 0 0 / 8%), 0 4px 8px -2px oklch(0% 0 0 / 8%);
+  --elevation-elevated: 0 8px 16px -4px oklch(0% 0 0 / 12%), 0 20px 40px -8px oklch(0% 0 0 / 14%);
 }
 
 .dark {
@@ -29,22 +35,50 @@
   --muted-foreground: oklch(92.2% 0 none);
   --accent: oklch(37.1% 0 none);
   --neutral: oklch(70.8% 0 none);
-  --outline: oklch(70.8% 0 none);
-  --ring: oklch(70.8% 0 none/0.5);
+  /* 浮层表面提亮 +4.5% 亮度（暗色层级第一来源：越浮越高越亮），跟随画布色相 */
+  --surface-raised: oklch(from var(--background) calc(l + 0.045) c h);
 
   --primary: oklch(98.5% 0 none);
   --primary-accent: oklch(87% 0 0);
 
   --danger: oklch(70.4% 0.191 22.216);
   --info: oklch(70.7% 0.165 254.624);
-  --success: oklch(79.2% 0.209 151.711);
-  --warning: oklch(85.2% 0.199 91.936);
+  --success: oklch(72.3% 0.219 149.579);
+  --warning: oklch(79.5% 0.184 86.047);
+
+  /* 暗色三级层次：浮层表面提亮（--surface-raised）+ 白色亮环勾轮廓 + 顶部白色内高光；
+     黑色投影仅作浮层经过浅色内容（正文、表格）时的兜底 */
+  --elevation-faint: inset 0 1px 0 0 oklch(100% 0 0 / 5%), 0 1px 2px 0 oklch(0% 0 0 / 30%);
+  --elevation-subtle: 0 0 0 1px oklch(100% 0 0 / 7%), inset 0 1px 0 0 oklch(100% 0 0 / 7%), 0 1px 2px 0 oklch(0% 0 0 / 30%), 0 2px 4px 0 oklch(0% 0 0 / 25%);
+  --elevation-base: 0 0 0 1px oklch(100% 0 0 / 9%), inset 0 1px 0 0 oklch(100% 0 0 / 9%), 0 2px 4px -1px oklch(0% 0 0 / 35%), 0 4px 8px -2px oklch(0% 0 0 / 30%);
+  --elevation-elevated: 0 0 0 1px oklch(100% 0 0 / 14%), inset 0 1px 0 0 oklch(100% 0 0 / 11%), 0 8px 16px -4px oklch(0% 0 0 / 45%), 0 24px 48px -8px oklch(0% 0 0 / 50%);
 }
 
 @theme inline {
-  --breakpoint-3xl: 1920px;
+  /* 圆角分级（design.md §5）：sm 行内/标签/小控件，md 输入框/按钮，lg 区块卡片，xl 大卡片/弹窗/Drawer */
+  --radius: 4px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
+  /* 阴影刻度（design.md §5）：Tailwind 默认刻度全部映射到语义四级，不再清除——
+     2xs/xs→faint，sm→subtle，md→base，lg/xl/2xl→elevated；语义名与刻度名同值并存 */
+  --shadow-2xs: var(--elevation-faint);
+  --shadow-xs: var(--elevation-faint);
+  --shadow-sm: var(--elevation-subtle);
+  --shadow-md: var(--elevation-base);
+  --shadow-lg: var(--elevation-elevated);
+  --shadow-xl: var(--elevation-elevated);
+  --shadow-2xl: var(--elevation-elevated);
+  --shadow-faint: var(--elevation-faint);
+  --shadow-subtle: var(--elevation-subtle);
+  --shadow-base: var(--elevation-base);
+  --shadow-elevated: var(--elevation-elevated);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface-raised: var(--surface-raised);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-hover: var(--accent);
@@ -55,9 +89,9 @@
   --color-primary-foreground: var(--background);
   --color-primary-accent: var(--primary-accent);
 
-  --color-border: var(--ring);
-  --color-ring: var(--ring);
-  --color-outline: var(--outline);
+  --color-border: var(--accent);
+  --color-ring: var(--primary-accent)/0.5;
+  --color-outline: var(--primary-accent);
 
   --color-info: var(--info);
   --color-danger: var(--danger);

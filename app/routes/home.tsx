@@ -5,7 +5,6 @@ import { Link, useParams } from "react-router";
 import { baseOptions } from "@/components/layout-shared";
 import { ExampleWall } from "@/components/example-wall";
 import { Button, Typography } from "@/ui";
-import { cn } from "@/ui";
 import { i18n } from "@/lib/i18n";
 
 export type Locale = "en" | "zh";
@@ -85,7 +84,7 @@ function LandingHero({ locale }: { locale: Locale }) {
         <div className="mt-6 flex flex-wrap gap-2">
           <Link
             to={docsPath}
-            className={cn(Button.className.base, Button.className.variant.primary)}
+            className={Button.className.primary}
           >
             {t.primaryCta}
             <ArrowRight className="size-4" />
@@ -94,7 +93,7 @@ function LandingHero({ locale }: { locale: Locale }) {
             to="https://github.com/litefytop/litefy"
             target="_blank"
             rel="noopener noreferrer"
-            className={cn(Button.className.base, Button.className.variant.outline)}
+            className={Button.className.outline}
           >
             {t.secondaryCta}
           </Link>
@@ -102,11 +101,11 @@ function LandingHero({ locale }: { locale: Locale }) {
       </div>
       <div className="relative hidden md:block">
         <div className="absolute -inset-6 rounded-3xl bg-linear-to-br from-fd-primary/30 via-fd-primary/5 to-transparent blur-2xl" />
-        <div className="relative rounded-2xl border border-fd-border bg-fd-background/80 p-4 shadow-lg backdrop-blur">
+        <div className="relative rounded-2xl border border-fd-border bg-fd-background/80 p-4 shadow-elevated backdrop-blur">
           <div className="mb-3 flex items-center gap-1.5">
-            <div className="h-2.5 w-2.5 rounded-full bg-red-400" />
-            <div className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
-            <div className="h-2.5 w-2.5 rounded-full bg-green-400" />
+            <div className="h-2.5 w-2.5 rounded-full bg-danger" />
+            <div className="h-2.5 w-2.5 rounded-full bg-warning" />
+            <div className="h-2.5 w-2.5 rounded-full bg-success" />
           </div>
           <div className="space-y-2">
             <div className="h-2.5 w-3/4 rounded bg-fd-muted" />

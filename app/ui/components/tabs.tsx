@@ -10,7 +10,7 @@ export type TabsVariant = "button" | "line";
 
 const triggerClassNames: Record<TabsVariant, string> = {
   button:
-    "rounded-md hover:bg-accent data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm",
+    "rounded-md hover:bg-accent data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-subtle",
   line: "border-b-2 border-transparent data-[state=active]:text-primary data-[state=active]:border-primary",
 };
 

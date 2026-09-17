@@ -1,0 +1,43 @@
+---
+title: Chip
+description: Inline status label for short text marks, state flags and filter tags — carries all system status color semantics in one place.
+---
+
+## Installation
+
+<Installation name="chip" />
+
+## Usage
+
+`Chip` is a pure display label with no interaction logic. It ships six variants that cover the whole status color system — use `variant` instead of hand-picking colors.
+
+<ComponentPreview name="chip-basic" />
+
+- `primary` (default) — brand emphasis label
+- `outline` — bordered secondary label, lightweight
+- `success` / `warning` / `danger` / `info` — standard system status colors
+
+### Link and button variants
+
+`Chip` always renders a `span` and does not provide an `as` prop. For link or button scenarios, nest the native element inside as a child — the `Chip` owns the visuals, the child owns the semantics and interaction. Use `text-current` to inherit the variant color and `no-underline` to drop the default link underline:
+
+<ComponentPreview
+  name="chip-variants"
+/>
+
+## Notes
+
+- `Chip` is for inline status marks only — do not use it as a corner badge or floating marker; use [Badge](/docs/component/badge) for attached markers and [Callout](/docs/component/callout) for block-level feedback.
+- To make a chip interactive, nest an `a` or `button` as its child instead of reaching for class strings — this keeps a single visual source.
+- Custom colors are still possible by passing utilities to `className`; they win over the variant colors.
+- Combine with the [Capsule](/docs/component/capsule) component to build shields-io style badges.
+
+## API Reference
+
+### Chip
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `"outline" \| "primary" \| "success" \| "warning" \| "danger" \| "info"` | `"primary"` | Color semantics of the label |
+| `className` | `ClassNameValue` | - | Custom CSS class, overrides variant colors |
+| `...props` | `React.ComponentProps<"span">` | - | Supports all native span props |

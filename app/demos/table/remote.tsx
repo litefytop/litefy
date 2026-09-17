@@ -51,8 +51,8 @@ export default function Demo() {
             render: (row) => <span className="font-medium">{row.name}</span>,
           },
           { key: "category", header: "Category" },
-          { key: "price", header: "Price", sortable: true, align: "right", render: (row) => `$${row.price}` },
-          { key: "stock", header: "Stock", sortable: true, align: "right" },
+          { key: "price", header: "Price", sortable: true, width: "7rem", render: (row) => `$${row.price}` },
+          { key: "stock", header: "Stock", sortable: true, width: "6rem" },
         ]}
       />
       <p className="text-xs text-muted-foreground">

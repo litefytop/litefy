@@ -1,6 +1,6 @@
 ---
 title: Badge
-description: A square surface slot with a corner marker — drop an icon inside and attach a Tag-style label to the top-right corner.
+description: A square surface slot with a corner marker — drop an icon inside and attach a label to the top-right corner.
 ---
 
 ## Installation
@@ -11,7 +11,7 @@ description: A square surface slot with a corner marker — drop an icon inside 
 
 ### Basic Usage
 
-`Badge` is a fixed-size surface (a `size-12` muted square by default) whose corner marker is rendered through the [Tag](/docs/component/tag) component — pass `label` to attach a numeric or text marker at the top-right corner.
+`Badge` is a fixed-size surface (a `size-12` muted square by default) whose corner marker is a standalone overlay span — pass `label` to attach a numeric or text marker at the top-right corner.
 
 <ComponentPreview
   name="badge-basic"
@@ -27,7 +27,7 @@ The surface shape comes entirely from utilities, so reshape it with `className` 
 
 ### Marker coloring
 
-`label` renders as a Tag — color it the same way, via the `label` slot:
+`label` renders as a marker — color it the same way, via the `label` slot:
 
 <ComponentPreview
   name="badge-marker-color"
@@ -35,7 +35,7 @@ The surface shape comes entirely from utilities, so reshape it with `className` 
 
 ## Notes
 
-- The marker uses the [Tag](/docs/component/tag) component internally — when installing via CLI, add both: `litefy add badge tag`.
+- The marker is a standalone overlay span, not a [Chip](/docs/component/chip) — attached markers and inline status labels are deliberately separate components. `Badge` ships with no dependencies.
 
 ## API Reference
 
@@ -44,7 +44,7 @@ The surface shape comes entirely from utilities, so reshape it with `className` 
 | Prop        | Type                              | Default | Description                                              |
 | :---------- | :-------------------------------- | :------ | :------------------------------------------------------- |
 | `children`  | `React.ReactNode`                 | -       | Surface content, typically an icon                       |
-| `label`     | `React.ReactNode`                 | -       | Corner marker content, rendered as a Tag at the top-right |
+| `label`     | `React.ReactNode`                 | -       | Corner marker content, rendered as an overlay at the top-right |
 | `classNames`| `{ label?: ClassNameValue }`      | -       | Custom class names per slot                              |
 | `styles`    | `{ label?: React.CSSProperties }` | -       | Custom styles per slot                                   |
 | `className` | `ClassNameValue`                  | -       | Custom class names of the surface                        |

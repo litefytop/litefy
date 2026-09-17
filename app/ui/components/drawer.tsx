@@ -38,7 +38,7 @@ export function DrawerWrapper({
     <div
       {...props}
       className={cn(
-        "fixed transition-transform duration-300 ease-out flex shadow-lg max-h-full max-w-full min-w-1/4 min-h-1/3 bg-background text-foreground",
+        "fixed transition-transform duration-300 ease-out flex rounded-xl shadow-elevated max-h-full max-w-full min-w-1/4 min-h-1/3 bg-surface-raised text-foreground",
         isHorizontal ? "w-1/4 h-full" : "h-1/3 w-full",
         placementStyles[placement],
         className,

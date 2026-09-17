@@ -10,25 +10,25 @@ export default function WizardBasicDemo() {
       <form className="flex h-full w-full flex-col justify-center gap-3 rounded-lg border p-4">
         <label className="text-sm font-medium">Email</label>
         <input
-          className="h-9 rounded-md border bg-background px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="h-9 rounded-md border bg-background px-3 text-sm"
           placeholder="you@example.com"
         />
         <label className="text-sm font-medium">Password</label>
         <input
           type="password"
-          className="h-9 rounded-md border bg-background px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="h-9 rounded-md border bg-background px-3 text-sm"
           placeholder="••••••••"
         />
       </form>
       <form className="flex h-full w-full flex-col justify-center gap-3 rounded-lg border p-4">
         <label className="text-sm font-medium">Display name</label>
         <input
-          className="h-9 rounded-md border bg-background px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="h-9 rounded-md border bg-background px-3 text-sm"
           placeholder="Your name"
         />
         <label className="text-sm font-medium">Bio</label>
         <textarea
-          className="min-h-16 rounded-md border bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="min-h-16 rounded-md border bg-background px-3 py-2 text-sm"
           placeholder="Tell something about yourself"
         />
       </form>

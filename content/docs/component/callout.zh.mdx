@@ -1,0 +1,36 @@
+---
+title: Callout 提示块
+description: 区块级静态反馈组件，用于大段提示、说明、结果反馈——统一系统反馈视觉口径。
+---
+
+## 安装
+
+<Installation name="callout" />
+
+## 用法
+
+`Callout` 是静态的区块级反馈容器。渲染语义色低透底色 + 对应语义文字色，保证柔和且统一。
+
+<ComponentPreview name="callout-basic" />
+
+- `info`（默认）— 中性说明与提示
+- `success` — 成功结果
+- `warning` — 警示提醒
+- `danger` — 失败与危险反馈
+
+## 注意
+
+- `Callout` 仅用于区块提示——短状态标记用 [Chip](/docs/component/chip)，行内操作用 `text` 型 [Button](/docs/component/button)。
+- 它是静态容器：没有 hover、focus 等交互状态。
+- 内部可组合任意内容——标题可用带 `font-medium` 的 `<p>`，也可放任意图标。
+- 表单控件下方的校验反馈同样是 `Callout`：`variant="danger"` 搭配 `role="alert"`。`Form` / `FormItem` 的错误行内部就是这样渲染的。
+
+## API 参考
+
+### Callout
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `"info" \| "success" \| "warning" \| "danger"` | `"info"` | 区块的语义色 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类，覆盖变体色 |
+| `...props` | `React.ComponentProps<"div">` | - | 支持所有原生 div 属性 |

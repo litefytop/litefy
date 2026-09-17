@@ -1,0 +1,34 @@
+---
+title: CardButton
+description: A card-shaped interactive button — rests at shadow-base, lifts to shadow-elevated on hover.
+---
+
+## Installation
+
+<Installation name="card-button" />
+
+## Usage
+
+`CardButton` is the interactive counterpart of [Card](/docs/component/card): the same card surface (`rounded-lg`, border, `shadow-base`), but a real `button` — resting at `shadow-base`, it rises 2px and lifts to `shadow-elevated` on hover. Use it whenever a whole card is clickable: stat tiles, selectable panels, navigation cards. Purely presentational content belongs in static `Card`.
+
+Focus and pressed states are handled like Button: a focus ring plus an inset shadow while pressed.
+
+Stat cards that respond to hover:
+
+<ComponentPreview name="card-button-basic" />
+
+### Variants
+
+Variants mirror Button: `outline` (default) is the standard card look; `primary` and `danger` tint the whole surface for strong emphasis; `text` is flat at rest — no border, no shadow, only a background tint on hover — for lightweight card lists.
+
+<ComponentPreview name="card-button-variants" />
+
+## API Reference
+
+### CardButton
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `"primary" \| "danger" \| "outline" \| "text"` | `"outline"` | Visual weight, mirrors Button |
+| `className` | `ClassNameValue` | - | Custom CSS class |
+| `...props` | `React.ComponentProps<"button">` | - | Supports all native button props |

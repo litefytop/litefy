@@ -9,7 +9,7 @@ export default function Demo() {
     <SwitchLabel>
       <SwitchTrack
         checked={checked}
-        className="w-14 h-7 bg-muted data-checked:bg-emerald-600"
+        className="w-14 h-7 bg-muted data-checked:bg-primary-accent"
       >
         <SwitchRoot
           checked={checked}

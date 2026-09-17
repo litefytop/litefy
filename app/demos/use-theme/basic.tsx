@@ -1,6 +1,6 @@
 "use client";
 
-import { useTheme } from "@/ui";
+import { Button, useTheme } from "@/ui";
 
 const SURFACES = [
   { value: "", color: "oklch(55.6% 0 none)" },
@@ -41,17 +41,14 @@ export default function UseThemeBasicDemo() {
       </p>
       <div className="flex gap-2">
         {(["light", "dark", "system"] as const).map((mode) => (
-          <button
+          <Button
             key={mode}
-            type="button"
+            variant={theme.theme === mode ? "primary" : "outline"}
             onClick={() => theme.setTheme(mode)}
-            className={
-              "rounded-md border px-3 py-1.5 text-sm capitalize hover:bg-primary-accent" +
-              (theme.theme === mode ? " bg-primary text-primary-foreground" : "")
-            }
+            className="capitalize"
           >
             {mode}
-          </button>
+          </Button>
         ))}
       </div>
       <div className="flex flex-col items-center gap-2">

@@ -41,7 +41,7 @@ export function PickerContent({ className, ...props }: PickerContentProps) {
       popover="manual"
       tabIndex={-1}
       {...props}
-      className={cn("bg-background text-foreground border shadow-lg rounded-lg", className)}
+      className={cn("bg-surface-raised text-foreground border shadow-elevated rounded-xl", className)}
     />
   );
 }

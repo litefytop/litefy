@@ -10,8 +10,10 @@ import { Button, Input, Select } from "@/ui";   // the barrel — everything is 
 - Every component spreads native HTML props through (`{...props}`); `ref` works as a normal prop (React 19, no `forwardRef`).
 - `className` accepts a string or array and merges via `tailwind-merge` (`ClassNameValue`).
 - Most components expose per-part overrides: `classNames={{ slot: "..." }}` and `styles={{ slot: {} }}`.
-- Use **semantic tokens only** (never raw palette colors): `bg-background` `text-foreground` `text-muted-foreground` `bg-primary` `text-primary-foreground` `bg-primary-accent` `bg-muted` `bg-hover` `border` `text-danger` `text-success` `text-warning` `text-info` `ring` `outline` `text-neutral`.
-- Form controls follow the same conventions: `value` / `defaultValue` + `onValueChange` (or `checked` / `defaultChecked` + `onCheckedChange`) and `disabled`. `invalid` (danger border) exists only on text inputs (Input, Password, Textarea, NumberInput, NumberField, InputOtp, DatePicker) — non-text interactive components (Select, Radio, Checkbox, Segment, Upload…) take no `invalid`; render validation feedback below the control with the `Error` component.
+- **Composite XOR parts** — finished composites (`Dialog`, `Toaster`, …) already assemble and wire their parts internally; never render a component's parts inside its own composite (`Dialog` ships a built-in top-right ESC close button — putting `DialogClose` in its children stacks a duplicate button). Parts (`DialogRoot` / `DialogContent` / `DialogClose` / …) are for custom assembly with your own open/close lifecycle only.
+- Use **semantic tokens only** (never raw palette colors): `bg-background` `bg-surface-raised` (floating panels — lighter than canvas in dark mode) `text-foreground` `text-muted-foreground` `bg-primary` `text-primary-foreground` `bg-primary-accent` `bg-muted` `bg-hover` `border` `text-danger` `text-success` `text-warning` `text-info` `ring` `outline` `text-neutral`.
+- Shadows have four semantic levels — `shadow-faint` `shadow-subtle` `shadow-base` `shadow-elevated`. Tailwind's default scale is overridden in theme.css to map onto them (`2xs/xs`→faint, `sm`→subtle, `md`→base, `lg/xl/2xl`→elevated); both families share the same values. Dark levels carry a white rim + top highlight, so never fake elevation with white blur-glows. Never use arbitrary `shadow-[...]`.
+- Form controls follow the same conventions: `value` / `defaultValue` + `onValueChange` (or `checked` / `defaultChecked` + `onCheckedChange`) and `disabled`. `invalid` (danger border) exists only on text inputs (Input, Password, Textarea, NumberInput, NumberField, InputOtp, DatePicker) — non-text interactive components (Select, Radio, Checkbox, Segment, Upload…) take no `invalid`; render validation feedback below the control with a Callout (`variant="danger"`, `role="alert"`).
 - Icons come from `lucide-react`, typically `className="size-4"`.
 - Full prop tables and behavior details live in `content/docs/component/<name>.mdx` (and `.zh.mdx`) — consult them when a prop you need isn't listed below.
 
@@ -103,7 +105,7 @@ Self-managing form field: renders a finished control per `variant` (`"input" | "
   controlProps={{ placeholder: "you@example.com" }}
 />
 ```
-- Layout: label → control → one hint line. Description shows by default and is **replaced by an Error container** while invalid; no space is reserved when empty.
+- Layout: label → control → one hint line. Description shows by default and is **replaced by a danger Callout (`role="alert"`)** while invalid; no space is reserved when empty.
 - `validate` returns `string` (hard error) | `{ message, invalid: false }` (message only) | `false` (bare invalid) | `null/undefined/true` (pass). Re-validates on change once invalid; `validateTrigger="onChange" | "onBlur"` (default onBlur).
 - Registers with the surrounding `Form`; `controlProps` forwards to the underlying control (custom `onChange`/`onBlur` are wrapped, not replaced). The select variant carries its value in a hidden input for native submission.
 
@@ -113,11 +115,12 @@ Full form composition: fields, submit handling, validation collection, imperativ
 ## Buttons
 
 ### Button
-`variant`: `"primary"` (default) | `"danger"` | `"outline"` | `"text"`. `loading` swaps in a spinner (`loadingConfig` to customize), icon-only children get square padding automatically.
+`variant`: `"primary"` (default) | `"danger"` | `"outline"` | `"text"`. `loading` swaps in a spinner (`loadingConfig` to customize), icon-only children get square padding automatically. To give a non-button element (e.g. an `<a>` CTA link) the full button look, set `className` to `Button.className.primary` / `.danger` / `.outline` / `.text` — pre-flattened full class strings, usable directly without `cn`.
 
 ## Layout & Surfaces
 
-### Card — glassmorphic surface with hover lift and ambient glow.
+### Card — glassmorphic **static** surface: `rounded-lg` + fixed `shadow-base`, no hover effects or lift (interaction belongs to CardButton).
+### CardButton — card-shaped interactive button inheriting the Card base: variants mirror Button (`"primary" | "danger" | "outline" | "text"`), rests at `shadow-base` and lifts to `hover:shadow-elevated`.
 ### Paper — print-ready A4/A5 page surface, portrait or landscape (`variant="a4" | "a5" | "a4-landscape" | "a5-landscape"`).
 ### Separator
 Line, or a line–text–line divider when `children` is passed (the auth "or" divider). Horizontal carries a default `my-3` (override via `className`); vertical lines self-stretch in flex rows and rely on `gap`. Parts: `SeparatorLine` / `SeparatorText`.
@@ -154,7 +157,7 @@ Menu usable in normal document flow: `items` (groups, two-level submenus), keybo
 Trigger + Popover + Menu composite: `trigger`, `items` (same shape as Menu), `onSelect`, `alignX` (default `"center"`), `classNames` (content / item / label / sub). Trigger is styled as a primary Button by default.
 
 ### Pagination
-Controlled page navigator: first / prev / numbered pages with ellipsis / next / last. Pure view — `page` + `totalPages` + `onPageChange` are required, state belongs to `usePagination` (`base: 1`). `siblingCount` (default `1`) controls neighbors before ellipsis collapse; `disabled` freezes all buttons while loading. Parts: `PaginationRoot` / `PaginationFirst` / `PaginationPrev` / `PaginationPages` / `PaginationNext` / `PaginationLast` / `PaginationEllipsis`.
+Controlled page navigator: first / prev / numbered pages with ellipsis / next / last. Pure view — `page` + `totalPages` + `onPageChange` are required, state belongs to `usePagination` (`base: 1`). `siblingCount` (default `1`) controls neighbors before ellipsis collapse; `disabled` freezes all buttons while loading. Optional `summary` renders a page-count text on the left — left-right layout: the summary takes the remaining width and wraps onto new lines while the controls stay on the same row, vertically centered and never squeezed; typical content is total items and selection count. Parts: `PaginationRoot` / `PaginationFirst` / `PaginationPrev` / `PaginationPages` / `PaginationNext` / `PaginationLast` / `PaginationEllipsis` / `PaginationSummary`.
 
 ### Sidebar
 Collapsible sidebar controlled via ref (`SidebarHandle` — e.g. `ref.current.collapse()`).
@@ -162,7 +165,7 @@ Collapsible sidebar controlled via ref (`SidebarHandle` — e.g. `ref.current.co
 ## Overlays
 
 ### Dialog
-Modal on the native `<dialog>`: `open` / `onOpenChange`, `onBackdropClick`. Parts: `DialogRoot` / `DialogContent` / `DialogClose`.
+Modal on the native `<dialog>` with a built-in top-right ESC close button and focus trap: `open` / `onOpenChange`, `onBackdropClick`. Parts `DialogRoot` / `DialogContent` / `DialogClose` are for custom assembly only — don't render `DialogClose` inside `Dialog`.
 
 ### Command
 Dialog-based command palette: `trigger` (or app-level ⌘K wiring via `open` / `onOpenChange`) opens a dialog with the search input on top and the filtered list below. Filters on `value` / string `label` / `keywords` (custom via `filter`), `↑`/`↓`+`Enter` keyboard navigation with the first match pre-highlighted, selecting closes the dialog. Items are config-driven — `{ label, value?, icon?, shortcut?, keywords?, disabled? }` plus `{ group, items }` groups; `renderItem` overrides row rendering. Parts `CommandRoot` / `CommandInput` / `CommandList` assemble the input + filtered list without the dialog (e.g. inside a Popover).
@@ -198,9 +201,14 @@ Toasts never carry action buttons — use Dialog when interaction is needed. `cl
 `<Avatar src="..." fallback="FL" />` — image with skeleton + fallback states. Parts: `AvatarRoot` / `AvatarImage`.
 
 ### Badge
-Square slot with a corner marker: put an icon as children, `label` renders a Tag pinned to the top-right.
+Square slot with a corner marker: put an icon as children, `label` renders a standalone overlay span pinned to the top-right (not a Chip — attached markers and inline status labels are separate components). Zero dependencies.
 
-### Tag — plain single-color chip, zero interaction logic; color it with any `bg-*` utility.
+### Callout
+Block-level static feedback container: `variant` (`"info"` (default) | `"success" | "warning" | "danger"`) picks a soft semantic tinted background + matching text color. Static only — no interaction states. For inline state marks use Chip; short inline actions use a `text` Button.
+
+### Chip
+Inline status label, zero interaction logic: `variant` (`"primary"` (default) | `"outline" | "success" | "warning" | "danger" | "info"`) carries all system status color semantics — prefer it over hand-picking `bg-*` colors. To make a chip interactive, nest an `a` / `button` as its child (Chip owns visuals, child owns semantics) — no static class-string reuse.
+
 ### Kbd — keyboard key visual with pressable hover/active states.
 
 ### Table
@@ -212,7 +220,7 @@ Square slot with a corner marker: put an icon as children, `label` renders a Tag
   empty="No rows" getKey={fn} classNames={{ body: "h-48" }}   // body scroller ships a built-in h-96
 />
 ```
-Column: `{ key, header, render?, sortable?, compare?, align? }`. Clickable sortable headers for local data; remote mode delegates sorting to your backend (`onSortChange`). Header and body are two separate tables (`table-fixed` equal columns, the header strip never scrolls): the body scroller ships a built-in fixed height `h-96` so paging never collapses it (override via `classNames.body`), per-column widths go in `column.className` (applies to th and td). Parts: `TableRoot` / `TableHead` / `TableBody` / `TableBase` for custom assembly (keep the `<colgroup>` identical in both tables).
+Column: `{ key, header, render?, sortable?, compare?, align?, width?, className? }`. Clickable sortable headers for local data; remote mode delegates sorting to your backend (`onSortChange`). Header and body are two separate tables (`table-fixed`, the header strip never scrolls): widths are content-independent, so paging never shifts the layout; the body scroller ships a built-in fixed height `h-96` (override via `classNames.body`). Columns take an optional `width` (CSS width on the `<col>`, e.g. `"8rem"`); width-less columns share the leftover equally — leave one flexible text column without `width` and give narrow columns (numbers, badges, controls) explicit widths. All columns are start-aligned by design with table-wide `tabular-nums` — reserve `align` for control columns' `center`. Parts: `TableRoot` / `TableHead` / `TableBody` / `TableBase` for custom assembly (keep the `<colgroup>` identical in both tables).
 
 ### SelectableTable
 Table with a built-in checkbox column (header select-all with indeterminate state; it only affects the current page and preserves cross-page selections):
@@ -285,9 +293,6 @@ Same state machine as a vertical steps accordion — only the current step expan
 
 ### Upload
 Dropzone upload with local validation: `accept`, `multiple`, `maxSize`, `maxCount`, `onFilesAccepted` / `onFilesRejected` / `onFileRemove`, `dropzone`. Parts: `UploadDropzone` / `UploadItem` / `UploadActions` / `UploadHiddenInput`. Monitoring actual network progress is decoupled — use the `use-upload-monitor` hook.
-
-### Error
-Danger-tinted message container for validation feedback below a control: `text-danger` on `bg-danger/15`, renders `role="alert"`. Pair it with non-text interactive components (Select, Radio, Checkbox, Segment, Upload…) — text inputs keep their own `invalid` border instead. `Form` / `FormItem` use it internally for their error lines.
 
 ### Chart
 Self-built canvas time-series chart on the `chart-kit` math layer (nice ticks, LTTB downsampling, `scaleLinear` / `linePath` / `areaPath`) + the `chart-paint` canvas helpers (grid / bars / line / crosshair painting) — automatic canvas theming, responsive width, interactive legend, hover tooltip, drag box-zoom with double-click reset. Series support `type: "line" | "area" | "bar"`. Pair with the `use-chart-palette` hook.

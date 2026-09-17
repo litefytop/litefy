@@ -147,7 +147,7 @@ function WallCard({
   return (
     <div
       ref={ref}
-      className="overflow-hidden rounded-xl border bg-background transition-shadow hover:shadow-md"
+      className="overflow-hidden rounded-lg border bg-background shadow-base transition-shadow hover:shadow-elevated"
     >
       <Link
         to={item.href(locale)}

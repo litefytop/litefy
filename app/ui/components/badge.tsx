@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
-import { Tag } from "./tag";
 
 export interface BadgeProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
@@ -20,18 +19,20 @@ export function Badge({ children, className, label, classNames, styles, ...props
     <div
       {...props}
       className={cn(
-        "relative flex items-center justify-center size-12 rounded-md shadow-md",
+        "relative flex items-center justify-center size-12 rounded-sm shadow-subtle",
         className,
       )}
     >
-      <Tag
-        children={label}
-        className={[
-          "absolute top-0 right-0 rounded-full translate-x-[50%] translate-y-[-50%]",
+      <span
+        className={cn(
+          "absolute top-0 right-0 inline-flex items-center justify-center min-h-2 min-w-2 rounded-full translate-x-[50%] translate-y-[-50%] bg-primary text-primary-foreground leading-none tabular-nums truncate text-xs",
+          label && "px-1",
           classNames?.label,
-        ]}
+        )}
         style={styles?.label}
-      />
+      >
+        {label}
+      </span>
       {children}
     </div>
   );

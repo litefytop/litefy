@@ -5,10 +5,7 @@
   },
   "badge": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/badge.tsx",
-    "dependence": [
-      "tag"
-    ]
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/badge.tsx"
   },
   "banner": {
     "type": "component",
@@ -26,9 +23,17 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/calendar.tsx"
   },
+  "callout": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/callout.tsx"
+  },
   "capsule": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/capsule.tsx"
+  },
+  "card-button": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/card-button.tsx"
   },
   "card": {
     "type": "component",
@@ -68,6 +73,10 @@
   "chip-group": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/chip-group.tsx"
+  },
+  "chip": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/chip.tsx"
   },
   "collapse": {
     "type": "component",
@@ -144,10 +153,6 @@
       "input-group"
     ]
   },
-  "error": {
-    "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/error.tsx"
-  },
   "form-item": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/form-item.tsx",
@@ -157,7 +162,7 @@
       "select",
       "password",
       "number-input",
-      "error",
+      "callout",
       "form"
     ]
   },
@@ -349,10 +354,6 @@
   "tabs": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/tabs.tsx"
-  },
-  "tag": {
-    "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/tag.tsx"
   },
   "text-area": {
     "type": "component",

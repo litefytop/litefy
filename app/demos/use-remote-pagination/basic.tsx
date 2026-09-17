@@ -36,7 +36,7 @@ export default function UseRemotePaginationBasicDemo() {
           remote.search(e.target.value);
         }}
         placeholder="Search…"
-        className="h-9 rounded-md border px-3 text-sm outline-none focus:border-primary"
+        className="h-9 rounded-md border px-3 text-sm"
       />
       {remote.isSearching ? (
         <p className="py-4 text-center text-sm text-muted-foreground">Searching…</p>

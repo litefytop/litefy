@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { Sidebar, type SidebarHandle } from "@/ui";
+import { Button, Sidebar, type SidebarHandle } from "@/ui";
 
 export default function SidebarBasicDemo() {
   const sidebarRef = useRef<SidebarHandle>(null);
@@ -9,27 +9,15 @@ export default function SidebarBasicDemo() {
   return (
     <div className="flex w-full flex-col gap-3">
       <div className="flex gap-2">
-        <button
-          type="button"
-          onClick={() => sidebarRef.current?.toggle()}
-          className="px-3 py-1.5 text-sm border rounded hover:bg-primary-accent"
-        >
+        <Button variant="outline" onClick={() => sidebarRef.current?.toggle()}>
           Toggle
-        </button>
-        <button
-          type="button"
-          onClick={() => sidebarRef.current?.open()}
-          className="px-3 py-1.5 text-sm border rounded hover:bg-primary-accent"
-        >
+        </Button>
+        <Button variant="outline" onClick={() => sidebarRef.current?.open()}>
           Open
-        </button>
-        <button
-          type="button"
-          onClick={() => sidebarRef.current?.close()}
-          className="px-3 py-1.5 text-sm border rounded hover:bg-primary-accent"
-        >
+        </Button>
+        <Button variant="outline" onClick={() => sidebarRef.current?.close()}>
           Close
-        </button>
+        </Button>
       </div>
       <div className="flex w-full h-48 border rounded-md overflow-hidden">
         <Sidebar ref={sidebarRef} defaultOpen className="w-48 p-4 border-r">

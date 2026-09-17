@@ -39,7 +39,7 @@ export function DialogContent({ className, ...props }: DialogContentProps) {
       className={cn(
         "fixed min-w-70 max-w-md",
         "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 m-0",
-        "rounded-lg border p-6 shadow-lg bg-background text-foreground",
+        "rounded-xl border p-6 shadow-elevated bg-surface-raised text-foreground",
         className,
       )}
     />

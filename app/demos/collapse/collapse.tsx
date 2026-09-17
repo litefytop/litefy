@@ -4,7 +4,7 @@ import { Collapse } from "@/ui";
 
 export default function Demo() {
   return (
-    <div>
+    <div >
       <Collapse
         label="Collapse and Accordion"
         className="max-w-md min-w-xs rounded-md border border-border"

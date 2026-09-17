@@ -1,6 +1,6 @@
 "use client";
 
-import { useVirtualScroll } from "@/ui";
+import { Button, useVirtualScroll } from "@/ui";
 
 const ROWS = Array.from({ length: 500 }, (_, i) => `Row ${i + 1}`);
 
@@ -14,27 +14,15 @@ export default function VirtualScrollBasicDemo() {
   return (
     <div className="flex flex-col items-center gap-4 py-4">
       <div className="flex gap-2">
-        <button
-          type="button"
-          onClick={() => virtual.scrollToIndex(250, "center")}
-          className="px-3 py-1.5 text-sm border rounded hover:bg-primary-accent"
-        >
+        <Button variant="outline" onClick={() => virtual.scrollToIndex(250, "center")}>
           Jump to 250
-        </button>
-        <button
-          type="button"
-          onClick={virtual.scrollToTop}
-          className="px-3 py-1.5 text-sm border rounded hover:bg-primary-accent"
-        >
+        </Button>
+        <Button variant="outline" onClick={virtual.scrollToTop}>
           Top
-        </button>
-        <button
-          type="button"
-          onClick={virtual.scrollToBottom}
-          className="px-3 py-1.5 text-sm border rounded hover:bg-primary-accent"
-        >
+        </Button>
+        <Button variant="outline" onClick={virtual.scrollToBottom}>
           Bottom
-        </button>
+        </Button>
       </div>
       <div
         {...virtual.containerProps}

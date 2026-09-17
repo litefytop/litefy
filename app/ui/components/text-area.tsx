@@ -24,7 +24,7 @@ export function Textarea({
       aria-invalid={invalid}
       data-invalid={invalid ? true : undefined}
       className={cn(
-        "flex w-full rounded-md border border-border shadow-xs transition-colors px-2 py-2 text-sm",
+        "flex w-full rounded-md border border-border shadow-base transition-colors px-2 py-2 text-sm",
         "min-h-20 resize-y",
         "focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20",
         "aria-invalid:border-danger aria-invalid:text-danger",

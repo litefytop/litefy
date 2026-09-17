@@ -21,6 +21,8 @@ import BannerBasicDemo from "./banner/basic";
 import bannerBasicCode from "./banner/basic.tsx?raw";
 import BannerCustomDemo from "./banner/custom";
 import bannerCustomCode from "./banner/custom.tsx?raw";
+import CalloutBasicDemo from "./callout/basic";
+import calloutBasicCode from "./callout/basic.tsx?raw";
 import DatePickerBasicDemo from "./date-picker/basic";
 import datePickerBasicCode from "./date-picker/basic.tsx?raw";
 import MasonryBasicDemo from "./masonry/basic";
@@ -105,8 +107,10 @@ import CommandPartsDemo from "./command/parts";
 import commandPartsCode from "./command/parts.tsx?raw";
 import CardBasicDemo from "./card/basic";
 import cardBasicCode from "./card/basic.tsx?raw";
-import CardGroupDemo from "./card/group";
-import cardGroupCode from "./card/group.tsx?raw";
+import CardButtonBasicDemo from "./card-button/basic";
+import cardButtonBasicCode from "./card-button/basic.tsx?raw";
+import CardButtonVariantsDemo from "./card-button/variants";
+import cardButtonVariantsCode from "./card-button/variants.tsx?raw";
 import CapsuleBadgeDemo from "./capsule/badge";
 import capsuleBadgeCode from "./capsule/badge.tsx?raw";
 import CapsuleLinkDemo from "./capsule/link";
@@ -117,10 +121,10 @@ import TypographyTextDemo from "./typography/text";
 import typographyTextCode from "./typography/text.tsx?raw";
 import PaperBasicDemo from "./paper/basic";
 import paperBasicCode from "./paper/basic.tsx?raw";
-import TagBasicDemo from "./tag/basic";
-import tagBasicCode from "./tag/basic.tsx?raw";
-import TagVariantsDemo from "./tag/variants";
-import tagVariantsCode from "./tag/variants.tsx?raw";
+import ChipBasicDemo from "./chip/basic";
+import chipBasicCode from "./chip/basic.tsx?raw";
+import ChipVariantsDemo from "./chip/variants";
+import chipVariantsCode from "./chip/variants.tsx?raw";
 import KbdBasicDemo from "./kbd/basic";
 import kbdBasicCode from "./kbd/basic.tsx?raw";
 import KbdCombinationDemo from "./kbd/combination";
@@ -137,8 +141,6 @@ import DialogCustomDemo from "./dialog/custom";
 import dialogCustomCode from "./dialog/custom.tsx?raw";
 import DrawerBasicDemo from "./drawer/basic";
 import drawerBasicCode from "./drawer/basic.tsx?raw";
-import ErrorBasicDemo from "./error/basic";
-import errorBasicCode from "./error/basic.tsx?raw";
 import DrawerExpandableDemo from "./drawer/expandable";
 import drawerExpandableCode from "./drawer/expandable.tsx?raw";
 import DrawerCustomDemo from "./drawer/custom";
@@ -201,6 +203,8 @@ import NumberInputCustomDemo from "./number-input/custom";
 import numberInputCustomCode from "./number-input/custom.tsx?raw";
 import PaginationComponentDemo from "./pagination/basic";
 import paginationComponentCode from "./pagination/basic.tsx?raw";
+import PaginationLongSummaryDemo from "./pagination/long-summary";
+import paginationLongSummaryCode from "./pagination/long-summary.tsx?raw";
 import PagerBasicDemo from "./pager/basic";
 import pagerBasicCode from "./pager/basic.tsx?raw";
 import PagerGestureDemo from "./pager/gesture";
@@ -459,13 +463,17 @@ export const demos: Record<string, DemoItem> = {
     component: CardBasicDemo,
     code: cardBasicCode,
   },
-  "tag-basic": {
-    component: TagBasicDemo,
-    code: tagBasicCode,
+  "chip-basic": {
+    component: ChipBasicDemo,
+    code: chipBasicCode,
   },
-  "tag-variants": {
-    component: TagVariantsDemo,
-    code: tagVariantsCode,
+  "chip-variants": {
+    component: ChipVariantsDemo,
+    code: chipVariantsCode,
+  },
+  "callout-basic": {
+    component: CalloutBasicDemo,
+    code: calloutBasicCode,
   },
   "capsule-badge": {
     component: CapsuleBadgeDemo,
@@ -475,9 +483,13 @@ export const demos: Record<string, DemoItem> = {
     component: CapsuleLinkDemo,
     code: capsuleLinkCode,
   },
-  "card-group": {
-    component: CardGroupDemo,
-    code: cardGroupCode,
+  "card-button-basic": {
+    component: CardButtonBasicDemo,
+    code: cardButtonBasicCode,
+  },
+  "card-button-variants": {
+    component: CardButtonVariantsDemo,
+    code: cardButtonVariantsCode,
   },
   "typography-headings": {
     component: TypographyHeadingsDemo,
@@ -506,10 +518,6 @@ export const demos: Record<string, DemoItem> = {
   "drawer-basic": {
     component: DrawerBasicDemo,
     code: drawerBasicCode,
-  },
-  "error-basic": {
-    component: ErrorBasicDemo,
-    code: errorBasicCode,
   },
   "drawer-expandable": {
     component: DrawerExpandableDemo,
@@ -726,6 +734,10 @@ export const demos: Record<string, DemoItem> = {
   "pagination-basic": {
     component: PaginationComponentDemo,
     code: paginationComponentCode,
+  },
+  "pagination-long-summary": {
+    component: PaginationLongSummaryDemo,
+    code: paginationLongSummaryCode,
   },
   "pager-basic": {
     component: PagerBasicDemo,

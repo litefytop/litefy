@@ -7,18 +7,31 @@ Litefy's styling is layered CSS custom properties, all defined in OKLCH and mapp
 
 | Layer | File(s) | Registry | What it does |
 |---|---|---|---|
-| **Theme** (required) | `theme.css` | `style-theme` | Base token set: light + dark schemes, `@theme inline` mapping |
+| **Theme** (required, auto-installed by `init`) | `theme.css` | `style-theme` | Base token set: light + dark schemes, `@theme inline` mapping |
 | **Brand** (optional) | `*-brand.css` ×13 | `style-*-brand` | Overrides `--primary` / `--primary-accent` under `[data-brand]` |
 | **Surface** (optional) | `*-surface.css` ×9 | `style-*-surface` | Overrides `--background` / `--foreground` / `--muted` / `--muted-foreground` / `--accent` / `--neutral` under `[data-surface]` |
-| **Interactive** (required) | `interactive.css` | `style-interactive` | Global behavior styles: disabled, focus-visible, press feedback |
+| **Interactive** (optional, recommended) | `interactive.css` | `style-interactive` | Global behavior styles: disabled, focus-visible, press feedback |
 
-Install `theme.css` and `interactive.css` first — they are the required base. Brand and Surface presets are optional add-ons, combinable freely (one brand + one surface at a time).
+`theme.css` is the required base and comes preinstalled with `init`. `interactive.css` is recommended but optional — skip it if you would rather implement your own disabled/focus styles. Brand and Surface presets are optional add-ons, combinable freely (one brand + one surface at a time).
 
 ## Theme
 
 <Installation name="style-theme" type="css" />
 
 `theme.css` includes both light and dark color schemes — the `.dark` class on `<html>` automatically applies dark mode. The variables use OKLCH color values, supported by all modern browsers.
+
+### Shadow levels
+
+Shadows have exactly four semantic levels. Light mode expresses elevation with black drop shadows; in dark mode the dark canvas swallows black shadows (nothing left to darken), so dark elevation is carried by a trio: **raised surfaces** (`--surface-raised`, canvas lightness +4.5% — floating components ship with `bg-surface-raised`), a **white rim** (1px light ring baked into the shadow, 7% on subtle → 14% on elevated) and a **white top inset highlight** (5–11%); black drop shadows are dialed down and only matter when an overlay floats over lighter content (body text, tables). Blur-glows in white are forbidden (they collide with the focus ring). Tailwind's default shadow scale is mapped onto these levels in `theme.css` — both class families share the same values, use whichever you prefer:
+
+| Scale classes | Semantic class | Level | Use for |
+|---------------|----------------|-------|---------|
+| `shadow-2xs` `shadow-xs` | `shadow-faint` | faint | Tiny inline elements, minimal placeholders |
+| `shadow-sm` | `shadow-subtle` | subtle | Small labels (Badge/Chip), compact inline controls |
+| `shadow-md` | `shadow-base` | base | Buttons, inputs, standard cards |
+| `shadow-lg` `shadow-xl` `shadow-2xl` | `shadow-elevated` | elevated | Dialogs, floating overlays, drawers |
+
+Radius levels match shadow levels one-to-one: `rounded-sm` inline/labels, `rounded-md` inputs/buttons, `rounded-lg` block cards, `rounded-xl` overlay shells.
 
 ## Interactive Styles
 
@@ -27,6 +40,8 @@ Install `theme.css` and `interactive.css` first — they are the required base. 
 - **Disabled controls** (`:disabled`, `[inert]`, `[data-disabled]`): dimmed to 50% opacity, neutral background, `not-allowed` cursor and no pointer events — including wrappers like `label:has(:disabled)` so composed checkboxes and uploads dim entirely.
 - **Focus-visible**: a `1px` outline (`--color-outline`) plus a `3px` soft ring (`--color-ring`) for keyboard navigation only — mouse clicks never show rings.
 - **Button press**: inset shadow + `brightness(0.95)` on `button:active` for tactile feedback.
+
+This layer is optional: without it, components work, but disabled/focus/press feedback is yours to implement.
 
 <Installation name="style-interactive" type="css" />
 

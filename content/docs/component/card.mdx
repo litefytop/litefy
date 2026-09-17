@@ -1,6 +1,6 @@
 ---
 title: Card
-description: A glassmorphic surface with hover lift, soft shadow, and an ambient glow.
+description: A glassmorphic static surface with a fixed soft shadow.
 ---
 
 ## Installation
@@ -13,17 +13,11 @@ A simple card with title, description, and actions.
 
 <ComponentPreview name="card-basic" />
 
-### Group
-
-Compose multiple `Card` elements into a responsive grid layout.
-
-<ComponentPreview name="card-group" />
-
 ## API Reference
 
 ### Card
 
-A glassmorphic surface with hover lift, soft shadow, and an ambient glow that fades in on hover. The glow is a static radial-gradient overlay anchored at the top-left corner (`at 25% 25%`) and tinted `from-primary/15` — it follows the theme's primary color and is not customizable via a CSS variable.
+A glassmorphic **static** surface with a fixed `shadow-base` (`rounded-lg`) — no hover lift or effects, so static containers never masquerade as clickable. For an interactive card, use [CardButton](/docs/component/card-button).
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|

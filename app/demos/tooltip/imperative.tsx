@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { TooltipContent, TooltipTrigger } from "@/ui";
+import { Button, TooltipContent, TooltipTrigger } from "@/ui";
 
 export default function TooltipImperativeDemo() {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -20,20 +20,12 @@ export default function TooltipImperativeDemo() {
       </TooltipContent>
 
       <div className="flex gap-2">
-        <button
-          type="button"
-          onClick={() => contentRef.current?.showPopover()}
-          className="px-4 py-2 text-sm border rounded hover:bg-primary-accent"
-        >
+        <Button variant="outline" onClick={() => contentRef.current?.showPopover()}>
           Open
-        </button>
-        <button
-          type="button"
-          onClick={() => contentRef.current?.hidePopover()}
-          className="px-4 py-2 text-sm border rounded hover:bg-primary-accent"
-        >
+        </Button>
+        <Button variant="outline" onClick={() => contentRef.current?.hidePopover()}>
           Close
-        </button>
+        </Button>
       </div>
     </div>
   );

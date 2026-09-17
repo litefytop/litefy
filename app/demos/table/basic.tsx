@@ -6,14 +6,15 @@ interface Task {
   title: string;
   owner: string;
   priority: "high" | "medium" | "low";
+  points: number;
   done: boolean;
 }
 
 const tasks: Task[] = [
-  { title: "Design review", owner: "Ada", priority: "high", done: true },
-  { title: "API integration", owner: "Linus", priority: "medium", done: false },
-  { title: "Write tests", owner: "Grace", priority: "high", done: false },
-  { title: "Release notes", owner: "Ada", priority: "low", done: true },
+  { title: "Design review", owner: "Ada", priority: "high", points: 3, done: true },
+  { title: "API integration", owner: "Linus", priority: "medium", points: 8, done: false },
+  { title: "Write tests", owner: "Grace", priority: "high", points: 5, done: false },
+  { title: "Release notes", owner: "Ada", priority: "low", points: 1, done: true },
 ];
 
 export default function Demo() {
@@ -24,11 +25,12 @@ export default function Demo() {
         getKey={(row) => row.title}
         columns={[
           { key: "title", header: "Task", sortable: true },
-          { key: "owner", header: "Owner", sortable: true },
+          { key: "owner", header: "Owner", width: "7rem" },
           {
             key: "priority",
             header: "Priority",
             sortable: true,
+            width: "7rem",
             render: (row) => (
               <span
                 className={
@@ -43,7 +45,8 @@ export default function Demo() {
               </span>
             ),
           },
-          { key: "done", header: "Done", align: "right", render: (row) => (row.done ? "✓" : "—") },
+          { key: "points", header: "Points", sortable: true, width: "6rem" },
+          { key: "done", header: "Done", width: "5rem", render: (row) => (row.done ? "✓" : "—") },
         ]}
       />
     </div>

@@ -22,7 +22,7 @@ export default function UseDragBasicDemo() {
         onPointerDown={drag.handlePointerDown}
         style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}
         className={
-          "flex cursor-grab select-none touch-none flex-col items-center justify-center rounded-lg border bg-background px-6 py-4 shadow-md active:cursor-grabbing" +
+          "flex cursor-grab select-none touch-none flex-col items-center justify-center rounded-lg border bg-background px-6 py-4 shadow-base active:cursor-grabbing" +
           (drag.isDragging ? " ring-2 ring-primary" : "")
         }
       >

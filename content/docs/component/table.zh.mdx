@@ -21,7 +21,7 @@ description: 通用数据表格，表头可点击排序（本地数据），也�
 
 ### 表头固定 + 表体滚动
 
-表头与表体是**两个独立的表格**：表头条本身永不滚动（纯 `overflow-hidden`，无滚动条、无 gutter 预留），表体滚动容器在其下独立滚动，内置固定高度（`h-96`），翻页行数变少时表格不会坍塌。列宽采用 `table-fixed` 均分；需要自定义列宽时，把 `w-*` 类写进列的 `className`（会同时作用于表头单元格和表体单元格）。通过 `classNames.body` 覆盖（如 `h-48`，或 `h-auto` 加 `classNames.table` 的 `min-w-*` 支持宽表）。
+表头与表体是**两个独立的表格**：表头条本身永不滚动（纯 `overflow-hidden`，无滚动条、无 gutter 预留），表体滚动容器在其下独立滚动，内置固定高度（`h-96`），翻页行数变少时表格不会坍塌。列宽采用 `table-fixed`，列宽与内容完全无关——**翻页不会引起布局跳动**。设置了 `width` 的列按该宽度渲染，未设置的列平分剩余宽度——因此给窄列（数字、徽标、控件）显式 `width`，让主文本列留空吸收剩余空间。所有单元格默认 start 对齐并启用等宽数字字形（tabular-nums）；设计规范约定不右对齐列，除非业务明确需要。通过 `classNames.body` 覆盖（如 `h-48`，或 `h-auto` 加 `classNames.table` 的 `min-w-*` 支持宽表）。
 
 <ComponentPreview name="table-scroll" />
 
@@ -57,8 +57,9 @@ description: 通用数据表格，表头可点击排序（本地数据），也�
 | `render` | `(row: T) => React.ReactNode` | 原始值 | 自定义单元格渲染 |
 | `sortable` | `boolean` | `false` | 表头可点击排序 |
 | `compare` | `(a: T, b: T) => number` | `<` / `>` | 本地排序使用的自定义比较器 |
-| `align` | `"left" \| "right" \| "center"` | `"left"` | 单元格对齐 |
-| `className` | `ClassNameValue` | - | 同时作用于该列表头单元格与表体单元格的自定义类名（如用 `w-*` 设列宽） |
+| `align` | `"left" \| "right" \| "center"` | `"left"` | 单元格对齐；设计规范约定列统一 start（控件列可用 center） |
+| `width` | `string` | - | 列的 CSS 宽度（`"8rem"`、`"25%"`、`"20ch"`），作用于 `<col>`；未设置的列平分剩余宽度 |
+| `className` | `ClassNameValue` | - | 同时作用于该列表头单元格与表体单元格的自定义类名（如长文本列用 `max-w-*`） |
 
 ### 零件
 

@@ -1,6 +1,6 @@
 ---
 title: Card 卡片
-description: 玻璃拟态卡片表面，悬停上浮、柔和阴影与氛围光晕。
+description: 玻璃拟态静态卡片表面，固定柔和阴影。
 ---
 
 ## 安装
@@ -13,17 +13,11 @@ description: 玻璃拟态卡片表面，悬停上浮、柔和阴影与氛围光�
 
 <ComponentPreview name="card-basic" />
 
-### 组合
-
-将多个 `Card` 组合成响应式网格布局。
-
-<ComponentPreview name="card-group" />
-
 ## API 参考
 
 ### Card
 
-玻璃拟态卡片表面，悬停上浮并伴随柔和阴影与渐入的氛围光晕。光晕是固定在左上角（`at 25% 25%`）的径向渐变遮罩，颜色为 `from-primary/15`——跟随主题主色，无法通过 CSS 变量自定义。
+玻璃拟态**静态**卡片表面，固定 `shadow-base`（`rounded-lg`）——无 hover 抬升与动效，静态容器不伪装成可点击。需要卡片形态的交互组件请使用 [CardButton](/zh/docs/component/card-button)。
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|

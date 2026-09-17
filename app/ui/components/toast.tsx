@@ -20,7 +20,7 @@ export function ToastRoot({ className, ...props }: ToastRootProps) {
     <div
       {...props}
       className={cn(
-        "relative pointer-events-auto flex w-full items-center justify-between gap-3 rounded-lg border p-4 shadow-lg text-foreground bg-background",
+        "relative pointer-events-auto flex w-full items-center justify-between gap-3 rounded-xl border p-4 shadow-elevated text-foreground bg-surface-raised",
         "data-[exiting=true]:animate-out data-[exiting=true]:slide-out-to-top data-[exiting=true]:duration-500",
         "transition-all duration-400",
         className,

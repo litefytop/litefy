@@ -1,11 +1,11 @@
-import { Capsule, Tag } from "@/ui";
+import { Capsule, Chip } from "@/ui";
 
 export default function CapsuleLinkDemo() {
   return (
     <a href="#">
       <Capsule>
-        <Tag className="bg-neutral">docs</Tag>
-        <Tag className="bg-primary">litefy.dev</Tag>
+        <Chip className="bg-neutral text-background">docs</Chip>
+        <Chip className="bg-primary text-primary-foreground">litefy.dev</Chip>
       </Capsule>
     </a>
   );

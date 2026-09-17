@@ -25,7 +25,7 @@ export default function Demo() {
       <Toggle
         checked={values.includes("dashed")}
         onCheckedChange={() => handleToggle("dashed")}
-        className="border-dashed rounded-full px-4 py-2 aria-checked:bg-emerald-600 aria-checked:border-emerald-600"
+        className="border-dashed rounded-full px-4 py-2 aria-checked:bg-primary-accent aria-checked:border-primary-accent"
       >
         <Sparkles className="size-4" />
         Dashed
