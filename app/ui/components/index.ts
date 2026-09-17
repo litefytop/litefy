@@ -37,7 +37,6 @@ export * from "./list";
 export * from "./menu";
 export * from "./masonry";
 export * from "./multi-select";
-export * from "./navigator";
 export * from "./number-field";
 export * from "./number-input";
 export * from "./pager";

@@ -20,7 +20,7 @@ export interface CardButtonProps extends Omit<React.ComponentProps<"button">, "c
   className?: ClassNameValue;
 }
 
-function CardButton({ variant = "outline", className, children, ...props }: CardButtonProps) {
+export function CardButton({ variant = "outline", className, children, ...props }: CardButtonProps) {
   return (
     <button type="button" {...props} className={cn(cardButtonClass.base, cardButtonClass.variant[variant], className)}>
       {children}
@@ -28,4 +28,4 @@ function CardButton({ variant = "outline", className, children, ...props }: Card
   );
 }
 
-export { CardButton };
+

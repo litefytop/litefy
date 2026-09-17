@@ -445,7 +445,7 @@ export function Chart({
         </div>
         <div
           ref={tooltipRef}
-          className="pointer-events-none absolute left-0 top-0 hidden rounded-xl border bg-background px-2 py-1.5 text-xs text-foreground shadow-elevated"
+          className="pointer-events-none absolute left-0 top-0 hidden rounded-xl border bg-surface-raised px-2 py-1.5 text-xs text-foreground shadow-elevated"
         />
       </div>
     </div>

@@ -62,6 +62,13 @@ export default {
       zh: "卡片",
     },
   },
+  "card-button": {
+    name: "CardButton",
+    displayName: {
+      en: "CardButton",
+      zh: "卡片按钮",
+    },
+  },
   calendar: {
     name: "Calendar",
     displayName: {
@@ -246,13 +253,6 @@ export default {
     displayName: {
       en: "Multi Select",
       zh: "多选框",
-    },
-  },
-  navigator: {
-    name: "Navigator",
-    displayName: {
-      en: "Navigator",
-      zh: "筛选导航",
     },
   },
   "number-field": {

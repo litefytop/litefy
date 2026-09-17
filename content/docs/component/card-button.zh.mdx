@@ -1,0 +1,34 @@
+---
+title: CardButton 卡片按钮
+description: 卡片形态的交互按钮——静止时 shadow-base，hover 上浮提升为 shadow-elevated。
+---
+
+## 安装
+
+<Installation name="card-button" />
+
+## 用法
+
+`CardButton` 是 [Card](/zh/docs/component/card) 的交互对应物：同样的卡片表面（`rounded-lg`、边框、`shadow-base`），但本体是真正的 `button`——静止时 `shadow-base`，hover 上浮 2px 并提升为 `shadow-elevated`。整张卡片可点击时（统计磁贴、可选面板、导航卡片）使用它；纯展示内容属于静态 `Card`。
+
+焦点与按压态与 Button 一致：焦点环 + 按压时内阴影。
+
+hover 时会上浮的统计卡片：
+
+<ComponentPreview name="card-button-basic" />
+
+### 变体
+
+变体与 Button 对齐：`outline`（默认）是标准卡片形态；`primary` 与 `danger` 整面着色，用于强强调；`text` 静止时完全扁平——无边框无阴影，hover 仅背景变淡——适合轻量卡片列表。
+
+<ComponentPreview name="card-button-variants" />
+
+## API 参考
+
+### CardButton
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `variant` | `"primary" \| "danger" \| "outline" \| "text"` | `"outline"` | 视觉权重，与 Button 对齐 |
+| `className` | `ClassNameValue` | - | 自定义 CSS 类 |
+| `...props` | `React.ComponentProps<"button">` | - | 支持所有原生 button 属性 |

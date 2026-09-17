@@ -1,23 +1,15 @@
-import { Card } from "@/ui";
+import { Button, Card } from "@/ui";
 
 export default function CardBasicDemo() {
   return (
     <Card className="w-full max-w-sm p-6">
       <h3 className="text-lg font-semibold">Litefy Card</h3>
       <p className="text-muted-foreground mt-2 text-sm">
-        A glassmorphic surface with subtle border, soft shadow and a glow that
-        fades in on hover.
+        A static glassmorphic surface with subtle border and soft shadow.
       </p>
       <div className="mt-4 flex gap-2">
-        <button
-          type="button"
-          className="rounded-md bg-primary px-3 py-1.5 text-sm text-primary-foreground"
-        >
-          Action
-        </button>
-        <button type="button" className="rounded-md border px-3 py-1.5 text-sm">
-          Cancel
-        </button>
+        <Button>Action</Button>
+        <Button variant="outline">Cancel</Button>
       </div>
     </Card>
   );

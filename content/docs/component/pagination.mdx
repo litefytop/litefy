@@ -21,11 +21,15 @@ The page list shows the first page, the last page, the current page with `siblin
 
 ### Summary text
 
-Pass `summary` to render a page-count text on the left with the controls pushed to the right — the text wraps automatically and never squeezes the controls. The content is plain text you compose, so it localizes freely:
+Pass `summary` to render a page-count text on the left with the controls on the right — a left-right layout where the summary takes the remaining width and wraps onto new lines while the controls hold their place, vertically centered. Typical content: how many items and how many are selected:
 
 ```tsx
-<Pagination page={page} totalPages={total} onPageChange={goTo} summary={`Page ${page} of ${total}`} />
+<Pagination page={page} totalPages={total} onPageChange={goTo} summary="Showing 1–10 of 1,286 items · 3 selected" />
 ```
+
+A narrow container makes the summary wrap onto multiple lines while the controls stay on the row, vertically centered:
+
+<ComponentPreview name="pagination-long-summary" />
 
 ### With SelectableTable
 
@@ -42,7 +46,7 @@ Pass `summary` to render a page-count text on the left with the controls pushed 
 | `onPageChange` | `(page: number) => void` | - | Fired by every button click |
 | `siblingCount` | `number` | `1` | Page numbers shown on each side of the current page before collapsing into ellipsis |
 | `disabled` | `boolean` | `false` | Disables every button (e.g. while a page is loading) |
-| `summary` | `React.ReactNode` | - | Page-count text rendered left of the controls; wraps automatically |
+| `summary` | `React.ReactNode` | - | Page-count text on the left; takes the remaining width and wraps, controls stay on the row vertically centered |
 | `className` | `ClassNameValue` | - | Custom classes, applied to the root `nav` |
 | `classNames` | `{ pages?, summary? }` | - | Custom classes for the numbered-pages group and the summary text |
 | `styles` | `{ summary? }` | - | Custom styles for the summary text |
@@ -58,6 +62,6 @@ Pass `summary` to render a page-count text on the left with the controls pushed 
 | `PaginationNext` | `Button` | text variant, `px-0` | Next page (`ChevronRight`) |
 | `PaginationLast` | `Button` | text variant, `px-0` | Jump to the last page (`ChevronsRight`) |
 | `PaginationEllipsis` | `<span>` | `size-8 text-muted-foreground` | Collapsed pages marker (`MoreHorizontal`) |
-| `PaginationSummary` | `<span>` | `min-w-0 text-sm text-muted-foreground` | Summary text slot, wraps automatically |
+| `PaginationSummary` | `<span>` | `min-w-0 flex-1 text-sm text-muted-foreground` | Summary text slot, absorbs the remaining width and wraps |
 
 The current page renders as an `outline` Button with `aria-current="page"`; all other page numbers render as `text` Buttons.

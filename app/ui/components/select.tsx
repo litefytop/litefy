@@ -216,7 +216,7 @@ export function Select({
         role="listbox"
         aria-label={placeholder}
         className={cn(
-          "bg-background text-foreground max-h-64 overflow-y-auto rounded-xl border p-1 shadow-elevated",
+          "bg-surface-raised text-foreground max-h-64 overflow-y-auto rounded-xl border p-1 shadow-elevated",
           classNames?.panel,
         )}
         style={{

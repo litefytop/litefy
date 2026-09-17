@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { DrawerRoot, DrawerWrapper, DrawerDrag, DrawerContent, useDrag } from "@/ui";
+import { Button, DrawerRoot, DrawerWrapper, DrawerDrag, DrawerContent, useDrag } from "@/ui";
 
 export default function Demo() {
   const [open, setOpen] = useState(false);
@@ -55,7 +55,7 @@ export default function Demo() {
 
   return (
     <div className="flex flex-col gap-4 items-center p-6">
-      <button onClick={() => setOpen(true)}>Open Drawer</button>
+      <Button variant="outline" onClick={() => setOpen(true)}>Open Drawer</Button>
       <DrawerRoot
         ref={dialogRef}
         onCancel={(e) => {
@@ -74,11 +74,11 @@ export default function Demo() {
           className="h-[30vh] min-h-[15vh] max-h-[85vh]"
         >
           <DrawerDrag isHorizontal={false} onPointerDown={drag.handlePointerDown} />
-          <DrawerContent className="bg-background">
+          <DrawerContent>
             <p>Drag handle to shrink / expand panel</p>
-            <button className="mt-2" onClick={() => setOpen(false)}>
+            <Button variant="outline" className="mt-2" onClick={() => setOpen(false)}>
               Close
-            </button>
+            </Button>
           </DrawerContent>
         </DrawerWrapper>
       </DrawerRoot>

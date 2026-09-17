@@ -43,7 +43,7 @@ export function MultiSelect({
       hasPopup="dialog"
       trigger={trigger ?? `${placeholder} (${innerValue.length})`}
       classNames={{
-        trigger: cn(Button.className.base, Button.className.variant.primary, className),
+        trigger: cn(Button.className.primary, className),
         content: classNames?.content,
       }}
     >

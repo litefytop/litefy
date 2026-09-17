@@ -1,9 +1,9 @@
-import { Card } from "@/ui";
+import { CardButton } from "@/ui";
 
-export default function CardGroupDemo() {
+export default function CardButtonBasicDemo() {
   return (
     <div className="grid w-full max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2">
-      <Card className="p-5">
+      <CardButton className="p-5">
         <div className="text-muted-foreground text-xs uppercase tracking-wider">
           Revenue
         </div>
@@ -11,8 +11,8 @@ export default function CardGroupDemo() {
         <div className="text-muted-foreground mt-1 text-xs">
           +12.4% from last week
         </div>
-      </Card>
-      <Card className="p-5">
+      </CardButton>
+      <CardButton className="p-5">
         <div className="text-muted-foreground text-xs uppercase tracking-wider">
           Active users
         </div>
@@ -20,7 +20,7 @@ export default function CardGroupDemo() {
         <div className="text-muted-foreground mt-1 text-xs">
           +5.1% from last week
         </div>
-      </Card>
+      </CardButton>
     </div>
   );
 }

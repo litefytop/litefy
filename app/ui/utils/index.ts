@@ -12,4 +12,3 @@ export * from "./use-upload-monitor";
 export * from "./use-combobox";
 export * from "./use-panel-focus";
 export * from "./use-load-more";
-export * from "./use-navigator";

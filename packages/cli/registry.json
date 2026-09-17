@@ -214,10 +214,6 @@
       "popover"
     ]
   },
-  "navigator": {
-    "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/navigator.tsx"
-  },
   "number-field": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/number-field.tsx"
@@ -436,10 +432,6 @@
   "use-load-more": {
     "type": "hook",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-load-more.ts"
-  },
-  "use-navigator": {
-    "type": "hook",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-navigator.ts"
   },
   "use-pagination": {
     "type": "hook",

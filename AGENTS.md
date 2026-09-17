@@ -10,7 +10,9 @@ import { Button, Input, Select } from "@/ui";   // the barrel — everything is 
 - Every component spreads native HTML props through (`{...props}`); `ref` works as a normal prop (React 19, no `forwardRef`).
 - `className` accepts a string or array and merges via `tailwind-merge` (`ClassNameValue`).
 - Most components expose per-part overrides: `classNames={{ slot: "..." }}` and `styles={{ slot: {} }}`.
-- Use **semantic tokens only** (never raw palette colors): `bg-background` `text-foreground` `text-muted-foreground` `bg-primary` `text-primary-foreground` `bg-primary-accent` `bg-muted` `bg-hover` `border` `text-danger` `text-success` `text-warning` `text-info` `ring` `outline` `text-neutral`.
+- **Composite XOR parts** — finished composites (`Dialog`, `Toaster`, …) already assemble and wire their parts internally; never render a component's parts inside its own composite (`Dialog` ships a built-in top-right ESC close button — putting `DialogClose` in its children stacks a duplicate button). Parts (`DialogRoot` / `DialogContent` / `DialogClose` / …) are for custom assembly with your own open/close lifecycle only.
+- Use **semantic tokens only** (never raw palette colors): `bg-background` `bg-surface-raised` (floating panels — lighter than canvas in dark mode) `text-foreground` `text-muted-foreground` `bg-primary` `text-primary-foreground` `bg-primary-accent` `bg-muted` `bg-hover` `border` `text-danger` `text-success` `text-warning` `text-info` `ring` `outline` `text-neutral`.
+- Shadows have four semantic levels — `shadow-faint` `shadow-subtle` `shadow-base` `shadow-elevated`. Tailwind's default scale is overridden in theme.css to map onto them (`2xs/xs`→faint, `sm`→subtle, `md`→base, `lg/xl/2xl`→elevated); both families share the same values. Dark levels carry a white rim + top highlight, so never fake elevation with white blur-glows. Never use arbitrary `shadow-[...]`.
 - Form controls follow the same conventions: `value` / `defaultValue` + `onValueChange` (or `checked` / `defaultChecked` + `onCheckedChange`) and `disabled`. `invalid` (danger border) exists only on text inputs (Input, Password, Textarea, NumberInput, NumberField, InputOtp, DatePicker) — non-text interactive components (Select, Radio, Checkbox, Segment, Upload…) take no `invalid`; render validation feedback below the control with a Callout (`variant="danger"`, `role="alert"`).
 - Icons come from `lucide-react`, typically `className="size-4"`.
 - Full prop tables and behavior details live in `content/docs/component/<name>.mdx` (and `.zh.mdx`) — consult them when a prop you need isn't listed below.
@@ -113,7 +115,7 @@ Full form composition: fields, submit handling, validation collection, imperativ
 ## Buttons
 
 ### Button
-`variant`: `"primary"` (default) | `"danger"` | `"outline"` | `"text"`. `loading` swaps in a spinner (`loadingConfig` to customize), icon-only children get square padding automatically.
+`variant`: `"primary"` (default) | `"danger"` | `"outline"` | `"text"`. `loading` swaps in a spinner (`loadingConfig` to customize), icon-only children get square padding automatically. To give a non-button element (e.g. an `<a>` CTA link) the full button look, set `className` to `Button.className.primary` / `.danger` / `.outline` / `.text` — pre-flattened full class strings, usable directly without `cn`.
 
 ## Layout & Surfaces
 
@@ -155,10 +157,7 @@ Menu usable in normal document flow: `items` (groups, two-level submenus), keybo
 Trigger + Popover + Menu composite: `trigger`, `items` (same shape as Menu), `onSelect`, `alignX` (default `"center"`), `classNames` (content / item / label / sub). Trigger is styled as a primary Button by default.
 
 ### Pagination
-Controlled page navigator: first / prev / numbered pages with ellipsis / next / last. Pure view — `page` + `totalPages` + `onPageChange` are required, state belongs to `usePagination` (`base: 1`). `siblingCount` (default `1`) controls neighbors before ellipsis collapse; `disabled` freezes all buttons while loading. Optional `summary` renders a page-count text on the left with the controls pushed right (`ms-auto`); it wraps automatically and never squeezes the controls. Parts: `PaginationRoot` / `PaginationFirst` / `PaginationPrev` / `PaginationPages` / `PaginationNext` / `PaginationLast` / `PaginationEllipsis` / `PaginationSummary`.
-
-### Navigator
-Standalone filter-navigation bar, decoupled from Table: a wrapping flex container (auto line-wrap, vertically centered siblings) with an optional `title`. No pagination inside — compose with Table externally, never nest it inside Table. Filter state comes from `useNavigator` (`fields` defaults → `values` / `setValue` / `setValues` / `reset` / `activeKeys` / `activeCount`); use the component for the standard layout or the hook alone with custom DOM.
+Controlled page navigator: first / prev / numbered pages with ellipsis / next / last. Pure view — `page` + `totalPages` + `onPageChange` are required, state belongs to `usePagination` (`base: 1`). `siblingCount` (default `1`) controls neighbors before ellipsis collapse; `disabled` freezes all buttons while loading. Optional `summary` renders a page-count text on the left — left-right layout: the summary takes the remaining width and wraps onto new lines while the controls stay on the same row, vertically centered and never squeezed; typical content is total items and selection count. Parts: `PaginationRoot` / `PaginationFirst` / `PaginationPrev` / `PaginationPages` / `PaginationNext` / `PaginationLast` / `PaginationEllipsis` / `PaginationSummary`.
 
 ### Sidebar
 Collapsible sidebar controlled via ref (`SidebarHandle` — e.g. `ref.current.collapse()`).
@@ -166,7 +165,7 @@ Collapsible sidebar controlled via ref (`SidebarHandle` — e.g. `ref.current.co
 ## Overlays
 
 ### Dialog
-Modal on the native `<dialog>`: `open` / `onOpenChange`, `onBackdropClick`. Parts: `DialogRoot` / `DialogContent` / `DialogClose`.
+Modal on the native `<dialog>` with a built-in top-right ESC close button and focus trap: `open` / `onOpenChange`, `onBackdropClick`. Parts `DialogRoot` / `DialogContent` / `DialogClose` are for custom assembly only — don't render `DialogClose` inside `Dialog`.
 
 ### Command
 Dialog-based command palette: `trigger` (or app-level ⌘K wiring via `open` / `onOpenChange`) opens a dialog with the search input on top and the filtered list below. Filters on `value` / string `label` / `keywords` (custom via `filter`), `↑`/`↓`+`Enter` keyboard navigation with the first match pre-highlighted, selecting closes the dialog. Items are config-driven — `{ label, value?, icon?, shortcut?, keywords?, disabled? }` plus `{ group, items }` groups; `renderItem` overrides row rendering. Parts `CommandRoot` / `CommandInput` / `CommandList` assemble the input + filtered list without the dialog (e.g. inside a Popover).
@@ -221,7 +220,7 @@ Inline status label, zero interaction logic: `variant` (`"primary"` (default) | 
   empty="No rows" getKey={fn} classNames={{ body: "h-48" }}   // body scroller ships a built-in h-96
 />
 ```
-Column: `{ key, header, render?, sortable?, compare?, align? }`. Clickable sortable headers for local data; remote mode delegates sorting to your backend (`onSortChange`). Header and body are two separate tables (`table-fixed` equal columns, the header strip never scrolls): the body scroller ships a built-in fixed height `h-96` so paging never collapses it (override via `classNames.body`), per-column widths go in `column.className` (applies to th and td). Parts: `TableRoot` / `TableHead` / `TableBody` / `TableBase` for custom assembly (keep the `<colgroup>` identical in both tables).
+Column: `{ key, header, render?, sortable?, compare?, align?, width?, className? }`. Clickable sortable headers for local data; remote mode delegates sorting to your backend (`onSortChange`). Header and body are two separate tables (`table-fixed`, the header strip never scrolls): widths are content-independent, so paging never shifts the layout; the body scroller ships a built-in fixed height `h-96` (override via `classNames.body`). Columns take an optional `width` (CSS width on the `<col>`, e.g. `"8rem"`); width-less columns share the leftover equally — leave one flexible text column without `width` and give narrow columns (numbers, badges, controls) explicit widths. All columns are start-aligned by design with table-wide `tabular-nums` — reserve `align` for control columns' `center`. Parts: `TableRoot` / `TableHead` / `TableBody` / `TableBase` for custom assembly (keep the `<colgroup>` identical in both tables).
 
 ### SelectableTable
 Table with a built-in checkbox column (header select-all with indeterminate state; it only affects the current page and preserves cross-page selections):
@@ -316,6 +315,5 @@ Chat composer: `value` / `defaultValue` + `onValueChange`, `onSend`, `enterToSen
 | `PickerRoot` / `PickerInput` / `PickerContent` | Its parts |
 | `PopoverContent` / `usePopoverTrigger` | Low-level popover building blocks |
 | `use-pagination` | Pagination state hook |
-| `use-navigator` | Filter-state hook: `fields` defaults → `values` / `setValue` / `setValues` / `reset` / `activeCount` |
 | `use-virtual-scroll`, `use-load-more`, `use-drag`, `use-combobox`, `use-panel-focus`, `use-upload-monitor`, `use-chart-palette`, `use-remote-pagination`, `use-remote-sort`, `use-theme` | Headless hooks in `@/ui/utils` |
 | `cn` | `tailwind-merge` itself; `ClassNameValue` is its accepted type |

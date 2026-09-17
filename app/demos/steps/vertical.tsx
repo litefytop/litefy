@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Steps } from "@/ui";
+import { Button, Steps } from "@/ui";
 
 const content = [
   "Create your login credentials.",
@@ -26,22 +26,20 @@ export default function Demo() {
       />
       <div className="rounded-lg border p-3 text-sm text-muted-foreground">{content[index]}</div>
       <div className="flex items-center justify-between">
-        <button
-          type="button"
+        <Button
+          variant="outline"
           onClick={() => setIndex((i) => Math.max(0, i - 1))}
           disabled={index === 0}
-          className="inline-flex h-8 cursor-pointer items-center rounded-md border bg-background px-3 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
         >
           Back
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          variant="outline"
           onClick={() => setIndex((i) => Math.min(2, i + 1))}
           disabled={index === 2}
-          className="inline-flex h-8 cursor-pointer items-center rounded-md border bg-background px-3 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
         >
           Next
-        </button>
+        </Button>
       </div>
     </div>
   );

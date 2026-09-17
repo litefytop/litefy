@@ -89,7 +89,10 @@ export interface PaginationSummaryProps
 
 export function PaginationSummary({ className, ...props }: PaginationSummaryProps) {
   return (
-    <span {...props} className={cn("min-w-0 text-sm text-muted-foreground", className)} />
+    <span
+      {...props}
+      className={cn("min-w-0 flex-1 text-sm text-muted-foreground", className)}
+    />
   );
 }
 
@@ -187,13 +190,13 @@ export function Pagination({
   const atStart = page <= 1;
   const atEnd = page >= totalPages;
   return (
-    <PaginationRoot className={cn(summary != null && "flex-wrap gap-x-3 gap-y-2", className)}>
+    <PaginationRoot className={cn(summary != null && "gap-x-3", className)}>
       {summary != null && (
         <PaginationSummary className={classNames?.summary} style={styles?.summary}>
           {summary}
         </PaginationSummary>
       )}
-      <div className={cn("flex items-center gap-1", summary != null && "ms-auto")}>
+      <div className={cn("flex items-center gap-1", summary != null && "shrink-0")}>
         <PaginationFirst disabled={disabled || atStart} onClick={() => onPageChange?.(1)} />
         <PaginationPrev disabled={disabled || atStart} onClick={() => onPageChange?.(page - 1)} />
         <PaginationPages

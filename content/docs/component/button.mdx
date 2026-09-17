@@ -52,3 +52,20 @@ The button component.
 | --------- | ----------------- | ------- | ----------------------------- |
 | `loading` | `boolean`         | `false` | Whether the button is loading |
 | `icon`    | `React.ReactNode` | -       | Custom loading icon           |
+
+### Button.className
+
+Static class strings for applying the full Button look to non-button elements, such as styling an `<a>` link as a button. Each key is a pre-flattened, conflict-resolved full class string (base + variant), usable directly as a `className` without `cn`:
+
+```tsx
+<Link to="/docs" className={Button.className.primary}>
+  Read the docs
+</Link>
+```
+
+| Key       | Equivalent                            |
+| --------- | ------------------------------------- |
+| `primary` | `variant="primary"` (default) look    |
+| `danger`  | `variant="danger"` look               |
+| `outline` | `variant="outline"` look              |
+| `text`    | `variant="text"` look                 |

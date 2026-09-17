@@ -37,7 +37,7 @@ export function DropdownMenu({
       alignX={alignX}
       trigger={trigger}
       classNames={{
-        trigger: cn(Button.className.base, Button.className.variant.primary, className),
+        trigger: cn(Button.className.primary, className),
         content: classNames?.content,
       }}
     >

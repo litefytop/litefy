@@ -5,7 +5,6 @@ import { Link, useParams } from "react-router";
 import { baseOptions } from "@/components/layout-shared";
 import { ExampleWall } from "@/components/example-wall";
 import { Button, Typography } from "@/ui";
-import { cn } from "@/ui";
 import { i18n } from "@/lib/i18n";
 
 export type Locale = "en" | "zh";
@@ -85,7 +84,7 @@ function LandingHero({ locale }: { locale: Locale }) {
         <div className="mt-6 flex flex-wrap gap-2">
           <Link
             to={docsPath}
-            className={cn(Button.className.base, Button.className.variant.primary)}
+            className={Button.className.primary}
           >
             {t.primaryCta}
             <ArrowRight className="size-4" />
@@ -94,7 +93,7 @@ function LandingHero({ locale }: { locale: Locale }) {
             to="https://github.com/litefytop/litefy"
             target="_blank"
             rel="noopener noreferrer"
-            className={cn(Button.className.base, Button.className.variant.outline)}
+            className={Button.className.outline}
           >
             {t.secondaryCta}
           </Link>

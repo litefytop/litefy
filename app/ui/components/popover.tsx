@@ -118,7 +118,7 @@ export function PopoverContent({
       tabIndex={-1}
       onKeyDown={handleContentKeyDown}
       className={cn(
-        "bg-background text-foreground min-w-32 max-h-96 overflow-auto rounded-xl border p-1 shadow-elevated",
+        "bg-surface-raised text-foreground min-w-32 max-h-96 overflow-auto rounded-xl border p-1 shadow-elevated",
         className,
       )}
       style={{

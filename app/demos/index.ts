@@ -107,8 +107,10 @@ import CommandPartsDemo from "./command/parts";
 import commandPartsCode from "./command/parts.tsx?raw";
 import CardBasicDemo from "./card/basic";
 import cardBasicCode from "./card/basic.tsx?raw";
-import CardGroupDemo from "./card/group";
-import cardGroupCode from "./card/group.tsx?raw";
+import CardButtonBasicDemo from "./card-button/basic";
+import cardButtonBasicCode from "./card-button/basic.tsx?raw";
+import CardButtonVariantsDemo from "./card-button/variants";
+import cardButtonVariantsCode from "./card-button/variants.tsx?raw";
 import CapsuleBadgeDemo from "./capsule/badge";
 import capsuleBadgeCode from "./capsule/badge.tsx?raw";
 import CapsuleLinkDemo from "./capsule/link";
@@ -201,6 +203,8 @@ import NumberInputCustomDemo from "./number-input/custom";
 import numberInputCustomCode from "./number-input/custom.tsx?raw";
 import PaginationComponentDemo from "./pagination/basic";
 import paginationComponentCode from "./pagination/basic.tsx?raw";
+import PaginationLongSummaryDemo from "./pagination/long-summary";
+import paginationLongSummaryCode from "./pagination/long-summary.tsx?raw";
 import PagerBasicDemo from "./pager/basic";
 import pagerBasicCode from "./pager/basic.tsx?raw";
 import PagerGestureDemo from "./pager/gesture";
@@ -305,10 +309,6 @@ import TransferBasicDemo from "./transfer/basic";
 import transferBasicCode from "./transfer/basic.tsx?raw";
 import UseDragBasicDemo from "./use-drag/basic";
 import useDragBasicCode from "./use-drag/basic.tsx?raw";
-import UseNavigatorBasicDemo from "./use-navigator/basic";
-import useNavigatorBasicCode from "./use-navigator/basic.tsx?raw";
-import NavigatorBasicDemo from "./navigator/basic";
-import navigatorBasicCode from "./navigator/basic.tsx?raw";
 import UseRemotePaginationBasicDemo from "./use-remote-pagination/basic";
 import useRemotePaginationBasicCode from "./use-remote-pagination/basic.tsx?raw";
 import UseThemeBasicDemo from "./use-theme/basic";
@@ -483,9 +483,13 @@ export const demos: Record<string, DemoItem> = {
     component: CapsuleLinkDemo,
     code: capsuleLinkCode,
   },
-  "card-group": {
-    component: CardGroupDemo,
-    code: cardGroupCode,
+  "card-button-basic": {
+    component: CardButtonBasicDemo,
+    code: cardButtonBasicCode,
+  },
+  "card-button-variants": {
+    component: CardButtonVariantsDemo,
+    code: cardButtonVariantsCode,
   },
   "typography-headings": {
     component: TypographyHeadingsDemo,
@@ -731,6 +735,10 @@ export const demos: Record<string, DemoItem> = {
     component: PaginationComponentDemo,
     code: paginationComponentCode,
   },
+  "pagination-long-summary": {
+    component: PaginationLongSummaryDemo,
+    code: paginationLongSummaryCode,
+  },
   "pager-basic": {
     component: PagerBasicDemo,
     code: pagerBasicCode,
@@ -963,14 +971,6 @@ export const demos: Record<string, DemoItem> = {
   "use-drag-basic": {
     component: UseDragBasicDemo,
     code: useDragBasicCode,
-  },
-  "use-navigator-basic": {
-    component: UseNavigatorBasicDemo,
-    code: useNavigatorBasicCode,
-  },
-  "navigator-basic": {
-    component: NavigatorBasicDemo,
-    code: navigatorBasicCode,
   },
   "use-remote-pagination-basic": {
     component: UseRemotePaginationBasicDemo,

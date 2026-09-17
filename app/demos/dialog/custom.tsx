@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { DialogRoot, DialogClose, DialogContent } from "@/ui";
+import { Button, DialogRoot, DialogClose, DialogContent } from "@/ui";
 
 export default function Demo() {
   const [open, setOpen] = useState(false);
@@ -18,7 +18,7 @@ export default function Demo() {
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <button onClick={() => setOpen(true)}>Open Dialog</button>
+      <Button variant="outline" onClick={() => setOpen(true)}>Open Dialog</Button>
       <DialogRoot
         ref={dialogRef}
         onCancel={(e) => {
@@ -42,12 +42,9 @@ export default function Demo() {
               <code>DialogContent</code>, with your own open/close lifecycle.
             </p>
           </div>
-          <button
-            className="w-full rounded-md border py-2 text-sm font-medium hover:bg-muted"
-            onClick={() => setOpen(false)}
-          >
+          <Button variant="outline" className="w-full" onClick={() => setOpen(false)}>
             Continue
-          </button>
+          </Button>
         </DialogContent>
       </DialogRoot>
     </div>
