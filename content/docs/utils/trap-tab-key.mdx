@@ -1,0 +1,31 @@
+---
+title: trap-tab-key
+description: Focus trap for modal containers — call it from onKeyDown and Tab cycles inside the container instead of escaping to the page
+---
+
+## Installation
+
+<Installation name="trap-tab-key" />
+
+## Usage
+
+`trapTabKey` implements the standard modal focus trap: while a container is open, `Tab` and `Shift+Tab` cycle within its focusable descendants instead of escaping to the page behind. Call it from the container's `onKeyDown` and hand it the container element.
+
+[Dialog](/docs/component/dialog) and [Drawer](/docs/component/drawer) call it internally. Use it directly when you assemble a custom modal from parts — for example a `DialogRoot`-based overlay with your own open/close lifecycle:
+
+```tsx
+import { trapTabKey } from "@/ui";
+
+<DialogRoot onKeyDown={(e) => trapTabKey(e, dialogRef.current)}>{/* ... */}</DialogRoot>;
+```
+
+Only visible focusable elements are cycled (filtered by `offsetParent`), and the key event is only intercepted when focus would actually leave the container — all other keys pass through untouched.
+
+## API Reference
+
+### Parameters
+
+| Parameter   | Type                          | Description                                                                 |
+| :---------- | :---------------------------- | :-------------------------------------------------------------------------- |
+| `e`         | `React.KeyboardEvent`         | The key event; only `Tab` is handled, everything else is ignored             |
+| `container` | `HTMLElement \| null`         | The modal container to keep focus inside; `null` is a safe no-op             |

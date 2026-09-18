@@ -4,7 +4,7 @@ import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
 import { useChartPalette } from "../utils/use-chart-palette";
 import { arcPath, donutLayout } from "../utils/chart-kit";
-import { ChartLegend } from "../utils/chart-legend";
+import { ChartLegend } from "./chart-legend";
 
 export interface DonutDatum {
   label: string;
@@ -61,6 +61,15 @@ export function Donut({
   const segments = donutLayout(visible, -90, gap);
   const focus = hover != null && !hidden.has(hover) ? hover : null;
   const innerRadius = variant === "pie" ? 0 : 62;
+  const readout =
+    focus != null ? (
+      <>
+        <span className="max-w-20 truncate text-xs text-muted-foreground">{data[focus].label}</span>
+        <span className="text-xl font-semibold text-foreground">{format(data[focus].value)}</span>
+      </>
+    ) : (
+      <span className="text-xl font-semibold text-foreground">{format(total)}</span>
+    );
 
   const toggle = (index: number) => {
     setHidden((prev) => {
@@ -115,18 +124,12 @@ export function Donut({
         </svg>
         {variant === "donut" && (
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center">
-            {focus != null ? (
-              <>
-                <span className="max-w-20 truncate text-xs text-muted-foreground">
-                  {data[focus].label}
-                </span>
-                <span className="text-xl font-semibold text-foreground">
-                  {format(data[focus].value)}
-                </span>
-              </>
-            ) : (
-              <span className="text-xl font-semibold text-foreground">{format(total)}</span>
-            )}
+            {readout}
+          </div>
+        )}
+        {variant === "pie" && (
+          <div className="pointer-events-none flex h-12 flex-col items-center justify-center text-center">
+            {readout}
           </div>
         )}
       </div>

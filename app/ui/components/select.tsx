@@ -187,7 +187,7 @@ export function Select({
         onKeyDown={handleTriggerKeyDown}
         data-open={open || undefined}
         className={cn(
-          "flex h-9 w-full items-center justify-between gap-2 rounded-md border px-3 py-1 text-sm cursor-pointer shadow-base",
+          "flex h-9 w-full max-w-120 items-center justify-between gap-2 rounded-md border px-3 py-1 text-sm cursor-pointer shadow-base",
           !selectedLabel && "text-muted-foreground",
           className,
         )}

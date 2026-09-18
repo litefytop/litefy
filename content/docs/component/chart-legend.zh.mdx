@@ -1,0 +1,32 @@
+---
+title: Chart Legend
+description: Chart、Donut 与 Radar 共用的可点选图例 —— 点击条目隐藏或恢复系列，支持 line 与 square 两种色块
+---
+
+ChartLegend 是 [Chart](/docs/component/chart)、[Donut](/docs/component/donut) 和 [Radar](/docs/component/radar) 共用的图例，以独立组件形式发布，自定义图表也可以直接复用。每个条目是一个按钮：点击隐藏或恢复对应下标的系列，悬停时高亮。隐藏系列的条目降为 40% 不透明度。
+
+色块有两种形状——`"line"` 适配系列型图表（线段），`"square"` 适配分类型图表（饼图/环形图的扇区）。
+
+## 安装
+
+<Installation name="chart-legend" />
+
+## 用法
+
+<ComponentPreview name="chart-legend-basic" />
+
+颜色是普通的 CSS 颜色字符串——传语义变量（如 `var(--color-primary)`）即可跟随主题，或者传图表实际使用的解析后颜色（`ChartSeriesConfig.stroke` 未指定时按下标回退到 [`useChartPalette`](/docs/utils/use-chart-palette) 色板）。组件是纯展示的：状态由你持有，因此 `hidden` 受控，组件也不会在你的图表上下强加任何布局。
+
+## API 参考
+
+### ChartLegend
+
+| Prop        | Type                                        | Default  | Description                                                |
+| :---------- | :------------------------------------------ | :------- | :--------------------------------------------------------- |
+| `items`     | `{ label: string; color: string }[]`        | -（必填） | 每个系列一个条目，顺序与图表的系列一致                      |
+| `hidden`    | `ReadonlySet<number>`                       | -        | 当前隐藏的下标集合；命中的条目渲染为半透明                  |
+| `swatch`    | `"line" \| "square"`                        | `"line"` | 色块形状——系列型用线段，分类数据用方块                      |
+| `onToggle`  | `(index: number) => void`                   | -        | 条目被点击时回调                                            |
+| `onHover`   | `(index: number \| null) => void`           | -        | 条目 mouse enter 时回调下标，mouse leave 时回调 `null`      |
+| `className` | `ClassNameValue`                            | -        | 合并到容器上；加 `justify-center` 可让整行居中              |
+| `style`     | `React.CSSProperties`                       | -        | 容器内联样式                                                |

@@ -1,0 +1,32 @@
+---
+title: Chart Legend
+description: Toggleable legend shared by Chart, Donut and Radar — clickable entries hide or restore series, with line and square swatches
+---
+
+ChartLegend is the legend used by [Chart](/docs/component/chart), [Donut](/docs/component/donut) and [Radar](/docs/component/radar), shipped as a standalone component so custom charts can share it. Each entry is a button: clicking hides or restores the series at that index, and hovering highlights it. Entries for hidden series dim to 40% opacity.
+
+Swatches come in two shapes — `"line"` for series-style charts (stroke segments) and `"square"` for categorical charts (pie/donut slices).
+
+## Installation
+
+<Installation name="chart-legend" />
+
+## Usage
+
+<ComponentPreview name="chart-legend-basic" />
+
+Colors are plain CSS color strings — pass semantic variables such as `var(--color-primary)` so entries follow the theme, or the same resolved colors your chart uses (`ChartSeriesConfig.stroke` falls back to the [`useChartPalette`](/docs/utils/use-chart-palette) palette by index). The component is purely presentational: state lives with you, which is why `hidden` is controlled and there is no built-in layout above or below your chart.
+
+## API Reference
+
+### ChartLegend
+
+| Prop        | Type                                        | Default  | Description                                                            |
+| :---------- | :------------------------------------------ | :------- | :--------------------------------------------------------------------- |
+| `items`     | `{ label: string; color: string }[]`        | - (required) | One entry per series, in the same order as the chart's series      |
+| `hidden`    | `ReadonlySet<number>`                       | -        | Indices currently hidden; matching entries render dimmed               |
+| `swatch`    | `"line" \| "square"`                        | `"line"` | Swatch shape — line segments for series, squares for categorical data  |
+| `onToggle`  | `(index: number) => void`                   | -        | Called when an entry is clicked                                        |
+| `onHover`   | `(index: number \| null) => void`           | -        | Called on entry mouse enter with the index, and mouse leave with `null` |
+| `className` | `ClassNameValue`                            | -        | Merged onto the container; add `justify-center` to center the row      |
+| `style`     | `React.CSSProperties`                       | -        | Inline style on the container                                          |

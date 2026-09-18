@@ -1,0 +1,44 @@
+---
+title: use-image-status
+description: Avatar 与 Image 共用的图片加载状态机 —— 通过 `new Image()` 预加载，解析为 loading、success 或 failure，并带安全清理
+---
+
+## 安装
+
+<Installation name="use-image-status" />
+
+## 用法
+
+`useImageStatus` 用 `new window.Image()` 预加载图片地址，并跟踪一个三态状态机：`loading` → `success` / `failure`。用它构建任何带骨架屏和占位槽位的图片类组件——[Avatar](/docs/component/avatar) 和 [Image](/docs/component/image) 内部跑的就是它。
+
+```tsx
+import { useImageStatus } from "@/ui";
+
+function Thumbnail({ src }: { src?: string }) {
+  const status = useImageStatus(src);
+
+  return (
+    <div className="relative size-12 overflow-hidden rounded-md">
+      {status === "loading" && <Skeleton className="size-full" />}
+      {status === "failure" && <span className="text-xs text-muted-foreground">Failed</span>}
+      {status === "success" && <img src={src} alt="" className="size-full object-cover" />}
+    </div>
+  );
+}
+```
+
+行为细节：空的或 `undefined` 的 `src` 立即解析为 `failure`，不发起网络请求；状态回调包在 `startTransition` 里，图片解析完成不会阻塞输入；`src` 变化或卸载时清理进行中的加载（摘除 `onload` / `onerror` 并忽略迟到事件）。
+
+## API 参考
+
+### 参数
+
+| Parameter | Type     | Default | Description                                    |
+| :-------- | :------- | :------ | :--------------------------------------------- |
+| `src`     | `string` | -       | 要预加载的图片地址；空值或 `undefined` → `failure` |
+
+### 返回值
+
+| Member   | Type                                        | Description                                              |
+| :------- | :------------------------------------------ | :------------------------------------------------------- |
+| `status` | `"loading" \| "success" \| "failure"`       | 当前加载状态；`src` 变化时重置为 `loading`                |

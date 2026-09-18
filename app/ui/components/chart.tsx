@@ -26,7 +26,7 @@ import {
   type PlotFrame,
 } from "../utils/chart-paint";
 import { useChartPalette } from "../utils/use-chart-palette";
-import { ChartLegend } from "../utils/chart-legend";
+import { ChartLegend } from "./chart-legend";
 
 export type ChartData = [number[], ...number[][]];
 

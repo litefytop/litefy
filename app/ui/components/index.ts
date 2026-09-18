@@ -8,6 +8,7 @@ export * from "./card";
 export * from "./card-button";
 export * from "./cascader";
 export * from "./chart";
+export * from "./chart-legend";
 export * from "./date-picker";
 export * from "./collapse";
 export * from "./button";

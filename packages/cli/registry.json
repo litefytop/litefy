@@ -50,6 +50,10 @@
       "popover"
     ]
   },
+  "chart-legend": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/chart-legend.tsx"
+  },
   "chart": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/chart.tsx",
@@ -433,13 +437,6 @@
   "chart-kit": {
     "type": "util",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/chart-kit.ts"
-  },
-  "chart-legend": {
-    "type": "util",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/chart-legend.tsx",
-    "dependence": [
-      "cn"
-    ]
   },
   "chart-paint": {
     "type": "util",

@@ -318,5 +318,5 @@ Card + Image + Tooltip composition: `src`, `alt`, `title`, `description`, option
 | `PopoverContent` / `usePopoverTrigger` | Low-level popover building blocks |
 | `use-pagination` | Pagination state hook |
 | `use-virtual-scroll`, `use-load-more`, `use-drag`, `use-combobox`, `use-panel-focus`, `use-floating-panel`, `use-image-status`, `use-upload-monitor`, `use-chart-palette`, `use-remote-pagination`, `use-remote-sort`, `use-theme` | Headless hooks in `@/ui/utils` |
-| `trapTabKey`, `ChartLegend` | Shared dialog/drawer focus trap and chart/donut/radar legend in `@/ui/utils` |
+| `trapTabKey`, `ChartLegend` | Shared dialog/drawer focus trap and chart/donut/radar legend in `@/ui` |
 | `cn` | `tailwind-merge` itself; `ClassNameValue` is its accepted type |

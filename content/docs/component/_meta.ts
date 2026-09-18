@@ -90,6 +90,13 @@ export default {
       zh: "图表",
     },
   },
+  "chart-legend": {
+    name: "Chart Legend",
+    displayName: {
+      en: "Chart Legend",
+      zh: "图表图例",
+    },
+  },
   "chat-input": {
     name: "Chat Input",
     displayName: {

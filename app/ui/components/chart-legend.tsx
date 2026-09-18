@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { type ClassNameValue, cn } from "./cn";
+import { type ClassNameValue, cn } from "../utils/cn";
 
 export interface ChartLegendProps {
   items: { label: string; color: string }[];

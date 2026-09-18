@@ -1,0 +1,31 @@
+---
+title: trap-tab-key
+description: 模态容器的焦点圈定 —— 在 onKeyDown 里调用它，Tab 将在容器内循环而不会逃逸到页面
+---
+
+## 安装
+
+<Installation name="trap-tab-key" />
+
+## 用法
+
+`trapTabKey` 实现标准的模态焦点圈定：容器打开期间，`Tab` 和 `Shift+Tab` 在容器内可聚焦后代之间循环，不会逃逸到背后的页面。把它接到容器的 `onKeyDown` 上，并传入容器元素。
+
+[Dialog](/docs/component/dialog) 和 [Drawer](/docs/component/drawer) 内部调用的就是它。当你用零件组装自定义模态时直接使用——例如基于 `DialogRoot`、自管开闭生命周期的浮层：
+
+```tsx
+import { trapTabKey } from "@/ui";
+
+<DialogRoot onKeyDown={(e) => trapTabKey(e, dialogRef.current)}>{/* ... */}</DialogRoot>;
+```
+
+只有可见的可聚焦元素会参与循环（按 `offsetParent` 过滤），且只有焦点将要离开容器时才拦截按键——其余按键原样放行。
+
+## API 参考
+
+### 参数
+
+| Parameter   | Type                          | Description                                              |
+| :---------- | :---------------------------- | :------------------------------------------------------- |
+| `e`         | `React.KeyboardEvent`         | 键盘事件；只处理 `Tab`，其余按键直接忽略                  |
+| `container` | `HTMLElement \| null`         | 圈定焦点的模态容器；传 `null` 是安全的空操作              |

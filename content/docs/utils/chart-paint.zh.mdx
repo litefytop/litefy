@@ -1,0 +1,62 @@
+---
+title: chart-paint
+description: 图表家族的 canvas 绘制层 —— 绘图区矩形、网格、坐标标签、折线/面积/柱状、十字线与框选，全部跟随主题
+---
+
+## 安装
+
+<Installation name="chart-paint" />
+
+## 用法
+
+`chart-paint` 是 [Chart](/docs/component/chart) 底下的 canvas 绘制层：把一个 `PlotFrame`（绘图区矩形 + 可见数据窗口）画成像素——网格、坐标标签、折线/面积/柱状、十字线和拖拽框选。与 [`chart-kit`](/docs/utils/chart-kit) 数学层配套使用，后者负责算出这些绘制器消费的 scales、ticks 和降采样点。
+
+`readThemeColor` 从 `document.documentElement` 读取 CSS 自定义属性并带回退值，canvas 的描边因此自动跟随品牌色与暗色模式。一个最小绘制流程：
+
+```tsx
+import { computePlotRect, drawYAxisGrid, drawXAxisLabels, drawLineSeries, readThemeColor } from "@/utils/chart-paint";
+
+function draw(ctx: CanvasRenderingContext2D, width: number, height: number, ticks: number[], points: Point[]) {
+  const frame = computePlotRect(ctx, ticks, width, height);
+  const textColor = readThemeColor("--color-muted-foreground", "#6b7280");
+  const gridColor = readThemeColor("--color-border", "#e5e7eb");
+
+  drawYAxisGrid(ctx, frame, ticks, textColor, gridColor);
+  drawXAxisLabels(ctx, frame, xLabels, textColor);
+  drawLineSeries(ctx, frame, points, { stroke: "var(--color-primary)", width: 1.5 });
+}
+```
+
+[Chart](/docs/component/chart) 是参考实现——它的 `draw()` 展示了完整管线（裁剪到绘图区、先画柱、再画折线/面积、最后画十字线与框选）。
+
+## API 参考
+
+### 工具函数
+
+| Member                             | Type                                                                                        | Description                                  |
+| :--------------------------------- | :------------------------------------------------------------------------------------------ | :------------------------------------------- |
+| `AXIS_FONT`                        | `string`                                                                                     | 坐标标签绘制器使用的字体                      |
+| `readThemeColor(name, fallback)`   | `(name: string, fallback: string) => string`                                                 | 读取 CSS 自定义属性并带回退                   |
+| `fillWith(ctx, color, alpha)`      | `(ctx, color: string, alpha: number) => void`                                                | 设置带透明度的 `fillStyle`                    |
+| `strokeWith(ctx, color, alpha)`    | `(ctx, color: string, alpha: number) => void`                                                | 设置带透明度的 `strokeStyle`                  |
+| `resetAlpha(ctx)`                  | `(ctx) => void`                                                                              | 将 `globalAlpha` 重置为 1                     |
+| `computePlotRect(ctx, yTicks, width, height)` | `(ctx, yTicks: number[], width: number, height: number) => { left, top, width, height }` | 量出最宽的 y 标签并预留空间，返回绘图区矩形 |
+
+### 绘制器
+
+| Member                                          | Description                                                        |
+| :---------------------------------------------- | :----------------------------------------------------------------- |
+| `drawYAxisGrid(ctx, frame, yTicks, textColor, gridColor)` | 水平网格线与 y 轴标签                                      |
+| `drawXAxisLabels(ctx, frame, xLabels, textColor)` | x 轴标签；`xLabels` 为 `{ value, text }[]`，经 frame 的比例尺映射   |
+| `drawBars(ctx, frame, xs, barSpecs, band)`       | 分组柱状；`barSpecs` 为 `BarSeriesPaint[]`，`band` 为类目宽度（px） |
+| `drawLineSeries(ctx, frame, points, options)`    | 折线或面积路径；`options` 为 `LineSeriesPaint`（`stroke`、`width`、`fill`、`fillAlpha`） |
+| `drawCrosshair(ctx, frame, crossX, dots, background, textColor)` | 悬停竖线与各系列圆点                              |
+| `drawSelection(ctx, frame, startPx, endPx, color)` | 两个 x 像素之间的拖拽缩放选框                                   |
+
+### 类型
+
+| Type              | 字段                                                                                                       |
+| :---------------- | :--------------------------------------------------------------------------------------------------------- |
+| `PlotFrame`       | `left`、`top`、`plotWidth`、`plotHeight`、`xMin`、`xMax`、`yMin`、`yMax`、`i0`、`i1`（可见数据窗口）        |
+| `BarSeriesPaint`  | `values: number[]`、`fill: string`、`alpha: number`                                                         |
+| `LineSeriesPaint` | `stroke: string`、`width: number`、`fill?: string`、`fillAlpha: number`                                     |

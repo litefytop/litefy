@@ -4,7 +4,7 @@ import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
 import { useChartPalette } from "../utils/use-chart-palette";
 import { polar, polygonPoints, radarPolygon, radarRings, radarSpokes } from "../utils/chart-kit";
-import { ChartLegend } from "../utils/chart-legend";
+import { ChartLegend } from "./chart-legend";
 
 export interface RadarSeries {
   label: string;
