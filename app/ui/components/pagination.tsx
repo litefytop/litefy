@@ -23,47 +23,60 @@ export interface PaginationFirstProps extends Omit<React.ComponentProps<typeof B
   className?: ClassNameValue;
 }
 
-export function PaginationFirst({ className, ...props }: PaginationFirstProps) {
-  return (
-    <Button type="button" variant="text" aria-label="First page" {...props} className={cn("px-0", className)}>
-      <ChevronsLeft />
-    </Button>
-  );
-}
-
 export interface PaginationPrevProps extends Omit<React.ComponentProps<typeof Button>, "className" | "variant"> {
   className?: ClassNameValue;
-}
-
-export function PaginationPrev({ className, ...props }: PaginationPrevProps) {
-  return (
-    <Button type="button" variant="text" aria-label="Previous page" {...props} className={cn("px-0", className)}>
-      <ChevronLeft />
-    </Button>
-  );
 }
 
 export interface PaginationNextProps extends Omit<React.ComponentProps<typeof Button>, "className" | "variant"> {
   className?: ClassNameValue;
 }
 
-export function PaginationNext({ className, ...props }: PaginationNextProps) {
-  return (
-    <Button type="button" variant="text" aria-label="Next page" {...props} className={cn("px-0", className)}>
-      <ChevronRight />
-    </Button>
-  );
-}
-
 export interface PaginationLastProps extends Omit<React.ComponentProps<typeof Button>, "className" | "variant"> {
   className?: ClassNameValue;
 }
 
+function PaginationNavButton({
+  label,
+  children,
+  className,
+  ...props
+}: PaginationFirstProps & { label: string }) {
+  return (
+    <Button type="button" variant="text" aria-label={label} {...props} className={cn("px-0", className)}>
+      {children}
+    </Button>
+  );
+}
+
+export function PaginationFirst({ className, ...props }: PaginationFirstProps) {
+  return (
+    <PaginationNavButton label="First page" {...props} className={className}>
+      <ChevronsLeft />
+    </PaginationNavButton>
+  );
+}
+
+export function PaginationPrev({ className, ...props }: PaginationPrevProps) {
+  return (
+    <PaginationNavButton label="Previous page" {...props} className={className}>
+      <ChevronLeft />
+    </PaginationNavButton>
+  );
+}
+
+export function PaginationNext({ className, ...props }: PaginationNextProps) {
+  return (
+    <PaginationNavButton label="Next page" {...props} className={className}>
+      <ChevronRight />
+    </PaginationNavButton>
+  );
+}
+
 export function PaginationLast({ className, ...props }: PaginationLastProps) {
   return (
-    <Button type="button" variant="text" aria-label="Last page" {...props} className={cn("px-0", className)}>
+    <PaginationNavButton label="Last page" {...props} className={className}>
       <ChevronsRight />
-    </Button>
+    </PaginationNavButton>
   );
 }
 
@@ -103,6 +116,7 @@ export interface PaginationPagesProps {
   onPageChange?: (page: number) => void;
   disabled?: boolean;
   className?: ClassNameValue;
+  style?: React.CSSProperties;
 }
 
 function range(start: number, end: number): number[] {
@@ -131,13 +145,14 @@ export function PaginationPages({
   onPageChange,
   disabled,
   className,
+  style,
 }: PaginationPagesProps) {
   const items = React.useMemo(
     () => buildPageItems(page, totalPages, siblingCount),
     [page, totalPages, siblingCount],
   );
   return (
-    <div className={cn("flex items-center gap-1", className)}>
+    <div className={cn("flex items-center gap-1", className)} style={style}>
       {items.map((item, index) =>
         typeof item === "number" ? (
           <Button
@@ -172,6 +187,7 @@ export interface PaginationProps {
     summary?: ClassNameValue;
   };
   styles?: {
+    pages?: React.CSSProperties;
     summary?: React.CSSProperties;
   };
 }
@@ -206,6 +222,7 @@ export function Pagination({
           onPageChange={onPageChange}
           disabled={disabled}
           className={classNames?.pages}
+          style={styles?.pages}
         />
         <PaginationNext disabled={disabled || atEnd} onClick={() => onPageChange?.(page + 1)} />
         <PaginationLast disabled={disabled || atEnd} onClick={() => onPageChange?.(totalPages)} />

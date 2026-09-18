@@ -10,7 +10,7 @@ export interface CalloutProps extends Omit<React.ComponentProps<"div">, "classNa
   className?: ClassNameValue;
 }
 
-const calloutVariants: Record<CalloutVariant, string> = {
+const calloutClass: Record<CalloutVariant, string> = {
   info: "bg-info/15 text-info",
   success: "bg-success/15 text-success",
   warning: "bg-warning/15 text-warning",
@@ -23,7 +23,7 @@ export function Callout({ variant = "info", className, ...props }: CalloutProps)
       role="note"
       data-variant={variant}
       {...props}
-      className={cn("rounded-md p-3 text-sm", calloutVariants[variant], className)}
+      className={cn("rounded-md p-3 text-sm", calloutClass[variant], className)}
     />
   );
 }

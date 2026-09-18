@@ -46,12 +46,13 @@ A modal dialog component built on the native HTML `dialog` element, with built-i
 | Prop              | Type                                                | Default      | Description                                                                                       |
 | ----------------- | --------------------------------------------------- | ------------ | ------------------------------------------------------------------------------------------------- |
 | `open`            | `boolean`                                           | - (required) | Controlled open state, synced with the native `showModal()` / `close()` internally                |
+| `title`           | `React.ReactNode`                                   | -            | Optional title. When provided, renders a header row — title on the left, the close button fixed on the right in flow — so long titles wrap instead of overlapping the button |
 | `onOpenChange`    | `(open: boolean) => void`                           | -            | Callback when the open state changes; fired on Esc, close button click, native `cancel` / `close` |
 | `onBackdropClick` | `(e: React.MouseEvent<HTMLDialogElement>) => void`  | -            | Callback fired when the backdrop is clicked; implement close-on-backdrop-click with it            |
 | `classNames`      | `{ root?, content?, close? }`                       | -            | Custom class names per part, applied to the dialog element, content area and close button         |
 | `styles`          | `{ root?, content?, close? }`                       | -            | Inline styles per part                                                                            |
 | `children`        | `React.ReactNode`                                   | -            | Dialog content, rendered inside the content area `DialogContent`                                  |
-| `...props`        | `React.ComponentProps<"div">`                       | -            | Remaining props are passed through to the content area `DialogContent` (except `className` / `styles`) |
+| `...props`        | `React.ComponentProps<"div">`                       | -            | Remaining props are passed through to the content area `DialogContent` (except `className` / `styles` / `title`) |
 
 ---
 

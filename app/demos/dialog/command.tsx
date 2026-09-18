@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@/ui";
 import { dialog } from "@/ui";
-import { CircleAlert, CircleCheck, Info, TriangleAlert } from "lucide-react";
 
 export default function Demo() {
   return (
@@ -9,7 +8,7 @@ export default function Demo() {
       <Button
         onClick={() => {
           dialog.success({
-            title: <span className="flex gap-2"><CircleCheck className="fill-success text-background"/>Success</span>,
+            title: "Success",
             children: "Operation completed successfully.",
           });
         }}
@@ -19,7 +18,7 @@ export default function Demo() {
       <Button
         onClick={() => {
           dialog.warning({
-            title: <span className="flex gap-2"><TriangleAlert className="fill-warning text-background"/>Warning</span>,
+            title: "Warning",
             children: "Please check your input before submitting.",
           });
         }}
@@ -29,7 +28,7 @@ export default function Demo() {
       <Button
         onClick={() => {
           dialog.error({
-            title: <span className="flex gap-2"><CircleAlert className="fill-danger text-background"/>Error</span>,
+            title: "Error",
             children: "Something went wrong, please try again later.",
           });
         }}
@@ -39,7 +38,7 @@ export default function Demo() {
       <Button
         onClick={() => {
           dialog.info({
-            title: <span className="flex gap-2"><Info className="fill-info text-background"/>Info</span>,
+            title: "Info",
             children: "This is an informational message.",
           });
         }}

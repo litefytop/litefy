@@ -2,6 +2,7 @@
 import * as React from "react";
 import { ChevronDown } from "lucide-react";
 import { type ClassNameValue, cn } from "../utils/cn";
+import { useFloatingPanel } from "../utils/use-floating-panel";
 
 export type SelectOption = {
   label: string;
@@ -135,24 +136,14 @@ export function Select({
     }
   };
 
-  React.useEffect(() => {
-    const panel = panelRef.current;
-    if (!panel) return;
-    if (open) panel.showPopover();
-    else panel.hidePopover();
-  }, [open]);
-
-  React.useEffect(() => {
-    if (!open) return;
-    const handleDocumentMouseDown = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (panelRef.current?.contains(target)) return;
-      if (triggerRef.current?.contains(target)) return;
-      setOpen(false);
-    };
-    document.addEventListener("mousedown", handleDocumentMouseDown);
-    return () => document.removeEventListener("mousedown", handleDocumentMouseDown);
-  }, [open]);
+  useFloatingPanel({
+    open,
+    panelRef,
+    anchorRef: triggerRef,
+    onOpenChange: (next) => {
+      if (!next) setOpen(false);
+    },
+  });
 
   React.useEffect(() => {
     if (!open || highlightIndex === null) return;

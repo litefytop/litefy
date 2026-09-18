@@ -60,6 +60,7 @@ export function WatermarkCanvas({
     if (typeof window === "undefined") return "light";
     return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   });
+  const [themeTick, setThemeTick] = useState(0);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -68,6 +69,15 @@ export function WatermarkCanvas({
     };
     mediaQuery.addEventListener("change", handler);
     return () => mediaQuery.removeEventListener("change", handler);
+  }, []);
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => setThemeTick((t) => t + 1));
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class", "style", "data-brand", "data-surface"],
+    });
+    return () => observer.disconnect();
   }, []);
 
   const draw = useCallback(() => {
@@ -141,7 +151,7 @@ export function WatermarkCanvas({
       }
     }
     ctx.restore();
-  }, [text, fontSize, color, fontFamily, rotate, gap, padding, opacity, colorScheme]);
+  }, [text, fontSize, color, fontFamily, rotate, gap, padding, opacity, colorScheme, themeTick]);
 
   useEffect(() => {
     draw();

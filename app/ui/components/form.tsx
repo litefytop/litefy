@@ -1,6 +1,5 @@
-import { Loader2 } from "lucide-react";
 import * as React from "react";
-import { cn } from "../utils/cn";
+import { Button } from "./button";
 
 type FormElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 type FormValue = string | number | string[] | number[] | null;
@@ -262,22 +261,18 @@ type FormSubmitProps = React.ComponentProps<"button"> & {
 
 function FormSubmit({ children, className, ref, loadingIcon, ...props }: FormSubmitProps) {
   const { isPending } = React.useContext(FormContext);
-  const icon = isPending && (loadingIcon ?? <Loader2 className="animate-spin size-4" />);
 
   return (
-    <button
+    <Button
       type="submit"
+      variant="outline"
       disabled={isPending}
-      ref={ref}
-      className={cn(
-        "border border-border cursor-pointer  inline-flex items-center justify-center shrink-0 select-none [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 h-9 min-w-9 px-3 py-1 has-[>svg]:px-2 gap-1 rounded-md",
-        className,
-      )}
+      loadingConfig={{ loading: isPending, icon: loadingIcon }}
+      className={className}
       {...props}
     >
-      {icon}
       {children}
-    </button>
+    </Button>
   );
 }
 

@@ -16,6 +16,9 @@ export interface ChipGroupProps {
   classNames?: {
     chip?: ClassNameValue;
   };
+  styles?: {
+    chip?: React.CSSProperties;
+  };
 }
 
 const chipClass =
@@ -27,6 +30,8 @@ export function ChipGroup({
   renderMore,
   className,
   classNames,
+  styles,
+  ...props
 }: ChipGroupProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const shadowRef = React.useRef<HTMLDivElement>(null);
@@ -80,10 +85,10 @@ export function ChipGroup({
   const visible = items.slice(0, visibleCount);
 
   return (
-    <div className={cn("max-w-full overflow-hidden", className)}>
+    <div {...props} className={cn("max-w-full overflow-hidden", className)}>
       <div ref={containerRef} className="flex min-w-0 items-center gap-1.5">
         {visible.map((item) => (
-          <span key={item.value} className={cn(chipClass, classNames?.chip)}>
+          <span key={item.value} className={cn(chipClass, classNames?.chip)} style={styles?.chip}>
             {item.label}
           </span>
         ))}
@@ -99,7 +104,7 @@ export function ChipGroup({
         className="pointer-events-none absolute top-[-9999px] left-[-9999px] flex items-center gap-1.5"
       >
         {items.map((item) => (
-          <span key={item.value} data-chip className={cn(chipClass, classNames?.chip)}>
+          <span key={item.value} data-chip className={cn(chipClass, classNames?.chip)} style={styles?.chip}>
             {item.label}
           </span>
         ))}

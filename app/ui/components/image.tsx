@@ -1,6 +1,7 @@
 "use client";
 import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
+import { useImageStatus } from "../utils/use-image-status";
 
 export interface ImageRootProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
@@ -44,29 +45,7 @@ export function Image({
   styles,
   ...props
 }: ImageProps) {
-  const [status, setStatus] = React.useState<"loading" | "success" | "failure">("loading");
-
-  React.useEffect(() => {
-    let isActive = true;
-    setStatus("loading");
-    const img = new window.Image();
-    img.onload = () => {
-      if (isActive) {
-        React.startTransition(() => setStatus("success"));
-      }
-    };
-    img.onerror = () => {
-      if (isActive) {
-        React.startTransition(() => setStatus("failure"));
-      }
-    };
-    img.src = src;
-    return () => {
-      isActive = false;
-      img.onload = null;
-      img.onerror = null;
-    };
-  }, [src]);
+  const status = useImageStatus(src);
 
   return (
     <ImageRoot className={className} style={style}>

@@ -395,27 +395,16 @@ function ToastContainer({ visibleToasts = 3, className, ...props }: ToastContain
   );
 }
 
-const Toaster = Object.assign(ToastContainer, {
-  success: (options: ToastItemProps) => {
-    return toastObserver.addToast({ ...options, type: "success" });
-  },
+type ToastMethod = (options: ToastItemProps) => string | number;
 
-  error: (options: ToastItemProps) => {
-    return toastObserver.addToast({ ...options, type: "error" });
-  },
+const toastMethods = Object.fromEntries(
+  (["success", "error", "warning", "info", "loading"] as ToastType[]).map((type) => [
+    type,
+    (options: ToastItemProps) => toastObserver.addToast({ ...options, type }),
+  ]),
+) as Record<ToastType, ToastMethod>;
 
-  warning: (options: ToastItemProps) => {
-    return toastObserver.addToast({ ...options, type: "warning" });
-  },
-
-  info: (options: ToastItemProps) => {
-    return toastObserver.addToast({ ...options, type: "info" });
-  },
-
-  loading: (options: ToastItemProps) => {
-    return toastObserver.addToast({ ...options, type: "loading" });
-  },
-
+const Toaster = Object.assign(ToastContainer, toastMethods, {
   dismiss: (id?: string | number) => {
     if (id !== undefined) {
       removeWithExit(id);

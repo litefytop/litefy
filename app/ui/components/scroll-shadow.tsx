@@ -33,7 +33,7 @@ export interface ScrollShadowEdgeProps extends Omit<React.ComponentProps<"div">,
   edge?: Edge;
 }
 
-const edgeClasses: Record<Edge, string> = {
+const edgeClass: Record<Edge, string> = {
   top: "top-0 inset-x-0 h-16 bg-linear-to-b from-background to-transparent",
   bottom: "bottom-0 inset-x-0 h-16 bg-linear-to-t from-background to-transparent",
   left: "left-0 inset-y-0 w-16 bg-linear-to-r from-background to-transparent",
@@ -49,7 +49,7 @@ export function ScrollShadowEdge({
     <div
       {...props}
       data-position={edge}
-      className={cn("pointer-events-none absolute", edgeClasses[edge], className)}
+      className={cn("pointer-events-none absolute", edgeClass[edge], className)}
     />
   );
 }

@@ -81,7 +81,8 @@ export type MenuGroupConfig = {
 
 export type MenuConfig = MenuGroupConfig | MenuItemConfig;
 
-export interface MenuProps {
+export interface MenuProps
+  extends Omit<HTMLAttrs<React.ComponentProps<"ul">>, "ref" | "onSelect"> {
   items: MenuConfig[];
   autoFocus?: boolean;
   onSelect?: (item: MenuItemConfig) => void;
@@ -101,7 +102,7 @@ export interface MenuProps {
   };
 }
 
-interface MenuListProps {
+interface MenuListProps extends Omit<HTMLAttrs<React.ComponentProps<"ul">>, "ref" | "onSelect"> {
   ref?: React.Ref<HTMLUListElement>;
   items: MenuConfig[];
   uid: string;
@@ -141,6 +142,7 @@ function MenuList({
   onArrowLeft,
   onItemMouseEnter,
   onItemMouseLeave,
+  ...props
 }: MenuListProps) {
   const listRef = React.useRef<HTMLUListElement>(null);
   const [activeEntry, setActiveEntry] = React.useState<string | null>(null);
@@ -283,7 +285,7 @@ function MenuList({
   });
 
   return (
-    <MenuRoot ref={listRef} className={className} style={style}>
+    <MenuRoot ref={listRef} {...props} className={className} style={style}>
       {nodes}
     </MenuRoot>
   );
@@ -299,6 +301,7 @@ export function Menu({
   itemClassName,
   classNames,
   styles,
+  ...props
 }: MenuProps) {
   const id = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const rootPanelRef = React.useRef<HTMLUListElement>(null);
@@ -395,6 +398,7 @@ export function Menu({
     <>
       <MenuList
         ref={rootPanelRef}
+        {...props}
         items={items}
         uid={`${id}-root`}
         autoFocus={autoFocus}

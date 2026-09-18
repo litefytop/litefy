@@ -1,6 +1,7 @@
 "use client";
 import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
+import { useFloatingPanel } from "../utils/use-floating-panel";
 
 type PopoverAlignX = "start" | "end" | "center";
 
@@ -50,7 +51,6 @@ export function PopoverContent({
   ...props
 }: PopoverContentProps) {
   const panelRef = React.useRef<HTMLDivElement>(null);
-  const previouslyFocusedRef = React.useRef<HTMLElement | null>(null);
   const handleOpenChange = React.useCallback(
     (next: boolean) => {
       onOpenChange?.(next);
@@ -58,41 +58,13 @@ export function PopoverContent({
     [onOpenChange],
   );
 
-  React.useEffect(() => {
-    const panel = panelRef.current;
-    if (!panel) return;
-    if (open) {
-      panel.showPopover();
-      if (autofocus) {
-        previouslyFocusedRef.current =
-          document.activeElement instanceof HTMLElement ? document.activeElement : null;
-        const focusables = panel.querySelectorAll<HTMLElement>(
-          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
-        );
-        (focusables[0] ?? panel).focus();
-      }
-    } else {
-      panel.hidePopover();
-      if (autofocus) {
-        const active = document.activeElement;
-        const focusWouldBeLost =
-          active === null || active === document.body || panel.contains(active);
-        if (focusWouldBeLost) previouslyFocusedRef.current?.focus?.();
-        previouslyFocusedRef.current = null;
-      }
-    }
-  }, [open, autofocus]);
-
-  React.useEffect(() => {
-    if (!open) return;
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (panelRef.current?.contains(target)) return;
-      handleOpenChange(false);
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [open, handleOpenChange]);
+  useFloatingPanel({
+    open,
+    panelRef,
+    onOpenChange: handleOpenChange,
+    restoreFocus: autofocus,
+    focusOnOpen: autofocus,
+  });
 
   const handleContentKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     onKeyDownProp?.(e);
@@ -232,7 +204,8 @@ export function usePopoverTrigger({
   return { triggerProps, contentProps, clearTimer, scheduleClose, scheduleOpen, anchorName };
 }
 
-export interface PopoverProps {
+export interface PopoverProps
+  extends Omit<React.ComponentProps<"button">, "className" | "style" | "children"> {
   trigger: React.ReactNode;
   open?: boolean;
   defaultOpen?: boolean;
@@ -262,6 +235,7 @@ export function Popover({
   styles,
   children,
   mode = "click",
+  ...props
 }: PopoverProps) {
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen);
   const isControlled = open !== undefined;
@@ -285,8 +259,9 @@ export function Popover({
   return (
     <>
       <button
+        {...props}
         {...triggerProps}
-        type="button"
+        type={props.type ?? "button"}
         className={cn(classNames?.trigger)}
         style={{ ...triggerProps.style, ...styles?.trigger }}
       >

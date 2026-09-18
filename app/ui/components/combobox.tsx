@@ -33,6 +33,10 @@ export interface ComboboxProps
     panel?: ClassNameValue;
     item?: ClassNameValue;
   };
+  styles?: {
+    panel?: React.CSSProperties;
+    item?: React.CSSProperties;
+  };
 }
 
 export function Combobox({
@@ -47,6 +51,7 @@ export function Combobox({
   debounceMs = 300,
   className,
   classNames,
+  styles,
   ...props
 }: ComboboxProps) {
   const isControlled = controlledValue !== undefined;
@@ -117,6 +122,7 @@ export function Combobox({
       onKeyDown={handleKeyDown}
       className={className}
       classNames={{ popover: cn("p-1", classNames?.panel) }}
+      styles={{ popover: styles?.panel }}
     >
       <List
         highlightIndex={highlightIndex}
@@ -135,6 +141,7 @@ export function Combobox({
         }
         className="max-h-64"
         classNames={{ item: classNames?.item }}
+        styles={{ item: styles?.item }}
       />
     </Picker>
   );

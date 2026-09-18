@@ -15,7 +15,7 @@ export type TypographyVariant =
   | "heading-code"
   | "description-code";
 
-const variantClasses: Record<TypographyVariant, string> = {
+const variantClass: Record<TypographyVariant, string> = {
   h1: "font-semibold tracking-tight text-4xl sm:text-5xl lg:text-6xl",
   h2: "font-semibold tracking-tight text-3xl sm:text-4xl lg:text-5xl",
   h3: "font-semibold tracking-tight text-2xl sm:text-3xl lg:text-4xl",
@@ -54,7 +54,7 @@ export function Typography({
 }: TypographyProps) {
   const Comp = variantTags[variant] as React.ElementType;
   return (
-    <Comp {...props} className={cn(variantClasses[variant], className)}>
+    <Comp {...props} className={cn(variantClass[variant], className)}>
       {children}
     </Comp>
   );

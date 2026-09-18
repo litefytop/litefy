@@ -198,7 +198,8 @@ export interface StepsItemConfig {
   content?: React.ReactNode;
 }
 
-export interface StepsProps {
+export interface StepsProps
+  extends Omit<React.ComponentProps<"ol">, "className" | "onChange"> {
   items: StepsItemConfig[];
   index: number;
   orientation?: "horizontal" | "vertical";
@@ -221,9 +222,10 @@ export function Steps({
   maxIndex = items.length - 1,
   className,
   classNames,
+  ...props
 }: StepsProps) {
   return (
-    <StepsRoot orientation={orientation} className={className}>
+    <StepsRoot {...props} orientation={orientation} className={className}>
       {items.map((item, i) => (
         <StepsItem
           key={i}

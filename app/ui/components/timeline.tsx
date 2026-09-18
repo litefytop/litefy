@@ -25,6 +25,13 @@ export interface TimelineItemProps extends Omit<React.ComponentProps<"li">, "cla
     heading?: ClassNameValue;
     description?: ClassNameValue;
   };
+  styles?: {
+    marker?: React.CSSProperties;
+    connector?: React.CSSProperties;
+    time?: React.CSSProperties;
+    heading?: React.CSSProperties;
+    description?: React.CSSProperties;
+  };
 }
 
 export function TimelineItem({
@@ -35,6 +42,7 @@ export function TimelineItem({
   description,
   className,
   classNames,
+  styles,
   ...props
 }: TimelineItemProps) {
   return (
@@ -46,22 +54,35 @@ export function TimelineItem({
             "has-[svg]:size-5 has-[svg]:border has-[svg]:bg-background has-[svg]:text-foreground",
             classNames?.marker,
           )}
+          style={styles?.marker}
         >
           {marker}
         </span>
         {connector && (
-          <span aria-hidden className={cn("w-px flex-1 bg-border", classNames?.connector)} />
+          <span
+            aria-hidden
+            className={cn("w-px flex-1 bg-border", classNames?.connector)}
+            style={styles?.connector}
+          />
         )}
       </span>
       <div className="flex flex-1 flex-col gap-0.5">
         {time && (
-          <span className={cn("text-xs tabular-nums text-muted-foreground", classNames?.time)}>
+          <span
+            className={cn("text-xs tabular-nums text-muted-foreground", classNames?.time)}
+            style={styles?.time}
+          >
             {time}
           </span>
         )}
-        <span className={cn("text-sm font-medium", classNames?.heading)}>{heading}</span>
+        <span className={cn("text-sm font-medium", classNames?.heading)} style={styles?.heading}>
+          {heading}
+        </span>
         {description && (
-          <span className={cn("text-sm text-muted-foreground", classNames?.description)}>
+          <span
+            className={cn("text-sm text-muted-foreground", classNames?.description)}
+            style={styles?.description}
+          >
             {description}
           </span>
         )}
@@ -77,7 +98,8 @@ export interface TimelineItemConfig {
   description?: React.ReactNode;
 }
 
-export interface TimelineProps {
+export interface TimelineProps
+  extends Omit<React.ComponentProps<"ol">, "className"> {
   items: TimelineItemConfig[];
   className?: ClassNameValue;
   classNames?: {
@@ -87,11 +109,18 @@ export interface TimelineProps {
     heading?: ClassNameValue;
     description?: ClassNameValue;
   };
+  styles?: {
+    marker?: React.CSSProperties;
+    connector?: React.CSSProperties;
+    time?: React.CSSProperties;
+    heading?: React.CSSProperties;
+    description?: React.CSSProperties;
+  };
 }
 
-export function Timeline({ items, className, classNames }: TimelineProps) {
+export function Timeline({ items, className, classNames, styles, ...props }: TimelineProps) {
   return (
-    <TimelineRoot className={className}>
+    <TimelineRoot {...props} className={className}>
       {items.map((item, i) => (
         <TimelineItem
           key={i}
@@ -101,6 +130,7 @@ export function Timeline({ items, className, classNames }: TimelineProps) {
           heading={item.heading}
           description={item.description}
           classNames={classNames}
+          styles={styles}
         />
       ))}
     </TimelineRoot>

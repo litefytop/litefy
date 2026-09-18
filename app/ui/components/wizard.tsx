@@ -3,10 +3,12 @@
 import * as React from "react";
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { type ClassNameValue, cn } from "../utils/cn";
+import { Button } from "./button";
 import { Pager } from "./pager";
 import { Steps, type StepsItemConfig } from "./steps";
 
-export interface WizardProps {
+export interface WizardProps
+  extends Omit<React.ComponentProps<"div">, "className"> {
   steps: StepsItemConfig[];
   children: React.ReactNode[];
   onFinish?: () => void;
@@ -82,11 +84,12 @@ export function Wizard({
   onFinish,
   className,
   classNames,
+  ...props
 }: WizardProps) {
   const nav = useWizardNavigation({ count: steps.length });
 
   return (
-    <div className={cn("w-full space-y-6", className)}>
+    <div {...props} className={cn("w-full space-y-6", className)}>
       <Steps
         items={steps}
         index={nav.index}
@@ -104,30 +107,22 @@ export function Wizard({
         {children}
       </Pager>
       <div className={cn("flex items-center justify-between", classNames?.footer)}>
-        <button
-          type="button"
-          onClick={() => nav.go(nav.index - 1)}
+        <Button
+          variant="outline"
+          className="h-9 px-4 text-muted-foreground hover:bg-muted"
           disabled={nav.isFirst}
-          className="h-9 cursor-pointer rounded-md border px-4 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          onClick={() => nav.go(nav.index - 1)}
         >
           Back
-        </button>
+        </Button>
         {nav.isLast ? (
-          <button
-            type="button"
-            onClick={onFinish}
-            className="h-9 cursor-pointer rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
+          <Button className="h-9 px-4" onClick={onFinish}>
             Submit
-          </button>
+          </Button>
         ) : (
-          <button
-            type="button"
-            onClick={() => nav.go(nav.index + 1)}
-            className="h-9 cursor-pointer rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
+          <Button className="h-9 px-4" onClick={() => nav.go(nav.index + 1)}>
             Next
-          </button>
+          </Button>
         )}
       </div>
     </div>
@@ -195,9 +190,6 @@ export function InlineWizard({
     if (!disabled) nav.go(next);
   };
 
-  const buttonBase =
-    "inline-flex h-8 cursor-pointer items-center justify-center gap-1 rounded-md px-3 text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50";
-
   return (
     <Steps
       orientation="vertical"
@@ -224,48 +216,34 @@ export function InlineWizard({
                 className={cn("mt-3 flex items-center justify-end gap-2", classNames?.footer)}
               >
                 {i > 0 && (
-                  <button
-                    type="button"
+                  <Button
+                    variant="outline"
+                    className={cn("text-muted-foreground", classNames?.button)}
                     disabled={disabled}
                     onClick={() => go(i - 1)}
-                    className={cn(
-                      buttonBase,
-                      "border text-muted-foreground hover:bg-hover hover:text-foreground",
-                      classNames?.button,
-                    )}
                   >
                     <ChevronLeft className="size-4" />
                     {backLabel}
-                  </button>
+                  </Button>
                 )}
                 {i === steps.length - 1 ? (
-                  <button
-                    type="button"
+                  <Button
+                    className={classNames?.primaryButton}
                     disabled={disabled}
                     onClick={onFinish}
-                    className={cn(
-                      buttonBase,
-                      "bg-primary text-primary-foreground hover:bg-primary-accent",
-                      classNames?.primaryButton,
-                    )}
                   >
                     {finishLabel}
                     {onFinish && <Check className="size-4" />}
-                  </button>
+                  </Button>
                 ) : (
-                  <button
-                    type="button"
+                  <Button
+                    className={classNames?.primaryButton}
                     disabled={disabled}
                     onClick={() => go(i + 1)}
-                    className={cn(
-                      buttonBase,
-                      "bg-primary text-primary-foreground hover:bg-primary-accent",
-                      classNames?.primaryButton,
-                    )}
                   >
                     {nextLabel}
                     <ChevronRight className="size-4" />
-                  </button>
+                  </Button>
                 )}
               </div>
             </>

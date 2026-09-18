@@ -462,7 +462,8 @@ export function CalendarYearGrid({
 
 export type CalendarView = "days" | "months" | "years";
 
-export interface CalendarProps {
+export interface CalendarProps
+  extends Omit<React.ComponentProps<"div">, "className" | "defaultValue" | "onChange"> {
   value?: Temporal.PlainDate | null;
   defaultValue?: Temporal.PlainDate | null;
   visibleMonth: Temporal.PlainDate;
@@ -492,6 +493,7 @@ export function Calendar({
   isDateDisabled,
   firstDayOfWeek = 0,
   className,
+  ...props
 }: CalendarProps) {
   const rootRef = React.useRef<HTMLDivElement>(null);
   const pendingFocusRef = React.useRef<{ attribute: string; value: string } | null>(null);
@@ -588,7 +590,7 @@ export function Calendar({
   };
 
   return (
-    <CalendarRoot ref={rootRef} className={className}>
+    <CalendarRoot ref={rootRef} {...props} className={className}>
       <CalendarHeader onKeyDown={handleHeaderKeyDown}>
         <CalendarNavButton
           direction="previous"

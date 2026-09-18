@@ -4,6 +4,7 @@ import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
 import { useChartPalette } from "../utils/use-chart-palette";
 import { arcPath, donutLayout } from "../utils/chart-kit";
+import { ChartLegend } from "../utils/chart-legend";
 
 export interface DonutDatum {
   label: string;
@@ -77,33 +78,15 @@ export function Donut({
       {...props}
     >
       {showLegend && (
-        <div
-          className={cn(
-            "flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs",
-            classNames?.legend,
-          )}
+        <ChartLegend
+          swatch="square"
+          className={cn("justify-center", classNames?.legend)}
           style={styles?.legend}
-        >
-          {data.map((datum, i) => (
-            <button
-              key={`${datum.label}-${i}`}
-              type="button"
-              onMouseEnter={() => setHover(i)}
-              onMouseLeave={() => setHover(null)}
-              onClick={() => toggle(i)}
-              className={cn(
-                "flex cursor-pointer items-center gap-1.5 text-muted-foreground transition-opacity hover:text-foreground",
-                hidden.has(i) && "opacity-40",
-              )}
-            >
-              <span
-                className="size-2.5 rounded-[3px]"
-                style={{ background: colorOf(i) }}
-              />
-              {datum.label}
-            </button>
-          ))}
-        </div>
+          items={data.map((datum, i) => ({ label: datum.label, color: colorOf(i) }))}
+          hidden={hidden}
+          onHover={setHover}
+          onToggle={toggle}
+        />
       )}
       <div className={cn("relative mx-auto mt-2 w-full max-w-64", classNames?.svg)}>
         <svg
