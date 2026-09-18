@@ -1,0 +1,52 @@
+---
+title: use-floating-panel
+description: Native popover lifecycle for anchored panels — show/hide sync, outside-press close with anchor exclusion, and focus save/restore
+---
+
+## Installation
+
+<Installation name="use-floating-panel" />
+
+## Usage
+
+`useFloatingPanel` runs the full lifecycle of a `popover="manual"` panel: it calls `showPopover()` / `hidePopover()` as `open` changes, closes on outside `mousedown` (optionally ignoring presses on an anchor element), saves the previously focused element on open and restores it on close when focus would otherwise be lost.
+
+It is the headless counterpart of [PopoverContent](/docs/component/popover) — [Popover](/docs/component/popover), [Picker](/docs/component/picker) and [Select](/docs/component/select) run this exact hook internally. Reach for it when you assemble your own anchored panel from primitives:
+
+```tsx
+import { useRef, useState } from "react";
+import { useFloatingPanel } from "@/ui";
+
+function MyPanel() {
+  const [open, setOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useFloatingPanel({
+    open,
+    panelRef,
+    onOpenChange: setOpen,
+    restoreFocus: true,
+  });
+
+  return (
+    <div ref={panelRef} popover="manual" className="not-open:hidden">
+      {/* panel content */}
+    </div>
+  );
+}
+```
+
+Escape handling is intentionally left to the call site (via `onKeyDown`), because keyboards interact with panels differently — an input-driven picker closes on the input's Escape, a menu closes on the panel's.
+
+## API Reference
+
+### Options (`UseFloatingPanelOptions`)
+
+| Option         | Type                                    | Default | Description                                                                 |
+| :------------- | :-------------------------------------- | :------ | :-------------------------------------------------------------------------- |
+| `open`         | `boolean`                               | -       | Whether the panel should be shown                                           |
+| `panelRef`     | `React.RefObject<HTMLElement \| null>`  | -       | Ref to the panel element (the `popover="manual"` element)                   |
+| `onOpenChange` | `(open: boolean) => void`               | -       | Called with `false` when an outside press requests a close                  |
+| `anchorRef`    | `React.RefObject<HTMLElement \| null>`  | -       | Presses inside this element do not count as outside (e.g. the trigger)      |
+| `restoreFocus` | `boolean`                               | `false` | On close, restore focus to the element focused before open if it was lost   |
+| `focusOnOpen`  | `boolean`                               | `false` | On open, move focus into the panel's first focusable element (or the panel) |

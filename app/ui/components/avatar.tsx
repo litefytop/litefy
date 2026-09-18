@@ -1,6 +1,7 @@
 "use client";
 import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
+import { useImageStatus } from "../utils/use-image-status";
 
 export interface AvatarRootProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
@@ -49,35 +50,7 @@ export function Avatar({
   styles,
   ...props
 }: AvatarProps) {
-  const [status, setStatus] = React.useState<"loading" | "success" | "failure">(() =>
-    src ? "loading" : "failure",
-  );
-
-  React.useEffect(() => {
-    if (!src) {
-      setStatus("failure");
-      return;
-    }
-    let isActive = true;
-    setStatus("loading");
-    const img = new window.Image();
-    img.onload = () => {
-      if (isActive) {
-        React.startTransition(() => setStatus("success"));
-      }
-    };
-    img.onerror = () => {
-      if (isActive) {
-        React.startTransition(() => setStatus("failure"));
-      }
-    };
-    img.src = src;
-    return () => {
-      isActive = false;
-      img.onload = null;
-      img.onerror = null;
-    };
-  }, [src]);
+  const status = useImageStatus(src);
 
   return (
     <AvatarRoot className={className} style={style}>

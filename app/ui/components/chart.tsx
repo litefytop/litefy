@@ -26,6 +26,7 @@ import {
   type PlotFrame,
 } from "../utils/chart-paint";
 import { useChartPalette } from "../utils/use-chart-palette";
+import { ChartLegend } from "./chart-legend";
 
 export type ChartData = [number[], ...number[][]];
 
@@ -104,17 +105,29 @@ export function Chart({
     const xs = dataRef.current[0];
     if (!tooltip || !wrap || idx < 0 || idx >= xs.length) return;
     const xLabel = time ? formatTimestamp(xs[idx]) : String(xs[idx]);
-    const rows = configsRef.current
-      .map((config, i) => {
-        if (config.show === false || hiddenRef.current.has(i)) return "";
-        const values = dataRef.current[i + 1] ?? [];
-        const raw = values[idx];
-        const stroke = config.stroke ?? paletteRef.current[i % paletteRef.current.length];
-        const text = raw == null ? "-" : config.value ? config.value(raw) : String(raw);
-        return `<div style="display:flex;align-items:center;gap:6px;min-width:120px"><span style="width:10px;height:2px;border-radius:1px;background:${stroke}"></span><span>${config.label}</span><span style="margin-left:auto;font-weight:500">${text}</span></div>`;
-      })
-      .join("");
-    tooltip.innerHTML = `<div style="font-weight:600;margin-bottom:4px">${xLabel}</div>${rows}`;
+    const header = document.createElement("div");
+    header.style.cssText = "font-weight:600;margin-bottom:4px";
+    header.textContent = xLabel;
+    const rows = document.createDocumentFragment();
+    configsRef.current.forEach((config, i) => {
+      if (config.show === false || hiddenRef.current.has(i)) return;
+      const values = dataRef.current[i + 1] ?? [];
+      const raw = values[idx];
+      const stroke = config.stroke ?? paletteRef.current[i % paletteRef.current.length];
+      const text = raw == null ? "-" : config.value ? config.value(raw) : String(raw);
+      const row = document.createElement("div");
+      row.style.cssText = "display:flex;align-items:center;gap:6px;min-width:120px";
+      const swatch = document.createElement("span");
+      swatch.style.cssText = `width:10px;height:2px;border-radius:1px;background:${stroke}`;
+      const label = document.createElement("span");
+      label.textContent = config.label;
+      const value = document.createElement("span");
+      value.style.cssText = "margin-left:auto;font-weight:500";
+      value.textContent = text;
+      row.append(swatch, label, value);
+      rows.append(row);
+    });
+    tooltip.replaceChildren(header, rows);
     tooltip.style.display = "block";
     const x = Math.min(Math.max(px + 12, 0), wrap.clientWidth - tooltip.offsetWidth);
     const y = Math.max(py - tooltip.offsetHeight - 12, 0);
@@ -405,32 +418,21 @@ export function Chart({
 
   return (
     <div className={cn("w-full", className)}>
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
-        {configs.map((config, i) => {
-          const stroke = config.stroke ?? palette[i % palette.length];
-          return (
-            <button
-              key={`${config.label}-${i}`}
-              type="button"
-              onClick={() =>
-                setHidden((prev) => {
-                  const next = new Set(prev);
-                  if (next.has(i)) next.delete(i);
-                  else next.add(i);
-                  return next;
-                })
-              }
-              className={cn(
-                "flex cursor-pointer items-center gap-1.5 text-muted-foreground transition-opacity hover:text-foreground",
-                hidden.has(i) && "opacity-40",
-              )}
-            >
-              <span className="h-0.5 w-3 rounded-full" style={{ background: stroke }} />
-              {config.label}
-            </button>
-          );
-        })}
-      </div>
+      <ChartLegend
+        items={configs.map((config, i) => ({
+          label: config.label,
+          color: config.stroke ?? palette[i % palette.length],
+        }))}
+        hidden={hidden}
+        onToggle={(i) =>
+          setHidden((prev) => {
+            const next = new Set(prev);
+            if (next.has(i)) next.delete(i);
+            else next.add(i);
+            return next;
+          })
+        }
+      />
       <div ref={wrapRef} className="relative mt-2">
         <div ref={containerRef} className="w-full">
           <canvas

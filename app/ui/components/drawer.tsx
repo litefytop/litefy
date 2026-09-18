@@ -1,6 +1,7 @@
 "use client";
 import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
+import { trapTabKey } from "../utils/trap-tab-key";
 
 const placementStyles = {
   left: "left-0 top-0 bottom-0 flex-row-reverse",
@@ -175,32 +176,7 @@ export function Drawer({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDialogElement>) => {
-    if (e.key === "Tab") {
-      const dialog = dialogRef.current;
-      if (!dialog) return;
-      const focusable = Array.from(
-        dialog.querySelectorAll<HTMLElement>(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-        ),
-      ).filter((el) => el.offsetParent !== null);
-      if (focusable.length === 0) {
-        e.preventDefault();
-        return;
-      }
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (e.shiftKey) {
-        if (document.activeElement === first || !dialog.contains(document.activeElement)) {
-          e.preventDefault();
-          last.focus();
-        }
-      } else {
-        if (document.activeElement === last || !dialog.contains(document.activeElement)) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
-    }
+    trapTabKey(e, dialogRef.current);
   };
   const setRefs = (element: HTMLDivElement | null) => {
     wrapperRef.current = element;

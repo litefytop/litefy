@@ -165,7 +165,7 @@ Collapsible sidebar controlled via ref (`SidebarHandle` — e.g. `ref.current.co
 ## Overlays
 
 ### Dialog
-Modal on the native `<dialog>` with a built-in top-right ESC close button and focus trap: `open` / `onOpenChange`, `onBackdropClick`. Parts `DialogRoot` / `DialogContent` / `DialogClose` are for custom assembly only — don't render `DialogClose` inside `Dialog`.
+Modal on the native `<dialog>` with a built-in top-right ESC close button and focus trap: `open` / `onOpenChange`, `onBackdropClick`, optional `title` (renders a header row — title left, close button right in flow — so long titles wrap instead of overlapping the button). Parts `DialogRoot` / `DialogContent` / `DialogClose` are for custom assembly only — don't render `DialogClose` inside `Dialog`.
 
 ### Command
 Dialog-based command palette: `trigger` (or app-level ⌘K wiring via `open` / `onOpenChange`) opens a dialog with the search input on top and the filtered list below. Filters on `value` / string `label` / `keywords` (custom via `filter`), `↑`/`↓`+`Enter` keyboard navigation with the first match pre-highlighted, selecting closes the dialog. Items are config-driven — `{ label, value?, icon?, shortcut?, keywords?, disabled? }` plus `{ group, items }` groups; `renderItem` overrides row rendering. Parts `CommandRoot` / `CommandInput` / `CommandList` assemble the input + filtered list without the dialog (e.g. inside a Popover).
@@ -303,9 +303,11 @@ Tree list of field rows with always-visible operator/value rules (tree guides `�
 ### ChatInput
 Chat composer: `value` / `defaultValue` + `onValueChange`, `onSend`, `enterToSend`, `attach` slot, `actions`, pasted-screenshot thumbnails (`autoPaste`), `placeholder`, `disabled`.
 
-## Composition Guides (not shipped components)
+### Combobox
+Input + popover listbox on the Picker + List primitives: `options` (string[]) for local filtering or `fetcher` for remote search (debounced, infinite scroll via `pageSize`), `value` / `defaultValue` + `onValueChange`, `invalid`, `empty`, `classNames.panel` / `classNames.item`.
 
-**Combobox** and **PreviewCard** have docs pages and demos, but no shipped file — they teach how to assemble shipped primitives (Picker + List, Card + Image + Tooltip). Follow those recipes in `content/docs/component/<name>.mdx` instead of importing them.
+### PreviewCard
+Card + Image + Tooltip composition: `src`, `alt`, `title`, `description`, optional `trigger` (renders an `<a>` hover anchor with the card in a tooltip; omit for an inline card), `href`, `delay`, `classNames` (image / body / title / description).
 
 ## Core Primitives worth knowing
 
@@ -315,5 +317,6 @@ Chat composer: `value` / `defaultValue` + `onValueChange`, `onSend`, `enterToSen
 | `PickerRoot` / `PickerInput` / `PickerContent` | Its parts |
 | `PopoverContent` / `usePopoverTrigger` | Low-level popover building blocks |
 | `use-pagination` | Pagination state hook |
-| `use-virtual-scroll`, `use-load-more`, `use-drag`, `use-combobox`, `use-panel-focus`, `use-upload-monitor`, `use-chart-palette`, `use-remote-pagination`, `use-remote-sort`, `use-theme` | Headless hooks in `@/ui/utils` |
+| `use-virtual-scroll`, `use-load-more`, `use-drag`, `use-combobox`, `use-panel-focus`, `use-floating-panel`, `use-image-status`, `use-upload-monitor`, `use-chart-palette`, `use-remote-pagination`, `use-remote-sort`, `use-theme` | Headless hooks in `@/ui/utils` |
+| `trapTabKey`, `ChartLegend` | Shared dialog/drawer focus trap and chart/donut/radar legend in `@/ui` |
 | `cn` | `tailwind-merge` itself; `ClassNameValue` is its accepted type |

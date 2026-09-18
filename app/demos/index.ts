@@ -59,6 +59,8 @@ import DonutPieDemo from "./donut/pie";
 import donutPieCode from "./donut/pie.tsx?raw";
 import RadarBasicDemo from "./radar/basic";
 import radarBasicCode from "./radar/basic.tsx?raw";
+import ChartLegendBasicDemo from "./chart-legend/basic";
+import chartLegendBasicCode from "./chart-legend/basic.tsx?raw";
 import SparklineBasicDemo from "./sparkline/basic";
 import sparklineBasicCode from "./sparkline/basic.tsx?raw";
 import ChatInputBasicDemo from "./chat-input/basic";
@@ -85,8 +87,6 @@ import CalendarCustomDemo from "./calendar/custom";
 import calendarCustomCode from "./calendar/custom.tsx?raw";
 import CalendarDisabledDemo from "./calendar/disabled";
 import calendarDisabledCode from "./calendar/disabled.tsx?raw";
-import CalendarI18nDemo from "./calendar/i18n";
-import calendarI18nCode from "./calendar/i18n.tsx?raw";
 import CheckboxBasicDemo from "./checkbox/basic";
 import checkboxBasicCode from "./checkbox/basic.tsx?raw";
 import CheckboxGroupDemo from "./checkbox/group";
@@ -382,6 +382,10 @@ export const demos: Record<string, DemoItem> = {
     component: RadarBasicDemo,
     code: radarBasicCode,
   },
+  "chart-legend-basic": {
+    component: ChartLegendBasicDemo,
+    code: chartLegendBasicCode,
+  },
   "sparkline-basic": {
     component: SparklineBasicDemo,
     code: sparklineBasicCode,
@@ -401,10 +405,6 @@ export const demos: Record<string, DemoItem> = {
   "calendar-custom": {
     component: CalendarCustomDemo,
     code: calendarCustomCode,
-  },
-  "calendar-i18n": {
-    component: CalendarI18nDemo,
-    code: calendarI18nCode,
   },
 
   "checkbox-basic": {

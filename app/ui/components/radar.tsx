@@ -4,6 +4,7 @@ import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
 import { useChartPalette } from "../utils/use-chart-palette";
 import { polar, polygonPoints, radarPolygon, radarRings, radarSpokes } from "../utils/chart-kit";
+import { ChartLegend } from "./chart-legend";
 
 export interface RadarSeries {
   label: string;
@@ -102,30 +103,14 @@ export function Radar({
       {...props}
     >
       {showLegend && (
-        <div
-          className={cn(
-            "flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs",
-            classNames?.legend,
-          )}
+        <ChartLegend
+          className={cn("justify-center", classNames?.legend)}
           style={styles?.legend}
-        >
-          {series.map((item, i) => (
-            <button
-              key={`${item.label}-${i}`}
-              type="button"
-              onMouseEnter={() => setHover(i)}
-              onMouseLeave={() => setHover(null)}
-              onClick={() => toggle(i)}
-              className={cn(
-                "flex cursor-pointer items-center gap-1.5 text-muted-foreground transition-opacity hover:text-foreground",
-                hidden.has(i) && "opacity-40",
-              )}
-            >
-              <span className="h-0.5 w-3 rounded-full" style={{ background: colorOf(i) }} />
-              {item.label}
-            </button>
-          ))}
-        </div>
+          items={series.map((item, i) => ({ label: item.label, color: colorOf(i) }))}
+          hidden={hidden}
+          onHover={setHover}
+          onToggle={toggle}
+        />
       )}
       <svg
         viewBox="0 0 240 220"

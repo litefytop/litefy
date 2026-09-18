@@ -67,6 +67,7 @@ description: 基于原生 popover 与 listbox 面板的选择器，面板跟随�
 
 行为说明：
 
+- 触发器为流式宽度：`w-full` 并以 `max-w-120` 封顶，保证宽容器下标签行长度可读；需要其他宽度时通过 `className` 覆盖。
 - 选中选项后面板关闭、值更新、焦点回到触发器。
 - 面板通过 top layer 逃逸祖先的 `overflow` 裁剪，靠近视口边缘时通过 `positionTryFallbacks` 自动翻转，并以 `min-width: anchor-size(width)` 匹配触发器宽度。
 - 面板打开时，高亮从当前选中的选项开始。

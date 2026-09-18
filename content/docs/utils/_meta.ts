@@ -14,6 +14,13 @@ export default {
       zh: "图表数学层",
     },
   },
+  "chart-paint": {
+    name: "Chart Paint",
+    displayName: {
+      en: "chart-paint",
+      zh: "图表绘制层",
+    },
+  },
   "use-theme": {
     name: "Theme",
     displayName: {
@@ -49,6 +56,20 @@ export default {
       zh: "面板焦点",
     },
   },
+  "use-floating-panel": {
+    name: "Floating Panel",
+    displayName: {
+      en: "use-floating-panel",
+      zh: "浮层生命周期",
+    },
+  },
+  "trap-tab-key": {
+    name: "Trap Tab Key",
+    displayName: {
+      en: "trap-tab-key",
+      zh: "焦点圈定",
+    },
+  },
   "use-drag": {
     name: "Drag",
     displayName: {
@@ -82,6 +103,13 @@ export default {
     displayName: {
       en: "use-upload-monitor",
       zh: "上传监控",
+    },
+  },
+  "use-image-status": {
+    name: "Image Status",
+    displayName: {
+      en: "use-image-status",
+      zh: "图片加载状态",
     },
   },
   "use-pagination": {

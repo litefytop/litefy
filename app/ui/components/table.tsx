@@ -25,7 +25,8 @@ export interface TableColumn<T> {
   width?: string;
 }
 
-export interface TableProps<T> {
+export interface TableProps<T>
+  extends Omit<React.ComponentProps<"div">, "className"> {
   data: T[];
   columns: TableColumn<T>[];
 
@@ -100,6 +101,7 @@ export function Table<T extends object>({
   className,
   classNames,
   styles,
+  ...props
 }: TableProps<T>) {
   const isControlled = controlledSort !== undefined;
   const [internalSort, setInternalSort] = React.useState<SortState<T>>(null);
@@ -143,7 +145,7 @@ export function Table<T extends object>({
   );
 
   return (
-    <TableRoot className={className} style={styles?.wrapper}>
+    <TableRoot {...props} className={className} style={styles?.wrapper}>
       <TableHead className={classNames?.head}>
         <TableBase className={classNames?.table} style={styles?.table}>
           {colGroup}

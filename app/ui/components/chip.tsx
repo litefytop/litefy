@@ -16,7 +16,7 @@ export interface ChipProps extends Omit<React.ComponentProps<"span">, "className
   className?: ClassNameValue;
 }
 
-const chipVariants: Record<ChipVariant, string> = {
+const chipClass: Record<ChipVariant, string> = {
   outline: "border text-foreground",
   primary: "bg-primary text-primary-foreground",
   success: "bg-success/15 text-success",
@@ -32,7 +32,7 @@ export function Chip({ variant = "primary", children, className, ...props }: Chi
     <span
       data-variant={variant}
       {...props}
-      className={cn("inline-flex items-center justify-center min-h-2 min-w-2 rounded-sm leading-none tabular-nums truncate text-xs px-1", chipVariants[variant], className)}
+      className={cn("inline-flex items-center justify-center min-h-2 min-w-2 rounded-sm leading-none tabular-nums truncate text-xs px-1", chipClass[variant], className)}
     >
       {children}
     </span>

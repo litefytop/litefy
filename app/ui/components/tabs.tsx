@@ -8,7 +8,7 @@ export type TabsOrientation = "horizontal" | "vertical";
 
 export type TabsVariant = "button" | "line";
 
-const triggerClassNames: Record<TabsVariant, string> = {
+const triggerClass: Record<TabsVariant, string> = {
   button:
     "rounded-md hover:bg-accent data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-subtle",
   line: "border-b-2 border-transparent data-[state=active]:text-primary data-[state=active]:border-primary",
@@ -130,6 +130,7 @@ export interface TabsTriggerProps extends Omit<React.ComponentProps<"button">, "
   value: string;
   active?: boolean;
   variant?: TabsVariant;
+  uid?: string;
   onValueChange?: (value: string) => void;
   className?: ClassNameValue;
 }
@@ -138,14 +139,16 @@ export function TabsTrigger({
   value,
   active = false,
   variant = "line",
+  uid,
   onValueChange,
   disabled,
   className,
   children,
   ...props
 }: TabsTriggerProps) {
-  const triggerId = `tabs-trigger-${value}`;
-  const panelId = `tabs-panel-${value}`;
+  const scope = uid ? `tabs-${uid}-` : "tabs-";
+  const triggerId = `${scope}trigger-${value}`;
+  const panelId = `${scope}panel-${value}`;
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
     const el = e.currentTarget;
@@ -190,7 +193,7 @@ export function TabsTrigger({
       disabled={disabled}
       onClick={() => !disabled && onValueChange?.(value)}
       onKeyDown={handleKeyDown}
-      className={cn("px-4 py-2 text-sm font-medium", triggerClassNames[variant], className)}
+      className={cn("px-4 py-2 text-sm font-medium", triggerClass[variant], className)}
     >
       {children}
     </button>
@@ -200,24 +203,28 @@ export function TabsTrigger({
 export interface TabsContentProps extends Omit<React.ComponentProps<"div">, "className"> {
   value: string;
   active?: boolean;
+  uid?: string;
   className?: ClassNameValue;
 }
 
 export function TabsContent({
   value,
   active = false,
+  uid,
   className,
   children,
   ...props
 }: TabsContentProps) {
   if (!active) return null;
 
+  const scope = uid ? `tabs-${uid}-` : "tabs-";
+
   return (
     <div
       {...props}
-      id={`tabs-panel-${value}`}
+      id={`${scope}panel-${value}`}
       role="tabpanel"
-      aria-labelledby={`tabs-trigger-${value}`}
+      aria-labelledby={`${scope}trigger-${value}`}
       data-state="active"
       className={cn("w-full p-4 rounded-lg", className)}
     >
@@ -258,6 +265,7 @@ export function Tabs({
   );
   const isControlled = value !== undefined;
   const selectedValue = isControlled ? value : uncontrolledValue;
+  const uid = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
 
   const handleValueChange = (val: string) => {
     if (!isControlled) setUncontrolledValue(val);
@@ -279,6 +287,7 @@ export function Tabs({
           <TabsTrigger
             key={option.value}
             value={option.value}
+            uid={uid}
             active={selectedValue === option.value}
             disabled={option.disabled}
             variant={variant}
@@ -292,6 +301,7 @@ export function Tabs({
         <TabsContent
           key={option.value}
           value={option.value}
+          uid={uid}
           active={selectedValue === option.value}
         >
           {option.content}

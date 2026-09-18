@@ -11,7 +11,8 @@ export type TransferItemConfig = {
   disabled?: boolean;
 };
 
-export interface TransferProps {
+export interface TransferProps
+  extends Omit<React.ComponentProps<"div">, "className" | "onChange"> {
   dataSource: TransferItemConfig[];
   value?: string[];
   defaultValue?: string[];
@@ -26,6 +27,13 @@ export interface TransferProps {
     item?: ClassNameValue;
     actions?: ClassNameValue;
   };
+  styles?: {
+    panel?: React.CSSProperties;
+    header?: React.CSSProperties;
+    body?: React.CSSProperties;
+    item?: React.CSSProperties;
+    actions?: React.CSSProperties;
+  };
 }
 
 export function Transfer({
@@ -37,6 +45,8 @@ export function Transfer({
   renderItem,
   className,
   classNames,
+  styles,
+  ...props
 }: TransferProps) {
   const [uncontrolledValue, setValue] = React.useState<string[]>(defaultValue ?? []);
   const isControlled = controlledValue !== undefined;
@@ -103,36 +113,48 @@ export function Transfer({
             classNames?.item,
           ),
         }}
+        styles={{ label: styles?.item }}
       >
         {renderItemContent(item)}
       </Checkbox>
     ));
   };
 
-  return (
-    <div className={cn("flex items-center gap-3", className)}>
+  const renderPanel = (
+    items: TransferItemConfig[],
+    checked: ReadonlySet<string>,
+    setChecked: (next: ReadonlySet<string>) => void,
+    title: React.ReactNode,
+  ) => (
+    <div
+      className={cn("flex min-w-0 flex-1 flex-col rounded-lg border", classNames?.panel)}
+      style={styles?.panel}
+    >
       <div
         className={cn(
-          "flex min-w-0 flex-1 flex-col rounded-lg border",
-          classNames?.panel,
+          "flex items-center justify-between gap-2 border-b px-3 py-2 text-sm font-medium",
+          classNames?.header,
         )}
+        style={styles?.header}
       >
-        <div
-          className={cn(
-            "flex items-center justify-between gap-2 border-b px-3 py-2 text-sm font-medium",
-            classNames?.header,
-          )}
-        >
-          <span className="truncate">{titles?.[0] ?? "Source"}</span>
-          <span className="text-xs font-normal text-muted-foreground">
-            {sourceChecked.size}/{sourceItems.length}
-          </span>
-        </div>
-        <div className={cn("flex h-64 flex-col overflow-auto p-1", classNames?.body)}>
-          {renderItems(sourceItems, sourceChecked, setSourceChecked)}
-        </div>
+        <span className="truncate">{title}</span>
+        <span className="text-xs font-normal text-muted-foreground">
+          {checked.size}/{items.length}
+        </span>
       </div>
-      <div className={cn("flex flex-col items-center gap-2", classNames?.actions)}>
+      <div
+        className={cn("flex h-64 flex-col overflow-auto p-1", classNames?.body)}
+        style={styles?.body}
+      >
+        {renderItems(items, checked, setChecked)}
+      </div>
+    </div>
+  );
+
+  return (
+    <div {...props} className={cn("flex items-center gap-3", className)}>
+      {renderPanel(sourceItems, sourceChecked, setSourceChecked, titles?.[0] ?? "Source")}
+      <div className={cn("flex flex-col items-center gap-2", classNames?.actions)} style={styles?.actions}>
         <button
           type="button"
           aria-label="Move right"
@@ -152,27 +174,7 @@ export function Transfer({
           <ArrowLeft className="size-4" />
         </button>
       </div>
-      <div
-        className={cn(
-          "flex min-w-0 flex-1 flex-col rounded-lg border",
-          classNames?.panel,
-        )}
-      >
-        <div
-          className={cn(
-            "flex items-center justify-between gap-2 border-b px-3 py-2 text-sm font-medium",
-            classNames?.header,
-          )}
-        >
-          <span className="truncate">{titles?.[1] ?? "Target"}</span>
-          <span className="text-xs font-normal text-muted-foreground">
-            {targetChecked.size}/{targetItems.length}
-          </span>
-        </div>
-        <div className={cn("flex h-64 flex-col overflow-auto p-1", classNames?.body)}>
-          {renderItems(targetItems, targetChecked, setTargetChecked)}
-        </div>
-      </div>
+      {renderPanel(targetItems, targetChecked, setTargetChecked, titles?.[1] ?? "Target")}
     </div>
   );
 }

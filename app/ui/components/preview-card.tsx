@@ -6,7 +6,8 @@ import { Image } from "./image";
 import { TooltipContent, useTooltipWiring } from "./tooltip";
 import { type ClassNameValue, cn } from "../utils/cn";
 
-export interface PreviewCardProps {
+export interface PreviewCardProps
+  extends Omit<React.ComponentProps<"div">, "className" | "title"> {
   src: string;
   alt?: string;
   title: React.ReactNode;
@@ -21,6 +22,12 @@ export interface PreviewCardProps {
     title?: ClassNameValue;
     description?: ClassNameValue;
   };
+  styles?: {
+    image?: React.CSSProperties;
+    body?: React.CSSProperties;
+    title?: React.CSSProperties;
+    description?: React.CSSProperties;
+  };
 }
 
 export function PreviewCard({
@@ -33,6 +40,8 @@ export function PreviewCard({
   delay = 200,
   className,
   classNames,
+  styles,
+  ...props
 }: PreviewCardProps) {
   const uid = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const popoverId = `preview-${uid}`;
@@ -40,12 +49,23 @@ export function PreviewCard({
   const wiring = useTooltipWiring({ popoverId, anchorName, delay });
 
   const card = (
-    <Card className={cn(trigger ? "w-72" : "w-full max-w-sm", className)}>
-      <Image src={src} alt={alt} className={cn("h-40 w-full", classNames?.image)} />
-      <div className={cn("p-4", classNames?.body)}>
-        <h3 className={cn("text-sm font-semibold", classNames?.title)}>{title}</h3>
+    <Card {...props} className={cn(trigger ? "w-72" : "w-full max-w-sm", className)}>
+      <Image
+        src={src}
+        alt={alt}
+        className="h-40 w-full"
+        classNames={{ image: classNames?.image }}
+        styles={{ image: styles?.image }}
+      />
+      <div className={cn("p-4", classNames?.body)} style={styles?.body}>
+        <h3 className={cn("text-sm font-semibold", classNames?.title)} style={styles?.title}>
+          {title}
+        </h3>
         {description && (
-          <p className={cn("mt-1 text-xs text-muted-foreground", classNames?.description)}>
+          <p
+            className={cn("mt-1 text-xs text-muted-foreground", classNames?.description)}
+            style={styles?.description}
+          >
             {description}
           </p>
         )}

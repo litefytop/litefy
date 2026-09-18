@@ -1,7 +1,10 @@
 {
   "avatar": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/avatar.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/avatar.tsx",
+    "dependence": [
+      "use-image-status"
+    ]
   },
   "badge": {
     "type": "component",
@@ -47,13 +50,18 @@
       "popover"
     ]
   },
+  "chart-legend": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/chart-legend.tsx"
+  },
   "chart": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/chart.tsx",
     "dependence": [
       "chart-kit",
       "chart-paint",
-      "use-chart-palette"
+      "use-chart-palette",
+      "chart-legend"
     ]
   },
   "chat-input": {
@@ -123,19 +131,26 @@
   },
   "dialog": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/dialog.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/dialog.tsx",
+    "dependence": [
+      "trap-tab-key"
+    ]
   },
   "donut": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/donut.tsx",
     "dependence": [
       "use-chart-palette",
-      "chart-kit"
+      "chart-kit",
+      "chart-legend"
     ]
   },
   "drawer": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/drawer.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/drawer.tsx",
+    "dependence": [
+      "trap-tab-key"
+    ]
   },
   "dropdown-menu": {
     "type": "component",
@@ -168,11 +183,17 @@
   },
   "form": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/form.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/form.tsx",
+    "dependence": [
+      "button"
+    ]
   },
   "image": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/image.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/image.tsx",
+    "dependence": [
+      "use-image-status"
+    ]
   },
   "input-group": {
     "type": "component",
@@ -250,11 +271,17 @@
   },
   "picker": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/picker.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/picker.tsx",
+    "dependence": [
+      "use-floating-panel"
+    ]
   },
   "popover": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/popover.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/popover.tsx",
+    "dependence": [
+      "use-floating-panel"
+    ]
   },
   "preview-card": {
     "type": "component",
@@ -286,7 +313,8 @@
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/radar.tsx",
     "dependence": [
       "use-chart-palette",
-      "chart-kit"
+      "chart-kit",
+      "chart-legend"
     ]
   },
   "radio": {
@@ -306,7 +334,10 @@
   },
   "select": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/select.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/select.tsx",
+    "dependence": [
+      "use-floating-panel"
+    ]
   },
   "selectable-table": {
     "type": "component",
@@ -398,6 +429,7 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/wizard.tsx",
     "dependence": [
+      "button",
       "pager",
       "steps"
     ]
@@ -417,6 +449,10 @@
     "type": "util",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/cn.ts"
   },
+  "trap-tab-key": {
+    "type": "util",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/trap-tab-key.ts"
+  },
   "use-chart-palette": {
     "type": "hook",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-chart-palette.ts"
@@ -428,6 +464,14 @@
   "use-drag": {
     "type": "hook",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-drag.ts"
+  },
+  "use-floating-panel": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-floating-panel.ts"
+  },
+  "use-image-status": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-image-status.ts"
   },
   "use-load-more": {
     "type": "hook",

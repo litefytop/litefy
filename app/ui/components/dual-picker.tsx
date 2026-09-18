@@ -12,7 +12,8 @@ export interface DualPickerOption<T> {
   option: T;
 }
 
-export interface DualPickerProps<T> {
+export interface DualPickerProps<T>
+  extends Omit<React.ComponentProps<"div">, "className"> {
   options: DualPickerOption<T>[];
   
   mode?: "single" | "multiple";
@@ -42,7 +43,10 @@ export interface DualPickerProps<T> {
   };
   styles?: {
     panel?: React.CSSProperties;
+    header?: React.CSSProperties;
     body?: React.CSSProperties;
+    item?: React.CSSProperties;
+    selected?: React.CSSProperties;
   };
 }
 
@@ -62,6 +66,7 @@ export function DualPicker<T>({
   className,
   classNames,
   styles,
+  ...props
 }: DualPickerProps<T>) {
   const [uncontrolled, setUncontrolled] = React.useState<string[]>(defaultValue);
   const isControlled = controlledValue !== undefined;
@@ -109,9 +114,12 @@ export function DualPicker<T>({
   const bodyClass = "flex h-64 flex-col overflow-auto p-1 gap-1";
 
   return (
-    <div className={cn("flex items-stretch gap-3", className)}>
+    <div {...props} className={cn("flex items-stretch gap-3", className)}>
       <div className={cn(panelClass, classNames?.panel)} style={styles?.panel}>
-        <div className={cn("border-b px-3 py-2 text-sm font-medium", classNames?.header)}>
+        <div
+          className={cn("border-b px-3 py-2 text-sm font-medium", classNames?.header)}
+          style={styles?.header}
+        >
           {sourceTitle}
         </div>
         <div className="border-b p-1">
@@ -149,6 +157,7 @@ export function DualPicker<T>({
                   disabled && "pointer-events-none opacity-50",
                   classNames?.item,
                 )}
+                style={styles?.item}
               >
                 {renderOption ? renderOption(option, { selected }) : defaultOption(option)}
               </div>
@@ -158,7 +167,10 @@ export function DualPicker<T>({
       </div>
 
       <div className={cn(panelClass, classNames?.panel)} style={styles?.panel}>
-        <div className={cn("flex items-center justify-between border-b px-3 py-2 text-sm font-medium", classNames?.header)}>
+        <div
+          className={cn("flex items-center justify-between border-b px-3 py-2 text-sm font-medium", classNames?.header)}
+          style={styles?.header}
+        >
           <span>{targetTitle}</span>
           <span className="text-xs font-normal text-muted-foreground">{value.length}</span>
         </div>
@@ -176,6 +188,7 @@ export function DualPicker<T>({
                   disabled && "pointer-events-none opacity-50",
                   classNames?.selected,
                 )}
+                style={styles?.selected}
                 onClick={onRemove}
               >
                 {renderSelected ? (

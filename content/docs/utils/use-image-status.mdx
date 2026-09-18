@@ -1,0 +1,44 @@
+---
+title: use-image-status
+description: Image loading state machine shared by Avatar and Image — preloads via `new Image()` and resolves to loading, success or failure with safe cleanup
+---
+
+## Installation
+
+<Installation name="use-image-status" />
+
+## Usage
+
+`useImageStatus` preloads an image URL with `new window.Image()` and tracks a three-state machine: `loading` → `success` / `failure`. Use it to build any image-like component with skeleton and fallback slots — it is what [Avatar](/docs/component/avatar) and [Image](/docs/component/image) run internally.
+
+```tsx
+import { useImageStatus } from "@/ui";
+
+function Thumbnail({ src }: { src?: string }) {
+  const status = useImageStatus(src);
+
+  return (
+    <div className="relative size-12 overflow-hidden rounded-md">
+      {status === "loading" && <Skeleton className="size-full" />}
+      {status === "failure" && <span className="text-xs text-muted-foreground">Failed</span>}
+      {status === "success" && <img src={src} alt="" className="size-full object-cover" />}
+    </div>
+  );
+}
+```
+
+Behavior details: an empty or `undefined` `src` resolves to `failure` immediately without touching the network; the state callbacks are wrapped in `startTransition` so a resolved load does not block input; and in-flight loads are cleaned up on `src` change or unmount (the `onload` / `onerror` handlers are detached and late events are ignored).
+
+## API Reference
+
+### Parameters
+
+| Parameter | Type     | Default | Description                                            |
+| :-------- | :------- | :------ | :----------------------------------------------------- |
+| `src`     | `string` | -       | Image URL to preload; empty or `undefined` → `failure` |
+
+### Returns
+
+| Member   | Type                                        | Description                                                            |
+| :------- | :------------------------------------------ | :--------------------------------------------------------------------- |
+| `status` | `"loading" \| "success" \| "failure"`       | Current load state; resets to `loading` whenever `src` changes          |

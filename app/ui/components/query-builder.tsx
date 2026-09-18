@@ -25,7 +25,8 @@ export interface QueryFieldConfig {
   options?: { label: string; value: string }[];
 }
 
-export interface QueryBuilderProps {
+export interface QueryBuilderProps
+  extends Omit<React.ComponentProps<"div">, "className" | "defaultValue" | "onSubmit"> {
   fields: QueryFieldConfig[];
   defaultValue?: QueryGroup;
   onSubmit?: (query: QueryGroup) => void;
@@ -35,6 +36,18 @@ export interface QueryBuilderProps {
   maxDepth?: number;
   disabled?: boolean;
   className?: ClassNameValue;
+  classNames?: {
+    header?: ClassNameValue;
+    body?: ClassNameValue;
+    preview?: ClassNameValue;
+    footer?: ClassNameValue;
+  };
+  styles?: {
+    header?: React.CSSProperties;
+    body?: React.CSSProperties;
+    preview?: React.CSSProperties;
+    footer?: React.CSSProperties;
+  };
 }
 
 const KIND_OPERATORS: Record<QueryValueKind, string[]> = {
@@ -207,6 +220,9 @@ function QueryBuilderImpl({
   maxDepth = 2,
   disabled,
   className,
+  classNames,
+  styles,
+  ...props
 }: QueryBuilderProps) {
   const [draft, setDraft] = React.useState<DraftGroup>(() =>
     defaultValue ? fromQueryGroup(defaultValue, fields) : newDraftGroup(fields),
@@ -475,19 +491,32 @@ function QueryBuilderImpl({
 
   return (
     <div
+      {...props}
       className={cn(
         "flex h-96 w-full flex-col overflow-hidden overscroll-contain rounded-lg border bg-background text-foreground",
         className,
       )}
     >
-      <div className="flex shrink-0 items-center gap-1.5 border-b border-border px-2 py-1">
+      <div
+        className={cn(
+          "flex shrink-0 items-center gap-1.5 border-b border-border px-2 py-1",
+          classNames?.header,
+        )}
+        style={styles?.header}
+      >
         {renderGroupHeader(draft, [])}
       </div>
-      <div className="min-h-0 flex-1 overflow-y-auto">
+      <div
+        className={cn("min-h-0 flex-1 overflow-y-auto", classNames?.body)}
+        style={styles?.body}
+      >
         {!draft.collapsed && renderGroupContent(draft, [])}
       </div>
       {showPreview && (
-        <div className="shrink-0 border-t bg-muted/30 px-3 py-2">
+        <div
+          className={cn("shrink-0 border-t bg-muted/30 px-3 py-2", classNames?.preview)}
+          style={styles?.preview}
+        >
           <div className="flex items-center gap-2">
             <span className="text-xs font-medium text-muted-foreground">Preview</span>
           </div>
@@ -496,7 +525,13 @@ function QueryBuilderImpl({
           </pre>
         </div>
       )}
-      <div className="flex shrink-0 items-center justify-center gap-2 border-t bg-background px-3 py-2">
+      <div
+        className={cn(
+          "flex shrink-0 items-center justify-center gap-2 border-t bg-background px-3 py-2",
+          classNames?.footer,
+        )}
+        style={styles?.footer}
+      >
         <Button variant="outline" disabled={disabled} onClick={handleReset}>
           Reset
         </Button>

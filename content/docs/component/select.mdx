@@ -67,6 +67,7 @@ A select built on the native popover API and CSS anchor positioning: the trigger
 
 Behavior notes:
 
+- The trigger is fluid: `w-full` capped at `max-w-120` so the label line stays readable in wide containers; pass `className` to override.
 - Selecting an option closes the panel, updates the value and returns focus to the trigger.
 - The panel escapes ancestor `overflow` clipping via the top layer, flips via `positionTryFallbacks` near viewport edges, and matches the trigger width with `min-width: anchor-size(width)`.
 - When the panel opens, the highlight starts on the currently selected option.

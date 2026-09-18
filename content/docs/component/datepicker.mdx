@@ -11,14 +11,7 @@ description: A date picker built on the native Temporal API — an editable inpu
 
 ### Basic Usage
 
-The input is fully editable, and validation runs on `Enter` and when the panel closes:
-
-- separators are flexible — space, `-`, `/` and `,` all work, and accepted input is auto-formatted to the canonical `YYYY-MM-DD` form (`2026/8/5` becomes `2026-08-05`);
-- a complete date commits — the value fills the input and the panel closes;
-- a bare year (`2026`) opens that year's month panel, and a year-month (`2026-08`) opens that month's day grid — each picked part fills the input progressively (`2026` → `2026-08` → commit on the day pick);
-- anything invalid (e.g. letters, an out-of-range month) clears the input and shows the danger border until you type again.
-
-Typing a complete date also previews the selection and the visible month live, before validation runs.
+The input is fully editable — type a date (separators are flexible, auto-normalized to `YYYY-MM-DD`) or pick one from the panel. Validation runs on `Enter` and when the panel closes: a complete date commits, a bare year or year-month opens the matching panel to pick the missing part, invalid input clears the field with the danger border.
 
 <ComponentPreview
   name="date-picker-basic"
@@ -41,7 +34,8 @@ A controlled-or-uncontrolled date field. The visible month and panel open state 
 | :---------------- | :--------------------------------------------- | :-------------------------- | :-------------------------------------------------------------------------------------------- |
 | `value`           | `Temporal.PlainDate \| null`                   | -                           | Controlled selected date                                                                      |
 | `defaultValue`    | `Temporal.PlainDate \| null`                   | -                           | Initial selected date (uncontrolled)                                                          |
-| `onValueChange`   | `(date: Temporal.PlainDate) => void`           | -                           | Fired when a date is committed — picked from the panel, or `Enter` on a complete typed date   || `placeholder`     | `string`                                       | `"Select or type a date"`   | Input placeholder                                                                             |
+| `onValueChange`   | `(date: Temporal.PlainDate) => void`           | -                           | Fired when a date is committed — picked from the panel, or `Enter` on a complete typed date   |
+| `placeholder`     | `string`                                       | `"Select or type a date"`   | Input placeholder                                                                             |
 | `disabled`        | `boolean`                                      | -                           | Disables the input and the panel                                                              |
 | `invalid`         | `boolean`                                      | -                           | External invalid state — shows the danger border (also set internally when validation clears the input) |
 | `firstDayOfWeek`  | `0 \| 1`                                       | `0`                         | First day of the calendar week (`0` = Sunday, `1` = Monday)                                   |
@@ -51,6 +45,4 @@ A controlled-or-uncontrolled date field. The visible month and panel open state 
 | `classNames`      | `{ input?; trailing?; panel? }` — each `ClassNameValue` | -                  | Custom classes for the input, its trailing decoration and the calendar panel                  |
 | `styles`          | `{ input?; trailing? }` — each `React.CSSProperties`    | -                  | Inline styles for the input and trailing decoration                                           |
 
-Typing behavior: every keystroke mirrors into the input, and a complete date previews the selection and the visible month live. Space, `-`, `/` and `,` are accepted as separators and normalized to `YYYY-MM-DD` on validation. Validation runs on `Enter` and when the panel closes — a complete date commits; a bare year opens the month panel and a year-month opens the day grid so the missing part can be picked; anything invalid clears the input.
-
-Keyboard: while the panel is open, `ArrowDown` moves focus into the calendar's first control and `ArrowUp` into its last (via [`usePanelFocus`](/docs/utils/use-panel-focus)) — typing and calendar navigation never compete for the input. `Escape` closes the panel and hands focus back to the input.
+While the panel is open, `ArrowDown` moves focus into the calendar's first control and `ArrowUp` into its last (via [`usePanelFocus`](/docs/utils/use-panel-focus)) — typing and calendar navigation never compete for the input. `Escape` closes the panel and hands focus back to the input.

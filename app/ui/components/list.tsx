@@ -2,7 +2,7 @@
 import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
 
-const viewportClasses = "scrollbar-none [&::-webkit-scrollbar]:hidden";
+const viewportClass = "scrollbar-none [&::-webkit-scrollbar]:hidden";
 
 export type ListControllerProps<T> = {
   items: T[];
@@ -109,25 +109,24 @@ function groupItems<T>(items: T[], getGroup: (item: T, index: number) => string)
   return Array.from(map.entries());
 }
 
-export function List<T>(props: ListProps<T>) {
-  const {
-    items,
-    getKey,
-    getGroup,
-    renderGroupHeader,
-    renderItem,
-    empty,
-    highlightIndex,
-    onHighlightChange,
-    onSelect,
-    onScrollBottom,
-    onItemMouseMove,
-    className,
-    style,
-    classNames = {},
-    styles = {},
-  } = props;
-
+function ListView<T>({
+  ordered = false,
+  items,
+  getKey,
+  getGroup,
+  renderGroupHeader,
+  renderItem,
+  empty,
+  highlightIndex,
+  onHighlightChange,
+  onSelect,
+  onScrollBottom,
+  onItemMouseMove,
+  className,
+  style,
+  classNames = {},
+  styles = {},
+}: ListProps<T> & { ordered?: boolean }) {
   const controller = useListController({
     items,
     highlightIndex,
@@ -136,69 +135,50 @@ export function List<T>(props: ListProps<T>) {
     onScrollBottom,
   });
 
-  const hasGroup = typeof getGroup === "function" && typeof renderGroupHeader === "function";
+  const hasGroup = !ordered && typeof getGroup === "function" && typeof renderGroupHeader === "function";
+  const Tag = ordered ? "ol" : "ul";
 
-  if (items.length === 0 && empty !== undefined) {
-    return (
-      <div
-        ref={controller.rootRef as React.Ref<HTMLDivElement>}
-        tabIndex={0}
-        onKeyDown={controller.handleKeyDown}
-        onScroll={controller.handleScroll}
-        className={cn("overflow-auto overscroll-contain", viewportClasses, className)}
-        style={style}
-      >
-        <ul className="list-none">
-          <li className="px-3 py-2 text-sm text-neutral">{empty}</li>
-        </ul>
-      </div>
-    );
-  }
-
-  if (!hasGroup) {
-    return (
-      <div
-        ref={controller.rootRef as React.Ref<HTMLDivElement>}
-        tabIndex={0}
-        onKeyDown={controller.handleKeyDown}
-        onScroll={controller.handleScroll}
-        className={cn("overflow-auto overscroll-contain", viewportClasses, className)}
-        style={style}
-      >
-        <ul className="list-none">
-          {items.map((item, index) => (
-            <li
-              key={getKey?.(item, index) ?? index}
-              data-highlighted={controller.highlightIndex === index}
-              onClick={() => onSelect?.(item, index)}
-              onMouseMove={onItemMouseMove ? () => onItemMouseMove(item, index) : undefined}
-              className={cn(
-                "px-3 py-2 text-sm cursor-pointer transition-colors hover:bg-hover data-[highlighted=true]:bg-primary",
-                classNames.item,
-              )}
-              style={styles.item}
-            >
-              {renderItem(item, index)}
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
-
-  const grouped = groupItems(items, getGroup!);
-
-  return (
+  const viewport = (content: React.ReactNode) => (
     <div
       ref={controller.rootRef as React.Ref<HTMLDivElement>}
       tabIndex={0}
       onKeyDown={controller.handleKeyDown}
       onScroll={controller.handleScroll}
-      className={cn("overflow-auto overscroll-contain", viewportClasses, className)}
+      className={cn("overflow-auto overscroll-contain", viewportClass, className)}
       style={style}
     >
+      {content}
+    </div>
+  );
+
+  const row = (item: T, index: number) => (
+    <li
+      key={getKey?.(item, index) ?? index}
+      data-highlighted={controller.highlightIndex === index}
+      onClick={() => onSelect?.(item, index)}
+      onMouseMove={onItemMouseMove ? () => onItemMouseMove(item, index) : undefined}
+      className={cn(
+        "px-3 py-2 text-sm cursor-pointer transition-colors hover:bg-hover data-[highlighted=true]:bg-accent",
+        classNames.item,
+      )}
+      style={styles.item}
+    >
+      {renderItem(item, index)}
+    </li>
+  );
+
+  if (items.length === 0 && empty !== undefined) {
+    return viewport(
+      <Tag className={ordered ? "list-decimal pl-6" : "list-none"}>
+        <li className="px-3 py-2 text-sm text-neutral">{empty}</li>
+      </Tag>,
+    );
+  }
+
+  if (hasGroup) {
+    return viewport(
       <div className="outline-none">
-        {grouped.map(([groupName, groupItemsList]) => (
+        {groupItems(items, getGroup!).map(([groupName, groupItemsList]) => (
           <div key={groupName}>
             <div
               className={cn(
@@ -209,98 +189,26 @@ export function List<T>(props: ListProps<T>) {
             >
               {renderGroupHeader!(groupName)}
             </div>
-            <ul className="list-none">
-              {groupItemsList.map(({ item, index }) => (
-                <li
-                  key={getKey?.(item, index) ?? index}
-                  data-highlighted={controller.highlightIndex === index}
-                  onClick={() => onSelect?.(item, index)}
-                  onMouseMove={onItemMouseMove ? () => onItemMouseMove(item, index) : undefined}
-                  className={cn(
-                    "px-3 py-2 text-sm cursor-pointer transition-colors hover:bg-hover data-[highlighted=true]:bg-accent",
-                    classNames.item,
-                  )}
-                  style={styles.item}
-                >
-                  {renderItem(item, index)}
-                </li>
-              ))}
-            </ul>
+            <Tag className="list-none">
+              {groupItemsList.map(({ item, index }) => row(item, index))}
+            </Tag>
           </div>
         ))}
-      </div>
-    </div>
-  );
-}
-
-export function Order<T>(props: OrderProps<T>) {
-  const {
-    getKey,
-    items,
-    renderItem,
-    empty,
-    highlightIndex,
-    onHighlightChange,
-    onSelect,
-    onScrollBottom,
-    onItemMouseMove,
-    className,
-    style,
-    classNames = {},
-    styles = {},
-  } = props;
-
-  const controller = useListController({
-    items,
-    highlightIndex,
-    onHighlightChange,
-    onSelect,
-    onScrollBottom,
-  });
-
-  if (items.length === 0 && empty !== undefined) {
-    return (
-      <div
-        ref={controller.rootRef as React.Ref<HTMLDivElement>}
-        tabIndex={0}
-        onKeyDown={controller.handleKeyDown}
-        onScroll={controller.handleScroll}
-        className={cn("overflow-auto overscroll-contain", viewportClasses, className)}
-        style={style}
-      >
-        <ol className="list-decimal pl-6">
-          <li className="px-3 py-2 text-sm text-neutral">{empty}</li>
-        </ol>
-      </div>
+      </div>,
     );
   }
 
-  return (
-    <div
-      ref={controller.rootRef as React.Ref<HTMLDivElement>}
-      tabIndex={0}
-      onKeyDown={controller.handleKeyDown}
-      onScroll={controller.handleScroll}
-      className={cn("overflow-auto overscroll-contain", viewportClasses, className)}
-      style={style}
-    >
-        <ol className="list-decimal pl-6">
-          {items.map((item, index) => (
-            <li
-              key={getKey?.(item, index) ?? index}
-              data-highlighted={controller.highlightIndex === index}
-              onClick={() => onSelect?.(item, index)}
-              onMouseMove={onItemMouseMove ? () => onItemMouseMove(item, index) : undefined}
-              className={cn(
-                "px-3 py-2 text-sm cursor-pointer transition-colors hover:bg-hover data-[highlighted=true]:bg-accent",
-                classNames.item,
-              )}
-              style={styles.item}
-            >
-              {renderItem(item, index)}
-            </li>
-          ))}
-        </ol>
-    </div>
+  return viewport(
+    <Tag className={ordered ? "list-decimal pl-6" : "list-none"}>
+      {items.map((item, index) => row(item, index))}
+    </Tag>,
   );
+}
+
+export function List<T>(props: ListProps<T>) {
+  return <ListView {...props} />;
+}
+
+export function Order<T>(props: OrderProps<T>) {
+  return <ListView ordered {...props} />;
 }

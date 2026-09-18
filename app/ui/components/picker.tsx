@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
+import { useFloatingPanel } from "../utils/use-floating-panel";
 
 export interface PickerRootProps extends Omit<React.ComponentProps<"div">, "className"> {
   className?: ClassNameValue;
@@ -96,7 +97,6 @@ export function Picker({
 }: PickerProps) {
   const anchorName = `--picker-${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
   const popoverRef = React.useRef<HTMLDivElement>(null);
-  const previouslyFocusedRef = React.useRef<HTMLElement | null>(null);
 
   const setPanelRefs = (el: HTMLDivElement | null) => {
     popoverRef.current = el;
@@ -119,36 +119,12 @@ export function Picker({
     [isOpenControlled, onOpenChange],
   );
 
-  React.useEffect(() => {
-    const popover = popoverRef.current;
-    if (!popover) return;
-    if (open) {
-      previouslyFocusedRef.current =
-        document.activeElement instanceof HTMLElement ? document.activeElement : null;
-      popover.showPopover();
-    } else {
-      popover.hidePopover();
-      const active = document.activeElement;
-      if (
-        (active === null || active === document.body || popover.contains(active)) &&
-        previouslyFocusedRef.current
-      ) {
-        previouslyFocusedRef.current.focus?.();
-      }
-      previouslyFocusedRef.current = null;
-    }
-  }, [open]);
-
-  React.useEffect(() => {
-    if (!open) return;
-    const handleDocumentMouseDown = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (popoverRef.current?.contains(target)) return;
-      handleOpenChange(false);
-    };
-    document.addEventListener("mousedown", handleDocumentMouseDown);
-    return () => document.removeEventListener("mousedown", handleDocumentMouseDown);
-  }, [open, handleOpenChange]);
+  useFloatingPanel({
+    open,
+    panelRef: popoverRef,
+    onOpenChange: handleOpenChange,
+    restoreFocus: true,
+  });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isValueControlled) setValue(e.target.value);

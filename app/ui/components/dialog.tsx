@@ -1,7 +1,9 @@
 "use client";
 import * as React from "react";
 import { createRoot } from "react-dom/client";
+import { CircleCheck, CircleHelp, TriangleAlert, X } from "lucide-react";
 import { type ClassNameValue, cn } from "../utils/cn";
+import { trapTabKey } from "../utils/trap-tab-key";
 
 export type DialogRootProps = Omit<React.ComponentProps<"dialog">, "className"> & {
   className?: ClassNameValue;
@@ -21,7 +23,7 @@ export function DialogClose({ className, ...props }: DialogCloseProps) {
       type="button"
       {...props}
       className={cn(
-        "absolute right-4 top-4 h-6 w-8 rounded-sm border text-xs font-mono font-medium text-muted-foreground transition-colors hover:bg-hover select-none",
+        "absolute right-4 top-4 h-6 w-8 rounded-sm border text-xs font-mono font-medium text-muted-foreground transition-colors hover:bg-hover hover:text-foreground cursor-pointer select-none",
         className,
       )}
     />
@@ -46,8 +48,10 @@ export function DialogContent({ className, ...props }: DialogContentProps) {
   );
 }
 
-export interface DialogProps extends Omit<DialogContentProps, "className" | "styles"> {
+export interface DialogProps
+  extends Omit<DialogContentProps, "className" | "styles" | "title"> {
   open: boolean;
+  title?: React.ReactNode;
   onOpenChange?: (open: boolean) => void;
   onBackdropClick?: (e: React.MouseEvent<HTMLDialogElement>) => void;
   className?: ClassNameValue;
@@ -67,6 +71,7 @@ export function Dialog({
   style,
   classNames,
   styles,
+  title,
   children,
   open,
   onOpenChange,
@@ -77,33 +82,7 @@ export function Dialog({
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!open) return;
-    if (e.key !== "Tab") return;
-    const dialog = ref.current;
-    if (!dialog) return;
-    const focusable = Array.from(
-      dialog.querySelectorAll<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-      ),
-    ).filter((el) => el.offsetParent !== null);
-
-    if (focusable.length === 0) {
-      e.preventDefault();
-      return;
-    }
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-
-    if (e.shiftKey) {
-      if (document.activeElement === first || !dialog.contains(document.activeElement)) {
-        e.preventDefault();
-        last.focus();
-      }
-    } else {
-      if (document.activeElement === last || !dialog.contains(document.activeElement)) {
-        e.preventDefault();
-        first.focus();
-      }
-    }
+    trapTabKey(e, ref.current);
   };
 
   React.useEffect(() => {
@@ -125,6 +104,17 @@ export function Dialog({
     onOpenChange?.(false);
   };
 
+  const renderCloseButton = (inFlow?: boolean) => (
+    <DialogClose
+      className={cn(inFlow && "static shrink-0", classNames?.close)}
+      style={styles?.close}
+      aria-label="Close (ESC)"
+      onClick={() => onOpenChange?.(false)}
+    >
+      ESC
+    </DialogClose>
+  );
+
   return (
     <DialogRoot
       ref={ref}
@@ -138,24 +128,34 @@ export function Dialog({
       style={style}
     >
       <DialogContent {...props} style={styles?.content} className={classNames?.content}>
-        <DialogClose
-          className={classNames?.close}
-          style={styles?.close}
-          aria-label="Close (ESC)"
-          onClick={() => onOpenChange?.(false)}
-        >
-          ESC
-        </DialogClose>
+        {title != null ? (
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <h3 className="min-w-0 text-lg font-semibold">{title}</h3>
+            {renderCloseButton(true)}
+          </div>
+        ) : (
+          renderCloseButton()
+        )}
         {children}
       </DialogContent>
     </DialogRoot>
   );
 }
 
+export type DialogCommandType = "success" | "error" | "warning" | "info";
+
 type DialogCommandOptions = {
+  type?: DialogCommandType;
   title?: React.ReactNode;
   children?: React.ReactNode;
   props?: DialogProps;
+};
+
+const commandIcons: Record<DialogCommandType, React.ReactNode> = {
+  success: <CircleCheck className="size-5 text-success" />,
+  error: <X className="size-5 text-danger" />,
+  warning: <TriangleAlert className="size-5 text-warning" />,
+  info: <CircleHelp className="size-5 text-info" />,
 };
 
 function renderCommandDialog(options: DialogCommandOptions) {
@@ -180,9 +180,19 @@ function renderCommandDialog(options: DialogCommandOptions) {
       }
     }, [open]);
 
+    const titleNode = options.title ? (
+      options.type ? (
+        <span className="flex items-center gap-2">
+          {commandIcons[options.type]}
+          {options.title}
+        </span>
+      ) : (
+        options.title
+      )
+    ) : undefined;
+
     return (
-      <Dialog open={open} onOpenChange={setOpen} {...options.props}>
-        {options.title && <h3 className="text-lg font-semibold mb-3">{options.title}</h3>}
+      <Dialog open={open} onOpenChange={setOpen} {...options.props} title={titleNode}>
         <div>{options.children}</div>
       </Dialog>
     );
@@ -192,8 +202,8 @@ function renderCommandDialog(options: DialogCommandOptions) {
 }
 
 export const dialog = {
-  success: (opts: DialogCommandOptions) => renderCommandDialog(opts),
-  error: (opts: DialogCommandOptions) => renderCommandDialog(opts),
-  warning: (opts: DialogCommandOptions) => renderCommandDialog(opts),
-  info: (opts: DialogCommandOptions) => renderCommandDialog(opts),
+  success: (opts: Omit<DialogCommandOptions, "type">) => renderCommandDialog({ ...opts, type: "success" }),
+  error: (opts: Omit<DialogCommandOptions, "type">) => renderCommandDialog({ ...opts, type: "error" }),
+  warning: (opts: Omit<DialogCommandOptions, "type">) => renderCommandDialog({ ...opts, type: "warning" }),
+  info: (opts: Omit<DialogCommandOptions, "type">) => renderCommandDialog({ ...opts, type: "info" }),
 };

@@ -14,22 +14,10 @@ description: A calendar panel component built on the native Temporal API, suppor
 
 ### Basic Usage
 
-The visible month is fully controlled: hold it in state and update it via `onVisibleMonthChange`. The selection supports both controlled (`value` + `onChange`) and uncontrolled (`defaultValue`) modes.
-
-The panel switches between three views: days, months and years. In the header the year and the month are two independent title buttons — click the year to open the year panel, click the month to open the month panel. Both panels are 3 × 4 grids: the month panel lists the 12 months of the visible year, the year panel lists a 12-year window centered on the visible year. Picking a year drills down into the month panel; picking a month returns to the day panel. The previous / next buttons step by one month on the day panel, one year on the month panel and a 12-year page on the year panel.
-
-Keyboard navigation: the grid has a single tab stop (the selected date, or day 1 when nothing is selected), and `ArrowRight` / `ArrowLeft` / `ArrowDown` / `ArrowUp` move the cursor by one day or one week — only focus moves, the value does not change until `Enter` / `Space` confirms. Disabled days are skipped; when the target date is outside the current grid, the visible month switches automatically and the target date is focused. The month and year panels follow the same pattern with one cell / one row steps. `ArrowDown` on any header control (previous / next, year / month title) jumps straight into the active view's grid, so the header never traps the focus.
+The visible month is fully controlled: hold it in state and update it via `onVisibleMonthChange`. Selection supports both controlled (`value` + `onChange`) and uncontrolled (`defaultValue`) modes.
 
 <ComponentPreview
   name="calendar-basic"
-/>
-
-### Localizing the Month Labels
-
-Month names come from the mutable static `Calendar.calendarMonthLabels` (English abbreviations by default). Override it once at your app's entry point and every calendar — including the one inside [DatePicker](/docs/component/datepicker) — picks it up:
-
-<ComponentPreview
-  name="calendar-i18n"
 />
 
 ### Disabled Dates
@@ -71,6 +59,12 @@ Ready-to-use composite component.
 | `className`            | `ClassNameValue`                                | -        | Custom class names, applied to the root                                                 |
 
 `Temporal.PlainDate` is immutable — all month arithmetic is performed with `add` / `subtract` / `with`, never by mutating an existing object.
+
+**Localization**: month names come from the mutable static `Calendar.calendarMonthLabels` (English abbreviations by default). It is process-global and cannot be scoped to a single instance — override it once at your app's entry point and every calendar picks it up from the next render, including the one inside [DatePicker](/docs/component/datepicker). Weekday abbreviations in the day grid are fixed English labels.
+
+```tsx
+Calendar.calendarMonthLabels = ["一月", "二月", /* ... */];
+```
 
 ---
 
