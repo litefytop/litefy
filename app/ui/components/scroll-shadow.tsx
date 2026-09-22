@@ -1,160 +1,98 @@
 "use client";
-
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
-
 type Edge = "top" | "bottom" | "left" | "right";
 type EdgesProp = Edge | Edge[];
-
 export interface ScrollShadowRootProps extends Omit<React.ComponentProps<"div">, "className"> {
-  className?: ClassNameValue;
+    className?: ClassNameValue;
 }
-
 export function ScrollShadowRoot({ className, ...props }: ScrollShadowRootProps) {
-  return <div {...props} className={cn("relative overflow-hidden", className)} />;
+    return <div {...props} className={cn("relative overflow-hidden", className)}/>;
 }
-
 export interface ScrollShadowViewportProps extends Omit<React.ComponentProps<"div">, "className"> {
-  className?: ClassNameValue;
+    className?: ClassNameValue;
 }
-
 export function ScrollShadowViewport({ className, ...props }: ScrollShadowViewportProps) {
-  return (
-    <div
-      tabIndex={0}
-      {...props}
-      className={cn("size-full overflow-auto overscroll-contain", className)}
-    />
-  );
+    return (<div tabIndex={0} {...props} className={cn("size-full overflow-auto overscroll-contain", className)}/>);
 }
-
 export interface ScrollShadowEdgeProps extends Omit<React.ComponentProps<"div">, "className"> {
-  className?: ClassNameValue;
-  edge?: Edge;
+    className?: ClassNameValue;
+    edge?: Edge;
 }
-
 const edgeClass: Record<Edge, string> = {
-  top: "top-0 inset-x-0 h-16 bg-linear-to-b from-background to-transparent",
-  bottom: "bottom-0 inset-x-0 h-16 bg-linear-to-t from-background to-transparent",
-  left: "left-0 inset-y-0 w-16 bg-linear-to-r from-background to-transparent",
-  right: "right-0 inset-y-0 w-16 bg-linear-to-l from-background to-transparent",
+    top: "top-0 inset-x-0 h-16 bg-linear-to-b from-background to-transparent",
+    bottom: "bottom-0 inset-x-0 h-16 bg-linear-to-t from-background to-transparent",
+    left: "left-0 inset-y-0 w-16 bg-linear-to-r from-background to-transparent",
+    right: "right-0 inset-y-0 w-16 bg-linear-to-l from-background to-transparent",
 };
-
-export function ScrollShadowEdge({
-  className,
-  edge = "bottom",
-  ...props
-}: ScrollShadowEdgeProps) {
-  return (
-    <div
-      {...props}
-      data-position={edge}
-      className={cn("pointer-events-none absolute", edgeClass[edge], className)}
-    />
-  );
+export function ScrollShadowEdge({ className, edge = "bottom", ...props }: ScrollShadowEdgeProps) {
+    return (<div {...props} data-position={edge} className={cn("pointer-events-none absolute", edgeClass[edge], className)}/>);
 }
-
 const normalizeEdges = (edges: EdgesProp = ["bottom"]): Edge[] => {
-  return Array.isArray(edges) ? edges : [edges];
+    return Array.isArray(edges) ? edges : [edges];
 };
-
 const initialVisibility: Record<Edge, boolean> = {
-  top: false,
-  bottom: false,
-  left: false,
-  right: false,
+    top: false,
+    bottom: false,
+    left: false,
+    right: false,
 };
-
 export interface ScrollShadowProps {
-  children: React.ReactNode;
-  edges?: EdgesProp;
-  onScroll?: React.UIEventHandler<HTMLDivElement>;
-  className?: ClassNameValue;
-  style?: React.CSSProperties;
-  classNames?: {
-    viewport?: ClassNameValue;
-    edge?: ClassNameValue;
-  };
-  styles?: {
-    viewport?: React.CSSProperties;
-    edge?: React.CSSProperties;
-  };
-}
-
-export function ScrollShadow({
-  children,
-  edges: edgesProp = ["bottom"],
-  onScroll,
-  className,
-  style,
-  classNames,
-  styles,
-}: ScrollShadowProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [visibility, setVisibility] = useState<Record<Edge, boolean>>(initialVisibility);
-  const edges = useMemo(() => normalizeEdges(edgesProp), [edgesProp]);
-
-  const updateVisibility = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-
-    const { scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth } = el;
-
-    const canScrollVertical = scrollHeight > clientHeight;
-    const canScrollHorizontal = scrollWidth > clientWidth;
-
-    const top = canScrollVertical && scrollTop > 0;
-    const bottom = canScrollVertical && scrollTop + clientHeight < scrollHeight - 1;
-    const left = canScrollHorizontal && scrollLeft > 0;
-    const right = canScrollHorizontal && scrollLeft + clientWidth < scrollWidth - 1;
-
-    setVisibility((prev) => {
-      if (prev.top === top && prev.bottom === bottom && prev.left === left && prev.right === right) {
-        return prev;
-      }
-      return { top, bottom, left, right };
-    });
-  }, []);
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-
-    updateVisibility();
-
-    el.addEventListener("scroll", updateVisibility, { passive: true });
-
-    const resizeObserver = new ResizeObserver(() => {
-      updateVisibility();
-    });
-    resizeObserver.observe(el);
-
-    return () => {
-      el.removeEventListener("scroll", updateVisibility);
-      resizeObserver.disconnect();
+    children: React.ReactNode;
+    edges?: EdgesProp;
+    onScroll?: React.UIEventHandler<HTMLDivElement>;
+    className?: ClassNameValue;
+    style?: React.CSSProperties;
+    classNames?: {
+        viewport?: ClassNameValue;
+        edge?: ClassNameValue;
     };
-  }, [updateVisibility]);
-
-  return (
-    <ScrollShadowRoot className={className} style={style}>
-      <ScrollShadowViewport
-        ref={scrollRef}
-        onScroll={onScroll}
-        className={classNames?.viewport}
-        style={styles?.viewport}
-      >
+    styles?: {
+        viewport?: React.CSSProperties;
+        edge?: React.CSSProperties;
+    };
+}
+export function ScrollShadow({ children, edges: edgesProp = ["bottom"], onScroll, className, style, classNames, styles, }: ScrollShadowProps) {
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const [visibility, setVisibility] = useState<Record<Edge, boolean>>(initialVisibility);
+    const edges = useMemo(() => normalizeEdges(edgesProp), [edgesProp]);
+    const updateVisibility = useCallback(() => {
+        const el = scrollRef.current;
+        if (!el)
+            return;
+        const { scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth } = el;
+        const canScrollVertical = scrollHeight > clientHeight;
+        const canScrollHorizontal = scrollWidth > clientWidth;
+        const top = canScrollVertical && scrollTop > 0;
+        const bottom = canScrollVertical && scrollTop + clientHeight < scrollHeight - 1;
+        const left = canScrollHorizontal && scrollLeft > 0;
+        const right = canScrollHorizontal && scrollLeft + clientWidth < scrollWidth - 1;
+        setVisibility((prev) => {
+            if (prev.top === top && prev.bottom === bottom && prev.left === left && prev.right === right) {
+                return prev;
+            }
+            return { top, bottom, left, right };
+        });
+    }, []);
+    useEffect(() => {
+        const el = scrollRef.current;
+        if (!el)
+            return;
+        updateVisibility();
+        el.addEventListener("scroll", updateVisibility, { passive: true });
+        const resizeObserver = new ResizeObserver(() => {
+            updateVisibility();
+        });
+        resizeObserver.observe(el);
+        return () => {
+            el.removeEventListener("scroll", updateVisibility);
+            resizeObserver.disconnect();
+        };
+    }, [updateVisibility]);
+    return (<ScrollShadowRoot className={className} style={style}>
+      <ScrollShadowViewport ref={scrollRef} onScroll={onScroll} className={classNames?.viewport} style={styles?.viewport}>
         {children}
       </ScrollShadowViewport>
-      {edges.map((edge) =>
-        visibility[edge] ? (
-          <ScrollShadowEdge
-            key={edge}
-            edge={edge}
-            className={classNames?.edge}
-            style={styles?.edge}
-          />
-        ) : null,
-      )}
-    </ScrollShadowRoot>
-  );
+      {edges.map((edge) => visibility[edge] ? (<ScrollShadowEdge key={edge} edge={edge} className={classNames?.edge} style={styles?.edge}/>) : null)}
+    </ScrollShadowRoot>);
 }

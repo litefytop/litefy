@@ -1,5 +1,8 @@
 "use client";
 
+/* design-detect-disable-file hardcoded-color
+   use-theme 演示需要直接书写各主题的 oklch 色值 */
+
 import { Button, useTheme } from "@/ui";
 
 const SURFACES = [

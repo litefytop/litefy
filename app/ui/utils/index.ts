@@ -1,4 +1,5 @@
 export * from "./cn";
+export * from "./use-auto-id";
 export * from "./chart-kit";
 export * from "./chart-paint";
 export * from "./use-pagination";

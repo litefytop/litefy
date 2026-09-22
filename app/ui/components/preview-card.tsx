@@ -1,96 +1,55 @@
 "use client";
-
 import * as React from "react";
 import { Card } from "./card";
 import { Image } from "./image";
 import { TooltipContent, useTooltipWiring } from "./tooltip";
 import { type ClassNameValue, cn } from "../utils/cn";
-
-export interface PreviewCardProps
-  extends Omit<React.ComponentProps<"div">, "className" | "title"> {
-  src: string;
-  alt?: string;
-  title: React.ReactNode;
-  description?: React.ReactNode;
-  trigger?: React.ReactNode;
-  href?: string;
-  delay?: number;
-  className?: ClassNameValue;
-  classNames?: {
-    image?: ClassNameValue;
-    body?: ClassNameValue;
-    title?: ClassNameValue;
-    description?: ClassNameValue;
-  };
-  styles?: {
-    image?: React.CSSProperties;
-    body?: React.CSSProperties;
-    title?: React.CSSProperties;
-    description?: React.CSSProperties;
-  };
+export interface PreviewCardProps extends Omit<React.ComponentProps<"div">, "className" | "title"> {
+    src: string;
+    alt?: string;
+    title: React.ReactNode;
+    description?: React.ReactNode;
+    trigger?: React.ReactNode;
+    href?: string;
+    delay?: number;
+    className?: ClassNameValue;
+    classNames?: {
+        image?: ClassNameValue;
+        body?: ClassNameValue;
+        title?: ClassNameValue;
+        description?: ClassNameValue;
+    };
+    styles?: {
+        image?: React.CSSProperties;
+        body?: React.CSSProperties;
+        title?: React.CSSProperties;
+        description?: React.CSSProperties;
+    };
 }
-
-export function PreviewCard({
-  src,
-  alt,
-  title,
-  description,
-  trigger,
-  href = "#",
-  delay = 200,
-  className,
-  classNames,
-  styles,
-  ...props
-}: PreviewCardProps) {
-  const uid = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
-  const popoverId = `preview-${uid}`;
-  const anchorName = `--preview-${uid}`;
-  const wiring = useTooltipWiring({ popoverId, anchorName, delay });
-
-  const card = (
-    <Card {...props} className={cn(trigger ? "w-72" : "w-full max-w-sm", className)}>
-      <Image
-        src={src}
-        alt={alt}
-        className="h-40 w-full"
-        classNames={{ image: classNames?.image }}
-        styles={{ image: styles?.image }}
-      />
+export function PreviewCard({ src, alt, title, description, trigger, href = "#", delay = 200, className, classNames, styles, ...props }: PreviewCardProps) {
+    const uid = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
+    const popoverId = `preview-${uid}`;
+    const anchorName = `--preview-${uid}`;
+    const wiring = useTooltipWiring({ popoverId, anchorName, delay });
+    const card = (<Card {...props} className={cn(trigger ? "w-72" : "w-full max-w-sm", className)}>
+      <Image src={src} alt={alt} className="h-40 w-full" classNames={{ image: classNames?.image }} styles={{ image: styles?.image }}/>
       <div className={cn("p-4", classNames?.body)} style={styles?.body}>
         <h3 className={cn("text-sm font-semibold", classNames?.title)} style={styles?.title}>
           {title}
         </h3>
-        {description && (
-          <p
-            className={cn("mt-1 text-xs text-muted-foreground", classNames?.description)}
-            style={styles?.description}
-          >
+        {description && (<p className={cn("mt-1 text-xs text-muted-foreground", classNames?.description)} style={styles?.description}>
             {description}
-          </p>
-        )}
+          </p>)}
       </div>
-    </Card>
-  );
-
-  if (!trigger) return card;
-
-  return (
-    <>
-      <a
-        href={href}
-        onPointerEnter={wiring.show}
-        onPointerLeave={wiring.hide}
-        onFocus={wiring.show}
-        onBlur={wiring.hide}
-        style={wiring.anchorStyle}
-        className="text-primary underline-offset-4 hover:text-accent hover:underline"
-      >
+    </Card>);
+    if (!trigger)
+        return card;
+    return (<>
+      <a href={href} onPointerEnter={wiring.show} onPointerLeave={wiring.hide} onFocus={wiring.show} onBlur={wiring.hide} style={wiring.anchorStyle} className="text-primary underline-offset-4 hover:text-accent hover:underline">
         {trigger}
       </a>
       <TooltipContent id={popoverId} anchorName={anchorName} delay={delay}>
         {card}
       </TooltipContent>
-    </>
-  );
+    </>);
 }

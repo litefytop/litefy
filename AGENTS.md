@@ -12,7 +12,7 @@ import { Button, Input, Select } from "@/ui";   // the barrel — everything is 
 - Most components expose per-part overrides: `classNames={{ slot: "..." }}` and `styles={{ slot: {} }}`.
 - **Composite XOR parts** — finished composites (`Dialog`, `Toaster`, …) already assemble and wire their parts internally; never render a component's parts inside its own composite (`Dialog` ships a built-in top-right ESC close button — putting `DialogClose` in its children stacks a duplicate button). Parts (`DialogRoot` / `DialogContent` / `DialogClose` / …) are for custom assembly with your own open/close lifecycle only.
 - Use **semantic tokens only** (never raw palette colors): `bg-background` `bg-surface-raised` (floating panels — lighter than canvas in dark mode) `text-foreground` `text-muted-foreground` `bg-primary` `text-primary-foreground` `bg-primary-accent` `bg-muted` `bg-hover` `border` `text-danger` `text-success` `text-warning` `text-info` `ring` `outline` `text-neutral`.
-- Shadows have four semantic levels — `shadow-faint` `shadow-subtle` `shadow-base` `shadow-elevated`. Tailwind's default scale is overridden in theme.css to map onto them (`2xs/xs`→faint, `sm`→subtle, `md`→base, `lg/xl/2xl`→elevated); both families share the same values. Dark levels carry a white rim + top highlight, so never fake elevation with white blur-glows. Never use arbitrary `shadow-[...]`.
+- Shadows have four semantic levels — `shadow-faint` `shadow-subtle` `shadow-base` `shadow-elevated`. Tailwind's default scale is overridden in theme.css to map onto them (`2xs/xs`→faint, `sm`→subtle, `md`→base, `lg/xl/2xl`→elevated); both families share the same values, but prefer the semantic names in new code (scale names are a compatibility alias; `design-detect` warns on them). Dark levels carry a white rim + top highlight, so never fake elevation with white blur-glows. Never use arbitrary `shadow-[...]`.
 - Form controls follow the same conventions: `value` / `defaultValue` + `onValueChange` (or `checked` / `defaultChecked` + `onCheckedChange`) and `disabled`. `invalid` (danger border) exists only on text inputs (Input, Password, Textarea, NumberInput, NumberField, InputOtp, DatePicker) — non-text interactive components (Select, Radio, Checkbox, Segment, Upload…) take no `invalid`; render validation feedback below the control with a Callout (`variant="danger"`, `role="alert"`).
 - Icons come from `lucide-react`, typically `className="size-4"`.
 - Full prop tables and behavior details live in `content/docs/component/<name>.mdx` (and `.zh.mdx`) — consult them when a prop you need isn't listed below.
@@ -91,7 +91,10 @@ Standalone calendar panel (Temporal API), parts-based: `CalendarRoot` composes `
 Two-panel picker (source ↔ selected) for single or multiple `mode`. Rows are render-props — `renderOption` / `renderSelected` / `getLabel` — so any content format works. `options`, `value` / `defaultValue`, `onValueChange`, `sourceTitle` / `targetTitle`, `searchPlaceholder`.
 
 ### InputGroup
-Shell that owns focus/invalid styling for a wrapped control (never a double focus ring). Parts: `InputRoot` / `InputLeading` / `InputTrailing`. `Input` is built on it.
+Shell that owns focus/invalid styling for a wrapped control (never a double focus ring — direct children are stripped of their own focus indicators via child selectors, so any control can sit inside). Parts: `InputRoot` / `InputLeading` / `InputTrailing`. `Input` is built on it.
+
+### FieldSearch
+Field select + value input joined in one `InputGroup` shell, for table filtering. `fields` drive the leading select: text fields take `placeholder` and emit after `debounceMs` (default 300); enum fields take `options` (+ `allLabel`, default "All") and render a second select that emits on pick. `onSearch(field, value)` always receives trimmed values, fires with an empty value on clear / field switch, and holds during IME composition.
 
 ### FormItem
 Self-managing form field: renders a finished control per `variant` (`"input" | "textarea" | "select" | "password" | "number-input"`) with label, optional description and built-in validation.

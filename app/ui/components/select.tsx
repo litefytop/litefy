@@ -3,255 +3,158 @@ import * as React from "react";
 import { ChevronDown } from "lucide-react";
 import { type ClassNameValue, cn } from "../utils/cn";
 import { useFloatingPanel } from "../utils/use-floating-panel";
-
 export type SelectOption = {
-  label: string;
-  value: string;
+    label: string;
+    value: string;
 };
-
 export type SelectOptionGroup = {
-  group: string;
-  options: SelectOption[];
+    group: string;
+    options: SelectOption[];
 };
-
-export interface SelectProps extends Omit<
-  React.ComponentProps<"button">,
-  "onChange" | "value" | "defaultValue" | "children" | "type" | "className" | "style"
-> {
-  options: (SelectOption | SelectOptionGroup)[];
-  value?: string;
-  defaultValue?: string;
-  onValueChange?: (value: string) => void;
-  placeholder?: string;
-  required?: boolean;
-  name?: string;
-  className?: ClassNameValue;
-  style?: React.CSSProperties;
-  classNames?: {
-    panel?: ClassNameValue;
-    label?: ClassNameValue;
-    option?: ClassNameValue;
-  };
-  styles?: {
-    panel?: React.CSSProperties;
-  };
+export interface SelectProps extends Omit<React.ComponentProps<"button">, "onChange" | "value" | "defaultValue" | "children" | "type" | "className" | "style"> {
+    options: (SelectOption | SelectOptionGroup)[];
+    value?: string;
+    defaultValue?: string;
+    onValueChange?: (value: string) => void;
+    placeholder?: string;
+    required?: boolean;
+    name?: string;
+    className?: ClassNameValue;
+    style?: React.CSSProperties;
+    classNames?: {
+        panel?: ClassNameValue;
+        label?: ClassNameValue;
+        option?: ClassNameValue;
+    };
+    styles?: {
+        panel?: React.CSSProperties;
+    };
 }
-
-export function Select({
-  options,
-  value: controlledValue,
-  defaultValue = "",
-  onValueChange,
-  placeholder,
-  disabled,
-  required,
-  name,
-  className,
-  style,
-  classNames,
-  styles,
-  ...props
-}: SelectProps) {
-  const isControlled = controlledValue !== undefined;
-  const uid = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
-  const anchorName = `--select-${uid}`;
-  const triggerRef = React.useRef<HTMLButtonElement>(null);
-  const panelRef = React.useRef<HTMLDivElement>(null);
-
-  const [uncontrolledOpen, setOpen] = React.useState(false);
-  const [uncontrolledValue, setValue] = React.useState(defaultValue);
-  const [highlightIndex, setHighlightIndex] = React.useState<number | null>(null);
-
-  const value = isControlled ? controlledValue : uncontrolledValue;
-  const open = uncontrolledOpen;
-
-  const flat = React.useMemo(
-    () => options.flatMap((item) => ("options" in item ? item.options : [item])),
-    [options],
-  );
-  const selectedLabel = flat.find((option) => option.value === value)?.label ?? null;
-
-  const setOpenState = (next: boolean) => {
-    setOpen(next);
-    if (next) {
-      const selectedIdx = flat.findIndex((option) => option.value === value);
-      setHighlightIndex(selectedIdx === -1 ? (flat.length ? 0 : null) : selectedIdx);
-    } else {
-      setHighlightIndex(null);
-    }
-  };
-
-  const commit = (option: SelectOption) => {
-    if (!isControlled) setValue(option.value);
-    onValueChange?.(option.value);
-    setOpen(false);
-    setHighlightIndex(null);
-    triggerRef.current?.focus();
-  };
-
-  const moveHighlight = (delta: 1 | -1) => {
-    if (flat.length === 0) return;
-    setHighlightIndex((prev) => {
-      if (prev === null) return delta === 1 ? 0 : flat.length - 1;
-      return (prev + delta + flat.length) % flat.length;
+export function Select({ options, value: controlledValue, defaultValue = "", onValueChange, placeholder, disabled, required, name, className, style, classNames, styles, ...props }: SelectProps) {
+    const isControlled = controlledValue !== undefined;
+    const uid = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
+    const anchorName = `--select-${uid}`;
+    const triggerRef = React.useRef<HTMLButtonElement>(null);
+    const panelRef = React.useRef<HTMLDivElement>(null);
+    const [uncontrolledOpen, setOpen] = React.useState(false);
+    const [uncontrolledValue, setValue] = React.useState(defaultValue);
+    const [highlightIndex, setHighlightIndex] = React.useState<number | null>(null);
+    const value = isControlled ? controlledValue : uncontrolledValue;
+    const open = uncontrolledOpen;
+    const flat = React.useMemo(() => options.flatMap((item) => ("options" in item ? item.options : [item])), [options]);
+    const selectedLabel = flat.find((option) => option.value === value)?.label ?? null;
+    const setOpenState = (next: boolean) => {
+        setOpen(next);
+        if (next) {
+            const selectedIdx = flat.findIndex((option) => option.value === value);
+            setHighlightIndex(selectedIdx === -1 ? (flat.length ? 0 : null) : selectedIdx);
+        }
+        else {
+            setHighlightIndex(null);
+        }
+    };
+    const commit = (option: SelectOption) => {
+        if (!isControlled)
+            setValue(option.value);
+        onValueChange?.(option.value);
+        setOpen(false);
+        setHighlightIndex(null);
+        triggerRef.current?.focus();
+    };
+    const moveHighlight = (delta: 1 | -1) => {
+        if (flat.length === 0)
+            return;
+        setHighlightIndex((prev) => {
+            if (prev === null)
+                return delta === 1 ? 0 : flat.length - 1;
+            return (prev + delta + flat.length) % flat.length;
+        });
+    };
+    const handleTriggerKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+        if (disabled)
+            return;
+        switch (e.key) {
+            case "ArrowDown":
+            case "ArrowUp":
+                e.preventDefault();
+                if (!open)
+                    setOpenState(true);
+                else
+                    moveHighlight(e.key === "ArrowDown" ? 1 : -1);
+                return;
+            case "Enter":
+            case " ":
+                e.preventDefault();
+                if (open && highlightIndex !== null)
+                    commit(flat[highlightIndex]);
+                else
+                    setOpenState(!open);
+                return;
+            case "Escape":
+                if (open) {
+                    e.preventDefault();
+                    setOpenState(false);
+                }
+                return;
+            case "Home":
+                if (open) {
+                    e.preventDefault();
+                    setHighlightIndex(flat.length ? 0 : null);
+                }
+                return;
+            case "End":
+                if (open) {
+                    e.preventDefault();
+                    setHighlightIndex(flat.length ? flat.length - 1 : null);
+                }
+                return;
+            case "Tab":
+                setOpenState(false);
+                return;
+        }
+    };
+    useFloatingPanel({
+        open,
+        panelRef,
+        anchorRef: triggerRef,
+        onOpenChange: (next) => {
+            if (!next)
+                setOpen(false);
+        },
     });
-  };
-
-  const handleTriggerKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
-    if (disabled) return;
-    switch (e.key) {
-      case "ArrowDown":
-      case "ArrowUp":
-        e.preventDefault();
-        if (!open) setOpenState(true);
-        else moveHighlight(e.key === "ArrowDown" ? 1 : -1);
-        return;
-      case "Enter":
-      case " ":
-        e.preventDefault();
-        if (open && highlightIndex !== null) commit(flat[highlightIndex]);
-        else setOpenState(!open);
-        return;
-      case "Escape":
-        if (open) {
-          e.preventDefault();
-          setOpenState(false);
-        }
-        return;
-      case "Home":
-        if (open) {
-          e.preventDefault();
-          setHighlightIndex(flat.length ? 0 : null);
-        }
-        return;
-      case "End":
-        if (open) {
-          e.preventDefault();
-          setHighlightIndex(flat.length ? flat.length - 1 : null);
-        }
-        return;
-      case "Tab":
-        setOpenState(false);
-        return;
-    }
-  };
-
-  useFloatingPanel({
-    open,
-    panelRef,
-    anchorRef: triggerRef,
-    onOpenChange: (next) => {
-      if (!next) setOpen(false);
-    },
-  });
-
-  React.useEffect(() => {
-    if (!open || highlightIndex === null) return;
-    panelRef.current
-      ?.querySelector('[data-highlighted="true"]')
-      ?.scrollIntoView({ block: "nearest" });
-  }, [open, highlightIndex]);
-
-  const renderOption = (option: SelectOption, index: number) => (
-    <div
-      key={option.value}
-      role="option"
-      aria-selected={option.value === value}
-      data-highlighted={highlightIndex === index || undefined}
-      aria-disabled={disabled || undefined}
-      onClick={disabled ? undefined : () => commit(option)}
-      className={cn(
-        "cursor-pointer px-3 py-2 text-sm transition-colors select-none hover:bg-hover",
-        "data-[highlighted=true]:bg-primary",
-        option.value === value && "font-medium",
-        disabled && "pointer-events-none opacity-50",
-        classNames?.option,
-      )}
-    >
+    React.useEffect(() => {
+        if (!open || highlightIndex === null)
+            return;
+        panelRef.current
+            ?.querySelector('[data-highlighted="true"]')
+            ?.scrollIntoView({ block: "nearest" });
+    }, [open, highlightIndex]);
+    const renderOption = (option: SelectOption, index: number) => (<div key={option.value} role="option" aria-selected={option.value === value} data-highlighted={highlightIndex === index || undefined} aria-disabled={disabled || undefined} onClick={disabled ? undefined : () => commit(option)} className={cn("cursor-pointer px-3 py-2 text-sm transition-colors select-none hover:bg-hover", "data-[highlighted=true]:bg-primary", option.value === value && "font-medium", disabled && "pointer-events-none opacity-50", classNames?.option)}>
       {option.label}
-    </div>
-  );
-
-  return (
-    <>
-      {name && <input type="hidden" name={name} value={value} />}
-      <button
-        {...props}
-        ref={triggerRef}
-        type="button"
-        disabled={disabled}
-        aria-haspopup="listbox"
-        aria-expanded={open || undefined}
-        aria-required={required || undefined}
-        onClick={() => !disabled && setOpenState(!open)}
-        onKeyDown={handleTriggerKeyDown}
-        data-open={open || undefined}
-        className={cn(
-          "flex h-9 w-full max-w-120 items-center justify-between gap-2 rounded-md border px-3 py-1 text-sm cursor-pointer shadow-base",
-          !selectedLabel && "text-muted-foreground",
-          className,
-        )}
-        style={{ anchorName, ...style }}
-      >
+    </div>);
+    return (<>
+      {name && <input type="hidden" name={name} value={value}/>}
+      <button {...props} ref={triggerRef} type="button" disabled={disabled} aria-haspopup="listbox" aria-expanded={open || undefined} aria-required={required || undefined} onClick={() => !disabled && setOpenState(!open)} onKeyDown={handleTriggerKeyDown} data-open={open || undefined} className={cn("flex h-9 w-full max-w-120 items-center justify-between gap-2 rounded-md border px-3 py-1 text-sm cursor-pointer shadow-base", !selectedLabel && "text-muted-foreground", className)} style={{ anchorName, ...style }}>
         <span className="truncate">{selectedLabel ?? placeholder ?? ""}</span>
-        <ChevronDown
-          aria-hidden
-          className="size-4 shrink-0 text-muted-foreground transition-transform duration-200 data-[open=true]:rotate-180"
-          data-open={open || undefined}
-        />
+        <ChevronDown aria-hidden className="size-4 shrink-0 text-muted-foreground transition-transform duration-200 data-[open=true]:rotate-180" data-open={open || undefined}/>
       </button>
-      <div
-        ref={panelRef}
-        popover="manual"
-        tabIndex={-1}
-        role="listbox"
-        aria-label={placeholder}
-        className={cn(
-          "bg-surface-raised text-foreground max-h-64 overflow-y-auto rounded-xl border p-1 shadow-elevated",
-          classNames?.panel,
-        )}
-        style={{
-          margin: "4px 0 0",
-          positionAnchor: anchorName,
-          positionArea: "bottom span-all",
-          justifySelf: "anchor-center",
-          minWidth: "anchor-size(width)",
-          positionTryFallbacks: "flip-block",
-          ...styles?.panel,
-        }}
-      >
-        {flat.length === 0 ? (
-          <div className="pointer-events-none px-3 py-2 text-sm text-muted-foreground">
+      <div ref={panelRef} popover="manual" tabIndex={-1} role="listbox" aria-label={placeholder} className={cn("bg-surface-raised text-foreground max-h-64 overflow-y-auto rounded-xl border p-1 shadow-elevated", classNames?.panel)} style={{
+            margin: "4px 0 0",
+            positionAnchor: anchorName,
+            positionArea: "bottom span-all",
+            justifySelf: "anchor-center",
+            minWidth: "anchor-size(width)",
+            positionTryFallbacks: "flip-block",
+            ...styles?.panel,
+        }}>
+        {flat.length === 0 ? (<div className="pointer-events-none px-3 py-2 text-sm text-muted-foreground">
             No options available
-          </div>
-        ) : (
-          options.map((item, index) =>
-            "options" in item ? (
-              <div key={`group-${item.group}-${index}`} role="presentation">
-                <div
-                  className={cn(
-                    "px-3 py-1.5 text-xs font-medium text-muted-foreground",
-                    classNames?.label,
-                  )}
-                >
+          </div>) : (options.map((item, index) => "options" in item ? (<div key={`group-${item.group}-${index}`} role="presentation">
+                <div className={cn("px-3 py-1.5 text-xs font-medium text-muted-foreground", classNames?.label)}>
                   {item.group}
                 </div>
-                {item.options.map((option) =>
-                  renderOption(
-                    option,
-                    flat.findIndex((o) => o.value === option.value),
-                  ),
-                )}
-              </div>
-            ) : (
-              renderOption(
-                item,
-                flat.findIndex((o) => o.value === item.value),
-              )
-            ),
-          )
-        )}
+                {item.options.map((option) => renderOption(option, flat.findIndex((o) => o.value === option.value)))}
+              </div>) : (renderOption(item, flat.findIndex((o) => o.value === item.value)))))}
       </div>
-    </>
-  );
+    </>);
 }

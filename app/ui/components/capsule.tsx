@@ -1,19 +1,13 @@
 "use client";
-
 import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
-
 export interface CapsuleProps extends Omit<React.ComponentProps<"div">, "className"> {
-  className?: ClassNameValue;
+    className?: ClassNameValue;
 }
-
 export function Capsule({ children, className, ...props }: CapsuleProps) {
-  return (
-    <div {...props} className={cn(Capsule.className, className)}>
+    return (<div {...props} className={cn(Capsule.className, className)}>
       {children}
-    </div>
-  );
+    </div>);
 }
-
 Capsule.className =
-  "inline-flex items-center overflow-hidden rounded-md *:rounded-none *:px-2 *:py-1";
+    "inline-flex items-center overflow-hidden rounded-md *:rounded-none *:px-2 *:py-1";

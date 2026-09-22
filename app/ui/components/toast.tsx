@@ -1,455 +1,329 @@
 "use client";
-
 import { CircleCheck, CircleHelp, Loader2, TriangleAlert, X } from "lucide-react";
 import React, { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
-
 export type ToastType = "success" | "error" | "warning" | "info" | "loading";
-
 export type CloseEvent = {
-  type: "auto" | "manual" | "complete";
-  id?: string | number;
+    type: "auto" | "manual" | "complete";
+    id?: string | number;
 };
-
 export interface ToastRootProps extends Omit<React.ComponentProps<"div">, "className"> {
-  className?: ClassNameValue;
+    className?: ClassNameValue;
 }
-
 export function ToastRoot({ className, ...props }: ToastRootProps) {
-  return (
-    <div
-      {...props}
-      className={cn(
-        "relative pointer-events-auto flex w-full items-center justify-between gap-3 rounded-xl border p-4 shadow-elevated text-foreground bg-surface-raised",
-        "data-[exiting=true]:animate-out data-[exiting=true]:slide-out-to-top data-[exiting=true]:duration-500",
-        "transition-all duration-400",
-        className,
-      )}
-    />
-  );
+    return (<div {...props} className={cn("relative pointer-events-auto flex w-full items-center justify-between gap-3 rounded-xl border p-4 shadow-elevated text-foreground bg-surface-raised", "data-[exiting=true]:animate-out data-[exiting=true]:slide-out-to-top data-[exiting=true]:duration-500", "transition-all duration-400", className)}/>);
 }
-
 export interface ToastIconProps extends Omit<React.ComponentProps<"div">, "className"> {
-  className?: ClassNameValue;
+    className?: ClassNameValue;
 }
-
 export function ToastIcon({ className, ...props }: ToastIconProps) {
-  return <div {...props} className={cn("shrink-0", className)} />;
+    return <div {...props} className={cn("shrink-0", className)}/>;
 }
-
 export interface ToastContentProps extends Omit<React.ComponentProps<"div">, "className"> {
-  className?: ClassNameValue;
+    className?: ClassNameValue;
 }
-
 export function ToastContent({ className, ...props }: ToastContentProps) {
-  return <div {...props} className={cn("flex-1", className)} />;
+    return <div {...props} className={cn("flex-1", className)}/>;
 }
-
 export interface ToastTitleProps extends Omit<React.ComponentProps<"div">, "className"> {
-  className?: ClassNameValue;
+    className?: ClassNameValue;
 }
-
 export function ToastTitle({ className, ...props }: ToastTitleProps) {
-  return <div {...props} className={cn("font-medium", className)} />;
+    return <div {...props} className={cn("font-medium", className)}/>;
 }
-
 export interface ToastDescriptionProps extends Omit<React.ComponentProps<"div">, "className"> {
-  className?: ClassNameValue;
+    className?: ClassNameValue;
 }
-
 export function ToastDescription({ className, ...props }: ToastDescriptionProps) {
-  return <div {...props} className={cn("text-sm text-muted-foreground mt-1", className)} />;
+    return <div {...props} className={cn("text-sm text-muted-foreground mt-1", className)}/>;
 }
-
-export interface ToastCloseProps extends Omit<
-  React.ComponentProps<"button">,
-  "className" | "type"
-> {
-  className?: ClassNameValue;
+export interface ToastCloseProps extends Omit<React.ComponentProps<"button">, "className" | "type"> {
+    className?: ClassNameValue;
 }
-
 export function ToastClose({ className, children, ...props }: ToastCloseProps) {
-  return (
-    <button
-      {...props}
-      type="button"
-      aria-label="Dismiss notification"
-      className={cn(
-        "absolute right-2 top-2 shrink-0 rounded-sm p-1 text-muted-foreground transition-colors hover:bg-hover hover:text-foreground cursor-pointer",
-        className,
-      )}
-    >
-      {children ?? <X className="size-4" />}
-    </button>
-  );
+    return (<button {...props} type="button" aria-label="Dismiss notification" className={cn("absolute right-2 top-2 shrink-0 rounded-sm p-1 text-muted-foreground transition-colors hover:bg-hover hover:text-foreground cursor-pointer", className)}>
+      {children ?? <X className="size-4"/>}
+    </button>);
 }
-
 export type ToastItemProps = Omit<React.ComponentProps<"div">, "className" | "style"> & {
-  id?: string | number;
-  type?: ToastType;
-  title?: React.ReactNode;
-  description?: React.ReactNode;
-  icon?: React.ReactNode;
-  duration?: number;
-  closable?: boolean;
-  onClose?: (event: CloseEvent) => void;
-  isExpanded?: boolean;
-  classNames?: {
-    icon?: ClassNameValue;
-    content?: ClassNameValue;
-    title?: ClassNameValue;
-    description?: ClassNameValue;
-    close?: ClassNameValue;
-  };
-  styles?: {
-    icon?: React.CSSProperties;
-    content?: React.CSSProperties;
-    title?: React.CSSProperties;
-    description?: React.CSSProperties;
-    close?: React.CSSProperties;
-  };
+    id?: string | number;
+    type?: ToastType;
+    title?: React.ReactNode;
+    description?: React.ReactNode;
+    icon?: React.ReactNode;
+    duration?: number;
+    closable?: boolean;
+    onClose?: (event: CloseEvent) => void;
+    isExpanded?: boolean;
+    classNames?: {
+        icon?: ClassNameValue;
+        content?: ClassNameValue;
+        title?: ClassNameValue;
+        description?: ClassNameValue;
+        close?: ClassNameValue;
+    };
+    styles?: {
+        icon?: React.CSSProperties;
+        content?: React.CSSProperties;
+        title?: React.CSSProperties;
+        description?: React.CSSProperties;
+        close?: React.CSSProperties;
+    };
 };
-
 let toastsCounter = 1;
-
 class ToastObserver {
-  private toasts: ToastItemProps[] = [];
-  private subscribers: Set<() => void> = new Set();
-
-  subscribe = (subscriber: () => void) => {
-    this.subscribers.add(subscriber);
-    return () => {
-      this.subscribers.delete(subscriber);
+    private toasts: ToastItemProps[] = [];
+    private subscribers: Set<() => void> = new Set();
+    subscribe = (subscriber: () => void) => {
+        this.subscribers.add(subscriber);
+        return () => {
+            this.subscribers.delete(subscriber);
+        };
     };
-  };
-
-  private publish = () => {
-    this.subscribers.forEach((subscriber) => subscriber());
-  };
-
-  addToast = (toast: ToastItemProps) => {
-    const id = toastsCounter++;
-    this.toasts = [...this.toasts, { ...toast, id: String(id) }];
-    this.publish();
-    return id;
-  };
-
-  removeToast = (id: string | number) => {
-    this.toasts = this.toasts.filter((t) => String(t.id) !== String(id));
-    this.publish();
-    if (this.toasts.length === 0) {
-      toastsCounter = 1;
-    }
-  };
-
-  getToasts = () => this.toasts;
+    private publish = () => {
+        this.subscribers.forEach((subscriber) => subscriber());
+    };
+    addToast = (toast: ToastItemProps) => {
+        const id = toastsCounter++;
+        this.toasts = [...this.toasts, { ...toast, id: String(id) }];
+        this.publish();
+        return id;
+    };
+    removeToast = (id: string | number) => {
+        this.toasts = this.toasts.filter((t) => String(t.id) !== String(id));
+        this.publish();
+        if (this.toasts.length === 0) {
+            toastsCounter = 1;
+        }
+    };
+    getToasts = () => this.toasts;
 }
-
 const toastObserver = new ToastObserver();
-
 const dismissHandlers = new Map<string | number, () => void>();
-
 const removeWithExit = (id: string | number) => {
-  const handler = dismissHandlers.get(String(id));
-  if (handler) {
-    handler();
-    return;
-  }
-  const toast = toastObserver.getToasts().find((t) => String(t.id) === String(id));
-  toast?.onClose?.({ type: "manual", id });
-  toast?.onClose?.({ type: "complete", id });
-  toastObserver.removeToast(id);
+    const handler = dismissHandlers.get(String(id));
+    if (handler) {
+        handler();
+        return;
+    }
+    const toast = toastObserver.getToasts().find((t) => String(t.id) === String(id));
+    toast?.onClose?.({ type: "manual", id });
+    toast?.onClose?.({ type: "complete", id });
+    toastObserver.removeToast(id);
 };
-
 const emptyToasts: ToastItemProps[] = [];
-
 const useToastStore = () => {
-  return useSyncExternalStore(
-    toastObserver.subscribe,
-    () => toastObserver.getToasts(),
-    () => emptyToasts,
-  );
+    return useSyncExternalStore(toastObserver.subscribe, () => toastObserver.getToasts(), () => emptyToasts);
 };
-
 const toastIcons: Record<ToastType, React.ReactNode> = {
-  success: <CircleCheck className="size-4 text-green-500" />,
-  error: <X className="size-4 text-danger" />,
-  warning: <TriangleAlert className="size-4 text-amber-400" />,
-  info: <CircleHelp className="size-4" />,
-  loading: <Loader2 className="size-4 animate-spin" />,
+    success: <CircleCheck className="size-4 text-green-500"/>,
+    error: <X className="size-4 text-danger"/>,
+    warning: <TriangleAlert className="size-4 text-amber-400"/>,
+    info: <CircleHelp className="size-4"/>,
+    loading: <Loader2 className="size-4 animate-spin"/>,
 };
-
 const EXIT_MS = 500;
-
-function ToastItem({
-  isExpanded = false,
-  id,
-  type,
-  duration,
-  closable,
-  onClose,
-  icon: customIcon,
-  title,
-  description,
-  classNames,
-  styles,
-  ...restProps
-}: ToastItemProps) {
-  const [isExiting, setIsExiting] = useState(false);
-  const rootRef = React.useRef<HTMLDivElement>(null);
-  const exitingRef = React.useRef(false);
-  const remainingRef = React.useRef<number | undefined>(undefined);
-
-  const handleDismiss = useCallback(
-    (closeType: "auto" | "manual" = "manual") => {
-      if (exitingRef.current) return;
-      exitingRef.current = true;
-      setIsExiting(true);
-      onClose?.({ type: closeType, id });
-
-      const el = rootRef.current;
-      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (el && !reduced) {
-        const gap = parseFloat(getComputedStyle(el.parentElement ?? el).rowGap || "0");
-        el.style.overflow = "hidden";
-        el.animate(
-          [
-            { height: `${el.offsetHeight}px`, marginBottom: "0px", opacity: "1" },
-            { height: "0px", marginBottom: `${-gap}px`, opacity: "0" },
-          ],
-          { duration: EXIT_MS, easing: "ease-out", fill: "forwards" },
-        );
-      }
-
-      setTimeout(() => {
-        onClose?.({ type: "complete", id });
-        toastObserver.removeToast(id!);
-      }, EXIT_MS);
-    },
-    [id, onClose],
-  );
-
-  useEffect(() => {
-    const d = duration ?? 5000;
-    if (type === "loading" || d === Infinity || isExpanded) {
-      return;
-    }
-
-    if (remainingRef.current === undefined) {
-      remainingRef.current = d;
-    }
-    const startedAt = Date.now();
-    const timer = setTimeout(() => {
-      handleDismiss("auto");
-    }, remainingRef.current);
-
-    return () => {
-      remainingRef.current = Math.max(0, (remainingRef.current ?? d) - (Date.now() - startedAt));
-      clearTimeout(timer);
-    };
-  }, [handleDismiss, isExpanded, type, duration]);
-
-  useEffect(() => {
-    if (id === undefined) return;
-    dismissHandlers.set(id, () => handleDismiss("manual"));
-    return () => {
-      dismissHandlers.delete(id);
-    };
-  }, [handleDismiss, id]);
-
-  const icon = customIcon ?? toastIcons[type || "success"];
-
-  return (
-    <ToastRoot {...restProps} ref={rootRef} data-expanded={isExpanded} data-exiting={isExiting}>
-      {icon && (
-        <ToastIcon className={classNames?.icon} style={styles?.icon}>
+function ToastItem({ isExpanded = false, id, type, duration, closable, onClose, icon: customIcon, title, description, classNames, styles, ...restProps }: ToastItemProps) {
+    const [isExiting, setIsExiting] = useState(false);
+    const rootRef = React.useRef<HTMLDivElement>(null);
+    const exitingRef = React.useRef(false);
+    const remainingRef = React.useRef<number | undefined>(undefined);
+    const handleDismiss = useCallback((closeType: "auto" | "manual" = "manual") => {
+        if (exitingRef.current)
+            return;
+        exitingRef.current = true;
+        setIsExiting(true);
+        onClose?.({ type: closeType, id });
+        const el = rootRef.current;
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (el && !reduced) {
+            const gap = Number.parseFloat(getComputedStyle(el.parentElement ?? el).rowGap) || 0;
+            el.style.overflow = "hidden";
+            el.animate([
+                { height: `${el.offsetHeight}px`, marginBottom: "0px", opacity: "1" },
+                { height: "0px", marginBottom: `${-gap}px`, opacity: "0" },
+            ], { duration: EXIT_MS, easing: "ease-out", fill: "forwards" });
+        }
+        setTimeout(() => {
+            onClose?.({ type: "complete", id });
+            toastObserver.removeToast(id!);
+        }, EXIT_MS);
+    }, [id, onClose]);
+    useEffect(() => {
+        const d = duration ?? 5000;
+        if (type === "loading" || d === Infinity || isExpanded) {
+            return;
+        }
+        if (remainingRef.current === undefined) {
+            remainingRef.current = d;
+        }
+        const startedAt = Date.now();
+        const timer = setTimeout(() => {
+            handleDismiss("auto");
+        }, remainingRef.current);
+        return () => {
+            remainingRef.current = Math.max(0, (remainingRef.current ?? d) - (Date.now() - startedAt));
+            clearTimeout(timer);
+        };
+    }, [handleDismiss, isExpanded, type, duration]);
+    useEffect(() => {
+        if (id === undefined)
+            return;
+        dismissHandlers.set(id, () => handleDismiss("manual"));
+        return () => {
+            dismissHandlers.delete(id);
+        };
+    }, [handleDismiss, id]);
+    const icon = customIcon ?? toastIcons[type || "success"];
+    return (<ToastRoot {...restProps} ref={rootRef} data-expanded={isExpanded} data-exiting={isExiting}>
+      {icon && (<ToastIcon className={classNames?.icon} style={styles?.icon}>
           {icon}
-        </ToastIcon>
-      )}
+        </ToastIcon>)}
       <ToastContent className={cn(closable && "pr-5", classNames?.content)} style={styles?.content}>
         <ToastTitle className={classNames?.title} style={styles?.title}>
           {title}
         </ToastTitle>
-        {description && (
-          <ToastDescription className={classNames?.description} style={styles?.description}>
+        {description && (<ToastDescription className={classNames?.description} style={styles?.description}>
             {description}
-          </ToastDescription>
-        )}
+          </ToastDescription>)}
       </ToastContent>
-      {closable && (
-        <ToastClose
-          className={classNames?.close}
-          style={styles?.close}
-          onClick={(e) => {
-            e.stopPropagation();
-            handleDismiss("manual");
-          }}
-        />
-      )}
-    </ToastRoot>
-  );
+      {closable && (<ToastClose className={classNames?.close} style={styles?.close} onClick={(e) => {
+                e.stopPropagation();
+                handleDismiss("manual");
+            }}/>)}
+    </ToastRoot>);
 }
-
 export interface ToastContainerProps extends Omit<React.ComponentProps<"div">, "className"> {
-  visibleToasts?: number;
-  className?: ClassNameValue;
+    visibleToasts?: number;
+    className?: ClassNameValue;
 }
-
 let hostOwnerId: symbol | null = null;
 const hostListeners = new Set<() => void>();
-
 function claimHost(id: symbol) {
-  if (hostOwnerId === null) {
-    hostOwnerId = id;
-    hostListeners.forEach((listener) => listener());
-  }
+    if (hostOwnerId === null) {
+        hostOwnerId = id;
+        hostListeners.forEach((listener) => listener());
+    }
 }
-
 function releaseHost(id: symbol) {
-  if (hostOwnerId === id) {
-    hostOwnerId = null;
-    hostListeners.forEach((listener) => listener());
-  }
+    if (hostOwnerId === id) {
+        hostOwnerId = null;
+        hostListeners.forEach((listener) => listener());
+    }
 }
-
 function useHostClaim() {
-  const idRef = React.useRef(Symbol("toaster-host"));
-  const [isHost, setIsHost] = React.useState(false);
-
-  React.useEffect(() => {
-    const id = idRef.current;
-    claimHost(id);
-    const sync = () => setIsHost(hostOwnerId === id);
-    sync();
-    hostListeners.add(sync);
-    return () => {
-      releaseHost(id);
-      hostListeners.delete(sync);
-    };
-  }, []);
-
-  return isHost;
+    const idRef = React.useRef(Symbol("toaster-host"));
+    const [isHost, setIsHost] = React.useState(false);
+    React.useEffect(() => {
+        const id = idRef.current;
+        claimHost(id);
+        const sync = () => setIsHost(hostOwnerId === id);
+        sync();
+        hostListeners.add(sync);
+        return () => {
+            releaseHost(id);
+            hostListeners.delete(sync);
+        };
+    }, []);
+    return isHost;
 }
-
 function ToastContainer({ visibleToasts = 3, className, ...props }: ToastContainerProps) {
-  const isHost = useHostClaim();
-  const toasts = useToastStore();
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [expandedTimeout, setExpandedTimeout] = useState<NodeJS.Timeout | null>(null);
-  const prevCount = React.useRef(0);
-
-  const filteredToasts = toasts.slice(-visibleToasts);
-
-  React.useEffect(() => {
-    if (toasts.length > prevCount.current) {
-      setIsExpanded(false);
-      setExpandedTimeout((current) => {
-        if (current) clearTimeout(current);
+    const isHost = useHostClaim();
+    const toasts = useToastStore();
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [expandedTimeout, setExpandedTimeout] = useState<NodeJS.Timeout | null>(null);
+    const prevCount = React.useRef(0);
+    const viewportRef = React.useRef<HTMLElement>(null);
+    const filteredToasts = toasts.slice(-visibleToasts);
+    React.useEffect(() => {
+        const el = viewportRef.current;
+        if (!el || filteredToasts.length === 0)
+            return;
+        if (typeof el.showPopover === "function") {
+            try {
+                el.showPopover();
+            }
+            catch {
+            }
+        }
+    }, [filteredToasts.length]);
+    React.useEffect(() => {
+        if (toasts.length > prevCount.current) {
+            setIsExpanded(false);
+            setExpandedTimeout((current) => {
+                if (current)
+                    clearTimeout(current);
+                return null;
+            });
+        }
+        prevCount.current = toasts.length;
+    }, [toasts.length]);
+    const handleMouseEnter = () => {
+        if (expandedTimeout) {
+            clearTimeout(expandedTimeout);
+            setExpandedTimeout(null);
+        }
+        setIsExpanded(true);
+    };
+    const handleMouseLeave = () => {
+        const timeout = setTimeout(() => {
+            setIsExpanded(false);
+        }, 100);
+        setExpandedTimeout(timeout);
+    };
+    if (!isHost || filteredToasts.length === 0) {
         return null;
-      });
     }
-    prevCount.current = toasts.length;
-  }, [toasts.length]);
-
-  const handleMouseEnter = () => {
-    if (expandedTimeout) {
-      clearTimeout(expandedTimeout);
-      setExpandedTimeout(null);
-    }
-    setIsExpanded(true);
-  };
-
-  const handleMouseLeave = () => {
-    const timeout = setTimeout(() => {
-      setIsExpanded(false);
-    }, 100);
-    setExpandedTimeout(timeout);
-  };
-
-  if (!isHost || filteredToasts.length === 0) {
-    return null;
-  }
-
-  return (
-    <section
-      {...props}
-      data-expanded={isExpanded}
-      className={cn(
-        "fixed top-4 left-1/2 -translate-x-1/2 z-100 w-full max-w-105",
-        !isExpanded && "*:absolute *:left-0 *:right-0",
-        isExpanded && "flex flex-col gap-4",
-        "data-[expanded=false]:[&>*:nth-child(1)]:translate-y-0",
-        "data-[expanded=false]:[&>*:nth-child(2)]:translate-y-2",
-        "data-[expanded=false]:[&>*:nth-child(3)]:translate-y-4",
-        "data-[expanded=false]:[&>*:nth-child(n+4)]:translate-y-6",
-        className,
-      )}
-      aria-label="Notifications"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      {filteredToasts.map((toast) => (
-        <ToastItem key={toast.id} {...toast} isExpanded={isExpanded} />
-      ))}
-    </section>
-  );
+    return (<section {...props} ref={viewportRef} popover="manual" data-expanded={isExpanded} className={cn("fixed top-4 left-1/2 -translate-x-1/2 z-100 w-full max-w-105", !isExpanded && "*:absolute *:left-0 *:right-0", isExpanded && "flex flex-col gap-4", "data-[expanded=false]:[&>*:nth-child(1)]:translate-y-0", "data-[expanded=false]:[&>*:nth-child(2)]:translate-y-2", "data-[expanded=false]:[&>*:nth-child(3)]:translate-y-4", "data-[expanded=false]:[&>*:nth-child(n+4)]:translate-y-6", className)} aria-label="Notifications" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      {filteredToasts.map((toast) => (<ToastItem key={toast.id} {...toast} isExpanded={isExpanded}/>))}
+    </section>);
 }
-
 type ToastMethod = (options: ToastItemProps) => string | number;
-
-const toastMethods = Object.fromEntries(
-  (["success", "error", "warning", "info", "loading"] as ToastType[]).map((type) => [
+const toastMethods = Object.fromEntries((["success", "error", "warning", "info", "loading"] as ToastType[]).map((type) => [
     type,
     (options: ToastItemProps) => toastObserver.addToast({ ...options, type }),
-  ]),
-) as Record<ToastType, ToastMethod>;
-
+])) as Record<ToastType, ToastMethod>;
 const Toaster = Object.assign(ToastContainer, toastMethods, {
-  dismiss: (id?: string | number) => {
-    if (id !== undefined) {
-      removeWithExit(id);
-      return;
-    }
-    const toasts = toastObserver.getToasts();
-    toasts.forEach((t) => {
-      if (t.id !== undefined) {
-        removeWithExit(t.id);
-      }
-    });
-  },
-
-  promise,
+    dismiss: (id?: string | number) => {
+        if (id !== undefined) {
+            removeWithExit(id);
+            return;
+        }
+        const toasts = toastObserver.getToasts();
+        toasts.forEach((t) => {
+            if (t.id !== undefined) {
+                removeWithExit(t.id);
+            }
+        });
+    },
+    promise,
 });
-
 type PromiseData<T> = {
-  loading: React.ReactNode;
-  success: React.ReactNode | ((data: T) => React.ReactNode);
-  error: React.ReactNode | ((error: unknown) => React.ReactNode);
+    loading: React.ReactNode;
+    success: React.ReactNode | ((data: T) => React.ReactNode);
+    error: React.ReactNode | ((error: unknown) => React.ReactNode);
 };
-
 function promise<T>(promise: () => Promise<T>, data: PromiseData<T>) {
-  const loadingId = toastObserver.addToast({
-    title: data.loading,
-    type: "loading",
-  } as ToastItemProps);
-
-  promise()
-    .then((response) => {
-      removeWithExit(loadingId);
-      const message = typeof data.success === "function" ? data.success(response) : data.success;
-      toastObserver.addToast({
-        title: message,
-        type: "success",
-      } as ToastItemProps);
+    const loadingId = toastObserver.addToast({
+        title: data.loading,
+        type: "loading",
+    } as ToastItemProps);
+    promise()
+        .then((response) => {
+        removeWithExit(loadingId);
+        const message = typeof data.success === "function" ? data.success(response) : data.success;
+        toastObserver.addToast({
+            title: message,
+            type: "success",
+        } as ToastItemProps);
     })
-    .catch((error) => {
-      removeWithExit(loadingId);
-      const message = typeof data.error === "function" ? data.error(error) : data.error;
-      toastObserver.addToast({
-        title: message,
-        type: "error",
-      } as ToastItemProps);
+        .catch((error) => {
+        removeWithExit(loadingId);
+        const message = typeof data.error === "function" ? data.error(error) : data.error;
+        toastObserver.addToast({
+            title: message,
+            type: "error",
+        } as ToastItemProps);
     });
 }
-
 export { Toaster };

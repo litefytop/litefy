@@ -1,5 +1,8 @@
 "use client";
 
+/* design-detect-disable-file hardcoded-color
+   主题切换器的品牌/表面色板本身就是调色板定义，与 theme.css 同级基建 */
+
 import { Monitor, Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Popover, useTheme } from "@/ui";

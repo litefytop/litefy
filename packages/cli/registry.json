@@ -75,7 +75,8 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/checkbox.tsx",
     "dependence": [
-      "form"
+      "form",
+      "use-auto-id"
     ]
   },
   "chip-group": {
@@ -168,6 +169,14 @@
       "input-group"
     ]
   },
+  "field-search": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/field-search.tsx",
+    "dependence": [
+      "input-group",
+      "select"
+    ]
+  },
   "form-item": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/form-item.tsx",
@@ -197,7 +206,10 @@
   },
   "input-group": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/input-group.tsx"
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/input-group.tsx",
+    "dependence": [
+      "use-auto-id"
+    ]
   },
   "input-otp": {
     "type": "component",
@@ -266,6 +278,7 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/password.tsx",
     "dependence": [
+      "use-auto-id",
       "input-group"
     ]
   },
@@ -273,6 +286,7 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/picker.tsx",
     "dependence": [
+      "use-auto-id",
       "use-floating-panel"
     ]
   },
@@ -321,7 +335,8 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/radio.tsx",
     "dependence": [
-      "form"
+      "form",
+      "use-auto-id"
     ]
   },
   "scroll-shadow": {
@@ -452,6 +467,10 @@
   "trap-tab-key": {
     "type": "util",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/trap-tab-key.ts"
+  },
+  "use-auto-id": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-auto-id.ts"
   },
   "use-chart-palette": {
     "type": "hook",

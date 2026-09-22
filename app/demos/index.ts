@@ -35,6 +35,8 @@ import FormItemValidationDemo from "./form-item/validation";
 import formItemValidationCode from "./form-item/validation.tsx?raw";
 import InputGroupDemo from "./input-group/basic";
 import inputGroupCode from "./input-group/basic.tsx?raw";
+import FieldSearchDemo from "./field-search/basic";
+import fieldSearchCode from "./field-search/basic.tsx?raw";
 import FormPartsDemo from "./form/parts";
 import formPartsCode from "./form/parts.tsx?raw";
 import BadgeBasicDemo from "./badge/basic";
@@ -582,6 +584,10 @@ export const demos: Record<string, DemoItem> = {
   "input-group-basic": {
     component: InputGroupDemo,
     code: inputGroupCode,
+  },
+  "field-search-basic": {
+    component: FieldSearchDemo,
+    code: fieldSearchCode,
   },
   "form-parts": {
     component: FormPartsDemo,
