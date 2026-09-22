@@ -2,12 +2,12 @@
 import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
 import { FormContext } from "./form";
-import { useAutoId } from "../utils/use-auto-id";
 export interface RadioRootProps extends Omit<React.ComponentProps<"input">, "type" | "className"> {
     className?: ClassNameValue;
 }
 export function RadioRoot({ className, ...props }: RadioRootProps) {
-    const id = useAutoId(props.id);
+    const autoId = React.useId();
+    const id = props.id ?? autoId;
     return <input {...props} id={id} type="radio" className={cn("sr-only peer", className)}/>;
 }
 export interface RadioIndicatorProps extends Omit<React.ComponentProps<"span">, "className"> {

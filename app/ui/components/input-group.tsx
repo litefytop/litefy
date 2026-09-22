@@ -1,6 +1,5 @@
 import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
-import { useAutoId } from "../utils/use-auto-id";
 type HTMLAttrs<T> = Omit<T, "className"> & {
     [key: `data-${string}`]: string | number | null | undefined | true;
     className?: ClassNameValue;
@@ -19,7 +18,8 @@ export type InputRootProps = Omit<React.ComponentProps<"input">, "className"> & 
     className?: ClassNameValue;
 };
 export function InputRoot({ className, ...props }: InputRootProps) {
-    const id = useAutoId(props.id);
+    const autoId = React.useId();
+    const id = props.id ?? autoId;
     return (<input {...props} id={id} className={cn("flex-1 border-0 ring-0 bg-transparent px-2 py-1 text-sm outline-none placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground", "group-data-invalid/input:text-danger", className)}/>);
 }
 export type InputTrailingProps = HTMLAttrs<React.ComponentProps<"span">>;

@@ -75,8 +75,7 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/checkbox.tsx",
     "dependence": [
-      "form",
-      "use-auto-id"
+      "form"
     ]
   },
   "chip-group": {
@@ -206,10 +205,7 @@
   },
   "input-group": {
     "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/input-group.tsx",
-    "dependence": [
-      "use-auto-id"
-    ]
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/input-group.tsx"
   },
   "input-otp": {
     "type": "component",
@@ -278,7 +274,6 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/password.tsx",
     "dependence": [
-      "use-auto-id",
       "input-group"
     ]
   },
@@ -286,7 +281,6 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/picker.tsx",
     "dependence": [
-      "use-auto-id",
       "use-floating-panel"
     ]
   },
@@ -335,8 +329,7 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/radio.tsx",
     "dependence": [
-      "form",
-      "use-auto-id"
+      "form"
     ]
   },
   "scroll-shadow": {
@@ -467,10 +460,6 @@
   "trap-tab-key": {
     "type": "util",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/trap-tab-key.ts"
-  },
-  "use-auto-id": {
-    "type": "hook",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-auto-id.ts"
   },
   "use-chart-palette": {
     "type": "hook",

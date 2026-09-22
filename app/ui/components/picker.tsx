@@ -1,7 +1,6 @@
 "use client";
 import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
-import { useAutoId } from "../utils/use-auto-id";
 import { useFloatingPanel } from "../utils/use-floating-panel";
 export interface PickerRootProps extends Omit<React.ComponentProps<"div">, "className"> {
     className?: ClassNameValue;
@@ -13,7 +12,8 @@ export interface PickerInputProps extends Omit<React.ComponentProps<"input">, "c
     className?: ClassNameValue;
 }
 export function PickerInput({ className, ...props }: PickerInputProps) {
-    const id = useAutoId(props.id);
+    const autoId = React.useId();
+    const id = props.id ?? autoId;
     return (<input role="combobox" {...props} id={id} className={cn("h-9 w-full px-3 py-2 text-sm border rounded-md outline-none cursor-pointer", "placeholder:text-muted-foreground focus:ring-inset focus:ring-1 focus:ring-ring", "aria-invalid:border-danger aria-invalid:text-danger", "aria-invalid:focus-visible:outline-1 aria-invalid:focus-visible:outline-danger aria-invalid:focus-visible:ring-3 aria-invalid:focus-visible:ring-danger/50", className)}/>);
 }
 export interface PickerContentProps extends Omit<React.ComponentProps<"div">, "className"> {

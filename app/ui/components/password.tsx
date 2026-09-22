@@ -2,7 +2,6 @@
 import * as React from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { type ClassNameValue, cn } from "../utils/cn";
-import { useAutoId } from "../utils/use-auto-id";
 import { InputGroup } from "./input-group";
 export interface PasswordGroupProps extends Omit<React.ComponentProps<"div">, "className"> {
     className?: ClassNameValue;
@@ -16,7 +15,8 @@ export interface PasswordRootProps extends Omit<React.ComponentProps<"input">, "
     visible?: boolean;
 }
 export function PasswordRoot({ className, visible, ...props }: PasswordRootProps) {
-    const id = useAutoId(props.id);
+    const autoId = React.useId();
+    const id = props.id ?? autoId;
     return (<input {...props} id={id} type={visible ? "text" : "password"} className={cn("appearance-none border-0 bg-transparent px-2 py-1 text-sm flex-1 outline-none", "placeholder:text-muted-foreground", "selection:bg-primary selection:text-primary-foreground ring-0", className)}/>);
 }
 export interface PasswordToggleProps extends Omit<React.ComponentProps<"button">, "className"> {

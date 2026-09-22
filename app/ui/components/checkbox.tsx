@@ -2,13 +2,13 @@ import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
 import { Check } from "lucide-react";
 import { FormContext } from "./form";
-import { useAutoId } from "../utils/use-auto-id";
 export interface CheckboxRootProps extends Omit<React.ComponentProps<"input">, "type" | "className" | "value"> {
     className?: ClassNameValue;
     value?: string;
 }
 export function CheckboxRoot({ className, onKeyDown, ...props }: CheckboxRootProps) {
-    const id = useAutoId(props.id);
+    const autoId = React.useId();
+    const id = props.id ?? autoId;
     return (<input {...props} id={id} type="checkbox" className={cn("sr-only", className)} onKeyDown={(e) => {
             if (e.key === "Enter") {
                 e.preventDefault();

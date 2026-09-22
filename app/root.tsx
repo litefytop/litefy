@@ -10,7 +10,7 @@ import {
   useParams,
 } from "react-router";
 import type { Route } from "./+types/root";
-import "./ui/styles/index.css";
+
 import "./global.css";
 import { Suspense } from "react";
 import SearchDialog from "./components/search";

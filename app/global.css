@@ -1,4 +1,6 @@
-
+@import "./ui/styles/index.css";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
 
 html {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
