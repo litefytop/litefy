@@ -185,6 +185,13 @@ export default {
       zh: "右键菜单",
     },
   },
+  "field-search": {
+    name: "Field Search",
+    displayName: {
+      en: "Field Search",
+      zh: "字段搜索",
+    },
+  },
   form: {
     name: "Form",
     displayName: {

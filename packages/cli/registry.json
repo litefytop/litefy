@@ -168,6 +168,14 @@
       "input-group"
     ]
   },
+  "field-search": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/field-search.tsx",
+    "dependence": [
+      "input-group",
+      "select"
+    ]
+  },
   "form-item": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/form-item.tsx",

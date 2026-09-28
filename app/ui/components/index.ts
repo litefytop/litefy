@@ -25,6 +25,7 @@ export * from "./donut";
 export * from "./drawer";
 export * from "./dropdown-menu";
 export * from "./dual-picker";
+export * from "./field-search";
 export * from "./form";
 export * from "./form-item";
 export * from "./image";

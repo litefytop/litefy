@@ -1,0 +1,68 @@
+---
+title: Field Search 字段搜索
+description: 前缀字段选择 + 值输入的一体化搜索控件——文本字段防抖过滤，枚举字段即选即查。
+---
+
+## 安装
+
+<Installation name="field-search" />
+
+## 用法
+
+### 基础用法
+
+`FieldSearch` 将 `InputGroup` + `Select` + `Input` 组合成单个搜索控件：前缀下拉选择要搜索的字段，其余部分是值输入。焦点环由外壳统一负责——通过子元素选择器（`outline-0` / `ring-0`）剥离子元素自身的焦点环，组合体永远不会出现双重焦点环。
+
+文本字段按 `debounceMs`（默认 300）防抖后发出查询；带 `options` 的字段渲染为第二个下拉而非输入框，选择后立即查询，并自动带上一个"全部"空值选项。清空输入或切换字段时以空值触发查询；输入法合成期间不发出，拼音打字不会反复打扰表格。
+
+<ComponentPreview name="field-search-basic" />
+
+```tsx
+<FieldSearch
+  fields={[
+    { value: "name", label: "姓名", placeholder: "按姓名搜索" },
+    {
+      value: "status",
+      label: "状态",
+      options: [
+        { value: "active", label: "启用" },
+        { value: "archived", label: "归档" },
+      ],
+    },
+  ]}
+  onSearch={(field, value) => runQuery(field, value)}
+/>
+```
+
+## 注意
+
+- 刻意不带候选下拉——表格本身就是搜索结果；配合 [Table](/docs/components/table) 使用，把 `onSearch` 接入你的过滤逻辑。
+- `onSearch` 收到的是去首尾空格后的值，且同一字段 + 值的重复连续触发会被跳过。
+
+## API 参考
+
+### FieldSearch
+
+| 属性         | 类型                                      | 默认值 | 描述                                                  |
+| ------------ | ----------------------------------------- | ------ | ----------------------------------------------------- |
+| `fields`     | `FieldSearchField[]`                      | -      | 可搜索字段；初始选中第一个                            |
+| `onSearch`   | `(field: string, value: string) => void`  | -      | 防抖后 / 选择后回调，参数为字段标识与去空格的值       |
+| `debounceMs` | `number`                                  | `300`  | 文本输入的防抖毫秒数                                  |
+| `className`  | `ClassNameValue`                          | -      | 自定义类名，作用于外壳                                |
+
+### FieldSearchField
+
+| 属性          | 类型                  | 默认值   | 描述                                       |
+| ------------- | --------------------- | -------- | ------------------------------------------ |
+| `value`       | `string`              | -        | 字段标识，`onSearch` 原样返回              |
+| `label`       | `string`              | -        | 字段下拉中显示的标签                       |
+| `placeholder` | `string`              | -        | 文本模式的占位文案                         |
+| `options`     | `FieldSearchOption[]` | -        | 枚举模式：提供后渲染为下拉而非文本输入     |
+| `allLabel`    | `string`              | `"All"`  | 枚举模式空值选项文案                       |
+
+### FieldSearchOption
+
+| 属性    | 类型     | 描述       |
+| ------- | -------- | ---------- |
+| `label` | `string` | 选项标签   |
+| `value` | `string` | 选项值     |

@@ -11,7 +11,7 @@ description: An input shell that owns focus and invalid styling for a wrapped co
 
 ### Basic Usage
 
-`InputGroup` is the shell around a wrapped control. It owns all focus (`focus-within`) and invalid (`data-invalid`) visuals — border, ring and outline — while the inner `InputRoot` stays visually bare, so the group and the input can never produce a double focus ring. `InputLeading` / `InputTrailing` are the prefix/suffix slots.
+`InputGroup` is the shell around a wrapped control. It owns all focus (`focus-within`) and invalid (`data-invalid`) visuals — border, ring and outline — and strips its direct children of their own focus indicators (`outline-0` / `ring-0` via child selectors), so any control placed inside (an `InputRoot`, a `Select`, buttons…) can never produce a double focus ring. `InputLeading` / `InputTrailing` are the prefix/suffix slots.
 
 Set `invalid` on the group — not `aria-invalid` styling on the input. The inner input still carries `aria-invalid` for accessibility, and its danger text color is driven by the group through `group-data-invalid`; the middle row of the demo shows the invalid group.
 
