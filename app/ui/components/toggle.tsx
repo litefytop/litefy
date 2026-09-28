@@ -1,15 +1,18 @@
 import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
+
+/** 与 Segment 一致的变体:fill 选中填充主色;text 纯文字,选中仅文字着主色(无填充) */
+export type ToggleVariant = "fill" | "text";
 export interface ToggleProps extends Omit<React.ComponentProps<"button">, "type" | "className"> {
     checked?: boolean;
     defaultChecked?: boolean;
     onCheckedChange?: (checked: boolean) => void;
     value?: string;
     disabled?: boolean;
+    variant?: ToggleVariant;
     className?: ClassNameValue;
-    children?: React.ReactNode;
 }
-export const Toggle = ({ checked: controlledChecked, defaultChecked = false, onCheckedChange, disabled, className, children, onClick, ...props }: ToggleProps) => {
+export const Toggle = ({ checked: controlledChecked, defaultChecked = false, onCheckedChange, disabled, variant = "fill", className, children, onClick, ...props }: ToggleProps) => {
     const [uncontrolledChecked, setUncontrolledChecked] = React.useState(defaultChecked);
     const isControlled = controlledChecked !== undefined;
     const checked = isControlled ? controlledChecked : uncontrolledChecked;
@@ -22,7 +25,7 @@ export const Toggle = ({ checked: controlledChecked, defaultChecked = false, onC
             setUncontrolledChecked(next);
         onCheckedChange?.(next);
     };
-    return (<button {...props} type="button" aria-pressed={checked} disabled={disabled} onClick={handleClick} className={cn("inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium", "border border-border text-foreground", "transition-colors duration-200", "aria-pressed:bg-primary aria-pressed:text-primary-foreground aria-pressed:border-primary", "hover:not-aria-pressed:bg-muted/50", className)}>
+    return (<button {...props} type="button" aria-pressed={checked} disabled={disabled} onClick={handleClick} className={cn("relative inline-flex items-center justify-center gap-2 h-9 min-w-9 px-3 py-1 text-sm font-medium cursor-pointer select-none transition-colors duration-200", variant === "fill" ? cn("rounded-md text-muted-foreground", "first:rounded-l-md last:rounded-r-md", "aria-pressed:bg-primary aria-pressed:text-primary-foreground") : cn("rounded-md text-muted-foreground hover:bg-accent", "aria-pressed:text-primary-accent"), className)}>
       {children}
     </button>);
 };
@@ -38,10 +41,11 @@ export interface ToggleGroupProps {
     defaultValue?: string[];
     onChange?: (values: string[]) => void;
     disabled?: boolean;
+    variant?: ToggleVariant;
     className?: ClassNameValue;
     itemClassName?: ClassNameValue;
 }
-export function ToggleGroup({ options, value: controlledValue, defaultValue = [], onChange, disabled, className, itemClassName, }: ToggleGroupProps) {
+export function ToggleGroup({ options, value: controlledValue, defaultValue = [], onChange, disabled, variant, className, itemClassName, }: ToggleGroupProps) {
     const [uncontrolledValue, setUncontrolledValue] = React.useState<string[]>(defaultValue);
     const isControlled = controlledValue !== undefined;
     const selectedValues = isControlled ? controlledValue : uncontrolledValue;
@@ -54,8 +58,8 @@ export function ToggleGroup({ options, value: controlledValue, defaultValue = []
             setUncontrolledValue(next);
         onChange?.(next);
     };
-    return (<div className={cn("inline-flex", className)}>
-      {options.map((option) => (<Toggle key={option.value} value={option.value} disabled={disabled || option.disabled} checked={selectedSet.has(option.value)} onCheckedChange={() => handleToggle(option.value)} className={cn("rounded-none border-y border-r border-l-0 border-border aria-pressed:border-border first:border-l first:rounded-l-md last:rounded-r-md", option.className ?? itemClassName)}>
+    return (<div className={cn("inline-flex rounded-md group", className)}>
+      {options.map((option) => (<Toggle key={option.value} value={option.value} variant={variant} disabled={disabled || option.disabled} checked={selectedSet.has(option.value)} onCheckedChange={() => handleToggle(option.value)} className={cn(option.className ?? itemClassName)}>
           {option.label}
         </Toggle>))}
     </div>);

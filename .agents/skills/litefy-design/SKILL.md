@@ -2,7 +2,7 @@
 name: litefy-design
 description: Litefy UI 设计规范（本仓库 UI 的"宪法"）。当需要创建、修改、重构、审查任何使用 Litefy UI 的界面或组件时使用：写业务页面、新建/改造组件、选择组件、写颜色/边框/阴影/圆角/间距/焦点样式、排查视觉不一致、审计 UI 代码合规性。不适用于：与本仓库无关的第三方项目、纯逻辑/数据层代码、文档文字编辑。规范与代码冲突时以本规范为准并报告冲突。
 metadata:
-  version: 2.7.0
+  version: 2.7.1
 ---
 
 # Litefy UI Design Spec
@@ -206,10 +206,17 @@ metadata:
 - 圆角默认 rounded-md
 - 设计约束：仅用于区块提示，短状态标记使用 Chip，行内操作使用 text Button
 
+### DropdownMenu 下拉菜单
+
+- 设计定义：点击触发器弹出菜单的成品组合（Popover + Menu 接线完毕）
+- **trigger 本身就是组件渲染的单个 `<button>`**：内容只放图标 + 文字（如 `<><Plus />插入征象</>`）；禁止在 trigger 里再嵌套自带边框/背景/内边距的盒子或按钮——会呈现按钮套按钮。样式经 `className` 覆盖默认主色底（cn 为 tailwind-merge，后写胜出，如 `border bg-background px-2 py-1 text-xs hover:bg-hover` 即 outline 风格）
+- 菜单项行动作走 `onSelect`；分组用 `group` 项；层级过深（二级以上）应改用独立 Dialog 承载
+
 ### Dialog 对话框
 
 - 设计定义：模态对话框成品，内置右上角"ESC"关闭按钮（§10 第 6 条）
 - **内容不得与关闭按钮交集**：有标题一律用 `title` prop——组件把标题与行内 ESC 排成同一行（`flex items-center justify-between`，标题 `min-w-0` 可截断），结构性零交集；不传 `title` 时 ESC 悬浮于 `right-4 top-4`，内容右上角（约 48×40px）禁止放置任何元素，必要时用 padding 预留
+- **标题只走 `title` prop，禁止在 children 里手写 `h3` 标题**：children 是正文区，手写标题会与 ESC 行分离、形成两段式头部的错误结构。正文直接从描述性 `<p>` 开始；错误/警示类对话框的语义靠 title 文案本身表达，不用额外造一个正文大字
 - 长标题（单号/编号等）在 `title` 里传 `truncate` 的节点，全文用 `title` 属性悬停展示
 
 ### Table

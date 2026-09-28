@@ -274,7 +274,8 @@ function ToastContainer({ visibleToasts = 3, className, ...props }: ToastContain
     if (!isHost || filteredToasts.length === 0) {
         return null;
     }
-    return (<section {...props} ref={viewportRef} popover="manual" data-expanded={isExpanded} className={cn("fixed top-4 left-1/2 -translate-x-1/2 z-100 w-full max-w-105", !isExpanded && "*:absolute *:left-0 *:right-0", isExpanded && "flex flex-col gap-4", "data-[expanded=false]:[&>*:nth-child(1)]:translate-y-0", "data-[expanded=false]:[&>*:nth-child(2)]:translate-y-2", "data-[expanded=false]:[&>*:nth-child(3)]:translate-y-4", "data-[expanded=false]:[&>*:nth-child(n+4)]:translate-y-6", className)} aria-label="Notifications" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    // oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex jsx-a11y/no-noninteractive-element-interactions -- aria-label 命名的 section 即 region,滚动区需键盘可达
+    return (<section {...props} ref={viewportRef} popover="manual" tabIndex={0} data-expanded={isExpanded} className={cn("fixed top-4 left-1/2 -translate-x-1/2 z-100 w-full max-w-105", !isExpanded && "*:absolute *:left-0 *:right-0", isExpanded && "flex flex-col gap-4", "data-[expanded=false]:[&>*:nth-child(1)]:translate-y-0", "data-[expanded=false]:[&>*:nth-child(2)]:translate-y-2", "data-[expanded=false]:[&>*:nth-child(3)]:translate-y-4", "data-[expanded=false]:[&>*:nth-child(n+4)]:translate-y-6", className)} aria-label="Notifications" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       {filteredToasts.map((toast) => (<ToastItem key={toast.id} {...toast} isExpanded={isExpanded}/>))}
     </section>);
 }

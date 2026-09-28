@@ -1,12 +1,16 @@
 "use client";
 import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
+
+/** fill:选中项填充主色,未选中无底色;text:纯文字,选中仅文字着主色(无填充) */
+export type SegmentVariant = "fill" | "text";
 export interface SegmentProps extends Omit<React.ComponentProps<"button">, "type" | "className"> {
     className?: ClassNameValue;
     checked?: boolean;
+    variant?: SegmentVariant;
 }
-export function Segment({ className, checked, ...props }: SegmentProps) {
-    return (<button {...props} type="button" role="radio" aria-checked={checked} className={cn("relative inline-flex items-center justify-center gap-2 h-9 min-w-9 px-3 py-1 text-sm font-medium cursor-pointer select-none", "bg-muted text-muted-foreground border-y border-r first:border-l border-border", "first:rounded-l-md last:rounded-r-md", "transition-colors duration-200", "aria-checked:bg-primary aria-checked:text-primary-foreground", className)}/>);
+export function Segment({ className, checked, variant = "fill", ...props }: SegmentProps) {
+    return (<button {...props} type="button" role="radio" aria-checked={checked} className={cn("relative inline-flex items-center justify-center gap-2 h-9 min-w-9 px-3 py-1 text-sm font-medium cursor-pointer select-none transition-colors duration-200", variant === "fill" ? cn("text-muted-foreground", "first:rounded-l-md last:rounded-r-md", "aria-checked:bg-primary aria-checked:text-primary-foreground") : cn("rounded-md text-muted-foreground hover:bg-accent", "aria-checked:text-primary-accent"), className)}/>);
 }
 export interface SegmentOptionConfig {
     label: string;
@@ -20,10 +24,11 @@ export interface SegmentGroupProps {
     defaultValue?: string;
     onValueChange?: (value: string) => void;
     disabled?: boolean;
+    variant?: SegmentVariant;
     className?: ClassNameValue;
     itemClassName?: ClassNameValue;
 }
-export function SegmentGroup({ options, value: controlledValue, defaultValue, onValueChange, disabled, className, itemClassName, }: SegmentGroupProps) {
+export function SegmentGroup({ options, value: controlledValue, defaultValue, onValueChange, disabled, variant, className, itemClassName, }: SegmentGroupProps) {
     const [uncontrolledValue, setValue] = React.useState<string | undefined>(defaultValue);
     const isControlled = controlledValue !== undefined;
     const selectedValue = isControlled ? controlledValue : uncontrolledValue;
@@ -69,13 +74,13 @@ export function SegmentGroup({ options, value: controlledValue, defaultValue, on
         const index = options.findIndex((option) => option.value === selectedValue);
         return index !== -1 && enabledIndexes.includes(index) ? index : -1;
     })();
-    return (<div role="radiogroup" onKeyDown={handleGroupKeyDown} className={cn("inline-flex rounded-md border border-border bg-muted group", className)}>
+    return (<div role="radiogroup" onKeyDown={handleGroupKeyDown} className={cn("inline-flex rounded-md group", className)}>
       {options.map((option, index) => (<Segment key={option.value} ref={(el) => {
                 itemRefs.current[index] = el;
-            }} value={option.value} disabled={disabled || option.disabled} checked={selectedValue === option.value} tabIndex={index === selectedEnabledIndex ||
+            }} value={option.value} variant={variant} disabled={disabled || option.disabled} checked={selectedValue === option.value} tabIndex={index === selectedEnabledIndex ||
                 (selectedEnabledIndex === -1 && index === enabledIndexes[0])
                 ? 0
-                : -1} onClick={() => handleSelect(option.value)} className={cn("border-y-0 border-r first:border-l-0 last:border-r-0", option.className ?? itemClassName)}>
+                : -1} onClick={() => handleSelect(option.value)} className={cn(option.className ?? itemClassName)}>
           {option.label}
         </Segment>))}
     </div>);
