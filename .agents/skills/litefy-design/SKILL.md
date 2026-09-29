@@ -1,19 +1,21 @@
 ---
 name: litefy-design
-description: Litefy UI 设计规范（本仓库 UI 的"宪法"）。当需要创建、修改、重构、审查任何使用 Litefy UI 的界面或组件时使用：写业务页面、新建/改造组件、选择组件、写颜色/边框/阴影/圆角/间距/焦点样式、排查视觉不一致、审计 UI 代码合规性。不适用于：与本仓库无关的第三方项目、纯逻辑/数据层代码、文档文字编辑。规范与代码冲突时以本规范为准并报告冲突。
+description: Litefy UI 设计规范（任何使用 Litefy UI 的项目的"宪法"，官网 https://litefy.top/）。当需要创建、修改、重构、审查任何使用 Litefy UI 的界面或组件时使用：写业务页面、新建/改造组件、选择组件、写颜色/边框/阴影/圆角/间距/焦点样式、排查视觉不一致、审计 UI 代码合规性。不适用于：不使用 Litefy UI 的项目、纯逻辑/数据层代码、文档文字编辑。规范与代码冲突时以本规范为准并报告冲突。
 metadata:
-  version: 2.7.1
+  version: 2.8.0
 ---
 
 # Litefy UI Design Spec
 
-本文件是 Litefy UI 的设计宪法。impeccable 等通用设计 skill 管"怎么思考和验证"，本规范管"**这个仓库里具体怎么写**"——两者同时生效时，冲突处以本规范为准。
+本文件是 Litefy UI 的设计宪法。官网 **<https://litefy.top/>**：组件文档（中文 `/zh/docs/component/<name>`，英文版把 `/zh` 换成 `/en`）、面向 AI 的文档索引 `/zh/llms.txt` 与全文 `/zh/llms-full.txt`、技能分发页 `/zh/docs/skill`。impeccable 等通用设计 skill 管"怎么思考和验证"，本规范管"**这个仓库里具体怎么写**"——两者同时生效时，冲突处以本规范为准。
+
+> 分层约定：本规范只管"怎么写合规"（Token、结构、反模式、验证）；"组件怎么用"（props / API 细节）**不内嵌**进本文件——组件用法速查以仓库根 `AGENTS.md` 为单一事实源，组件详细文档以 `content/docs`（官网同步自它）为准。往本文件加内容前先问：这是设计约束，还是用法说明？后者一律外链，不抄进来。
 
 ## 0. 工作流
 
 写任何 UI 前按此顺序：
 
-1. **选组件**：先查 `AGENTS.md`（组件速查）——有内置组件就绝不手写 div。组合指南类（Combobox / PreviewCard）读 `content/docs/component/<name>.mdx` 的配方。成品与零件二选一（§10 第 6 条）。
+1. **选组件**：有内置组件就绝不手写 div。组件用法速查按所在环境二选一：**本仓库**查根目录 `AGENTS.md`（组件速查），组合指南类（Combobox / PreviewCard）读 `content/docs/component/<name>.mdx` 的配方；**装进业务项目后**（官网分发的技能，目标仓库没有 AGENTS.md）查官网 <https://litefy.top/>——`/zh/llms.txt`（索引）、`/zh/llms-full.txt`（全文）、`/zh/docs/component/<name>`（单组件），按需抓取。成品与零件二选一（§10 第 6 条）。
 2. **套 Token**：颜色 / 阴影 / 圆角 / 间距 / 字号 / 动效时长一律用语义 Token，见 §1–§9。
 3. **查反模式**：动手前后各对照一次 §10.5 的 Refuse 列表。
 4. **验证**：完成后跑 §12 验证清单，并执行 skill 自带的 `node .agents/skills/litefy-design/scripts/design-detect.mjs`（见 §12.4）做机器检查——审计模式仅记录，开发模式直接修。
