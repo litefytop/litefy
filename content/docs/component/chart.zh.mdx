@@ -3,9 +3,7 @@ title: Chart 图表
 description: 自研 canvas 时序图引擎，共享 chart-kit 数学层 —— 自动画布与主题色集成、自适应宽度、可交互图例与悬浮提示
 ---
 
-Chart 是自研的 canvas 时序图组件，基于 `chart-kit` 数学层（`scaleLinear`、`linePath` / `areaPath`、单调平滑、nice 刻度、LTTB 降采样）与 `useChartPalette` 构建，自动使用色板生成的 8 色为各数据系列着色，网格与坐标轴文字跟随主题变量（`--color-border` / `--color-muted-foreground`），容器宽度变化时通过 ResizeObserver 自适应重绘，并内置可点击隐藏系列的图例与跟随光标的悬浮提示。
-
-在图表家族中，Chart 是 canvas 引擎成员：[Donut](/zh/docs/component/donut)、[Radar](/zh/docs/component/radar) 与 [Sparkline](/zh/docs/component/sparkline) 是面向类目与小数据量的零依赖 SVG 组件，而 Chart 负责大数据量时序 —— 单系列达到数千点以上、或需要在时间轴上框选缩放时，仍然选它。渲染为 DPR 感知的 canvas 2D，十字线与框选区全部绘制在画布内，组件无需任何外部 CSS。
+面向大数据量的 canvas 时序图——类目或小数据量请见 [Donut](/zh/docs/component/donut)、[Radar](/zh/docs/component/radar)、[Sparkline](/zh/docs/component/sparkline)。
 
 ## 安装
 
@@ -33,29 +31,29 @@ Chart 依赖 `useChartPalette` 色板 hook 与 `chart-kit` / `chart-paint` 工�
 
 ### 线状图
 
+时间轴上的基础折线图。
+
 <ComponentPreview
   name="chart-line"
 />
 
-`data` 的类型是 `ChartData`（`[number[], ...number[][]]`）：第一个数组是 x 值（`time` 默认为 `true`，传 Unix 秒时间戳），后续数组按顺序对应 `series` 中每个系列的 y 值。未显式指定 `stroke` 的系列自动从色板取色（按索引循环）。
-
 ### 面积图
+
+面积系列——设置 `fill: true` 或 `type: "area"`。
 
 <ComponentPreview
   name="chart-area"
 />
 
-`fill: true`（或 `type: "area"`）从折线向下填充到绘图区下边缘，因此正负值混合的温度类数据无需额外配置。
-
 ### 柱状图
+
+传 `type: "bar"` 绘制分组柱状，常搭配 `time={false}` 使用数字 x 轴。
 
 <ComponentPreview
   name="chart-bars"
 />
 
-柱状是原生系列类型：传 `type: "bar"` 即可绘制分组柱状（占每个 x 区间 70% 的宽度，在多个柱状系列间均分）。柱体颜色通过 `useChartPalette` 显式取色赋给 `stroke` 与 `fill`。柱状图通常搭配 `time={false}` 使用数字 x 轴——此时组件会自动在 x 轴两端各扩展半个单位，保证边缘柱体不被裁剪。
-
-## API
+## API 参考
 
 ### ChartProps
 
@@ -80,13 +78,3 @@ Chart 依赖 `useChartPalette` 色板 hook 与 `chart-kit` / `chart-paint` 工�
 | value | (v: number) => string | - | 悬浮提示中的数值格式化函数 |
 | show | boolean | true | 初始是否显示该系列 |
 
-### 行为说明
-
-- **图例**：渲染在图表上方，点击可切换对应系列的显示/隐藏，再次点击恢复。
-- **缩放**：在绘图区拖拽框选可放大对应 x 区间（y 范围自动适配窗口内数据）；**双击**还原为完整数据范围。
-- **悬浮提示**：光标移入绘图区时显示各可见系列在该 x 位置的值，随光标移动并自动防溢出。
-- **主题联动**：主题切换导致主色/背景变化时，`useChartPalette` 触发重建，系列颜色与网格颜色随之更新。
-- **色板模式**：`useChartPalette()` 默认沿色环取色（高对比度）；`useChartPalette({ mode: "mono" })` 沿主色同一色系取色（靠明度区分系列，适合与主题保持一致的柱状/面积图）。主色为无彩色时两种模式均回退到蓝色系。
-- **时间轴**：刻度位置与文案由 `niceTimeTicks` 生成（秒/分/时/天/月/年边界对齐、本地化格式），缩放时自动重算。
-- **大数据量**：窗口内点数超过 2000 的系列自动按 LTTB 算法降采样到约每像素一个点，保证 hover 与拖拽流畅。
-- **数据更新**：`data` 变化时直接重绘画布，适合轮询、实时推送等高频更新场景。

@@ -17,7 +17,7 @@ Basic checkbox supporting controlled and uncontrolled modes.
 
 ### Disabled
 
-Set `disabled` on a single checkbox, mark individual options as `disabled` in the option config, or disable the whole group to lock every option.
+Set `disabled` on a single checkbox, mark individual options as `disabled` in the option config, or disable the whole group.
 
 <ComponentPreview 
   name="checkbox-disabled"
@@ -33,9 +33,7 @@ Data-driven group mode with select-all / indeterminate states.
 
 ### Custom
 
-Real-focus checkboxes toggle with `Space` natively; `CheckboxRoot` also toggles on `Enter`, so popover-hosted groups (multi-select) can be operated entirely from the keyboard.
-
-Build a select-all group with indeterminate state using the composable components. Note that `CheckboxRoot` must be nested inside `CheckboxIndicator` — the focus ring relies on `has-focus-visible:` matching a descendant of the indicator, so placing the root outside breaks the visible focus style on keyboard focus.
+Build a select-all group with the composable components; nest `CheckboxRoot` inside `CheckboxIndicator` — it also toggles on `Enter`, so popover-hosted groups work from the keyboard.
 
 <ComponentPreview 
   name="checkbox-custom"

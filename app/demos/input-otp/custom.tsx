@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import { InputOtpGroup, InputOtpSlot } from "@/ui";
 
 const LENGTH = 6;
@@ -27,7 +27,7 @@ export default function Demo() {
     <div className="flex flex-col items-start gap-3">
       <div className="flex items-center gap-2">
         {[0, 1].map((group) => (
-          <div key={group} className="flex items-center gap-2">
+          <Fragment key={group}>
             {group === 1 && <span className="text-sm text-muted-foreground">-</span>}
             <InputOtpGroup>
               {chars.slice(group * 3, group * 3 + 3).map((char, i) => {
@@ -75,7 +75,7 @@ export default function Demo() {
                 );
               })}
             </InputOtpGroup>
-          </div>
+          </Fragment>
         ))}
       </div>
       <p className="text-sm text-muted-foreground">Value: {value || "-"}</p>

@@ -9,22 +9,17 @@ description: Steps + Pager 组合的向导组件，内部管理索引状态 —�
 
 ## 用法
 
-传入 `steps` 作为进度指示器，`children` 作为 Pager 内容——每个子元素对应一步。Wizard 内部管理 `index` 和 `maxIndex`；已到达的步骤可通过 Steps 指示器回退，未来步骤不能跳过。
+传入 `steps` 作为进度指示器、每个子元素对应一步——Wizard 内部管理索引状态。
 
 <ComponentPreview
   name="wizard-basic"
 />
 
-## 注意
-
-- Wizard 内部使用 [Steps](/docs/component/steps) 和 [Pager](/docs/component/pager)——CLI 安装时请一并添加：`litefy add wizard steps pager`。
-- Pager 配置为 `gesture={false}` 和 `transition="view-transition"`，防止误滑提交并为步骤切换提供动画。
-- `maxIndex` 记录已到达的最远步骤并传给 Steps——已到达步骤可点击回退，未来步骤锁定。
-- 最后一步将 Next 按钮替换为 Submit，点击时触发 `onFinish`。
+CLI 安装时需一并添加 `litefy add wizard steps pager`——Wizard 构建于 [Steps](/docs/component/steps) 与 [Pager](/docs/component/pager) 之上。
 
 ### 内联变体
 
-`Wizard.Inline`（亦导出为 `InlineWizard`）用同一套状态机驱动纵向步骤手风琴：只有当前步骤展开显示内容与它自己的 Back / Continue 按钮，其余步骤折叠为标题行。点击已访问步骤即可回跳。
+`Wizard.Inline`（亦导出为 `InlineWizard`）以纵向步骤手风琴渲染同一套状态机——只有当前步骤展开。
 
 <ComponentPreview name="wizard-inline" />
 
@@ -42,7 +37,7 @@ description: Steps + Pager 组合的向导组件，内部管理索引状态 —�
 
 ### 禁用状态
 
-给内联变体传入 `disabled` 冻结它的 Back / Continue 按钮（最后一步的 Finish 同样冻结），当前步骤内容保持展示——例如步骤提交请求进行中时。
+传入 `disabled` 冻结内联变体的 Back / Continue 按钮——例如异步提交进行中时。
 
 <ComponentPreview name="wizard-disabled" />
 
@@ -50,7 +45,7 @@ description: Steps + Pager 组合的向导组件，内部管理索引状态 —�
 
 ### useWizardNavigation
 
-向导状态机（钳位导航 + 最远到达锁定）以 `useWizardNavigation({ count, defaultIndex?, index?, maxIndex?, onIndexChange? })` 导出——返回 `{ index, maxVisited, maxReachable, isFirst, isLast, isReachable, go }`。上方的分页式 Wizard 与下方的内联变体都由它驱动，你也可以用它构建自定义向导外壳。
+导出的向导状态机，用于构建自定义向导外壳：`useWizardNavigation({ count, defaultIndex?, index?, maxIndex?, onIndexChange? })` 返回 `{ index, maxVisited, maxReachable, isFirst, isLast, isReachable, go }`。
 
 ### Wizard
 

@@ -20,12 +20,10 @@ export default function Demo() {
       options={products.map((p) => ({ value: p.name, option: p }))}
       getLabel={(p) => `${p.emoji} ${p.name}`}
       renderOption={(product, { selected }) => (
-        <span className="flex w-full items-center justify-between gap-2">
-          <span className="flex min-w-0 items-center gap-2">
-            <span aria-hidden>{product.emoji}</span>
-            <span className="truncate">{product.name}</span>
-          </span>
-          <span className="shrink-0 text-xs text-muted-foreground">
+        <span className="flex w-full items-center gap-2">
+          <span aria-hidden>{product.emoji}</span>
+          <span className="min-w-0 truncate">{product.name}</span>
+          <span className="ml-auto shrink-0 text-xs text-muted-foreground">
             ${product.price}
             {selected && " · selected"}
           </span>

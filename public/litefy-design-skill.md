@@ -2,7 +2,7 @@
 name: litefy-design
 description: Litefy UI 设计规范（任何使用 Litefy UI 的项目的"宪法"，官网 https://litefy.top/）。当需要创建、修改、重构、审查任何使用 Litefy UI 的界面或组件时使用：写业务页面、新建/改造组件、选择组件、写颜色/边框/阴影/圆角/间距/焦点样式、排查视觉不一致、审计 UI 代码合规性。不适用于：不使用 Litefy UI 的项目、纯逻辑/数据层代码、文档文字编辑。规范与代码冲突时以本规范为准并报告冲突。
 metadata:
-  version: 2.9.0
+  version: 2.9.1
 ---
 
 # Litefy UI Design Spec
@@ -292,7 +292,7 @@ pnpm dlx oxlint --jsx-a11y-plugin src
 
 ### 12.4 机器检测
 
-脚本随 skill 分发：`node .agents/skills/litefy-design/scripts/design-detect.mjs`（在本仓库开发时也可用 `node scripts/design-detect.mjs` 或 `pnpm lint:design`；可传位置参数指定扫描根目录，不传时自动按脚本安装位置推断 `<repo>/app`，兜底当前工作目录）扫描业务代码（排除 `ui` / `generated`）：
+脚本随 skill 分发：`node .agents/skills/litefy-design/scripts/design-detect.mjs`（本仓库开发也可用 `pnpm lint:design`，指向同一脚本；可传位置参数指定扫描根目录，不传时自动按脚本安装位置推断 `<repo>/app`，兜底当前工作目录）扫描业务代码（排除 `ui` / `generated`）：
 
 - **hardcoded-color（error）**：Tailwind 默认调色板类（`text-red-500`、`bg-black` 等）与 `#hex` / `rgb` / `hsl` / `oklch` 任意色值（§1）；URL 类属性（`href` / `src` / `to` / `id` 等）中的锚点串不计
 - **arbitrary-shadow（error）**：`shadow-[...]`（含 `inset` 按压阴影，组件层专属）——只允许语义四级（§5）

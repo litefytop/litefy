@@ -9,7 +9,7 @@ description: 基于原生 popover 与 listbox 面板的选择器，面板跟随�
 
 ## 用法
 
-带占位文本与选项的基础选择器。面板是普通 DOM，会跟随主题配色 —— 这一点与原生 `<select>` 的下拉不同。
+带占位文本与选项的基础选择器。
 
 <ComponentPreview 
   name="select-basic"
@@ -41,7 +41,7 @@ description: 基于原生 popover 与 listbox 面板的选择器，面板跟随�
 
 ### 自定义
 
-触发器是显示当前选中项的按钮；面板是锚点定位的弹层。通过 `classNames` 组合样式。
+通过 `classNames` 组合样式。
 
 <ComponentPreview
   name="select-custom"
@@ -70,13 +70,6 @@ description: 基于原生 popover 与 listbox 面板的选择器，面板跟随�
 | `classNames` | `{ panel?; label?; option? }` —— 值均为 `ClassNameValue` | - | 面板、分组标签与选项的自定义类名 |
 | `styles` | `{ panel? }` —— 值均为 `React.CSSProperties` | - | 面板的内联样式 |
 | `...props` | `React.ComponentProps<"button">` | - | 其余原生 button 属性透传到触发器上，如 `id`、`aria-describedby` |
-
-行为说明：
-
-- 触发器为流式宽度：`w-full` 并以 `max-w-120` 封顶，保证宽容器下标签行长度可读；需要其他宽度时通过 `className` 覆盖。
-- 选中选项后面板关闭、值更新、焦点回到触发器。
-- 面板通过 top layer 逃逸祖先的 `overflow` 裁剪，靠近视口边缘时通过 `positionTryFallbacks` 自动翻转，并以 `min-width: anchor-size(width)` 匹配触发器宽度。
-- 面板打开时，高亮从当前选中的选项开始。
 
 ### SelectOption
 

@@ -9,33 +9,25 @@ description: 受控的页码导航——首页 / 上一页 / 页码（带省略�
 
 ## 用法
 
-`Pagination` 是完全受控的视图组件：渲染 `page`，点击通过 `onPageChange` 上报——搭配持有页码状态的 [usePagination](/zh/docs/utils/use-pagination) 使用。
+完全受控的视图组件——搭配持有页码状态的 [usePagination](/zh/docs/utils/use-pagination) 使用。
 
 <ComponentPreview name="pagination-basic" />
 
-页码列表展示首页、末页、当前页及其 `siblingCount` 个邻居，其余折叠为省略号。点击页码或箭头只会调用 `onPageChange`，组件自己永远不会翻页。
-
 ### 禁用状态
 
-传入 `disabled` 冻结全部按钮——首页、上一页、页码、下一页、末页——例如翻页请求加载中时：
+传入 `disabled` 冻结全部按钮，例如翻页请求加载中时：
 
 <ComponentPreview name="pagination-disabled" />
 
 ### 分页文本
 
-传入 `summary` 可实现左右布局：左侧页码统计文本占据剩余宽度、可换行，右侧控件同行保持不动、相对多行文本垂直居中。内容是业务自行拼装的纯文本，典型场景是展示总条数与选中数：
-
-```tsx
-<Pagination page={page} totalPages={total} onPageChange={goTo} summary="Showing 1–10 of 1,286 items · 3 selected" />
-```
-
-窄容器下的长 summary 文案——在自己的宽度内自动换行到多行，控件同行居中不受影响：
+传入 `summary` 在左侧渲染页码统计文本；窄容器下文本换行到多行，控件同行保持不动：
 
 <ComponentPreview name="pagination-long-summary" />
 
 ### 搭配 SelectableTable
 
-`Pagination` 不局限于表格。[SelectableTable](/zh/docs/component/selectable-table) 的[分页指南](/zh/docs/component/selectable-table#与-pagination-组合分页)给出了推荐组合：钩子驱动取数，表格保持纯展示，布局由你自己的容器拼接。
+与 [SelectableTable](/zh/docs/component/selectable-table) 的推荐组合见其[分页指南](/zh/docs/component/selectable-table#与-pagination-组合分页)。
 
 ## API 参考
 

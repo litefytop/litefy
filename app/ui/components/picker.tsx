@@ -6,7 +6,7 @@ export interface PickerRootProps extends Omit<React.ComponentProps<"div">, "clas
     className?: ClassNameValue;
 }
 export function PickerRoot({ className, ...props }: PickerRootProps) {
-    return <div {...props} className={cn("relative", className)}/>;
+    return <div {...props} className={cn("relative max-w-[40ch]", className)}/>;
 }
 export interface PickerInputProps extends Omit<React.ComponentProps<"input">, "className"> {
     className?: ClassNameValue;

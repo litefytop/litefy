@@ -1,6 +1,6 @@
 # Audit — Litefy 库级基准与维护工具
 
-针对 **litefy 库本身**的基准测试、回归扫描和审计报告。不是业务代码的设计检查——那是 `scripts/design-detect.mjs`（`pnpm lint:design`）的职责。
+针对 **litefy 库本身**的基准测试、回归扫描和审计报告。不是业务代码的设计检查——那是 `pnpm lint:design`（`.agents/skills/litefy-design/scripts/design-detect.mjs`）的职责。
 
 ## Demo 审计报告
 

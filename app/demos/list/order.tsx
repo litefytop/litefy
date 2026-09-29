@@ -23,12 +23,11 @@ export default function ListOrderDemo() {
       items={steps}
       getKey={(step) => step.id}
       empty={<div className="px-3 py-4 text-center text-muted-foreground">No steps</div>}
-      classNames={{ item: "flex items-center gap-2" }}
       renderItem={(step) => (
-        <>
+        <div className="flex items-center gap-2">
           <span className="flex-1 truncate">{step.title}</span>
           <span className="text-muted-foreground">{step.owner}</span>
-        </>
+        </div>
       )}
     />
   );

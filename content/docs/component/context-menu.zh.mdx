@@ -9,7 +9,7 @@ description: 命令式唤起的右键菜单，支持指针锚定、分组与子�
 
 ## 用法
 
-先挂载一次 `<ContextMenuHost />`，然后在任意元素的 `onContextMenu` 里调用 `ContextMenu.open()` —— 不需要包裹组件，菜单在指针位置打开。
+先挂载一次 `<ContextMenuHost />`，然后在任意元素的 `onContextMenu` 里调用 `ContextMenu.open()`——不需要包裹组件。
 
 <ComponentPreview
   name="context-menu-basic"
@@ -17,7 +17,7 @@ description: 命令式唤起的右键菜单，支持指针锚定、分组与子�
 
 ### 自定义样式
 
-通过 `open()` 的 `classNames.content` / `styles.content` 定制面板。菜单项本身（分组、子菜单、键盘导航）由 [Menu](/docs/component/menu) 组件提供 —— `MenuConfig` 与 `MenuItemConfig` 请参阅其 API。
+通过 `open()` 的 `classNames.content` / `styles.content` 定制面板；菜单项能力由 [Menu](/docs/component/menu) 组件提供。
 
 <ComponentPreview
   name="context-menu-custom"
@@ -27,7 +27,7 @@ description: 命令式唤起的右键菜单，支持指针锚定、分组与子�
 
 ### ContextMenuHost
 
-`ContextMenu.open()` 激活期间渲染浮动菜单面板。在应用根挂载一次即可——没有菜单打开时它不渲染任何内容。点击外部与 `Escape` 自动关闭；面板内右键被屏蔽，不会弹出浏览器菜单。
+`ContextMenu.open()` 激活期间渲染浮动菜单面板；在应用根挂载一次即可——没有菜单打开时它不渲染任何内容。
 
 | Prop        | Type              | Default | Description              |
 | :---------- | :---------------- | :------ | :----------------------- |
@@ -59,8 +59,3 @@ ContextMenu.dismiss(): void
 ```
 
 以编程方式关闭菜单。
-
-### 说明
-
-- 面板锚定在指针位置的一个零尺寸元素上，靠近视口边缘时通过 `positionTryFallbacks` 自动翻转——两者均为内部实现细节。
-- 由于没有包裹层，触发源可以是任意元素或事件：表格行、canvas、树节点，甚至非右键手势。

@@ -257,8 +257,6 @@ import PasswordDisabledDemo from "./password/disabled";
 import passwordDisabledCode from "./password/disabled.tsx?raw";
 import PickerBasicDemo from "./picker/basic";
 import pickerBasicCode from "./picker/basic.tsx?raw";
-import PickerDatepickerDemo from "./picker/datepicker";
-import pickerDatepickerCode from "./picker/datepicker.tsx?raw";
 import RadioBasicDemo from "./radio/basic";
 import radioBasicCode from "./radio/basic.tsx?raw";
 import RadioCustomDemo from "./radio/custom";
@@ -267,10 +265,6 @@ import RadioDisabledDemo from "./radio/disabled";
 import radioDisabledCode from "./radio/disabled.tsx?raw";
 import ScrollShadowBasicDemo from "./scroll-shadow/basic";
 import scrollShadowBasicCode from "./scroll-shadow/basic.tsx?raw";
-import ScrollShadowPositionDemo from "./scroll-shadow/position";
-import scrollShadowPositionCode from "./scroll-shadow/position.tsx?raw";
-import ScrollShadowSizeDemo from "./scroll-shadow/size";
-import scrollShadowSizeCode from "./scroll-shadow/size.tsx?raw";
 import SeparatorBasicDemo from "./separator/basic";
 import separatorBasicCode from "./separator/basic.tsx?raw";
 import SegmentBasicDemo from "./segment/basic";
@@ -877,21 +871,9 @@ export const demos: Record<string, DemoItem> = {
     component: PickerBasicDemo,
     code: pickerBasicCode,
   },
-  "picker-datepicker": {
-    component: PickerDatepickerDemo,
-    code: pickerDatepickerCode,
-  },
   "scroll-shadow-basic": {
     component: ScrollShadowBasicDemo,
     code: scrollShadowBasicCode,
-  },
-  "scroll-shadow-position": {
-    component: ScrollShadowPositionDemo,
-    code: scrollShadowPositionCode,
-  },
-  "scroll-shadow-size": {
-    component: ScrollShadowSizeDemo,
-    code: scrollShadowSizeCode,
   },
   "separator-basic": {
     component: SeparatorBasicDemo,

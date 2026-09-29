@@ -9,9 +9,13 @@ description: A multi-select dropdown composed of Popover and CheckboxGroup — f
 
 ## Usage
 
+Composed from [Popover](/docs/component/popover) + [CheckboxGroup](/docs/component/checkbox) — the CLI install resolves them automatically.
+
 <ComponentPreview
   name="multi-select-basic"
 />
+
+Panel clicks never close it — only outside mousedown or Escape — so users can toggle freely.
 
 ### Grouped
 
@@ -20,13 +24,6 @@ description: A multi-select dropdown composed of Popover and CheckboxGroup — f
 <ComponentPreview
   name="multi-select-grouped"
 />
-
-## Notes
-
-- MultiSelect is composed internally from [Popover](/docs/component/popover) and [CheckboxGroup](/docs/component/checkbox) — installing via CLI resolves them automatically.
-- The trigger always shows the selection count (e.g. `Categories (3)`) to keep width stable and avoid layout shift.
-- Panel clicks never close it — only outside mousedown or Escape does — so users can toggle freely.
-- `ArrowDown` / `ArrowUp` (or `ArrowRight` / `ArrowLeft`) cycle through checkboxes, skipping disabled items; `Space` toggles; `Escape` closes the panel.
 
 ## API Reference
 

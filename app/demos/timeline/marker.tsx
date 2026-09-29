@@ -8,7 +8,7 @@ const items = [
     marker: <ShoppingCart className="size-3" />,
     time: "2026-08-30 10:24",
     heading: "Order placed",
-    description: "Order #1042 created from web checkout",
+    description: "Order #1042 created from web checkout", // design-detect-disable-line hardcoded-color（文案里的订单号，不是色值）
   },
   {
     marker: <CreditCard className="size-3" />,

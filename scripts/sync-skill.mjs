@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const src = path.resolve(__dirname, "../.agents/skills/litefy-design/SKILL.md");
 const dest = path.resolve(__dirname, "../public/litefy-design-skill.md");
 
-const detectSrc = path.resolve(__dirname, "design-detect.mjs");
+const detectSrc = path.resolve(__dirname, "../.agents/skills/litefy-design/scripts/design-detect.mjs");
 const detectDest = path.resolve(__dirname, "../public/litefy-design-detect.mjs");
 
 await fs.copy(src, dest);

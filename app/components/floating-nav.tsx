@@ -26,7 +26,7 @@ const labels = {
 } as const;
 
 const itemClass =
-  "size-8 rounded-lg inline-flex items-center justify-center text-muted-foreground hover:bg-hover hover:text-foreground focus-visible:outline-1 focus-visible:outline-outline focus-visible:ring-3 focus-visible:ring-ring/50 disabled:opacity-50 disabled:pointer-events-none transition-colors";
+  "size-8 rounded-lg inline-flex items-center justify-center text-muted-foreground hover:bg-hover hover:text-foreground transition-colors";
 
 function hint(action: string, item?: Item, shortcut?: string) {
   const name = typeof item?.name === "string" ? item.name : undefined;

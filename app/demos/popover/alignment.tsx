@@ -21,7 +21,7 @@ function ActionList() {
 export default function PopoverAlignmentDemo() {
   return (
     <div className="flex flex-col gap-8">
-      <div>
+      <section>
         <h3 className="text-sm font-medium mb-4">Position Area</h3>
         <div className="flex gap-4">
           <Popover
@@ -45,8 +45,8 @@ export default function PopoverAlignmentDemo() {
             <ActionList />
           </Popover>
         </div>
-      </div>
-      <div>
+      </section>
+      <section>
         <h3 className="text-sm font-medium mb-4">Align X (sidebar)</h3>
         <div className="flex gap-4">
           <Popover
@@ -64,7 +64,7 @@ export default function PopoverAlignmentDemo() {
             <ActionList />
           </Popover>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

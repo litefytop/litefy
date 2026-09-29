@@ -67,7 +67,7 @@ function LandingHero({ locale }: { locale: Locale }) {
   const docsPath = `/${locale}/docs`;
 
   return (
-    <div className="grid w-full gap-8 md:grid-cols-[1.2fr_1fr] md:items-center">
+    <section className="grid w-full gap-8 md:grid-cols-[1.2fr_1fr] md:items-center">
       <div>
         <div className="inline-flex items-center gap-1.5 rounded-full bg-fd-primary/10 px-3 py-1 text-xs font-medium text-fd-primary">
           <Sparkles className="h-3 w-3" />
@@ -101,7 +101,7 @@ function LandingHero({ locale }: { locale: Locale }) {
       </div>
       <div className="relative hidden md:block">
         <div className="absolute -inset-6 rounded-3xl bg-linear-to-br from-fd-primary/30 via-fd-primary/5 to-transparent blur-2xl" />
-        <div className="relative rounded-2xl border border-fd-border bg-fd-background/80 p-4 shadow-elevated backdrop-blur">
+        <figure className="relative rounded-2xl border border-fd-border bg-fd-background/80 p-4 shadow-elevated backdrop-blur">
           <div className="mb-3 flex items-center gap-1.5">
             <div className="h-2.5 w-2.5 rounded-full bg-danger" />
             <div className="h-2.5 w-2.5 rounded-full bg-warning" />
@@ -116,9 +116,9 @@ function LandingHero({ locale }: { locale: Locale }) {
             <div className="h-7 w-20 rounded-md bg-primary" />
             <div className="h-7 w-20 rounded-md border border-border" />
           </div>
-        </div>
+        </figure>
       </div>
-    </div>
+    </section>
   );
 }
 

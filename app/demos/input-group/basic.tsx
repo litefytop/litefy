@@ -4,7 +4,7 @@ import { InputGroup, InputLeading, InputRoot, InputTrailing } from "@/ui";
 
 export default function Demo() {
   return (
-    <div className="flex w-full max-w-md flex-col gap-4">
+    <div className="flex flex-col gap-4">
       <InputGroup>
         <InputLeading>$</InputLeading>
         <InputRoot type="text" placeholder="0.00" aria-label="Price in US dollars" />

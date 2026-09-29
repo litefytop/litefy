@@ -56,45 +56,47 @@ export default function UseThemeBasicDemo() {
       </div>
       <div className="flex flex-col items-center gap-2">
         <span className="text-xs text-muted-foreground">Surface (neutral)</span>
-        <div className="flex max-w-full flex-wrap justify-center gap-2">
+        <ul className="flex max-w-full flex-wrap justify-center gap-2">
           {SURFACES.map((surface) => (
-            <button
-              key={surface.value}
-              type="button"
-              aria-label={surface.value || "default"}
-              title={surface.value || "default"}
-              onClick={() => theme.setSurface(surface.value)}
-              className={
-                "size-6 cursor-pointer rounded-full transition-transform hover:scale-110" +
-                (theme.surface === surface.value
-                  ? " ring-2 ring-ring ring-offset-2 ring-offset-background"
-                  : "")
-              }
-              style={{ backgroundColor: surface.color }}
-            />
+            <li key={surface.value}>
+              <button
+                type="button"
+                aria-label={surface.value || "default"}
+                title={surface.value || "default"}
+                onClick={() => theme.setSurface(surface.value)}
+                className={
+                  "size-6 cursor-pointer rounded-full transition-transform hover:scale-110" +
+                  (theme.surface === surface.value
+                    ? " ring-2 ring-ring ring-offset-2 ring-offset-background"
+                    : "")
+                }
+                style={{ backgroundColor: surface.color }}
+              />
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
       <div className="flex flex-col items-center gap-2">
         <span className="text-xs text-muted-foreground">Brand (primary)</span>
-        <div className="flex max-w-full flex-wrap justify-center gap-2">
+        <ul className="flex max-w-full flex-wrap justify-center gap-2">
           {BRANDS.map((brand) => (
-            <button
-              key={brand.value}
-              type="button"
-              aria-label={brand.value || "default"}
-              title={brand.value || "default"}
-              onClick={() => theme.setBrand(brand.value)}
-              className={
-                "size-6 cursor-pointer rounded-full transition-transform hover:scale-110" +
-                (theme.brand === brand.value
-                  ? " ring-2 ring-ring ring-offset-2 ring-offset-background"
-                  : "")
-              }
-              style={{ backgroundColor: brand.color }}
-            />
+            <li key={brand.value}>
+              <button
+                type="button"
+                aria-label={brand.value || "default"}
+                title={brand.value || "default"}
+                onClick={() => theme.setBrand(brand.value)}
+                className={
+                  "size-6 cursor-pointer rounded-full transition-transform hover:scale-110" +
+                  (theme.brand === brand.value
+                    ? " ring-2 ring-ring ring-offset-2 ring-offset-background"
+                    : "")
+                }
+                style={{ backgroundColor: brand.color }}
+              />
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </div>
   );

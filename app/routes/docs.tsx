@@ -89,7 +89,7 @@ function ComponentsList({
         const key = typeof folder.name === "string" ? folder.name : (folder.$id ?? index);
 
         return (
-          <div key={String(key)} className="space-y-4">
+          <section key={String(key)} className="space-y-4">
             <h2 className="text-2xl font-bold">{folder.name}</h2>
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
               {items.map((item, itemIndex) => {
@@ -114,7 +114,7 @@ function ComponentsList({
                 );
               })}
             </div>
-          </div>
+          </section>
         );
       })}
     </div>

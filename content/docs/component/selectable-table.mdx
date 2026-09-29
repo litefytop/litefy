@@ -9,19 +9,19 @@ description: A table with a built-in checkbox column and select-all with indeter
 
 ## Usage
 
-`SelectableTable` wraps [Table](/docs/component/table) with a built-in checkbox column — `rowKey` identifies rows and doubles as the selection key; select-all affects only the current page and preserves selections from other pages.
+`SelectableTable` wraps [Table](/docs/component/table) with a built-in checkbox column — select-all affects only the current page and preserves other pages' selections.
 
 <ComponentPreview name="selectable-table-basic" />
 
 ### Composition with Pagination
 
-The table renders whatever `data` holds; paging is composed externally. Let [usePagination](/docs/utils/use-pagination) own the page state, pass its `index` and `goTo` into [Pagination](/docs/component/pagination), fetch the current page into `data` yourself, and place the table, the status text and the pager inside your own footer layout. The live result is in the preview below — open its code for the exact wiring.
+The table renders whatever `data` holds — let [usePagination](/docs/utils/use-pagination) own the page state and feed [Pagination](/docs/component/pagination) externally.
 
 <ComponentPreview name="selectable-table-pagination" />
 
 ### Large datasets
 
-For row counts too large to render at once, pair the [TableBody](#parts) scroller with [useVirtualScroll](/docs/utils/use-virtual-scroll): the hook's container props attach to the scroller and its visible-window output drives which rows render.
+Pair the [TableBody](#parts) scroller with [useVirtualScroll](/docs/utils/use-virtual-scroll) for row counts too large to render at once.
 
 The selection column lives under the internal key `__selection` — avoid a data field with that name.
 

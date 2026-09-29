@@ -9,7 +9,7 @@ description: A dropzone upload component with local validation, drag and drop, a
 
 ## Usage
 
-The Upload component handles selection, drag and drop and local validation only — it performs no network requests and keeps no upload state. Pair it with the [`useUploadMonitor`](/docs/utils/use-upload-monitor) hook to execute uploads and track progress.
+Upload only handles selection, drag-and-drop and local validation — it performs no network requests; pair it with the [`useUploadMonitor`](/docs/utils/use-upload-monitor) hook for actual uploads and progress.
 
 <ComponentPreview
   name="upload-basic"
@@ -17,7 +17,7 @@ The Upload component handles selection, drag and drop and local validation only 
 
 ### Disabled
 
-When `disabled`, the dropzone ignores clicks, keyboard activation and drag-and-drop — nothing new can be added while already-queued items keep their state.
+When `disabled`, the dropzone ignores clicks, keyboard activation and drag-and-drop — queued items keep their state.
 
 <ComponentPreview
   name="upload-disabled"
@@ -65,8 +65,6 @@ A dropzone built with the parts below, encapsulating validation and file item li
 | `style` | `React.CSSProperties` | - | Custom inline style for the root |
 | `classNames` | `{ dropzone?; hiddenInput? }` | - | Custom classes for each part |
 | `styles` | `{ dropzone?; hiddenInput? }` | - | Custom inline styles for each part |
-
-All controllers are aborted when the component unmounts.
 
 ---
 

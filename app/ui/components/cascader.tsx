@@ -84,7 +84,7 @@ export function Cascader({ tree, placeholder = "Select your location", className
       </PopoverContent>);
     });
     return (<>
-      <div {...props} style={{ anchorName: `--cascader-${uid}-root`, ...style }} className={cn("w-72 rounded-md border text-sm shadow-base transition-colors", "hover:border-primary/50", "focus-within:outline-1 focus-within:outline-outline focus-within:ring-3 focus-within:ring-ring/50", className)}>
+      <div {...props} style={{ anchorName: `--cascader-${uid}-root`, ...style }} className={cn("max-w-[40ch] rounded-md border text-sm shadow-base transition-colors", "hover:border-primary/50", "focus-within:outline-1 focus-within:outline-outline focus-within:ring-3 focus-within:ring-ring/50", className)}>
         {trigger}
       </div>
       {panels}

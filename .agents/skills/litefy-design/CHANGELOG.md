@@ -2,6 +2,7 @@
 
 设计规范与检测脚本的历史版本说明。当前版本见 SKILL.md 头部 `version` 字段。
 
+- **2.9.1（2026-09-29）**：design-detect 收敛为单一来源——skill 内 `scripts/design-detect.mjs` 为正本，删除仓库 `scripts/` 旧副本（缺 `nested-tabs` 规则）与 skill 根目录的重复副本；`pnpm lint:design` 与官网下载文件改从正本同步（§12.4 路径说明同步更新）。正本修复扫描根推断：skill 安装位（`.agents/skills/litefy-design/scripts/`）到 `<repo>/app` 需 4 级 `../`，原候选只覆盖到 3 级，导致从该位运行时回退 cwd 扫描全仓库。
 - **2.9.0（2026-09-29）**：§2 边框新增"输入类控件规范形态 border + shadow-base"定案——disabled 整体 opacity 50% 使 `var(--accent)/50` 边框等效仅 25%，可辨识度由同级阴影兜底，边框不裸用；裸边框合理形态白名单（微小指示器 / 虚线占位 / 结构线 / 浮层内嵌面板）；InputOtpSlot 据此补齐 `shadow-base`。配套修复：input-otp / pagination 的 disabled demo 瘦身为单实例（HeroUI 化"一个属性一个示例"）。
 - **2.8.0（2026-09-28）**：新增官网与文档分层指引——头部声明官网 litefy.top（组件文档、面向 AI 的 `llms.txt` / `llms-full.txt`、技能分发页）与"用法不内嵌"分层约定（设计约束进本文件，API 细节一律外链：仓库内查 `AGENTS.md` / `content/docs`，仓库外查官网）；§0"选组件"按所在环境分流（本仓库查 AGENTS.md，装进业务项目后查官网）；description 面向分发场景微调（适用范围改为"任何使用 Litefy UI 的项目"，排除项改为"不使用 Litefy UI 的项目"）。
 - **2.7.0（2026-09-22）**：无障碍静态检查切换为 `oxlint --jsx-a11y-plugin` 一次性调用（`pnpm dlx`，零仓库依赖，§12.2），移除 eslint 配置示例；文档瘦身——删除示例代码块（规则由 design-detect 机器执行，无需示例），变更记录外置到本文件（不再属于 SKILL.md 正文）；design-detect 新增 `nested-tabs` warn（Tabs 面板内嵌套 Tabs，§11 Tabs 反模式 / §12.4）。

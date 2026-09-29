@@ -9,26 +9,10 @@ description: A scrollable container with gradient shadow indicators for better s
 
 ## Usage
 
-A scrollable container with bottom shadow indicator.
+A scrollable container with gradient shadow indicators — `edges` picks the side(s), `classNames.edge` overrides the built-in `h-16` / `w-16` gradient size.
 
 <ComponentPreview 
   name="scroll-shadow-basic"
-/>
-
-### Shadow Position
-
-Control where the shadow appears: top, bottom, left, or right.
-
-<ComponentPreview 
-  name="scroll-shadow-position"
-/>
-
-### Custom Size
-
-Adjust the shadow gradient size for different visual effects — override the built-in `h-16` / `w-16` through `classNames.edge`.
-
-<ComponentPreview
-  name="scroll-shadow-size"
 />
 
 ## API Reference
@@ -46,8 +30,6 @@ A scrollable container with gradient shadow indicators.
 | `style` | `React.CSSProperties` | - | Inline styles, applied to the root container |
 | `classNames` | `{ viewport?, edge? }` | - | Custom classes for the scroll viewport and shadow overlays (override the built-in `h-16` / `w-16` edge size here) |
 | `styles` | `{ viewport?, edge? }` | - | Inline styles for the scroll viewport and shadow overlays |
-
-Each shadow overlay carries a `data-position` attribute (`top` / `bottom` / `left` / `right`), so single edges can be targeted with variants like `data-[position=top]:`. The overlays are purely visual — `pointer-events: none` keeps them from blocking scroll or click interactions.
 
 ### Composable Components
 
@@ -80,4 +62,4 @@ A single gradient shadow overlay for one edge.
 | `edge`      | `'top' \| 'bottom' \| 'left' \| 'right'` | `'bottom'` | Edge the gradient points from    |
 | `className` | `ClassNameValue` | -           | Custom CSS class (built-in size is `h-16` / `w-16`) |
 
-Supports all native `<div>` attributes. Visibility is not managed by the part itself; the composite `ScrollShadow` toggles it based on scroll position.
+Supports all native `<div>` attributes; visibility is toggled by the composite `ScrollShadow` based on scroll position.

@@ -18,12 +18,9 @@ description: 区块级静态反馈组件，用于大段提示、说明、结果�
 - `warning` — 警示提醒
 - `danger` — 失败与危险反馈
 
-## 注意
+短状态标记用 [Chip](/docs/component/chip)，行内操作用 `text` 型 [Button](/docs/component/button)。
 
-- `Callout` 仅用于区块提示——短状态标记用 [Chip](/docs/component/chip)，行内操作用 `text` 型 [Button](/docs/component/button)。
-- 它是静态容器：没有 hover、focus 等交互状态。
-- 内部可组合任意内容——标题可用带 `font-medium` 的 `<p>`，也可放任意图标。
-- 表单控件下方的校验反馈同样是 `Callout`：`variant="danger"` 搭配 `role="alert"`。`Form` / `FormItem` 的错误行内部就是这样渲染的。
+表单控件下方的校验反馈同样是 `Callout`——`variant="danger"` 搭配 `role="alert"`；`Form` / `FormItem` 的错误行内部就是这样渲染的。
 
 ## API 参考
 

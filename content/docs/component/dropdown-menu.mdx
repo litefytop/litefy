@@ -9,17 +9,13 @@ description: A dropdown menu composed of Popover and Menu — group items, nest 
 
 ## Usage
 
+Composed from [Popover](/docs/component/popover) + [Menu](/docs/component/menu) — the CLI install resolves them automatically.
+
 <ComponentPreview
   name="dropdown-menu-basic"
 />
 
-## Notes
-
-- DropdownMenu is composed internally from [Popover](/docs/component/popover) and [Menu](/docs/component/menu) — installing via CLI resolves them automatically.
-- The trigger is styled with Button's primary variant by default; pass a custom `trigger` node to override.
-- `Menu` receives `autoFocus={open}` so the first enabled item is focused on each open — arrow keys work immediately.
-- Selecting an item or pressing Escape closes the panel; focus returns to the trigger automatically (Popover's built-in behaviour).
-- Submenu hover, ArrowRight / ArrowLeft navigation, and outside-mousedown dismissal are handled by Menu internally.
+Selecting an item or Escape closes the panel and focus returns to the trigger; `autoFocus={open}` focuses the first enabled item on each open.
 
 ## API Reference
 

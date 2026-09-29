@@ -9,7 +9,7 @@ description: A canvas-based watermark component that tiles text over content, wi
 
 ## Usage
 
-Wrap any content with `Watermark`; a tiled text watermark is drawn over it. The canvas measures its container, redraws automatically on resize, and renders at device pixel ratio for crisp text.
+Wrap any content with `Watermark`; a tiled text watermark is drawn over it.
 
 <ComponentPreview 
   name="watermark-basic"
@@ -17,7 +17,7 @@ Wrap any content with `Watermark`; a tiled text watermark is drawn over it. The 
 
 ### Custom
 
-Assemble `Watermark.Root` and `Watermark.Canvas` directly to control every canvas option (`fontSize`, `color`, `fontFamily`, `rotate`, `gap`, `padding`, `opacity`). The canvas redraws when props change.
+Assemble `Watermark.Root` and `Watermark.Canvas` directly to control every canvas option (`fontSize`, `color`, `fontFamily`, `rotate`, `gap`, `padding`, `opacity`).
 
 <ComponentPreview 
   name="watermark-custom"
@@ -50,7 +50,7 @@ The composite watermark: a relatively positioned root with a tiled canvas overla
 | `styles`     | `{ canvas?: React.CSSProperties }`                          | -                  | Inline styles for the canvas                                        |
 | `...props`   | `React.ComponentProps<"div">`                               | -                  | Supports all native div props (except `className`, `style`), passed to the root    |
 
-`WatermarkColor` accepts the semantic tokens `"muted" \| "muted-foreground" \| "primary" \| "primary-foreground" \| "secondary" \| "secondary-foreground" \| "accent"` — resolved from CSS variables and reactive to light/dark mode — or any custom CSS color string.
+`WatermarkColor` accepts the semantic tokens `"muted" \| "muted-foreground" \| "primary" \| "primary-foreground" \| "secondary" \| "secondary-foreground" \| "accent"` or any custom CSS color string.
 
 ---
 
@@ -58,7 +58,7 @@ The composite watermark: a relatively positioned root with a tiled canvas overla
 
 #### WatermarkRoot
 
-The watermark container, rendered as a `div` with a built-in `relative` class. The canvas measures and fills its parent, so the root provides the positioning context.
+The watermark container; it provides the positioning context the canvas fills.
 
 | Prop       | Type                          | Default | Description                     |
 | :--------- | :---------------------------- | :------ | :------------------------------ |
@@ -67,7 +67,7 @@ The watermark container, rendered as a `div` with a built-in `relative` class. T
 
 #### WatermarkCanvas
 
-The `canvas` element that draws the tiled watermark text. It sizes itself to its parent element (which should be positioned, e.g. `WatermarkRoot`), redraws on container resize and on `prefers-color-scheme` changes, and renders at device pixel ratio.
+The `canvas` that draws the tiled watermark text; its parent should be positioned, e.g. `WatermarkRoot`.
 
 | Prop         | Type                                              | Default              | Description                                                                          |
 | :----------- | :------------------------------------------------ | :------------------- | :----------------------------------------------------------------------------------- |

@@ -9,7 +9,7 @@ description: A menu component usable directly in the document flow, with groupin
 
 ## Usage
 
-A real menu rendered in document flow — no trigger or popover wrapper. Items are driven by the `items` config (grouped, disabled, two-level submenus); container styling is yours to provide.
+A menu rendered directly in document flow — no trigger or popover wrapper; items are driven by the `items` config and container styling is yours to provide.
 
 <ComponentPreview
   name="menu-basic"
@@ -25,7 +25,7 @@ A real menu rendered in document flow — no trigger or popover wrapper. Items a
 | `Enter`      | Select the focused item                     |
 | `Escape`     | Calls `onEscape` and closes the submenu          |
 
-Submenus open on hover with a short close delay, or persistently via `ArrowRight`. A click outside the menu closes any open submenu; `Escape` forwards to your `onEscape` handler so a wrapping popover (e.g. Popover) can close itself.
+`Escape` forwards to your `onEscape` handler so a wrapping popover (e.g. Popover) can close itself.
 
 ## API Reference
 
@@ -77,7 +77,7 @@ The root list (`ul` with `role="menu"`), built-in `m-0 list-none p-0`.
 
 #### MenuItem
 
-Menu item wrapper (`li`) with built-in `m-0 not-last:border-b`. The composite renders a `role="menuitem"` button inside and anchors submenus to it via `anchor-name`.
+Menu item wrapper (`li`) with built-in `m-0 not-last:border-b`; the composite renders a `role="menuitem"` button inside.
 
 | Prop        | Type                       | Default | Description                    |
 | ----------- | --------------------------- | ------- | ------------------------------- |
@@ -95,7 +95,7 @@ Group label row (`li`) with built-in muted label styling.
 
 #### MenuSubContent
 
-Submenu panel container rendered as a `popover="manual"` div with built-in submenu positioning (`position-area: right span-bottom` and flip fallbacks). Anchor it to the parent item via `positionAnchor` (each item's `anchor-name` is `--menu-sub-{entryId}`).
+Submenu panel container rendered as a `popover="manual"` div; anchor it to the parent item via `positionAnchor` (each item's `anchor-name` is `--menu-sub-{entryId}`).
 
 | Prop             | Type                          | Default | Description                          |
 | ---------------- | ------------------------------ | ------- | -------------------------------------- |

@@ -9,7 +9,7 @@ description: An input with a filterable dropdown list — local options with cli
 
 ## Usage
 
-Pass `options` as local string options — typing filters them case-insensitively, `ArrowDown` / `ArrowUp` move the highlight, `Enter` or a click on a row selects.
+Type to filter local string options; focus never leaves the input — Combobox is a composition of [Picker](/docs/component/picker) and [List](/docs/component/list), auto-resolved by the CLI install.
 
 <ComponentPreview
   name="combobox-basic"
@@ -17,7 +17,7 @@ Pass `options` as local string options — typing filters them case-insensitivel
 
 ### Invalid State
 
-`invalid` puts the input in the danger-border state and sets `aria-invalid` — wire it to your own validation, here flagging free text that is not one of the options.
+`invalid` shows the danger-border state; wire it to your own validation.
 
 <ComponentPreview
   name="combobox-invalid"
@@ -25,7 +25,7 @@ Pass `options` as local string options — typing filters them case-insensitivel
 
 ### Empty
 
-`empty` replaces the default "No data" node rendered when the filtered list has no rows — pass any React node, e.g. an icon plus a hint. Async mode keeps its own default: "Loading..." while a request is in flight.
+`empty` swaps the default "No data" node for any React node.
 
 <ComponentPreview
   name="combobox-empty"
@@ -33,19 +33,11 @@ Pass `options` as local string options — typing filters them case-insensitivel
 
 ### Async Search
 
-Pass `fetcher` instead of `options` for large or remote datasets — keyword search is debounced and `loadMore` fires when the list is scrolled to the bottom.
+Pass `fetcher` instead of `options` for large or remote datasets; `fetcher` takes precedence when both are provided.
 
 <ComponentPreview
   name="combobox-async"
 />
-
-## Notes
-
-- Combobox is composed internally from [Picker](/docs/component/picker), [List](/docs/component/list), and the [useCombobox](/docs/utils/use-combobox) / [useRemotePagination](/docs/utils/use-remote-pagination) utils — installing via CLI resolves them automatically.
-- `fetcher` takes precedence over `options` when both are provided.
-- Async mode searches on mount and on every keystroke (debounced); the empty state shows "Loading..." while a request is in flight.
-- Focus never leaves the input: `ArrowDown` opens the panel, then arrows drive the highlight and `Enter` selects; the panel closes on selection, outside mousedown, or Escape.
-- After selecting, the input text equals the chosen option — the list filters against it on reopen; clear the text to see all options again.
 
 ## API Reference
 

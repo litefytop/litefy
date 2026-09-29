@@ -9,7 +9,7 @@ description: A date picker built on the native Temporal API — an editable inpu
 
 ## Usage
 
-The input is fully editable — type a date or pick one from the panel; incomplete or invalid input opens the matching panel or clears the field.
+An editable input plus a month panel — requires the native [Temporal API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal) (Chrome 136+, Firefox 139+, Safari 26).
 
 <ComponentPreview
   name="date-picker-basic"
@@ -17,16 +17,11 @@ The input is fully editable — type a date or pick one from the panel; incomple
 
 ### Disabled
 
-`disabled` makes both the input and the panel non-interactive — typing, `Enter` commit and opening the panel are all blocked.
+`disabled` makes both the input and the panel non-interactive.
 
 <ComponentPreview
   name="date-picker-disabled"
 />
-
-## Notes
-
-- Requires the native [Temporal API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal) (Chrome 136+, Firefox 139+, Safari 26). The site shows a banner when the current browser lacks it.
-- Built on the [Picker](/docs/component/picker) and [Calendar](/docs/component/calendar) components — assemble those directly when you need full control (see the [DatePicker Assembly](/docs/component/picker#datepicker-assembly) guide).
 
 ## API Reference
 
@@ -34,7 +29,7 @@ The input is fully editable — type a date or pick one from the panel; incomple
 
 #### DatePicker
 
-A controlled-or-uncontrolled date field. The visible month and panel open state are managed internally; the value can be controlled via `value` / `onValueChange`.
+A controlled-or-uncontrolled date field; the visible month and panel open state are managed internally.
 
 | Prop              | Type                                           | Default                     | Description                                                                                   |
 | :---------------- | :--------------------------------------------- | :-------------------------- | :-------------------------------------------------------------------------------------------- |
@@ -51,4 +46,4 @@ A controlled-or-uncontrolled date field. The visible month and panel open state 
 | `classNames`      | `{ input?; trailing?; panel? }` — each `ClassNameValue` | -                  | Custom classes for the input, its trailing decoration and the calendar panel                  |
 | `styles`          | `{ input?; trailing? }` — each `React.CSSProperties`    | -                  | Inline styles for the input and trailing decoration                                           |
 
-While the panel is open, `ArrowDown` moves focus into the calendar's first control and `ArrowUp` into its last (via [`usePanelFocus`](/docs/utils/use-panel-focus)) — typing and calendar navigation never compete for the input. `Escape` closes the panel and hands focus back to the input.
+While the panel is open, `ArrowDown` / `ArrowUp` move focus into the calendar's first / last control; `Escape` closes it and returns focus to the input.

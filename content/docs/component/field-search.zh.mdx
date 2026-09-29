@@ -13,27 +13,7 @@ description: 前缀字段选择 + 值输入的一体化搜索控件——文本�
 
 <ComponentPreview name="field-search-basic" />
 
-```tsx
-<FieldSearch
-  fields={[
-    { value: "name", label: "姓名", placeholder: "按姓名搜索" },
-    {
-      value: "status",
-      label: "状态",
-      options: [
-        { value: "active", label: "启用" },
-        { value: "archived", label: "归档" },
-      ],
-    },
-  ]}
-  onSearch={(field, value) => runQuery(field, value)}
-/>
-```
-
-## 注意
-
-- 刻意不带候选下拉——表格本身就是搜索结果；配合 [Table](/docs/components/table) 使用，把 `onSearch` 接入你的过滤逻辑。
-- `onSearch` 收到的是去首尾空格后的值，且同一字段 + 值的重复连续触发会被跳过。
+刻意不带候选下拉——表格本身就是搜索结果；配合 [Table](/docs/components/table) 使用，把 `onSearch` 接入你的过滤逻辑。
 
 ## API 参考
 
@@ -42,7 +22,7 @@ description: 前缀字段选择 + 值输入的一体化搜索控件——文本�
 | 属性         | 类型                                      | 默认值 | 描述                                                  |
 | ------------ | ----------------------------------------- | ------ | ----------------------------------------------------- |
 | `fields`     | `FieldSearchField[]`                      | -      | 可搜索字段；初始选中第一个                            |
-| `onSearch`   | `(field: string, value: string) => void`  | -      | 防抖后 / 选择后回调，参数为字段标识与去空格的值       |
+| `onSearch`   | `(field: string, value: string) => void`  | -      | 防抖后 / 选择后回调，参数为字段标识与去空格的值；同字段同值的连续重复触发会被跳过 |
 | `debounceMs` | `number`                                  | `300`  | 文本输入的防抖毫秒数                                  |
 | `className`  | `ClassNameValue`                          | -      | 自定义类名，作用于外壳                                |
 

@@ -47,6 +47,8 @@ const ROOT_CANDIDATES = [
   path.join(__dirname, "../app"),
   path.join(__dirname, "../../../app"),
   path.join(__dirname, "../../../src/app"),
+  path.join(__dirname, "../../../../app"),
+  path.join(__dirname, "../../../../src/app"),
   process.cwd(),
 ];
 const ROOT = path.resolve(

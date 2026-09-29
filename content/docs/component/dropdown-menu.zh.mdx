@@ -9,17 +9,13 @@ description: 由 Popover 和 Menu 组合而成的下拉菜单 —— 支持分�
 
 ## 用法
 
+由 [Popover](/docs/component/popover) + [Menu](/docs/component/menu) 组合而成——CLI 安装时自动解析依赖。
+
 <ComponentPreview
   name="dropdown-menu-basic"
 />
 
-## 注意
-
-- DropdownMenu 内部由 [Popover](/docs/component/popover) 和 [Menu](/docs/component/menu) 组合而成——CLI 安装时会自动解析并安装这些依赖。
-- 触发器默认使用 Button 的 primary 变体样式；可传入自定义 `trigger` 节点覆盖。
-- `Menu` 接收 `autoFocus={open}`，每次打开面板时自动聚焦第一个可用项——方向键立即可用。
-- 选中菜单项或按 Escape 关闭面板；焦点自动还给触发器（Popover 内置行为）。
-- 子菜单的悬停展开、ArrowRight / ArrowLeft 导航、面板外 mousedown 关闭均由 Menu 内部处理。
+选中菜单项或按 Escape 关闭面板，焦点自动还给触发器；`autoFocus={open}` 使每次打开时自动聚焦第一个可用项。
 
 ## API 参考
 

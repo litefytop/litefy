@@ -13,27 +13,7 @@ description: An all-in-one search control pairing a leading field select with a 
 
 <ComponentPreview name="field-search-basic" />
 
-```tsx
-<FieldSearch
-  fields={[
-    { value: "name", label: "Name", placeholder: "Search by name" },
-    {
-      value: "status",
-      label: "Status",
-      options: [
-        { value: "active", label: "Active" },
-        { value: "archived", label: "Archived" },
-      ],
-    },
-  ]}
-  onSearch={(field, value) => runQuery(field, value)}
-/>
-```
-
-## Notes
-
-- No suggestion dropdown by design — the table itself is the search result; pair it with [Table](/docs/components/table) and feed `onSearch` into your filtering.
-- `onSearch` receives trimmed values and skips duplicate consecutive emissions of the same field + value pair.
+No suggestion dropdown by design — the table itself is the result; pair it with [Table](/docs/components/table) and feed `onSearch` into your filtering.
 
 ## API Reference
 
@@ -42,7 +22,7 @@ description: An all-in-one search control pairing a leading field select with a 
 | Prop         | Type                                      | Default | Description                                                                        |
 | ------------ | ----------------------------------------- | ------- | ---------------------------------------------------------------------------------- |
 | `fields`     | `FieldSearchField[]`                      | -       | Searchable fields; the first one is selected initially                             |
-| `onSearch`   | `(field: string, value: string) => void`  | -       | Called with the field identifier and the trimmed value after debounce / on pick    |
+| `onSearch`   | `(field: string, value: string) => void`  | -       | Called with the field identifier and the trimmed value after debounce / on pick; duplicate consecutive emissions are skipped |
 | `debounceMs` | `number`                                  | `300`   | Debounce for text input emissions                                                  |
 | `className`  | `ClassNameValue`                          | -       | Custom classes, applied to the group shell                                         |
 

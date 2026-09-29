@@ -9,7 +9,7 @@ description: A masonry layout that balances items across equal-width columns by 
 
 ## Usage
 
-Items are distributed across equal-width columns with a greedy shortest-column strategy measured from the real DOM, so columns stay visually balanced. The column count responds to the container width by default (`1 / sm:2 / lg:3 / xl:4`).
+Items are balanced across equal-width columns; the column count responds to the container width by default (`1 / sm:2 / lg:3 / xl:4`).
 
 <ComponentPreview
   name="masonry-basic"
@@ -17,7 +17,7 @@ Items are distributed across equal-width columns with a greedy shortest-column s
 
 ### Custom
 
-Pass a fixed `columns` count and pair the layout with [`useLoadMore`](/docs/utils/use-load-more) to grow the list while scrolling an inner container. Prefix items keep their column placement as the list grows, so existing content never jumps.
+Pass a fixed `columns` count and pair with [`useLoadMore`](/docs/utils/use-load-more) to grow the list while scrolling an inner container.
 
 <ComponentPreview
   name="masonry-custom"
@@ -25,7 +25,7 @@ Pass a fixed `columns` count and pair the layout with [`useLoadMore`](/docs/util
 
 ### Nesting
 
-A `Masonry` rendered inside another `Masonry` (anywhere in the React tree) automatically degrades to a static CSS multi-columns layout: no measurement and no `ResizeObserver`, so the two levels cannot feed each other resize loops. The nested layout trades height balancing away — columns fill in source order (DOM order is preserved), `columns` breakpoints resolve via container queries, and counts are capped at 6. A dev-only `console.warn` announces the degradation. The composed parts (`Masonry.Column` / `Masonry.Item`) do no measuring and are unaffected.
+A `Masonry` nested inside another (anywhere in the React tree) degrades to a static CSS multi-columns layout — no height balancing, columns fill in source order.
 
 ## API Reference
 
@@ -33,7 +33,7 @@ A `Masonry` rendered inside another `Masonry` (anywhere in the React tree) autom
 
 #### Masonry
 
-A data-driven masonry layout. After each render it measures the rendered items and rebalances the distribution; the measurement converges (heights do not depend on the assignment because all columns share the same width). Async content that grows after mount (images, lazy demos) is not re-measured automatically — give such items a min-height close to their final size. Nested inside another Masonry it renders statically instead (see [Nesting](#nesting)).
+A data-driven masonry layout; async content that grows after mount is not re-measured — give such items a min-height close to their final size.
 
 | Prop         | Type                                              | Default                        | Description                                                                   |
 | :----------- | :------------------------------------------------ | :----------------------------- | :---------------------------------------------------------------------------- |
@@ -67,7 +67,7 @@ One equal-width column stack (`flex min-w-0 flex-col`).
 
 #### MasonryItem
 
-The cell wrapper each item renders into (`min-w-0`), tagged with internal `data-masonry-*` attributes used for measuring.
+The cell wrapper each item renders into (`min-w-0`).
 
 | Prop       | Type                          | Description                     |
 | :--------- | :---------------------------- | :------------------------------ |

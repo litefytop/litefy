@@ -3,9 +3,7 @@ title: Donut 环形图
 description: 零依赖 SVG 饼图/环形图，色板跟随主题，悬停聚焦与中心读数，图例可点击切换
 ---
 
-Donut 用纯 SVG 渲染类目占比 —— 底层不依赖任何图表库。扇形颜色来自 `useChartPalette`，品牌、表面与暗色模式切换时自动跟随。悬停扇形或图例会压暗其余项，读数显示悬停项的标签与数值 —— donut 模式在中孔内，pie 模式在图表下方（空闲时显示总数）。图例可点击隐藏或恢复扇形。
-
-属于图表家族：与 [Chart](/zh/docs/component/chart)、[Radar](/zh/docs/component/radar)、[Sparkline](/zh/docs/component/sparkline) 共享 `chart-kit` 数学层——需要坐标轴、悬浮提示或大数据量时序时选 Chart。每个成员独立安装。
+属于图表家族：与 [Chart](/zh/docs/component/chart)、[Radar](/zh/docs/component/radar)、[Sparkline](/zh/docs/component/sparkline) 共享 `chart-kit` 数学层——需要坐标轴、悬浮提示或大数据量时序时选 Chart。
 
 ## 安装
 
@@ -15,23 +13,23 @@ Donut 用纯 SVG 渲染类目占比 —— 底层不依赖任何图表库。扇�
 
 ### 环形图
 
+基础环形图，使用默认色板与图例。
+
 <ComponentPreview
   name="donut-basic"
 />
 
-每条数据为 `{ label, value, color? }`。未显式指定 `color` 时按索引从色板取色。负值与零值会被钳制；`gap` 以角度控制扇形间隔，保证细小扇形可读。
-
 ### 饼图
+
+`variant="pie"` 关闭中孔，读数移到图表下方。
 
 <ComponentPreview
   name="donut-pie"
 />
 
-`variant="pie"` 关闭中孔，读数移到图表下方。传入 `valueFormatter` 可控制读数的显示格式。
-
 ### 数值格式化
 
-`valueFormatter` 控制中心读数的数值显示格式 —— 空闲时的总数与悬停时的扇形数值都经过它处理。默认为普通的 `toLocaleString`；这里将数值格式化为美元金额。
+这里通过 `valueFormatter` 将数值格式化为美元金额；默认为普通 `toLocaleString`。
 
 <ComponentPreview
   name="donut-value-formatter"
@@ -51,10 +49,3 @@ Donut 用纯 SVG 渲染类目占比 —— 底层不依赖任何图表库。扇�
 | `className` | `ClassNameValue` | - | 追加到根元素的类名 |
 | `classNames` | `DonutClassNames` | - | 槽位覆盖：`root` / `svg` / `segment` / `legend` |
 | `styles` | `DonutStyles` | - | 与 `classNames` 槽位对应的内联样式 |
-
-### 行为说明
-
-- **悬停聚焦**：悬停扇形或图例项时，其余扇形压暗到 35% 不透明度；读数从总数切换为悬停项的标签与数值 —— donut 在中孔内，pie 在图表下方。
-- **图例切换**：点击图例项隐藏或恢复对应扇形；隐藏项不计入总数。
-- **主题同步**：`data-brand`、`data-surface` 或暗色模式变化时扇形颜色自动重建，数据上的 `color` 始终优先于色板。
-- **尺寸**：图表为正方形，随容器伸展但不超过 `max-w-64` —— 通过 `classNames.svg` 覆盖；图例与布局在其上方。

@@ -9,7 +9,7 @@ const options = [
 
 export default function SelectInvalidDemo() {
   return (
-    <div className="flex w-full max-w-sm flex-col gap-2">
+    <div className="flex w-full max-w-xs flex-col gap-2">
       <Select options={options} placeholder="Select your country..." />
       <Callout role="alert" variant="danger">Please select your country.</Callout>
       <Select options={options} placeholder="Valid selection" defaultValue="us" />

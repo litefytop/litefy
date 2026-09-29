@@ -9,6 +9,8 @@ description: 由 Card、Image 和 Tooltip 组合而成的预览卡片 —— 可
 
 ## 用法
 
+由 [Card](/docs/component/card)、[Image](/docs/component/image) 和 [Tooltip](/docs/component/tooltip) 组合而成——CLI 安装时自动解析依赖。
+
 ### 图片卡片
 
 卡片内联渲染——不传 `trigger` 和 `href` 时原地嵌入内容流。
@@ -25,12 +27,7 @@ description: 由 Card、Image 和 Tooltip 组合而成的预览卡片 —— 可
   name="preview-card-basic"
 />
 
-## 注意
-
-- PreviewCard 内部由 [Card](/docs/component/card)、[Image](/docs/component/image) 和 [Tooltip](/docs/component/tooltip) 组合而成——CLI 安装时会自动解析并安装这些依赖。
-- Card 的 `overflow-hidden rounded-lg` 会自动裁出顶部图片的圆角。
-- 传入 `trigger` 时，卡片作为 Tooltip 内容渲染（宽度 `w-72`）；不传 `trigger` 时，作为独立卡片渲染（`max-w-sm`）。
-- Image 的 `className` 控制图片区域高度（默认 `h-40`）。
+Image 的 `className` 控制图片区域高度（默认 `h-40`）。
 
 ## API 参考
 

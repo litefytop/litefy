@@ -18,12 +18,9 @@ description: Block-level static feedback for long-form notes, descriptions and r
 - `warning` — cautionary hints
 - `danger` — failures and danger feedback
 
-## Notes
+For short inline state marks use [Chip](/docs/component/chip); for inline actions use a `text` [Button](/docs/component/button).
 
-- `Callout` is for block-level feedback only — for short inline state marks use [Chip](/docs/component/chip), for inline actions use a `text` [Button](/docs/component/button).
-- It is a static container: no hover, focus or other interaction states.
-- Compose arbitrary content inside — a title can be a `<p>` with `font-medium`, or use any icon.
-- Validation feedback below a form control is a `Callout` too: `variant="danger"` with `role="alert"`. `Form` / `FormItem` render their error line this way internally.
+Validation feedback below a form control is a `Callout` too — `variant="danger"` with `role="alert"`; `Form` / `FormItem` render their error line this way.
 
 ## API Reference
 

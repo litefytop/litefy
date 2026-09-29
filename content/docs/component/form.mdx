@@ -17,7 +17,7 @@ Compose a form from `Form` + [FormItem](/docs/component/form-item) + `Form.Submi
 
 ### Validation
 
-Wrapped fields validate through `FormItem`'s `validate` / `validateTrigger`. Validation runs on `onChange` or `onBlur` and the returned string renders as the error message below the input.
+Wrapped fields validate through `FormItem`'s `validate` / `validateTrigger`.
 
 <ComponentPreview 
   name="form-validation"
@@ -25,7 +25,7 @@ Wrapped fields validate through `FormItem`'s `validate` / `validateTrigger`. Val
 
 ### Parts Mode (useFieldValidity)
 
-When `FormItem` is too much, skip wrappers entirely: keep a `useFieldValidity` store (built into the Form module), set/clear errors from your own handlers, pass `aria-invalid` into the control, and render your own description / error text. Every input control ships danger styling (`border-danger` / `text-danger` and a danger focus ring) that activates from the `aria-invalid` attribute alone.
+Roll your own field wiring with the `useFieldValidity` hook instead of `FormItem` wrappers.
 
 <ComponentPreview 
   name="form-parts"

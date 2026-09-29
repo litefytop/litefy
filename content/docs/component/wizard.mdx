@@ -9,22 +9,17 @@ description: A steps + pager wizard that manages index state internally — visi
 
 ## Usage
 
-Pass `steps` for the progress indicator and `children` for the pager body — one child per step. The Wizard manages `index` and `maxIndex` internally; visited steps can be revisited via the Steps indicator, future steps cannot be skipped ahead.
+Pass `steps` for the progress indicator and one child per step — the Wizard manages index state internally.
 
 <ComponentPreview
   name="wizard-basic"
 />
 
-## Notes
-
-- Wizard internally uses [Steps](/docs/component/steps) and [Pager](/docs/component/pager) — when installing via CLI, add all: `litefy add wizard steps pager`.
-- The Pager is configured with `gesture={false}` and `transition="view-transition"` to prevent accidental swipe submission and animate step transitions.
-- `maxIndex` tracks the highest visited step and is passed to Steps — visited steps are clickable for backward navigation, future steps are locked.
-- The last step swaps the Next button for Submit, which fires `onFinish`.
+CLI installation must add all three — `litefy add wizard steps pager` — since the Wizard is built on [Steps](/docs/component/steps) and [Pager](/docs/component/pager).
 
 ### Inline Variant
 
-`Wizard.Inline` (also exported as `InlineWizard`) drives the same state machine as a vertical steps accordion: only the current step expands to show its content with its own Back / Continue controls, while the other steps stay collapsed to their title rows. Click a visited step to return to it.
+`Wizard.Inline` (also exported as `InlineWizard`) renders the same state machine as a vertical steps accordion — only the current step expands.
 
 <ComponentPreview name="wizard-inline" />
 
@@ -42,7 +37,7 @@ Pass `steps` for the progress indicator and `children` for the pager body — on
 
 ### Disabled
 
-Pass `disabled` to the inline variant to freeze its Back / Continue buttons (and Finish on the last step) while the current step stays visible — e.g. while an async step submission is in flight.
+Pass `disabled` to freeze the inline variant's Back / Continue buttons — e.g. while an async submission is in flight.
 
 <ComponentPreview name="wizard-disabled" />
 
@@ -50,7 +45,7 @@ Pass `disabled` to the inline variant to freeze its Back / Continue buttons (and
 
 ### useWizardNavigation
 
-The wizard state machine (clamped navigation + max-visited lock) is exported as `useWizardNavigation({ count, defaultIndex?, index?, maxIndex?, onIndexChange? })` — it returns `{ index, maxVisited, maxReachable, isFirst, isLast, isReachable, go }`. It powers both the pager-based Wizard above and the inline variant below, and you can use it to build custom wizard shells.
+The exported wizard state machine for building custom wizard shells: `useWizardNavigation({ count, defaultIndex?, index?, maxIndex?, onIndexChange? })` returns `{ index, maxVisited, maxReachable, isFirst, isLast, isReachable, go }`.
 
 ### Wizard
 

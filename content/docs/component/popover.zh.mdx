@@ -9,7 +9,7 @@ description: 基于 popover + CSS Anchor Positioning 的按钮触发浮层面板
 
 ## 用法
 
-button + popover 的基础零件，不是菜单：`trigger` 打开一个面板，面板内容完全由你决定。默认 `click` 模式；`mode="hover"` 时指针移入或 trigger 聚焦即打开面板。
+button + popover 的基础零件，不是菜单：`trigger` 打开一个面板，面板内容完全由你决定。
 
 <ComponentPreview
   name="popover-basic"
@@ -17,7 +17,7 @@ button + popover 的基础零件，不是菜单：`trigger` 打开一个面板�
 
 ### 对齐
 
-除内置 `alignX`（`start` / `center` / `end`）外，任意 CSS Anchor Positioning 的 `positionArea` 都可通过 `styles.content` 设置，默认启用 `flip-block, flip-inline` 翻转回退。
+除内置 `alignX` 外，任意 CSS Anchor Positioning 的 `positionArea` 都可通过 `styles.content` 设置。
 
 <ComponentPreview
   name="popover-alignment"
@@ -25,7 +25,7 @@ button + popover 的基础零件，不是菜单：`trigger` 打开一个面板�
 
 ### 组合零件
 
-手动拼装零件可完全接管触发器接线 —— 示例在开合时驱动 `showPopover()` / `hidePopover()`、面板外 `mousedown` 关闭，而 `Escape` 处理由 `PopoverContent` 内置。
+手动拼装零件可完全接管触发器接线。
 
 <ComponentPreview
   name="popover-custom"
@@ -51,15 +51,13 @@ button + popover 的基础零件，不是菜单：`trigger` 打开一个面板�
 | `classNames`   | `{ trigger?: ClassNameValue; content?: ClassNameValue }`                          | -        | 按插槽自定义类名                                                           |
 | `styles`       | `{ trigger?: React.CSSProperties; content?: React.CSSProperties }`                | -        | 按插槽内联样式 —— 如 `styles.content.positionArea` 覆盖 `alignX`           |
 
-关闭路径：`click` 模式下点击 trigger 切换面板；焦点在面板内时按 `Escape`、面板外 `mousedown` 都会关闭；`hover` 模式下指针离开 trigger 与面板 `hoverDelayClose` 毫秒后关闭。
-
 ---
 
 ### Hooks
 
 #### usePopoverTrigger
 
-将自定义触发元素与面板接入 popover 状态 —— 高层组件 `Popover` 即基于它构建。把 `anchorName` 应用为触发元素的 `anchor-name` 样式，并作为面板的 `positionAnchor`，面板即可对齐触发器。
+将自定义触发元素与面板接入 popover 状态；把 `anchorName` 应用为触发元素的 `anchor-name` 样式与面板的 `positionAnchor` 即可对齐。
 
 选项（`UsePopoverTriggerOptions`）：
 
@@ -88,7 +86,7 @@ button + popover 的基础零件，不是菜单：`trigger` 打开一个面板�
 
 #### PopoverContent
 
-浮动面板：`popover="manual"` 的 div，内置面板外观（边框、阴影、最高 `max-h-96` 可滚动）。切换 `open` 会执行 `showPopover()` / `hidePopover()`；面板内按 `Escape` 或面板外 `mousedown` 会调用 `onOpenChange(false)`。消费者的 `onKeyDown` 与内置 Escape 处理组合调用 —— `preventDefault()` 可跳过内置行为。
+浮动面板：`popover="manual"` 的 div，内置面板外观；消费者的 `onKeyDown` 与内置 `Escape` 处理组合调用——`preventDefault()` 可跳过内置行为。
 
 | 属性           | 类型                             | 默认值   | 描述                                                                        |
 | :------------- | :------------------------------- | :------- | :-------------------------------------------------------------------------- |

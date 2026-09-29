@@ -29,7 +29,7 @@ export interface CheckboxLabelProps extends Omit<React.ComponentProps<"label">, 
     className?: ClassNameValue;
 }
 export function CheckboxLabel({ className, children, ...props }: CheckboxLabelProps) {
-    return (<label {...props} className={cn("flex items-center gap-4 select-none font-medium", className)}>
+    return (<label {...props} className={cn("flex items-center gap-4 select-none font-medium", "has-[:disabled]:pointer-events-none has-[:disabled]:opacity-50 has-[:disabled]:text-muted-foreground", className)}>
       {children}
     </label>);
 }

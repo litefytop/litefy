@@ -15,17 +15,11 @@ description: A pill-shaped overflow-hidden container that joins arbitrary childr
 
 ### Composition
 
-`Capsule` is a plain container — it always renders a `div`, with no `as` prop. What goes inside is up to you: two tags form a badge, but toggle groups, segment groups or any other content work just the same. When the whole capsule should be clickable, wrap the `<Capsule>` in a native `<a>` (or `button`) so every child shares the same click target, instead of nesting the link on a single child:
+When the whole capsule should be clickable, wrap `<Capsule>` in a native `<a>` (or `button`) so every child shares the same click target, instead of nesting the link on a single child:
 
 <ComponentPreview
   name="capsule-link"
 />
-
-## Notes
-
-- The container applies `*:rounded-none *:px-2 *:py-1` to every child, so typical children only need their color utilities — no per-child radius/padding resets required.
-- Any number of children works: the container just clips whatever is inside.
-- `Capsule.className` is the static base class string of the pill container, handy when styling a wrapper element or reusing the pill look elsewhere.
 
 ## API Reference
 

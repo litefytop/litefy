@@ -9,27 +9,25 @@ description: 通用数据表格，表头可点击排序（本地数据），也�
 
 ## 用法
 
-`Table` 是数据驱动的：传入 `data` 与 `columns` 配置即可。给列设置 `sortable: true` 后表头可点击——排序按 **升序 → 降序 → 清除** 循环，并直接作用于本地 `data`。
+`Table` 是数据驱动的：传入 `data` 与 `columns` 配置即可；`sortable: true` 让表头可点击排序。
 
 <ComponentPreview name="table-basic" />
 
 ### 远程排序（数据库）
 
-传入受控的 `sort` + `onSortChange` 即进入**远程模式**：Table 不再做内部排序，只上报表头点击，由你拿排序参数查询数据库。搭配 [useRemoteSort](/zh/docs/utils/use-remote-sort) 使用，它负责管理排序状态并生成查询字符串。
+传入受控的 `sort` + `onSortChange` 即进入**远程模式**——排序交给数据库；搭配 [useRemoteSort](/zh/docs/utils/use-remote-sort) 管理状态并生成查询。
 
 <ComponentPreview name="table-remote" />
 
 ### 表头固定 + 表体滚动
 
-表头与表体是**两个独立的表格**：表头条本身永不滚动（纯 `overflow-hidden`，无滚动条、无 gutter 预留），表体滚动容器在其下独立滚动，内置固定高度（`h-96`），翻页行数变少时表格不会坍塌。列宽采用 `table-fixed`，列宽与内容完全无关——**翻页不会引起布局跳动**。设置了 `width` 的列按该宽度渲染，未设置的列平分剩余宽度——因此给窄列（数字、徽标、控件）显式 `width`，让主文本列留空吸收剩余空间。所有单元格默认 start 对齐并启用等宽数字字形（tabular-nums）；设计规范约定不右对齐列，除非业务明确需要。通过 `classNames.body` 覆盖（如 `h-48`，或 `h-auto` 加 `classNames.table` 的 `min-w-*` 支持宽表）。
+表头固定、表体在独立容器内滚动——内置表体高度可通过 `classNames.body` 覆盖。
 
 <ComponentPreview name="table-scroll" />
 
 ### 可组装零件
 
-`Table` 由四个原子组装而成，自定义表格（额外表头内容、非数据表格、虚拟滚动行）可以复用同一套骨架：
-
-骨架永远相同：TableRoot 内是一个 TableHead 表头条（放带表头行的 TableBase）加一个 TableBody 滚动容器（放带 tbody 的 TableBase）。两个表格中的 `<colgroup>` 必须保持一致（`table-fixed` 下它决定共享的列宽）。
+`Table` 由四个原子组装而成——自定义表格复用同一套骨架，两个表格中的 `<colgroup>` 必须保持一致。
 
 ## API 参考
 

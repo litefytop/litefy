@@ -9,9 +9,13 @@ description: 由 Popover 和 CheckboxGroup 组合而成的多选下拉 —— �
 
 ## 用法
 
+由 [Popover](/docs/component/popover) + [CheckboxGroup](/docs/component/checkbox) 组合而成——CLI 安装时自动解析依赖。
+
 <ComponentPreview
   name="multi-select-basic"
 />
+
+面板内点击不会关闭它——只有面板外 mousedown 或 Escape 才会关闭——用户可以自由勾选。
 
 ### 分组用法
 
@@ -20,13 +24,6 @@ description: 由 Popover 和 CheckboxGroup 组合而成的多选下拉 —— �
 <ComponentPreview
   name="multi-select-grouped"
 />
-
-## 注意
-
-- MultiSelect 内部由 [Popover](/docs/component/popover) 和 [CheckboxGroup](/docs/component/checkbox) 组合而成——CLI 安装时会自动解析并安装这些依赖。
-- 触发器始终显示选中数量（如 `Categories (3)`），保持宽度稳定，避免布局抖动。
-- 面板内点击永远不会关闭它——只有面板外 mousedown 或 Escape 才会关闭——用户可以自由勾选。
-- `ArrowDown` / `ArrowUp`（或 `ArrowRight` / `ArrowLeft`）在复选框间循环移动焦点（跳过禁用项）；`Space` 切换；`Escape` 关闭面板。
 
 ## API 参考
 

@@ -28,9 +28,9 @@ export default function VirtualScrollBasicDemo() {
         {...virtual.containerProps}
         className="w-full max-w-sm overflow-auto rounded-md border"
       >
-        <div className="relative" style={{ height: virtual.totalHeight }}>
+        <ul className="relative" style={{ height: virtual.totalHeight }}>
           {virtual.visibleItems.map(({ index, top }) => (
-            <div
+            <li
               key={index}
               style={{
                 position: "absolute",
@@ -43,9 +43,9 @@ export default function VirtualScrollBasicDemo() {
               className="flex items-center px-4 text-sm border-b"
             >
               {ROWS[index]}
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </div>
   );

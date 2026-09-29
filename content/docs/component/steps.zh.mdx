@@ -9,7 +9,7 @@ description: 受控步骤条，区分已完成、当前与未到达状态，并�
 
 ## 用法
 
-完全受控的 `index`——默认所有步骤可点击。点击已完成或未到达的步骤触发 `onChange(nextIndex)`；当前步骤不可点击。
+完全受控的 `index`；已完成与未到达步骤可点击并触发 `onChange`，当前步骤不可点击。
 
 <ComponentPreview
   name="steps-basic"
@@ -17,20 +17,15 @@ description: 受控步骤条，区分已完成、当前与未到达状态，并�
 
 ### 锁定导航
 
-把 `maxIndex` 设为已到达的最远步骤：已完成步骤可点击回退，未来步骤被锁定（`disabled`）无法跳过——正是向导流程需要的行为。
+把 `maxIndex` 设为已到达的最远步骤——已完成步骤可点击回退，未来步骤被锁定。
 
 <ComponentPreview
   name="steps-locked"
 />
 
-实现要点：
-
-- `maxIndex` 默认 `items.length - 1`（全部可点击）；传入已到达的最远索引即可锁定后续步骤。
-- 状态自动推导：`completed` 显示 `Check` 图标，连接线到当前步骤为止为主题色；`current` 带 `aria-current="step"`。
-
 ### 垂直布局
 
-设置 `orientation="vertical"` 即可纵向排列步骤——标题与描述显示在圆点旁，连接线纵向贯穿，外观与 [Timeline](/zh/docs/component/timeline) 一致。
+设置 `orientation="vertical"` 即可纵向排列步骤——标题与描述显示在圆点旁，外观与 [Timeline](/zh/docs/component/timeline) 一致。
 
 <ComponentPreview name="steps-vertical" />
 
@@ -57,7 +52,7 @@ description: 受控步骤条，区分已完成、当前与未到达状态，并�
 
 ### 组合零件
 
-零件继承原生 DOM 属性，内置 `className` 通过 `cn` 合并 —— 传入 `className` 是扩展默认值而非替换。
+零件的内置 `className` 会与传入的合并——传入 `className` 是扩展默认值而非替换。
 
 #### StepsRoot
 
@@ -70,7 +65,7 @@ description: 受控步骤条，区分已完成、当前与未到达状态，并�
 
 #### StepsItem
 
-单个步骤：连接线（第二项起）、圆形标记按钮、标题与可选描述。标记是真实 `<button>` —— `clickable` 时可键盘访问。
+单个步骤：连接线、圆形标记按钮、标题与可选描述；标记在 `clickable` 时可键盘访问。
 
 | 属性          | 类型                              | 默认值  | 描述                                       |
 | :------------ | :-------------------------------- | :------ | :----------------------------------------- |

@@ -4,7 +4,7 @@ import { InputGroup, NumberRoot } from "@/ui";
 
 export default function Demo() {
   return (
-    <div className="w-full max-w-md rounded-lg border bg-muted/40 p-4">
+    <div className="max-w-md rounded-lg border bg-muted/40 p-4">
       <p className="mb-3 text-sm font-medium">Assemble from Input parts</p>
       <p className="mb-3 text-sm text-muted-foreground">
         The stepping cue, thousands separators and prefix/suffix are composite features.

@@ -9,36 +9,27 @@ description: A tree list of field rows with always-visible operator/value rules,
 
 ## Usage
 
-`QueryBuilder` renders the query as a flat tree list: field rows with an add (`+`) button at the end, condition rows joined by tree guides, nested and/or groups, a live natural-language preview and centered Submit / Reset.
+A flat tree list of field rows, nested and/or groups and a live natural-language preview.
 
 <ComponentPreview name="query-builder-basic" />
 
-- **text / number / date** — press the field row's **`+`** to append a condition row; each row is an operator dropdown plus a value input, and the trailing trash button removes it.
-- **Group** — a nested root: exactly the same layout as the root group — same first row, same tree list — so nesting reads as one recursive pattern.
-
 ### Disabled
 
-Pass `disabled` to make the whole tree read-only: add / remove buttons, operator dropdowns, value editors, enum checkboxes, group combinators and Submit / Reset all become non-interactive.
+Pass `disabled` to make the whole tree read-only.
 
 <ComponentPreview name="query-builder-disabled" />
 
 ### Enum fields
 
-`valueKind: "select"` fields render their options **always visible** as child rows (tree-guided like any other child): a **select-all** row followed by one checkbox row per option. Checking and unchecking options directly creates and removes the condition; the checked options merge into a **single `IN` condition** (never split into `OR`ed equals). Only forward `IN` is offered — no `NOT IN`; to invert a selection, check everything and uncheck what you don't need.
+`valueKind: "select"` fields render their options as always-visible checkbox child rows — checking options directly creates and removes the condition.
 
 ### Natural-language preview
 
-The preview is built from field labels and reads for humans: sibling rules are joined by the group combinator (`and` / `or`), nested groups are always parenthesized, and values are formatted per kind — numbers raw, text and dates single-quoted (embedded quotes doubled), and select `IN` renders as `('vip', 'beta')`. An empty tree previews as "No conditions yet".
-
-Operators render as English phrases by default, RQB-style: `Name is 'fung'`, `Price is greater than 30`, `Status is one of ('vip', 'beta')`.
-
-Fields are label/value pairs: `name` is what gets written into the query, `label` is what humans read — field rows and the preview always render the label, so the same query tree localizes freely.
-
-Operators are localized through the `QueryBuilder.operatorLabels` static — it feeds both the operator dropdowns and the preview. Unknown operators fall back to their raw string, so custom operators keep working without configuration.
+A live plain-English preview of the current query tree.
 
 ### Submit and Reset
 
-The tree is a draft: edits update the live preview only. **Submit** emits the query tree through `onSubmit` / `onQueryChange` as a structured `QueryGroup` object (`{ combinator: "and" | "or", rules: [{ field, operator, value } | QueryGroup] }`). **Reset** restores the draft to `defaultValue` (or an empty tree).
+Edits update the preview only — **Submit** emits the query tree as a `QueryGroup` object, **Reset** restores `defaultValue`.
 
 ## API Reference
 
@@ -68,11 +59,7 @@ The tree is a draft: edits update the live preview only. **Submit** emits the qu
 
 ### Security: the query leaves as JSON, never as SQL
 
-`onSubmit` / `onQueryChange` hand you the **structured query object** — never a SQL string. The natural-language preview is **display-only**, rendered in the browser for human reading. Do not send any preview string to your backend for execution: client-generated SQL cannot be trusted or safely validated, and executing it would bypass parameterization as well as any row-level scoping.
-
-The safe backend flow is: receive the JSON object → validate it against a whitelist (allowed fields, allowed operators per field, value types and ranges) → convert it to **parameterized** SQL server-side, binding every value as a query parameter. The frontend's job is the editing experience; dialect correctness and safety both belong to the backend.
-
-This component has zero external dependencies — dialect conversion (SQL, MongoDB, CEL, …) is implemented server-side from the submitted JSON.
+Never send the preview string to your backend for execution — validate the JSON against a whitelist and build parameterized SQL server-side.
 
 ### Statics
 

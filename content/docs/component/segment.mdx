@@ -17,7 +17,7 @@ Data-driven segmented control for single-select, supporting controlled and uncon
 
 ### Disabled
 
-Disable a single option through its own `disabled` flag, or pass `disabled` on the group to lock every option — keyboard navigation skips disabled options in both cases.
+Disable a single option via its own `disabled` flag, or the whole group via the group's `disabled`.
 
 <ComponentPreview
   name="segment-disabled"
@@ -33,7 +33,7 @@ Disable a single option through its own `disabled` flag, or pass `disabled` on t
 
 ### Custom
 
-Assemble segments manually with controlled parts; the composite uses a pure color transition by default and ships without a sliding indicator — add one yourself if needed.
+Assemble segments manually with the controlled parts.
 
 <ComponentPreview
   name="segment-custom"
@@ -58,7 +58,7 @@ Ready-to-use composite component.
 | `className`      | `ClassNameValue`              | -       | Custom class names, applied to the container       |
 | `itemClassName`  | `ClassNameValue`              | -       | Custom class names, applied to each segment        |
 
-Keyboard: the group is a radio group with roving tabindex — `ArrowRight` / `ArrowDown` / `ArrowLeft` / `ArrowUp` move to (and select) the next / previous enabled option, `Home` / `End` jump to the first / last one, `Enter` / `Space` activate the focused option.
+Keyboard: roving-tabindex radio group — arrow keys move to and select the next / previous enabled option, `Home` / `End` jump to the ends, `Enter` / `Space` activate.
 
 ### SegmentOptionConfig
 
@@ -75,7 +75,7 @@ Keyboard: the group is a radio group with roving tabindex — `ArrowRight` / `Ar
 
 #### Segment
 
-A single segment part with radio semantics: once checked, clicking again does not uncheck it. It carries no internal state — the `checked` state must be provided from outside, so it is only meaningful inside a `SegmentGroup` or a manually assembled group container.
+A single segment part with radio semantics; it holds no internal state — `checked` must be provided from outside.
 
 | Prop       | Type                             | Default | Description                                                       |
 | :--------- | :------------------------------- | :------ | :---------------------------------------------------------------- |

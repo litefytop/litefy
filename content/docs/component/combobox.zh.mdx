@@ -9,7 +9,7 @@ description: 带可过滤下拉列表的输入框 —— 本地选项客户端�
 
 ## 用法
 
-传入 `options` 作为本地字符串选项——键入文本即时过滤（不区分大小写），`ArrowDown` / `ArrowUp` 移动高亮，`Enter` 或点击行选中。
+键入即过滤本地字符串选项，焦点始终留在输入框——Combobox 由 [Picker](/docs/component/picker) 与 [List](/docs/component/list) 组合而成，CLI 安装时自动解析。
 
 <ComponentPreview
   name="combobox-basic"
@@ -17,7 +17,7 @@ description: 带可过滤下拉列表的输入框 —— 本地选项客户端�
 
 ### 无效状态
 
-`invalid` 让输入框进入危险边框状态并设置 `aria-invalid` —— 接到自己的校验逻辑上使用，这里标记不属于选项列表的自由文本。
+`invalid` 显示危险边框状态，把它接到你自己的校验逻辑上。
 
 <ComponentPreview
   name="combobox-invalid"
@@ -25,7 +25,7 @@ description: 带可过滤下拉列表的输入框 —— 本地选项客户端�
 
 ### 空状态
 
-`empty` 替换过滤后无匹配时默认的 "No data" 节点 —— 可传入任意 React 节点，例如图标加提示文案；异步模式保留自己的默认行为，请求进行中显示 "Loading..."。
+`empty` 用任意 React 节点替换默认的 "No data" 节点。
 
 <ComponentPreview
   name="combobox-empty"
@@ -33,19 +33,11 @@ description: 带可过滤下拉列表的输入框 —— 本地选项客户端�
 
 ### 异步搜索
 
-数据量大或来源为远程接口时，传入 `fetcher` 代替 `options`——关键词搜索自动防抖，列表滚动到底部时触发 `loadMore` 加载更多。
+数据量大或来源为远程接口时传 `fetcher` 代替 `options`；两者同时提供时 `fetcher` 优先。
 
 <ComponentPreview
   name="combobox-async"
 />
-
-## 注意
-
-- Combobox 内部由 [Picker](/docs/component/picker)、[List](/docs/component/list) 和 [useCombobox](/docs/utils/use-combobox) / [useRemotePagination](/docs/utils/use-remote-pagination) 工具组合而成——CLI 安装时会自动解析并安装这些依赖。
-- 同时传入 `fetcher` 和 `options` 时，`fetcher` 优先。
-- 异步模式在挂载时和每次键入（防抖）后发起搜索；请求进行中时空状态显示 "Loading..."。
-- 焦点始终留在输入框：`ArrowDown` 打开面板，随后方向键驱动高亮、`Enter` 选中；选中、点击面板外或 `Escape` 关闭面板。
-- 选中后输入框文本即所选选项——重新打开时列表会按它过滤；清空文本即可看到全部选项。
 
 ## API 参考
 

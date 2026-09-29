@@ -7,7 +7,7 @@ export default function Demo() {
   const [count, setCount] = useState<number | undefined>(1);
 
   return (
-    <div className="flex w-full max-w-md flex-wrap items-start gap-6">
+    <div className="flex max-w-md flex-wrap items-start gap-6">
       <div className="flex flex-col gap-1">
         <span className="text-xs text-muted-foreground">Quantity · 1–99</span>
         <NumberField
