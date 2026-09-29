@@ -25,7 +25,7 @@ export const Toggle = ({ checked: controlledChecked, defaultChecked = false, onC
             setUncontrolledChecked(next);
         onCheckedChange?.(next);
     };
-    return (<button {...props} type="button" aria-pressed={checked} disabled={disabled} onClick={handleClick} className={cn("relative inline-flex items-center justify-center gap-2 h-9 min-w-9 px-3 py-1 text-sm font-medium cursor-pointer select-none transition-colors duration-200", variant === "fill" ? cn("rounded-md text-muted-foreground", "first:rounded-l-md last:rounded-r-md", "aria-pressed:bg-primary aria-pressed:text-primary-foreground") : cn("rounded-md text-muted-foreground hover:bg-accent", "aria-pressed:text-primary-accent"), className)}>
+    return (<button {...props} type="button" aria-pressed={checked} disabled={disabled} onClick={handleClick} className={cn("relative inline-flex items-center justify-center gap-2 h-9 min-w-9 px-3 py-1 text-sm font-medium cursor-pointer select-none transition-colors duration-200", variant === "fill" ? cn("rounded-md text-muted-foreground", "first:rounded-l-md last:rounded-r-md", "aria-pressed:bg-primary aria-pressed:text-primary-foreground") : cn("rounded-md text-muted-foreground hover:bg-accent", "aria-pressed:text-primary-accent aria-pressed:font-bold"), className)}>
       {children}
     </button>);
 };

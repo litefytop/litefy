@@ -9,9 +9,15 @@ description: A compact numeric field with a leading Minus and trailing Plus step
 
 ## Usage
 
-`NumberField` is the stepper-style numeric field: a leading Minus and trailing Plus button step the value by `step` (clamped to `min` / `max`). The field ships with a border by default; set `variant="embedded"` when it lives inside another container (toolbars, table cells, custom shells) and the border is dropped. Each stepper button disables itself once the value reaches its side's bound. Keyboard stepping works while the input is focused.
+`NumberField` is the stepper-style numeric field: leading Minus / trailing Plus buttons step the value by `step`, clamped to `min` / `max`. Set `variant="embedded"` to drop the border when it lives inside another container.
 
 <ComponentPreview name="number-field-basic" />
+
+### Invalid
+
+Set `invalid` to show the danger border state.
+
+<ComponentPreview name="number-field-invalid" />
 
 ### Controlled
 

@@ -13,7 +13,7 @@ export interface CascaderTriggerProps extends Omit<React.ComponentProps<"button"
     className?: ClassNameValue;
 }
 export function CascaderTrigger({ className, ...props }: CascaderTriggerProps) {
-    return (<button {...props} className={cn("min-w-0 flex-1 truncate transition-colors px-3 py-2", className)}/>);
+    return (<button {...props} className={cn("min-w-0 flex-1 cursor-pointer truncate px-3 py-2 transition-colors hover:text-foreground focus-visible:outline-none", className)}/>);
 }
 export interface CascaderProps extends Omit<React.ComponentProps<"div">, "children" | "className"> {
     tree: CascaderNode[];
@@ -84,7 +84,7 @@ export function Cascader({ tree, placeholder = "Select your location", className
       </PopoverContent>);
     });
     return (<>
-      <div {...props} style={{ anchorName: `--cascader-${uid}-root`, ...style }} className={cn("w-72 rounded-md border text-sm", className)}>
+      <div {...props} style={{ anchorName: `--cascader-${uid}-root`, ...style }} className={cn("w-72 rounded-md border text-sm shadow-base transition-colors", "hover:border-primary/50", "focus-within:outline-1 focus-within:outline-outline focus-within:ring-3 focus-within:ring-ring/50", className)}>
         {trigger}
       </div>
       {panels}

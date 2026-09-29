@@ -9,12 +9,26 @@ description: 带可过滤下拉列表的输入框 —— 本地选项客户端�
 
 ## 用法
 
-### 基础用法
-
 传入 `options` 作为本地字符串选项——键入文本即时过滤（不区分大小写），`ArrowDown` / `ArrowUp` 移动高亮，`Enter` 或点击行选中。
 
 <ComponentPreview
   name="combobox-basic"
+/>
+
+### 无效状态
+
+`invalid` 让输入框进入危险边框状态并设置 `aria-invalid` —— 接到自己的校验逻辑上使用，这里标记不属于选项列表的自由文本。
+
+<ComponentPreview
+  name="combobox-invalid"
+/>
+
+### 空状态
+
+`empty` 替换过滤后无匹配时默认的 "No data" 节点 —— 可传入任意 React 节点，例如图标加提示文案；异步模式保留自己的默认行为，请求进行中显示 "Loading..."。
+
+<ComponentPreview
+  name="combobox-empty"
 />
 
 ### 异步搜索

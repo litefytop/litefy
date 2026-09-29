@@ -7,12 +7,18 @@ import TableScrollDemo from "./table/scroll";
 import tableScrollCode from "./table/scroll.tsx?raw";
 import WizardInlineDemo from "./wizard/inline";
 import wizardInlineCode from "./wizard/inline.tsx?raw";
+import WizardDisabledDemo from "./wizard/disabled";
+import wizardDisabledCode from "./wizard/disabled.tsx?raw";
 import DualPickerBasicDemo from "./dual-picker/basic";
 import dualPickerBasicCode from "./dual-picker/basic.tsx?raw";
 import DualPickerSingleDemo from "./dual-picker/single";
 import dualPickerSingleCode from "./dual-picker/single.tsx?raw";
+import DualPickerDisabledDemo from "./dual-picker/disabled";
+import dualPickerDisabledCode from "./dual-picker/disabled.tsx?raw";
 import QueryBuilderBasicDemo from "./query-builder/basic";
 import queryBuilderBasicCode from "./query-builder/basic.tsx?raw";
+import QueryBuilderDisabledDemo from "./query-builder/disabled";
+import queryBuilderDisabledCode from "./query-builder/disabled.tsx?raw";
 import StepsVerticalDemo from "./steps/vertical";
 import stepsVerticalCode from "./steps/vertical.tsx?raw";
 import AvatarBasicDemo from "./avatar/basic";
@@ -25,6 +31,8 @@ import CalloutBasicDemo from "./callout/basic";
 import calloutBasicCode from "./callout/basic.tsx?raw";
 import DatePickerBasicDemo from "./date-picker/basic";
 import datePickerBasicCode from "./date-picker/basic.tsx?raw";
+import DatePickerDisabledDemo from "./date-picker/disabled";
+import datePickerDisabledCode from "./date-picker/disabled.tsx?raw";
 import MasonryBasicDemo from "./masonry/basic";
 import masonryBasicCode from "./masonry/basic.tsx?raw";
 import MasonryCustomDemo from "./masonry/custom";
@@ -33,6 +41,8 @@ import FormItemDemo from "./form-item/basic";
 import formItemCode from "./form-item/basic.tsx?raw";
 import FormItemValidationDemo from "./form-item/validation";
 import formItemValidationCode from "./form-item/validation.tsx?raw";
+import FormItemDisabledDemo from "./form-item/disabled";
+import formItemDisabledCode from "./form-item/disabled.tsx?raw";
 import InputGroupDemo from "./input-group/basic";
 import inputGroupCode from "./input-group/basic.tsx?raw";
 import FieldSearchDemo from "./field-search/basic";
@@ -59,6 +69,8 @@ import DonutBasicDemo from "./donut/basic";
 import donutBasicCode from "./donut/basic.tsx?raw";
 import DonutPieDemo from "./donut/pie";
 import donutPieCode from "./donut/pie.tsx?raw";
+import DonutValueFormatterDemo from "./donut/value-formatter";
+import donutValueFormatterCode from "./donut/value-formatter.tsx?raw";
 import RadarBasicDemo from "./radar/basic";
 import radarBasicCode from "./radar/basic.tsx?raw";
 import ChartLegendBasicDemo from "./chart-legend/basic";
@@ -67,6 +79,8 @@ import SparklineBasicDemo from "./sparkline/basic";
 import sparklineBasicCode from "./sparkline/basic.tsx?raw";
 import ChatInputBasicDemo from "./chat-input/basic";
 import chatInputBasicCode from "./chat-input/basic.tsx?raw";
+import ChatInputDisabledDemo from "./chat-input/disabled";
+import chatInputDisabledCode from "./chat-input/disabled.tsx?raw";
 import CascaderBasicDemo from "./cascader/basic";
 import cascaderBasicCode from "./cascader/basic.tsx?raw";
 import AvatarCustomDemo from "./avatar/custom";
@@ -99,10 +113,16 @@ import ChipGroupTooltipDemo from "./chip-group/tooltip";
 import chipGroupTooltipCode from "./chip-group/tooltip.tsx?raw";
 import CheckboxCustomDemo from "./checkbox/custom";
 import checkboxCustomCode from "./checkbox/custom.tsx?raw";
+import CheckboxDisabledDemo from "./checkbox/disabled";
+import checkboxDisabledCode from "./checkbox/disabled.tsx?raw";
 import ComboboxAsyncDemo from "./combobox/async";
 import comboboxAsyncCode from "./combobox/async.tsx?raw";
 import ComboboxBasicDemo from "./combobox/basic";
 import comboboxBasicCode from "./combobox/basic.tsx?raw";
+import ComboboxInvalidDemo from "./combobox/invalid";
+import comboboxInvalidCode from "./combobox/invalid.tsx?raw";
+import ComboboxEmptyDemo from "./combobox/empty";
+import comboboxEmptyCode from "./combobox/empty.tsx?raw";
 import CommandBasicDemo from "./command/basic";
 import commandBasicCode from "./command/basic.tsx?raw";
 import CommandPartsDemo from "./command/parts";
@@ -179,12 +199,14 @@ import InputBasicDemo from "./input/basic";
 import inputBasicCode from "./input/basic.tsx?raw";
 import InputOtpBasicDemo from "./input-otp/basic";
 import inputOtpBasicCode from "./input-otp/basic.tsx?raw";
+import InputOtpCustomDemo from "./input-otp/custom";
+import inputOtpCustomCode from "./input-otp/custom.tsx?raw";
 import InputOtpInvalidDemo from "./input-otp/invalid";
 import inputOtpInvalidCode from "./input-otp/invalid.tsx?raw";
-import InputOtpControlledDemo from "./input-otp/controlled";
-import inputOtpControlledCode from "./input-otp/controlled.tsx?raw";
 import InputOtpMaskDemo from "./input-otp/mask";
 import inputOtpMaskCode from "./input-otp/mask.tsx?raw";
+import InputOtpDisabledDemo from "./input-otp/disabled";
+import inputOtpDisabledCode from "./input-otp/disabled.tsx?raw";
 import InputInvalidDemo from "./input/invalid";
 import inputInvalidCode from "./input/invalid.tsx?raw";
 import InputCustomDemo from "./input/custom";
@@ -201,12 +223,16 @@ import NumberFieldInvalidDemo from "./number-field/invalid";
 import numberFieldInvalidCode from "./number-field/invalid.tsx?raw";
 import NumberInputBasicDemo from "./number-input/basic";
 import numberInputBasicCode from "./number-input/basic.tsx?raw";
+import NumberInputDisabledDemo from "./number-input/disabled";
+import numberInputDisabledCode from "./number-input/disabled.tsx?raw";
 import NumberInputCustomDemo from "./number-input/custom";
 import numberInputCustomCode from "./number-input/custom.tsx?raw";
 import PaginationComponentDemo from "./pagination/basic";
 import paginationComponentCode from "./pagination/basic.tsx?raw";
 import PaginationLongSummaryDemo from "./pagination/long-summary";
 import paginationLongSummaryCode from "./pagination/long-summary.tsx?raw";
+import PaginationDisabledDemo from "./pagination/disabled";
+import paginationDisabledCode from "./pagination/disabled.tsx?raw";
 import PagerBasicDemo from "./pager/basic";
 import pagerBasicCode from "./pager/basic.tsx?raw";
 import PagerGestureDemo from "./pager/gesture";
@@ -223,20 +249,20 @@ import menuBasicCode from "./menu/basic.tsx?raw";
 import listBasicCode from "./list/basic.tsx?raw";
 import PasswordBasicDemo from "./password/basic";
 import passwordBasicCode from "./password/basic.tsx?raw";
-import PasswordControlledDemo from "./password/controlled";
-import passwordControlledCode from "./password/controlled.tsx?raw";
 import PasswordCustomDemo from "./password/custom";
 import passwordCustomCode from "./password/custom.tsx?raw";
+import PasswordInvalidDemo from "./password/invalid";
+import passwordInvalidCode from "./password/invalid.tsx?raw";
+import PasswordDisabledDemo from "./password/disabled";
+import passwordDisabledCode from "./password/disabled.tsx?raw";
 import PickerBasicDemo from "./picker/basic";
 import pickerBasicCode from "./picker/basic.tsx?raw";
 import PickerDatepickerDemo from "./picker/datepicker";
 import pickerDatepickerCode from "./picker/datepicker.tsx?raw";
-import PasswordInvalidDemo from "./password/invalid";
-import passwordInvalidCode from "./password/invalid.tsx?raw";
 import RadioBasicDemo from "./radio/basic";
 import radioBasicCode from "./radio/basic.tsx?raw";
-import RadioControlledDemo from "./radio/controlled";
-import radioControlledCode from "./radio/controlled.tsx?raw";
+import RadioCustomDemo from "./radio/custom";
+import radioCustomCode from "./radio/custom.tsx?raw";
 import RadioDisabledDemo from "./radio/disabled";
 import radioDisabledCode from "./radio/disabled.tsx?raw";
 import ScrollShadowBasicDemo from "./scroll-shadow/basic";
@@ -249,8 +275,12 @@ import SeparatorBasicDemo from "./separator/basic";
 import separatorBasicCode from "./separator/basic.tsx?raw";
 import SegmentBasicDemo from "./segment/basic";
 import segmentBasicCode from "./segment/basic.tsx?raw";
+import SegmentVariantsDemo from "./segment/variants";
+import segmentVariantsCode from "./segment/variants.tsx?raw";
 import SegmentCustomDemo from "./segment/custom";
 import segmentCustomCode from "./segment/custom.tsx?raw";
+import SegmentDisabledDemo from "./segment/disabled";
+import segmentDisabledCode from "./segment/disabled.tsx?raw";
 import SidebarBasicDemo from "./sidebar/basic";
 import sidebarBasicCode from "./sidebar/basic.tsx?raw";
 import SliderBasicDemo from "./slider/basic";
@@ -259,8 +289,12 @@ import SliderOrientationDemo from "./slider/orientation";
 import sliderOrientationCode from "./slider/orientation.tsx?raw";
 import StepsBasicDemo from "./steps/basic";
 import stepsBasicCode from "./steps/basic.tsx?raw";
+import StepsLockedDemo from "./steps/locked";
+import stepsLockedCode from "./steps/locked.tsx?raw";
 import TimelineBasicDemo from "./timeline/basic";
 import timelineBasicCode from "./timeline/basic.tsx?raw";
+import TimelineMarkerDemo from "./timeline/marker";
+import timelineMarkerCode from "./timeline/marker.tsx?raw";
 import ToastBasicDemo from "./toast/basic";
 import toastBasicCode from "./toast/basic.tsx?raw";
 import ToastPromiseDemo from "./toast/promise";
@@ -269,6 +303,8 @@ import WizardBasicDemo from "./wizard/basic";
 import wizardBasicCode from "./wizard/basic.tsx?raw";
 import SelectBasicDemo from "./select/basic";
 import selectBasicCode from "./select/basic.tsx?raw";
+import SelectDisabledDemo from "./select/disabled";
+import selectDisabledCode from "./select/disabled.tsx?raw";
 import SelectGroupedDemo from "./select/grouped";
 import selectGroupedCode from "./select/grouped.tsx?raw";
 import SelectInvalidDemo from "./select/invalid";
@@ -281,16 +317,12 @@ import SelectableTablePaginationDemo from "./selectable-table/pagination";
 import selectableTablePaginationCode from "./selectable-table/pagination.tsx?raw";
 import SwitchBasicDemo from "./switch/basic";
 import switchBasicCode from "./switch/basic.tsx?raw";
-import SwitchControlledDemo from "./switch/controlled";
-import switchControlledCode from "./switch/controlled.tsx?raw";
 import SwitchCustomDemo from "./switch/custom";
 import switchCustomCode from "./switch/custom.tsx?raw";
 import SwitchDisabledDemo from "./switch/disabled";
 import switchDisabledCode from "./switch/disabled.tsx?raw";
 import TabsBasicDemo from "./tabs/basic";
 import tabsBasicCode from "./tabs/basic.tsx?raw";
-import TabsControlledDemo from "./tabs/controlled";
-import tabsControlledCode from "./tabs/controlled.tsx?raw";
 import TabsOrientationDemo from "./tabs/orientation";
 import tabsOrientationCode from "./tabs/orientation.tsx?raw";
 import TabsVariantDemo from "./tabs/variant";
@@ -299,6 +331,8 @@ import TabsLazyDemo from "./tabs/lazy";
 import tabsLazyCode from "./tabs/lazy.tsx?raw";
 import ToggleBasicDemo from "./toggle/basic";
 import toggleBasicCode from "./toggle/basic.tsx?raw";
+import ToggleVariantsDemo from "./toggle/variants";
+import toggleVariantsCode from "./toggle/variants.tsx?raw";
 import ToggleGroupDemo from "./toggle/group";
 import toggleGroupCode from "./toggle/group.tsx?raw";
 import ToggleCustomDemo from "./toggle/custom";
@@ -323,6 +357,8 @@ import UploadCustomDemo from "./upload/custom";
 import uploadCustomCode from "./upload/custom.tsx?raw";
 import UploadMultipleDemo from "./upload/multiple";
 import uploadMultipleCode from "./upload/multiple.tsx?raw";
+import UploadDisabledDemo from "./upload/disabled";
+import uploadDisabledCode from "./upload/disabled.tsx?raw";
 import WatermarkBasicDemo from "./watermark/basic";
 import watermarkBasicCode from "./watermark/basic.tsx?raw";
 import WatermarkCustomDemo from "./watermark/custom";
@@ -360,6 +396,10 @@ export const demos: Record<string, DemoItem> = {
     component: ChatInputBasicDemo,
     code: chatInputBasicCode,
   },
+  "chat-input-disabled": {
+    component: ChatInputDisabledDemo,
+    code: chatInputDisabledCode,
+  },
   "chart-line": {
     component: ChartLineDemo,
     code: chartLineCode,
@@ -379,6 +419,10 @@ export const demos: Record<string, DemoItem> = {
   "donut-pie": {
     component: DonutPieDemo,
     code: donutPieCode,
+  },
+  "donut-value-formatter": {
+    component: DonutValueFormatterDemo,
+    code: donutValueFormatterCode,
   },
   "radar-basic": {
     component: RadarBasicDemo,
@@ -429,6 +473,10 @@ export const demos: Record<string, DemoItem> = {
     component: CheckboxCustomDemo,
     code: checkboxCustomCode,
   },
+  "checkbox-disabled": {
+    component: CheckboxDisabledDemo,
+    code: checkboxDisabledCode,
+  },
   "combobox-async": {
     component: ComboboxAsyncDemo,
     code: comboboxAsyncCode,
@@ -436,6 +484,14 @@ export const demos: Record<string, DemoItem> = {
   "combobox-basic": {
     component: ComboboxBasicDemo,
     code: comboboxBasicCode,
+  },
+  "combobox-invalid": {
+    component: ComboboxInvalidDemo,
+    code: comboboxInvalidCode,
+  },
+  "combobox-empty": {
+    component: ComboboxEmptyDemo,
+    code: comboboxEmptyCode,
   },
   "command-basic": {
     component: CommandBasicDemo,
@@ -581,6 +637,10 @@ export const demos: Record<string, DemoItem> = {
     component: FormItemValidationDemo,
     code: formItemValidationCode,
   },
+  "form-item-disabled": {
+    component: FormItemDisabledDemo,
+    code: formItemDisabledCode,
+  },
   "input-group-basic": {
     component: InputGroupDemo,
     code: inputGroupCode,
@@ -608,6 +668,10 @@ export const demos: Record<string, DemoItem> = {
   "date-picker-basic": {
     component: DatePickerBasicDemo,
     code: datePickerBasicCode,
+  },
+  "date-picker-disabled": {
+    component: DatePickerDisabledDemo,
+    code: datePickerDisabledCode,
   },
   "masonry-basic": {
     component: MasonryBasicDemo,
@@ -669,13 +733,17 @@ export const demos: Record<string, DemoItem> = {
     component: InputOtpInvalidDemo,
     code: inputOtpInvalidCode,
   },
-  "input-otp-controlled": {
-    component: InputOtpControlledDemo,
-    code: inputOtpControlledCode,
-  },
   "input-otp-mask": {
     component: InputOtpMaskDemo,
     code: inputOtpMaskCode,
+  },
+  "input-otp-disabled": {
+    component: InputOtpDisabledDemo,
+    code: inputOtpDisabledCode,
+  },
+  "input-otp-custom": {
+    component: InputOtpCustomDemo,
+    code: inputOtpCustomCode,
   },
   "input-custom": {
     component: InputCustomDemo,
@@ -696,6 +764,10 @@ export const demos: Record<string, DemoItem> = {
   "number-input-basic": {
     component: NumberInputBasicDemo,
     code: numberInputBasicCode,
+  },
+  "number-input-disabled": {
+    component: NumberInputDisabledDemo,
+    code: numberInputDisabledCode,
   },
   "number-input-custom": {
     component: NumberInputCustomDemo,
@@ -721,13 +793,13 @@ export const demos: Record<string, DemoItem> = {
     component: TabsOrientationDemo,
     code: tabsOrientationCode,
   },
-  "tabs-controlled": {
-    component: TabsControlledDemo,
-    code: tabsControlledCode,
-  },
   "toggle-basic": {
     component: ToggleBasicDemo,
     code: toggleBasicCode,
+  },
+  "toggle-variants": {
+    component: ToggleVariantsDemo,
+    code: toggleVariantsCode,
   },
   "toggle-group": {
     component: ToggleGroupDemo,
@@ -744,6 +816,10 @@ export const demos: Record<string, DemoItem> = {
   "pagination-long-summary": {
     component: PaginationLongSummaryDemo,
     code: paginationLongSummaryCode,
+  },
+  "pagination-disabled": {
+    component: PaginationDisabledDemo,
+    code: paginationDisabledCode,
   },
   "pager-basic": {
     component: PagerBasicDemo,
@@ -789,9 +865,9 @@ export const demos: Record<string, DemoItem> = {
     component: PasswordInvalidDemo,
     code: passwordInvalidCode,
   },
-  "password-controlled": {
-    component: PasswordControlledDemo,
-    code: passwordControlledCode,
+  "password-disabled": {
+    component: PasswordDisabledDemo,
+    code: passwordDisabledCode,
   },
   "password-custom": {
     component: PasswordCustomDemo,
@@ -825,9 +901,17 @@ export const demos: Record<string, DemoItem> = {
     component: SegmentBasicDemo,
     code: segmentBasicCode,
   },
+  "segment-variants": {
+    component: SegmentVariantsDemo,
+    code: segmentVariantsCode,
+  },
   "segment-custom": {
     component: SegmentCustomDemo,
     code: segmentCustomCode,
+  },
+  "segment-disabled": {
+    component: SegmentDisabledDemo,
+    code: segmentDisabledCode,
   },
   "sidebar-basic": {
     component: SidebarBasicDemo,
@@ -845,9 +929,17 @@ export const demos: Record<string, DemoItem> = {
     component: StepsBasicDemo,
     code: stepsBasicCode,
   },
+  "steps-locked": {
+    component: StepsLockedDemo,
+    code: stepsLockedCode,
+  },
   "timeline-basic": {
     component: TimelineBasicDemo,
     code: timelineBasicCode,
+  },
+  "timeline-marker": {
+    component: TimelineMarkerDemo,
+    code: timelineMarkerCode,
   },
   "table-basic": {
     component: TableBasicDemo,
@@ -865,6 +957,10 @@ export const demos: Record<string, DemoItem> = {
     component: WizardInlineDemo,
     code: wizardInlineCode,
   },
+  "wizard-disabled": {
+    component: WizardDisabledDemo,
+    code: wizardDisabledCode,
+  },
   "dual-picker-basic": {
     component: DualPickerBasicDemo,
     code: dualPickerBasicCode,
@@ -873,9 +969,17 @@ export const demos: Record<string, DemoItem> = {
     component: DualPickerSingleDemo,
     code: dualPickerSingleCode,
   },
+  "dual-picker-disabled": {
+    component: DualPickerDisabledDemo,
+    code: dualPickerDisabledCode,
+  },
   "query-builder-basic": {
     component: QueryBuilderBasicDemo,
     code: queryBuilderBasicCode,
+  },
+  "query-builder-disabled": {
+    component: QueryBuilderDisabledDemo,
+    code: queryBuilderDisabledCode,
   },
   "steps-vertical": {
     component: StepsVerticalDemo,
@@ -909,18 +1013,22 @@ export const demos: Record<string, DemoItem> = {
     component: RadioBasicDemo,
     code: radioBasicCode,
   },
-
-  "radio-controlled": {
-    component: RadioControlledDemo,
-    code: radioControlledCode,
+  "radio-custom": {
+    component: RadioCustomDemo,
+    code: radioCustomCode,
   },
   "radio-disabled": {
     component: RadioDisabledDemo,
     code: radioDisabledCode,
   },
+
   "select-basic": {
     component: SelectBasicDemo,
     code: selectBasicCode,
+  },
+  "select-disabled": {
+    component: SelectDisabledDemo,
+    code: selectDisabledCode,
   },
   "select-grouped": {
     component: SelectGroupedDemo,
@@ -946,10 +1054,6 @@ export const demos: Record<string, DemoItem> = {
     component: SwitchBasicDemo,
     code: switchBasicCode,
   },
-  "switch-controlled": {
-    component: SwitchControlledDemo,
-    code: switchControlledCode,
-  },
   "switch-custom": {
     component: SwitchCustomDemo,
     code: switchCustomCode,
@@ -973,6 +1077,10 @@ export const demos: Record<string, DemoItem> = {
   "upload-basic": {
     component: UploadBasicDemo,
     code: uploadBasicCode,
+  },
+  "upload-disabled": {
+    component: UploadDisabledDemo,
+    code: uploadDisabledCode,
   },
   "use-drag-basic": {
     component: UseDragBasicDemo,

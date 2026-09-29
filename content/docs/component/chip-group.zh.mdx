@@ -9,9 +9,7 @@ description: 自动折叠溢出标签的原生组件，隐藏集合通过 render
 
 ## 用法
 
-### 基础用法
-
-组件是纯原生组件，只负责两件事：渲染 chip 和溢出折叠测量。它不内置 `+N` 触发器，也不内置弹层——溢出集合通过 `onOverflowChange` 回调传出，`renderMore(hidden)` 在行内渲染自定义触发器（示例用 `Popover` 拼装 `+N` 弹层）：
+纯原生组件：负责渲染 chip 与溢出折叠测量——隐藏集合通过 `onOverflowChange` 传出，`renderMore(hidden)` 在行内渲染自定义触发器。
 
 <ComponentPreview
   name="chip-group-basic"

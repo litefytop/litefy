@@ -170,7 +170,7 @@ async function measureDemo(item, iters) {
     let ready = false;
     for (let attempt = 0; attempt < 3 && !ready; attempt++) {
       try {
-        await page.goto(`${BASE}/.agent/audit/harness/index.html?demo=${item.demo}`, {
+        await page.goto(`${BASE}/audit/harness/index.html?demo=${item.demo}`, {
           waitUntil: "domcontentloaded",
           timeout: 60000,
         });

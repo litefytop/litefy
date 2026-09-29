@@ -9,12 +9,26 @@ description: A segmented control component for single-select, supporting control
 
 ## Usage
 
-### Basic Usage
-
 Data-driven segmented control for single-select, supporting controlled and uncontrolled modes.
 
 <ComponentPreview
   name="segment-basic"
+/>
+
+### Disabled
+
+Disable a single option through its own `disabled` flag, or pass `disabled` on the group to lock every option — keyboard navigation skips disabled options in both cases.
+
+<ComponentPreview
+  name="segment-disabled"
+/>
+
+### Variants
+
+`fill` is the default and is shown in Basic Usage; the `text` variant only tints the selected text.
+
+<ComponentPreview
+  name="segment-variants"
 />
 
 ### Custom
@@ -40,6 +54,7 @@ Ready-to-use composite component.
 | `defaultValue`   | `string`                      | -       | Default selected value (uncontrolled)              |
 | `onValueChange`  | `(value: string) => void`     | -       | Callback when the selected value changes           |
 | `disabled`       | `boolean`                     | `false` | Disable all options                                |
+| `variant`        | `"fill" \| "text"`            | `"fill"`| Visual variant: `fill` highlights with a primary background, `text` only tints the selected text |
 | `className`      | `ClassNameValue`              | -       | Custom class names, applied to the container       |
 | `itemClassName`  | `ClassNameValue`              | -       | Custom class names, applied to each segment        |
 
@@ -66,5 +81,6 @@ A single segment part with radio semantics: once checked, clicking again does no
 | :--------- | :------------------------------- | :------ | :---------------------------------------------------------------- |
 | `children` | `React.ReactNode`                | -       | The segment content                                               |
 | `checked`  | `boolean`                        | `false` | Checked state, drives `aria-checked` and the checked styles       |
+| `variant` | `"fill" \| "text"`                | `"fill"`| Visual variant: `fill` highlights with a primary background, `text` only tints the selected text |
 | `className` | `ClassNameValue`                | -       | Custom class names                                                |
 | `...props` | `React.ComponentProps<"button">` | -       | Supports all native button props (except `type`), such as `onClick`, `disabled` |

@@ -9,9 +9,7 @@ description: 纯 UI 进度条组件，只负责渲染 current 与 duration，不
 
 ## 用法
 
-### 基础用法
-
-Progress 是一个纯 UI 组件：宽度由 `current`（%）经 `duration`（毫秒）CSS 过渡到达，进度计算、采样、预估、轮询等调度逻辑全部属于业务方 —— 组件内不内置定时器。`isAbort` 与 `isComplete` 分别表达失败与完成语义：中止时立刻冻结在当前宽度并切换失败色，完成时强制 100% 并切换成功色。
+纯 UI 进度条：宽度经 CSS 过渡动画到达 `current`，过渡时长为 `duration` —— 进度计算、采样与预估全部属于业务方。`isAbort` / `isComplete` 分别表达失败 / 成功语义。
 
 <ComponentPreview
   name="progress-basic"

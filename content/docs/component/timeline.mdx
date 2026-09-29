@@ -9,8 +9,6 @@ description: A vertical timeline — a display-only component of markers, connec
 
 ## Usage
 
-### Basic Usage
-
 A display-only component with no controlled state — entries are defined via `items`, and the connector line automatically stops at the last entry.
 
 <ComponentPreview
@@ -22,6 +20,14 @@ Key points:
 - Each entry renders `time` (tabular numerals), `heading` (medium weight) and optional `description` (muted text) top to bottom — all `React.ReactNode`.
 - The marker defaults to a primary-colored dot; passing `marker` (e.g. an icon) automatically enlarges it into a bordered circular container.
 - The connector line is managed by `Timeline`: the last entry renders none; when using `TimelineItem` standalone, turn it off via `connector={false}`.
+
+### Custom Marker
+
+`marker` lives on each item config — pass any node, commonly a lucide icon, to replace the default primary dot. A marker containing an SVG automatically enlarges the container into a bordered circular badge.
+
+<ComponentPreview
+  name="timeline-marker"
+/>
 
 ## API Reference
 

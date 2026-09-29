@@ -9,9 +9,7 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 
 ## 用法
 
-### 基础用法
-
-用 `Form` + [FormItem](/zh/docs/component/form-item) + `Form.Submit` 组合表单。不带包装的分组控件（复选/单选组）原生提交即可——给它们 `name` 属性，值会自动进入提交数据。表单实例也可以通过 `ref` 获取：`setValues` 从外部填充字段（例如回填远程取回的草稿），`reset` 清空，`submit` 触发一次编程式提交。
+用 `Form` + [FormItem](/zh/docs/component/form-item) + `Form.Submit` 组合表单；表单实例也可以通过 `ref` 获取（`setValues` / `reset` / `submit`）。
 
 <ComponentPreview 
   name="form-basic"

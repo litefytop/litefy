@@ -9,12 +9,18 @@ description: 基于原生 popover 与 listbox 面板的选择器，面板跟随�
 
 ## 用法
 
-### 基础用法
-
 带占位文本与选项的基础选择器。面板是普通 DOM，会跟随主题配色 —— 这一点与原生 `<select>` 的下拉不同。
 
 <ComponentPreview 
   name="select-basic"
+/>
+
+### 禁用状态
+
+`disabled` 禁用触发按钮——面板无法打开，已选标签原样展示。
+
+<ComponentPreview 
+  name="select-disabled"
 />
 
 ### 选项分组

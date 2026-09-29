@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router";
 import { baseOptions } from "@/components/layout-shared";
 import { ExampleWall } from "@/components/example-wall";
-import { Button, Typography } from "@/ui";
+import { Button, Skeleton, Typography } from "@/ui";
 import { i18n } from "@/lib/i18n";
 
 export type Locale = "en" | "zh";
@@ -108,13 +108,13 @@ function LandingHero({ locale }: { locale: Locale }) {
             <div className="h-2.5 w-2.5 rounded-full bg-success" />
           </div>
           <div className="space-y-2">
-            <div className="h-2.5 w-3/4 rounded bg-fd-muted" />
-            <div className="h-2.5 w-1/2 rounded bg-fd-muted" />
-            <div className="h-2.5 w-5/6 rounded bg-fd-muted" />
+            <Skeleton className="h-2.5 w-3/4 bg-muted" />
+            <Skeleton className="h-2.5 w-1/2 bg-muted" />
+            <Skeleton className="h-2.5 w-5/6 bg-muted" />
           </div>
           <div className="mt-4 flex gap-2">
-            <div className="h-7 w-20 rounded-md bg-fd-primary" />
-            <div className="h-7 w-20 rounded-md border border-fd-border" />
+            <div className="h-7 w-20 rounded-md bg-primary" />
+            <div className="h-7 w-20 rounded-md border border-border" />
           </div>
         </div>
       </div>

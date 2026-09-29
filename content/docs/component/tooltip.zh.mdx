@@ -9,9 +9,7 @@ description: 基于原生 Popover API 和 CSS 锚点定位构建的提示框组�
 
 ## 用法
 
-### 基础用法
-
-在悬停或聚焦时显示的基础提示框。`Tooltip` 是接线容器：生成内容 id、锚点名称与延迟，经 context 提供给 `TooltipTrigger` / `TooltipContent` —— 不克隆任何元素，触发器永远是显式的 `TooltipTrigger`。
+在悬停或聚焦时显示的基础提示框；`Tooltip` 是接线容器，通过 context 把内容 id、锚点名称与延迟交给 `TooltipTrigger` / `TooltipContent`。
 
 <ComponentPreview
   name="tooltip-basic"

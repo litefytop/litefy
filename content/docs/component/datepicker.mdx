@@ -9,12 +9,18 @@ description: A date picker built on the native Temporal API — an editable inpu
 
 ## Usage
 
-### Basic Usage
-
-The input is fully editable — type a date (separators are flexible, auto-normalized to `YYYY-MM-DD`) or pick one from the panel. Validation runs on `Enter` and when the panel closes: a complete date commits, a bare year or year-month opens the matching panel to pick the missing part, invalid input clears the field with the danger border.
+The input is fully editable — type a date or pick one from the panel; incomplete or invalid input opens the matching panel or clears the field.
 
 <ComponentPreview
   name="date-picker-basic"
+/>
+
+### Disabled
+
+`disabled` makes both the input and the panel non-interactive — typing, `Enter` commit and opening the panel are all blocked.
+
+<ComponentPreview
+  name="date-picker-disabled"
 />
 
 ## Notes

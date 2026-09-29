@@ -9,18 +9,23 @@ description: A controlled steps indicator with completed, current and upcoming s
 
 ## Usage
 
-### Basic Usage
-
-Fully controlled `index`. With `maxIndex` set to the highest visited step, completed steps stay clickable for going back while future steps are locked (`disabled`) and cannot be skipped ahead — exactly what a wizard needs.
+Fully controlled `index` — all steps are clickable by default. Clicking a completed or upcoming step fires `onChange(nextIndex)`; the current step is not clickable.
 
 <ComponentPreview
   name="steps-basic"
 />
 
+### Locked Navigation
+
+Set `maxIndex` to the highest visited step: completed steps stay clickable for going back while future steps are locked (`disabled`) and cannot be skipped ahead — exactly what a wizard needs.
+
+<ComponentPreview
+  name="steps-locked"
+/>
+
 Key points:
 
 - `maxIndex` defaults to `items.length - 1` (all steps clickable); pass the highest visited index to lock future steps.
-- Clicking a clickable step fires `onChange(nextIndex)`; the current step is never clickable.
 - States are derived: `completed` shows a `Check` icon and a primary connector line up to the current step, `current` gets `aria-current="step"`.
 
 ### Vertical

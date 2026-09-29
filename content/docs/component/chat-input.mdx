@@ -9,11 +9,15 @@ description: A chat composer with pasted-screenshot thumbnails, a capability-tog
 
 ## Usage
 
-`ChatInput` manages the text and pasted-image state for you: screenshots pasted into the textarea become a thumbnail strip (`URL.createObjectURL` handled internally), and the send button emits the collected payload through `onSend`, clearing the composer afterwards.
-
-Capability toggles go into the `actions` slot — compose them from [Toggle](/docs/component/toggle) yourself.
+`ChatInput` manages the text and pasted-image state for you; capability toggles go into the `actions` slot.
 
 <ComponentPreview name="chat-input-basic" />
+
+### Disabled
+
+Set `disabled` to freeze the whole composer: the textarea, the attach button and the send button all become non-interactive, e.g. while a session is disconnected.
+
+<ComponentPreview name="chat-input-disabled" />
 
 ### Mobile adaptation
 

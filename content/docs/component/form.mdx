@@ -9,9 +9,7 @@ description: A complete form composition with fields, submit, validation, and im
 
 ## Usage
 
-### Basic Usage
-
-Compose a form from `Form` + [FormItem](/docs/component/form-item) + `Form.Submit`. Group controls without a wrapper (checkbox / radio groups) submit natively — give them a `name` and they join the payload. The form instance is also available through a `ref`: `setValues` fills fields from outside (e.g. resuming a draft fetched from remote), `reset` clears them, `submit` triggers a programmatic submission.
+Compose a form from `Form` + [FormItem](/docs/component/form-item) + `Form.Submit`; the form instance is also available through a `ref` (`setValues` / `reset` / `submit`).
 
 <ComponentPreview 
   name="form-basic"

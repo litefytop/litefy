@@ -9,8 +9,6 @@ description: A steps + pager wizard that manages index state internally — visi
 
 ## Usage
 
-### Basic Usage
-
 Pass `steps` for the progress indicator and `children` for the pager body — one child per step. The Wizard manages `index` and `maxIndex` internally; visited steps can be revisited via the Steps indicator, future steps cannot be skipped ahead.
 
 <ComponentPreview
@@ -41,6 +39,12 @@ Pass `steps` for the progress indicator and `children` for the pager body — on
 | `disabled` | `boolean` | `false` | Disable navigation |
 | `className` | `ClassNameValue` | - | Custom classes, applied to the list |
 | `classNames` | `marker` / `title` / `description` / `connector` / `content` / `footer` / `button` / `primaryButton` | - | Custom classes per part |
+
+### Disabled
+
+Pass `disabled` to the inline variant to freeze its Back / Continue buttons (and Finish on the last step) while the current step stays visible — e.g. while an async step submission is in flight.
+
+<ComponentPreview name="wizard-disabled" />
 
 ## API Reference
 

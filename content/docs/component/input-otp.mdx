@@ -9,12 +9,18 @@ description: A one-time-code input with auto-advance, paste support, keyboard na
 
 ## Usage
 
-### Basic Usage
-
 An OTP input with auto-advance, backspace navigation, arrow keys and clipboard paste.
 
 <ComponentPreview
   name="input-otp-basic"
+/>
+
+### Disabled
+
+`disabled` disables every slot — typing, paste and focus are all blocked while the current value stays visible.
+
+<ComponentPreview
+  name="input-otp-disabled"
 />
 
 ### Invalid State
@@ -33,12 +39,12 @@ Render slots as password inputs for PIN-style codes.
   name="input-otp-mask"
 />
 
-### Controlled
+### Custom
 
-Control the value externally and receive updates via `onValueChange`.
+Assemble the parts directly for layouts the high-level component can't express — e.g. a serial key split into two groups by a separator with round slots. Value state, focus movement and paste handling are wired by the consumer.
 
 <ComponentPreview
-  name="input-otp-controlled"
+  name="input-otp-custom"
 />
 
 ## API Reference

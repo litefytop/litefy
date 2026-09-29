@@ -20,8 +20,8 @@ function Sidebar({ ref, children, className, defaultOpen = true, ...props }: Sid
         close: () => setOpen(false),
         isOpen: open,
     }));
-    return (<aside {...props} data-close={!open ? true : undefined} className={cn(className, "h-full overflow-hidden bg-background text-foreground transition-[width,padding,margin] duration-300 ease-in-out data-close:w-0 data-close:p-0 data-close:m-0")}>
-      {children}
+    return (<aside {...props} data-close={!open ? true : undefined} className={cn(className, "h-full overflow-hidden bg-background text-foreground transition-[width,padding,margin] duration-300 ease-in-out data-close:w-0 data-close:px-0 data-close:mx-0")}>
+        <div className={cn("h-full overflow-hidden", !open && "min-w-max")}>{children}</div>
     </aside>);
 }
 export { Sidebar };

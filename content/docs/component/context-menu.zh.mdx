@@ -9,9 +9,7 @@ description: 命令式唤起的右键菜单，支持指针锚定、分组与子�
 
 ## 用法
 
-### 基础用法
-
-先挂载一次 `<ContextMenuHost />`，然后在任意元素的 `onContextMenu` 里调用 `ContextMenu.open()` —— 不需要包裹组件，也不需要锚点布线。菜单在指针位置打开；选中菜单项后自动关闭；菜单已打开时再次右键，会重新锚定到新的光标位置。
+先挂载一次 `<ContextMenuHost />`，然后在任意元素的 `onContextMenu` 里调用 `ContextMenu.open()` —— 不需要包裹组件，菜单在指针位置打开。
 
 <ComponentPreview
   name="context-menu-basic"

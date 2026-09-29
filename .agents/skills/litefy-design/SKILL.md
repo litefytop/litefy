@@ -2,7 +2,7 @@
 name: litefy-design
 description: Litefy UI 设计规范（任何使用 Litefy UI 的项目的"宪法"，官网 https://litefy.top/）。当需要创建、修改、重构、审查任何使用 Litefy UI 的界面或组件时使用：写业务页面、新建/改造组件、选择组件、写颜色/边框/阴影/圆角/间距/焦点样式、排查视觉不一致、审计 UI 代码合规性。不适用于：不使用 Litefy UI 的项目、纯逻辑/数据层代码、文档文字编辑。规范与代码冲突时以本规范为准并报告冲突。
 metadata:
-  version: 2.8.0
+  version: 2.9.0
 ---
 
 # Litefy UI Design Spec
@@ -48,6 +48,8 @@ metadata:
 
 - 全局中性组件默认边框：`var(--accent)/50` 半透明边框
 - 品牌交互组件（Primary按钮、核心选中控件）不使用默认边框，统一复用 Brand 色板
+- 带边框的输入类控件（Input / InputGroup / Select / Textarea / NumberField / InputOtp / Button / Card 等）规范形态是 **`border + shadow-base`，边框不裸用**：disabled 态整体 opacity 50% 后边框等效只剩 25%，可辨识度由同级阴影兜底（2026-09-29 定案；InputOtpSlot 曾裸边框漏网已补齐）
+- 裸边框的合理形态（不配阴影）：微小指示器（Checkbox / Radio / Steps marker）、虚线占位（Upload dropzone）、分隔与结构线、常驻浮层内的内嵌面板（宿主已带 elevated 阴影）
 - 禁止"边框 + 大阴影"叠用制造 ghost card；阴影等级已含边界定义，二选一
 
 ## 3. 焦点环体系

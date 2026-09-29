@@ -9,9 +9,7 @@ description: A button-triggered popover panel built on popover + CSS Anchor Posi
 
 ## Usage
 
-### Basic Usage
-
-Popover is a button + popover base, not a menu: the `trigger` opens a panel whose content is entirely yours. In the default `click` mode, clicking the trigger toggles the panel (`ArrowDown` / `Space` on the trigger also open it). The panel closes on `Escape` pressed while focus is inside it, or on `mousedown` outside it. With `mode="hover"`, the panel opens on pointer enter or trigger focus and closes after a short delay once the pointer leaves both. Compose it with [Menu](/docs/component/menu) to build a dropdown menu, or with [Checkbox](/docs/component/checkbox) to build a [MultiSelect](/docs/component/multi-select).
+A button + popover base, not a menu: the `trigger` opens a panel whose content is entirely yours. Click mode by default; `mode="hover"` opens on pointer enter or trigger focus.
 
 <ComponentPreview
   name="popover-basic"

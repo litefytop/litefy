@@ -9,9 +9,7 @@ description: An imperative right-click context menu with pointer anchoring, grou
 
 ## Usage
 
-### Basic Usage
-
-Mount `<ContextMenuHost />` once, then call `ContextMenu.open()` from any element's `onContextMenu` — no wrapper component, no anchor plumbing. The menu opens at the pointer; selecting an item closes it; right-clicking again while open re-anchors to the new cursor position.
+Mount `<ContextMenuHost />` once, then call `ContextMenu.open()` from any element's `onContextMenu` — no wrapper, the menu opens at the pointer.
 
 <ComponentPreview name="context-menu-basic" />
 

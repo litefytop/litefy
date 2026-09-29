@@ -9,9 +9,7 @@ description: 内置复选框列的数据表格，支持全选半选状态。分�
 
 ## 用法
 
-`SelectableTable` 在 [Table](/zh/docs/component/table) 的基础上自动前置一列复选框。选中值就是行 key 数组——传 `selected` + `onSelectionChange` 进入受控模式，或只传 `defaultSelected` 非受控使用。`rowKey` 必填：它既是行标识，也是选中值。
-
-全选只作用于**当前页**，并且**保留其他页的已选项**——跨页累加选择由调用方管理（例如在每次查询后继续收集 key）。
+`SelectableTable` 在 [Table](/zh/docs/component/table) 的基础上内置一列复选框——`rowKey` 既是行标识，也是选中值；全选只作用于当前页，并保留其他页的已选项。
 
 <ComponentPreview name="selectable-table-basic" />
 

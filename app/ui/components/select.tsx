@@ -129,7 +129,7 @@ export function Select({ options, value: controlledValue, defaultValue = "", onV
             ?.querySelector('[data-highlighted="true"]')
             ?.scrollIntoView({ block: "nearest" });
     }, [open, highlightIndex]);
-    const renderOption = (option: SelectOption, index: number) => (<div key={option.value} role="option" aria-selected={option.value === value} data-highlighted={highlightIndex === index || undefined} aria-disabled={disabled || undefined} onClick={disabled ? undefined : () => commit(option)} className={cn("cursor-pointer px-3 py-2 text-sm transition-colors select-none hover:bg-hover", "data-[highlighted=true]:bg-primary", option.value === value && "font-medium", disabled && "pointer-events-none opacity-50", classNames?.option)}>
+    const renderOption = (option: SelectOption, index: number) => (<div key={option.value} role="option" aria-selected={option.value === value} data-highlighted={highlightIndex === index || undefined} aria-disabled={disabled || undefined} onClick={disabled ? undefined : () => commit(option)} className={cn("cursor-pointer px-3 py-2 text-sm transition-colors select-none hover:bg-hover", "data-[highlighted=true]:bg-primary data-[highlighted=true]:text-primary-foreground", option.value === value && "font-medium", disabled && "pointer-events-none opacity-50", classNames?.option)}>
       {option.label}
     </div>);
     return (<>

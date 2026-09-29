@@ -29,6 +29,14 @@ Each datum is `{ label, value, color? }`. Colors are picked from the palette by 
 
 `variant="pie"` closes the hole and moves the readout below the chart. Pass `valueFormatter` to control how values render in the readout.
 
+### Value Formatter
+
+`valueFormatter` controls how values render in the center readout — the idle total and the hovered slice value both go through it. The default is plain `toLocaleString`; here values are formatted as US dollars.
+
+<ComponentPreview
+  name="donut-value-formatter"
+/>
+
 ## API Reference
 
 ### Donut

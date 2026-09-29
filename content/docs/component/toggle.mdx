@@ -9,12 +9,18 @@ description: A toggle button component supporting controlled, uncontrolled and g
 
 ## Usage
 
-### Basic Usage
-
 Simple toggles with icon content, supporting uncontrolled mode and disabled state.
 
 <ComponentPreview
   name="toggle-basic"
+/>
+
+### Variants
+
+`fill` is the default and is shown in Basic Usage; the `text` variant only tints the selected text.
+
+<ComponentPreview
+  name="toggle-variants"
 />
 
 ### Group
@@ -45,6 +51,7 @@ Style `Toggle` through `className` for custom shapes and colors — e.g. a pill 
 | `onCheckedChange` | `(checked: boolean) => void`   | -       | Callback when the checked state changes                                                                       |
 | `value`           | `string`                       | -       | Value forwarded to the native button; in `Toggle.Group` it identifies each option                             |
 | `disabled`        | `boolean`                      | `false` | Disable the toggle                                                                                            |
+| `variant`        | `"fill" \| "text"`             | `"fill"`| Visual variant: `fill` highlights with a primary background, `text` only tints the selected text              |
 | `className`       | `ClassNameValue`               | -       | Custom class names                                                                                            |
 | `...props`        | `React.ComponentProps<"button">` | -     | Supports all native button props (except `type`, `className`, `aria-checked`), such as `name`, `form`, `autofocus` |
 
@@ -59,6 +66,7 @@ Pressing a disabled toggle does nothing. A custom `onClick` handler runs before 
 | `defaultValue`   | `string[]`                   | `[]`    | Default selected values (uncontrolled)             |
 | `onChange`       | `(values: string[]) => void` | -       | Callback when values change                        |
 | `disabled`       | `boolean`                    | `false` | Disable all options                                |
+| `variant`        | `"fill" \| "text"`           | `"fill"`| Visual variant: `fill` highlights with a primary background, `text` only tints the selected text |
 | `className`      | `ClassNameValue`             | -       | Custom class names, applied to the container       |
 | `itemClassName`  | `ClassNameValue`             | -       | Custom class names, applied to each toggle         |
 

@@ -9,12 +9,18 @@ description: 一次性验证码输入框，支持自动跳格、粘贴填充、�
 
 ## 用法
 
-### 基础用法
-
 支持自动跳格、退格回退、方向键导航与剪贴板粘贴的验证码输入框。
 
 <ComponentPreview
   name="input-otp-basic"
+/>
+
+### 禁用状态
+
+`disabled` 禁用所有格子——无法输入、粘贴或聚焦，当前值保持可见。
+
+<ComponentPreview
+  name="input-otp-disabled"
 />
 
 ### 无效状态
@@ -33,12 +39,12 @@ description: 一次性验证码输入框，支持自动跳格、粘贴填充、�
   name="input-otp-mask"
 />
 
-### 受控
+### 自定义拼装
 
-通过 `value` 外部受控，并经 `onValueChange` 接收值变化。
+直接用零件拼装高级组件表达不了的布局——例如用分隔符分成两组的序列号输入、圆形格子。值状态、焦点移动与粘贴处理由消费方自行接线。
 
 <ComponentPreview
-  name="input-otp-controlled"
+  name="input-otp-custom"
 />
 
 ## API 参考

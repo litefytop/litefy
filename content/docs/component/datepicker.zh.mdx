@@ -9,12 +9,18 @@ description: 基于原生 Temporal API 的日期选择器 —— 可编辑输入
 
 ## 用法
 
-### 基础用法
-
-输入框完全可编辑 —— 直接键入日期（分隔符宽松，自动归一化为 `YYYY-MM-DD`），也可以从面板中选择。校验在 `Enter` 和关闭面板时触发：完整日期直接提交，只有年份 / 年月会打开对应面板补选缺失部分，非法输入清空输入框并显示 danger 边框。
+输入框完全可编辑 —— 直接键入日期，也可以从面板中选择；输入不完整或非法时，会打开对应面板补选或清空输入框。
 
 <ComponentPreview
   name="date-picker-basic"
+/>
+
+### 禁用状态
+
+`disabled` 使输入框与面板均不可交互——键入、`Enter` 提交与打开面板都被阻止。
+
+<ComponentPreview
+  name="date-picker-disabled"
 />
 
 ## 说明

@@ -9,8 +9,6 @@ description: 基于 options 驱动、支持多种变体和方向设置的标签�
 
 ## 用法
 
-### 基础用法
-
 带有非受控状态的基础标签页实现。Tabs 采用 options 驱动：通过 `value`、`label` 和 `content` 声明每个标签。
 
 <ComponentPreview
@@ -19,7 +17,7 @@ description: 基于 options 驱动、支持多种变体和方向设置的标签�
 
 ### 变体
 
-在线条和按钮变体之间切换，以获得不同的视觉样式。
+`line` 为默认变体，见基础用法；`button` 将每个触发器渲染为独立按钮。
 
 <ComponentPreview
   name="tabs-variant"
@@ -31,14 +29,6 @@ description: 基于 options 驱动、支持多种变体和方向设置的标签�
 
 <ComponentPreview
   name="tabs-orientation"
-/>
-
-### 受控模式
-
-通过受控状态外部管理活动标签。
-
-<ComponentPreview
-  name="tabs-controlled"
 />
 
 ## API 参考

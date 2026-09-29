@@ -9,12 +9,18 @@ description: 支持受控、非受控以及分组多选模式的切换按钮组�
 
 ## 用法
 
-### 基础用法
-
 带图标内容的简单切换按钮，支持非受控模式和禁用状态。
 
 <ComponentPreview
   name="toggle-basic"
+/>
+
+### 变体
+
+`fill` 为默认变体，见基础用法；`text` 仅将选中文字着主色。
+
+<ComponentPreview
+  name="toggle-variants"
 />
 
 ### 分组
@@ -45,6 +51,7 @@ description: 支持受控、非受控以及分组多选模式的切换按钮组�
 | `onCheckedChange` | `(checked: boolean) => void`   | -       | 选中状态变化时触发的回调函数                                                       |
 | `value`           | `string`                       | -       | 转发给原生 button 的 value；在 `Toggle.Group` 中用于标识每个选项                   |
 | `disabled`        | `boolean`                      | `false` | 禁用切换按钮                                                                       |
+| `variant`        | `"fill" \| "text"`             | `"fill"`| 视觉变体：`fill` 选中项填充主色，`text` 仅选中文字着色                              |
 | `className`       | `ClassNameValue`               | -       | 自定义类名                                                                         |
 | `...props`        | `React.ComponentProps<"button">` | -     | 支持所有原生 button 属性（除 `type`、`className`、`aria-checked` 外），如 `name`、`form`、`autofocus` |
 
@@ -59,6 +66,7 @@ description: 支持受控、非受控以及分组多选模式的切换按钮组�
 | `defaultValue`   | `string[]`                   | `[]`    | 非受控模式下的默认选中值                   |
 | `onChange`       | `(values: string[]) => void` | -       | 选中值变化时触发的回调函数                 |
 | `disabled`       | `boolean`                    | `false` | 禁用所有选项                               |
+| `variant`        | `"fill" \| "text"`           | `"fill"`| 视觉变体：`fill` 选中项填充主色，`text` 仅选中文字着色 |
 | `className`      | `ClassNameValue`             | -       | 自定义类名，应用于容器                     |
 | `itemClassName`  | `ClassNameValue`             | -       | 自定义类名，应用于每个切换按钮             |
 

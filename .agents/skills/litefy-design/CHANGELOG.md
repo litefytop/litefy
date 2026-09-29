@@ -2,6 +2,7 @@
 
 设计规范与检测脚本的历史版本说明。当前版本见 SKILL.md 头部 `version` 字段。
 
+- **2.9.0（2026-09-29）**：§2 边框新增"输入类控件规范形态 border + shadow-base"定案——disabled 整体 opacity 50% 使 `var(--accent)/50` 边框等效仅 25%，可辨识度由同级阴影兜底，边框不裸用；裸边框合理形态白名单（微小指示器 / 虚线占位 / 结构线 / 浮层内嵌面板）；InputOtpSlot 据此补齐 `shadow-base`。配套修复：input-otp / pagination 的 disabled demo 瘦身为单实例（HeroUI 化"一个属性一个示例"）。
 - **2.8.0（2026-09-28）**：新增官网与文档分层指引——头部声明官网 litefy.top（组件文档、面向 AI 的 `llms.txt` / `llms-full.txt`、技能分发页）与"用法不内嵌"分层约定（设计约束进本文件，API 细节一律外链：仓库内查 `AGENTS.md` / `content/docs`，仓库外查官网）；§0"选组件"按所在环境分流（本仓库查 AGENTS.md，装进业务项目后查官网）；description 面向分发场景微调（适用范围改为"任何使用 Litefy UI 的项目"，排除项改为"不使用 Litefy UI 的项目"）。
 - **2.7.0（2026-09-22）**：无障碍静态检查切换为 `oxlint --jsx-a11y-plugin` 一次性调用（`pnpm dlx`，零仓库依赖，§12.2），移除 eslint 配置示例；文档瘦身——删除示例代码块（规则由 design-detect 机器执行，无需示例），变更记录外置到本文件（不再属于 SKILL.md 正文）；design-detect 新增 `nested-tabs` warn（Tabs 面板内嵌套 Tabs，§11 Tabs 反模式 / §12.4）。
 - **2.6.0（2026-09-21）**：§15 Table 新增两条强制约束——数据型表格必须配套分页导航（服务端分页优先）；行内操作按钮配色强制（`text-primary` 普通 / `text-danger` 危险，禁止前景色与 warning），文案两字动词优先并列宽下限；补充"单元格截断须 `block truncate`"（行内 span 的 truncate 无效）。

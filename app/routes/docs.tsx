@@ -1,5 +1,5 @@
 import browserCollections from "collections/browser";
-import type { Folder, Item } from "fumadocs-core/page-tree";
+import type { Folder, Item, Root } from "fumadocs-core/page-tree";
 import { deserializePageTree } from "fumadocs-core/source/client";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import {
@@ -16,6 +16,7 @@ import { getMDXComponents } from "@/components/mdx";
 import { pageTrees } from "@/generated/page-trees";
 import { i18n } from "@/lib/i18n";
 import { baseOptions } from "@/components/layout-shared";
+import { FloatingNav } from "@/components/floating-nav";
 import { buildMarkdownUrl } from "@/lib/markdown-url";
 import { gitConfig } from "@/lib/shared";
 import type { Route } from "./+types/docs";
@@ -133,10 +134,16 @@ export default function Docs({ params }: Route.ComponentProps) {
 
   const t = docsIndexI18n[locale] || docsIndexI18n.en;
   const tree = useMemo(() => {
-    const t = deserializePageTree(pageTrees[locale]);
+    // deserializePageTree mutates the tree in place (string names → React elements) —
+    // clone so the raw tree keeps string names for FloatingNav titles
+    const t = deserializePageTree({
+      $fumadocs_loader: "page-tree",
+      data: structuredClone(pageTrees[locale].data),
+    });
     (t as { $id?: string }).$id = locale;
     return t;
   }, [locale]);
+  const rawTree = pageTrees[locale].data as unknown as Root;
 
   const isOverview = slugs[0] === "overview";
   const isIndexRoot = slugs.length === 0;
@@ -152,6 +159,7 @@ export default function Docs({ params }: Route.ComponentProps) {
       return (
         <DocsLayout {...baseOptions(locale)} tree={tree}>
           <PageContent markdownUrl={markdownUrl} path={fullPath} />
+          <FloatingNav tree={rawTree} />
         </DocsLayout>
       );
     }
@@ -169,6 +177,7 @@ export default function Docs({ params }: Route.ComponentProps) {
 
         <ComponentsList categories={categories} locale={locale} t={t} />
       </div>
+      <FloatingNav tree={rawTree} />
     </DocsLayout>
   );
 }

@@ -12,7 +12,7 @@ export interface InputOtpSlotProps extends Omit<React.ComponentProps<"input">, "
     ref?: React.Ref<HTMLInputElement>;
 }
 export function InputOtpSlot({ className, ref, ...props }: InputOtpSlotProps) {
-    return (<input {...props} ref={ref} className={cn("size-9 rounded-md border border-border text-center text-sm font-medium outline-none transition-colors", "focus:border-primary focus:ring-2 focus:ring-ring/50", "aria-invalid:border-danger aria-invalid:text-danger", "aria-invalid:focus-visible:outline-none aria-invalid:focus-visible:ring-3 aria-invalid:focus-visible:ring-danger/50", className)}/>);
+    return (<input {...props} ref={ref} className={cn("size-9 rounded-md border border-border shadow-base text-center text-sm font-medium outline-none transition-colors", "focus:border-primary focus:ring-2 focus:ring-ring/50", "aria-invalid:border-danger aria-invalid:text-danger", "aria-invalid:focus-visible:outline-none aria-invalid:focus-visible:ring-3 aria-invalid:focus-visible:ring-danger/50", className)}/>);
 }
 export interface InputOtpClassNames {
     slot?: ClassNameValue;

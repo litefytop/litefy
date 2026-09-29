@@ -9,9 +9,7 @@ description: 基于 popover + CSS Anchor Positioning 的按钮触发浮层面板
 
 ## 用法
 
-### 基础用法
-
-Popover 是 button + popover 的基础零件，不是菜单：`trigger` 打开一个面板，面板内容完全由你决定。默认 `click` 模式下点击 trigger 切换面板（trigger 上按 `ArrowDown` / `Space` 也可打开）；焦点在面板内时按 `Escape`、或在面板外按下鼠标（`mousedown`）都会关闭它。`mode="hover"` 时，指针移入或 trigger 聚焦时打开面板，指针移出 trigger 与面板后延迟一小段时间关闭。与 [Menu](/docs/component/menu) 组合即可拼装出下拉菜单，与 [Checkbox](/docs/component/checkbox) 组合即可拼装出 [MultiSelect](/docs/component/multi-select)。
+button + popover 的基础零件，不是菜单：`trigger` 打开一个面板，面板内容完全由你决定。默认 `click` 模式；`mode="hover"` 时指针移入或 trigger 聚焦即打开面板。
 
 <ComponentPreview
   name="popover-basic"

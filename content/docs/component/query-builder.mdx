@@ -9,12 +9,18 @@ description: A tree list of field rows with always-visible operator/value rules,
 
 ## Usage
 
-`QueryBuilder` renders the query as a **flat tree list**. Every field appears **exactly once** per group as a row — label plus a kind badge — with the **add (`+`) button at the end of the row**. Its conditions render directly beneath it as child rows joined by tree guides (`├` for every child, `└` for the last), each child being an operator dropdown plus a value editor with the **remove button at the end** — the right edge is always the action area. A field with no conditions renders nothing extra. The layout is fully recursive: the root group and every added group share the same first row — collapse chevron, **AND / OR** segment and the **+ Group** button — above the tree list, which scrolls inside a fixed-height frame. Below it, a read-only **natural-language preview panel** shows the query, and centered **Submit / Reset** buttons sit at the very bottom.
+`QueryBuilder` renders the query as a flat tree list: field rows with an add (`+`) button at the end, condition rows joined by tree guides, nested and/or groups, a live natural-language preview and centered Submit / Reset.
 
 <ComponentPreview name="query-builder-basic" />
 
 - **text / number / date** — press the field row's **`+`** to append a condition row; each row is an operator dropdown plus a value input, and the trailing trash button removes it.
 - **Group** — a nested root: exactly the same layout as the root group — same first row, same tree list — so nesting reads as one recursive pattern.
+
+### Disabled
+
+Pass `disabled` to make the whole tree read-only: add / remove buttons, operator dropdowns, value editors, enum checkboxes, group combinators and Submit / Reset all become non-interactive.
+
+<ComponentPreview name="query-builder-disabled" />
 
 ### Enum fields
 

@@ -17,9 +17,7 @@ description: 受控单 DOM 分页容器，支持触摸手势拖拽翻页、循�
 
 常态只挂载当前页。触摸拖拽时临时挂载相邻页做实时 `transform` 跟随，回弹/落定动画结束后立刻卸载恢复单 DOM。程序跳转任何时刻都只有一个页面 DOM。
 
-### 基础用法
-
-完全受控的 `index` / `onChange` —— 示例用导航按钮驱动，默认 `transition="view-transition"`。浏览器不支持 `document.startViewTransition` 时降级为无动画瞬间切换。
+完全受控的 `index` / `onChange`，默认 `transition="view-transition"`。
 
 <ComponentPreview
   name="pager-basic"

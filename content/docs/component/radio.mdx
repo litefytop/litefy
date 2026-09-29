@@ -9,28 +9,26 @@ description: A parts-based radio component with an options-driven group — arro
 
 ## Usage
 
-### Basic Usage
-
 Basic radio buttons with individual and group modes.
 
 <ComponentPreview 
   name="radio-basic"
 />
 
-### Controlled Mode
-
-Manage radio group value externally with controlled state.
-
-<ComponentPreview 
-  name="radio-controlled"
-/>
-
 ### Disabled
 
 Shows disabled state for individual radio and radio group.
 
-<ComponentPreview 
+<ComponentPreview
   name="radio-disabled"
+/>
+
+### Custom
+
+Assemble the parts directly — `RadioRoot` must be nested inside `RadioIndicator` (the focus ring relies on `has-focus-visible:` matching a descendant of the indicator), and a shared `name` turns separately assembled roots into a native radio group. Indicator children style themselves off the root with `peer-checked:` — here a filled indicator with a check icon instead of the default dot.
+
+<ComponentPreview
+  name="radio-custom"
 />
 
 ## API Reference

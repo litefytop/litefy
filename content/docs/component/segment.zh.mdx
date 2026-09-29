@@ -9,12 +9,26 @@ description: 支持受控、非受控和 options 驱动模式的单选分段控�
 
 ## 用法
 
-### 基础用法
-
 数据驱动的分段控制器，用于单选，支持受控和非受控模式。
 
 <ComponentPreview
   name="segment-basic"
+/>
+
+### 禁用状态
+
+通过选项自身的 `disabled` 标记禁用单个选项，或在分组上传入 `disabled` 锁定全部选项——两种情况下键盘导航都会跳过禁用项。
+
+<ComponentPreview
+  name="segment-disabled"
+/>
+
+### 变体
+
+`fill` 为默认变体，见基础用法；`text` 仅将选中文字着主色。
+
+<ComponentPreview
+  name="segment-variants"
 />
 
 ### 自定义拼装
@@ -40,6 +54,7 @@ description: 支持受控、非受控和 options 驱动模式的单选分段控�
 | `defaultValue`   | `string`                      | -       | 非受控模式下的默认选中值                   |
 | `onValueChange`  | `(value: string) => void`     | -       | 选中值变化时触发的回调函数                 |
 | `disabled`       | `boolean`                     | `false` | 禁用所有选项                               |
+| `variant`        | `"fill" \| "text"`            | `"fill"`| 视觉变体：`fill` 选中项填充主色，`text` 仅选中文字着色 |
 | `className`      | `ClassNameValue`              | -       | 自定义类名，应用于容器                     |
 | `itemClassName`  | `ClassNameValue`              | -       | 自定义类名，应用于每个分段按钮             |
 
@@ -66,5 +81,6 @@ description: 支持受控、非受控和 options 驱动模式的单选分段控�
 | ---------- | -------------------------------- | ------- | ------------------------------------------------------------- |
 | `children` | `React.ReactNode`                | -       | 分段按钮的内容                                                |
 | `checked`  | `boolean`                        | `false` | 选中状态，驱动 `aria-checked` 和选中样式                      |
+| `variant` | `"fill" \| "text"`               | `"fill"`| 视觉变体：`fill` 选中项填充主色，`text` 仅选中文字着色        |
 | `className` | `ClassNameValue`                | -       | 自定义类名                                                    |
 | `...props` | `React.ComponentProps<"button">` | -       | 支持所有原生 button 属性（除 `type` 外），如 `onClick`、`disabled` |

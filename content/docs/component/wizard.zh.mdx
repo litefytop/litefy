@@ -9,8 +9,6 @@ description: Steps + Pager 组合的向导组件，内部管理索引状态 —�
 
 ## 用法
 
-### 基础用法
-
 传入 `steps` 作为进度指示器，`children` 作为 Pager 内容——每个子元素对应一步。Wizard 内部管理 `index` 和 `maxIndex`；已到达的步骤可通过 Steps 指示器回退，未来步骤不能跳过。
 
 <ComponentPreview
@@ -41,6 +39,12 @@ description: Steps + Pager 组合的向导组件，内部管理索引状态 —�
 | `disabled` | `boolean` | `false` | 禁用导航 |
 | `className` | `ClassNameValue` | - | 自定义类名，作用于列表 |
 | `classNames` | `marker` / `title` / `description` / `connector` / `content` / `footer` / `button` / `primaryButton` | - | 各部分自定义类名 |
+
+### 禁用状态
+
+给内联变体传入 `disabled` 冻结它的 Back / Continue 按钮（最后一步的 Finish 同样冻结），当前步骤内容保持展示——例如步骤提交请求进行中时。
+
+<ComponentPreview name="wizard-disabled" />
 
 ## API 参考
 

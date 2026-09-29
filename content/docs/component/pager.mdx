@@ -17,9 +17,7 @@ The component never adapts to its content — you must provide width and height 
 
 Only the current page is mounted. During a touch drag the adjacent pages are mounted temporarily for the real-time `transform` follow, and they are unmounted as soon as the settle animation finishes. Programmatic jumps never mount more than one page.
 
-### Basic Usage
-
-Fully controlled `index` / `onChange` — the demo drives it with navigation buttons and uses the default `transition="view-transition"`. Browsers without `document.startViewTransition` fall back to an instant swap.
+Fully controlled `index` / `onChange` with the default `transition="view-transition"`.
 
 <ComponentPreview
   name="pager-basic"

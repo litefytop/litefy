@@ -9,15 +9,17 @@ description: 受控的页码导航——首页 / 上一页 / 页码（带省略�
 
 ## 用法
 
-`Pagination` 是**完全受控的视图组件**：渲染 `page` 给定的一切，点击只通过 `onPageChange` 上报。它自己不持有状态——请搭配 [usePagination](/zh/docs/utils/use-pagination) 使用，由钩子持有页码、钳制边界，并提供 `goTo` / `next` / `previous` / `toFirst` / `toEnd`。
-
-以 1 为起始页、总页数创建钩子，把它的当前 index 作为 page、goTo 作为翻页回调传入，同一个 index 也用于展示当前页码。
-
-
+`Pagination` 是完全受控的视图组件：渲染 `page`，点击通过 `onPageChange` 上报——搭配持有页码状态的 [usePagination](/zh/docs/utils/use-pagination) 使用。
 
 <ComponentPreview name="pagination-basic" />
 
 页码列表展示首页、末页、当前页及其 `siblingCount` 个邻居，其余折叠为省略号。点击页码或箭头只会调用 `onPageChange`，组件自己永远不会翻页。
+
+### 禁用状态
+
+传入 `disabled` 冻结全部按钮——首页、上一页、页码、下一页、末页——例如翻页请求加载中时：
+
+<ComponentPreview name="pagination-disabled" />
 
 ### 分页文本
 

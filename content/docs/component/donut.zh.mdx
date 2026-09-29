@@ -29,6 +29,14 @@ Donut 用纯 SVG 渲染类目占比 —— 底层不依赖任何图表库。扇�
 
 `variant="pie"` 关闭中孔，读数移到图表下方。传入 `valueFormatter` 可控制读数的显示格式。
 
+### 数值格式化
+
+`valueFormatter` 控制中心读数的数值显示格式 —— 空闲时的总数与悬停时的扇形数值都经过它处理。默认为普通的 `toLocaleString`；这里将数值格式化为美元金额。
+
+<ComponentPreview
+  name="donut-value-formatter"
+/>
+
 ## API 参考
 
 ### Donut

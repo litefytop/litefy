@@ -9,9 +9,7 @@ description: A primitive component that automatically collapses overflowing chip
 
 ## Usage
 
-### Basic Usage
-
-The component is a pure primitive with two responsibilities: rendering chips and overflow-collapse measurement. It ships no built-in `+N` trigger and no built-in panel — the hidden set is exposed via the `onOverflowChange` callback, and `renderMore(hidden)` renders a custom trigger inline (the example composes a `+N` popover with `Popover`):
+A pure primitive: rendering chips and overflow-collapse measurement — the hidden set is exposed via `onOverflowChange`, and `renderMore(hidden)` renders a custom trigger inline.
 
 <ComponentPreview
   name="chip-group-basic"

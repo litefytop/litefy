@@ -9,12 +9,18 @@ description: 按 variant 渲染成品控件的表单字段——label、输入�
 
 ## 用法
 
-### 基础用法
-
-`FormItem` 按 `variant`（`input`、`textarea`、`select`、`password`、`number-input`）渲染对应的成品控件，布局固定为：**label → 输入框 → 描述 / 错误信息**（两者共用一个插槽——默认显示描述，字段无效时被错误信息替代）。它会向周围的 `Form` 注册自身以便提交时收集值，校验错误以 danger 文本显示在输入框下方，单独使用也可以。
+`FormItem` 按 `variant` 渲染对应的成品控件，布局固定为 **label → 输入框 → 描述 / 错误信息**——并向周围的 `Form` 注册自身，用于提交与校验。
 
 <ComponentPreview
   name="form-item"
+/>
+
+### 禁用状态
+
+在字段上设置 `disabled` 可冻结该控件的输入，表单其余部分照常工作——label、描述与错误行布局不变，仅控件不可交互。
+
+<ComponentPreview
+  name="form-item-disabled"
 />
 
 ### 校验

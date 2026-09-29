@@ -12,7 +12,6 @@
   "type": "commonjs",
   "dependencies": {
     "@axe-core/playwright": "^4.13.0",
-    "@welldone-software/why-did-you-render": "^10.0.1",
     "playwright": "^1.63.0"
   }
 }

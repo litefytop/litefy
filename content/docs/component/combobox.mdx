@@ -9,12 +9,26 @@ description: An input with a filterable dropdown list — local options with cli
 
 ## Usage
 
-### Basic Usage
-
 Pass `options` as local string options — typing filters them case-insensitively, `ArrowDown` / `ArrowUp` move the highlight, `Enter` or a click on a row selects.
 
 <ComponentPreview
   name="combobox-basic"
+/>
+
+### Invalid State
+
+`invalid` puts the input in the danger-border state and sets `aria-invalid` — wire it to your own validation, here flagging free text that is not one of the options.
+
+<ComponentPreview
+  name="combobox-invalid"
+/>
+
+### Empty
+
+`empty` replaces the default "No data" node rendered when the filtered list has no rows — pass any React node, e.g. an icon plus a hint. Async mode keeps its own default: "Loading..." while a request is in flight.
+
+<ComponentPreview
+  name="combobox-empty"
 />
 
 ### Async Search
