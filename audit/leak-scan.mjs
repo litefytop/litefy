@@ -16,16 +16,36 @@ import { startHarnessServer } from "./harness-server.mjs";
 
 const REPO = path.resolve(import.meta.dirname, "../..");
 const DEMOS_DIR = path.join(REPO, "app/demos");
-const SKIP_DIRS = new Set(["use-drag", "use-pagination", "use-remote-pagination", "use-theme", "virtual-scroll"]);
+const SKIP_DIRS = new Set([
+  "use-drag",
+  "use-pagination",
+  "use-remote-pagination",
+  "use-theme",
+  "virtual-scroll",
+]);
 const BASE = "http://localhost:5193";
 
 // Overlay/observer-heavy demos get the full 1000-cycle treatment.
 const RISK_ITERS = 1000;
 const BASE_ITERS = 200;
 const RISK = new Set([
-  "popover", "dialog", "drawer", "dropdown-menu", "tooltip", "select", "combobox",
-  "multi-select", "date-picker", "context-menu", "toast", "query-builder",
-  "banner", "chart", "masonry", "scroll-shadow", "watermark", "sidebar",
+  "popover",
+  "dialog",
+  "drawer",
+  "dropdown-menu",
+  "tooltip",
+  "select",
+  "combobox",
+  "multi-select",
+  "date-picker",
+  "context-menu",
+  "toast",
+  "banner",
+  "chart",
+  "masonry",
+  "scroll-shadow",
+  "watermark",
+  "sidebar",
 ]);
 const LONG_TAIL_MS = { toast: 6000 }; // let auto-dismiss timers expire before sampling
 const ONLY = process.argv.slice(2);
@@ -36,7 +56,10 @@ function manifest() {
     const p = path.join(DEMOS_DIR, dir);
     if (!fs.statSync(p).isDirectory() || SKIP_DIRS.has(dir)) continue;
     if (ONLY.length && !ONLY.includes(dir)) continue;
-    const files = fs.readdirSync(p).filter((f) => f.endsWith(".tsx")).sort();
+    const files = fs
+      .readdirSync(p)
+      .filter((f) => f.endsWith(".tsx"))
+      .sort();
     if (!files.length) continue;
     const pick = files.includes("basic.tsx") ? "basic.tsx" : files[0];
     out.push({ dir, demo: `${dir}/${pick.replace(/\.tsx$/, "")}` });
@@ -48,8 +71,24 @@ const server = await startHarnessServer(5193);
 await server.listen();
 console.log("harness up");
 
+// Browser binary: EDGE_PATH env override, then common install locations, then
+// Playwright's bundled Chromium (executablePath: undefined).
+function findBrowser() {
+  if (process.env.EDGE_PATH) return process.env.EDGE_PATH;
+  for (const p of [
+    "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+    "C:/Program Files/Microsoft/Edge/Application/msedge.exe",
+    "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
+    "/usr/bin/microsoft-edge",
+    "/usr/bin/microsoft-edge-stable",
+  ]) {
+    if (fs.existsSync(p)) return p;
+  }
+  return undefined;
+}
+
 const browser = await chromium.launch({
-  executablePath: "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+  executablePath: findBrowser(),
   // Headless avoids background-tab timer throttling and WeakRef-cleanup freezes
   // that plague headed runs when the window loses focus.
   headless: true,
@@ -135,33 +174,30 @@ async function measureDemo(item, iters) {
     }));
 
   const toggleLoop = (n) =>
-    page.evaluate(
-      async (n) => {
-        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-        const esc = () => {
-          const target = document.activeElement || document.body;
-          target.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
-          document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
-        };
-        const outsideDown = () =>
-          document.body.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
-        let buttons = [];
-        for (let i = 0; i < n; i++) {
-          if (i % 20 === 0 || !buttons.length) {
-            buttons = [...document.querySelectorAll("#root button:not([disabled])")];
-          }
-          const btn = buttons[i % buttons.length];
-          try {
-            btn.click();
-          } catch {}
-          await sleep(4);
-          esc();
-          if (i % 5 === 0) outsideDown();
-          await sleep(4);
+    page.evaluate(async (n) => {
+      const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+      const esc = () => {
+        const target = document.activeElement || document.body;
+        target.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+        document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+      };
+      const outsideDown = () =>
+        document.body.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+      let buttons = [];
+      for (let i = 0; i < n; i++) {
+        if (i % 20 === 0 || !buttons.length) {
+          buttons = [...document.querySelectorAll("#root button:not([disabled])")];
         }
-      },
-      n,
-    );
+        const btn = buttons[i % buttons.length];
+        try {
+          btn.click();
+        } catch {}
+        await sleep(4);
+        esc();
+        if (i % 5 === 0) outsideDown();
+        await sleep(4);
+      }
+    }, n);
 
   const record = { demo: item.demo, iters, error: null };
   try {
@@ -222,13 +258,16 @@ async function measureDemo(item, iters) {
       } else {
         record.canaryDetached = (await sample()).detached;
         detachedDelta = record.canaryDetached - s0.detached;
-        verdict = detachedDelta > 20 ? `REAL LEAK retained≈${record.canaryDetached}` : `artifact (cleared after canary; true retained≈${record.canaryDetached})`;
+        verdict =
+          detachedDelta > 20
+            ? `REAL LEAK retained≈${record.canaryDetached}`
+            : `artifact (cleared after canary; true retained≈${record.canaryDetached})`;
       }
     }
     Object.assign(record, {
-      heap0MB: +((s0.heap / 1048576).toFixed(2)),
-      heapMidMB: +((sMid.heap / 1048576).toFixed(2)),
-      heap1MB: +((s1.heap / 1048576).toFixed(2)),
+      heap0MB: +(s0.heap / 1048576).toFixed(2),
+      heapMidMB: +(sMid.heap / 1048576).toFixed(2),
+      heap1MB: +(s1.heap / 1048576).toFixed(2),
       growthMB: +(growth / 1048576).toFixed(2),
       segAMB: +(segA / 1048576).toFixed(2),
       segBMB: +(segB / 1048576).toFixed(2),
@@ -248,4 +287,29 @@ async function measureDemo(item, iters) {
   return record;
 }
 
-const mb = (bytes) => (bytes / 1048576).toFixed(2);
+const records = [];
+for (const item of manifest()) {
+  const iters = RISK.has(item.dir) ? RISK_ITERS : BASE_ITERS;
+  console.log(`scanning ${item.demo} (${iters} iters)...`);
+  const record = await measureDemo(item, iters);
+  records.push(record);
+  console.log(
+    record.error
+      ? `  ERROR ${record.error}`
+      : `  ${record.verdict} | heap ${record.heap0MB}->${record.heap1MB}MB (d${record.growthMB}) | detached ${record.detached0}->${record.detached1} | net listeners ${record.listenerDelta} | RO ${record.roDelta}`,
+  );
+}
+
+await browser.close();
+await server.close();
+
+fs.mkdirSync(new URL("./results/", import.meta.url), { recursive: true });
+fs.writeFileSync(new URL("./results/leak.json", import.meta.url), JSON.stringify(records, null, 1));
+console.log("done:", records.length);
+
+const flagged = records.filter((r) => r.error || /LEAK|UNVERIFIED/.test(r.verdict));
+if (flagged.length) {
+  console.log("flagged:");
+  for (const r of flagged) console.log(`  ${r.demo}: ${r.error ?? r.verdict}`);
+  process.exitCode = 1;
+}

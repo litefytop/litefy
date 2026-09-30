@@ -2,6 +2,24 @@
 
 针对 **litefy 库本身**的基准测试、回归扫描和审计报告。不是业务代码的设计检查——那是 `pnpm lint:design`（`.agents/skills/litefy-design/scripts/design-detect.mjs`）的职责。
 
+## Quality & Benchmarks
+
+Browser-based regression tooling that guards the component library itself:
+
+- **`leak-scan.mjs`** — memory-leak regression. Each demo is cycled (click / Escape / outside-mousedown, up to 1000 iterations for overlay-heavy components) inside a fresh browser context, then GC is forced and three signals are sampled: two-segment JS heap growth (separates warmup plateau from linear leak), detached DOM tracked via WeakRefs, and live ResizeObserver / MutationObserver counts plus net event-listener drift. A FinalizationRegistry canary tells real retention apart from pending WeakRef cleanup before any leak verdict is issued.
+- **`scan-docs.mjs`** — route-level axe-core accessibility + longtask scan of the docs site, driven by `routes.json`.
+- **`sizes.mjs` / `sizes-isolated.mjs`** — per-component bundle size (gzip), app-bundled vs isolated build.
+- **`full-bundle.mjs`** — whole-library bundle cost as a historical baseline (litefy ≈ 58.4K gzip vs antd ≈ 476K).
+
+Usage: start the shared harness server first, then run any scanner.
+
+```bash
+node audit/harness-server.mjs
+node audit/leak-scan.mjs [component ...]
+```
+
+Internal audit reports (`demo-audit.md`, `source-audit-parts/`) are working notes and intentionally excluded from the public repo.
+
 ## Demo 审计报告
 
 - `demo-audit.md` — 全量 demo 审计报告（182 个 demo 逐组件核对 + HeroUI 化粒度定案），行动项均已执行，留档备查

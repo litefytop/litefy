@@ -5,3 +5,6 @@ node_modules/
 /app/generated/
 .source
 audit/results
+# internal audit reports — Chinese working notes, not part of the public repo
+audit/demo-audit.md
+audit/source-audit-parts/
