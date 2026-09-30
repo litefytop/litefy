@@ -9,10 +9,5 @@ const options = [
 ];
 
 export default function SelectDisabledDemo() {
-  return (
-    <div className="flex flex-col gap-4">
-      <Select options={options} placeholder="Select a framework..." disabled />
-      <Select options={options} defaultValue="react" disabled />
-    </div>
-  );
+  return <Select options={options} placeholder="Select a framework..." disabled />;
 }
