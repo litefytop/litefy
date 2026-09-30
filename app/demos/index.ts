@@ -15,10 +15,6 @@ import DualPickerSingleDemo from "./dual-picker/single";
 import dualPickerSingleCode from "./dual-picker/single.tsx?raw";
 import DualPickerDisabledDemo from "./dual-picker/disabled";
 import dualPickerDisabledCode from "./dual-picker/disabled.tsx?raw";
-import QueryBuilderBasicDemo from "./query-builder/basic";
-import queryBuilderBasicCode from "./query-builder/basic.tsx?raw";
-import QueryBuilderDisabledDemo from "./query-builder/disabled";
-import queryBuilderDisabledCode from "./query-builder/disabled.tsx?raw";
 import StepsVerticalDemo from "./steps/vertical";
 import stepsVerticalCode from "./steps/vertical.tsx?raw";
 import AvatarBasicDemo from "./avatar/basic";
@@ -954,14 +950,6 @@ export const demos: Record<string, DemoItem> = {
   "dual-picker-disabled": {
     component: DualPickerDisabledDemo,
     code: dualPickerDisabledCode,
-  },
-  "query-builder-basic": {
-    component: QueryBuilderBasicDemo,
-    code: queryBuilderBasicCode,
-  },
-  "query-builder-disabled": {
-    component: QueryBuilderDisabledDemo,
-    code: queryBuilderDisabledCode,
   },
   "steps-vertical": {
     component: StepsVerticalDemo,

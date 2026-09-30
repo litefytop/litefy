@@ -49,7 +49,6 @@ export * from "./progress";
 export * from "./preview-card";
 export * from "./radio";
 export * from "./radar";
-export * from "./query-builder";
 export * from "./scroll-shadow";
 export * from "./select";
 export * from "./selectable-table";
