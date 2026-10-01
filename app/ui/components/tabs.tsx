@@ -95,18 +95,30 @@ export function TabsTrigger({ value, active = false, variant = "line", uid, onVa
         const tablist = el.closest('[role="tablist"]');
         if (!tablist)
             return;
+        // APG:水平 tablist 用 Left/Right,竖向另加 Up/Down;方向键只移焦点,Enter/Space 激活
+        const vertical = tablist.getAttribute("aria-orientation") === "vertical";
         const tabs = Array.from(tablist.querySelectorAll<HTMLButtonElement>('[role="tab"]:not([disabled])'));
         const currentIndex = tabs.indexOf(el);
-        if (e.key === "ArrowRight") {
+        if (e.key === "ArrowRight" || (vertical && e.key === "ArrowDown")) {
             e.preventDefault();
             const next = tabs[(currentIndex + 1) % tabs.length];
             next?.focus();
             return;
         }
-        if (e.key === "ArrowLeft") {
+        if (e.key === "ArrowLeft" || (vertical && e.key === "ArrowUp")) {
             e.preventDefault();
             const prev = tabs[(currentIndex - 1 + tabs.length) % tabs.length];
             prev?.focus();
+            return;
+        }
+        if (e.key === "Home") {
+            e.preventDefault();
+            tabs[0]?.focus();
+            return;
+        }
+        if (e.key === "End") {
+            e.preventDefault();
+            tabs[tabs.length - 1]?.focus();
             return;
         }
         if (e.key === "Enter" || e.key === " ") {

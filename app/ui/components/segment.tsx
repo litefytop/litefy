@@ -2,7 +2,7 @@
 import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
 
-/** fill:选中项填充主色,未选中无底色;text:纯文字,选中仅文字着主色(无填充) */
+/** fill:选中项填充主色,未选中无底色;text:纯文字无填充,选中文字着主色并加下划线 */
 export type SegmentVariant = "fill" | "text";
 export interface SegmentProps extends Omit<React.ComponentProps<"button">, "type" | "className"> {
     className?: ClassNameValue;
@@ -10,7 +10,7 @@ export interface SegmentProps extends Omit<React.ComponentProps<"button">, "type
     variant?: SegmentVariant;
 }
 export function Segment({ className, checked, variant = "fill", ...props }: SegmentProps) {
-    return (<button {...props} type="button" role="radio" aria-checked={checked} className={cn("relative inline-flex items-center justify-center gap-2 h-9 min-w-9 px-3 py-1 text-sm font-medium cursor-pointer select-none transition-colors duration-200", variant === "fill" ? cn("text-muted-foreground", "first:rounded-l-md last:rounded-r-md", "aria-checked:bg-primary aria-checked:text-primary-foreground") : cn("rounded-md text-muted-foreground hover:bg-accent", "aria-checked:text-primary-accent aria-checked:font-bold"), className)}/>);
+    return (<button {...props} type="button" role="radio" aria-checked={checked} className={cn("relative inline-flex items-center justify-center gap-2 h-9 min-w-9 px-3 py-1 text-sm font-medium cursor-pointer select-none transition-colors duration-200", variant === "fill" ? cn("text-muted-foreground hover:bg-accent", "first:rounded-l-md last:rounded-r-md", "aria-checked:bg-primary aria-checked:text-primary-foreground") : cn("rounded-md text-muted-foreground hover:bg-accent", "aria-checked:text-primary aria-checked:underline aria-checked:decoration-2 aria-checked:underline-offset-4"), className)}/>);
 }
 export interface SegmentOptionConfig {
     label: string;
