@@ -61,7 +61,7 @@ export function Wizard({ steps, children, onFinish, className, classNames, ...pr
     const nav = useWizardNavigation({ count: steps.length });
     return (<div {...props} className={cn("w-full space-y-6", className)}>
       <Steps items={steps} index={nav.index} maxIndex={nav.maxVisited} onChange={nav.go} className={classNames?.steps}/>
-      <Pager index={nav.index} onChange={nav.go} transition="view-transition" gesture={false} className={cn("h-48 w-full", classNames?.pager)}>
+      <Pager index={nav.index} onChange={nav.go} transition="slide" gesture={false} className={cn("h-48 w-full", classNames?.pager)}>
         {children}
       </Pager>
       <div className={cn("flex items-center justify-between", classNames?.footer)}>

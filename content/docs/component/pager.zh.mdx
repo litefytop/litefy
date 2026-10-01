@@ -33,7 +33,7 @@ description: 受控单 DOM 分页容器，支持触摸手势拖拽翻页、循�
 | `onChange`   | `(nextIndex: number) => void`   | -                 | 手势翻页提交后触发，由父组件更新 `index`          |
 | `children`   | `React.ReactNode[]`             | -                 | 每个子项一页；只有当前页挂载 DOM                  |
 | `loop`       | `boolean`                       | `false`           | 到达边界后循环翻页                                |
-| `transition` | `"none" \| "view-transition"`   | `"view-transition"` | 程序跳转的动画策略（不影响手势拖拽）            |
+| `transition` | `"none" \| "slide"`   | `"slide"` | 程序跳转的动画策略（不影响手势拖拽）            |
 | `gesture`    | `boolean`                       | `true`            | 是否启用触摸手势                                  |
 | `className`  | `ClassNameValue`                | -                 | 自定义类名 —— 必须包含宽高                        |
 | `...props`   | `React.ComponentProps<"div">`   | -                 | 原生 div 属性，透传到根容器                       |

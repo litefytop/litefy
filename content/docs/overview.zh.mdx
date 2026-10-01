@@ -4,3 +4,13 @@ description: Litefy UI 中所有组件、CSS 工具类与Hooks的快速索引。
 ---
 
 库的高层导览。选择一个分类以深入了解。
+
+## AI 用法指引
+
+把这份组件清单交给 AI 编码助手时，按优先级选择接入方式：
+
+1. **设计规范技能** —— `npx litefy@latest skill` 将 `litefy-design` 技能（语义 Token、阴影/圆角分级、组件选型规则、反模式库，随附 `design-detect` 校验脚本）安装进项目，规则常驻模型上下文。见 [Skills](/zh/docs/skill)。
+2. **`llms.txt`** —— 机器可读的文档索引 `/zh/llms.txt`，全文在 `/zh/llms-full.txt`。
+3. **单组件文档** —— 下方每个组件都链接到 `/zh/docs/component/<name>`，含 props、行为说明与在线演示。
+
+无论走哪条路径，生成契约一致：组合 Litefy 组件而非手写 HTML + Tailwind；只用语义 Token（`bg-background`、`text-primary`…）；复合成品与低层零件二选一，不得混用。

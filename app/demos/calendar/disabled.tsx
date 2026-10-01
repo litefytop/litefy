@@ -2,14 +2,16 @@
 
 import { useState } from "react";
 import { Calendar } from "@/ui";
+import { compareDates, currentDate } from "@/ui/utils/date-math";
 
 export default function Demo() {
-  const [visibleMonth, setVisibleMonth] = useState(() => Temporal.Now.plainDateISO());
-  const [selectedDate, setSelectedDate] = useState<Temporal.PlainDate | null>(null);
+  const [visibleMonth, setVisibleMonth] = useState(() => currentDate());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-  const isDateDisabled = (date: Temporal.PlainDate) => {
-    const today = Temporal.Now.plainDateISO();
-    return Temporal.PlainDate.compare(date, today) < 0 || date.dayOfWeek > 5;
+  const isDateDisabled = (date: Date) => {
+    const today = currentDate();
+    const weekday = date.getDay();
+    return compareDates(date, today) < 0 || weekday === 0 || weekday === 6;
   };
 
   return (

@@ -1,0 +1,14 @@
+/* Popover 皮肤 — headless 骨架见 app/ui/components/popover.tsx */
+@layer components {
+  [data-slot="popover-content"] {
+    min-width: 8rem;
+    max-height: 24rem;
+    overflow: auto;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border);
+    padding: 0.25rem;
+    background-color: var(--surface-raised);
+    color: var(--foreground);
+    box-shadow: var(--elevation-elevated);
+  }
+}

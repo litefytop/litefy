@@ -32,11 +32,11 @@ src/ui/litefy/
 └── styles/index.css   # global style entry, rewritten automatically by the CLI
 ```
 
-### 2. Install optional styles and components
+### 2. Install components
 
-`theme.css` (the required token layer) is already installed by `init`. `interactive.css` — the global disabled/focus/press behavior layer — is recommended but optional: skip it if you would rather implement your own interaction styles. See [Styles](/docs/styles) for the full layer list and the optional brand/surface presets.
+`init` already installed the complete style preset (`preset`): the token layer, the brand/surface color schemes, the global interactive layer and the component skins — shipped as one whole package, because a color scheme is only coherent when its layers travel together. Individual CSS files are no longer downloadable separately; browse their sources on the [Styles](/docs/styles) page.
 
-Add them together with your first components using the `add` command, e.g. `add style-interactive button`.
+Add your first components with the `add` command, e.g. `add button`.
 
 Every `add` rewrites `styles/index.css` to match what is installed — you never edit it by hand.
 
@@ -60,7 +60,7 @@ import { Button } from "@/ui/litefy";
 
 ### init
 
-Initialize your project: generate the `litefy.json` config file, create the `ui/litefy` directory structure, generate `utils/cn.ts` and the aggregate barrel, install the dependencies, download the required `style-theme` base style, and initialize the global style entry `styles/index.css`. Running `add` before initialization triggers the initialization flow automatically.
+Initialize your project: generate the `litefy.json` config file, create the `ui/litefy` directory structure, generate `utils/cn.ts` and the aggregate barrel, install the dependencies, download the whole-package `preset` style (tokens + color schemes + component skins), and initialize the global style entry `styles/index.css`. Running `add` before initialization triggers the initialization flow automatically.
 
 > ⚠️ Do not manually modify the path fields in `litefy.json`. If you change the paths yourself, you must keep the project alias and import statements in sync; the CLI will not fix them automatically.
 

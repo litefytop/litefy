@@ -1,7 +1,7 @@
 import axios from "axios";
 import fs from "fs-extra";
 import path from "node:path";
-import type { Registry, RegistryEntry } from "../commands/add";
+import type { Registry } from "../commands/add";
 
 const REGISTRY_CDN_URL =
   "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/packages/cli/registry.json";
@@ -33,8 +33,8 @@ export function getRepoPathFromUrl(url: string): string | null {
   return slash === -1 ? null : rest.slice(slash + 1);
 }
 
-export async function readPkgSource(entry: RegistryEntry): Promise<string | null> {
-  const repoPath = getRepoPathFromUrl(entry.url);
+export async function readPkgSource(url: string): Promise<string | null> {
+  const repoPath = getRepoPathFromUrl(url);
   if (!repoPath) return null;
   const localPath = path.join(PKG_ROOT, "sources", repoPath);
   if (!(await fs.pathExists(localPath))) return null;

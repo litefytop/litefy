@@ -72,10 +72,9 @@ export function Cascader({ tree, placeholder = "Select your location", className
         return (<PopoverContent key={level} open={isOpen} onOpenChange={(v) => {
                 if (!v)
                     setOpenLevel(null);
-            }} className={classNames?.panel} style={{
+            }} anchorName={`--cascader-${uid}-root`} className={classNames?.panel} style={{
                 width: "18rem",
                 ...styles?.panel,
-                positionAnchor: `--cascader-${uid}-root`,
             }}>
         <List items={items} renderItem={(node) => (<span className="flex items-center justify-between gap-2">
               <span>{node.label}</span>
@@ -84,7 +83,7 @@ export function Cascader({ tree, placeholder = "Select your location", className
       </PopoverContent>);
     });
     return (<>
-      <div {...props} style={{ anchorName: `--cascader-${uid}-root`, ...style }} className={cn("max-w-[40ch] rounded-md border text-sm shadow-base transition-colors", "hover:border-primary/50", "focus-within:outline-1 focus-within:outline-outline focus-within:ring-3 focus-within:ring-ring/50", className)}>
+      <div {...props} data-anchor-name={`--cascader-${uid}-root`} style={style} className={cn("max-w-[40ch] rounded-md border text-sm shadow-base transition-colors", "hover:border-primary/50", "focus-within:outline-1 focus-within:outline-outline focus-within:ring-3 focus-within:ring-ring/50", className)}>
         {trigger}
       </div>
       {panels}

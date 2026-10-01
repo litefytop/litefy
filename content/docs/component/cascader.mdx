@@ -1,6 +1,6 @@
 ---
 title: Cascader
-description: A multi-level cascading selector driven by a tree, built from a breadcrumb-style trigger and popover panels positioned via CSS anchor positioning
+description: A multi-level cascading selector driven by a tree, built from a breadcrumb-style trigger and popover panels positioned by a built-in JS positioning engine
 ---
 
 ## Installation
@@ -15,7 +15,7 @@ Pass a tree to `tree`; clicking a level opens its panel, clicking a leaf complet
   name="cascader-basic"
 />
 
-Requires Chrome 125+ for CSS anchor positioning.
+Panel positioning is handled by the built-in JS positioning engine — no browser feature beyond the Popover API is required.
 
 ## API Reference
 
@@ -25,7 +25,7 @@ Ready-to-use composite components.
 
 #### Cascader
 
-A multi-level cascading selector driven by a tree; panels default to `18rem` width via `styles.panel`, and the internally managed anchor props always take precedence over `styles`.
+A multi-level cascading selector driven by a tree; panels default to `18rem` width via `styles.panel`, and the internally managed positioning props (anchor + placement) always take precedence over `styles`.
 
 | Prop         | Type                                                                     | Default                  | Description                                                                                    |
 | :----------- | :----------------------------------------------------------------------- | :----------------------- | :--------------------------------------------------------------------------------------------- |

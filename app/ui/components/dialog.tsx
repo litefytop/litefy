@@ -8,19 +8,19 @@ export type DialogRootProps = Omit<React.ComponentProps<"dialog">, "className"> 
     className?: ClassNameValue;
 };
 export function DialogRoot({ className, ...props }: DialogRootProps) {
-    return <dialog {...props} className={cn("focus:outline-none", className)}/>;
+    return <dialog {...props} className={cn(className)}></dialog>;
 }
 export type DialogCloseProps = Omit<React.ComponentProps<"button">, "className"> & {
     className?: ClassNameValue;
 };
 export function DialogClose({ className, ...props }: DialogCloseProps) {
-    return (<button type="button" {...props} className={cn("absolute right-4 top-4 h-6 w-8 rounded-sm border text-xs font-mono font-medium text-muted-foreground transition-colors hover:bg-hover hover:text-foreground cursor-pointer select-none", className)}/>);
+    return (<button type="button" {...props} data-slot="dialog-close" className={cn(className)}/>);
 }
 export type DialogContentProps = Omit<React.ComponentProps<"div">, "className"> & {
     className?: ClassNameValue;
 };
 export function DialogContent({ className, ...props }: DialogContentProps) {
-    return (<div {...props} className={cn("fixed min-w-70 max-w-md", "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 m-0", "rounded-xl border p-6 shadow-elevated bg-surface-raised text-foreground", className)}/>);
+    return (<div {...props} data-slot="dialog-content" className={cn(className)}/>);
 }
 export interface DialogProps extends Omit<DialogContentProps, "className" | "styles" | "title"> {
     open: boolean;
@@ -65,17 +65,16 @@ export function Dialog({ className, style, classNames, styles, title, children, 
         e.preventDefault();
         onOpenChange?.(false);
     };
-    const renderCloseButton = () => (<DialogClose className={cn("static shrink-0", classNames?.close)} style={styles?.close} aria-label="Close (ESC)" onClick={() => onOpenChange?.(false)}>
+    const renderCloseButton = () => (<DialogClose data-inline="true" className={classNames?.close} style={styles?.close} aria-label="Close (ESC)" onClick={() => onOpenChange?.(false)}>
       ESC
     </DialogClose>);
-    return (<DialogRoot ref={ref} onKeyDown={handleKeyDown} onCancel={handleCancel} onClose={handleNativeClose} onClick={(e) => {
+    return (<DialogRoot ref={ref} data-open={open || undefined} onKeyDown={handleKeyDown} onCancel={handleCancel} onClose={handleNativeClose} onClick={(e) => {
             if (e.target === e.currentTarget)
                 onBackdropClick?.(e);
-        }} className={className} style={style}>
+        }} className={cn("litefy-dialog", className)} style={style}>
       <DialogContent {...props} style={styles?.content} className={classNames?.content}>
-        
-        <div className="mb-3 flex items-center justify-end gap-3">
-          {title != null && (<h3 className="mr-auto min-w-0 truncate text-lg font-semibold">{title}</h3>)}
+        <div data-slot="dialog-header">
+          {title != null && (<h3 data-slot="dialog-title">{title}</h3>)}
           {renderCloseButton()}
         </div>
         {children}
@@ -90,10 +89,10 @@ type DialogCommandOptions = {
     props?: DialogProps;
 };
 const commandIcons: Record<DialogCommandType, React.ReactNode> = {
-    success: <CircleCheck className="size-5 text-success"/>,
-    error: <X className="size-5 text-danger"/>,
-    warning: <TriangleAlert className="size-5 text-warning"/>,
-    info: <CircleHelp className="size-5 text-info"/>,
+    success: <CircleCheck data-dialog-icon="success"/>,
+    error: <X data-dialog-icon="error"/>,
+    warning: <TriangleAlert data-dialog-icon="warning"/>,
+    info: <CircleHelp data-dialog-icon="info"/>,
 };
 function renderCommandDialog(options: DialogCommandOptions) {
     let container: HTMLDivElement | null = document.createElement("div");
@@ -114,7 +113,7 @@ function renderCommandDialog(options: DialogCommandOptions) {
                 return () => clearTimeout(timer);
             }
         }, [open]);
-        const titleNode = options.title ? (options.type ? (<span className="flex items-center gap-2">
+        const titleNode = options.title ? (options.type ? (<span data-slot="dialog-title-icon">
           {commandIcons[options.type]}
           {options.title}
         </span>) : (options.title)) : undefined;

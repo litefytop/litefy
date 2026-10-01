@@ -18,11 +18,11 @@ Litefy 不提供完整项目脚手架，请在已有 React 项目中使用。
 
 ## 快速开始
 
-四步：初始化 → 安装必装样式与首批组件 → 引入全局样式入口 → 使用。
+四步：初始化 → 安装首批组件 → 引入全局样式入口 → 使用。
 
 ### 1. 初始化
 
-运行 `init` 命令（各包管理器变体见下方[命令](#命令)一节）。它会生成 `litefy.json` 配置，创建 `ui/litefy` 目录，安装 `react`、`react-dom`、`lucide-react`、`tailwindcss`、`tailwind-merge`，下载必装的 `style-theme` 基础样式，并写入自动生成的全局样式入口 `styles/index.css`。
+运行 `init` 命令（各包管理器变体见下方[命令](#命令)一节）。它会生成 `litefy.json` 配置，创建 `ui/litefy` 目录，安装 `react`、`react-dom`、`lucide-react`、`tailwindcss`、`tailwind-merge`，下载整包 `preset` 样式预设，并写入自动生成的全局样式入口 `styles/index.css`。
 
 ```txt
 src/ui/litefy/
@@ -32,11 +32,11 @@ src/ui/litefy/
 └── styles/index.css   # 全局样式入口，由 CLI 自动维护
 ```
 
-### 2. 安装可选样式与组件
+### 2. 安装组件
 
-`theme.css`（必装的令牌层）已由 `init` 自动安装。`interactive.css`——全局禁用/焦点/按压行为层——推荐安装但属可选：想自行实现交互样式可以跳过。完整的层级说明与可选的 brand/surface 预设见 [Styles](/zh/docs/styles)。
+`init` 已经装好完整的样式预设（`preset`）：令牌层、brand/surface 色板、全局交互层与组件皮肤——全部作为整包分发，因为配色方案只有各层成套在一起才是自洽的。单个 CSS 文件不再提供分别下载；源码可在 [Styles](/zh/docs/styles) 页浏览。
 
-用 `add` 命令把它和首批组件一起装上，例如 `add style-interactive button`。
+用 `add` 命令装上首批组件，例如 `add button`。
 
 每次 `add` 都会自动重写 `styles/index.css` 使其与已安装内容保持一致——无需手动编辑。
 
@@ -60,7 +60,7 @@ import { Button } from "@/ui/litefy";
 
 ### init
 
-初始化项目：生成 `litefy.json` 配置文件，创建 `ui/litefy` 目录结构，生成 `utils/cn.ts` 与聚合 barrel，安装所需依赖，下载必装的 `style-theme` 基础样式，并初始化全局样式入口 `styles/index.css`。未初始化直接执行 add，会自动触发初始化流程。
+初始化项目：生成 `litefy.json` 配置文件，创建 `ui/litefy` 目录结构，生成 `utils/cn.ts` 与聚合 barrel，安装所需依赖，下载整包 `preset` 样式预设（令牌 + 色板 + 组件皮肤），并初始化全局样式入口 `styles/index.css`。未初始化直接执行 add，会自动触发初始化流程。
 
 > ⚠️ 不要手动修改 `litefy.json` 中的路径字段。如果自行修改路径，你需要同步维护项目别名与导入语句，CLI 不会自动修复。
 

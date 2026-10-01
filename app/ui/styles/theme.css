@@ -39,6 +39,13 @@
   --elevation-subtle: 0 1px 2px 0 oklch(0% 0 0 / 6%), 0 2px 4px 0 oklch(0% 0 0 / 5%);
   --elevation-base: 0 2px 4px -1px oklch(0% 0 0 / 8%), 0 4px 8px -2px oklch(0% 0 0 / 8%);
   --elevation-elevated: 0 8px 16px -4px oklch(0% 0 0 / 12%), 0 20px 40px -8px oklch(0% 0 0 / 14%);
+  --elevation-pressed: inset 0 2px 4px 0 var(--accent);
+
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 0.75rem;
+  --space-lg: 1rem;
+  --space-xl: 1.5rem;
 }
 
 .dark {
@@ -67,6 +74,7 @@
   --elevation-subtle: 0 0 0 1px oklch(100% 0 0 / 7%), inset 0 1px 0 0 oklch(100% 0 0 / 7%), 0 1px 2px 0 oklch(0% 0 0 / 30%), 0 2px 4px 0 oklch(0% 0 0 / 25%);
   --elevation-base: 0 0 0 1px oklch(100% 0 0 / 9%), inset 0 1px 0 0 oklch(100% 0 0 / 9%), 0 2px 4px -1px oklch(0% 0 0 / 35%), 0 4px 8px -2px oklch(0% 0 0 / 30%);
   --elevation-elevated: 0 0 0 1px oklch(100% 0 0 / 14%), inset 0 1px 0 0 oklch(100% 0 0 / 11%), 0 8px 16px -4px oklch(0% 0 0 / 45%), 0 24px 48px -8px oklch(0% 0 0 / 50%);
+  --elevation-pressed: inset 0 1px 0 0 oklch(100% 0 0 / 9%), inset 0 -2px 4px 0 oklch(0% 0 0 / 30%);
 }
 
 @theme inline {

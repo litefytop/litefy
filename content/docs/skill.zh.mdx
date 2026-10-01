@@ -1,5 +1,5 @@
 ---
-title: AI Skill AI 技能
+title: Skills 技能
 description: 安装 Litefy UI 设计规范技能，让 AI 编码助手开箱即用写出正确的 Litefy UI
 ---
 
@@ -9,33 +9,58 @@ Litefy UI 设计规范技能（`litefy-design`）是一个 `SKILL.md` 文件，�
 
 加载技能后，模型不再手写裸 HTML + Tailwind，而是用正确的 Token 组合 Litefy 组件——与本站文档教的规则一致，且始终在模型上下文里。
 
-## 下载
+## 获取技能
 
-**[下载 litefy-design-skill.md](/litefy-design-skill.md)** —— 原始技能文件，构建时从仓库源文件自动同步，始终最新。
+### CLI 安装（推荐）
 
-**[下载 litefy-design-detect.mjs](/litefy-design-detect.mjs)** —— 随附的校验脚本。对你的项目源码目录运行（`node litefy-design-detect.mjs src`）：硬编码色值、任意值阴影、手写焦点/禁用样式为 error（非零退出码，可接 CI）；阴影旧刻度名与结构坏味道（同标签三层以上嵌套、Tabs 触发条配手搓面板、Tabs 嵌套、滚动嵌套）为 warn。
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest skill
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest skill
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest skill
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest skill
+    ```
+  </Tab>
+</Tabs>
+
+把 `SKILL.md`、配套 `CHANGELOG.md` 和随附的 `scripts/design-detect.mjs` 校验脚本一起装进当前项目的 `.claude/skills/litefy-design/` 目录。
+
+**选项**
+
+- `-d, --dir <path>`：目标技能目录（默认 `.claude/skills/litefy-design`）——指向你的工具实际扫描的目录，如 `.cursor/skills/litefy-design`
+- `-o, --overwrite`：覆盖已存在的文件
+
+### 单独下载源码
+
+逐个下载文件、自行放置：
+
+- **[litefy-design-skill.md](/litefy-design-skill.md)** —— 原始技能文件，构建时从仓库源文件自动同步，始终最新
+- **[litefy-design-detect.mjs](/litefy-design-detect.mjs)** —— 可独立使用的校验脚本
 
 两个文件也可以在 [GitHub](https://github.com/litefytop/litefy/tree/main/.agents/skills/litefy-design) 上查看。
 
-## 安装
+## 放在哪里
 
-### Claude Code（项目级技能）
+- **Claude Code**：项目内 `.claude/skills/litefy-design/SKILL.md`（随仓库提交，团队全员共享），或 `~/.claude/skills/litefy-design/SKILL.md` 作为个人全局安装
+- **其他支持 skills 的工具**：多数遵循同样的 `skills/<name>/SKILL.md` 约定（如 `~/.codex/skills/`、`.cursor/skills/`），把文件放进去即可
+- **不支持 skills 的工具**：文件就是纯 Markdown——把内容粘贴进你的 `AGENTS.md`、`CLAUDE.md` 或 `.cursorrules`，效果相同
 
-```bash
-mkdir -p .claude/skills/litefy-design
-curl -fsSL https://litefy.top/litefy-design-skill.md \
-  -o .claude/skills/litefy-design/SKILL.md
-```
+## 校验
 
-放在 `.claude/skills/` 下随仓库提交，团队全员共享。个人全局安装则放到 `~/.claude/skills/litefy-design/SKILL.md`。
-
-### 其他支持 skills 的工具
-
-把下载的文件放到你的工具扫描的技能目录即可（多数遵循同样的 `skills/<name>/SKILL.md` 约定，如 `~/.codex/skills/`、`.cursor/skills/`）。
-
-### 不支持 skills 的工具
-
-文件就是纯 Markdown——把内容粘贴进你的 `AGENTS.md`、`CLAUDE.md` 或 `.cursorrules`，效果相同。
+对项目的源码目录运行随附脚本（`node .claude/skills/litefy-design/scripts/design-detect.mjs src`，单独下载则 `node litefy-design-detect.mjs src`）：硬编码色值、任意值阴影、手写焦点/禁用样式为 error（非零退出码，可接 CI）；阴影旧刻度名与结构坏味道（同标签三层以上嵌套、Tabs 触发条配手搓面板、Tabs 嵌套、滚动嵌套）为 warn。加 `--fix` 可自动改写唯一机械安全的规则——旧阴影刻度名到同值的语义名（`shadow-sm` → `shadow-subtle`，零视觉变化）；其余问题一律只报告。
 
 ## 内容一览
 

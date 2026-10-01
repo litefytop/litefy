@@ -1,6 +1,7 @@
 "use client";
 import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
+import { useFloatingPosition, useMergedPanelRef } from "../utils/floating-position";
 type HTMLAttrs<T> = Omit<T, "className"> & {
     [key: `data-${string}`]: string | number | null | undefined | true;
     className?: ClassNameValue;
@@ -24,19 +25,14 @@ export function MenuLabel({ className, ...props }: MenuLabelProps) {
     return (<li role="group" className={cn("m-0 not-last:border-b px-2 py-1.5 text-xs text-muted-foreground", className)} {...props}/>);
 }
 export interface MenuSubContentProps extends HTMLAttrs<React.ComponentProps<"div">> {
-    positionAnchor?: string;
+    /** Name of the anchor item (matching its `data-anchor-name`) for the built-in JS positioning. */
+    anchorName?: string;
     className?: ClassNameValue;
 }
-export function MenuSubContent({ positionAnchor, className, style, ...props }: MenuSubContentProps) {
-    return (<div {...props} popover="manual" tabIndex={-1} className={cn("bg-surface-raised text-foreground w-3xs overflow-auto rounded-xl border p-1 shadow-elevated", className)} style={{
-            margin: 0,
-            positionAnchor,
-            positionArea: "right span-bottom",
-            justifySelf: "start",
-            alignSelf: "start",
-            positionTryFallbacks: "flip-inline, flip-block",
-            ...style,
-        }}/>);
+export function MenuSubContent({ anchorName, className, style, ref, ...props }: MenuSubContentProps) {
+    const panelRef = useMergedPanelRef<HTMLDivElement>(ref);
+    useFloatingPosition(panelRef, anchorName);
+    return (<div {...props} ref={panelRef} popover="manual" tabIndex={-1} data-float-anchor={anchorName} data-float-side="right" data-float-align="start" data-float-gap={0} className={cn("bg-surface-raised text-foreground w-3xs overflow-auto rounded-xl border p-1 shadow-elevated", className)} style={style}/>);
 }
 export type MenuItemConfig = {
     label: React.ReactNode;
@@ -143,7 +139,7 @@ function MenuList({ ref, items, uid, autoFocus, className, style, itemClassName,
             mi.onClick?.(e);
             onSelect?.(mi);
         };
-        return (<MenuItem key={entryId} data-entry={entryId} className={classNames?.item} style={{ anchorName: `--menu-sub-${entryId}`, ...styles?.item }} onKeyDown={(e) => {
+        return (<MenuItem key={entryId} data-entry={entryId} data-anchor-name={`--menu-sub-${entryId}`} className={classNames?.item} style={styles?.item} onKeyDown={(e) => {
                 const enabled = entries.filter((en) => !en.item.disabled);
                 const idx = enabled.findIndex((en) => en.entryId === activeEntry);
                 switch (e.key) {
@@ -299,7 +295,7 @@ export function Menu({ items, autoFocus, onSelect, onEscape, className, style, i
         : undefined;
     return (<>
       <MenuList ref={rootPanelRef} {...props} items={items} uid={`${id}-root`} autoFocus={autoFocus} className={cn(className)} style={style} itemClassName={itemClassName} classNames={{ item: classNames?.item, label: classNames?.label }} styles={{ item: styles?.item, label: styles?.label }} onSelect={handleSelect} onEscape={handleEscape} onArrowRight={(entryId, item) => openSub(entryId, item, true)} onItemMouseEnter={handleItemMouseEnter} onItemMouseLeave={handleItemMouseLeave}/>
-      {hoverSubItem && hoverAnchor && !!hoverSubItem.children?.length && (<MenuSubContent ref={subPanelRef} positionAnchor={hoverAnchor} onMouseEnter={clearTimer} onMouseLeave={handleItemMouseLeave} className={classNames?.sub} style={styles?.sub}>
+      {hoverSubItem && hoverAnchor && !!hoverSubItem.children?.length && (<MenuSubContent ref={subPanelRef} anchorName={hoverAnchor} onMouseEnter={clearTimer} onMouseLeave={handleItemMouseLeave} className={classNames?.sub} style={styles?.sub}>
           <MenuList autoFocus={subAutoFocus} items={hoverSubItem.children} uid={`${id}-sub`} itemClassName={itemClassName} classNames={{ item: classNames?.item, label: classNames?.label }} styles={{ item: styles?.item, label: styles?.label }} onSelect={handleSelect} onEscape={handleEscape} onArrowLeft={handleArrowLeft} onItemMouseEnter={clearTimer} onItemMouseLeave={handleItemMouseLeave}/>
         </MenuSubContent>)}
     </>);

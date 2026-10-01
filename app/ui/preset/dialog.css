@@ -1,0 +1,124 @@
+/* Dialog 皮肤 — 成品类：dialog.litefy-dialog，零件挂 data-slot="dialog-*"，状态用 data-open / data-inline；骨架见 app/ui/components/dialog.tsx */
+@layer components {
+  dialog.litefy-dialog {
+    margin: auto;
+    border: none;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  dialog.litefy-dialog:focus {
+    outline: none;
+  }
+
+  dialog.litefy-dialog::backdrop {
+    background: oklch(0% 0 0 / 50%);
+    backdrop-filter: blur(4px);
+  }
+
+  dialog.litefy-dialog[data-open="true"] {
+    display: grid;
+  }
+
+  [data-slot="dialog-content"] {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 17.5rem;
+    max-width: 28rem;
+    margin: 0;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    background-color: var(--surface-raised);
+    color: var(--foreground);
+    box-shadow: var(--elevation-elevated);
+  }
+
+  [data-slot="dialog-header"] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  [data-slot="dialog-title"] {
+    margin-right: auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    font-weight: 600;
+  }
+
+  [data-slot="dialog-close"] {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    height: 1.5rem;
+    width: 2rem;
+    cursor: pointer;
+    user-select: none;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 500;
+    color: var(--muted-foreground);
+    transition: background-color 150ms ease, color 150ms ease;
+  }
+
+  [data-slot="dialog-close"]:hover {
+    background-color: var(--accent);
+    color: var(--foreground);
+  }
+
+  /* 组合 Dialog 的行内标题按钮：脱离绝对定位，参与 header 行布局 */
+  [data-slot="dialog-close"][data-inline="true"] {
+    position: static;
+    flex-shrink: 0;
+  }
+
+  [data-slot="dialog-title-icon"] {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  [data-slot="dialog-title-icon"] > svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  [data-dialog-icon="success"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--success);
+  }
+
+  [data-dialog-icon="error"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--danger);
+  }
+
+  [data-dialog-icon="warning"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--warning);
+  }
+
+  [data-dialog-icon="info"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--info);
+  }
+}

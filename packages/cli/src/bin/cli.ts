@@ -5,6 +5,7 @@ import packageJson from "../../package.json";
 import add from "../commands/add";
 import install from "../commands/install";
 import init from "../commands/init";
+import skill from "../commands/skill";
 import rm from "../commands/rm";
 import repair from "../commands/repair";
 import clean from "../commands/clean";
@@ -42,6 +43,13 @@ program
   .action(async (opts) => {
     await install(opts);
   });
+
+program
+  .command("skill")
+  .description("Install the litefy-design skill (SKILL.md + design-detect validator)")
+  .option("-d, --dir <path>", "Target skill directory", ".claude/skills/litefy-design")
+  .option("-o, --overwrite", "Overwrite existing files")
+  .action(async (opts) => await skill(opts));
 
 program
   .command("rm <names...>")

@@ -1,14 +1,13 @@
 ---
 title: Calendar
-description: A calendar panel component built on the native Temporal API, supporting controlled selection, disabled dates and parts-based assembly
+description: A calendar panel component built on native JavaScript Date, supporting controlled selection, disabled dates and parts-based assembly
 ---
 
 ## Installation
 
 <Installation name="calendar" />
 
-> [!TIP]
-> The component uses the browser-native `Temporal.PlainDate` API. No date library is bundled and no polyfill is provided — make sure the target environment supports the Temporal API (Chrome 139+, or a polyfill installed by yourself).
+> The component works with plain JavaScript `Date` values treated as calendar dates (no time-zone semantics). No date library is bundled and no polyfill is needed — it runs on every Baseline browser.
 
 ## Usage
 
@@ -44,19 +43,19 @@ Ready-to-use composite component.
 
 | Prop                   | Type                                            | Default  | Description                                                                             |
 | :--------------------- | :---------------------------------------------- | :------- | :-------------------------------------------------------------------------------------- |
-| `visibleMonth`         | `Temporal.PlainDate`                            | -        | Required. The month panel currently displayed                                           |
-| `value`                | `Temporal.PlainDate \| null`                    | -        | Controlled selected date                                                                |
-| `defaultValue`         | `Temporal.PlainDate \| null`                    | -        | Default selected date (uncontrolled)                                                    |
+| `visibleMonth`         | `Date`                            | -        | Required. The month panel currently displayed                                           |
+| `value`                | `Date \| null`                    | -        | Controlled selected date                                                                |
+| `defaultValue`         | `Date \| null`                    | -        | Default selected date (uncontrolled)                                                    |
 | `view`                 | `"days" \| "months" \| "years"`                 | -        | Controlled active panel                                                                 |
 | `defaultView`          | `"days" \| "months" \| "years"`                 | `"days"` | Initial panel (uncontrolled)                                                            |
-| `onChange`             | `(date: Temporal.PlainDate) => void`            | -        | Fired when clicking a valid date inside the visible month                               |
-| `onVisibleMonthChange` | `(month: Temporal.PlainDate) => void`           | -        | Fired when the visible month changes (previous / next, panel pick, keyboard navigation) |
+| `onChange`             | `(date: Date) => void`            | -        | Fired when clicking a valid date inside the visible month                               |
+| `onVisibleMonthChange` | `(month: Date) => void`           | -        | Fired when the visible month changes (previous / next, panel pick, keyboard navigation) |
 | `onViewChange`         | `(view: "days" \| "months" \| "years") => void` | -        | Fired when the active panel changes                                                     |
-| `isDateDisabled`       | `(date: Temporal.PlainDate) => boolean`         | -        | Return `true` to disable the date                                                       |
+| `isDateDisabled`       | `(date: Date) => boolean`         | -        | Return `true` to disable the date                                                       |
 | `firstDayOfWeek`       | `0 \| 1`                                        | `0`      | `0` starts the week on Sunday, `1` starts it on Monday                                  |
 | `className`            | `ClassNameValue`                                | -        | Custom class names, applied to the root                                                 |
 
-`Temporal.PlainDate` is immutable — all month arithmetic is performed with `add` / `subtract` / `with`, never by mutating an existing object.
+Dates are plain JavaScript `Date` values used as calendar dates. The component treats them as immutable — it never mutates the `Date` you pass in and always emits fresh `Date` objects (anchored at local noon to stay DST-safe) from `onVisibleMonthChange` / `onChange`. Month arithmetic clamps the day to the end of the target month: Jan 31 + 1 month becomes Feb 28/29.
 
 `Calendar.calendarMonthLabels` is process-global — set it once at your app entry (it also affects [DatePicker](/docs/component/datepicker)); day-grid weekday abbreviations are fixed English.
 
@@ -112,11 +111,11 @@ Text button for the header title area — typically rendered twice as the year a
 
 | Prop              | Type                                     | Default | Description                                                       |
 | :---------------- | :--------------------------------------- | :------ | :---------------------------------------------------------------- |
-| `visibleMonth`    | `Temporal.PlainDate`                     | -       | Source of the shown year; its month is the fallback tab stop      |
-| `value`           | `Temporal.PlainDate \| null`             | -       | Selected date, highlights the cell of the same month              |
-| `isMonthDisabled` | `(month: Temporal.PlainDate) => boolean` | -       | Receives the first day of each month; return `true` to disable it |
-| `onSelect`        | `(month: Temporal.PlainDate) => void`    | -       | Fired with the first day of the picked month                      |
-| `onNavigate`      | `(month: Temporal.PlainDate) => void`    | -       | Fired when arrowing out of the shown year with the target month   |
+| `visibleMonth`    | `Date`                     | -       | Source of the shown year; its month is the fallback tab stop      |
+| `value`           | `Date \| null`             | -       | Selected date, highlights the cell of the same month              |
+| `isMonthDisabled` | `(month: Date) => boolean` | -       | Receives the first day of each month; return `true` to disable it |
+| `onSelect`        | `(month: Date) => void`    | -       | Fired with the first day of the picked month                      |
+| `onNavigate`      | `(month: Date) => void`    | -       | Fired when arrowing out of the shown year with the target month   |
 | `className`       | `ClassNameValue`                         | -       | Custom class names                                                |
 | `...props`        | `React.ComponentProps<"div">`            | -       | Native div props                                                  |
 
@@ -126,11 +125,11 @@ Text button for the header title area — typically rendered twice as the year a
 
 | Prop             | Type                                    | Default | Description                                                    |
 | :--------------- | :-------------------------------------- | :------ | :------------------------------------------------------------- |
-| `visibleMonth`   | `Temporal.PlainDate`                    | -       | Centers the 12-year window; its year is the fallback tab stop  |
-| `value`          | `Temporal.PlainDate \| null`            | -       | Selected date, highlights the cell of the same year            |
-| `isYearDisabled` | `(year: Temporal.PlainDate) => boolean` | -       | Receives January 1st of each year; return `true` to disable it |
-| `onSelect`       | `(year: Temporal.PlainDate) => void`    | -       | Fired with January 1st of the picked year                      |
-| `onNavigate`     | `(year: Temporal.PlainDate) => void`    | -       | Fired when arrowing out of the window with the target year     |
+| `visibleMonth`   | `Date`                    | -       | Centers the 12-year window; its year is the fallback tab stop  |
+| `value`          | `Date \| null`            | -       | Selected date, highlights the cell of the same year            |
+| `isYearDisabled` | `(year: Date) => boolean` | -       | Receives January 1st of each year; return `true` to disable it |
+| `onSelect`       | `(year: Date) => void`    | -       | Fired with January 1st of the picked year                      |
+| `onNavigate`     | `(year: Date) => void`    | -       | Fired when arrowing out of the window with the target year     |
 | `className`      | `ClassNameValue`                        | -       | Custom class names                                             |
 | `...props`       | `React.ComponentProps<"div">`           | -       | Native div props                                               |
 
@@ -140,12 +139,12 @@ Weekday header row plus the weeks body — pass a two-dimensional `weeks` array 
 
 | Prop             | Type                                    | Default | Description                                                   |
 | :--------------- | :-------------------------------------- | :------ | :------------------------------------------------------------ |
-| `weeks`          | `Temporal.PlainDate[][]`                | -       | Two-dimensional weeks array, 7 dates per row                  |
-| `visibleMonth`   | `Temporal.PlainDate`                    | -       | Used to detect out-of-month cells                             |
-| `value`          | `Temporal.PlainDate \| null`            | -       | Selected date, drives the highlighted cell                    |
-| `isDateDisabled` | `(date: Temporal.PlainDate) => boolean` | -       | Return `true` to disable the date                             |
-| `onSelect`       | `(date: Temporal.PlainDate) => void`    | -       | Fired on cell click; the composite filters out-of-month dates |
-| `onNavigate`     | `(date: Temporal.PlainDate) => void`    | -       | Fired when arrowing to a date not present in the grid         |
+| `weeks`          | `Date[][]`                | -       | Two-dimensional weeks array, 7 dates per row                  |
+| `visibleMonth`   | `Date`                    | -       | Used to detect out-of-month cells                             |
+| `value`          | `Date \| null`            | -       | Selected date, drives the highlighted cell                    |
+| `isDateDisabled` | `(date: Date) => boolean` | -       | Return `true` to disable the date                             |
+| `onSelect`       | `(date: Date) => void`    | -       | Fired on cell click; the composite filters out-of-month dates |
+| `onNavigate`     | `(date: Date) => void`    | -       | Fired when arrowing to a date not present in the grid         |
 | `firstDayOfWeek` | `0 \| 1`                                | `0`     | Weekday header order                                          |
 | `className`      | `ClassNameValue`                        | -       | Custom class names                                            |
 | `...props`       | `React.ComponentProps<"div">`           | -       | Native div props                                              |
@@ -156,12 +155,12 @@ A single week row, usually rendered by `CalendarGrid`.
 
 | Prop             | Type                                    | Default | Description                                                                                  |
 | :--------------- | :-------------------------------------- | :------ | :------------------------------------------------------------------------------------------- |
-| `week`           | `Temporal.PlainDate[]`                  | -       | The 7 dates of this week                                                                     |
-| `visibleMonth`   | `Temporal.PlainDate`                    | -       | Used to detect out-of-month cells                                                            |
-| `value`          | `Temporal.PlainDate \| null`            | -       | Selected date                                                                                |
-| `isDateDisabled` | `(date: Temporal.PlainDate) => boolean` | -       | Return `true` to disable the date                                                            |
-| `onSelect`       | `(date: Temporal.PlainDate) => void`    | -       | Fired on cell click                                                                          |
-| `onNavigate`     | `(date: Temporal.PlainDate) => void`    | -       | Fired when arrowing to a date not present in the grid                                        |
+| `week`           | `Date[]`                  | -       | The 7 dates of this week                                                                     |
+| `visibleMonth`   | `Date`                    | -       | Used to detect out-of-month cells                                                            |
+| `value`          | `Date \| null`            | -       | Selected date                                                                                |
+| `isDateDisabled` | `(date: Date) => boolean` | -       | Return `true` to disable the date                                                            |
+| `onSelect`       | `(date: Date) => void`    | -       | Fired on cell click                                                                          |
+| `onNavigate`     | `(date: Date) => void`    | -       | Fired when arrowing to a date not present in the grid                                        |
 | `tabStopDate`    | `string`                                | -       | ISO date string of the single tab stop in the grid; omit to keep all cells natively tabbable |
 | `className`      | `ClassNameValue`                        | -       | Custom class names                                                                           |
 | `...props`       | `React.ComponentProps<"div">`           | -       | Native div props                                                                             |
@@ -172,10 +171,10 @@ A single date cell rendered as a button.
 
 | Prop           | Type                             | Default | Description                                                                                |
 | :------------- | :------------------------------- | :------ | :----------------------------------------------------------------------------------------- |
-| `date`         | `Temporal.PlainDate`             | -       | The date this cell renders (shows `date.day`)                                              |
+| `date`         | `Date`             | -       | The date this cell renders (shows `date.getDate()`)                                              |
 | `outsideMonth` | `boolean`                        | `false` | Grays out cells not belonging to the visible month                                         |
 | `selected`     | `boolean`                        | `false` | Highlights the cell as selected                                                            |
 | `tabStop`      | `boolean`                        | -       | Roving tabindex: `true` makes the cell the only tab stop; omit to keep native tab behavior |
-| `onNavigate`   | `(date: Temporal.PlainDate) => void` | -   | Fired when arrowing to a date not present in the grid                                       |
+| `onNavigate`   | `(date: Date) => void` | -   | Fired when arrowing to a date not present in the grid                                       |
 | `className`    | `ClassNameValue`                 | -       | Custom class names                                                                         |
 | `...props`     | `React.ComponentProps<"button">` | -       | Native button props (except `type`), such as `disabled`                                    |

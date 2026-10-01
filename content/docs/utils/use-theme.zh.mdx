@@ -1,6 +1,6 @@
 ---
 title: use-theme 主题
-description: 全局主题状态 hook，品牌、表面与颜色模式持久化到 localStorage
+description: 全局颜色模式 hook，亮色 / 暗色 / 跟随系统持久化到 localStorage
 ---
 
 ## 安装
@@ -9,15 +9,17 @@ description: 全局主题状态 hook，品牌、表面与颜色模式持久化�
 
 ## 用法
 
-通过 `useSyncExternalStore` 共享的模块级全局状态。加载时从 localStorage 读取 `brand` / `surface` / `theme`，应用到 `document.documentElement`（`data-brand`、`data-surface`、`.dark`、`color-scheme`），`theme` 为 `"system"` 时跟随系统配色。
+通过 `useSyncExternalStore` 共享的模块级全局状态。加载时从 localStorage 读取 `theme`，应用到 `document.documentElement`（`.dark`、`color-scheme`），`theme` 为 `"system"` 时跟随系统配色。
 
 <ComponentPreview
   name="use-theme-basic"
 />
 
-## 主题 token
+风格模板**不做运行时切换**——每个模板自带完整的亮色 + 暗色令牌集，在安装时选定。详见[样式](/docs/styles)与[默认方案](/docs/templates/default)。`useTheme` 只负责已安装模板内部的亮 / 暗 / 跟随系统模式。
 
-`surface` 和 `brand` 切换 `app/ui/styles/*-surface.css` 与 `app/ui/styles/*-brand.css` 中定义的 CSS 变量集。上方预览可以实时切换。如需静态安装预设色板，请参阅[样式](/docs/styles)。
+## 颜色令牌家族
+
+已安装的模板在 `:root` / `.dark` 上定义两组可复用色板：
 
 ### Surface（表面）
 
@@ -37,7 +39,7 @@ Brand 是主题色，除默认黑白主题外都是彩色的：
 | Token | 用途 |
 |------|------|
 | `--primary` | 品牌主色，用于重点操作与强调状态 |
-| `--accent` | primary 的加强色，用于 hover 场景 |
+| `--primary-accent` | primary 的加强色，用于 hover 场景 |
 | `--ring` | 用于 border 和外边框（焦点环），同属品牌色系 |
 
 ## API 参考
@@ -52,16 +54,12 @@ function useTheme(): ThemeState
 
 | 属性 | 类型 | 说明 |
 |------|------|------|
-| `brand` | `string` | 当前品牌 token，映射到根元素的 `data-brand` |
-| `surface` | `string` | 当前表面 token，映射到根元素的 `data-surface` |
 | `theme` | `'light' \| 'dark' \| 'system'` | 当前颜色模式 |
-| `setBrand` | `(brand: string) => void` | 设置品牌 token，持久化并应用 |
-| `setSurface` | `(surface: string) => void` | 设置表面 token，持久化并应用 |
 | `setTheme` | `(mode: ThemeMode) => void` | 设置颜色模式，持久化并应用 |
-| `toggleTheme` | `() => void` | 在亮色与暗色之间切换（`system` 时先解析实际模式） |
+| `toggleTheme` | `() => void` | 在亮色与暗色之间切换（system 时先解析系统实际模式） |
 
-**注意事项：**
+**注意：**
 
-- 状态保存在 React 之外，多处调用 `useTheme` 共享同一份 store 并同步更新。
-- 持久化到 localStorage 的 `theme-storage` 键。
-- `theme` 为 `"system"` 时保留存储值，实际应用的模式实时跟随 `prefers-color-scheme` 变化。
+- 全部状态存放在 React 之外；多个组件调用 `useTheme` 共享同一个 store，一起重渲染。
+- 持久化在 `theme-storage` localStorage 键下。
+- `theme` 为 `"system"` 时保留存储值，实际应用模式随 `prefers-color-scheme` 实时变化。

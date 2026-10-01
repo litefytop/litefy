@@ -5,18 +5,10 @@ import * as React from "react";
 export function detectMissingFeatures(): string[] {
   if (typeof window === "undefined") return [];
   if (new URLSearchParams(window.location.search).has("force-unsupported")) {
-    return ["Popover API", "CSS Anchor Positioning", "Temporal API"];
+    return ["Popover API"];
   }
   const missing: string[] = [];
   if (!("popover" in HTMLElement.prototype)) missing.push("Popover API");
-  if (
-    typeof CSS === "undefined" ||
-    typeof CSS.supports !== "function" ||
-    !CSS.supports("anchor-name: --litefy-check")
-  ) {
-    missing.push("CSS Anchor Positioning");
-  }
-  if (typeof Temporal === "undefined") missing.push("Temporal API");
   return missing;
 }
 
@@ -24,14 +16,6 @@ const featureReasons: Record<string, { en: string; zh: string }> = {
   "Popover API": {
     en: "Popover API — floating panels (menus, selects, pickers)",
     zh: "Popover API —— 弹出面板(菜单、下拉、拾取器)",
-  },
-  "CSS Anchor Positioning": {
-    en: "CSS Anchor Positioning — panel positioning",
-    zh: "CSS Anchor Positioning —— 面板定位",
-  },
-  "Temporal API": {
-    en: "Temporal API — date handling",
-    zh: "Temporal API —— 日期处理",
   },
 };
 

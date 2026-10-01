@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { Popover } from "@/ui";
-import { Button } from "@/ui";
 
 const actions = ["Rename", "Duplicate", "Delete"];
 
@@ -12,7 +11,7 @@ export default function PopoverBasicDemo() {
     <div className="flex flex-col items-center gap-3">
       <Popover
         trigger="Open"
-        classNames={{ trigger: Button.className.primary }}
+        classNames={{ trigger: "litefy-button litefy-button-primary" }}
       >
         <div className="flex flex-col">
           {actions.map((action) => (

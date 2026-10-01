@@ -1,6 +1,6 @@
 ---
 title: Date Picker
-description: A date picker built on the native Temporal API — an editable input, a month panel and pointer-anchored popover in one shipped component
+description: A date picker built on native JavaScript Date — an editable input, a month panel and pointer-anchored popover in one shipped component
 ---
 
 ## Installation
@@ -9,7 +9,7 @@ description: A date picker built on the native Temporal API — an editable inpu
 
 ## Usage
 
-An editable input plus a month panel — requires the native [Temporal API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal) (Chrome 136+, Firefox 139+, Safari 26).
+An editable input plus a month panel — works with plain JavaScript `Date` values (treated as calendar dates); no date library or polyfill required, runs on every Baseline browser.
 
 <ComponentPreview
   name="date-picker-basic"
@@ -33,14 +33,14 @@ A controlled-or-uncontrolled date field; the visible month and panel open state 
 
 | Prop              | Type                                           | Default                     | Description                                                                                   |
 | :---------------- | :--------------------------------------------- | :-------------------------- | :-------------------------------------------------------------------------------------------- |
-| `value`           | `Temporal.PlainDate \| null`                   | -                           | Controlled selected date                                                                      |
-| `defaultValue`    | `Temporal.PlainDate \| null`                   | -                           | Initial selected date (uncontrolled)                                                          |
-| `onValueChange`   | `(date: Temporal.PlainDate) => void`           | -                           | Fired when a date is committed — picked from the panel, or `Enter` on a complete typed date   |
+| `value`           | `Date \| null`                   | -                           | Controlled selected date                                                                      |
+| `defaultValue`    | `Date \| null`                   | -                           | Initial selected date (uncontrolled)                                                          |
+| `onValueChange`   | `(date: Date) => void`           | -                           | Fired when a date is committed — picked from the panel, or `Enter` on a complete typed date   |
 | `placeholder`     | `string`                                       | `"Select or type a date"`   | Input placeholder                                                                             |
 | `disabled`        | `boolean`                                      | -                           | Disables the input and the panel                                                              |
 | `invalid`         | `boolean`                                      | -                           | External invalid state — shows the danger border (also set internally when validation clears the input) |
 | `firstDayOfWeek`  | `0 \| 1`                                       | `0`                         | First day of the calendar week (`0` = Sunday, `1` = Monday)                                   |
-| `isDateDisabled`  | `(date: Temporal.PlainDate) => boolean`        | -                           | Predicate disabling calendar dates                                                            |
+| `isDateDisabled`  | `(date: Date) => boolean`        | -                           | Predicate disabling calendar dates                                                            |
 | `trailing`        | `React.ReactNode`                              | calendar icon               | Trailing decoration inside the input                                                          |
 | `onKeyDown`       | `React.KeyboardEventHandler<HTMLInputElement>` | -                           | Runs before the built-in `Enter` commit; `preventDefault()` cancels it                        |
 | `classNames`      | `{ input?; trailing?; panel? }` — each `ClassNameValue` | -                  | Custom classes for the input, its trailing decoration and the calendar panel                  |

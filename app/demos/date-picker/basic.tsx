@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { DatePicker } from "@/ui";
+import { toISODate } from "@/ui/utils/date-math";
 
 export default function DatePickerBasicDemo() {
-  const [date, setDate] = useState<Temporal.PlainDate | null>(null);
+  const [date, setDate] = useState<Date | null>(null);
 
   return (
     <div className="flex flex-col items-center gap-3">
@@ -14,7 +15,7 @@ export default function DatePickerBasicDemo() {
         onValueChange={setDate}
       />
       <p className="text-sm text-muted-foreground">
-        Selected: {date?.toString() ?? "-"}
+        Selected: {date ? toISODate(date) : "-"}
       </p>
     </div>
   );

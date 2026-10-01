@@ -38,10 +38,16 @@ interface LitefyConfig {
 export type RegistryEntry = {
   type: "component" | "hook" | "util" | "css";
   url: string;
+  /** Whole-package CSS entries list every file URL; `url` stays the anchor file. */
+  files?: string[];
   docs?: string;
   dependence?: string[];
   dependencies?: string[];
 };
+
+export function entryFileUrls(entry: RegistryEntry): string[] {
+  return entry.files?.length ? entry.files : [entry.url];
+}
 
 export type Registry = Record<string, RegistryEntry>;
 
@@ -185,32 +191,35 @@ export async function addSingle(
   const targetDir = path.resolve(cwd, relTargetDir);
   await fs.ensureDir(targetDir);
 
-  const fileName = getFileNameFromUrl(entry.url);
-  const outFile = path.join(targetDir, fileName);
-  const exists = await fs.pathExists(outFile);
+  let ok = true;
+  for (const url of entryFileUrls(entry)) {
+    const fileName = getFileNameFromUrl(url);
+    const outFile = path.join(targetDir, fileName);
+    const exists = await fs.pathExists(outFile);
 
-  if (exists && !options.overwrite) {
-    logger.warn(`${fileName} exists, skip. Use --overwrite to replace.`);
-    return true;
-  }
-
-  logger.step(`Download ${itemName} → ${path.relative(cwd, outFile)}`);
-  try {
-    const res = await axios.get<string>(entry.url, { timeout: 10000 });
-    await fs.writeFile(outFile, res.data, "utf-8");
-    logger.success(`Saved ${fileName}`);
-  } catch {
-    const pkgSource = await readPkgSource(entry);
-    if (pkgSource !== null) {
-      await fs.writeFile(outFile, pkgSource, "utf-8");
-      logger.success(`Saved ${fileName} (from package sources)`);
-      return true;
+    if (exists && !options.overwrite) {
+      logger.warn(`${fileName} exists, skip. Use --overwrite to replace.`);
+      continue;
     }
-    logger.error(`Download failed ${itemName}: CDN unreachable and no package source fallback`);
-    return false;
+
+    logger.step(`Download ${itemName} → ${path.relative(cwd, outFile)}`);
+    try {
+      const res = await axios.get<string>(url, { timeout: 10000 });
+      await fs.writeFile(outFile, res.data, "utf-8");
+      logger.success(`Saved ${fileName}`);
+    } catch {
+      const pkgSource = await readPkgSource(url);
+      if (pkgSource !== null) {
+        await fs.writeFile(outFile, pkgSource, "utf-8");
+        logger.success(`Saved ${fileName} (from package sources)`);
+        continue;
+      }
+      logger.error(`Download failed ${itemName}: CDN unreachable and no package source fallback`);
+      ok = false;
+    }
   }
 
-  return true;
+  return ok;
 }
 
 export default add;

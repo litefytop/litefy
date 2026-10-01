@@ -1,5 +1,5 @@
 ---
-title: AI Skill
+title: Skills
 description: Install the Litefy UI design skill so AI coding assistants write correct Litefy UI out of the box
 ---
 
@@ -9,33 +9,58 @@ The Litefy UI design skill (`litefy-design`) is a `SKILL.md` file that teaches A
 
 With the skill loaded, the model stops hand-writing raw HTML + Tailwind and starts composing Litefy components with the right tokens — the same rules this documentation site teaches, but always in the model's context.
 
-## Download
+## Get the skill
 
-**[Download litefy-design-skill.md](/litefy-design-skill.md)** — the raw skill file, always synced from the repo's source of truth at build time.
+### Install with the CLI (recommended)
 
-**[Download litefy-design-detect.mjs](/litefy-design-detect.mjs)** — the bundled validation script. Run it against your project's source root (`node litefy-design-detect.mjs src`); violations of the hardcoded-color, arbitrary-shadow and handwritten-focus rules exit non-zero so it can gate CI, while legacy shadow scale names and structural smells (3+ same-tag nesting, hand-rolled Tabs panels, nested Tabs, nested scrolling) are reported as warnings.
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest skill
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest skill
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest skill
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest skill
+    ```
+  </Tab>
+</Tabs>
+
+Installs `SKILL.md`, its `CHANGELOG.md` and the bundled `scripts/design-detect.mjs` validator into `.claude/skills/litefy-design/` of the current project.
+
+**Options**
+
+- `-d, --dir <path>`: target skill directory (default `.claude/skills/litefy-design`) — point it wherever your agent scans, e.g. `.cursor/skills/litefy-design`
+- `-o, --overwrite`: replace existing files
+
+### Download the source files
+
+Grab the individual files and place them yourself:
+
+- **[litefy-design-skill.md](/litefy-design-skill.md)** — the raw skill file, always synced from the repo's source of truth at build time
+- **[litefy-design-detect.mjs](/litefy-design-detect.mjs)** — the validation script standalone
 
 Both files are also viewable on [GitHub](https://github.com/litefytop/litefy/tree/main/.agents/skills/litefy-design).
 
-## Install
+## Where to put it
 
-### Claude Code (project skill)
+- **Claude Code**: `.claude/skills/litefy-design/SKILL.md` inside the project (commit it and the whole team shares the skill), or `~/.claude/skills/litefy-design/SKILL.md` for a personal, machine-wide install
+- **Other agents with skills support**: most follow the same `skills/<name>/SKILL.md` convention (e.g. `~/.codex/skills/`, `.cursor/skills/`) — place the files there
+- **Agents without skill support**: the file is plain Markdown — paste its content into your `AGENTS.md`, `CLAUDE.md` or `.cursorrules` and it works the same
 
-```bash
-mkdir -p .claude/skills/litefy-design
-curl -fsSL https://litefy.top/litefy-design-skill.md \
-  -o .claude/skills/litefy-design/SKILL.md
-```
+## Validate
 
-Committing it under `.claude/skills/` shares the skill with your whole team through the repo. Use `~/.claude/skills/litefy-design/SKILL.md` instead for a personal, machine-wide install.
-
-### Other agents with skills support
-
-Place the downloaded file at the skills location your agent scans (most follow the same `skills/<name>/SKILL.md` convention, e.g. `~/.codex/skills/`, `.cursor/skills/`).
-
-### Agents without skill support
-
-The file is plain Markdown — paste its content into your `AGENTS.md`, `CLAUDE.md` or `.cursorrules` and it works the same.
+Run the bundled script against your project's source root (`node .claude/skills/litefy-design/scripts/design-detect.mjs src`, or `node litefy-design-detect.mjs src` for a standalone download): violations of the hardcoded-color, arbitrary-shadow and handwritten-focus rules exit non-zero so it can gate CI, while legacy shadow scale names and structural smells (3+ same-tag nesting, hand-rolled Tabs panels, nested Tabs, nested scrolling) are reported as warnings. Add `--fix` to auto-rewrite the one mechanically safe rule — legacy shadow scale names to their identical-valued semantic names (`shadow-sm` → `shadow-subtle`); every other finding stays report-only.
 
 ## What's inside
 

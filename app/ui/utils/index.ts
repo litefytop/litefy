@@ -15,3 +15,5 @@ export * from "./use-load-more";
 export * from "./use-floating-panel";
 export * from "./trap-tab-key";
 export * from "./use-image-status";
+export * from "./date-math";
+export * from "./floating-position";

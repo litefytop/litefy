@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { Calendar } from "@/ui";
+import { currentDate, toISODate } from "@/ui/utils/date-math";
 
 export default function Demo() {
-  const [visibleMonth, setVisibleMonth] = useState(() => Temporal.Now.plainDateISO());
-  const [selectedDate, setSelectedDate] = useState<Temporal.PlainDate | null>(null);
+  const [visibleMonth, setVisibleMonth] = useState(() => currentDate());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   return (
     <div className="flex flex-col gap-3">
@@ -17,7 +18,7 @@ export default function Demo() {
         firstDayOfWeek={1}
       />
       <p className="text-sm text-muted-foreground">
-        Selected: {selectedDate ? selectedDate.toString() : "-"}
+        Selected: {selectedDate ? toISODate(selectedDate) : "-"}
       </p>
     </div>
   );

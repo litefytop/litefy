@@ -5,6 +5,13 @@ import { type CalendarView, Calendar } from "./calendar";
 import { type ClassNameValue, cn } from "../utils/cn";
 import { Picker } from "./picker";
 import { usePanelFocus } from "../utils/use-panel-focus";
+import {
+    currentDate,
+    dateFromParts,
+    parseISODate,
+    startOfMonth,
+    toISODate,
+} from "../utils/date-math";
 type ParsedInput = {
     kind: "empty";
 } | {
@@ -15,11 +22,11 @@ type ParsedInput = {
 } | {
     kind: "yearMonth";
     normalized: string;
-    firstOfMonth: Temporal.PlainDate;
+    firstOfMonth: Date;
 } | {
     kind: "full";
     normalized: string;
-    date: Temporal.PlainDate;
+    date: Date;
 };
 function parseInput(raw: string): ParsedInput {
     const normalized = raw
@@ -44,7 +51,7 @@ function parseInput(raw: string): ParsedInput {
             return {
                 kind: "yearMonth",
                 normalized: `${y}-${mm}`,
-                firstOfMonth: Temporal.PlainDate.from(`${y}-${mm}-01`),
+                firstOfMonth: dateFromParts(Number(y), month - 1, 1),
             };
         }
         return { kind: "invalid" };
@@ -55,25 +62,22 @@ function parseInput(raw: string): ParsedInput {
             return { kind: "invalid" };
         const mm = m.padStart(2, "0");
         const dd = d.padStart(2, "0");
-        try {
-            const date = Temporal.PlainDate.from(`${y}-${mm}-${dd}`);
-            return { kind: "full", normalized: `${y}-${mm}-${dd}`, date };
-        }
-        catch {
+        const date = parseISODate(`${y}-${mm}-${dd}`);
+        if (!date)
             return { kind: "invalid" };
-        }
+        return { kind: "full", normalized: `${y}-${mm}-${dd}`, date };
     }
     return { kind: "invalid" };
 }
 export interface DatePickerProps {
-    value?: Temporal.PlainDate | null;
-    defaultValue?: Temporal.PlainDate | null;
-    onValueChange?: (date: Temporal.PlainDate) => void;
+    value?: Date | null;
+    defaultValue?: Date | null;
+    onValueChange?: (date: Date) => void;
     placeholder?: string;
     disabled?: boolean;
     invalid?: boolean;
     firstDayOfWeek?: 0 | 1;
-    isDateDisabled?: (date: Temporal.PlainDate) => boolean;
+    isDateDisabled?: (date: Date) => boolean;
     trailing?: React.ReactNode;
     onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
     classNames?: {
@@ -88,32 +92,32 @@ export interface DatePickerProps {
 }
 export function DatePicker({ value, defaultValue, onValueChange, placeholder = "Select or type a date", disabled, invalid, firstDayOfWeek = 0, isDateDisabled, trailing = <CalendarIcon className="size-4 text-muted-foreground"/>, onKeyDown, classNames, styles, }: DatePickerProps) {
     const [open, setOpen] = React.useState(false);
-    const [text, setText] = React.useState(() => (value ?? defaultValue)?.toString() ?? "");
-    const [selected, setSelected] = React.useState<Temporal.PlainDate | null>(() => value ?? defaultValue ?? null);
-    const [visibleMonth, setVisibleMonth] = React.useState<Temporal.PlainDate>(() => (value ?? defaultValue ?? Temporal.Now.plainDateISO()).with({ day: 1 }));
+    const [text, setText] = React.useState(() => (value ?? defaultValue) ? toISODate(value ?? defaultValue!) : "");
+    const [selected, setSelected] = React.useState<Date | null>(() => value ?? defaultValue ?? null);
+    const [visibleMonth, setVisibleMonth] = React.useState<Date>(() => startOfMonth(value ?? defaultValue ?? currentDate()));
     const [view, setView] = React.useState<CalendarView>("days");
     const [hasError, setHasError] = React.useState(false);
-    const committedRef = React.useRef<string | null>(defaultValue?.toString() ?? null);
+    const committedRef = React.useRef<string | null>(defaultValue ? toISODate(defaultValue) : null);
     const panelRef = React.useRef<HTMLDivElement | null>(null);
     const handlePanelArrowKeys = usePanelFocus({ open, panelRef });
     React.useEffect(() => {
         if (value === undefined)
             return;
-        committedRef.current = value?.toString() ?? null;
+        committedRef.current = value ? toISODate(value) : null;
         setSelected(value);
-        setText(value?.toString() ?? "");
+        setText(value ? toISODate(value) : "");
         if (value) {
-            setVisibleMonth(value.with({ day: 1 }));
+            setVisibleMonth(startOfMonth(value));
             setView("days");
         }
     }, [value]);
-    const commit = (date: Temporal.PlainDate) => {
+    const commit = (date: Date) => {
         setSelected(date);
-        setVisibleMonth(date.with({ day: 1 }));
-        setText(date.toString());
+        setVisibleMonth(startOfMonth(date));
+        setText(toISODate(date));
         setView("days");
         setOpen(false);
-        committedRef.current = date.toString();
+        committedRef.current = toISODate(date);
         onValueChange?.(date);
     };
     const handleTextChange = (next: string) => {
@@ -122,7 +126,7 @@ export function DatePicker({ value, defaultValue, onValueChange, placeholder = "
         const parsed = parseInput(next);
         if (parsed.kind === "full") {
             setSelected(parsed.date);
-            setVisibleMonth(parsed.date.with({ day: 1 }));
+            setVisibleMonth(startOfMonth(parsed.date));
         }
     };
     const applyParsed = (parsed: ParsedInput) => {
@@ -135,7 +139,7 @@ export function DatePicker({ value, defaultValue, onValueChange, placeholder = "
                 setHasError(true);
                 return;
             case "year":
-                setVisibleMonth(Temporal.PlainDate.from(`${parsed.year}-01-01`));
+                setVisibleMonth(dateFromParts(Number(parsed.year), 0, 1));
                 setView("months");
                 setText(parsed.year);
                 setOpen(true);
@@ -176,13 +180,13 @@ export function DatePicker({ value, defaultValue, onValueChange, placeholder = "
             handleEnter();
         }
     };
-    const handleMonthSelect = (month: Temporal.PlainDate) => {
+    const handleMonthSelect = (month: Date) => {
         setHasError(false);
-        setText(`${month.year}-${String(month.month).padStart(2, "0")}`);
+        setText(`${month.getFullYear()}-${String(month.getMonth() + 1).padStart(2, "0")}`);
     };
-    const handleYearSelect = (year: Temporal.PlainDate) => {
+    const handleYearSelect = (year: Date) => {
         setHasError(false);
-        setText(String(year.year));
+        setText(String(year.getFullYear()));
     };
     return (<Picker open={open} onOpenChange={handleOpenChange} panelRef={panelRef} value={text} onValueChange={handleTextChange} placeholder={placeholder} disabled={disabled} aria-invalid={(hasError || invalid) || undefined} trailing={trailing} onKeyDown={handleKeyDown} classNames={{ input: classNames?.input, trailing: classNames?.trailing }} styles={{ input: styles?.input, trailing: styles?.trailing }}>
       <Calendar value={selected} visibleMonth={visibleMonth} onVisibleMonthChange={setVisibleMonth} onChange={commit} view={view} onViewChange={setView} onMonthSelect={handleMonthSelect} onYearSelect={handleYearSelect} isDateDisabled={isDateDisabled} firstDayOfWeek={firstDayOfWeek} className={cn(classNames?.panel)}/>

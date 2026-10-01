@@ -57,7 +57,7 @@
 ## Calendar（calendar.tsx，340 行）
 
 - 逻辑：导出 Root/Header/NavButton/TitleButton/Grid/GridRow/GridCell/MonthGrid/YearGrid 九 parts + Calendar 复合 + CalendarView 类型 + calendarMonthLabels 常量及同名静态属性。
-- Temporal.PlainDate 全程不可变运算；value/view 支持受控/非受控，visibleMonth 为纯受控必填（月份状态完全归调用方，#L216-L242）。
+- 原生 Date 按日历日期处理（正午锚定 + epoch-day 比较，utils/date-math）；value/view 支持受控/非受控，visibleMonth 为纯受控必填（月份状态完全归调用方，#L216-L242）。
 - 键盘：三视图均 role="grid" + roving tabindex 单 tab stop；Arrow 四向按列数偏移查 button[data-*]，越界时 onNavigate→onVisibleMonthChange 换页，pendingFocusRef 渲染后 effect 恢复焦点（#L60-L79、#L286-L294）；header ArrowDown 跳入网格（#L312-L321）。
 - a11y：grid/row/gridcell/columnheader + aria-selected；nav 按钮 aria-label 随视图变（Previous month/year…）。
 - 文档偏差：复合层已实现 onMonthSelect/onYearSelect（#L225-L226）但文档 Calendar API 表未列；其余一致（parts 的 isMonthDisabled/isYearDisabled 已文档化）。
@@ -226,7 +226,7 @@
 
 ## DatePicker（date-picker.tsx，190 行）
 
-- 逻辑：单导出 DatePicker + DatePickerProps；Calendar + Picker + usePanelFocus 组合，基于 Temporal API。
+- 逻辑：单导出 DatePicker + DatePickerProps；Calendar + Picker + usePanelFocus 组合，基于原生 Date（utils/date-math）。
 - 宽松解析 parseInput：空格/逗号/斜杠/中文逗号归一为 -；4 位年→月份视图、年月→日视图、完整日期 commit（#L24-L67）；invalid 清空并标错（#L133-L136）。
 - 内部状态 open/text/selected/visibleMonth/view/hasError + committedRef 去重；受控 value 变化全量同步（#L99-L109）。
 - Enter 提交解析、面板关闭时补一次 applyParsed（#L159-L166）；方向键经 usePanelFocus 与面板联动；外部 onKeyDown 可 preventDefault 覆盖（#L167-L178）；commit 后关面板并重置 view。

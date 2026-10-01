@@ -33,7 +33,7 @@ Touch-drag paging with `loop` on to wrap around at both boundaries.
 | `onChange`   | `(nextIndex: number) => void`   | -                 | Fired after a gesture commit; the parent updates `index`                |
 | `children`   | `React.ReactNode[]`             | -                 | One child per page; only the active page is mounted                     |
 | `loop`       | `boolean`                       | `false`           | Wrap around at both boundaries                                          |
-| `transition` | `"none" \| "view-transition"`   | `"view-transition"` | Animation strategy for programmatic jumps (gesture drags are unaffected) |
+| `transition` | `"none" \| "slide"`   | `"slide"` | Animation strategy for programmatic jumps (gesture drags are unaffected) |
 | `gesture`    | `boolean`                       | `true`            | Enable touch drag paging                                                |
 | `className`  | `ClassNameValue`                | -                 | Custom class names — must include the width and height                  |
 | `...props`   | `React.ComponentProps<"div">`   | -                 | Native div props, spread on the root container                          |

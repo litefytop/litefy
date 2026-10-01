@@ -1,0 +1,109 @@
+---
+title: Default Style
+description: The finished components of Litefy's default style template — showcase only, no demo controls.
+---
+
+import { Avatar, Badge, Breadcrumb, Button, Callout, Chip, Checkbox, Command, DropdownMenu, Input, Kbd, Popover, Progress, Select, Skeleton, Switch, Table, Tabs, Steps, Tooltip, TooltipContent, TooltipTrigger } from "@/ui";
+import { Bell, Plus, Search } from "lucide-react";
+
+This page shows what the **default** style template ships: finished components, rendered as-is, with no demo controls around them. Every value on this page reads the semantic tokens from `theme.css`, so the whole look is one interchangeable package — see [Styles](/docs/styles) for the token layers and how templates are distributed.
+
+## Buttons
+
+<div className="flex flex-wrap items-center gap-2">
+  <Button>Primary</Button>
+  <Button variant="outline">Outline</Button>
+  <Button variant="danger">Danger</Button>
+  <Button variant="text">Text</Button>
+  <Button loadingConfig={{ loading: true }}>Saving</Button>
+  <Button><Plus className="size-4" />New</Button>
+  <Button aria-label="Search"><Search className="size-4" /></Button>
+</div>
+
+The look is plain classes — any element can wear it:
+
+```tsx
+<Link to="/docs" className="litefy-button litefy-button-primary">Read the docs</Link>
+```
+
+## Form controls
+
+<div className="grid gap-3 sm:grid-cols-2">
+  <Input placeholder="Search docs" leading={<Search className="size-4" />} />
+  <Select placeholder="Pick a fruit" defaultValue="apple" options={[{ label: "Apple", value: "apple" }, { label: "Banana", value: "banana" }]} />
+  <div className="flex items-center gap-4">
+    <Checkbox defaultChecked label="Keep me signed in" />
+    <span className="flex items-center gap-2 text-sm"><Switch defaultChecked aria-label="Notifications" />Notifications</span>
+  </div>
+</div>
+
+## Status & feedback
+
+<div className="flex flex-wrap gap-2">
+  <Chip>primary</Chip>
+  <Chip variant="outline">outline</Chip>
+  <Chip variant="success">success</Chip>
+  <Chip variant="warning">warning</Chip>
+  <Chip variant="danger">danger</Chip>
+  <Chip variant="info">info</Chip>
+</div>
+
+<div className="flex flex-wrap items-center gap-4">
+  <Badge label="5"><Bell className="size-5" /></Badge>
+  <Avatar fallback="LZ" />
+  <Kbd>⌘K</Kbd>
+  <Progress current={60} duration={300} />
+</div>
+
+<div className="grid gap-2">
+  <Callout>Plain guidance lives in the info variant.</Callout>
+  <Callout variant="success">Saved successfully.</Callout>
+  <Callout variant="warning">Your session expires soon.</Callout>
+  <Callout variant="danger">Upload failed — the file exceeds 10 MB.</Callout>
+</div>
+
+<div className="flex flex-col gap-2">
+  <Skeleton className="h-4 w-56" />
+  <Skeleton className="h-4 w-40" />
+</div>
+
+## Navigation
+
+<Breadcrumb items={[{ label: "Docs" }, { label: "Style Templates" }, { label: "Default" }]} />
+
+<Tabs options={[{ label: "Overview", value: "overview", content: <div className="p-4 text-sm text-muted-foreground">Everything at a glance.</div> }, { label: "Details", value: "details", content: <div className="p-4 text-sm text-muted-foreground">Deep dive per section.</div> }]} defaultValue="overview" />
+
+<Steps items={[{ title: "Cart" }, { title: "Checkout" }, { title: "Done" }]} index={1} />
+
+## Overlays
+
+<div className="flex flex-wrap gap-2">
+  <Popover trigger="Popover" classNames={{ trigger: "litefy-button litefy-button-outline" }}>
+    <div className="flex flex-col p-1 text-sm">
+      <p className="mb-2 text-muted-foreground">Native popover API with built-in positioning.</p>
+      <Button variant="text">Got it</Button>
+    </div>
+  </Popover>
+  <DropdownMenu trigger="Actions" items={[{ label: "Edit" }, { label: "Duplicate" }, { label: "Delete" }]} />
+  <Tooltip>
+    <TooltipTrigger className="litefy-button litefy-button-outline">Hover me</TooltipTrigger>
+    <TooltipContent>Tooltips work on click for touch devices too.</TooltipContent>
+  </Tooltip>
+  <Command trigger="Command palette" placeholder="Type a command" items={[{ label: "New file", shortcut: "⌘N" }, { label: "Open recent" }, { group: "Preferences", items: [{ label: "Toggle theme" }] }]} />
+</div>
+
+## Data
+
+<Table
+  columns={[
+    { key: "name", header: "Name" },
+    { key: "status", header: "Status", width: "8rem", render: (row) => <Chip variant={row.status === "Failed" ? "danger" : "success"}>{row.status}</Chip> },
+    { key: "updated", header: "Updated", width: "10rem" },
+  ]}
+  data={[
+    { name: "Homepage redesign", status: "Live", updated: "2 h ago" },
+    { name: "Invoice export", status: "Live", updated: "yesterday" },
+    { name: "Image pipeline", status: "Failed", updated: "3 d ago" },
+  ]}
+  getKey={(row) => row.name}
+/>

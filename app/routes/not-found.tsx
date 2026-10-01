@@ -25,12 +25,12 @@ export default function NotFound() {
     <HomeLayout {...baseOptions(locale)}>
       <div className="p-4 flex flex-col items-center justify-center text-center flex-1">
         <h1 className="text-xl font-bold mb-2">Not Found</h1>
-        <p className="text-fd-muted-foreground mb-4">
+        <p className="text-muted-foreground mb-4">
           This page could not be found.
         </p>
 
         <Link
-          className="text-sm bg-fd-primary text-fd-primary-foreground rounded-full font-medium px-4 py-2.5"
+          className="text-sm bg-primary text-primary-foreground rounded-full font-medium px-4 py-2.5"
           to={docsPath}
         >
           Back to Docs

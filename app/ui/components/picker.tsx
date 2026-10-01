@@ -2,11 +2,14 @@
 import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
 import { useFloatingPanel } from "../utils/use-floating-panel";
+import { useFloatingPosition, useMergedPanelRef } from "../utils/floating-position";
 export interface PickerRootProps extends Omit<React.ComponentProps<"div">, "className"> {
     className?: ClassNameValue;
+    /** Registers this element as the positioning anchor (`data-anchor-name`) for the panel. */
+    anchorName?: string;
 }
-export function PickerRoot({ className, ...props }: PickerRootProps) {
-    return <div {...props} className={cn("relative max-w-[40ch]", className)}/>;
+export function PickerRoot({ className, anchorName, ...props }: PickerRootProps) {
+    return <div {...props} data-anchor-name={anchorName} className={cn("relative max-w-[40ch]", className)}/>;
 }
 export interface PickerInputProps extends Omit<React.ComponentProps<"input">, "className"> {
     className?: ClassNameValue;
@@ -18,9 +21,13 @@ export function PickerInput({ className, ...props }: PickerInputProps) {
 }
 export interface PickerContentProps extends Omit<React.ComponentProps<"div">, "className"> {
     className?: ClassNameValue;
+    /** Anchor element name (matching the anchor's `data-anchor-name`) consumed by the built-in JS positioning. */
+    anchorName?: string;
 }
-export function PickerContent({ className, ...props }: PickerContentProps) {
-    return (<div popover="manual" tabIndex={-1} {...props} className={cn("bg-surface-raised text-foreground border shadow-elevated rounded-xl", className)}/>);
+export function PickerContent({ className, anchorName, ref, ...props }: PickerContentProps) {
+    const panelRef = useMergedPanelRef<HTMLDivElement>(ref);
+    useFloatingPosition(panelRef, anchorName);
+    return (<div ref={panelRef} popover="manual" tabIndex={-1} {...props} data-float-anchor={anchorName} data-float-side="bottom" data-float-align="center" data-float-gap={4} data-float-match-width={anchorName ? "true" : undefined} className={cn("bg-surface-raised text-foreground border shadow-elevated rounded-xl", className)}/>);
 }
 export interface PickerClassNames {
     input?: ClassNameValue;
@@ -79,7 +86,7 @@ export function Picker({ className, value: controlledValue, defaultValue = "", o
         onValueChange?.(e.target.value);
     };
     return (<>
-      <PickerRoot style={{ anchorName, ...style }} className={cn(className)} data-open={open || undefined}>
+      <PickerRoot anchorName={anchorName} style={style} className={cn(className)} data-open={open || undefined}>
         <PickerInput {...props} style={styles?.input} value={value} aria-expanded={open} onClick={(e) => {
             onClickProp?.(e);
             if (!e.defaultPrevented)
@@ -101,20 +108,12 @@ export function Picker({ className, value: controlledValue, defaultValue = "", o
             {trailing}
           </span>)}
       </PickerRoot>
-      <PickerContent ref={setPanelRefs} onKeyDown={(e) => {
+      <PickerContent ref={setPanelRefs} anchorName={anchorName} onKeyDown={(e) => {
             if (e.key === "Escape") {
                 e.preventDefault();
                 handleOpenChange(false);
             }
-        }} style={{
-            margin: "4px 0 0",
-            positionAnchor: anchorName,
-            positionArea: "bottom span-all",
-            justifySelf: "anchor-center",
-            minWidth: "anchor-size(width)",
-            positionTryFallbacks: "flip-block",
-            ...styles?.popover,
-        }} className={classNames?.popover}>
+        }} style={styles?.popover} className={classNames?.popover}>
         {children}
       </PickerContent>
     </>);

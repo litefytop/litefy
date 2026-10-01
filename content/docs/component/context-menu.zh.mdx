@@ -27,11 +27,7 @@ description: 命令式唤起的右键菜单，支持指针锚定、分组与子�
 
 ### ContextMenuHost
 
-`ContextMenu.open()` 激活期间渲染浮动菜单面板；在应用根挂载一次即可——没有菜单打开时它不渲染任何内容。
-
-| Prop        | Type              | Default | Description              |
-| :---------- | :---------------- | :------ | :----------------------- |
-| `className` | `ClassNameValue`  | -       | 锚点包装层的自定义类名    |
+`ContextMenu.open()` 激活期间渲染浮动菜单面板；在应用根挂载一次即可——没有菜单打开时它不渲染任何内容。它不接受任何属性；面板由内置 JS 定位引擎按 `ContextMenu.open()` 传入的 `x` / `y` 坐标定位。
 
 ### 静态方法
 
@@ -50,7 +46,7 @@ ContextMenu.open(options: ContextMenuOpenOptions): void
 | `items`        | `MenuConfig[]`                         | -       | 菜单项，扁平或分组 —— 与 [Menu](/docs/component/menu) 组件的形状一致 **必填** |
 | `onSelect`     | `(item: MenuItemConfig) => void`       | -       | 菜单项激活时触发，随后菜单关闭                                        |
 | `classNames`   | `{ content?: ClassNameValue }`         | -       | 面板的自定义类名                                                      |
-| `styles`       | `{ content?: React.CSSProperties }`    | -       | 面板的内联样式；锚点定位属性由组件内部管理                            |
+| `styles`       | `{ content?: React.CSSProperties }`    | -       | 面板的内联样式；定位属性由组件内部管理                              |
 
 #### ContextMenu.dismiss
 

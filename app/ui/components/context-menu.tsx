@@ -47,29 +47,16 @@ export const ContextMenu = {
 };
 export function ContextMenuHost() {
     const menu = React.useSyncExternalStore(subscribe, snapshot, () => null);
-    const uid = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
-    const anchorName = `--context-menu-${uid}`;
     if (menu === null)
         return null;
     const { options } = menu;
-    return (<>
-      <div aria-hidden className="fixed size-0" style={{ left: options.x, top: options.y, anchorName }}/>
-      <PopoverContent open={menu.open} onOpenChange={(next) => {
+    return (<PopoverContent open={menu.open} onOpenChange={(next) => {
             if (!next)
                 ContextMenu.dismiss();
-        }} onContextMenu={(e) => e.preventDefault()} className={cn("w-48", options.classNames?.content)} style={{
-            positionArea: "bottom right",
-            justifySelf: "start",
-            alignSelf: "start",
-            positionTryFallbacks: "flip-block, flip-inline",
-            margin: "4px 0 0 4px",
-            ...options.styles?.content,
-            positionAnchor: anchorName,
-        }}>
+        }} onContextMenu={(e) => e.preventDefault()} anchorPoint={{ x: options.x, y: options.y }} className={cn("w-48", options.classNames?.content)} style={options.styles?.content}>
         <Menu autoFocus={menu.open} items={options.items} onSelect={(item) => {
             options.onSelect?.(item);
             ContextMenu.dismiss();
         }} onEscape={() => ContextMenu.dismiss()}/>
-      </PopoverContent>
-    </>);
+      </PopoverContent>);
 }

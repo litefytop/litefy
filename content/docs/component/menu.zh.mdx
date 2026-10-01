@@ -95,10 +95,10 @@ type MenuConfig = MenuGroupConfig | MenuItemConfig;
 
 #### MenuSubContent
 
-子菜单面板容器，渲染为 `popover="manual"` 的 div；通过 `positionAnchor` 锚定到父菜单项（每个菜单项的 `anchor-name` 为 `--menu-sub-{entryId}`）。
+子菜单面板容器，渲染为 `popover="manual"` 的 div；通过 `anchorName` 锚定到父菜单项（每个菜单项自带 `data-anchor-name="--menu-sub-{entryId}"` 属性），由内置 JS 定位引擎定位。
 
 | Prop             | Type                          | Default | Description                    |
 | ---------------- | ------------------------------ | ------- | -------------------------------- |
-| `positionAnchor` | `string`                       | -       | 锚定的父菜单项 `anchor-name`     |
+| `anchorName` | `string`                       | -       | 锚定的父菜单项名称（其 `data-anchor-name` 属性）  |
 | `className`      | `ClassNameValue`               | -       | 自定义类名                       |
 | `...props`       | `React.ComponentProps<"div">`  | -       | 支持全部 div 原生属性            |

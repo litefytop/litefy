@@ -25,11 +25,7 @@ Restyle the panel via `classNames.content` / `styles.content` passed to `open()`
 
 ### ContextMenuHost
 
-Renders the floating menu panel while `ContextMenu.open()` is active; mount it once near the app root — it renders nothing until a menu is opened.
-
-| Prop        | Type              | Default | Description                      |
-| :---------- | :---------------- | :------ | :------------------------------- |
-| `className` | `ClassNameValue`  | -       | Custom class on the anchor wrapper |
+Renders the floating menu panel while `ContextMenu.open()` is active; mount it once near the app root — it renders nothing until a menu is opened. It takes no props; the panel is positioned by the built-in JS engine at the `x` / `y` coordinates passed to `ContextMenu.open()`.
 
 ### Statics
 
@@ -48,7 +44,7 @@ Opens the menu at the given viewport coordinates.
 | `items`        | `MenuConfig[]`                         | -       | Menu items, flat or grouped — same shape as the [Menu](/docs/component/menu) component **Required** |
 | `onSelect`     | `(item: MenuItemConfig) => void`       | -       | Fired when a menu item is activated; the menu closes afterwards              |
 | `classNames`   | `{ content?: ClassNameValue }`         | -       | Custom classes for the panel                                                 |
-| `styles`       | `{ content?: React.CSSProperties }`    | -       | Inline styles for the panel; anchor positioning props are managed internally |
+| `styles`       | `{ content?: React.CSSProperties }`    | -       | Inline styles for the panel; positioning props are managed internally      |
 
 #### ContextMenu.dismiss
 

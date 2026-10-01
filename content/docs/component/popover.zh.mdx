@@ -1,6 +1,6 @@
 ---
 title: Popover 弹出面板
-description: 基于 popover + CSS Anchor Positioning 的按钮触发浮层面板 —— dropdown-menu 组合的底座
+description: 基于原生 Popover API 与内置 JS 定位引擎的按钮触发浮层面板 —— dropdown-menu 组合的底座
 ---
 
 ## 安装
@@ -17,7 +17,7 @@ button + popover 的基础零件，不是菜单：`trigger` 打开一个面板�
 
 ### 对齐
 
-除内置 `alignX` 外，任意 CSS Anchor Positioning 的 `positionArea` 都可通过 `styles.content` 设置。
+除内置 `alignX` 外，还可通过 `placement`（`side` / `align` / `gap` / `matchWidth`）完全覆盖面板吸附方式，定位由内置 JS 定位引擎完成。
 
 <ComponentPreview
   name="popover-alignment"
@@ -37,7 +37,7 @@ button + popover 的基础零件，不是菜单：`trigger` 打开一个面板�
 
 #### Popover
 
-渲染一个原生触发按钮（`type="button"`、`aria-haspopup`、`aria-expanded`）加浮动面板，通过 CSS Anchor Positioning 定位。
+渲染一个原生触发按钮（`type="button"`、`aria-haspopup`、`aria-expanded`）加浮动面板，由内置 JS 定位引擎定位。
 
 | 属性           | 类型                                                                              | 默认值   | 描述                                                                       |
 | :------------- | :-------------------------------------------------------------------------------- | :------- | :------------------------------------------------------------------------- |
@@ -47,9 +47,10 @@ button + popover 的基础零件，不是菜单：`trigger` 打开一个面板�
 | `defaultOpen`  | `boolean`                                                                         | `false`  | 初始面板状态（非受控）                                                     |
 | `onOpenChange` | `(open: boolean) => void`                                                         | -        | 面板开合时触发                                                             |
 | `alignX`       | `"start" \| "end" \| "center"`                                                    | `center` | 面板相对触发器的水平对齐                                                   |
+| `placement`    | `{ side?; align?; gap?; matchWidth? }`                                            | -        | 覆盖 `alignX` 推导出的吸附方位（内置 JS 定位）                             |
 | `mode`         | `"click" \| "hover"`                                                              | `click`  | 触发交互模式；`hover` 在指针移入 / trigger 聚焦时打开，指针移出后延迟关闭   |
-| `classNames`   | `{ trigger?: ClassNameValue; content?: ClassNameValue }`                          | -        | 按插槽自定义类名                                                           |
-| `styles`       | `{ trigger?: React.CSSProperties; content?: React.CSSProperties }`                | -        | 按插槽内联样式 —— 如 `styles.content.positionArea` 覆盖 `alignX`           |
+| `classNames`   | `{ trigger?: ClassNameValue; content?: ClassNameValue }`                          | -        | 按插槽自定义类名——trigger 是裸 `<button>`（零件），需要外观时挂 preset 成品 class（如 `litefy-button litefy-button-primary`） |
+| `styles`       | `{ trigger?: React.CSSProperties; content?: React.CSSProperties }`                | -        | 按插槽内联样式（定位本身由组件内部管理）                                   |
 
 ---
 
@@ -57,7 +58,7 @@ button + popover 的基础零件，不是菜单：`trigger` 打开一个面板�
 
 #### usePopoverTrigger
 
-将自定义触发元素与面板接入 popover 状态；把 `anchorName` 应用为触发元素的 `anchor-name` 样式与面板的 `positionAnchor` 即可对齐。
+将自定义触发元素与面板接入 popover 状态；把 `triggerProps` 展开到触发元素上（自带 `data-anchor-name` 属性），再把返回的 `anchorName` 传给 `PopoverContent` 的 `anchorName` 属性即可对齐。
 
 选项（`UsePopoverTriggerOptions`）：
 
@@ -73,12 +74,12 @@ button + popover 的基础零件，不是菜单：`trigger` 打开一个面板�
 
 | Member          | Type         | Description                                                                              |
 | :-------------- | :----------- | :--------------------------------------------------------------------------------------- |
-| `triggerProps`  | `object`     | 透传到触发元素的属性：`aria-haspopup`、`aria-expanded`、`anchor-name` 样式，以及 click / hover / focus / 键盘事件处理器 |
+| `triggerProps`  | `object`     | 透传到触发元素的属性：`aria-haspopup`、`aria-expanded`、`data-anchor-name` 属性，以及 click / hover / focus / 键盘事件处理器 |
 | `contentProps`  | `object`     | 透传到面板的属性：hover 模式下指针移入取消待执行的关闭定时器，移出时重新调度关闭        |
 | `clearTimer`    | `() => void` | 取消待执行的 hover 开合定时器                                                            |
 | `scheduleOpen`  | `() => void` | 打开面板，遵循 `hoverDelayOpen` 延迟                                                    |
 | `scheduleClose` | `() => void` | `hoverDelayClose` 毫秒后关闭面板                                                        |
-| `anchorName`    | `string`     | 生成的 CSS anchor 名（如 `--popover-trigger-abc123`）                                    |
+| `anchorName`    | `string`     | 生成的锚点名称（如 `--popover-trigger-abc123`），传给面板的 `anchorName` 属性           |
 
 ---
 
@@ -92,8 +93,11 @@ button + popover 的基础零件，不是菜单：`trigger` 打开一个面板�
 | :------------- | :------------------------------- | :------- | :-------------------------------------------------------------------------- |
 | `open`         | `boolean`                        | -        | 控制面板；`true` 调用 `showPopover()`，`false` 调用 `hidePopover()`         |
 | `onOpenChange` | `(open: boolean) => void`        | -        | 面板内按 `Escape` 或面板外 `mousedown` 时调用                               |
-| `alignX`       | `"start" \| "end" \| "center"`   | `center` | 通过 CSS Anchor Positioning `positionArea` 水平对齐                         |
+| `alignX`       | `"start" \| "end" \| "center"`   | `center` | 吸附预设：`start` 贴触发器左侧，`end` 贴右侧，`center` 置于下方居中        |
+| `anchorName`   | `string`                         | -        | 定位所锚定元素的名称（对应其 `data-anchor-name` 属性）                     |
+| `anchorPoint`  | `{ x: number; y: number }`       | -        | 按视口坐标锚定（如鼠标位置），优先于 `anchorName`                          |
+| `placement`    | `{ side?; align?; gap?; matchWidth? }` | -    | 覆盖 `alignX` 推导出的吸附方位                                             |
 | `className`    | `ClassNameValue`                 | -        | 自定义类名                                                                  |
-| `style`        | `React.CSSProperties`            | -        | 内联样式，与内置 anchor 样式合并（`positionTryFallbacks: "flip-block, flip-inline"`） |
+| `style`        | `React.CSSProperties`            | -        | 自定义内联样式；定位本身由内置 JS 引擎管理（视口溢出翻边 + 交叉轴收拢）    |
 | `ref`          | `React.Ref<HTMLDivElement>`      | -        | 转发到面板 div                                                              |
 | `...props`     | `React.ComponentProps<"div">`    | -        | 支持所有原生 div 属性（`className` 除外），如 `role`、`id`、`onKeyDown`     |

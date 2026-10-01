@@ -4,7 +4,7 @@ import logger from "../utils/logger";
 import { getFileNameFromUrl, loadRegistry, resolveRegistryName } from "../utils/registry";
 import { writeBarrelIndex } from "../utils/barrel";
 import { syncStyleImports } from "../utils/style-imports";
-import type { Registry, RegistryEntry } from "./add";
+import { entryFileUrls, type Registry, type RegistryEntry } from "./add";
 
 interface LitefyConfig {
   components: {
@@ -86,14 +86,15 @@ async function removeSingle(
   }
 
   const targetDir = path.resolve(cwd, relDir);
-  const fileName = getFileNameFromUrl(entry.url);
-  const filePath = path.join(targetDir, fileName);
 
-  if (await fs.pathExists(filePath)) {
-    await fs.remove(filePath);
-    logger.success(`Deleted ${path.relative(cwd, filePath)}`);
-  } else {
-    logger.warn(`File not found ${path.relative(cwd, filePath)}, clean config only`);
+  for (const url of entryFileUrls(entry)) {
+    const filePath = path.join(targetDir, getFileNameFromUrl(url));
+    if (await fs.pathExists(filePath)) {
+      await fs.remove(filePath);
+      logger.success(`Deleted ${path.relative(cwd, filePath)}`);
+    } else {
+      logger.warn(`File not found ${path.relative(cwd, filePath)}, clean config only`);
+    }
   }
 
   switch (entry.type) {

@@ -1,6 +1,6 @@
 ---
 title: Tooltip 提示框
-description: 基于原生 Popover API 和 CSS 锚点定位构建的提示框组件
+description: 基于原生 Popover API 与内置 JS 定位引擎构建的提示框组件
 ---
 
 ## 安装
@@ -49,22 +49,22 @@ description: 基于原生 Popover API 和 CSS 锚点定位构建的提示框组�
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `popoverId` | `string` | - | 要显隐的内容元素 id；缺省回退到 `Tooltip` context |
-| `anchorName` | `string` | - | 设置在触发元素上的 CSS 锚点名称，与内容的 `positionAnchor` 匹配；缺省回退到 `Tooltip` context |
+| `anchorName` | `string` | - | 设置在触发元素上的锚点名称（渲染为 `data-anchor-name` 属性），与内容的 `anchorName` 匹配；缺省回退到 `Tooltip` context |
 | `delay` | `number` | `100` | 隐藏延迟时间（毫秒）；缺省回退到 `Tooltip` context |
 | `className` | `ClassNameValue` | - | 自定义 CSS 类 |
-| `style` | `React.CSSProperties` | - | 自定义内联样式，与锚点名称合并 |
+| `style` | `React.CSSProperties` | - | 自定义内联样式 |
 | `...props` | `React.ComponentProps<"button">` | - | 支持所有原生 button 属性（除 `className`、`style` 外） |
 
 #### TooltipContent
 
-内联渲染的提示气泡，带 `popover="manual"`（top layer 不受祖先 `overflow` 裁剪）和锚点定位。
+内联渲染的提示气泡，带 `popover="manual"`（top layer 不受祖先 `overflow` 裁剪），由内置 JS 定位引擎定位（默认位于触发器上方居中，视口溢出时翻到下方）。
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `id` | `string` | - | 供触发元素 `popoverId` 引用的元素 id；缺省回退到 `Tooltip` context |
-| `anchorName` | `string` | - | 触发元素的锚点名称，应用为 `positionAnchor`；缺省回退到 `Tooltip` context |
+| `anchorName` | `string` | - | 触发元素的锚点名称（其 `data-anchor-name` 属性），供内置 JS 定位匹配；缺省回退到 `Tooltip` context |
 | `delay` | `number` | `100` | 指针交互的隐藏延迟时间（毫秒）；缺省回退到 `Tooltip` context |
 | `className` | `ClassNameValue` | - | 自定义 CSS 类 |
-| `style` | `React.CSSProperties` | - | 自定义内联样式，与锚点样式合并 |
+| `style` | `React.CSSProperties` | - | 自定义内联样式；定位本身由内置 JS 引擎管理 |
 | `ref` | `React.Ref<HTMLDivElement>` | - | 指向弹出层元素的 ref，用于命令式 `showPopover()` 和 `hidePopover()` 调用 |
 | `...props` | `React.ComponentProps<"div">` | - | 支持所有原生 div 属性（除 `className`、`style`、`id` 外） |
