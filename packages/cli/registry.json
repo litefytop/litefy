@@ -304,18 +304,6 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/progress.tsx"
   },
-  "query-builder": {
-    "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/query-builder.tsx",
-    "dependence": [
-      "button",
-      "checkbox",
-      "date-picker",
-      "input",
-      "segment",
-      "select"
-    ]
-  },
   "radar": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/radar.tsx",

@@ -9,12 +9,18 @@ description: 复选框组件，支持受控、非受控、分组和自定义指�
 
 ## 用法
 
-### 基础用法
-
 基础复选框，支持受控和非受控模式。
 
 <ComponentPreview 
   name="checkbox-basic"
+/>
+
+### 禁用状态
+
+在单个复选框上设置 `disabled`。
+
+<ComponentPreview 
+  name="checkbox-disabled"
 />
 
 ### 组受控模式
@@ -27,7 +33,7 @@ description: 复选框组件，支持受控、非受控、分组和自定义指�
 
 ### 自定义
 
-使用可组合组件构建带全选/半选状态的分组。注意 `CheckboxRoot` 必须放在 `CheckboxIndicator` 内部 —— 聚焦环样式依赖 `has-focus-visible:` 选择器匹配指示器的后代元素，root 放在外面会导致键盘聚焦时样式失效。
+使用可组合组件构建全选分组；`CheckboxRoot` 需嵌套在 `CheckboxIndicator` 内部，且支持 `Enter` 切换，弹层内的分组可全键盘操作。
 
 <ComponentPreview 
   name="checkbox-custom"

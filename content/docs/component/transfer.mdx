@@ -9,19 +9,13 @@ description: A dual-panel transfer that moves items between source and target li
 
 ## Usage
 
-### Basic Usage
-
 Pass `dataSource` with all available items and `value` for the ones currently in the target panel. Items with `disabled: true` stay in the source and cannot be checked or moved.
 
 <ComponentPreview
   name="transfer-basic"
 />
 
-## Notes
-
-- Transfer internally uses the [Checkbox](/docs/component/checkbox) component for each row — when installing via CLI, add both: `litefy add transfer checkbox`.
-- `renderItem` accepts a custom renderer applied in both panels; without it, the item's `label` is rendered as plain text.
-- Each panel owns its own checked state (`Set`). The move buttons apply the checked items and clear the panel's checked state; a direction button is disabled while its panel has no checked items.
+Each row uses [Checkbox](/docs/component/checkbox) — install both: `litefy add transfer checkbox`.
 
 ## API Reference
 

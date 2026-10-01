@@ -9,31 +9,25 @@ description: A controlled page navigator — first / prev / numbered pages with 
 
 ## Usage
 
-`Pagination` is a **fully controlled view**: it renders whatever `page` says and reports clicks through `onPageChange`. It owns no state — pair it with [usePagination](/docs/utils/use-pagination), which owns the page number, clamps boundaries, and offers `goTo` / `next` / `previous` / `toFirst` / `toEnd`.
-
-Create the hook with a base of one and the total page count, pass its current index as the page and its goTo as the page change handler, and read the same index to label the view.
-
-
+A fully controlled view — pair it with [usePagination](/docs/utils/use-pagination), which owns the page state.
 
 <ComponentPreview name="pagination-basic" />
 
-The page list shows the first page, the last page, the current page with `siblingCount` neighbors, and collapses everything in between into ellipsis markers. Clicking a page number or any arrow calls `onPageChange`; the component never advances the page itself.
+### Disabled
+
+Pass `disabled` to freeze every button, e.g. while a page request is loading:
+
+<ComponentPreview name="pagination-disabled" />
 
 ### Summary text
 
-Pass `summary` to render a page-count text on the left with the controls on the right — a left-right layout where the summary takes the remaining width and wraps onto new lines while the controls hold their place, vertically centered. Typical content: how many items and how many are selected:
-
-```tsx
-<Pagination page={page} totalPages={total} onPageChange={goTo} summary="Showing 1–10 of 1,286 items · 3 selected" />
-```
-
-A narrow container makes the summary wrap onto multiple lines while the controls stay on the row, vertically centered:
+Pass `summary` to render a page-count text on the left; in narrow containers it wraps onto new lines while the controls stay on the row:
 
 <ComponentPreview name="pagination-long-summary" />
 
 ### With SelectableTable
 
-`Pagination` is table-agnostic. The recommended composition for a paged [SelectableTable](/docs/component/selectable-table) is covered in its [Pagination guide](/docs/component/selectable-table#composition-with-pagination): the hook drives the fetch, the table stays presentation-only, and both sit side by side under your own layout.
+The recommended composition with [SelectableTable](/docs/component/selectable-table) is covered in its [Pagination guide](/docs/component/selectable-table#composition-with-pagination).
 
 ## API Reference
 

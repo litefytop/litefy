@@ -18,6 +18,8 @@ import { fileURLToPath } from "node:url";
 //   nested-scroll          (warn)  overflow-* element nested inside another scroll context, or wrapping
 //                                  a component with built-in scroll (Table) — double scrollbars and
 //                                  broken height; wrapper padding is the sanctioned spacing tool
+//   nested-tabs            (warn)  <Tabs> inside <Tabs> — nested tab bars break aria ownership and
+//                                  keyboard navigation; split into pages or Segmented/Chip controls
 // Boundary: design-detect owns DESIGN-LANGUAGE rules only. Accessibility semantics belong to the
 // standard toolchain (eslint-plugin-jsx-a11y static, axe-core on rendered pages) — do not add
 // generic a11y rules here, they would signal coverage that the standard tools actually own.
@@ -45,6 +47,8 @@ const ROOT_CANDIDATES = [
   path.join(__dirname, "../app"),
   path.join(__dirname, "../../../app"),
   path.join(__dirname, "../../../src/app"),
+  path.join(__dirname, "../../../../app"),
+  path.join(__dirname, "../../../../src/app"),
   process.cwd(),
 ];
 const ROOT = path.resolve(
@@ -281,6 +285,33 @@ function jsxClassNameText(node, sf) {
 }
 
 /** 盒中盒的可靠信号:滚动上下文嵌套。装饰 div(动画/定位用)不计入,2 层 wrapper 合法。 */
+/** Tabs 嵌套:Tabs 面板里再放 Tabs——aria 归属与键盘路径混乱,内层分组应改分段控件或拆页面 */
+function scanNestedTabs(file, source, sf) {
+  if (!ts) return;
+
+  const visit = (node, tabsDepth) => {
+    if (ts.isJsxElement(node) || ts.isJsxSelfClosingElement(node)) {
+      const isTabs = jsxElementName(node) === "Tabs";
+      if (tabsDepth > 0 && isTabs) {
+        const { line } = sf.getLineAndCharacterOfPosition(node.getStart(sf));
+        push(
+          "nested-tabs",
+          "warn",
+          file,
+          line + 1,
+          "<Tabs> inside <Tabs> — nested tab bars break aria ownership and keyboard navigation; use Chip/Segmented controls for the inner grouping, or split into separate pages",
+        );
+      }
+      const next = tabsDepth + (isTabs ? 1 : 0);
+      ts.forEachChild(node, (child) => visit(child, next));
+      return;
+    }
+    ts.forEachChild(node, (child) => visit(child, tabsDepth));
+  };
+
+  visit(sf, 0);
+}
+
 function scanNestedScroll(file, source, sf) {
   if (!ts) return;
 
@@ -407,6 +438,7 @@ for (const abs of collectFiles(ROOT)) {
   scanNesting(rel, source, sf);
   scanTabs(rel, source);
   scanNestedScroll(rel, source, sf);
+  scanNestedTabs(rel, source, sf);
 }
 
 const errors = findings.filter((f) => f.severity === "error");

@@ -126,52 +126,55 @@ export function ThemeSwitcher({ lang = "en", className }: { lang?: Lang; classNa
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-1.5">
             <span className="text-xs font-medium text-muted-foreground">{t.theme}</span>
-            <div className="flex gap-1 rounded-lg border p-1">
+            <ul className="flex gap-1 rounded-lg border p-1">
               {modes.map((mode) => (
-                <button
-                  key={mode.value}
-                  type="button"
-                  onClick={() => theme.setTheme(mode.value)}
-                  aria-label={mode.label}
-                  title={mode.label}
-                  className={cn(
-                    "flex flex-1 items-center justify-center gap-1.5 rounded-md p-1.5 text-xs whitespace-nowrap text-muted-foreground hover:bg-muted",
-                    theme.theme === mode.value && "bg-muted text-foreground",
-                  )}
-                >
-                  <mode.icon className="size-4" />
-                  {mode.label}
-                </button>
+                <li key={mode.value} className="flex flex-1">
+                  <button
+                    type="button"
+                    onClick={() => theme.setTheme(mode.value)}
+                    aria-label={mode.label}
+                    title={mode.label}
+                    className={cn(
+                      "flex w-full items-center justify-center gap-1.5 rounded-md p-1.5 text-xs whitespace-nowrap text-muted-foreground hover:bg-muted",
+                      theme.theme === mode.value && "bg-muted text-foreground",
+                    )}
+                  >
+                    <mode.icon className="size-4" />
+                    {mode.label}
+                  </button>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
           <div className="flex flex-col gap-1.5">
             <span className="text-xs font-medium text-muted-foreground">{t.surface}</span>
-            <div className="flex flex-wrap gap-1.5">
+            <ul className="flex flex-wrap gap-1.5">
               {SURFACES.map((surface) => (
-                <DotButton
-                  key={surface.value}
-                  color={surface.color}
-                  label={surface.value || t.default}
-                  active={theme.surface === surface.value}
-                  onClick={() => theme.setSurface(surface.value)}
-                />
+                <li key={surface.value}>
+                  <DotButton
+                    color={surface.color}
+                    label={surface.value || t.default}
+                    active={theme.surface === surface.value}
+                    onClick={() => theme.setSurface(surface.value)}
+                  />
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
           <div className="flex flex-col gap-1.5">
             <span className="text-xs font-medium text-muted-foreground">{t.brand}</span>
-            <div className="flex flex-wrap gap-1.5">
+            <ul className="flex flex-wrap gap-1.5">
               {BRANDS.map((brand) => (
-                <DotButton
-                  key={brand.value}
-                  color={brand.color}
-                  label={brand.value || t.default}
-                  active={theme.brand === brand.value}
-                  onClick={() => theme.setBrand(brand.value)}
-                />
+                <li key={brand.value}>
+                  <DotButton
+                    color={brand.color}
+                    label={brand.value || t.default}
+                    active={theme.brand === brand.value}
+                    onClick={() => theme.setBrand(brand.value)}
+                  />
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </div>
       </Popover>

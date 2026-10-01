@@ -9,35 +9,11 @@ description: An all-in-one search control pairing a leading field select with a 
 
 ## Usage
 
-### Basic Usage
-
-`FieldSearch` composes `InputGroup` + `Select` + `Input` into a single search control: the leading select picks which field to search, and the rest of the group is the value input. The group owns the focus ring — its children are stripped of their own (`outline-0` / `ring-0` via child selectors), so the composite never shows a double ring.
-
-Text fields emit on debounce (`debounceMs`, default 300); fields with `options` render a second select instead of an input and emit immediately on pick, prefixed with an "All" empty option. Emissions fire with an empty value when the input is cleared or the field switches, and IME composition holds emissions until it ends so pinyin typing never spams the table.
+`FieldSearch` composes `InputGroup` + `Select` + `Input` into a single search control: the leading select picks which field to search, the rest is the value input. Text fields emit on debounce; enum fields render a second select and emit immediately on pick.
 
 <ComponentPreview name="field-search-basic" />
 
-```tsx
-<FieldSearch
-  fields={[
-    { value: "name", label: "Name", placeholder: "Search by name" },
-    {
-      value: "status",
-      label: "Status",
-      options: [
-        { value: "active", label: "Active" },
-        { value: "archived", label: "Archived" },
-      ],
-    },
-  ]}
-  onSearch={(field, value) => runQuery(field, value)}
-/>
-```
-
-## Notes
-
-- No suggestion dropdown by design — the table itself is the search result; pair it with [Table](/docs/components/table) and feed `onSearch` into your filtering.
-- `onSearch` receives trimmed values and skips duplicate consecutive emissions of the same field + value pair.
+No suggestion dropdown by design — the table itself is the result; pair it with [Table](/docs/components/table) and feed `onSearch` into your filtering.
 
 ## API Reference
 
@@ -46,7 +22,7 @@ Text fields emit on debounce (`debounceMs`, default 300); fields with `options` 
 | Prop         | Type                                      | Default | Description                                                                        |
 | ------------ | ----------------------------------------- | ------- | ---------------------------------------------------------------------------------- |
 | `fields`     | `FieldSearchField[]`                      | -       | Searchable fields; the first one is selected initially                             |
-| `onSearch`   | `(field: string, value: string) => void`  | -       | Called with the field identifier and the trimmed value after debounce / on pick    |
+| `onSearch`   | `(field: string, value: string) => void`  | -       | Called with the field identifier and the trimmed value after debounce / on pick; duplicate consecutive emissions are skipped |
 | `debounceMs` | `number`                                  | `300`   | Debounce for text input emissions                                                  |
 | `className`  | `ClassNameValue`                          | -       | Custom classes, applied to the group shell                                         |
 

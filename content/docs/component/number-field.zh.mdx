@@ -9,9 +9,15 @@ description: 带前导 Minus 与尾部 Plus 步进按钮的紧凑数字步进器
 
 ## 用法
 
-`NumberField` 是步进器形态的数字输入组件：前导 Minus 与尾部 Plus 按钮按 `step` 步进数值（受 `min` / `max` 约束）。字段默认带边框；放在其他容器内部（工具栏、表格单元格、自定义外壳）时设置 `variant="embedded"` 去掉边框。数值到达某一侧边界后，该侧步进按钮自动禁用。输入框聚焦时依然支持键盘步进。
+`NumberField` 是步进器形态的数字输入组件：前导 Minus / 尾部 Plus 按钮按 `step` 步进数值，并受 `min` / `max` 约束。放在其他容器内部时，设置 `variant="embedded"` 去掉边框。
 
 <ComponentPreview name="number-field-basic" />
+
+### 无效状态
+
+设置 `invalid` 显示危险边框状态。
+
+<ComponentPreview name="number-field-invalid" />
 
 ### 受控
 

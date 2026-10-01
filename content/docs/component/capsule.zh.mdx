@@ -9,23 +9,17 @@ description: 胶囊形容器，将任意子元素——标签、toggle 组、seg
 
 ## 用法
 
-`Capsule` 是胶囊形 overflow-hidden 容器：放入的任意内容都会被拼接、裁剪为一个整体胶囊。容器通过 `*:rounded-none *:px-2 *:py-1` 统一子元素样式，像 [Chip](/docs/component/chip) 这类典型子元素只需写颜色工具类。
+`Capsule` 是胶囊形 overflow-hidden 容器，将任意子元素拼接为一个整体胶囊；子元素通过 `*:rounded-none *:px-2 *:py-1` 统一样式。
 
 <ComponentPreview name="capsule-badge" />
 
 ### 组合
 
-`Capsule` 就是一个普通容器——始终渲染为 `div`，没有 `as` 属性。里面放什么都可以：两个标签可以拼成徽章，toggle 组、segment 组或任意其他内容同样适用。当整个胶囊需要可点击时，应将 `<Capsule>` 包在原生 `<a>`（或 `button`）里，让所有子元素共享同一个点击目标，而不是把链接只嵌在某个子元素上：
+当整个胶囊需要可点击时，应将 `<Capsule>` 包在原生 `<a>`（或 `button`）里，让所有子元素共享同一个点击目标，而不是把链接只嵌在某个子元素上：
 
 <ComponentPreview
   name="capsule-link"
 />
-
-## 注意
-
-- 容器通过 `*:rounded-none *:px-2 *:py-1` 对所有子元素统一处理圆角与内边距，典型子元素只需写颜色工具类即可。
-- 子元素数量不限：容器会裁剪任意内容。
-- `Capsule.className` 是胶囊容器的静态基础类名字符串，可用于样式化包裹元素或在其他地方复用胶囊外观。
 
 ## API 参考
 

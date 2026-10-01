@@ -9,9 +9,13 @@ description: A two-panel picker for single or multiple selection — option rows
 
 ## Usage
 
-`DualPicker` is the two-panel picker (source + selected). Click an option to select it — in `"multiple"` mode it toggles, in `"single"` mode it replaces the previous pick. Click a selected entry to remove it. The search input filters the source panel.
+`DualPicker` is the two-panel picker (source + selected): click an option to select it, click a selected entry to remove it.
 
-Both list bodies keep a fixed height (`h-64`) so filtering never collapses the panels — override via `classNames={{ body: ... }}`.
+### Disabled
+
+`disabled` locks both panels — source options can't be selected and selected entries can't be removed, both dimmed to half opacity.
+
+<ComponentPreview name="dual-picker-disabled" />
 
 ### Custom content (e.g. products with images)
 

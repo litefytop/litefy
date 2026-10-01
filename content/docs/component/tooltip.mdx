@@ -9,9 +9,7 @@ description: A tooltip component built on the native Popover API and CSS anchor 
 
 ## Usage
 
-### Basic Usage
-
-A basic tooltip that appears on hover or focus. `Tooltip` is a wiring container: it generates the content id, anchor name and delay, then provides them to `TooltipTrigger` / `TooltipContent` through context — no element cloning, the trigger is always an explicit `TooltipTrigger`.
+A basic tooltip that appears on hover or focus.
 
 <ComponentPreview
   name="tooltip-basic"
@@ -70,10 +68,3 @@ The tooltip bubble rendered inline with `popover="manual"` (the top layer escape
 | `style` | `React.CSSProperties` | - | Custom inline styles, merged with the anchor styles |
 | `ref` | `React.Ref<HTMLDivElement>` | - | Ref to the popover element for imperative `showPopover()` and `hidePopover()` calls |
 | `...props` | `React.ComponentProps<"div">` | - | Supports all native div props (except `className`, `style`, `id`) |
-
-## Notes
-
-- Built on the native Popover API and CSS anchor positioning (`anchor-name` / `position-anchor` / `position-area`), with no manual positioning fallback.
-- Anchored above the trigger by default, with `position-try-fallbacks: flip-block, flip-inline` handling overflow automatically — no direction prop needed.
-- The content keeps itself open while the pointer is over it; `showPopover()` on an already open popover is a no-op.
-- Multiple `showPopover()` calls won't reopen, and `hidePopover()` closes immediately.

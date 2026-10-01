@@ -9,9 +9,15 @@ description: A bordered numeric input with a non-interactive up/down cue in the 
 
 ## Usage
 
-`NumberInput` is the classic bordered numeric field: an `InputGroup` shell, optional `prefix` / `suffix`, and a non-interactive up/down cue in the trailing area (`suffix` replaces the cue when set). Stepping is keyboard-only — `ArrowUp` / `ArrowDown` on the focused input. For clickable Minus / Plus steppers use [NumberField](/docs/component/number-field).
+`NumberInput` is the classic bordered numeric field with optional `prefix` / `suffix`; stepping is keyboard-only (`ArrowUp` / `ArrowDown`). For clickable Minus / Plus steppers use [NumberField](/docs/component/number-field).
 
 <ComponentPreview name="number-input-basic" />
+
+### Disabled
+
+`disabled` disables the entire field — the input and keyboard stepping are locked, and the trailing cue dims along with the shell.
+
+<ComponentPreview name="number-input-disabled" />
 
 ### Custom
 

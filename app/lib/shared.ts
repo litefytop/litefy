@@ -1,4 +1,5 @@
 export const appName = "Litefy UI";
+export const siteUrl = "https://litefy.top";
 export const docsRoute = "/docs";
 export const docsImageRoute = "/og/docs";
 export const docsContentRoute = "/llms.mdx/docs";

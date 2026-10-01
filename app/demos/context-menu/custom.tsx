@@ -16,7 +16,7 @@ export default function ContextMenuCustomDemo() {
     <div className="flex flex-col items-center gap-3">
       <ContextMenuHost />
       <div
-        className="flex h-64 w-full max-w-md select-none items-center justify-center rounded-md border border-dashed border-primary/50 bg-primary/5 text-sm text-muted-foreground"
+        className="flex size-64 max-w-md select-none items-center justify-center rounded-md border border-dashed border-primary/50 bg-primary/5 text-sm text-muted-foreground"
         onContextMenu={(e) => {
           e.preventDefault();
           ContextMenu.open({

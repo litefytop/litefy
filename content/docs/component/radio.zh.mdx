@@ -9,28 +9,26 @@ description: 零件化组装的单选按钮组件，分组由 options 驱动—�
 
 ## 用法
 
-### 基础用法
-
 基础单选框，支持单独和分组模式。
 
 <ComponentPreview 
   name="radio-basic"
 />
 
-### 受控模式
-
-通过受控状态管理单选框组的值。
-
-<ComponentPreview 
-  name="radio-controlled"
-/>
-
 ### 禁用状态
 
-展示单个单选框禁用和单选框组禁用的效果。
+展示单选框的禁用效果。
 
-<ComponentPreview 
+<ComponentPreview
   name="radio-disabled"
+/>
+
+### 自定义拼装
+
+直接用零件拼装——`RadioRoot` 必须嵌套在 `RadioIndicator` 内部，共享 `name` 让各自拼装的 root 组成原生单选组。
+
+<ComponentPreview
+  name="radio-custom"
 />
 
 ## API 参考

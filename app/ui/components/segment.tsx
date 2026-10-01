@@ -10,7 +10,7 @@ export interface SegmentProps extends Omit<React.ComponentProps<"button">, "type
     variant?: SegmentVariant;
 }
 export function Segment({ className, checked, variant = "fill", ...props }: SegmentProps) {
-    return (<button {...props} type="button" role="radio" aria-checked={checked} className={cn("relative inline-flex items-center justify-center gap-2 h-9 min-w-9 px-3 py-1 text-sm font-medium cursor-pointer select-none transition-colors duration-200", variant === "fill" ? cn("text-muted-foreground", "first:rounded-l-md last:rounded-r-md", "aria-checked:bg-primary aria-checked:text-primary-foreground") : cn("rounded-md text-muted-foreground hover:bg-accent", "aria-checked:text-primary-accent"), className)}/>);
+    return (<button {...props} type="button" role="radio" aria-checked={checked} className={cn("relative inline-flex items-center justify-center gap-2 h-9 min-w-9 px-3 py-1 text-sm font-medium cursor-pointer select-none transition-colors duration-200", variant === "fill" ? cn("text-muted-foreground", "first:rounded-l-md last:rounded-r-md", "aria-checked:bg-primary aria-checked:text-primary-foreground") : cn("rounded-md text-muted-foreground hover:bg-accent", "aria-checked:text-primary-accent aria-checked:font-bold"), className)}/>);
 }
 export interface SegmentOptionConfig {
     label: string;

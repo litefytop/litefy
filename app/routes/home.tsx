@@ -4,8 +4,10 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router";
 import { baseOptions } from "@/components/layout-shared";
 import { ExampleWall } from "@/components/example-wall";
-import { Button, Typography } from "@/ui";
+import { Button, Skeleton, Typography } from "@/ui";
 import { i18n } from "@/lib/i18n";
+import { jsonLdScript, socialMeta } from "@/lib/seo";
+import { appName, gitConfig, siteUrl } from "@/lib/shared";
 
 export type Locale = "en" | "zh";
 
@@ -54,11 +56,13 @@ const landingContent = {
 export function meta({ params }: { params: { lang?: string } }) {
   const locale = (params.lang || i18n.defaultLanguage) as Locale;
   const t = content[locale] ?? content.en;
+  const url = `${siteUrl}/${locale}`;
   return [
     { title: t.title },
     { name: "description", content: t.description },
     { name: "robots", content: "index, follow" },
-    { rel: "canonical", href: `https://litefy.top/${locale}` },
+    { rel: "canonical", href: url },
+    ...socialMeta({ title: t.title, description: t.description, url, locale }),
   ];
 }
 
@@ -67,7 +71,7 @@ function LandingHero({ locale }: { locale: Locale }) {
   const docsPath = `/${locale}/docs`;
 
   return (
-    <div className="grid w-full gap-8 md:grid-cols-[1.2fr_1fr] md:items-center">
+    <section className="grid w-full gap-8 md:grid-cols-[1.2fr_1fr] md:items-center">
       <div>
         <div className="inline-flex items-center gap-1.5 rounded-full bg-fd-primary/10 px-3 py-1 text-xs font-medium text-fd-primary">
           <Sparkles className="h-3 w-3" />
@@ -101,24 +105,24 @@ function LandingHero({ locale }: { locale: Locale }) {
       </div>
       <div className="relative hidden md:block">
         <div className="absolute -inset-6 rounded-3xl bg-linear-to-br from-fd-primary/30 via-fd-primary/5 to-transparent blur-2xl" />
-        <div className="relative rounded-2xl border border-fd-border bg-fd-background/80 p-4 shadow-elevated backdrop-blur">
+        <figure className="relative rounded-2xl border border-fd-border bg-fd-background/80 p-4 shadow-elevated backdrop-blur">
           <div className="mb-3 flex items-center gap-1.5">
             <div className="h-2.5 w-2.5 rounded-full bg-danger" />
             <div className="h-2.5 w-2.5 rounded-full bg-warning" />
             <div className="h-2.5 w-2.5 rounded-full bg-success" />
           </div>
           <div className="space-y-2">
-            <div className="h-2.5 w-3/4 rounded bg-fd-muted" />
-            <div className="h-2.5 w-1/2 rounded bg-fd-muted" />
-            <div className="h-2.5 w-5/6 rounded bg-fd-muted" />
+            <Skeleton className="h-2.5 w-3/4 bg-muted" />
+            <Skeleton className="h-2.5 w-1/2 bg-muted" />
+            <Skeleton className="h-2.5 w-5/6 bg-muted" />
           </div>
           <div className="mt-4 flex gap-2">
-            <div className="h-7 w-20 rounded-md bg-fd-primary" />
-            <div className="h-7 w-20 rounded-md border border-fd-border" />
+            <div className="h-7 w-20 rounded-md bg-primary" />
+            <div className="h-7 w-20 rounded-md border border-border" />
           </div>
-        </div>
+        </figure>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -143,6 +147,29 @@ export function HomeContent({ locale }: { locale: Locale }) {
         <p className="text-fd-muted-foreground">{t.subheading}</p>
         <ExampleWall locale={locale} />
       </div>
+      {jsonLdScript([
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: appName,
+          url: `${siteUrl}/`,
+          inLanguage: locale,
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: appName,
+          url: `${siteUrl}/`,
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web",
+          description: t.description,
+          author: {
+            "@type": "Organization",
+            name: "Litefy",
+            url: `https://github.com/${gitConfig.user}`,
+          },
+        },
+      ])}
     </HomeLayout>
   );
 }

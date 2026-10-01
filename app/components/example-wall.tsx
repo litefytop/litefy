@@ -193,7 +193,7 @@ export function ExampleWall({ locale }: { locale: "en" | "zh" }) {
 
   return (
     <div ref={ref} className="mt-20 w-full max-w-6xl text-left">
-      <div className="mb-6 flex items-end justify-between gap-4">
+      <header className="mb-6 flex items-end justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">{t.title}</h2>
           <p className="mt-1 text-sm text-fd-muted-foreground">
@@ -208,7 +208,7 @@ export function ExampleWall({ locale }: { locale: "en" | "zh" }) {
         >
           {locale === "zh" ? "查看全部组件" : "View all components"}
         </Link>
-      </div>
+      </header>
       {near && (
         <Masonry
           items={wallItems.slice(0, visibleCount)}

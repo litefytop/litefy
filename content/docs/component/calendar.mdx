@@ -12,9 +12,7 @@ description: A calendar panel component built on the native Temporal API, suppor
 
 ## Usage
 
-### Basic Usage
-
-The visible month is fully controlled: hold it in state and update it via `onVisibleMonthChange`. Selection supports both controlled (`value` + `onChange`) and uncontrolled (`defaultValue`) modes.
+Hold `visibleMonth` in state and update it via `onVisibleMonthChange`.
 
 <ComponentPreview
   name="calendar-basic"
@@ -22,7 +20,7 @@ The visible month is fully controlled: hold it in state and update it via `onVis
 
 ### Disabled Dates
 
-Return `true` from `isDateDisabled` to disable specific dates. Disabled cells are rendered as disabled buttons and never fire `onChange`.
+Return `true` from `isDateDisabled` to disable specific dates.
 
 <ComponentPreview
   name="calendar-disabled"
@@ -30,7 +28,7 @@ Return `true` from `isDateDisabled` to disable specific dates. Disabled cells ar
 
 ### Parts Assembly
 
-All parts are exported. Compose `CalendarRoot`, `CalendarHeader`, `CalendarNavButton`, `CalendarTitleButton` and the grids manually to build a fully customized panel — the demo below manages the view, the weeks array and both states itself.
+Compose the exported parts manually to build a fully customized panel.
 
 <ComponentPreview
   name="calendar-custom"
@@ -60,7 +58,7 @@ Ready-to-use composite component.
 
 `Temporal.PlainDate` is immutable — all month arithmetic is performed with `add` / `subtract` / `with`, never by mutating an existing object.
 
-**Localization**: month names come from the mutable static `Calendar.calendarMonthLabels` (English abbreviations by default). It is process-global and cannot be scoped to a single instance — override it once at your app's entry point and every calendar picks it up from the next render, including the one inside [DatePicker](/docs/component/datepicker). Weekday abbreviations in the day grid are fixed English labels.
+`Calendar.calendarMonthLabels` is process-global — set it once at your app entry (it also affects [DatePicker](/docs/component/datepicker)); day-grid weekday abbreviations are fixed English.
 
 ```tsx
 Calendar.calendarMonthLabels = ["一月", "二月", /* ... */];
@@ -72,7 +70,7 @@ Calendar.calendarMonthLabels = ["一月", "二月", /* ... */];
 
 #### CalendarRoot
 
-The panel shell: border, background and vertical spacing. Extends all native `div` props.
+The panel shell: border, background and vertical spacing.
 
 | Prop        | Type                          | Default | Description        |
 | :---------- | :---------------------------- | :------ | :----------------- |
@@ -81,7 +79,7 @@ The panel shell: border, background and vertical spacing. Extends all native `di
 
 #### CalendarHeader
 
-Header shell: a flex row for the navigation buttons and the title buttons. Pure layout — renders `children` between the edges, leaving the composition to you.
+Header shell: a flex row for the navigation buttons and the title buttons.
 
 | Prop        | Type                             | Default | Description         |
 | :---------- | :------------------------------- | :------ | :------------------ |
@@ -90,7 +88,7 @@ Header shell: a flex row for the navigation buttons and the title buttons. Pure 
 
 #### CalendarNavButton
 
-Chevron navigation button for the header. `direction` picks the icon; pass `children` to replace it with a custom icon.
+Chevron navigation button for the header.
 
 | Prop        | Type                             | Default                 | Description                                          |
 | :---------- | :------------------------------- | :---------------------- | :--------------------------------------------------- |
@@ -101,7 +99,7 @@ Chevron navigation button for the header. `direction` picks the icon; pass `chil
 
 #### CalendarTitleButton
 
-Text button for the header title area — typically rendered twice as the year and the month. Setting the `data-active` attribute highlights it as the current panel.
+Text button for the header title area — typically rendered twice as the year and the month.
 
 | Prop        | Type                             | Default | Description                                            |
 | :---------- | :------------------------------- | :------ | :----------------------------------------------------- |
@@ -110,7 +108,7 @@ Text button for the header title area — typically rendered twice as the year a
 
 #### CalendarMonthGrid
 
-3 × 4 month panel listing the 12 months of the visible year. Cells carry a `data-month` attribute for in-grid lookup; arrow keys move by one month or one row, and leaving the shown year calls `onNavigate`.
+3 × 4 month panel listing the 12 months of the visible year.
 
 | Prop              | Type                                     | Default | Description                                                       |
 | :---------------- | :--------------------------------------- | :------ | :---------------------------------------------------------------- |
@@ -124,7 +122,7 @@ Text button for the header title area — typically rendered twice as the year a
 
 #### CalendarYearGrid
 
-3 × 4 year panel showing a 12-year window centered on the visible year. Cells carry a `data-year` attribute for in-grid lookup; arrow keys move by one year or one row, and leaving the window calls `onNavigate`.
+3 × 4 year panel showing a 12-year window centered on the visible year.
 
 | Prop             | Type                                    | Default | Description                                                    |
 | :--------------- | :-------------------------------------- | :------ | :------------------------------------------------------------- |
@@ -138,7 +136,7 @@ Text button for the header title area — typically rendered twice as the year a
 
 #### CalendarGrid
 
-Weekday header row plus the weeks body. Expects a two-dimensional `weeks` array of `Temporal.PlainDate` (including padding dates from the previous and next months).
+Weekday header row plus the weeks body — pass a two-dimensional `weeks` array including previous/next-month padding dates.
 
 | Prop             | Type                                    | Default | Description                                                   |
 | :--------------- | :-------------------------------------- | :------ | :------------------------------------------------------------ |
@@ -154,7 +152,7 @@ Weekday header row plus the weeks body. Expects a two-dimensional `weeks` array 
 
 #### CalendarGridRow
 
-A single week row. Usually rendered by `CalendarGrid`, but can be composed manually.
+A single week row, usually rendered by `CalendarGrid`.
 
 | Prop             | Type                                    | Default | Description                                                                                  |
 | :--------------- | :-------------------------------------- | :------ | :------------------------------------------------------------------------------------------- |
@@ -170,7 +168,7 @@ A single week row. Usually rendered by `CalendarGrid`, but can be composed manua
 
 #### CalendarGridCell
 
-A single date cell rendered as a button. `aria-selected` drives the selected styles, `data-outside-month` fades out-of-month cells. Arrow keys move the cursor to another day (Enter / Space confirms); each cell carries a `data-date` attribute for in-grid lookup.
+A single date cell rendered as a button.
 
 | Prop           | Type                             | Default | Description                                                                                |
 | :------------- | :------------------------------- | :------ | :----------------------------------------------------------------------------------------- |

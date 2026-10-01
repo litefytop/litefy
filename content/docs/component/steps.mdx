@@ -9,23 +9,23 @@ description: A controlled steps indicator with completed, current and upcoming s
 
 ## Usage
 
-### Basic Usage
-
-Fully controlled `index`. With `maxIndex` set to the highest visited step, completed steps stay clickable for going back while future steps are locked (`disabled`) and cannot be skipped ahead — exactly what a wizard needs.
+Fully controlled `index`; completed and upcoming steps are clickable and fire `onChange`, the current step is not.
 
 <ComponentPreview
   name="steps-basic"
 />
 
-Key points:
+### Locked Navigation
 
-- `maxIndex` defaults to `items.length - 1` (all steps clickable); pass the highest visited index to lock future steps.
-- Clicking a clickable step fires `onChange(nextIndex)`; the current step is never clickable.
-- States are derived: `completed` shows a `Check` icon and a primary connector line up to the current step, `current` gets `aria-current="step"`.
+Set `maxIndex` to the highest visited step — completed steps stay clickable, future steps are locked.
+
+<ComponentPreview
+  name="steps-locked"
+/>
 
 ### Vertical
 
-Set `orientation="vertical"` to stack the steps — titles and descriptions render beside the markers with a continuous connector line, matching the [Timeline](/docs/component/timeline) look.
+Set `orientation="vertical"` to stack the steps — titles and descriptions render beside the markers, matching the [Timeline](/docs/component/timeline) look.
 
 <ComponentPreview name="steps-vertical" />
 
@@ -52,7 +52,7 @@ Set `orientation="vertical"` to stack the steps — titles and descriptions rend
 
 ### Composable Components
 
-The parts extend native DOM props and merge their built-in `className` through `cn` — passing `className` extends the defaults instead of replacing them.
+Parts merge their built-in `className` with yours — passing `className` extends the defaults instead of replacing them.
 
 #### StepsRoot
 
@@ -65,7 +65,7 @@ The outer `<ol>` flex container (`role` list semantics come from the native elem
 
 #### StepsItem
 
-A single step: connector line (from the second item on), circular marker button, title and optional description. The marker is a real `<button>` — keyboard accessible when `clickable`.
+A single step: connector line, circular marker button, title and optional description; the marker is keyboard accessible when `clickable`.
 
 | Prop          | Type                              | Default | Description                                                        |
 | :------------ | :-------------------------------- | :------ | :----------------------------------------------------------------- |

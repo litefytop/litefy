@@ -9,9 +9,7 @@ description: An auto-scrolling marquee banner with seamless looping, hover pause
 
 ## Usage
 
-### Basic Usage
-
-A data-driven announcement banner. Items repeat automatically to fill the width and loop seamlessly; hovering pauses the scroll.
+A data-driven auto-scrolling announcement banner.
 
 <ComponentPreview
   name="banner-basic"
@@ -19,7 +17,7 @@ A data-driven announcement banner. Items repeat automatically to fill the width 
 
 ### Custom
 
-Assemble the parts manually for full control: a custom-styled viewport, your own track speed and direction, and duplicated copies for the seamless loop (the extra copy is `aria-hidden`). In parts mode you render the two copies yourself — the track shifts by exactly `-50%`, so both halves must be identical.
+Assemble the parts manually — render two identical copies (the extra one `aria-hidden`) for the seamless loop.
 
 <ComponentPreview
   name="banner-custom"
@@ -31,7 +29,7 @@ Assemble the parts manually for full control: a custom-styled viewport, your own
 
 #### Banner
 
-A data-driven marquee banner. It measures the viewport, repeats the item set enough times to fill twice the width, and animates the track with the Web Animations API — no global keyframes required. Content copies beyond the first are `aria-hidden`.
+A data-driven marquee banner.
 
 | Prop           | Type                                   | Default | Description                                                                              |
 | :------------- | :------------------------------------- | :------ | :--------------------------------------------------------------------------------------- |
@@ -68,7 +66,7 @@ A single scrolling entry.
 
 #### BannerViewport
 
-The clipping container. Renders a full-width `overflow-hidden` div with `aria-roledescription="marquee"`.
+The clipping container.
 
 | Prop       | Type                          | Description                     |
 | :--------- | :---------------------------- | :------------------------------ |
@@ -77,7 +75,7 @@ The clipping container. Renders a full-width `overflow-hidden` div with `aria-ro
 
 #### BannerTrack
 
-The animated strip. Runs a linear infinite `translateX(0 → -50%)` (reversed for `direction="right"`) via the Web Animations API, and pauses automatically under `prefers-reduced-motion: reduce`. For a seamless loop the track must contain two identical halves — the `-50%` shift is what makes the loop seamless.
+The animated strip; for a seamless loop it must contain two identical halves (the `-50%` shift).
 
 | Prop        | Type                          | Default | Description                                              |
 | :---------- | :---------------------------- | :------ | :------------------------------------------------------- |

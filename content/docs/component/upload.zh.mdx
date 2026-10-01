@@ -1,5 +1,5 @@
 ---
-title: 上传
+title: Upload 上传
 description: 拖拽上传区域组件，支持本地校验、拖拽上传，并搭配完全解耦的上传监控 hook
 ---
 
@@ -9,12 +9,18 @@ description: 拖拽上传区域组件，支持本地校验、拖拽上传，并�
 
 ## 用法
 
-### 基础用法
-
-Upload 组件只处理选择、拖拽与本地校验——不发起网络请求，也不维护上传状态。搭配 [`useUploadMonitor`](/docs/utils/use-upload-monitor) hook 执行上传并跟踪进度。
+Upload 只处理选择、拖拽与本地校验——不发起网络请求；搭配 [`useUploadMonitor`](/docs/utils/use-upload-monitor) hook 执行上传并跟踪进度。
 
 <ComponentPreview
   name="upload-basic"
+/>
+
+### 禁用状态
+
+禁用后拖放区不再响应点击、键盘与拖拽——已排队的条目状态保持不变。
+
+<ComponentPreview
+  name="upload-disabled"
 />
 
 ### 校验限制
@@ -59,8 +65,6 @@ Upload 组件只处理选择、拖拽与本地校验——不发起网络请求�
 | `style` | `React.CSSProperties` | - | 根节点自定义内联样式 |
 | `classNames` | `{ dropzone?; hiddenInput? }` | - | 各零件自定义类 |
 | `styles` | `{ dropzone?; hiddenInput? }` | - | 各零件自定义内联样式 |
-
-组件卸载时中止全部 controller。
 
 ---
 

@@ -45,7 +45,7 @@ export default function Demo() {
   const [selected, setSelected] = React.useState<string[]>([]);
 
   return (
-    <div className="flex w-full max-w-xl flex-col gap-2">
+    <section className="flex w-full max-w-xl flex-col gap-2">
       <SelectableTable
         data={data}
         rowKey={(row) => row.id}
@@ -58,7 +58,7 @@ export default function Demo() {
           { key: "village", header: "Village" },
         ]}
       />
-      <div className="flex items-center justify-between gap-2 text-sm text-muted-foreground">
+      <footer className="flex items-center justify-between gap-2 text-sm text-muted-foreground">
         <span className="min-w-0 truncate">{selected.length} selected · {TOTAL} total</span>
         <div className="flex shrink-0 items-center gap-1">
           <Button variant="text" aria-label="Export selected" disabled={selected.length === 0}>
@@ -71,7 +71,7 @@ export default function Demo() {
             disabled={loading}
           />
         </div>
-      </div>
-    </div>
+      </footer>
+    </section>
   );
 }

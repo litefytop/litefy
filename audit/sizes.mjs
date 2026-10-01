@@ -5,7 +5,9 @@ import zlib from "node:zlib";
 
 const REPO = path.resolve(import.meta.dirname, "../..");
 const COMP_DIR = path.join(REPO, "app/ui/components");
-const esbuild = createRequire(import.meta.url)("../../node_modules/.pnpm/esbuild@0.28.2/node_modules/esbuild");
+const esbuild = createRequire(import.meta.url)(
+  "../../node_modules/.pnpm/esbuild@0.28.2/node_modules/esbuild",
+);
 
 const EXTERNAL = ["react", "react-dom", "react/jsx-runtime", "react-dom/client", "lucide-react"];
 const NPM_MARKER = "node_modules/.pnpm/";
@@ -15,7 +17,8 @@ function listEntries() {
   for (const name of fs.readdirSync(COMP_DIR).sort()) {
     const p = path.join(COMP_DIR, name);
     if (fs.statSync(p).isDirectory()) {
-      if (fs.existsSync(path.join(p, "index.tsx"))) out.push({ name, file: path.join(p, "index.tsx") });
+      if (fs.existsSync(path.join(p, "index.tsx")))
+        out.push({ name, file: path.join(p, "index.tsx") });
     } else if (name.endsWith(".tsx")) {
       out.push({ name: name.replace(/\.tsx$/, ""), file: p });
     }
@@ -63,13 +66,20 @@ for (const entry of listEntries()) {
       rawMin: raw,
       gzip,
       ownBytesIn: own,
-      npmDeps: [...deps.entries()].map(([name, bytes]) => ({ name, bytes })).sort((a, b) => b.bytes - a.bytes),
+      npmDeps: [...deps.entries()]
+        .map(([name, bytes]) => ({ name, bytes }))
+        .sort((a, b) => b.bytes - a.bytes),
     });
-    console.log(`${entry.name.padEnd(18)} raw=${(raw / 1024).toFixed(1)}K gzip=${(gzip / 1024).toFixed(2)}K deps=${[...deps.keys()].join(",") || "-"}`);
+    console.log(
+      `${entry.name.padEnd(18)} raw=${(raw / 1024).toFixed(1)}K gzip=${(gzip / 1024).toFixed(2)}K deps=${[...deps.keys()].join(",") || "-"}`,
+    );
   } catch (e) {
     results.push({ component: entry.name, error: String(e).slice(0, 300) });
     console.log(`${entry.name.padEnd(18)} ERROR ${String(e).slice(0, 120)}`);
   }
 }
-fs.writeFileSync(new URL("./results/sizes.json", import.meta.url), JSON.stringify(results, null, 1));
+fs.writeFileSync(
+  new URL("./results/sizes.json", import.meta.url),
+  JSON.stringify(results, null, 1),
+);
 console.log("done:", results.length);

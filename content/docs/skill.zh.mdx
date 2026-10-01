@@ -1,5 +1,5 @@
 ---
-title: AI Skill
+title: AI Skill AI 技能
 description: 安装 Litefy UI 设计规范技能，让 AI 编码助手开箱即用写出正确的 Litefy UI
 ---
 
@@ -13,7 +13,7 @@ Litefy UI 设计规范技能（`litefy-design`）是一个 `SKILL.md` 文件，�
 
 **[下载 litefy-design-skill.md](/litefy-design-skill.md)** —— 原始技能文件，构建时从仓库源文件自动同步，始终最新。
 
-**[下载 litefy-design-detect.mjs](/litefy-design-detect.mjs)** —— 随附的校验脚本。对你的项目源码目录运行（`node litefy-design-detect.mjs src`）：硬编码色值、任意值阴影、手写焦点/禁用样式为 error（非零退出码，可接 CI），结构坏味道（同标签三层以上嵌套）为 warn。
+**[下载 litefy-design-detect.mjs](/litefy-design-detect.mjs)** —— 随附的校验脚本。对你的项目源码目录运行（`node litefy-design-detect.mjs src`）：硬编码色值、任意值阴影、手写焦点/禁用样式为 error（非零退出码，可接 CI）；阴影旧刻度名与结构坏味道（同标签三层以上嵌套、Tabs 触发条配手搓面板、Tabs 嵌套、滚动嵌套）为 warn。
 
 两个文件也可以在 [GitHub](https://github.com/litefytop/litefy/tree/main/.agents/skills/litefy-design) 上查看。
 
@@ -47,4 +47,4 @@ curl -fsSL https://litefy.top/litefy-design-skill.md \
 - **反模式库** —— 硬编码色值、ghost card、动布局属性等一票否决项
 - **组件专项规范** —— Button 变体、Card 与 CardButton、Chip/Badge/Callout 划分、Table 列宽模型的设计 rationale
 - **验证清单** —— 发布前的静态、可访问性与视觉检查
-- **随附校验脚本** —— `design-detect.mjs` 确定性检查硬编码色值、任意值阴影、手写焦点/禁用样式（interactive.css 在场时）与同标签三层以上嵌套
+- **随附校验脚本** —— `design-detect.mjs` 确定性检查硬编码色值、任意值阴影、手写焦点/禁用样式（interactive.css 在场时），并对阴影旧刻度名与结构坏味道（同标签三层嵌套、Tabs 手搓面板/嵌套、滚动嵌套）给出 warn

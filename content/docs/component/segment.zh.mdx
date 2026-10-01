@@ -9,17 +9,31 @@ description: 支持受控、非受控和 options 驱动模式的单选分段控�
 
 ## 用法
 
-### 基础用法
-
 数据驱动的分段控制器，用于单选，支持受控和非受控模式。
 
 <ComponentPreview
   name="segment-basic"
 />
 
+### 禁用状态
+
+通过选项自身的 `disabled` 禁用单项，或在分组上传入 `disabled` 锁定全部。
+
+<ComponentPreview
+  name="segment-disabled"
+/>
+
+### 变体
+
+`fill` 为默认变体，见基础用法；`text` 仅将选中文字着主色。
+
+<ComponentPreview
+  name="segment-variants"
+/>
+
 ### 自定义拼装
 
-使用受控零件手动拼装分段控制器；组合组件默认使用纯颜色过渡，不内置滑动指示器，需要时可自行添加。
+使用受控零件手动拼装分段控制器。
 
 <ComponentPreview
   name="segment-custom"
@@ -40,10 +54,11 @@ description: 支持受控、非受控和 options 驱动模式的单选分段控�
 | `defaultValue`   | `string`                      | -       | 非受控模式下的默认选中值                   |
 | `onValueChange`  | `(value: string) => void`     | -       | 选中值变化时触发的回调函数                 |
 | `disabled`       | `boolean`                     | `false` | 禁用所有选项                               |
+| `variant`        | `"fill" \| "text"`            | `"fill"`| 视觉变体：`fill` 选中项填充主色，`text` 仅选中文字着色 |
 | `className`      | `ClassNameValue`              | -       | 自定义类名，应用于容器                     |
 | `itemClassName`  | `ClassNameValue`              | -       | 自定义类名，应用于每个分段按钮             |
 
-键盘：分组是带 roving tabindex 的单选组 —— `ArrowRight` / `ArrowDown` / `ArrowLeft` / `ArrowUp` 移动到（并选中）下一个/上一个可用选项，`Home` / `End` 跳到第一个/最后一个，`Enter` / `Space` 激活聚焦的选项。
+键盘：带 roving tabindex 的单选组 —— 方向键移动并选中下一个 / 上一个可用选项，`Home` / `End` 跳到首尾，`Enter` / `Space` 激活。
 
 ### SegmentOptionConfig
 
@@ -60,11 +75,12 @@ description: 支持受控、非受控和 options 驱动模式的单选分段控�
 
 #### Segment
 
-单个分段零件，具有单选语义：选中后再次点击不会取消选中。它不持有内部状态，`checked` 状态必须由外部提供，因此只在 `SegmentGroup` 或手动拼装的分组容器中才有意义。
+单个分段零件，具有单选语义；不持有内部状态——`checked` 必须由外部提供。
 
 | 属性       | 类型                             | 默认值  | 描述                                                          |
 | ---------- | -------------------------------- | ------- | ------------------------------------------------------------- |
 | `children` | `React.ReactNode`                | -       | 分段按钮的内容                                                |
 | `checked`  | `boolean`                        | `false` | 选中状态，驱动 `aria-checked` 和选中样式                      |
+| `variant` | `"fill" \| "text"`               | `"fill"`| 视觉变体：`fill` 选中项填充主色，`text` 仅选中文字着色        |
 | `className` | `ClassNameValue`                | -       | 自定义类名                                                    |
 | `...props` | `React.ComponentProps<"button">` | -       | 支持所有原生 button 属性（除 `type` 外），如 `onClick`、`disabled` |

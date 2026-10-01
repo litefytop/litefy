@@ -71,9 +71,7 @@ A group of collapsible panels. Mutually exclusive mode by default (at most one p
 | `onKeyChange`       | `(value: string \| undefined) => void` \| `(values: string[]) => void`                                                                                         | -       | Callback when the open keys change                                                             |
 | `common`            | `{ className?: ClassNameValue; classNames?: { trigger?: ClassNameValue; panel?: ClassNameValue }; icon?: React.ReactNode \| ((open: boolean) => React.ReactNode) }` | -       | Uniform configuration applied to each item; the item's own `className`/`classNames`/`icon` take precedence |
 | `className`         | `ClassNameValue`                                                                                                                                               | -       | Container custom styles                                                                        |
-| `...props`          | `React.ComponentProps<"div">`                                                                                                                                  | -       | All native div props supported                                                                 |
-
-> Items are separated by `not-last:border-b` by default, which can be overridden via `common.className`.
+| `...props`          | `React.ComponentProps<"div">`                                                                  | -       | All native div props supported                                                                 |
 
 #### CollapseItemConfig
 
@@ -101,9 +99,7 @@ Outer container that lays items out vertically and separates them with `not-last
 
 #### CollapseTrigger
 
-The trigger button; the `open` prop drives `aria-expanded`, and hover styles apply while collapsed.
-
-> Inside `Collapse`, it automatically wires `aria-expanded`, `aria-controls`, and the open toggle; used standalone, pass `open` and control it yourself via `onClick`.
+The trigger button; used standalone, pass `open` and toggle it yourself via `onClick`.
 
 | Prop        | Type                             | Default | Description                       |
 | ----------- | -------------------------------- | ------- | --------------------------------- |
@@ -113,7 +109,7 @@ The trigger button; the `open` prop drives `aria-expanded`, and hover styles app
 
 #### CollapsePanel
 
-> DOM: the outer `<section>` handles the grid rows collapse animation and accessibility attributes; `className` applies to the inner content wrapper, which has built-in `p-4 pt-0`. Inside `Collapse`, the open state is passed automatically.
+The collapsible panel; inside `Collapse` the open state is wired automatically.
 
 | Prop        | Type                              | Default | Description                                            |
 | ----------- | --------------------------------- | ------- | ------------------------------------------------------ |

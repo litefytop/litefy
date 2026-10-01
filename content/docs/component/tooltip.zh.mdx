@@ -9,9 +9,7 @@ description: 基于原生 Popover API 和 CSS 锚点定位构建的提示框组�
 
 ## 用法
 
-### 基础用法
-
-在悬停或聚焦时显示的基础提示框。`Tooltip` 是接线容器：生成内容 id、锚点名称与延迟，经 context 提供给 `TooltipTrigger` / `TooltipContent` —— 不克隆任何元素，触发器永远是显式的 `TooltipTrigger`。
+在悬停或聚焦时显示的基础提示框。
 
 <ComponentPreview
   name="tooltip-basic"
@@ -70,10 +68,3 @@ description: 基于原生 Popover API 和 CSS 锚点定位构建的提示框组�
 | `style` | `React.CSSProperties` | - | 自定义内联样式，与锚点样式合并 |
 | `ref` | `React.Ref<HTMLDivElement>` | - | 指向弹出层元素的 ref，用于命令式 `showPopover()` 和 `hidePopover()` 调用 |
 | `...props` | `React.ComponentProps<"div">` | - | 支持所有原生 div 属性（除 `className`、`style`、`id` 外） |
-
-## 注意事项
-
-- 基于原生 Popover API 和 CSS 锚点定位（`anchor-name` / `position-anchor` / `position-area`）构建，无手动定位回退。
-- 默认锚定在触发元素上方，通过 `position-try-fallbacks: flip-block, flip-inline` 自动处理溢出翻转，无需方向属性。
-- 指针悬停在提示内容上时保持显示；对已打开的弹出层调用 `showPopover()` 不会重复打开。
-- `hidePopover()` 会立即关闭，不受隐藏延迟影响。

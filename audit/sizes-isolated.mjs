@@ -1,5 +1,6 @@
 import { createRequire } from "node:module";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import zlib from "node:zlib";
 
@@ -56,8 +57,7 @@ function listEntries() {
   return out;
 }
 
-const stubDir = path.join(import.meta.dirname, "stubs");
-fs.mkdirSync(stubDir, { recursive: true });
+const stubDir = fs.mkdtempSync(path.join(os.tmpdir(), "litefy-size-stubs-"));
 
 function expandNames(seed) {
   const all = new Set();

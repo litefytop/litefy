@@ -9,15 +9,13 @@ description: An imperative right-click context menu with pointer anchoring, grou
 
 ## Usage
 
-### Basic Usage
-
-Mount `<ContextMenuHost />` once, then call `ContextMenu.open()` from any element's `onContextMenu` — no wrapper component, no anchor plumbing. The menu opens at the pointer; selecting an item closes it; right-clicking again while open re-anchors to the new cursor position.
+Mount `<ContextMenuHost />` once, then call `ContextMenu.open()` from any element's `onContextMenu` — no wrapper needed.
 
 <ComponentPreview name="context-menu-basic" />
 
 ### Custom Styling
 
-Pass `classNames.content` / `styles.content` through `open()` to restyle the panel. The menu items themselves (grouping, submenus, keyboard navigation) come from the [Menu](/docs/component/menu) component — refer to its API for `MenuConfig` and `MenuItemConfig`.
+Restyle the panel via `classNames.content` / `styles.content` passed to `open()`; menu item capabilities come from the [Menu](/docs/component/menu) component.
 
 <ComponentPreview
   name="context-menu-custom"
@@ -27,7 +25,7 @@ Pass `classNames.content` / `styles.content` through `open()` to restyle the pan
 
 ### ContextMenuHost
 
-Renders the floating menu panel whenever `ContextMenu.open()` is active. Mount it once near the app root — it renders nothing until a menu is opened. Closing happens automatically on outside `mousedown` and `Escape`; right-clicks inside the panel are suppressed so the browser menu never appears.
+Renders the floating menu panel while `ContextMenu.open()` is active; mount it once near the app root — it renders nothing until a menu is opened.
 
 | Prop        | Type              | Default | Description                      |
 | :---------- | :---------------- | :------ | :------------------------------- |
@@ -59,8 +57,3 @@ ContextMenu.dismiss(): void
 ```
 
 Closes the menu programmatically.
-
-### Notes
-
-- The panel anchors to a zero-size element placed at the pointer position and flips via `positionTryFallbacks` near viewport edges — both are internal details.
-- Because there is no wrapper, the trigger can be any element or event source: table rows, canvas, tree nodes, or even a non-right-click gesture.

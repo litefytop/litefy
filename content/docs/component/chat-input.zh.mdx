@@ -9,11 +9,15 @@ description: 聊天输入组件——粘贴截图自动生成缩略图、能力�
 
 ## 用法
 
-`ChatInput` 替你管理文字与粘贴图片的状态：粘贴进文本域的截图自动生成缩略图条（内部处理 `URL.createObjectURL`），发送按钮通过 `onSend` 把收集到的内容整包发出，并自动清空输入。
-
-能力开关放在 `actions` 插槽里——用 [Toggle](/zh/docs/component/toggle) 自行组合。
+`ChatInput` 替你管理文字与粘贴图片的状态；能力开关放在 `actions` 插槽里。
 
 <ComponentPreview name="chat-input-basic" />
+
+### 禁用状态
+
+设置 `disabled` 后整个输入框冻结：文本域、附件按钮与发送按钮均不可交互，例如会话断开时。
+
+<ComponentPreview name="chat-input-disabled" />
 
 ### 移动端适配
 

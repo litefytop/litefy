@@ -1,5 +1,5 @@
 ---
-title: 水印
+title: Watermark 水印
 description: 基于 canvas 的水印组件，将文本平铺覆盖在内容之上，提供可组合的两段式 API
 ---
 
@@ -9,9 +9,7 @@ description: 基于 canvas 的水印组件，将文本平铺覆盖在内容之�
 
 ## 用法
 
-### 基础用法
-
-用 `Watermark` 包裹任意内容，文本平铺的水印会绘制在内容之上。canvas 会测量容器大小并在尺寸变化时自动重绘，同时按设备像素比渲染以保证文字清晰。
+用 `Watermark` 包裹任意内容，文本平铺的水印会绘制在内容之上。
 
 <ComponentPreview 
   name="watermark-basic"
@@ -19,7 +17,7 @@ description: 基于 canvas 的水印组件，将文本平铺覆盖在内容之�
 
 ### 自定义
 
-直接组合 `Watermark.Root` 和 `Watermark.Canvas`，完全控制每个 canvas 选项（`fontSize`、`color`、`fontFamily`、`rotate`、`gap`、`padding`、`opacity`）。属性变化时 canvas 会自动重绘。
+直接组合 `Watermark.Root` 和 `Watermark.Canvas`，完全控制每个 canvas 选项（`fontSize`、`color`、`fontFamily`、`rotate`、`gap`、`padding`、`opacity`）。
 
 <ComponentPreview 
   name="watermark-custom"
@@ -52,7 +50,7 @@ description: 基于 canvas 的水印组件，将文本平铺覆盖在内容之�
 | `styles` | `{ canvas?: React.CSSProperties }` | - | canvas 的内联样式 |
 | `...props`   | `React.ComponentProps<"div">`                              | -                  | 支持全部 div 原生属性（除 `className`、`style`），透传给 root |
 
-`WatermarkColor` 支持语义 token `"muted" \| "muted-foreground" \| "primary" \| "primary-foreground" \| "secondary" \| "secondary-foreground" \| "accent"` —— 通过 CSS 变量解析并响应明暗模式切换 —— 也支持任意自定义 CSS 颜色字符串。
+`WatermarkColor` 支持语义 token `"muted" \| "muted-foreground" \| "primary" \| "primary-foreground" \| "secondary" \| "secondary-foreground" \| "accent"` 或任意自定义 CSS 颜色字符串。
 
 ---
 
@@ -60,7 +58,7 @@ description: 基于 canvas 的水印组件，将文本平铺覆盖在内容之�
 
 #### WatermarkRoot
 
-水印容器，渲染为内置 `relative` 类名的 `div`。canvas 会测量并填满其父元素，因此 root 提供定位上下文。
+水印容器，为 canvas 提供其填满所需的定位上下文。
 
 | 属性        | 类型                          | 默认值 | 描述                   |
 | :---------- | :---------------------------- | :----- | :--------------------- |
@@ -69,7 +67,7 @@ description: 基于 canvas 的水印组件，将文本平铺覆盖在内容之�
 
 #### WatermarkCanvas
 
-绘制平铺水印文字的 `canvas` 元素。它根据父元素（应为定位元素，如 `WatermarkRoot`）确定自身尺寸，在容器尺寸变化和 `prefers-color-scheme` 变化时自动重绘，并按设备像素比渲染。
+绘制平铺水印文字的 `canvas`；父元素应为定位元素，如 `WatermarkRoot`。
 
 | 属性         | 类型                                              | 默认值               | 描述                                                       |
 | :----------- | :------------------------------------------------ | :------------------- | :--------------------------------------------------------- |

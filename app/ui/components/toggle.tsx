@@ -25,7 +25,7 @@ export const Toggle = ({ checked: controlledChecked, defaultChecked = false, onC
             setUncontrolledChecked(next);
         onCheckedChange?.(next);
     };
-    return (<button {...props} type="button" aria-pressed={checked} disabled={disabled} onClick={handleClick} className={cn("relative inline-flex items-center justify-center gap-2 h-9 min-w-9 px-3 py-1 text-sm font-medium cursor-pointer select-none transition-colors duration-200", variant === "fill" ? cn("rounded-md text-muted-foreground", "first:rounded-l-md last:rounded-r-md", "aria-pressed:bg-primary aria-pressed:text-primary-foreground") : cn("rounded-md text-muted-foreground hover:bg-accent", "aria-pressed:text-primary-accent"), className)}>
+    return (<button {...props} type="button" aria-pressed={checked} disabled={disabled} onClick={handleClick} className={cn("relative inline-flex items-center justify-center gap-2 h-9 min-w-9 px-3 py-1 text-sm font-medium cursor-pointer select-none transition-colors duration-200", variant === "fill" ? cn("rounded-md text-muted-foreground", "aria-pressed:bg-primary aria-pressed:text-primary-foreground") : cn("rounded-md text-muted-foreground hover:bg-accent", "aria-pressed:text-primary-accent aria-pressed:font-bold"), className)}>
       {children}
     </button>);
 };
@@ -58,8 +58,8 @@ export function ToggleGroup({ options, value: controlledValue, defaultValue = []
             setUncontrolledValue(next);
         onChange?.(next);
     };
-    return (<div className={cn("inline-flex rounded-md group", className)}>
-      {options.map((option) => (<Toggle key={option.value} value={option.value} variant={variant} disabled={disabled || option.disabled} checked={selectedSet.has(option.value)} onCheckedChange={() => handleToggle(option.value)} className={cn(option.className ?? itemClassName)}>
+    return (<div className={cn("inline-flex rounded-md group", variant !== "text" && "overflow-hidden", className)}>
+      {options.map((option) => (<Toggle key={option.value} value={option.value} variant={variant} disabled={disabled || option.disabled} checked={selectedSet.has(option.value)} onCheckedChange={() => handleToggle(option.value)} className={cn(variant !== "text" && "rounded-none", option.className ?? itemClassName)}>
           {option.label}
         </Toggle>))}
     </div>);

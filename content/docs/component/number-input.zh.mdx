@@ -9,9 +9,15 @@ description: 带边框的数字输入框，尾部为非交互的上下提示图�
 
 ## 用法
 
-`NumberInput` 是经典带边框的数字输入框：`InputGroup` 外壳、可选 `prefix` / `suffix`，尾部区域为非交互的上下提示图标（设置 `suffix` 时替换提示图标）。步进仅通过键盘——聚焦后按 `ArrowUp` / `ArrowDown`。需要可点击的 Minus / Plus 步进器请使用 [NumberField](/zh/docs/component/number-field)。
+`NumberInput` 是经典带边框的数字输入框，支持可选的 `prefix` / `suffix`；步进仅通过键盘（`ArrowUp` / `ArrowDown`）。需要可点击的 Minus / Plus 步进器请使用 [NumberField](/zh/docs/component/number-field)。
 
 <ComponentPreview name="number-input-basic" />
+
+### 禁用状态
+
+`disabled` 禁用整个字段——输入与键盘步进均被锁定，尾部提示图标随外壳一同变淡。
+
+<ComponentPreview name="number-input-disabled" />
 
 ### 自定义
 

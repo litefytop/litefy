@@ -7,7 +7,7 @@ export default function Demo() {
   const [query, setQuery] = React.useState({ field: "name", value: "" });
 
   return (
-    <div className="flex w-full max-w-md flex-col gap-3">
+    <div className="flex max-w-md flex-col gap-3">
       <FieldSearch
         fields={[
           { value: "name", label: "Name", placeholder: "Search by name" },

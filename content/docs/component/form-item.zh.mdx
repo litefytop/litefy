@@ -9,17 +9,23 @@ description: 按 variant 渲染成品控件的表单字段——label、输入�
 
 ## 用法
 
-### 基础用法
-
-`FormItem` 按 `variant`（`input`、`textarea`、`select`、`password`、`number-input`）渲染对应的成品控件，布局固定为：**label → 输入框 → 描述 / 错误信息**（两者共用一个插槽——默认显示描述，字段无效时被错误信息替代）。它会向周围的 `Form` 注册自身以便提交时收集值，校验错误以 danger 文本显示在输入框下方，单独使用也可以。
+`FormItem` 按 `variant` 渲染成品控件，label、描述与校验开箱即用。
 
 <ComponentPreview
   name="form-item"
 />
 
+### 禁用状态
+
+在字段上设置 `disabled` 可冻结该控件。
+
+<ComponentPreview
+  name="form-item-disabled"
+/>
+
 ### 校验
 
-`validate` 支持两种错误形态：返回**字符串**是硬错误（显示文案，同时控件出现 danger 边框 / `aria-invalid`）；返回 **`{ message, invalid: false }`** 则只显示文案、不标记控件——适合必填项为空时的提示：空值只出错误文字，等真正填入了错误的值才出现控件错误样式。
+`validate` 返回**字符串**为硬错误，返回 **`{ message, invalid: false }`** 只显示文案、不标记控件（如必填项为空）。
 
 <ComponentPreview
   name="form-item-validation"
@@ -29,7 +35,7 @@ description: 按 variant 渲染成品控件的表单字段——label、输入�
 
 ### FormItem
 
-以成品控件形式渲染的表单字段。属性按 `variant` 形成可辨识联合：所有 variant 共享 `FormItemBaseProps`，`controlProps` 的类型随所选 variant 变化。
+以成品控件形式渲染的表单字段。
 
 | 属性              | 类型                                                                                                                                                              | 默认值     | 描述                                                                                      |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ----------------------------------------------------------------------------------------- |
@@ -55,4 +61,4 @@ description: 按 variant 渲染成品控件的表单字段——label、输入�
 | `password`     | `Omit<PasswordProps, "ref">`                                                                       |
 | `number-input` | `Omit<NumberInputProps, "ref">`                                                                   |
 
-> `controlProps` 中自定义的 `onChange` / `onBlur` 会被保留 —— `FormItem` 对其做包装，校验与你的处理器都会执行。`select` variant 的值保存在组件状态中，并由隐藏 input 携带参与原生表单提交。
+> `controlProps` 中自定义的 `onChange` / `onBlur` 会被包装而非替换；`select` variant 的值由隐藏 input 携带参与原生表单提交。

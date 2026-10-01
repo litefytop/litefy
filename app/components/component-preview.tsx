@@ -54,7 +54,7 @@ export function ComponentPreview({
     >
       {description && <p className="text-muted-foreground mb-2 text-sm">{description}</p>}
 
-      <div className="overflow-hidden rounded-xl border">
+      <figure className="overflow-hidden rounded-xl border">
         <div
           className={cn(
             "preview not-prose relative min-h-151 w-full overflow-hidden border-separator bg-background p-4 sm:p-10",
@@ -79,7 +79,7 @@ export function ComponentPreview({
             </Collapse>
           </>
         )}
-      </div>
+      </figure>
     </div>
   );
 }

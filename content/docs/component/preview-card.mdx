@@ -9,7 +9,11 @@ description: A preview card composed of Card, Image, and Tooltip — an image ca
 
 ## Usage
 
+Composed from [Card](/docs/component/card), [Image](/docs/component/image), and [Tooltip](/docs/component/tooltip) — the CLI install resolves them automatically.
+
 ### Image Card
+
+The card renders inline — omit `trigger` and `href` to embed it in place.
 
 <ComponentPreview
   name="preview-card-image"
@@ -23,12 +27,7 @@ Wrap a link with `trigger` and `href` to show the card as a tooltip on hover.
   name="preview-card-basic"
 />
 
-## Notes
-
-- PreviewCard is composed internally from [Card](/docs/component/card), [Image](/docs/component/image), and [Tooltip](/docs/component/tooltip) — installing via CLI resolves them automatically.
-- Card's `overflow-hidden rounded-lg` clips the top image to rounded corners automatically.
-- When `trigger` is provided, the card is rendered as a `Tooltip` content (width `w-72`); without `trigger`, it renders as a standalone card (`max-w-sm`).
-- Image `className` controls the image area height (default `h-40`).
+Image `className` controls the image area height (default `h-40`).
 
 ## API Reference
 

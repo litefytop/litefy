@@ -9,27 +9,25 @@ description: A generic data table with clickable sortable headers for local data
 
 ## Usage
 
-`Table` is data-driven: pass `data` plus a `columns` config. Set `sortable: true` on a column to make its header clickable — the sort cycles **asc → desc → cleared** and applies locally to `data`.
+`Table` is data-driven: pass `data` plus a `columns` config; `sortable: true` makes a column header click-to-sort.
 
 <ComponentPreview name="table-basic" />
 
 ### Remote sorting (database)
 
-Pass a controlled `sort` + `onSortChange` to enter **remote mode**: the Table stops sorting internally and only reports header clicks, so the query can run against your database. Pair with [useRemoteSort](/docs/utils/use-remote-sort), which manages the state and builds the query string.
+Pass controlled `sort` + `onSortChange` to enter **remote mode** — sorting is delegated to your database; pair with [useRemoteSort](/docs/utils/use-remote-sort) for state and query building.
 
 <ComponentPreview name="table-remote" />
 
 ### Sticky header with a scrollable body
 
-The header and the body are **two separate tables**: the header strip never scrolls (plain `overflow-hidden`, no scrollbar, no gutter), and the body scroller sits below it with a built-in fixed height (`h-96`), so the table never collapses when a page has fewer rows. Columns use `table-fixed`, which makes column widths content-independent — paging never shifts the layout. A column with `width` gets exactly that, and the width-less ones share the leftover equally — so give narrow columns (numbers, badges, controls) a `width` and leave your main text column without one. All cells are start-aligned with tabular figures by default; per the design spec, don't right-align columns unless a business case truly requires it. Override the body height via `classNames.body` (e.g. `h-48`, or `h-auto` plus `min-w-*` on `classNames.table` for wide tables).
+The header stays fixed while the body scrolls in its own container — override the built-in body height via `classNames.body`.
 
 <ComponentPreview name="table-scroll" />
 
 ### Composable parts
 
-`Table` is assembled from four atoms, so custom tables (extra header content, non-data tables, virtualized rows) can reuse the same frame:
-
-The skeleton is always the same: TableRoot wraps a TableHead strip holding one TableBase with the header row, and a TableBody scroller holding one TableBase with the tbody. Keep the `<colgroup>` identical in both tables (with `table-fixed` it controls the shared column widths).
+`Table` is assembled from four atoms — custom tables reuse the same frame, keeping the `<colgroup>` identical in both tables.
 
 ## API Reference
 

@@ -9,17 +9,23 @@ description: A one-time-code input with auto-advance, paste support, keyboard na
 
 ## Usage
 
-### Basic Usage
-
 An OTP input with auto-advance, backspace navigation, arrow keys and clipboard paste.
 
 <ComponentPreview
   name="input-otp-basic"
 />
 
+### Disabled
+
+`disabled` disables every slot — typing, paste and focus are all blocked while the current value stays visible.
+
+<ComponentPreview
+  name="input-otp-disabled"
+/>
+
 ### Invalid State
 
-Set `invalid` to mark the group (`data-invalid`) and every slot (`aria-invalid`) — the danger border and text apply automatically. Validate on complete and clear the flag once the code is corrected.
+Set `invalid` to mark the group and every slot — the danger border applies automatically; validate on complete and clear once corrected.
 
 <ComponentPreview
   name="input-otp-invalid"
@@ -33,12 +39,12 @@ Render slots as password inputs for PIN-style codes.
   name="input-otp-mask"
 />
 
-### Controlled
+### Custom
 
-Control the value externally and receive updates via `onValueChange`.
+Assemble the parts directly for layouts the high-level component can't express; value state, focus movement and paste handling are wired by the consumer.
 
 <ComponentPreview
-  name="input-otp-controlled"
+  name="input-otp-custom"
 />
 
 ## API Reference
@@ -64,8 +70,6 @@ An OTP input built with the parts below, encapsulating value state and interacti
 | `style` | `React.CSSProperties` | - | Inline styles for the group |
 | `classNames` | `{ slot? }` | - | Custom classes for the slot |
 | `styles` | `{ slot? }` | - | Custom inline styles for the slot |
-
-Typing advances focus, `Backspace` moves back when the slot is empty, arrow keys navigate between slots, and pasting fills from the current slot. The first slot uses `autoComplete='one-time-code'`.
 
 ---
 

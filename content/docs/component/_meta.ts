@@ -332,13 +332,6 @@ export default {
       zh: "预览卡片",
     },
   },
-  "query-builder": {
-    name: "Query Builder",
-    displayName: {
-      en: "Query Builder",
-      zh: "查询构建器",
-    },
-  },
   progress: {
     name: "Progress",
     displayName: {

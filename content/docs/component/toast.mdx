@@ -9,9 +9,7 @@ description: A global toast notification component with a store-based imperative
 
 ## Usage
 
-### Basic Usage
-
-Call `Toaster.success` / `Toaster.error` / `Toaster.warning` / `Toaster.info` / `Toaster.loading` imperatively. Mount a single `<Toaster />` once in your app to render the toast list; it is fixed at the top-center of the viewport and shows up to 3 stacked toasts by default.
+Call `Toaster.success` / `Toaster.error` / `Toaster.warning` / `Toaster.info` / `Toaster.loading` imperatively; mount a single `<Toaster />` once to render the list.
 
 <ComponentPreview
   name="toast-basic"
@@ -19,12 +17,7 @@ Call `Toaster.success` / `Toaster.error` / `Toaster.warning` / `Toaster.info` / 
 
 ### Closing toasts
 
-Toasts are notifications only — they never carry action buttons. When an interaction is required (confirm, retry, open details), use the [Dialog](/docs/component/dialog) instead.
-
-Two ways to close a toast:
-
-- Pass `closable` to render a close button in the toast's top-right corner.
-- `Toaster.loading` (and every other method) returns a toast id: pass it to `Toaster.dismiss(id)` to close exactly that toast when the work finishes. Calling `Toaster.dismiss()` without an id dismisses every toast.
+Toasts never carry action buttons — use [Dialog](/docs/component/dialog) for interaction; close via `closable` or `Toaster.dismiss(id)`.
 
 ### Promise
 
@@ -40,11 +33,9 @@ Two ways to close a toast:
 
 #### Toaster
 
-The toast host. Render it once in your application; it subscribes to the global toast store and renders the toast list fixed at the top-center of the viewport. It also carries the imperative methods below.
+The toast host — render it once; it carries the imperative methods below.
 
-If multiple `<Toaster />` instances are mounted, only the first one acts as the host and renders toasts; the rest render nothing, so accidental duplicate mounts can never cause duplicated toasts or inconsistent hover pausing.
-
-Collapsed toasts stack with a slight vertical offset; hovering expands them into a vertical list and pauses auto-dismiss.
+If multiple `<Toaster />` instances are mounted, only the first one renders toasts.
 
 | Prop            | Type                                    | Default | Description                                                                |
 | --------------- | --------------------------------------- | ------- | -------------------------------------------------------------------------- |
@@ -98,7 +89,7 @@ Options accepted by every imperative method.
 
 ### Composable Components
 
-The toast card is built from the parts below. They are exported so you can assemble a custom toast card when the composite API is not enough.
+Assemble the exported parts below to build a custom toast card.
 
 #### ToastRoot
 

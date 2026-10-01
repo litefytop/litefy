@@ -23,9 +23,9 @@ export function PackageManagerTabs({ command }: PackageManagerTabsProps) {
 
   return (
     <div className="rounded-lg p-4 font-mono">
-      <div className="flex flex-col gap-2">
+      <ul className="flex flex-col gap-2">
         {list.map((item) => (
-          <div key={item.key} className="relative group">
+          <li key={item.key} className="relative group">
             <div className="pl-4 pr-12 py-2">
               <span className="text-success mr-2">$</span>
               {item.cmd}
@@ -42,9 +42,9 @@ export function PackageManagerTabs({ command }: PackageManagerTabsProps) {
                 <CopyIcon className="size-4 text-muted-foreground" />
               )}
             </button>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }

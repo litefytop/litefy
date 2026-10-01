@@ -9,18 +9,19 @@ description: 基于原生 Temporal API 的日期选择器 —— 可编辑输入
 
 ## 用法
 
-### 基础用法
-
-输入框完全可编辑 —— 直接键入日期（分隔符宽松，自动归一化为 `YYYY-MM-DD`），也可以从面板中选择。校验在 `Enter` 和关闭面板时触发：完整日期直接提交，只有年份 / 年月会打开对应面板补选缺失部分，非法输入清空输入框并显示 danger 边框。
+可编辑输入框加月份面板——依赖原生 [Temporal API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal)（Chrome 136+、Firefox 139+、Safari 26）。
 
 <ComponentPreview
   name="date-picker-basic"
 />
 
-## 说明
+### 禁用状态
 
-- 依赖原生 [Temporal API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal)（Chrome 136+、Firefox 139+、Safari 26+）。当前浏览器缺失时站点会显示横幅提醒。
-- 基于 [Picker](/docs/component/picker) 和 [Calendar](/docs/component/calendar) 组件构建 —— 需要完全控制时可直接拼装这两个零件（参见 [DatePicker 拼装指南](/docs/component/picker#datepicker-assembly)）。
+`disabled` 使输入框与面板均不可交互。
+
+<ComponentPreview
+  name="date-picker-disabled"
+/>
 
 ## API 参考
 
@@ -28,7 +29,7 @@ description: 基于原生 Temporal API 的日期选择器 —— 可编辑输入
 
 #### DatePicker
 
-受控/非受控皆可。可见月份与面板开关状态由组件内部管理；选中值可通过 `value` / `onValueChange` 受控。
+受控/非受控皆可；可见月份与面板开关状态由组件内部管理。
 
 | Prop              | Type                                           | Default                     | Description                                                                                   |
 | :---------------- | :--------------------------------------------- | :-------------------------- | :-------------------------------------------------------------------------------------------- |
@@ -45,4 +46,4 @@ description: 基于原生 Temporal API 的日期选择器 —— 可编辑输入
 | `classNames`      | `{ input?; trailing?; panel? }` —— 值均为 `ClassNameValue` | -                | 输入框、尾部装饰与日历面板的自定义类名                                                             |
 | `styles`          | `{ input?; trailing? }` —— 值均为 `React.CSSProperties`    | -                | 输入框与尾部装饰的内联样式                                                                          |
 
-面板打开期间，`ArrowDown` 将焦点移入日历的第一个控件，`ArrowUp` 移入最后一个（通过 [`usePanelFocus`](/docs/utils/use-panel-focus)）—— 键入与日历导航不会争抢输入框焦点。`Escape` 关闭面板并把焦点交还输入框。
+面板打开期间，`ArrowDown` / `ArrowUp` 将焦点移入日历的第一个 / 最后一个控件；`Escape` 关闭面板并把焦点交还输入框。

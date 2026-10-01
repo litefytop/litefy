@@ -129,12 +129,12 @@ export function Select({ options, value: controlledValue, defaultValue = "", onV
             ?.querySelector('[data-highlighted="true"]')
             ?.scrollIntoView({ block: "nearest" });
     }, [open, highlightIndex]);
-    const renderOption = (option: SelectOption, index: number) => (<div key={option.value} role="option" aria-selected={option.value === value} data-highlighted={highlightIndex === index || undefined} aria-disabled={disabled || undefined} onClick={disabled ? undefined : () => commit(option)} className={cn("cursor-pointer px-3 py-2 text-sm transition-colors select-none hover:bg-hover", "data-[highlighted=true]:bg-primary", option.value === value && "font-medium", disabled && "pointer-events-none opacity-50", classNames?.option)}>
+    const renderOption = (option: SelectOption, index: number) => (<div key={option.value} role="option" aria-selected={option.value === value} data-highlighted={highlightIndex === index || undefined} aria-disabled={disabled || undefined} onClick={disabled ? undefined : () => commit(option)} className={cn("cursor-pointer px-3 py-2 text-sm transition-colors select-none hover:bg-hover", "data-[highlighted=true]:bg-primary data-[highlighted=true]:text-primary-foreground", option.value === value && "font-medium", disabled && "pointer-events-none opacity-50", classNames?.option)}>
       {option.label}
     </div>);
     return (<>
       {name && <input type="hidden" name={name} value={value}/>}
-      <button {...props} ref={triggerRef} type="button" disabled={disabled} aria-haspopup="listbox" aria-expanded={open || undefined} aria-required={required || undefined} onClick={() => !disabled && setOpenState(!open)} onKeyDown={handleTriggerKeyDown} data-open={open || undefined} className={cn("flex h-9 w-full max-w-120 items-center justify-between gap-2 rounded-md border px-3 py-1 text-sm cursor-pointer shadow-base", !selectedLabel && "text-muted-foreground", className)} style={{ anchorName, ...style }}>
+      <button {...props} ref={triggerRef} type="button" disabled={disabled} aria-haspopup="listbox" aria-expanded={open || undefined} aria-required={required || undefined} onClick={() => !disabled && setOpenState(!open)} onKeyDown={handleTriggerKeyDown} data-open={open || undefined} className={cn("flex h-9 max-w-[40ch] items-center justify-between gap-2 rounded-md border px-3 py-1 text-sm cursor-pointer shadow-base", !selectedLabel && "text-muted-foreground", className)} style={{ anchorName, ...style }}>
         <span className="truncate">{selectedLabel ?? placeholder ?? ""}</span>
         <ChevronDown aria-hidden className="size-4 shrink-0 text-muted-foreground transition-transform duration-200 data-[open=true]:rotate-180" data-open={open || undefined}/>
       </button>

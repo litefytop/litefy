@@ -73,8 +73,6 @@ description: 支持单面板、多选与手风琴互斥模式的折叠面板组�
 | `className`         | `ClassNameValue`                                                       | -       | 容器自定义样式                                         |
 | `...props`          | `React.ComponentProps<"div">`                                          | -       | 支持全部 div 原生属性                                  |
 
-> 子项之间默认以 `not-last:border-b` 分隔，可通过 `common.className` 覆盖。
-
 #### CollapseItemConfig
 
 继承除 `children`、`open`、`onOpenChange`、`itemKey` 外的所有 `Collapse` 属性。
@@ -101,9 +99,7 @@ description: 支持单面板、多选与手风琴互斥模式的折叠面板组�
 
 #### CollapseTrigger
 
-触发器按钮；`open` 属性驱动 `aria-expanded`，收起状态下显示悬停样式。
-
-> 在 `Collapse` 内部时自动联动 `aria-expanded`、`aria-controls` 与展开切换；独立使用时传入 `open` 并通过 `onClick` 自行控制。
+触发器按钮；独立使用时传入 `open` 并通过 `onClick` 自行控制。
 
 | 属性        | 类型                             | 默认值 | 描述                     |
 | ----------- | -------------------------------- | ------ | ------------------------ |
@@ -113,7 +109,7 @@ description: 支持单面板、多选与手风琴互斥模式的折叠面板组�
 
 #### CollapsePanel
 
-> DOM：外层 `<section>` 负责基于 grid rows 的折叠动画与无障碍属性；`className` 作用于内层内容容器，内层已内置 `p-4 pt-0`。在 `Collapse` 内部时自动传入展开状态。
+折叠面板；在 `Collapse` 内部时自动联动展开状态。
 
 | 属性        | 类型                              | 默认值 | 描述                                  |
 | ----------- | --------------------------------- | ------ | ------------------------------------- |

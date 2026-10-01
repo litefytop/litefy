@@ -212,7 +212,7 @@ export function NumberField(props: NumberFieldProps) {
         rest: rest as NumberCoreOptions["rest"],
     });
     const bordered = variant !== "embedded";
-    return (<div data-invalid={invalid || undefined} className={cn("group/input inline-flex h-9 items-center overflow-hidden rounded-md", bordered && "border border-border shadow-base", "data-invalid:border data-invalid:border-danger", className)} style={style}>
+    return (<div data-invalid={invalid || undefined} className={cn("group/input inline-flex h-9 max-w-[40ch] items-center overflow-hidden rounded-md", bordered && "border border-border shadow-base", "data-invalid:border data-invalid:border-danger", className)} style={style}>
       <NumberStepper direction="down" aria-label="Decrease" disabled={disabled || !canDecrement} onClick={() => stepDelta(-step)}/>
       <NumberRoot {...inputProps} aria-invalid={invalid} className={cn("w-16 text-center px-1", classNames?.root)} style={styles?.root}/>
       <NumberStepper direction="up" aria-label="Increase" disabled={disabled || !canIncrement} onClick={() => stepDelta(step)}/>

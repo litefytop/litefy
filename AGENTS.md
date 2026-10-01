@@ -212,7 +212,7 @@ Block-level static feedback container: `variant` (`"info"` (default) | `"success
 ### Chip
 Inline status label, zero interaction logic: `variant` (`"primary"` (default) | `"outline" | "success" | "warning" | "danger" | "info"`) carries all system status color semantics — prefer it over hand-picking `bg-*` colors. To make a chip interactive, nest an `a` / `button` as its child (Chip owns visuals, child owns semantics) — no static class-string reuse.
 
-### Kbd — keyboard key visual with pressable hover/active states.
+### Kbd — static keyboard key visual (non-interactive; no hover/active states).
 
 ### Table
 ```tsx
@@ -257,8 +257,7 @@ Scrollable list with keyboard navigation and selection:
 ## Scroll & Containers
 
 ### ScrollShadow
-Scrollable container with gradient shadows on `edges` (`"top" | "bottom" | "left" | "right" | [...]`, default bottom). Purely visual — no built-in navigation buttons.
-- `size` (default `64px`) sets the gradient size.
+Scrollable container with gradient shadows on `edges` (`"top" | "bottom" | "left" | "right" | [...]`, default bottom). Purely visual — no built-in navigation buttons. Gradient size defaults to built-in `h-16` / `w-16` on the edge overlays; override via `classNames.edge`.
 - Inner scrolling is contained (`overscroll-behavior: contain`) so keyboard/wheel never chain-scrolls the page.
 - Parts: `ScrollShadowRoot` / `ScrollShadowViewport` / `ScrollShadowEdge`. Edges carry `data-position` for `data-[position=top]:` targeting.
 
@@ -299,9 +298,6 @@ Dropzone upload with local validation: `accept`, `multiple`, `maxSize`, `maxCoun
 
 ### Chart
 Self-built canvas time-series chart on the `chart-kit` math layer (nice ticks, LTTB downsampling, `scaleLinear` / `linePath` / `areaPath`) + the `chart-paint` canvas helpers (grid / bars / line / crosshair painting) — automatic canvas theming, responsive width, interactive legend, hover tooltip, drag box-zoom with double-click reset. Series support `type: "line" | "area" | "bar"`. Pair with the `use-chart-palette` hook.
-
-### QueryBuilder
-Tree list of field rows with always-visible operator/value rules (tree guides `├`/`└`, `+` at the field-row end, remove at the rule-row end) plus nested and/or groups, a live natural-language preview and Submit/Reset. `fields`, `defaultValue`, `onQueryChange`, `onSubmit` / `onReset`, `showPreview`, `maxDepth`. Emits a structured `QueryGroup` JSON object (`{ combinator, rules }`) — dialect conversion (SQL etc.) is the backend's job. Fields are label/value pairs (`name` + `label`); operators render as English phrases by default ("is", "is greater than", …) and localize via the `QueryBuilder.operatorLabels` static (Record<string, string>, consumed by both the operator dropdowns and the preview).
 
 ### ChatInput
 Chat composer: `value` / `defaultValue` + `onValueChange`, `onSend`, `enterToSend`, `attach` slot, `actions`, pasted-screenshot thumbnails (`autoPaste`), `placeholder`, `disabled`.

@@ -1,5 +1,5 @@
 ---
-title: Input OTP
+title: Input OTP 验证码输入
 description: 一次性验证码输入框，支持自动跳格、粘贴填充、键盘导航与掩码模式。
 ---
 
@@ -9,17 +9,23 @@ description: 一次性验证码输入框，支持自动跳格、粘贴填充、�
 
 ## 用法
 
-### 基础用法
-
 支持自动跳格、退格回退、方向键导航与剪贴板粘贴的验证码输入框。
 
 <ComponentPreview
   name="input-otp-basic"
 />
 
+### 禁用状态
+
+`disabled` 禁用所有格子——无法输入、粘贴或聚焦，当前值保持可见。
+
+<ComponentPreview
+  name="input-otp-disabled"
+/>
+
 ### 无效状态
 
-设置 `invalid` 会在组上标记 `data-invalid`、在每个格子标记 `aria-invalid`——危险色边框与文字自动生效。填满后校验，修正后清除标记。
+设置 `invalid` 会在组与每个格子上标记无效态，危险色样式自动生效；填满后校验，修正后清除标记。
 
 <ComponentPreview
   name="input-otp-invalid"
@@ -33,12 +39,12 @@ description: 一次性验证码输入框，支持自动跳格、粘贴填充、�
   name="input-otp-mask"
 />
 
-### 受控
+### 自定义拼装
 
-通过 `value` 外部受控，并经 `onValueChange` 接收值变化。
+直接用零件拼装高级组件表达不了的布局；值状态、焦点移动与粘贴处理由消费方自行接线。
 
 <ComponentPreview
-  name="input-otp-controlled"
+  name="input-otp-custom"
 />
 
 ## API 参考
@@ -64,8 +70,6 @@ description: 一次性验证码输入框，支持自动跳格、粘贴填充、�
 | `style` | `React.CSSProperties` | - | 容器自定义内联样式 |
 | `classNames` | `{ slot? }` | - | 单元格的自定义类 |
 | `styles` | `{ slot? }` | - | 单元格的内联样式 |
-
-输入后自动跳到下一格，空格子按 `Backspace` 回退并删除上一格，方向键在格子间移动，粘贴从当前格起填充。首个格子使用 `autoComplete='one-time-code'`。
 
 ---
 

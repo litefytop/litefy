@@ -9,9 +9,7 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 
 ## 用法
 
-### 基础用法
-
-用 `Form` + [FormItem](/zh/docs/component/form-item) + `Form.Submit` 组合表单。不带包装的分组控件（复选/单选组）原生提交即可——给它们 `name` 属性，值会自动进入提交数据。表单实例也可以通过 `ref` 获取：`setValues` 从外部填充字段（例如回填远程取回的草稿），`reset` 清空，`submit` 触发一次编程式提交。
+用 `Form` + [FormItem](/zh/docs/component/form-item) + `Form.Submit` 组合表单；表单实例也可以通过 `ref` 获取（`setValues` / `reset` / `submit`）。
 
 <ComponentPreview 
   name="form-basic"
@@ -19,7 +17,7 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 
 ### 校验
 
-包装字段通过 `FormItem` 的 `validate` / `validateTrigger` 做校验。校验在 `onChange` 或 `onBlur` 时执行，返回的字符串渲染为输入框下方的错误信息。
+包装字段通过 `FormItem` 的 `validate` / `validateTrigger` 做校验。
 
 <ComponentPreview 
   name="form-validation"
@@ -27,7 +25,7 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 
 ### 零件用法（useFieldValidity）
 
-不使用任何包装组件：自持一个 `useFieldValidity` 状态（内置于 Form 模块），在自己的处理器里设置/清除错误，把 `aria-invalid` 传给控件，并条件渲染错误信息。所有输入类控件都内置危险样式（`border-danger` / `text-danger` 与危险焦点环），仅凭 `aria-invalid` 属性即可生效。
+不使用 `FormItem` 包装，用 `useFieldValidity` hook 自行管理字段校验。
 
 <ComponentPreview 
   name="form-parts"

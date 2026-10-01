@@ -9,19 +9,19 @@ description: 垂直时间轴，标记、连接线、时间、标题与描述的�
 
 ## 用法
 
-### 基础用法
-
 纯展示组件，无需受控状态 —— 通过 `items` 定义条目，连接线自动终止于最后一项。
 
 <ComponentPreview
   name="timeline-basic"
 />
 
-实现要点：
+### 自定义标记
 
-- 每个条目自上而下渲染 `time`（等宽数字）、`heading`（加粗）与可选 `description`（弱化文本），均为 `React.ReactNode`。
-- 标记默认为主题色圆点；传入 `marker`（如图标）后自动放大为带边框的圆形容器。
-- 连接线由 `Timeline` 自动控制：最后一项不渲染；单独使用 `TimelineItem` 时可通过 `connector={false}` 手动关闭。
+在条目上传入 `marker`（常见为 lucide 图标）即可替换默认圆点。
+
+<ComponentPreview
+  name="timeline-marker"
+/>
 
 ## API 参考
 

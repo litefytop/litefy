@@ -9,19 +9,13 @@ description: 双面板穿梭框，通过复选框勾选在来源与目标列表�
 
 ## 用法
 
-### 基础用法
-
 传入 `dataSource` 包含所有可用条目，`value` 为当前位于目标面板的条目。`disabled: true` 的条目会留在来源面板，无法勾选或移动。
 
 <ComponentPreview
   name="transfer-basic"
 />
 
-## 注意
-
-- Transfer 内部使用 [Checkbox](/docs/component/checkbox) 组件渲染每一行——CLI 安装时请一并添加：`litefy add transfer checkbox`。
-- `renderItem` 接受自定义渲染器，两个面板同时生效；不传时直接渲染条目 `label` 文本。
-- 每个面板独立维护勾选状态（`Set`）。移动按钮应用勾选项并清空该面板的勾选状态；面板没有勾选项时对应方向按钮禁用。
+每一行使用 [Checkbox](/docs/component/checkbox) 渲染——CLI 安装时请一并添加：`litefy add transfer checkbox`。
 
 ## API 参考
 

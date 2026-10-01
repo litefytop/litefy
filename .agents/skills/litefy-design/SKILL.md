@@ -1,19 +1,21 @@
 ---
 name: litefy-design
-description: Litefy UI 设计规范（本仓库 UI 的"宪法"）。当需要创建、修改、重构、审查任何使用 Litefy UI 的界面或组件时使用：写业务页面、新建/改造组件、选择组件、写颜色/边框/阴影/圆角/间距/焦点样式、排查视觉不一致、审计 UI 代码合规性。不适用于：与本仓库无关的第三方项目、纯逻辑/数据层代码、文档文字编辑。规范与代码冲突时以本规范为准并报告冲突。
+description: Litefy UI 设计规范（任何使用 Litefy UI 的项目的"宪法"，官网 https://litefy.top/）。当需要创建、修改、重构、审查任何使用 Litefy UI 的界面或组件时使用：写业务页面、新建/改造组件、选择组件、写颜色/边框/阴影/圆角/间距/焦点样式、排查视觉不一致、审计 UI 代码合规性。不适用于：不使用 Litefy UI 的项目、纯逻辑/数据层代码、文档文字编辑。规范与代码冲突时以本规范为准并报告冲突。
 metadata:
-  version: 2.7.1
+  version: 2.9.1
 ---
 
 # Litefy UI Design Spec
 
-本文件是 Litefy UI 的设计宪法。impeccable 等通用设计 skill 管"怎么思考和验证"，本规范管"**这个仓库里具体怎么写**"——两者同时生效时，冲突处以本规范为准。
+本文件是 Litefy UI 的设计宪法。官网 **<https://litefy.top/>**：组件文档（中文 `/zh/docs/component/<name>`，英文版把 `/zh` 换成 `/en`）、面向 AI 的文档索引 `/zh/llms.txt` 与全文 `/zh/llms-full.txt`、技能分发页 `/zh/docs/skill`。impeccable 等通用设计 skill 管"怎么思考和验证"，本规范管"**这个仓库里具体怎么写**"——两者同时生效时，冲突处以本规范为准。
+
+> 分层约定：本规范只管"怎么写合规"（Token、结构、反模式、验证）；"组件怎么用"（props / API 细节）**不内嵌**进本文件——组件用法速查以仓库根 `AGENTS.md` 为单一事实源，组件详细文档以 `content/docs`（官网同步自它）为准。往本文件加内容前先问：这是设计约束，还是用法说明？后者一律外链，不抄进来。
 
 ## 0. 工作流
 
 写任何 UI 前按此顺序：
 
-1. **选组件**：先查 `AGENTS.md`（组件速查）——有内置组件就绝不手写 div。组合指南类（Combobox / PreviewCard）读 `content/docs/component/<name>.mdx` 的配方。成品与零件二选一（§10 第 6 条）。
+1. **选组件**：有内置组件就绝不手写 div。组件用法速查按所在环境二选一：**本仓库**查根目录 `AGENTS.md`（组件速查），组合指南类（Combobox / PreviewCard）读 `content/docs/component/<name>.mdx` 的配方；**装进业务项目后**（官网分发的技能，目标仓库没有 AGENTS.md）查官网 <https://litefy.top/>——`/zh/llms.txt`（索引）、`/zh/llms-full.txt`（全文）、`/zh/docs/component/<name>`（单组件），按需抓取。成品与零件二选一（§10 第 6 条）。
 2. **套 Token**：颜色 / 阴影 / 圆角 / 间距 / 字号 / 动效时长一律用语义 Token，见 §1–§9。
 3. **查反模式**：动手前后各对照一次 §10.5 的 Refuse 列表。
 4. **验证**：完成后跑 §12 验证清单，并执行 skill 自带的 `node .agents/skills/litefy-design/scripts/design-detect.mjs`（见 §12.4）做机器检查——审计模式仅记录，开发模式直接修。
@@ -46,6 +48,8 @@ metadata:
 
 - 全局中性组件默认边框：`var(--accent)/50` 半透明边框
 - 品牌交互组件（Primary按钮、核心选中控件）不使用默认边框，统一复用 Brand 色板
+- 带边框的输入类控件（Input / InputGroup / Select / Textarea / NumberField / InputOtp / Button / Card 等）规范形态是 **`border + shadow-base`，边框不裸用**：disabled 态整体 opacity 50% 后边框等效只剩 25%，可辨识度由同级阴影兜底（2026-09-29 定案；InputOtpSlot 曾裸边框漏网已补齐）
+- 裸边框的合理形态（不配阴影）：微小指示器（Checkbox / Radio / Steps marker）、虚线占位（Upload dropzone）、分隔与结构线、常驻浮层内的内嵌面板（宿主已带 elevated 阴影）
 - 禁止"边框 + 大阴影"叠用制造 ghost card；阴影等级已含边界定义，二选一
 
 ## 3. 焦点环体系
@@ -288,7 +292,7 @@ pnpm dlx oxlint --jsx-a11y-plugin src
 
 ### 12.4 机器检测
 
-脚本随 skill 分发：`node .agents/skills/litefy-design/scripts/design-detect.mjs`（在本仓库开发时也可用 `node scripts/design-detect.mjs` 或 `pnpm lint:design`；可传位置参数指定扫描根目录，不传时自动按脚本安装位置推断 `<repo>/app`，兜底当前工作目录）扫描业务代码（排除 `ui` / `generated`）：
+脚本随 skill 分发：`node .agents/skills/litefy-design/scripts/design-detect.mjs`（本仓库开发也可用 `pnpm lint:design`，指向同一脚本；可传位置参数指定扫描根目录，不传时自动按脚本安装位置推断 `<repo>/app`，兜底当前工作目录）扫描业务代码（排除 `ui` / `generated`）：
 
 - **hardcoded-color（error）**：Tailwind 默认调色板类（`text-red-500`、`bg-black` 等）与 `#hex` / `rgb` / `hsl` / `oklch` 任意色值（§1）；URL 类属性（`href` / `src` / `to` / `id` 等）中的锚点串不计
 - **arbitrary-shadow（error）**：`shadow-[...]`（含 `inset` 按压阴影，组件层专属）——只允许语义四级（§5）

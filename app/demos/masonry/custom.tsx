@@ -44,12 +44,12 @@ export default function MasonryCustomDemo() {
           className="gap-2"
           getKey={(photo) => photo.id}
           renderItem={(photo) => (
-            <div
+            <figure
               className={`flex items-end rounded-md border p-2 ${photo.tone}`}
               style={{ height: photo.height }}
             >
               <span className="text-xs font-medium">{photo.title}</span>
-            </div>
+            </figure>
           )}
         />
         {hasMore && <div ref={sentinelRef} aria-hidden className="h-px" />}
