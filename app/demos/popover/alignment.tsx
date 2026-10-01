@@ -1,6 +1,7 @@
 "use client";
 import { Popover } from "@/ui";
-import { Button } from "@/ui";
+
+const triggerClass = { trigger: "litefy-button litefy-button-outline" };
 
 function ActionList() {
   return (
@@ -22,25 +23,22 @@ export default function PopoverAlignmentDemo() {
   return (
     <div className="flex flex-col gap-8">
       <section>
-        <h3 className="text-sm font-medium mb-4">Position Area</h3>
+        <h3 className="text-sm font-medium mb-4">Placement</h3>
         <div className="flex gap-4">
           <Popover
-            styles={{ content: { positionArea: "bottom span-right", justifySelf: "start" } }}
-            classNames={{ trigger: Button.className.primary }}
-            trigger="span-right"
+            placement={{ side: "bottom", align: "start" }}
+            trigger="align start"
+            classNames={triggerClass}
           >
             <ActionList />
           </Popover>
-          <Popover
-            classNames={{ trigger: Button.className.primary }}
-            trigger="bottom span-all"
-          >
+          <Popover trigger="align center" classNames={triggerClass}>
             <ActionList />
           </Popover>
           <Popover
-            styles={{ content: { positionArea: "bottom span-left", justifySelf: "end" } }}
-            classNames={{ trigger: Button.className.primary }}
-            trigger="span-left"
+            placement={{ side: "bottom", align: "end" }}
+            trigger="align end"
+            classNames={triggerClass}
           >
             <ActionList />
           </Popover>
@@ -49,18 +47,10 @@ export default function PopoverAlignmentDemo() {
       <section>
         <h3 className="text-sm font-medium mb-4">Align X (sidebar)</h3>
         <div className="flex gap-4">
-          <Popover
-            alignX="start"
-            classNames={{ trigger: Button.className.primary }}
-            trigger="alignX start"
-          >
+          <Popover alignX="start" trigger="alignX start" classNames={triggerClass}>
             <ActionList />
           </Popover>
-          <Popover
-            alignX="end"
-            classNames={{ trigger: Button.className.primary }}
-            trigger="alignX end"
-          >
+          <Popover alignX="end" trigger="alignX end" classNames={triggerClass}>
             <ActionList />
           </Popover>
         </div>

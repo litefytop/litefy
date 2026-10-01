@@ -51,19 +51,18 @@ The button component.
 | `loading` | `boolean`         | `false` | Whether the button is loading |
 | `icon`    | `React.ReactNode` | -       | Custom loading icon           |
 
-### Button.className
+### Styling non-button elements
 
-Static class strings for applying the full Button look to non-button elements, such as styling an `<a>` link as a button. Each key is a pre-flattened, conflict-resolved full class string (base + variant), usable directly as a `className` without `cn`:
+The Button look is the preset skin's finished-product classes (`preset/button.css`) — any element (an `<a>` CTA link, a `Link`) wears the full button look just by carrying the same classes:
 
 ```tsx
-<Link to="/docs" className={Button.className.primary}>
+<Link to="/docs" className="litefy-button litefy-button-primary">
   Read the docs
 </Link>
 ```
 
-| Key       | Equivalent                            |
-| --------- | ------------------------------------- |
-| `primary` | `variant="primary"` (default) look    |
-| `danger`  | `variant="danger"` look               |
-| `outline` | `variant="outline"` look              |
-| `text`    | `variant="text"` look                 |
+| Class                                                                   | Role                                        |
+| ----------------------------------------------------------------------- | ------------------------------------------- |
+| `litefy-button`                                                           | Base layout / focus / press form (required) |
+| `litefy-button-primary` / `-danger` / `-outline` / `-text`                | Appearance variant                          |
+| `data-pure-icon="true"`                                                   | Optional state attribute: square icon-only  |

@@ -223,7 +223,7 @@ export default function Docs({ params }: Route.ComponentProps) {
       <div className="max-w-5xl mx-auto px-4 py-12 [grid-area:main] bg-background">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">{t.title}</h1>
-          <p className="text-lg text-fd-muted-foreground">{t.description}</p>
+          <p className="text-lg text-muted-foreground">{t.description}</p>
         </div>
 
         <ComponentsList categories={categories} locale={locale} t={t} />

@@ -16,11 +16,15 @@ export async function syncStyleImports(
   installedStyles: string[],
   registry: Registry,
 ): Promise<void> {
-  const files = installedStyles
-    .map((name) => registry[name])
-    .filter((entry) => entry?.type === "css")
-    .map((entry) => getFileNameFromUrl(entry.url))
-    .sort();
+  const files = [
+    ...new Set(
+      installedStyles
+        .map((name) => registry[name])
+        .filter((entry) => entry?.type === "css")
+        .flatMap((entry) => (entry.files?.length ? entry.files : [entry.url]))
+        .map((url) => getFileNameFromUrl(url)),
+    ),
+  ].sort();
 
   const baseFiles = files.filter((f) => f === "theme.css");
   const overrideFiles = files.filter((f) => f !== "theme.css");

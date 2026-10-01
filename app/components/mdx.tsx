@@ -6,7 +6,6 @@ import { ComponentPreview } from "./component-preview";
 import { CssSource } from "./css-source";
 import { Installation } from "./installation";
 import { PackageManagerTabs } from "./package-manager-tabs";
-import { PresetTabs } from "./preset-tabs";
 import { Source } from "./source";
 
 export function getMDXComponents(components?: MDXComponents) {
@@ -15,7 +14,6 @@ export function getMDXComponents(components?: MDXComponents) {
     ...TabsComponents,
     ComponentPreview,
     PackageManagerTabs,
-    PresetTabs,
     Source,
     CssSource,
     Installation,

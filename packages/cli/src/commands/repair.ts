@@ -4,8 +4,7 @@ import logger from "../utils/logger";
 import { getFileNameFromUrl, loadRegistry } from "../utils/registry";
 import { writeBarrelIndex } from "../utils/barrel";
 import { syncStyleImports } from "../utils/style-imports";
-import { addSingle } from "./add";
-import type { Registry, RegistryEntry } from "./add";
+import { addSingle, entryFileUrls, type Registry, type RegistryEntry } from "./add";
 
 interface LitefyConfig {
   components: {
@@ -61,12 +60,14 @@ export async function repair() {
 
   for (const item of processList) {
     const { name, entry, targetDir } = item;
-    const fileName = getFileNameFromUrl(entry.url);
-    const filePath = path.resolve(cwd, targetDir, fileName);
-
-    if (await fs.pathExists(filePath)) {
-      continue;
+    let missing = false;
+    for (const url of entryFileUrls(entry)) {
+      if (!(await fs.pathExists(path.resolve(cwd, targetDir, getFileNameFromUrl(url))))) {
+        missing = true;
+        break;
+      }
     }
+    if (!missing) continue;
     logger.info(`[repair] missing file, restoring ${name}`);
     await addSingle(name, entry, targetDir, cwd, { overwrite: true });
   }

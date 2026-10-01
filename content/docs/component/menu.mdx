@@ -95,10 +95,10 @@ Group label row (`li`) with built-in muted label styling.
 
 #### MenuSubContent
 
-Submenu panel container rendered as a `popover="manual"` div; anchor it to the parent item via `positionAnchor` (each item's `anchor-name` is `--menu-sub-{entryId}`).
+Submenu panel container rendered as a `popover="manual"` div; anchor it to the parent item via `anchorName` (each item carries `data-anchor-name="--menu-sub-{entryId}"`), positioned by the built-in JS engine.
 
 | Prop             | Type                          | Default | Description                          |
 | ---------------- | ------------------------------ | ------- | -------------------------------------- |
-| `positionAnchor` | `string`                       | -       | `anchor-name` of the parent menu item  |
+| `anchorName` | `string`                       | -       | Anchor name of the parent menu item (its `data-anchor-name`)  |
 | `className`      | `ClassNameValue`               | -       | Custom class name                      |
 | `...props`       | `React.ComponentProps<"div">`  | -       | Supports all native div props          |

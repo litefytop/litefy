@@ -1,6 +1,7 @@
 "use client";
 import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
+import { useFloatingPosition, useMergedPanelRef } from "../utils/floating-position";
 const hideTimers = new WeakMap<Element, ReturnType<typeof setTimeout>>();
 function showTooltip(id: string) {
     const el = document.getElementById(id);
@@ -60,7 +61,7 @@ export function useTooltipWiring({ popoverId, anchorName, delay = 100 }: Tooltip
             if (popoverId)
                 cancelHide(popoverId);
         },
-        anchorStyle: anchorName ? { anchorName } : undefined,
+        anchorProps: anchorName ? { "data-anchor-name": anchorName } : undefined,
     }), [popoverId, anchorName, delay]);
 }
 export interface TooltipTriggerProps extends Omit<React.ComponentProps<"button">, "className" | "style"> {
@@ -88,7 +89,7 @@ export function TooltipTrigger({ className, style, popoverId, anchorName, delay,
         }} onBlur={(e) => {
             wiring.hide();
             onBlur?.(e);
-        }} className={cn("inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring px-1", className)} style={anchorName$ ? { anchorName: anchorName$, ...style } : style}/>);
+        }} className={cn("inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring px-1", className)} data-anchor-name={anchorName$ || undefined} style={style}/>);
 }
 export interface TooltipContentProps extends Omit<React.ComponentProps<"div">, "className" | "style" | "id"> {
     className?: ClassNameValue;
@@ -102,7 +103,9 @@ export function TooltipContent({ children, className, style, id, anchorName, del
     const id$ = id ?? ctx?.popoverId;
     const anchorName$ = anchorName ?? ctx?.anchorName;
     const delay$ = delay ?? ctx?.delay ?? 100;
-    return (<div ref={ref} id={id$} role="tooltip" popover="manual" onPointerEnter={(e) => {
+    const panelRef = useMergedPanelRef<HTMLDivElement>(ref);
+    useFloatingPosition(panelRef, anchorName$);
+    return (<div ref={panelRef} id={id$} role="tooltip" popover="manual" onPointerEnter={(e) => {
             if (id$)
                 cancelHide(id$);
             onPointerEnter?.(e);
@@ -110,14 +113,7 @@ export function TooltipContent({ children, className, style, id, anchorName, del
             if (id$)
                 scheduleHide(id$, delay$);
             onPointerLeave?.(e);
-        }} className={cn("z-50 rounded-xl bg-surface-raised px-3 py-1.5 text-xs text-foreground shadow-elevated border w-max max-w-sm m-1", className)} style={{
-            positionAnchor: anchorName$,
-            positionArea: "top span-all",
-            justifySelf: "anchor-center",
-            alignSelf: "end",
-            positionTryFallbacks: "flip-block, flip-inline",
-            ...style,
-        }} {...props}>
+        }} data-float-anchor={anchorName$ || undefined} data-float-side="top" data-float-align="center" data-float-gap={4} className={cn("z-50 rounded-xl bg-surface-raised px-3 py-1.5 text-xs text-foreground shadow-elevated border w-max max-w-sm", className)} style={style} {...props}>
       {children}
     </div>);
 }

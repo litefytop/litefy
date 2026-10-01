@@ -1,94 +1,59 @@
 ---
 title: Styles 样式
-description: Litefy UI 的主题令牌、品牌与表面色板，以及全局交互样式。
+description: Litefy UI 的主题令牌、全局交互样式，以及彼此独立的风格模板。
 ---
 
 Litefy 的样式是分层的 CSS 自定义属性，全部使用 OKLCH 并经 `@theme inline` 映射进 Tailwind——每个组件只读语义令牌（`bg-background`、`text-primary`、`border`…），因此换掉任意一层样式即可整体换肤，无需触碰组件代码。
 
-| 层 | 文件 | Registry | 作用 |
-|---|---|---|---|
-| **Theme**（必装，`init` 自动安装） | `theme.css` | `style-theme` | 基础令牌集：亮/暗两套配色、`@theme inline` 映射 |
-| **Brand**（可选） | `*-brand.css` ×13 | `style-*-brand` | 在 `[data-brand]` 下覆盖 `--primary` / `--primary-accent` |
-| **Surface**（可选） | `*-surface.css` ×9 | `style-*-surface` | 在 `[data-surface]` 下覆盖 `--background` / `--foreground` / `--muted` / `--muted-foreground` / `--accent` / `--neutral` |
-| **Interactive**（可选，推荐） | `interactive.css` | `style-interactive` | 全局行为样式：禁用态、focus-visible、按压反馈 |
+| 层 | 文件 | 作用 |
+|---|---|---|
+| **Theme**（必需） | `theme.css` | 基础令牌集：亮色 + 暗色双方案，`@theme inline` 映射 |
+| **Interactive** | `interactive.css` | 全局行为样式：禁用态、focus-visible、按压反馈 |
+| **组件皮肤** | `preset/*.css` | 按组件拆分的皮肤：成品挂 `litefy-*` class，零件用 `data-slot`、状态用 `data-*` 选择 |
 
-`theme.css` 是必装基础层，`init` 时已自动安装。`interactive.css` 推荐安装但属可选——想自行实现禁用/焦点样式可以跳过。Brand 与 Surface 预设为可选扩展，可自由组合（同时使用一个 brand + 一个 surface）。
+以上三层作为**一个整包 registry 条目——`preset`** 分发，`init` 会自动安装。单个 CSS 文件不提供分别下载：令牌层与组件皮肤只有成套在一起才是自洽的。各文件源码仍可在下方浏览。
 
-## 主题令牌
+## Theme
 
-<Installation name="style-theme" type="css" />
+<Installation name="preset" />
 
-`theme.css` 包含亮色与暗色两套配色——`<html>` 上存在 `.dark` 类时自动应用暗色模式。变量使用 OKLCH 色值，现代浏览器均已支持。
+`theme.css` 同时包含亮色与暗色方案——`<html>` 上的 `.dark` class 自动应用暗色模式。变量使用 OKLCH 颜色值，全部现代浏览器均支持。
 
 ### 阴影分级
 
-阴影只有语义四级。亮色用黑色投影表达层级；暗色下深底会吞掉黑影（没东西可变暗），因此暗色层级由三件套承担：**浮层表面提亮**（`--surface-raised`，画布亮度 +4.5%，浮层组件默认使用 `bg-surface-raised`）、**白色亮环**（阴影自带 1px 白色外圈，subtle 7% → elevated 14%）与**顶部白色内高光**（5-11%）；黑色投影降档保留，仅供浮层经过浅色内容（正文、表格）时兜底。禁止白色模糊外发光（与焦点环语义冲突）。Tailwind 默认刻度在 `theme.css` 中被映射到这四级上——两套类名同值并存，可任选其一：
+阴影严格分为四个语义等级。亮色模式用黑色投影表达层级；暗色模式下深色画布会吞掉黑色投影（没有可再压暗的空间），因此暗色层级由三件套承担——**浮层表面提亮**（`--surface-raised`，画布亮度 +4.5%，浮层组件自带 `bg-surface-raised`）、**白色亮环**（阴影内置 1px 白圈，subtle 7% → elevated 14%）、**顶部白色内高光**（5–11%）；黑色投影降档兜底，仅在浮层盖住较亮内容（正文、表格）时起作用。禁止白色模糊外发光（与焦点环语义冲突）。Tailwind 默认阴影刻度已在 `theme.css` 映射到这四级——两套类名同值，任选其一：
 
-| 刻度类名 | 语义类名 | 档位 | 用途 |
-|----------|----------|------|------|
+| 刻度类 | 语义类 | 等级 | 用途 |
+|--------|--------|------|------|
 | `shadow-2xs` `shadow-xs` | `shadow-faint` | faint | 微小行内元素、极简占位 |
 | `shadow-sm` | `shadow-subtle` | subtle | 小标签（Badge/Chip）、紧凑行内控件 |
 | `shadow-md` | `shadow-base` | base | 按钮、输入框、标准卡片 |
-| `shadow-lg` `shadow-xl` `shadow-2xl` | `shadow-elevated` | elevated | 弹窗、悬浮浮层、Drawer |
+| `shadow-lg` `shadow-xl` `shadow-2xl` | `shadow-elevated` | elevated | 弹窗、悬浮浮层、抽屉 |
 
-圆角与阴影等级一一匹配：`rounded-sm` 行内/标签、`rounded-md` 输入框/按钮、`rounded-lg` 区块卡片、`rounded-xl` 弹层外壳。
+圆角等级与阴影等级一一配对：`rounded-sm` 行内/标签、`rounded-md` 输入框/按钮、`rounded-lg` 区块卡片、`rounded-xl` 浮层外壳。
 
-## 交互样式
+## Interactive 交互样式
 
-`interactive.css` 不是主题——它是所有 Litefy 组件依赖的全局行为层，通过四条 `@layer base` 规则生效：
+`interactive.css` 不是主题——它是每个 Litefy 组件都依赖的全局行为层，包含四条 `@layer base` 规则：
 
-- **禁用控件**（`:disabled`、`[inert]`、`[data-disabled]`）：50% 透明度、中性背景、`not-allowed` 光标并屏蔽指针事件——同时覆盖 `label:has(:disabled)` 包装器，组合式 Checkbox、Upload 等会整体变灰。
-- **键盘焦点**：仅为 `:focus-visible` 提供 `1px` 描边（`--color-outline`）加 `3px` 柔和光晕（`--color-ring`）——鼠标点击不会出现焦点圈。
-- **按压反馈**：`button:active` 时的内阴影 + `brightness(0.95)` 亮度变化。
+- **禁用控件**（`:disabled`、`[inert]`、`[data-disabled]`）：整体 50% 透明度、中性底色、`not-allowed` 光标且不响应指针事件——含 `label:has(:disabled)` 这类包装层，组合复选框、上传控件会整体变暗。
+- **Focus-visible**：`1px` 描边（`--color-outline`）加 `3px` 柔光环（`--color-ring`），仅键盘导航触发——鼠标点击不出现焦点环。
+- **按钮按压**：`button:active` 内阴影 + `brightness(0.95)`，提供触觉反馈。
 
-该层为可选：不安装组件也能正常工作，但禁用/焦点/按压反馈需要自行实现。
+该层随 `preset` 整包分发。如果你想自行实现禁用/焦点/按压样式，从生成的 `styles/index.css` 里去掉 `./interactive.css` 导入即可——组件照常工作，反馈交由你负责。
 
-<Installation name="style-interactive" type="css" />
+## 风格模板
 
-## 主题构成
+Litefy 的**风格**是独立模板，而非运行时切换：每个模板自带完整亮色 + 暗色令牌集（`theme.css`）、组件皮肤（`preset/*.css`）和成品组件示例页。风格之间不在同一页面共存，也不提供浏览器内换色——安装时选定一个模板，由它负责应用的全部外观。
 
-Litefy 主题由两个可自由组合的模块构成：
+组件文档的演示一律展示**默认方案**；其他风格各自提供示例页，而不是复制一套演示。点击模板卡片即可打开对应的完整示例页。
 
-- **Surface**：中性画布色板，控制页面背景与文字颜色。
-- **Brand**：交互品牌色板，控制按钮与强调控件。
+<Cards>
+  <Card
+    title="Default 默认方案"
+    href="/zh/docs/templates/default"
+    description="出厂外观：中性表面、近黑品牌色，AA/AAA 调校的亮暗双方案。随 preset 整包安装（init 自动完成）。"
+  />
+</Cards>
 
-> 需要用 `useTheme` 在运行时切换色板，见 [`useTheme`](./utils/use-theme.zh.mdx)。
-
-## Surface 预设
-
-每个预设覆盖中性变量（`--background`、`--foreground`、`--muted`、`--muted-foreground`、`--accent`、`--neutral`）。
-
-<PresetTabs
-  items={[
-    "gray-surface",
-    "mauve-surface",
-    "mist-surface",
-    "olive-surface",
-    "slate-surface",
-    "stone-surface",
-    "taupe-surface",
-    "zinc-surface",
-  ]}
-/>
-
-## Brand 预设
-
-每个预设覆盖品牌变量（`--primary` 与 `--primary-accent`）。
-
-<PresetTabs
-  items={[
-    "amber-brand",
-    "cyan-brand",
-    "emerald-brand",
-    "fuchsia-brand",
-    "indigo-brand",
-    "lime-brand",
-    "orange-brand",
-    "pink-brand",
-    "purple-brand",
-    "rose-brand",
-    "sky-brand",
-    "teal-brand",
-    "violet-brand",
-  ]}
-/>
+新风格将按同样的下载模型入驻：独立的整包 registry 条目 + 各自的示例页。

@@ -42,7 +42,7 @@
 - 导出：`Calendar` 及 Root/Header/Grid/MonthGrid/YearGrid 等 parts
 - 结构：root > header（导航）> grid/row/cell（日期/月份/年份三种网格）
 - 行为：date/defaultValue 受控非受控、defaultView 视图切换、单 roving tab stop + 方向键移动光标（焦点不跟值）、isDateDisabled/isMonthDisabled/isYearDisabled、onNavigate
-- 依赖：`utils/cn`（基于原生 Temporal API）
+- 依赖：`utils/cn`、`utils/date-math`（基于原生 Date 的日历日期运算）
 
 ### callout.tsx
 - 导出：`Callout`
@@ -137,8 +137,8 @@
 ### date-picker.tsx
 - 导出：`DatePicker`
 - 结构：Picker 包裹 Calendar（可编辑 input + 月份面板 popover）
-- 行为：value/defaultValue（Temporal 日期）、输入解析、isDateDisabled、firstDayOfWeek、invalid、面板键盘焦点
-- 依赖：`Picker`、`Calendar`、`utils/cn`、`utils/use-panel-focus`
+- 行为：value/defaultValue（原生 Date）、输入解析、isDateDisabled、firstDayOfWeek、invalid、面板键盘焦点
+- 依赖：`Picker`、`Calendar`、`utils/cn`、`utils/date-math`、`utils/use-panel-focus`
 
 ### dialog.tsx
 - 导出：`Dialog`、`DialogRoot`、`DialogContent`、`DialogClose`；命令式 `dialog.success/error/warning/info`

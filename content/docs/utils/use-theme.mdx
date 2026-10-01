@@ -1,6 +1,6 @@
 ---
 title: use-theme
-description: Global theme state hook with localStorage persistence for brand, surface and color mode
+description: Global color-mode hook with localStorage persistence for light / dark / system
 ---
 
 ## Installation
@@ -9,19 +9,19 @@ description: Global theme state hook with localStorage persistence for brand, su
 
 ## Usage
 
-A module-level store shared across components via `useSyncExternalStore`. Reads `brand` / `surface` / `theme` from localStorage on load, applies them to `document.documentElement` (`data-brand`, `data-surface`, `.dark`, `color-scheme`) and follows the system color scheme when `theme` is `"system"`.
+A module-level store shared across components via `useSyncExternalStore`. Reads `theme` from localStorage on load, applies it to `document.documentElement` (`.dark`, `color-scheme`) and follows the system color scheme when `theme` is `"system"`.
 
 <ComponentPreview
   name="use-theme-basic"
 />
 
-## Theming tokens
+Style templates do **not** switch at runtime — each template ships its own complete light + dark token set, chosen at install time. See [Styles](/docs/styles) and the [Default template](/docs/templates/default). `useTheme` only drives the light / dark / system mode inside whichever template is installed.
 
-`surface` and `brand` switch the CSS variable sets defined in `app/ui/styles/*-surface.css` and `app/ui/styles/*-brand.css`. The preview above lets you switch them live. To install a preset palette statically, see [Styles](/docs/styles).
+## Color token families
 
-### Surface
+The installed template defines two reusable palettes on `:root` / `.dark`:
 
-The surface palette is a neutral color system for containers:
+### Surface (neutral)
 
 | Token | Purpose |
 |------|-------------|
@@ -32,12 +32,10 @@ The surface palette is a neutral color system for containers:
 
 ### Brand
 
-The brand palette is the theme color system. Except for the default black-and-white theme, brands are colorful:
-
 | Token | Purpose |
 |------|-------------|
 | `--primary` | The main brand color, used for emphasized actions and states |
-| `--accent` | The reinforced primary color, used for hover scenarios |
+| `--primary-accent` | The reinforced primary color, used for hover scenarios |
 | `--ring` | Borders and focus outlines, also part of the brand color family |
 
 ## API Reference
@@ -52,11 +50,7 @@ Returns a `ThemeState`:
 
 | Property | Type | Description |
 |------|------|-------------|
-| `brand` | `string` | Current brand token, mapped to `data-brand` on the root element |
-| `surface` | `string` | Current surface token, mapped to `data-surface` on the root element |
 | `theme` | `'light' \| 'dark' \| 'system'` | Current color mode |
-| `setBrand` | `(brand: string) => void` | Set the brand token, persists and applies it |
-| `setSurface` | `(surface: string) => void` | Set the surface token, persists and applies it |
 | `setTheme` | `(mode: ThemeMode) => void` | Set the color mode, persists and applies it |
 | `toggleTheme` | `() => void` | Switch between light and dark (resolves system first) |
 

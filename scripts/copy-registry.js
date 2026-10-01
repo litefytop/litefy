@@ -207,13 +207,23 @@ async function generateRegistry() {
     counts[type] += 1;
   }
 
-  const styleFiles = await scanDir(path.join(srcComponentDir, "styles"));
-  for (const fname of styleFiles) {
-    const base = path.basename(fname, path.extname(fname));
-    const key = `style-${base}`;
-    registry[key] = {
+  // CSS ships as ONE whole-package preset entry (tokens + schemes + component
+  // skins); per-file downloads are discontinued by design.
+  const presetUrls = [
+    ...(await scanDir(path.join(srcComponentDir, "styles"))).map(
+      (fname) =>
+        `https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/${fname}`,
+    ),
+    ...(await scanDir(path.join(srcComponentDir, "preset"))).map(
+      (fname) =>
+        `https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/preset/${fname}`,
+    ),
+  ];
+  if (presetUrls.length) {
+    registry["preset"] = {
       type: "css",
-      url: `https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/styles/${fname}`,
+      url: presetUrls.find((u) => u.endsWith("/theme.css")) ?? presetUrls[0],
+      files: presetUrls,
     };
     counts.css += 1;
   }

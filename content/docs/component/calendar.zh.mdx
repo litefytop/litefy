@@ -1,6 +1,6 @@
 ---
 title: Calendar 日历
-description: 基于浏览器原生 Temporal API 的日历面板组件，支持受控选择、禁用日期和零件化拼装
+description: 基于原生 JavaScript Date 的日历面板组件，支持受控选择、禁用日期和零件化拼装
 ---
 
 ## 安装
@@ -8,7 +8,7 @@ description: 基于浏览器原生 Temporal API 的日历面板组件，支持�
 <Installation name="calendar" />
 
 > [!TIP]
-> 组件使用浏览器原生 `Temporal.PlainDate` API，不打包任何日期库，也不提供 polyfill —— 请确保目标环境支持 Temporal API（Chrome 139+，或自行安装 polyfill）。
+> 组件使用原生 JavaScript `Date` 值，按纯日历日期处理（无时区语义）—— 不打包任何日期库，也不需要 polyfill，所有 Baseline 浏览器均可直接运行。
 
 ## 用法
 
@@ -44,19 +44,19 @@ description: 基于浏览器原生 Temporal API 的日历面板组件，支持�
 
 | 属性                   | 类型                                            | 默认值   | 描述                                           |
 | ---------------------- | ----------------------------------------------- | -------- | ---------------------------------------------- |
-| `visibleMonth`         | `Temporal.PlainDate`                            | -        | 必填。当前显示的月份面板                       |
-| `value`                | `Temporal.PlainDate \| null`                    | -        | 受控的选中日期                                 |
-| `defaultValue`         | `Temporal.PlainDate \| null`                    | -        | 非受控模式下的默认选中日期                     |
+| `visibleMonth`         | `Date`                            | -        | 必填。当前显示的月份面板                       |
+| `value`                | `Date \| null`                    | -        | 受控的选中日期                                 |
+| `defaultValue`         | `Date \| null`                    | -        | 非受控模式下的默认选中日期                     |
 | `view`                 | `"days" \| "months" \| "years"`                 | -        | 受控的当前面板                                 |
 | `defaultView`          | `"days" \| "months" \| "years"`                 | `"days"` | 非受控模式下的初始面板                         |
-| `onChange`             | `(date: Temporal.PlainDate) => void`            | -        | 点击可见月份内的有效日期时触发                 |
-| `onVisibleMonthChange` | `(month: Temporal.PlainDate) => void`           | -        | 可见月份变化时触发（翻页、面板选择、键盘导航） |
+| `onChange`             | `(date: Date) => void`            | -        | 点击可见月份内的有效日期时触发                 |
+| `onVisibleMonthChange` | `(month: Date) => void`           | -        | 可见月份变化时触发（翻页、面板选择、键盘导航） |
 | `onViewChange`         | `(view: "days" \| "months" \| "years") => void` | -        | 当前面板变化时触发                             |
-| `isDateDisabled`       | `(date: Temporal.PlainDate) => boolean`         | -        | 返回 `true` 禁用该日期                         |
+| `isDateDisabled`       | `(date: Date) => boolean`         | -        | 返回 `true` 禁用该日期                         |
 | `firstDayOfWeek`       | `0 \| 1`                                        | `0`      | `0` 周日开头，`1` 周一开头                     |
 | `className`            | `ClassNameValue`                                | -        | 自定义类名，应用于根元素                       |
 
-`Temporal.PlainDate` 是不可变对象 —— 所有月份运算均通过 `add` / `subtract` / `with` 完成，不会修改原对象。
+日期为原生 JavaScript `Date` 值，按纯日历日期处理。组件将其视为不可变对象 —— 永远不会修改你传入的 `Date`，`onVisibleMonthChange` / `onChange` 抛出的都是全新的 `Date` 对象（锚定本地正午以规避 DST）。跨月运算会把日期钳制到目标月的最后一天：1 月 31 日 +1 月得到 2 月 28/29 日。
 
 `Calendar.calendarMonthLabels` 为进程级全局——在应用入口设置一次（同样影响 [DatePicker](/docs/component/datepicker)）；日网格星期缩写固定为英文。
 
@@ -112,11 +112,11 @@ Calendar.calendarMonthLabels = ["一月", "二月", /* ... */];
 
 | 属性              | 类型                                     | 默认值 | 描述                                      |
 | ----------------- | ---------------------------------------- | ------ | ----------------------------------------- |
-| `visibleMonth`    | `Temporal.PlainDate`                     | -      | 提供展示的年份；其月份作为兜底 Tab 停靠点 |
-| `value`           | `Temporal.PlainDate \| null`             | -      | 选中日期，高亮同月份的格子                |
-| `isMonthDisabled` | `(month: Temporal.PlainDate) => boolean` | -      | 接收每月第一天；返回 `true` 禁用该月      |
-| `onSelect`        | `(month: Temporal.PlainDate) => void`    | -      | 携带所选月份的第一天触发                  |
-| `onNavigate`      | `(month: Temporal.PlainDate) => void`    | -      | 方向键越出当前年份时携带目标月份触发      |
+| `visibleMonth`    | `Date`                     | -      | 提供展示的年份；其月份作为兜底 Tab 停靠点 |
+| `value`           | `Date \| null`             | -      | 选中日期，高亮同月份的格子                |
+| `isMonthDisabled` | `(month: Date) => boolean` | -      | 接收每月第一天；返回 `true` 禁用该月      |
+| `onSelect`        | `(month: Date) => void`    | -      | 携带所选月份的第一天触发                  |
+| `onNavigate`      | `(month: Date) => void`    | -      | 方向键越出当前年份时携带目标月份触发      |
 | `className`       | `ClassNameValue`                         | -      | 自定义类名                                |
 | `...props`        | `React.ComponentProps<"div">`            | -      | 原生 div 属性                             |
 
@@ -126,11 +126,11 @@ Calendar.calendarMonthLabels = ["一月", "二月", /* ... */];
 
 | 属性             | 类型                                    | 默认值 | 描述                                            |
 | ---------------- | --------------------------------------- | ------ | ----------------------------------------------- |
-| `visibleMonth`   | `Temporal.PlainDate`                    | -      | 决定 12 年窗口的中心；其年份作为兜底 Tab 停靠点 |
-| `value`          | `Temporal.PlainDate \| null`            | -      | 选中日期，高亮同年份的格子                      |
-| `isYearDisabled` | `(year: Temporal.PlainDate) => boolean` | -      | 接收每年的 1 月 1 日；返回 `true` 禁用该年      |
-| `onSelect`       | `(year: Temporal.PlainDate) => void`    | -      | 携带所选年份的 1 月 1 日触发                    |
-| `onNavigate`     | `(year: Temporal.PlainDate) => void`    | -      | 方向键越出窗口时携带目标年份触发                |
+| `visibleMonth`   | `Date`                    | -      | 决定 12 年窗口的中心；其年份作为兜底 Tab 停靠点 |
+| `value`          | `Date \| null`            | -      | 选中日期，高亮同年份的格子                      |
+| `isYearDisabled` | `(year: Date) => boolean` | -      | 接收每年的 1 月 1 日；返回 `true` 禁用该年      |
+| `onSelect`       | `(year: Date) => void`    | -      | 携带所选年份的 1 月 1 日触发                    |
+| `onNavigate`     | `(year: Date) => void`    | -      | 方向键越出窗口时携带目标年份触发                |
 | `className`      | `ClassNameValue`                        | -      | 自定义类名                                      |
 | `...props`       | `React.ComponentProps<"div">`           | -      | 原生 div 属性                                   |
 
@@ -140,12 +140,12 @@ Calendar.calendarMonthLabels = ["一月", "二月", /* ... */];
 
 | 属性             | 类型                                    | 默认值 | 描述                                     |
 | ---------------- | --------------------------------------- | ------ | ---------------------------------------- |
-| `weeks`          | `Temporal.PlainDate[][]`                | -      | 二维周数组，每行 7 个日期                |
-| `visibleMonth`   | `Temporal.PlainDate`                    | -      | 用于检测非当月格子                       |
-| `value`          | `Temporal.PlainDate \| null`            | -      | 选中日期，驱动高亮格子                   |
-| `isDateDisabled` | `(date: Temporal.PlainDate) => boolean` | -      | 返回 `true` 禁用该日期                   |
-| `onSelect`       | `(date: Temporal.PlainDate) => void`    | -      | 格子点击时触发；组合组件会过滤非当月日期 |
-| `onNavigate`     | `(date: Temporal.PlainDate) => void`    | -      | 方向键移动到网格中不存在的日期时触发     |
+| `weeks`          | `Date[][]`                | -      | 二维周数组，每行 7 个日期                |
+| `visibleMonth`   | `Date`                    | -      | 用于检测非当月格子                       |
+| `value`          | `Date \| null`            | -      | 选中日期，驱动高亮格子                   |
+| `isDateDisabled` | `(date: Date) => boolean` | -      | 返回 `true` 禁用该日期                   |
+| `onSelect`       | `(date: Date) => void`    | -      | 格子点击时触发；组合组件会过滤非当月日期 |
+| `onNavigate`     | `(date: Date) => void`    | -      | 方向键移动到网格中不存在的日期时触发     |
 | `firstDayOfWeek` | `0 \| 1`                                | `0`    | 星期表头顺序                             |
 | `className`      | `ClassNameValue`                        | -      | 自定义类名                               |
 | `...props`       | `React.ComponentProps<"div">`           | -      | 原生 div 属性                            |
@@ -156,12 +156,12 @@ Calendar.calendarMonthLabels = ["一月", "二月", /* ... */];
 
 | 属性             | 类型                                    | 默认值 | 描述                                                                    |
 | ---------------- | --------------------------------------- | ------ | ----------------------------------------------------------------------- |
-| `week`           | `Temporal.PlainDate[]`                  | -      | 本周的 7 个日期                                                         |
-| `visibleMonth`   | `Temporal.PlainDate`                    | -      | 用于检测非当月格子                                                      |
-| `value`          | `Temporal.PlainDate \| null`            | -      | 选中日期                                                                |
-| `isDateDisabled` | `(date: Temporal.PlainDate) => boolean` | -      | 返回 `true` 禁用该日期                                                  |
-| `onSelect`       | `(date: Temporal.PlainDate) => void`    | -      | 格子点击时触发                                                          |
-| `onNavigate`     | `(date: Temporal.PlainDate) => void`    | -      | 方向键移动到网格中不存在的日期时触发                                    |
+| `week`           | `Date[]`                  | -      | 本周的 7 个日期                                                         |
+| `visibleMonth`   | `Date`                    | -      | 用于检测非当月格子                                                      |
+| `value`          | `Date \| null`            | -      | 选中日期                                                                |
+| `isDateDisabled` | `(date: Date) => boolean` | -      | 返回 `true` 禁用该日期                                                  |
+| `onSelect`       | `(date: Date) => void`    | -      | 格子点击时触发                                                          |
+| `onNavigate`     | `(date: Date) => void`    | -      | 方向键移动到网格中不存在的日期时触发                                    |
 | `tabStopDate`    | `string`                                | -      | 网格中唯一 Tab 停靠点的 ISO 日期字符串；省略则所有格子保持原生 Tab 行为 |
 | `className`      | `ClassNameValue`                        | -      | 自定义类名                                                              |
 | `...props`       | `React.ComponentProps<"div">`           | -      | 原生 div 属性                                                           |
@@ -172,10 +172,10 @@ Calendar.calendarMonthLabels = ["一月", "二月", /* ... */];
 
 | 属性           | 类型                             | 默认值  | 描述                                                                         |
 | -------------- | -------------------------------- | ------- | ---------------------------------------------------------------------------- |
-| `date`         | `Temporal.PlainDate`             | -       | 该格子渲染的日期（显示 `date.day`）                                          |
+| `date`         | `Date`             | -       | 该格子渲染的日期（显示 `date.getDate()`）                                          |
 | `outsideMonth` | `boolean`                        | `false` | 置灰弱化不属于可见月份的格子                                                 |
 | `selected`     | `boolean`                        | `false` | 将格子高亮为选中状态                                                         |
 | `tabStop`      | `boolean`                        | -       | Roving tabindex：`true` 使该格子成为唯一 Tab 停靠点；省略则保持原生 Tab 行为 |
-| `onNavigate`   | `(date: Temporal.PlainDate) => void` | -   | 方向键移动到网格中不存在的日期时触发                                        |
+| `onNavigate`   | `(date: Date) => void` | -   | 方向键移动到网格中不存在的日期时触发                                        |
 | `className`    | `ClassNameValue`                 | -       | 自定义类名                                                                   |
 | `...props`     | `React.ComponentProps<"button">` | -       | 原生 button 属性（除 `type` 外），如 `disabled`                              |

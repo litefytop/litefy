@@ -3,6 +3,7 @@ import * as React from "react";
 import { ChevronDown } from "lucide-react";
 import { type ClassNameValue, cn } from "../utils/cn";
 import { useFloatingPanel } from "../utils/use-floating-panel";
+import { useFloatingPosition } from "../utils/floating-position";
 export type SelectOption = {
     label: string;
     value: string;
@@ -122,6 +123,7 @@ export function Select({ options, value: controlledValue, defaultValue = "", onV
                 setOpen(false);
         },
     });
+    useFloatingPosition(panelRef, anchorName);
     React.useEffect(() => {
         if (!open || highlightIndex === null)
             return;
@@ -129,28 +131,20 @@ export function Select({ options, value: controlledValue, defaultValue = "", onV
             ?.querySelector('[data-highlighted="true"]')
             ?.scrollIntoView({ block: "nearest" });
     }, [open, highlightIndex]);
-    const renderOption = (option: SelectOption, index: number) => (<div key={option.value} role="option" aria-selected={option.value === value} data-highlighted={highlightIndex === index || undefined} aria-disabled={disabled || undefined} onClick={disabled ? undefined : () => commit(option)} className={cn("cursor-pointer px-3 py-2 text-sm transition-colors select-none hover:bg-hover", "data-[highlighted=true]:bg-primary data-[highlighted=true]:text-primary-foreground", option.value === value && "font-medium", disabled && "pointer-events-none opacity-50", classNames?.option)}>
+    const renderOption = (option: SelectOption, index: number) => (<div key={option.value} role="option" data-slot="select-option" aria-selected={option.value === value} data-highlighted={highlightIndex === index || undefined} data-selected={option.value === value || undefined} data-disabled={disabled || undefined} onClick={disabled ? undefined : () => commit(option)} className={cn(classNames?.option)}>
       {option.label}
     </div>);
     return (<>
       {name && <input type="hidden" name={name} value={value}/>}
-      <button {...props} ref={triggerRef} type="button" disabled={disabled} aria-haspopup="listbox" aria-expanded={open || undefined} aria-required={required || undefined} onClick={() => !disabled && setOpenState(!open)} onKeyDown={handleTriggerKeyDown} data-open={open || undefined} className={cn("flex h-9 max-w-[40ch] items-center justify-between gap-2 rounded-md border px-3 py-1 text-sm cursor-pointer shadow-base", !selectedLabel && "text-muted-foreground", className)} style={{ anchorName, ...style }}>
-        <span className="truncate">{selectedLabel ?? placeholder ?? ""}</span>
-        <ChevronDown aria-hidden className="size-4 shrink-0 text-muted-foreground transition-transform duration-200 data-[open=true]:rotate-180" data-open={open || undefined}/>
+      <button {...props} ref={triggerRef} type="button" disabled={disabled} aria-haspopup="listbox" aria-expanded={open || undefined} aria-required={required || undefined} data-open={open || undefined} data-placeholder-shown={!selectedLabel || undefined} data-anchor-name={anchorName} onClick={() => !disabled && setOpenState(!open)} onKeyDown={handleTriggerKeyDown} className={cn("litefy-select", className)} style={style}>
+        <span data-slot="select-value">{selectedLabel ?? placeholder ?? ""}</span>
+        <ChevronDown aria-hidden data-slot="select-chevron" data-open={open || undefined}/>
       </button>
-      <div ref={panelRef} popover="manual" tabIndex={-1} role="listbox" aria-label={placeholder} className={cn("bg-surface-raised text-foreground max-h-64 overflow-y-auto rounded-xl border p-1 shadow-elevated", classNames?.panel)} style={{
-            margin: "4px 0 0",
-            positionAnchor: anchorName,
-            positionArea: "bottom span-all",
-            justifySelf: "anchor-center",
-            minWidth: "anchor-size(width)",
-            positionTryFallbacks: "flip-block",
-            ...styles?.panel,
-        }}>
-        {flat.length === 0 ? (<div className="pointer-events-none px-3 py-2 text-sm text-muted-foreground">
+      <div ref={panelRef} popover="manual" tabIndex={-1} role="listbox" aria-label={placeholder} data-slot="select-panel" data-float-anchor={anchorName} data-float-side="bottom" data-float-align="center" data-float-gap={4} data-float-match-width className={cn(classNames?.panel)} style={styles?.panel}>
+        {flat.length === 0 ? (<div data-slot="select-empty">
             No options available
           </div>) : (options.map((item, index) => "options" in item ? (<div key={`group-${item.group}-${index}`} role="presentation">
-                <div className={cn("px-3 py-1.5 text-xs font-medium text-muted-foreground", classNames?.label)}>
+                <div data-slot="select-group-label" className={cn(classNames?.label)}>
                   {item.group}
                 </div>
                 {item.options.map((option) => renderOption(option, flat.findIndex((o) => o.value === option.value)))}

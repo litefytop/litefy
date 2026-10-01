@@ -45,7 +45,7 @@ export function PreviewCard({ src, alt, title, description, trigger, href = "#",
     if (!trigger)
         return card;
     return (<>
-      <a href={href} onPointerEnter={wiring.show} onPointerLeave={wiring.hide} onFocus={wiring.show} onBlur={wiring.hide} style={wiring.anchorStyle} className="text-primary underline-offset-4 hover:text-accent hover:underline">
+      <a href={href} onPointerEnter={wiring.show} onPointerLeave={wiring.hide} onFocus={wiring.show} onBlur={wiring.hide} data-anchor-name={anchorName} className="text-primary underline-offset-4 hover:text-accent hover:underline">
         {trigger}
       </a>
       <TooltipContent id={popoverId} anchorName={anchorName} delay={delay}>

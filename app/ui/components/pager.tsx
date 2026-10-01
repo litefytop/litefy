@@ -1,9 +1,8 @@
 "use client";
 import * as React from "react";
-import { flushSync } from "react-dom";
 import { Children, isValidElement } from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
-export type PagerTransition = "none" | "view-transition";
+export type PagerTransition = "none" | "slide";
 export interface PagerProps extends Omit<React.ComponentProps<"div">, "children" | "className" | "onChange"> {
     index: number;
     onChange: (nextIndex: number) => void;
@@ -13,20 +12,19 @@ export interface PagerProps extends Omit<React.ComponentProps<"div">, "children"
     gesture?: boolean;
     className?: ClassNameValue;
 }
-type ViewTransitionDocument = Document & {
-    startViewTransition?: (update?: () => void) => {
-        finished: Promise<void>;
-    };
-};
 interface DragState {
     from: number;
     offset: number;
     settling: boolean;
 }
+interface SlideState {
+    from: number;
+    to: number;
+    dir: 1 | -1;
+}
 const SETTLE_MS = 200;
 const DRAG_RATIO = 0.25;
-export function Pager({ index, onChange, children, loop = false, transition = "view-transition", gesture = true, className, ...props }: PagerProps) {
-    const id = React.useId();
+export function Pager({ index, onChange, children, loop = false, transition = "slide", gesture = true, className, ...props }: PagerProps) {
     const slides = Children.toArray(children).filter(isValidElement);
     const total = slides.length;
     const viewportRef = React.useRef<HTMLDivElement>(null);
@@ -37,8 +35,10 @@ export function Pager({ index, onChange, children, loop = false, transition = "v
     const offsetRef = React.useRef(0);
     const gestureLockRef = React.useRef(false);
     const gestureCommitRef = React.useRef(false);
-    const vtLockRef = React.useRef(false);
+    const slidingRef = React.useRef(false);
+    const slideTimerRef = React.useRef(0);
     const [drag, setDrag] = React.useState<DragState | null>(null);
+    const [slide, setSlide] = React.useState<SlideState | null>(null);
     const [renderedIndex, setRenderedIndex] = React.useState(index);
     const normalize = React.useCallback((i: number) => total === 0 ? 0 : loop ? ((i % total) + total) % total : Math.max(0, Math.min(i, total - 1)), [loop, total]);
     React.useEffect(() => {
@@ -46,21 +46,28 @@ export function Pager({ index, onChange, children, loop = false, transition = "v
             return;
         if (gestureCommitRef.current)
             return;
-        const doc = document as ViewTransitionDocument;
-        const canVT = transition === "view-transition" &&
-            typeof doc.startViewTransition === "function" &&
-            !vtLockRef.current;
-        if (!canVT) {
-            setRenderedIndex(normalize(index));
+        const target = normalize(index);
+        if (slidingRef.current) {
+            window.clearTimeout(slideTimerRef.current);
+            slidingRef.current = false;
+            setSlide(null);
+            setRenderedIndex(target);
             return;
         }
-        vtLockRef.current = true;
-        const vt = doc.startViewTransition!(() => {
-            flushSync(() => setRenderedIndex(normalize(index)));
-        });
-        vt.finished.finally(() => {
-            vtLockRef.current = false;
-        });
+        if (transition === "none" || !viewportRef.current?.clientWidth) {
+            setRenderedIndex(target);
+            return;
+        }
+        const current = normalize(renderedIndex);
+        const fwd = (target - current + total) % total;
+        const dir: 1 | -1 = fwd <= total / 2 ? 1 : -1;
+        slidingRef.current = true;
+        setSlide({ from: current, to: target, dir });
+        slideTimerRef.current = window.setTimeout(() => {
+            slidingRef.current = false;
+            setSlide(null);
+            setRenderedIndex(target);
+        }, SETTLE_MS);
     }, [index, renderedIndex, transition, normalize, total]);
     const canGo = (from: number, dir: 1 | -1) => loop || (dir === 1 ? from < total - 1 : from > 0);
     const resist = (from: number, dx: number) => {
@@ -85,7 +92,7 @@ export function Pager({ index, onChange, children, loop = false, transition = "v
         }, SETTLE_MS);
     };
     const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-        if (gestureLockRef.current || vtLockRef.current)
+        if (gestureLockRef.current || slidingRef.current)
             return;
         touchRef.current = { startX: e.touches[0].clientX, from: renderedIndex };
         offsetRef.current = 0;
@@ -121,7 +128,6 @@ export function Pager({ index, onChange, children, loop = false, transition = "v
     if (total === 0)
         return null;
     const current = normalize(renderedIndex);
-    const vtName = `pager-${id.replace(/[^a-zA-Z0-9_-]/g, "")}`;
     const prevIndex = loop ? (current - 1 + total) % total : current > 0 ? current - 1 : null;
     const nextIndex = loop ? (current + 1) % total : current < total - 1 ? current + 1 : null;
     const gestureHandlers = gesture
@@ -133,12 +139,15 @@ export function Pager({ index, onChange, children, loop = false, transition = "v
         }
         : {};
     return (<div {...props} className={cn("overflow-hidden", className)}>
-      <div ref={viewportRef} className="relative h-full w-full touch-pan-y select-none" style={{ viewTransitionName: vtName } as React.CSSProperties} {...gestureHandlers}>
-        <div className={cn("relative h-full w-full", drag?.settling && "transition-transform duration-200 ease-out")} style={{ transform: drag ? `translateX(${drag.offset}px)` : undefined }}>
+      <div ref={viewportRef} className="relative h-full w-full touch-pan-y select-none" {...gestureHandlers}>
+        <div className={cn("relative h-full w-full", (drag?.settling || slide) && "transition-transform duration-200 ease-out")} style={{ transform: drag ? `translateX(${drag.offset}px)` : slide ? `translateX(${slide.dir === 1 ? -100 : 100}%)` : undefined }}>
           {drag && prevIndex !== null && (<div aria-hidden className="absolute inset-y-0 left-0 h-full w-full -translate-x-full">
               {slides[prevIndex]}
             </div>)}
           <div className="h-full w-full">{slides[current]}</div>
+          {slide && (<div aria-hidden className="absolute inset-y-0 left-0 h-full w-full" style={{ transform: `translateX(${slide.dir === 1 ? 100 : -100}%)` }}>
+              {slides[slide.to]}
+            </div>)}
           {drag && nextIndex !== null && (<div aria-hidden className="absolute inset-y-0 left-0 h-full w-full translate-x-full">
               {slides[nextIndex]}
             </div>)}

@@ -1,6 +1,6 @@
 ---
 title: Picker
-description: A generic input + popover container component for building pickers such as a date picker, powered by native popover and CSS anchor positioning
+description: A generic input + popover container component for building pickers such as a date picker, powered by the native Popover API and a built-in JS positioning engine
 ---
 
 ## Installation
@@ -44,7 +44,7 @@ Consumer `onKeyDown` / `onClick` compose with the built-in toggle and Escape-clo
 
 For panel keyboard, wire highlighted-list panels with [`useCombobox`](/docs/utils/use-combobox) (the input keeps focus while the panel is open), and panels of real focusable controls with [`usePanelFocus`](/docs/utils/use-panel-focus) and `panelRef`; on close, focus returns to the input if it would otherwise be lost.
 
-Popover positioning requires CSS anchor positioning support.
+Panel positioning is handled by the built-in JS positioning engine — no browser feature beyond the Popover API is required.
 
 ---
 
@@ -52,12 +52,13 @@ Popover positioning requires CSS anchor positioning support.
 
 #### PickerRoot
 
-Wrapper around the input; carries the anchor name consumed by the panel.
+Wrapper around the input; carries the anchor name (`data-anchor-name`) consumed by the panel.
 
-| Prop       | Type                          | Default | Description        |
-| :--------- | :---------------------------- | :------ | :----------------- |
-| `className`| `ClassNameValue`              | -       | Custom class names |
-| `...props` | `React.ComponentProps<"div">` | -       | Native div props   |
+| Prop        | Type                          | Default | Description                                        |
+| :---------- | :---------------------------- | :------ | :------------------------------------------------- |
+| `anchorName`| `string`                      | -       | Registers this element as the panel's anchor       |
+| `className` | `ClassNameValue`              | -       | Custom class names                                 |
+| `...props`  | `React.ComponentProps<"div">` | -       | Native div props                                   |
 
 #### PickerInput
 
@@ -70,9 +71,10 @@ The trigger input.
 
 #### PickerContent
 
-The popover panel — a native `popover="manual"` element; call `showPopover()` / `hidePopover()` and position it via `style={{ positionAnchor: ... }}` (there is no `positionAnchor` prop).
+The popover panel — a native `popover="manual"` element; call `showPopover()` / `hidePopover()` and position it via the `anchorName` prop (the built-in JS engine docks it below the anchor, width-matched, flipping above on overflow).
 
-| Prop       | Type                          | Default | Description         |
-| :--------- | :---------------------------- | :------ | :------------------ |
-| `className`| `ClassNameValue`              | -       | Custom class names  |
-| `...props` | `React.ComponentProps<"div">` | -       | Native div props    |
+| Prop        | Type                          | Default | Description                                          |
+| :---------- | :---------------------------- | :------ | :--------------------------------------------------- |
+| `anchorName`| `string`                      | -       | Name of the anchor element (its `data-anchor-name`)  |
+| `className` | `ClassNameValue`              | -       | Custom class names                                   |
+| `...props`  | `React.ComponentProps<"div">` | -       | Native div props                                     |

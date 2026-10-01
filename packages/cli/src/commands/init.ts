@@ -1,11 +1,11 @@
 import path from "node:path";
-import axios from "axios";
 import fs from "fs-extra";
 import inquirer from "inquirer";
 import logger from "../utils/logger";
 import { detectPackageManager, installDependencies, type PackageManager } from "../utils/pm";
-import { getFileNameFromUrl, loadRegistry } from "../utils/registry";
+import { loadRegistry } from "../utils/registry";
 import { syncStyleImports } from "../utils/style-imports";
+import { addSingle } from "./add";
 import { UI_BARREL_INDEX_SOURCE } from "../utils/barrel";
 
 interface InitOptions {
@@ -151,28 +151,21 @@ async function init(options: InitOptions): Promise<void> {
 
   const registry = await loadRegistry();
 
-  const themeEntry = registry["style-theme"];
-  if (themeEntry?.type === "css") {
-    logger.step("Installing required style: style-theme...");
-    try {
-      const res = await axios.get<string>(themeEntry.url, { timeout: 10000 });
-      await fs.ensureDir(path.resolve(cwd, stylesPath));
-      await fs.writeFile(
-        path.resolve(cwd, stylesPath, getFileNameFromUrl(themeEntry.url)),
-        res.data,
-        "utf-8",
-      );
-      if (!config.styles.installed.includes("style-theme")) {
-        config.styles.installed.push("style-theme");
+  const presetEntry = registry["preset"];
+  if (presetEntry?.type === "css") {
+    logger.step("Installing the style preset (whole package: tokens + schemes + component skins)...");
+    const ok = await addSingle("preset", presetEntry, stylesPath, cwd, { overwrite: true });
+    if (ok) {
+      if (!config.styles.installed.includes("preset")) {
+        config.styles.installed.push("preset");
         await writeLitefyConfig(cwd, config);
       }
-      logger.success("Installed style-theme");
-    } catch (error) {
-      logger.warn(error instanceof Error ? error.message : String(error));
-      logger.warn("style-theme download failed. Install it later: litefy add style-theme");
+      logger.success("Installed preset");
+    } else {
+      logger.warn("Some preset files failed to download. Retry: litefy add preset --overwrite");
     }
   } else {
-    logger.warn("style-theme not found in registry. Install it later: litefy add style-theme");
+    logger.warn("preset not found in registry. Install it later: litefy add preset");
   }
 
   await syncStyleImports(cwd, stylesPath, config.styles.installed, registry);
@@ -199,10 +192,6 @@ async function init(options: InitOptions): Promise<void> {
   • HTML entry:
     <link rel="stylesheet" href="${cssImportPath}" />
 `);
-
-  logger.info(
-    `Optional: add the global interaction layer with "litefy add style-interactive", or implement your own.`,
-  );
 }
 
 export default init;

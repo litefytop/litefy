@@ -13,14 +13,21 @@ export default {
   },
   skill: {
     displayName: {
-      en: "AI Skill",
-      zh: "AI 技能",
+      en: "Skills",
+      zh: "技能",
     },
   },
   styles: {
     displayName: {
       en: "Styles",
       zh: "样式",
+    },
+  },
+  templates: {
+    type: "folder",
+    displayName: {
+      en: "Style Templates",
+      zh: "风格模板",
     },
   },
   overview: {

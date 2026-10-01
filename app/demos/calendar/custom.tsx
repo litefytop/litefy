@@ -12,47 +12,60 @@ import {
   CalendarYearGrid,
   calendarMonthLabels,
 } from "@/ui";
+import {
+  addDays,
+  addMonths,
+  addYears,
+  currentDate,
+  dateFromParts,
+  daysInMonth,
+  startOfMonth,
+} from "@/ui/utils/date-math";
 
 export default function Demo() {
   const [view, setView] = useState<CalendarView>("days");
-  const [visibleMonth, setVisibleMonth] = useState(() => Temporal.Now.plainDateISO());
-  const [selectedDate, setSelectedDate] = useState<Temporal.PlainDate | null>(() =>
-    Temporal.Now.plainDateISO(),
-  );
+  const [visibleMonth, setVisibleMonth] = useState(() => currentDate());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(() => currentDate());
 
-  const firstOfMonth = visibleMonth.with({ day: 1 });
-  const offset = firstOfMonth.dayOfWeek % 7;
-  const start = firstOfMonth.subtract({ days: offset });
-  const weekCount = Math.ceil((offset + visibleMonth.daysInMonth) / 7);
+  const firstOfMonth = startOfMonth(visibleMonth);
+  const offset = firstOfMonth.getDay();
+  const start = addDays(firstOfMonth, -offset);
+  const weekCount = Math.ceil(
+    (offset + daysInMonth(visibleMonth.getFullYear(), visibleMonth.getMonth())) / 7,
+  );
   const weeks = Array.from({ length: weekCount }, (_, weekIndex) =>
-    Array.from({ length: 7 }, (_, dayIndex) => start.add({ days: weekIndex * 7 + dayIndex })),
+    Array.from({ length: 7 }, (_, dayIndex) => addDays(start, weekIndex * 7 + dayIndex)),
   );
 
-  const handleSelect = (date: Temporal.PlainDate) => {
-    if (date.year !== visibleMonth.year || date.month !== visibleMonth.month) return;
+  const handleSelect = (date: Date) => {
+    if (
+      date.getFullYear() !== visibleMonth.getFullYear() ||
+      date.getMonth() !== visibleMonth.getMonth()
+    )
+      return;
     setSelectedDate(date);
   };
 
-  const handleMonthSelect = (month: Temporal.PlainDate) => {
+  const handleMonthSelect = (month: Date) => {
     setVisibleMonth(month);
     setView("days");
   };
 
-  const handleYearSelect = (year: Temporal.PlainDate) => {
-    setVisibleMonth(visibleMonth.with({ year: year.year, day: 1 }));
+  const handleYearSelect = (year: Date) => {
+    setVisibleMonth(dateFromParts(year.getFullYear(), visibleMonth.getMonth(), 1));
     setView("months");
   };
 
   const handlePrevious = () => {
-    if (view === "days") setVisibleMonth(visibleMonth.subtract({ months: 1 }));
-    else if (view === "months") setVisibleMonth(visibleMonth.subtract({ years: 1 }));
-    else setVisibleMonth(visibleMonth.subtract({ years: 12 }));
+    if (view === "days") setVisibleMonth(addMonths(visibleMonth, -1));
+    else if (view === "months") setVisibleMonth(addYears(visibleMonth, -1));
+    else setVisibleMonth(addYears(visibleMonth, -12));
   };
 
   const handleNext = () => {
-    if (view === "days") setVisibleMonth(visibleMonth.add({ months: 1 }));
-    else if (view === "months") setVisibleMonth(visibleMonth.add({ years: 1 }));
-    else setVisibleMonth(visibleMonth.add({ years: 12 }));
+    if (view === "days") setVisibleMonth(addMonths(visibleMonth, 1));
+    else if (view === "months") setVisibleMonth(addYears(visibleMonth, 1));
+    else setVisibleMonth(addYears(visibleMonth, 12));
   };
 
   const navUnit = view === "days" ? "month" : view === "months" ? "year" : "years";
@@ -70,13 +83,13 @@ export default function Demo() {
             data-active={view === "years" || undefined}
             onClick={() => setView("years")}
           >
-            {visibleMonth.year}
+            {visibleMonth.getFullYear()}
           </CalendarTitleButton>
           <CalendarTitleButton
             data-active={view === "months" || undefined}
             onClick={() => setView("months")}
           >
-            {calendarMonthLabels[visibleMonth.month - 1]}
+            {calendarMonthLabels[visibleMonth.getMonth()]}
           </CalendarTitleButton>
         </div>
         <CalendarNavButton direction="next" label={`Next ${navUnit}`} onClick={handleNext} />

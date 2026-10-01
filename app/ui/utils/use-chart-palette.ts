@@ -191,7 +191,7 @@ export function useChartPalette(options?: ChartPaletteOptions): string[] {
         });
         observer.observe(document.documentElement, {
             attributes: true,
-            attributeFilter: ["class", "style", "data-brand", "data-surface"],
+            attributeFilter: ["class", "style"],
         });
         return () => observer.disconnect();
     }, [mode, count]);
@@ -228,7 +228,7 @@ export function useSameFamilyShades(count: number): string[] {
         });
         observer.observe(document.documentElement, {
             attributes: true,
-            attributeFilter: ["class", "style", "data-brand", "data-surface"],
+            attributeFilter: ["class", "style"],
         });
         return () => observer.disconnect();
     }, [count]);

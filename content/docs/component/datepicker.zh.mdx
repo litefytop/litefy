@@ -1,6 +1,6 @@
 ---
 title: Date Picker 日期选择器
-description: 基于原生 Temporal API 的日期选择器 —— 可编辑输入框、月份面板与指针锚定弹层合为一个正式组件
+description: 基于原生 JavaScript Date 的日期选择器 —— 可编辑输入框、月份面板与指针锚定弹层合为一个正式组件
 ---
 
 ## 安装
@@ -9,7 +9,7 @@ description: 基于原生 Temporal API 的日期选择器 —— 可编辑输入
 
 ## 用法
 
-可编辑输入框加月份面板——依赖原生 [Temporal API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal)（Chrome 136+、Firefox 139+、Safari 26）。
+可编辑输入框加月份面板——使用原生 JavaScript `Date` 值（按纯日历日期处理），无需日期库或 polyfill，所有 Baseline 浏览器均可直接运行。
 
 <ComponentPreview
   name="date-picker-basic"
@@ -33,14 +33,14 @@ description: 基于原生 Temporal API 的日期选择器 —— 可编辑输入
 
 | Prop              | Type                                           | Default                     | Description                                                                                   |
 | :---------------- | :--------------------------------------------- | :-------------------------- | :-------------------------------------------------------------------------------------------- |
-| `value`           | `Temporal.PlainDate \| null`                   | -                           | 受控的选中日期                                                                                  |
-| `defaultValue`    | `Temporal.PlainDate \| null`                   | -                           | 初始选中日期（非受控）                                                                           |
-| `onValueChange`   | `(date: Temporal.PlainDate) => void`           | -                           | 日期提交时触发 —— 面板选中，或输入完整日期后按 `Enter`                                            |
+| `value`           | `Date \| null`                   | -                           | 受控的选中日期                                                                                  |
+| `defaultValue`    | `Date \| null`                   | -                           | 初始选中日期（非受控）                                                                           |
+| `onValueChange`   | `(date: Date) => void`           | -                           | 日期提交时触发 —— 面板选中，或输入完整日期后按 `Enter`                                            |
 | `placeholder`     | `string`                                       | `"Select or type a date"`   | 输入框占位文本                                                                                   |
 | `disabled`        | `boolean`                                      | -                           | 禁用输入框与面板                                                                                  |
 | `invalid`         | `boolean`                                      | -                           | 外部校验失败状态 —— 显示 danger 边框（校验清空输入时组件内部也会设置）                                |
 | `firstDayOfWeek`  | `0 \| 1`                                       | `0`                         | 每周第一天（`0` = 周日，`1` = 周一）                                                              |
-| `isDateDisabled`  | `(date: Temporal.PlainDate) => boolean`        | -                           | 禁用日历中日期的判断函数                                                                          |
+| `isDateDisabled`  | `(date: Date) => boolean`        | -                           | 禁用日历中日期的判断函数                                                                          |
 | `trailing`        | `React.ReactNode`                              | 日历图标                     | 输入框尾部装饰                                                                                    |
 | `onKeyDown`       | `React.KeyboardEventHandler<HTMLInputElement>` | -                           | 在内置的 `Enter` 提交之前执行；`preventDefault()` 可取消提交                                       |
 | `classNames`      | `{ input?; trailing?; panel? }` —— 值均为 `ClassNameValue` | -                | 输入框、尾部装饰与日历面板的自定义类名                                                             |

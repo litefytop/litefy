@@ -1,22 +1,21 @@
 ---
 title: Styles
-description: Theme tokens, brand and surface palettes, and global interactive styles of Litefy UI.
+description: Theme tokens, global interactive styles, and the standalone style templates of Litefy UI.
 ---
 
 Litefy's styling is layered CSS custom properties, all defined in OKLCH and mapped into Tailwind via `@theme inline` — every component reads semantic tokens (`bg-background`, `text-primary`, `border`…), so swapping a layer restyles the whole kit without touching component code.
 
-| Layer | File(s) | Registry | What it does |
-|---|---|---|---|
-| **Theme** (required, auto-installed by `init`) | `theme.css` | `style-theme` | Base token set: light + dark schemes, `@theme inline` mapping |
-| **Brand** (optional) | `*-brand.css` ×13 | `style-*-brand` | Overrides `--primary` / `--primary-accent` under `[data-brand]` |
-| **Surface** (optional) | `*-surface.css` ×9 | `style-*-surface` | Overrides `--background` / `--foreground` / `--muted` / `--muted-foreground` / `--accent` / `--neutral` under `[data-surface]` |
-| **Interactive** (optional, recommended) | `interactive.css` | `style-interactive` | Global behavior styles: disabled, focus-visible, press feedback |
+| Layer | File(s) | What it does |
+|---|---|---|
+| **Theme** (required) | `theme.css` | Base token set: light + dark schemes, `@theme inline` mapping |
+| **Interactive** | `interactive.css` | Global behavior styles: disabled, focus-visible, press feedback |
+| **Component skins** | `preset/*.css` | Per-component skin targeting finished components via `litefy-*` classes, parts via `data-slot` and state via `data-*` selectors |
 
-`theme.css` is the required base and comes preinstalled with `init`. `interactive.css` is recommended but optional — skip it if you would rather implement your own disabled/focus styles. Brand and Surface presets are optional add-ons, combinable freely (one brand + one surface at a time).
+These layers ship as **one whole-package registry entry — `preset`** — and `init` installs it automatically. Individual CSS files are not downloadable separately: a color scheme is only coherent when its token layers and skins travel together. Per-file sources are still browsable below.
 
 ## Theme
 
-<Installation name="style-theme" type="css" />
+<Installation name="preset" />
 
 `theme.css` includes both light and dark color schemes — the `.dark` class on `<html>` automatically applies dark mode. The variables use OKLCH color values, supported by all modern browsers.
 
@@ -41,54 +40,20 @@ Radius levels match shadow levels one-to-one: `rounded-sm` inline/labels, `round
 - **Focus-visible**: a `1px` outline (`--color-outline`) plus a `3px` soft ring (`--color-ring`) for keyboard navigation only — mouse clicks never show rings.
 - **Button press**: inset shadow + `brightness(0.95)` on `button:active` for tactile feedback.
 
-This layer is optional: without it, components work, but disabled/focus/press feedback is yours to implement.
+This layer ships inside the `preset` package. If you would rather implement your own disabled/focus/press styles, drop the `./interactive.css` import from the generated `styles/index.css` — components keep working, the feedback becomes yours.
 
-<Installation name="style-interactive" type="css" />
+## Style Templates
 
-## Theme Composition
+A Litefy **style** is a standalone template, not a runtime switch: each template carries its own complete light + dark token set (`theme.css`), the component skins (`preset/*.css`), and a showcase page of finished components. Styles never coexist on one page and there is no in-browser palette switching — you pick a template at install time and it owns the look of your app.
 
-The Litefy theme consists of two freely combinable modules:
+Component documentation demos always show the **default** template; every other template ships its own showcase instead of duplicated demos. Open a template card for its full showcase page.
 
-- **Surface**: the neutral canvas palette that controls page background and text colors.
-- **Brand**: the interactive brand palette that controls buttons and accent controls.
+<Cards>
+  <Card
+    title="Default"
+    href="/en/docs/templates/default"
+    description="The shipped look: neutral surface, near-black brand, AA/AAA-tuned light + dark schemes. Installed as the whole-package preset entry (automatic via init)."
+  />
+</Cards>
 
-> To switch palettes at runtime with `useTheme`, see [`useTheme`](./utils/use-theme.mdx).
-
-## Surface Presets
-
-Each preset overrides the neutral variables (`--background`, `--foreground`, `--muted`, `--muted-foreground`, `--accent`, `--neutral`).
-
-<PresetTabs
-  items={[
-    "gray-surface",
-    "mauve-surface",
-    "mist-surface",
-    "olive-surface",
-    "slate-surface",
-    "stone-surface",
-    "taupe-surface",
-    "zinc-surface",
-  ]}
-/>
-
-## Brand Presets
-
-Each preset overrides the brand variables (`--primary` and `--primary-accent`).
-
-<PresetTabs
-  items={[
-    "amber-brand",
-    "cyan-brand",
-    "emerald-brand",
-    "fuchsia-brand",
-    "indigo-brand",
-    "lime-brand",
-    "orange-brand",
-    "pink-brand",
-    "purple-brand",
-    "rose-brand",
-    "sky-brand",
-    "teal-brand",
-    "violet-brand",
-  ]}
-/>
+New templates arrive as additional whole-package entries (own registry name + showcase page) with the same download model.

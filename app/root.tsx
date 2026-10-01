@@ -30,7 +30,7 @@ export function Layout({ children }: { children: React.ReactNode } = { children:
         <Meta />
         <Links />
       </head>
-      <body className="flex flex-col min-h-screen bg-muted">
+      <body className="flex flex-col min-h-screen bg-background">
         <BrowserSupportGate>
           <Suspense fallback={<HydrateFallback />}>
             <RootProvider
@@ -104,16 +104,16 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     typeof window !== "undefined" ? `/${window.location.pathname.split("/")[1] || ""}` : "/";
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-fd-background text-fd-foreground">
+    <main className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-background text-foreground">
       <div className="w-full max-w-xl flex flex-col items-center text-center gap-3">
-        <span className="text-sm font-medium text-fd-muted-foreground tracking-widest uppercase">
+        <span className="text-sm font-medium text-muted-foreground tracking-widest uppercase">
           Something went wrong
         </span>
         <h1 className="text-3xl sm:text-4xl font-bold">{message}</h1>
-        <p className="text-fd-muted-foreground max-w-md wrap-break-word">{details}</p>
+        <p className="text-muted-foreground max-w-md wrap-break-word">{details}</p>
         <a
           href={homeHref}
-          className="mt-4 inline-flex items-center gap-2 text-sm bg-fd-primary text-fd-primary-foreground hover:bg-fd-primary/90 transition-colors rounded-full font-medium px-5 py-2.5"
+          className="mt-4 inline-flex items-center gap-2 text-sm bg-primary text-primary-foreground hover:bg-primary/90 transition-colors rounded-full font-medium px-5 py-2.5"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -134,7 +134,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
         </a>
       </div>
       {stack && (
-        <pre className="mt-10 w-full max-w-xl p-4 overflow-x-auto rounded-lg border bg-fd-card text-fd-card-foreground text-xs leading-relaxed">
+        <pre className="mt-10 w-full max-w-xl p-4 overflow-x-auto rounded-lg border bg-muted text-foreground text-xs leading-relaxed">
           <code>{stack}</code>
         </pre>
       )}

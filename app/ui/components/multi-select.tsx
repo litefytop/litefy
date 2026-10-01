@@ -1,7 +1,6 @@
 "use client";
 import * as React from "react";
 import { CheckboxGroup, type CheckboxOptionConfig, type CheckboxOptionGroup } from "./checkbox";
-import { Button } from "./button";
 import { Popover } from "./popover";
 import { type ClassNameValue, cn } from "../utils/cn";
 export interface MultiSelectProps {
@@ -26,7 +25,7 @@ export function MultiSelect({ options, value, defaultValue = [], onChange, trigg
         onChange?.(next);
     };
     return (<Popover hasPopup="dialog" trigger={trigger ?? `${placeholder} (${innerValue.length})`} classNames={{
-            trigger: cn(Button.className.primary, className),
+            trigger: cn("litefy-button litefy-button-primary", className),
             content: classNames?.content,
         }}>
       <CheckboxGroup options={options} value={innerValue} onChange={handleChange} aria-label={placeholder}/>

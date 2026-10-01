@@ -4,3 +4,13 @@ description: A quick index of every component, CSS utility, and hook in Litefy U
 ---
 
 A high-level map of the library. Pick a section to dive in.
+
+## AI usage guide
+
+Handing this component list to an AI coding assistant — in order of preference:
+
+1. **Design skill** — `npx litefy@latest skill` installs the `litefy-design` skill (semantic tokens, shadow/rounding levels, component selection rules, anti-patterns, bundled `design-detect` validator) into your project, so the rules stay in the model's context. See [Skills](/docs/skill).
+2. **`llms.txt`** — the machine-readable docs index at `/llms.txt` (`/zh/llms.txt` for Chinese), with the full corpus in `/llms-full.txt`.
+3. **Per-component docs** — each entry below links to `/docs/component/<name>`, with props, behavior notes and live demos.
+
+Whatever route you take, the generation contract is the same: compose Litefy components instead of hand-writing HTML + Tailwind, use semantic tokens only (`bg-background`, `text-primary`…), and pick either the finished composite or its low-level parts — never both (§ composite XOR parts).

@@ -1,0 +1,109 @@
+---
+title: Default Style 默认方案
+description: Litefy 默认风格模板的成品组件展示——只有成品，没有 demo 控件。
+---
+
+import { Avatar, Badge, Breadcrumb, Button, Callout, Chip, Checkbox, Command, DropdownMenu, Input, Kbd, Popover, Progress, Select, Skeleton, Switch, Table, Tabs, Steps, Tooltip, TooltipContent, TooltipTrigger } from "@/ui";
+import { Bell, Plus, Search } from "lucide-react";
+
+本页展示**默认方案**风格模板的成品：组件原样渲染，四周没有任何 demo 控件。页面上每一个取值都读取 `theme.css` 的语义令牌，因此整套外观是一个可整体替换的方案包——令牌分层与模板分发方式见[样式](/docs/styles)。
+
+## 按钮
+
+<div className="flex flex-wrap items-center gap-2">
+  <Button>主要</Button>
+  <Button variant="outline">描边</Button>
+  <Button variant="danger">危险</Button>
+  <Button variant="text">文字</Button>
+  <Button loadingConfig={{ loading: true }}>保存中</Button>
+  <Button><Plus className="size-4" />新建</Button>
+  <Button aria-label="搜索"><Search className="size-4" /></Button>
+</div>
+
+外观就是普通 class——任何元素都能套上：
+
+```tsx
+<Link to="/docs" className="litefy-button litefy-button-primary">阅读文档</Link>
+```
+
+## 表单控件
+
+<div className="grid gap-3 sm:grid-cols-2">
+  <Input placeholder="搜索文档" leading={<Search className="size-4" />} />
+  <Select placeholder="选一个水果" defaultValue="apple" options={[{ label: "苹果", value: "apple" }, { label: "香蕉", value: "banana" }]} />
+  <div className="flex items-center gap-4">
+    <Checkbox defaultChecked label="记住我" />
+    <span className="flex items-center gap-2 text-sm"><Switch defaultChecked aria-label="通知" />通知</span>
+  </div>
+</div>
+
+## 状态与反馈
+
+<div className="flex flex-wrap gap-2">
+  <Chip>primary</Chip>
+  <Chip variant="outline">outline</Chip>
+  <Chip variant="success">success</Chip>
+  <Chip variant="warning">warning</Chip>
+  <Chip variant="danger">danger</Chip>
+  <Chip variant="info">info</Chip>
+</div>
+
+<div className="flex flex-wrap items-center gap-4">
+  <Badge label="5"><Bell className="size-5" /></Badge>
+  <Avatar fallback="LZ" />
+  <Kbd>⌘K</Kbd>
+  <Progress current={60} duration={300} />
+</div>
+
+<div className="grid gap-2">
+  <Callout>一般的提示交给 info 变体。</Callout>
+  <Callout variant="success">保存成功。</Callout>
+  <Callout variant="warning">会话即将过期。</Callout>
+  <Callout variant="danger">上传失败——文件超过 10 MB。</Callout>
+</div>
+
+<div className="flex flex-col gap-2">
+  <Skeleton className="h-4 w-56" />
+  <Skeleton className="h-4 w-40" />
+</div>
+
+## 导航
+
+<Breadcrumb items={[{ label: "文档" }, { label: "风格模板" }, { label: "默认方案" }]} />
+
+<Tabs options={[{ label: "概览", value: "overview", content: <div className="p-4 text-sm text-muted-foreground">所有内容一览。</div> }, { label: "详情", value: "details", content: <div className="p-4 text-sm text-muted-foreground">逐区块深入。</div> }]} defaultValue="overview" />
+
+<Steps items={[{ title: "购物车" }, { title: "结算" }, { title: "完成" }]} index={1} />
+
+## 浮层
+
+<div className="flex flex-wrap gap-2">
+  <Popover trigger="Popover" classNames={{ trigger: "litefy-button litefy-button-outline" }}>
+    <div className="flex flex-col p-1 text-sm">
+      <p className="mb-2 text-muted-foreground">原生 popover API + 内置定位。</p>
+      <Button variant="text">知道了</Button>
+    </div>
+  </Popover>
+  <DropdownMenu trigger="操作" items={[{ label: "编辑" }, { label: "复制" }, { label: "删除" }]} />
+  <Tooltip>
+    <TooltipTrigger className="litefy-button litefy-button-outline">悬停我</TooltipTrigger>
+    <TooltipContent>触屏设备点按同样可以唤起提示。</TooltipContent>
+  </Tooltip>
+  <Command trigger="命令面板" placeholder="输入命令" items={[{ label: "新建文件", shortcut: "⌘N" }, { label: "最近打开" }, { group: "偏好设置", items: [{ label: "切换主题" }] }]} />
+</div>
+
+## 数据
+
+<Table
+  columns={[
+    { key: "name", header: "名称" },
+    { key: "status", header: "状态", width: "8rem", render: (row) => <Chip variant={row.status === "失败" ? "danger" : "success"}>{row.status}</Chip> },
+    { key: "updated", header: "更新于", width: "10rem" },
+  ]}
+  data={[
+    { name: "首页改版", status: "已上线", updated: "2 小时前" },
+    { name: "发票导出", status: "已上线", updated: "昨天" },
+    { name: "图片流水线", status: "失败", updated: "3 天前" },
+  ]}
+  getKey={(row) => row.name}
+/>

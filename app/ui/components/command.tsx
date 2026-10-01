@@ -3,7 +3,6 @@ import * as React from "react";
 import { Search } from "lucide-react";
 import { type ClassNameValue, cn } from "../utils/cn";
 import { Dialog } from "./dialog";
-import { Button } from "./button";
 import { InputRoot } from "./input-group";
 import { Kbd } from "./kbd";
 import { List } from "./list";
@@ -206,11 +205,11 @@ export function Command({ items, trigger, open: controlledOpen, defaultOpen = fa
         onOpenChange?.(next);
     };
     return (<>
-      {trigger && (<button type="button" aria-haspopup="dialog" aria-expanded={open} onClick={() => setOpen(true)} className={cn(Button.className.primary, classNames?.trigger)}>
+      {trigger && (<button type="button" aria-haspopup="dialog" aria-expanded={open} onClick={() => setOpen(true)} className={cn("litefy-button litefy-button-primary", classNames?.trigger)}>
           {trigger}
         </button>)}
       <Dialog open={open} onOpenChange={setOpen} onBackdropClick={() => setOpen(false)} className={className} classNames={{
-            content: cn("top-[12%] translate-y-0 w-full max-w-lg p-0", classNames?.content),
+            content: cn("top-[12%] [transform:translateX(-50%)] w-full max-w-lg p-0", classNames?.content),
             close: "hidden",
         }} styles={{ content: styles?.content }}>
         <CommandRoot items={items} open={open} filter={filter} onSelect={(item) => {

@@ -2,6 +2,8 @@
 
 设计规范与检测脚本的历史版本说明。当前版本见 SKILL.md 头部 `version` 字段。
 
+- **2.11.0（2026-10-01）**：§1 改为**静态风格模板模型**——每个模板是独立、完整、安装时选定的整包（固定亮色 + 暗色 token 与组件皮肤），废除 `data-brand` / `data-surface` 运行时换色（21 个 `*-brand.css` / `*-surface.css` 已删除，后续重排为色阶作为新模板素材）；`useTheme` 仅剩 light/dark/system。头部补充风格模板成品示例页 `/zh/docs/templates/<template>`（组件文档演示一律基于默认模板）；§12.4 disable-file 豁免示例由 theme-switcher 改为色板/模板 token 定义类代码。
+- **2.10.0（2026-10-01）**：design-detect 新增 `--fix` 模式——仅自动修复 legacy-shadow-name（§5 同值改名映射，`shadow-sm`→`shadow-subtle` 等，零视觉变化；其余规则需判断力，保持只报告）；修复只在字符串字面量内发生，注释与豁免行不受影响（disable 注释同样约束 --fix），重复运行幂等（§12.4）。配套：CLI 新增 `litefy skill` 命令（SKILL.md + CHANGELOG + design-detect.mjs 一键安装到 `.claude/skills/litefy-design/`，`--dir` 可指向其他工具目录）；官网分发页更名 Skills 并改为「CLI 安装 / 单独下载源码」双路径。
 - **2.9.1（2026-09-29）**：design-detect 收敛为单一来源——skill 内 `scripts/design-detect.mjs` 为正本，删除仓库 `scripts/` 旧副本（缺 `nested-tabs` 规则）与 skill 根目录的重复副本；`pnpm lint:design` 与官网下载文件改从正本同步（§12.4 路径说明同步更新）。正本修复扫描根推断：skill 安装位（`.agents/skills/litefy-design/scripts/`）到 `<repo>/app` 需 4 级 `../`，原候选只覆盖到 3 级，导致从该位运行时回退 cwd 扫描全仓库。
 - **2.9.0（2026-09-29）**：§2 边框新增"输入类控件规范形态 border + shadow-base"定案——disabled 整体 opacity 50% 使 `var(--accent)/50` 边框等效仅 25%，可辨识度由同级阴影兜底，边框不裸用；裸边框合理形态白名单（微小指示器 / 虚线占位 / 结构线 / 浮层内嵌面板）；InputOtpSlot 据此补齐 `shadow-base`。配套修复：input-otp / pagination 的 disabled demo 瘦身为单实例（HeroUI 化"一个属性一个示例"）。
 - **2.8.0（2026-09-28）**：新增官网与文档分层指引——头部声明官网 litefy.top（组件文档、面向 AI 的 `llms.txt` / `llms-full.txt`、技能分发页）与"用法不内嵌"分层约定（设计约束进本文件，API 细节一律外链：仓库内查 `AGENTS.md` / `content/docs`，仓库外查官网）；§0"选组件"按所在环境分流（本仓库查 AGENTS.md，装进业务项目后查官网）；description 面向分发场景微调（适用范围改为"任何使用 Litefy UI 的项目"，排除项改为"不使用 Litefy UI 的项目"）。

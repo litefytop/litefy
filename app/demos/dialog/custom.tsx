@@ -29,7 +29,7 @@ export default function Demo() {
         onClick={(e) => {
           if (e.target === e.currentTarget) setOpen(false);
         }}
-        className="backdrop:bg-muted/50"
+        className="litefy-dialog backdrop:bg-muted/50"
       >
         <DialogClose aria-label="Close (ESC)" onClick={() => setOpen(false)}>
           ESC

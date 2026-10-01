@@ -24,6 +24,9 @@ import { fileURLToPath } from "node:url";
 // standard toolchain (eslint-plugin-jsx-a11y static, axe-core on rendered pages) — do not add
 // generic a11y rules here, they would signal coverage that the standard tools actually own.
 // Exit code: 1 if any error, else 0. Warns never fail the run.
+// --fix: opt-in auto-fix for the ONE mechanically safe rule — legacy-shadow-name rewrites
+//        shadow-<scale> to its identical-valued semantic name (shadow-sm -> shadow-subtle).
+//        Every other rule stays report-only; their fixes need judgement.
 // Suppress: `design-detect-disable-file <rules|*>` anywhere in a file (for theme-definition code);
 // `// design-detect-disable-line[: <rules>]` on the finding's line, or `// design-detect-disable-next-line[: <rules>]` above it.
 
@@ -38,6 +41,7 @@ try {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const args = process.argv.slice(2);
+const FIX = args.includes("--fix");
 
 // Default scan root works from both install positions:
 //   <repo>/scripts/design-detect.mjs              → <repo>/app
@@ -103,6 +107,7 @@ const RE_SCROLL_CLASS = /\boverflow-(?:x-|y-)?(?:auto|scroll)\b/;
 const SCROLL_COMPONENTS = new Set(["Table"]);
 
 const findings = [];
+const fixedFiles = [];
 
 function lineOf(source, index) {
   let line = 1;
@@ -141,6 +146,31 @@ function buildDisableCtx(source) {
 }
 
 let disableCtx = { fileDisabled: new Set(), lineDisabled: new Map() };
+
+function isRuleDisabled(ctx, line, rule) {
+  if (ctx.fileDisabled.has("*") || ctx.fileDisabled.has(rule)) return true;
+  const lineRules = ctx.lineDisabled.get(line) ?? [];
+  return lineRules.includes("*") || lineRules.includes(rule);
+}
+
+/** --fix: the only mechanically safe auto-fix — legacy-shadow-name is an identical-valued rename (LEGACY_TO_SEMANTIC). */
+function fixLegacyShadows(source, ctx) {
+  let count = 0;
+  const stringRe = /"((?:[^"\\\n]|\\.)*)"|'((?:[^'\\\n]|\\.)*)'|`((?:[^`\\]|\\.)*)`/g;
+  const fixed = source.replace(stringRe, (match, dq, sq, bt, offset) => {
+    const literal = dq ?? sq ?? bt;
+    if (literal == null) return match;
+    if (isRuleDisabled(ctx, lineOf(source, offset), "legacy-shadow-name")) return match;
+    RE_LEGACY_SHADOW.lastIndex = 0;
+    if (!RE_LEGACY_SHADOW.test(literal)) return match;
+    const next = literal.replace(RE_LEGACY_SHADOW, (hit, name) => {
+      count += 1;
+      return `shadow-${LEGACY_TO_SEMANTIC[name]}`;
+    });
+    return match[0] + next + match[0];
+  });
+  return { source: fixed, count };
+}
 
 function bracketSpans(text) {
   const spans = [];
@@ -366,8 +396,16 @@ const interactiveInstalled = INTERACTIVE_CANDIDATES.some((p) =>
 
 for (const abs of collectFiles(ROOT)) {
   const rel = path.relative(process.cwd(), abs).replaceAll("\\", "/");
-  const source = fs.readFileSync(abs, "utf8");
+  let source = fs.readFileSync(abs, "utf8");
   disableCtx = buildDisableCtx(source);
+  if (FIX) {
+    const { source: fixedSource, count } = fixLegacyShadows(source, disableCtx);
+    if (count) {
+      fs.writeFileSync(abs, fixedSource, "utf8");
+      fixedFiles.push(`${rel} (${count})`);
+      source = fixedSource;
+    }
+  }
   const sf = ts
     ? ts.createSourceFile(abs, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX)
     : null;
@@ -445,6 +483,11 @@ const errors = findings.filter((f) => f.severity === "error");
 const warns = findings.filter((f) => f.severity === "warn");
 
 console.log(`design-detect: root=${path.relative(process.cwd(), ROOT) || "."} interactive.css=${interactiveInstalled ? "present" : "absent (focus/disabled rule skipped)"}`);
+
+if (FIX && fixedFiles.length) {
+  console.log(`--fix rewrote legacy shadow names in ${fixedFiles.length} file(s):`);
+  for (const f of fixedFiles) console.log(`  FIXED ${f}`);
+}
 
 for (const f of findings) {
   console.log(`${f.severity.toUpperCase().padEnd(5)} ${f.file}:${f.line} [${f.rule}] ${f.message}`);

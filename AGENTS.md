@@ -79,13 +79,13 @@ Themeable select on the native popover API + listbox. Options-driven with groups
 The value lives in state; for native form submission pair it with `FormItem` (which adds the hidden input).
 
 ### Cascader
-Multi-level cascading selector driven by a `tree`; breadcrumb-style trigger, CSS-anchor-positioned panels. `CascaderTrigger` usable separately.
+Multi-level cascading selector driven by a `tree`; breadcrumb-style trigger, JS-positioned panels (built-in positioning engine). `CascaderTrigger` usable separately.
 
 ### DatePicker
-Date picker on the native Temporal API: editable input + month panel popover. `value` / `defaultValue` (Temporal date), `onValueChange`, `isDateDisabled`, `firstDayOfWeek`, `placeholder`, `invalid`.
+Date picker on native JavaScript `Date` (calendar dates, no time-zone semantics): editable input + month panel popover. `value` / `defaultValue` (Date), `onValueChange`, `isDateDisabled`, `firstDayOfWeek`, `placeholder`, `invalid`.
 
 ### Calendar
-Standalone calendar panel (Temporal API), parts-based: `CalendarRoot` composes `CalendarHeader` / `CalendarGrid` / `CalendarMonthGrid` / `CalendarYearGrid`. `date` / `defaultValue`, `defaultView`, `isDateDisabled` / `isMonthDisabled` / `isYearDisabled`, `onNavigate`.
+Standalone calendar panel (native `Date`), parts-based: `CalendarRoot` composes `CalendarHeader` / `CalendarGrid` / `CalendarMonthGrid` / `CalendarYearGrid`. `date` / `defaultValue`, `defaultView`, `isDateDisabled` / `isMonthDisabled` / `isYearDisabled`, `onNavigate`.
 
 ### DualPicker
 Two-panel picker (source ↔ selected) for single or multiple `mode`. Rows are render-props — `renderOption` / `renderSelected` / `getLabel` — so any content format works. `options`, `value` / `defaultValue`, `onValueChange`, `sourceTitle` / `targetTitle`, `searchPlaceholder`.
@@ -118,7 +118,7 @@ Full form composition: fields, submit handling, validation collection, imperativ
 ## Buttons
 
 ### Button
-`variant`: `"primary"` (default) | `"danger"` | `"outline"` | `"text"`. `loading` swaps in a spinner (`loadingConfig` to customize), icon-only children get square padding automatically. To give a non-button element (e.g. an `<a>` CTA link) the full button look, set `className` to `Button.className.primary` / `.danger` / `.outline` / `.text` — pre-flattened full class strings, usable directly without `cn`.
+`variant`: `"primary"` (default) | `"danger"` | `"outline"` | `"text"`. `loading` swaps in a spinner (`loadingConfig` to customize), icon-only children get square padding automatically. The Button look is the preset's finished classes `litefy-button` + `litefy-button-<variant>` — to give a non-button element (e.g. an `<a>` CTA link) the full button look, put those classes on it instead of hand-copying utilities.
 
 ## Layout & Surfaces
 
@@ -177,10 +177,10 @@ Dialog-based command palette: `trigger` (or app-level ⌘K wiring via `open` / `
 Slide-in panel: `open` / `onOpenChange`, `placement`, `onBackdropClick`, and touch-drag support via the `DrawerDrag` part/API.
 
 ### Popover
-Button-triggered floating panel on the native popover API + CSS anchor positioning. `trigger`, `open` / `defaultOpen` / `onOpenChange`, `alignX`, `mode`. `PopoverContent` and `usePopoverTrigger` are the building blocks for other popups.
+Button-triggered floating panel on the native popover API + a built-in JS positioning engine. `trigger`, `open` / `defaultOpen` / `onOpenChange`, `alignX`, `mode`. `PopoverContent` and `usePopoverTrigger` are the building blocks for other popups.
 
 ### Tooltip
-Composition over cloning: `<Tooltip><TooltipTrigger>Hover</TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip>` — `Tooltip` is a wiring container that hands content id / anchor name / `delay` to its parts via context. Parts are also usable standalone with explicit `popoverId` / `anchorName` (native Popover API + anchor positioning).
+Composition over cloning: `<Tooltip><TooltipTrigger>Hover</TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip>` — `Tooltip` is a wiring container that hands content id / anchor name / `delay` to its parts via context. Parts are also usable standalone with explicit `popoverId` / `anchorName` (native Popover API + built-in JS positioning).
 
 ### ContextMenu
 Imperative right-click menu: mount `<ContextMenuHost />` once, then call `ContextMenu.open({ x, y, items, onSelect, classNames?, styles? })` from any element's `onContextMenu` — no wrapper, works on table rows / canvas / any event source. `items` (same shape as Menu), `ContextMenu.dismiss()` to close programmatically. Outside mousedown and Escape close it.
@@ -265,7 +265,7 @@ Scrollable container with gradient shadows on `edges` (`"top" | "bottom" | "left
 `<Collapse defaultOpen>` or `items`-driven; `multiple` / accordion modes, `activeKeys` / `onKeyChange` for control. Parts: `CollapseRoot` / `CollapseTrigger` / `CollapsePanel`. `Accordion` is the items-driven convenience export.
 
 ### Pager
-Single-DOM controlled pager for paged content / manga readers: `index` / `onChange`, `gesture` (touch drag), `loop`, `transition="view-transition"`, `offset`. One child per page.
+Single-DOM controlled pager for paged content / manga readers: `index` / `onChange`, `gesture` (touch drag), `loop`, `transition="slide"` (transform slide for programmatic jumps) or `"none"`, `offset`. One child per page.
 
 ### Banner
 Auto-scrolling marquee: `items`, `speed` / `duration`, `direction`, `pauseOnHover`. Parts: `BannerViewport` / `BannerTrack` / `BannerItem`.
@@ -312,7 +312,7 @@ Card + Image + Tooltip composition: `src`, `alt`, `title`, `description`, option
 
 | Export | Role |
 |--------|------|
-| `Picker` | Generic input + popover container (native popover + CSS anchor positioning) — the base for building custom pickers |
+| `Picker` | Generic input + popover container (native popover + built-in JS positioning engine) — the base for building custom pickers |
 | `PickerRoot` / `PickerInput` / `PickerContent` | Its parts |
 | `PopoverContent` / `usePopoverTrigger` | Low-level popover building blocks |
 | `use-pagination` | Pagination state hook |

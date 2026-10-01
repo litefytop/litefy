@@ -2,41 +2,46 @@
 import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
 import { useFloatingPanel } from "../utils/use-floating-panel";
+import { type FloatingPlacement, useFloatingPosition } from "../utils/floating-position";
 type PopoverAlignX = "start" | "end" | "center";
-const alignXMap: Record<PopoverAlignX, {
-    positionArea: string;
-    justifySelf: string;
-    alignSelf: string;
-    margin: string;
-}> = {
+const alignXMap: Record<PopoverAlignX, Required<FloatingPlacement>> = {
     start: {
-        positionArea: "left span-bottom",
-        justifySelf: "end",
-        alignSelf: "start",
-        margin: "0 4px 0 0",
+        side: "left",
+        align: "start",
+        gap: 4,
+        matchWidth: false,
     },
     center: {
-        positionArea: "bottom span-all",
-        justifySelf: "anchor-center",
-        alignSelf: "start",
-        margin: "4px 0 0",
+        side: "bottom",
+        align: "center",
+        gap: 4,
+        matchWidth: false,
     },
     end: {
-        positionArea: "right span-bottom",
-        justifySelf: "start",
-        alignSelf: "start",
-        margin: "0 0 0 4px",
+        side: "right",
+        align: "start",
+        gap: 4,
+        matchWidth: false,
     },
 };
 export interface PopoverContentProps extends Omit<React.ComponentProps<"div">, "className"> {
     open?: boolean;
     onOpenChange?: (open: boolean) => void;
     alignX?: PopoverAlignX;
+    /** Name of the anchor element (matching its `data-anchor-name`) for the built-in JS positioning. */
+    anchorName?: string;
+    /** Viewport point anchor (e.g. mouse coordinates); takes precedence over `anchorName`. */
+    anchorPoint?: {
+        x: number;
+        y: number;
+    };
+    /** Overrides the placement derived from `alignX`. */
+    placement?: FloatingPlacement;
     autofocus?: boolean;
     className?: ClassNameValue;
     style?: React.CSSProperties;
 }
-export function PopoverContent({ open, onOpenChange, alignX = "center", autofocus = true, className, style, onKeyDown: onKeyDownProp, children, ref, ...props }: PopoverContentProps) {
+export function PopoverContent({ open, onOpenChange, alignX = "center", anchorName, anchorPoint, placement, autofocus = true, className, style, onKeyDown: onKeyDownProp, children, ref, ...props }: PopoverContentProps) {
     const panelRef = React.useRef<HTMLDivElement>(null);
     const handleOpenChange = React.useCallback((next: boolean) => {
         onOpenChange?.(next);
@@ -48,6 +53,8 @@ export function PopoverContent({ open, onOpenChange, alignX = "center", autofocu
         restoreFocus: autofocus,
         focusOnOpen: autofocus,
     });
+    const merged = { ...alignXMap[alignX], ...placement };
+    useFloatingPosition(panelRef, `${anchorName ?? ""}|${anchorPoint?.x ?? ""},${anchorPoint?.y ?? ""}|${merged.side}|${merged.align}|${merged.gap}|${merged.matchWidth}`);
     const handleContentKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         onKeyDownProp?.(e);
         if (!e.defaultPrevented && e.key === "Escape") {
@@ -63,11 +70,7 @@ export function PopoverContent({ open, onOpenChange, alignX = "center", autofocu
             ref.current = element;
         }
     };
-    return (<div ref={setRefs} {...props} popover="manual" tabIndex={-1} onKeyDown={handleContentKeyDown} className={cn("bg-surface-raised text-foreground min-w-32 max-h-96 overflow-auto rounded-xl border p-1 shadow-elevated", className)} style={{
-            ...alignXMap[alignX],
-            positionTryFallbacks: "flip-block, flip-inline",
-            ...style,
-        }}>
+    return (<div ref={setRefs} {...props} popover="manual" tabIndex={-1} onKeyDown={handleContentKeyDown} data-slot="popover-content" data-float-anchor={anchorName} data-float-x={anchorPoint?.x} data-float-y={anchorPoint?.y} data-float-side={merged.side} data-float-align={merged.align} data-float-gap={merged.gap} data-float-match-width={merged.matchWidth || undefined} className={cn(className)} style={style}>
       {children}
     </div>);
 }
@@ -107,9 +110,7 @@ export function usePopoverTrigger({ open, onOpenChange, mode = "click", hoverDel
         return {
             "aria-haspopup": hasPopup,
             "aria-expanded": open,
-            style: {
-                anchorName: anchorName,
-            },
+            "data-anchor-name": anchorName,
             onClick: (e: React.MouseEvent) => {
                 if (mode === "hover")
                     return;
@@ -166,12 +167,14 @@ export function usePopoverTrigger({ open, onOpenChange, mode = "click", hoverDel
     }, [open, clearTimer]);
     return { triggerProps, contentProps, clearTimer, scheduleClose, scheduleOpen, anchorName };
 }
-export interface PopoverProps extends Omit<React.ComponentProps<"button">, "className" | "style" | "children"> {
+export interface PopoverProps extends Omit<React.ComponentProps<"button">, "className" | "style" | "children" | "type"> {
     trigger: React.ReactNode;
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean) => void;
     alignX?: PopoverAlignX;
+    /** Overrides the placement derived from `alignX` (built-in JS positioning). */
+    placement?: FloatingPlacement;
     hasPopup?: PopoverHasPopup;
     children: React.ReactNode;
     classNames?: {
@@ -184,7 +187,7 @@ export interface PopoverProps extends Omit<React.ComponentProps<"button">, "clas
     };
     mode?: "click" | "hover";
 }
-export function Popover({ trigger, open, defaultOpen = false, onOpenChange, alignX = "center", hasPopup = "menu", classNames, styles, children, mode = "click", ...props }: PopoverProps) {
+export function Popover({ trigger, open, defaultOpen = false, onOpenChange, alignX = "center", placement, hasPopup = "menu", classNames, styles, children, mode = "click", ...props }: PopoverProps) {
     const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen);
     const isControlled = open !== undefined;
     const innerOpen = isControlled ? open : uncontrolledOpen;
@@ -200,10 +203,10 @@ export function Popover({ trigger, open, defaultOpen = false, onOpenChange, alig
         hasPopup,
     });
     return (<>
-      <button {...props} {...triggerProps} type={props.type ?? "button"} className={cn(classNames?.trigger)} style={{ ...triggerProps.style, ...styles?.trigger }}>
+      <button {...props} {...triggerProps} type="button" className={cn(classNames?.trigger)} style={styles?.trigger}>
         {trigger}
       </button>
-      <PopoverContent {...contentProps} open={innerOpen} onOpenChange={handleOpenChange} alignX={alignX} autofocus={mode !== "hover"} className={classNames?.content} style={{ positionAnchor: anchorName, ...styles?.content }}>
+      <PopoverContent {...contentProps} open={innerOpen} onOpenChange={handleOpenChange} alignX={alignX} placement={placement} anchorName={anchorName} autofocus={mode !== "hover"} className={classNames?.content} style={styles?.content}>
         {children}
       </PopoverContent>
     </>);

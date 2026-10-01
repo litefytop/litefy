@@ -2,12 +2,12 @@
 name: litefy-design
 description: Litefy UI 设计规范（任何使用 Litefy UI 的项目的"宪法"，官网 https://litefy.top/）。当需要创建、修改、重构、审查任何使用 Litefy UI 的界面或组件时使用：写业务页面、新建/改造组件、选择组件、写颜色/边框/阴影/圆角/间距/焦点样式、排查视觉不一致、审计 UI 代码合规性。不适用于：不使用 Litefy UI 的项目、纯逻辑/数据层代码、文档文字编辑。规范与代码冲突时以本规范为准并报告冲突。
 metadata:
-  version: 2.9.1
+  version: 2.11.0
 ---
 
 # Litefy UI Design Spec
 
-本文件是 Litefy UI 的设计宪法。官网 **<https://litefy.top/>**：组件文档（中文 `/zh/docs/component/<name>`，英文版把 `/zh` 换成 `/en`）、面向 AI 的文档索引 `/zh/llms.txt` 与全文 `/zh/llms-full.txt`、技能分发页 `/zh/docs/skill`。impeccable 等通用设计 skill 管"怎么思考和验证"，本规范管"**这个仓库里具体怎么写**"——两者同时生效时，冲突处以本规范为准。
+本文件是 Litefy UI 的设计宪法。官网 **<https://litefy.top/>**：组件文档（中文 `/zh/docs/component/<name>`，英文版把 `/zh` 换成 `/en`）、风格模板成品示例页 `/zh/docs/templates/<template>`（组件文档演示一律基于默认模板）、面向 AI 的文档索引 `/zh/llms.txt` 与全文 `/zh/llms-full.txt`、技能分发页 `/zh/docs/skill`。impeccable 等通用设计 skill 管"怎么思考和验证"，本规范管"**这个仓库里具体怎么写**"——两者同时生效时，冲突处以本规范为准。
 
 > 分层约定：本规范只管"怎么写合规"（Token、结构、反模式、验证）；"组件怎么用"（props / API 细节）**不内嵌**进本文件——组件用法速查以仓库根 `AGENTS.md` 为单一事实源，组件详细文档以 `content/docs`（官网同步自它）为准。往本文件加内容前先问：这是设计约束，还是用法说明？后者一律外链，不抄进来。
 
@@ -27,7 +27,7 @@ metadata:
 
 ## 1. 色彩体系
 
-配色分为两层体系：中性容器色板（Surface）、品牌交互色板（Brand），适配亮色/暗色主题，全组件统一复用，无自定义杂色。
+配色由**风格模板**提供：每个模板是一个独立、完整、静态安装的整包（固定的一套亮色 + 暗色 token 与组件皮肤），安装时选定，**运行期不存在换色切换**（`data-brand` / `data-surface` 运行时换色方案已废除）。模板内部的颜色仍分两层 token 体系——中性容器色（Surface 系）与品牌交互色（Brand 系），适配亮色/暗色主题，全组件统一复用，无自定义杂色。
 **Surface 中性色板（页面容器、文本、通用状态）**
 
 - --foreground：主要正文文本、标题、核心图标
@@ -305,7 +305,7 @@ pnpm dlx oxlint --jsx-a11y-plugin src
 
 **边界**：design-detect 只负责**设计语言**规则（标准工具看不见的部分：色彩 Token、阴影分级、Tabs 组件用法等）。**无障碍语义不在其职责内**——静态交给 oxlint `--jsx-a11y-plugin`（§12.2），渲染后交给 axe-core；在此自查会发出"已覆盖无障碍"的错误信号，让用户误以为不需要标准工具链。
 
-error 使脚本以非零码退出（可接 CI），warn 只报告。检测结果为问题清单，处理方式遵循当前模式（审计记录 / 开发修复）。误报豁免用注释标记，禁止为绕过检查而滥用：文件级 `/* design-detect-disable-file <规则|*> */`（主题定义类代码专用，如 theme-switcher），行级 `// design-detect-disable-line <规则>` 或上一行 `// design-detect-disable-next-line <规则>`。
+error 使脚本以非零码退出（可接 CI），warn 只报告。`--fix` 模式只自动修复 **legacy-shadow-name** 一条规则——旧刻度名到语义名是 §5 的同值改名映射（`shadow-sm`→`shadow-subtle` 等），无任何视觉变化；其余规则的修复需要判断力，一律只报告。disable 注释同样约束 `--fix`（被豁免的行不会被改写），重复运行幂等。检测结果为问题清单，处理方式遵循当前模式（审计记录 / 开发修复）。误报豁免用注释标记，禁止为绕过检查而滥用：文件级 `/* design-detect-disable-file <规则|*> */`（仅色板/模板 token 定义类代码专用，如把 OKLCH 色值列成表的主题文件），行级 `// design-detect-disable-line <规则>` 或上一行 `// design-detect-disable-next-line <规则>`。
 
 无障碍语义的权威检查在标准工具链：静态用 oxlint `--jsx-a11y-plugin`（一次性 `dlx` 调用，§12.2），渲染后用 axe-core，design-detect 不做无障碍规则。
 

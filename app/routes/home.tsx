@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router";
 import { baseOptions } from "@/components/layout-shared";
 import { ExampleWall } from "@/components/example-wall";
-import { Button, Skeleton, Typography } from "@/ui";
+import { Skeleton, Typography } from "@/ui";
 import { i18n } from "@/lib/i18n";
 import { jsonLdScript, socialMeta } from "@/lib/seo";
 import { appName, gitConfig, siteUrl } from "@/lib/shared";
@@ -73,7 +73,7 @@ function LandingHero({ locale }: { locale: Locale }) {
   return (
     <section className="grid w-full gap-8 md:grid-cols-[1.2fr_1fr] md:items-center">
       <div>
-        <div className="inline-flex items-center gap-1.5 rounded-full bg-fd-primary/10 px-3 py-1 text-xs font-medium text-fd-primary">
+        <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
           <Sparkles className="h-3 w-3" />
           {t.badge}
         </div>
@@ -82,13 +82,13 @@ function LandingHero({ locale }: { locale: Locale }) {
           <br />
           {t.title2}
         </h2>
-        <p className="mt-3 max-w-md text-sm text-fd-muted-foreground md:text-base">
+        <p className="mt-3 max-w-md text-sm text-muted-foreground md:text-base">
           {t.description}
         </p>
         <div className="mt-6 flex flex-wrap gap-2">
           <Link
             to={docsPath}
-            className={Button.className.primary}
+            className="litefy-button litefy-button-primary"
           >
             {t.primaryCta}
             <ArrowRight className="size-4" />
@@ -97,15 +97,15 @@ function LandingHero({ locale }: { locale: Locale }) {
             to="https://github.com/litefytop/litefy"
             target="_blank"
             rel="noopener noreferrer"
-            className={Button.className.outline}
+            className="litefy-button litefy-button-outline"
           >
             {t.secondaryCta}
           </Link>
         </div>
       </div>
       <div className="relative hidden md:block">
-        <div className="absolute -inset-6 rounded-3xl bg-linear-to-br from-fd-primary/30 via-fd-primary/5 to-transparent blur-2xl" />
-        <figure className="relative rounded-2xl border border-fd-border bg-fd-background/80 p-4 shadow-elevated backdrop-blur">
+        <div className="absolute -inset-6 rounded-3xl bg-linear-to-br from-primary/30 via-primary/5 to-transparent blur-2xl" />
+        <figure className="relative rounded-2xl border border-border bg-background/80 p-4 shadow-elevated backdrop-blur">
           <div className="mb-3 flex items-center gap-1.5">
             <div className="h-2.5 w-2.5 rounded-full bg-danger" />
             <div className="h-2.5 w-2.5 rounded-full bg-warning" />
@@ -144,7 +144,7 @@ export function HomeContent({ locale }: { locale: Locale }) {
         <Typography variant="headline" className="mt-4">
           {t.heading}
         </Typography>
-        <p className="text-fd-muted-foreground">{t.subheading}</p>
+        <p className="text-muted-foreground">{t.subheading}</p>
         <ExampleWall locale={locale} />
       </div>
       {jsonLdScript([

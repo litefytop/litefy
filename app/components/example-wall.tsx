@@ -96,9 +96,9 @@ function useNearViewport<T extends HTMLElement>(rootMargin: string, initial = fa
 function DemoSkeleton() {
   return (
     <div className="flex w-full max-w-56 flex-col items-center gap-2.5">
-      <div className="h-7 w-2/3 animate-pulse rounded-md bg-fd-muted" />
-      <div className="h-2.5 w-full animate-pulse rounded bg-fd-muted" />
-      <div className="h-2.5 w-3/4 animate-pulse rounded bg-fd-muted" />
+      <div className="h-7 w-2/3 animate-pulse rounded-md bg-muted" />
+      <div className="h-2.5 w-full animate-pulse rounded bg-muted" />
+      <div className="h-2.5 w-3/4 animate-pulse rounded bg-muted" />
     </div>
   );
 }
@@ -120,7 +120,7 @@ class DemoErrorBoundary extends React.Component<
   render() {
     if (this.state.failed) {
       return (
-        <div className="py-8 text-xs text-fd-muted-foreground">
+        <div className="py-8 text-xs text-muted-foreground">
           {this.props.locale === "zh" ? "该示例加载失败" : "Failed to load this example"}
         </div>
       );
@@ -151,10 +151,10 @@ function WallCard({
     >
       <Link
         to={item.href(locale)}
-        className="group flex items-center justify-between border-b px-4 py-2.5 text-sm font-medium transition-colors hover:bg-fd-muted/50"
+        className="group flex items-center justify-between border-b px-4 py-2.5 text-sm font-medium transition-colors hover:bg-muted/50"
       >
         <span>{item.title(locale)}</span>
-        <ArrowUpRight className="size-3.5 text-fd-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+        <ArrowUpRight className="size-3.5 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
       </Link>
       <div className="flex min-h-36 items-center justify-center overflow-hidden p-6">
         <DemoErrorBoundary locale={locale}>
@@ -196,14 +196,14 @@ export function ExampleWall({ locale }: { locale: "en" | "zh" }) {
       <header className="mb-6 flex items-end justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">{t.title}</h2>
-          <p className="mt-1 text-sm text-fd-muted-foreground">
+          <p className="mt-1 text-sm text-muted-foreground">
             {t.description}
           </p>
         </div>
         <Link
           to={`/${locale}/docs/overview`}
           className={cn(
-            "shrink-0 text-sm font-medium text-fd-primary hover:underline",
+            "shrink-0 text-sm font-medium text-primary hover:underline",
           )}
         >
           {locale === "zh" ? "查看全部组件" : "View all components"}
@@ -220,7 +220,7 @@ export function ExampleWall({ locale }: { locale: "en" | "zh" }) {
         <div ref={sentinelRef} aria-hidden className="h-px w-full" />
       )}
       {near && !hasMore && (
-        <p className="mt-6 text-center text-xs text-fd-muted-foreground">
+        <p className="mt-6 text-center text-xs text-muted-foreground">
           {locale === "zh"
             ? `已展示全部 ${wallItems.length} 个示例`
             : `All ${wallItems.length} examples shown`}

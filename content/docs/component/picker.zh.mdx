@@ -1,6 +1,6 @@
 ---
 title: Picker 拾取器
-description: 通用的 input + popover 容器组件，基于原生 popover 和 CSS 锚点定位构建，可用于拼装日期选择器等各类拾取场景
+description: 通用的 input + popover 容器组件，基于原生 Popover API 与内置 JS 定位引擎构建，可用于拼装日期选择器等各类拾取场景
 ---
 
 ## 安装
@@ -44,7 +44,7 @@ description: 通用的 input + popover 容器组件，基于原生 popover 和 C
 
 面板键盘用 hook 接线：高亮列表用 [`useCombobox`](/docs/utils/use-combobox)（面板打开期间输入框保持焦点），真实可聚焦控件构成的面板用 [`usePanelFocus`](/docs/utils/use-panel-focus) 配合 `panelRef`；面板关闭时焦点若即将丢失会自动交还给输入框。
 
-面板定位依赖 CSS 锚点定位支持。
+面板定位由内置 JS 定位引擎完成，除 Popover API 外无其他浏览器特性要求。
 
 ---
 
@@ -52,12 +52,13 @@ description: 通用的 input + popover 容器组件，基于原生 popover 和 C
 
 #### PickerRoot
 
-输入框的包裹容器，承载面板消费的锚点名称。
+输入框的包裹容器，承载面板消费的锚点名称（`data-anchor-name` 属性）。
 
-| 属性       | 类型                          | 默认值  | 描述         |
-| ---------- | ----------------------------- | ------- | ------------ |
-| `className`| `ClassNameValue`              | -       | 自定义类名   |
-| `...props` | `React.ComponentProps<"div">` | -       | 原生 div 属性|
+| 属性       | 类型                          | 默认值  | 描述                                       |
+| ---------- | ----------------------------- | ------- | ------------------------------------------ |
+| `anchorName`| `string`                     | -       | 将该元素注册为面板的锚点                   |
+| `className`| `ClassNameValue`              | -       | 自定义类名                                 |
+| `...props` | `React.ComponentProps<"div">` | -       | 原生 div 属性                              |
 
 #### PickerInput
 
@@ -70,9 +71,10 @@ description: 通用的 input + popover 容器组件，基于原生 popover 和 C
 
 #### PickerContent
 
-弹出面板——原生 `popover="manual"` 元素；命令式调用 `showPopover()` / `hidePopover()`，并通过 `style={{ positionAnchor: ... }}` 定位（没有 `positionAnchor` 属性）。
+弹出面板——原生 `popover="manual"` 元素；命令式调用 `showPopover()` / `hidePopover()`，并通过 `anchorName` 属性定位（内置 JS 引擎将其贴在锚点下方、宽度贴合锚点，视口溢出时翻到上方）。
 
-| 属性       | 类型                          | 默认值  | 描述          |
-| ---------- | ----------------------------- | ------- | ------------- |
-| `className`| `ClassNameValue`              | -       | 自定义类名    |
-| `...props` | `React.ComponentProps<"div">` | -       | 原生 div 属性 |
+| 属性       | 类型                          | 默认值  | 描述                                       |
+| ---------- | ----------------------------- | ------- | ------------------------------------------ |
+| `anchorName`| `string`                     | -       | 锚点元素的名称（其 `data-anchor-name`）    |
+| `className`| `ClassNameValue`              | -       | 自定义类名                                 |
+| `...props` | `React.ComponentProps<"div">` | -       | 原生 div 属性                              |

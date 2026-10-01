@@ -1,0 +1,6 @@
+/* Litefy 默认多色方案（preset）——整包分发，不随单组件下载。
+ * 契约见 README.md；在 tailwindcss 与 theme token 之后导入。 */
+@import "./button.css";
+@import "./dialog.css";
+@import "./select.css";
+@import "./popover.css";

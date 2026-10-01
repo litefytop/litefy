@@ -36,19 +36,10 @@ export default function Demo() {
 
   return (
     <>
-      <Button ref={triggerRef} style={{ anchorName }} onClick={() => setOpen(!open)}>
+      <Button ref={triggerRef} {...{ "data-anchor-name": anchorName }} onClick={() => setOpen(!open)}>
         Open Custom Popover
       </Button>
-      <PopoverContent
-        ref={panelRef}
-        style={{
-          positionAnchor: anchorName,
-          positionArea: "bottom span-all",
-          justifySelf: "center",
-          margin: "4px 0 0",
-          positionTryFallbacks: "flip-block, flip-inline",
-        }}
-      >
+      <PopoverContent ref={panelRef} anchorName={anchorName}>
         <button
           className="w-full text-left px-2 py-1.5 text-sm font-semibold rounded-sm hover:bg-hover"
           onClick={close}

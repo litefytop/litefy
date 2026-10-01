@@ -1,6 +1,6 @@
 ---
 title: Popover
-description: A button-triggered popover panel built on popover + CSS Anchor Positioning — the base for dropdown-menu compositions
+description: A button-triggered popover panel built on the native Popover API with a built-in JS positioning engine — the base for dropdown-menu compositions
 ---
 
 ## Installation
@@ -17,7 +17,7 @@ A button + popover base, not a menu: the `trigger` opens a panel whose content i
 
 ### Alignment
 
-Beyond the built-in `alignX`, any CSS Anchor Positioning `positionArea` can be set through `styles.content`.
+Beyond the built-in `alignX`, the exact docking can be overridden with `placement` (`side` / `align` / `gap` / `matchWidth`), handled by the built-in JS positioning engine.
 
 <ComponentPreview
   name="popover-alignment"
@@ -37,7 +37,7 @@ Assemble the parts manually for full control over the trigger wiring.
 
 #### Popover
 
-Renders a native trigger button (`type="button"`, `aria-haspopup`, `aria-expanded`) plus the floating panel, positioned with CSS Anchor Positioning.
+Renders a native trigger button (`type="button"`, `aria-haspopup`, `aria-expanded`) plus the floating panel, positioned by the built-in JS positioning engine.
 
 | Prop           | Type                                                                              | Default  | Description                                                                                 |
 | :------------- | :-------------------------------------------------------------------------------- | :------- | :------------------------------------------------------------------------------------------ |
@@ -47,9 +47,10 @@ Renders a native trigger button (`type="button"`, `aria-haspopup`, `aria-expande
 | `defaultOpen`  | `boolean`                                                                         | `false`  | Initial panel state (uncontrolled)                                                           |
 | `onOpenChange` | `(open: boolean) => void`                                                         | -        | Fired whenever the panel opens or closes                                                     |
 | `alignX`       | `"start" \| "end" \| "center"`                                                    | `center` | Horizontal alignment of the panel relative to the trigger                                    |
+| `placement`    | `{ side?; align?; gap?; matchWidth? }`                                            | -        | Overrides the docking derived from `alignX` (built-in JS positioning)                        |
 | `mode`         | `"click" \| "hover"`                                                              | `click`  | Trigger interaction mode; `hover` opens on pointer enter / trigger focus and closes after a delayed pointer leave |
-| `classNames`   | `{ trigger?: ClassNameValue; content?: ClassNameValue }`                          | -        | Custom class names per slot                                                                  |
-| `styles`       | `{ trigger?: React.CSSProperties; content?: React.CSSProperties }`                | -        | Inline styles per slot — e.g. `styles.content.positionArea` overrides `alignX`               |
+| `classNames`   | `{ trigger?: ClassNameValue; content?: ClassNameValue }`                          | -        | Custom class names per slot — the trigger is a bare `<button>` (part); give it preset finished classes (e.g. `litefy-button litefy-button-primary`) to style it |
+| `styles`       | `{ trigger?: React.CSSProperties; content?: React.CSSProperties }`                | -        | Inline styles per slot (positioning itself is managed internally)                            |
 
 ---
 
@@ -57,7 +58,7 @@ Renders a native trigger button (`type="button"`, `aria-haspopup`, `aria-expande
 
 #### usePopoverTrigger
 
-Wires a custom trigger element and panel to the popover state; apply `anchorName` as the trigger's `anchor-name` style and the panel's `positionAnchor` for alignment.
+Wires a custom trigger element and panel to the popover state; spread `triggerProps` onto the trigger (it carries the `data-anchor-name` attribute) and pass the returned `anchorName` to `PopoverContent`'s `anchorName` prop for alignment.
 
 Options (`UsePopoverTriggerOptions`):
 
@@ -73,12 +74,12 @@ Returns:
 
 | Member          | Type         | Description                                                                                        |
 | :-------------- | :----------- | :------------------------------------------------------------------------------------------------- |
-| `triggerProps`  | `object`     | Spread on the trigger element: `aria-haspopup`, `aria-expanded`, the `anchor-name` style, and click / hover / focus / keyboard handlers |
+| `triggerProps`  | `object`     | Spread on the trigger element: `aria-haspopup`, `aria-expanded`, the `data-anchor-name` attribute, and click / hover / focus / keyboard handlers |
 | `contentProps`  | `object`     | Spread on the panel: cancels the pending close timer on pointer enter and schedules it on pointer leave (hover mode) |
 | `clearTimer`    | `() => void` | Cancels any pending hover open/close timer                                                          |
 | `scheduleOpen`  | `() => void` | Opens the panel, honoring `hoverDelayOpen`                                                          |
 | `scheduleClose` | `() => void` | Closes the panel after `hoverDelayClose` ms                                                         |
-| `anchorName`    | `string`     | Generated CSS anchor name (e.g. `--popover-trigger-abc123`)                                         |
+| `anchorName`    | `string`     | Generated anchor name (e.g. `--popover-trigger-abc123`); pass it to the panel's `anchorName` prop   |
 
 ---
 
@@ -92,8 +93,11 @@ The floating panel: a `popover="manual"` div with pre-wired panel look; a consum
 | :------------- | :------------------------------- | :------- | :---------------------------------------------------------------------------------------- |
 | `open`         | `boolean`                        | -        | Controls the panel; `true` calls `showPopover()`, `false` calls `hidePopover()`           |
 | `onOpenChange` | `(open: boolean) => void`        | -        | Called when `Escape` is pressed inside the panel or a `mousedown` lands outside it        |
-| `alignX`       | `"start" \| "end" \| "center"`   | `center` | Horizontal alignment via CSS Anchor Positioning `positionArea`                            |
-| `className`    | `ClassNameValue`                 | -        | Custom class names                                                                        |
-| `style`        | `React.CSSProperties`            | -        | Inline styles merged over the built-in anchor styles (`positionTryFallbacks: "flip-block, flip-inline"`) |
+| `alignX`       | `"start" \| "end" \| "center"`   | `center` | Docking preset: `start` attaches the panel to the trigger's left, `end` to its right, `center` below it |
+| `anchorName`   | `string`                         | -        | Name of the anchor element (its `data-anchor-name`) to position against                                   |
+| `anchorPoint`  | `{ x: number; y: number }`       | -        | Viewport point anchor (e.g. mouse coordinates); takes precedence over `anchorName`                        |
+| `placement`    | `{ side?; align?; gap?; matchWidth? }` | -    | Overrides the docking derived from `alignX`                                                               |
+| `className`    | `ClassNameValue`                 | -        | Custom class names                                                                                        |
+| `style`        | `React.CSSProperties`            | -        | Custom inline styles; positioning itself is managed by the built-in JS engine (side flip + cross-axis clamping) |
 | `ref`          | `React.Ref<HTMLDivElement>`      | -        | Forwards to the panel div                                                                 |
 | `...props`     | `React.ComponentProps<"div">`    | -        | Supports all native div props (except `className`), such as `role`, `id`, `onKeyDown`     |

@@ -1,7 +1,6 @@
 "use client";
 import * as React from "react";
 import { Menu, type MenuConfig, type MenuItemConfig } from "./menu";
-import { Button } from "./button";
 import { Popover } from "./popover";
 import { type ClassNameValue, cn } from "../utils/cn";
 export interface DropdownMenuProps {
@@ -20,7 +19,7 @@ export interface DropdownMenuProps {
 export function DropdownMenu({ trigger, items, onSelect, alignX = "center", className, classNames, }: DropdownMenuProps) {
     const [open, setOpen] = React.useState(false);
     return (<Popover open={open} onOpenChange={setOpen} alignX={alignX} trigger={trigger} classNames={{
-            trigger: cn(Button.className.primary, className),
+            trigger: cn("litefy-button litefy-button-primary", className),
             content: classNames?.content,
         }}>
       <Menu autoFocus={open} items={items} onSelect={(item) => {

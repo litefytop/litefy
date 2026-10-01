@@ -51,19 +51,18 @@ description: 支持多种变体和加载状态的按钮组件
 | `loading` | `boolean`         | `false` | 按钮是否处于加载状态 |
 | `icon`    | `React.ReactNode` | -       | 自定义加载图标       |
 
-### Button.className
+### 给非 button 元素套按钮外观
 
-静态 class 字符串，用于把完整的按钮外观套到非 button 元素上，例如把 `<a>` 链接样式化为按钮。每个键都是预拼接、冲突已解决的完整 class 串（base + 变体），可直接作为 `className` 使用，无需 `cn`：
+按钮外观就是 preset 皮肤（`preset/button.css`）里的成品 class——任何元素（`<a>` CTA 链接、`Link`）挂上同样的 class 即可获得完整按钮外观：
 
 ```tsx
-<Link to="/docs" className={Button.className.primary}>
+<Link to="/docs" className="litefy-button litefy-button-primary">
   阅读文档
 </Link>
 ```
 
-| 键        | 等价外观                         |
-| --------- | -------------------------------- |
-| `primary` | `variant="primary"`（默认）外观  |
-| `danger`  | `variant="danger"` 外观          |
-| `outline` | `variant="outline"` 外观         |
-| `text`    | `variant="text"` 外观            |
+| Class                                                | 作用                     |
+| ---------------------------------------------------- | ------------------------ |
+| `litefy-button`                                      | 基础布局/焦点/按压形态（必带） |
+| `litefy-button-primary` / `-danger` / `-outline` / `-text` | 外观变体                 |
+| `data-pure-icon="true"`                              | 可选状态属性：纯图标方形   |
