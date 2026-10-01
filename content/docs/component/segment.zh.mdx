@@ -25,7 +25,7 @@ description: 支持受控、非受控和 options 驱动模式的单选分段控�
 
 ### 变体
 
-`fill` 为默认变体，见基础用法；`text` 仅将选中文字着主色。
+`fill` 为默认变体，见基础用法；`text` 将选中文字着主色并加下划线。
 
 <ComponentPreview
   name="segment-variants"
@@ -54,7 +54,7 @@ description: 支持受控、非受控和 options 驱动模式的单选分段控�
 | `defaultValue`   | `string`                      | -       | 非受控模式下的默认选中值                   |
 | `onValueChange`  | `(value: string) => void`     | -       | 选中值变化时触发的回调函数                 |
 | `disabled`       | `boolean`                     | `false` | 禁用所有选项                               |
-| `variant`        | `"fill" \| "text"`            | `"fill"`| 视觉变体：`fill` 选中项填充主色，`text` 仅选中文字着色 |
+| `variant`        | `"fill" \| "text"`            | `"fill"`| 视觉变体：`fill` 选中项填充主色，`text` 选中文字着色并加下划线 |
 | `className`      | `ClassNameValue`              | -       | 自定义类名，应用于容器                     |
 | `itemClassName`  | `ClassNameValue`              | -       | 自定义类名，应用于每个分段按钮             |
 
@@ -81,6 +81,6 @@ description: 支持受控、非受控和 options 驱动模式的单选分段控�
 | ---------- | -------------------------------- | ------- | ------------------------------------------------------------- |
 | `children` | `React.ReactNode`                | -       | 分段按钮的内容                                                |
 | `checked`  | `boolean`                        | `false` | 选中状态，驱动 `aria-checked` 和选中样式                      |
-| `variant` | `"fill" \| "text"`               | `"fill"`| 视觉变体：`fill` 选中项填充主色，`text` 仅选中文字着色        |
+| `variant` | `"fill" \| "text"`               | `"fill"`| 视觉变体：`fill` 选中项填充主色，`text` 选中文字着色并加下划线        |
 | `className` | `ClassNameValue`                | -       | 自定义类名                                                    |
 | `...props` | `React.ComponentProps<"button">` | -       | 支持所有原生 button 属性（除 `type` 外），如 `onClick`、`disabled` |

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { type ClassNameValue, cn } from "../utils/cn";
 
-/** 与 Segment 一致的变体:fill 选中填充主色;text 纯文字,选中仅文字着主色(无填充) */
+/** 与 Segment 一致的变体:fill 选中填充主色;text 纯文字无填充,选中文字着主色并加下划线 */
 export type ToggleVariant = "fill" | "text";
 export interface ToggleProps extends Omit<React.ComponentProps<"button">, "type" | "className"> {
     checked?: boolean;
@@ -25,7 +25,7 @@ export const Toggle = ({ checked: controlledChecked, defaultChecked = false, onC
             setUncontrolledChecked(next);
         onCheckedChange?.(next);
     };
-    return (<button {...props} type="button" aria-pressed={checked} disabled={disabled} onClick={handleClick} className={cn("relative inline-flex items-center justify-center gap-2 h-9 min-w-9 px-3 py-1 text-sm font-medium cursor-pointer select-none transition-colors duration-200", variant === "fill" ? cn("rounded-md text-muted-foreground", "aria-pressed:bg-primary aria-pressed:text-primary-foreground") : cn("rounded-md text-muted-foreground hover:bg-accent", "aria-pressed:text-primary-accent aria-pressed:font-bold"), className)}>
+    return (<button {...props} type="button" aria-pressed={checked} disabled={disabled} onClick={handleClick} className={cn("relative inline-flex items-center justify-center gap-2 h-9 min-w-9 px-3 py-1 text-sm font-medium cursor-pointer select-none transition-colors duration-200", variant === "fill" ? cn("rounded-md text-muted-foreground hover:bg-accent", "aria-pressed:bg-primary aria-pressed:text-primary-foreground") : cn("rounded-md text-muted-foreground hover:bg-accent", "aria-pressed:text-primary aria-pressed:underline aria-pressed:decoration-2 aria-pressed:underline-offset-4"), className)}>
       {children}
     </button>);
 };
