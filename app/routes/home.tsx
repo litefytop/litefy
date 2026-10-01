@@ -6,6 +6,8 @@ import { baseOptions } from "@/components/layout-shared";
 import { ExampleWall } from "@/components/example-wall";
 import { Button, Skeleton, Typography } from "@/ui";
 import { i18n } from "@/lib/i18n";
+import { jsonLdScript, socialMeta } from "@/lib/seo";
+import { appName, gitConfig, siteUrl } from "@/lib/shared";
 
 export type Locale = "en" | "zh";
 
@@ -54,11 +56,13 @@ const landingContent = {
 export function meta({ params }: { params: { lang?: string } }) {
   const locale = (params.lang || i18n.defaultLanguage) as Locale;
   const t = content[locale] ?? content.en;
+  const url = `${siteUrl}/${locale}`;
   return [
     { title: t.title },
     { name: "description", content: t.description },
     { name: "robots", content: "index, follow" },
-    { rel: "canonical", href: `https://litefy.top/${locale}` },
+    { rel: "canonical", href: url },
+    ...socialMeta({ title: t.title, description: t.description, url, locale }),
   ];
 }
 
@@ -143,6 +147,29 @@ export function HomeContent({ locale }: { locale: Locale }) {
         <p className="text-fd-muted-foreground">{t.subheading}</p>
         <ExampleWall locale={locale} />
       </div>
+      {jsonLdScript([
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: appName,
+          url: `${siteUrl}/`,
+          inLanguage: locale,
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: appName,
+          url: `${siteUrl}/`,
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web",
+          description: t.description,
+          author: {
+            "@type": "Organization",
+            name: "Litefy",
+            url: `https://github.com/${gitConfig.user}`,
+          },
+        },
+      ])}
     </HomeLayout>
   );
 }

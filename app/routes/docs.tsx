@@ -18,10 +18,39 @@ import { i18n } from "@/lib/i18n";
 import { baseOptions } from "@/components/layout-shared";
 import { FloatingNav } from "@/components/floating-nav";
 import { buildMarkdownUrl } from "@/lib/markdown-url";
-import { gitConfig } from "@/lib/shared";
+import { jsonLdScript, socialMetaTags } from "@/lib/seo";
+import { appName, gitConfig, siteUrl } from "@/lib/shared";
 import type { Route } from "./+types/docs";
 
 type Locale = keyof typeof pageTrees;
+
+/** 由 MDX 文件路径（如 component/button.zh.mdx）推出语言与规范 URL */
+function docPageMeta(path: string): { locale: "en" | "zh"; url: string } {
+  const locale: "en" | "zh" = path.endsWith(".zh.mdx") ? "zh" : "en";
+  const base = path.replace(/\.mdx$/, "").replace(/\.zh$/, "");
+  return {
+    locale,
+    url: `${siteUrl}/${locale}/docs${base === "index" ? "" : `/${base}`}`,
+  };
+}
+
+type Crumb = { name: string; url?: string };
+
+/** 在原始页面树中按 URL 找节点，沿途收集文件夹名作为面包屑 */
+function collectCrumbs(tree: Root, url: string): Crumb[] {
+  const walk = (nodes: Root["children"], ancestors: Crumb[]): Crumb[] | null => {
+    for (const node of nodes) {
+      if (node.type === "folder") {
+        const found = walk(node.children ?? [], [...ancestors, { name: String(node.name) }]);
+        if (found) return found;
+      } else if (node.type === "page" && node.url === url) {
+        return [...ancestors, { name: String(node.name), url: node.url }];
+      }
+    }
+    return null;
+  };
+  return walk(tree.children ?? [], []) ?? [];
+}
 
 const docsIndexI18n = {
   en: {
@@ -49,10 +78,32 @@ const clientLoader = browserCollections.docs.createClientLoader({
       path: string;
     },
   ) {
+    const { locale, url } = docPageMeta(path);
+    const pageTitle = frontmatter.title.includes(appName)
+      ? frontmatter.title
+      : `${frontmatter.title} - ${appName}`;
+    const description = frontmatter.description ?? "";
+    const crumbs = collectCrumbs(pageTrees[locale].data as unknown as Root, new URL(url).pathname);
+    const breadcrumb = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: appName, item: `${siteUrl}/${locale}` },
+        ...crumbs.map((crumb, i) => ({
+          "@type": "ListItem",
+          position: i + 2,
+          name: crumb.name,
+          ...(crumb.url ? { item: `${siteUrl}${crumb.url}` } : {}),
+        })),
+      ],
+    };
+
     return (
       <DocsPage toc={toc} className="bg-background">
-        <title>{frontmatter.title}</title>
-        <meta name="description" content={frontmatter.description} />
+        <title>{pageTitle}</title>
+        <meta name="description" content={description} />
+        {socialMetaTags({ title: pageTitle, description, url, locale })}
+        {jsonLdScript(breadcrumb)}
         <DocsTitle>{frontmatter.title}</DocsTitle>
         <DocsDescription>{frontmatter.description}</DocsDescription>
         <div className="flex flex-row gap-2 items-center border-b -mt-4 pb-6">
