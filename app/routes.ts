@@ -4,6 +4,7 @@ export default [
   route("", "routes/index.tsx"),
   route(":lang", "routes/home.tsx"),
   route(":lang/docs/*", "routes/docs.tsx"),
+  route(":lang/templates/:slug", "routes/template-showcase.tsx"),
   route(":lang/api/search", "routes/search.ts"),
 
   route(":lang/llms.txt", "llms/index.ts"),

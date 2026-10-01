@@ -23,13 +23,6 @@ export default {
       zh: "样式",
     },
   },
-  templates: {
-    type: "folder",
-    displayName: {
-      en: "Style Templates",
-      zh: "风格模板",
-    },
-  },
   overview: {
     displayName: {
       en: "Overview",

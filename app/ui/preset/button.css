@@ -65,6 +65,8 @@
   }
 
   .litefy-button-outline {
+    background-color: transparent;
+    color: var(--foreground);
     border: 1px solid var(--border);
   }
 
