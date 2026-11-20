@@ -15,7 +15,7 @@ const triggerClasses =
   "no-underline underline-offset-4 hover:underline";
 
 const imageClasses: ImageClassNames = {
-  root: cn(imagePartClasses.root, "h-[10rem] border-hair border-border shadow-surface"),
+  root: cn(imagePartClasses.root, "h-40 border-hair border-border shadow-surface"),
   image: "h-full w-full object-cover",
 };
 

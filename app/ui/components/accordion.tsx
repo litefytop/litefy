@@ -82,7 +82,7 @@ export function Accordion({ items, multiple = false, activeKeys, defaultActiveKe
     };
     return (<CollapseRoot {...props}>
       {items.map(({ panel, ...cfg }) => {
-            return (<Collapse {...cfg} key={cfg.itemKey} className={cfg.className ?? common?.className} classNames={{
+            return (<Collapse key={cfg.itemKey} {...cfg} className={cfg.className ?? common?.className} classNames={{
                     trigger: cfg.classNames?.trigger ?? common?.classNames?.trigger,
                     icon: cfg.classNames?.icon ?? common?.classNames?.icon,
                     panel: cfg.classNames?.panel ?? common?.classNames?.panel,

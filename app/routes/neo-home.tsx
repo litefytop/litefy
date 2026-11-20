@@ -1,7 +1,7 @@
 import { type LinksFunction } from "react-router";
 import neoSiteHref from "./neo-site.css?url";
 import { homeContent, type Locale } from "./home-view";
-import { i18n } from "@/lib/i18n";
+import { siteDefaultLanguage } from "@/lib/i18n";
 import { socialMeta } from "@/lib/seo";
 import { siteUrl } from "@/lib/shared";
 
@@ -10,7 +10,7 @@ export const links: LinksFunction = () => [
 ];
 
 export function meta({ params }: { params: { lang?: string } }) {
-  const locale = (params.lang || i18n.defaultLanguage) as Locale;
+  const locale = (params.lang || siteDefaultLanguage) as Locale;
   const t = homeContent[locale] ?? homeContent.en;
   const url = `${siteUrl}/neo/${locale}`;
   return [

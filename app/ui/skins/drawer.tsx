@@ -17,9 +17,9 @@ const stageClasses =
 const panelClasses =
   "pointer-events-auto group-focus-visible/drawer:focus-ring @container " +
   "flex overflow-hidden rounded-xl border-frame border-border bg-surface-raised text-foreground shadow-elevated " +
-  "transition-transform duration-md ease-frame " +
+  "duration-md ease-frame " +
   "[--litefy-pane-size:--spacing(96)] data-[size=sm]:[--litefy-pane-size:--spacing(80)] data-[size=lg]:[--litefy-pane-size:--spacing(128)] " +
-  "group-data-[duration=sm]:duration-sm group-data-[duration=lg]:duration-lg " +
+  "group-data-[duration=sm]:duration-sm! group-data-[duration=lg]:duration-lg! " +
   "data-[placement=left]:h-full data-[placement=left]:w-(--litefy-pane-size) data-[placement=left]:max-w-full data-[placement=left]:min-w-[min(100%,--spacing(64))] " +
   "data-[placement=left]:flex-row-reverse " +
   "data-[placement=right]:h-full data-[placement=right]:w-(--litefy-pane-size) data-[placement=right]:max-w-full data-[placement=right]:min-w-[min(100%,--spacing(64))] " +

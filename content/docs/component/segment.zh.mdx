@@ -17,7 +17,7 @@ description: 支持受控、非受控和 options 驱动模式的单选分段控�
 
 ### 变体
 
-`variant` 切换整体外观，默认中性，另有 `primary` 与 `text`。
+`variant` 切换整体外观，默认 `primary`（未选中为文字钮、选中为主题色块，外观与动效面板同款），另有 `text`。
 
 <ComponentPreview
   name="segment-variants"
@@ -37,7 +37,7 @@ description: 支持受控、非受控和 options 驱动模式的单选分段控�
 | `value`          | `string`                      | 受控的选中值                                                    |
 | `defaultValue`   | `string`                      | 非受控模式下的默认选中值                                              |
 | `onValueChange`  | `(value: string) => void`     | 选中值变化时触发的回调函数                                             |
-| `variant`        | `"primary" \| "text"`         | 选中态外观：缺省为滑动指示块，`primary` 选中项填充主题色背景，`text` 选中项为主题色加粗下划线文字 |
+| `variant`        | `"primary" \| "text"`         | 选中态外观，默认 `primary`：描边容器内未选中项为文字钮、选中项转主题色块；`text` 无壳，选中项为主题色加粗下划线文字，无 hover |
 | `disabled`       | `boolean`                     | 禁用所有选项，默认 `false`                                         |
 | `className`      | `string`                      | 自定义类名，应用于容器                                               |
 | `itemClassName`  | `string`                      | 自定义类名，应用于每个分段按钮                                           |

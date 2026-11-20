@@ -7,6 +7,6 @@
 5. 文本层（`lineThrough` 开启才出现在 DOM）：删除线由 label 行作答——`has-[:checked]` 且非半选时对 `span[data-line]` 后代加 `line-through`（decoration 色随文字色，直切不设过渡）；选择器挂在 label 上、目标不存在即无效果，宿主复用 `checkboxPartClasses.label` 时零回归。
 6. 覆盖折入：headless 把 `classNames.label` 与 `className` 挂上同一元素，皮肤把消费方 `className` 折进 label 槽，避免同串挂两遍。
 7. 组合导出：`checkboxPartClasses`（input / indicator / label）供 Transfer 行、Table 批量行等宿主复用。
-8. CheckboxGroup：纵向紧贴栈（禁纵向间距）；分节标题与小节标题是两个文字角色——分节 `text-sm` + `font-label` 档 + label 两项 + `foreground`，小节标题同款但 `surface-fg` 文字色。
+8. CheckboxGroup：纵向紧贴栈（禁纵向间距）；组标签格式与 Field label 同档（`block w-full ps-2 mb-1 select-none text-sm font-label tracking-label case-label`），与选项间 4px（`mb-1`）；分节标题与小节标题是两个文字角色——分节 `text-sm` + `font-label` 档 + label 两项 + `foreground`，小节标题同款但 `surface-fg` 文字色。
 9. 专属令牌：无。
 （neo 阴影）承载面挂 shadow-frame——可交互件必有阴影（neo design.md 阴影律），minimal 无此工具类不渲染、零回归。

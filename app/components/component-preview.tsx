@@ -2,7 +2,7 @@
 
 import { type ComponentType, Suspense, lazy, useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { i18n } from "@/lib/i18n";
+import { siteDefaultLanguage } from "@/lib/i18n";
 import { tabsScrollLabels } from "@/lib/shared";
 import { CodeStage } from "./docs-codeblock";
 import { useSiteSkin } from "./site-skin";
@@ -53,8 +53,8 @@ function PreviewSkeleton() {
     <div
       className="flex flex-col items-center gap-2 w-full max-w-64"
     >
-      <div className="block rounded-md bg-accent motion-safe:animate-pulse h-[1.5rem] w-[66%]" />
-      <div className="block rounded-md bg-accent motion-safe:animate-pulse h-[0.5rem] w-full" />
+      <div className="block rounded-md bg-accent motion-safe:animate-pulse h-6 w-2/3" />
+      <div className="block rounded-md bg-accent motion-safe:animate-pulse h-2 w-full" />
     </div>
   );
 }
@@ -73,7 +73,7 @@ export function ComponentPreview({
 }: ComponentPreviewProps) {
   const { Callout, Tabs, demos } = useSiteSkin();
   const params = useParams<{ lang?: string }>();
-  const locale = params.lang || i18n.defaultLanguage;
+  const locale = params.lang || siteDefaultLanguage;
   const zh = locale === "zh";
   const [codePicked, setCodePicked] = useState(false);
 
@@ -95,7 +95,7 @@ export function ComponentPreview({
   }
 
   const stage = (
-    <div className="flex aspect-video min-h-0 w-full overflow-auto bg-background p-4 *:m-auto *:max-w-full *:min-w-0">
+    <div className="flex w-full min-h-64 overflow-auto bg-background p-2 *:m-auto *:max-w-full *:min-w-0 md:h-[round(up,calc(100cqw*9/16),1px)] md:min-h-0">
       <Suspense fallback={<PreviewSkeleton />}>
         <LazyDemo Demo={getLazyDemo(demo.load)} />
       </Suspense>
@@ -104,7 +104,7 @@ export function ComponentPreview({
 
   return (
     <div
-      className={["component-preview-container my-4 not-typography w-full", className].filter(Boolean).join(" ")}
+      className={["component-preview-container my-4 not-typography w-full @container", className].filter(Boolean).join(" ")}
       data-name={name}
       {...props}
     >

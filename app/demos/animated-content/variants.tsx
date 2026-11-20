@@ -16,7 +16,7 @@ export default function Demo() {
             key={`${direction}-${round}`}
             direction={direction}
             distance={32}
-            className="flex h-24 w-48 items-center justify-center rounded-lg border bg-surface text-sm font-medium"
+            className="flex h-16 w-32 items-center justify-center rounded-lg border bg-surface text-sm font-medium"
           >
             {direction}
           </AnimatedContent>

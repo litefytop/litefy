@@ -5,7 +5,7 @@
 
 ## 容器
 
-1. 内容居中；舞台比例定窗（桌面档 `w-192 aspect-video`、窄档 `w-full aspect-square`，机制见 `site/widgets/component-preview.md` 蓝图），demo 以普通组件直接渲染在文档流里，不做档位预览——响应式验证由开发者缩放浏览器窗口完成
+1. 内容居中；桌面档舞台比例定窗 `aspect-video`、窄档自然撑高并保留最小高度（机制见 `site/widgets/component-preview.md` 蓝图），demo 以普通组件直接渲染在文档流里，不做档位预览——响应式验证由开发者缩放浏览器窗口完成
 2. `overflow: auto` + `min-width/min-height: 0`，避免布局抖动
 3. demo 内部无需 div 包裹，直接展示组件
 
@@ -17,3 +17,4 @@
 4. 受控演示不配文字说明——「Selected: …」/「Hidden: none」/「Container width: …px」这类回显段落一律不写，控件自身的状态呈现即反馈；回显不再需要驱动状态时，连 state 一起省掉
 5. 容器结构收敛：一层能解决的不套两层；组件直挂 `className` / `style` 能表达的不再包 wrapper div；demo 根容器 `flex flex-col` 组织，内容居中用 `items-center` / `mx-auto`，不靠默认拉伸
 6. demo 文案一律英文，以组件默认值为准，不写中文——文档站界面是中文，但 demo 展示组件正本形态
+7. demo 尺寸收敛：内容不滚动就能表达的，不放大容器、不堆叠列表凑体量；容器大小与功能无关时取小尺寸——示例墙按原尺寸渲染预览，demo 越小预览越清晰

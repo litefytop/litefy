@@ -8,6 +8,8 @@ export type { InputProps } from "@/ui";
 export const fieldGroupClasses =
   "flex min-h-control w-55 max-w-full min-w-0 cursor-text items-center p-well rounded-md border-frame border-border bg-background text-foreground shadow-frame " +
   "motion-frame " +
+  "[&>input:not(:first-child)]:rounded-ss-none [&>input:not(:first-child)]:rounded-es-none " +
+  "[&>input:not(:last-child)]:rounded-se-none [&>input:not(:last-child)]:rounded-ee-none " +
   "borderless:border-0 bordered:border-frame bordered:border-border " +
   "focus-within:focus-ring " +
   "" +
@@ -39,7 +41,7 @@ export const fieldHintClasses =
 
 
 export const fieldTextareaClasses =
-  "block w-full min-h-[5rem] resize-y rounded-md border-frame border-border bg-well shadow-frame " +
+  "block w-full min-h-20 resize-y rounded-md border-frame border-border bg-well shadow-frame " +
   "py-3 motion-frame " +
   "font-field " +
   "placeholder:text-surface-fg " +

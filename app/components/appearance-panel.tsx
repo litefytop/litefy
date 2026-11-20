@@ -117,11 +117,11 @@ export function AppearancePanel({
       title={t.trigger}
       classNames={{
         trigger: `${className} size-control justify-center px-0`,
-        content: "w-96 max-w-[calc(100vw-2rem)] max-h-[min(70vh,40rem)] p-4",
+        content: "w-96 max-w-[calc(100vw_-_--spacing(8))] max-h-[min(70vh,--spacing(160))]",
       }}
       trigger={<Settings className="size-4" aria-hidden />}
     >
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 p-4">
         <Section label={t.appearance}>
           <ChoiceGroup
             label={t.appearance}

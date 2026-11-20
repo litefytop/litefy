@@ -31,7 +31,7 @@ Ready-to-use composite components.
 
 #### Dialog
 
-A modal dialog component built on the native HTML `dialog` element, with built-in focus trapping, Esc close and a background lock while open. The lock is reference-counted: stacked overlays release it only when the last one closes. Every content branch outside the dialog's ancestor chain is made `inert` (no pointer, keyboard or focus reaches it), other `<dialog>` elements excepted — a modal raised from one of them later must stay clickable. The root also clamps overflow so the background cannot scroll; the scrollbar width is compensated with padding so the layout doesn't shift.
+A modal dialog component built on the native HTML `dialog` element, with built-in focus trapping, Esc close and a background lock while open. The lock is reference-counted: stacked overlays release it only when the last one closes. Every content branch outside the dialog's ancestor chain is made `inert` (no pointer, keyboard or focus reaches it), other `<dialog>` elements excepted — a modal raised from one of them later must stay clickable. The root also clamps overflow so the background cannot scroll; the scrollbar width is compensated with padding so the layout doesn't shift. No top-right close button is rendered by default — close via Esc, the backdrop or your own action buttons; pass `close` to add one.
 
 | Prop              | Type                                               | Description                                                                                                       |
 | ----------------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
@@ -39,7 +39,8 @@ A modal dialog component built on the native HTML `dialog` element, with built-i
 | `title`           | `React.ReactNode`                                  | Optional title. When provided, a header row renders — the title and the close button are siblings in the flow     |
 | `onOpenChange`    | `(open: boolean) => void`                          | Open-state change callback; fired on Esc, close button click, and native `cancel` / `close`                       |
 | `onBackdropClick` | `(e: React.MouseEvent<HTMLDialogElement>) => void` | Backdrop clicks close the dialog by default; this callback is for extra side effects                              |
-| `closeLabel`      | `string`                                           | Accessible name of the inline close button built into this component, defaults to `'Close (ESC)'`                 |
+| `close`           | `"icon" \| "kbd" \| null`                          | Top-right close button variant. `"icon"` renders an X icon button, `"kbd"` renders an ESC key-cap button; omitted or `null` renders no close button. Esc close stays built-in either way |
+| `closeLabel`      | `string`                                           | Accessible name of the inline close button built into this component, defaults to `'Close'`                       |
 | `classNames`      | `{ root?, content?, close? }`                      | Custom class names per part, applied to the dialog element, the content area and the close button                 |
 | `styles`          | `{ root?, content?, close? }`                      | Inline styles per part                                                                                            |
 | `children`        | `React.ReactNode`                                  | Dialog content, rendered inside the content area `DialogContent`                                                  |
@@ -91,7 +92,7 @@ Imperative trigger methods that create the dialog dynamically and destroy it aut
 | `warning` | `(opts: DialogCommandOptions) => void` | Opens a command dialog |
 | `info`    | `(opts: DialogCommandOptions) => void` | Opens a command dialog |
 
-> The four methods are semantic shortcuts with identical behavior.
+> The four methods are semantic shortcuts with identical behavior. Each command dialog renders a top-right X close button by default; override it via `props.close`.
 > Browser limitation: only one modal dialog (`showModal()`) can be open at a time; repeated opens are blocked by the browser rather than queued.
 
 #### DialogCommandOptions

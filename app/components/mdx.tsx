@@ -11,7 +11,7 @@ import { ComponentPreview } from "./component-preview";
 import { MotionPreferenceStatus } from "./motion-preference-status";
 import { Source } from "./source";
 import { useSiteSkin } from "./site-skin";
-import { i18n } from "@/lib/i18n";
+import { i18n, siteDefaultLanguage } from "@/lib/i18n";
 import { tabsScrollLabels } from "@/lib/shared";
 
 const STATIC_HREF = /\.(md|mdx|txt|xml|json|webp|png|jpe?g|svg|ico|css|js)$/iu;
@@ -21,7 +21,7 @@ function MdxLink({ href, download, ...props }: React.ComponentProps<"a">) {
   if (download || (href && STATIC_HREF.test(href))) {
     return <a href={href} download={download} {...props} />;
   }
-  const locale = lang && (i18n.languages as readonly string[]).includes(lang) ? lang : i18n.defaultLanguage;
+  const locale = lang && (i18n.languages as readonly string[]).includes(lang) ? lang : siteDefaultLanguage;
   const localized =
     href && href.startsWith("/") && !new RegExp(`^/(${i18n.languages.join("|")})/`, "u").test(href)
       ? `/${locale}${href}`
@@ -110,13 +110,17 @@ function splitCodeToken(token: string): React.ReactNode[] {
 }
 
 function withCodeBreaks(node: React.ReactNode): React.ReactNode {
-  if (Array.isArray(node)) return node.map((child) => withCodeBreaks(child));
   if (!React.isValidElement(node)) return node;
   const props = node.props as { children?: React.ReactNode };
   if (node.type === "code" && typeof props.children === "string") {
     return React.cloneElement(node, {}, splitCodeToken(props.children));
   }
-  return React.cloneElement(node, {}, withCodeBreaks(props.children));
+  const children = React.Children.toArray(props.children).map((child) => withCodeBreaks(child));
+  return React.cloneElement(node, {}, ...children);
+}
+
+function withCodeBreaksChildren(children: React.ReactNode): React.ReactNode {
+  return React.Children.map(children, (child) => withCodeBreaks(child));
 }
 
 function MdxTable({ children, className, ...props }: React.ComponentPropsWithoutRef<"table">) {
@@ -136,7 +140,7 @@ function MdxTable({ children, className, ...props }: React.ComponentPropsWithout
             ))}
           </colgroup>
         )}
-        {withCodeBreaks(children)}
+        {withCodeBreaksChildren(children)}
       </table>
     </div>
   );

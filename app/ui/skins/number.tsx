@@ -70,8 +70,7 @@ const stepperClasses =
 const stepperIconClasses = "size-4";
 
 const fieldInputValueClasses =
-  "w-control self-stretch border-0 bg-well text-center " +
-  "rounded-[max(0px,calc(var(--radius-md)-var(--border-width-frame)))] shadow-well " +
+  "w-control self-stretch border-0 bg-well text-center rounded-none shadow-well " +
   "text-sm leading-5 font-field tabular-nums outline-none peer " +
   "placeholder:text-surface-fg selection:bg-primary selection:text-primary-fg " +
   "focus:outline-none aria-invalid:text-danger-fg";

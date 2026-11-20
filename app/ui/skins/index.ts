@@ -150,6 +150,7 @@ export type { TocProps } from "@/ui";
 export type { TocSkinProps } from "./toc";
 export { Toggle, ToggleGroup } from "./toggle";
 export type { ToggleProps, ToggleGroupProps } from "@/ui";
+export type { ToggleGroupVariant, ToggleGroupSkinProps } from "./toggle";
 export { Tooltip, TooltipTrigger, TooltipContent } from "./tooltip";
 export type { TooltipProps } from "@/ui";
 export { Transfer } from "./transfer";

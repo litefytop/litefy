@@ -60,6 +60,7 @@
   --focus-offset: 2px;
   --focus-outline-danger: 2px solid #be123c;
   --focus-glow: 0 2px 10px rgba(14, 116, 144, 0.35);
+  --focus-glow-inset: inset 0 2px 10px rgba(14, 116, 144, 0.35);
 
   /* Link and scrollbar are mechanism values (same precedent as --focus-*). */
   --link: #0e7490;
@@ -152,6 +153,7 @@
   --focus-outline: 2px solid #22d3ee;
   --focus-outline-danger: 2px solid #fb7185;
   --focus-glow: 0 0 20px rgba(34, 211, 238, 0.3);
+  --focus-glow-inset: inset 0 0 20px rgba(34, 211, 238, 0.3);
 
   --link: #22d3ee;
   --scrollbar-thumb: linear-gradient(180deg, #22d3ee, #ec4899);
@@ -222,7 +224,7 @@
   --color-surface: var(--surface);
   --color-surface-fg: var(--surface-fg);
   --color-surface-raised: var(--surface-raised);
-  --color-well: var(--background);
+  --color-well: var(--surface);
   --color-accent: var(--accent);
   --color-accent-fg: var(--accent-fg);
   --color-primary: var(--primary);
@@ -305,7 +307,6 @@
   --radius-4xl: 2.5rem;
   --radius-pill: 9999px;
   --radius-disc: 9999px;
-  --radius-swipe: 1rem;
 
   --padding-tight: calc((var(--height-control) - 1.2rem) / 2);
   --padding-snug: calc((var(--height-control) - 1.25rem) / 2);
@@ -437,6 +438,12 @@
   box-shadow: var(--shadow-frame-focus-danger);
 }
 
+@utility focus-ring-inset {
+  outline: var(--focus-outline);
+  outline-offset: calc(-1 * var(--focus-offset));
+  box-shadow: var(--focus-glow-inset);
+}
+
 @utility thumb-hit {
   &::after {
     content: "";
@@ -552,7 +559,7 @@
   padding-inline: calc(var(--spacing) * 2);
   padding-block: 0;
   border: var(--border-width-frame) solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: calc(var(--spacing) * 1);
   background-color: var(--color-background);
   background-image: var(--fill-background, none);
   color: var(--color-foreground);
@@ -562,12 +569,6 @@
   line-height: calc(var(--spacing) * 4);
   letter-spacing: var(--tracking-label);
   box-shadow: var(--shadow-subtle);
-}
-
-@property --litefy-cols {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 1;
 }
 
 @property --litefy-percent {
@@ -658,10 +659,6 @@
 
 /* ⑥ Base behaviour. */
 @layer base {
-  html {
-    text-autospace: normal;
-  }
-
   body {
     background-color: var(--background);
     color: var(--foreground);
@@ -680,11 +677,9 @@
     color: var(--primary-fg);
   }
 
-  /* Neon scrollbars: transparent track, cyan→pink gradient thumb, no arrows. */
-  * {
-    scrollbar-color: var(--primary) transparent;
-  }
-
+  /* Neon scrollbars: transparent track, cyan→pink gradient thumb, no arrows.
+     Chrome/Safari: webkit 定档强制经典滚动条常显；标准 scrollbar-* 一律不设——
+     标准属性非初始值会让浏览器丢弃 webkit 定档并退化为覆盖式滚动条自动隐藏。 */
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -711,6 +706,14 @@
 
   ::-webkit-scrollbar-corner {
     background: transparent;
+  }
+
+  /* Firefox 车道：webkit 伪元素不生效，走标准属性（渐变不可入，答主色实档）。 */
+  @-moz-document url-prefix("") {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary) transparent;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

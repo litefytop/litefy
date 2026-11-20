@@ -39,6 +39,8 @@ export const checkboxPartClasses = {
 
 const groupClasses = {
   root: "flex flex-col",
+  groupLabel:
+    "block w-full ps-2 mb-1 select-none text-sm font-label tracking-label case-label",
   section:
     "flex flex-col text-sm font-label case-label tracking-label text-foreground",
   label:

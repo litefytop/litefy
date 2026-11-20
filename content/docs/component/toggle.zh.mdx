@@ -15,6 +15,12 @@ description: 支持受控、非受控以及分组多选模式的切换按钮组�
   name="toggle-basic"
 />
 
+### 变体
+
+`variant` 属性切换组条外观——缺省 `outline` 为描边按钮组，`well` 为井道轨道形态，选中项凸起为背景色块。
+
+<ComponentPreview name="toggle-variants" />
+
 ## API 参考
 
 ### Toggle
@@ -40,6 +46,7 @@ description: 支持受控、非受控以及分组多选模式的切换按钮组�
 | `value`          | `string[]`                   | 受控的选中值                                     |
 | `defaultValue`   | `string[]`                   | 非受控模式下的默认选中值，默认 `[]`                       |
 | `onChange`       | `(values: string[]) => void` | 选中值变化时触发的回调函数                              |
+| `variant`        | `"outline" \| "well"`        | 组条外观，默认 `outline`；`outline` 外壳承担边框与圆角、选中项填充主色，`well` 为井道轨道、选中项凸起为背景色块 |
 | `disabled`       | `boolean`                    | 禁用所有选项，默认 `false`                          |
 | `className`      | `string`                     | 自定义类名，应用于容器                                |
 | `itemClassName`  | `string`                     | 自定义类名，应用于每个切换按钮                            |

@@ -4,6 +4,7 @@ export default function RadioBasicDemo() {
   return (
     <RadioGroup
       name="group-example"
+      label="Choose one"
       options={[
         { label: "Option 1", value: "group1" },
         { label: "Option 2", value: "group2" },

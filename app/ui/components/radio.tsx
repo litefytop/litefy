@@ -96,9 +96,11 @@ export interface RadioGroupProps {
   name?: string;
   disabled?: boolean;
   orientation?: "horizontal" | "vertical";
+  label?: React.ReactNode;
   className?: string;
   classNames?: {
     root?: string;
+    groupLabel?: string;
   };
   "aria-label"?: string;
   common?: {
@@ -122,6 +124,7 @@ export function RadioGroup({
   name,
   disabled,
   orientation,
+  label,
   className,
   classNames,
   "aria-label": ariaLabel,
@@ -154,8 +157,20 @@ export function RadioGroup({
     onValueChange?.(val);
     if (name) setFormValues((prev) => ({ ...prev, [name]: val }));
   };
+  const labelId = `${React.useId()}-label`;
   return (
-    <div role="radiogroup" aria-label={ariaLabel} data-orientation={orientation} className={[classNames?.root, className].filter(Boolean).join(" ")}>
+    <div
+      role="radiogroup"
+      aria-label={label === undefined ? ariaLabel : undefined}
+      aria-labelledby={label === undefined ? undefined : labelId}
+      data-orientation={orientation}
+      className={[classNames?.root, className].filter(Boolean).join(" ")}
+    >
+      {label !== undefined && (
+        <span id={labelId} className={classNames?.groupLabel}>
+          {label}
+        </span>
+      )}
       {options.map((option) => (
         <Radio
           key={option.value}

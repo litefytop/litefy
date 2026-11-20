@@ -11,15 +11,15 @@ const svgClasses = "mt-2 w-full max-w-72 mx-auto overflow-visible";
 const gridClasses = "fill-none stroke-border";
 
 const ringClasses =
-  "stroke-[0.5px] data-[outer=true]:stroke-1 md:data-[outer=true]:stroke-1";
+  "stroke-0.5 data-[outer=true]:stroke-1 md:data-[outer=true]:stroke-1";
 
-const spokeClasses = "stroke-[0.5px]";
+const spokeClasses = "stroke-0.5";
 
 const labelClasses =
   "fill-surface-fg text-xs font-label tracking-label case-label";
 
 const polygonClasses =
-  "cursor-pointer [fill-opacity:0.14] stroke-[1.5px] [stroke-linejoin:round] " +
+  "cursor-pointer [fill-opacity:0.14] stroke-1.5 [stroke-linejoin:round] " +
   "transition-opacity duration-sm data-[hovered=true]:[fill-opacity:0.28] " +
   "data-[dimmed=true]:opacity-35";
 

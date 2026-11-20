@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, Table } from "@/ui/skins";
+import { Button, Pagination, Table } from "@/ui/skins";
 
 interface Task {
   id: string;
@@ -16,8 +16,9 @@ const tasks: Task[] = [
   { id: "t-03", title: "Write tests", owner: "Grace", priority: "high" },
   { id: "t-04", title: "Release notes", owner: "Ada", priority: "low" },
   { id: "t-05", title: "Fix flaky test", owner: "Linus", priority: "high" },
-  { id: "t-06", title: "Update docs", owner: "Grace", priority: "medium" },
 ];
+
+const PAGE_SIZE = 5;
 
 function renderPriority(row: Task) {
   return (
@@ -37,25 +38,44 @@ function renderPriority(row: Task) {
 
 export default function Demo() {
   const [selected, setSelected] = React.useState<string[]>([]);
+  const totalPages = Math.max(1, Math.ceil(tasks.length / PAGE_SIZE));
+  const summary = `Showing 1–${Math.min(PAGE_SIZE, tasks.length)} of ${tasks.length} items${
+    selected.length > 0 ? ` · ${selected.length} selected` : ""
+  }`;
 
   return (
-    <Table
-      selectable
-      className="w-full"
-      data={tasks}
-      rowKey={(row) => row.id}
-      selected={selected}
-      onSelectionChange={setSelected}
-      bulkActions={<Button data-variant="text">Export</Button>}
-      columns={[
-        { key: "title", header: "Task", span: 3 },
-        { key: "owner", header: "Owner" },
-        {
-          key: "priority",
-          header: "Priority",
-          render: renderPriority,
-        },
-      ]}
-    />
+    <div className="flex w-full flex-col justify-center gap-y-2">
+      <Table
+        selectable
+        className="w-full"
+        data={tasks.slice(0, PAGE_SIZE)}
+        rowKey={(row) => row.id}
+        selected={selected}
+        onSelectionChange={setSelected}
+        columns={[
+          { key: "title", header: "Task", span: 3 },
+          { key: "owner", header: "Owner" },
+          {
+            key: "priority",
+            header: "Priority",
+            render: renderPriority,
+          },
+        ]}
+      />
+      <Pagination
+        page={1}
+        totalPages={totalPages}
+        summary={
+          <>
+            {summary}
+            {selected.length > 0 && (
+              <Button data-variant="text" onClick={() => setSelected([])}>
+                Clear
+              </Button>
+            )}
+          </>
+        }
+      />
+    </div>
   );
 }

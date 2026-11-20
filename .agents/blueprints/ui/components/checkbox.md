@@ -13,5 +13,6 @@
 - `CheckboxGroup` 选中值：传 `value` 即受控，否则内部数组（`defaultValue` 起，默认 `[]`）；`selectedSet` 判选中，toggle 为增删后回调 `onChange(values)`；`disabled` 组级与项级取或
 - `common` 为组级兜底：每项的 `classNames`/`styles`/`indicator`/`lineThrough` 优先项级、缺失回退 `common`
 - 表单集成：有 `name` 时经 `FormContext`（./form）`registerField` 注册，外部写入时解析（null→`[]`、数组逐项 String、单值包数组）回写状态并触发 `onChange`；toggle 时同步 `setFormValues`；卸载时 `unregisterField`
+- 组标签：`CheckboxGroup` 可选 `label`（ReactNode）与 `classNames.groupLabel`；有 `label` 时在选项之前渲染组标签 `<span>`（`useId` 生成 id，容器 `aria-labelledby` 指向该 id），无 `label` 时沿用可选 `aria-label`
 - 键盘导航：根 div `role="group"` + 可选 `aria-label`；方向键（Down/Right +1、Up/Left -1）在未禁用的 checkbox 间循环移动焦点
-- classNames 槽位：`Checkbox` 用 input/indicator/label/icon/text（text 仅 `lineThrough` 开启时出现在 DOM）；`CheckboxGroup` 用 root/section/label
+- classNames 槽位：`Checkbox` 用 input/indicator/label/icon/text（text 仅 `lineThrough` 开启时出现在 DOM）；`CheckboxGroup` 用 root/groupLabel/section/label

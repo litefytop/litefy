@@ -31,7 +31,7 @@ description: 使用原生 HTML dialog 元素构建的模态对话框组件
 
 #### Dialog
 
-基于原生 HTML `dialog` 元素的模态对话框组件，内置焦点圈定、Esc 关闭，并在打开期间锁住背景。锁定按引用计数：叠加的浮层要等最后一个关闭才释放。对话框祖先链之外的每个内容分支都被置为 `inert`（指针、键盘与焦点都进不去），页面里的其他 `<dialog>` 除外——后来从它弹出的模态必须还能点。根元素同时收口溢出，背景不可滚动；滚动条宽度用 padding 补偿，布局不跳动。
+基于原生 HTML `dialog` 元素的模态对话框组件，内置焦点圈定、Esc 关闭，并在打开期间锁住背景。锁定按引用计数：叠加的浮层要等最后一个关闭才释放。对话框祖先链之外的每个内容分支都被置为 `inert`（指针、键盘与焦点都进不去），页面里的其他 `<dialog>` 除外——后来从它弹出的模态必须还能点。根元素同时收口溢出，背景不可滚动；滚动条宽度用 padding 补偿，布局不跳动。缺省不渲染右上角关闭按钮——通过 Esc、遮罩点击或自备的 actions 按钮关闭；需要时用 `close` 配置。
 
 | Prop              | Type                                                | Description                                                                   |
 | ----------------- | --------------------------------------------------- | ----------------------------------------------------------------------------- |
@@ -39,7 +39,8 @@ description: 使用原生 HTML dialog 元素构建的模态对话框组件
 | `title`           | `React.ReactNode`                                   | 可选标题。传入后渲染头部行——标题与关闭按钮同为流内兄弟节点                                                |
 | `onOpenChange`    | `(open: boolean) => void`                           | 打开状态变化回调，Esc、关闭按钮点击、原生 `cancel` / `close` 时触发                                 |
 | `onBackdropClick` | `(e: React.MouseEvent<HTMLDialogElement>) => void`  | 点击遮罩默认关闭；此回调用于附加副作用                                                           |
-| `closeLabel`      | `string`                                            | 本组件自带的那枚内联关闭按钮的可访问名称，默认 `'Close (ESC)'`                                       |
+| `close`           | `"icon" \| "kbd" \| null`                           | 右上角关闭按钮形态。`"icon"` 渲染 X 图标按钮，`"kbd"` 渲染 ESC 键帽按钮；缺省或 `null` 不渲染关闭按钮。无论哪种取值，Esc 关闭始终内置 |
+| `closeLabel`      | `string`                                            | 本组件自带的那枚内联关闭按钮的可访问名称，默认 `'Close'`                                             |
 | `classNames`      | `{ root?, content?, close? }`                       | 各部分自定义类名，分别作用于 dialog 元素、内容区、关闭按钮                                             |
 | `styles`          | `{ root?, content?, close? }`                       | 各部分内联样式                                                                       |
 | `children`        | `React.ReactNode`                                   | 对话框内容，渲染在内容区 `DialogContent` 内                                                |
@@ -62,7 +63,7 @@ dialog 元素，渲染为无内置样式与行为的原生 `dialog`。
 
 #### DialogClose
 
-关闭按钮。它不发样式身份——定位与观感完全由它的 `className` 决定（复合组件通过 `classNames.close` 喂给它，方案皮肤把同一批字符串导出为 `dialogPartClasses`），挂在最近的定位祖先（即 dialog 元素）右上角。仅用于零件组装——复合组件 `Dialog` 内部已渲染并接线此按钮，禁止在 `Dialog` 的 children 里再放 `DialogClose`。
+关闭按钮。它不发样式身份——定位与观感完全由它的 `className` 决定（复合组件通过 `classNames.close` 喂给它，方案皮肤把同一批字符串导出为 `dialogPartClasses`），锚定到最近的定位祖先（dialog 元素）的右上角。仅用于零件组装——复合组件 `Dialog` 内部已渲染并接线此按钮，禁止在 `Dialog` 的 children 里再放 `DialogClose`。
 
 | Prop        | Type                             | Description                                |
 | ----------- | -------------------------------- | ------------------------------------------ |
@@ -91,7 +92,7 @@ dialog 元素，渲染为无内置样式与行为的原生 `dialog`。
 | `warning` | `(opts: DialogCommandOptions) => void` | 打开命令对话框 |
 | `info`    | `(opts: DialogCommandOptions) => void` | 打开命令对话框 |
 
-> 四个方法为语义化快捷方式，行为一致。
+> 四个方法为语义化快捷方式，行为一致。每个命令对话框默认渲染右上角 X 关闭按钮，可通过 `props.close` 覆盖。
 > 浏览器限制：模态 dialog（`showModal()`）同一时间只能打开一个，重复打开会被浏览器拦截，而非排队等待。
 
 #### DialogCommandOptions

@@ -7,5 +7,5 @@
 - 排版：左对齐页头（`text-2xl` 标题 + 一行副标题，不居中）；内容容器 `max-w-288` 居中、上下留白 `py-8`；双卡 `lg:grid-cols-2` 桌面并排、移动端纵叠（`items-start`）。
 - 合成卡：字段行（前景色 + 背景色 `sm:grid-cols-2` 同行）→ 透明度行（`w-24 shrink-0` NumberInput + `flex-1` Slider 同行，显式 `orientation="horizontal"`、常显值隐藏）→ 结果条（`size-14` 大色板 + HEX/RGB 两行 mono + 右侧复制 / 填入按钮，`bg-surface` 条）。
 - 对比卡：字段行（文字色 + 背景色同行）→ 预览条（两色的**有效色**内联渲染：示例文字 + 右侧大号比值）→ 通过徽章行（徽章自带阈值与 ✓/✗，无图例段）。
-- 卡内纵向节奏经 `classNames.inner` 整体换串施加（Card 的 `className` 落在外壳、内容承载在 inner 槽——gap 写在 Card 上无效；换串会连默认串一起替换，Card 自带内间距须随串带回）：`flex flex-col gap-6 p-4 @xl:p-6 @4xl:p-8`。
+- 卡内纵向节奏经 `classNames.inner` 整体换串施加（Card 的 `className` 落在外壳、内容承载在 inner 槽——gap 写在 Card 上无效；换串会连默认串一起替换，Card 自带内间距须随串带回）：`flex flex-col gap-6 p-4`。
 - 复制反馈统一走本地成功态，不用 toast，Button 组件零改动：结果条 HEX 复制钮显式传 `icon={<Copy/>}`，复制成功原位换成 check 徽标（success 背景圆底 + success-fg check，纯消费方组合复用 icon 槽）；令牌芯片复用 Button（`data-variant="outline"`），色板 span 作 `icon` 传入、令牌名 + 原值作 children 直渲，复制成功 status 槽以同尺寸 check 徽标（success 圆底）原位替换色板，令牌名与原值零位移；各复制钮挂 sr-only `role="status"` 播报复制结果，成功徽标 3 秒收回。

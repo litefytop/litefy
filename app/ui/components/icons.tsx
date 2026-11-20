@@ -70,6 +70,7 @@ export const ArrowUpDown = createIcon("ArrowUpDown", [["path",{"d":"m21 16-4 4-4
 export const Calendar = createIcon("Calendar", [["path",{"d":"M8 2v3","key":"1ioesn"}],["path",{"d":"M16 2v3","key":"otl347"}],["rect",{"x":"3","y":"3","width":"18","height":"18","rx":"2","key":"h1oib"}],["path",{"d":"M3 9h18","key":"1pudct"}]]);
 export const Check = createIcon("Check", [["path",{"d":"M20 6 9 17l-5-5","key":"1gmf2c"}]]);
 export const Copy = createIcon("Copy", [["rect",{"width":"14","height":"14","x":"8","y":"8","rx":"2","ry":"2","key":"1jniyj"}],["path",{"d":"M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2","key":"1jvk9l"}]]);
+export const GripVertical = createIcon("GripVertical", [["circle",{"cx":"9","cy":"12","r":"1","key":"1noitf"}],["circle",{"cx":"9","cy":"5","r":"1","key":"1vzz2e"}],["circle",{"cx":"9","cy":"19","r":"1","key":"1brjt1"}],["circle",{"cx":"15","cy":"12","r":"1","key":"1nfcwa"}],["circle",{"cx":"15","cy":"5","r":"1","key":"12wh0c"}],["circle",{"cx":"15","cy":"19","r":"1","key":"1n2ezu"}]]);
 export const ChevronDown = createIcon("ChevronDown", [["path",{"d":"m6 9 6 6 6-6","key":"qrunsl"}]]);
 export const ChevronLeft = createIcon("ChevronLeft", [["path",{"d":"m15 18-6-6 6-6","key":"1wnfg3"}]]);
 export const ChevronRight = createIcon("ChevronRight", [["path",{"d":"m9 18 6-6-6-6","key":"mthhwq"}]]);

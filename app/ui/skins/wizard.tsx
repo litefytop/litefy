@@ -14,7 +14,7 @@ const rootClasses = "w-full [&>*+*]:mt-6";
 const footerClasses =
   "flex items-center justify-between gap-x-2";
 
-const pagerClasses = "h-[12rem]";
+const pagerClasses = "h-48";
 
 const inlineFooterClasses =
   "mt-3 flex items-center justify-end gap-x-2";

@@ -10,7 +10,7 @@ const rootClasses =
   "data-[disabled]:pointer-events-none data-[disabled]:opacity-50";
 
 const rowClasses =
-  "relative h-full overflow-hidden rounded-swipe border-hair bg-background text-foreground shadow-frame";
+  "relative h-full overflow-hidden border-hair bg-background text-foreground shadow-frame";
 
 const railClasses =
   "absolute inset-0 bg-surface";
@@ -49,7 +49,7 @@ const hintClasses =
 const toggleClasses =
   "absolute top-1/2 m-0 h-px w-px overflow-hidden border-0 bg-transparent p-0 text-foreground -translate-y-1/2 whitespace-nowrap " +
   "[clip-path:inset(50%)] " +
-  "focus-visible:h-[1.5rem] focus-visible:w-auto focus-visible:overflow-visible focus-visible:rounded-pill focus-visible:px-2.5 focus-visible:text-xs focus-visible:[clip-path:none] focus-visible:bg-accent focus-visible:text-accent-fg focus-visible:focus-ring";
+  "focus-visible:h-6 focus-visible:w-auto focus-visible:overflow-visible focus-visible:rounded-pill focus-visible:px-2.5 focus-visible:text-xs focus-visible:[clip-path:none] focus-visible:bg-accent focus-visible:text-accent-fg focus-visible:focus-ring";
 
 const liveClasses = "sr-only";
 

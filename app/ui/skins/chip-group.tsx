@@ -13,7 +13,7 @@ const measureClasses =
 const moreClasses = "inline-flex shrink-0";
 
 export const chipClasses =
-  "inline-flex min-h-[1.25rem] items-center gap-1 rounded-sm border-control border-border px-2 text-xs leading-4 tracking-label case-label " +
+  "inline-flex min-h-5 items-center gap-1 rounded-sm border-control border-border px-2 text-xs leading-4 tracking-label case-label " +
   "whitespace-nowrap no-underline bg-surface text-surface-fg [&:is(a,button)]:min-h-control " +
   "[&:is(a,button)]:[&:is(a,button)]:" +
   "data-[variant=primary]:bg-primary data-[variant=primary]:text-primary-fg " +
@@ -23,7 +23,7 @@ export const chipClasses =
   "data-[variant=danger]:bg-danger data-[variant=danger]:text-danger-fg " +
   "data-[variant=info]:bg-info data-[variant=info]:text-info-fg ";
 
-const chipPartClasses = "max-w-[10rem] shrink-0 overflow-hidden text-ellipsis " + chipClasses;
+const chipPartClasses = "max-w-40 shrink-0 overflow-hidden text-ellipsis " + chipClasses;
 
 export function ChipGroup({ className, classNames, ...props }: ChipGroupProps) {
   return (

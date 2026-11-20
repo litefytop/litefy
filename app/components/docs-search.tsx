@@ -143,7 +143,7 @@ export function DocsSearchTrigger({
     >
       <Search className="shrink-0 size-4" aria-hidden />
       <span className="max-sm:hidden flex-1 truncate text-left">{label}</span>
-      <kbd className="max-md:hidden inline-flex h-[1.25rem] min-w-[1.25rem] items-center justify-center rounded-sm px-1.5 py-0 backdrop-blur-md font-mono text-xs leading-none font-semibold tracking-wide">
+      <kbd className="kbd max-md:hidden">
         Ctrl K
       </kbd>
     </Button>

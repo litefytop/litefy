@@ -1,28 +1,29 @@
 ﻿import type { DialogCommandOptions, DialogProps } from "@/ui";
 import { Dialog as DialogHeadless, dialog as dialogHeadless } from "@/ui";
 import { cn, mergeSlots } from "../utils/cn";
+import { buttonVariants } from "./button";
 
 
 const rootClasses =
-  "h-dvh w-full max-w-none max-h-none m-0 border-0 bg-transparent p-0 overflow-y-auto overscroll-contain [scrollbar-width:none] text-inherit @container";
+  "h-dvh w-full max-w-none max-h-none m-0 border-0 bg-transparent p-0 overflow-y-auto overscroll-contain [scrollbar-width:none] text-inherit";
 
 const stageClasses =
   "pointer-events-none grid min-h-[calc(100dvh+1px)] w-full place-items-center";
 
 const contentClasses =
   "pointer-events-auto relative w-full my-4 max-w-[min(100%_-_--spacing(8),--spacing(112))] " +
-  "rounded-xl border-frame border-border bg-surface-raised p-4 @xl:p-6 @4xl:p-8 text-foreground text-base leading-body shadow-elevated";
+  "rounded-xl border-frame border-border bg-surface-raised p-4 text-foreground text-base leading-body shadow-elevated";
 
 const headerClasses = "mb-3 flex items-center justify-between gap-x-3";
 
 const titleClasses =
   "m-0 mr-auto min-w-0 truncate text-h3 leading-head font-strong tracking-normal case-label";
 
-const closeClasses =
-  "absolute right-4 top-4 min-h-control min-w-control cursor-pointer select-none rounded-sm " +
-  "border-frame border-border px-0 py-0 text-xs leading-4 font-label tracking-label case-label " +
-  "motion-frame active:crush " +
-  "data-[inline=true]:static data-[inline=true]:shrink-0";
+const closeClasses = cn(
+  buttonVariants.text,
+  "hover:no-underline data-[inline=true]:static data-[inline=true]:shrink-0",
+  "[&_[data-close-key]]:kbd [&_[data-close-icon]]:size-4",
+);
 
 
 const titleIconClasses =

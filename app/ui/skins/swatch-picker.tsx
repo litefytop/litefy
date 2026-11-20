@@ -7,7 +7,6 @@ import { cn } from "../utils/cn";
 const itemClasses =
   "m-1 size-6 cursor-pointer rounded-md border-hair border-border bg-(--swatch-color) shadow-frame " +
   "motion-frame " +
-  "enabled:hover:shadow-frame-hover " +
   "aria-checked:shadow-checked " +
   "disabled:opacity-50 " +
   "focus-visible:focus-ring";

@@ -90,6 +90,7 @@ export interface CheckboxOptionGroup {
 }
 export interface CheckboxGroupClassNames {
     root?: string;
+    groupLabel?: string;
     section?: string;
     label?: string;
 }
@@ -100,6 +101,7 @@ export interface CheckboxGroupProps {
     onChange?: (values: string[]) => void;
     name?: string;
     disabled?: boolean;
+    label?: React.ReactNode;
     className?: string;
     classNames?: CheckboxGroupClassNames;
     "aria-label"?: string;
@@ -114,7 +116,7 @@ export interface CheckboxGroupProps {
     };
 }
 const EMPTY_VALUES: string[] = [];
-export function CheckboxGroup({ options, value, defaultValue = EMPTY_VALUES, onChange, name, disabled, className, classNames, common, "aria-label": ariaLabel, }: CheckboxGroupProps) {
+export function CheckboxGroup({ options, value, defaultValue = EMPTY_VALUES, onChange, name, disabled, label, className, classNames, common, "aria-label": ariaLabel, }: CheckboxGroupProps) {
     const [_value, setValue] = React.useState<string[]>(defaultValue);
     const isControlled = value !== undefined;
     const value$ = isControlled ? value : _value;
@@ -160,7 +162,11 @@ export function CheckboxGroup({ options, value, defaultValue = EMPTY_VALUES, onC
         const delta = e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : -1;
         inputs[(index + delta + inputs.length) % inputs.length]?.focus();
     };
-    return (<div role="group" aria-label={ariaLabel} className={[classNames?.root, className].filter(Boolean).join(" ") || undefined} onKeyDown={handleKeyDown}>
+    const labelId = `${React.useId()}-label`;
+    return (<div role="group" aria-label={label === undefined ? ariaLabel : undefined} aria-labelledby={label === undefined ? undefined : labelId} className={[classNames?.root, className].filter(Boolean).join(" ") || undefined} onKeyDown={handleKeyDown}>
+      {label !== undefined && (<span id={labelId} className={classNames?.groupLabel}>
+          {label}
+        </span>)}
       {options.map((item) => "group" in item ? (<div className={classNames?.section} key={item.group}>
             <span className={classNames?.label}>{item.group}</span>
             {item.options.map((option) => (<Checkbox key={option.value} value={option.value} disabled={disabled || option.disabled} name={name} checked={selectedSet.has(option.value)} onCheckedChange={() => handleToggle(option.value)} lineThrough={option.lineThrough ?? common?.lineThrough} classNames={option.classNames ?? common?.classNames} styles={option.styles ?? common?.styles} indicator={option.indicator ?? common?.indicator}>

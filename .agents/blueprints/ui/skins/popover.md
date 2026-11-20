@@ -1,6 +1,11 @@
 # Popover 皮肤（app/ui/skins/popover.tsx）
 
 1. 触发件：直接叠 `buttonVariants.outline`——按钮形披露件不重述按钮框。
-2. 内容面板：`min-w-32 max-h-96` 界 + `overflow-auto`，容器零内边距——浮层最外层不设 padding，由消费者自定（圆角菜单类面板取圆角补偿带，内容类如 tabs 折叠面板自补 `p-4`）；`rounded-xl` 圆角 + `border-frame` 描边 + `surface-raised` 面 + `shadow-elevated` 浮起，`text-base` + `leading-relaxed`。
-3. 组合导出：`popoverClasses`（trigger / content）与圆角补偿带 `panelPadClass`（`p-[min(var(--radius-xl),var(--spacing)*2)]`——律见 `ui/schemes.md` 第 14 条）供 DropdownMenu、ContextMenu、Tabs 折叠面板、Cascader 复用——浮层配方一处正本。
-4. 专属令牌：无。
+2. 内容面板两层：外壳 `min-w-32 max-h-96 overflow-hidden rounded-xl border-frame border-border bg-surface-raised text-base leading-relaxed shadow-elevated` 负责封顶与圆角裁剪、自身不滚；外壳内由皮肤渲染滚动视口 `max-h-[inherit] overflow-auto` 包住 children——视口上限继承外壳档位，消费方对外壳的 `max-h-*` 覆写自动传导到滚动层。经典滚动条是方角、不随元素自身圆角裁剪，圆角与滚动同层时滚动条两端顶进圆角缺口，故圆角归外壳、滚动归视口，滚动条贴边、两端被外壳圆角裁掉。
+3. 容器零内边距：外壳 padding 计入 `max-h`，滚动视口顶满时会裁掉底部留白——内容 padding 由消费者写在视口内的内容 wrapper 上，不落外壳也不落视口。
+4. 组合导出：`popoverClasses`（trigger / content）与圆角补偿带 `panelPadClass`（`p-[min(var(--radius-xl),var(--spacing)*2)]`——律见 `ui/schemes.md` 第 12 条）供 DropdownMenu、ContextMenu、menu 子面板、Select、Combobox、MultiSelect、Cascader、FilterCombobox、FloatingToc 复用——浮层配方一处正本；`content` 为单层滚动形态（`overflow-auto` 直挂面板），供自带内容结构的 DropdownMenu / ContextMenu / Cascader 整体取用。
+5. 专属令牌：无。
+
+## 待定项
+
+- 单层滚动形态（DropdownMenu / ContextMenu / Cascader 面板）滚动条两端同样顶进圆角缺口，随各自重构接入两层结构。

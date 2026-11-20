@@ -8,7 +8,7 @@ const options = [
   { label: "React", value: "react" },
   { label: "Vue", value: "vue" },
   { label: "Svelte", value: "svelte" },
-  { label: "Solid", value: "solid", disabled: true },
+  { label: "Solid", value: "solid" },
 ];
 
 export default function Demo() {
@@ -17,7 +17,7 @@ export default function Demo() {
   return (
     <div className="flex flex-col items-center gap-3">
       <div className="flex flex-wrap gap-3">
-        <Toggle defaultChecked>
+        <Toggle defaultChecked disabled>
           <Bold />
           Bold
         </Toggle>

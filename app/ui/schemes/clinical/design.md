@@ -143,7 +143,7 @@ motion:
   duration-sm: 120ms
   duration-md: 240ms
   duration-lg: 480ms
-  ease-frame: 'cubic-bezier(0.2, 0, 0, 1)'
+  ease-frame: 'cubic-bezier(0.4, 0, 0.2, 1)'
 components:
   avatar:
     rounded: '{rounded.disc}'
@@ -219,7 +219,7 @@ well:
 1. 留白一律走 Tailwind 数字乘道（`gap-3` / `p-6`），单基础值 `--spacing` 0.25rem（4px 栅格）、含 0.5 半步精修（2px），禁止手写固定 px 与更细刻度；语义档只作文档约定不进 CSS（`xs`≡1 / `sm`≡2 / `md`≡3 / `lg`≡4 / `xl`≡6 / `2xl`≡8），机制值（`px-control-x`、`py-snug` 这类反解档）另计；兄弟间隙基线 1rem（`gap-4`）。
 2. 页面留白三角色，互不混用：内联留白（顶栏 / 侧栏 / `main`）`px-4` → `md:px-6` → `lg:px-8`；区块节奏 `py-12` → `md:py-16` → `lg:py-20`（同一组数值另有 `--pad-block` 3rem / 4rem / 5rem 供少数内联样式读取，必须同值）；卡面内边距读 `--padding-panel` 1.5rem 恒值。
 3. `main` 是 container 不是 block；方案不给页面级裸元素挂全局样式，留白由 markup 自己写数字、按断点给档。
-4. Layout 断点三档：40rem / 48rem / 64rem；长文栏自己的 80rem 分界线归 Toc，不占三档。容器查询断点按用途归两族：内容内边距族 36rem / 56rem，紧凑布局族 28rem。新用途先归族，不发明新值。
+4. Layout 断点三档：40rem / 48rem / 64rem；长文栏自己的 80rem 分界线归 Toc，不占三档。容器查询断点按用途归族：紧凑布局族 28rem。新用途先归族，不发明新值。
 5. 尺寸与布局：优先 max-width 自适应，内容列 `margin-inline: auto`；宽度与高度走 `--spacing` 数字乘道、随案缩放，`--container-*` 只任 `@container` 断点不作宽度 utility，不设跨案恒定盒、不写 rem 定值（唯一 em 例外是正文行宽），同一元素只挂一枚宽度 utility；定档件取 16n 单位、浮层宽度对视口负责，六条车道与选道顺序见 delivery `references/skin-rules.md` 第 16 条；浮层自带默认尺寸且不随内容跳动；自由尺寸走内联覆盖。
 6. 命中区：`--height-field`（输入类带框壳）与 `--height-control`（其余一切可交互盒）同值 2.75rem（44px），语义分开为的是两类密度能各自调整。三条车道、外扩互压 12px 判据、连体组内层让位、输入壳热区细则见 ui-rules 技能 `operable.md` 8–12、23–25 条；禁止为组件开 `data-size` 尺寸阶梯。
 
@@ -230,27 +230,27 @@ well:
 3. 浮层（Dialog / Drawer / Menu / Popover / Tooltip / 命令面板）一律带框：`border-frame` 描边 + `surface-raised` 背景，无阴影派不出现；轻提示（Tooltip / Toast）同样只有描边（`shadow-hint` 答 `none`），Toast 卡面为语义浅底（状态块规则）。
 4. 无边框宿主上的操作控件必须自带边界：控件默认形态「填充或文字 + 1px 边框」，承重面不裸放。容器自带边界宿主复位；业务侧出口 `data-border="none | solid"`。
 5. 焦点（机制值，`index.css` 的 `--focus-*`）：2px `primary` 实线 outline、offset 2px、无阴影 glow；invalid / danger 转 `danger-fg` 同形。方案不设全局 `:focus-visible` 兜底——每个可聚焦件由皮肤显式挂 `focus-visible:focus-ring`（danger 挂 `focus-ring-danger`），内层件不挂即无环；环是方案层机制，皮肤只挂角色类、不自绘样式。焦点环禁止消失，允许换形态，不得只去掉 outline 而不给替代。
-6. 滚动条：默认 thin 细滚动条，不另造形态。
+6. 滚动条：全方案统一 6px 常显经典滚动条——`::-webkit-scrollbar` 定宽、thumb 答 `var(--border)`、track 与 corner 透明、箭头按钮隐藏；Firefox 车道（`@-moz-document`）标准属性答 `thin` + `var(--border)`。标准属性不得出现在 Chromium——非初始值会丢弃 webkit 定档、退化为覆盖式滚动条自动隐藏；组件层一律不设 scrollbar 样式。
 
 ## Motion
 
 1. 动效人格：克制、利落、无位移。允许的动作只有颜色换档与淡入淡出（透明度 0↔100）、折叠展开；禁止弹跳、回弹、速度感应、位移抬升与戏剧化登场（格子波形、摇曳类不进本方案）。`lift` 在本车道位移为 0——悬停反馈只换色，不挪动。
-2. 时长三档住 `--duration-*`（`sm` 120ms / `md` 240ms / `lg` 480ms），微交互默认档 `--transition-duration-frame` 120ms（`motion-frame` 束即读它）；缓动统一 `ease-frame` `cubic-bezier(0.2, 0, 0, 1)`。禁止裸时长与裸缓动（`duration-150`、`ease-[ease]` 这类绕档写法不出现——它们同时绕过减动效契约）。
+2. 时长三档住 `--duration-*`（`sm` 120ms / `md` 240ms / `lg` 480ms），微交互默认档 `--transition-duration-frame` 120ms（`motion-frame` 束即读它）；缓动统一 `ease-frame` `cubic-bezier(0.4, 0, 0.2, 1)`。禁止裸时长与裸缓动（`duration-150`、`ease-[ease]` 这类绕档写法不出现——它们同时绕过减动效契约）。
 3. 按压唯一入口是 `crush` 工具类：位移 0 + `brightness(0.95)` 压暗；禁止手写 `translate-(--translate-crush)` 丢掉压暗，禁止位移代替换色。
 4. 悬停反馈只换色：可点条目悬停吃 `accent` 对，品牌件悬停吃 `primary-accent` 深化档；不升阴影档（没有阴影可升）、不位移。
 5. 减动效契约：`prefers-reduced-motion: reduce` 或 `data-motion="reduce"` 时全部时长令牌清零、CSS 动画压到 1ms；JS 侧动效读 `useMotionPreference`。任何绕过令牌的时长都等于绕过契约。
-6. 透明度豁免清单（全方案仅此五条，弱化态不在其中）：`border` 令牌自身的 14% 洗边、禁用契约的 50%、悬停显现过渡的 0↔100（tooltip、toast 关闭钮、字段提示）、遮罩渐隐（scroll-shadow 的画布色渐变）、图表数据编码的透明度（`fill-opacity` 与 donut / radar 的降权 dim——图表以透明度叠色为媒介）。其余弱化态一律 `surface-fg` 文字色或图形差异（划线、换色）表达，不用 opacity。
+6. 透明度豁免清单（全方案仅此六条，其余弱化态不在其中）：`border` 令牌自身的 14% 洗边、禁用契约的 50%、悬停显现过渡的 0↔100（tooltip、toast 关闭钮、字段提示）、遮罩渐隐（scroll-shadow 的画布色渐变）、图表数据编码的透明度（`fill-opacity` 与 donut / radar 的降权 dim——图表以透明度叠色为媒介）、日历外月日期文字的 50% 透明（`text-foreground/50` 文字色 alpha 而非元素 opacity，对画布实测约 3.7:1，用户接受取舍 2026-11-20）。其余弱化态一律 `surface-fg` 文字色或图形差异（划线、换色）表达，不用 opacity。
 
 ## Shapes
 
 1. **全直角是唯一形状答案**：`@theme` 用 0px 回答半径阶梯每一档（含 `pill` / `disc` / `swipe`），共享代码写来的 `rounded-lg` 在这里得到直角而不是不生成——切换方案时改变的是观感而不是丢失。皮肤禁止写 `rounded-full`（静态圆不读令牌，谁也答不成 0）——圆点、胶囊、圆钮一律 `rounded-pill` / `rounded-disc`（本方案答 0px，得直角），本方案无圆形。
 2. 轨道族（滑块 / 进度条 / 开关轨）：矩形直角、无描边、纯色块，未填充底 `surface`、填充 `primary`；轨道一律连续条，格子形态不进本方案——输入滑块的反馈靠值气泡与按压，不靠格子与速度波。
-3. 连体控制组（拼接输入 + 按钮、Segment 条）内角自然为 0，端帽无需处理。
+3. 连体控制组（拼接输入 + 按钮）内角自然为 0，端帽无需处理。
 
 ## Components
 
 1. 组件不拥有颜色与尺寸，只挑档位：颜色取 `colors` 语义名，间距取数字尺度，命中区按 44。数值唯一权威是文件头 YAML；逐属性 API 与变体归组件文档。已迁移组件的角色与槽位见 `.agents/blueprints/ui/skins/<name>.md`，此处不再重述。
-2. Avatar 专属令牌：`disc`（`--radius-disc`，答 0px）。SwipeActions 专属令牌：`--radius-swipe`，答 0px（全直角宪法管到每一枚半径令牌）。
+2. Avatar 专属令牌：`disc`（`--radius-disc`，答 0px）。SwipeActions 行体为方角轨道面（同 Banner），不用圆角（全直角宪法）。
 3. 未迁移组件档位短条（随各组件重构迁入其皮肤蓝图）：
 
    1. Input / Select 触发器 / 字段壳：`background` 背景色 + `foreground` 前景色，1px `border` 描边 + `--height-field` 下限，无阴影；聚焦 = 描边转 `primary` 2px 或外壳换 `accent` 填充，`invalid` 转 `danger-fg`。
@@ -267,7 +267,7 @@ well:
 2. 禁阴影：`shadow-sm|md|lg|xl|2xl`、`drop-shadow-*`、任何 blur ≥ 0 的 box-shadow；唯一豁免 `shadow-checked` 扁平双环（blur 0、四案同答）。层级只靠边界线、表面阶梯与留白。
 3. 焦点环原样保留——它是无障碍的下限；禁止 `focus:outline-none` 而不给替代描边。
 4. 品牌色稀缺：一屏一个主操作，`primary` 禁止大面积铺面；状态色只用于状态，不当装饰、不当层级。暗档禁止白字压 sky-600 / sky-700 一类中亮蓝（4.12 / 5.34 的 700 虽过 4.5 但描边不过 3:1——品牌统一走 sky-500 + 深字）。
-5. 层级禁止表达成透明度调深浅 / 灰字弱化；非当前态的弱化（日历外月、图例隐藏、降权图标）用 `surface-fg` 文字色或图形差异表达，不用 opacity——透明度只出现在 Motion §6 的豁免清单里。
+5. 层级禁止表达成透明度调深浅 / 灰字弱化；非当前态的弱化（图例隐藏、降权图标）用 `surface-fg` 文字色或图形差异表达，不用 opacity——透明度只出现在 Motion §6 的豁免清单里（日历外月见其第六条）。
 6. 禁手写焦点 / 禁用 / hover / 按压样式：交互态归方案层；禁悬停位移与升档阴影（无阴影可升）。
 7. 禁灰边框（`border-gray-*` / `border-slate-*` / `border-neutral-*`）：边框一律读 `border` 令牌。
 8. 通用外观禁令见 delivery `references/skin-rules.md`，排版见 `references/typography.md`，动效见 `references/motion.md`，装饰见 `references/decoration.md`，无障碍下限见 ui-rules 技能，此处不重述。

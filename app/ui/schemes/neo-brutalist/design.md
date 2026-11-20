@@ -158,7 +158,7 @@ components:
   avatar:
     rounded: '{rounded.disc}'
 well:
-  color: '{colors.background}'
+  color: '{colors.surface}'
   padding: 0px
   shadow: none
   dark-shadow: none
@@ -257,7 +257,7 @@ well:
 2. `--shadow-*` 默认命名空间被整档删除，`shadow-sm|md|lg|xl|2xl` 与 `drop-shadow-*` 在本车道根本不生成。透明背景色角色要取消上一档必须 `shadow-none md:shadow-none` **两条都写**（`cn` 只取消同前缀的类）。
 3. **边框与阴影成套**（与 minimal 的「二选一」相反）：凡承重的面同带 `border-2 md:border-4 border-border` 与一档硬阴影；半档表面（行内状态标签）只描边、不承重，没有阴影。容器自带边界宿主复位；业务侧出口只有 `data-border="none | solid"`。例外：轻提示（Tooltip / Toast）是不承重的浮层，只有描边、没有阴影（`shadow-hint` 答 `none`）。
 4. 焦点：2px 硬描边 outline（`--focus-outline: 2px solid var(--foreground)`，offset 2px）+ 抬升一档阴影，**禁止发光与柔和阴影**（`--focus-glow: none`）。方案不设全局 `:focus-visible` 兜底——每个可聚焦件由皮肤显式挂 `focus-visible:focus-ring` 或由外壳洪泛自答，内层件不挂即无环。焦点环禁止消失，允许换形态（背景色洪泛），不得只去掉 outline 而不给替代。
-5. 滚动条：硬边方块——12px 宽、`foreground` 色滑块、2px 背景色描边、无圆角（`-webkit-` 专有属性：标准 thin scrollbar 会被渲染成圆头胶囊）。
+5. 滚动条：硬边方块——12px 宽、`foreground` 色滑块、2px 背景色描边、无圆角（`-webkit-` 专有属性：标准 thin scrollbar 会被渲染成圆头胶囊）；箭头按钮隐藏、corner 透明；Firefox 车道（`@-moz-document`）标准属性答 `thin` + `var(--foreground)`。标准属性不得出现在 Chromium——非初始值会丢弃 webkit 定档、退化为覆盖式滚动条自动隐藏；组件层一律不设 scrollbar 样式。
 6. 暗档：深度仍由描边与硬阴影读出，`--foreground` 转白后阴影自动跟着反转（阴影色就是 `var(--foreground)`），不引入任何发光。
 
 ## Shapes
@@ -285,18 +285,18 @@ well:
 8. 未迁移组件档位短条（随各组件重构迁入其皮肤蓝图）：
 
    1. Card：`rounded-lg` + `border-frame` + `p-panel` + `background`/`foreground` + `shadow-block`；可点卡再接 `hover:lift` / `active:crush` / `hover:shadow-block-hover`；静态卡禁一切 hover 动效。
-   2. 输入族：外壳承重（边框 + 硬阴影 + `min-h-control`），内层输入元素透明背景、`border-0 outline-none`；聚焦 = 外壳背景色整壳换 `accent` 配 `accent-fg`；`invalid` 换 `danger`，不复用默认焦点。
+   2. 输入族：外壳承重（边框 + 硬阴影 + `min-h-control`），内层输入元素 `bg-well` lime 井底、`border-0 outline-none`；聚焦 = 外壳背景色整壳换 `accent` 配 `accent-fg`；`invalid` 换 `danger`，不复用默认焦点。
    3. 行内状态标签：半档底色不承重、无阴影；基准底色 `surface` 配 `surface-fg`，primary 档底色 `--primary`，状态变体填语义背景色档（info / danger 深块的文字取 `background`（日白夜黑），success / warning 亮块配恒黑 `accent-fg`）。
 
-9. SwipeActions 专属令牌：`--radius-swipe`，答 `0px`（全直角宪法管到每一枚半径令牌）。
-10. 组容器井（well）：关井——`--padding-well` 0、`--color-well` 答 `background`、`--shadow-well` `none`，输入族观感维持黑白承重现状。偏离统一井底（`surface` lime）的原因：lime 井会破 6 / 3 / 1 面积预算，lime 仍归 Hero、侧栏、表头与提示。
+9. SwipeActions 行体为方角轨道面（同 Banner），不用圆角（全直角宪法）。
+10. 组容器井（well）：`--padding-well` 0、`--color-well` 答 `surface`（lime 色井）、`--shadow-well` `none`——字段族井底与 Segment 轨道平涂 lime、全直角、无拟态阴影，井读法退化为「色井贴边的扁平字段」；浮起药丸读 `background` 与 lime 轨道分离（取值以皮肤蓝图 `ui/skins/segment.md` 为准）。
 
 ## Do / Don't（方案语言边界）
 
 1. 禁圆角：任何非零半径；本方案皮肤只写 `rounded-none` 与 `rounded-pill`（后者在本方案答 0px），禁止 `rounded-full` 与任何字面圆角值。
 2. 禁模糊阴影：`shadow-sm|md|lg|xl|2xl`、`drop-shadow-*`、任何 blur > 0 的自定义阴影。
 3. 阴影一致性：可交互组件的承载面必有阴影（`shadow-frame` 系——checkbox / radio / switch 的控制面、upload 投放区、分页数字盒、色样、独立 List 框等）；纯展示件可不带；`text` 变体按钮豁免（不加阴影与动效）。浮层族（popover / dialog / drawer / menu / select 面板）走 `shadow-elevated`，轻提示族 `shadow-hint` 本方案答 none。
-4. 禁灰边框（`border-gray-*` / `border-slate-*` / `border-neutral-*`）与灰正文——弱化的文字用前景色深档，不用中间灰。
+4. 禁灰边框（`border-gray-*` / `border-slate-*` / `border-neutral-*`）与灰正文——弱化的文字用前景色深档，不用中间灰。唯一例外（用户定 2026-11-20）：日历外月日期文字 50% 透明（`text-foreground/50`，全案皮肤约定，见 schemes.md 蓝图第 18 条），为用户接受取舍。
 5. 禁 tint 色档（`color-mix(… transparent)`、`bg-primary/10`）；禁颜色参与过渡——`transition-all` 与任何把 color / background / opacity 列入的 transition 列表；禁止用 opacity 过渡或半透明染色代替背景色硬切。
 6. 禁柔化缓动：`bounce`、`elastic`、spring 曲线。
 7. 禁把填充色当正文字色（正文级彩色只有语义四色）；禁止前景色与档位错配——黑色前景压日档深填充只有 3.56–4.26（不过 4.5），白色前景压夜档亮填充同理。

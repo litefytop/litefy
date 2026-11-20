@@ -47,12 +47,11 @@ description: 悬浮于视口侧缘的目录指示器——横条组悬停或点�
 
 ### FloatingTocContent
 
-展开的面板（原生 popover，锚定在触发器旁）。
+展开的面板（原生 popover，悬停展开时直接覆盖横条位置，交互只落在菜单条目上）。
 
 | 属性          | 类型                            | 描述                            |
 | ----------- | ----------------------------- | ----------------------------- |
-| `offset`    | `number`                      | 与触发器的间距（px），默认 `8`            |
-| `placement` | `FloatingPlacement`           | 覆盖默认弹出方向，默认 随根 `placement` 推导 |
+| `placement` | `FloatingPlacement`           | 覆盖默认弹出位置，默认随根 `placement` 推导（外缘与触发器外缘齐平、盖住横条） |
 | `...props`  | `React.ComponentProps<"div">` | 支持所有原生 `div` 属性               |
 
 ### FloatingTocItem

@@ -2,7 +2,7 @@
 import type { CascaderProps } from "@/ui";
 import { cn, mergeSlots } from "../utils/cn";
 import { listClasses, listViewportClasses } from "./list";
-import { popoverClasses } from "./popover";
+import { panelPadClass, popoverClasses } from "./popover";
 
 
 const rootClasses =
@@ -18,13 +18,13 @@ const triggerClasses =
 
 const chevronClasses = "size-3.5 shrink-0 text-surface-fg";
 
-const menuClasses = popoverClasses.content;
+const menuClasses = cn(popoverClasses.content, panelPadClass);
 
 const optionClasses = "flex items-center justify-between gap-x-2";
 
 const listClassesInPanel = {
   ...listClasses,
-  viewport: cn(listViewportClasses, "w-full max-h-[14rem]"),
+  viewport: cn(listViewportClasses, "w-full max-h-56"),
 };
 
 export function Cascader({ className, classNames, ...props }: CascaderProps) {

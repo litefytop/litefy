@@ -30,11 +30,13 @@ export function PickerContent({ className, anchorName, matchWidth = true, ref, .
 }
 export interface PickerClassNames {
     input?: string;
+    leading?: string;
     trailing?: string;
     popover?: string;
 }
 export interface PickerStyles {
     input?: React.CSSProperties;
+    leading?: React.CSSProperties;
     trailing?: React.CSSProperties;
     popover?: React.CSSProperties;
 }
@@ -46,6 +48,7 @@ export interface PickerProps extends Omit<PickerInputProps, "value" | "defaultVa
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean) => void;
+    leading?: React.ReactNode;
     trailing?: React.ReactNode;
     children?: React.ReactNode;
     panelRef?: React.Ref<HTMLDivElement>;
@@ -53,7 +56,7 @@ export interface PickerProps extends Omit<PickerInputProps, "value" | "defaultVa
     classNames?: PickerClassNames;
     styles?: PickerStyles;
 }
-export function Picker({ className, value: controlledValue, defaultValue = "", onValueChange, open: controlledOpen, defaultOpen = false, onOpenChange, trailing, children, panelRef, matchPanelWidth = true, classNames, styles, style, onClick: onClickProp, onKeyDown: onKeyDownProp, ...props }: PickerProps) {
+export function Picker({ className, value: controlledValue, defaultValue = "", onValueChange, open: controlledOpen, defaultOpen = false, onOpenChange, leading, trailing, children, panelRef, matchPanelWidth = true, classNames, styles, style, onClick: onClickProp, onKeyDown: onKeyDownProp, "aria-invalid": ariaInvalid, ...props }: PickerProps) {
     const anchorName = `--picker-${React.useId().replaceAll(/[^a-zA-Z0-9_-]/gu, "")}`;
     const panelId = `${anchorName}-panel`;
     const popoverRef = useMergedPanelRef<HTMLDivElement>(panelRef);
@@ -80,8 +83,9 @@ export function Picker({ className, value: controlledValue, defaultValue = "", o
         onValueChange?.(e.target.value);
     };
     return (<>
-      <PickerRoot anchorName={anchorName} style={style} className={className} data-open={open || undefined}>
-        <PickerInput {...props} style={styles?.input} value={value} aria-expanded={open} aria-controls={panelId} onClick={(e) => {
+      <PickerRoot anchorName={anchorName} style={style} className={className} data-open={open || undefined} data-invalid={ariaInvalid || undefined}>
+        {leading ? (<span className={classNames?.leading} style={styles?.leading}>{leading}</span>) : null}
+        <PickerInput {...props} aria-invalid={ariaInvalid} style={styles?.input} value={value} aria-expanded={open} aria-controls={panelId} onClick={(e) => {
             onClickProp?.(e);
             if (!e.defaultPrevented)
                 handleOpenChange(!open);

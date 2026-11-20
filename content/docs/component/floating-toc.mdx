@@ -47,13 +47,12 @@ A single bar indicator (`<span aria-hidden>`).
 
 ### FloatingTocContent
 
-The expanded panel (a native popover anchored beside the trigger).
+The expanded panel (a native popover that, when expanded on hover, directly covers the bars — interaction lands on the menu items only).
 
-| Prop        | Type                          | Description                                                                          |
-| ----------- | ----------------------------- | ------------------------------------------------------------------------------------ |
-| `offset`    | `number`                      | Distance from the trigger (px), defaults to `8`                                      |
-| `placement` | `FloatingPlacement`           | Overrides the default popup direction, defaults to Derived from the root `placement` |
-| `...props`  | `React.ComponentProps<"div">` | Supports all native `div` props                                                      |
+| Prop        | Type                          | Description                                                                              |
+| ----------- | ----------------------------- | ---------------------------------------------------------------------------------------- |
+| `placement` | `FloatingPlacement`           | Overrides the default popup position; derived from the root `placement` by default (outer edges flush with the trigger, covering the bars) |
+| `...props`  | `React.ComponentProps<"div">` | Supports all native `div` props                                                          |
 
 ### FloatingTocItem
 

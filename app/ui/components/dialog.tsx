@@ -32,6 +32,7 @@ export interface DialogProps extends Omit<DialogContentProps, "className" | "sty
     title?: React.ReactNode;
     onOpenChange?: (open: boolean) => void;
     onBackdropClick?: (e: React.MouseEvent<HTMLDialogElement>) => void;
+    close?: "icon" | "kbd" | null;
     closeLabel?: string;
     className?: string;
     style?: React.CSSProperties;
@@ -53,7 +54,7 @@ export interface DialogProps extends Omit<DialogContentProps, "className" | "sty
         titleIcon?: React.CSSProperties;
     };
 }
-export function Dialog({ className, style, classNames, styles, title, children, open, onOpenChange, onBackdropClick, closeLabel = "Close (ESC)", "aria-label": ariaLabel, ...props }: DialogProps) {
+export function Dialog({ className, style, classNames, styles, title, children, open, onOpenChange, onBackdropClick, close, closeLabel = "Close", "aria-label": ariaLabel, ...props }: DialogProps) {
     const ref = React.useRef<HTMLDialogElement>(null);
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (!open)
@@ -78,9 +79,14 @@ export function Dialog({ className, style, classNames, styles, title, children, 
         e.preventDefault();
         onOpenChange?.(false);
     };
-    const renderCloseButton = () => (<DialogClose data-inline="true" className={classNames?.close} style={styles?.close} aria-label={closeLabel} onClick={() => onOpenChange?.(false)}>
-      ESC
-    </DialogClose>);
+    const renderCloseButton = () => {
+        if (!close)
+            return null;
+        return (<DialogClose data-inline="true" className={classNames?.close} style={styles?.close} aria-label={closeLabel} onClick={() => onOpenChange?.(false)}>
+        {close === "icon" ? <X data-close-icon/> : <kbd data-close-key>ESC</kbd>}
+      </DialogClose>);
+    };
+    const showHeader = (title !== undefined && title !== null) || (close !== undefined && close !== null);
     return (<DialogRoot ref={ref} aria-label={ariaLabel} data-open={open || undefined} onKeyDown={handleKeyDown} onCancel={handleCancel} onClose={handleNativeClose} onClick={(e) => {
             if (e.target === e.currentTarget) {
                 onOpenChange?.(false);
@@ -89,10 +95,10 @@ export function Dialog({ className, style, classNames, styles, title, children, 
         }} className={className || classNames?.root} style={style}>
       <DialogStage style={styles?.stage} className={classNames?.stage}>
         <DialogContent {...props} style={styles?.content} className={classNames?.content}>
-          <div className={classNames?.header} style={styles?.header}>
-            {title !== null && title !== undefined && (<h3 className={classNames?.title} style={styles?.title}>{title}</h3>)}
+          {showHeader && (<div className={classNames?.header} style={styles?.header}>
+            {title !== undefined && title !== null && (<h3 className={classNames?.title} style={styles?.title}>{title}</h3>)}
             {renderCloseButton()}
-          </div>
+          </div>)}
           {children}
         </DialogContent>
       </DialogStage>
@@ -134,7 +140,7 @@ function renderCommandDialog(options: DialogCommandOptions) {
           {commandIcons[options.type]}
           {options.title}
         </span>) : (options.title)) : undefined;
-        return (<Dialog open={open} onOpenChange={setOpen} {...options.props} title={titleNode}>
+        return (<Dialog open={open} onOpenChange={setOpen} close="icon" {...options.props} title={titleNode}>
         <div>{options.children}</div>
       </Dialog>);
     }

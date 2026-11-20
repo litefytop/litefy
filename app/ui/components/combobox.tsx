@@ -2,6 +2,7 @@
 import * as React from "react";
 import { List, type ListClassNames } from "./list";
 import { Picker } from "./picker";
+import { Search } from "./icons";
 import { useCombobox } from "../utils/use-combobox";
 import { useRemotePagination } from "../utils/use-remote-pagination";
 export type ComboboxFetcher = (params: {
@@ -23,21 +24,25 @@ export interface ComboboxProps extends Omit<React.ComponentProps<"input">, "valu
     empty?: React.ReactNode;
     pageSize?: number;
     debounceMs?: number;
+    leading?: React.ReactNode;
     trailing?: React.ReactNode;
     className?: string;
     classNames?: {
         panel?: string;
         item?: string;
         input?: string;
+        leading?: string;
         trailing?: string;
         list?: ListClassNames;
     };
     styles?: {
         panel?: React.CSSProperties;
         item?: React.CSSProperties;
+        leading?: React.CSSProperties;
     };
 }
-export function Combobox({ options, fetcher, value: controlledValue, defaultValue = "", onValueChange, onCommit, invalid, empty, pageSize = 20, debounceMs = 300, trailing, onCompositionStart: onCompositionStartProp, onCompositionEnd: onCompositionEndProp, onKeyDown: onKeyDownProp, className, classNames, styles, ...props }: ComboboxProps) {
+export function Combobox({ options, fetcher, value: controlledValue, defaultValue = "", onValueChange, onCommit, invalid, empty, pageSize = 20, debounceMs = 300, leading, trailing, onCompositionStart: onCompositionStartProp, onCompositionEnd: onCompositionEndProp, onKeyDown: onKeyDownProp, className, classNames, styles, ...props }: ComboboxProps) {
+    const defaultLeading = leading === undefined ? <Search aria-hidden="true" /> : leading;
     const isControlled = controlledValue !== undefined;
     const [uncontrolledValue, setValue] = React.useState(defaultValue);
     const [open, setOpen] = React.useState(false);
@@ -120,11 +125,11 @@ export function Combobox({ options, fetcher, value: controlledValue, defaultValu
                 onValueChange?.(finalText);
             }
             onCompositionEndProp?.(e);
-        }} aria-invalid={invalid || undefined} trailing={trailing} onKeyDown={(e) => {
+        }} aria-invalid={invalid || undefined} leading={defaultLeading} trailing={trailing} onKeyDown={(e) => {
             onKeyDownProp?.(e);
             if (!e.defaultPrevented)
                 handleKeyDown(e);
-        }} className={className} classNames={{ input: classNames?.input, trailing: classNames?.trailing, popover: classNames?.panel }} styles={{ popover: styles?.panel }}>
+        }} className={className} classNames={{ leading: classNames?.leading, input: classNames?.input, trailing: classNames?.trailing, popover: classNames?.panel }} styles={{ leading: styles?.leading, popover: styles?.panel }}>
       <List highlightIndex={highlightIndex} onHighlightChange={setHighlightIndex} items={items} renderItem={(item) => item} getKey={(item, index) => `${item}-${index}`} empty={emptyNode} onSelect={commit} onScrollBottom={fetcher
             ? () => {
                 if (remote.hasMore && !remote.loading)

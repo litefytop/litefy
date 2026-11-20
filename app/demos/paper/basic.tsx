@@ -5,7 +5,7 @@ import { Paper } from "@/ui/skins";
 export default function Demo() {
   return (
     <div className="flex w-full justify-center overflow-x-auto py-2">
-      <Paper format="a5">
+      <Paper>
         <div className="typography flex max-w-none flex-col gap-2">
           <h3>Invoice #2048</h3>
           <p>

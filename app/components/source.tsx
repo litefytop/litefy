@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
 import registry from "../../packages/cli/registry.json";
 import { FileCode, Folder, ChevronLeft } from "@/components/icons";
-import { i18n } from "@/lib/i18n";
+import { siteDefaultLanguage } from "@/lib/i18n";
 import { CodeStage } from "./docs-codeblock";
 import { useSiteSkin } from "./site-skin";
 
@@ -63,7 +63,7 @@ interface FileSourceProps {
 
 export function FileSource({ paths, className }: FileSourceProps) {
   const { Button, cn } = useSiteSkin();
-  const zh = (useParams<{ lang?: string }>().lang ?? i18n.defaultLanguage) === "zh";
+  const zh = (useParams<{ lang?: string }>().lang ?? siteDefaultLanguage) === "zh";
   const [picked, setPicked] = useState("");
   const [code, setCode] = useState("");
   const codeRef = useRef("");

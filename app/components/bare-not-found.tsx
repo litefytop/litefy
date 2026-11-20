@@ -8,7 +8,7 @@ export function BareNotFound() {
     <div
       className="flex flex-col items-center justify-center gap-4 px-4 md:px-6 lg:px-8 min-h-screen bg-background text-center text-foreground"
     >
-      <h1 className="m-0 scroll-mt-20 py-4 mb-4 text-[2.25rem] leading-10 tracking-tight font-bold sm:text-[3rem] sm:leading-none lg:text-[3.75rem] lg:leading-none">404</h1>
+      <h1 className="m-0 scroll-mt-20 py-4 mb-4 text-36 leading-10 tracking-tight font-bold sm:text-48 sm:leading-none lg:text-60 lg:leading-none">404</h1>
       <p className="m-0 scroll-mt-20 text-surface-fg text-base leading-6 sm:text-lg sm:leading-7">This style template does not exist.</p>
       <Link to="/" className={buttonVariants.outline}>
         Back to Docs

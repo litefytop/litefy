@@ -9,7 +9,7 @@ description: 通用数据表格，表头可点击排序（本地数据），也�
 
 ## 用法
 
-数据驱动表格：传 `data` 与 `columns`，`sortable: true` 开启排序，`selectable` 开启行选择；窄容器横向滚动，不换形。
+数据驱动表格：传 `data` 与 `columns`，`sortable: true` 开启排序，`selectable` 开启行选择；窄容器列宽按权重压缩，每列 64px 下限兜底，超出横向滚动。
 
 <ComponentPreview name="table-basic" />
 
@@ -21,9 +21,33 @@ description: 通用数据表格，表头可点击排序（本地数据），也�
 
 ### 行选择
 
-`selectable` 开启行选择：列首复选框、页内全选三态，选中行后表头尾出批量操作行；选择键由 `rowKey` 提供，跨页选中保留。
+`selectable` 开启行选择：列首是宽与行高一致的 44px 方形复选框列，页内全选三态；选择键由 `rowKey` 提供，跨页选中保留。点击行内任意区域也会切换选中（复选框、链接、按钮等交互元素内的点击除外）；复选框仍是键盘通路。表格不渲染第二行——选中数与操作（如「已选 3」+ 清除按钮）写在表格下方 [Pagination](/zh/docs/component/pagination) 的 `summary` 槽里。
 
 <ComponentPreview name="table-selectable" />
+
+### 斑马纹
+
+`zebra` 按数据顺序为奇数行加底色——排序与虚拟滚动下条纹位置始终正确。
+
+<ComponentPreview name="table-zebra" />
+
+### 虚拟滚动
+
+`virtual` 只渲染可视窗口，应对大数据量；`rowHeight` 必须与实际行距一致（默认 `45`：44px 控件档行高 + 1px 行分隔）。行内容须保持单行——换行会改变行高、导致窗口错位。滚动发生在表体内部——x 向滚动在条根，表体只滚 y、滚动条也在表体；滚动条外观由全局方案统一定义并常显，组件不干预。
+
+<ComponentPreview name="table-virtual" />
+
+### 列拖动
+
+`columnDrag` 让表头可拖拽调序；选择列恒居首位、不可拖。指针通路：把表头拖到另一列上。键盘通路：聚焦手柄按钮，`Enter` 拾起，方向键移动，`Enter` 落下，`Escape` 取消。顺序用 `columnOrder` + `onColumnsChange` 受控，或 `defaultColumnOrder` 非受控；不在顺序中的 key 按原相对顺序排在尾部。
+
+<ComponentPreview name="table-column-drag" />
+
+### 单元格折叠
+
+`collapse: true` 的列把单元格内容折叠为单行省略，悬停显示 `title` 原生提示（仅截断时出现），点击完全展开且不回收。首渲染零抖动；展开改变行高，与 `virtual` 定高约束互斥，虚拟表格不要对可展开行开启。折叠格的类名可经 `classNames.cellCollapse` 覆盖。
+
+<ComponentPreview name="table-collapse" />
 
 ### 筛选属于业务层
 
@@ -47,19 +71,24 @@ description: 通用数据表格，表头可点击排序（本地数据），也�
 | `initialSortDirection` | `"asc" \| "desc"`                                                                                                                                                                                               | 首次点击某列使用的方向，默认 `"asc"`                                                      |
 | `empty`                | `React.ReactNode`                                                                                                                                                                                               | 数据为空时渲染的内容，默认 `"No data"`                                                   |
 | `caption`              | `React.ReactNode`                                                                                                                                                                                               | 表格说明，渲染为表头 `table` 的 `<caption>`（表体不重复），给表格一个可访问名称来源                          |
-| `selectable`           | `boolean`                                                                                                                                                                                                       | 行选择开关：列首复选框、页内全选三态、批量操作行，默认 `false`                                         |
+| `selectable`           | `boolean`                                                                                                                                                                                                       | 行选择开关：44px 方形复选框列、页内全选三态，默认 `false`                                        |
 | `rowKey`               | `(row: T) => string`                                                                                                                                                                                            | 行选择键提取器；缺省回退 `getKey` / 下标                                                  |
 | `selected`             | `string[]`                                                                                                                                                                                                      | 选中键集合（受控）                                                                   |
 | `defaultSelected`      | `string[]`                                                                                                                                                                                                      | 初始选中键（非受控），默认 `[]`                                                          |
 | `onSelectionChange`    | `(selected: string[]) => void`                                                                                                                                                                                  | 选中集合变化回调（两种模式均触发）                                                           |
+| `zebra`                | `boolean`                                                                                                                                                                                                       | 按数据顺序为奇数行加底色，默认 `false`                                                       |
+| `virtual`              | `boolean`                                                                                                                                                                                                       | 只渲染可视窗口行，默认 `false`                                                              |
+| `rowHeight`            | `number`                                                                                                                                                                                                        | 虚拟滚动使用的行距；必须与实际渲染行高一致，默认 `45`（44px 控件档行高 + 1px 行分隔）                          |
+| `columnDrag`           | `boolean`                                                                                                                                                                                                       | 表头拖拽调序，带可键盘操作的手柄，默认 `false`                                                     |
+| `columnOrder`          | `string[]`                                                                                                                                                                                                      | 列 key 顺序（受控）；顺序外的 key 按原相对顺序排尾                                                |
+| `defaultColumnOrder`   | `string[]`                                                                                                                                                                                                      | 初始列顺序（非受控），默认 `[]`                                                              |
+| `onColumnsChange`      | `(keys: string[]) => void`                                                                                                                                                                                      | 落下与每次键盘移动时回调（两种模式均触发）                                                         |
+| `dragHandleLabel`      | `string`                                                                                                                                                                                                        | 拖动手柄的无障碍标签，默认 `"Reorder column"`                                               |
 | `loading`              | `boolean`                                                                                                                                                                                                       | 空态文案切为 Loading，不接管选择，默认 `false`                                             |
 | `selectAllLabel`       | `string`                                                                                                                                                                                                        | 全选复选框的无障碍标签，默认 `"Select all on this page"`                                  |
 | `rowLabel`             | `string`                                                                                                                                                                                                        | 行复选框的无障碍标签，默认 `"Select this row"`                                           |
-| `bulkActions`          | `React.ReactNode`                                                                                                                                                                                               | 批量行中的批量操作节点                                                                 |
-| `selectedLabel`        | `string`                                                                                                                                                                                                        | 批量行计数后的标签文案，默认 `"selected"`                                                 |
-| `clearLabel`           | `string`                                                                                                                                                                                                        | 批量行清除按钮文案，默认 `"Clear"`                                                      |
 | `className`            | `string`                                                                                                                                                                                                        | 自定义类名，作用于外层框架                                                               |
-| `classNames`           | `table` / `col` / `caption` / `head` / `headRow` / `headCell` / `headLabel` / `sortIcon` / `body` / `row` / `cell` / `empty` / `bulkRow` / `bulkBar` / `bulkCount` / `bulkLabel` / `bulkActions` / `bulkClear` / `checkbox` | 各部分自定义类名（`head` / `body` 分别作用于表头条与表体滚动容器；`caption` 作用于表格说明；`bulk*` 作用于批量行；`checkbox` 为复选框零件槽） |
+| `classNames`           | `table` / `col` / `caption` / `head` / `headRow` / `headCell` / `headLabel` / `sortIcon` / `dragHandle` / `body` / `row` / `cell` / `cellCollapse` / `empty` / `checkbox` | 各部分自定义类名（`head` / `body` 分别作用于表头条与表体滚动容器；`caption` 作用于表格说明；`dragHandle` 作用于列拖动手柄；`checkbox` 为复选框零件槽；`cellCollapse` 为折叠单元格） |
 | `styles`               | `{ wrapper?, table? }`                                                                                                                                                                                          | 外层容器与两个 table 的内联样式                                                         |
 
 #### TableColumn&lt;T&gt;
@@ -72,7 +101,8 @@ description: 通用数据表格，表头可点击排序（本地数据），也�
 | `sortable`  | `boolean`                       | 表头可点击排序，默认 `false`                                                            |
 | `compare`   | `(a: T, b: T) => number`        | 本地排序使用的自定义比较器，默认 `<` / `>`                                                    |
 | `align`     | `"left" \| "right" \| "center"` | 单元格对齐；设计规范约定列统一 start（控件列可用 center），默认 `"left"`                               |
-| `span`      | `number`                        | 列宽权重：该列占容器宽度的比例 = 本列 `span` ÷ 全部列 `span` 之和；每列另有皮肤给出的最小宽度档（落在 `col` 上），默认 `1` |
+| `span`      | `number`                        | 列宽权重：该列占容器宽度的比例 = 本列 `span` ÷ 数据列 `span` 之和（选择列除外——固定 44px）；列宽严格按该占比固定，不随内容与翻页变化，默认 `1` |
+| `collapse`  | `boolean`                       | 单元格内容折叠为单行省略并带 `title` 原生提示（仅截断时显示），点击完全展开且不回收；展开改变行高，勿与 `virtual` 同用，默认 `false` |
 | `className` | `string`                        | 同时作用于该列表头单元格与表体单元格的自定义类名（业务侧自有布局，如长文本截断）                                      |
 
 #### SortState&lt;T&gt;
@@ -85,20 +115,23 @@ description: 通用数据表格，表头可点击排序（本地数据），也�
 
 | 零件 | 元素 | 发出的属性 | 描述 |
 |------|------|--------|------|
-| `TableRoot` | `<div>` | - | 外层框架，列宽放不下时的横向滚动容器；把列数作为 `--litefy-cols` 发布在自己身上 |
+| `TableRoot` | `<div>` | - | 外层框架，手动组装的宽内容横向滚动兜底 |
 | `TableHead` | `<div>` | - | 表头条，永不滚动 |
 | `TableBody` | `<div>` | - | 表体滚动容器 |
 | `TableBase` | `<table>` | - | 表头条与表体各自渲染的 table 元素（内置 `table-layout: fixed`） |
 
-所有零件均接受原生元素属性与 `className`。表头与表体是两张独立表格，共用同一份 `<colgroup>`，列宽不随行数变化，翻页时布局不会抖动；表体默认高度及其他观感由所加载的方案定义。手动组装时 `<colgroup>` 需与 `Table` 生成的保持一致（每列 `width: calc(span * 100% / 总 span)` + `min-width`）。
+所有零件均接受原生元素属性与 `className`。表头与表体是两张独立表格，共用同一份 `<colgroup>`，列宽不随行数变化，翻页时布局不会抖动；表体默认高度及其他观感由所加载的方案定义。滚动契约：条根是唯一横向滚动容器（y 轴不滚），表体只滚 y、滚动条也在表体；表头与表体容器按列宽下限总和撑出 `min-width`，超宽时头体同宽、由条根横向滚动兜底；滚动条外观由全局方案统一定义并常显，组件不设置任何滚动条样式。手动组装时 `<colgroup>` 需与 `Table` 生成的保持一致（每列 `width: max(64px, calc(span * 100% / 总 span))`；`selectable` 时选择列固定 `44px`，数据列分剩余宽度）。
 
 ## 键盘交互
 
 | Key | Description |
 | --- | --- |
-| `Tab` | 只会到达你自己在 `render` 或 `header` 里渲染的可聚焦元素；骨架自带的单元格、标签与排序图标都不进 Tab 序 |
+| `Tab` | 到达行复选框（`selectable`）、拖动手柄（`columnDrag`），以及你在 `render`、`header` 里渲染的可聚焦元素 |
+| `Enter` / `Space` | 在拖动手柄上——拾起该列；再按一次落下 |
+| `ArrowLeft` / `ArrowRight` | 拾起状态下——与相邻列交换顺序 |
+| `Escape` | 拾起状态下——取消并还原拾起前顺序 |
 
-骨架不绑定任何按键。排序只绑在 `<th>` 的 `onClick` 上，而 `<th>` 不可聚焦，因此 `sortable` 表头没有键盘路径——需要键盘操作请在 `header` 内自放 `<button>`。
+排序只绑在 `<th>` 的 `onClick` 上，而 `<th>` 不可聚焦——需要键盘排序请在 `header` 内自放 `<button>`。行选择的键盘通路是行复选框。
 
 ## 数据属性
 
@@ -108,6 +141,9 @@ description: 通用数据表格，表头可点击排序（本地数据），也�
 | `[data-sorted]` | 位于表头单元格上——所在列为当前排序键时存在 |
 | `[data-active]` | 位于排序图标上——排序列的图标上存在 |
 | `[data-align]` | 位于表头与表体单元格上——取 `"left"`、`"center"` 或 `"right"`，与该列的 `align` 一致 |
+| `[data-drag-over]` | 位于表头单元格上——拖动的列悬停在它上面时存在（`columnDrag`） |
+| `[data-grabbed]` | 位于拖动手柄上——键盘拾起该列时存在 |
 | `[data-label]` | 位于表体单元格上——取该列的字符串 `header`，用作单元格的标签 |
-| `[data-bulk]` | 位于批量行 `<tr>` 上——`selectable` 且存在选中项时渲染于表头尾 |
-| `[data-bulk-bar]` / `[data-bulk-count]` / `[data-bulk-label]` / `[data-bulk-actions]` / `[data-bulk-clear]` | 位于批量行内部——操作条、计数、标签、操作节点容器与清除按钮 |
+| `[data-selectable]` | 位于表体行上——`selectable` 时存在；行可点击切换选中 |
+| `[data-zebra="odd"]` | 位于表体行上——`zebra` 时奇数数据行存在 |
+| `[data-selection-cell]` | 位于表体单元格上——标记选择列单元格，行点击切换选中时排除 |

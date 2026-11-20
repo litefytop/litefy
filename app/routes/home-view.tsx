@@ -4,7 +4,7 @@ import { CardLink } from "@/components/card-link";
 import { useEffect } from "react";
 import { Link, useNavigate, useParams, useLocation } from "react-router";
 import { StyleGallery } from "@/components/style-gallery";
-import { i18n } from "@/lib/i18n";
+import { siteDefaultLanguage } from "@/lib/i18n";
 import { jsonLdScript } from "@/lib/seo";
 import { appName, gitConfig, siteUrl } from "@/lib/shared";
 import { SiteSkinProvider, useSiteSkin } from "@/components/site-skin";
@@ -90,7 +90,7 @@ function LandingHero({ locale, pathname }: { locale: Locale; pathname: string })
           <p className="m-0 scroll-mt-20 text-xs font-medium tracking-widest uppercase">
             {t.eyebrow}
           </p>
-          <h1 className="m-0 scroll-mt-20 py-4 mb-4 text-[2.25rem] leading-10 tracking-tight font-bold sm:text-[3rem] sm:leading-none lg:text-[3.75rem] lg:leading-none">
+          <h1 className="m-0 scroll-mt-20 py-4 mb-4 text-36 leading-10 tracking-tight font-bold sm:text-48 sm:leading-none lg:text-60 lg:leading-none">
             {t.title}
           </h1>
           <p className="max-w-256 text-sm text-surface-fg">{t.body}</p>
@@ -169,14 +169,14 @@ export function HomeRoute() {
   const params = useParams<{ lang: string }>();
   const pathname = useLocation().pathname;
   const navigate = useNavigate();
-  const lang = params.lang ?? i18n.defaultLanguage;
+  const lang = params.lang ?? siteDefaultLanguage;
   const schemePrefix = SCHEME_PREFIXES.find((p) => p.replace(/^\//u, "") === lang);
   useEffect(() => {
     if (schemePrefix) {
-      navigate(`${schemePrefix}/${i18n.defaultLanguage}`, { replace: true });
+      navigate(`${schemePrefix}/${siteDefaultLanguage}`, { replace: true });
     }
   }, [schemePrefix, navigate]);
-  const locale = (LANGUAGES.includes(lang) ? lang : i18n.defaultLanguage) as Locale;
+  const locale = (LANGUAGES.includes(lang) ? lang : siteDefaultLanguage) as Locale;
   return (
     <SiteSkinProvider skin={siteSkin}>
       <HomeContent locale={locale} pathname={pathname} />

@@ -11,7 +11,7 @@ import {
 import type { Route } from "./+types/root";
 
 import { Suspense, useEffect } from "react";
-import { i18n } from "@/lib/i18n";
+import { siteDefaultLanguage } from "@/lib/i18n";
 import { findStyleTemplateByPath, laneHomeHref, LANGUAGES, SCHEME_PREFIXES, STYLE_TEMPLATES } from "@/lib/style-templates";
 import { applyAttr, loadStored } from "@/lib/ramp-attrs";
 import { HydrateFallback } from "./components/hydrate-fallback";
@@ -20,7 +20,7 @@ import { ArrowLeft } from "./components/icons";
 
 export function Layout(props?: { children?: React.ReactNode }) {
   const { children } = props ?? {};
-  const { lang = i18n.defaultLanguage } = useParams<{ lang?: string }>();
+  const { lang = siteDefaultLanguage } = useParams<{ lang?: string }>();
   return (
     <html lang={lang} suppressHydrationWarning>
       <head>
@@ -39,6 +39,9 @@ export function Layout(props?: { children?: React.ReactNode }) {
     </html>
   );
 }
+
+// router 水合未初始化窗口期渲染骨架屏（四条 docs 路由 clientLoader.hydrate = true）
+export { HydrateFallback };
 
 const MARKDOWN_DOCS = new RegExp(`^(?:/[a-z-]+)?/(${LANGUAGES.join("|")})/docs/(.+)\\.md$`, "u");
 
@@ -120,7 +123,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
   return (
     <main className="flex flex-col items-center justify-center gap-6 px-4 md:px-6 lg:px-8 min-h-screen">
-      <div className="flex w-full max-w-[40rem] flex-col items-center gap-3 text-center">
+      <div className="flex w-full max-w-160 flex-col items-center gap-3 text-center">
         <p className="m-0">Something went wrong</p>
         <h1 className="m-0">{message}</h1>
         <p className="m-0 wrap-break-word max-w-112">
@@ -133,7 +136,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
       </div>
       {stack && (
         <pre
-          className="w-full max-w-[40rem] overflow-x-auto whitespace-pre-wrap p-4"
+          className="w-full max-w-160 overflow-x-auto whitespace-pre-wrap p-4"
           style={{ marginBlockStart: "var(--pad-block)" }}
         >
           <code>{stack}</code>

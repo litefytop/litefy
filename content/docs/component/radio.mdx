@@ -73,8 +73,10 @@ The label wrapper (clicking it toggles the selection).
 | `disabled`      | `boolean`                              | Disables all options, defaults to `false`                                 |
 | `name`          | `string`                               | The group name — also enables native arrow-key navigation between options |
 | `orientation`   | `"horizontal" \| "vertical"`           | Layout direction of the options, defaults to `"vertical"`                 |
+| `label`         | `React.ReactNode`                      | Group label rendered above the options, serving as the group's accessible name |
+| `classNames`    | `{ root?; groupLabel? }`               | Custom class names for the container and the group label                  |
 | `className`     | `string`                               | Custom class name, applied to the container                               |
-| `aria-label`    | `string`                               | Accessible label for the group                                            |
+| `aria-label`    | `string`                               | Accessible label for the group, used when `label` is not set              |
 | `common`        | `{ classNames?, styles?, indicator? }` | Common configuration applied to all options                               |
 
 ## Keyboard Interactions

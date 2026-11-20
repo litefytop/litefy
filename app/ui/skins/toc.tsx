@@ -10,7 +10,7 @@ import { cn, mergeSlots } from "../utils/cn";
    writes the thumb's `transform` inline (measured offset + scale); the class only
    states where the transform is anchored and how fast it retimes. */
 const railClasses =
-  "hidden xl:block sticky top-8 self-start w-[14rem] shrink-0 text-sm leading-5";
+  "hidden xl:block sticky top-8 self-start w-56 shrink-0 text-sm leading-5";
 
 const titleClasses = "mb-3 font-strong";
 
@@ -48,17 +48,17 @@ const chevronClasses =
 /* The narrow-screen disclosure: same floating-panel recipe as every other panel in
    this scheme, and it is its own scroller — the list can be longer than the viewport. */
 const panelClasses =
-  "xl:hidden min-w-[8rem] max-w-[min(16rem,calc(100vw-2rem))] max-h-[min(24rem,60vh)] overflow-auto rounded-xl border-frame border-border p-1 " +
+  "xl:hidden min-w-32 max-w-[min(--spacing(64),calc(100vw_-_--spacing(8)))] max-h-[min(--spacing(96),60vh)] overflow-auto rounded-xl border-frame border-border p-1 " +
   "bg-surface-raised text-foreground shadow-elevated";
 
 const ringClasses = "size-5 shrink-0";
 
 /* The ring's contract: the track is the quiet surface, the arc is the brand — the
    lightness step between them is the reading, in both schemes. */
-const ringTrackClasses = "fill-none stroke-surface stroke-[1.5px]";
+const ringTrackClasses = "fill-none stroke-surface stroke-1.5";
 
 const ringProgressClasses =
-  "fill-none stroke-primary stroke-[1.5px] " +
+  "fill-none stroke-primary stroke-1.5 " +
   "-rotate-90 origin-center transition-[stroke-dashoffset] duration-sm ease-frame";
 
 const currentClasses = "truncate text-surface-fg";

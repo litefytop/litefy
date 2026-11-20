@@ -21,9 +21,9 @@ const entries = [
 export default function Demo() {
   const [active, setActive] = useState("overview");
   return (
-    <div className="h-full w-full scale-100">
+    <div className="flex h-full w-full scale-100 items-center justify-center">
       <FloatingToc>
-        <FloatingTocTrigger>
+        <FloatingTocTrigger className="static translate-y-0">
           {entries.map((entry) => (
             <FloatingTocBar key={entry.value} active={entry.value === active} level={entry.level} />
           ))}

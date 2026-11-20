@@ -1,4 +1,4 @@
-import { i18n } from "./i18n";
+import { i18n, siteDefaultLanguage } from "./i18n";
 
 export const LANGUAGES: string[] = [...i18n.languages];
 
@@ -168,6 +168,6 @@ export function toStylePath(pathname: string, target: StyleTemplate): string {
 
 export function laneHomeHref(pathname: string): string {
   const segment = stripSchemePrefix(pathname).split("/").find(Boolean);
-  const lang = segment && LANGUAGES.includes(segment) ? segment : i18n.defaultLanguage;
+  const lang = segment && LANGUAGES.includes(segment) ? segment : siteDefaultLanguage;
   return `${schemePrefixOf(pathname)}/${lang}`;
 }

@@ -496,7 +496,7 @@ function Hero({ t, lang }: { t: T; lang: Lang }) {
       <div className={cn(CONTAINER, "flex flex-col gap-6")}>
         <div className="flex flex-col gap-3">
           <p className={EYEBROW}>{t.hero.eyebrow}</p>
-          <h1 className="text-[2.5rem] leading-head tracking-tight font-bold">
+          <h1 className="text-40 leading-head tracking-tight font-bold">
             {lang === "zh" ? tpl?.name.zh : tpl?.name.en}
           </h1>
           <p className={LEAD}>{lang === "zh" ? tpl?.desc.zh : tpl?.desc.en}</p>
@@ -677,7 +677,7 @@ function LawsBlock({ t }: { t: T }) {
 function TypeBlock({ t }: { t: T }) {
   const ty = t.type;
   const ladder: { sample: string; spec: string; className: string }[] = [
-    { sample: "headline", spec: "2.5rem / 700", className: "text-[2.5rem] leading-head tracking-tight font-bold" },
+    { sample: "headline", spec: "2.5rem / 700", className: "text-40 leading-head tracking-tight font-bold" },
     { sample: "h1", spec: "1.75rem / 700", className: "text-h1 leading-head tracking-tight font-bold" },
     { sample: "h2", spec: "1.375rem / 700", className: "text-h2 leading-head tracking-tight font-bold" },
     { sample: "h3", spec: "1.125rem / 600", className: "text-h3 leading-head font-semibold" },

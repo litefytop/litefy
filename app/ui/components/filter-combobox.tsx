@@ -3,6 +3,8 @@ import * as React from "react";
 import { Check, RotateCcw, Search, X } from "./icons";
 import { ButtonRoot } from "./button";
 import { type FilterRule, toFilterParams } from "../utils/filter-query";
+import { useFloatingPanel } from "../utils/use-floating-panel";
+import { useFloatingPosition } from "../utils/floating-position";
 import {
     type ComboboxSuggestion,
     type FilterComboboxField,
@@ -188,7 +190,9 @@ export function FilterCombobox({
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState<string | null>(null);
     const inputRef = React.useRef<HTMLInputElement | null>(null);
+    const listRef = React.useRef<HTMLDivElement | null>(null);
     const listId = React.useId();
+    const anchorName = `--filter-combobox-${React.useId().replaceAll(/[^a-zA-Z0-9_-]/gu, "")}`;
     const controllerRef = React.useRef<AbortController | null>(null);
     const fetcherRef = React.useRef(fetcher);
     const onResultRef = React.useRef(onResult);
@@ -362,6 +366,10 @@ export function FilterCombobox({
         return [];
     }, [stage, fields, draft, activeField, resolvedTexts, selectField, selectOperator, commitValueText]);
 
+    const showList = listOpen && candidates.length > 0;
+    useFloatingPanel({ open: showList, panelRef: listRef, onOpenChange: setListOpen });
+    useFloatingPosition(listRef, `${stage}:${candidates.length}:${showList}`);
+
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Escape") {
             event.preventDefault();
@@ -432,7 +440,6 @@ export function FilterCombobox({
 
     const renderChipItem = renderChip ?? defaultRenderChip;
     const renderOptionItem = renderOption ?? defaultRenderOption;
-    const showList = listOpen && candidates.length > 0;
     const draftFieldLabel = activeField?.label ?? "";
     const draftOperatorLabel = operator ? resolvedTexts.operatorLabels[operator] ?? operator : "";
     const showDraft = stage !== "field" && draftFieldLabel !== "";
@@ -467,6 +474,7 @@ export function FilterCombobox({
                 className={classNames?.bar}
                 style={styles?.bar}
                 data-slot="bar"
+                data-anchor-name={anchorName}
                 data-clear={rules.length > 0 || undefined}
                 onMouseDown={(event) => {
                     const target = event.target as HTMLElement;
@@ -480,7 +488,9 @@ export function FilterCombobox({
                 }}
             >
                 <Search aria-hidden="true" />
-                {rules.map((rule) => renderChipNode(rule))}
+                {rules.map((rule) => (
+                    <React.Fragment key={rule.id}>{renderChipNode(rule)}</React.Fragment>
+                ))}
                 {showDraft ? (
                     <span className={classNames?.draft} style={styles?.draft} data-slot="draft" aria-hidden="true">
                         {draftOperatorLabel ? `${draftFieldLabel} ${draftOperatorLabel}` : draftFieldLabel}
@@ -538,34 +548,6 @@ export function FilterCombobox({
                         <RotateCcw />
                     </ButtonRoot>
                 ) : null}
-                <div
-                    id={listId}
-                    role="listbox"
-                    aria-label={stage === "field"
-                        ? resolvedTexts.fieldPlaceholder
-                        : stage === "operator"
-                            ? resolvedTexts.operatorPlaceholder
-                            : resolvedTexts.valuePlaceholder}
-                    className={classNames?.list}
-                    style={styles?.list}
-                    hidden={!showList}
-                    data-slot="suggestion-list"
-                >
-                    {candidates.map((item, index) => (
-                        <React.Fragment key={item.id}>
-                            {renderOptionItem({
-                                item,
-                                active: index === activeIndex,
-                                index,
-                                id: `${listId}-${index}`,
-                                onSelect: item.select,
-                                onHover: () => setActiveIndex(index),
-                                classNames,
-                                styles,
-                            })}
-                        </React.Fragment>
-                    ))}
-                </div>
                 {hints.length > 0 ? (
                     <span id={hintId} className={classNames?.hint} style={styles?.hint} data-slot="hint">
                         {hints.map((hint) =>
@@ -582,6 +564,41 @@ export function FilterCombobox({
                         )}
                     </span>
                 ) : null}
+            </div>
+            <div
+                ref={listRef}
+                id={listId}
+                role="listbox"
+                aria-label={stage === "field"
+                    ? resolvedTexts.fieldPlaceholder
+                    : stage === "operator"
+                        ? resolvedTexts.operatorPlaceholder
+                        : resolvedTexts.valuePlaceholder}
+                popover="manual"
+                tabIndex={-1}
+                data-float-anchor={anchorName}
+                data-float-side="bottom"
+                data-float-align="start"
+                data-float-gap={4}
+                data-float-match-width="true"
+                className={classNames?.list}
+                style={styles?.list}
+                data-slot="suggestion-list"
+            >
+                {candidates.map((item, index) => (
+                    <React.Fragment key={item.id}>
+                        {renderOptionItem({
+                            item,
+                            active: index === activeIndex,
+                            index,
+                            id: `${listId}-${index}`,
+                            onSelect: item.select,
+                            onHover: () => setActiveIndex(index),
+                            classNames,
+                            styles,
+                        })}
+                    </React.Fragment>
+                ))}
             </div>
             <FilterComboboxStatus
                 loading={loading}

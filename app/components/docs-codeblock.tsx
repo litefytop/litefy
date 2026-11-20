@@ -3,7 +3,7 @@ import { Check, Copy } from "@/components/icons";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { useSiteSkin } from "./site-skin";
-import { i18n } from "@/lib/i18n";
+import { siteDefaultLanguage } from "@/lib/i18n";
 import { copyText } from "@/lib/clipboard";
 import { codeToHtml } from "shiki";
 
@@ -59,7 +59,7 @@ export function DocsCodeBlock({
 export function CodeCopyButton({ code }: { code: string }) {
   const { Button } = useSiteSkin();
   const params = useParams<{ lang?: string }>();
-  const locale = params.lang || i18n.defaultLanguage;
+  const locale = params.lang || siteDefaultLanguage;
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {

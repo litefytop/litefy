@@ -13,10 +13,10 @@ export interface CardButtonProps extends Omit<React.ComponentProps<"button">, "c
 }
 
 export const cardClasses =
-  "block @container w-full rounded-lg border-frame border-border shadow-block";
+  "block w-full rounded-lg border-frame border-border shadow-block";
 
 export const cardInnerClasses =
-  "flex flex-col gap-4 p-4 @xl:p-6 @4xl:p-8";
+  "flex flex-col gap-4 p-4";
 
 export const cardButtonClasses =
   "w-full cursor-pointer text-left p-4 [font:inherit] motion-frame " +

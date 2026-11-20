@@ -9,7 +9,7 @@ description: A generic data table with clickable sortable headers for local data
 
 ## Usage
 
-A data-driven table: pass `data` and `columns`; `sortable: true` enables sorting, `selectable` enables row selection; narrow containers scroll horizontally instead of reflowing.
+A data-driven table: pass `data` and `columns`; `sortable: true` enables sorting, `selectable` enables row selection. Columns compress by weight with a 64px floor per column; overflow scrolls.
 
 <ComponentPreview name="table-basic" />
 
@@ -21,9 +21,33 @@ Pass controlled `sort` + `onSortChange` to enter remote mode, delegating sorting
 
 ### Row selection
 
-`selectable` enables row selection: a checkbox in the first column, a tri-state select-all for the page, and after rows are selected a bulk actions row appears at the tail of the header; the selection key comes from `rowKey`, and selections persist across pages.
+`selectable` enables row selection: the first column is a square checkbox column as wide as the row height (44px), plus a tri-state select-all for the page; the selection key comes from `rowKey`, and selections persist across pages. Clicking anywhere in a row also toggles it (clicks on checkboxes, links, buttons and other interactive elements are excluded); the checkbox remains the keyboard path. The table never renders a second row — echo the count and actions (e.g. `3 selected` + a clear button) in the [Pagination](/en/docs/component/pagination) `summary` slot placed under the table.
 
 <ComponentPreview name="table-selectable" />
+
+### Zebra striping
+
+`zebra` shades odd rows by data order — the pattern stays correct through sorting and virtualization.
+
+<ComponentPreview name="table-zebra" />
+
+### Virtual scrolling
+
+`virtual` renders only the visible window for large datasets; `rowHeight` must match the rendered row stride (defaults to `45`: the 44px control-height row plus the 1px divider). Rows must stay single-line — wrapped content changes the row height and desynchronizes the window. Scrolling happens inside the body — x-axis scrolling lives on the table root, the body scrolls y only and owns the scrollbar; the scrollbar look is defined globally by the loaded scheme and is always visible, components never touch it.
+
+<ComponentPreview name="table-virtual" />
+
+### Column reordering
+
+`columnDrag` makes headers draggable to reorder columns; the selection column stays first and is never dragged. Pointer: drag a header onto another. Keyboard: focus the handle button, press `Enter` to pick up, move with the arrow keys, `Enter` to drop, `Escape` to cancel. Order is controlled via `columnOrder` + `onColumnsChange`, or uncontrolled via `defaultColumnOrder`; keys missing from the order keep their original relative order at the tail.
+
+<ComponentPreview name="table-column-drag" />
+
+### Cell text collapse
+
+Columns with `collapse: true` collapse their cell content to a single ellipsized line with a native `title` tooltip (shown only while truncated); clicking fully expands the content and it does not collapse back. The first render never shifts layout; expanding changes the row height, which conflicts with the fixed-height constraint of `virtual` — do not enable it on expandable rows in virtual tables. Customize the collapsed cell via `classNames.cellCollapse`.
+
+<ComponentPreview name="table-collapse" />
 
 ### Filtering belongs to the business layer
 
@@ -47,19 +71,24 @@ Ready-to-use finished components.
 | `initialSortDirection` | `"asc" \| "desc"`                                                                                                                                                                                               | Direction used on the first click of a column, defaults to `"asc"`                   |
 | `empty`                | `React.ReactNode`                                                                                                                                                                                               | Rendered when the data is empty, defaults to `"No data"`                             |
 | `caption`              | `React.ReactNode`                                                                                                                                                                                               | Table caption, rendered as the header `table`'s `<caption>` (the body does not repeat it), giving the table an accessible name |
-| `selectable`           | `boolean`                                                                                                                                                                                                       | Row selection switch: first-column checkbox, tri-state page select-all, bulk actions row, defaults to `false` |
+| `selectable`           | `boolean`                                                                                                                                                                                                       | Row selection switch: 44px square checkbox column, tri-state page select-all, defaults to `false` |
 | `rowKey`               | `(row: T) => string`                                                                                                                                                                                            | Selection key extractor; falls back to `getKey` / index                              |
 | `selected`             | `string[]`                                                                                                                                                                                                      | Selected key set (controlled)                                                        |
 | `defaultSelected`      | `string[]`                                                                                                                                                                                                      | Initial selected keys (uncontrolled), defaults to `[]`                               |
 | `onSelectionChange`    | `(selected: string[]) => void`                                                                                                                                                                                  | Called when the selection set changes (both modes)                                   |
+| `zebra`                | `boolean`                                                                                                                                                                                                       | Shade odd rows by data order, defaults to `false`                                    |
+| `virtual`              | `boolean`                                                                                                                                                                                                       | Render only the visible window of rows, defaults to `false`                          |
+| `rowHeight`            | `number`                                                                                                                                                                                                        | Row stride used by virtual scrolling; must match the rendered row height, defaults to `45` (44px control-height row + 1px divider) |
+| `columnDrag`           | `boolean`                                                                                                                                                                                                       | Header drag-to-reorder with a keyboard-operable handle, defaults to `false`          |
+| `columnOrder`          | `string[]`                                                                                                                                                                                                      | Column key order (controlled); unknown keys keep their relative order at the tail    |
+| `defaultColumnOrder`   | `string[]`                                                                                                                                                                                                      | Initial column order (uncontrolled), defaults to `[]`                                |
+| `onColumnsChange`      | `(keys: string[]) => void`                                                                                                                                                                                      | Called on drop and on each keyboard move (both modes)                                |
+| `dragHandleLabel`      | `string`                                                                                                                                                                                                        | Accessible label of the drag handle, defaults to `"Reorder column"`                  |
 | `loading`              | `boolean`                                                                                                                                                                                                       | Switches the empty-state text to Loading, does not take over selection, defaults to `false` |
 | `selectAllLabel`       | `string`                                                                                                                                                                                                        | Accessible label of the select-all checkbox, defaults to `"Select all on this page"` |
 | `rowLabel`             | `string`                                                                                                                                                                                                        | Accessible label of the row checkbox, defaults to `"Select this row"`                |
-| `bulkActions`          | `React.ReactNode`                                                                                                                                                                                               | Bulk action nodes in the bulk row                                                    |
-| `selectedLabel`        | `string`                                                                                                                                                                                                        | Label text after the count in the bulk row, defaults to `"selected"`                 |
-| `clearLabel`           | `string`                                                                                                                                                                                                        | Bulk row clear button text, defaults to `"Clear"`                                    |
 | `className`            | `string`                                                                                                                                                                                                        | Custom class name, applied to the outer frame                                        |
-| `classNames`           | `table` / `col` / `caption` / `head` / `headRow` / `headCell` / `headLabel` / `sortIcon` / `body` / `row` / `cell` / `empty` / `bulkRow` / `bulkBar` / `bulkCount` / `bulkLabel` / `bulkActions` / `bulkClear` / `checkbox` | Custom classes per part (`head` / `body` target the header strip and the body scroller respectively; `caption` targets the table caption; `bulk*` target the bulk row; `checkbox` is the checkbox part slot) |
+| `classNames`           | `table` / `col` / `caption` / `head` / `headRow` / `headCell` / `headLabel` / `sortIcon` / `dragHandle` / `body` / `row` / `cell` / `cellCollapse` / `empty` / `checkbox` | Custom classes per part (`head` / `body` target the header strip and the body scroller respectively; `caption` targets the table caption; `dragHandle` targets the column drag handle; `checkbox` is the checkbox part slot; `cellCollapse` targets the collapsed cell) |
 | `styles`               | `{ wrapper?, table? }`                                                                                                                                                                                          | Inline styles for the outer wrapper and both tables                                  |
 
 #### TableColumn&lt;T&gt;
@@ -72,7 +101,8 @@ Ready-to-use finished components.
 | `sortable`  | `boolean`                       | Make the header click-to-sort, defaults to `false`                                     |
 | `compare`   | `(a: T, b: T) => number`        | Custom comparator used by local sorting, defaults to `<` / `>`                         |
 | `align`     | `"left" \| "right" \| "center"` | Cell alignment; the design spec keeps columns start-aligned (center is fine for control columns), defaults to `"left"` |
-| `span`      | `number`                        | Width weight: the column's share of the container width = its own `span` ÷ the sum of all columns' `span`; each column also carries a minimum width tier from the skin (applied on `col`), defaults to `1` |
+| `span`      | `number`                        | Width weight: the column's share of the container width = its own `span` ÷ the sum of data columns' `span` (the selection column is excluded — it is fixed at 44px); columns keep this exact proportion regardless of content or paging, defaults to `1` |
+| `collapse`  | `boolean`                       | Collapse cell content to a single ellipsized line with a native `title` tooltip (shown only while truncated); clicking fully expands it with no collapse-back; expanding changes row height — do not combine with `virtual`, defaults to `false` |
 | `className` | `string`                        | Custom classes applied to the column's header cell and body cells (your own layout, e.g. truncating long text) |
 
 #### SortState&lt;T&gt;
@@ -85,20 +115,23 @@ Ready-to-use finished components.
 
 | Part | Element | Emitted attributes | Description |
 |------|---------|--------------------|-------------|
-| `TableRoot` | `<div>` | - | Outer frame — the horizontal scroller when the column widths do not fit; publishes the column count on itself as `--litefy-cols` |
+| `TableRoot` | `<div>` | - | Outer frame — horizontal scroll fallback for hand-assembled wide content |
 | `TableHead` | `<div>` | - | Header strip; never scrolls |
 | `TableBody` | `<div>` | - | Body scroller |
 | `TableBase` | `<table>` | - | The table element rendered by the header strip and by the body (built-in `table-layout: fixed`) |
 
-All parts accept native element props plus `className`. Head and body are two separate tables sharing one `<colgroup>`, so column widths never depend on the row count and paging never shifts the layout; the default body height and every other visual are defined by the loaded scheme. Hand-assembled tables must keep the `<colgroup>` identical to what `Table` emits (`width: calc(span * 100% / total span)` + `min-width` on every `<col>`).
+All parts accept native element props plus `className`. Head and body are two separate tables sharing one `<colgroup>`, so column widths never depend on the row count and paging never shifts the layout; the default body height and every other visual are defined by the loaded scheme. Scroll contract: the root is the only horizontal scroll container (it never scrolls y), the body scrolls y only and owns the scrollbar; head and body containers get a `min-width` of the summed column floors, so when the floors exceed the container both grow to the same width and the root scrolls horizontally. Scrollbar styling is defined globally by the scheme and always visible — components never set scrollbar styles. Hand-assembled tables must keep the `<colgroup>` identical to what `Table` emits (`width: max(64px, calc(span * 100% / total span))` on every `<col>`; with `selectable`, the selection column is fixed at `44px` and data columns split the remaining width).
 
 ## Keyboard Interactions
 
 | Key | Description |
 | --- | --- |
-| `Tab` | Reaches only the focusable elements you render yourself inside `render` or `header`; the skeleton's own cells, labels and sort icons never enter the tab order |
+| `Tab` | Reaches the row checkboxes (`selectable`), the drag handles (`columnDrag`), and focusable elements you render inside `render` or `header` |
+| `Enter` / `Space` | On a drag handle — pick up the column; press again to drop |
+| `ArrowLeft` / `ArrowRight` | While a column is picked up — swap it with the adjacent column |
+| `Escape` | While a column is picked up — cancel and restore the pre-grab order |
 
-The skeleton attaches no key handler. Sorting is bound to `onClick` on a `<th>`, which is not focusable, so a `sortable` header has no keyboard path — put your own `<button>` in `header` to make it operable.
+Sorting is bound to `onClick` on a `<th>`, which is not focusable — for keyboard sorting put your own `<button>` in `header`. Row selection keeps the row checkbox as its keyboard path.
 
 ## Data Attributes
 
@@ -108,6 +141,9 @@ The skeleton attaches no key handler. Sorting is bound to `onClick` on a `<th>`,
 | `[data-sorted]` | On a header cell — present when its column is the current sort key |
 | `[data-active]` | On the sort icon — present on the sorted column's icon |
 | `[data-align]` | On header and body cells — `"left"`, `"center"` or `"right"`, matching the column's `align` |
+| `[data-drag-over]` | On a header cell — present while a dragged column hovers over it (`columnDrag`) |
+| `[data-grabbed]` | On the drag handle — present while its column is picked up via keyboard |
 | `[data-label]` | On body cells — the column's string `header`, used as the cell's label |
-| `[data-bulk]` | On the bulk row `<tr>` — rendered at the tail of the header when `selectable` and there are selected items |
-| `[data-bulk-bar]` / `[data-bulk-count]` / `[data-bulk-label]` / `[data-bulk-actions]` / `[data-bulk-clear]` | Inside the bulk row — the action bar, the count, the label, the actions container and the clear button |
+| `[data-selectable]` | On body rows — present when `selectable`; rows are click-to-toggle |
+| `[data-zebra="odd"]` | On body rows — present on odd data rows when `zebra` |
+| `[data-selection-cell]` | On body cells — marks the selection column's cell, excluded from row-click toggling |

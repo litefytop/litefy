@@ -197,7 +197,7 @@ function TokenChip({ name, raw, copiedLabel }: { name: string; raw: string; copi
       }}
     >
       <span className="font-mono font-medium">{name}</span>
-      <span className="max-w-[11rem] truncate font-mono" title={raw}>
+      <span className="max-w-44 truncate font-mono" title={raw}>
         {raw || "—"}
       </span>
       <span role="status" className="sr-only">
@@ -277,7 +277,7 @@ function ColorTools() {
 
   const ratio = computed?.ratio ?? null;
   const badge = (label: string, need: number, pass: boolean) => (
-    <span key={label} className={`inline-flex h-[1.25rem] items-center gap-1 rounded-sm px-2 text-xs leading-4 font-medium whitespace-nowrap ${pass ? "bg-success text-success-fg" : "bg-danger text-danger-fg"}`}>
+    <span key={label} className={`inline-flex h-5 items-center gap-1 rounded-sm px-2 text-xs leading-4 font-medium whitespace-nowrap ${pass ? "bg-success text-success-fg" : "bg-danger text-danger-fg"}`}>
       {label} {need} {pass ? "✓" : "✗"}
     </span>
   );
@@ -291,7 +291,7 @@ function ColorTools() {
         </header>
 
         <div className="grid gap-6 lg:grid-cols-2 items-start">
-          <Card classNames={{ inner: "flex flex-col gap-6 p-4 @xl:p-6 @4xl:p-8" }}>
+          <Card classNames={{ inner: "flex flex-col gap-6 p-4" }}>
             <div className="flex items-baseline justify-between gap-2">
               <h2 className="text-lg font-semibold">{t.effective}</h2>
               <span className="text-xs text-surface-fg">{t.effNote}</span>
@@ -362,7 +362,7 @@ function ColorTools() {
             </div>
           </Card>
 
-          <Card classNames={{ inner: "flex flex-col gap-6 p-4 @xl:p-6 @4xl:p-8" }}>
+          <Card classNames={{ inner: "flex flex-col gap-6 p-4" }}>
             <h2 className="text-lg font-semibold">{t.contrast}</h2>
             <div className="grid gap-4 sm:grid-cols-2">
               <ColorField label={t.text} value={txt} onChange={setTxt} />
@@ -394,7 +394,7 @@ function ColorTools() {
           </Card>
         </div>
 
-        <Card classNames={{ inner: "flex flex-col gap-6 p-4 @xl:p-6 @4xl:p-8" }}>
+        <Card classNames={{ inner: "flex flex-col gap-6 p-4" }}>
           <div className="flex items-baseline justify-between gap-2">
             <h2 className="text-lg font-semibold">{t.tokens}</h2>
             <span className="text-xs text-surface-fg">{t.tokensNote}</span>

@@ -26,7 +26,7 @@ const defaultSlots = {
         "data-[orientation=vertical]:w-1 data-[orientation=vertical]:h-64 data-[orientation=vertical]:shrink-0",
     fill: "absolute rounded-pill bg-primary",
     thumb:
-        "absolute block size-[1.5rem] rounded-pill touch-none cursor-grab active:cursor-grabbing " +
+        "absolute block size-6 rounded-pill touch-none cursor-grab active:cursor-grabbing " +
         "border-frame border-border bg-background shadow-base motion-frame " +
         "active:bg-accent focus-visible:focus-ring thumb-hit",
 };
@@ -40,8 +40,8 @@ const cellSlots = {
     fill: "absolute rounded-sm bg-primary",
     thumb:
         "absolute block touch-none rounded-pill outline-none cursor-grab active:cursor-grabbing motion-frame " +
-        "data-[orientation=horizontal]:h-control data-[orientation=horizontal]:w-[1.5rem] " +
-        "data-[orientation=vertical]:w-control data-[orientation=vertical]:h-[1.5rem]",
+        "data-[orientation=horizontal]:h-control data-[orientation=horizontal]:w-6 " +
+        "data-[orientation=vertical]:w-control data-[orientation=vertical]:h-6",
 };
 
 export function Slider({ orientation, className, classNames, ...props }: SliderProps & { "data-variant"?: SliderVariant }) {

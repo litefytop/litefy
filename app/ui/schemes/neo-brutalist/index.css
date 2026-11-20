@@ -55,6 +55,7 @@
   --focus-offset: 2px;
   --focus-outline-danger: 2px solid var(--foreground);
   --focus-glow: none;
+  --focus-glow-inset: none;
 
   --text-transform-label: uppercase;
   --transition-frame-properties: box-shadow, translate;
@@ -171,7 +172,7 @@
   --color-surface: var(--surface);
   --color-surface-fg: var(--surface-fg);
   --color-surface-raised: var(--surface-raised);
-  --color-well: var(--background);
+  --color-well: var(--surface);
   --color-accent: var(--accent);
   --color-accent-fg: var(--accent-fg);
   --color-primary: var(--primary);
@@ -266,7 +267,6 @@
   --radius-4xl: 0px;
   --radius-pill: 0px;
   --radius-disc: 0px;
-  --radius-swipe: 0px;
 
   --padding-tight: calc((var(--height-control) - 1.2rem) / 2);
   --padding-snug: calc((var(--height-control) - 1.25rem) / 2);
@@ -399,6 +399,12 @@
   box-shadow: var(--shadow-frame-focus-danger);
 }
 
+@utility focus-ring-inset {
+  outline: var(--focus-outline);
+  outline-offset: calc(-1 * var(--focus-offset));
+  box-shadow: var(--focus-glow-inset);
+}
+
 @utility thumb-hit {
   &::after {
     content: "";
@@ -515,7 +521,7 @@
   padding-inline: calc(var(--spacing) * 2);
   padding-block: 0;
   border: var(--border-width-frame) solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: calc(var(--spacing) * 1);
   background-color: var(--color-background);
   background-image: var(--fill-background, none);
   color: var(--color-foreground);
@@ -525,12 +531,6 @@
   line-height: calc(var(--spacing) * 4);
   letter-spacing: var(--tracking-label);
   box-shadow: var(--shadow-subtle);
-}
-
-@property --litefy-cols {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 1;
 }
 
 @property --litefy-percent {
@@ -609,10 +609,6 @@
 }
 
 @layer base {
-  html {
-    text-autospace: normal;
-  }
-
   body {
     background-color: var(--background);
     color: var(--foreground);
@@ -643,6 +639,24 @@
   ::-webkit-scrollbar-thumb {
     background: var(--foreground);
     border: 2px solid var(--background);
+  }
+
+  ::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  /* Firefox 车道：webkit 伪元素不生效，走标准属性。 */
+  @-moz-document url-prefix("") {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--foreground) transparent;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

@@ -19,7 +19,7 @@ const owners = ["Ada", "Linus", "Grace", "Edsger"];
 const priorities = ["high", "medium", "low"] as const;
 const points = [3, 8, 5, 1, 2, 3, 8, 5, 3, 1, 5, 2];
 
-const tasks: Task[] = titles.map((title, i) => ({
+const tasks: Task[] = titles.slice(0, 5).map((title, i) => ({
   title,
   owner: owners[i % owners.length],
   priority: priorities[i % priorities.length],

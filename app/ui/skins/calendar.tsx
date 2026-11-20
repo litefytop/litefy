@@ -5,7 +5,7 @@ import { buttonVariants } from "./button";
 
 
 const rootClasses =
-  "flex w-full max-w-[calc(7*var(--width-control)+14px+6*var(--spacing))] flex-col rounded-lg border-frame border-border p-3 text-foreground shadow-surface";
+  "flex w-full max-w-[calc(7*var(--width-control)+6*var(--spacing))] flex-col rounded-lg border-frame border-border p-3 text-foreground shadow-surface";
 
 
 const rootInPanelClasses = "flex flex-col";
@@ -29,14 +29,14 @@ const gridClasses = "grid grid-cols-1";
 const weekClasses = "grid grid-cols-7 data-[cols=3]:grid-cols-3";
 
 const weekdayClasses =
-  "flex h-[2rem] items-center justify-center text-xs font-label tracking-label case-label text-surface-fg";
+  "flex h-8 items-center justify-center text-xs font-label tracking-label case-label text-surface-fg";
 
 const dayBaseClasses =
-  "inline-flex m-px h-control w-[calc(100%-2px)] max-w-(--width-control) justify-self-center cursor-pointer items-center justify-center rounded-md bg-transparent " +
+  "inline-flex h-control w-full cursor-pointer items-center justify-center rounded-md bg-transparent " +
   "text-foreground hover:bg-accent hover:text-accent-fg text-sm font-field tabular-nums select-none " +
-  "focus-visible:focus-ring " +
+  "focus-visible:focus-ring-inset " +
   "disabled:cursor-not-allowed disabled:text-surface-fg " +
-  "data-[outside-month=true]:text-surface-fg";
+  "data-[outside-month=true]:text-foreground/50";
 
 const dayClasses =
   cn(
@@ -58,10 +58,10 @@ export const calendarInPanelClasses = rootInPanelClasses;
    width; the viewport cap only kicks in on very small screens, and scrolling
    is preferred over compressing the grid. */
 export const calendarPopoverWidthClasses =
-  "w-[calc(7*var(--width-control)+14px+6*var(--spacing))] max-w-[calc(100vw-1rem)] overflow-x-auto";
+  "w-[calc(7*var(--width-control)+6*var(--spacing))] max-w-[calc(100vw-1rem)] overflow-x-auto";
 
 export const calendarPanelWidthClasses =
-  "w-max min-w-[calc(7*var(--width-control)+14px)]";
+  "w-max min-w-[calc(7*var(--width-control))]";
 
 export const calendarClasses = {
   header: headerClasses,

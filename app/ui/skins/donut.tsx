@@ -16,10 +16,10 @@ const segmentClasses =
 const centerClasses =
   "pointer-events-none flex flex-col items-center justify-center text-center " +
   "data-[variant=donut]:absolute data-[variant=donut]:inset-0 " +
-  "data-[variant=pie]:h-[3rem]";
+  "data-[variant=pie]:h-12";
 
 const centerLabelClasses =
-  "max-w-[5rem] truncate text-xs leading-4 font-label tracking-label case-label text-surface-fg";
+  "max-w-20 truncate text-xs leading-4 font-label tracking-label case-label text-surface-fg";
 
 const centerValueClasses = "text-h3 leading-head font-strong text-foreground";
 

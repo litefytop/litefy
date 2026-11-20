@@ -31,7 +31,7 @@ export default function ChipGroupBasicDemo() {
               {hidden.map((item) => (
                 <li
                   key={item.value}
-                  className="inline-flex h-[1.25rem] items-center gap-1 rounded-sm bg-primary/12 px-2 text-xs leading-4 text-primary whitespace-nowrap"
+                  className="inline-flex h-5 items-center gap-1 rounded-sm bg-primary/12 px-2 text-xs leading-4 text-primary whitespace-nowrap"
                 >
                   {item.label}
                 </li>

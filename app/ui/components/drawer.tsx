@@ -78,6 +78,17 @@ export function Drawer({ className, style, classNames, styles, size, placement =
     const dialogRef = React.useRef<HTMLDialogElement>(null);
     const wrapperRef = React.useRef<HTMLDivElement>(null);
     const openRef = React.useRef(open);
+    const animRef = React.useRef<Animation | null>(null);
+    const animatePane = React.useCallback((wrapper: HTMLDivElement, transforms: string[]) => {
+        animRef.current?.cancel();
+        const anim = wrapper.animate(transforms.map((transform) => ({ transform })), {
+            duration: getTransitionDurationMs(wrapper) || 1,
+            easing: getComputedStyle(wrapper).transitionTimingFunction || "linear",
+            fill: "forwards",
+        });
+        animRef.current = anim;
+        return anim;
+    }, []);
     React.useLayoutEffect(() => {
         const dialog = dialogRef.current;
         const wrapper = wrapperRef.current;
@@ -88,28 +99,28 @@ export function Drawer({ className, style, classNames, styles, size, placement =
             if (!dialog.open) {
                 dialog.showModal();
             }
-            wrapper.style.transform = "translate(0, 0)";
+            animatePane(wrapper, [transformMap[placement], "translate(0, 0)"]);
         }
-        else {
-            wrapper.style.transform = transformMap[placement];
-            if (dialog.open) {
-                const timer = window.setTimeout(() => {
-                    if (!openRef.current && dialog.open) {
-                        dialog.close();
-                    }
-                }, getTransitionDurationMs(wrapper) || 1);
-                return () => window.clearTimeout(timer);
-            }
+        else if (dialog.open) {
+            const anim = animatePane(wrapper, ["translate(0, 0)", transformMap[placement]]);
+            let done = false;
+            const finish = () => {
+                if (done) {
+                    return;
+                }
+                done = true;
+                if (!openRef.current && dialog.open) {
+                    dialog.close();
+                }
+            };
+            anim.finished.then(finish, finish);
+            const timer = window.setTimeout(finish, getTransitionDurationMs(wrapper) || 1);
+            return () => window.clearTimeout(timer);
         }
-    }, [open, placement]);
+    }, [animatePane, open, placement]);
     const handleClose = React.useCallback(() => {
         onOpenChange(false);
     }, [onOpenChange]);
-    const handleTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
-        if (e.propertyName === "transform" && !openRef.current && dialogRef.current?.open) {
-            dialogRef.current.close();
-        }
-    };
     const handleCancel = (e: React.SyntheticEvent<HTMLDialogElement>) => {
         e.preventDefault();
         handleClose();
@@ -134,7 +145,7 @@ export function Drawer({ className, style, classNames, styles, size, placement =
             }
         }}>
       <DrawerStage placement={placement} className={classNames?.stage} style={styles?.stage}>
-        <DrawerWrapper {...props} ref={setRefs} size={size} placement={placement} onTransitionEnd={handleTransitionEnd} className={classNames?.wrapper} style={styles?.wrapper}>
+        <DrawerWrapper {...props} ref={setRefs} size={size} placement={placement} className={classNames?.wrapper} style={styles?.wrapper}>
           
           {drag && <DrawerDrag orientation={orientation} className={classNames?.drag} style={styles?.drag} onPointerDown={drag.handlePointerDown}/>}
           <DrawerContent orientation={orientation} className={classNames?.content} style={styles?.content}>

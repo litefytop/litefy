@@ -71,7 +71,7 @@ export function Breadcrumb({ items, className, style, classNames, styles, ...pro
       <BreadcrumbList className={classNames?.list} style={styles?.list}>
         {items.map((item, index) => {
             const isLast = index === items.length - 1;
-            return (<React.Fragment key={item.href ?? String(item.label)}>
+            return (<React.Fragment key={`${item.href ?? ""}:${String(item.label)}`}>
               <BreadcrumbItem className={classNames?.item} style={styles?.item}>
                 {isLast ? (<BreadcrumbPage className={classNames?.page} style={styles?.page}>
                     {item.label}

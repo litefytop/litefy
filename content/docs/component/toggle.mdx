@@ -15,6 +15,12 @@ A toggle button, controlled or uncontrolled; `ToggleGroup` renders the group.
   name="toggle-basic"
 />
 
+### Variants
+
+The `variant` prop switches the group look — `outline` by default (outlined button strip), `well` renders the well-track form where pressed items are raised as background blocks.
+
+<ComponentPreview name="toggle-variants" />
+
 ## API Reference
 
 ### Toggle
@@ -40,6 +46,7 @@ Pressing a disabled toggle does nothing. A custom `onClick` handler runs before 
 | `value`          | `string[]`                   | Controlled selected values                               |
 | `defaultValue`   | `string[]`                   | Default selected values (uncontrolled), defaults to `[]` |
 | `onChange`       | `(values: string[]) => void` | Callback when values change                              |
+| `variant`        | `"outline" \| "well"`        | Group look, defaults to `outline`; `outline` owns the border and rounding on the shell with primary-filled pressed items, `well` renders the well-track form with pressed items raised as background blocks |
 | `disabled`       | `boolean`                    | Disable all options, defaults to `false`                 |
 | `className`      | `string`                     | Custom class names, applied to the container             |
 | `itemClassName`  | `string`                     | Custom class names, applied to each toggle               |

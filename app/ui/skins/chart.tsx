@@ -18,7 +18,7 @@ const tooltipClasses =
 
 const tooltipHeaderClasses = "mb-1 text-xs font-semibold tracking-label case-label";
 
-const tooltipRowClasses = "flex items-center gap-x-1.5 min-w-[7.5rem] font-field";
+const tooltipRowClasses = "flex items-center gap-x-1.5 min-w-30 font-field";
 
 const tooltipSwatchClasses = "w-2.5 h-0.5 rounded-sm border-control border-border flex-none";
 

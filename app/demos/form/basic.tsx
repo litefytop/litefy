@@ -17,19 +17,17 @@ export default function Demo() {
 
   return (
     <Form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <div className="flex flex-col gap-3">
-        <span>Plan</span>
-        <RadioGroup
-          name="plan"
-          orientation="horizontal"
-          defaultValue="pro"
-          options={[
-            { label: "Free", value: "free" },
-            { label: "Pro", value: "pro" },
-            { label: "Team", value: "team" },
-          ]}
-        />
-      </div>
+      <RadioGroup
+        name="plan"
+        label="Plan"
+        orientation="horizontal"
+        defaultValue="pro"
+        options={[
+          { label: "Free", value: "free" },
+          { label: "Pro", value: "pro" },
+          { label: "Team", value: "team" },
+        ]}
+      />
 
       <Input
         name="name"

@@ -27,6 +27,9 @@ const groupRootClasses =
   "flex flex-col " +
   "data-[orientation=horizontal]:flex-row data-[orientation=horizontal]:flex-wrap data-[orientation=horizontal]:gap-x-4";
 
+const groupLabelClasses =
+  "block w-full ps-2 mb-1 select-none text-sm font-label tracking-label case-label";
+
 const partClasses = {
   input: inputClasses,
   indicator: indicatorClasses,
@@ -56,7 +59,7 @@ export function RadioGroup({ className, common, options, classNames, ...props }:
         ),
       }))}
       common={{ ...common, classNames: mergeSlots(partClasses, common?.classNames) }}
-      classNames={mergeSlots({ root: cn(groupRootClasses, className) }, classNames)}
+      classNames={mergeSlots({ root: cn(groupRootClasses, className), groupLabel: groupLabelClasses }, classNames)}
     />
   );
 }

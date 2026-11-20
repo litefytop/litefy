@@ -56,6 +56,8 @@ description: 复选框组件，支持受控、非受控、分组和自定义指�
 | `onChange`     | `(values: string[]) => void`                                                                                                                                                                                                           | 值变化回调                            |
 | `name`         | `string`                                                                                                                                                                                                                               | 分组名称，作用于每个 input                 |
 | `disabled`     | `boolean`                                                                                                                                                                                                                              | 禁用所有选项，默认 `false`                |
+| `label`        | `React.ReactNode`                                                                                                                                                                                                                      | 组标签，渲染在选项上方，作为组的可访问名称            |
+| `classNames`   | `{ root?; groupLabel?; section?; label? }`                                                                                                                                                                                             | 容器、组标签、分节与分节标题的自定义类名             |
 | `className`    | `string`                                                                                                                                                                                                                               | 自定义类名，作用于容器                      |
 | `common`       | `{ lineThrough?: boolean; classNames?: { input?: string; indicator?: string; label?: string; icon?: string; text?: string }; styles?: { indicator?: React.CSSProperties; label?: React.CSSProperties }; indicator?: React.ReactNode }` | 统一应用到每个选项的配置（`lineThrough` 项级优先） |
 
@@ -122,4 +124,4 @@ label 包装器，将 input 与指示器和文本关联起来。
 
 ## 数据属性
 
-骨架不在本组件上发射任何 `data-*`。选中与禁用状态由原生 `<input type="checkbox">` 读取（`:checked`、`disabled`）；`CheckboxGroup` 根元素携带 `role="group"` 与 `aria-label`。
+骨架不在本组件上发射任何 `data-*`。选中与禁用状态由原生 `<input type="checkbox">` 读取（`:checked`、`disabled`）；`CheckboxGroup` 根元素携带 `role="group"`，传 `label` 时经 `aria-labelledby` 关联组标签，否则用可选 `aria-label`。

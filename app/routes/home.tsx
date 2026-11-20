@@ -1,7 +1,7 @@
 import { type LinksFunction } from "react-router";
 import globalHref from "../global.css?url";
 import { homeContent, type Locale } from "./home-view";
-import { i18n } from "@/lib/i18n";
+import { siteDefaultLanguage } from "@/lib/i18n";
 import { socialMeta } from "@/lib/seo";
 import { siteUrl } from "@/lib/shared";
 import { LANGUAGES } from "../lib/style-templates";
@@ -11,8 +11,8 @@ export const links: LinksFunction = () => [
 ];
 
 export function meta({ params }: { params: { lang?: string } }) {
-  const lang = params.lang ?? i18n.defaultLanguage;
-  const locale = (LANGUAGES.includes(lang) ? lang : i18n.defaultLanguage) as Locale;
+  const lang = params.lang ?? siteDefaultLanguage;
+  const locale = (LANGUAGES.includes(lang) ? lang : siteDefaultLanguage) as Locale;
   const t = homeContent[locale] ?? homeContent.en;
   const url = `${siteUrl}/${locale}`;
   return [

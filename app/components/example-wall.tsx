@@ -118,9 +118,69 @@ function useNearViewport<T extends HTMLElement>(rootMargin: string, initial = fa
 function DemoSkeleton() {
   return (
     <div className="flex flex-col items-center gap-2 w-full max-w-64">
-      <div className="block rounded-md bg-accent motion-safe:animate-pulse h-[1.5rem] w-[66%]" />
-      <div className="block rounded-md bg-accent motion-safe:animate-pulse h-[0.5rem] w-full" />
-      <div className="block rounded-md bg-accent motion-safe:animate-pulse h-[0.5rem] w-[75%]" />
+      <div className="block rounded-md bg-accent motion-safe:animate-pulse h-6 w-2/3" />
+      <div className="block rounded-md bg-accent motion-safe:animate-pulse h-2 w-full" />
+      <div className="block rounded-md bg-accent motion-safe:animate-pulse h-2 w-3/4" />
+    </div>
+  );
+}
+
+function SkeletonCentered() {
+  return (
+    <div className="flex h-full items-center justify-center">
+      <DemoSkeleton />
+    </div>
+  );
+}
+
+function DemoFitBox({ children }: { children: React.ReactNode }) {
+  const boxRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
+  const [fit, setFit] = useState<{ scale: number; height: number; top: number } | null>(null);
+
+  useEffect(() => {
+    const box = boxRef.current;
+    const inner = innerRef.current;
+    if (!box || !inner) return;
+    let frame = 0;
+    const measure = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const availH = box.clientHeight;
+        const availW = box.clientWidth;
+        const naturalH = inner.offsetHeight;
+        const naturalW = inner.scrollWidth;
+        if (!availH || !availW || !naturalH) return;
+        const scale = Math.min(1, availH / naturalH, availW / naturalW);
+        const height = naturalH * scale;
+        setFit({ scale, height, top: Math.max(0, (availH - height) / 2) });
+      });
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(box);
+    observer.observe(inner);
+    return () => {
+      observer.disconnect();
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  return (
+    <div ref={boxRef} className="relative h-full w-full">
+      <div
+        className="absolute inset-x-0 flex items-start justify-center"
+        style={fit ? { top: fit.top, height: fit.height } : { top: 0 }}
+      >
+        <div
+          ref={innerRef}
+          className="w-full"
+          style={fit ? { transform: `scale(${fit.scale})`, transformOrigin: "top center" } : undefined}
+        >
+          {children}
+        </div>
+      </div>
     </div>
   );
 }
@@ -181,14 +241,16 @@ function WallCard({
         <span>{item.title(locale)}</span>
         <ArrowUpRight className="opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 size-3.5 text-surface-fg" />
       </Link>
-      <div className="p-6 flex items-center justify-center min-h-[9rem] overflow-hidden rounded-b-[inherit] *:max-w-full *:min-w-0">
+      <div className="h-48 overflow-hidden rounded-b-[inherit] p-6">
         <DemoErrorBoundary locale={locale}>
           {near ? (
-            <Suspense fallback={<DemoSkeleton />}>
-              <LazyDemo Demo={getLazyDemo(item)} />
+            <Suspense fallback={<SkeletonCentered />}>
+              <DemoFitBox>
+                <LazyDemo Demo={getLazyDemo(item)} />
+              </DemoFitBox>
             </Suspense>
           ) : (
-            <DemoSkeleton />
+            <SkeletonCentered />
           )}
         </DemoErrorBoundary>
       </div>

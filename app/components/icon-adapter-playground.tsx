@@ -75,7 +75,7 @@ export function IconAdapterPlayground() {
             className="flex flex-col items-center gap-1 rounded-sm border border-border bg-background p-2"
           >
             <Icon className="size-5" aria-hidden />
-            <span className="font-mono text-[10px] text-surface-fg">
+            <span className="font-mono text-2.5 text-surface-fg">
               {(g.sourceNames as Record<string, string>)[name] ?? name}
             </span>
           </div>

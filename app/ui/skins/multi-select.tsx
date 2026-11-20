@@ -2,12 +2,13 @@
 import type { MultiSelectProps } from "@/ui";
 import { cn, mergeSlots } from "../utils/cn";
 import { buttonVariants } from "./button";
+import { panelPadClass } from "./popover";
 
 
 const triggerClasses =
   cn(buttonVariants.outline, "rounded-md px-control-x min-h-field border-frame w-55 max-w-full min-w-0 text-left");
 
-const listClasses = "max-h-96 overflow-y-auto p-1 outline-none";
+const listClasses = "max-h-96 overflow-y-auto outline-none";
 
 const groupClasses =
   "px-3 py-snug text-sm leading-5 font-label tracking-label case-label text-surface-fg";
@@ -33,6 +34,7 @@ export function MultiSelect({
       className={cn(triggerClasses, className)}
       classNames={mergeSlots(
         {
+          content: panelPadClass,
           list: listClasses,
           group: groupClasses,
           option: optionClasses,

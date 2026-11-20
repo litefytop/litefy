@@ -16,6 +16,7 @@ export interface ThoughtLineClassNames {
     steps?: string;
     step?: string;
     stepMarker?: string;
+    stepsShell?: string;
 }
 
 export interface ThoughtLineProps extends Omit<React.ComponentProps<"div">, "className"> {
@@ -167,7 +168,7 @@ export function ThoughtLine({
             </Line>
             {steps && steps.length > 0 && (
                 <ul id={listId} data-open={open ? "true" : "false"} className={classNames?.steps}>
-                    <div>
+                    <div className={classNames?.stepsShell}>
                         {steps.map((step, i) => {
                             const current = !settled && i === steps.length - 1;
                             return (

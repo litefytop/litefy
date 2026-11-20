@@ -39,6 +39,7 @@
   --focus-offset: 2px;
   --focus-outline-danger: 2px solid var(--danger-fg);
   --focus-glow: none;
+  --focus-glow-inset: none;
   --press-filter: brightness(0.95);
 
   --text-transform-label: none;
@@ -202,7 +203,6 @@
   --radius-4xl: 0px;
   --radius-pill: 0px;
   --radius-disc: 0px;
-  --radius-swipe: 0px;
 
   --font-sans: Inter, system-ui, sans-serif;
   --font-mono:
@@ -242,7 +242,7 @@
   --transition-duration-lg: var(--duration-lg);
 
   --default-transition-duration: 120ms;
-  --default-transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
   --border-width-control: 1px;
   --border-width-hair: 1px;
@@ -258,7 +258,7 @@
   --translate-lift: 0rem;
   --translate-crush: 0rem;
   --transition-duration-frame: 120ms;
-  --ease-frame: cubic-bezier(0.2, 0, 0, 1);
+  --ease-frame: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @theme inline {
@@ -341,6 +341,12 @@
   outline: var(--focus-outline-danger);
   outline-offset: var(--focus-offset);
   box-shadow: var(--shadow-frame-focus-danger);
+}
+
+@utility focus-ring-inset {
+  outline: var(--focus-outline);
+  outline-offset: calc(-1 * var(--focus-offset));
+  box-shadow: var(--focus-glow-inset);
 }
 
 @utility thumb-hit {
@@ -454,7 +460,7 @@
   padding-inline: calc(var(--spacing) * 2);
   padding-block: 0;
   border: var(--border-width-frame) solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: calc(var(--spacing) * 1);
   background-color: var(--color-background);
   background-image: var(--fill-background, none);
   color: var(--color-foreground);
@@ -464,12 +470,6 @@
   line-height: calc(var(--spacing) * 4);
   letter-spacing: var(--tracking-label);
   box-shadow: var(--shadow-subtle);
-}
-
-@property --litefy-cols {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 1;
 }
 
 @property --litefy-percent {
@@ -558,13 +558,42 @@
 
   html {
     font-family: var(--font-sans);
-    scrollbar-width: thin;
-    text-autospace: normal;
   }
 
+  /* Clinical scrollbars: 全方案统一 6px 常显经典滚动条（webkit 强制经典）；
+     标准 scrollbar-* 只进 Firefox 车道，Chrome 下设标准属性会丢弃 webkit 定档。 */
   *::-webkit-scrollbar {
     width: 6px;
     height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--surface-fg);
+  }
+
+  ::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  @-moz-document url-prefix("") {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
   }
 
   body {

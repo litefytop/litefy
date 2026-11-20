@@ -6,7 +6,7 @@ import { type FC, useSyncExternalStore } from "react";
 import { useParams } from "react-router";
 import { useMDXComponents } from "@/components/mdx";
 import { pageTrees } from "@/generated/page-trees";
-import { i18n } from "@/lib/i18n";
+import { siteDefaultLanguage } from "@/lib/i18n";
 import { FloatingNav } from "@/components/floating-nav";
 import { buildMarkdownUrl } from "@/lib/markdown-url";
 import { jsonLdScript, socialMetaTags } from "@/lib/seo";
@@ -133,7 +133,7 @@ export async function preloadDocsPage(pathname: string): Promise<void> {
 
 function resolveLocale(input: string | undefined): Locale {
   if (input && input in pageTrees) return input as Locale;
-  return i18n.defaultLanguage as Locale;
+  return siteDefaultLanguage as Locale;
 }
 
 function DocPage({ Page, markdownUrl, path }: { Page: FC<{ markdownUrl: string; path: string }>; markdownUrl: string; path: string }) {

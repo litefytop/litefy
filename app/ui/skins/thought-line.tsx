@@ -37,8 +37,10 @@ const stepsClasses =
   "grid pl-6 transition-[grid-template-rows] duration-md ease-frame " +
   "data-[open=false]:grid-rows-[0fr] data-[open=true]:grid-rows-[1fr]";
 
+const stepsShellClasses = "min-h-0 overflow-hidden";
+
 const stepClasses =
-  "flex min-h-0 items-center gap-x-2 overflow-hidden py-0.5 text-sm leading-5 text-surface-fg " +
+  "flex items-center gap-x-2 py-0.5 text-sm leading-5 text-surface-fg " +
   "data-[current=true]:text-foreground";
 
 const stepMarkerClasses =
@@ -54,6 +56,7 @@ const skinClassNames = {
   timer: timerClasses,
   chevron: chevronClasses,
   steps: stepsClasses,
+  stepsShell: stepsShellClasses,
   step: stepClasses,
   stepMarker: stepMarkerClasses,
 };

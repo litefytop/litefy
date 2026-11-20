@@ -62,13 +62,13 @@ export function FloatingTocBar({ active = false, level = 1, className, ...props 
     return (<span {...props} aria-hidden data-active={active || undefined} data-depth={level} data-placement={placement} className={className}/>);
 }
 export interface FloatingTocContentProps extends Omit<React.ComponentProps<"div">, "className"> {
-    offset?: number;
     placement?: FloatingPlacement;
     className?: string;
 }
-export function FloatingTocContent({ offset = 8, placement, className, ...props }: FloatingTocContentProps) {
+export function FloatingTocContent({ placement, className, ...props }: FloatingTocContentProps) {
     const { placement: side, open, onOpenChange, contentProps, anchorName, panelId, mode } = useFloatingTocContext();
-    const derived: FloatingPlacement = { side: side === "right" ? "left" : "right", align: "center", gap: offset };
+    // 负 gap 让面板外缘与触发器外缘齐平、完整盖住横条；-32 对应皮肤触发器宽度（p-2 + 最宽横条 w-4）
+    const derived: FloatingPlacement = { side: side === "right" ? "left" : "right", align: "center", gap: -32 };
     return (<PopoverContent {...props} {...contentProps} id={panelId} open={open} onOpenChange={onOpenChange} anchorName={anchorName} placement={{ ...derived, ...placement }} autofocus={mode !== "hover"} className={className}/>);
 }
 export interface FloatingTocItemProps extends Omit<React.ComponentProps<"button">, "className"> {

@@ -202,6 +202,7 @@ export interface CommandListClassNames {
     itemIcon?: string;
     itemLabel?: string;
     shortcut?: string;
+    empty?: string;
 }
 export interface CommandListProps extends Omit<React.ComponentProps<"div">, "children" | "className"> {
     empty?: React.ReactNode;
@@ -226,7 +227,7 @@ export function CommandList({ empty, renderItem, className, classNames, styles, 
         })} empty={empty ?? "No results"} highlightIndex={highlightIndex} onHighlightChange={setHighlightIndex} onSelect={selectRow} onItemMouseMove={(row, index) => {
             if (!row.item.disabled && highlightIndex !== index)
                 setHighlightIndex(index);
-        }} className={className} classNames={{ root: classNames?.rows, item: classNames?.item, groupHeader: classNames?.label }} styles={{ item: styles?.item, groupHeader: styles?.label }}/>
+        }} className={className} classNames={{ root: classNames?.rows, item: classNames?.item, groupHeader: classNames?.label, empty: classNames?.empty }} styles={{ item: styles?.item, groupHeader: styles?.label }}/>
     </div>);
 }
 export interface CommandProps extends Omit<React.ComponentProps<"button">, "children" | "className" | "style" | "type" | "onSelect"> {
@@ -263,6 +264,7 @@ export interface CommandProps extends Omit<React.ComponentProps<"button">, "chil
         itemIcon?: string;
         itemLabel?: string;
         shortcut?: string;
+        empty?: string;
     };
     styles?: {
         content?: React.CSSProperties;
@@ -289,14 +291,14 @@ export function Command({ items, trigger, open: controlledOpen, defaultOpen = fa
       <Dialog open={open} onOpenChange={setOpen} aria-label={placeholder} className={className} classNames={{
             ...dialogClassNames,
             content: [dialogClassNames?.content, classNames?.content].filter(Boolean).join(" ") || undefined,
-        }} styles={{ ...dialogStyles, content: styles?.content, header: { display: "none" }, close: { display: "none" } }}>
+        }} styles={{ ...dialogStyles, content: styles?.content }}>
         <CommandRoot items={items} open={open} filter={filter} onKeywordChange={onKeywordChange} onSelect={(item) => {
             onSelect?.(item);
             setOpen(false);
         }} className={classNames?.root}>
           <CommandInput placeholder={placeholder} className={classNames?.input} inputClassNames={classNames?.field} classNames={{ icon: classNames?.searchIcon }} trailing={trailing}/>
 
-          <CommandList empty={empty} renderItem={renderItem} className={classNames?.list} classNames={{ rows: classNames?.rows, item: classNames?.item, label: classNames?.label, itemIcon: classNames?.itemIcon, itemLabel: classNames?.itemLabel, shortcut: classNames?.shortcut }} styles={{ item: styles?.item, label: styles?.label }}/>
+          <CommandList empty={empty} renderItem={renderItem} className={classNames?.list} classNames={{ rows: classNames?.rows, item: classNames?.item, label: classNames?.label, itemIcon: classNames?.itemIcon, itemLabel: classNames?.itemLabel, shortcut: classNames?.shortcut, empty: classNames?.empty }} styles={{ item: styles?.item, label: styles?.label }}/>
           {hints !== null && <CommandFooter navigate={hints?.navigate} open={hints?.open} close={hints?.close} className={classNames?.footer}/>}
         </CommandRoot>
       </Dialog>

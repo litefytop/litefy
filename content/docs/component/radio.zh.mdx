@@ -73,8 +73,10 @@ description: 零件化组装的单选按钮组件，分组由 options 驱动—�
 | `disabled`      | `boolean`                              | 禁用所有选项，默认 `false`       |
 | `name`          | `string`                               | 分组名称——同时启用选项间原生的方向键导航   |
 | `orientation`   | `"horizontal" \| "vertical"`           | 选项的排列方向，默认 `"vertical"` |
+| `label`         | `React.ReactNode`                      | 组标签，渲染在选项上方，作为组的可访问名称 |
+| `classNames`    | `{ root?; groupLabel? }`               | 容器与组标签的自定义类名             |
 | `className`     | `string`                               | 自定义类名，应用于容器             |
-| `aria-label`    | `string`                               | 组的无障碍标签                 |
+| `aria-label`    | `string`                               | 组的无障碍标签，未传 `label` 时生效 |
 | `common`        | `{ classNames?, styles?, indicator? }` | 应用于所有选项的通用配置            |
 
 ## 键盘交互

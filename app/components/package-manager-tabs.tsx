@@ -1,7 +1,7 @@
 import { Check, Copy } from "@/components/icons";
 import { useSiteSkin } from "./site-skin";
 import { copyText } from "@/lib/clipboard";
-import { i18n } from "@/lib/i18n";
+import { siteDefaultLanguage } from "@/lib/i18n";
 import { useParams } from "react-router";
 import { useState } from "react";
 
@@ -12,7 +12,7 @@ interface PackageManagerTabsProps {
 export function PackageManagerTabs({ command }: PackageManagerTabsProps) {
   const { Button } = useSiteSkin();
   const params = useParams<{ lang?: string }>();
-  const locale = params.lang || i18n.defaultLanguage;
+  const locale = params.lang || siteDefaultLanguage;
   const [copied, setCopied] = useState<string | null>(null);
 
   const handleCopy = async (text: string, pm: string) => {

@@ -383,7 +383,7 @@ function TemplateScene({
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <header className="flex h-[3.5rem] items-center gap-2 px-4 md:px-6 lg:px-8 sticky top-0 z-40 border-b bg-surface">
+      <header className="flex h-14 items-center gap-2 px-4 md:px-6 lg:px-8 sticky top-0 z-40 border-b bg-surface">
         <NavBar
           items={[...BLOCKS]}
           getKey={(id) => id}
@@ -420,7 +420,7 @@ function TemplateScene({
               <p className="m-0 scroll-mt-20 text-xs font-medium tracking-widest uppercase">
                 {t.hero.eyebrow}
               </p>
-              <h1 className="m-0 scroll-mt-20 py-4 mb-4 text-[2.25rem] leading-10 tracking-tight font-bold sm:text-[3rem] sm:leading-none lg:text-[3.75rem] lg:leading-none">
+              <h1 className="m-0 scroll-mt-20 py-4 mb-4 text-36 leading-10 tracking-tight font-bold sm:text-48 sm:leading-none lg:text-60 lg:leading-none">
                 {templateTitle(tpl, lang)}
               </h1>
               <p className="max-w-256 text-sm text-surface-fg">{tpl.desc[lang]}</p>
@@ -519,7 +519,7 @@ function PaletteBlock({ tpl, lang }: { tpl: StyleTemplate; lang: Lang }) {
             {TOKENS.map(({ token, ...roles }) => (
               <span
                 key={token}
-                className="h-[3.5rem] rounded-sm border"
+                className="h-14 rounded-sm border"
                 title={`${token} · ${roles[lang]}`}
                 style={{ backgroundColor: `var(${token})` }}
               />
@@ -619,7 +619,7 @@ function TypeBlock({ t }: { t: Copy }) {
         <div className="grid gap-4 lg:grid-cols-3">
           <Card className="flex flex-col gap-3">
             <h3 className="text-sm font-medium">{ty.ladder}</h3>
-            <p className="m-0 scroll-mt-20 py-4 mb-4 text-[2.25rem] leading-10 tracking-tight font-bold sm:text-[3rem] sm:leading-none lg:text-[3.75rem] lg:leading-none">
+            <p className="m-0 scroll-mt-20 py-4 mb-4 text-36 leading-10 tracking-tight font-bold sm:text-48 sm:leading-none lg:text-60 lg:leading-none">
               headline
             </p>
             <h4 className="m-0 scroll-mt-20 font-semibold leading-head text-h4 mt-[1.5em]">

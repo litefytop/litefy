@@ -3,7 +3,7 @@ import type { SparklineProps } from "@/ui";
 import { cn, mergeSlots } from "../utils/cn";
 
 
-const rootClasses = "h-[3rem] w-[8rem]";
+const rootClasses = "h-12 w-32";
 
 const barClasses = "fill-current";
 const areaClasses = "fill-current [fill-opacity:0.15]";

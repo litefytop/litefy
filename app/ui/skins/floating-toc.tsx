@@ -13,6 +13,7 @@ import type {
   FloatingTocItemProps,
 } from "@/ui";
 import { cn } from "../utils/cn";
+import { panelPadClass } from "./popover";
 
 export function FloatingToc(props: FloatingTocProps) {
   return <FloatingTocHeadless {...props} />;
@@ -54,7 +55,8 @@ export function FloatingTocContent({ className, ...props }: FloatingTocContentPr
     <FloatingTocContentHeadless
       {...props}
       className={cn(
-        "min-w-[10rem] max-w-[min(16rem,calc(100vw-2rem))] max-h-[min(24rem,60vh)] overflow-auto rounded-xl border-frame border-border p-1",
+        "min-w-40 max-w-[min(--spacing(64),calc(100vw_-_--spacing(8)))] max-h-[min(--spacing(96),60vh)] overflow-auto rounded-xl border-frame border-border",
+        panelPadClass,
         "bg-surface-raised text-foreground shadow-elevated",
         className
       )}
@@ -67,7 +69,7 @@ export function FloatingTocItem({ className, ...props }: FloatingTocItemProps) {
     <FloatingTocItemHeadless
       {...props}
       className={cn(
-        "block w-full text-start py-1 ps-3 pe-3 rounded-md text-sm leading-5 text-surface-fg cursor-pointer",
+        "block w-full text-start py-1 ps-3 pe-3 text-sm leading-5 text-surface-fg cursor-pointer",
         "hover:bg-accent hover:text-accent-fg",
         "data-active:font-strong data-active:text-primary",
         "data-[depth=2]:ps-6 data-[depth=3]:ps-9 data-[depth=4]:ps-12 data-[depth=5]:ps-15",

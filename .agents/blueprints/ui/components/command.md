@@ -11,9 +11,9 @@
 - Root 在 `open` 为真时清空 keyword 并聚焦输入框
 - `CommandInput`：`Input`，`role="combobox"` + `aria-autocomplete="list"` + `aria-expanded` + `aria-controls` 指向列表 viewport id + `aria-activedescendant` 指向高亮行 id，leading 缺省 `Search` 图标（`aria-hidden`）；`trailing` 透传（组合版经 prop 注入随状态附件，如搜索加载 spinner）
 - 导出 `CommandFooter`：`data-command-footer` 脚注行，三组 `data-command-hint`（键帽 `data-command-hint-key` + `aria-hidden`，配 `↑` `↓` / `↵` / `esc` 与说明文字），`navigate` / `open` / `close` 文字缺省 Navigate / Open / Close
-- `CommandList`：内部 `List`；存在分组项时启用分组头渲染；`getKey` 取 `item.value ?? index`；鼠标移入非 disabled 项更新高亮；`empty` 缺省 "No results"，显式传 `null` 且无行时整个列表不渲染（紧凑初始态）
+- `CommandList`：内部 `List`；存在分组项时启用分组头渲染；`getKey` 取 `item.value ?? index`；鼠标移入非 disabled 项更新高亮；`empty` 缺省 "No results"，显式传 `null` 且无行时整个列表不渲染（紧凑初始态）；空态由 `classNames.empty` 着装（骨架只透传槽位、不自带样式）
 - 行渲染 `renderItem(item, { highlighted, disabled })` 可覆盖；缺省渲染 icon（`aria-hidden`）+ label（`data-disabled` 标记）+ shortcut（`kbd`）
 - `selectRow` 对 disabled 项不触发 `onSelect`
-- 组合 `Command`：`trigger` 渲染为 Button（`aria-haspopup="dialog"` + `aria-expanded`，点击开面板），`Dialog` 承载 Root/Input/List；Dialog 的 header 与 close 以内联样式隐藏，`aria-label` 取 `placeholder`；选择后自动关闭；`open` / `defaultOpen` / `onOpenChange` 控制开关；输入行 `trailing` 透传（如搜索加载 spinner），列表后渲染 `CommandFooter` 脚注（键盘说明，含 esc 关闭），`hints` 传本地化文字、传 `null` 整体关闭
+- 组合 `Command`：`trigger` 渲染为 Button（`aria-haspopup="dialog"` + `aria-expanded`，点击开面板），`Dialog` 承载 Root/Input/List（不传 `title` 与 `close`，Dialog 不渲染 header 与关闭钮），`aria-label` 取 `placeholder`；选择后自动关闭；`open` / `defaultOpen` / `onOpenChange` 控制开关；输入行 `trailing` 透传（如搜索加载 spinner），列表后渲染 `CommandFooter` 脚注（键盘说明，含 esc 关闭），`hints` 传本地化文字、传 `null` 整体关闭
 - `dialogClassNames` / `dialogStyles` 直通 Dialog；`classNames.content` 拼接到 Dialog content
-- 槽位：`classNames: trigger / content / input / field / searchIcon / list / root / footer / rows / item / label / itemIcon / itemLabel / shortcut`；`styles: content / list / item / label`
+- 槽位：`classNames: trigger / content / input / field / searchIcon / list / root / footer / rows / item / label / itemIcon / itemLabel / shortcut / empty`；`styles: content / list / item / label`

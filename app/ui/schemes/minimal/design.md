@@ -207,18 +207,19 @@ well:
 1. 留白一律走 Tailwind 数字乘道（`gap-3` / `p-6`），单基础值 `--spacing` 0.25rem（4px 栅格）、含 0.5 半步精修（2px），禁止手写固定 px 与更细刻度；语义档只作文档约定不进 CSS（`xs`≡1 / `sm`≡2 / `md`≡3 / `lg`≡4 / `xl`≡6 / `2xl`≡8），机制值（`px-control-x`、`py-snug` 这类反解档）另计；兄弟间隙基线 1rem（`gap-4`）。
 2. 页面留白三角色，互不混用：内联留白（顶栏 / 侧栏 / `main`）`px-4` → `md:px-6` → `lg:px-8`；区块节奏 `py-12` → `md:py-16` → `lg:py-20`（同一组数值另有 `--pad-block` 3rem / 4rem / 5rem 供少数内联样式读取，必须同值）；盒内边距固定 `p-6`，卡片组件与裸元素同一个数。
 3. `main` 是 container 不是 block；方案不给页面级裸元素挂全局样式，留白由 markup 自己写数字、按断点给档。
-4. Layout 断点三档：40rem / 48rem / 64rem；长文栏自己的 80rem 分界线归 Toc，不占三档。容器查询断点按用途归两族：内容内边距族 36rem / 56rem（Card、Dialog、Drawer 盒内边距升档），紧凑布局族 28rem（Pagination）。新用途先归族，不发明新值。
+4. Layout 断点三档：40rem / 48rem / 64rem；长文栏自己的 80rem 分界线归 Toc，不占三档。容器查询断点按用途归族：紧凑布局族 28rem（Pagination）。新用途先归族，不发明新值。
 5. 尺寸与布局：优先 max-width 自适应，内容列 `margin-inline: auto`（正文 `max-w-[40em]` 行宽车道、页面框 `max-w-320` 80rem）；宽度与高度走 `--spacing` 数字乘道、随案缩放，`--container-*` 只任 `@container` 断点不作宽度 utility，不设跨案恒定盒、不写 rem 定值（唯一 em 例外是正文行宽），同一元素只挂一枚宽度 utility；定档件取 16n 单位、浮层宽度对视口负责，六条车道与选道顺序见 delivery `references/skin-rules.md` 第 16 条；浮层自带默认尺寸且不随内容跳动；自由尺寸走内联覆盖。
 6. 命中区：`--height-field`（输入类带框壳）与 `--height-control`（其余一切可交互盒）同值 2.75rem（44px），语义分开为的是两类密度能各自调整。三条车道（整盒 `min-height` 到 44 / 伪元素外扩 / 行内文字豁免）、外扩互压 12px 判据、连体组内层让位、输入壳热区细则见 ui-rules 技能 `operable.md` 8–12、23–25 条；禁止为组件开 `data-size` 尺寸阶梯。
 
 ## Elevation & Depth
 
-1. 阴影严格分级，与圆角一一配对，语义四级住 `--elevation-*`：`faint`（sm，发丝元素、极小占位）/ `subtle`（sm，小标签、紧凑行内控件、轻悬浮）/ `base`（md，按钮、输入框、标准卡片静止态）/ `elevated`（xl，弹窗、抽屉、浮层、顶级面板）；第五枚 `--elevation-pressed` 按压内阴影只归组件层。亮档只用扩散黑投影（大模糊、低不透明度，弥散不锐利）；暗档每档加淡白亮环（subtle 7% → elevated 14%）与顶部内高光、黑投影降档兜底；语义四级之外的自造档位与任意值阴影一律不出现。轻提示角色 `shadow-hint`（Tooltip / Toast 皮肤点名）答 `elevated` 同值，不另设第五档。
-2. 焦点（机制值，`index.css` 的 `--focus-*`）：1px `primary` outline 加 3px `primary` 50% 透明阴影；invalid / danger 转 `danger-fg` 同形阴影。方案不设全局 `:focus-visible` 兜底——每个可聚焦件由皮肤显式挂 `focus-visible:focus-ring`（danger 挂 `focus-ring-danger`），内层件不挂即无环；环是方案层机制，皮肤只挂角色类、不自绘样式。
+1. 阴影严格分级，与圆角一一配对，语义四级住 `--elevation-*`：`faint`（sm，发丝元素、极小占位）/ `subtle`（sm，小标签、紧凑行内控件、轻悬浮）/ `base`（md，按钮、输入框、标准卡片静止态）/ `elevated`（xl，弹窗、抽屉、浮层、顶级面板）；第五枚 `--elevation-pressed` 按压内阴影只归组件层。亮档只用扩散黑投影（大模糊、低不透明度，弥散不锐利）；暗档每档加淡白亮环（subtle 7% → elevated 14%）与顶部内高光，投影与亮档严格同形同尺寸、不透明度加倍加深——纯黑投影画在同深度暗画布上需约 2 倍强度才可辨（经验规则）；语义四级之外的自造档位与任意值阴影一律不出现。轻提示角色 `shadow-hint`（Tooltip / Toast 皮肤点名）答 `elevated` 同值，不另设第五档。
+2. 焦点（机制值，`index.css` 的 `--focus-*`）：1px `primary` outline 加 3px `primary` 50% 透明阴影；invalid / danger 转 `danger-fg` 同形阴影。零间隙网格控件（日历日期格）另有内画档 `focus-ring-inset`：outline 与光晕同形内画（offset 取 `--focus-offset` 负值、光晕读 `--focus-glow-inset`），聚焦足迹不超 44×44 控件盒。方案不设全局 `:focus-visible` 兜底——每个可聚焦件由皮肤显式挂 `focus-visible:focus-ring`（danger 挂 `focus-ring-danger`），内层件不挂即无环；环是方案层机制，皮肤只挂角色类、不自绘样式。
 3. 边界系统（发丝是唯一宽度）：全局中性组件默认边框 = `var(--border)`；品牌交互组件统一走 Brand 色板。输入类规范形态「边框 + `base` 阴影」成套，边框不裸用；裸边框只给微小指示器（Checkbox / Radio / Steps marker）、虚线占位、分隔结构线、浮层内嵌面板。
 4. 边框与阴影二选一：带边框的盒子再叠大阴影即 Ghost card，出现即改。
 5. 控件边框与宿主互补：无边框宿主上的操作控件必须自带边框；已有边界线的宿主内行内控件只用文字 / 填充形态。
 6. 容器自带边界，宿主负责复位：可独立承载内容的容器（列表视口、折叠根、卡片、浮层面板）边框写在方案里，消费方不补；嵌进别的组件时宿主复位（去边框 + 去圆角）。业务侧出口 `data-border="none | solid"`。
+7. 滚动条：全方案统一 6px 常显经典滚动条——`::-webkit-scrollbar` 定宽、thumb 答 `var(--border)`、track 与 corner 透明、箭头按钮隐藏；Firefox 车道（`@-moz-document`）标准属性答 `thin` + `var(--border)`。标准属性不得出现在 Chromium——非初始值会丢弃 webkit 定档、退化为覆盖式滚动条自动隐藏；组件层一律不设 scrollbar 样式。
 
 ## Motion
 
@@ -227,29 +228,28 @@ well:
 3. 按压唯一入口是 `crush` 工具类（translate 归零 + `brightness(0.95)`）；禁止手写 `translate-(--translate-crush)` 丢掉压暗。
 4. 悬停阴影两车道：按钮类不升档（`shadow-frame-hover` 与静止同档，反馈靠 lift / crush）；容器类升一档（`shadow-block-hover` 即 elevated）。滑块拇指、对话框关闭钮这类小控件按按钮类处理，禁止 hover 升 elevated。
 5. 减动效契约：`prefers-reduced-motion: reduce` 或 `data-motion="reduce"` 时全部时长令牌清零、CSS 动画压到 1ms；JS 侧动效读 `useMotionPreference`。任何绕过令牌的时长都等于绕过契约。
-6. 透明度豁免清单（全方案仅此五条，弱化态不在其中）：`border` 令牌自身的 50% 洗边、禁用契约的 50%、悬停显现过渡的 0↔100（tooltip、toast 关闭钮、字段提示）、遮罩渐隐（scroll-shadow 的画布色渐变）、图表数据编码的透明度（`fill-opacity` 与 donut / radar 的降权 dim——图表以透明度叠色为媒介）。其余弱化态一律 `surface-fg` 文字色或图形差异（划线、换色）表达，不用 opacity。
+6. 透明度豁免清单（全方案仅此六条，其余弱化态不在其中）：`border` 令牌自身的 50% 洗边、禁用契约的 50%、悬停显现过渡的 0↔100（tooltip、toast 关闭钮、字段提示）、遮罩渐隐（scroll-shadow 的画布色渐变）、图表数据编码的透明度（`fill-opacity` 与 donut / radar 的降权 dim——图表以透明度叠色为媒介）、日历外月日期文字的 50% 透明（`text-foreground/50` 文字色 alpha 而非元素 opacity，对画布实测约 3.7:1，用户接受取舍 2026-11-20）。其余弱化态一律 `surface-fg` 文字色或图形差异（划线、换色）表达，不用 opacity。
 
 ## Shapes
 
 1. 圆角四档加胶囊，永远与阴影档一致：`sm` 8px 行内标签 / `md` 12px 输入与字段族触发件 / `lg` 16px 独立区块卡 / `xl` 24px 大卡与浮层外壳 / `full` 装饰圆（时间线节点、徽标圆点）/ `disc` 头像（答 `pill`，全圆）/ `pill` 胶囊（按钮、按下钮、特性胶囊、进度条、开关轨道、单选框——按钮族默认成圆）。
 2. 本方案重映射为柔和阶梯（`sm`/`md`/`lg`/`xl` = 8/12/16/24px，`@theme` 显式声明，不再依赖核心默认刻度）；只用这几档，`xs` / `2xl` / `3xl` / `4xl` 属别的风格语言，本方案不出现。静态的 `rounded-full` 谁也答不成 0，所以胶囊与头像圆写 `rounded-pill` / `rounded-disc`，由各方案回答。
-3. 连体控制组（拼接输入 + 按钮、Segment 条）内角压平为 0，只保留首尾端帽。
+3. 连体控制组（拼接输入 + 按钮）内角压平为 0，只保留首尾端帽。
 4. 轨道族（滑块 / 进度条 / 开关轨）：半径一律胶囊 `pill`、无描边、纯色块，未填充底 `surface`、填充 `primary`；轨道一律连续条，格子形态不进本方案——输入滑块的反馈靠值气泡与按压，不靠格子与速度波。
 
 ## Components
 
 1. 组件不拥有颜色与尺寸，只挑档位：颜色取 `colors` 语义名，圆角按 Shapes 四档，间距取五档数字尺度，命中区按 44。数值唯一权威是文件头 YAML；逐属性 API 与变体归组件文档。已迁移组件（Button / Avatar / Banner）的角色与槽位见 `.agents/blueprints/ui/skins/<name>.md`，此处不再重述。
-2. Avatar 专属令牌：`disc`（`--radius-disc`，答 `pill`，全圆）。
-3. SwipeActions 专属令牌：`--radius-swipe`，答 `xl`（0.75rem，声明在 `@theme`，Avatar `disc` 同款先例）。
-4. 未迁移组件档位短条（随各组件重构迁入其皮肤蓝图）：
+2. Avatar 专属令牌：`disc`（`--radius-disc`，答 `pill`，全圆）。SwipeActions 行体为方角轨道面（同 Banner），不用圆角。
+3. 未迁移组件档位短条（随各组件重构迁入其皮肤蓝图）：
 
    1. Input / Select 触发器 / 字段壳：`background` 背景色 + `foreground` 前景色，`md` 圆角 + `base` 阴影，`--height-field` 下限。
-   2. Card：`background` 背景色 + `foreground` 前景色，`lg` 圆角，盒内 `p-4`（容器 36rem 起 `p-6`、56rem 起 `p-8`），流体尺寸。
+   2. Card：`background` 背景色 + `foreground` 前景色，`lg` 圆角，盒内 `p-4`（固定档，体量差异由圆角档承担），流体尺寸。
    3. 浮层（Dialog / Drawer / Menu / Popover / Tooltip / 命令面板）：浮层背景（机制值：亮档即 `background`，暗档自动提亮一档）+ `foreground` 文字色，`xl` 圆角 + `border-frame` 描边 + `elevated` 阴影——浮层一律带框，无框派不出现。
    4. bar 形态容器（顶栏 / 侧栏 / 底栏 / hero）：`surface` 背景色 + `surface-fg` 前景色，靠边界线分区，不叠阴影。
    5. 状态块与状态标签：静态背景取 `<status>` 静置背景色，文字取对应 `<status>-fg`；状态色只用于状态，不作装饰、不当大面积背景色。
    6. Toc：长文栏 80rem 分界线归它自己，不占 Layout 三档断点。
-5. 组容器井（well）：字段壳与分段壳不挂框距（`--padding-well` 答 0——关井只去框距，与扁平极简同法），井（输入元素 / 值区 / 多行域）挂 `bg-well`（`--color-well` 读 `surface`）+ `shadow-well`（`--shadow-well` 双向内阴影，单一光源左上——暗影落在井口上缘、亮光补在对缘；亮暗各答，数值见 YAML `well` 块，经验规则）+ 同心式圆角（`radius-md − frame 边宽`，式见 delivery `references/skin-rules.md` 第 17 条）。完全关井 = 框距 0 + 井底读 `background`，读法退回纯容器形态。
+4. 组容器井（well）：字段壳不挂框距（`--padding-well` 答 0——关井只去框距，与扁平极简同法），井（输入元素 / 值区 / 多行域）挂 `bg-well`（`--color-well` 读 `surface`）+ `shadow-well`（`--shadow-well` 双向内阴影，单一光源左上——暗影落在井口上缘、亮光补在对缘；亮暗各答，数值见 YAML `well` 块，经验规则）+ 同心式圆角（`radius-md − frame 边宽`，式见 delivery `references/skin-rules.md` 第 17 条）。Segment 分段壳自成井道：井底 / 井内阴影同读 well 令牌，框距取 `p-1.5`、外壳 `rounded-lg`，选中项衬底为 `background` 浮起药丸、选中文字转 `primary`（取值以皮肤蓝图 `ui/skins/segment.md` 为准）。完全关井 = 框距 0 + 井底读 `background`，读法退回纯容器形态。
 
 ## Do / Don't（方案语言边界）
 
@@ -257,7 +257,7 @@ well:
 2. 阴影档与圆角档成对出现；边框与阴影二选一——「边框 + 大阴影」叠用即 Ghost card，出现即改；静态 Card 加 hover 动效同禁。
 3. 焦点环原样保留——它是无障碍的下限。
 4. 亮 / 暗两档镜像同一套语义，暗档靠提亮浮层表面与白亮环表达深度；禁止白色模糊外发光。
-5. 层级禁止表达成透明度调深浅 / 灰字弱化；非当前态的弱化（日历外月、图例隐藏、降权图标）用 `surface-fg` 文字色或图形差异表达，不用 opacity——透明度只出现在 Motion §6 的豁免清单里。
+5. 层级禁止表达成透明度调深浅 / 灰字弱化；非当前态的弱化（图例隐藏、降权图标）用 `surface-fg` 文字色或图形差异表达，不用 opacity——透明度只出现在 Motion §6 的豁免清单里（日历外月见其第六条）。
 6. 禁止手写焦点 / 禁用 / hover / 按压样式：交互态归方案层。
 7. 通用外观禁令见 delivery 技能，无障碍下限见 ui-rules 技能，此处不重述。
 8. 交付自检：替换示例内容后页面仍一眼识别为极简——**灰阶 + 一处品牌色 + 发丝边界 + 扩散柔影 + 大圆角**；没有任一元素跳出五档间距或四级阴影；亮 / 暗两档来回切无破相。克制不等于空：密度靠排版与留白建立，不靠把元素调淡——宁可少一种颜色，不可少一个状态。

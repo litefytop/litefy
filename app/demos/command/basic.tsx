@@ -61,7 +61,7 @@ export default function Demo() {
           <>
             <Search />
             Search commands…
-            <kbd className="inline-flex h-[1.25rem] min-w-[1.25rem] items-center justify-center rounded-sm px-1.5 py-0 backdrop-blur-md font-mono text-[0.625rem] leading-none font-semibold tracking-wide">⌘K</kbd>
+            <kbd className="kbd">⌘K</kbd>
           </>
         }
         items={items}

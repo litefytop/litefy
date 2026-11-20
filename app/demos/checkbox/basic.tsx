@@ -28,8 +28,8 @@ export default function Demo() {
         className="ps-8"
         value={selected}
         onChange={setSelected}
+        label="Colors"
         options={OPTIONS}
-        aria-label="Colors"
       />
     </div>
   );
