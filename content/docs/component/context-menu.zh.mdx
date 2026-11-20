@@ -1,0 +1,84 @@
+---
+title: Context Menu 右键菜单
+description: 命令式唤起的上下文菜单，桌面右键、触屏长按与 Shift+F10 三条触发通路，支持分组与子菜单
+---
+
+## 安装
+
+<Installation name="context-menu" />
+
+## 用法
+
+挂载 `<ContextMenuHost />`，触发区域展开 `useContextMenuTrigger()` 的 props，右键 / 长按即可呼出菜单。
+
+<ComponentPreview
+  name="context-menu-basic"
+/>
+
+## API 参考
+
+### ContextMenuHost
+
+`ContextMenu.open()` 激活期间渲染浮动菜单面板；在应用根挂载一次即可——没有菜单打开时它不渲染任何内容。它不接受任何属性；面板按 `ContextMenu.open()` 传入的 `x` / `y` 坐标点锚定（[浮动定位](/zh/docs/utils/use-floating-panel)）。
+
+### 静态方法
+
+#### ContextMenu.open
+
+```ts
+ContextMenu.open(options: ContextMenuOpenOptions): void
+```
+
+在给定视口坐标处打开菜单。
+
+| 选项             | 类型                                     | 描述                                                                   |
+| :------------- | :------------------------------------- | :------------------------------------------------------------------- |
+| `x`            | `number`                               | 视口 x 坐标（通常是 `e.clientX`）**必填**                                       |
+| `y`            | `number`                               | 视口 y 坐标（通常是 `e.clientY`）**必填**                                       |
+| `items`        | `MenuConfig[]`                         | 菜单项，扁平或分组 —— 与 [Menu](/zh/docs/component/menu) 组件的形状一致 **必填**       |
+| `onSelect`     | `(item: MenuItemConfig) => void`       | 菜单项激活时触发，随后菜单关闭                                                      |
+| `classNames`   | `{ content?: string }`                 | 面板的自定义类名                                                             |
+| `styles`       | `{ content?: React.CSSProperties }`    | 面板的内联样式；定位属性由组件内部管理                                                  |
+
+#### ContextMenu.dismiss
+
+```ts
+ContextMenu.dismiss(): void
+```
+
+以编程方式关闭菜单。
+
+### useContextMenuTrigger
+
+把三条触发通路绑成一个 props 集合，展开到触发元素上即可：桌面右键与 Shift+F10 即时打开；触屏按住 500ms 打开（移动超 10px、抬手或滚动取消），打开后吞掉本次点击，菜单关闭不会落一次点击。返回的 `style` 自带 `WebkitTouchCallout: none` 与 `user-select: none`——压掉 iOS 长按的系统callout与选字，代价是触发区内文本不可长按选择。
+
+| 选项           | 类型                                  | 描述                             |
+| :----------- | :---------------------------------- | :----------------------------- |
+| `items`      | `MenuConfig[]`                      | 与 `ContextMenu.open` 一致 **必填** |
+| `onSelect`   | `(item: MenuItemConfig) => void`    | 与 `ContextMenu.open` 一致        |
+| `classNames` | `{ content?: string }`              | 与 `ContextMenu.open` 一致        |
+| `styles`     | `{ content?: React.CSSProperties }` | 与 `ContextMenu.open` 一致        |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Shift` + `F10` | 在触发元素上打开菜单（锚定元素中心） |
+| `Escape` | 关闭菜单 |
+| `ArrowUp` / `ArrowDown` | 在菜单项间移动焦点（打开时首个可用项获得焦点） |
+| `Enter` / `Space` | 选中当前聚焦项并关闭菜单 |
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-entry]` | 位于每个菜单项 `li` 上——该条目的 entry id，方向键导航据此查找条目（来自 [Menu](/zh/docs/component/menu)） |
+| `[data-anchor-name]` | 位于每个菜单项 `li` 上——取值 `--menu-sub-{entryId}`，其子菜单面板据此锚定（来自 [Menu](/zh/docs/component/menu)） |
+| `[data-active]` | 位于菜单项按钮上——它正处于方向键 / 悬停的活动条目时存在（来自 [Menu](/zh/docs/component/menu)） |
+| `[data-has-sub]` | 位于菜单项按钮上——它会打开子菜单时存在（来自 [Menu](/zh/docs/component/menu)） |
+| `[data-float-x]` | 位于根面板上——取 `ContextMenu.open()` 传入的 `x` |
+| `[data-float-y]` | 位于根面板上——取 `ContextMenu.open()` 传入的 `y` |
+| `[data-float-side]` | 位于面板上——请求的吸附方位；根面板是点锚定，该值在它身上被忽略（[浮动定位](/zh/docs/utils/use-floating-panel)） |
+| `[data-float-align]` | 位于面板上——请求的交叉轴对齐，与 `[data-float-side]` 同理 |
+| `[data-float-gap]` | 位于面板上——请求的锚点偏移像素值 |
+| `[data-float-anchor]` | 只位于子菜单面板上——父级菜单项的 `--menu-sub-{entryId}`；根面板没有元素锚点，因此不带该属性 |

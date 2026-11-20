@@ -1,0 +1,67 @@
+---
+title: Chart
+description: A self-built canvas time-series engine sharing the chart-kit math layer — automatic canvas rendering, responsive width, interactive legend and hover tooltip
+---
+
+A canvas time-series chart for large datasets — for categorical or small data see [Donut](/en/docs/component/donut), [Radar](/en/docs/component/radar) and [Sparkline](/en/docs/component/sparkline).
+
+## Installation
+
+<Installation name="chart" />
+
+Chart depends on `chart-legend`, the `useChartPalette` hook and the `chart-kit` / `chart-paint` utilities — `litefy add chart` installs them all; the look comes from the scheme's own `chart` and `chart-legend` CSS.
+
+`useChartPalette` also works standalone for custom visualizations — call `useChartPalette({ mode: "fixed" | "mono" })` to get 8 color values; see [use-chart-palette](/en/docs/utils/use-chart-palette) for details.
+
+## Usage
+
+A basic line chart over a time axis.
+
+<ComponentPreview
+  name="chart-line"
+/>
+
+## API Reference
+
+### ChartProps
+
+| Prop            | Type                                    | Description                                                                                                                           |
+| --------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| data            | ChartData (`[number[], ...number[][]]`) | Aligned chart data; the first array holds the x values                                                                                |
+| series          | ChartSeriesConfig[]                     | Series configs, one per y array in data, in the same order                                                                            |
+| height          | number                                  | Chart height in pixels; width always adapts to the container, defaults to 240                                                         |
+| time            | boolean                                 | Whether the x axis is a time scale; when false the values are treated as plain numbers, defaults to true                              |
+| label           | string                                  | The chart's accessible name, applied to the canvas's `role="img"` + `aria-label`; unset it joins each series `label` with `, `, falling back to `"Chart"` when all are empty |
+| zoomHint        | React.ReactNode                         | Content of the interaction hint below the canvas; pass an empty string to hide it, defaults to "Drag to zoom · double-click to reset" |
+| legendPlacement | "top" \| "bottom"                       | Legend position: below the canvas (default) or above, defaults to "bottom"                                                            |
+| className       | string                                  | Classes appended to the root element                                                                                                  |
+| onReady         | () => void                              | Called once after the first render completes                                                                                          |
+
+### ChartSeriesConfig
+
+| Prop   | Type                        | Description                                                                            |
+| ------ | --------------------------- | -------------------------------------------------------------------------------------- |
+| label  | string                      | Series name, shown in the legend and the tooltip                                       |
+| type   | `"line" \| "area" \| "bar"` | How the series is drawn, defaults to `"line"`                                          |
+| stroke | string                      | Line color, any valid CSS color, defaults to Auto from the palette                     |
+| width  | number                      | Line width in pixels; applies to line / area only, defaults to 1.5                     |
+| fill   | string \| boolean           | Area fill; `true` takes the line color at 18% opacity, a string is a custom fill color |
+| value  | (v: number) => string       | Value formatter used in the tooltip                                                    |
+| show   | boolean                     | Whether the series is initially shown, defaults to true                                |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Double-click` | Resets the zoom |
+
+Hovering shows the crosshair and the tooltip, and dragging draws a box zoom — both are pointer-only interactions with no keyboard equivalents.
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-hidden]` | On each legend item button — present when that series is toggled to hidden |
+| `[data-shape]` | On each legend swatch — `"line"` or `"square"`, mirroring `ChartLegend`'s `swatch` prop |
+
+The chart root element, the canvas wrapper, the `<canvas>` and the tooltip element carry no `data-*`; only the legend parts do.

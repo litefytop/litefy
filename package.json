@@ -1,0 +1,49 @@
+{
+  "name": "litefy-fuma",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prebuild": "pnpm node scripts/copy-registry.js && node scripts/build-page-trees.mjs && node scripts/check-i18n-sync.mjs && node scripts/check-doc-format.mjs",
+    "build": "react-router build",
+    "dev": "react-router dev",
+    "lint": "oxlint app packages/cli/src scripts",
+    "lint:fix": "oxlint --fix app packages/cli/src scripts",
+    "types:check": "react-router typegen && fumadocs-mdx && tsc --noEmit && node scripts/check-blueprint-sync.mjs && node scripts/check-doc-format.mjs && node scripts/check-ui-css.mjs && oxlint app packages/cli/src scripts",
+    "audit:check": "node scripts/security-audit.mjs",
+    "postinstall": "fumadocs-mdx",
+    "cli:build": "pnpm --filter=litefy run build",
+    "cli:dev": "pnpm --filter=litefy run dev",
+    "cli:sync": "pnpm --filter=litefy run sync-sources",
+    "cli:link": "pnpm --filter=litefy exec npm link",
+    "cli:publish": "pnpm audit:check && pnpm --filter=litefy publish",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@orama/orama": "^3.1.18",
+    "@orama/tokenizers": "^3.1.18",
+    "@react-router/node": "^7.18.3",
+    "@tabler/icons-react": "^3.50.0",
+    "cn": "^0.4.0",
+    "fumadocs-core": "16.9.3",
+    "fumadocs-mdx": "15.0.11",
+    "fumadocs-registry": "^0.3.2",
+    "isbot": "^5",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-router": "^7.18.3",
+    "shiki": "^4.4.3"
+  },
+  "devDependencies": {
+    "@react-router/dev": "^7.18.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/mdx": "^2.0.14",
+    "@types/node": "^25.9.5",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "oxfmt": "^0.63.0",
+    "oxlint": "^1.80.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3",
+    "vite": "^7.3.6"
+  }
+}

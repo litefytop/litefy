@@ -1,0 +1,55 @@
+---
+title: Date Picker
+description: A date picker built on native JavaScript Date — an editable input, a month panel and pointer-anchored popover in one shipped component
+---
+
+## Installation
+
+<Installation name="date-picker" />
+
+## Usage
+An editable input plus a month panel popover, on plain JavaScript `Date` values.
+
+<ComponentPreview
+  name="date-picker-basic"
+/>
+
+An editable input plus a month panel — works with plain JavaScript `Date` values (treated as calendar dates); no date library or polyfill required, runs on every Baseline browser.
+## API Reference
+
+### DatePicker
+
+A controlled-or-uncontrolled date field; the visible month and panel open state are managed internally.
+
+| Prop              | Type                                                 | Description                                                                                          |
+| :---------------- | :--------------------------------------------------- | :--------------------------------------------------------------------------------------------------- |
+| `value`           | `Date \| null`                                       | Controlled selected date                                                                             |
+| `defaultValue`    | `Date \| null`                                       | Initial selected date (uncontrolled)                                                                 |
+| `onValueChange`   | `(date: Date) => void`                               | Fired when a date is committed — picked from the panel, or `Enter` on a complete typed date          |
+| `placeholder`     | `string`                                             | Input placeholder, defaults to `"Select or type a date"`                                             |
+| `disabled`        | `boolean`                                            | Disables the input and the panel                                                                     |
+| `invalid`         | `boolean`                                            | External invalid state — emits `aria-invalid` (also set internally when validation clears the input) |
+| `firstDayOfWeek`  | `0 \| 1`                                             | First day of the calendar week (`0` = Sunday, `1` = Monday), defaults to `0`                         |
+| `isDateDisabled`  | `(date: Date) => boolean`                            | Predicate disabling calendar dates                                                                   |
+| `trailing`        | `React.ReactNode`                                    | Trailing decoration inside the input, defaults to `CalendarIcon`                                     |
+| `onKeyDown`       | `React.KeyboardEventHandler<HTMLInputElement>`       | Runs before the built-in `Enter` commit; `preventDefault()` cancels it                               |
+| `classNames`      | `{ input?; trailing?; panel? }` — each `string`      | Custom classes for the input, its trailing decoration and the calendar panel                         |
+| `styles`          | `{ input?; trailing? }` — each `React.CSSProperties` | Inline styles for the input and trailing decoration                                                  |
+
+While the panel is open, `ArrowDown` / `ArrowUp` move focus into the calendar's first / last control; `Escape` closes it and returns focus to the input.
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Enter` | Parses the typed text — commits a full valid date, or jumps to the month / year view for partial input |
+| `Escape` | Closes the panel and re-applies the parse to the typed text |
+| `ArrowDown` | Opens the panel from the input; while open, moves focus into the panel |
+
+Typing a full valid date live-syncs the calendar selection without closing the panel.
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-open]` | On the root — present while the panel is open |

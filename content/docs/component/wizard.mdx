@@ -1,0 +1,67 @@
+---
+title: Wizard
+description: A wizard composed of Steps + Pager that manages index state internally — visited steps can be revisited, future steps cannot be skipped
+---
+
+## Installation
+
+<Installation name="wizard" />
+
+## Usage
+
+Pass `steps` for the progress indicator and one child per step — the Wizard manages the index state internally.
+
+<ComponentPreview
+  name="wizard-basic"
+/>
+
+### InlineWizard
+
+Renders the same state machine as a vertical steps accordion; only the current step expands.
+
+<ComponentPreview name="wizard-inline" />
+
+## API Reference
+
+### useWizardNavigation
+
+The exported wizard state machine for building custom wizard shells: `useWizardNavigation({ count, defaultIndex?, index?, maxIndex?, onIndexChange? })` returns `{ index, maxVisited, maxReachable, isFirst, isLast, isReachable, go }`.
+
+### Wizard
+
+The wizard component: manages step navigation state and renders the Steps indicator, the Pager body and the footer buttons.
+
+| Prop              | Type                                                                                  | Description                                                                                                                                                                                                                                                                                                   |
+| :---------------- | :------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `steps`           | `StepsItemConfig[]`                                                                   | Step configurations for the progress indicator                                                                                                                                                                                                                                                                |
+| `children`        | `React.ReactNode[]`                                                                   | Page content, one child per step                                                                                                                                                                                                                                                                              |
+| `onFinish`        | `() => void`                                                                          | Fired when the Submit button is clicked                                                                                                                                                                                                                                                                       |
+| `backLabel`       | `React.ReactNode`                                                                     | Footer button label, defaults to `"Back"`                                                                                                                                                                                                                                                                     |
+| `nextLabel`       | `React.ReactNode`                                                                     | Footer button label, defaults to `"Next"`                                                                                                                                                                                                                                                                     |
+| `finishLabel`     | `React.ReactNode`                                                                     | Footer button label, defaults to `"Submit"`                                                                                                                                                                                                                                                                   |
+| `className`       | `string`                                                                              | Custom class names, applied to the root element                                                                                                                                                                                                                                                               |
+| `classNames`      | `{ steps? / pager? / footer? / button? / primaryButton? }`                            | Custom class names per part — each is a single string written on that part's own element. The Pager body's height is the skeleton's inline default, taken from the scheme's `--litefy-wizard-pager-height` token — retune that token to change the height instead of overriding the inline style with a class |
+| `stepsClassNames` | `item` / `marker` / `rail` / `connector` / `texts` / `title` / `description` / `body` | Class names for the Steps indicator's own parts                                                                                                                                                                                                                                                               |
+| `stepsStyles`     | Same parts as above, with `React.CSSProperties` values                                | Inline styles for the Steps indicator's own parts                                                                                                                                                                                                                                                             |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Tab` | Reaches the clickable step markers and step titles, then the footer buttons; a locked marker is `disabled` and a non-clickable title renders as a `<span>`, so neither enters the tab order |
+| `Enter` / `Space` | Activates the focused step button and jumps to that step, or activates the focused footer button |
+
+No key handler is attached anywhere: arrow keys do not change steps, the Pager body handles no keys, and `Wizard` renders it with `gesture={false}`, so touch swipe is off as well. Steps change only through a step button or a footer button.
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-state]` | On each step `<li>`, its marker button, its title and its connector — `"completed"`, `"current"` or `"upcoming"` |
+| `[data-clickable]` | On a step's marker button and, when clickable, on its title button — present on visited steps other than the current one |
+| `[data-orientation]` | On the Steps `<ol>` and on each `<li>` — `Wizard` follows the container width (horizontal by default, vertical when narrow); `InlineWizard` is always `"vertical"` |
+| `[data-connector]` | `InlineWizard` only — on a vertical step's text block, present while its connector renders |
+| `[data-animating]` | `Wizard` only — on the Pager track, present while the slide to another step runs |
+| `[data-position]` | `Wizard` only — on the Pager layer that slides in; only `"slide"` ever appears, because `gesture={false}` rules out the drag layers |
+
+These attributes come from the [Steps](/en/docs/component/steps) and [Pager](/en/docs/component/pager) parts the Wizard renders; those two pages are the authority.

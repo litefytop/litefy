@@ -1,0 +1,69 @@
+---
+title: Avatar
+description: An avatar component with image loading states, skeleton and fallback support
+---
+
+## Installation
+
+<Installation name="avatar" />
+
+## Usage
+
+Avatar component handling image loading, success, and failure states with skeleton and fallback.
+
+<ComponentPreview 
+  name="avatar-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Avatar
+
+A self-managing avatar component that preloads the image and switches between skeleton, image, and fallback states.
+
+| Prop         | Type                                                          | Description                                                                                                                                                                   |
+| ------------ | ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src`        | `string`                                                      | Image source URL, required                                                                                                                                                    |
+| `skeleton`   | `React.ReactNode`                                             | Content shown while the image is loading — pass a self-styled node to replace the scheme's default pulsing placeholder block                                                  |
+| `fallback`   | `React.ReactNode`                                             | Content shown when the image fails to load — a string is wrapped in the scheme's text cell, an element renders as provided; without it the scheme shows an empty tinted block |
+| `className`  | `string`                                                      | Custom classes, applied to the root container                                                                                                                                 |
+| `style`      | `React.CSSProperties`                                         | Inline styles, applied to the root container                                                                                                                                  |
+| `classNames` | `{ image?: string }`                                          | Custom classes for the image                                                                                                                                                  |
+| `styles`     | `{ image?: React.CSSProperties }`                             | Inline styles for the image                                                                                                                                                   |
+
+Supports all native `<img>` attributes (such as `alt`); `className` and `style` apply to the root container.
+
+### Composable Components
+
+#### AvatarRoot
+
+The container element; its size and content layout (centering, overflow clipping) are defined by the scheme you load.
+
+| Prop        | Type             | Description                      |
+| ----------- | ---------------- | -------------------------------- |
+| `className` | `string`         | Custom CSS class                 |
+
+Supports all native `<div>` attributes.
+
+#### AvatarImage
+
+The image element rendered with lazy loading and async decoding.
+
+| Prop        | Type             | Description                      |
+| ----------- | ---------------- | -------------------------------- |
+| `src`       | `string`         | Image source URL, required       |
+| `className` | `string`         | Custom CSS class                 |
+
+Supports all native `<img>` attributes.
+
+## Keyboard Interactions
+
+The skeleton handles no keys. `AvatarRoot` is a `<div>` and `AvatarImage` is an `<img>`, neither of which enters the tab order.
+
+## Data Attributes
+
+The skeleton emits no `data-*` on this component.

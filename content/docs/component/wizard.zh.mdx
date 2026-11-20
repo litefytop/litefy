@@ -1,0 +1,67 @@
+---
+title: Wizard 向导
+description: Steps + Pager 组合的向导组件，内部管理索引状态 —— 已到达步骤可回退，未来步骤不可跳过
+---
+
+## 安装
+
+<Installation name="wizard" />
+
+## 用法
+
+传入 `steps` 作为进度指示器、每个子元素对应一步——Wizard 内部管理索引状态。
+
+<ComponentPreview
+  name="wizard-basic"
+/>
+
+### InlineWizard
+
+以纵向步骤手风琴渲染同一套状态机，只有当前步骤展开。
+
+<ComponentPreview name="wizard-inline" />
+
+## API 参考
+
+### useWizardNavigation
+
+导出的向导状态机，用于构建自定义向导外壳：`useWizardNavigation({ count, defaultIndex?, index?, maxIndex?, onIndexChange? })` 返回 `{ index, maxVisited, maxReachable, isFirst, isLast, isReachable, go }`。
+
+### Wizard
+
+向导组件，管理步骤导航状态，渲染 Steps 指示器、Pager 内容区和底部按钮。
+
+| 属性                | 类型                                                                                    | 描述                                                                                                             |
+| :---------------- | :------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------- |
+| `steps`           | `StepsItemConfig[]`                                                                   | 进度指示器的步骤配置                                                                                                     |
+| `children`        | `React.ReactNode[]`                                                                   | 页面内容，每个子元素对应一步                                                                                                 |
+| `onFinish`        | `() => void`                                                                          | 点击 Submit 按钮时触发                                                                                                |
+| `backLabel`       | `React.ReactNode`                                                                     | 底部按钮文案，默认 `"Back"`                                                                                             |
+| `nextLabel`       | `React.ReactNode`                                                                     | 底部按钮文案，默认 `"Next"`                                                                                             |
+| `finishLabel`     | `React.ReactNode`                                                                     | 底部按钮文案，默认 `"Submit"`                                                                                           |
+| `className`       | `string`                                                                              | 自定义类名，应用于根元素                                                                                                   |
+| `classNames`      | `{ steps? / pager? / footer? / button? / primaryButton? }`                            | 按部件自定义类名——每个都是一串写在它自己那个元素上。Pager 内容区的高度是骨架的内联默认值，取自方案的 `--litefy-wizard-pager-height` 令牌——改高度请重调该令牌，别用类名去压内联样式 |
+| `stepsClassNames` | `item` / `marker` / `rail` / `connector` / `texts` / `title` / `description` / `body` | Steps 进度条各部件的类名                                                                                                |
+| `stepsStyles`     | 同上部件，值为 `React.CSSProperties`                                                         | Steps 进度条各部件的内联样式                                                                                              |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Tab` | 依次到达可点击的步骤圆点与步骤标题，然后是底部按钮；被锁住的圆点是 `disabled`，不可点击的标题渲染为 `<span>`，二者都不进入 Tab 序 |
+| `Enter` / `Space` | 激活聚焦的步骤按钮并跳到该步，或激活聚焦的底部按钮 |
+
+任何位置都没有绑定按键处理：方向键不切步，Pager 内容区不接管按键，且 `Wizard` 以 `gesture={false}` 渲染它，触摸滑动同样关闭。步骤只能通过步骤按钮或底部按钮改变。
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-state]` | 位于每个步骤 `<li>`、它的圆点按钮、标题与连接线——取值 `"completed"`、`"current"` 或 `"upcoming"` |
+| `[data-clickable]` | 位于步骤的圆点按钮上，可点击时也在标题按钮上——存在于已访问过且非当前的步骤 |
+| `[data-orientation]` | 位于 Steps 的 `<ol>` 与每个 `<li>` 上——`Wizard` 随容器宽度（默认横向，窄容器转垂直），`InlineWizard` 恒为 `"vertical"` |
+| `[data-connector]` | 仅 `InlineWizard`——位于垂直步骤的文本块上，其连接线渲染时存在 |
+| `[data-animating]` | 仅 `Wizard`——位于 Pager 轨道上，切换到另一步的滑动进行时存在 |
+| `[data-position]` | 仅 `Wizard`——位于 Pager 滑入的那一层；只有 `"slide"` 会出现，因为 `gesture={false}` 排除了拖拽层 |
+
+这些属性来自 Wizard 渲染的 [Steps](/zh/docs/component/steps) 与 [Pager](/zh/docs/component/pager) 部件，以那两个页面为准。

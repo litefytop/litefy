@@ -1,0 +1,66 @@
+---
+title: Pagination
+description: A controlled page navigator — first / previous / numbered pages (with ellipsis) / next / last. A pure view component; page state lives in usePagination.
+---
+
+## Installation
+
+<Installation name="pagination" />
+
+## Usage
+
+A fully controlled view component, paired with `usePagination`.
+
+<ComponentPreview name="pagination-basic" />
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Pagination
+
+| Prop           | Type                                                      | Description                                                                                                                                   |
+| -------------- | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `page`         | `number`                                                  | Current page (1-based). **Required**                                                                                                          |
+| `totalPages`   | `number`                                                  | Total number of pages. **Required**                                                                                                           |
+| `onPageChange` | `(page: number) => void`                                  | Fired when any button is clicked                                                                                                              |
+| `siblingCount` | `number`                                                  | Page numbers shown on each side of the current page; the rest collapse into ellipsis, defaults to `1`                                         |
+| `disabled`     | `boolean`                                                 | Disables every button (e.g. while a page is loading), defaults to `false`                                                                     |
+| `summary`      | `React.ReactNode`                                         | Summary text slot on the left                                                                                                                 |
+| `className`    | `string`                                                  | Custom classes, applied to the root `nav`                                                                                                     |
+| `classNames`   | `{ controls?, nav?, pages?, page?, ellipsis?, summary? }` | Custom classes per part: the button group, the four edge buttons, the page-number group, a single page button, the ellipsis, the summary text |
+| `styles`       | `{ controls?, nav?, pages?, page?, ellipsis?, summary? }` | Custom inline styles for the same parts                                                                                                       |
+
+### Composable Components
+
+| Part | Element | Emitted attributes | Description |
+|------|---------|--------------------|-------------|
+| `PaginationRoot` | `<nav>` | `aria-label="pagination"` | Row container |
+| `PaginationFirst` | `Button` | `aria-label="First page"` | Jump to the first page (`ChevronsLeft`) |
+| `PaginationPrev` | `Button` | `aria-label="Previous page"` | Previous page (`ChevronLeft`) |
+| `PaginationPages` | `<div>` | - | Page-number buttons + ellipsis |
+| `PaginationNext` | `Button` | `aria-label="Next page"` | Next page (`ChevronRight`) |
+| `PaginationLast` | `Button` | `aria-label="Last page"` | Jump to the last page (`ChevronsRight`) |
+| `PaginationEllipsis` | `<span>` | - | Collapsed pages marker (`MoreHorizontal`) |
+| `PaginationSummary` | `<span>` | - | Summary text slot |
+
+The current page number carries `aria-current="page"`.
+
+## Keyboard Interactions
+
+The skeleton attaches no key handlers. Every control is a native `<button type="button">`; key behavior belongs to HTML itself.
+
+| Key | Description |
+| --- | --- |
+| `Tab` | Reaches the buttons in DOM order: first, previous, the page numbers, next, last. Pages collapsed into ellipsis, and buttons disabled at the first/last boundary or by `disabled`, are not in the tab order |
+| `Enter` / `Space` | Natively activates the focused button; every button fires `onPageChange` once |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-pure-icon]` | On the first, previous, next and last buttons — their content is a single icon without text (from [Button](/en/docs/component/button)) |
+
+The `nav`, the pages container, the ellipsis and the summary text carry no `data-*`; the current page is marked by `aria-current="page"`, not by a data attribute.

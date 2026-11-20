@@ -1,0 +1,37 @@
+/*
+ * Tailwind entry for the neo-brutalist showcase route.
+ *
+ * This file owns `@import "tailwindcss" source(none)` and composes the scheme
+ * theme layer (`app/ui/schemes/neo-brutalist/index.css`: tokens, the token ladder,
+ * base behaviour, @theme and @utility). It scans the shared skins lane plus the
+ * route's own source — the page and the shared chrome it renders (the appearance
+ * panel and its palette grid) — plus the hero's marching-ants bar.
+ */
+@import "tailwindcss" source(none);
+@import "../ui/schemes/neo-brutalist/index.css";
+@source "../ui/skins";
+@source "./neo-showcase.tsx";
+@source "../components/appearance-panel.tsx";
+@source "../components/palette-section.tsx";
+
+/* Marching-ants stripe bar under the hero top edge (from the original). */
+.brutal-march-anim {
+  background-image: repeating-linear-gradient(90deg, #000 0 12px, transparent 12px 24px);
+  animation: brutal-march 0.5s linear infinite;
+}
+
+@keyframes brutal-march {
+  to {
+    background-position-x: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .brutal-march-anim {
+    animation: none;
+  }
+}
+
+:root[data-motion="reduce"] .brutal-march-anim {
+  animation: none;
+}

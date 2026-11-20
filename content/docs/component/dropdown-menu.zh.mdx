@@ -1,0 +1,58 @@
+---
+title: Dropdown Menu 下拉菜单
+description: 由 Popover 和 Menu 组合而成的下拉菜单 —— 支持分组、嵌套子菜单和键盘导航
+---
+
+## 安装
+
+<Installation name="dropdown-menu" />
+
+## 用法
+
+由 Popover + Menu 组合，CLI 安装时自动解析依赖。
+
+<ComponentPreview
+  name="dropdown-menu-basic"
+/>
+
+## API 参考
+
+### DropdownMenu
+
+| 属性              | 类型                                                            | 描述                                                                                          |
+| :-------------- | :------------------------------------------------------------ | :------------------------------------------------------------------------------------------ |
+| `trigger`       | `React.ReactNode`                                             | 触发器文案或节点                                                                                    |
+| `items`         | `MenuConfig[]`                                                | 菜单项（分组、子菜单、叶子项）                                                                             |
+| `onSelect`      | `(item: MenuItemConfig) => void`                              | 点击叶子项时触发                                                                                    |
+| `alignX`        | `"start" \| "end" \| "center"`                                | 面板在触发器下方展开，`start`/`center`/`end` 分别左对齐、居中、右对齐，默认 `"center"`                                |
+| `className`     | `string`                                                      | 触发器按钮的自定义类名                                                                                 |
+| `itemClassName` | `string`                                                      | 落在每个菜单项的 `role="menuitem"` 按钮上，子菜单项同样命中；单项自己的 `className` 排在它之后，冲突时以单项为准                    |
+| `classNames`    | `{ content? / item? / label? / sub? / menuRoot? / chevron? }` | 面板、菜单项、标签、子菜单的自定义类名；`menuRoot` 是菜单自己的根元素（面板内那个 `<ul role="menu">`）；`chevron` 是有子菜单项行尾的右箭头图标 |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `ArrowDown` / `Space` | 从触发器打开面板，并聚焦第一个可用项 |
+| `ArrowUp` / `ArrowDown` | 在菜单项之间移动焦点（循环） |
+| `ArrowRight` / `ArrowLeft` | 打开或关闭子菜单 |
+| `Enter` | 选中当前聚焦项并关闭面板 |
+| `Escape` | 关闭面板，焦点回到触发器 |
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-anchor-name]` | 位于触发按钮上——取值 `--popover-trigger-{id}`，面板据此锚定（来自 [Popover](/zh/docs/component/popover)） |
+| `[data-pure-icon]` | 位于触发按钮上——`trigger` 只有一个图标、不含文字时存在（来自 [Button](/zh/docs/component/button)） |
+| `[data-float-anchor]` | 位于面板上——取触发器的 `data-anchor-name`；位于子菜单面板时取父级菜单项的 `--menu-sub-{entryId}` |
+| `[data-float-side]` | 位于面板上——恒为 `bottom`（`alignX` 只定水平对齐，需要侧向开口由 `placement` 覆盖）；子菜单面板恒为 `right` |
+| `[data-float-align]` | 位于面板上——与 `alignX` 一致：`start`、`center`、`end`；子菜单面板恒为 `start` |
+| `[data-float-gap]` | 位于面板上——锚点偏移像素值：根面板 `4`，子菜单面板 `0` |
+| `[data-entry]` | 位于每个菜单项 `li` 上——该条目的 entry id，方向键导航据此查找条目（来自 [Menu](/zh/docs/component/menu)） |
+| `[data-anchor-name]` | 位于每个菜单项 `li` 上——取值 `--menu-sub-{entryId}`，其子菜单面板据此锚定（来自 [Menu](/zh/docs/component/menu)） |
+| `[data-active]` | 位于菜单项按钮上——它正处于方向键 / 悬停的活动条目时存在（来自 [Menu](/zh/docs/component/menu)） |
+| `[data-has-sub]` | 位于菜单项按钮上——它会打开子菜单时存在（来自 [Menu](/zh/docs/component/menu)） |
+
+面板打开状态不由任何 `data-*` 标注，它由原生 popover（`:popover-open`）暴露。
+

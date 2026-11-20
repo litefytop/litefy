@@ -1,0 +1,66 @@
+---
+title: Pagination 分页器
+description: 受控的页码导航——首页 / 上一页 / 页码（带省略号）/ 下一页 / 末页。纯视图组件，状态交给 usePagination。
+---
+
+## 安装
+
+<Installation name="pagination" />
+
+## 用法
+
+完全受控的视图组件，搭配 `usePagination` 使用。
+
+<ComponentPreview name="pagination-basic" />
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Pagination
+
+| 属性             | 类型                                                        | 描述                                      |
+| -------------- | --------------------------------------------------------- | --------------------------------------- |
+| `page`         | `number`                                                  | 当前页（1 起） **必填**                         |
+| `totalPages`   | `number`                                                  | 总页数 **必填**                              |
+| `onPageChange` | `(page: number) => void`                                  | 任意按钮点击时触发                               |
+| `siblingCount` | `number`                                                  | 当前页两侧展示的页码数量，超出部分折叠为省略号，默认 `1`          |
+| `disabled`     | `boolean`                                                 | 禁用全部按钮（例如翻页加载中），默认 `false`              |
+| `summary`      | `React.ReactNode`                                         | 位于左侧的分页统计文本插槽                           |
+| `className`    | `string`                                                  | 自定义类名，作用于根 `nav`                        |
+| `classNames`   | `{ controls?, nav?, pages?, page?, ellipsis?, summary? }` | 各部件自定义类名：按钮组、四个首尾按钮、页码组、单个页码按钮、省略号、分页文本 |
+| `styles`       | `{ controls?, nav?, pages?, page?, ellipsis?, summary? }` | 同一批部件的自定义行内样式                           |
+
+### 可组合组件
+
+| 零件 | 元素 | 发出的属性 | 描述 |
+|------|------|--------|------|
+| `PaginationRoot` | `<nav>` | `aria-label="pagination"` | 行容器 |
+| `PaginationFirst` | `Button` | `aria-label="First page"` | 跳转首页（`ChevronsLeft`） |
+| `PaginationPrev` | `Button` | `aria-label="Previous page"` | 上一页（`ChevronLeft`） |
+| `PaginationPages` | `<div>` | - | 页码按钮 + 省略号 |
+| `PaginationNext` | `Button` | `aria-label="Next page"` | 下一页（`ChevronRight`） |
+| `PaginationLast` | `Button` | `aria-label="Last page"` | 跳转末页（`ChevronsRight`） |
+| `PaginationEllipsis` | `<span>` | - | 折叠页码标记（`MoreHorizontal`） |
+| `PaginationSummary` | `<span>` | - | 分页文本插槽 |
+
+当前页页码带 `aria-current="page"`。
+
+## 键盘交互
+
+骨架不挂任何按键处理器。每个控件都是原生 `<button type="button">`，按键行为归 HTML 本身。
+
+| Key | Description |
+| --- | --- |
+| `Tab` | 按 DOM 顺序依次到达按钮：首页、上一页、页码按钮、下一页、末页。被折叠省略的页码，以及触到首尾边界或被 `disabled` 禁用的按钮，都不在 Tab 序里 |
+| `Enter` / `Space` | 原生激活当前聚焦的按钮，每个按钮都会触发一次 `onPageChange` |
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-pure-icon]` | 位于首页、上一页、下一页、末页四个按钮上——其子内容只有一个图标、不含文字（来自 [Button](/zh/docs/component/button)） |
+
+`nav`、页码容器、省略号与分页文本都不带 `data-*`；当前页由 `aria-current="page"` 标注，而不是数据属性。

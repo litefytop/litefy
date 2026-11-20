@@ -1,0 +1,41 @@
+---
+title: Sidebar 侧边栏
+description: 可折叠侧栏的成品容器——开合状态归组件、aside 语义归骨架、收纳形态归皮肤
+---
+
+## 安装
+
+<Installation name="sidebar" />
+
+## 用法
+
+以 `<aside>` 渲染的可折叠容器：默认非受控，传入 `open` + `onOpenChange` 即受控。
+
+## API 参考
+
+### Sidebar
+
+| Prop           | 类型                              | 描述                                                  |
+| -------------- | ------------------------------- | --------------------------------------------------- |
+| `ref`          | `React.Ref<SidebarHandle>`      | 命令式句柄（非受控模式）：`toggle` / `open` / `close` / `isOpen` |
+| `open`         | `boolean`                       | 受控开合状态；传入即受控                                        |
+| `defaultOpen`  | `boolean`                       | 初始开合状态（非受控），默认 `true`                               |
+| `onOpenChange` | `(open: boolean) => void`       | 开合变化回调（受控 / 非受控均触发）                                 |
+| `className`    | `string`                        | 自定义类；定位与尺寸由业务在此供给                                   |
+| `...props`     | `React.ComponentProps<"aside">` | 原生 aside 属性透传（`open` / `ref` / `className` 除外）      |
+
+### 渲染插槽
+
+| 零件 | 元素 | 状态属性 | 描述 |
+|------|------|----------|------|
+| `sidebar` | `<aside>` | `data-open="true\|false"` | 侧栏容器根；收纳形态（收起 `display:none`）由方案皮肤定义 |
+
+## 键盘交互
+
+本组件不接管任何按键——没有任何按键能开合侧边栏。
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-open]` | 位于根 `<aside>` 元素上——取值 `"true"` 或 `"false"`，镜像开合状态 |

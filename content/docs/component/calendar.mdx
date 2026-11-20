@@ -1,0 +1,184 @@
+---
+title: Calendar
+description: A calendar panel component built on native JavaScript Date, with controlled selection, disabled dates, and parts-based assembly
+---
+
+## Installation
+
+<Installation name="calendar" />
+
+## Usage
+
+Control the visible month with `onVisibleMonthChange` and disable dates with `isDateDisabled`.
+
+<ComponentPreview
+  name="calendar-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite component.
+
+#### Calendar
+
+| Prop                   | Type                                            | Description                                                                             |
+| ---------------------- | ----------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `visibleMonth`         | `Date`                                          | Required. The month panel currently displayed                                           |
+| `value`                | `Date \| null`                                  | Controlled selected date                                                                |
+| `defaultValue`         | `Date \| null`                                  | Default selected date (uncontrolled)                                                    |
+| `view`                 | `"days" \| "months" \| "years"`                 | Controlled active panel                                                                 |
+| `defaultView`          | `"days" \| "months" \| "years"`                 | Initial panel (uncontrolled), defaults to `"days"`                                      |
+| `onChange`             | `(date: Date) => void`                          | Fired when clicking a valid date inside the visible month                               |
+| `onVisibleMonthChange` | `(month: Date) => void`                         | Fired when the visible month changes (previous / next, panel pick, keyboard navigation) |
+| `onViewChange`         | `(view: "days" \| "months" \| "years") => void` | Fired when the active panel changes                                                     |
+| `isDateDisabled`       | `(date: Date) => boolean`                       | Return `true` to disable the date                                                       |
+| `firstDayOfWeek`       | `0 \| 1`                                        | `0` starts the week on Sunday, `1` starts it on Monday, defaults to `0`                 |
+| `className`            | `string`                                        | Custom class names, applied to the root                                                 |
+
+Dates are plain JavaScript `Date` values treated as calendar dates. The component treats them as immutable — it never mutates the `Date` you pass in, and `onVisibleMonthChange` / `onChange` always emit fresh `Date` objects (anchored at local noon to stay DST-safe). Month arithmetic clamps the day to the last day of the target month: Jan 31 + 1 month becomes Feb 28/29.
+
+`Calendar.calendarMonthLabels` is process-global — set it once at your app entry (it also affects [DatePicker](/en/docs/component/date-picker)); day-grid weekday abbreviations are fixed English.
+
+```tsx
+Calendar.calendarMonthLabels = ["一月", "二月", /* ... */];
+```
+
+---
+
+### Composable Components
+
+#### CalendarRoot
+
+The panel shell; its look is defined by the loaded scheme.
+
+| Prop        | Type                          | Description                      |
+| ----------- | ----------------------------- | -------------------------------- |
+| `className` | `string`                      | Custom class names               |
+| `...props`  | `React.ComponentProps<"div">` | Native div props                 |
+
+#### CalendarHeader
+
+Header shell (a `<header>`) holding the navigation buttons and the title buttons.
+
+| Prop        | Type                             | Description                      |
+| ----------- | -------------------------------- | -------------------------------- |
+| `className` | `string`                         | Custom class names               |
+| `...props`  | `React.ComponentProps<"header">` | Native header props              |
+
+#### CalendarNavButton
+
+Chevron navigation button for the header.
+
+| Prop         | Type                             | Description                                                                                             |
+| ------------ | -------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `direction`  | `"previous" \| "next"`           | Which chevron icon to render                                                                            |
+| `className`  | `string`                         | Custom class names                                                                                      |
+| `classNames` | `{ icon?: string }`              | Class names for the default chevron (ignored when `children` replaces the icon)                         |
+| `...props`   | `React.ComponentProps<"button">` | Native button props (except `type`); your own `aria-label` replaces the `"Previous"` / `"Next"` default |
+
+#### CalendarTitleButton
+
+Text button for the header title area — typically rendered twice, as the year and the month.
+
+| Prop        | Type                             | Description                                             |
+| ----------- | -------------------------------- | ------------------------------------------------------- |
+| `className` | `string`                         | Custom class names                                      |
+| `...props`  | `React.ComponentProps<"button">` | Native button props (except `type`), such as `onClick`  |
+
+#### CalendarMonthGrid
+
+A 3 × 4 month panel listing the 12 months of the visible year.
+
+| Prop              | Type                                     | Description                                                       |
+| ----------------- | ---------------------------------------- | ----------------------------------------------------------------- |
+| `visibleMonth`    | `Date`                                   | Source of the shown year; its month is the fallback tab stop      |
+| `value`           | `Date \| null`                           | Selected date, highlights the cell of the same month              |
+| `isMonthDisabled` | `(month: Date) => boolean`               | Receives the first day of each month; return `true` to disable it |
+| `onSelect`        | `(month: Date) => void`                  | Fired with the first day of the picked month                      |
+| `onNavigate`      | `(month: Date) => void`                  | Fired when arrowing out of the shown year, with the target month  |
+| `className`       | `string`                                 | Custom class names                                                |
+| `...props`        | `React.ComponentProps<"div">`            | Native div props                                                  |
+
+#### CalendarYearGrid
+
+A 3 × 4 year panel showing a 12-year window centered on the visible year.
+
+| Prop             | Type                                    | Description                                                    |
+| ---------------- | --------------------------------------- | -------------------------------------------------------------- |
+| `visibleMonth`   | `Date`                                  | Centers the 12-year window; its year is the fallback tab stop  |
+| `value`          | `Date \| null`                          | Selected date, highlights the cell of the same year            |
+| `isYearDisabled` | `(year: Date) => boolean`               | Receives January 1st of each year; return `true` to disable it |
+| `onSelect`       | `(year: Date) => void`                  | Fired with January 1st of the picked year                      |
+| `onNavigate`     | `(year: Date) => void`                  | Fired when arrowing out of the window, with the target year    |
+| `className`      | `string`                                | Custom class names                                             |
+| `...props`       | `React.ComponentProps<"div">`           | Native div props                                               |
+
+#### CalendarGrid
+
+Weekday header row plus the weeks body — pass a two-dimensional `weeks` array including previous/next-month padding dates.
+
+| Prop             | Type                                    | Description                                                   |
+| ---------------- | --------------------------------------- | ------------------------------------------------------------- |
+| `weeks`          | `Date[][]`                              | Two-dimensional weeks array, 7 dates per row                  |
+| `visibleMonth`   | `Date`                                  | Used to detect out-of-month cells                             |
+| `value`          | `Date \| null`                          | Selected date, drives the highlighted cell                    |
+| `isDateDisabled` | `(date: Date) => boolean`               | Return `true` to disable the date                             |
+| `onSelect`       | `(date: Date) => void`                  | Fired on cell click; the composite filters out-of-month dates |
+| `onNavigate`     | `(date: Date) => void`                  | Fired when arrowing to a date not present in the grid         |
+| `firstDayOfWeek` | `0 \| 1`                                | Weekday header order, defaults to `0`                         |
+| `className`      | `string`                                | Custom class names                                            |
+| `...props`       | `React.ComponentProps<"div">`           | Native div props                                              |
+
+#### CalendarGridRow
+
+A single week row part, usually rendered by `CalendarGrid`.
+
+| Prop             | Type                                    | Description                                                                                  |
+| ---------------- | --------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `week`           | `Date[]`                                | The 7 dates of this week                                                                     |
+| `visibleMonth`   | `Date`                                  | Used to detect out-of-month cells                                                            |
+| `value`          | `Date \| null`                          | Selected date                                                                                |
+| `isDateDisabled` | `(date: Date) => boolean`               | Return `true` to disable the date                                                            |
+| `onSelect`       | `(date: Date) => void`                  | Fired on cell click                                                                          |
+| `onNavigate`     | `(date: Date) => void`                  | Fired when arrowing to a date not present in the grid                                        |
+| `tabStopDate`    | `string`                                | ISO date string of the single tab stop in the grid; omit to keep all cells natively tabbable |
+| `className`      | `string`                                | Custom class names                                                                           |
+| `...props`       | `React.ComponentProps<"div">`           | Native div props                                                                             |
+
+#### CalendarGridCell
+
+A single date cell rendered as a button.
+
+| Prop           | Type                             | Description                                                                                |
+| -------------- | -------------------------------- | ------------------------------------------------------------------------------------------ |
+| `date`         | `Date`                           | The date this cell renders (shows `date.getDate()`)                                        |
+| `outsideMonth` | `boolean`                        | Grays out cells not belonging to the visible month, defaults to `false`                    |
+| `selected`     | `boolean`                        | Highlights the cell as selected, defaults to `false`                                       |
+| `tabStop`      | `boolean`                        | Roving tabindex: `true` makes the cell the only tab stop; omit to keep native tab behavior |
+| `rangeRole`    | `"start" \| "end" \| "between" \| "single"` | Range role, emits `data-range` and joins `aria-selected`; omit to be outside any range |
+| `onNavigate`   | `(date: Date) => void`           | Fired when arrowing to a date not present in the grid                                      |
+| `onSelect`     | `(date: Date) => void`           | Fired on cell click, composed with native `onClick`                                        |
+| `onHover`      | `(date: Date) => void`           | Fired when the pointer enters the cell                                                     |
+| `className`    | `string`                         | Custom class names                                                                         |
+| `...props`     | `React.ComponentProps<"button">` | Native button props (except `type` / `onSelect`), such as `disabled`                       |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `ArrowRight` / `ArrowLeft` | Day grid — moves ±1 day; month grid — ±1 month; year grid — ±1 year |
+| `ArrowDown` / `ArrowUp` | Day grid — moves ±7 days; month / year grid — ±3 cells (one row) |
+| `Enter` / `Space` | Selects the focused cell (native button activation) |
+| `ArrowDown` | In the header — moves focus into the grid's tab stop |
+
+Crossing the visible range pages the view and restores focus; each grid is a single tab stop (roving tabindex).
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-outside-month]` | On a day cell — present when the day belongs to the adjacent month |
+| `[data-view]` | On the month / year grids — `"month"` or `"year"`; absent on the day grid |
+| `[data-active]` | On the title buttons — present on the one whose view is current |

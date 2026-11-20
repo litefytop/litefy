@@ -1,0 +1,79 @@
+---
+title: Combobox
+description: An input with a filterable dropdown list — local options filtered client-side, or async remote search (debounced requests + scroll to load more)
+---
+
+## Installation
+
+<Installation name="combobox" />
+
+## Usage
+
+Typing filters the local options; matching ignores case and spaces, and focus stays in the input.
+
+<ComponentPreview
+  name="combobox-basic"
+/>
+
+### Async search
+
+Pass `fetcher` instead of `options` for large datasets or remote APIs; when both are provided, `fetcher` wins.
+
+<ComponentPreview
+  name="combobox-async"
+/>
+
+## API Reference
+
+### Combobox
+
+| Prop             | Type                                                                      | Description                                                               |
+| :--------------- | :------------------------------------------------------------------------ | :------------------------------------------------------------------------ |
+| `options`        | `string[]`                                                                | Local options, filtered client-side                                       |
+| `fetcher`        | `({ page, size, keyword }) => Promise<{ list: string[]; total: number }>` | Remote request function for async mode                                    |
+| `defaultValue`   | `string`                                                                  | Initial input text (uncontrolled), defaults to `""`                       |
+| `value`          | `string`                                                                  | Controlled input text                                                     |
+| `onValueChange`  | `(value: string) => void`                                                 | Fires on typing and on selection                                          |
+| `invalid`        | `boolean`                                                                 | Invalid state of the input, defaults to `false`                           |
+| `empty`          | `React.ReactNode`                                                         | Node for the list's empty state, defaults to `"No data"` / `"Loading..."` |
+| `pageSize`       | `number`                                                                  | Page size for async pagination, defaults to `20`                          |
+| `debounceMs`     | `number`                                                                  | Debounce delay for async search, defaults to `300`                        |
+| `className`      | `string`                                                                  | Custom class name applied to the input container                          |
+| `classNames`     | `{ panel? / item? }`                                                      | Custom class names for the panel and list items                           |
+
+### Atoms
+
+#### Picker
+
+The foundation of Combobox: a generic input + popover container for assembling custom picker scenarios (the CLI installs it along with `litefy add combobox`).
+
+| Prop                     | Type                                | Description                                                                                    |
+| :----------------------- | :---------------------------------- | :--------------------------------------------------------------------------------------------- |
+| `value` / `defaultValue` | `string`                            | Input value (controlled / uncontrolled), defaults to `""`                                      |
+| `onValueChange`          | `(value: string) => void`           | Fires when the input value changes                                                             |
+| `open` / `defaultOpen`   | `boolean`                           | Panel open state (controlled / uncontrolled), defaults to `false`                              |
+| `onOpenChange`           | `(open: boolean) => void`           | Fires when the panel opens or closes (click, outside click, Escape)                            |
+| `trailing`               | `React.ReactNode`                   | Trailing icon of the input                                                                     |
+| `children`               | `React.ReactNode`                   | Popover panel content                                                                          |
+| `panelRef`               | `React.Ref<HTMLDivElement>`         | Receives the panel element; use together with [usePanelFocus](/en/docs/utils/use-panel-focus) |
+| `className` / `style`    | -                                   | Applied to the root container                                                                  |
+| `classNames` / `styles`  | `{ input? / trailing? / popover? }` | Per-part overrides                                                                             |
+| `...props`               | `React.ComponentProps<"input">`     | Remaining native input props                                                                   |
+
+Panel keyboard behavior is wired up with hooks: use [useCombobox](/en/docs/utils/use-combobox) for highlight lists (the input keeps focus while the panel is open), and [usePanelFocus](/en/docs/utils/use-panel-focus) with `panelRef` for panels made of real focusable controls; if focus would be lost when the panel closes, it is handed back to the input automatically.
+
+## Keyboard Interactions
+
+| Key                    | Description                                                                                    |
+| ---------------------- | ---------------------------------------------------------------------------------------------- |
+| `ArrowDown` / `ArrowUp` | Moves the highlight while the panel is open; when the panel is closed, `ArrowDown` opens it    |
+| `Enter`                | Commits the currently highlighted option                                                       |
+| `Escape`               | Closes the panel                                                                               |
+
+During IME composition, `onValueChange` and the remote search are suspended and only fire after the composition ends.
+
+## Data Attributes
+
+| Attribute    | Description                                                                          |
+| ------------ | ------------------------------------------------------------------------------------ |
+| `[data-open]` | On the root element — present while the panel is open (from the underlying Picker)  |

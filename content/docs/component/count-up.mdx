@@ -1,0 +1,47 @@
+---
+title: CountUp
+description: A number rolling from a start value to its target — plays on viewport entry, settles at the end, screen readers read the final value only
+---
+
+## Installation
+
+<Installation name="count-up" />
+
+## Usage
+
+A number-increment display: rolls from the start value to the target only when it enters the viewport, then settles; with reduced motion the animation is skipped and the final value renders directly.
+
+<ComponentPreview name="count-up-basic" />
+
+When `to` changes the value rolls from the currently displayed number to the new target; under reduced motion it snaps straight to the new final value.
+
+## API Reference
+
+### CountUp
+
+| Prop         | Type                           | Description                                                                                                          |
+| :----------- | :----------------------------- | :------------------------------------------------------------------------------------------------------------------- |
+| `to`         | `number`                       | Target value                                                                                                         |
+| `from`       | `number`                       | Start value, defaults to `0`                                                                                         |
+| `duration`   | `number`                       | Roll duration in seconds, defaults to `2`                                                                            |
+| `delay`      | `number`                       | Delay after viewport entry, in seconds, defaults to `0`                                                              |
+| `decimals`   | `number`                       | Decimal places, defaults to `0`                                                                                      |
+| `separator`  | `string`                       | Thousands separator, empty string disables it, defaults to `","`                                                     |
+| `decimal`    | `string`                       | Decimal point symbol, defaults to `"."`                                                                              |
+| `prefix`     | `string`                       | Prefix, defaults to `""`                                                                                             |
+| `suffix`     | `string`                       | Suffix, defaults to `""`                                                                                             |
+| `easing`     | `"linear" \| "out"`            | Easing curve, `out` means easeOutCubic, defaults to `"out"`                                                          |
+| `format`     | `(value: number) => string`    | Takes over formatting entirely; `decimals` / `separator` / `decimal` / `prefix` / `suffix` are ignored when provided |
+| `className`  | `string`                       | Custom class for the root element                                                                                    |
+| `classNames` | `{ value?, final?: string }`   | Custom classes for the animated value layer and the final-value layer                                                |
+| `...props`   | `React.ComponentProps<"span">` | Forwarded to the root `span`                                                                                         |
+
+## Keyboard Interactions
+
+This component is not a control and handles no keys.
+
+## Data Attributes
+
+| Attribute | Description |
+| :--- | :--- |
+| `[data-status]` | On the root element — `"idle"`, `"playing"` or `"done"` |

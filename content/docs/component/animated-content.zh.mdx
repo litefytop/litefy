@@ -1,0 +1,52 @@
+---
+title: AnimatedContent 内容过渡
+description: 内容进入视口时入场、子内容变化时先退场再换入——方向、距离与时长档可调，减弱动效直接呈现
+---
+
+## 安装
+
+<Installation name="animated-content" />
+
+## 用法
+
+内容过渡容器：进入视口时入场，子内容变化时先退场再换入；减弱动效下直接呈现。
+
+<ComponentPreview name="animated-content-basic" />
+
+### 变体
+
+四个入场方向与三档时长，Replay 重播入场。
+
+<ComponentPreview name="animated-content-variants" />
+
+## API 参考
+
+### AnimatedContent
+
+| 属性          | 类型                            | 描述                                                                 |
+| :---------- | :---------------------------- | :----------------------------------------------------------------- |
+| `direction` | `"up" \| "down" \| "left" \| "right"` | 入场运动方向，`up` 即从下方升到位，默认 `"up"`                          |
+| `distance`  | `number`                        | 入场起点位移（像素），默认 `24`                                              |
+| `duration`  | `"sm" \| "md" \| "lg"`          | 时长档，读方案 `--duration-*` 令牌，默认 `"lg"`                              |
+| `delay`     | `number`                        | 过渡延迟（毫秒），默认 `0`                                                    |
+| `threshold` | `number`                        | IntersectionObserver 触发阈值，默认 `0.1`                                 |
+| `once`      | `boolean`                       | 入场一次后断开观察；`false` 时离屏退场、回屏再入场，默认 `true`                          |
+| `className` | `string`                        | 根元素自定义类                                                            |
+| `style`     | `React.CSSProperties`           | 根元素内联样式，与机制变量合并                                                  |
+| `...props`  | `React.ComponentProps<"div">`   | 透传到根 `div`                                                          |
+
+内容签名按子节点判定：元素子节点取 `key ?? 类型名`，文本与数字子节点取值；同类型同 key 的元素 props 变化不触发换入动画，需要重播时给元素显式 `key`。
+
+退场时长按根元素计算样式的过渡时长取值——令牌清零（减弱动效）时立即换入；隐藏态根元素挂 `inert`，内容不进焦点顺序与朗读流。内容换入可能改变高度，外框尺寸由消费方钉死（固定高卡片或预留道）。
+
+## 键盘交互
+
+本组件不是控件，不接管任何按键。
+
+## 数据属性
+
+| 属性               | 描述                                                       |
+| :--------------- | :------------------------------------------------------- |
+| `[data-state]`     | 位于根元素——`"in"` 已入场，`"out"` 未入场或退场中                     |
+| `[data-direction]` | 位于根元素——入场方向 `up` / `down` / `left` / `right`            |
+| `[data-duration]`  | 位于根元素——时长档 `sm` / `md` / `lg`                          |

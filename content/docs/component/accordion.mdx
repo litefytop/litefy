@@ -1,0 +1,61 @@
+---
+title: Accordion
+description: A data-driven group of collapsible panels with exclusive and multiple modes
+---
+
+## Installation
+
+<Installation name="accordion" />
+
+## Usage
+
+A data-driven group of collapsible panels; exclusive by default, add `multiple` to keep several panels open at once.
+
+<ComponentPreview
+  name="accordion-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Accordion
+
+A group of collapsible panels. Mutually exclusive by default (at most one panel open at a time); adding the `multiple` prop switches to multiple selection. The `activeKeys` type switches with the mode: exclusive is `string`, multiple is `string[]`.
+
+| Prop                | Type                                                                                                                                                                                                                                                                                                       | Description                                                                                                 |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `items`             | `CollapseItemConfig[]`                                                                                                                                                                                                                                                                                     | Array of collapse panel config items. **Required**                                                          |
+| `multiple`          | `boolean`                                                                                                                                                                                                                                                                                                  | Enables multiple selection, several panels can be open at the same time, defaults to `false`                |
+| `defaultActiveKeys` | `string` \| `string[]`                                                                                                                                                                                                                                                                                     | Initially open items (uncontrolled). Exclusive: `string`; multiple: `string[]`                              |
+| `activeKeys`        | `string` \| `string[]`                                                                                                                                                                                                                                                                                     | Currently open items (controlled). Exclusive: `string`; multiple: `string[]`                                |
+| `onKeyChange`       | `(value: string \| undefined) => void` \| `(values: string[]) => void`                                                                                                                                                                                                                                     | Called when the open items change                                                                           |
+| `common`            | `{ className?: string; classNames?: { trigger?: string; icon?: string; panel?: string; body?: string }; styles?: { trigger?: React.CSSProperties; icon?: React.CSSProperties; panel?: React.CSSProperties; body?: React.CSSProperties }; icon?: React.ReactNode \| ((open: boolean) => React.ReactNode) }` | Uniform configuration applied to every item; the item's own `className`/`classNames`/`icon` take precedence |
+| `className`         | `string`                                                                                                                                                                                                                                                                                                   | Custom styles for the container                                                                             |
+| `...props`          | `React.ComponentProps<"div">`                                                                                                                                                                                                                                                                              | Supports all native div props                                                                               |
+
+#### CollapseItemConfig
+
+Extends all `Collapse` props except `children`, `open`, `onOpenChange`, and `itemKey`.
+
+| Field     | Type                                                      | Description                                                                                  |
+| --------- | --------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `itemKey` | `string`                                                  | Unique identifier of the item. **Required**                                                  |
+| `panel`   | `React.ReactNode`                                         | Content shown in the panel. **Required**                                                     |
+| `label`   | `React.ReactNode \| ((open: boolean) => React.ReactNode)` | Content shown on the header trigger; accepts a function receiving the open state             |
+| `icon`    | `React.ReactNode \| ((open: boolean) => React.ReactNode)` | Expand/collapse icon; accepts a function receiving the open state, defaults to `ChevronDown` |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Enter` / `Space` | Activates the currently focused trigger through the native `<button>`; the skeleton handles no keys |
+| `Tab` | Reaches each trigger in DOM order. A collapsed panel stays mounted — the `<section>` only clips height — so its focusable elements remain in the tab order; whether to drop them is decided by the loaded scheme |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-open]` | On the panel — `"true"` or `"false"`, drives the open/close animation; also carried by the default collapse icon |

@@ -1,0 +1,93 @@
+---
+title: Switch 开关
+description: 支持受控状态和可自由拼装的开关组件
+---
+
+## 安装
+
+<Installation name="switch" />
+
+## 用法
+
+带有默认选中状态的简单开关组件。
+
+<ComponentPreview
+  name="switch-basic"
+/>
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的组合组件。
+
+#### Switch
+
+| 属性                | 类型                                                | 描述                                                                                   |
+| ----------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `children`        | `React.ReactNode`                                 | 渲染在开关旁边的标签内容                                                                         |
+| `checked`         | `boolean`                                         | 受控的选中状态                                                                              |
+| `defaultChecked`  | `boolean`                                         | 非受控模式下的默认选中状态，默认 `false`                                                             |
+| `onCheckedChange` | `(checked: boolean) => void`                      | 选中状态变化时触发的回调函数                                                                       |
+| `classNames`      | `{ label?, track?, thumb?: string }`              | 定制 label、滑轨和滑块的自定义类名                                                                 |
+| `styles`          | `{ label?, track?, thumb?: React.CSSProperties }` | 定制 label、滑轨和滑块的内联样式                                                                  |
+| `disabled`        | `boolean`                                         | 禁用开关，默认 `false`                                                                      |
+| `...props`        | `React.ComponentProps<"input">`                   | 支持所有原生 input 属性（除 `type`、`className` 外），如 `name`、`value`、`required`                  |
+
+---
+
+### 可组合组件
+
+#### SwitchRoot
+
+视觉隐藏的原生复选框输入（`sr-only`），承载状态、焦点和表单语义。
+
+| 属性          | 类型                              | 描述                                                   |
+| ----------- | ------------------------------- | ---------------------------------------------------- |
+| `className` | `string`                        | 自定义 CSS 类                                            |
+| `...props`  | `React.ComponentProps<"input">` | 支持所有原生 input 属性（除 `type`、`className` 外）              |
+
+#### SwitchTrack
+
+渲染为 `span` 的滑轨。组件自身不发样式身份：`data-checked` 标记选中态，观感完全由它的 `className` 决定（复合组件喂它 `classNames.track`，方案皮肤在那里写滑轨边框与选中色）。
+
+| 属性          | 类型                             | 描述                                             |
+| ----------- | ------------------------------ | ---------------------------------------------- |
+| `checked`   | `boolean`                      | 驱动 `data-checked` 属性和样式，默认 `false`             |
+| `className` | `string`                       | 自定义 CSS 类                                      |
+| `children`  | `React.ReactNode`              | 滑轨内容，通常为 `SwitchRoot` 和 `SwitchThumb`          |
+| `...props`  | `React.ComponentProps<"span">` | 支持所有原生 span 属性                                 |
+
+#### SwitchThumb
+
+渲染为 `span` 的视觉滑块，通过 `data-checked` 样式滑动。
+
+| 属性          | 类型                             | 描述                              |
+| ----------- | ------------------------------ | ------------------------------- |
+| `checked`   | `boolean`                      | 驱动 `data-checked` 位移，默认 `false` |
+| `className` | `string`                       | 自定义 CSS 类                       |
+| `...props`  | `React.ComponentProps<"span">` | 支持所有原生 span 属性                  |
+
+#### SwitchLabel
+
+将输入与滑轨和文本关联起来的标签包装器。
+
+| 属性          | 类型                              | 描述                      |
+| ----------- | ------------------------------- | ----------------------- |
+| `className` | `string`                        | 自定义 CSS 类               |
+| `...props`  | `React.ComponentProps<"label">` | 支持所有原生 label 属性         |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Tab` | 到达底层 checkbox 输入框——原生 |
+| `Space` | 切换开关——原生 checkbox 行为 |
+
+骨架不处理其他按键；与 `Checkbox` 不同，`Enter` 不会切换。
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-checked]` | 位于滑轨与滑块上——选中时存在 |

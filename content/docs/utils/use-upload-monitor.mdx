@@ -1,0 +1,67 @@
+---
+title: use-upload-monitor
+description: Monitor file upload progress with XMLHttpRequest, with abort and removal support
+---
+
+## Installation
+
+<Installation name="use-upload-monitor" />
+
+## Usage
+
+An upload hook decoupled from Upload, built on `XMLHttpRequest`.
+
+<ComponentPreview
+  name="upload-basic"
+/>
+
+```tsx
+import { Upload, useUploadMonitor } from "@/ui";
+
+function Demo() {
+  const upload = useUploadMonitor({ action: "/api/upload" });
+  return (
+    <Upload
+      multiple
+      onFilesAccepted={upload.acceptFiles}
+      onFileRemove={upload.removeItem}
+    />
+  );
+}
+```
+
+## API Reference
+
+### useUploadMonitor
+
+```ts
+function useUploadMonitor(options: UseUploadMonitorOptions): UseUploadMonitorResult
+```
+
+#### UseUploadMonitorOptions
+
+| Property          | Type                     | Description                                            |
+| ----------------- | ------------------------ | ------------------------------------------------------ |
+| `action`          | `string`                 | Upload URL; requests are sent as `POST`                |
+| `fieldName`       | `string`                 | FormData field name for the file, defaults to `"file"` |
+| `headers`         | `Record<string, string>` | Extra request headers                                  |
+| `withCredentials` | `boolean`                | Whether cross-origin requests carry credentials        |
+| `data`            | `Record<string, string>` | Extra fields appended to the FormData                  |
+
+#### UseUploadMonitorResult
+
+| Property | Type | Description |
+|------|------|-------------|
+| `fileList` | `UploadMonitorItem[]` | The item list, each with `{ uid, file, status, progress }` |
+| `acceptFiles` | `(items: UploadItem[]) => void` | Receives the items emitted by Upload and starts uploading |
+| `removeItem` | `(uid: string) => void` | Aborts the matching request and removes the item |
+| `clearAll` | `() => void` | Aborts all requests and clears the list |
+
+#### UploadMonitorItem
+
+| Property | Type | Description |
+|------|------|-------------|
+| `uid` | `string` | Unique id matching the Upload item |
+| `file` | `File` | The file being uploaded |
+| `status` | `'pending' \| 'uploading' \| 'success' \| 'error'` | Upload lifecycle state |
+| `progress` | `number` | Upload percentage, `0` – `100` |

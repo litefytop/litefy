@@ -1,0 +1,47 @@
+---
+title: CountUp 数字滚动
+description: 数字从起点滚动到目标值——进入视口才播放，播完定格，朗读端只读终值
+---
+
+## 安装
+
+<Installation name="count-up" />
+
+## 用法
+
+数字递增展示件：进入视口才从起点值滚动到目标值，播完定格；减弱动效下不播动画，直接显示终值。
+
+<ComponentPreview name="count-up-basic" />
+
+值变化时从当前显示值滚到新目标值；减弱动效下直接定格新终值。
+
+## API 参考
+
+### CountUp
+
+| 属性           | 类型                             | 描述                                                                         |
+| :----------- | :----------------------------- | :------------------------------------------------------------------------- |
+| `to`         | `number`                       | 目标值                                                                        |
+| `from`       | `number`                       | 起点值，默认 `0`                                                                 |
+| `duration`   | `number`                       | 滚动时长（秒），默认 `2`                                                             |
+| `delay`      | `number`                       | 进入视口后的延迟（秒），默认 `0`                                                         |
+| `decimals`   | `number`                       | 小数位数，默认 `0`                                                                |
+| `separator`  | `string`                       | 千分位分隔符，空串关闭，默认 `","`                                                       |
+| `decimal`    | `string`                       | 小数点符号，默认 `"."`                                                             |
+| `prefix`     | `string`                       | 前缀，默认 `""`                                                                 |
+| `suffix`     | `string`                       | 后缀，默认 `""`                                                                 |
+| `easing`     | `"linear" \| "out"`            | 缓动曲线，`out` 即 easeOutCubic，默认 `"out"`                                       |
+| `format`     | `(value: number) => string`    | 整体接管格式化，提供时 `decimals` / `separator` / `decimal` / `prefix` / `suffix` 不参与 |
+| `className`  | `string`                       | 根元素自定义类                                                                    |
+| `classNames` | `{ value?, final?: string }`   | 动画文本层与终值层自定义类                                                              |
+| `...props`   | `React.ComponentProps<"span">` | 透传到根 `span`                                                                |
+
+## 键盘交互
+
+本组件不是控件，不接管任何按键。
+
+## 数据属性
+
+| 属性 | 描述 |
+| :--- | :--- |
+| `[data-status]` | 位于根元素——`"idle"`、`"playing"` 或 `"done"` |

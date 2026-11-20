@@ -1,0 +1,55 @@
+---
+title: Date Picker 日期选择器
+description: 基于原生 JavaScript Date 的日期选择器 —— 可编辑输入框、月份面板与指针锚定弹层合为一个正式组件
+---
+
+## 安装
+
+<Installation name="date-picker" />
+
+## 用法
+
+输入框加月份面板，使用原生 `Date` 值，无需日期库。
+
+<ComponentPreview
+  name="date-picker-basic"
+/>
+
+## API 参考
+
+### DatePicker
+
+受控/非受控皆可；可见月份与面板开关状态由组件内部管理。
+
+| Prop              | Type                                                 | Description                                                                                   |
+| :---------------- | :--------------------------------------------------- | :-------------------------------------------------------------------------------------------- |
+| `value`           | `Date \| null`                                       | 受控的选中日期                                                                                       |
+| `defaultValue`    | `Date \| null`                                       | 初始选中日期（非受控）                                                                                   |
+| `onValueChange`   | `(date: Date) => void`                               | 日期提交时触发 —— 面板选中，或输入完整日期后按 `Enter`                                                             |
+| `placeholder`     | `string`                                             | 输入框占位文本，默认 `"Select or type a date"`                                                          |
+| `disabled`        | `boolean`                                            | 禁用输入框与面板                                                                                      |
+| `invalid`         | `boolean`                                            | 外部校验失败状态 —— 发出 `aria-invalid`（校验清空输入时组件内部也会设置）                                                |
+| `firstDayOfWeek`  | `0 \| 1`                                             | 每周第一天（`0` = 周日，`1` = 周一），默认 `0`                                                               |
+| `isDateDisabled`  | `(date: Date) => boolean`                            | 禁用日历中日期的判断函数                                                                                  |
+| `trailing`        | `React.ReactNode`                                    | 输入框尾部装饰，默认 `CalendarIcon`                                                                     |
+| `onKeyDown`       | `React.KeyboardEventHandler<HTMLInputElement>`       | 在内置的 `Enter` 提交之前执行；`preventDefault()` 可取消提交                                                  |
+| `classNames`      | `{ input?; trailing?; panel? }` —— 值均为 `string`      | 输入框、尾部装饰与日历面板的自定义类名                                                                           |
+| `styles`          | `{ input?; trailing? }` —— 值均为 `React.CSSProperties` | 输入框与尾部装饰的内联样式                                                                                 |
+
+面板打开期间，`ArrowDown` / `ArrowUp` 将焦点移入日历的第一个 / 最后一个控件；`Escape` 关闭面板并把焦点交还输入框。
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Enter` | 解析输入的文本——完整有效日期则提交，部分输入则跳转到月 / 年视图 |
+| `Escape` | 关闭面板并对输入的文本重新解析 |
+| `ArrowDown` | 从输入框打开面板；面板打开时将焦点移入面板 |
+
+输入完整有效日期时实时同步日历选中项，面板不关闭。
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-open]` | 位于根元素上——面板打开期间存在 |

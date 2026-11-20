@@ -1,0 +1,58 @@
+---
+title: Details 详情披露
+description: 原生 details 披露件薄壳，开合与互斥全由浏览器接管
+---
+
+## 安装
+
+<Installation name="details" />
+
+## 用法
+
+原生披露件，开合状态由浏览器管理，无需受控。
+
+<ComponentPreview
+  name="details-basic"
+/>
+
+### 原生互斥分组
+
+给多个 Details 传同一个 `name` 即组成互斥组：打开一项自动关闭其余，全部由浏览器原生实现（Chrome 126+、Safari 17.2+、Firefox 130+，旧浏览器退化为独立面板）。
+
+<ComponentPreview
+  name="details-group"
+/>
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Details
+
+原生 `<details>` 披露件薄壳：无状态、无 JS 行为，键盘与无障碍语义由原生元素自答；是折叠面板/手风琴之外的可选轻量扩展。
+
+| 属性           | 类型                                                                                          | 描述                                         |
+| ------------ | ------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| `label`      | `React.ReactNode`                                                                           | 触发行显示内容                                    |
+| `icon`       | `React.ReactNode`                                                                           | 展开收起图标，传 `null` 不渲染图标，默认 `ChevronDown`     |
+| `name`       | `string`                                                                                    | 互斥分组名，原生透传给 `<details>` 元素                 |
+| `className`  | `string`                                                                                    | 自定义类名，作用于根 `<details>` 元素                  |
+| `classNames` | `{ summary?: string; icon?: string; body?: string }`                                        | 触发行、图标盒、内容容器三个插槽的自定义类名                     |
+| `styles`     | `{ summary?: React.CSSProperties; icon?: React.CSSProperties; body?: React.CSSProperties }` | 同上三个插槽的内联样式                                |
+| `children`   | `React.ReactNode`                                                                           | 面板内容                                       |
+| `...props`   | `React.ComponentProps<"details">`                                                           | 支持全部 details 原生属性（含 `open`、`onToggle`）     |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Enter` / `Space` | 由原生 `<summary>` 激活，展开或收起当前披露件；骨架不接管任何按键 |
+| `Tab` | 到达触发行。收起的披露件内容仍挂载在 DOM 中，其内可聚焦元素保持在 Tab 序中 |
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[open]` | 位于根 `<details>` 元素上，展开时存在——皮肤据此驱动图标翻转与悬停染色 |

@@ -1,0 +1,30 @@
+---
+title: AI 接入 For Agents
+description: 面向 AI 编码助手的双语文档集——文件清单、消费规则与接入方式。
+---
+
+import { AgentPrompt } from "@/components/agents-prompt";
+
+Litefy 为 AI 编码助手准备了一组机器可读文档，按关注点拆分：**结构文档**描述组件的结构、行为与装配规则，皮肤无关；**design.md** 描述视觉语言，皮肤专属。不做两套平行文档——headless 项目与皮肤项目读同一份结构文档，差异只在是否附加 design.md。
+
+把下面这段 prompt 交给助手，即可说明各文件的用途与消费规则：
+
+<AgentPrompt />
+
+## 文件清单
+
+- **`/{lang}/llms.txt`**——文档导航索引：全部页面与组件的链接。中文 `/zh/llms.txt`，英文 `/en/llms.txt`。
+- **`/{lang}/llms-full.txt`**——组件全文文档：props、行为说明与示例。中文 `/zh/llms-full.txt`，英文 `/en/llms-full.txt`。适用所有项目。
+- **`design.md`**——皮肤专属的设计语言文件：颜色、排版、间距、交互状态。皮肤项目附加：[minimal](https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/minimal/design.md) · [neo-brutalist](https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/neo-brutalist/design.md)。
+
+## 消费规则
+
+- **headless 项目**：只读结构文档（llms.txt / llms-full），忽略 design.md；纯样式组件（无 headless 版）不可用。
+- **皮肤项目**：结构文档 + 所选皮肤的 design.md；视觉 token 与类名以 design.md 为准。
+
+## 接入方式
+
+- **在线读取**：上述 URL 即原始内容，支持读取网页的助手直接抓取。
+- **复制全文**：打开 URL 复制内容，粘贴进助手上下文。
+
+项目接入组件本身见[安装](/zh/docs/installation)；各皮肤观感见[皮肤](/zh/docs/styles)。

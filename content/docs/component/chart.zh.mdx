@@ -1,0 +1,68 @@
+---
+title: Chart 图表
+description: 自研 canvas 时序图引擎，共享 chart-kit 数学层 —— 自动画布渲染、自适应宽度、可交互图例与悬浮提示
+---
+
+面向大数据量的 canvas 时序图——类目或小数据量请见 [Donut](/zh/docs/component/donut)、[Radar](/zh/docs/component/radar)、[Sparkline](/zh/docs/component/sparkline)。
+
+## 安装
+
+<Installation name="chart" />
+
+Chart 依赖 `chart-legend`、`useChartPalette` hook 与 `chart-kit` / `chart-paint` 工具，`litefy add chart` 会一并安装；观感则来自方案自带的 `chart` 与 `chart-legend` CSS。
+
+`useChartPalette` 也可以独立用于自定义可视化——调用 `useChartPalette({ mode: "fixed" | "mono" })` 返回 8 个颜色值，详见 [use-chart-palette](/zh/docs/utils/use-chart-palette)。
+
+## 用法
+
+时间轴上的基础折线图。
+
+<ComponentPreview
+  name="chart-line"
+/>
+
+## API 参考
+
+### ChartProps
+
+| 属性              | 类型                                     | 说明                                                          |
+| --------------- | -------------------------------------- | ----------------------------------------------------------- |
+| data            | ChartData（`[number[], ...number[][]]`） | 对齐的图表数据，第一个数组为 x 值                                          |
+| series          | ChartSeriesConfig[]                    | 数据系列配置，顺序与 data 的 y 数组一一对应                                  |
+| height          | number                                 | 图表高度（像素），宽度始终随容器自适应，默认 240                                  |
+| time            | boolean                                | x 轴是否为时间刻度；为 false 时按普通数值处理，默认 true                         |
+| label           | string                                 | 图表的无障碍名称，落到 canvas 的 `role="img"` + `aria-label`；缺省取各系列 `label` 以 `, ` 连接，全空回退 `"Chart"` |
+| zoomHint        | React.ReactNode                        | 画布下方交互提示的内容，传空串隐藏，默认 "Drag to zoom · double-click to reset" |
+| legendPlacement | "top" \| "bottom"                      | 图例位置：画布下方（默认）或上方，默认 "bottom"                                |
+| className       | string                                 | 追加到根元素的类名                                                   |
+| onReady         | () => void                             | 首次渲染完成后回调一次                                                 |
+
+### ChartSeriesConfig
+
+| 属性     | 类型                          | 说明                                     |
+| ------ | --------------------------- | -------------------------------------- |
+| label  | string                      | 系列名称，显示在图例与悬浮提示中                       |
+| type   | `"line" \| "area" \| "bar"` | 系列的绘制方式，默认 `"line"`                    |
+| stroke | string                      | 线条颜色，任意合法 CSS 颜色，默认 色板自动取色             |
+| width  | number                      | 线宽（像素），仅折线/面积生效，默认 1.5                 |
+| fill   | string \| boolean           | 面积填充；true 时取线条色并加 18% 透明度，传字符串则为自定义填充色 |
+| value  | (v: number) => string       | 悬浮提示中的数值格式化函数                          |
+| show   | boolean                     | 初始是否显示该系列，默认 true                      |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Double-click` | 重置缩放 |
+
+悬停显示十字准线与悬浮提示、拖拽框选缩放——两者均为纯指针交互，没有键盘等价操作。
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-hidden]` | 位于每个图例项按钮上——该系列被切换为隐藏时存在 |
+| `[data-shape]` | 位于每个图例色块上——取值 `"line"` 或 `"square"`，镜像 `ChartLegend` 的 `swatch` 属性 |
+
+图表根元素、画布外层容器、`<canvas>` 与提示元素都不带 `data-*`，只有图例各部分带。
+

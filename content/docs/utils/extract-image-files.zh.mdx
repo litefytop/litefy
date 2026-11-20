@@ -1,0 +1,28 @@
+---
+title: extract-image-files
+description: 从剪贴板事件里提取可预览的图片文件——与 Prompt Bar 的 onPaste 配套
+---
+
+## 安装
+
+<Installation name="extract-image-files" />
+
+## 用法
+
+从剪贴板事件的数据载体中提取图片文件，每张图返回一条记录，附带会话内预览用的对象 URL；非图片项一律跳过。URL 生命周期归调用方——预览丢弃时自行 `URL.revokeObjectURL`。
+
+## API 参考
+
+### extractImageFiles
+
+```ts
+function extractImageFiles(dataTransfer: DataTransfer | null): ExtractedImageFile[]
+```
+
+#### ExtractedImageFile
+
+| 属性 | 类型 | 描述 |
+|------|------|-------------|
+| `name` | `string` | 文件名；无名粘贴位图回退 `pasted-image` |
+| `url` | `string` | `URL.createObjectURL(file)`——会话预览地址，用毕由调用方 revoke |
+| `file` | `File` | 原始图片文件，可直接上传 |

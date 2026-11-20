@@ -1,0 +1,85 @@
+---
+title: Segment
+description: A segmented control component for single-select, supporting controlled, uncontrolled and options-driven modes
+---
+
+## Installation
+
+<Installation name="segment" />
+
+## Usage
+
+A data-driven segmented control for single-select, with controlled and uncontrolled modes.
+
+<ComponentPreview
+  name="segment-basic"
+/>
+
+### Variants
+
+The `variant` prop switches the overall look — neutral by default, plus `primary` and `text`.
+
+<ComponentPreview
+  name="segment-variants"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### SegmentGroup
+
+| Prop             | Type                          | Description                                                                                                                                                                                     |
+| ---------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `options`        | `SegmentOptionConfig[]`       | The options data array                                                                                                                                                                          |
+| `value`          | `string`                      | Controlled selected value                                                                                                                                                                       |
+| `defaultValue`   | `string`                      | Default selected value in uncontrolled mode                                                                                                                                                     |
+| `onValueChange`  | `(value: string) => void`     | Called when the selected value changes                                                                                                                                                          |
+| `variant`        | `"primary" \| "text"`         | Checked look: by default a sliding indicator block; `primary` fills the checked item with the primary background color; `text` renders the checked item as primary-colored bold underlined text |
+| `disabled`       | `boolean`                     | Disables all options, defaults to `false`                                                                                                                                                       |
+| `className`      | `string`                      | Custom class name, applied to the container                                                                                                                                                     |
+| `itemClassName`  | `string`                      | Custom class name, applied to each segment button                                                                                                                                               |
+
+Keyboard: a radiogroup with roving tabindex — the arrow keys move to and select the next / previous enabled option, `Home` / `End` jump to the ends, `Enter` / `Space` activate.
+
+### SegmentOptionConfig
+
+| Field       | Type              | Description                                              |
+| ----------- | ----------------- | -------------------------------------------------------- |
+| `label`     | `string`          | Option display text                                      |
+| `value`     | `string`          | Unique identifying value                                 |
+| `disabled`  | `boolean`         | Disables the option, defaults to `false`                 |
+| `className` | `string`          | Custom class name; takes precedence over `itemClassName` |
+
+---
+
+### Composable Components
+
+#### Segment
+
+A single segment part with radio semantics; it holds no internal state — `checked` must be provided from outside.
+
+| Prop        | Type                             | Description                                                                     |
+| ----------- | -------------------------------- | ------------------------------------------------------------------------------- |
+| `children`  | `React.ReactNode`                | The segment button's content                                                    |
+| `checked`   | `boolean`                        | Checked state, drives `aria-checked`, defaults to `false`                       |
+| `className` | `string`                         | Custom class name                                                               |
+| `...props`  | `React.ComponentProps<"button">` | Supports all native button props (except `type`), such as `onClick`, `disabled` |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `ArrowRight` / `ArrowDown` | Focuses and checks the next enabled segment, wrapping at the end |
+| `ArrowLeft` / `ArrowUp` | Focuses and checks the previous enabled segment, wrapping at the start |
+| `Home` | Jumps to the first enabled segment |
+| `End` | Jumps to the last enabled segment |
+| `Enter` / `Space` | Activates the focused segment |
+
+Uses roving tabindex: only the checked segment is reachable by `Tab`.
+
+## Data Attributes
+
+The skeleton emits no `data-*` on this component. State is exposed through each button's `aria-checked` and `tabIndex`.

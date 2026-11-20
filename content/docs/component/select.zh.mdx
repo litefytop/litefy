@@ -1,0 +1,86 @@
+---
+title: Select 选择器
+description: 基于原生 popover 与 listbox 面板的选择器 —— 支持选项分组、键盘导航与验证状态
+---
+
+## 安装
+
+<Installation name="select" />
+
+## 用法
+
+`options` 支持平铺与分组两种写法，触发器显示选中项。
+
+<ComponentPreview
+  name="select-basic"
+/>
+
+### 变体
+
+`data-variant="cell"` 切换设置行形态——触发器与 default 同宽，label 前置左端、选中值与箭头收拢右端，整块即点击目标。
+
+<ComponentPreview
+  name="select-variants"
+/>
+
+## API 参考
+
+### Select
+
+基于原生 popover API 与内置 JS 定位引擎的选择器：触发按钮显示选中项的文本。键盘：`ArrowDown` / `ArrowUp` 打开面板并移动高亮（首尾环绕），`Home` / `End` 跳到第一个 / 最后一个选项，`Enter` / `Space` 选中高亮项，`Escape` 不选择直接关闭，`Tab` 关闭。在触发器上写 `tabIndex={-1}` 使它退出 Tab 序列，被程序聚焦后它自己的列表键处理照常生效。
+
+| Prop              | Type                                                                    | Description                                                                                                                                                                                              |
+| ----------------- | ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `options`         | `(SelectOption \| SelectOptionGroup)[]`                                 | 要展示的选项或选项分组数组                                                                                                                                                                                            |
+| `value`           | `string`                                                                | 受控的选中值                                                                                                                                                                                                   |
+| `defaultValue`    | `string`                                                                | 非受控模式的默认选中值，默认 `""`                                                                                                                                                                                      |
+| `onValueChange`   | `(value: string) => void`                                               | 选中选项时触发                                                                                                                                                                                                  |
+| `open`            | `boolean`                                                               | 从外部受控面板开关——用于在别处触发的弹层，例如连体字段里的 `Ctrl` + `↓`                                                                                                                                                              |
+| `onOpenChange`    | `(open: boolean) => void`                                               | 面板每次开合都会触发，含选中项、`Escape` 与点击外部关闭                                                                                                                                                                         |
+| `placeholder`     | `string`                                                                | 未选中任何选项时显示的占位文本                                                                                                                                                                                          |
+| `label`           | `React.ReactNode`                                                       | 触发器始端前置标签（设置行形态的行首文本），随触发器内容进入可访问名                                                                                                                                                                       |
+| `description`     | `React.ReactNode`                                                       | 渲染于触发器下方的辅助文字，校验失败时被错误信息替代                                                                                                                                                                               |
+| `validate`        | `(value: string) => FieldValidateResult`                                | 校验函数；传入即进入字段模式，提交时门禁、已有错误时变更即重验                                                                                                                                                                          |
+| `validateTrigger` | `'submit' \| 'change' \| 'blur'`                                        | 校验时机，默认 `'submit'`                                                                                                                                                                                       |
+| `name`            | `string`                                                                | 渲染携带该 name 的隐藏 input，使值参与原生表单提交；值变化时在隐藏域上派发 `change` 供 [Field](/zh/docs/component/field) 重验                                                                                                              |
+| `data-variant`    | `'default' \| 'cell'`                                                   | 外观变体；`cell` 为设置行形态，默认 `'default'`                                                                                                                                                                        |
+| `disabled`        | `boolean`                                                               | 禁用触发器                                                                                                                                                                                                    |
+| `className`       | `string`                                                                | 自定义类名，作用于触发器                                                                                                                                                                                             |
+| `style`           | `React.CSSProperties`                                                   | 内联样式，作用于触发器                                                                                                                                                                                              |
+| `classNames`      | `{ panel?; label?; option?; value?; chevron?; empty? }` —— 值均为 `string` | 面板、分组标签、选项、值、箭头与空态的自定义类名                                                                                                                                                                                 |
+| `styles`          | `{ panel? }` —— 值均为 `React.CSSProperties`                               | 面板的内联样式                                                                                                                                                                                                  |
+| `...props`        | `React.ComponentProps<"button">`                                        | 其余原生 button 属性透传到触发器上，如 `id`、`aria-describedby`、`aria-required`、`tabIndex`——没有 `required` 属性；你自己写的 `aria-haspopup` 会取代触发器默认的 `listbox`。`ref` 指向触发器；`onKeyDown` 先于组件的列表键执行，`preventDefault()` 即可把这些按键接管过去 |
+
+### SelectOption
+
+| Prop    | Type     | Description            |
+| ------- | -------- | ---------------------- |
+| `label` | `string` | 选项的显示文本                |
+| `value` | `string` | 选项关联的值                 |
+
+### SelectOptionGroup
+
+| Prop      | Type             | Description            |
+| --------- | ---------------- | ---------------------- |
+| `group`   | `string`         | 分组标签文本                 |
+| `options` | `SelectOption[]` | 分组内的选项数组               |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `ArrowDown` / `ArrowUp` | 面板关闭时打开面板；面板打开时移动高亮（首尾环绕）。打开时高亮初始定位到已选项，未选中则为第一个选项 |
+| `Enter` / `Space` | 位于触发器上——切换面板开关；面板打开时——提交高亮项并关闭面板 |
+| `Escape` | 关闭面板，不做选择 |
+| `Home` / `End` | 高亮第一个 / 最后一个选项 |
+| `Tab` | 关闭面板并继续移动焦点 |
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-open]` | 位于触发器与人字形图标上——面板打开期间存在 |
+| `[data-placeholder-shown]` | 位于触发器上——未选中任何值时存在 |
+| `[data-highlighted]` | 位于键盘高亮所在的选项上 |
+| `[data-selected]` | 位于当前选中的选项上 |
+| `[data-disabled]` | 位于每个选项上——整个选择器被禁用时存在 |

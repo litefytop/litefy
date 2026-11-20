@@ -1,0 +1,67 @@
+---
+title: Image
+description: An image component with loading state, loading placeholder, and error handling
+---
+
+## Installation
+
+<Installation name="image" />
+
+## Usage
+Preloads the image and manages the loading state, rendering the image on success.
+
+<ComponentPreview 
+  name="image-basic"
+/>
+
+`loadingNode` customizes the loading placeholder — commonly a blurred-thumbnail progressive loading — and `fallback` shows on failure.
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Image
+
+An image component with preload state management; its look arrives through `classNames`, which the loaded scheme's skin fills (the same strings are exported as `imagePartClasses`).
+
+| Prop          | Type                                            | Description                                                                               |
+| ------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `src`         | `string`                                        | Image source URL                                                                          |
+| `alt`         | `string`                                        | Alternative text for the image                                                            |
+| `fallback`    | `React.ReactNode`                               | Custom fallback element shown when the image fails to load                                |
+| `loadingNode` | `React.ReactNode`                               | Placeholder element shown while loading, commonly used for progressive blurred thumbnails |
+| `className`   | `string`                                        | Custom classes, applied to the root container                                             |
+| `style`       | `React.CSSProperties`                           | Inline styles, applied to the root container                                              |
+| `classNames`  | `{ image?: string }`                            | Custom classes for the image                                                              |
+| `styles`      | `{ image?: React.CSSProperties }`               | Inline styles for the image                                                               |
+
+---
+
+### Composable Components
+
+#### ImageRoot
+
+Outer container; how it clips and positions is whatever its `className` says — the composite supplies it from `classNames.root`, and a scheme's skin exports the same strings as `imagePartClasses`.
+
+| Prop        | Type                           | Description                      |
+| ----------- | ------------------------------ | -------------------------------- |
+| `className` | `string`                       | Custom class name                |
+| `...props`  | `React.ComponentProps<"div">`  | Supports all native div props    |
+
+#### ImageImage
+
+The image element; the skeleton forces `loading="lazy"` and `decoding="async"`, and its size and fill are whatever its `className` says (the composite supplies `classNames.image`).
+
+| Prop        | Type                           | Description                      |
+| ----------- | ------------------------------ | -------------------------------- |
+| `className` | `string`                       | Custom class name                |
+| `...props`  | `React.ComponentProps<"img">`  | Supports all native img props    |
+
+## Keyboard Interactions
+
+The skeleton handles no keys. None of its parts attaches a key handler, and the `img` it renders is not focusable.
+
+## Data Attributes
+
+The skeleton emits no `data-*` on this component. Load state is not exposed as an attribute — it is decided by which child the composite mounts: `loadingNode` while loading, `fallback` on failure, the `img` on success.

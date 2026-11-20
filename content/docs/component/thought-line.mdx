@@ -1,0 +1,54 @@
+---
+title: Thought Line
+description: Reasoning trace header — a breathing glyph and a live clock that folds its steps into one line when done
+---
+
+Pairs with [Lattice Loader](/en/docs/component/lattice-loader) — the wave is the waiting state, the line is the trace.
+
+## Installation
+
+<Installation name="thought-line" />
+
+## Usage
+
+A reasoning trace header for AI responses: the wave runs beside the label while the live clock ticks, then settles into a check with the steps folded away.
+
+<ComponentPreview name="thought-line-basic" />
+
+## API Reference
+
+### ThoughtLine
+
+| Prop                | Type                                                                                               | Description                                                                                                                                       |
+| :------------------ | :------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `working`           | `boolean`                                                                                          | Working or settled; `true` again restarts the clock and reopens the trace, defaults to `true`                                                     |
+| `label`             | `string`                                                                                           | The working line, defaults to `"Thinking…"`                                                                                                       |
+| `doneLabel`         | `string`                                                                                           | The settled line; empty gives `Thought for` with the timer, `Done thinking` without, defaults to `""`                                             |
+| `glyph`             | `"lattice" \| "sparkle" \| "dot" \| "none" \| ReactNode`                                           | The working mark — `lattice` runs the [Lattice Loader](/en/docs/component/lattice-loader) wave and settles into a check, defaults to `"lattice"` |
+| `steps`             | `string[]`                                                                                         | The trace beneath the line; the last step is current, earlier ones tick                                                                           |
+| `collapsible`       | `boolean`                                                                                          | The line becomes a toggle for the trace, with a chevron, defaults to `true`                                                                       |
+| `collapseOnSettle`  | `boolean`                                                                                          | Folds the trace into the line when it settles, defaults to `true`                                                                                 |
+| `settleAfter`       | `number`                                                                                           | Seconds after which the line settles by itself; `0` waits for `working`, defaults to `0`                                                          |
+| `elapsed`           | `number`                                                                                           | Controlled seconds; the internal clock never runs                                                                                                 |
+| `showTimer`         | `boolean`                                                                                          | The live clock that freezes into the sentence, defaults to `true`                                                                                 |
+| `renderLabel`       | `(text: string, working: boolean) => ReactNode`                                                    | Wraps either line, inline content only                                                                                                            |
+| `onSettle`          | `(seconds: number) => void`                                                                        | Fires once per settle, with the frozen time                                                                                                       |
+| `className`         | `string`                                                                                           | Applied to the root `div`                                                                                                                         |
+| `classNames`        | `{ line?, glyph?, body?, label?, lattice?, timer?, chevron?, steps?, step?, stepMarker?: string }` | Custom classes on the slots (`body` is the stack anchor — the working label and the settled line share one grid cell and crossfade)               |
+| `latticeClassNames` | `{ lattice?, cell?, mark?, timer?: string }`                                                       | Forwarded to the nested LatticeLoader when `glyph` is the default lattice wave                                                                    |
+| `...props`          | `React.ComponentProps<"div">`                                                                      | Spread onto the root `div`                                                                                                                        |
+
+## Keyboard Interactions
+
+| Key | Description |
+| :-- | :---------- |
+| `Enter` / `Space` | Toggles the trace — the line is a native `button` when `collapsible` |
+
+## Data Attributes
+
+| Attribute | Description |
+| :-------- | :---------- |
+| `[data-working]` | On the root — `"true"` while thinking, `"false"` once settled |
+| `[data-collapsible]` | On the root — whether the line is a trace toggle |
+| `[data-open]` | On the root and the trace list — mirrors the open state |
+| `[data-current]` | On the last unfinished step row and its marker |

@@ -1,0 +1,113 @@
+---
+title: Table
+description: A generic data table with clickable sortable headers for local data, or remote mode that delegates sorting to your database.
+---
+
+## Installation
+
+<Installation name="table" />
+
+## Usage
+
+A data-driven table: pass `data` and `columns`; `sortable: true` enables sorting, `selectable` enables row selection; narrow containers scroll horizontally instead of reflowing.
+
+<ComponentPreview name="table-basic" />
+
+### Remote sorting
+
+Pass controlled `sort` + `onSortChange` to enter remote mode, delegating sorting to your database; pair with [useRemoteSort](/en/docs/utils/use-remote-sort) to manage the state.
+
+<ComponentPreview name="table-remote" />
+
+### Row selection
+
+`selectable` enables row selection: a checkbox in the first column, a tri-state select-all for the page, and after rows are selected a bulk actions row appears at the tail of the header; the selection key comes from `rowKey`, and selections persist across pages.
+
+<ComponentPreview name="table-selectable" />
+
+### Filtering belongs to the business layer
+
+The skeleton ships no filtering: filter controls depend heavily on the column type (text, enum, number and date each need a different value control), which does not fit one generic API. When you need filtering, build your own row via the `headExtra` slot at the tail of the header, compose it from primitives like [Input](/en/docs/component/input), [Select](/en/docs/component/select) and [Date Picker](/en/docs/component/date-picker), filter the data on the business side, and pass the result back as `data`.
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use finished components.
+
+#### Table
+
+| Prop                   | Type                                                                                                                                                                                                            | Description                                                                          |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `data`                 | `T[]`                                                                                                                                                                                                           | Row data **Required**                                                                |
+| `columns`              | `TableColumn<T>[]`                                                                                                                                                                                              | Column config **Required**                                                           |
+| `getKey`               | `(row: T, index: number) => React.Key`                                                                                                                                                                          | Row key extractor, defaults to index                                                 |
+| `sort`                 | `SortState<T> \| null`                                                                                                                                                                                          | Controlled sort state; passing it enters remote mode                                 |
+| `onSortChange`         | `(sort: SortState<T>) => void`                                                                                                                                                                                  | Header click callback (fired in both modes)                                          |
+| `initialSortDirection` | `"asc" \| "desc"`                                                                                                                                                                                               | Direction used on the first click of a column, defaults to `"asc"`                   |
+| `empty`                | `React.ReactNode`                                                                                                                                                                                               | Rendered when the data is empty, defaults to `"No data"`                             |
+| `caption`              | `React.ReactNode`                                                                                                                                                                                               | Table caption, rendered as the header `table`'s `<caption>` (the body does not repeat it), giving the table an accessible name |
+| `selectable`           | `boolean`                                                                                                                                                                                                       | Row selection switch: first-column checkbox, tri-state page select-all, bulk actions row, defaults to `false` |
+| `rowKey`               | `(row: T) => string`                                                                                                                                                                                            | Selection key extractor; falls back to `getKey` / index                              |
+| `selected`             | `string[]`                                                                                                                                                                                                      | Selected key set (controlled)                                                        |
+| `defaultSelected`      | `string[]`                                                                                                                                                                                                      | Initial selected keys (uncontrolled), defaults to `[]`                               |
+| `onSelectionChange`    | `(selected: string[]) => void`                                                                                                                                                                                  | Called when the selection set changes (both modes)                                   |
+| `loading`              | `boolean`                                                                                                                                                                                                       | Switches the empty-state text to Loading, does not take over selection, defaults to `false` |
+| `selectAllLabel`       | `string`                                                                                                                                                                                                        | Accessible label of the select-all checkbox, defaults to `"Select all on this page"` |
+| `rowLabel`             | `string`                                                                                                                                                                                                        | Accessible label of the row checkbox, defaults to `"Select this row"`                |
+| `bulkActions`          | `React.ReactNode`                                                                                                                                                                                               | Bulk action nodes in the bulk row                                                    |
+| `selectedLabel`        | `string`                                                                                                                                                                                                        | Label text after the count in the bulk row, defaults to `"selected"`                 |
+| `clearLabel`           | `string`                                                                                                                                                                                                        | Bulk row clear button text, defaults to `"Clear"`                                    |
+| `className`            | `string`                                                                                                                                                                                                        | Custom class name, applied to the outer frame                                        |
+| `classNames`           | `table` / `col` / `caption` / `head` / `headRow` / `headCell` / `headLabel` / `sortIcon` / `body` / `row` / `cell` / `empty` / `bulkRow` / `bulkBar` / `bulkCount` / `bulkLabel` / `bulkActions` / `bulkClear` / `checkbox` | Custom classes per part (`head` / `body` target the header strip and the body scroller respectively; `caption` targets the table caption; `bulk*` target the bulk row; `checkbox` is the checkbox part slot) |
+| `styles`               | `{ wrapper?, table? }`                                                                                                                                                                                          | Inline styles for the outer wrapper and both tables                                  |
+
+#### TableColumn&lt;T&gt;
+
+| Field       | Type                            | Description                                                                            |
+| ----------- | ------------------------------- | -------------------------------------------------------------------------------------- |
+| `key`       | `keyof T & string`              | Row field to display **Required**                                                      |
+| `header`    | `React.ReactNode`               | Header label; a string header also becomes the cell's `data-label`, defaults to `key`  |
+| `render`    | `(row: T) => React.ReactNode`   | Custom cell renderer, defaults to raw value                                            |
+| `sortable`  | `boolean`                       | Make the header click-to-sort, defaults to `false`                                     |
+| `compare`   | `(a: T, b: T) => number`        | Custom comparator used by local sorting, defaults to `<` / `>`                         |
+| `align`     | `"left" \| "right" \| "center"` | Cell alignment; the design spec keeps columns start-aligned (center is fine for control columns), defaults to `"left"` |
+| `span`      | `number`                        | Width weight: the column's share of the container width = its own `span` ÷ the sum of all columns' `span`; each column also carries a minimum width tier from the skin (applied on `col`), defaults to `1` |
+| `className` | `string`                        | Custom classes applied to the column's header cell and body cells (your own layout, e.g. truncating long text) |
+
+#### SortState&lt;T&gt;
+
+`{ key: keyof T & string; direction: "asc" | "desc" } | null`
+
+---
+
+### Composable Components
+
+| Part | Element | Emitted attributes | Description |
+|------|---------|--------------------|-------------|
+| `TableRoot` | `<div>` | - | Outer frame — the horizontal scroller when the column widths do not fit; publishes the column count on itself as `--litefy-cols` |
+| `TableHead` | `<div>` | - | Header strip; never scrolls |
+| `TableBody` | `<div>` | - | Body scroller |
+| `TableBase` | `<table>` | - | The table element rendered by the header strip and by the body (built-in `table-layout: fixed`) |
+
+All parts accept native element props plus `className`. Head and body are two separate tables sharing one `<colgroup>`, so column widths never depend on the row count and paging never shifts the layout; the default body height and every other visual are defined by the loaded scheme. Hand-assembled tables must keep the `<colgroup>` identical to what `Table` emits (`width: calc(span * 100% / total span)` + `min-width` on every `<col>`).
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Tab` | Reaches only the focusable elements you render yourself inside `render` or `header`; the skeleton's own cells, labels and sort icons never enter the tab order |
+
+The skeleton attaches no key handler. Sorting is bound to `onClick` on a `<th>`, which is not focusable, so a `sortable` header has no keyboard path — put your own `<button>` in `header` to make it operable.
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-sortable]` | On a header cell — present when the column is `sortable` |
+| `[data-sorted]` | On a header cell — present when its column is the current sort key |
+| `[data-active]` | On the sort icon — present on the sorted column's icon |
+| `[data-align]` | On header and body cells — `"left"`, `"center"` or `"right"`, matching the column's `align` |
+| `[data-label]` | On body cells — the column's string `header`, used as the cell's label |
+| `[data-bulk]` | On the bulk row `<tr>` — rendered at the tail of the header when `selectable` and there are selected items |
+| `[data-bulk-bar]` / `[data-bulk-count]` / `[data-bulk-label]` / `[data-bulk-actions]` / `[data-bulk-clear]` | Inside the bulk row — the action bar, the count, the label, the actions container and the clear button |

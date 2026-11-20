@@ -1,0 +1,95 @@
+---
+title: Radio
+description: A parts-based radio component with an options-driven group — arrow-key navigation comes natively from the shared name
+---
+
+## Installation
+
+<Installation name="radio" />
+
+## Usage
+
+A basic radio in standalone and group modes; unchecked shows a hollow ring, checked fills the whole ring solid.
+
+<ComponentPreview
+  name="radio-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use finished components.
+
+#### Radio
+
+| Prop              | Type                             | Description                                                                                          |
+| ----------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `children`        | `React.ReactNode`                | The radio's label content                                                                            |
+| `checked`         | `boolean`                        | Controlled checked state, defaults to `false`                                                        |
+| `defaultChecked`  | `boolean`                        | Default checked state in uncontrolled mode, defaults to `false`                                      |
+| `onCheckedChange` | `(checked: boolean) => void`     | Called when checked                                                                                  |
+| `indicator`       | `React.ReactNode`                | Custom indicator content, appended inside the ring                                                   |
+| `classNames`      | `{ input?; indicator?; label? }` | Custom class names for the input, the ring and the label                                             |
+| `styles`          | `{ indicator?; label? }`         | Inline styles for the indicator and the label                                                        |
+| `className`       | `string`                         | Custom class name, applied to the label                                                              |
+| `...props`        | `React.ComponentProps<"input">`  | Supports all native input props (except `type` and `className`), such as `name`, `value`, `disabled` |
+
+#### RadioOptionConfig
+
+| Field        | Type                                                               | Description                                                |
+| ------------ | ------------------------------------------------------------------ | ---------------------------------------------------------- |
+| `label`      | `string`                                                           | Option display text                                        |
+| `value`      | `string`                                                           | Unique identifying value                                   |
+| `disabled`   | `boolean`                                                          | Disables the option, defaults to `false`                   |
+| `indicator`  | `React.ReactNode`                                                  | Custom indicator; takes precedence over `common.indicator` |
+| `classNames` | `{ input?; indicator?; label? }`                                   | Per-option part class names; take precedence over `common` |
+| `styles`     | `{ indicator?: React.CSSProperties; label?: React.CSSProperties }` | Per-option part styles; take precedence over `common`      |
+
+---
+
+### Composable Components
+
+#### RadioRoot
+
+The bare radio input — the skin of the loaded scheme hides it (via the utility classes in `classNames.input`), and the indicator reads its checked state through `:has(:checked)`.
+
+#### RadioIndicator
+
+The indicator part — its state-reading contract: `:has(:checked)` reads the checked state and `:has(:focus-visible)` reads the focus state; the actual presentation is defined by the loaded scheme. When assembling by hand, nest `RadioRoot` inside `RadioIndicator` and give every assembled root the same `name` — that is what makes them a native radio group.
+
+#### RadioLabel
+
+The label wrapper (clicking it toggles the selection).
+
+#### RadioGroup
+
+| Prop            | Type                                   | Description                                                               |
+| --------------- | -------------------------------------- | ------------------------------------------------------------------------- |
+| `options`       | `RadioOptionConfig[]`                  | The options data array                                                    |
+| `value`         | `string`                               | Controlled selected value                                                 |
+| `defaultValue`  | `string`                               | Default selected value in uncontrolled mode                               |
+| `onValueChange` | `(value: string) => void`              | Called when the selected value changes                                    |
+| `disabled`      | `boolean`                              | Disables all options, defaults to `false`                                 |
+| `name`          | `string`                               | The group name — also enables native arrow-key navigation between options |
+| `orientation`   | `"horizontal" \| "vertical"`           | Layout direction of the options, defaults to `"vertical"`                 |
+| `className`     | `string`                               | Custom class name, applied to the container                               |
+| `aria-label`    | `string`                               | Accessible label for the group                                            |
+| `common`        | `{ classNames?, styles?, indicator? }` | Common configuration applied to all options                               |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Tab` | Reaches the checked item in the `name` radio group, or the first item when nothing is checked — native radio group behavior |
+| `ArrowRight` / `ArrowDown` | Checks the next item sharing the `name` — native, requires a shared `name` |
+| `ArrowLeft` / `ArrowUp` | Checks the previous item sharing the `name` — native, requires a shared `name` |
+| `Space` | Checks the focused radio — native |
+
+The skeleton itself handles no keys.
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-orientation]` | On the `RadioGroup` root — mirrors the `orientation` prop; not rendered when the prop is not passed |

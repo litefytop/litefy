@@ -1,0 +1,36 @@
+---
+title: Typography
+description: Pure classes, no component — hang a typo-* class on any element, or hang typography on an area and let the scheme typeset everything inside.
+---
+
+## Usage
+
+Pure classes, no component — hang a `typo-*` class on any element, or hang `typography` on a container and let the scheme typeset everything inside.
+
+<ComponentPreview
+  name="typography-basic"
+/>
+
+### Reading area
+
+One class on a container typesets every heading, paragraph, list, quote, inline code and link inside.
+
+<ComponentPreview
+  name="typography-area"
+/>
+
+## Class Reference
+
+| Class               | Answers                                                                                      |
+| ------------------- | -------------------------------------------------------------------------------------------- |
+| `typography`        | Reading area — typesets descendant h1–h6, p, ul/ol, blockquote, code and a; a subtree marked `not-typography` opts out |
+| `typo-h1` … `typo-h6` | Heading characters: size, weight, line-height, each scheme answers its own voice           |
+| `typo-body`         | Body copy: size, line-height, text color                                                     |
+| `typo-quote`        | Quote: line-height, text color, left bar and padding                                         |
+| `typo-list`         | List: line-height, indent, markers (ul disc / ol decimal)                                    |
+| `typo-code`         | Inline code: mono family, background color, border                                           |
+| `typo-link`         | Link: primary color, underline                                                               |
+
+Single-hung classes and the reading area give the same look — block spacing and line width are the caller's job: rhythm via a `gap-*` column or the site's own prose margins, line width via `max-w-[40em]` (it scales with the font size, so 40 Chinese characters and 80 Latin characters per line both hold); the typography area itself carries no width.
+
+The larger the font size, the smaller the relative line-height and the tighter the letter spacing; each tier is answered by the scheme, not by one global line-height. When Chinese and Latin text mix, the scheme turns on `text-autospace` on `html`, which inserts 1/8 em gaps between Chinese characters and Latin letters or digits automatically, while punctuation squeezing stays with the browser's default; both are progressive enhancements — browsers without support fall back to default typography and the text content is unchanged.

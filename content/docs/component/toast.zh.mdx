@@ -1,0 +1,158 @@
+---
+title: Toast 轻提示
+description: 基于 store 命令式 API 的全局轻提示组件
+---
+
+## 安装
+
+<Installation name="toast" />
+
+## 用法
+
+全局轻提示：挂载一次 `<Toaster />`，之后命令式调用即可。
+
+<ComponentPreview
+  name="toast-basic"
+/>
+
+## API 参考
+
+### 高阶组件
+
+#### Toaster
+
+轻提示宿主——应用中渲染一次，承载下方的命令式方法。
+
+挂载多个 `<Toaster />` 实例时，只有第一个会渲染轻提示。
+
+| 属性              | 类型                                      | 描述                                                         |
+| --------------- | --------------------------------------- | ---------------------------------------------------------- |
+| `visibleToasts` | `number`                                | 同时渲染的最大轻提示数量，默认 `3`                                        |
+| `className`     | `string`                                | 容器的自定义类名                                                   |
+| `...props`      | `React.ComponentProps<"div">`           | 其余属性透传给容器的 `section` 元素                                    |
+
+命令式方法：
+
+| 方法      | 类型                                                                          | 描述                                                              |
+| --------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `success` | `(options: ToastItemProps) => number`                                         | 显示成功轻提示，返回轻提示 id                                     |
+| `error`   | `(options: ToastItemProps) => number`                                         | 显示错误轻提示，返回轻提示 id                                     |
+| `warning` | `(options: ToastItemProps) => number`                                         | 显示警告轻提示，返回轻提示 id                                     |
+| `info`    | `(options: ToastItemProps) => number`                                         | 显示信息轻提示，返回轻提示 id                                     |
+| `loading` | `(options: ToastItemProps) => number`                                         | 显示持久的加载轻提示（永不自动关闭）                              |
+| `dismiss` | `(id?: string \| number) => void`                                             | 按 id 关闭轻提示；不传 id 时关闭全部轻提示                        |
+| `promise` | `<T>(promise: () => Promise<T>, data: PromiseData<T>) => void`                | 加载轻提示，Promise 结束后同一条原地转为成功/错误态（始终单条）     |
+
+#### ToastItemProps
+
+所有命令式方法接受的选项。
+
+| 属性            | 类型                                                         | 描述                                                                                       |
+| ------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `id`          | `string \| number`                                         | 轻提示 id；创建时由 store 自动分配                                                                   |
+| `title`       | `React.ReactNode`                                          | 轻提示标题                                                                                    |
+| `description` | `React.ReactNode`                                          | 标题下方的次要文本                                                                                |
+| `type`        | `"success" \| "error" \| "warning" \| "info" \| "loading"` | 图标类型；由语义化方法自动设置                                                                          |
+| `icon`        | `React.ReactNode`                                          | 自定义图标，覆盖内置的类型图标，默认 type icon                                                             |
+| `duration`    | `number`                                                   | 自动关闭延迟（毫秒）；`Infinity` 表示不自动关闭（loading 轻提示始终持久显示），默认 `5000`                               |
+| `closable`    | `boolean`                                                  | 在轻提示右上角渲染关闭按钮，默认 `false`                                                                 |
+| `onClose`     | `(event: CloseEvent) => void`                              | 关闭开始时以 `type: "auto" \| "manual"` 触发，移除完成后以 `type: "complete"` 触发                        |
+| `classNames`  | `{ root?, icon?, content?, title?, description?, close? }` | 轻提示卡片各部分的自定义类名                                                                           |
+| `styles`      | `{ root?, icon?, content?, title?, description?, close? }` | 轻提示卡片各部分的内联样式                                                                            |
+
+#### CloseEvent
+
+| 字段   | 类型                                 | 描述                                                     |
+| ------ | ------------------------------------ | -------------------------------------------------------- |
+| `type` | `"auto" \| "manual" \| "complete"`   | 轻提示关闭的原因；`"complete"` 在移除完成后触发          |
+| `id`   | `string \| number`（可选）           | 轻提示 id                                                |
+
+#### PromiseData&lt;T&gt;
+
+| 字段      | 类型                                                       | 描述                                     |
+| --------- | ---------------------------------------------------------- | ---------------------------------------- |
+| `loading` | `React.ReactNode`                                          | Promise 进行中显示的标题                 |
+| `success` | `React.ReactNode \| ((data: T) => React.ReactNode)`        | 成功时的标题                             |
+| `error`   | `React.ReactNode \| ((error: unknown) => React.ReactNode)` | 失败时的标题                             |
+
+### 可组合组件
+
+装配以下已导出的零件，构建自定义轻提示卡片。
+
+#### ToastRoot
+
+轻提示卡片容器（单行 chip）。`data-tapped` 为点击展开态、`data-exiting` 为退场动画态。
+
+| 属性          | 类型               | 描述            |
+| ----------- | ---------------- | ------------- |
+| `className` | `string`         | 自定义 CSS 类     |
+
+支持全部原生 `<div>` 属性。
+
+#### ToastIcon
+
+前置图标的包装容器。
+
+| 属性          | 类型               | 描述            |
+| ----------- | ---------------- | ------------- |
+| `className` | `string`         | 自定义 CSS 类     |
+
+支持全部原生 `<div>` 属性。
+
+#### ToastContent
+
+标题和描述列的包装容器。
+
+| 属性          | 类型               | 描述            |
+| ----------- | ---------------- | ------------- |
+| `className` | `string`         | 自定义 CSS 类     |
+
+支持全部原生 `<div>` 属性。
+
+#### ToastTitle
+
+标题文本。
+
+| 属性          | 类型               | 描述            |
+| ----------- | ---------------- | ------------- |
+| `className` | `string`         | 自定义 CSS 类     |
+
+支持全部原生 `<div>` 属性。
+
+#### ToastDescription
+
+标题下方的次要文本。
+
+| 属性          | 类型               | 描述            |
+| ----------- | ---------------- | ------------- |
+| `className` | `string`         | 自定义 CSS 类     |
+
+支持全部原生 `<div>` 属性。
+#### ToastClose
+
+`closable` 开启时渲染在右上角的关闭按钮。
+
+| Prop        | Type             | Description            |
+| ----------- | ---------------- | ---------------------- |
+| `className` | `string`         | 自定义类名                  |
+
+支持所有原生 `<button>` 属性。
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Tab` | 依次到达视口容器 `<section>`（`tabIndex={0}`）与每条设置了 `closable` 的轻提示上的关闭按钮 |
+| `Enter` / `Space` | 激活当前聚焦的关闭按钮——由浏览器自身的按钮点击触发关闭流程 |
+
+骨架自身不绑定任何按键，`Escape` 无任何作用。悬停视口或点击卡片暂停倒计时；点击卡片同时切换描述的展开/收起。
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-expanded]` | 位于每条轻提示与视口容器——悬停视口暂停倒计时时为 `"true"` |
+| `[data-tapped]` | 位于每条轻提示——被点击展开（同时暂停倒计时）时存在 |
+| `[data-exiting]` | 位于每条轻提示——正在播放退场动画时为 `"true"` |
+| `[data-type]` | 位于图标——取值 `"success"`、`"error"`、`"warning"`、`"info"` 或 `"loading"` |
+

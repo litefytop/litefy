@@ -1,0 +1,38 @@
+---
+title: use-theme
+description: A color-mode hook persisting light / dark / system to localStorage, provided by the default style scheme
+---
+
+## Installation
+
+<Installation name="use-theme" />
+
+## Usage
+
+Global theme state: reads and writes localStorage and applies it, with support for following the system.
+
+<ComponentPreview
+  name="use-theme-basic"
+/>
+
+## API Reference
+
+### useTheme
+
+```ts
+function useTheme(): ThemeState
+```
+
+Returns a `ThemeState`:
+
+| Property | Type | Description |
+|------|------|------|
+| `theme` | `'light' \| 'dark' \| 'system'` | The current color mode |
+| `setTheme` | `(mode: ThemeMode) => void` | Sets the color mode, persists and applies it |
+| `toggleTheme` | `() => void` | Switches between light and dark (when `system`, resolves the system's actual mode first) |
+
+**Notes:**
+
+- All state lives outside React; multiple components calling `useTheme` share the same store and re-render together.
+- Persisted under the `theme-storage` localStorage key.
+- When `theme` is `"system"`, the stored value is kept and the applied mode follows `prefers-color-scheme` changes live.

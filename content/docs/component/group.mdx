@@ -1,0 +1,45 @@
+---
+title: Group
+description: Joins sibling controls tightly together — zero gaps, the middle items lose their corners, and the first and last keep one rounded side each.
+---
+
+## Installation
+
+<Installation name="group" />
+
+## Usage
+
+A horizontal compact container: Group only tames the corner radii (the middle items go to zero, the first and last keep one side each).
+
+<ComponentPreview
+  name="group-basic"
+/>
+
+## API Reference
+
+### Group
+
+A horizontal control-group container. Children pass through untouched — Group renders no parts for them.
+
+| Prop        | Type                          | Description                                          |
+| ----------- | ----------------------------- | ---------------------------------------------------- |
+| `children`  | `React.ReactNode`             | The sibling controls that join the connection        |
+| `className` | `string`                      | Custom class name for the container                  |
+| `role`      | `string`                      | The container role, overridable, defaults to `group` |
+| `...props`  | `React.ComponentProps<"div">` | Supports all native div props                        |
+
+### GroupRoot
+
+The group container part — same behavior as `Group`, without the skin's connected look.
+
+| Prop       | Type                          | Description             |
+| ---------- | ----------------------------- | ----------------------- |
+| `...props` | `React.ComponentProps<"div">` | Supports all native div props |
+
+## Keyboard Interactions
+
+Takes over no keys — children keep their own keyboard behavior and focus rings.
+
+## Data Attributes
+
+The skeleton emits no `data-*` on this component.

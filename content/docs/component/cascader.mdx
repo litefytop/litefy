@@ -1,0 +1,74 @@
+---
+title: Cascader
+description: A multi-level cascading selector driven by tree data, made up of a breadcrumb-style trigger and popup panels positioned by a built-in JS positioning engine
+---
+
+## Installation
+
+<Installation name="cascader" />
+
+## Usage
+
+Pass tree data to `tree`; clicking a level opens its panel, clicking a leaf completes the selection.
+
+<ComponentPreview
+  name="cascader-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Cascader
+
+A multi-level cascading selector driven by tree data; panel width comes from the loaded scheme and is overridable via `classNames.menu` / `styles.menu`; the internally managed positioning props (anchor + placement) always take precedence over `styles`.
+
+| Prop          | Type                                                                                        | Description                                                                                                                                                |
+| :------------ | :------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tree`        | `CascaderNode[]`                                                                            | Tree data driving the cascading selection                                                                                                                  |
+| `placeholder` | `string`                                                                                    | Placeholder text shown on the trigger when nothing is selected, defaults to `"Select your location"`                                                       |
+| `width`       | `string \| number`                                                                          | Overall width (CSS value); the panel matches the field box and the columns divide it evenly, defaults to `24rem`                                           |
+| `className`   | `string`                                                                                    | Custom class name for the root container                                                                                                                   |
+| `classNames`  | `{ root?; breadcrumb?; trigger?; chevron?; menu?; option?; list?: ListClassNames }`         | Custom class names per part: root container, breadcrumb row, per-level triggers, chevron icons, level panels, option rows, and the `List` inside the panel |
+| `styles`      | `{ root?: React.CSSProperties; trigger?: React.CSSProperties; menu?: React.CSSProperties }` | Inline styles for the root container, the breadcrumbs and the level panels                                                                                 |
+| `...props`    | `React.ComponentProps<"div">`                                                               | Supports all native div props (except `children`, `className`), spread onto the root container                                                             |
+
+#### CascaderNode
+
+Data structure of a cascader tree node.
+
+| Field      | Type              | Description                      |
+| :--------- | :---------------- | :------------------------------- |
+| `value`    | `string`          | Unique value of the node         |
+| `label`    | `string`          | Display text of the node         |
+| `children` | `CascaderNode[]`  | Child nodes for the next level   |
+
+---
+
+### Composable Components
+
+#### CascaderTrigger
+
+A breadcrumb-style trigger button; the composite renders one per level.
+
+| Prop        | Type                             | Description                       |
+| :---------- | :------------------------------- | :-------------------------------- |
+| `className` | `string`                         | Custom CSS class                  |
+| `...props`  | `React.ComponentProps<"button">` | Supports all native button props  |
+
+## Keyboard Interactions
+
+| Key                | Description                                                                                |
+| ------------------ | ------------------------------------------------------------------------------------------ |
+| `ArrowDown` / `ArrowUp` | Moves the option highlight in the open panel                                          |
+| `Enter` / `Space`  | Selects the highlighted option; on a breadcrumb trigger it is native button activation     |
+| `Escape`           | Closes the currently open panel                                                            |
+
+## Data Attributes
+
+| Attribute                | Description                                                              |
+| ------------------------ | ------------------------------------------------------------------------ |
+| `[aria-expanded]`        | On a trigger button — `true` while that level's panel is open            |
+| `[aria-current="step"]`  | On the trigger button that shows the selected leaf                       |

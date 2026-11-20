@@ -1,0 +1,21 @@
+# 导航外壳（app/components/docs-shell.tsx 与 showcase 顶栏）
+
+- 层：界面域·壳层——跨页常驻外观（侧栏面板、顶栏、移动端抽屉、页脚工具区、目录栏）。同层的其他壳见本目录，嵌在正文里的交互件归 `site/widgets/`，独立路由的功能页归 `site/pages/`。
+- 职责：文档壳与首页/展示页共用导航外观；正文归 `content/guide.md`，总览与工具页归 `site/pages/`，外观面板归 `site/shell/appearance-panel.md`，横幅归 `site/shell/motion-preference-notice.md`。
+- 壳层网格：`h-dvh overflow-hidden` 满窗 grid；lg 起区域 `'banner banner' 'sidebar main'`——横幅整行、侧栏整列、正文占余列，文档页无顶栏行（标识区由侧栏面板自带，顶栏属 HomeShell/showcase 页面域）；窄档单列 `'banner' 'main'`。侧栏与正文之间无让位补丁，宽度由网格列自答；侧栏关闭时列塌缩、main 吃满。
+- 滚动模型：文档页 window 恒不滚，滚动容器是 `main`（`overflow-y-auto` + `data-scroll-root` 标记）；路由切换 PUSH 归零、POP 按 sessionStorage 按路径恢复、带 hash 的导航跳过归零交给浏览器 `scrollIntoView`；root 的 `ScrollRestoration` 保留给非文档路由的 window 滚动。
+- 页内滚动侦听一律容器无关：目录阅读进度与滚动侦测走 capture 相位 scroll 监听（scroll 不冒泡但 capture 上传到 window），浮动导航的回顶/回底就近查 `[data-scroll-root]`。
+- 锚点让位走常量：滚动容器挂 `scroll-pt` 一个声明覆盖全部锚点目标，标题与表格不再逐个挂 `scroll-mt`；main 列内无覆盖层（顶栏是网格行），锚点落点只让呼吸空隙。
+- 跳转链接：网格根第一个子节点是 `<a href="#main-content">`（`sr-only focus:not-sr-only`，聚焦时固定左上角浮出，双语标签「跳到主要内容 / Skip to content」）；`main` 挂 `id="main-content"` 与 `tabIndex={-1}` 作落点，键盘用户一键越过侧栏直达正文（a11y 下限见 ui-rules `operable.md` 20）。
+- 侧栏断点 lg 起固定列，窄档抽屉（`openSidebar` 媒体查询与断点同值 1024）；浮动条 `lg:hidden`。
+- 侧栏面板分三区：header 工具区（标识、收起/关闭、搜索入口）与 footer 工具区（风格、外观、语言、GitHub）定位固定，只有中列导航区（目录树）随内容伸缩并独立滚动；树展开不位移 header 与 footer，面板高度恒等视口，桌面列与抽屉同构。
+- 页脚工具区只放外观、语言、GitHub 三个控件，右对齐，`gap-1`；外观按钮打开单一外观面板，不再分别放主题、风格、调色板按钮。
+- 三控件保持 44×44 命中区，不缩控件、不加宽侧栏。侧栏宽读 `w-64`（默认 16rem，随 `--spacing` 逐案缩放，neo 24rem）；页脚 `px-3` 下默认案可用 232px，三控件加两处间距共 140px；不套零间距外容器，避免焦点环与 hover 边界相撞。
+- 顶栏复用同一外观按钮，保留语言，不放 GitHub（GitHub 由文档页侧栏页脚承载）；移动端从抽屉页脚进入，不新增独立入口；首页与 showcase 顶栏同构。
+- 首页顶栏控件：搜索 <sm 收成 44×44 图标按钮（sm 起展开为定宽搜索框，md 起带 Ctrl K 角标）；风格切换为 44×44 图标按钮，点开下拉菜单列出全部方案、当前方案打勾；外观与语言为 44×44 图标按钮；站点名 <sm 只显示 logo 图标，sm 起显示文字。验收下限 320px 视口。
+- 壳层容器不设最大宽度：文档壳的正文区与横幅全宽随视口，`max-w-320` 只属首页/展示页等页面域容器（其顶栏与页脚随页面域）；目录列随 main 右缘排布，正文列自身仍走宽度车道（spacing 数字乘道）。
+- 目录与侧栏随网格行自答位置；浮动菜单（视口固定）按 `--motion-banner-h` 下移让位横幅；桌面端正文顶部留白由 main 自身 padding 常量承担。
+- 导航数据只读 `pageTrees` 与 `_meta.ts`，不在壳层复制正文或标题；界面入口（如颜色工具）由壳层追加，其页面本身归 `site/pages/`。
+- 正文列（`article.typography`）宽走 `max-w-160` 居中（40rem 基准，随 `--spacing` 逐案缩放，neo 60rem）：列宽随方案栅格缩放，demo 等演示件随列同宽、neo 占据更大空间，手机端 `w-full` 不超屏宽；段落、列表、引文仍守 40em 阅读行宽（`[&>p]:max-w-[40em]` 配 `mx-auto` 子代类收窄居中，基准案与列宽同值无差异，a11y 下限见 ui-rules `perceivable.md` 19，车道见 delivery `references/skin-rules.md` 16.1）。
+- 正文标题（h2–h6）统一下间距 `mb-5`：标题与后续任意块（正文、Tabs、代码块、预览件）都有衔接间距——正文块的 `mt-5` 与之塌陷不叠加，块级演示件（无自身外距）由标题下间距兜底。
+- 正文表格单元格（`td`/`th`）挂 `overflow-wrap: anywhere` 兜底：固定布局列内的无词界长串（URL 式 token、超长类型）允许任意字符处换行，词界换行由 MDX 渲染层（`site/shell/mdx.md`）的 `<wbr>` 承担。

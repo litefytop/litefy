@@ -1,0 +1,100 @@
+---
+title: Banner 横幅
+description: 自动滚动播放的横幅组件，无缝循环、悬停暂停、支持方向与速度控制
+---
+
+## 安装
+
+<Installation name="banner" />
+
+## 用法
+
+数据驱动的自动滚动公告横幅。
+
+<ComponentPreview
+  name="banner-basic"
+/>
+
+## API 参考
+
+### 高阶组件
+
+#### Banner
+
+数据驱动的跑马灯横幅。内容不足以铺满视口时，把差值均分为每个条目的尾随间距撑满视口宽，任意内容长度都无缝循环；`styles.item` 的 `marginRight` 可接管该间距。
+
+| Prop           | Type                                                                | Description                                                                              |
+| :------------- | :------------------------------------------------------------------ | :--------------------------------------------------------------------------------------- |
+| `items`        | `BannerItem[]`                                                      | 滚动的内容；每项渲染在一个 `BannerItem` 内                                                             |
+| `speed`        | `number`                                                            | 循环一周（轨道位移 `-50%`）所需的秒数，默认 `30`                                                           |
+| `direction`    | `"left" \| "right"`                                                 | 滚动方向，默认 `left`                                                                           |
+| `pauseOnHover` | `boolean`                                                           | 指针悬停在横幅上时暂停动画，默认 `true`                                                                  |
+| `playing`      | `boolean`                                                           | 总开关——为 `false` 时无论是否悬停都不播放动画，默认 `true`                                                   |
+| `closable`     | `boolean`                                                           | 为 true 时在横幅末端渲染内置关闭钮，默认 `false`                                                          |
+| `onClose`      | `() => void`                                                        | 内置关闭钮被点击时触发，未提供则点击无操作                                                                    |
+| `closeLabel`   | `string`                                                            | 内置关闭钮的 `aria-label`，默认 `Close`                                                           |
+| `className`    | `string`                                                            | 根元素的自定义类名                                                                                |
+| `style`        | `React.CSSProperties`                                               | 根元素的内联样式                                                                                 |
+| `classNames`   | `{ viewport?; track?; item?; close? }` —— 值均为 `string`              | 视口、轨道、条目与关闭钮的自定义类名                                                                       |
+| `styles`       | `{ viewport?; track?; item?; close? }` —— 值均为 `React.CSSProperties` | 视口、轨道、条目与关闭钮的内联样式                                                                        |
+| `...props`     | `React.ComponentProps<"div">`                                       | 原生 div 属性透传到根元素（不含 `children`）；你自己的 `onMouseEnter` / `onMouseLeave` 会与悬停暂停组合             |
+
+#### BannerItem
+
+单个滚动条目。
+
+| Field     | Type                 | Description   |
+| :-------- | :------------------- | :------------ |
+| `key`     | `string \| number`   | 可选 React key |
+| `content` | `React.ReactNode`    | 渲染的内容     |
+
+---
+
+### 可组合组件
+
+#### BannerViewport
+
+裁剪容器。
+
+| Prop       | Type                          | Description       |
+| :--------- | :---------------------------- | :---------------- |
+| `className`| `string`              | 自定义类名         |
+| `...props` | `React.ComponentProps<"div">` | 支持所有原生 div 属性 |
+
+#### BannerTrack
+
+动画轨道；无缝循环要求轨道包含完全相同的两半（对应 `-50%` 位移），其中重复的那半标记 `aria-hidden`，辅助技术只读一遍。轨道把内容排成不换行的一行、宽度由内容决定，该布局由所加载的方案提供。
+
+| Prop        | Type                          | Description                                              |
+| :---------- | :---------------------------- | :------------------------------------------------------- |
+| `duration`  | `number`                      | 循环一周所需的秒数，默认 `30`                                        |
+| `direction` | `"left" \| "right"`           | 滚动方向，默认 `left`                                           |
+| `playing`   | `boolean`                     | 播放或暂停动画，默认 `true`                                        |
+| `className` | `string`                      | 自定义类名                                                    |
+| `...props`  | `React.ComponentProps<"div">` | 支持所有原生 div 属性                                            |
+
+#### BannerItem
+
+单个条目单元；条目在轨道内不换行、不被压缩，其余外观由所加载的方案定义。
+
+| Prop       | Type                          | Description       |
+| :--------- | :---------------------------- | :---------------- |
+| `className`| `string`              | 自定义类名         |
+| `...props` | `React.ComponentProps<"div">` | 支持所有原生 div 属性 |
+
+#### BannerClose
+
+内置关闭钮；`Banner` 在 `closable` 为 true 时自动渲染，内容为骨架内置的 X 图标，未绑定 `onClose` 时点击无操作。
+
+| Prop       | Type                            | Description           |
+| :--------- | :------------------------------ | :-------------------- |
+| `className`| `string`                        | 自定义类名             |
+| `...props` | `React.ComponentProps<"button">`| 支持所有原生 button 属性 |
+
+## 键盘交互
+
+内置关闭钮是原生 `<button>`：Enter / Space 原生激活，焦点环由所加载的方案提供。其余不接管任何按键。暂停由指针驱动：`pauseOnHover` 响应 `onMouseEnter` / `onMouseLeave`；运动抑制读取 `useMotionPreference` 合并后的有效值（应用内设置 + `prefers-reduced-motion`），不读取按键。自动播放还受视口可见性约束：横幅滚出视口时暂停，回到视口恢复，仍受 `playing`、`pauseOnHover` 与运动抑制约束。
+
+## 数据属性
+
+骨架不在本组件上发射任何 `data-*`。视口携带 `aria-roledescription="marquee"`，每个重复集合携带 `aria-hidden`。

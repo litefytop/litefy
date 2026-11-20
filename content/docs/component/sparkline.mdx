@@ -1,0 +1,39 @@
+---
+title: Sparkline
+description: Tiny axis-free trend line rendered in SVG — colored via currentColor so it themes like any text element
+---
+
+Part of the chart family with [Chart](/en/docs/component/chart), [Donut](/en/docs/component/donut) and [Radar](/en/docs/component/radar) — reach for Chart when you need axes or tooltips.
+
+## Installation
+
+<Installation name="sparkline" />
+
+## Usage
+A tiny inline trend line that follows the surrounding text colour.
+
+<ComponentPreview
+  name="sparkline-basic"
+/>
+
+A basic sparkline; its stroke and fill follow `currentColor` (so it inherits the surrounding text colour), and the default box size comes from the loaded scheme — set your own size via `className` or inline `style`.
+## API Reference
+
+### Sparkline
+
+| Prop         | Type                             | Description                                                     |
+| :----------- | :------------------------------- | :-------------------------------------------------------------- |
+| `data`       | `number[]`                       | Raw values, mapped left to right                                |
+| `variant`    | `"line" \| "area" \| "bar"`      | Shape of the sparkline, defaults to `"line"`                    |
+| `smooth`     | `boolean`                        | Monotone-cubic smoothing for line and area, defaults to `false` |
+| `className`  | `string`                         | Applied to the root `svg`; use it for your own size and colour  |
+| `classNames` | `{ bar?, area?, line?: string }` | Custom classes on the bar, area and line shapes                 |
+| `...props`   | `React.ComponentProps<"svg">`    | Spread onto the root `svg` element                              |
+
+## Keyboard Interactions
+
+The skeleton handles no keys.
+
+## Data Attributes
+
+The skeleton emits no `data-*` on this component.

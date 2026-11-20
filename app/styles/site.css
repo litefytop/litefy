@@ -1,0 +1,43 @@
+/* Litefy docs site — shiki layer.
+
+   业务样式一律写在组件里的 Tailwind 工具类（间距/圆角走皮肤 @theme 阶梯，
+   断点 sm=40rem / md=48rem / lg=64rem 与皮肤一致）；这里只保留 shiki 渲染块
+   无法用单元素工具类表达的规则。 */
+
+/* Bare <code>/<pre> would otherwise fall to the browser's default monospace,
+   which on Windows is serif Courier; the site asks the loaded scheme's token. */
+code,
+pre {
+  font-family: var(--font-mono);
+}
+
+/* Code stage: a fixed 4:3 window that scrolls internally, so a whole source
+   file can never balloon the page. The surrounding box belongs to the container
+   (figure / bordered Tabs), so the embedded shiki block melts into it. */
+.code-stage {
+  aspect-ratio: 4 / 3;
+  height: auto;
+}
+
+.code-stage .shiki {
+  height: 100%;
+  padding-block: calc(var(--spacing) * 4);
+  border: 0;
+  border-radius: 0;
+}
+
+.code-stage-scroll {
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* One-line command strips (agents prompt): control-height window, and each
+   shiki line keeps clear of the copy button at the top-right corner. */
+.skill-command .shiki {
+  min-height: calc(var(--height-control) + calc(var(--spacing) * 1) * 2);
+  padding-block: calc(var(--spacing) * 3);
+}
+
+.skill-command .shiki .line {
+  padding-inline-end: calc(var(--height-control) + calc(var(--spacing) * 3));
+}

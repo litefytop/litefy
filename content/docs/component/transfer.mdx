@@ -1,0 +1,59 @@
+---
+title: Transfer
+description: A dual-panel transfer that moves items between source and target lists through checkbox selection
+---
+
+## Installation
+
+<Installation name="transfer" />
+
+## Usage
+
+Dual-panel transfer: `dataSource` holds all items, `value` holds the ones in the target panel.
+
+<ComponentPreview
+  name="transfer-basic"
+/>
+
+## API Reference
+
+### Transfer
+
+A dual-panel transfer component that manages controlled/uncontrolled value state and renders the source/target panels with move buttons.
+
+| Prop             | Type                                                                          | Description                                                                                 |
+| :--------------- | :---------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------ |
+| `dataSource`     | `TransferItemConfig[]`                                                        | All available items                                                                         |
+| `value`          | `string[]`                                                                    | Controlled value — the item values currently in the target panel                            |
+| `defaultValue`   | `string[]`                                                                    | Default target values (uncontrolled), defaults to `[]`                                      |
+| `onChange`       | `(value: string[]) => void`                                                   | Fired after items move in either direction                                                  |
+| `titles`         | `[React.ReactNode, React.ReactNode]`                                          | Titles of the source and target panels, defaults to `Source` / `Target`                     |
+| `renderItem`     | `(item: TransferItemConfig) => React.ReactNode`                               | Custom item renderer, applied to both panels                                                |
+| `moveRightLabel` | `string`                                                                      | Accessible name of the move-right button this component renders, defaults to `'Move right'` |
+| `moveLeftLabel`  | `string`                                                                      | Accessible name of the move-left button this component renders, defaults to `'Move left'`   |
+| `className`      | `string`                                                                      | Custom class names, applied to the root element                                             |
+| `classNames`     | `panel` / `header` / `count` / `body` / `empty` / `item` / `actions` / `move` | Custom class names per part                                                                 |
+
+### TransferItemConfig
+
+Data structure for the transfer's source items.
+
+| Field      | Type              | Description                                                                                          |
+| :--------- | :---------------- | :--------------------------------------------------------------------------------------------------- |
+| `label`    | `React.ReactNode` | Item display content                                                                                 |
+| `value`    | `string`          | Unique identifier value                                                                              |
+| `disabled` | `boolean`         | Disables the item — it stays in the source panel and cannot be checked or moved, defaults to `false` |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Tab` | Reaches every item's checkbox, then the two move buttons; when a side has no checked item, its button is `disabled` and leaves the tab order |
+| `Space` | Toggles the focused checkbox — native `<input type="checkbox">` behavior |
+| `Enter` | Toggles the focused checkbox — `CheckboxRoot` calls `preventDefault()` and clicks the input |
+
+Arrow keys move no items: the arrow-key walk belongs to `CheckboxGroup`, while `Transfer` renders standalone `Checkbox` items.
+
+## Data Attributes
+
+The skeleton emits no `data-*` on this component.

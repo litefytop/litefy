@@ -1,0 +1,44 @@
+---
+title: Chip Group 折叠标签组
+description: 自动折叠溢出标签的原生组件，隐藏集合通过 renderMore / onOverflowChange 传出，展示方式由业务方拼装
+---
+
+## 安装
+
+<Installation name="chip-group" />
+
+## 用法
+
+渲染标签组并折叠溢出项，隐藏集合经 `renderMore(hidden)` 自行拼装。
+
+<ComponentPreview
+  name="chip-group-basic"
+/>
+
+## API 参考
+
+### ChipGroup
+
+| 属性                  | 类型                                            | 描述                                                                                              |
+| :------------------ | :-------------------------------------------- | :---------------------------------------------------------------------------------------------- |
+| `items`             | `ChipItem[]`                                  | 全部标签项                                                                                           |
+| `onOverflowChange`  | `(hidden: ChipItem[]) => void`                | 折叠集合变化时回调，携带被隐藏的 items                                                                          |
+| `renderMore`        | `(hidden: ChipItem[]) => React.ReactNode`     | 行内渲染自定义触发器，`hidden` 为被折叠的 items                                                                 |
+| `className`         | `string`                                      | 自定义类名，应用于外层容器（在此设置 `max-width`）                                                                 |
+| `style`             | `React.CSSProperties`                         | 外层容器的内联样式                                                                                       |
+| `classNames`        | `row` / `chip` / `more` / `measure`           | 按插槽自定义类名（`row` 标签行 / `chip` 单个标签 / `more` 溢出触发器 / `measure` 隐藏测量行）；`chip` 同时落在可见那一行的标签与离屏的测量副本上 |
+
+### ChipItem
+
+| 字段      | 类型                | 描述         |
+| :------ | :---------------- | :--------- |
+| `value` | `string`          | 唯一标识       |
+| `label` | `React.ReactNode` | 标签文本       |
+
+## 键盘交互
+
+本组件不接管任何按键。每个标签都是不可聚焦的 `<span>`，因此只有 `renderMore` 传入的内容进入 Tab 序。
+
+## 数据属性
+
+骨架不在本组件上发射任何 `data-*`。离屏的测量行携带 `aria-hidden`。

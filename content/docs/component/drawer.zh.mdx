@@ -1,0 +1,111 @@
+---
+title: Drawer 抽屉
+description: 支持多种位置选项的滑入面板组件
+---
+
+## 安装
+
+<Installation name="drawer" />
+
+## 用法
+
+默认右侧滑入的抽屉；不传 `drag` 则无拖拽把手。
+
+<ComponentPreview
+  name="drawer-basic"
+/>
+
+### 可调整尺寸抽屉
+
+传入 `useDrag` 提供的拖拽手势对象后，边缘出现拖拽把手条，可拖拽调整抽屉大小。
+
+<ComponentPreview
+  name="drawer-expandable"
+/>
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Drawer
+
+带有焦点管理和键盘导航的滑入面板组件。
+
+| 属性                | 类型                                                                                             | 描述                                                                                                           |
+| ----------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `ref`             | `React.Ref<HTMLDivElement>`                                                                    | 转发到 `DrawerWrapper`（抽屉面板主体），用于拖拽调整尺寸等命令式需求                                                                   |
+| `placement`       | `'left' \| 'right' \| 'top' \| 'bottom'`                                                       | 抽屉的位置，默认 `"right"`                                                                                           |
+| `open`            | `boolean`                                                                                      | 控制抽屉打开关闭                                                                                                     |
+| `onOpenChange`    | `(open: boolean) => void`                                                                      | 抽屉状态变更回调 **必填**                                                                                              |
+| `onBackdropClick` | `(e: React.MouseEvent<HTMLDialogElement>) => void`                                             | 点击遮罩默认关闭；此回调用于附加副作用                                                                                          |
+| `size`            | `'sm' \| 'md' \| 'lg'`                                                                         | 尺寸档位，渲染为 `data-size`；实际尺寸与 min/max 钳制住在所加载方案皮肤的 `classNames.wrapper` 工具类串里，可用行内 `style` 宽高覆盖（仍被钳制），默认 `"md"` |
+| `onCancel`        | `(e: React.SyntheticEvent<HTMLDialogElement>) => void`                                         | dialog 被取消（Esc）时的额外回调；默认关闭行为始终先执行                                                                            |
+| `drag`            | `DrawerDragApi`                                                                                | 拖拽手势对象（由外部 `useDrag` 提供）；传入才渲染拖拽把手条，不传即普通抽屉                                                                  |
+| `className`       | `string`                                                                                       | 自定义类名，作用于原生 `<dialog>` 元素                                                                                    |
+| `style`           | `React.CSSProperties`                                                                          | 内联样式，作用于原生 `<dialog>` 元素                                                                                     |
+| `classNames`      | `{ wrapper?: string; drag?: string; content?: string }`                                        | 内部元素的自定义类名                                                                                                   |
+| `styles`          | `{ wrapper?: React.CSSProperties; drag?: React.CSSProperties; content?: React.CSSProperties }` | 内部元素的内联样式                                                                                                    |
+| `children`        | `React.ReactNode`                                                                              | 抽屉面板内容                                                                                                       |
+| `...props`        | `React.ComponentProps<"div">`                                                                  | 透传到 `DrawerWrapper`，支持全部 div 原生属性                                                                            |
+
+---
+
+### 可组合组件
+
+#### DrawerRoot
+
+dialog 元素，渲染为无内置样式与行为的原生 `dialog`。
+
+| Prop        | Type                             | Description                                  |
+| ----------- | -------------------------------- | -------------------------------------------- |
+| `className` | `string`                         | 自定义类名，作用于原生 dialog 元素                        |
+| `...props`  | `React.ComponentProps<"dialog">` | 支持全部 dialog 原生属性（除 `className`）              |
+
+#### DrawerWrapper
+
+滑动面板主体，携带 `data-placement` / `data-size` 状态属性；定位、尺寸档位与 min/max 钳制来自所加载方案皮肤的 `classNames.wrapper` 工具类串，滑动过渡同样由它供给。
+
+| Prop           | Type                                     | Description                             |
+| -------------- | ---------------------------------------- | --------------------------------------- |
+| `placement`    | `'left' \| 'right' \| 'top' \| 'bottom'` | 抽屉的位置，渲染为 `data-placement`              |
+| `size`         | `'sm' \| 'md' \| 'lg'`                   | 尺寸档位，渲染为 `data-size`，默认 `"md"`          |
+| `className`    | `string`                                 | 自定义类名                                   |
+| `...props`     | `React.ComponentProps<"div">`            | 支持全部 div 原生属性（除 `className`）            |
+
+#### DrawerDrag
+
+拖拽把手条（细条 + 握点指示），拖拽逻辑由外部 `useDrag` 提供；成品 Drawer 仅在传入 `drag` 手势时渲染它。
+
+| Prop           | Type                          | Description                              |
+| -------------- | ----------------------------- | ---------------------------------------- |
+| `orientation`  | `'horizontal' \| 'vertical'`  | 把手条朝向，由 `placement` 推导，默认 `"horizontal"` |
+| `className`    | `string`                      | 自定义类名                                    |
+| `...props`     | `React.ComponentProps<"div">` | 支持全部 div 原生属性（除 `className`）             |
+
+#### DrawerContent
+
+内容面板容器，纯内置滚动列（`overflow-auto`），不设内边距，间距由内容自行管理。
+
+| Prop           | Type                          | Description                             |
+| -------------- | ----------------------------- | --------------------------------------- |
+| `orientation`  | `'horizontal' \| 'vertical'`  | 内容朝向；垂直时内容居中                            |
+| `className`    | `string`                      | 自定义类名                                   |
+| `children`     | `React.ReactNode`             | 面板内容                                    |
+| `...props`     | `React.ComponentProps<"div">` | 支持全部 div 原生属性（除 `className`）            |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Tab` / `Shift + Tab` | 在抽屉内移动焦点；打开期间焦点被圈定在抽屉内部 |
+| `Escape` | 关闭抽屉 |
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-placement]` | 位于抽屉面板——取值 `"left"`、`"right"`、`"top"` 或 `"bottom"`，与 `placement` 属性一致 |
+| `[data-size]` | 位于抽屉面板——取值 `"sm"`、`"md"` 或 `"lg"`，与 `size` 属性一致 |
+| `[data-orientation]` | 位于拖拽把手条——取值 `"horizontal"` 或 `"vertical"`；仅在启用拖拽调整尺寸时存在 |

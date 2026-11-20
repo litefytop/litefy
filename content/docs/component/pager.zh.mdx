@@ -1,0 +1,44 @@
+---
+title: Pager 分页容器
+description: 受控单 DOM 分页容器，支持触摸手势拖拽翻页、循环与 View-Transition 切换动画，面向漫画阅读等分页内容场景
+---
+
+## 安装
+
+<Installation name="pager" />
+
+## 用法
+
+完全受控的翻页容器，需显式宽高；触摸拖拽默认开启。
+
+<ComponentPreview name="pager-basic" />
+
+## 机制
+
+根元素裁切、相对定位视口、绝对定位的相邻图层与滑动过渡**全部内置骨架（内联样式）**——即使方案完全没有 Pager 的 CSS，分页器功能仍成立。方案只通过 `--litefy-pager-duration` 令牌交出动效时长；单实例换档在根元素或任意祖先上写 `data-duration="sm | md | lg"`（骨架的回弹计时读的是同一枚令牌，CSS 过渡与 DOM 交换永不先后错位）。
+
+## API 参考
+
+### Pager
+
+| 属性           | 类型                              | 描述                                                |
+| :----------- | :------------------------------ | :------------------------------------------------ |
+| `index`      | `number`                        | 受控当前页索引                                           |
+| `onChange`   | `(nextIndex: number) => void`   | 手势翻页提交后触发，由父组件更新 `index`                          |
+| `children`   | `React.ReactNode[]`             | 每个子项一页；只有当前页挂载 DOM                                |
+| `loop`       | `boolean`                       | 到达边界后循环翻页，默认 `false`                              |
+| `transition` | `"none" \| "slide"`             | 程序跳转的动画策略（不影响手势拖拽），默认 `"slide"`                   |
+| `gesture`    | `boolean`                       | 是否启用触摸手势，默认 `true`                                |
+| `className`  | `string`                        | 自定义类名 —— 必须包含宽高                                   |
+| `...props`   | `React.ComponentProps<"div">`   | 原生 div 属性，透传到根容器                                  |
+
+## 键盘交互
+
+本组件不接管任何按键——没有零件挂按键处理器。当前页由 `index` 属性决定，视口上的触摸拖拽是骨架唯一会自行换算成 `onChange` 调用的输入；其余按键都归当前页里装着的内容。
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-animating]` | 位于内层轨道上——拖拽回弹或滑动过渡进行期间存在 |
+| `[data-position]` | 位于离屏图层页上——拖拽期间取值 `"prev"` 或 `"next"`，滑动过渡期间取值 `"slide"` |

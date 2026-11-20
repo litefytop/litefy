@@ -1,0 +1,262 @@
+---
+title: Installation 安装
+description: 将 Litefy 组件安装到你的 React 项目中。
+---
+
+组件采用源码分发，提供 CLI 工具和手动安装两种方式。
+
+## 前提条件
+
+Litefy 不提供完整项目脚手架，请在已有 React 项目中使用。硬性要求只有两条：
+
+- **React 19+**（依赖 React 19 新特性，低版本不兼容）
+- 已开启 **TypeScript**
+
+## 安装 CLI
+
+### init
+
+初始化项目：生成 `litefy.json` 配置文件，创建 `ui/litefy` 目录结构与聚合 barrel，并安装所需依赖。未初始化直接执行 add，会自动触发初始化流程。
+
+> ⚠️ 不要手动修改 `litefy.json` 中的路径字段。若你自行挪动这些目录，需同步更新导入路径以保持一致，CLI 不会替你改写。
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest init
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest init
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest init
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest init
+    ```
+  </Tab>
+</Tabs>
+
+**Options**
+
+- `-y, --yes`：跳过交互提示，使用全部默认配置
+
+### add
+
+批量下载组件骨架及其关联的 hooks 与 utils，自动解析每个条目的 `dependence`（构建时扫描模板的相对导入得出），安装解析出的 npm 依赖，并更新聚合导出文件。风格方案一经选定（`-s`，或此前执行过 `add style`），每次 `add` 还会整包重同步该方案的完整样式表。
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest add <components...>
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest add <components...>
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest add <components...>
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest add <components...>
+    ```
+  </Tab>
+</Tabs>
+
+**Options**
+
+- `-o, --overwrite`：强制覆盖已存在的文件
+- `-y, --yes`：跳过交互提示（自动安装 npm 依赖）
+- `-s, --style <scheme>`：选定风格方案；其完整样式表随每次 add 自动重同步
+
+### style
+
+安装（或切换）一个风格方案。`init` 只装无样式骨架——风格永远是 `add` 时的选择：`add style <方案>` 安装或切换样式表，最后安装的方案是 `styles/index.css` 唯一接线的方案。
+
+安装器把该方案的**唯一样式表**——`index.css`：令牌、`@layer base` 区块、`@theme` 映射（从常量反解出来的维度各占一个命名空间，`h-control` / `py-snug` / `duration-sm` 这些名字就由它生成；留白不带名字，写数字间距刻度）、本方案的 `@custom-variant` 档位与 `@utility` 原语——写入 styles 目录。这个文件是纯主题层，不是独立入口：把它接进你自己的 Tailwind CSS 入口，先 `@import "tailwindcss"` 再 `@import` 它（tailwind 在前，先声明级联层序）；工具类由你的入口扫描生成，不再重建任何导入清单。方案以整体为单位安装：不存在按组件拆分的样式条目，因为自洽的单位是方案。组件的外观是共用皮肤层 `app/ui/skin/*.tsx` 里的 utility 串，注册表目前还没有能安置它们的条目类型——`add style` 只交付样式表，控件上的工具类由你按该方案 `design.md` 的规定书写。
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest add style minimal
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest add style minimal
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest add style minimal
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest add style minimal
+    ```
+  </Tab>
+</Tabs>
+
+**Options**
+
+- `-o, --overwrite`：强制覆盖已存在的文件
+- `-y, --yes`：跳过交互提示
+
+### install
+
+一次性安装**全部** registry 条目——每个组件、hook 与 util——适合把整个组件库拉到本地。内部委托给 `add`，依赖解析与导出更新逻辑完全一致。
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest install
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest install
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest install
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest install
+    ```
+  </Tab>
+</Tabs>
+
+**Options**
+
+- `-o, --overwrite`：强制覆盖已存在的组件文件
+- `-y, --yes`：跳过交互提示
+
+### rm
+
+移除已安装组件：删除对应文件，并更新配置清单与聚合导出。
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest rm <names...>
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest rm <names...>
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest rm <names...>
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest rm <names...>
+    ```
+  </Tab>
+</Tabs>
+
+### repair
+
+校验本地资源完整性，在线补拉缺失的组件与 hooks，并重新生成聚合导出。
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest repair
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest repair
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest repair
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest repair
+    ```
+  </Tab>
+</Tabs>
+
+### clean
+
+离线清理：移除配置中本地已不存在的组件记录，不访问网络。
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest clean
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest clean
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest clean
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest clean
+    ```
+  </Tab>
+</Tabs>
+
+### uninstall
+
+完全卸载：删除所有 Litefy 本地文件与 `litefy.json`。业务代码中的手写导入不会自动清除，需自行清理。
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest uninstall
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest uninstall
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest uninstall
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest uninstall
+    ```
+  </Tab>
+</Tabs>
+
+## 手动安装
+
+组件库分为骨架和皮肤两种模式。手动安装时按需下载初始化资源：
+
+- **骨架**：组件源码零样式，只发结构与行为；组件初始化必须的 icon 收集在单个文件里。从[骨架](/zh/docs/headless)页打包下载 icon 收集文件，放入 `ui/litefy/components/`，再自行安装源码里 import 的依赖。
+- **皮肤**：每种风格只有一份 `index.css`（令牌、基础区块与 `@theme` 映射）。在[皮肤](/zh/docs/styles)页查看并复制，接进你的 Tailwind CSS 入口（先 `@import "tailwindcss"` 再 `@import` 它）。

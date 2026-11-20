@@ -1,0 +1,58 @@
+---
+title: Details
+description: A native details disclosure shell, with toggling and exclusivity handled by the browser
+---
+
+## Installation
+
+<Installation name="details" />
+
+## Usage
+
+A native disclosure widget; the open state lives in the browser and needs no controlling state.
+
+<ComponentPreview
+  name="details-basic"
+/>
+
+### Native Exclusive Grouping
+
+Give several Details the same `name` to form an exclusive group: opening one closes the others, handled entirely by the browser (Chrome 126+, Safari 17.2+, Firefox 130+; older browsers fall back to independent panels).
+
+<ComponentPreview
+  name="details-group"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Details
+
+A native `<details>` disclosure shell: no state, no JS behavior — keyboard and accessibility semantics come from the native element; a lightweight alternative alongside Collapse/Accordion.
+
+| Prop         | Type                                                                                        | Description                                                                       |
+| ------------ | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `label`      | `React.ReactNode`                                                                           | Content shown on the header trigger                                               |
+| `icon`       | `React.ReactNode`                                                                           | Expand/collapse icon; pass `null` to render no icon, defaults to `ChevronDown`    |
+| `name`       | `string`                                                                                    | Exclusive group name, passed through natively to the `<details>` element          |
+| `className`  | `string`                                                                                    | Custom classes, applied to the root `<details>` element                           |
+| `classNames` | `{ summary?: string; icon?: string; body?: string }`                                        | Custom classes for the three slots: trigger row, icon box, content container      |
+| `styles`     | `{ summary?: React.CSSProperties; icon?: React.CSSProperties; body?: React.CSSProperties }` | Inline styles for the same three slots                                            |
+| `children`   | `React.ReactNode`                                                                           | Panel content                                                                     |
+| `...props`   | `React.ComponentProps<"details">`                                                           | Supports all native details props (including `open` and `onToggle`)               |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Enter` / `Space` | Activates the native `<summary>`, expanding or collapsing the disclosure; the skeleton handles no keys |
+| `Tab` | Reaches the trigger row. A collapsed disclosure keeps its content mounted, so focusable elements inside remain in the tab order |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[open]` | On the root `<details>` element, present while expanded — the skin uses it to drive icon rotation and hover tinting |

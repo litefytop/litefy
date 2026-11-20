@@ -1,0 +1,54 @@
+---
+title: Thought Line 思考线
+description: AI 思考过程行——呼吸图标与实时秒表，结束后把步骤折叠成一行
+---
+
+与 [Lattice Loader](/zh/docs/component/lattice-loader) 配套——波形是等待态，本组件是思考轨迹。
+
+## 安装
+
+<Installation name="thought-line" />
+
+## 用法
+
+AI 回答的思考过程行：思考波随文案运行、秒表实时跳动，结束后波形定格成对勾、步骤收进行内。
+
+<ComponentPreview name="thought-line-basic" />
+
+## API 参考
+
+### ThoughtLine
+
+| 属性                  | 类型                                                                                                 | 描述                                                                                                |
+| :------------------ | :------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------ |
+| `working`           | `boolean`                                                                                          | 思考中或已定格；再次置 `true` 重开秒表并重新展开轨迹，默认 `true`                                                          |
+| `label`             | `string`                                                                                           | 工作文案，默认 `"Thinking…"`                                                                             |
+| `doneLabel`         | `string`                                                                                           | 完成文案；为空时有秒表补全为 `Thought for`，无秒表用 `Done thinking`，默认 `""`                                         |
+| `glyph`             | `"lattice" \| "sparkle" \| "dot" \| "none" \| ReactNode`                                           | 思考中的标记——`lattice` 以 [Lattice Loader](/zh/docs/component/lattice-loader) 波形运行并定格成对勾，默认 `"lattice"` |
+| `steps`             | `string[]`                                                                                         | 行下的步骤轨迹；末条为进行中，其余打勾                                                                               |
+| `collapsible`       | `boolean`                                                                                          | 行成为轨迹的开关，带箭头，默认 `true`                                                                            |
+| `collapseOnSettle`  | `boolean`                                                                                          | 定格时把轨迹折叠进行内，默认 `true`                                                                             |
+| `settleAfter`       | `number`                                                                                           | 到点自动定格的秒数；`0` 表示等 `working` 翻 `false`，默认 `0`                                                      |
+| `elapsed`           | `number`                                                                                           | 受控秒数，传入则内部时钟不跑                                                                                    |
+| `showTimer`         | `boolean`                                                                                          | 实时秒表，定格后冻结进句子里，默认 `true`                                                                          |
+| `renderLabel`       | `(text: string, working: boolean) => ReactNode`                                                    | 包一层文案的出口，仅行内内容                                                                                    |
+| `onSettle`          | `(seconds: number) => void`                                                                        | 每次定格回调一次，带冻结秒数                                                                                    |
+| `className`         | `string`                                                                                           | 根元素自定义类                                                                                           |
+| `classNames`        | `{ line?, glyph?, body?, label?, lattice?, timer?, chevron?, steps?, step?, stepMarker?: string }` | 各槽位自定义类（`body` 是叠放锚——工作句与完成句同格叠放交叉淡变）                                                             |
+| `latticeClassNames` | `{ lattice?, cell?, mark?, timer?: string }`                                                       | `glyph` 为默认格阵波时直通内嵌 LatticeLoader 的槽位                                                             |
+| `...props`          | `React.ComponentProps<"div">`                                                                      | 透传到根 `div`                                                                                        |
+
+## 键盘交互
+
+| 按键 | 描述 |
+| :--- | :--- |
+| `Enter` / `Space` | 切换轨迹显隐——`collapsible` 时行件是原生 `button` |
+
+## 数据属性
+
+| 属性 | 描述 |
+| :--- | :--- |
+| `[data-working]` | 位于根元素——思考中为 `"true"`，定格后为 `"false"` |
+| `[data-collapsible]` | 位于根元素——行是否为轨迹开关 |
+| `[data-open]` | 位于根元素与轨迹列表——镜像展开状态 |
+| `[data-current]` | 位于最后一条进行中的步骤行及其标记上 |

@@ -1,0 +1,60 @@
+---
+title: Button
+description: A grid-layout button with an icon cell and a status cell
+---
+
+## Installation
+
+<Installation name="button" />
+
+## Usage
+
+Configuring `status` makes the button a grid of constant width: idle padding reserves the icon's room and `active` squeezes the icon in; with `icon` given both cells are constant and swap in place.
+
+<ComponentPreview
+  name="button-status"
+/>
+
+## Variants
+
+Left to right: default (primary), outline, text, and danger.
+
+<ComponentPreview name="button-variants" />
+
+primary carries priority (submit, confirm); danger marks high-risk actions only; outline and text are for side-by-side actions of equal priority.
+
+## API Reference
+
+### Button
+
+The button renders `icon` and `children` as the two cells of a grid; while `status.active` is true the icon cell swaps to `status.icon` in place. An icon without children is the icon-only form and carries its own `aria-label`.
+
+| Prop        | Type                                          | Description                                                                                                                                                                                                                                                                                                                                               |
+| ----------- | --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `className` | `string`                                      | Custom CSS class.                                                                                                                                                                                                                                                                                                                                         |
+| `icon`      | `React.ReactNode`                             | The icon cell, rendered before `children`; icons are sized by the button (`size-5` mobile, `size-4` desktop)                                                                                                                                                                                                                                              |
+| `status`    | `{ icon: React.ReactNode; active: boolean }`  | Configuring it turns the button into a grid of constant width. Without `icon`: idle renders children centered with symmetric padding reserving the icon's room, and `active` shows `status.icon` in that room; with `icon`, both cells are constant and `status.icon` swaps in place. Display only — pass `disabled` / `aria-busy` yourself while waiting |
+| `...props`  | `React.ComponentProps<"button">`              | Supports all native button props (except `className`), such as `type`, `disabled`                                                                                                                                                                                                                                                                         |
+
+### Atom
+
+#### ButtonRoot
+
+The `<button>` itself: children carry the content; empty children emit `data-pure-icon`. It carries no styles and no layout — compose it into your own trigger with your own classes.
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Enter` / `Space` | Activates the button through the native `<button>`; the skeleton handles no keys |
+| `Tab` | Reaches the button; a `disabled` button leaves the tab order |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-variant]` | On the button — `outline` takes the outlined look, `text` the chrome-less inline look; absent means primary |
+| `[data-danger]` | On the button — for dangerous actions; switches to the danger face and the danger focus ring |
+| `[data-pure-icon]` | On the button — present when the content is icon-only; the button becomes a 44×44 box |
+| `[data-status]` | On the button — present while `status` is configured; switches the layout to grid |
+| `[data-status-reserve]` | On the button — present while `status` is configured without `icon`; symmetric padding reserves the icon's room so the width never changes |

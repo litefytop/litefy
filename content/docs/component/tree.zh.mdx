@@ -1,0 +1,91 @@
+---
+title: Tree 树形列表
+description: 数据驱动的层级折叠树，适用于文件浏览器、分类面板与侧边栏导航
+---
+
+## 安装
+
+<Installation name="tree" />
+
+## 用法
+
+`items` 驱动的树，带 `children` 为文件夹；`value` 标记当前行。
+
+<ComponentPreview
+  name="tree-basic"
+/>
+
+## API 参考
+
+### 高阶组件
+
+#### Tree
+
+| 属性                | 类型                                                                                                                                                      | 描述                                                                   |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `items`           | `TreeNodeConfig[]`                                                                                                                                      | 树节点数组（文件夹、叶子、分隔标签）。**必填**                                            |
+| `value`           | `string \| null`                                                                                                                                        | 命中的叶子标记为当前项（`aria-current="page"` + 方案选中观感）                          |
+| `onValueChange`   | `(value: string) => void`                                                                                                                               | 无 `href` 的叶子被选中时回调                                                   |
+| `navigate`        | `(href: string, event: React.MouseEvent) => void`                                                                                                       | SPA 接入点：`href` 行的普通点击不再走浏览器跳转，改为调用此回调                                |
+| `openKeys`        | `string[]`                                                                                                                                              | 展开的文件夹 key（受控）                                                       |
+| `defaultOpenKeys` | `string[]`                                                                                                                                              | 初始展开的文件夹 key（非受控）                                                    |
+| `onOpenChange`    | `(keys: string[]) => void`                                                                                                                              | 展开集合变化回调                                                             |
+| `className`       | `string`                                                                                                                                                | 自定义类名，作用于根容器                                                         |
+| `classNames`      | `{ trigger?: string; item?: string; label?: string; group?: string; node?: string; labelText?: string; icon?: string; branch?: string; clip?: string }` | 按部件覆盖：行、嵌套组、文件夹 `<li>`、文字段、两处图标、展开分支与其裁剪层                            |
+| `styles`          | `{ trigger?: React.CSSProperties; item?: React.CSSProperties; label?: React.CSSProperties }`                                                            | 行的内联样式                                                               |
+| `...props`        | `React.ComponentProps<"ul">`                                                                                                                            | 支持全部 ul 原生属性                                                         |
+
+键盘：`↑` `↓` 在可见行间移动，`Home` `End` 跳到首/末行，`→` 展开（或进入）文件夹，`←` 折叠或跳到父级。
+
+#### TreeNodeConfig
+
+| 字段            | 类型                                                          | 描述                                                       |
+| ------------- | ----------------------------------------------------------- | -------------------------------------------------------- |
+| `label`       | `React.ReactNode`                                           | 行内容。**必填**                                               |
+| `value`       | `string`                                                    | 稳定标识，用于 `value` 匹配、选中与展开 key，默认 索引路径                     |
+| `href`        | `string`                                                    | 配置后行渲染为链接                                                |
+| `icon`        | `React.ReactNode \| ((open: boolean) => React.ReactNode)`   | 行首图标；文件夹支持函数形式，接收展开状态                                    |
+| `disabled`    | `boolean`                                                   | 禁用该行，默认 `false`                                          |
+| `defaultOpen` | `boolean`                                                   | 文件夹的初始展开状态（非受控），默认 `false`                               |
+| `children`    | `TreeItemConfig[]`                                          | 配置后该节点成为文件夹                                              |
+| `type`        | `"separator"`                                               | 分隔节点渲染为非交互的分组标签（只读取 `label`）                             |
+
+---
+
+### 可组合组件
+
+#### TreeRoot
+
+外层 `<ul>`，带 `role="tree"`。
+
+#### TreeTrigger
+
+文件夹行 `<button>`，带 `role="treeitem"`；传入 `open` 驱动 `aria-expanded` 与 `data-open`。
+
+#### TreeItem
+
+叶子行 `<a>`，带 `role="treeitem"`；节点未配置 `href` 时 `Tree` 改为渲染普通 `<button>`。
+
+#### TreeLabel
+
+分组标签行——`<div>`，不带 ARIA 角色。
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `ArrowDown` | 聚焦下一个可见行 |
+| `ArrowUp` | 聚焦上一个可见行 |
+| `Home` | 聚焦第一个可见行 |
+| `End` | 聚焦最后一个可见行 |
+| `ArrowRight` | 在关闭的文件夹上展开它；在展开的文件夹上移动到它的第一个子行 |
+| `ArrowLeft` | 在展开的文件夹上折叠它；否则移动到父级行 |
+| `Enter` / `Space` | 按原生方式激活聚焦的叶子按钮或链接 |
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-open]` | 位于文件夹触发器、其折叠图标与分支容器上——取值 `"true"` 或 `"false"` |
+| `[data-active]` | 位于叶子行上——被选中的行取值 `"true"`，其余为 `"false"` |
+| `[data-value]` | 位于触发器与叶子行上——节点的 `value`，缺省时生成 `${parent}#${index}` |

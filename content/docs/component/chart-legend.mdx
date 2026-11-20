@@ -1,0 +1,45 @@
+---
+title: Chart Legend
+description: A clickable legend shared by Chart, Donut and Radar — clicking an entry hides or restores the series, with line and square swatches
+---
+
+ChartLegend is the legend shared by [Chart](/en/docs/component/chart), [Donut](/en/docs/component/donut) and [Radar](/en/docs/component/radar), shipped as a standalone component so custom charts can reuse it directly. Each entry is a button: clicking hides or restores the series at that index; pointer enter/leave fires `onHover`. Entries hit by `hidden` emit `data-hidden`.
+
+Swatches come in two shapes — `"line"` for series-style charts (line segments) and `"square"` for categorical charts (pie/donut sectors).
+
+## Installation
+
+<Installation name="chart-legend" />
+
+## Usage
+
+A clickable legend: each entry is a button that hides or restores the series at that index.
+
+<ComponentPreview name="chart-legend-basic" />
+
+## API Reference
+
+### ChartLegend
+
+| Prop        | Type                                        | Description                                                                                              |
+| :---------- | :------------------------------------------ | :------------------------------------------------------------------------------------------------------- |
+| `items`     | `{ label: string; color: string }[]`        | One entry per series, in the same order as the chart's series                                            |
+| `hidden`    | `ReadonlySet<number>`                       | The set of currently hidden indices; matching entries emit `data-hidden`                                 |
+| `swatch`    | `"line" \| "square"`                        | Swatch shape — line segments for series-style charts, squares for categorical data, defaults to `"line"` |
+| `onToggle`  | `(index: number) => void`                   | Called when an entry is clicked                                                                          |
+| `onHover`   | `(index: number \| null) => void`           | Called with the index on entry mouse enter, and with `null` on mouse leave                               |
+| `className` | `string`                                    | Merged onto the container                                                                                |
+| `style`     | `React.CSSProperties`                       | Inline style on the container                                                                            |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Enter` / `Space` | Toggles the visibility of that series |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-hidden]` | On a legend item — present while its series is hidden |
+| `[data-shape]` | On the swatch — `"line"` or `"square"` |

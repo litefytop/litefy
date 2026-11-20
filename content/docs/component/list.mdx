@@ -1,0 +1,79 @@
+---
+title: List
+description: A scrollable list container with keyboard navigation, highlight, selection and a scroll-to-bottom callback
+---
+
+## Installation
+
+<Installation name="list" />
+
+## Usage
+
+A scroll container driven by `items`, with row content rendered through `renderItem` and keyboard navigation built in.
+
+<ComponentPreview name="list-basic" />
+
+## API Reference
+
+### High-level Components
+
+#### List
+
+A list with scrolling and keyboard navigation; the container's size is supplied by the consumer.
+
+| Prop                | Type                                                                | Description                                                                                                          |
+| ------------------- | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `items`             | `T[]`                                                               | Data array to render                                                                                                 |
+| `renderItem`        | `(item: T, index: number) => ReactNode`                             | Row content renderer                                                                                                 |
+| `getKey`            | `(item: T, index: number) => Key`                                   | Row key extractor; defaults to the index                                                                             |
+| `empty`             | `React.ReactNode`                                                   | Rendered when `items` is empty                                                                                       |
+| `highlightIndex`    | `number \| null`                                                    | Controlled highlight index; omit it to use internal keyboard navigation                                              |
+| `onHighlightChange` | `(index: number \| null) => void`                                   | Fired when the highlight changes                                                                                     |
+| `getGroup`          | `(item: T, index: number) => string`                                | Group label extractor; grouping is enabled only when both `getGroup` and `renderGroupHeader` are provided            |
+| `renderGroupHeader` | `(groupName: string) => ReactNode`                                  | Group header renderer; grouping is enabled only when both `getGroup` and `renderGroupHeader` are provided            |
+| `onSelect`          | `(item: T, index: number) => void`                                  | Fired when a row is clicked or confirmed with `Enter` during keyboard navigation                                     |
+| `onScrollBottom`    | `() => void`                                                        | Fired when the list scrolls to within 16px of the bottom, for load-more scenarios                                    |
+| `onItemMouseMove`   | `(item: T, index: number) => void`                                  | Fired as the pointer moves over a row — wire it to `setHighlightIndex` to let hover and keyboard share one highlight |
+| `ref`               | `React.Ref<HTMLUListElement \| HTMLDivElement>`                     | Ref to the root element — a `ul` in flat mode, a `div` in grouped mode, e.g. to move focus into the list             |
+| `className`         | `string`                                                            | Custom class for the root                                                                                            |
+| `style`             | `React.CSSProperties`                                               | Custom inline style for the root                                                                                     |
+| `classNames`        | `{ item?: string; groupHeader?: string }`                           | Custom classes for rows and group headers                                                                            |
+| `styles`            | `{ item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | Inline styles for rows and group headers                                                                             |
+
+Row separation is decided by the scheme (the component never forces it); pair it with [ScrollShadow](/en/docs/component/scroll-shadow) yourself when you want scroll-edge shadows.
+
+#### Order
+
+The ordered-list variant: the list element renders as an `<ol>` and emits `data-ordered`, with decimal numbering supplied by the loaded scheme. It accepts every `List` prop except the grouping API (`getGroup` / `renderGroupHeader`), and its `ref` is `React.Ref<HTMLOListElement>`. Numbers render through `::marker`, which requires rows to keep `display: list-item` — changing a row's display (to flex, for example) makes the numbers disappear, so lay out row content inside `renderItem`.
+
+| Prop                | Type                                                                | Description                                                                       |
+| ------------------- | ------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `items`             | `T[]`                                                               | Data array to render                                                              |
+| `renderItem`        | `(item: T, index: number) => ReactNode`                             | Row content renderer                                                              |
+| `getKey`            | `(item: T, index: number) => Key`                                   | Row key extractor; defaults to the index                                          |
+| `empty`             | `React.ReactNode`                                                   | Rendered when `items` is empty                                                    |
+| `highlightIndex`    | `number \| null`                                                    | Controlled highlight index; omit it to use internal keyboard navigation           |
+| `onHighlightChange` | `(index: number \| null) => void`                                   | Fired when the highlight changes                                                  |
+| `onSelect`          | `(item: T, index: number) => void`                                  | Fired when a row is clicked or confirmed with `Enter` during keyboard navigation  |
+| `onScrollBottom`    | `() => void`                                                        | Fired when the list scrolls to within 16px of the bottom, for load-more scenarios |
+| `onItemMouseMove`   | `(item: T, index: number) => void`                                  | Fired as the pointer moves over a row                                             |
+| `ref`               | `React.Ref<HTMLOListElement>`                                       | Ref to the root `<ol>` element                                                    |
+| `className`         | `string`                                                            | Custom class for the root                                                         |
+| `style`             | `React.CSSProperties`                                               | Custom inline style for the root                                                  |
+| `classNames`        | `{ item?: string; groupHeader?: string }`                           | Custom classes for each part (`groupHeader` is unused in `Order`)                 |
+| `styles`            | `{ item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | Custom inline styles for each part (`groupHeader` is unused in `Order`)           |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `ArrowDown` | Moves the highlight to the next item — from no highlight to the first; the highlighted item scrolls into view |
+| `ArrowUp` | Moves the highlight to the previous item — from no highlight to the last; the highlighted item scrolls into view |
+| `Enter` / `Space` | Selects the currently highlighted item |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-highlighted]` | On each item — present while the keyboard highlight rests on it |
+| `[data-ordered]` | On the root element — present when the list is ordered |

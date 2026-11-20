@@ -1,0 +1,83 @@
+---
+title: Watermark
+description: A canvas-based watermark component that tiles text over content, with a composable two-part API
+---
+
+## Installation
+
+<Installation name="watermark" />
+
+## Usage
+
+Wrap any content with `Watermark`; the tiled text watermark is drawn over it.
+
+<ComponentPreview 
+  name="watermark-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Watermark
+
+The composite watermark: a root container (styled through `classNames.root`), a tiled canvas overlay and your content.
+
+| Prop         | Type                                                       | Description                                                                     |
+| :----------- | :--------------------------------------------------------- | :------------------------------------------------------------------------------ |
+| `text`       | `string`                                                   | Watermark text content                                                          |
+| `fontSize`   | `number`                                                   | Watermark text font size (px), defaults to `16`                                 |
+| `color`      | `WatermarkColor`                                           | Watermark text color, defaults to `"surface-fg"`                                |
+| `fontFamily` | `string`                                                   | Watermark text font family, defaults to `"sans-serif"`                          |
+| `rotate`     | `number`                                                   | Rotation angle (degrees), defaults to `-30`                                     |
+| `gap`        | `number`                                                   | Minimum spacing (px) between adjacent watermark tiles, defaults to `100`        |
+| `padding`    | `number`                                                   | Extra padding (px) around each watermark tile, defaults to `20`                 |
+| `opacity`    | `number`                                                   | Watermark opacity (0–1), defaults to `0.3`                                      |
+| `children`   | `React.ReactNode`                                          | The content covered by the watermark                                            |
+| `className`  | `string`                                                   | Custom class name, applied to the root                                          |
+| `style`      | `React.CSSProperties`                                      | Inline style, applied to the root                                               |
+| `classNames` | `{ canvas?: string }`                                      | Custom class name for the canvas                                                |
+| `styles`     | `{ canvas?: React.CSSProperties }`                         | Inline styles for the canvas                                                    |
+| `...props`   | `React.ComponentProps<"div">`                              | Supports all native div props (except `className`, `style`), passed to the root |
+
+`WatermarkColor` accepts the semantic tokens `"surface" \| "surface-fg" \| "primary" \| "primary-fg" \| "secondary" \| "secondary-foreground" \| "accent"` or any custom CSS color string.
+
+---
+
+### Composable Components
+
+#### WatermarkRoot
+
+The watermark container; it provides the positioning context the canvas needs to fill.
+
+| Prop        | Type                          | Description                      |
+| :---------- | :---------------------------- | :------------------------------- |
+| `className` | `string`                      | Custom CSS class                 |
+| `...props`  | `React.ComponentProps<"div">` | Supports all native div props    |
+
+#### WatermarkCanvas
+
+The `canvas` that draws the tiled watermark text; its parent should be a positioned element, such as `WatermarkRoot`.
+
+| Prop         | Type                                             | Description                                                                                                                             |
+| :----------- | :----------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| `text`       | `string`                                         | Watermark text content                                                                                                                  |
+| `fontSize`   | `number`                                         | Watermark text font size (px), defaults to `16`                                                                                         |
+| `color`      | `WatermarkColor`                                 | Watermark text color, defaults to `"surface-fg"`                                                                                        |
+| `fontFamily` | `string`                                         | Watermark text font family, defaults to `"sans-serif"`                                                                                  |
+| `rotate`     | `number`                                         | Rotation angle (degrees), defaults to `-30`                                                                                             |
+| `gap`        | `number`                                         | Minimum spacing (px) between adjacent watermark tiles, defaults to `100`                                                                |
+| `padding`    | `number`                                         | Extra padding (px) around each watermark tile, defaults to `20`                                                                         |
+| `opacity`    | `number`                                         | Watermark opacity (0–1), defaults to `0.3`                                                                                              |
+| `className`  | `string`                                         | Custom CSS class; the canvas is built in to fill its parent, let pointer input through, stay unselectable and resize with the container |
+| `...props`   | `React.ComponentProps<"canvas">`                 | Supports all native canvas props (except `className`, `ref`)                                                                            |
+
+## Keyboard Interactions
+
+This component takes over no keys. The canvas is not focusable and carries `pointer-events: none`, receiving neither keyboard nor pointer input; every key belongs to the content under the watermark.
+
+## Data Attributes
+
+The skeleton emits no `data-*` on this component.

@@ -1,0 +1,79 @@
+---
+title: Form
+description: A complete form component composed of fields, submission, validation, and imperative ref control
+---
+
+## Installation
+
+<Installation name="form" />
+
+## Usage
+
+Compose a form from `Form` + `FormSubmit`; field controls plug in directly with `name` / `label` / `validate`, and validation gates the submit in one place.
+
+<ComponentPreview
+  name="form-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use finished components.
+
+#### Form
+
+The root form component built on top of the native `<form>` element.
+
+| Prop        | Type                                       | Description                                                                                                                                                                                              |
+| ----------- | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `onSubmit`  | `(values: FormValues) => Promise<boolean>` | Async submit handler. Receives the preprocessed values, multi-value fields as arrays. Return `true` for success and to trigger `autoReset`; returning `false` or throwing keeps the current input values |
+| `autoReset` | `boolean`                                  | Resets the form automatically when `onSubmit` resolves to `true`, defaults to `true`                                                                                                                     |
+| `onReset`   | `() => void`                               | Fired when the form resets — including the `autoReset` after a successful submit and a reset via `ref.reset()`                                                                                           |
+| `ref`       | `React.Ref<FormRef>`                       | Imperative handle exposing `setValues`, `reset`, `submit`                                                                                                                                                |
+| `children`  | `React.ReactNode`                          | Form content, typically field controls with `name` and `FormSubmit`                                                                                                                                      |
+| `...props`  | `React.ComponentProps<"form">`             | Supports all native form props (except `action`, `onSubmit`, `ref`), spread onto the underlying form element                                                                                             |
+
+#### FormRef
+
+The imperative handle obtained through the `ref` prop, where `FormValue = string | number | string[] | number[] | null`.
+
+| Method      | Type                                          | Description                                                                                                                                     |
+| ----------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `setValues` | `(values: Record<string, FormValue>) => void` | Updates one or more fields and notifies each modified control the way React listens — text fields and selects dispatch `input` + `change`, checkboxes/radios dispatch a single `click` — so the consumer's `onChange` and field validation both see the new value. Disabled controls and unchanged fields are left alone |
+| `reset`     | `() => void`                                  | Resets the form and clears all registered inputs                                                                                                  |
+| `submit`    | `() => void`                                  | Triggers a programmatic form submission                                                                                                           |
+
+---
+
+### Composable Components
+
+#### FormSubmit
+
+A submit button that automatically reflects the form's submit state. It is disabled while the form is submitting and can render a custom loading icon.
+
+| Prop          | Type              | Description                                                                      |
+| ------------- | ----------------- | -------------------------------------------------------------------------------- |
+| `loadingIcon` | `React.ReactNode` | Custom icon shown while the form is submitting; defaults to a spinning `Loader2` |
+| `className`   | `string`          | Custom CSS class, applied to the submit button                                   |
+| `children`    | `React.ReactNode` | Button label                                                                     |
+
+All other native `<button>` props are supported; `type` is forced to `submit`. Internally it renders a [Button](/en/docs/component/button) — when consumed from a scheme package, that scheme's skin composes its button look on top via `className` (the headless version emits no styling hooks).
+
+## Keyboard Interactions
+
+The skeleton attaches no key handlers in `Form` or `FormSubmit` — the behaviors below come with the native `<form>` and `<button>` elements.
+
+| Key | Description |
+| --- | --- |
+| `Enter` | Implicit submission of the native `<form>`; it goes through the same `onSubmit` as a submit click |
+| `Enter` / `Space` | Native activation of the focused button, `FormSubmit` included |
+| Other keys | Belong to the focused control — see that control's docs |
+
+## Data Attributes
+
+The `<form>` element itself carries no `data-*`.
+
+| Attribute | Description |
+| --- | --- |
+| `[data-pure-icon]` | On `FormSubmit` — present when its children are a single icon with no text (from [Button](/en/docs/component/button)) |

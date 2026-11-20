@@ -1,0 +1,59 @@
+---
+title: MultiSelect 多选
+description: Popover + listbox 组成的多选控件——分组候选、勾选标记、面板不关连续勾选。
+---
+
+## 安装
+
+<Installation name="multi-select" />
+
+## 用法
+
+Popover + listbox 多选控件，选项由 `options` 驱动，支持分组。
+
+<ComponentPreview name="multi-select-basic" />
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### MultiSelect
+
+| Prop           | Type                                           | Description                                  |
+| -------------- | ---------------------------------------------- | -------------------------------------------- |
+| `options`      | `MultiSelectOption[]` **必填**                   | 候选项：标签、值、分组与禁用                               |
+| `value`        | `string[]`                                     | 受控选中值                                        |
+| `defaultValue` | `string[]`                                     | 默认选中值（非受控），默认 `[]`                           |
+| `onChange`     | `(values: string[]) => void`                   | 每次切换后的全量选中值                                  |
+| `trigger`      | `React.ReactNode`                              | 自定义触发内容，缺省为占位文本钮                             |
+| `placeholder`  | `string`                                       | 占位文本，同时作面板的 `aria-label`，默认 `Select options` |
+| `disabled`     | `boolean`                                      | 禁用触发钮，默认 `false`                             |
+| `className`    | `string`                                       | 触发钮自定义类名                                     |
+| `classNames`   | `{ content?; list?; group?; option?; check? }` | 面板、列表、分组头、选项与勾选图标的自定义类名                      |
+| `...props`     | `React.ComponentProps<"button">`               | 支持触发钮原生属性（不含 `children` 等）                   |
+
+### MultiSelectOption
+
+| 属性 | 类型 | 描述 |
+| ---- | ---- | ---- |
+| `label` | `string` | 选项标签 |
+| `value` | `string` | 选项值 |
+| `group` | `string` | 分组名——提供后渲染分组头并缩进该组选项 |
+| `disabled` | `boolean` | 禁用该选项 |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `↑` / `↓` | 在候选间移动高亮（环绕） |
+| `Enter` / `Space` | 切换高亮项的选中态（面板保持打开） |
+| `Escape` | 关闭面板并把焦点归还触发钮 |
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-selected]` | 位于选项上——该候选已选中 |
+| `[data-highlighted]` | 位于选项上——键盘高亮所在项 |

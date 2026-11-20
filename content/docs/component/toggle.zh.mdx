@@ -1,0 +1,67 @@
+---
+title: Toggle 切换按钮
+description: 支持受控、非受控以及分组多选模式的切换按钮组件
+---
+
+## 安装
+
+<Installation name="toggle" />
+
+## 用法
+
+切换按钮，支持受控 / 非受控；`ToggleGroup` 渲染分组。
+
+<ComponentPreview
+  name="toggle-basic"
+/>
+
+## API 参考
+
+### Toggle
+
+| 属性                | 类型                               | 描述                                                                                  |
+| ----------------- | -------------------------------- | ----------------------------------------------------------------------------------- |
+| `children`        | `React.ReactNode`                | 切换按钮的内容                                                                             |
+| `checked`         | `boolean`                        | 受控的选中状态                                                                             |
+| `defaultChecked`  | `boolean`                        | 非受控模式下的默认选中状态，默认 `false`                                                            |
+| `onCheckedChange` | `(checked: boolean) => void`     | 选中状态变化时触发的回调函数                                                                      |
+| `value`           | `string`                         | 转发给原生 button 的 value；在 `ToggleGroup` 中用于标识每个选项                                      |
+| `disabled`        | `boolean`                        | 禁用切换按钮，默认 `false`                                                                   |
+| `className`       | `string`                         | 自定义类名                                                                               |
+| `...props`        | `React.ComponentProps<"button">` | 支持所有原生 button 属性（除 `type`、`className`、`aria-checked` 外），如 `name`、`form`、`autofocus` |
+
+禁用状态下点击切换按钮不会有任何效果。自定义的 `onClick` 会在内部切换逻辑之前执行；在其中调用 `e.preventDefault()` 可以阻止选中状态变化。
+
+### ToggleGroup
+
+| 属性               | 类型                           | 描述                                         |
+| ---------------- | ---------------------------- | ------------------------------------------ |
+| `options`        | `ToggleOptionConfig[]`       | 选项数据数组                                     |
+| `value`          | `string[]`                   | 受控的选中值                                     |
+| `defaultValue`   | `string[]`                   | 非受控模式下的默认选中值，默认 `[]`                       |
+| `onChange`       | `(values: string[]) => void` | 选中值变化时触发的回调函数                              |
+| `disabled`       | `boolean`                    | 禁用所有选项，默认 `false`                          |
+| `className`      | `string`                     | 自定义类名，应用于容器                                |
+| `itemClassName`  | `string`                     | 自定义类名，应用于每个切换按钮                            |
+
+### ToggleOptionConfig
+
+| 字段          | 类型                | 描述                                          |
+| ----------- | ----------------- | ------------------------------------------- |
+| `label`     | `React.ReactNode` | 选项内容，可携图标片段                                 |
+| `value`     | `string`          | 唯一标识值                                       |
+| `disabled`  | `boolean`         | 禁用该选项，默认 `false`                            |
+| `className` | `string`          | 自定义类名，优先级高于 `itemClassName`                 |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Enter` / `Space` | 激活这个 `<button type="button">`；真正翻转状态的是浏览器自身的点击——骨架不绑定任何按键 |
+| `Tab` | 每个可用开关各自是一个进入 Tab 序的按钮；`disabled` 的开关不进入 |
+
+`ToggleGroup` 只渲染普通按钮，不提供按钮之间的方向键导航。
+
+## 数据属性
+
+骨架不在本组件上发射任何 `data-*`。按下状态由按钮上的 `aria-pressed` 承载。

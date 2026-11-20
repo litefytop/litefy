@@ -1,0 +1,44 @@
+---
+title: Pager
+description: A controlled single-DOM pager with touch gesture dragging, loop and View-Transition page switching, built for manga-style readers and paged content
+---
+
+## Installation
+
+<Installation name="pager" />
+
+## Usage
+A fully controlled single-DOM pager: `index` / `onChange`, one child per page.
+
+<ComponentPreview name="pager-basic" />
+
+Fully controlled `index` / `onChange`; the root needs explicit width and height — it never adapts to content. Touch-drag paging is on by default (`gesture`); the demo runs with `loop`, so drag and the buttons wrap around at both boundaries.
+## Mechanics
+
+The root's clipping, the relatively positioned viewport, the absolutely positioned neighbour layers and the slide transition are **inline styles in the skeleton** — a scheme that ships no Pager CSS still gets a working pager. The only thing the loaded scheme supplies is the motion number, through its `--litefy-pager-duration` token; one instance switches tier with `data-duration="sm | md | lg"` on the root or any ancestor (the skeleton reads that same token for its settle timer, so the CSS transition and the DOM swap never disagree).
+
+## API Reference
+
+### Pager
+
+| Prop         | Type                            | Description                                                                                     |
+| :----------- | :------------------------------ | :---------------------------------------------------------------------------------------------- |
+| `index`      | `number`                        | Controlled current page index                                                                   |
+| `onChange`   | `(nextIndex: number) => void`   | Fired after a gesture commit; the parent updates `index`                                        |
+| `children`   | `React.ReactNode[]`             | One child per page; only the active page is mounted                                             |
+| `loop`       | `boolean`                       | Wrap around at both boundaries, defaults to `false`                                             |
+| `transition` | `"none" \| "slide"`             | Animation strategy for programmatic jumps (gesture drags are unaffected), defaults to `"slide"` |
+| `gesture`    | `boolean`                       | Enable touch drag paging, defaults to `true`                                                    |
+| `className`  | `string`                        | Custom class names — must include the width and height                                          |
+| `...props`   | `React.ComponentProps<"div">`   | Native div props, spread on the root container                                                  |
+
+## Keyboard Interactions
+
+The skeleton handles no keys. No part attaches a key handler. The shown page comes from the `index` prop, and a touch drag on the viewport is the only input the skeleton itself turns into an `onChange` call; every other key belongs to the content of the current page.
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-animating]` | On the inner track — present while a drag settle or slide transition runs |
+| `[data-position]` | On the offscreen layer pages — `"prev"` or `"next"` during a drag, `"slide"` during a slide transition |

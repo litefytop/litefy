@@ -1,0 +1,49 @@
+---
+title: Radar 雷达图
+description: 零依赖 SVG 雷达图，同心网格与类目轴，图例可点击切换
+---
+
+属于图表家族，与 [Chart](/zh/docs/component/chart)、[Donut](/zh/docs/component/donut)、[Sparkline](/zh/docs/component/sparkline) 同层 —— 需要坐标轴或悬浮提示时选 Chart。
+
+## 安装
+
+<Installation name="radar" />
+
+## 用法
+
+多系列雷达图，图例可点击切换。
+
+<ComponentPreview
+  name="radar-basic"
+/>
+
+## API 参考
+
+### Radar
+
+| 属性           | 类型                | 说明                                                            |
+| :----------- | :---------------- | :------------------------------------------------------------ |
+| `axes`       | `string[]`        | 类目标签，每轴一条                                                     |
+| `series`     | `RadarSeries[]`   | 系列：`{ label, values, color? }`，`values` 与 `axes` 对齐           |
+| `max`        | `number`          | 数值刻度上限，超出部分被钳制，默认 可见值最大者                                      |
+| `levels`     | `number`          | 同心网格环数量，默认 `4`                                                |
+| `showLegend` | `boolean`         | 是否在图上方渲染可点击图例，默认 `true`                                       |
+| `className`  | `string`          | 追加到根元素的类名                                                     |
+| `classNames` | `RadarClassNames` | 槽位覆盖：`root` / `svg` / `grid` / `label` / `polygon` / `legend` |
+| `styles`     | `RadarStyles`     | 与 `classNames` 槽位对应的内联样式                                      |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Enter` / `Space` | 图例项上按下——切换该系列的可见性 |
+
+多边形高亮仅跟随指针悬停——没有键盘等价操作。
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-hovered]` | 位于系列多边形上——该系列被悬停时存在 |
+| `[data-dimmed]` | 位于系列多边形上——悬停在其他系列时存在 |
+| `[data-outer]` | 位于最外层网格环上 |

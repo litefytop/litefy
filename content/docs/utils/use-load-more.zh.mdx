@@ -1,0 +1,60 @@
+---
+title: use-load-more 滚动加载
+description: 本地数据的滚动分页 hook —— 哨兵接近视口时自动增长可见切片
+---
+
+## 安装
+
+<Installation name="use-load-more" />
+
+## 用法
+
+本地数据分页 hook：哨兵进入视口即自动加载下一页。
+
+```tsx
+import { useLoadMore } from "@/ui";
+
+function PhotoFeed({ photos }: { photos: Photo[] }) {
+  const { visibleCount, hasMore, loadMore, sentinelRef } = useLoadMore({
+    total: photos.length,
+    pageSize: 12,
+  });
+  const visible = photos.slice(0, visibleCount);
+
+  return (
+    <>
+      {visible.map((photo) => (
+        <PhotoCard key={photo.id} photo={photo} />
+      ))}
+      {hasMore ? (
+        <div ref={sentinelRef} aria-hidden style={{ height: "1px" }} />
+      ) : (
+        <p>已加载全部 {photos.length} 条</p>
+      )}
+    </>
+  );
+}
+```
+
+## API 参考
+
+### 选项（`UseLoadMoreOptions`）
+
+| Option         | Type                                        | Description                                       |
+| :------------- | :------------------------------------------ | :------------------------------------------------ |
+| `total`        | `number`                                    | 本地数据总量                                            |
+| `pageSize`     | `number`                                    | 每次展示的条数，默认 `12`                                   |
+| `initialCount` | `number`                                    | 初始可见条数，默认 `pageSize`                              |
+| `onLoadMore`   | `(visibleCount: number) => void`            | 可见条数增长后调用                                         |
+| `rootMargin`   | `string`                                    | 哨兵距根元素多远时触发，默认 `"400px"`                          |
+| `enabled`      | `boolean`                                   | 设为 `false` 暂停自动加载（改为手动调用 `loadMore`），默认 `true`    |
+| `root`         | `React.RefObject<HTMLElement \| null>`      | 观察根元素；传入可滚动元素可将加载限定在内部容器内，默认 viewport             |
+
+### 返回值（`UseLoadMoreReturn`）
+
+| Member         | Type                                     | Description                                       |
+| :------------- | :--------------------------------------- | :------------------------------------------------ |
+| `visibleCount` | `number`                                 | 当前可见条数 —— 用 `items.slice(0, visibleCount)` 切片 |
+| `hasMore`      | `boolean`                                | 是否还有未展示的数据                                 |
+| `loadMore`     | `() => void`                             | 手动展示下一页                                       |
+| `sentinelRef`  | `React.RefCallback<HTMLElement>`         | 挂到列表后方哨兵元素上                                |

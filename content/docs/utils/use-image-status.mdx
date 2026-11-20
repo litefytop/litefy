@@ -1,0 +1,42 @@
+---
+title: use-image-status
+description: Image loading state machine shared by Avatar and Image — preloads via `new Image()`, resolves to loading, success or failure, with safe cleanup
+---
+
+## Installation
+
+<Installation name="use-image-status" />
+
+## Usage
+
+A three-state hook (loading / success / failure) for preloading images.
+
+```tsx
+import { useImageStatus } from "@/ui";
+
+function Thumbnail({ src }: { src?: string }) {
+  const status = useImageStatus(src);
+
+  return (
+    <div className="relative overflow-hidden rounded-md" style={{ width: "3rem", height: "3rem" }}>
+      {status === "loading" && <div className="h-full w-full rounded-md bg-accent motion-safe:animate-pulse" />}
+      {status === "failure" && <span className="text-xs text-surface-fg">Failed</span>}
+      {status === "success" && <img src={src} alt="" className="w-full h-full" style={{ objectFit: "cover" }} />}
+    </div>
+  );
+}
+```
+
+## API Reference
+
+### Parameters
+
+| Parameter | Type     | Description                                                        |
+| :-------- | :------- | :----------------------------------------------------------------- |
+| `src`     | `string` | Image URL to preload; an empty value or `undefined` → `failure`    |
+
+### Returns
+
+| Member   | Type                                  | Description                                                 |
+| :------- | :------------------------------------ | :---------------------------------------------------------- |
+| `status` | `"loading" \| "success" \| "failure"` | Current loading state; resets to `loading` when `src` changes |

@@ -1,0 +1,125 @@
+---
+title: Checkbox
+description: A checkbox component with controlled, uncontrolled, group and custom indicator support.
+---
+
+## Installation
+
+<Installation name="checkbox" />
+
+## Usage
+
+A basic checkbox with controlled / uncontrolled and indeterminate support; use `CheckboxGroup` for groups.
+
+<ComponentPreview
+  name="checkbox-basic"
+/>
+
+### Line-through label
+
+With `lineThrough` on, checking an item draws a line through its label text — a natural fit for check-off-to-complete lists.
+
+<ComponentPreview name="checkbox-line-through" />
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use finished components.
+
+#### Checkbox
+
+| Prop              | Type                                                                                   | Description                                                                                                                                               |
+| :---------------- | :------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `children`        | `React.ReactNode`                                                                      | The checkbox's label text                                                                                                                                 |
+| `checked`         | `boolean`                                                                              | Controlled checked state                                                                                                                                  |
+| `defaultChecked`  | `boolean`                                                                              | Default checked state (uncontrolled)                                                                                                                      |
+| `onChange`        | `(e: React.ChangeEvent<HTMLInputElement>) => void`                                     | Native change callback                                                                                                                                    |
+| `onCheckedChange` | `(checked: boolean) => void`                                                           | Called when the checked state changes                                                                                                                     |
+| `lineThrough`     | `boolean`                                                                              | Draws a line through the label text when checked and not indeterminate; when off the DOM is identical to not having the prop, defaults to `false`         |
+| `indeterminate`   | `boolean`                                                                              | Indeterminate state: written to the native `indeterminate` and expressed by the scheme as a minus icon; independent of `checked`, defaults to `false`     |
+| `indicator`       | `React.ReactNode`                                                                      | Custom indicator content, appended inside the box                                                                                                         |
+| `className`       | `string`                                                                               | Custom class name, applied to the checkbox box                                                                                                            |
+| `style`           | `React.CSSProperties`                                                                  | Inline styles, applied to the checkbox box                                                                                                                |
+| `classNames`      | `{ input?: string; indicator?: string; label?: string; icon?: string; text?: string }` | Custom class names for the hidden input, the box, the label, the state icon and the line-through text layer (`text` exists only when `lineThrough` is on) |
+| `styles`          | `{ indicator?: React.CSSProperties; label?: React.CSSProperties }`                     | Inline styles for the indicator and the label                                                                                                             |
+| `disabled`        | `boolean`                                                                              | Disables the checkbox, defaults to `false`                                                                                                                |
+| `...props`        | `React.ComponentProps<"input">`                                                        | Supports all native input props (except `type`, `className`, `value`), such as `name`, `value`, `required`                                                |
+
+#### CheckboxGroup
+
+| Prop           | Type                                                                                                                                                                                                                                   | Description                                                                   |
+| :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------- |
+| `options`      | `(CheckboxOptionConfig \| CheckboxOptionGroup)[]`                                                                                                                                                                                      | The options data array, flat or grouped                                       |
+| `value`        | `string[]`                                                                                                                                                                                                                             | Controlled selected values                                                    |
+| `defaultValue` | `string[]`                                                                                                                                                                                                                             | Default selected values (uncontrolled), defaults to `[]`                      |
+| `onChange`     | `(values: string[]) => void`                                                                                                                                                                                                           | Called when the values change                                                 |
+| `name`         | `string`                                                                                                                                                                                                                               | The group name, applied to every input                                        |
+| `disabled`     | `boolean`                                                                                                                                                                                                                              | Disables all options, defaults to `false`                                     |
+| `className`    | `string`                                                                                                                                                                                                                               | Custom class name, applied to the container                                   |
+| `common`       | `{ lineThrough?: boolean; classNames?: { input?: string; indicator?: string; label?: string; icon?: string; text?: string }; styles?: { indicator?: React.CSSProperties; label?: React.CSSProperties }; indicator?: React.ReactNode }` | Configuration applied to every option uniformly (per-item `lineThrough` wins) |
+
+#### CheckboxOptionConfig
+
+Inherits all `Checkbox` props except `children`.
+
+| Field         | Type              | Description                                                                                   |
+| :------------ | :---------------- | :-------------------------------------------------------------------------------------------- |
+| `label`       | `string`          | Option display text                                                                           |
+| `value`       | `string`          | Unique identifying value                                                                      |
+| `indicator`   | `React.ReactNode` | Per-item custom indicator                                                                     |
+| `lineThrough` | `boolean`         | Same as `Checkbox`'s `lineThrough`, falling back to `common.lineThrough`, defaults to `false` |
+
+#### CheckboxOptionGroup
+
+Grouped options, rendered as a group with a heading.
+
+| Field     | Type                     | Description                      |
+| :-------- | :----------------------- | :------------------------------- |
+| `group`   | `string`                 | The group heading                |
+| `options` | `CheckboxOptionConfig[]` | The options in the group         |
+
+---
+
+### Composable Components
+
+#### CheckboxRoot
+
+The visually hidden native input (`sr-only`) that carries state, focus and form semantics.
+
+| Prop        | Type                            | Description                                                           |
+| :---------- | :------------------------------ | :-------------------------------------------------------------------- |
+| `className` | `string`                        | Custom CSS class                                                      |
+| `...props`  | `React.ComponentProps<"input">` | Supports all native input props (except `type`, `className`, `value`) |
+
+#### CheckboxIndicator
+
+The visual indicator, rendered as a purely presentational `span`; the scheme reads the checked state of the inner `CheckboxRoot` through `:has(:checked)` to switch the background color, the default check mark is the input's next sibling shown and hidden via `peer-checked:`, and the checkbox semantics are carried by the input itself. When assembling, nest `CheckboxRoot` inside `CheckboxIndicator` — the indicator also responds to `Enter` to toggle, so groups inside popovers are fully keyboard operable.
+
+| Prop        | Type                           | Description                                                                                                            |
+| :---------- | :----------------------------- | :--------------------------------------------------------------------------------------------------------------------- |
+| `className` | `string`                       | Custom CSS class                                                                                                       |
+| `children`  | `React.ReactNode`              | The indicator content; empty by default in composable use, the checked look is expressed by the scheme as a solid fill |
+| `...props`  | `React.ComponentProps<"span">` | Supports all native span props                                                                                         |
+
+#### CheckboxLabel
+
+A label wrapper that associates the input with the indicator and the text.
+
+| Prop        | Type                            | Description                      |
+| :---------- | :------------------------------ | :------------------------------- |
+| `className` | `string`                        | Custom CSS class                 |
+| `...props`  | `React.ComponentProps<"label">` | Supports all native label props  |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Space` | Toggles the focused checkbox natively |
+| `Enter` | Also toggles the focused checkbox |
+| `ArrowDown` / `ArrowRight` | In a `CheckboxGroup`, moves focus to the next enabled checkbox, wrapping at the end |
+| `ArrowUp` / `ArrowLeft` | In a `CheckboxGroup`, moves focus to the previous enabled checkbox, wrapping at the start |
+
+## Data Attributes
+
+The skeleton emits no `data-*` on this component. Checked and disabled states are read from the native `<input type="checkbox">` (`:checked`, `disabled`); the `CheckboxGroup` root element carries `role="group"` and `aria-label`.

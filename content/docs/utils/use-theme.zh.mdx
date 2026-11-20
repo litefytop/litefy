@@ -1,0 +1,38 @@
+---
+title: use-theme 主题
+description: 颜色模式 hook，亮色 / 暗色 / 跟随系统持久化到 localStorage，由默认风格方案提供
+---
+
+## 安装
+
+<Installation name="use-theme" />
+
+## 用法
+
+全局主题状态：读写 localStorage 并应用，支持跟随系统。
+
+<ComponentPreview
+  name="use-theme-basic"
+/>
+
+## API 参考
+
+### useTheme
+
+```ts
+function useTheme(): ThemeState
+```
+
+返回 `ThemeState`：
+
+| 属性 | 类型 | 说明 |
+|------|------|------|
+| `theme` | `'light' \| 'dark' \| 'system'` | 当前颜色模式 |
+| `setTheme` | `(mode: ThemeMode) => void` | 设置颜色模式，持久化并应用 |
+| `toggleTheme` | `() => void` | 在亮色与暗色之间切换（system 时先解析系统实际模式） |
+
+**注意：**
+
+- 全部状态存放在 React 之外；多个组件调用 `useTheme` 共享同一个 store，一起重渲染。
+- 持久化在 `theme-storage` localStorage 键下。
+- `theme` 为 `"system"` 时保留存储值，实际应用模式随 `prefers-color-scheme` 实时变化。

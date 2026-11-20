@@ -1,0 +1,67 @@
+---
+title: Image 图片
+description: 支持加载状态、加载占位与错误处理的图片组件
+---
+
+## 安装
+
+<Installation name="image" />
+
+## 用法
+
+预加载图片并管理加载状态，渐进淡入；根容器需显式尺寸。
+
+<ComponentPreview 
+  name="image-basic"
+/>
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Image
+
+预加载管理的图片组件；外观经由 `classNames` 送达，由所加载方案的皮肤填写（同一批字符串也导出为 `imagePartClasses`）。
+
+| Prop          | Type                                            | Description                                                              |
+| ------------- | ----------------------------------------------- | ------------------------------------------------------------------------ |
+| `src`         | `string`                                        | 图片源 URL                                                                  |
+| `alt`         | `string`                                        | 图片的替代文本                                                                  |
+| `fallback`    | `React.ReactNode`                               | 图片加载失败时显示的自定义回退元素                                                        |
+| `loadingNode` | `React.ReactNode`                               | 加载占位元素（渐进的底层图，大图淡入后仍挂载其下）——常用模糊缩略图                                       |
+| `className`   | `string`                                        | 自定义类名，作用于根容器                                                             |
+| `style`       | `React.CSSProperties`                           | 内联样式，作用于根容器                                                              |
+| `classNames`  | `{ image?: string }`                            | 图片的自定义类名                                                                 |
+| `styles`      | `{ image?: React.CSSProperties }`               | 图片的内联样式                                                                  |
+
+---
+
+### 可组合组件
+
+#### ImageRoot
+
+外层容器；如何裁切与定位完全取决于它的 `className`——复合组件从 `classNames.root` 供给它，方案皮肤把同一批字符串导出为 `imagePartClasses`。
+
+| Prop        | Type                          | Description            |
+| ----------- | ----------------------------- | ---------------------- |
+| `className` | `string`                      | 自定义类名                  |
+| `...props`  | `React.ComponentProps<"div">` | 支持全部 div 原生属性          |
+
+#### ImageImage
+
+图片元素；骨架强制 `loading="lazy"` 与 `decoding="async"`，尺寸与填充方式取决于它的 `className`（复合组件供给 `classNames.image`）。
+
+| Prop        | Type                          | Description            |
+| ----------- | ----------------------------- | ---------------------- |
+| `className` | `string`                      | 自定义类名                  |
+| `...props`  | `React.ComponentProps<"img">` | 支持全部 img 原生属性          |
+
+## 键盘交互
+
+本组件不接管任何按键。它的每个零件都不挂按键处理器，渲染出的 `img` 也不可聚焦。
+
+## 数据属性
+
+骨架不在本组件上发射任何 `data-*`。加载状态不体现为属性，而由复合组件挂载哪个子节点决定：加载中挂 `loadingNode`，失败挂 `fallback`，成功挂 `img`。

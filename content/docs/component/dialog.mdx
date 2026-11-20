@@ -1,0 +1,118 @@
+---
+title: Dialog
+description: A modal dialog component built on the native HTML dialog element
+---
+
+## Installation
+
+<Installation name="dialog" />
+
+## Usage
+
+A basic dialog with built-in focus trapping, `Esc` close and an inert background.
+
+<ComponentPreview 
+  name="dialog-basic"
+/>
+
+### Command Dialog
+
+Triggered imperatively via the `dialog.success` / `dialog.error` / `dialog.warning` / `dialog.info` methods, created dynamically and destroyed automatically after closing.
+
+<ComponentPreview 
+  name="dialog-command"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Dialog
+
+A modal dialog component built on the native HTML `dialog` element, with built-in focus trapping, Esc close and a background lock while open. The lock is reference-counted: stacked overlays release it only when the last one closes. Every content branch outside the dialog's ancestor chain is made `inert` (no pointer, keyboard or focus reaches it), other `<dialog>` elements excepted — a modal raised from one of them later must stay clickable. The root also clamps overflow so the background cannot scroll; the scrollbar width is compensated with padding so the layout doesn't shift.
+
+| Prop              | Type                                               | Description                                                                                                       |
+| ----------------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `open`            | `boolean`                                          | Controlled open state, synced internally through the native `showModal()` / `close()`                             |
+| `title`           | `React.ReactNode`                                  | Optional title. When provided, a header row renders — the title and the close button are siblings in the flow     |
+| `onOpenChange`    | `(open: boolean) => void`                          | Open-state change callback; fired on Esc, close button click, and native `cancel` / `close`                       |
+| `onBackdropClick` | `(e: React.MouseEvent<HTMLDialogElement>) => void` | Backdrop clicks close the dialog by default; this callback is for extra side effects                              |
+| `closeLabel`      | `string`                                           | Accessible name of the inline close button built into this component, defaults to `'Close (ESC)'`                 |
+| `classNames`      | `{ root?, content?, close? }`                      | Custom class names per part, applied to the dialog element, the content area and the close button                 |
+| `styles`          | `{ root?, content?, close? }`                      | Inline styles per part                                                                                            |
+| `children`        | `React.ReactNode`                                  | Dialog content, rendered inside the content area `DialogContent`                                                  |
+| `...props`        | `React.ComponentProps<"div">`                      | Remaining props pass through to the content area `DialogContent` (except `className` / `styles` / `title`)        |
+
+---
+
+### Composable Components
+
+Use the parts to implement the open/close lifecycle yourself — unlike the composite, the parts carry no focus trap.
+
+#### DialogRoot
+
+The dialog element, rendered as a native `dialog` with no built-in styles or behavior.
+
+| Prop        | Type                             | Description                                             |
+| ----------- | -------------------------------- | ------------------------------------------------------- |
+| `className` | `string`                         | Custom class name, applied to the native dialog element |
+| `...props`  | `React.ComponentProps<"dialog">` | Supports all native dialog props (except `className`)   |
+
+#### DialogClose
+
+The close button. It emits no style identity — its position and look are decided entirely by its `className` (the composite feeds it through `classNames.close`, and a scheme skin exports the same strings as `dialogPartClasses`); it anchors to the top-right corner of the nearest positioned ancestor (the dialog element). For parts assembly only — the composite `Dialog` already renders and wires this button internally, so never put `DialogClose` inside `Dialog` children.
+
+| Prop        | Type                             | Description                                            |
+| ----------- | -------------------------------- | ------------------------------------------------------ |
+| `className` | `string`                         | Custom class name                                      |
+| `children`  | `React.ReactNode`                | Button content                                         |
+| `...props`  | `React.ComponentProps<"button">` | Supports all native button props (except `className`)  |
+
+#### DialogContent
+
+The content area container; it also emits no style identity — the panel's positioning, size and look are decided entirely by its `className` (the composite feeds it `classNames.content`, which a scheme skin fills from `dialogPartClasses`).
+
+| Prop        | Type                          | Description                                        |
+| ----------- | ----------------------------- | -------------------------------------------------- |
+| `className` | `string`                      | Custom class name                                  |
+| `children`  | `React.ReactNode`             | Content area content                               |
+| `...props`  | `React.ComponentProps<"div">` | Supports all native div props (except `className`) |
+
+#### dialog
+
+Imperative trigger methods that create the dialog dynamically and destroy it automatically after closing.
+
+| Method    | Type                                   | Description            |
+| --------- | -------------------------------------- | ---------------------- |
+| `success` | `(opts: DialogCommandOptions) => void` | Opens a command dialog |
+| `error`   | `(opts: DialogCommandOptions) => void` | Opens a command dialog |
+| `warning` | `(opts: DialogCommandOptions) => void` | Opens a command dialog |
+| `info`    | `(opts: DialogCommandOptions) => void` | Opens a command dialog |
+
+> The four methods are semantic shortcuts with identical behavior.
+> Browser limitation: only one modal dialog (`showModal()`) can be open at a time; repeated opens are blocked by the browser rather than queued.
+
+#### DialogCommandOptions
+
+| Field      | Type              | Description                            |
+| ---------- | ----------------- | -------------------------------------- |
+| `title`    | `React.ReactNode` | Dialog title                           |
+| `children` | `React.ReactNode` | Dialog content                         |
+| `props`    | `DialogProps`     | Pass-through props forwarded to Dialog |
+
+## Keyboard Interactions
+
+| Key                  | Description                                                                        |
+| -------------------- | ---------------------------------------------------------------------------------- |
+| `Tab` / `Shift + Tab` | Moves focus within the dialog; while open, focus is trapped inside it              |
+| `Escape`             | Closes the dialog                                                                  |
+| `Enter` / `Space`    | Activates the close button                                                         |
+
+## Data Attributes
+
+| Attribute     | Description                                                                                                       |
+| ------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `[data-open]` | On the dialog root — present while the dialog is open                                                             |
+| `[data-status]` | On the icon of command dialogs (`dialog.success` / `error` / `warning` / `info`) — `"success"`, `"error"`, `"warning"` or `"info"` |

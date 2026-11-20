@@ -1,0 +1,147 @@
+---
+title: Command
+description: A dialog-based command palette — clicking the trigger (or an app hotkey) opens a dialog with a search input on top and a keyboard-navigable filtered list below.
+---
+
+## Installation
+
+<Installation name="command" />
+
+## Usage
+
+A dialog-based command palette: typing filters the list, and pressing Enter runs the matching command and closes the panel.
+
+<ComponentPreview name="command-basic" />
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Command
+
+The finished palette: a trigger button opens a `<dialog>` with the search field on top and the filtered list below. The dialog's own header row (title plus built-in ESC button) is hidden — `placeholder` supplies the accessible name, and `Escape` still closes.
+
+| Prop               | Type                                                                                                     | Description                                                                                                                                                                                                                                                                                                                             |
+| ------------------ | -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`            | `(CommandItemConfig \| CommandGroupConfig)[]`                                                            | Commands or grouped commands                                                                                                                                                                                                                                                                                                            |
+| `trigger`          | `React.ReactNode`                                                                                        | Trigger content, rendered as a `type="button"` that opens the dialog: it carries `aria-haspopup="dialog"` (write the native attribute to override it) and `aria-expanded`, and every other native button prop you pass lands on it; omit it to control `open` yourself                                                                  |
+| `open`             | `boolean`                                                                                                | Controlled dialog state; pair it with `onOpenChange` to wire app-level hotkeys (such as `⌘K`) — the palette never binds a global key itself                                                                                                                                                                                             |
+| `defaultOpen`      | `boolean`                                                                                                | Initial state (uncontrolled), defaults to `false`                                                                                                                                                                                                                                                                                       |
+| `onOpenChange`     | `(open: boolean) => void`                                                                                | Dialog state callback                                                                                                                                                                                                                                                                                                                   |
+| `onSelect`         | `(item: CommandItemConfig) => void`                                                                      | Fired when a command is selected; the dialog closes afterwards                                                                                                                                                                                                                                                                          |
+| `filter`           | `(item, keyword) => boolean`                                                                             | Custom filter over the lowercased keyword; when omitted, a row matches by substring against the lowercased text joined from its `value`, string `label` and `keywords`. As long as the keyword is non-empty, disabled items are removed from the list regardless of what the filter returns                                             |
+| `onKeywordChange`  | `(keyword: string) => void`                                                                              | Fires on every keyword change, including the reset when the dialog opens. Use it for external data sources (server or static-index search): push the keyword out, fetch results, then pass back already-filtered `items` with `filter={() => true}` to avoid filtering twice                                                            |
+| `renderItem`       | `(item, { highlighted, disabled }) => React.ReactNode`                                                   | Custom row rendering; when omitted, a row is icon + label + shortcut. A custom renderer replaces the default markup wholesale, so the icon / label / shortcut slots only exist while the built-in row is in use                                                                                                                         |
+| `placeholder`      | `string`                                                                                                 | Search input placeholder; also the dialog's accessible name                                                                                                                                                                                                                                                                             |
+| `empty`            | `React.ReactNode`                                                                                        | Empty state node; pass `null` explicitly and the whole list stays unrendered when it has no rows (compact initial state: the panel is just the input row and the keyboard-hints footer), defaults to `"No results"`                                                                                                                     |
+| `hints`            | `{ navigate?; open?; close?: React.ReactNode } \| null`                                                  | Text for the keyboard-hints footer (beside the `↑` `↓` / `↵` / `esc` key caps); pass `null` to hide the footer entirely, defaults to English key hints                                                                                                                                                                                  |
+| `trailing`         | `React.ReactNode`                                                                                        | Trailing content in the input row (e.g. a spinner while searching), passed to the inner `Input`'s trailing slot                                                                                                                                                                                                                         |
+| `className`        | `string`                                                                                                 | Custom classes, applied to the `<dialog>` element                                                                                                                                                                                                                                                                                       |
+| `classNames`       | `trigger` / `content` / `input` / `field` / `searchIcon` / `list` / `root` / `footer` / `item` / `label` | Custom classes per part: `input` is the search field's shell, `field` goes to the inner `Input`'s slots, `searchIcon` is its built-in search icon, `list` lands on the list's scroll viewport, `item` is a single row, `label` a group header, `footer` the keyboard-hints footer; `content` merges with the dialog's own content class |
+| `styles`           | `content` / `item` / `label`                                                                             | Inline styles per part                                                                                                                                                                                                                                                                                                                  |
+| `dialogClassNames` | `Dialog`'s `classNames`                                                                                  | Classes for the outer dialog's parts; its `content` merges with `classNames.content`                                                                                                                                                                                                                                                    |
+| `dialogStyles`     | `Dialog`'s `styles`                                                                                      | Inline styles for the outer dialog's parts. The palette yields `content` to `styles.content` and hides the title row and the built-in ESC button, so those two slots stay internal                                                                                                                                                      |
+| `...props`         | `React.ComponentProps<"button">`                                                                         | Every other prop lands on the trigger button (except `children`, `className`, `style`, `type`, `onSelect`); without a `trigger` there is no button and they are dropped                                                                                                                                                                 |
+
+#### CommandItemConfig
+
+The structure of a single command; entries inside a group use it too.
+
+| Property   | Type              | Description                                                                                                              |
+| ---------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `label`    | `React.ReactNode` | Row label                                                                                                                |
+| `value`    | `string`          | Stable key and default filter text                                                                                       |
+| `icon`     | `React.ReactNode` | Leading icon                                                                                                             |
+| `shortcut` | `React.ReactNode` | Keyboard hint, rendered on the right as a native `<kbd>` key cap styled by the current scheme                            |
+| `keywords` | `string[]`        | Extra filter-only keywords                                                                                               |
+| `disabled` | `boolean`         | Not selectable and skipped by keyboard navigation; the whole row is removed from the list while the keyword is non-empty |
+
+#### CommandGroupConfig
+
+Commands under one section header.
+
+| Property | Type                  | Description                               |
+| -------- | --------------------- | ----------------------------------------- |
+| `group`  | `string`              | Group title, rendered as a section header |
+| `items`  | `CommandItemConfig[]` | Commands in the group                     |
+
+---
+
+### Composable Components
+
+The finished `Command` has already assembled and wired these three parts — never render the parts inside its children. Use the parts only when you want a search field plus a filtered list inside a host of your own — a Popover, a page section — that is, when the palette is not a modal and the open/close lifecycle is yours.
+
+#### CommandRoot
+
+Context provider and panel container: it owns the keyword, flattens groups into rows, runs the filter and remembers the highlight position.
+
+| Prop              | Type                                          | Description                                                                                                                                                            |
+| ----------------- | --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`           | `(CommandItemConfig \| CommandGroupConfig)[]` | Commands or grouped commands                                                                                                                                           |
+| `open`            | `boolean`                                     | Not the visibility switch here — when it turns `true` the container clears the keyword and focuses the input; that is the only way the finished palette uses it        |
+| `filter`          | `(item, keyword) => boolean`                  | Custom filter over the lowercased keyword; when omitted, a row matches by substring against the lowercased text joined from its `value`, string `label` and `keywords` |
+| `onKeywordChange` | `(keyword: string) => void`                   | Fires on every keyword change, including the reset                                                                                                                     |
+| `onSelect`        | `(item: CommandItemConfig) => void`           | Fired when a row is selected; nothing closes on its own                                                                                                                |
+| `className`       | `string`                                      | Custom classes on the container                                                                                                                                        |
+| `...props`        | `React.ComponentProps<"div">`                 | Supports all native div props (except `className` and `onSelect`)                                                                                                      |
+
+#### CommandInput
+
+The search input: reuses `Input` with the magnifier icon in its `leading` slot; the `↑` / `↓` / `Enter` key handling hangs on this element. The trailing `trailing` slot carries attachments that change with state (the finished palette puts a spinner there while a search is loading).
+
+| Prop              | Type                          | Description                                                                |
+| ----------------- | ----------------------------- | -------------------------------------------------------------------------- |
+| `placeholder`     | `string`                      | Search input placeholder                                                   |
+| `autoFocus`       | `boolean`                     | Passed to the inner `Input`                                                |
+| `trailing`        | `React.ReactNode`             | Content at the end of the input (consumer-defined, e.g. a loading spinner) |
+| `className`       | `string`                      | Custom classes on the input's shell                                        |
+| `inputClassNames` | `Input`'s `classNames`        | Per-slot classes for the inner `Input`                                     |
+| `classNames`      | `{ icon?: string }`           | Class for the input's built-in icon (the search magnifier)                 |
+| `...props`        | `React.ComponentProps<"div">` | Supports all native div props (except `className`)                         |
+
+#### CommandList
+
+The filtered list, implemented with `List` inside: one `<li>` per row, one section header per group, plus the empty state. It emits no hooks of its own: `className` lands on the list's scroll viewport, so in a self-assembled host it is up to you to give it the fixed-height frame (the command palette does exactly that through its own `classNames.list`).
+
+| Prop         | Type                                                   | Description                                                                                                                  |
+| ------------ | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| `empty`      | `React.ReactNode`                                      | Empty state node; pass `null` explicitly and the whole list stays unrendered when it has no rows, defaults to `"No results"` |
+| `renderItem` | `(item, { highlighted, disabled }) => React.ReactNode` | Custom row rendering; when omitted, a row is icon + label + shortcut                                                         |
+| `className`  | `string`                                               | Custom classes, applied to the list's scroll viewport                                                                        |
+| `classNames` | `item` / `label`                                       | A single row and a group header                                                                                              |
+| `styles`     | `item` / `label`                                       | Inline styles for the same two parts                                                                                         |
+| `...props`   | `React.ComponentProps<"div">`                          | Supports all native div props (except `children` and `className`)                                                            |
+
+#### CommandFooter
+
+The keyboard-hints footer: one row with three hint groups — `↑` `↓` for navigation, `↵` for open and `esc` for close. The finished `Command` renders it below the list automatically; the text is localized through `hints`.
+
+| Prop        | Type                          | Description                                              |
+| ----------- | ----------------------------- | -------------------------------------------------------- |
+| `navigate`  | `React.ReactNode`             | Text beside the `↑` `↓` key caps, defaults to `Navigate` |
+| `open`      | `React.ReactNode`             | Text beside the `↵` key cap, defaults to `Open`          |
+| `close`     | `React.ReactNode`             | Text beside the `esc` key cap, defaults to `Close`       |
+| `className` | `string`                      | Custom classes on the footer                             |
+| `...props`  | `React.ComponentProps<"div">` | Supports all native div props (except `className`)       |
+
+## Keyboard Interactions
+
+Keys take effect while the search input has focus; the first enabled result is highlighted automatically as soon as the list changes, so pressing `Enter` alone selects the topmost one.
+
+| Key | Description |
+| --- | --- |
+| `ArrowDown` / `ArrowUp` | Move the highlight among enabled rows, wrapping around |
+| `Enter` | Selects the highlighted row and closes the dialog |
+| `Escape` | Closes the dialog |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-highlighted="true"]` | On an item row — the row the keyboard currently points at |
+| `[data-disabled]` | On an item's label — present when that item is disabled |
+| `[data-command-footer]` | On the keyboard-hints footer |
+| `[data-command-hint]` | On each hint group inside the footer |
+| `[data-command-hint-key]` | On the footer's key caps — `↑` `↓` `↵` `esc` |

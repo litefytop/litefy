@@ -1,0 +1,31 @@
+---
+title: use-reduced-motion 减少动态效果
+description: 读取并订阅系统的减少动态效果偏好，不修改用户设置或控制动画
+---
+
+## 安装
+
+<Installation name="use-reduced-motion" />
+
+## 用法
+
+返回系统 `prefers-reduced-motion` 原始值，变化自动更新。
+
+<ComponentPreview name="use-reduced-motion-basic" />
+
+## API 参考
+
+### useReducedMotion
+
+```ts
+function useReducedMotion(): boolean
+```
+
+- 无参数，不读取应用内设置，也不提供覆盖选项。
+- `true`：用户希望减少动态效果；调用者可以暂停非必要动画、降低运动幅度或显示说明。
+- `false`：没有要求减少动态效果，不代表动画一定正在播放。
+- 服务端与首次 hydration 返回 `true`，挂载后使用浏览器实际偏好，避免在未知偏好时先播放动画。
+- 通过 `useSyncExternalStore` 订阅媒体查询的 `change` 事件，卸载时清理监听。
+- hook 不访问存储，不依赖皮肤，不包含提示文案，不修改系统设置，也不直接控制动画。
+
+Banner 与 `useSpin` 等动画组件使用 [useMotionPreference](/zh/docs/utils/use-motion-preference) 的 `reduced`；本 hook 适合状态展示、诊断或自行决定暂停策略。业务若需要覆盖系统偏好，应通过应用内动效设置实现，而不是把检测结果当作系统设置开关。

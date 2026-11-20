@@ -1,0 +1,113 @@
+---
+title: Menu
+description: A menu component usable directly in the document flow, with grouping, two-level submenus and keyboard navigation
+---
+
+## Installation
+
+<Installation name="menu" />
+
+## Usage
+
+A menu rendered directly in the document flow; menu items are driven by `items`, and container styling is up to you.
+
+<ComponentPreview
+  name="menu-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Menu
+
+| Prop            | Type                                | Description                                                                                                            |
+| --------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `items`         | `MenuConfig[]`                      | Menu item config, see [items](#items) below. **Required**                                                              |
+| `autoFocus`     | `boolean`                           | Focuses the first enabled item each time it turns `true`; pass the `open` of a wrapping popover to focus on every open |
+| `onSelect`      | `(item: MenuItemConfig) => void`    | Fired when a menu item is selected via click or keyboard                                                               |
+| `onEscape`      | `() => void`                        | Fired when `Escape` is pressed inside the menu                                                                         |
+| `className`     | `string`                            | Custom class for the root list; container styling in the document flow goes here                                       |
+| `style`         | `React.CSSProperties`               | Inline style for the root list                                                                                         |
+| `itemClassName` | `string`                            | Class applied to each menu item button                                                                                 |
+| `classNames`    | `{ item?; label?; sub?; chevron? }` | Custom classes for each part; `chevron` is the right-arrow icon at the end of a row that opens a submenu               |
+| `styles`        | `{ item?; label?; sub? }`           | Custom inline styles for each part                                                                                     |
+
+#### items
+
+```ts
+type MenuItemConfig = {
+  label: React.ReactNode;
+  disabled?: boolean;
+  className?: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  children?: Omit<MenuItemConfig, "children">[];
+};
+
+type MenuGroupConfig = {
+  group: React.ReactNode;
+  items: MenuItemConfig[];
+};
+
+type MenuConfig = MenuGroupConfig | MenuItemConfig;
+```
+
+---
+
+### Composable Components
+
+#### MenuRoot
+
+The root list (`ul`) with `role="menu"`; its own class is delivered through `className` (the composite supplies `classNames.root`).
+
+| Prop        | Type                         | Description                      |
+| ----------- | ---------------------------- | -------------------------------- |
+| `className` | `string`                     | Custom class name                |
+| `...props`  | `React.ComponentProps<"ul">` | Supports all native ul props     |
+
+#### MenuItem
+
+The menu item wrapper element (`li` with `role="none"`), carrying `data-entry` and `data-anchor-name`; the composite renders a `role="menuitem"` button inside it (carrying the `data-has-sub` / `data-active` state attributes). The wrapper's look is delivered through `classNames.item`, the inner button through the public `itemClassName` prop.
+
+| Prop        | Type                         | Description                      |
+| ----------- | ---------------------------- | -------------------------------- |
+| `className` | `string`                     | Custom class name                |
+| `...props`  | `React.ComponentProps<"li">` | Supports all native li props     |
+
+#### MenuLabel
+
+Group label row (`li` + `role="group"`); its visual hierarchy comes from `classNames.label`, supplied by the loaded scheme's skin.
+
+| Prop        | Type                         | Description                      |
+| ----------- | ---------------------------- | -------------------------------- |
+| `className` | `string`                     | Custom class name                |
+| `...props`  | `React.ComponentProps<"li">` | Supports all native li props     |
+
+#### MenuSubContent
+
+Submenu panel container rendered as a `popover="manual"` div; anchored to the parent menu item via `anchorName` (each menu item carries the `data-anchor-name="--menu-sub-{entryId}"` attribute) and positioned by the built-in JS positioning engine ([Floating positioning](/en/docs/utils/use-floating-panel)).
+
+| Prop             | Type                           | Description                                                              |
+| ---------------- | ------------------------------ | ------------------------------------------------------------------------ |
+| `anchorName`     | `string`                       | Name of the anchored parent menu item (its `data-anchor-name` attribute) |
+| `className`      | `string`                       | Custom class name                                                        |
+| `...props`       | `React.ComponentProps<"div">`  | Supports all native div props                                            |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `ArrowDown` / `ArrowUp` | Move focus between enabled menu items, wrapping around at the ends |
+| `ArrowRight` | At the root level, opens the current item's submenu and focuses its first enabled item |
+| `ArrowLeft` | Closes the open submenu and returns focus to the parent menu item |
+| `Escape` | Closes the open submenu first, then fires `onEscape` so an outer panel can close itself |
+| `Enter` / `Space` | Activates the focused item through native button behavior |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-active]` | On the menu item button — present while it is the active entry under hover / arrow-key navigation |
+| `[data-has-sub]` | On the menu item button — present when it opens a submenu |

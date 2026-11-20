@@ -1,0 +1,60 @@
+---
+title: Button 按钮
+description: 网格布局的按钮组件，icon 与 children 各占一格
+---
+
+## 安装
+
+<Installation name="button" />
+
+## 用法
+
+配置 `status` 即为恒宽网格：闲置对称内边距预留图标位，`active` 时图标挤入，宽度不变；已传 `icon` 则两格恒在原位换标。
+
+<ComponentPreview
+  name="button-status"
+/>
+
+## 变体
+
+从左到右依次是默认（primary）、outlined、text 与 danger。
+
+<ComponentPreview name="button-variants" />
+
+primary 给有优先级的动作（提交、确认）；danger 只标高风险操作；outline 与 text 用于同优先级的并排动作。
+
+## API 参考
+
+### Button
+
+按钮把 `icon` 与 `children` 作为网格的两个格子渲染；`status.active` 为真时 icon 格原位换成 `status.icon`。只传 `icon` 不传 children 即纯图标形态，必须自带 `aria-label` 说明动作。
+
+| Prop            | Type                                          | Description                                                                                                                            |
+| --------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `className`     | `string`                                      | 自定义 CSS 类。                                                                                                                             |
+| `icon`          | `React.ReactNode`                             | icon 格子，渲染在 children 前；图标尺寸由按钮统一强制（移动端 `size-5`、PC 端 `size-4`）                                                                         |
+| `status`        | `{ icon: React.ReactNode; active: boolean }`  | 配置即转恒宽网格。未传 `icon`：闲置 children 居中、对称内边距预留图标位，`active` 时 `status.icon` 挤入预留位；已传 `icon`：两格恒在、原位换标。纯展示格——等待期请自行传 `disabled` / `aria-busy` |
+| `...props`      | `React.ComponentProps<"button">`              | 支持全部 button 原生属性（除 `className`），如 `type`、`disabled`                                                                                    |
+
+### 原子组件
+
+#### ButtonRoot
+
+`<button>` 本体：children 承担内容，children 为空时发射 `data-pure-icon`；自身零样式零布局，自带类组合成自定义触发件。
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Enter` / `Space` | 由原生 `<button>` 完成激活；骨架不接管任何按键 |
+| `Tab` | 到达按钮；`disabled` 的按钮不进入 Tab 序 |
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-variant]` | 位于按钮上——`outline` 取描边外观，`text` 取无背景色无框的行内外观；不写就是 primary |
+| `[data-danger]` | 位于按钮上——危险动作用，换危险面色与危险焦点环 |
+| `[data-pure-icon]` | 位于按钮上——不传 `children` 时存在，按钮转成 44×44 的方盒 |
+| `[data-status]` | 位于按钮上——配置 `status` 时存在，布局切换为网格 |
+| `[data-status-reserve]` | 位于按钮上——配置 `status` 且未传 `icon` 时存在，对称内边距预留图标位，宽度恒定 |

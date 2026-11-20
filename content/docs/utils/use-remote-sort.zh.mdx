@@ -1,0 +1,52 @@
+---
+title: use-remote-sort 远程排序
+description: 面向数据库表格的排序状态管理——升/降/清除循环、生成查询字符串并防抖触发重取。
+---
+
+## 安装
+
+```bash
+npx litefy@latest add use-remote-sort
+```
+
+## 用法
+
+为远程表格管理排序状态，输出 `queryString` 供拉取。
+
+```tsx
+const remote = useRemoteSort({
+  sortableKeys: ["name", "price", "stock"],
+  onSortChange: (sort) => {
+  },
+});
+
+<Table
+  data={rows}
+  sort={remote.sort}
+  onSortChange={remote.setSort}
+  columns={[{ key: "name", header: "Name", sortable: true }]}
+/>;
+```
+
+## API 参考
+
+### Options
+
+| 选项             | 类型                                      | 描述                                      |
+| -------------- | --------------------------------------- | --------------------------------------- |
+| `sortableKeys` | `readonly K[]`                          | 允许数据库排序的列 key **必填**                    |
+| `onSortChange` | `(sort: { key: K; direction }) => void` | 重取回调，按 `debounceMs` 防抖                  |
+| `debounceMs`   | `number`                                | `onSortChange` 的防抖毫秒数，默认 `0`            |
+| `cycle`        | `"asc-desc" \| "asc-only"`              | 点击循环：升 → 降 → 清除，或升 → 清除，默认 `"asc-desc"` |
+| `initialSort`  | `RemoteSortState<K>`                    | 初始排序状态，默认 `null`                        |
+
+### Return
+
+| 字段 | 类型 | 描述 |
+|------|------|------|
+| `sort` | `RemoteSortState<K>` | 当前排序状态（未排序为 `null`） |
+| `toggleSort` | `(key: K) => void` | 表头点击处理器；`sortableKeys` 之外的 key 被忽略 |
+| `setSort` | `(sort: RemoteSortState<K>) => void` | 直接设置状态 |
+| `clearSort` | `() => void` | 清除排序 |
+| `queryParams` | `{ sortKey?, sortOrder? }` | 可直接展开的查询参数 |
+| `queryString` | `string` | `"sortKey=...&sortOrder=..."`（未排序为空） |

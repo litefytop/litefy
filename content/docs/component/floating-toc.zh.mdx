@@ -1,0 +1,87 @@
+---
+title: Floating Toc 浮动目录
+description: 悬浮于视口侧缘的目录指示器——横条组悬停或点击展开目录面板，活跃状态由外部传入。
+---
+
+## 安装
+
+<Installation name="floating-toc" />
+
+## 用法
+
+组合式：根只管开合状态，`Bar` / `Item` 的 `active` 与 `level` 由外部传入；条目是普通按钮，不做跳转。
+
+<ComponentPreview
+  name="floating-toc-basic"
+/>
+
+## API 参考
+
+### FloatingToc
+
+根部件：管理开合状态并下发上下文，不渲染 DOM。
+
+| 属性             | 类型                        | 描述                                 |
+| -------------- | ------------------------- | ---------------------------------- |
+| `placement`    | `"left" \| "right"`       | 触发器贴附的视口侧缘；面板从触发器内侧展开，默认 `"right"` |
+| `triggerMode`  | `"hover" \| "press"`      | 面板展开方式：悬停（带延迟）或点击，默认 `"hover"`     |
+| `open`         | `boolean`                 | 受控展开状态                             |
+| `defaultOpen`  | `boolean`                 | 非受控初始展开状态，默认 `false`               |
+| `onOpenChange` | `(open: boolean) => void` | 展开状态变化回调                           |
+| `openDelay`    | `number`                  | hover 模式下展开的延迟（ms），默认 `200`        |
+| `closeDelay`   | `number`                  | hover 模式下收起的延迟（ms），默认 `300`        |
+
+### FloatingTocTrigger
+
+包裹横条的 `<button>`，悬停/点击目标。带 `data-placement` 与 `data-open`；支持所有原生 `button` 属性，`aria-label` 缺省 "Table of contents"。
+
+### FloatingTocBar
+
+单根横条指示器（`<span aria-hidden>`）。
+
+| 属性         | 类型                             | 描述                           |
+| ---------- | ------------------------------ | ---------------------------- |
+| `active`   | `boolean`                      | 高亮为当前章节（拉长 + 品牌色），默认 `false` |
+| `level`    | `number`                       | 层级，1 为顶层；层级越深横条越短，默认 `1`     |
+| `...props` | `React.ComponentProps<"span">` | 支持所有原生 `span` 属性             |
+
+### FloatingTocContent
+
+展开的面板（原生 popover，锚定在触发器旁）。
+
+| 属性          | 类型                            | 描述                            |
+| ----------- | ----------------------------- | ----------------------------- |
+| `offset`    | `number`                      | 与触发器的间距（px），默认 `8`            |
+| `placement` | `FloatingPlacement`           | 覆盖默认弹出方向，默认 随根 `placement` 推导 |
+| `...props`  | `React.ComponentProps<"div">` | 支持所有原生 `div` 属性               |
+
+### FloatingTocItem
+
+面板内的条目（`<button type="button">`）。点击先触发用户 `onClick` 再收起面板。
+
+| 属性         | 类型                               | 描述                 |
+| ---------- | -------------------------------- | ------------------ |
+| `active`   | `boolean`                        | 高亮为当前章节，默认 `false` |
+| `level`    | `number`                         | 层级；层级越深缩进越多，默认 `1` |
+| `...props` | `React.ComponentProps<"button">` | 支持所有原生 `button` 属性 |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Tab` | 到达侧缘触发器；面板展开后 `Tab` 继续沿条目移动 |
+| `Enter` / `Space` | 位于触发器上——press 模式开合面板 |
+| `↓` | 位于触发器上——press 模式展开面板 |
+| `Enter` / `Space` | 位于条目上——触发条目并收起面板 |
+| `Escape` | 收起面板并把焦点交还触发器——前提是焦点仍在面板内；否则由面板外点击收起 |
+
+hover 模式下聚焦触发器即展开面板；面板是普通按钮的披露容器而非菜单，每个条目都是普通 tab stop。
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-active]` | 位于横条与面板条目上——被标为当前章节期间存在 |
+| `[data-depth]` | 位于横条与面板条目上——取值为 `level` |
+| `[data-placement]` | 位于触发器与横条上——触发器贴附的侧缘（`left` \| `right`） |
+| `[data-open]` | 位于触发器上——面板展开期间存在 |

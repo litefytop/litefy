@@ -1,0 +1,52 @@
+---
+title: Lattice Loader
+description: Inline agent status row — a rotating lit arc around the lattice beside a verb and a live stopwatch, resolving into a check or a cross
+---
+
+Pairs with [Thought Line](/en/docs/component/thought-line) — the wave is the waiting state, the check or cross is the verdict.
+
+## Installation
+
+<Installation name="lattice-loader" />
+
+## Usage
+
+An inline agent-status row: an arc of lit cells rotates by color alone beside a verb and a live stopwatch, resolving into a check or a cross.
+
+<ComponentPreview name="lattice-loader-basic" />
+
+This is the library's waiting indicator, the same role as a spinner — [Thought Line](/en/docs/component/thought-line) runs it as its thinking wave and lets it settle into a check.
+
+## API Reference
+
+### LatticeLoader
+
+| Prop         | Type                                         | Description                                                                                                 |
+| :----------- | :------------------------------------------- | :---------------------------------------------------------------------------------------------------------- |
+| `status`     | `"working" \| "done" \| "error"`             | Drives everything: the wave runs, or freezes and dissolves into a check or a cross, defaults to `"working"` |
+| `label`      | `React.ReactNode`                            | The verb while working, defaults to `"Thinking"`                                                            |
+| `doneLabel`  | `React.ReactNode`                            | The verb after `done`; the frozen time follows it, defaults to `"Done in"`                                  |
+| `errorLabel` | `React.ReactNode`                            | The verb after `error`, defaults to `"Failed after"`                                                        |
+| `pattern`    | `LatticePattern`                             | The wave geometry — named or a custom `{ cells, loop?, scale? }`, defaults to `"orbit"`                     |
+| `grid`       | `3 \| 4`                                     | Cells per side, defaults to `3`                                                                             |
+| `shape`      | `"square" \| "round"`                        | Rounded tiles or dots, defaults to `"round"`                                                                |
+| `step`       | `number`                                     | Milliseconds between neighbouring cells lighting; the loop scales with it, defaults to `90`                 |
+| `showTimer`  | `boolean`                                    | Shows the live stopwatch, defaults to `true`                                                                |
+| `elapsed`    | `number`                                     | Controlled elapsed seconds; the internal clock never runs                                                   |
+| `className`  | `string`                                     | Applied to the root `div`                                                                                   |
+| `classNames` | `{ lattice?, cell?, mark?, timer?: string }` | Custom classes on the slots                                                                                 |
+| `...props`   | `React.ComponentProps<"div">`                | Spread onto the root `div`                                                                                  |
+
+`LatticePattern` named waves — `3 × 3`: `arrow`, `dots`, `orbit`, `ripple`, `snake`, `spiral`; `4 × 4`: `sweep`, `spin`, `rain`, `pulse`, `orbit`, `snake`. A custom object gives one delay per cell in `step` units (`null` for a hole), an optional `loop` and `scale`. Unknown names fall back to `orbit`.
+
+## Keyboard Interactions
+
+The skeleton handles no keys — the row is a live status region, not a control.
+
+## Data Attributes
+
+| Attribute | Description |
+| :-------- | :---------- |
+| `[data-status]` | On the root — `"working"`, `"done"` or `"error"` |
+| `[data-shape]` | On the root — `"square"` or `"round"` |
+| `[data-hole]` | On placeholder cells excluded from the wave |

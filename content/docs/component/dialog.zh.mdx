@@ -1,0 +1,118 @@
+---
+title: Dialog 对话框
+description: 使用原生 HTML dialog 元素构建的模态对话框组件
+---
+
+## 安装
+
+<Installation name="dialog" />
+
+## 用法
+
+基础对话框，内置焦点圈定、`Esc` 关闭与背景 `inert`。
+
+<ComponentPreview 
+  name="dialog-basic"
+/>
+
+### 命令对话框
+
+通过 `dialog.success` / `dialog.error` / `dialog.warning` / `dialog.info` 命令式方法触发，动态创建并在关闭后自动销毁。
+
+<ComponentPreview 
+  name="dialog-command"
+/>
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Dialog
+
+基于原生 HTML `dialog` 元素的模态对话框组件，内置焦点圈定、Esc 关闭，并在打开期间锁住背景。锁定按引用计数：叠加的浮层要等最后一个关闭才释放。对话框祖先链之外的每个内容分支都被置为 `inert`（指针、键盘与焦点都进不去），页面里的其他 `<dialog>` 除外——后来从它弹出的模态必须还能点。根元素同时收口溢出，背景不可滚动；滚动条宽度用 padding 补偿，布局不跳动。
+
+| Prop              | Type                                                | Description                                                                   |
+| ----------------- | --------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `open`            | `boolean`                                           | 受控打开状态，内部通过原生 `showModal()` / `close()` 同步                                    |
+| `title`           | `React.ReactNode`                                   | 可选标题。传入后渲染头部行——标题与关闭按钮同为流内兄弟节点                                                |
+| `onOpenChange`    | `(open: boolean) => void`                           | 打开状态变化回调，Esc、关闭按钮点击、原生 `cancel` / `close` 时触发                                 |
+| `onBackdropClick` | `(e: React.MouseEvent<HTMLDialogElement>) => void`  | 点击遮罩默认关闭；此回调用于附加副作用                                                           |
+| `closeLabel`      | `string`                                            | 本组件自带的那枚内联关闭按钮的可访问名称，默认 `'Close (ESC)'`                                       |
+| `classNames`      | `{ root?, content?, close? }`                       | 各部分自定义类名，分别作用于 dialog 元素、内容区、关闭按钮                                             |
+| `styles`          | `{ root?, content?, close? }`                       | 各部分内联样式                                                                       |
+| `children`        | `React.ReactNode`                                   | 对话框内容，渲染在内容区 `DialogContent` 内                                                |
+| `...props`        | `React.ComponentProps<"div">`                       | 其余属性透传给内容区 `DialogContent`（`className` / `styles` / `title` 除外）               |
+
+---
+
+### 可组合组件
+
+自行实现开关生命周期时使用零件——与成品不同，零件本身不带焦点圈定。
+
+#### DialogRoot
+
+dialog 元素，渲染为无内置样式与行为的原生 `dialog`。
+
+| Prop        | Type                             | Description                                  |
+| ----------- | -------------------------------- | -------------------------------------------- |
+| `className` | `string`                         | 自定义类名，作用于原生 dialog 元素                        |
+| `...props`  | `React.ComponentProps<"dialog">` | 支持全部 dialog 原生属性（除 `className`）              |
+
+#### DialogClose
+
+关闭按钮。它不发样式身份——定位与观感完全由它的 `className` 决定（复合组件通过 `classNames.close` 喂给它，方案皮肤把同一批字符串导出为 `dialogPartClasses`），挂在最近的定位祖先（即 dialog 元素）右上角。仅用于零件组装——复合组件 `Dialog` 内部已渲染并接线此按钮，禁止在 `Dialog` 的 children 里再放 `DialogClose`。
+
+| Prop        | Type                             | Description                                |
+| ----------- | -------------------------------- | ------------------------------------------ |
+| `className` | `string`                         | 自定义类名                                      |
+| `children`  | `React.ReactNode`                | 按钮内容                                       |
+| `...props`  | `React.ComponentProps<"button">` | 支持全部 button 原生属性（除 `className`）            |
+
+#### DialogContent
+
+内容区容器，同样不发样式身份——面板的定位、尺寸与观感完全由它的 `className` 决定（复合组件喂它 `classNames.content`，方案皮肤用 `dialogPartClasses` 填这份）。
+
+| Prop        | Type                           | Description                              |
+| ----------- | ------------------------------ | ---------------------------------------- |
+| `className` | `string`                       | 自定义类名                                    |
+| `children`  | `React.ReactNode`              | 内容区内容                                    |
+| `...props`  | `React.ComponentProps<"div">`  | 支持全部 div 原生属性（除 `className`）             |
+
+#### dialog
+
+命令式触发方法，动态创建对话框并在关闭后自动销毁。
+
+| Method    | Type                                   | Description    |
+| --------- | -------------------------------------- | -------------- |
+| `success` | `(opts: DialogCommandOptions) => void` | 打开命令对话框 |
+| `error`   | `(opts: DialogCommandOptions) => void` | 打开命令对话框 |
+| `warning` | `(opts: DialogCommandOptions) => void` | 打开命令对话框 |
+| `info`    | `(opts: DialogCommandOptions) => void` | 打开命令对话框 |
+
+> 四个方法为语义化快捷方式，行为一致。
+> 浏览器限制：模态 dialog（`showModal()`）同一时间只能打开一个，重复打开会被浏览器拦截，而非排队等待。
+
+#### DialogCommandOptions
+
+| Field      | Type              | Description          |
+| ---------- | ----------------- | -------------------- |
+| `title`    | `React.ReactNode` | 对话框标题           |
+| `children` | `React.ReactNode` | 对话框内容           |
+| `props`    | `DialogProps`     | 透传给 Dialog 的属性 |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Tab` / `Shift + Tab` | 在对话框内移动焦点；打开期间焦点被圈定在对话框内部 |
+| `Escape` | 关闭对话框 |
+| `Enter` / `Space` | 激活关闭按钮 |
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-open]` | 位于对话框根元素——打开期间存在 |
+| `[data-status]` | 位于命令对话框（`dialog.success` / `error` / `warning` / `info`）的图标上——取值 `"success"`、`"error"`、`"warning"` 或 `"info"` |

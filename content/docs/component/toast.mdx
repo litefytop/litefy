@@ -1,0 +1,158 @@
+---
+title: Toast
+description: Global toast notifications backed by a store-based imperative API
+---
+
+## Installation
+
+<Installation name="toast" />
+
+## Usage
+
+Global toasts: mount a single `<Toaster />`, then call the imperative API.
+
+<ComponentPreview
+  name="toast-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+#### Toaster
+
+The toast host — render it once in the app; it carries the imperative methods below.
+
+When multiple `<Toaster />` instances are mounted, only the first one renders toasts.
+
+| Prop            | Type                                    | Description                                                              |
+| --------------- | --------------------------------------- | ------------------------------------------------------------------------ |
+| `visibleToasts` | `number`                                | Maximum number of toasts rendered at the same time, defaults to `3`      |
+| `className`     | `string`                                | Custom class name for the container                                      |
+| `...props`      | `React.ComponentProps<"div">`           | Remaining props are passed through to the container's `section` element  |
+
+Imperative methods:
+
+| Method    | Type                                                                          | Description                                                                                                       |
+| --------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `success` | `(options: ToastItemProps) => number`                                         | Shows a success toast, returns the toast id                                                                       |
+| `error`   | `(options: ToastItemProps) => number`                                         | Shows an error toast, returns the toast id                                                                        |
+| `warning` | `(options: ToastItemProps) => number`                                         | Shows a warning toast, returns the toast id                                                                       |
+| `info`    | `(options: ToastItemProps) => number`                                         | Shows an info toast, returns the toast id                                                                         |
+| `loading` | `(options: ToastItemProps) => number`                                         | Shows a persistent loading toast (never auto-dismisses)                                                           |
+| `dismiss` | `(id?: string \| number) => void`                                             | Dismisses a toast by id; without an id, dismisses all toasts                                                      |
+| `promise` | `<T>(promise: () => Promise<T>, data: PromiseData<T>) => void`                | A loading toast that turns into the success/error state in place when the promise settles (always a single toast) |
+
+#### ToastItemProps
+
+Options accepted by every imperative method.
+
+| Prop          | Type                                                       | Description                                                                                                     |
+| ------------- | ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `id`          | `string \| number`                                         | Toast id; auto-assigned by the store at creation                                                                |
+| `title`       | `React.ReactNode`                                          | Toast title                                                                                                     |
+| `description` | `React.ReactNode`                                          | Secondary text below the title                                                                                  |
+| `type`        | `"success" \| "error" \| "warning" \| "info" \| "loading"` | Icon type; set automatically by the semantic methods                                                            |
+| `icon`        | `React.ReactNode`                                          | Custom icon, overrides the built-in type icon, defaults to type icon                                            |
+| `duration`    | `number`                                                   | Auto-dismiss delay in ms; `Infinity` disables auto-dismiss (loading toasts always persist), defaults to `5000`  |
+| `closable`    | `boolean`                                                  | Renders a close button in the toast's top-right corner, defaults to `false`                                     |
+| `onClose`     | `(event: CloseEvent) => void`                              | Fired with `type: "auto" \| "manual"` when the close starts and with `type: "complete"` after removal completes |
+| `classNames`  | `{ root?, icon?, content?, title?, description?, close? }` | Custom class names for each part of the toast card                                                              |
+| `styles`      | `{ root?, icon?, content?, title?, description?, close? }` | Inline styles for each part of the toast card                                                                   |
+
+#### CloseEvent
+
+| Field  | Type                                 | Description                                              |
+| ------ | ------------------------------------ | -------------------------------------------------------- |
+| `type` | `"auto" \| "manual" \| "complete"`   | Why the toast closed; `"complete"` fires after removal completes |
+| `id`   | `string \| number` (optional)        | The toast id                                             |
+
+#### PromiseData&lt;T&gt;
+
+| Field     | Type                                                       | Description                              |
+| --------- | ---------------------------------------------------------- | ---------------------------------------- |
+| `loading` | `React.ReactNode`                                          | Title shown while the promise is pending |
+| `success` | `React.ReactNode \| ((data: T) => React.ReactNode)`        | Title shown on success                   |
+| `error`   | `React.ReactNode \| ((error: unknown) => React.ReactNode)` | Title shown on failure                   |
+
+### Composable Components
+
+Assemble the exported parts below to build a custom toast card.
+
+#### ToastRoot
+
+The toast card container (a single-line chip). `data-tapped` marks the tap-expanded state and `data-exiting` the exit-animation state.
+
+| Prop        | Type             | Description                      |
+| ----------- | ---------------- | -------------------------------- |
+| `className` | `string`         | Custom CSS class                 |
+
+Supports all native `<div>` attributes.
+
+#### ToastIcon
+
+Wrapper for the leading icon.
+
+| Prop        | Type             | Description                      |
+| ----------- | ---------------- | -------------------------------- |
+| `className` | `string`         | Custom CSS class                 |
+
+Supports all native `<div>` attributes.
+
+#### ToastContent
+
+Wrapper for the title and description column.
+
+| Prop        | Type             | Description                      |
+| ----------- | ---------------- | -------------------------------- |
+| `className` | `string`         | Custom CSS class                 |
+
+Supports all native `<div>` attributes.
+
+#### ToastTitle
+
+The title text.
+
+| Prop        | Type             | Description                      |
+| ----------- | ---------------- | -------------------------------- |
+| `className` | `string`         | Custom CSS class                 |
+
+Supports all native `<div>` attributes.
+
+#### ToastDescription
+
+The secondary text below the title.
+
+| Prop        | Type             | Description                      |
+| ----------- | ---------------- | -------------------------------- |
+| `className` | `string`         | Custom CSS class                 |
+
+Supports all native `<div>` attributes.
+
+#### ToastClose
+
+The close button rendered in the top-right corner when `closable` is set.
+
+| Prop        | Type             | Description                      |
+| ----------- | ---------------- | -------------------------------- |
+| `className` | `string`         | Custom class name                |
+
+Supports all native `<button>` attributes.
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Tab` | Reaches the viewport container `<section>` (`tabIndex={0}`) and then the close button of every toast rendered with `closable` |
+| `Enter` / `Space` | Activates the focused close button — the browser's own button click runs the dismiss flow |
+
+The skeleton binds no keys of its own, so `Escape` does nothing. Hovering the viewport or tapping a card pauses the countdown; tapping a card also toggles the description between expanded and collapsed.
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-expanded]` | On each toast and on the viewport container — `"true"` while hovering the viewport pauses the countdown |
+| `[data-tapped]` | On each toast — present while it is tapped open (which also pauses the countdown) |
+| `[data-exiting]` | On each toast — `"true"` while it plays its exit animation |
+| `[data-type]` | On the icon — `"success"`, `"error"`, `"warning"`, `"info"` or `"loading"` |

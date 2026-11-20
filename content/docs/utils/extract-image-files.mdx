@@ -1,0 +1,28 @@
+---
+title: extract-image-files
+description: Pull image files out of a clipboard event as previewable attachments — pairs with Prompt Bar's onPaste
+---
+
+## Installation
+
+<Installation name="extract-image-files" />
+
+## Usage
+
+Extract the image files carried by a clipboard event. Returns one entry per image with a session object URL for preview; everything that is not an image is skipped. The consumer owns the URL lifecycle — revoke it with `URL.revokeObjectURL` when the preview is discarded.
+
+## API Reference
+
+### extractImageFiles
+
+```ts
+function extractImageFiles(dataTransfer: DataTransfer | null): ExtractedImageFile[]
+```
+
+#### ExtractedImageFile
+
+| Property | Type | Description |
+|------|------|-------------|
+| `name` | `string` | File name, falling back to `pasted-image` for unnamed bitmaps |
+| `url` | `string` | `URL.createObjectURL(file)` — a session preview URL the consumer must revoke |
+| `file` | `File` | The raw image file, ready for upload |

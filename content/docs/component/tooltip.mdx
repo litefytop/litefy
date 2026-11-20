@@ -1,0 +1,83 @@
+---
+title: Tooltip
+description: A tooltip component built on the native Popover API and a built-in JS positioning engine
+---
+
+## Installation
+
+<Installation name="tooltip" />
+
+## Usage
+
+A basic tooltip that appears on hover or focus.
+
+<ComponentPreview
+  name="tooltip-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite component.
+
+#### Tooltip
+
+A wiring container: generates a content id and an anchor name, then provides them (plus `delay`) to `TooltipTrigger` / `TooltipContent` through context. Renders nothing itself and never clones children.
+
+| Prop       | Type              | Description                                                    |
+| ---------- | ----------------- | -------------------------------------------------------------- |
+| `children` | `React.ReactNode` | A `TooltipTrigger` and a `TooltipContent` pair                 |
+| `delay`    | `number`          | Delay in milliseconds before hiding tooltip, defaults to `100` |
+
+---
+
+### Composable Components
+
+#### TooltipTrigger
+
+The trigger button with built-in hover and focus show/hide logic. Inside a `Tooltip` it inherits the wiring from context; standalone, pass `popoverId` / `anchorName` explicitly. Any element can be assembled from the parts instead — `TooltipTrigger` is just the ready-made button.
+
+| Prop         | Type                             | Description                                                                                                                      |
+| ------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `popoverId`  | `string`                         | The content element id to show/hide; falls back to the `Tooltip` context                                                         |
+| `anchorName` | `string`                         | Anchor name set on the trigger as `data-anchor-name`, matched by the content's `anchorName`; falls back to the `Tooltip` context |
+| `delay`      | `number`                         | Hide delay in milliseconds; falls back to the `Tooltip` context, defaults to `100`                                               |
+| `className`  | `string`                         | Custom CSS class                                                                                                                 |
+| `style`      | `React.CSSProperties`            | Custom inline styles                                                                                                             |
+| `...props`   | `React.ComponentProps<"button">` | Supports all native button props (except `className`, `style`)                                                                   |
+
+#### TooltipContent
+
+The tooltip bubble rendered inline with `popover="manual"` (the top layer escapes ancestor `overflow` clipping) and positioned by the built-in JS engine — see [Float positioning](/en/docs/utils/use-floating-panel).
+
+| Prop         | Type                          | Description                                                                                                                 |
+| ------------ | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `id`         | `string`                      | Element id referenced by the trigger's `popoverId`; falls back to the `Tooltip` context                                     |
+| `anchorName` | `string`                      | Trigger's anchor name (its `data-anchor-name`), matched by the built-in JS positioning; falls back to the `Tooltip` context |
+| `delay`      | `number`                      | Hide delay in milliseconds for pointer interactions; falls back to the `Tooltip` context, defaults to `100`                 |
+| `className`  | `string`                      | Custom CSS class                                                                                                            |
+| `style`      | `React.CSSProperties`         | Custom inline styles; positioning itself is managed by the built-in JS engine                                               |
+| `ref`        | `React.Ref<HTMLDivElement>`   | Ref to the popover element for imperative `showPopover()` and `hidePopover()` calls                                         |
+| `...props`   | `React.ComponentProps<"div">` | Supports all native div props (except `className`, `style`, `id`)                                                           |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Tab` | Focusing the trigger shows the tooltip |
+| Focus out | Moving focus off the trigger hides it |
+
+There is no `Escape` handling — the tooltip hides when focus leaves the trigger or the pointer moves away.
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-anchor-name]` | On the trigger button — the resolved `anchorName`; absent when none is set |
+| `[data-float-anchor]` | On the content — the same anchor name; the positioning engine looks the trigger up by it |
+| `[data-float-side]` | On the content — `"top"`, written as a constant |
+| `[data-float-align]` | On the content — `"center"`, written as a constant |
+| `[data-float-gap]` | On the content — `4`, written as a constant |
+
+Viewport overflow flips the tooltip to the other side inside the positioning math; these attributes are never rewritten.

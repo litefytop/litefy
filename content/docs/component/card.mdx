@@ -1,0 +1,52 @@
+---
+title: Card
+description: Two role forms on one card frame — a static card and a clickable card.
+---
+
+## Installation
+
+<Installation name="card" />
+
+## Usage
+
+The static card — rounded corners, a hairline border and a block shadow, with no interactive states; content stacks vertically with a built-in default gap.
+
+<ComponentPreview
+  name="card-basic"
+/>
+
+### Clickable card
+
+CardButton turns the whole card into a button — a single outline look; hover lifts, pressing flattens, and a focus ring is built in.
+
+<ComponentPreview
+  name="card-button"
+/>
+
+## API Reference
+
+### Card
+
+A static card container: the content wrapper stacks vertically with a built-in default gap (`gap-4`), and `classNames.inner` replaces the wrapper classes wholesale.
+
+| Prop         | Type                          | Description                                                                                             |
+| ------------ | ----------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `children`   | `React.ReactNode`             | Card content                                                                                            |
+| `className`  | `string`                      | Custom class names of the card                                                                          |
+| `classNames` | `{ inner?: string }`          | Class channel for the content wrapper; the default string stacks vertically and carries the default gap |
+| `...props`   | `React.ComponentProps<"div">` | Supports all native div props                                                                           |
+
+### CardButton
+
+A clickable card rendered as a `<button>` — full width by default, text left-aligned.
+
+| Prop         | Type                                    | Description                                   |
+| ------------ | --------------------------------------- | --------------------------------------------- |
+| `type`       | `"button" \| "submit" \| "reset"`       | Button type, defaults to `"button"`           |
+| `children`   | `React.ReactNode`                       | Card content                                  |
+| `className`  | `string`                                | Custom class names of the button              |
+| `...props`   | `React.ComponentProps<"button">`        | Supports all native button props              |
+
+## Keyboard Interactions
+
+Card handles no keys and is not focusable. CardButton is a native `<button>` — `Enter` / `Space` activate it, `Tab` reaches it in DOM order.

@@ -1,0 +1,45 @@
+---
+title: Progress
+description: A pure UI progress bar that renders only the one reading you hand it — polling cadence and estimation belong to the business side
+---
+
+## Installation
+
+<Installation name="progress" />
+
+## Usage
+
+A pure UI progress bar: shows the reading you pass in, no more accurate than your last poll — an 8px borderless inline bar with a trailing percent readout for quiet spots like cards and list rows.
+
+<ComponentPreview
+  name="progress-basic"
+/>
+
+## API Reference
+
+### Progress
+
+| Prop         | Type                                                | Description                                                                                                                                                                  |
+| :----------- | :-------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `current`    | `number`                                            | Width percentage (0–100, clamped when out of range), the single source of truth for the bar                                                                                  |
+| `isAbort`    | `boolean`                                           | Abort: the last reading stays on screen and the fill switches to the danger semantic color; takes precedence over `paused`, defaults to `false`                              |
+| `isComplete` | `boolean`                                           | Complete: forces the width to 100%; takes precedence over `paused`, defaults to `false`                                                                                      |
+| `paused`     | `boolean`                                           | Paused: the reading freezes and the fill switches to the warning semantic color; the lowest precedence of the three states, defaults to `false`                              |
+| `hideValue`  | `boolean`                                           | Hides the trailing percent readout; the readout is `aria-hidden` and the progress value is always expressed by `aria-valuenow`, defaults to `false`                          |
+| `className`  | `string`                                            | Custom class name, applied to the root element                                                                                                                               |
+| `classNames` | `{ track?: string; fill?: string; value?: string }` | Custom class names, applied to the track, the fill and the readout respectively                                                                                              |
+
+Other native `<div>` props (`aria-label`, `data-*`, `id`, inline `style`...) are accepted as well and land on the root element; `--litefy-percent` in the root element's inline style is reserved by the component.
+
+## Keyboard Interactions
+
+This component takes over no keys.
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-abort]` | On the root element — present when `isAbort` |
+| `[data-complete]` | On the root element — present when `isComplete` |
+| `[data-paused]` | On the root element — present when `paused` |
+| `[data-variant]` | Set by the consumer: default is the inline bar, `meter` the standalone meter box |

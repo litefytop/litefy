@@ -1,0 +1,85 @@
+---
+title: Input
+description: An input component with leading/trailing slots and validation states
+---
+
+## Installation
+
+<Installation name="input" />
+
+## Usage
+
+Input fields for different data types.
+
+<ComponentPreview 
+  name="input-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Input
+
+The input component with slots and validation support.
+
+| Prop              | Type                                                                                            | Description                                                                                                                                                    |
+| ----------------- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`            | `'text' \| 'email' \| 'url' \| 'tel' \| 'search'`                                               | Input type                                                                                                                                                     |
+| `leading`         | `ReactNode`                                                                                     | Leading slot content (e.g., icons)                                                                                                                             |
+| `trailing`        | `ReactNode`                                                                                     | Trailing slot content (e.g., buttons, icons)                                                                                                                   |
+| `invalid`         | `boolean`                                                                                       | Whether the input is in an invalid state                                                                                                                       |
+| `label`           | `React.ReactNode`                                                                               | Field label rendered above the input; its `htmlFor` points at the input                                                                                        |
+| `description`     | `React.ReactNode`                                                                               | Helper text rendered below the input; replaced by the error message when validation fails                                                                      |
+| `validate`        | `(value: string) => FieldValidateResult`                                                        | Validation function; a string is the error message, `false` marks invalid with no message, `null`/`true` passes; passing it switches the input into field mode |
+| `validateTrigger` | `'submit' \| 'change' \| 'blur'`                                                                | When validation runs; on submit all fields gate together, and a field with an existing error revalidates on change, defaults to `'submit'`                     |
+| `className`       | `string`                                                                                        | Custom class names, applied to the shell container                                                                                                             |
+| `style`           | `React.CSSProperties`                                                                           | Inline styles, applied to the shell container                                                                                                                  |
+| `classNames`      | `{ group?: string; leading?: string; trailing?: string; root?: string }`                        | Custom class names for the group shell (`group`), the leading/trailing slots and the inner input (`root`)                                                      |
+| `styles`          | `{ leading?: React.CSSProperties; trailing?: React.CSSProperties; root?: React.CSSProperties }` | Inline styles for the leading/trailing slots and the inner input (`root`)                                                                                      |
+| `...props`        | `React.ComponentProps<"input">`                                                                 | Supports all native input props (except `type`, `className`)                                                                                                   |
+
+---
+
+### Composable Components
+
+The three parts assembled inside the composite, for building your own input; each takes `className` and spreads native props onto its element.
+
+#### InputRoot
+
+The native input. Generates its own `id` when none is passed, so a label can point at it.
+
+| Prop        | Type                            | Description                                          |
+| ----------- | ------------------------------- | ---------------------------------------------------- |
+| `className` | `string`                        | Custom CSS class                                     |
+| `...props`  | `React.ComponentProps<"input">` | Supports all native input props (except `className`) |
+
+#### InputLeading
+
+The slot before the input, for icons and other cues.
+
+| Prop        | Type                           | Description                              |
+| ----------- | ------------------------------ | ---------------------------------------- |
+| `className` | `string`                       | Custom CSS class                         |
+| `...props`  | `React.ComponentProps<"span">` | Supports all native span props           |
+
+#### InputTrailing
+
+The slot after the input, for buttons, icons and other cues.
+
+| Prop        | Type                           | Description                              |
+| ----------- | ------------------------------ | ---------------------------------------- |
+| `className` | `string`                       | Custom CSS class                         |
+| `...props`  | `React.ComponentProps<"span">` | Supports all native span props           |
+
+## Keyboard Interactions
+
+The component handles no keys. No part attaches `onKeyDown` — every key is handled by the native `<input>`, `Enter` included (which submits the wrapping form the way HTML prescribes).
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-invalid]` | On the shell — present when the field is invalid |

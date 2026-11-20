@@ -1,0 +1,67 @@
+---
+title: Separator
+description: A separator component supporting horizontal and vertical orientations, with text label and composable assembly
+---
+
+## Installation
+
+<Installation name="separator" />
+
+## Usage
+A line, or a line–text–line divider when `children` is passed.
+
+<ComponentPreview
+  name="separator-basic"
+/>
+
+Vertical separators stretch to fill their flex row's height and rely on `gap` for spacing.
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite component.
+
+#### Separator
+
+Renders a single line, or a line–text–line divider when `children` is passed.
+
+| Prop          | Type                                    | Description                                              |
+| ------------- | --------------------------------------- | -------------------------------------------------------- |
+| `children`    | `React.ReactNode`                       | Text label rendered between two lines                    |
+| `orientation` | `'horizontal' \| 'vertical'`            | Orientation of the separator, defaults to `'horizontal'` |
+| `className`   | `string`                                | Custom class names, applied to the line or the wrapper   |
+| `classNames`  | `{ line?, text?: string }`              | Custom classes for the lines and the text label          |
+| `styles`      | `{ line?, text?: React.CSSProperties }` | Inline styles for the lines and the text label           |
+
+---
+
+### Composable Components
+
+#### SeparatorLine
+
+The line part, sized by its own `data-orientation`. Vertical lines stretch to the flex row's height, or pin them with a fixed height.
+
+| Prop          | Type                          | Description                                         |
+| ------------- | ----------------------------- | --------------------------------------------------- |
+| `orientation` | `'horizontal' \| 'vertical'`  | Orientation of the line, defaults to `'horizontal'` |
+| `className`   | `string`                      | Custom CSS class                                    |
+| `...props`    | `React.ComponentProps<"div">` | Supports all native div props, such as `role`       |
+
+#### SeparatorText
+
+The text label part, styled for sitting between two lines.
+
+| Prop        | Type                           | Description                                        |
+| ----------- | ------------------------------ | -------------------------------------------------- |
+| `className` | `string`                       | Custom CSS class                                   |
+| `...props`  | `React.ComponentProps<"span">` | Supports all native span props, such as `children` |
+
+## Keyboard Interactions
+
+The skeleton handles no keys.
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-orientation]` | On the line and the composed root — `"horizontal"` or `"vertical"`, mirrors the `orientation` prop |

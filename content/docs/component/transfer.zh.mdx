@@ -1,0 +1,59 @@
+---
+title: Transfer 穿梭框
+description: 双面板穿梭框，通过复选框勾选在来源与目标列表之间移动条目
+---
+
+## 安装
+
+<Installation name="transfer" />
+
+## 用法
+
+双面板穿梭：`dataSource` 为全部条目，`value` 为目标面板条目。
+
+<ComponentPreview
+  name="transfer-basic"
+/>
+
+## API 参考
+
+### Transfer
+
+双面板穿梭框组件，管理受控/非受控值状态，渲染来源/目标面板与移动按钮。
+
+| 属性               | 类型                                                                            | 描述                                            |
+| :--------------- | :---------------------------------------------------------------------------- | :-------------------------------------------- |
+| `dataSource`     | `TransferItemConfig[]`                                                        | 所有可用条目                                        |
+| `value`          | `string[]`                                                                    | 受控值 —— 当前位于目标面板的条目值                           |
+| `defaultValue`   | `string[]`                                                                    | 默认目标值（非受控），默认 `[]`                            |
+| `onChange`       | `(value: string[]) => void`                                                   | 任一方向移动条目后触发                                   |
+| `titles`         | `[React.ReactNode, React.ReactNode]`                                          | 来源与目标面板的标题，默认 `Source` / `Target`             |
+| `renderItem`     | `(item: TransferItemConfig) => React.ReactNode`                               | 自定义条目渲染，两个面板同时生效                              |
+| `moveRightLabel` | `string`                                                                      | 本组件自带的右移按钮的可访问名称，默认 `'Move right'`            |
+| `moveLeftLabel`  | `string`                                                                      | 本组件自带的左移按钮的可访问名称，默认 `'Move left'`             |
+| `className`      | `string`                                                                      | 自定义类名，应用于根元素                                  |
+| `classNames`     | `panel` / `header` / `count` / `body` / `empty` / `item` / `actions` / `move` | 按部件自定义类名                                      |
+
+### TransferItemConfig
+
+穿梭框来源条目的数据结构。
+
+| 字段         | 类型                | 描述                                                      |
+| :--------- | :---------------- | :------------------------------------------------------ |
+| `label`    | `React.ReactNode` | 条目显示内容                                                  |
+| `value`    | `string`          | 唯一标识值                                                   |
+| `disabled` | `boolean`         | 禁用条目 —— 留在来源面板，无法勾选或移动，默认 `false`                       |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Tab` | 依次到达每个条目的复选框，然后是两个移动按钮；某一侧没有勾选时该侧按钮为 `disabled`，不进入 Tab 序 |
+| `Space` | 切换聚焦的复选框——原生 `<input type="checkbox">` 行为 |
+| `Enter` | 切换聚焦的复选框——`CheckboxRoot` 调用 `preventDefault()` 并点击该 input |
+
+方向键不移动任何条目：方向键遍历属于 `CheckboxGroup`，而 `Transfer` 渲染的是独立的 `Checkbox` 条目。
+
+## 数据属性
+
+骨架不在本组件上发射任何 `data-*`。

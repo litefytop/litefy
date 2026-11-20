@@ -1,0 +1,61 @@
+---
+title: Accordion 手风琴
+description: 数据驱动的折叠面板组，支持单开与多开两种模式
+---
+
+## 安装
+
+<Installation name="accordion" />
+
+## 用法
+
+数据驱动的折叠面板组，默认互斥，开启 `multiple` 后可同时展开多个面板。
+
+<ComponentPreview
+  name="accordion-basic"
+/>
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Accordion
+
+折叠面板组。默认互斥模式（同一时间最多展开一个面板）；添加 `multiple` 属性后切换为多选模式。`activeKeys` 类型随模式切换：互斥为 `string`，多选为 `string[]`。
+
+| 属性                  | 类型                                                                                                                                                                                                                                                                                                         | 描述                                                     |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| `items`             | `CollapseItemConfig[]`                                                                                                                                                                                                                                                                                     | 折叠面板配置项数组 **必填**                                       |
+| `multiple`          | `boolean`                                                                                                                                                                                                                                                                                                  | 开启多选模式，多个面板可以同时展开，默认 `false`                           |
+| `defaultActiveKeys` | `string` \| `string[]`                                                                                                                                                                                                                                                                                     | 默认展开项（非受控）。互斥：`string`；多选：`string[]`                   |
+| `activeKeys`        | `string` \| `string[]`                                                                                                                                                                                                                                                                                     | 当前展开项（受控）。互斥：`string`；多选：`string[]`                    |
+| `onKeyChange`       | `(value: string \| undefined) => void` \| `(values: string[]) => void`                                                                                                                                                                                                                                     | 展开项变化回调                                                |
+| `common`            | `{ className?: string; classNames?: { trigger?: string; icon?: string; panel?: string; body?: string }; styles?: { trigger?: React.CSSProperties; icon?: React.CSSProperties; panel?: React.CSSProperties; body?: React.CSSProperties }; icon?: React.ReactNode \| ((open: boolean) => React.ReactNode) }` | 统一应用到每个选项的配置，子项自身的 `className`/`classNames`/`icon` 优先  |
+| `className`         | `string`                                                                                                                                                                                                                                                                                                   | 容器自定义样式                                                |
+| `...props`          | `React.ComponentProps<"div">`                                                                                                                                                                                                                                                                              | 支持全部 div 原生属性                                          |
+
+#### CollapseItemConfig
+
+继承除 `children`、`open`、`onOpenChange`、`itemKey` 外的所有 `Collapse` 属性。
+
+| 字段        | 类型                                                        | 描述                                         |
+| --------- | --------------------------------------------------------- | ------------------------------------------ |
+| `itemKey` | `string`                                                  | 项目唯一标识符 **必填**                             |
+| `panel`   | `React.ReactNode`                                         | 内容面板显示内容 **必填**                            |
+| `label`   | `React.ReactNode \| ((open: boolean) => React.ReactNode)` | 头部触发器显示内容，支持函数接收 open 状态                   |
+| `icon`    | `React.ReactNode \| ((open: boolean) => React.ReactNode)` | 展开收起图标，支持函数接收 open 状态，默认 `ChevronDown`     |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Enter` / `Space` | 由原生 `<button>` 激活当前聚焦的触发器；骨架不接管任何按键 |
+| `Tab` | 按 DOM 顺序依次到达各触发器。收起的面板仍然挂载——`<section>` 只裁切高度——其内可聚焦元素保持在 Tab 序中；是否移出由加载的方案决定 |
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-open]` | 位于面板上——取值 `"true"` 或 `"false"`，驱动展开/收起动画；默认折叠图标上同样携带 |

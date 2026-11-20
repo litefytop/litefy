@@ -1,0 +1,85 @@
+---
+title: Timeline 时间轴
+description: 垂直时间轴，标记、连接线、时间、标题与描述的纯展示组件
+---
+
+## 安装
+
+<Installation name="timeline" />
+
+## 用法
+
+纯展示组件，无需受控状态 —— 通过 `items` 定义条目，连接线自动终止于最后一项。
+
+<ComponentPreview
+  name="timeline-basic"
+/>
+
+### 自定义标记
+
+在条目上传入 `marker`（常见为图标）即可替换默认标记；`orientation="horizontal"` 切横向排列。
+
+<ComponentPreview
+  name="timeline-marker"
+/>
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Timeline
+
+| 属性           | 类型                                                                                         | 描述                       |
+| :----------- | :----------------------------------------------------------------------------------------- | :----------------------- |
+| `items`      | `TimelineItemConfig[]`                                                                     | 时间轴条目定义                  |
+| `className`  | `string`                                                                                   | 自定义类名，应用于根元素             |
+| `classNames` | `item` / `spine` / `marker` / `connector` / `content` / `time` / `heading` / `description` | 按插槽自定义类名                 |
+| `styles`     | 同上插槽，值为 `React.CSSProperties`                                                              | 按插槽自定义内联样式               |
+
+#### TimelineItemConfig
+
+| 字段            | 类型                | 描述                                               |
+| :------------ | :---------------- | :----------------------------------------------- |
+| `marker`      | `React.ReactNode` | 可选的自定义标记内容（如图标）；不传时由方案给出默认标记                     |
+| `time`        | `React.ReactNode` | 可选的时间文本                                          |
+| `heading`     | `React.ReactNode` | 标题                                               |
+| `description` | `React.ReactNode` | 可选的描述文本                                          |
+
+### 可组合组件
+
+零件继承原生 DOM 属性；每个插槽的 `classNames` 覆写会与你传入的 `className` 合并，因此传入 `className` 是扩展默认值而非替换。
+
+#### TimelineRoot
+
+外层 `<ol>` flex 容器（列表语义来自原生元素）。
+
+| 属性          | 类型                           | 描述           |
+| :---------- | :--------------------------- | :----------- |
+| `className` | `string`                     | 自定义类名        |
+| `...props`  | `React.ComponentProps<"ol">` | 原生 ol 属性     |
+
+#### TimelineItem
+
+单个条目：标记、连接线（`connector` 控制）、时间、标题与可选描述。
+
+| 属性            | 类型                                                                                         | 描述                                         |
+| :------------ | :----------------------------------------------------------------------------------------- | :----------------------------------------- |
+| `connector`   | `boolean`                                                                                  | 是否渲染标记下方的连接线，默认 `true`                     |
+| `marker`      | `React.ReactNode`                                                                          | 可选的自定义标记内容；不传时由方案给出默认标记                    |
+| `time`        | `React.ReactNode`                                                                          | 可选的时间文本                                    |
+| `heading`     | `React.ReactNode`                                                                          | 标题                                         |
+| `description` | `React.ReactNode`                                                                          | 可选的描述文本                                    |
+| `className`   | `string`                                                                                   | 自定义类名，应用于条目                                |
+| `classNames`  | `item` / `spine` / `marker` / `connector` / `content` / `time` / `heading` / `description` | 按插槽自定义类名                                   |
+| `styles`      | 同上插槽，值为 `React.CSSProperties`                                                              | 按插槽自定义内联样式                                 |
+| `...props`    | `React.ComponentProps<"li">`                                                               | 原生 li 属性                                   |
+
+## 键盘交互
+
+本组件不接管任何按键。它不挂按键处理器，也不渲染可聚焦元素——根 `<ol>`、每个条目与各个插槽都只是普通容器。落在 `marker`、`time`、`heading` 或 `description` 节点上的按键归你放进去的内容所有。
+
+## 数据属性
+
+骨架不在本组件上发射任何 `data-*`。

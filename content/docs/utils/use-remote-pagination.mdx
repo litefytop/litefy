@@ -1,0 +1,60 @@
+---
+title: use-remote-pagination
+description: Debounced keyword search plus append-based pagination for remote data sources
+---
+
+## Installation
+
+<Installation name="use-remote-pagination" />
+
+## Usage
+
+Pair a debounced `search` with `loadMore` to query remote sources. The same fetcher handles both; a single in-flight request guard prevents duplicated fetches.
+
+<ComponentPreview
+  name="use-remote-pagination-basic"
+/>
+
+## API Reference
+
+### useRemotePagination
+
+```ts
+function useRemotePagination(opts: UseRemotePaginationOptions): UseRemotePaginationResult
+```
+
+#### UseRemotePaginationOptions
+
+| Property     | Type                 | Description                                                                        |
+| ------------ | -------------------- | ---------------------------------------------------------------------------------- |
+| `fetcher`    | `RemotePaginationFn` | Async function receiving `{ page, size, keyword }` and returning `{ list, total }` |
+| `debounceMs` | `number`             | Debounce delay for `search`, defaults to `300`                                     |
+| `pageSize`   | `number`             | Items requested per page, defaults to `20`                                         |
+
+#### RemotePaginationFn
+
+```ts
+type RemotePaginationFn = (params: {
+  page: number;
+  size: number;
+  keyword: string;
+}) => Promise<{ list: string[]; total: number }>;
+```
+
+#### UseRemotePaginationResult
+
+| Property | Type | Description |
+|------|------|-------------|
+| `data` | `string[]` | Accumulated list; replaced on search, appended on loadMore |
+| `loading` | `boolean` | Whether a request is in flight |
+| `isSearching` | `boolean` | Whether a fresh (page 1) request is in flight, for showing search placeholders |
+| `hasMore` | `boolean` | Whether more pages remain, derived from `list.length < total` |
+| `search` | `(keyword: string) => void` | Debounced keyword search; resets to page 1 and replaces `data` |
+| `loadMore` | `() => void` | Fetch the next page with the current keyword and append |
+| `reset` | `() => void` | Clear data and restore the initial state |
+
+**Notes:**
+
+- The fetcher response shape is fixed to `{ list, total }`; map your API response to this shape before returning.
+- `list` items are typed as `string[]` in this version; key them uniquely downstream.
+- Only one request runs at a time; concurrent triggers are dropped rather than queued.

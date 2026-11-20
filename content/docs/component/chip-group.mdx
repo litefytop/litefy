@@ -1,0 +1,44 @@
+---
+title: Chip Group
+description: A primitive component that automatically collapses overflowing chips, exposing the hidden set via renderMore / onOverflowChange for consumer-side composition
+---
+
+## Installation
+
+<Installation name="chip-group" />
+
+## Usage
+
+Renders chips, collapses the overflow, and hands the hidden items to `renderMore(hidden)`.
+
+<ComponentPreview
+  name="chip-group-basic"
+/>
+
+## API Reference
+
+### ChipGroup
+
+| Prop               | Type                                          | Description                                                                                                                                                                                               |
+| :----------------- | :-------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`            | `ChipItem[]`                                  | All chip items                                                                                                                                                                                            |
+| `onOverflowChange` | `(hidden: ChipItem[]) => void`                | Fired when the hidden set changes, carrying the hidden items                                                                                                                                              |
+| `renderMore`       | `(hidden: ChipItem[]) => React.ReactNode`     | Renders a custom trigger inline; `hidden` is the collapsed items                                                                                                                                          |
+| `className`        | `string`                                      | Custom class names, applied to the outer container (set `max-width` here)                                                                                                                                 |
+| `style`            | `React.CSSProperties`                         | Inline styles on the outer container                                                                                                                                                                      |
+| `classNames`       | `row` / `chip` / `more` / `measure`           | Custom class names per slot (`row` chip row / `chip` one chip / `more` overflow trigger / `measure` hidden measure row); `chip` lands on both the visible row's chips and the off-screen measurement copy |
+
+### ChipItem
+
+| Field   | Type              | Description                      |
+| :------ | :---------------- | :------------------------------- |
+| `value` | `string`          | Unique identity                  |
+| `label` | `React.ReactNode` | Chip text                        |
+
+## Keyboard Interactions
+
+The skeleton handles no keys. Each chip is a non-focusable `<span>`, so only the content you pass to `renderMore` joins the tab order.
+
+## Data Attributes
+
+The skeleton emits no `data-*` on this component. The off-screen measurement row carries `aria-hidden`.

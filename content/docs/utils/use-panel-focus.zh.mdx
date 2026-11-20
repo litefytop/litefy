@@ -1,0 +1,48 @@
+---
+title: use-panel-focus 面板焦点
+description: Picker 面板的真实焦点键盘接线 —— ArrowDown / ArrowUp 将焦点移入面板的第一个或最后一个可聚焦元素
+---
+
+## 安装
+
+<Installation name="use-panel-focus" />
+
+## 用法
+
+真实可聚焦面板的焦点管理：方向键在面板首尾元素间移动。
+
+```tsx
+import { Picker, usePanelFocus } from "@/ui";
+
+function PanelPicker() {
+  const [open, setOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const handlePanelArrowKeys = usePanelFocus({ open, panelRef });
+
+  return (
+    <Picker
+      open={open}
+      onOpenChange={setOpen}
+      panelRef={panelRef}
+      onKeyDown={handlePanelArrowKeys}
+    >
+      
+    </Picker>
+  );
+}
+```
+
+## API 参考
+
+### 选项（`UsePanelFocusOptions`）
+
+| Option     | Type                                     | Description                                     |
+| :--------- | :--------------------------------------- | :---------------------------------------------- |
+| `open`     | `boolean`                                | Picker 面板是否打开                                   |
+| `panelRef` | `React.RefObject<HTMLElement \| null>`   | 面板元素的 ref（即 Picker 的 `panelRef`）                |
+
+### 返回值
+
+| Member          | Type                                                  | Description                                              |
+| :-------------- | :---------------------------------------------------- | :------------------------------------------------------- |
+| `handleKeyDown` | `(e: React.KeyboardEvent<HTMLInputElement>) => void`  | 接到 Picker 的 `onKeyDown` 上；`ArrowDown` → 第一个元素，`ArrowUp` → 最后一个；面板内无可聚焦元素时回落到面板本身 |

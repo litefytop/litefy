@@ -1,0 +1,104 @@
+---
+title: Popover
+description: A button-triggered floating panel built on the native Popover API and a built-in JS positioning engine — the base for dropdown-menu compositions
+---
+
+## Installation
+
+<Installation name="popover" />
+
+## Usage
+
+A basic part: the `trigger` opens the panel and the content is fully custom; not a menu.
+
+<ComponentPreview
+  name="popover-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+#### Popover
+
+Renders a native trigger button (`type="button"`, `aria-expanded`, `aria-haspopup`) plus the floating panel, positioned by the built-in JS positioning engine. `aria-haspopup` defaults to `menu`; declare the panel's real kind by putting the native attribute on `Popover` itself (e.g. `aria-haspopup="dialog"`, or `"false"` for a read-only disclosure) — it is not a prop, so your value wins. An icon-only `trigger` (a single element) is auto-detected: the trigger renders through `Button`, so it emits `data-pure-icon`. Pass the icon node directly with an `aria-label` — do not wrap it in another element.
+
+| Prop           | Type                                                                              | Description                                                                                                                                                    |
+| :------------- | :-------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `trigger`      | `React.ReactNode`                                                                 | Content of the trigger button                                                                                                                                  |
+| `children`     | `React.ReactNode`                                                                 | Panel content                                                                                                                                                  |
+| `open`         | `boolean`                                                                         | Controlled panel state                                                                                                                                         |
+| `defaultOpen`  | `boolean`                                                                         | Initial panel state (uncontrolled), defaults to `false`                                                                                                        |
+| `onOpenChange` | `(open: boolean) => void`                                                         | Fired when the panel opens or closes                                                                                                                           |
+| `alignX`       | `"start" \| "end" \| "center"`                                                    | Horizontal alignment of the panel relative to the trigger, defaults to `center`                                                                                |
+| `placement`    | `{ side?; align?; gap?; matchWidth? }`                                            | Overrides the docking derived from `alignX` (built-in JS positioning)                                                                                          |
+| `mode`         | `"click" \| "hover"`                                                              | Trigger interaction mode; `hover` opens on pointer enter / trigger focus and closes after a delayed pointer leave, defaults to `click`                         |
+| `classNames`   | `{ trigger?: string; content?: string }`                                          | Custom class names per slot — merged over the loaded scheme skin's own trigger/panel classes (the skin exports `popoverClasses`); on conflicts your values win |
+| `styles`       | `{ trigger?: React.CSSProperties; content?: React.CSSProperties }`                | Inline styles per slot (positioning itself is managed internally)                                                                                              |
+
+---
+
+### Hooks
+
+#### usePopoverTrigger
+
+Wires a custom trigger element and a panel into the popover state; spread `triggerProps` onto the trigger element (it carries the `data-anchor-name` attribute), then pass the returned `anchorName` to `PopoverContent`'s `anchorName` prop for alignment.
+
+Options (`UsePopoverTriggerOptions`):
+
+| Option            | Type                   | Description                                                          |
+| :---------------- | :--------------------- | :------------------------------------------------------------------- |
+| `open`            | `boolean`              | Current panel state                                                  |
+| `onOpenChange`    | `(v: boolean) => void` | State updater the hook calls to open or close                        |
+| `mode`            | `"click" \| "hover"`   | Interaction mode, defaults to `click`                                |
+| `hoverDelayOpen`  | `number`               | Delay in ms from pointer enter to open (hover mode), defaults to `0` |
+| `hoverDelayClose` | `number`               | Delay in ms from pointer leave to close, defaults to `200`           |
+
+Returns:
+
+| Member          | Type         | Description                                                                                                                                                        |
+| :-------------- | :----------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `triggerProps`  | `object`     | Props to spread on the trigger element: `aria-haspopup` (default `menu`), `aria-expanded`, the `data-anchor-name` attribute, and click / hover / focus / keyboard handlers |
+| `contentProps`  | `object`     | Props to spread on the panel: in hover mode, pointer enter cancels the pending close timer and pointer leave schedules it again                                      |
+| `clearTimer`    | `() => void` | Cancels any pending hover open/close timer                                                                                                                         |
+| `scheduleOpen`  | `() => void` | Opens the panel, honoring the `hoverDelayOpen` delay                                                                                                               |
+| `scheduleClose` | `() => void` | Closes the panel after `hoverDelayClose` ms                                                                                                                        |
+| `anchorName`    | `string`     | The generated anchor name (e.g. `--popover-trigger-abc123`); pass it to the panel's `anchorName` prop                                                              |
+
+---
+
+### Composable Components
+
+#### PopoverContent
+
+The floating panel: a `popover="manual"` div that writes the positioning result as `data-float-*` (`anchor`, `x`, `y`, `side`, `align`, `gap`, `match-width`); a consumer `onKeyDown` composes with the built-in `Escape` handling — call `preventDefault()` to skip the built-in behavior.
+
+| Prop           | Type                                   | Description                                                                                                                                |
+| :------------- | :------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------- |
+| `open`         | `boolean`                              | Controls the panel; `true` calls `showPopover()`, `false` calls `hidePopover()`                                                            |
+| `onOpenChange` | `(open: boolean) => void`              | Called on `Escape` inside the panel or a `mousedown` outside it                                                                            |
+| `alignX`       | `"start" \| "end" \| "center"`         | Docking preset: always opens downward, with `start`/`center`/`end` aligning left, center, or right under the trigger, defaults to `center` |
+| `anchorName`   | `string`                               | Name of the element to anchor positioning to (its `data-anchor-name` attribute)                                                            |
+| `anchorPoint`  | `{ x: number; y: number }`             | Anchor by viewport coordinates (e.g. mouse position); takes precedence over `anchorName`                                                   |
+| `placement`    | `{ side?; align?; gap?; matchWidth? }` | Overrides the docking derived from `alignX`                                                                                                |
+| `className`    | `string`                               | Custom class names                                                                                                                         |
+| `style`        | `React.CSSProperties`                  | Custom inline styles; positioning itself is managed by the built-in JS engine ([Float positioning](/en/docs/utils/use-floating-panel))    |
+| `ref`          | `React.Ref<HTMLDivElement>`            | Forwards to the panel div                                                                                                                  |
+| `...props`     | `React.ComponentProps<"div">`          | Supports all native div props (except `className`), such as `role`, `id`, `onKeyDown`                                                      |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Escape` | Closes the panel; a consumer `onKeyDown` on the content can skip the built-in behavior via `preventDefault()` |
+| `ArrowDown` / `Space` | Opens the panel from the trigger (click mode) |
+| `Focus` | In hover mode, focusing the trigger opens the panel without a key press |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-float-side]` | On the content panel — the requested side, `"top"`, `"bottom"`, `"left"` or `"right"`; the engine may flip sides without rewriting this attribute ([Float positioning](/en/docs/utils/use-floating-panel)) |
+| `[data-float-align]` | On the content panel — the requested alignment, `"start"`, `"center"` or `"end"` |
+
+Open state is exposed by the native popover (`:popover-open`), not a data attribute.

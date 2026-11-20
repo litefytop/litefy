@@ -1,0 +1,106 @@
+---
+title: Slider
+description: A simulated slider with horizontal and vertical orientations, pointer dragging and keyboard support
+---
+
+## Installation
+
+<Installation name="slider" />
+
+## Usage
+
+A div-simulated slider: label, track and value on one row, value text always visible and hideable via `hideValue`; orientation is fixed: horizontal without `orientation`, vertical must be explicit.
+
+<ComponentPreview
+  name="slider-basic"
+/>
+
+### Variants
+
+`data-variant="cell"` switches to the cell form — a thick track (surface base + primary active fill) with a fully transparent thumb (no visible content rendered in any state); the label and value sit outside the track on both sides.
+
+<ComponentPreview
+  name="slider-variants"
+/>
+
+## API Reference
+
+### High-level Components
+
+#### Slider
+
+A simulated slider built from the parts below, encapsulating all state and interaction logic. The value is structurally clamped to `min` / `max`, so there is no invalid state to validate.
+
+| Prop           | Type                                                 | Description                                                                                                                                                                                                                     |
+| -------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`        | `number`                                             | Current value (controlled)                                                                                                                                                                                                      |
+| `defaultValue` | `number`                                             | Initial value (uncontrolled), defaults to `0`                                                                                                                                                                                   |
+| `onChange`     | `(val: number) => void`                              | Called when the value changes by dragging, track click or keyboard                                                                                                                                                              |
+| `min`          | `number`                                             | Minimum value, defaults to `0`                                                                                                                                                                                                  |
+| `max`          | `number`                                             | Maximum value, defaults to `100`                                                                                                                                                                                                |
+| `step`         | `number`                                             | Step size; decimals are kept based on the step precision, defaults to `1`                                                                                                                                                       |
+| `orientation`  | `'horizontal' \| 'vertical'`                         | Track orientation; always horizontal by default, does not change with the viewport or pointer type; when a narrow screen or touch screen needs vertical, pass `orientation="vertical"` explicitly via a media query or JS condition; with vertical the minimum sits at the bottom, defaults to `'horizontal'` |
+| `disabled`     | `boolean`                                            | Disables pointer and keyboard interaction, defaults to `false`                                                                                                                                                                  |
+| `name`         | `string`                                             | Renders a hidden input for form submission                                                                                                                                                                                      |
+| `data-variant` | `'default' \| 'cell'`                                | Visual variant; `cell` is the cell form with a full-row (full-column when vertical) track and a transparent thumb, defaults to `'default'`                                                                                      |
+| `label`        | `React.ReactNode`                                    | Visible label rendered beside the start of the track, associated with the slider via `aria-labelledby`                                                                                                                          |
+| `hideValue`    | `boolean`                                            | Toggle prop, off by default (value text shown); hides the value text when enabled, defaults to `false`                                                                                                                          |
+| `id`           | `string`                                             | The slider's id, the target of the label's `htmlFor`, defaults to auto-generated                                                                                                                                               |
+| `aria-label`   | `string`                                             | Accessible label when there is no visible label; mutually exclusive with `label`                                                                                                                                                |
+| `className`    | `string`                                             | Custom class for the root                                                                                                                                                                                                       |
+| `style`        | `React.CSSProperties`                                | Custom inline style for the root                                                                                                                                                                                                |
+| `classNames`   | `{ track?; fill?; thumb?; label?; value?; bubble? }` | Custom classes per part; `label` is the visible label, `value` the value text, `bubble` the drag-increment bubble (whether it is enabled is up to the skin)                                                                     |
+| `styles`       | `{ track?; fill?; thumb?; label?; value?; bubble? }` | Custom inline styles per part                                                                                                                                                                                                   |
+
+Keyboard support follows the WAI-ARIA slider pattern: arrow keys, PageUp/PageDown, Home and End.
+
+---
+
+### Composable Components
+
+Pure display parts with no built-in state or interaction, for advanced free assembly.
+
+#### SliderRoot
+
+The outermost container.
+
+#### SliderTrack
+
+The sliding track; the high-level component emits `data-orientation` (`horizontal` / `vertical`), and the track's size and colors are defined by the loaded scheme.
+
+#### SliderFill
+
+The progress fill; positioned entirely by the consumer's inline styles.
+
+#### SliderThumb
+
+The thumb, rendered as a `<button>`; the consumer wires up the events and the `role="slider"` aria attributes.
+
+#### SliderLabel
+
+The visible label, rendered as a `<label>`; its `htmlFor` points at the slider.
+
+#### SliderValue
+
+The current value text, rendered as a `<span aria-hidden>`; the semantic value is carried by `aria-valuenow`.
+
+### Width
+
+The horizontal track flexes with its container: both the preferred length and the cap are 112 spacing units (28rem in the default scheme), and it keeps shrinking when the space runs short, without squeezing out the label and value; the whole slider floors at 32 units (8rem in the default scheme) — when the container is narrower than the floor the slider yields to it and never breaks the layout. Give the root a width (e.g. `w-full`) and the track takes all the remaining space while the label and value keep their size. Vertical uses a `w-1` track thickness with the `h-64` length tier and does not flex. All values are multiples of `--spacing` and scale together when you switch schemes.
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `ArrowRight` / `ArrowUp` | Increase by one step |
+| `ArrowLeft` / `ArrowDown` | Decrease by one step |
+| `PageUp` / `PageDown` | Large step — one tenth of the range |
+| `Home` | Jump to `min` |
+| `End` | Jump to `max` |
+| `Escape` | While dragging, cancels the drag and restores the value at drag start |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-orientation]` | On the root and the track — `"horizontal"` or `"vertical"`, matching the `orientation` prop |

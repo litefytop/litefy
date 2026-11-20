@@ -1,0 +1,93 @@
+---
+title: Switch
+description: A toggle switch component with controlled state and composable assembly
+---
+
+## Installation
+
+<Installation name="switch" />
+
+## Usage
+
+A simple toggle switch with default checked state.
+
+<ComponentPreview
+  name="switch-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite component.
+
+#### Switch
+
+| Prop              | Type                                              | Description                                                                                       |
+| :---------------- | :------------------------------------------------ | :------------------------------------------------------------------------------------------------ |
+| `children`        | `React.ReactNode`                                 | Label content rendered next to the switch                                                         |
+| `checked`         | `boolean`                                         | Controlled checked state                                                                          |
+| `defaultChecked`  | `boolean`                                         | Default checked state for uncontrolled mode, defaults to `false`                                  |
+| `onCheckedChange` | `(checked: boolean) => void`                      | Callback triggered when the checked state changes                                                 |
+| `classNames`      | `{ label?, track?, thumb?: string }`              | Custom classes for the label, track and thumb                                                     |
+| `styles`          | `{ label?, track?, thumb?: React.CSSProperties }` | Inline styles for the label, track and thumb                                                      |
+| `disabled`        | `boolean`                                         | Disable the switch, defaults to `false`                                                           |
+| `...props`        | `React.ComponentProps<"input">`                   | Supports all native input props (except `type`, `className`), such as `name`, `value`, `required` |
+
+---
+
+### Composable Components
+
+#### SwitchRoot
+
+The visually hidden native checkbox input (`sr-only`) that carries state, focus and form semantics.
+
+| Prop        | Type                            | Description                                                  |
+| :---------- | :------------------------------ | :----------------------------------------------------------- |
+| `className` | `string`                        | Custom CSS class                                             |
+| `...props`  | `React.ComponentProps<"input">` | Supports all native input props (except `type`, `className`) |
+
+#### SwitchTrack
+
+The track, rendered as a `span`. It emits no style identity of its own: `data-checked` marks the on state, and the look is whatever its `className` says (the composite feeds it `classNames.track`, which a scheme's skin fills with the frame and the checked tint).
+
+| Prop        | Type                           | Description                                                         |
+| :---------- | :----------------------------- | :------------------------------------------------------------------ |
+| `checked`   | `boolean`                      | Drives the `data-checked` attribute and styles, defaults to `false` |
+| `className` | `string`                       | Custom CSS class                                                    |
+| `children`  | `React.ReactNode`              | Track content, typically `SwitchRoot` and `SwitchThumb`             |
+| `...props`  | `React.ComponentProps<"span">` | Supports all native span props                                      |
+
+#### SwitchThumb
+
+The visual thumb rendered as a `span` that slides via `data-checked` styling.
+
+| Prop        | Type                           | Description                                              |
+| :---------- | :----------------------------- | :------------------------------------------------------- |
+| `checked`   | `boolean`                      | Drives the `data-checked` translate, defaults to `false` |
+| `className` | `string`                       | Custom CSS class                                         |
+| `...props`  | `React.ComponentProps<"span">` | Supports all native span props                           |
+
+#### SwitchLabel
+
+The label wrapper that associates the input with the track and text.
+
+| Prop        | Type                            | Description                      |
+| :---------- | :------------------------------ | :------------------------------- |
+| `className` | `string`                        | Custom CSS class                 |
+| `...props`  | `React.ComponentProps<"label">` | Supports all native label props  |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Tab` | Reaches the underlying checkbox input — native |
+| `Space` | Toggles the switch — native checkbox behaviour |
+
+The skeleton handles no other keys; unlike `Checkbox`, `Enter` does not toggle.
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-checked]` | On the track and on the thumb — present while the switch is checked |

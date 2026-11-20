@@ -1,0 +1,43 @@
+---
+title: SwatchPicker
+description: A single-select swatch group — 24px color dots in a wrapping row, with colors passed in as runtime data.
+---
+
+## Installation
+
+<Installation name="swatch-picker" />
+
+## Usage
+
+A single-select swatch group; `color` takes a CSS color value, and the selected swatch wears a ring in its own color.
+
+<ComponentPreview
+  name="swatch-picker-basic"
+/>
+
+## API Reference
+
+### SwatchPicker
+
+| Prop            | Type                                                        | Description                                                                         |
+| --------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `options`       | `{ value; label; color; disabled?; attrs? }[]` **required** | Swatch config: value, accessible name, color literal and per-item data attributes   |
+| `value`         | `string`                                                    | Current selected value (controlled)                                                 |
+| `defaultValue`  | `string`                                                    | Initial selected value (uncontrolled)                                               |
+| `onValueChange` | `(value: string) => void`                                   | Selection change callback; clicking the already-selected swatch does not fire again |
+| `disabled`      | `boolean`                                                   | Disables the whole group                                                            |
+| `className`     | `string`                                                    | Custom class name of the container                                                  |
+
+`options.attrs` is the per-item data-* attribute channel — anchor an option to a fixed ramp stop (e.g. `data-brand="default"`) so its preview does not drift with the current selection.
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `ArrowRight` / `ArrowDown` | Move focus and selection forward one swatch, wrapping |
+| `ArrowLeft` / `ArrowUp` | Move focus and selection back one swatch, wrapping |
+| `Home` / `End` | Jump to the first / last enabled swatch |
+
+## Data Attributes
+
+Selected state is expressed as `aria-checked="true"` on the swatch (driving the same-color ring) and disabled as the native `disabled` attribute — the skeleton emits no `data-*`.

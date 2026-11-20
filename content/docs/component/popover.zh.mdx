@@ -1,0 +1,104 @@
+---
+title: Popover 弹出面板
+description: 基于原生 Popover API 与内置 JS 定位引擎的按钮触发浮层面板 —— dropdown-menu 组合的底座
+---
+
+## 安装
+
+<Installation name="popover" />
+
+## 用法
+
+基础零件：`trigger` 打开面板，内容完全自定义；不是菜单。
+
+<ComponentPreview
+  name="popover-basic"
+/>
+
+## API 参考
+
+### 高阶组件
+
+#### Popover
+
+渲染一个原生触发按钮（`type="button"`、`aria-expanded`、`aria-haspopup`）加浮动面板，由内置 JS 定位引擎定位。`aria-haspopup` 默认为 `menu`；要声明面板的真实类型，直接把原生属性写在 `Popover` 上即可（如 `aria-haspopup="dialog"`，只读展示面板写 `"false"`）——它不是 prop，你写的值优先。纯图标的 `trigger`（只有一个元素）会被自动识别：触发器经由 `Button` 渲染，因此发出 `data-pure-icon`。直接传图标节点并给它 `aria-label`，外面不要再包一层元素。
+
+| 属性             | 类型                                                                                | 描述                                                                         |
+| :------------- | :-------------------------------------------------------------------------------- | :------------------------------------------------------------------------- |
+| `trigger`      | `React.ReactNode`                                                                 | 触发按钮内容                                                                     |
+| `children`     | `React.ReactNode`                                                                 | 面板内容                                                                       |
+| `open`         | `boolean`                                                                         | 受控面板状态                                                                     |
+| `defaultOpen`  | `boolean`                                                                         | 初始面板状态（非受控），默认 `false`                                                     |
+| `onOpenChange` | `(open: boolean) => void`                                                         | 面板开合时触发                                                                    |
+| `alignX`       | `"start" \| "end" \| "center"`                                                    | 面板相对触发器的水平对齐，默认 `center`                                                   |
+| `placement`    | `{ side?; align?; gap?; matchWidth? }`                                            | 覆盖 `alignX` 推导出的吸附方位（内置 JS 定位）                                             |
+| `mode`         | `"click" \| "hover"`                                                              | 触发交互模式；`hover` 在指针移入 / trigger 聚焦时打开，指针移出后延迟关闭，默认 `click`                  |
+| `classNames`   | `{ trigger?: string; content?: string }`                                          | 按插槽自定义类名——它会合并到所加载方案皮肤自带的触发器/面板类名之上（皮肤以 `popoverClasses` 导出），同类属性以你写入的为准   |
+| `styles`       | `{ trigger?: React.CSSProperties; content?: React.CSSProperties }`                | 按插槽内联样式（定位本身由组件内部管理）                                                       |
+
+---
+
+### Hooks
+
+#### usePopoverTrigger
+
+将自定义触发元素与面板接入 popover 状态；把 `triggerProps` 展开到触发元素上（自带 `data-anchor-name` 属性），再把返回的 `anchorName` 传给 `PopoverContent` 的 `anchorName` 属性即可对齐。
+
+选项（`UsePopoverTriggerOptions`）：
+
+| Option            | Type                   | Description                                             |
+| :---------------- | :--------------------- | :------------------------------------------------------ |
+| `open`            | `boolean`              | 当前面板状态                                                  |
+| `onOpenChange`    | `(v: boolean) => void` | hook 请求开合时调用的状态更新函数                                     |
+| `mode`            | `"click" \| "hover"`   | 交互模式，默认 `click`                                         |
+| `hoverDelayOpen`  | `number`               | hover 模式下指针移入到打开的延迟（毫秒），默认 `0`                          |
+| `hoverDelayClose` | `number`               | 指针移出后到关闭的延迟（毫秒），默认 `200`                                |
+
+返回值：
+
+| Member          | Type         | Description                                                                              |
+| :-------------- | :----------- | :--------------------------------------------------------------------------------------- |
+| `triggerProps`  | `object`     | 透传到触发元素的属性：`aria-haspopup`（默认 `menu`）、`aria-expanded`、`data-anchor-name` 属性，以及 click / hover / focus / 键盘事件处理器 |
+| `contentProps`  | `object`     | 透传到面板的属性：hover 模式下指针移入取消待执行的关闭定时器，移出时重新调度关闭        |
+| `clearTimer`    | `() => void` | 取消待执行的 hover 开合定时器                                                            |
+| `scheduleOpen`  | `() => void` | 打开面板，遵循 `hoverDelayOpen` 延迟                                                    |
+| `scheduleClose` | `() => void` | `hoverDelayClose` 毫秒后关闭面板                                                        |
+| `anchorName`    | `string`     | 生成的锚点名称（如 `--popover-trigger-abc123`），传给面板的 `anchorName` 属性           |
+
+---
+
+### 可组合组件
+
+#### PopoverContent
+
+浮动面板：`popover="manual"` 的 div，把定位结果写成 `data-float-*`（`anchor`、`x`、`y`、`side`、`align`、`gap`、`match-width`）；消费者的 `onKeyDown` 与内置 `Escape` 处理组合调用——`preventDefault()` 可跳过内置行为。
+
+| 属性             | 类型                                     | 描述                                                                          |
+| :------------- | :------------------------------------- | :-------------------------------------------------------------------------- |
+| `open`         | `boolean`                              | 控制面板；`true` 调用 `showPopover()`，`false` 调用 `hidePopover()`                   |
+| `onOpenChange` | `(open: boolean) => void`              | 面板内按 `Escape` 或面板外 `mousedown` 时调用                                          |
+| `alignX`       | `"start" \| "end" \| "center"`         | 吸附预设：开口一律向下，`start`/`center`/`end` 分别左对齐、居中、右对齐于触发器下方，默认 `center`           |
+| `anchorName`   | `string`                               | 定位所锚定元素的名称（对应其 `data-anchor-name` 属性）                                       |
+| `anchorPoint`  | `{ x: number; y: number }`             | 按视口坐标锚定（如鼠标位置），优先于 `anchorName`                                             |
+| `placement`    | `{ side?; align?; gap?; matchWidth? }` | 覆盖 `alignX` 推导出的吸附方位                                                        |
+| `className`    | `string`                               | 自定义类名                                                                       |
+| `style`        | `React.CSSProperties`                  | 自定义内联样式；定位本身由内置 JS 引擎管理（[浮动定位](/zh/docs/utils/use-floating-panel)）          |
+| `ref`          | `React.Ref<HTMLDivElement>`            | 转发到面板 div                                                                   |
+| `...props`     | `React.ComponentProps<"div">`          | 支持所有原生 div 属性（`className` 除外），如 `role`、`id`、`onKeyDown`                     |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Escape` | 关闭面板；内容上的消费者 `onKeyDown` 可通过 `preventDefault()` 跳过内置行为 |
+| `ArrowDown` / `Space` | 从触发器打开面板（click 模式） |
+| `Focus` | hover 模式下，聚焦触发器即打开面板，不依赖按键 |
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-float-side]` | 位于内容面板——请求的方位，取值 `"top"`、`"bottom"`、`"left"` 或 `"right"`；引擎可能翻边但不回写该属性（[浮动定位](/zh/docs/utils/use-floating-panel)） |
+| `[data-float-align]` | 位于内容面板——请求的对齐，取值 `"start"`、`"center"` 或 `"end"` |
+
+打开状态由原生 popover（`:popover-open`）暴露，而不是数据属性。

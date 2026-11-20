@@ -1,0 +1,87 @@
+---
+title: Swipe Actions 滑动操作
+description: 物理滑动行——拖动行露出动作抽屉，快滑按速度定向，拖越提交点全滑提交，主动作块跃迁铺满后行体折叠
+---
+
+## 安装
+
+<Installation name="swipe-actions" />
+
+## 用法
+
+行内操作滑动件：所有指针（触屏与鼠标）统一物理滑动——拖动行露出动作抽屉，拖越提交点全滑提交——主动作块跃迁铺满整行、行体折叠收起，行在 `onCommit` 里由消费方移除。
+
+<ComponentPreview name="swipe-actions-basic" />
+
+动作按五个语义槽声明（`primary` / `info` / `success` / `warning` / `danger`），每色至多一次，由 props 结构锁死；轨道按意图成本排布，浅 → 深 = primary → info → success → warning → danger。全滑提交固定 danger 槽——跃迁铺满 + `onCommit` 只属于 danger，未填 danger 则无全滑；次级槽按下走 `onSelect`（`dismiss` 声明时折叠行）。`surface` 不设槽，中性动作落 `info` 或 `primary`。
+
+内容层动作侧端点带一枚滑动提示箭头（`direction=left` 为左箭头、镜像方向为右箭头），开态与拖拽中隐藏；无位移点按行体即可开合抽屉（落点在链接、按钮等可交互子件上时不劫持）——先看见滑出，再学会拖动。动作收起时动作轨 `inert`，键盘与读屏走行上的切换钮开合。动作按槽位语义自动派色。
+
+重新插入的行传 `enter` 即从折叠态长出，时长与缓动同折叠（`--swipe-collapse` + `ease-frame`，随方案与减动效自答）。
+
+## API 参考
+
+### SwipeActions
+
+| 属性              | 类型                                                                                          | 描述                                         |
+| :-------------- | :------------------------------------------------------------------------------------------ | :----------------------------------------- |
+| `primary`       | `SwipeActionConfig`                                                                         | 最浅槽位（最先露出），常放最高频的中性动作                      |
+| `info`          | `SwipeActionConfig`                                                                         | info 语义槽位                                  |
+| `success`       | `SwipeActionConfig`                                                                         | success 语义槽位                               |
+| `warning`       | `SwipeActionConfig`                                                                         | warning 语义槽位                               |
+| `danger`        | `SwipeActionConfig`                                                                         | 最深槽位 = 全滑提交块（恒 danger），按下或拖越提交点即折叠行；未填则无全滑 |
+| `direction`     | `"left" \| "right"`                                                                         | 滑动方向，镜像全部布局与键位，默认 `"left"`                 |
+| `height`        | `number`                                                                                    | 行高 px，折叠从此高度收起，默认 `64`                     |
+| `actionWidth`   | `number`                                                                                    | 单动作宽 px，即抽屉总宽，默认 `80`                      |
+| `snapBounce`    | `number`                                                                                    | 快滑吸附的回弹量；慢放不回弹，默认 `0.2`                    |
+| `resistance`    | `number`                                                                                    | 越界橡皮筋与提交段阻力系数，默认 `0.55`                    |
+| `collapseMs`    | `number`                                                                                    | 折叠时长 ms，默认 `200`                           |
+| `commitAt`      | `number`                                                                                    | 提交点占行宽比例（不小于抽屉宽加半动作宽），默认 `0.6`             |
+| `fullSwipe`     | `boolean`                                                                                   | 关闭后抽屉即尽头：无跃迁、无全滑提交，默认 `true`               |
+| `disabled`      | `boolean`                                                                                   | 压暗并忽略输入，默认 `false`                         |
+| `enter`         | `boolean`                                                                                   | 挂载首帧停在折叠态再长出（重新插入行的进场动画），默认 `false`        |
+| `open`          | `boolean`                                                                                   | 受控开合，外部变更回弹归位                              |
+| `onOpenChange`  | `(open: boolean) => void`                                                                   | 手势或键盘开合抽屉时回调                               |
+| `onAction`      | `(action: SwipeActionConfig) => void`                                                       | 任意动作按下即回调                                  |
+| `onCommit`      | `(action: SwipeActionConfig) => void`                                                       | 全滑或折叠动作在行关合后回调，消费方在此移除行                    |
+| `closeOnAction` | `boolean`                                                                                   | 非折叠动作按下后收拢抽屉，默认 `true`                     |
+| `haptic`        | `boolean`                                                                                   | 就绪态触屏震动（`navigator.vibrate(8)`），默认 `true`  |
+| `label`         | `string`                                                                                    | 根元素 `aria-label`，默认 `"List item"`          |
+| `toggleLabel`   | `string`                                                                                    | 键盘胶囊文案，缺省按动作数生成                            |
+| `children`      | `React.ReactNode`                                                                           | 行内容，渲染在可拖内容层                               |
+| `className`     | `string`                                                                                    | 根元素自定义类                                    |
+| `style`         | `React.CSSProperties`                                                                       | 根元素内联样式                                    |
+| `classNames`    | `{ root?, row?, rail?, action?, block?, commit?, surface?, hint?, toggle?, live?: string }` | 各槽位自定义类                                    |
+| `...props`      | `React.ComponentProps<"div">`                                                               | 透传到根 `div`                                 |
+
+### SwipeActionConfig
+
+| 字段         | 类型                | 描述                              |
+| :--------- | :---------------- | :------------------------------ |
+| `id`       | `string`          | 动作标识，缺省用序号                      |
+| `label`    | `string`          | 动作文字                            |
+| `icon`     | `React.ReactNode` | 动作图标，文字上方                       |
+| `onSelect` | `() => void`      | 动作回调；主动作与 `dismiss` 动作在行关合后触发   |
+| `dismiss`  | `boolean`         | 按下即折叠行（提交链），非主动作也可声明，默认 `false` |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Tab` | 聚焦行上的隐藏切换钮（聚焦即显形为胶囊） |
+| `Enter` / `Space` | 开合抽屉 |
+| `ArrowLeft` / `ArrowRight` | 开 / 关抽屉（随 `direction` 镜像） |
+| `Escape` | 关闭抽屉 |
+| `Delete` / `Backspace` | 开态提交主动作，等同全滑 |
+
+## 数据属性
+
+| 属性 | 描述 |
+| :--- | :--- |
+| `[data-direction]` | 位于根元素——`"left"` 或 `"right"` |
+| `[data-tone]` | 位于动作钮——`"primary"` / `"info"` / `"success"` / `"warning"` / `"danger"`，皮肤据此派语义对 |
+| `[data-open]` | 位于根元素——抽屉展开 |
+| `[data-phase]` | 位于根元素——`"idle"`、`"entering"`（长出中）、`"committing"`（跃迁中）或 `"collapsing"`（折叠中） |
+| `[data-dragging]` | 位于根元素——拖拽进行中 |
+| `[data-disabled]` | 位于根元素——禁用 |
+| `--swipe-h` / `--swipe-a` / `--swipe-collapse` | 位于根元素——内联几何变量，皮肤消费；圆角走方案令牌 `--radius-swipe`，不随组件实例内联 |

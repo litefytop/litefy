@@ -1,0 +1,44 @@
+---
+title: use-pagination
+description: A headless pagination state hook with looping, dynamic totals and change callbacks
+---
+
+## Installation
+
+<Installation name="use-pagination" />
+
+## Usage
+
+Basic pagination with navigation controls and a page indicator.
+
+<ComponentPreview 
+  name="use-pagination-basic"
+/>
+
+## API Reference
+
+### usePagination
+
+A headless pagination state hook that manages the paging logic; pair it with your own navigation controls (see the demo above).
+
+#### Parameters
+
+| Prop       | Type                       | Description                                                                                                                                                                                  |
+| ---------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `base`     | `number`                   | First page number; `index` is offset by this value. The [Pagination](/en/docs/component/pagination) component's `page` starts at 1, so pass `base: 1` when pairing the two, defaults to `0` |
+| `total`    | `number \| (() => number)` | Total page count, or a function returning it (for dynamic totals). **Required**                                                                                                              |
+| `loop`     | `boolean`                  | Wraps to the other end when navigating past the first or last page, defaults to `false`                                                                                                      |
+| `onChange` | `(page: number) => void`   | Fired when the page changes, carrying the new page                                                                                                                                           |
+
+#### Returns
+
+- `index`: Current page number (starts at `base`)
+- `total`: Current total page count
+- `setIndex(page | (prevPage) => page)`: Set the page directly or with an updater; it is normalized into the valid range
+- `goTo(page)`: Go to a specific page
+- `next()`: Next page
+- `previous()`: Previous page
+- `toFirst()`: Back to the first page (`base`)
+- `toEnd()`: Jump to the last page
+- `isFirst`: `true` when on the first page (always `false` when `loop` is enabled)
+- `isEnd`: `true` when on the last page (always `false` when `loop` is enabled)

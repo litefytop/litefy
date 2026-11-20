@@ -1,0 +1,11 @@
+# 外观与动效面板（app/components/appearance-panel.tsx）
+
+- 单一 Popover 面板，由页脚/顶栏的 44×44 图标按钮打开；不嵌套二级菜单。
+- 风格不进面板：独立 `StyleSelect`（app/components/style-select.tsx，Select 下拉）挂在侧栏页脚与顶栏、`AppearancePanel` 旁——风格会持续新增，下拉是它的容器，也避免浮层内再叠浮层；切换走 `toStylePath` 并保留滚动位置，当前风格即选中值。
+- 面板三节，顺序固定：外观、动效、调色板。
+- 外观：跟随系统 / 浅色 / 深色，读写 `useTheme()`；保持 `useTheme` 现有默认值，不因面板改变首次访问的主题。
+- 调色板：复用 `PaletteSection`；有调色板的皮肤显示色板，没有调色板的皮肤显示只读 `LiveSwatches`，不隐藏整节。色样可视 24×24（HeroUI sm 档），6 列网格、间距用外边距（`m-1`），不撑 44 命中格。色样取固定字面色（`PaletteOption.swatch`，运行时 ramp 值是 color-mix 衍生色不作色样）：品牌行取 Tailwind 500 刻度；表面行全是近中性灰——各取自身 ramp 色相与 chroma 提到 500 亮度的字面值，不套彩色档；`default` 读方案自身变量。模仿 ColorSwatchPicker：未选中 hover 放大、选中双环（画布色间隙 + 同色外环）。
+- 动效：跟随系统 / 减少动态 / 完整动态，读写 `useMotionPreference()`；无说明文字。
+- 每节使用同一分段控件：容器 `bg-quiet`、`p-1`、内部 grid 等宽列（`grid grid-flow-col auto-cols-fr gap-1`——`minmax(0,1fr)` 轨道列恒等宽、可缩不可溢出，Group 皮肤同款栅格），每项 `min-h-control min-w-0 px-2`（`min-w-0` 让格子随轨道收缩，按钮文字居中、永不撑破容器），选中态用 `bg-active text-active-foreground`；节标题与分隔线——节标题用方案 label 文字档（`text-label font-label tracking-label case-label`），与 Field label 同源。
+- 面板宽度按最宽行定档取 `w-96`：分段钮文字定宽、不随紧凑档 `--spacing` 收缩，`w-80` 在紧凑档（≤48rem 视口）会缩到 240px 装不下三枚四字标签——取 16n 档 `w-96`（紧凑档 288px）后最宽行恒有余量；`max-w-[calc(100vw-2rem)]`、`max-h-[min(70vh,40rem)]` 可滚动、内容区 `p-4`；触发器有 `aria-label`/`title`，Escape 关闭。
+- 文案随 `lang`（`zh` / `en`）；不持久化自己的状态，全部落在 `useTheme`、`useMotionPreference`、路由与调色板存储。

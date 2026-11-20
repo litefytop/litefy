@@ -1,0 +1,111 @@
+---
+title: Drawer
+description: A slide-in panel component with multiple placement options
+---
+
+## Installation
+
+<Installation name="drawer" />
+
+## Usage
+
+A drawer that slides in from the right by default; without `drag` there is no drag handle.
+
+<ComponentPreview
+  name="drawer-basic"
+/>
+
+### Resizable drawer
+
+Pass in a drag gesture object from `useDrag` and a drag handle bar appears at the edge, letting you resize the drawer by dragging.
+
+<ComponentPreview
+  name="drawer-expandable"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-made components that work out of the box.
+
+#### Drawer
+
+A slide-in panel with focus management and keyboard navigation.
+
+| Prop              | Type                                                                                           | Description                                                                                                                                                                                                                         |
+| ----------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ref`             | `React.Ref<HTMLDivElement>`                                                                    | Forwarded to `DrawerWrapper` (the drawer panel body) for imperative needs such as drag-to-resize                                                                                                                                    |
+| `placement`       | `'left' \| 'right' \| 'top' \| 'bottom'`                                                       | Placement of the drawer, defaults to `"right"`                                                                                                                                                                                      |
+| `open`            | `boolean`                                                                                      | Controls whether the drawer is open                                                                                                                                                                                                 |
+| `onOpenChange`    | `(open: boolean) => void`                                                                      | Called when the drawer state changes **Required**                                                                                                                                                                                   |
+| `onBackdropClick` | `(e: React.MouseEvent<HTMLDialogElement>) => void`                                             | Clicking the backdrop closes the drawer by default; this callback is for extra side effects                                                                                                                                         |
+| `size`            | `'sm' \| 'md' \| 'lg'`                                                                         | Size tier, rendered as `data-size`; the actual size and the min/max clamping live in the loaded scheme skin's `classNames.wrapper` utility string, overridable with inline `style` width/height (still clamped), defaults to `"md"` |
+| `onCancel`        | `(e: React.SyntheticEvent<HTMLDialogElement>) => void`                                         | Extra callback for when the dialog is canceled (Esc); the default close behavior always runs first                                                                                                                                  |
+| `drag`            | `DrawerDragApi`                                                                                | Drag gesture object (provided by the external `useDrag`); the drag handle bar renders only when passed, otherwise it is a plain drawer                                                                                              |
+| `className`       | `string`                                                                                       | Custom class name, applied to the native `<dialog>` element                                                                                                                                                                         |
+| `style`           | `React.CSSProperties`                                                                          | Inline styles, applied to the native `<dialog>` element                                                                                                                                                                             |
+| `classNames`      | `{ wrapper?: string; drag?: string; content?: string }`                                        | Custom class names for the inner elements                                                                                                                                                                                           |
+| `styles`          | `{ wrapper?: React.CSSProperties; drag?: React.CSSProperties; content?: React.CSSProperties }` | Inline styles for the inner elements                                                                                                                                                                                                |
+| `children`        | `React.ReactNode`                                                                              | Drawer panel content                                                                                                                                                                                                                |
+| `...props`        | `React.ComponentProps<"div">`                                                                  | Forwarded to `DrawerWrapper`; supports all native div props                                                                                                                                                                         |
+
+---
+
+### Composable Components
+
+#### DrawerRoot
+
+The dialog element, rendered as a native `dialog` with no built-in styles or behavior.
+
+| Prop        | Type                             | Description                                             |
+| ----------- | -------------------------------- | ------------------------------------------------------- |
+| `className` | `string`                         | Custom class name, applied to the native dialog element |
+| `...props`  | `React.ComponentProps<"dialog">` | Supports all native dialog props (except `className`)   |
+
+#### DrawerWrapper
+
+The sliding panel body, carrying the `data-placement` / `data-size` state attributes; positioning, size tiers and min/max clamping come from the loaded scheme skin's `classNames.wrapper` utility string, which also supplies the slide transition.
+
+| Prop        | Type                                     | Description                                            |
+| ----------- | ---------------------------------------- | ------------------------------------------------------ |
+| `placement` | `'left' \| 'right' \| 'top' \| 'bottom'` | Placement of the drawer, rendered as `data-placement`  |
+| `size`      | `'sm' \| 'md' \| 'lg'`                   | Size tier, rendered as `data-size`, defaults to `"md"` |
+| `className` | `string`                                 | Custom class name                                      |
+| `...props`  | `React.ComponentProps<"div">`            | Supports all native div props (except `className`)     |
+
+#### DrawerDrag
+
+The drag handle bar (a thin bar with a grip indicator); drag logic comes from the external `useDrag`. The finished Drawer renders it only when a `drag` gesture is passed.
+
+| Prop          | Type                          | Description                                                                  |
+| ------------- | ----------------------------- | ---------------------------------------------------------------------------- |
+| `orientation` | `'horizontal' \| 'vertical'`  | Handle bar orientation, derived from `placement`, defaults to `"horizontal"` |
+| `className`   | `string`                      | Custom class name                                                            |
+| `...props`    | `React.ComponentProps<"div">` | Supports all native div props (except `className`)                           |
+
+#### DrawerContent
+
+The content panel container: a built-in scrolling column (`overflow-auto`) with no padding; spacing is managed by the content itself.
+
+| Prop          | Type                          | Description                                            |
+| ------------- | ----------------------------- | ------------------------------------------------------ |
+| `orientation` | `'horizontal' \| 'vertical'`  | Content orientation; content is centered when vertical |
+| `className`   | `string`                      | Custom class name                                      |
+| `children`    | `React.ReactNode`             | Panel content                                          |
+| `...props`    | `React.ComponentProps<"div">` | Supports all native div props (except `className`)     |
+
+## Keyboard Interactions
+
+| Key                  | Description                                                                                      |
+| -------------------- | ------------------------------------------------------------------------------------------------ |
+| `Tab` / `Shift + Tab` | Moves focus within the drawer; while open, focus is trapped inside the drawer                    |
+| `Escape`             | Closes the drawer                                                                                |
+
+## Data Attributes
+
+| Attribute          | Description                                                                                                              |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| `[data-placement]` | On the drawer panel — `"left"`, `"right"`, `"top"` or `"bottom"`, matching the `placement` prop                          |
+| `[data-size]`      | On the drawer panel — `"sm"`, `"md"` or `"lg"`, matching the `size` prop                                                 |
+| `[data-orientation]` | On the drag handle bar — `"horizontal"` or `"vertical"`; present only when drag-to-resize is enabled                    |

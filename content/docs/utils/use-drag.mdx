@@ -1,0 +1,56 @@
+---
+title: use-drag
+description: Pointer-based drag hook with pointer capture, drag info callbacks and an isDragging flag
+---
+
+## Installation
+
+<Installation name="use-drag" />
+
+## Usage
+
+Pointer drag hook: captures the pointer and tracks its movement, reporting offsets through callbacks.
+
+<ComponentPreview
+  name="use-drag-basic"
+/>
+
+## API Reference
+
+### useDrag
+
+```ts
+function useDrag(opts?: UseDragOptions): DragResult
+```
+
+#### UseDragOptions
+
+| Property      | Type                                           | Description                                               |
+| ------------- | ---------------------------------------------- | --------------------------------------------------------- |
+| `disabled`    | `boolean`                                      | Ignore pointer down events when true, defaults to `false` |
+| `onDragStart` | `(e: React.PointerEvent<HTMLElement>) => void` | Called when the drag gesture starts                       |
+| `onDragMove`  | `(info: DragInfo) => void`                     | Called on every pointer move while dragging               |
+| `onDragEnd`   | `(info: DragInfo) => void`                     | Called when the pointer is released                       |
+
+#### DragInfo
+
+| Property | Type | Description |
+|------|------|-------------|
+| `dx` | `number` | Horizontal offset from the drag start position |
+| `dy` | `number` | Vertical offset from the drag start position |
+| `clientX` | `number` | Current pointer client X |
+| `clientY` | `number` | Current pointer client Y |
+
+#### DragResult
+
+| Property | Type | Description |
+|------|------|-------------|
+| `isDragging` | `boolean` | Whether a drag gesture is currently active |
+| `handlePointerDown` | `(e: React.PointerEvent<HTMLElement>) => void` | Bind to the drag handle's `onPointerDown` |
+
+**Notes:**
+
+- Deltas are relative to the pointer's start position; callers decide how to accumulate them.
+- Uses pointer capture, so the drag keeps tracking even when the pointer leaves the handle.
+- `pointercancel` follows the same path as `pointerup`: it ends the drag and fires `onDragEnd`.
+- On unmount, the document-level listeners are detached and `isDragging` is reset automatically.

@@ -1,0 +1,113 @@
+---
+title: Table 表格
+description: 通用数据表格，表头可点击排序（本地数据），也可切换远程模式把排序交给数据库。
+---
+
+## 安装
+
+<Installation name="table" />
+
+## 用法
+
+数据驱动表格：传 `data` 与 `columns`，`sortable: true` 开启排序，`selectable` 开启行选择；窄容器横向滚动，不换形。
+
+<ComponentPreview name="table-basic" />
+
+### 远程排序
+
+传入受控的 `sort` + `onSortChange` 即进入远程模式，排序交给数据库；搭配 [useRemoteSort](/zh/docs/utils/use-remote-sort) 管理状态。
+
+<ComponentPreview name="table-remote" />
+
+### 行选择
+
+`selectable` 开启行选择：列首复选框、页内全选三态，选中行后表头尾出批量操作行；选择键由 `rowKey` 提供，跨页选中保留。
+
+<ComponentPreview name="table-selectable" />
+
+### 筛选属于业务层
+
+骨架不内置筛选：筛选控件强依赖列类型（文本、枚举、数字、日期的取值控件各不相同），放不进一套通用 API。需要筛选时用 `headExtra` 槽位在表头尾部自建一行，用 [Input](/zh/docs/component/input)、[Select](/zh/docs/component/select)、[Date Picker](/zh/docs/component/date-picker) 等原件组合，数据过滤在业务侧完成后把结果传回 `data`。
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Table
+
+| 属性                     | 类型                                                                                                                                                                                                              | 描述                                                                          |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `data`                 | `T[]`                                                                                                                                                                                                           | 行数据 **必填**                                                                  |
+| `columns`              | `TableColumn<T>[]`                                                                                                                                                                                              | 列配置 **必填**                                                                  |
+| `getKey`               | `(row: T, index: number) => React.Key`                                                                                                                                                                          | 行 key 提取器，默认 index                                                          |
+| `sort`                 | `SortState<T> \| null`                                                                                                                                                                                          | 受控排序状态；传入即进入远程模式                                                            |
+| `onSortChange`         | `(sort: SortState<T>) => void`                                                                                                                                                                                  | 表头点击回调（两种模式均触发）                                                             |
+| `initialSortDirection` | `"asc" \| "desc"`                                                                                                                                                                                               | 首次点击某列使用的方向，默认 `"asc"`                                                      |
+| `empty`                | `React.ReactNode`                                                                                                                                                                                               | 数据为空时渲染的内容，默认 `"No data"`                                                   |
+| `caption`              | `React.ReactNode`                                                                                                                                                                                               | 表格说明，渲染为表头 `table` 的 `<caption>`（表体不重复），给表格一个可访问名称来源                          |
+| `selectable`           | `boolean`                                                                                                                                                                                                       | 行选择开关：列首复选框、页内全选三态、批量操作行，默认 `false`                                         |
+| `rowKey`               | `(row: T) => string`                                                                                                                                                                                            | 行选择键提取器；缺省回退 `getKey` / 下标                                                  |
+| `selected`             | `string[]`                                                                                                                                                                                                      | 选中键集合（受控）                                                                   |
+| `defaultSelected`      | `string[]`                                                                                                                                                                                                      | 初始选中键（非受控），默认 `[]`                                                          |
+| `onSelectionChange`    | `(selected: string[]) => void`                                                                                                                                                                                  | 选中集合变化回调（两种模式均触发）                                                           |
+| `loading`              | `boolean`                                                                                                                                                                                                       | 空态文案切为 Loading，不接管选择，默认 `false`                                             |
+| `selectAllLabel`       | `string`                                                                                                                                                                                                        | 全选复选框的无障碍标签，默认 `"Select all on this page"`                                  |
+| `rowLabel`             | `string`                                                                                                                                                                                                        | 行复选框的无障碍标签，默认 `"Select this row"`                                           |
+| `bulkActions`          | `React.ReactNode`                                                                                                                                                                                               | 批量行中的批量操作节点                                                                 |
+| `selectedLabel`        | `string`                                                                                                                                                                                                        | 批量行计数后的标签文案，默认 `"selected"`                                                 |
+| `clearLabel`           | `string`                                                                                                                                                                                                        | 批量行清除按钮文案，默认 `"Clear"`                                                      |
+| `className`            | `string`                                                                                                                                                                                                        | 自定义类名，作用于外层框架                                                               |
+| `classNames`           | `table` / `col` / `caption` / `head` / `headRow` / `headCell` / `headLabel` / `sortIcon` / `body` / `row` / `cell` / `empty` / `bulkRow` / `bulkBar` / `bulkCount` / `bulkLabel` / `bulkActions` / `bulkClear` / `checkbox` | 各部分自定义类名（`head` / `body` 分别作用于表头条与表体滚动容器；`caption` 作用于表格说明；`bulk*` 作用于批量行；`checkbox` 为复选框零件槽） |
+| `styles`               | `{ wrapper?, table? }`                                                                                                                                                                                          | 外层容器与两个 table 的内联样式                                                         |
+
+#### TableColumn&lt;T&gt;
+
+| 字段          | 类型                              | 描述                                                                            |
+| ----------- | ------------------------------- | ----------------------------------------------------------------------------- |
+| `key`       | `keyof T & string`              | 展示的行字段 **必填**                                                                 |
+| `header`    | `React.ReactNode`               | 表头文案；字符串表头同时作为该单元格的 `data-label`，默认 `key`                                     |
+| `render`    | `(row: T) => React.ReactNode`   | 自定义单元格渲染，默认 原始值                                                               |
+| `sortable`  | `boolean`                       | 表头可点击排序，默认 `false`                                                            |
+| `compare`   | `(a: T, b: T) => number`        | 本地排序使用的自定义比较器，默认 `<` / `>`                                                    |
+| `align`     | `"left" \| "right" \| "center"` | 单元格对齐；设计规范约定列统一 start（控件列可用 center），默认 `"left"`                               |
+| `span`      | `number`                        | 列宽权重：该列占容器宽度的比例 = 本列 `span` ÷ 全部列 `span` 之和；每列另有皮肤给出的最小宽度档（落在 `col` 上），默认 `1` |
+| `className` | `string`                        | 同时作用于该列表头单元格与表体单元格的自定义类名（业务侧自有布局，如长文本截断）                                      |
+
+#### SortState&lt;T&gt;
+
+`{ key: keyof T & string; direction: "asc" | "desc" } | null`
+
+---
+
+### 可组合组件
+
+| 零件 | 元素 | 发出的属性 | 描述 |
+|------|------|--------|------|
+| `TableRoot` | `<div>` | - | 外层框架，列宽放不下时的横向滚动容器；把列数作为 `--litefy-cols` 发布在自己身上 |
+| `TableHead` | `<div>` | - | 表头条，永不滚动 |
+| `TableBody` | `<div>` | - | 表体滚动容器 |
+| `TableBase` | `<table>` | - | 表头条与表体各自渲染的 table 元素（内置 `table-layout: fixed`） |
+
+所有零件均接受原生元素属性与 `className`。表头与表体是两张独立表格，共用同一份 `<colgroup>`，列宽不随行数变化，翻页时布局不会抖动；表体默认高度及其他观感由所加载的方案定义。手动组装时 `<colgroup>` 需与 `Table` 生成的保持一致（每列 `width: calc(span * 100% / 总 span)` + `min-width`）。
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Tab` | 只会到达你自己在 `render` 或 `header` 里渲染的可聚焦元素；骨架自带的单元格、标签与排序图标都不进 Tab 序 |
+
+骨架不绑定任何按键。排序只绑在 `<th>` 的 `onClick` 上，而 `<th>` 不可聚焦，因此 `sortable` 表头没有键盘路径——需要键盘操作请在 `header` 内自放 `<button>`。
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-sortable]` | 位于表头单元格上——所在列设为 `sortable` 时存在 |
+| `[data-sorted]` | 位于表头单元格上——所在列为当前排序键时存在 |
+| `[data-active]` | 位于排序图标上——排序列的图标上存在 |
+| `[data-align]` | 位于表头与表体单元格上——取 `"left"`、`"center"` 或 `"right"`，与该列的 `align` 一致 |
+| `[data-label]` | 位于表体单元格上——取该列的字符串 `header`，用作单元格的标签 |
+| `[data-bulk]` | 位于批量行 `<tr>` 上——`selectable` 且存在选中项时渲染于表头尾 |
+| `[data-bulk-bar]` / `[data-bulk-count]` / `[data-bulk-label]` / `[data-bulk-actions]` / `[data-bulk-clear]` | 位于批量行内部——操作条、计数、标签、操作节点容器与清除按钮 |

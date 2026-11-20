@@ -1,0 +1,113 @@
+---
+title: Breadcrumb 面包屑
+description: 由零件组合而成的导航路径——nav、list、item、link、page、separator，另有数据驱动的组合组件应对简单场景
+---
+
+## 安装
+
+<Installation name="breadcrumb" />
+
+## 用法
+
+组合组件 `Breadcrumb` 按顺序渲染 `items`，末条为当前页。
+
+<ComponentPreview
+  name="breadcrumb-basic"
+/>
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Breadcrumb
+
+| 属性           | 类型                                                                | 描述                                                |
+| :----------- | :---------------------------------------------------------------- | :------------------------------------------------ |
+| `items`      | `BreadcrumbDataItem[]`                                            | 路径条目，按层级顺序排列；最后一条渲染为当前页                           |
+| `className`  | `string`                                                          | 自定义类名，作用于根 `<nav>` 元素                             |
+| `style`      | `React.CSSProperties`                                             | 内联样式，作用于根 `<nav>` 元素                              |
+| `classNames` | `list` / `item` / `link` / `page` / `separator` / `separatorIcon` | 按插槽自定义类名；`separatorIcon` 只给内置的 `ChevronRight` 定尺寸 |
+| `styles`     | `list` / `item` / `link` / `page` / `separator`                   | 按插槽自定义样式                                          |
+| `...props`   | `React.ComponentProps<"nav">`                                     | 原生 nav 属性，展开到根元素                                  |
+
+#### BreadcrumbDataItem
+
+| 字段      | 类型                | 描述                               |
+| :------ | :---------------- | :------------------------------- |
+| `label` | `React.ReactNode` | 条目文本                             |
+| `href`  | `string`          | 链接目标；配置后该条目渲染为链接                 |
+
+---
+
+### 可组合组件
+
+零件继承原生 DOM 属性；每个插槽的 `classNames` 覆写会与你传入的 `className` 合并，因此传入 `className` 是扩展默认值而非替换。
+
+#### BreadcrumbRoot
+
+外层 `<nav aria-label="breadcrumb">` 容器。
+
+| 属性          | 类型                            | 描述            |
+| :---------- | :---------------------------- | :------------ |
+| `className` | `string`                      | 自定义类名         |
+| `...props`  | `React.ComponentProps<"nav">` | 原生 nav 属性     |
+
+#### BreadcrumbList
+
+内层 `<ol>`。
+
+| 属性          | 类型                           | 描述           |
+| :---------- | :--------------------------- | :----------- |
+| `className` | `string`                     | 自定义类名        |
+| `...props`  | `React.ComponentProps<"ol">` | 原生 ol 属性     |
+
+#### BreadcrumbItem
+
+单个 `<li>` 条目容器。
+
+| 属性          | 类型                           | 描述           |
+| :---------- | :--------------------------- | :----------- |
+| `className` | `string`                     | 自定义类名        |
+| `...props`  | `React.ComponentProps<"li">` | 原生 li 属性     |
+
+#### BreadcrumbLink
+
+可点击路径链接（真实 `<a>`）。
+
+| 属性          | 类型                          | 描述          |
+| :---------- | :-------------------------- | :---------- |
+| `className` | `string`                    | 自定义类名       |
+| `...props`  | `React.ComponentProps<"a">` | 原生 a 属性     |
+
+#### BreadcrumbPage
+
+当前页文本（不可点击，带 `aria-current="page"`）。
+
+| 属性          | 类型                             | 描述             |
+| :---------- | :----------------------------- | :------------- |
+| `className` | `string`                       | 自定义类名          |
+| `...props`  | `React.ComponentProps<"span">` | 原生 span 属性     |
+
+#### BreadcrumbSeparator
+
+分隔符，默认渲染 `ChevronRight` 图标，可通过 `children` 替换。
+
+| 属性           | 类型                           | 描述                                             |
+| :----------- | :--------------------------- | :--------------------------------------------- |
+| `className`  | `string`                     | 自定义类名                                          |
+| `classNames` | `{ icon? }` —— 值均为 `string`  | 内置 `ChevronRight` 的类名；用 `children` 换掉图标时不带任何类名 |
+| `children`   | `React.ReactNode`            | 自定义分隔符内容                                       |
+| `...props`   | `React.ComponentProps<"li">` | 原生 li 属性                                       |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Tab` | 依次到达每个 `BreadcrumbLink`，它们是原生 `<a>`；当前页是带 `role="link"` 与 `aria-disabled="true"` 的 `<span>`，不进入 Tab 序 |
+| `Enter` | 由原生链接完成激活；骨架不接管任何按键 |
+
+## 数据属性
+
+骨架不在本组件上发射任何 `data-*`。根元素携带 `aria-label="breadcrumb"`，当前页携带 `aria-current="page"` 与 `aria-disabled="true"`，每个分隔符携带 `aria-hidden` 与 `role="presentation"`。

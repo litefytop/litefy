@@ -1,0 +1,75 @@
+---
+title: Upload
+description: A drag-and-drop upload area with local validation and drag-and-drop upload, paired with a fully decoupled upload monitor hook
+---
+
+## Installation
+
+<Installation name="upload" />
+
+## Usage
+
+A drag-and-drop upload area: it only selects and validates locally, never sending network requests.
+
+<ComponentPreview
+  name="upload-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+#### Upload
+
+A drag-and-drop upload area composed of the parts below, encapsulating validation and the file item lifecycle.
+
+| Prop              | Type                                | Description                                                                                                                  |
+| ----------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `accept`          | `string`                            | Accepted file types (MIME types, `image/*` or extensions like `.pdf`)                                                        |
+| `multiple`        | `boolean`                           | Allow selecting multiple files, defaults to `false`                                                                          |
+| `maxCount`        | `number`                            | Maximum number of items accepted at once                                                                                     |
+| `maxSize`         | `number`                            | Maximum size of a single file in bytes                                                                                       |
+| `disabled`        | `boolean`                           | Disables click, keyboard and drag interactions, defaults to `false`                                                          |
+| `children`        | `React.ReactNode`                   | Custom dropzone content; defaults to hint text                                                                               |
+| `onFilesAccepted` | `(items: UploadItem[]) => void`     | Fired when validation passes; each item carries `{ uid, file, signal }`                                                      |
+| `onFilesRejected` | `(rejects: UploadReject[]) => void` | Fired when validation fails, with the rejection reasons (`accept` / `maxSize` / `maxCount`)                                  |
+| `onFileRemove`    | `(uid: string) => void`             | Fired after `actionsRef.current.remove(uid)` aborts the matching controller                                                  |
+| `onDragEnter`     | `(e: React.DragEvent) => void`      | Fired when files are dragged into the dropzone                                                                               |
+| `onDragLeave`     | `(e: React.DragEvent) => void`      | Fired when files are dragged out of the dropzone                                                                             |
+| `actionsRef`      | `React.Ref<UploadActions>`          | Imperative handle exposing `remove(uid)` and `clear()`; `remove` aborts the matching controller before firing `onFileRemove` |
+| `className`       | `string`                            | Custom class for the root                                                                                                    |
+| `style`           | `React.CSSProperties`               | Custom inline style for the root                                                                                             |
+| `classNames`      | `{ dropzone?; hiddenInput? }`       | Custom classes for each part                                                                                                 |
+| `styles`          | `{ dropzone?; hiddenInput? }`       | Custom inline styles for each part                                                                                           |
+
+---
+
+### Composable Components
+
+Pure display parts with no built-in state or interaction, for advanced users to assemble freely.
+
+#### UploadRoot
+
+The outermost container.
+
+#### UploadDropzone
+
+The dropzone surface; renders as a div with `role="button"` — events and styles are wired by the consumer.
+
+#### UploadHiddenInput
+
+The hidden native `input[type=file]`; the consumer wires `onChange` and triggers `click()` externally.
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Enter` / `Space` | On the dropzone — opens the file picker dialog |
+| `Tab` | The dropzone is the only tab stop — the hidden input is not focusable |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-dragging]` | On the dropzone — present while files are dragged over it |
+| `[data-disabled]` | On the dropzone — present when disabled |

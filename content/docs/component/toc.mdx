@@ -1,0 +1,66 @@
+---
+title: Toc
+description: An in-page table of contents with built-in scroll spy — a sticky rail on wide screens, switching to a tappable status disclosure on narrow ones.
+---
+
+## Installation
+
+<Installation name="toc" />
+
+## Usage
+
+Data-driven: pass each heading element's `id` (matching `document.getElementById`), its label and its depth.
+
+## API Reference
+
+### Toc
+
+| Prop         | Type                                                                                                                                         | Description                                                                                                   |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `items`      | `TocItem[]`                                                                                                                                  | **Required**. The headings to track; an empty array renders nothing                                           |
+| `title`      | `React.ReactNode`                                                                                                                            | The rail's title; also the fallback text of the narrow-screen status view when there is no active section yet |
+| `className`  | `string`                                                                                                                                     | Custom class name for the outer `nav`                                                                         |
+| `classNames` | `rail` / `title` / `scroll` / `list` / `item` / `thumb` / `status` / `ring` / `ringTrack` / `ringProgress` / `current` / `chevron` / `panel` | Custom class names for each part                                                                              |
+| `styles`     | `{ rail?, title?, scroll?, list?, item?, status?, ring?, panel? }`                                                                           | Inline styles for the rail, the status button and its panel                                                   |
+| `...props`   | `React.ComponentProps<"nav">`                                                                                                                | Supports all native `nav` props                                                                               |
+
+### TocItem
+
+| Field   | Type              | Description                                                     |
+| ------- | ----------------- | --------------------------------------------------------------- |
+| `id`    | `string`          | **Required**. The heading element id tracked by the spy         |
+| `label` | `React.ReactNode` | **Required**. The entry's label                                 |
+| `depth` | `number`          | Depth; levels greater than 2 are indented one level by the skin |
+
+### Rendered Slots
+
+| Slot (`classNames` key) | Element | Description |
+|------|------|------|
+| — (via `className`) | `<nav>` | The outer landmark; both forms are always rendered, and the loaded scheme's breakpoint decides which one shows |
+| `rail` | `<div>` | The rail side of the two forms |
+| `item` | `<a>` | A toc entry; carries `data-active` while its section is in the viewport, and `data-depth` mirrors the depth — the rail and the narrow-screen panel render the same set of entries |
+| `thumb` | `<div>` | The indicator strip marking the active range (`aria-hidden`, positioned by an inline transform) |
+| `status` | `<button>` | The narrow-screen disclosure button: scroll progress ring + current section + collapse chevron; while the panel is open it carries `aria-expanded` / `aria-controls` and `data-open` |
+| `panel` | `<div>` | The panel expanded by `status` (a native popover anchored below the button) |
+| `chevron` | `<svg>` | The chevron inside `status`; its `data-open` syncs with the panel |
+| `ringProgress` | `<circle>` | The circular scroll progress (driven by stroke-dashoffset) |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Tab` | Reaches the narrow-screen status button first; after the panel opens, focus lands on the first entry and `Tab` keeps moving through the entries |
+| `Enter` / `Space` | On the status button — opens or closes the panel |
+| `↓` | On the status button — opens the panel |
+| `Enter` | On an entry — jumps to that heading and closes the panel |
+| `Escape` | Closes the panel and returns focus to the status button — only while focus is still inside the panel; otherwise a click outside closes it |
+
+No arrow keys inside the panel: it is a disclosure container of links, not a menu, and every entry is a normal tab stop with its own `href`.
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-active]` | On each entry link — present while its heading is in the active set |
+| `[data-depth]` | On each entry link — the depth of the entry's heading |
+| `[data-open]` | On the narrow-screen `status` button and its `chevron` — present while the panel is open |

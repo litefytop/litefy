@@ -1,0 +1,45 @@
+---
+title: Progress 进度条
+description: 纯 UI 进度条组件，只渲染你交给它的那一次读数——轮询节奏与预估归业务方
+---
+
+## 安装
+
+<Installation name="progress" />
+
+## 用法
+
+纯 UI 进度条 —— 条子显示的就是你传入的那次读数，准确度不会超过你上一次轮询。默认形态是 8px 无描边内联细条，尾随百分比读数标记进度，贴卡片、列表行这类安静场景。
+
+<ComponentPreview
+  name="progress-basic"
+/>
+
+## API 参考
+
+### Progress
+
+| 属性           | 类型                  | 描述                                                           |
+| :----------- | :------------------ | :----------------------------------------------------------- |
+| `current`    | `number`            | 宽度百分比（0–100，超出自动截断），条子唯一的真相来源                                |
+| `isAbort`    | `boolean`           | 中止：最后一次读数留在屏上，填充条改 danger 语义色；优先级高于 `paused`，默认 `false`     |
+| `isComplete` | `boolean`           | 完成：强制宽度 100%；优先级高于 `paused`，默认 `false`                       |
+| `paused`     | `boolean`           | 暂停：读数冻结，填充条改 warning 语义色；三个状态中优先级最低，默认 `false`              |
+| `hideValue`  | `boolean`           | 隐藏尾随百分比读数；读数 `aria-hidden`，进度值恒由 `aria-valuenow` 表达，默认 `false`    |
+| `className`  | `string`            | 自定义类名，应用于根元素                                                 |
+| `classNames` | `{ track?: string; fill?: string; value?: string }` | 自定义类名，分别应用于轨道、填充条与读数                        |
+
+其余原生 `<div>` 属性（`aria-label`、`data-*`、`id`、内联 `style`……）同样接受，并落在根元素上；根元素内联样式里的 `--litefy-percent` 由组件保留。
+
+## 键盘交互
+
+本组件不接管任何按键。
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-abort]` | 位于根元素上——`isAbort` 时存在 |
+| `[data-complete]` | 位于根元素上——`isComplete` 时存在 |
+| `[data-paused]` | 位于根元素上——`paused` 时存在 |
+| `[data-variant]` | 消费方设置：缺省为内联细条，`meter` 独立读数盒 |

@@ -1,0 +1,37 @@
+---
+title: Badge
+description: A surface slot with a corner marker — drop an icon inside and attach a label to the top-right corner.
+---
+
+## Installation
+
+<Installation name="badge" />
+
+## Usage
+
+`children` fill the surface — typically an icon — while `label` overlays an optional marker at the top-right corner.
+
+<ComponentPreview
+  name="badge-marker"
+/>
+
+## API Reference
+
+### Badge
+
+| Prop         | Type                              | Description                                                                       |
+| :----------- | :-------------------------------- | :-------------------------------------------------------------------------------- |
+| `children`   | `React.ReactNode`                 | Surface content, typically an icon                                                |
+| `label`      | `React.ReactNode`                 | Corner marker content at the top-right; optional — omitted or empty renders a dot |
+| `classNames` | `{ label?: string }`              | Custom class names per slot                                                       |
+| `styles`     | `{ label?: React.CSSProperties }` | Custom styles per slot                                                            |
+| `className`  | `string`                          | Custom class names of the surface                                                 |
+| `...props`   | `React.ComponentProps<"div">`     | Native div props                                                                  |
+
+## Keyboard Interactions
+
+The skeleton handles no keys. Both parts are non-focusable elements (`<div>` surface, `<span>` marker); any interactive content comes from `children` or `label`.
+
+## Data Attributes
+
+The skeleton emits no `data-*` on this component.

@@ -1,0 +1,46 @@
+---
+title: Preview Card 预览卡片
+description: 由 Card、Image 和 Tooltip 组合而成的预览组件 —— 可独立展示，或悬停链接时弹出富预览
+---
+
+## 安装
+
+<Installation name="preview-card" />
+
+## 用法
+
+由 Image + Tooltip 组合而成，CLI 安装时自动解析依赖。
+
+<ComponentPreview
+  name="preview-card-basic"
+/>
+
+## API 参考
+
+### PreviewCard
+
+| 属性            | 类型                                           | 描述                                        |
+| :------------ | :------------------------------------------- | :---------------------------------------- |
+| `src`         | `string`                                     | 图片地址                                      |
+| `alt`         | `string`                                     | 图片 alt 文本                                 |
+| `title`       | `React.ReactNode`                            | 卡片标题                                      |
+| `description` | `React.ReactNode`                            | 卡片描述                                      |
+| `trigger`     | `React.ReactNode`                            | 传入时作为链接的悬停 Tooltip 展示                     |
+| `href`        | `string`                                     | 链接地址（仅在传入 `trigger` 时生效），默认 `"#"`         |
+| `delay`       | `number`                                     | Tooltip 显示延迟（毫秒，仅与 `trigger` 配合），默认 `200` |
+| `className`   | `string`                                     | 卡片的自定义类名                                  |
+| `classNames`  | `{ image? / body? / title? / description? }` | 子区域的自定义类名                                 |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Tab` | 焦点移入触发链接时显示卡片 |
+| Focus out | 焦点离开触发链接时隐藏卡片 |
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-floating]` | 位于卡片——仅在传入 `trigger`（浮动模式）时存在 |
+

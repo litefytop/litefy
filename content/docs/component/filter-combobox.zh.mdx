@@ -1,0 +1,119 @@
+---
+title: 组合筛选器
+description: 一行连续的 token 输入区——已提交规则、构建中的草稿与光标同处一条流，输入列名、选操作符、填值一气呵成
+---
+
+## 安装
+
+<Installation name="filter-combobox" />
+
+## 用法
+
+输入条是一根连续输入区：chips、草稿 token 与光标同处一条流，输入框始终跟在内容之后。
+
+<ComponentPreview name="filter-combobox-basic" />
+
+运行时切换语言只需替换 `texts` 对象——组件不内置 i18n 运行时与语言包：
+
+<ComponentPreview name="filter-combobox-i18n" />
+
+## API 参考
+
+### 一根连续输入区
+
+输入条是一根可换行的单行流：搜索图标固定头部，其后依次是已提交 chip、虚线草稿 chip、输入框与确认钮 / 放弃钮——全部跟随内容换行。清空钮**钉在 bar 右端**（absolute 右侧垂直居中，不随内容移动），有已提交规则时显示，显示期间 bar 经 `data-clear` 预留右侧空间防重叠。每条已提交 chip 都完整可见，不做 `+N` 折叠。点击输入区任意空白处即聚焦输入框。
+
+| 组成 | 行为 |
+| --- | --- |
+| 已提交 chip | 实线 chip，标签 + close 图标（`X`）移除钮，各有独立可访问名；点 chip 把该条回填为草稿继续编辑 |
+| 草稿 chip | 虚线 chip，选中列后出现、选定操作符后长成「列名 + 操作符」；纯视觉件（`aria-hidden`），语义由输入框与 `role="status"` 承担 |
+| 确认 / 放弃 | 在输入框（与 hint）后方：check 钮仅在值阶段且草稿非空时出现，点击校验并固化为实线 chip（`Enter` 等效）；X 钮在整段草稿态出现，一次放弃整条草稿回到 `field`，是 `Esc` 逐级回退的可见对照 |
+| 值提示 | 与 Password 同款的字段提示形态：小浮签悬浮在 bar 上方右端，`value` 阶段输入框聚焦时浮现，经 `aria-describedby` 关联 |
+| 清空 | 钉在 bar 右端的按钮（`RotateCcw`，`clearText` 可访问名），有已提交规则时出现；一次清空全部规则回到 `field` |
+
+`Esc` 逐级回退 `value → operator → field`，草稿 token 逐级收缩；`Backspace` 在 `field` 阶段且输入为空时删除末尾规则。整个组件只有一个候选列表浮层，不弹第二个面板、不嵌套编辑器。
+
+### 三个阶段
+
+| 阶段 | 候选内容 | 行为 |
+| --- | --- | --- |
+| `field` | 开发者维护的字段（按名称、标签、别名过滤）；**按空格同样呼出列名候选**（空格不进草稿） | 选中字段后列名以草稿 token 落入输入流，进入 `operator` |
+| `operator` | 只取该字段 `operators` 配置里的项，经 `texts.operatorLabels` 显示——默认全文字（`is` `is not` `greater than` `at least` `less than` `at most` `between` `not between` `before` `after` `contains` `does not contain` `is empty` `is not empty`），每个操作符零理解成本；各语言经 `operatorLabels` 整体替换（如中文「等于」「介于」） | 选中后草稿 token 长一级；`isEmpty` / `isNotEmpty` 无需值，直接成规则 |
+| `value` | `enum` 字段复用同一候选列表展示 `options`，输入即过滤；`number` / `date` 无候选，行内文本输入 | 点击或 `Enter` 选中枚举选项直接成规则；其余 `Enter` 或点输入框后方的 check 校验通过后成规则，chip 固化并回到 `field` |
+
+### 值阶段提示
+
+`value` 阶段 bar 上方右端浮现提示浮签——进入值阶段即显示（不依赖聚焦），由 `resolveValueHint(field, operator, texts)` 返回数组驱动。提示分两种形态：纯文本（`type: "text"`）与 **kbd 键帽**（`type: "keys"`，渲染为 `<kbd>` 元素）：
+
+| 字段 × 操作符 | 提示 |
+| --- | --- |
+| `number` + `between` / `notBetween` | 解释文字 + 键帽——`separatorLabel`（默认 `Separate with`）后接 `␣` `,` `/` 三枚 `<kbd>` 键帽（`separatorKeys`） |
+| `date` + `between` / `notBetween` | 格式提示 `dateValueHint`（默认 `Format YYYY-MM-DD`）**与**键帽 `␣` `,` `/` `-` 并排（`dateSeparatorKeys`）——日期可用 `-` 分割 |
+| `date` + 单值操作符 | 仅 `dateValueHint`（默认 `Format YYYY-MM-DD`） |
+| `number` / `text` / `enum` 单值、无值操作符 | 不显示（枚举已有下拉，文本无需提示） |
+
+解释性文字保留（label、`Format`），示例值一律不出现；键帽（`␣` 表示空格）跨语言通用。数字没有 `-` 分隔——负数区间用 `␣` `,` 或 `/` 分隔（如 `-10 20`）。
+
+日期只按 ISO `YYYY-MM-DD` 输入与存储——组件不解析多种日期格式，以 hint 说明格式。
+
+### 字段与操作符
+
+`FilterComboboxField = { name, label, type, aliases?, operators, options? }`。`type` 为 `text` / `number` / `date` / `enum`；`operators` 由开发者按列维护，组件不会替你补全。`enum` 的值会按 `options` 校验。
+
+`FilterRule = { id, field, operator, value }`，`value` 为 `string`、`string[]`（区间）或 `null`（无值操作符）。规则数组即组件的 `value` / `onChange` 契约，可直接交给 `toFilterParams(rules)` 扁平化后请求后端。
+
+### 值校验与分隔符
+
+| 操作符类别 | 校验 |
+| --- | --- |
+| 单值 | 非空，且 `number` 可解析为有限数、`enum` 命中 `options`、`date` 自动格式化——`2026-1-1` 规范化为 `2026-01-01`，三个按位数字段（`2003 05 19`）组装为 `2003-05-19` |
+| 区间 `between` / `notBetween` | 必须切出两个值，且两侧都通过上表单值校验（日期两侧各自自动格式化，六个按位数字段如 `2003 05 19 2003 06 20` 组装为区间）；起始不得大于结束（否则报 `invertedRangeText`） |
+| 无值 `isEmpty` / `isNotEmpty` | 恒通过，`value` 为 `null` |
+
+`separators` 默认 `[",", "/", " ", "，", "～", "~", "–"]`，可整体替换——`-` 不作通用分隔符：它同时是负号与 ISO 日期连字符。`parseRangeValue` 对 `date` 优先提取两个 ISO 日期，因此 `2026-01-01 - 2026-02-01` 可用；其余一律按分隔符切分。校验失败由 `role="alert"` 播报——格式错误报 `invalidRangeText`，起始大于结束报 `invertedRangeText`——均不产出规则。
+
+组件**只收集并结构化值**：规则以 `FilterRule[]` 交给消费方，`toFilterParams(rules)` 扁平化为结构化 `{ field, operator, value }` 参数、不含任何 SQL 或 DSL 文本；如何拼进 SQL、DSL 或 ORM 由开发者二次封装。
+
+### FilterCombobox
+
+| 属性                            | 类型                                                  | 描述                                   |
+| ----------------------------- | --------------------------------------------------- | ------------------------------------ |
+| `fields`                      | `FilterComboboxField[]`                             | 字段、别名与该列允许的操作符                       |
+| `value` / `defaultValue`      | `FilterRule[]`                                      | 受控 / 非受控规则数组，默认 `[]`                 |
+| `onChange`                    | `(rules: FilterRule[]) => void`                     | 规则变化回调                               |
+| `texts`                       | `FilterComboboxTexts`                               | 全部可替换文案，默认 英文默认值                     |
+| `separators`                  | `string[]`                                          | 区间值切分符，默认 见上                         |
+| `fetcher`                     | `(params, signal) => Promise<unknown>`              | 可选；规则变化自动查询，`AbortController` 取消在途请求 |
+| `onResult` / `onError`        | 回调                                                  | 查询回调；取消的请求不回调                        |
+| `resultCount`                 | `number`                                            | 结果数，仅供屏幕阅读器经 `role="status"` 播报      |
+| `renderChip` / `renderOption` | 渲染通道                                                | 皮肤用它注入 chip 与候选行外观，默认 无样式默认实现        |
+| `classNames` / `styles`       | `FilterComboboxClassNames` / `FilterComboboxStyles` | 槽位类串与内联样式                            |
+
+### 国际化
+
+组件**不内置 i18n 运行时与语言包**——所有用户可见文案集中在 `FilterComboboxTexts`，每项可选、有英文默认值：三阶段占位、`emptyFieldsText` / `emptyOperatorsText` / `emptyValuesText`、`invalidValueText` / `invalidRangeText` / `invertedRangeText`、提示 `dateValueHint`（默认 `Format YYYY-MM-DD`）、`separatorLabel`（默认 `Separate with`）、`separatorKeys`（默认 `["␣", ",", "/"]`）与 `dateSeparatorKeys`（默认 `["␣", ",", "/", "-"]`）、`removeLabel` / `editLabel`、`cancelDraftText` / `submitText` / `clearText`、`loadingText` / `errorText`、带 `{count}` 占位符的 `resultCountText`（默认 `{count} results`），以及 `operatorLabels`（按操作符逐个替换名称）。`separators` 也属可替换契约。
+
+运行时切换语言就是换一个 `texts` 对象——组件体积零增量，字典放在宿主侧。i18n demo 只内置一套中文字典，英文默认文案见上方用法 demo。确认钮 / 放弃钮 / 清空钮与 chip 按钮均为 `text` 变体图标钮（与文本并排禁用 `primary`，见 `pagination` 范例）。
+
+### FilterComboboxRef
+
+| 方法 | 描述 |
+| --- | --- |
+| `reset()` | 清空规则并回到 `field` 阶段 |
+| `submit()` | 手动触发一次查询 |
+| `getRules()` | 读取当前规则 |
+| `focusInput()` | 聚焦输入框 |
+
+### 键盘与 data-* 属性
+
+| 按键 | 描述 |
+| --- | --- |
+| `↑` / `↓` | 在候选列表移动并循环回绕；`value` 阶段仅枚举字段有候选 |
+| `Space` | `field` 阶段呼出列名候选（空格不进草稿） |
+| `Enter` | 选中当前候选；`value` 阶段有候选时选候选，否则提交规则 |
+| `Esc` | 逐级回退，任何阶段都能回到初始 |
+| `Backspace` | `field` 阶段且输入为空时删除末尾规则 |
+
+鼠标点击候选与键盘等效：候选项在 `mousedown` 阻止输入框失焦，列表不会在点击瞬间收起。
+
+`data-slot` 可取 `filter-combobox` / `bar` / `chip` / `draft` / `hint` / `suggestion-list`；`data-highlighted` 标记键盘当前项，`data-loading` / `data-error` 标记状态容器。

@@ -1,0 +1,79 @@
+---
+title: List 列表
+description: 支持键盘导航、高亮、选中与滚动到底回调的滚动列表容器
+---
+
+## 安装
+
+<Installation name="list" />
+
+## 用法
+
+由 `items` 驱动的滚动容器，行内容通过 `renderItem` 渲染，支持键盘导航。
+
+<ComponentPreview name="list-basic" />
+
+## API 参考
+
+### 高阶组件
+
+#### List
+
+支持滚动与键盘导航的列表；容器的尺寸由使用者自行提供。
+
+| Prop                | Type                                                                | Description                                             |
+| ------------------- | ------------------------------------------------------------------- | ------------------------------------------------------- |
+| `items`             | `T[]`                                                               | 要渲染的数据数组                                                |
+| `renderItem`        | `(item: T, index: number) => ReactNode`                             | 行内容渲染函数                                                 |
+| `getKey`            | `(item: T, index: number) => Key`                                   | 行 key 提取函数；默认使用索引                                       |
+| `empty`             | `React.ReactNode`                                                   | `items` 为空时渲染的内容                                        |
+| `highlightIndex`    | `number \| null`                                                    | 受控高亮索引；省略时使用内部键盘导航                                      |
+| `onHighlightChange` | `(index: number \| null) => void`                                   | 高亮变化时触发                                                 |
+| `getGroup`          | `(item: T, index: number) => string`                                | 分组标签提取函数；仅当 `getGroup` 与 `renderGroupHeader` 同时提供时启用分组  |
+| `renderGroupHeader` | `(groupName: string) => ReactNode`                                  | 组标题渲染函数；仅当 `getGroup` 与 `renderGroupHeader` 同时提供时启用分组   |
+| `onSelect`          | `(item: T, index: number) => void`                                  | 点击行或键盘导航期间按下 `Enter` 确认时触发                              |
+| `onScrollBottom`    | `() => void`                                                        | 列表滚动到底部 16px 以内时触发，用于加载更多场景                             |
+| `onItemMouseMove`   | `(item: T, index: number) => void`                                  | 指针在行上移动时触发——把它接到 `setHighlightIndex` 可让 hover 与键盘共享同一高亮 |
+| `ref`               | `React.Ref<HTMLUListElement \| HTMLDivElement>`                     | 根元素 ref —— 平铺模式为 `ul`，分组模式为 `div`，例如用于把焦点移入列表           |
+| `className`         | `string`                                                            | 根节点自定义类                                                 |
+| `style`             | `React.CSSProperties`                                               | 根节点自定义内联样式                                              |
+| `classNames`        | `{ item?: string; groupHeader?: string }`                           | 行与组标题的自定义类                                              |
+| `styles`            | `{ item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | 行与组标题的内联样式                                              |
+
+行分隔由方案决定（组件不强制）；需要滚动边缘阴影时自行搭配 [ScrollShadow](/zh/docs/component/scroll-shadow)。
+
+#### Order
+
+有序列表变体，列表元素渲染为 `<ol>` 并发出 `data-ordered`，十进制编号由所加载的方案提供。它接受除分组 API（`getGroup` / `renderGroupHeader`）外的所有 `List` 属性，`ref` 类型为 `React.Ref<HTMLOListElement>`。序号通过 `::marker` 渲染，要求行保持 `display: list-item`——改变行的 display（例如改成 flex）会使序号消失，行内容布局应放在 `renderItem` 内部。
+
+| Prop                | Type                                                                | Description                             |
+| ------------------- | ------------------------------------------------------------------- | --------------------------------------- |
+| `items`             | `T[]`                                                               | 要渲染的数据数组                                |
+| `renderItem`        | `(item: T, index: number) => ReactNode`                             | 行内容渲染函数                                 |
+| `getKey`            | `(item: T, index: number) => Key`                                   | 行 key 提取函数；默认使用索引                       |
+| `empty`             | `React.ReactNode`                                                   | `items` 为空时渲染的内容                        |
+| `highlightIndex`    | `number \| null`                                                    | 受控高亮索引；省略时使用内部键盘导航                      |
+| `onHighlightChange` | `(index: number \| null) => void`                                   | 高亮变化时触发                                 |
+| `onSelect`          | `(item: T, index: number) => void`                                  | 点击行或键盘导航期间按下 `Enter` 确认时触发              |
+| `onScrollBottom`    | `() => void`                                                        | 列表滚动到底部 16px 以内时触发，用于加载更多场景             |
+| `onItemMouseMove`   | `(item: T, index: number) => void`                                  | 指针在行上移动时触发                              |
+| `ref`               | `React.Ref<HTMLOListElement>`                                       | 根 `<ol>` 元素的 ref                        |
+| `className`         | `string`                                                            | 根节点自定义类                                 |
+| `style`             | `React.CSSProperties`                                               | 根节点自定义内联样式                              |
+| `classNames`        | `{ item?: string; groupHeader?: string }`                           | 各部分自定义类（`Order` 中不会用到 `groupHeader`）    |
+| `styles`            | `{ item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | 各部分自定义内联样式（`Order` 中不会用到 `groupHeader`） |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `ArrowDown` | 高亮移动到下一项——无高亮时移到第一项；高亮项会自动滚动到可视区域 |
+| `ArrowUp` | 高亮移动到上一项——无高亮时移到最后一项；高亮项会自动滚动到可视区域 |
+| `Enter` / `Space` | 选中当前高亮项 |
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-highlighted]` | 位于每个条目上——键盘高亮落在该项上时存在 |
+| `[data-ordered]` | 位于根元素上——列表有序时存在 |

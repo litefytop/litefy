@@ -1,0 +1,262 @@
+---
+title: Installation
+description: Install Litefy components into your React project.
+---
+
+Components ship as source — install them with the CLI tool, or by hand.
+
+## Prerequisites
+
+Litefy is not a project scaffold — use it inside an existing React app. The only hard requirements are:
+
+- **React 19+** (components rely on React 19 features; older versions are incompatible)
+- **TypeScript** enabled
+
+## CLI
+
+### init
+
+Initialize your project: generate the `litefy.json` config file, create the `ui/litefy` directory structure with its aggregate barrel files, and install the dependencies. Running `add` before initialization triggers the initialization flow automatically.
+
+> ⚠️ Do not manually modify the path fields in `litefy.json`. If you relocate these directories yourself, update your import paths to match; the CLI will not rewrite them for you.
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest init
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest init
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest init
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest init
+    ```
+  </Tab>
+</Tabs>
+
+**Options**
+
+- `-y, --yes`: Skip interactive prompts and use all default configuration
+
+### add
+
+Download component skeletons and their hooks and utils in batch, automatically resolve each entry's `dependence` (detected by scanning every template's relative imports at build time), install the resolved npm dependencies, and update the aggregate exports. Once a style scheme is picked (`-s`, or a previous `add style`), every `add` also re-syncs that scheme's complete stylesheet.
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest add <components...>
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest add <components...>
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest add <components...>
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest add <components...>
+    ```
+  </Tab>
+</Tabs>
+
+**Options**
+
+- `-o, --overwrite`: Force overwrite existing files
+- `-y, --yes`: Skip interactive prompts (auto-install npm dependencies)
+- `-s, --style <scheme>`: Pick the style scheme; its complete stylesheet re-syncs on every add
+
+### style
+
+Install (or switch) a style scheme. `init` sets up the headless skeleton only — styles are always an `add`-time choice: `add style <scheme>` installs or switches the stylesheet, and the last-installed scheme is the only one wired into `styles/index.css`.
+
+The installer writes the scheme's **single stylesheet** — `index.css`: tokens, the `@layer base` block, the `@theme` mapping (a namespace per dimension solved back out of a constant, which is what gives `h-control` / `py-snug` / `duration-sm` their names; whitespace carries no names and is written on the numeric spacing scale), its `@custom-variant` roles and `@utility` primitives — into the styles directory. That file is a pure theme layer, not a standalone entry: import it into your own Tailwind CSS entry after `@import "tailwindcss"` (Tailwind first, so it declares the cascade layer order); your entry's scan generates the utilities, and no import list is regenerated. A scheme installs as a whole: there are no per-component style entries, because the scheme is the unit of coherence. The component looks are utility strings in the shared skin layer `app/ui/skin/*.tsx`, which the registry cannot place yet — `add style` ships the stylesheet only, so you write each control's utilities the way that style's `design.md` prescribes.
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest add style minimal
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest add style minimal
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest add style minimal
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest add style minimal
+    ```
+  </Tab>
+</Tabs>
+
+**Options**
+
+- `-o, --overwrite`: Force overwrite existing files
+- `-y, --yes`: Skip interactive prompts
+
+### install
+
+Install **all** registry entries — every component, hook and util — in one go; useful to pull the full library locally. Delegates to `add`, so dependencies are resolved and exports are updated the same way.
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest install
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest install
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest install
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest install
+    ```
+  </Tab>
+</Tabs>
+
+**Options**
+
+- `-o, --overwrite`: Force overwrite existing component files
+- `-y, --yes`: Skip interactive prompts
+
+### rm
+
+Remove installed components: delete the corresponding files and update the config manifest and aggregate exports.
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest rm <names...>
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest rm <names...>
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest rm <names...>
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest rm <names...>
+    ```
+  </Tab>
+</Tabs>
+
+### repair
+
+Validate the integrity of local resources, fetch missing components and hooks online, and regenerate aggregate exports.
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest repair
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest repair
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest repair
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest repair
+    ```
+  </Tab>
+</Tabs>
+
+### clean
+
+Offline cleanup: prune component records in the config that no longer exist locally. No network required.
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest clean
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest clean
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest clean
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest clean
+    ```
+  </Tab>
+</Tabs>
+
+### uninstall
+
+Completely uninstall: delete all Litefy local files and `litefy.json`. Hand-written imports in your business code are not removed automatically; clean them up manually.
+
+<Tabs items={["npm", "yarn", "pnpm", "bun"]}>
+  <Tab value="npm">
+    ```bash
+    npx litefy@latest uninstall
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx litefy@latest uninstall
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx litefy@latest uninstall
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun litefy@latest uninstall
+    ```
+  </Tab>
+</Tabs>
+
+## Manual installation
+
+The library has two modes — headless skeletons and skins. When installing by hand, download the init resources you need:
+
+- **Skeleton**: component source ships without styles — structure and behavior only; the icons every component needs to initialize live in a single file. Download the icon collection from the [Headless](/en/docs/headless) page into `ui/litefy/components/`, then install the imported dependencies yourself.
+- **Skin**: each style is one `index.css` (tokens, the base block and the `@theme` mapping). Review and copy it from the [Styles](/en/docs/styles) page and import it into your Tailwind CSS entry after `@import "tailwindcss"`.

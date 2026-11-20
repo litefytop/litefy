@@ -1,0 +1,21 @@
+/* Site layer — the docs site's own Tailwind entry. It owns `@import "tailwindcss"
+   source(none)` and composes the scheme theme layer (tokens + base + the skins'
+   utilities), then extends generation to the business directories, so a page's
+   `bg-surface` / `text-sm` is generated in `@layer utilities` like every other
+   utility and a skin's variant can beat it. Business styles must never be emitted
+   unlayered — an unlayered declaration outranks the utilities layer and silences
+   every `quiet:` / `hover:` a skin makes. Routes link THIS file only — never the
+   scheme stylesheet as a second link. */
+@import "./styles/reset.css";
+@import "./styles/shiki.css";
+
+@import "tailwindcss" source(none);
+@import "./ui/schemes/minimal/index.css";
+
+@source "./components";
+@source "./demos";
+@source "./routes";
+@source "./root.tsx";
+@source "./ui";
+
+@import "./styles/site.css";

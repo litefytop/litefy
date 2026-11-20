@@ -1,0 +1,89 @@
+---
+title: Collapse
+description: A single collapsible panel component with controlled and uncontrolled open state
+---
+
+## Installation
+
+<Installation name="collapse" />
+
+## Usage
+
+A single collapsible panel; click the header row to expand or collapse the content.
+
+<ComponentPreview
+  name="collapse-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Collapse
+
+A single collapsible panel with a built-in trigger and an animated collapsible panel.
+
+| Prop           | Type                                                                                                                     | Description                                                                                  |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| `label`        | `React.ReactNode \| ((open: boolean) => React.ReactNode)`                                                                | Content shown on the header trigger; accepts a function receiving the open state             |
+| `icon`         | `React.ReactNode \| ((open: boolean) => React.ReactNode)`                                                                | Expand/collapse icon; accepts a function receiving the open state, defaults to `ChevronDown` |
+| `open`         | `boolean`                                                                                                                | Controlled open state                                                                        |
+| `defaultOpen`  | `boolean`                                                                                                                | Initial open state (uncontrolled), defaults to `false`                                       |
+| `onOpenChange` | `(open: boolean) => void`                                                                                                | Called when the open state changes                                                           |
+| `itemKey`      | `string`                                                                                                                 | Suffix for the trigger and panel ids, used for accessibility association                     |
+| `className`    | `string`                                                                                                                 | Custom classes, applied to the root container                                                |
+| `style`        | `React.CSSProperties`                                                                                                    | Inline styles, applied to the root container                                                 |
+| `classNames`   | `{ trigger?: string; icon?: string; panel?: string; body?: string }`                                                     | Custom classes for the four slots: trigger, chevron, animated shell, panel body              |
+| `styles`       | `{ trigger?: React.CSSProperties; icon?: React.CSSProperties; panel?: React.CSSProperties; body?: React.CSSProperties }` | Inline styles for the same four slots                                                        |
+| `children`     | `React.ReactNode`                                                                                                        | Panel content                                                                                |
+| `...props`     | `React.ComponentProps<"div">`                                                                                            | Supports all native div props                                                                |
+
+---
+
+### Composable Components
+
+#### CollapseRoot
+
+The outer `<div>` container of the panels.
+
+| Prop        | Type                          | Description                      |
+| ----------- | ----------------------------- | -------------------------------- |
+| `className` | `string`                      | Custom styles                    |
+| `...props`  | `React.ComponentProps<"div">` | Supports all native div props    |
+
+#### CollapseTrigger
+
+The trigger button; when used standalone, pass `open` and control it yourself via `onClick`.
+
+| Prop        | Type                             | Description                        |
+| ----------- | -------------------------------- | ---------------------------------- |
+| `open`      | `boolean`                        | Drives `aria-expanded`             |
+| `className` | `string`                         | Custom styles                      |
+| `...props`  | `React.ComponentProps<"button">` | Supports all native button props   |
+
+#### CollapsePanel
+
+The collapsible panel: the outer `<section>` is the animated grid clip layer, `className` / `style` land on it; `classNames.body` / `styles.body` address the inner content container.
+
+| Prop         | Type                                                          | Description                                                     |
+| ------------ | ------------------------------------------------------------- | --------------------------------------------------------------- |
+| `open`       | `boolean`                                                     | Whether expanded; drives the collapse animation                 |
+| `className`  | `string`                                                      | Custom styles, applied to the animated `<section>` shell        |
+| `classNames` | `{ panel?: string; body?: string }`                           | Custom classes for the animated shell and the content container |
+| `styles`     | `{ panel?: React.CSSProperties; body?: React.CSSProperties }` | Inline styles for the same two slots                            |
+| `...props`   | `React.ComponentProps<"section">`                             | Native section props, for accessibility and data-\*             |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Enter` / `Space` | Activates the currently focused trigger through the native `<button>`; the skeleton handles no keys |
+| `Tab` | Reaches each trigger in DOM order. A collapsed panel stays mounted — the `<section>` only clips height — so its focusable elements remain in the tab order; whether to drop them is decided by the loaded scheme |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-open]` | On the panel — `"true"` or `"false"`, drives the open/close animation; also carried by the default collapse icon |

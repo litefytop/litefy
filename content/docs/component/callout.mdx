@@ -1,0 +1,39 @@
+---
+title: Callout
+description: A block for callout semantics — info by default, with success / warning / danger via data-variant.
+---
+
+## Installation
+
+<Installation name="callout" />
+
+## Usage
+
+A block-level callout container; `data-variant` switches the `success` / `warning` / `danger` semantic colors.
+
+<ComponentPreview
+  name="callout-basic"
+/>
+
+## API Reference
+
+### Callout
+
+A pure-style component — no skeleton, no interactive states; content renders directly inside the block.
+
+| Prop        | Type                          | Description                                                                                            |
+| ----------- | ----------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `role`      | `string`                      | ARIA role of the block; switch to `alert` / `status` etc. to match the semantics, defaults to `"note"` |
+| `children`  | `React.ReactNode`             | Callout content                                                                                        |
+| `className` | `string`                      | Custom class names of the block                                                                        |
+| `...props`  | `React.ComponentProps<"div">` | Supports all native div props                                                                          |
+
+## Keyboard Interactions
+
+The component handles no keys and is not focusable — a pure display block; interactive content can only come from `children`.
+
+## Data Attributes
+
+| Attribute        | Description                                                            |
+| ---------------- | ---------------------------------------------------------------------- |
+| `[data-variant]` | Semantic variant: `success` / `warning` / `danger`, unset `info`; lays the matching semantic background color tier (300 / 200 tier) as the background, a dark vertical line on the start side, and the icon and title take the paired `*-fg` |

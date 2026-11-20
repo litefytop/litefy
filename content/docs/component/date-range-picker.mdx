@@ -1,0 +1,58 @@
+---
+title: Date Range Picker
+description: A single calendar panel where two clicks pick a start and end date; once the start is chosen, hovering previews the range instantly, and the whole range highlights as one continuous band
+---
+
+## Installation
+
+<Installation name="date-range-picker" />
+
+## Usage
+
+Two clicks in one calendar panel pick a start and end date; after the start is chosen, hovering previews the range band — solid endpoints, the middle highlighted as one band.
+
+<ComponentPreview name="date-range-picker-basic" />
+
+## API Reference
+
+### Selection flow
+
+| Stage | Behavior |
+| --- | --- |
+| Waiting for start | The first click writes the start and switches to waiting for the end |
+| Waiting for end | Hovering any date instantly previews the range band from the start to the hovered day; moving out of the grid clears the preview |
+| Done | The second click commits and closes if the date is not earlier than the start; an earlier date becomes the new start. Start may equal end |
+
+`Esc` closes the panel but keeps the chosen start, so the next open continues waiting for the end. While the panel is open, the trailing calendar icon becomes a close icon — clicking it or pressing `Backspace` clears the selected value and keeps the panel open; with no value, clicking the close icon does nothing, and `clearText` is the close icon's `aria-label`. The panel carries no step hints; the input placeholder and the hover preview provide the two-step guidance.
+
+The continuous highlight band of the selected range is drawn by the skin's `calendarRangeClasses` keyed on `data-range`; the single-value `DatePicker` appearance is unaffected.
+
+### DateRangePicker
+
+| Prop                            | Type                                                  | Description                                                                                                         |
+| ------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `value` / `defaultValue`        | `DateRangeValue`                                      | Controlled / uncontrolled value as ISO `YYYY-MM-DD` strings, defaults to `{ start: null, end: null }`               |
+| `onValueChange`                 | `(value: DateRangeValue) => void`                     | Fires when the range completes, avoiding the timezone ambiguity of `Date` objects                                   |
+| `placeholder`                   | `string`                                              | Input placeholder, stating that this is a range selection, defaults to `Select a date range`                        |
+| `startLabel` / `endLabel`       | `string`                                              | Accessible names for start and end, defaults to `Start date` / `End date`                                           |
+| `separator`                     | `string`                                              | Replaceable text joining start and end in the input, defaults to `–`                                                |
+| `clearText` / `invalidText`     | `string`                                              | Close icon accessible name / error message, defaults to `Clear` / `Start must not exceed end`                       |
+| `weekdayLabels` / `monthLabels` | `string[]`                                            | Replace weekday and month names wholesale for localization, defaults to English abbreviations / English month names |
+| `isDateDisabled`                | `(date: Date) => boolean`                             | Disabled dates                                                                                                      |
+| `firstDayOfWeek`                | `0 \| 1`                                              | First day of week, defaults to `0`                                                                                  |
+| `disabled`                      | `boolean`                                             | Disabled state, defaults to `false`                                                                                 |
+| `classNames` / `styles`         | `DateRangePickerClassNames` / `DateRangePickerStyles` | Slot class strings and inline styles                                                                                |
+
+### Relationship with Calendar
+
+The component reuses `Calendar`'s grid, arrow-key focus movement and month/year views. `Calendar` gains the optional props `range` / `weekdayLabels` / `monthLabels` / `onHoverDateChange`; without them its behavior is unchanged and `DatePicker` needs no edits. Day cells emit the four states `start` / `end` / `between` / `single` through `data-range`.
+
+The panel keeps `popover="manual"` and renders in the top layer, so it is not clipped even inside a table header with `overflow-hidden`. Panel width is computed from the calendar's own size (`7 × --width-control + 6 × --spacing`, theme-aware) and does not compress with a narrow field; very narrow viewports only add a width cap and horizontal scrolling.
+
+### data-* attributes
+
+| Attribute | Value | Description |
+| --- | --- | --- |
+| `data-range` | `start` / `end` / `between` / `single` | Role of a day cell within the range |
+| `data-in-range` | `true` | The day cell lies inside the selected range |
+| `data-slot` | `date-range-panel` | Panel structure marker |

@@ -1,0 +1,63 @@
+---
+title: Donut 环形图
+description: 零依赖 SVG 饼图/环形图，带中心读数，图例可点击切换
+---
+
+属于图表家族：与 [Chart](/zh/docs/component/chart)、[Radar](/zh/docs/component/radar)、[Sparkline](/zh/docs/component/sparkline) 共享 `chart-kit` 数学层——需要坐标轴、悬浮提示或大数据量时序时选 Chart。
+
+## 安装
+
+<Installation name="donut" />
+
+## 用法
+
+基础环形图，带图例。
+
+<ComponentPreview
+  name="donut-basic"
+/>
+
+### 饼图
+
+`variant="pie"` 关闭中孔，读数移到图表下方。
+
+<ComponentPreview
+  name="donut-pie"
+/>
+
+### 数值格式化
+
+通过 `valueFormatter` 将读数格式化为美元金额；默认为普通 `toLocaleString`。
+
+<ComponentPreview
+  name="donut-value-formatter"
+/>
+
+## API 参考
+
+### Donut
+
+| 属性               | 类型                          | 说明                                         |
+| :--------------- | :-------------------------- | :----------------------------------------- |
+| `data`           | `DonutDatum[]`              | 扇形数据：`{ label, value, color? }`            |
+| `variant`        | `"pie" \| "donut"`          | `pie` 关闭中孔并将读数移到图表下方，默认 `"donut"`          |
+| `gap`            | `number`                    | 扇形之间的角度间隔（度），默认 `2`                        |
+| `valueFormatter` | `(value: number) => string` | 读数的数值格式化，默认 `toLocaleString`               |
+| `showLegend`     | `boolean`                   | 是否在图上方渲染可点击图例，默认 `true`                    |
+| `className`      | `string`                    | 追加到根元素的类名                                  |
+| `classNames`     | `DonutClassNames`           | 槽位覆盖：`root` / `svg` / `segment` / `legend` |
+| `styles`         | `DonutStyles`               | 与 `classNames` 槽位对应的内联样式                   |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Enter` / `Space` | 图例项上按下——切换对应扇区的可见性 |
+
+中心读数仅跟随指针在扇区上的悬停——悬停高亮没有键盘等价操作。
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-dimmed]` | 位于扇形路径上——悬停在其他扇区时存在 |

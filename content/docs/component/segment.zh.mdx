@@ -1,0 +1,85 @@
+---
+title: Segment 分段控制器
+description: 支持受控、非受控和 options 驱动模式的单选分段控制组件
+---
+
+## 安装
+
+<Installation name="segment" />
+
+## 用法
+
+数据驱动的分段控制器，用于单选，支持受控和非受控模式。
+
+<ComponentPreview
+  name="segment-basic"
+/>
+
+### 变体
+
+`variant` 切换整体外观，默认中性，另有 `primary` 与 `text`。
+
+<ComponentPreview
+  name="segment-variants"
+/>
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的组合组件。
+
+#### SegmentGroup
+
+| 属性               | 类型                            | 描述                                                        |
+| ---------------- | ----------------------------- | --------------------------------------------------------- |
+| `options`        | `SegmentOptionConfig[]`       | 选项数据数组                                                    |
+| `value`          | `string`                      | 受控的选中值                                                    |
+| `defaultValue`   | `string`                      | 非受控模式下的默认选中值                                              |
+| `onValueChange`  | `(value: string) => void`     | 选中值变化时触发的回调函数                                             |
+| `variant`        | `"primary" \| "text"`         | 选中态外观：缺省为滑动指示块，`primary` 选中项填充主题色背景，`text` 选中项为主题色加粗下划线文字 |
+| `disabled`       | `boolean`                     | 禁用所有选项，默认 `false`                                         |
+| `className`      | `string`                      | 自定义类名，应用于容器                                               |
+| `itemClassName`  | `string`                      | 自定义类名，应用于每个分段按钮                                           |
+
+键盘：带 roving tabindex 的单选组 —— 方向键移动并选中下一个 / 上一个可用选项，`Home` / `End` 跳到首尾，`Enter` / `Space` 激活。
+
+### SegmentOptionConfig
+
+| 字段          | 类型                | 描述                                          |
+| ----------- | ----------------- | ------------------------------------------- |
+| `label`     | `string`          | 选项显示文本                                      |
+| `value`     | `string`          | 唯一标识值                                       |
+| `disabled`  | `boolean`         | 禁用该选项，默认 `false`                            |
+| `className` | `string`          | 自定义类名，优先级高于 `itemClassName`                 |
+
+---
+
+### 可组合组件
+
+#### Segment
+
+单个分段零件，具有单选语义；不持有内部状态——`checked` 必须由外部提供。
+
+| 属性          | 类型                               | 描述                                                            |
+| ----------- | -------------------------------- | ------------------------------------------------------------- |
+| `children`  | `React.ReactNode`                | 分段按钮的内容                                                       |
+| `checked`   | `boolean`                        | 选中状态，驱动 `aria-checked`，默认 `false`                             |
+| `className` | `string`                         | 自定义类名                                                         |
+| `...props`  | `React.ComponentProps<"button">` | 支持所有原生 button 属性（除 `type` 外），如 `onClick`、`disabled`           |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `ArrowRight` / `ArrowDown` | 聚焦并选中下一个可用分段，到末尾循环 |
+| `ArrowLeft` / `ArrowUp` | 聚焦并选中上一个可用分段，到开头循环 |
+| `Home` | 跳到第一个可用分段 |
+| `End` | 跳到最后一个可用分段 |
+| `Enter` / `Space` | 激活当前聚焦的分段 |
+
+采用 roving tabindex：仅选中的分段可被 Tab 聚焦。
+
+## 数据属性
+
+骨架不在本组件上发射任何 `data-*`。状态经每个按钮的 `aria-checked` 与 `tabIndex` 暴露。

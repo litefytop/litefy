@@ -1,0 +1,113 @@
+---
+title: Breadcrumb
+description: A navigation trail of composable parts — nav, list, item, link, page and separator — with a data-driven composite for simple trails
+---
+
+## Installation
+
+<Installation name="breadcrumb" />
+
+## Usage
+For simple trails, the composite renders `items` in order — the last one is the current page.
+
+<ComponentPreview
+  name="breadcrumb-basic"
+/>
+
+For simple trails, the composite `Breadcrumb` renders `items` in order — the last entry becomes the current page, the rest render as links:
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Breadcrumb
+
+| Prop         | Type                                                              | Description                                                             |
+| :----------- | :---------------------------------------------------------------- | :---------------------------------------------------------------------- |
+| `items`      | `BreadcrumbDataItem[]`                                            | Trail entries in hierarchy order; the last renders as page              |
+| `className`  | `string`                                                          | Custom class names, applied to the root `<nav>`                         |
+| `style`      | `React.CSSProperties`                                             | Inline styles, applied to the root `<nav>`                              |
+| `classNames` | `list` / `item` / `link` / `page` / `separator` / `separatorIcon` | Custom class names per slot; `separatorIcon` sizes the built-in chevron |
+| `styles`     | `list` / `item` / `link` / `page` / `separator`                   | Custom styles per slot                                                  |
+| `...props`   | `React.ComponentProps<"nav">`                                     | Native nav props, spread onto the root                                  |
+
+#### BreadcrumbDataItem
+
+| Field   | Type              | Description                                  |
+| :------ | :---------------- | :------------------------------------------- |
+| `label` | `React.ReactNode` | Entry text                                   |
+| `href`  | `string`          | Link target; entries with it render as links |
+
+---
+
+### Composable Components
+
+The parts extend native DOM props; each per-slot `classNames` override is merged with any `className` you pass, so passing `className` extends the defaults instead of replacing them.
+
+#### BreadcrumbRoot
+
+The outer `<nav aria-label="breadcrumb">` container.
+
+| Prop        | Type                          | Description                      |
+| :---------- | :---------------------------- | :------------------------------- |
+| `className` | `string`                      | Custom class names               |
+| `...props`  | `React.ComponentProps<"nav">` | Native nav props                 |
+
+#### BreadcrumbList
+
+The inner `<ol>`.
+
+| Prop        | Type                         | Description                      |
+| :---------- | :--------------------------- | :------------------------------- |
+| `className` | `string`                     | Custom class names               |
+| `...props`  | `React.ComponentProps<"ol">` | Native ol props                  |
+
+#### BreadcrumbItem
+
+A single `<li>` entry container.
+
+| Prop        | Type                         | Description                      |
+| :---------- | :--------------------------- | :------------------------------- |
+| `className` | `string`                     | Custom class names               |
+| `...props`  | `React.ComponentProps<"li">` | Native li props                  |
+
+#### BreadcrumbLink
+
+A clickable trail link (a real `<a>`).
+
+| Prop        | Type                        | Description                      |
+| :---------- | :-------------------------- | :------------------------------- |
+| `className` | `string`                    | Custom class names               |
+| `...props`  | `React.ComponentProps<"a">` | Native a props                   |
+
+#### BreadcrumbPage
+
+The current page text (not clickable, `aria-current="page"`).
+
+| Prop        | Type                           | Description                      |
+| :---------- | :----------------------------- | :------------------------------- |
+| `className` | `string`                       | Custom class names               |
+| `...props`  | `React.ComponentProps<"span">` | Native span props                |
+
+#### BreadcrumbSeparator
+
+The separator, rendering a `ChevronRight` icon by default — replace via `children`.
+
+| Prop         | Type                         | Description                                                                        |
+| :----------- | :--------------------------- | :--------------------------------------------------------------------------------- |
+| `className`  | `string`                     | Custom class names                                                                 |
+| `classNames` | `{ icon? }` — `string`       | Class for the built-in `ChevronRight`; a `children` replacement carries none of it |
+| `children`   | `React.ReactNode`            | Custom separator content                                                           |
+| `...props`   | `React.ComponentProps<"li">` | Native li props                                                                    |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Tab` | Reaches each `BreadcrumbLink`, a native `<a>`; the current page is a `<span>` with `role="link"` and `aria-disabled="true"`, so it never enters the tab order |
+| `Enter` | Activates the focused link natively; the skeleton handles no keys |
+
+## Data Attributes
+
+The skeleton emits no `data-*` on this component. The root carries `aria-label="breadcrumb"`, the current page `aria-current="page"` and `aria-disabled="true"`, each separator `aria-hidden` and `role="presentation"`.

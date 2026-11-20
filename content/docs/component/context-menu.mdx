@@ -1,0 +1,84 @@
+---
+title: Context Menu
+description: An imperative context menu with three trigger paths — desktop right-click, touch long-press and Shift+F10 — supporting groups and submenus
+---
+
+## Installation
+
+<Installation name="context-menu" />
+
+## Usage
+
+Mount `<ContextMenuHost />`, spread the `useContextMenuTrigger()` props onto the trigger area, and right-click / long-press opens the menu.
+
+<ComponentPreview
+  name="context-menu-basic"
+/>
+
+## API Reference
+
+### ContextMenuHost
+
+Renders the floating menu panel while `ContextMenu.open()` is active; mount it once at the app root — it renders nothing while no menu is open. It takes no props; the panel is point-anchored at the `x` / `y` coordinates passed to `ContextMenu.open()` ([Float positioning](/en/docs/utils/use-floating-panel)).
+
+### Static Methods
+
+#### ContextMenu.open
+
+```ts
+ContextMenu.open(options: ContextMenuOpenOptions): void
+```
+
+Opens the menu at the given viewport coordinates.
+
+| Option         | Type                                   | Description                                                                                              |
+| :------------- | :------------------------------------- | :------------------------------------------------------------------------------------------------------- |
+| `x`            | `number`                               | Viewport x coordinate (usually `e.clientX`). **Required**                                                |
+| `y`            | `number`                               | Viewport y coordinate (usually `e.clientY`). **Required**                                                |
+| `items`        | `MenuConfig[]`                         | Menu items, flat or grouped — same shape as the [Menu](/en/docs/component/menu) component. **Required** |
+| `onSelect`     | `(item: MenuItemConfig) => void`       | Fired when a menu item is activated; the menu closes afterwards                                          |
+| `classNames`   | `{ content?: string }`                 | Custom classes for the panel                                                                             |
+| `styles`       | `{ content?: React.CSSProperties }`    | Inline styles for the panel; positioning properties are managed internally                               |
+
+#### ContextMenu.dismiss
+
+```ts
+ContextMenu.dismiss(): void
+```
+
+Closes the menu programmatically.
+
+### useContextMenuTrigger
+
+Bundles the three trigger paths into one props set; spread it onto the trigger element: desktop right-click and Shift+F10 open immediately; touch opens after a 500ms hold (cancelled by moving more than 10px, lifting the finger, or scrolling), swallows that tap once open, and no click lands when the menu closes. The returned `style` carries `WebkitTouchCallout: none` and `user-select: none` — suppressing the iOS long-press system callout and text selection, at the cost of text inside the trigger area not being long-press selectable.
+
+| Option       | Type                                | Description                              |
+| :----------- | :---------------------------------- | :--------------------------------------- |
+| `items`      | `MenuConfig[]`                      | Same as `ContextMenu.open`. **Required** |
+| `onSelect`   | `(item: MenuItemConfig) => void`    | Same as `ContextMenu.open`               |
+| `classNames` | `{ content?: string }`              | Same as `ContextMenu.open`               |
+| `styles`     | `{ content?: React.CSSProperties }` | Same as `ContextMenu.open`               |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Shift` + `F10` | Opens the menu on the trigger element (anchored to the element's center) |
+| `Escape` | Closes the menu |
+| `ArrowUp` / `ArrowDown` | Moves focus among the menu items (the first enabled item gets focus on open) |
+| `Enter` / `Space` | Selects the currently focused item and closes the menu |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-entry]` | On each menu item `li` — the entry's entry id; arrow navigation uses it to find entries (from [Menu](/en/docs/component/menu)) |
+| `[data-anchor-name]` | On each menu item `li` — the value `--menu-sub-{entryId}`; its submenu panel anchors to it (from [Menu](/en/docs/component/menu)) |
+| `[data-active]` | On a menu item button — present while it is the arrow / hover active entry (from [Menu](/en/docs/component/menu)) |
+| `[data-has-sub]` | On a menu item button — present when it opens a submenu (from [Menu](/en/docs/component/menu)) |
+| `[data-float-x]` | On the root panel — the `x` passed to `ContextMenu.open()` |
+| `[data-float-y]` | On the root panel — the `y` passed to `ContextMenu.open()` |
+| `[data-float-side]` | On a panel — the requested docking side; the root panel is point-anchored, so the value is ignored on it ([Float positioning](/en/docs/utils/use-floating-panel)) |
+| `[data-float-align]` | On a panel — the requested cross-axis alignment; same caveat as `[data-float-side]` |
+| `[data-float-gap]` | On a panel — the requested offset from the anchor in pixels |
+| `[data-float-anchor]` | On submenu panels only — the parent menu item's `--menu-sub-{entryId}`; the root panel has no element anchor, so it does not carry this attribute |

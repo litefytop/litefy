@@ -1,0 +1,197 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "eslint",
+    "react",
+    "jsx-a11y",
+    "typescript",
+    "import",
+    "unicorn",
+    "oxc",
+    "promise",
+    "node"
+  ],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2024": true
+  },
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "pedantic": "error",
+    "perf": "error",
+    "nursery": "warn"
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/refs": "error",
+    "react/globals": "error",
+    "react/purity": "error",
+    "react/immutability": "error",
+    "react/static-components": "error",
+    "react/set-state-in-effect": "error",
+    "react/exhaustive-effect-dependencies": "error",
+    "react/memo-dependencies": "error",
+    "react/hooks": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error",
+    "no-console": ["error", { "allow": ["error", "warn"] }],
+    "typescript/no-explicit-any": "error",
+    "unicorn/no-null": "off",
+    "unicorn/prefer-top-level-await": "error",
+    "eslint/max-lines-per-function": "off",
+    "eslint/max-lines": "off",
+    "eslint/max-depth": "off",
+    "eslint/no-await-in-loop": "off",
+    "eslint/no-inline-comments": "off",
+    "eslint/no-underscore-dangle": "off",
+    "eslint/no-negated-condition": "off",
+    "unicorn/no-negated-condition": "off",
+    "unicorn/explicit-length-check": "off",
+    "unicorn/consistent-function-scoping": "off",
+    "unicorn/prefer-import-meta-properties": "off",
+    "unicorn/prefer-query-selector": "off",
+    "unicorn/no-useless-undefined": "off",
+    "unicorn/prefer-number-coercion": "off",
+    "jsx-a11y/prefer-tag-over-role": "off",
+    "jsx-a11y/no-autofocus": "off",
+    "import/max-dependencies": "off"
+  },
+  "overrides": [
+    {
+      "files": ["scripts/**", "packages/cli/src/**"],
+      "rules": {
+        "no-console": "off"
+      }
+    },
+    {
+      "files": ["app/ui/components/list.tsx"],
+      "rules": {
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/no-noninteractive-element-to-interactive-role": "off"
+      }
+    },
+    {
+      "files": ["app/ui/components/select.tsx"],
+      "rules": {
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/interactive-supports-focus": "off"
+      }
+    },
+    {
+      "files": ["app/ui/components/multi-select.tsx"],
+      "rules": {
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/no-noninteractive-element-to-interactive-role": "off"
+      }
+    },
+    {
+      "files": ["app/ui/components/nav-bar.tsx"],
+      "rules": {
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/no-static-element-interactions": "off"
+      }
+    },
+    {
+      "files": ["app/ui/components/toast.tsx"],
+      "rules": {
+        "jsx-a11y/no-noninteractive-element-interactions": "off",
+        "jsx-a11y/no-noninteractive-tabindex": "off"
+      }
+    },
+    {
+      "files": ["app/ui/components/popover.tsx"],
+      "rules": {
+        "jsx-a11y/no-noninteractive-element-interactions": "off"
+      }
+    },
+    {
+      "files": ["app/ui/components/segment.tsx"],
+      "rules": {
+        "jsx-a11y/interactive-supports-focus": "off"
+      }
+    },
+    {
+      "files": ["app/ui/components/picker.tsx"],
+      "rules": {
+        "jsx-a11y/role-has-required-aria-props": "off"
+      }
+    },
+    {
+      "files": ["app/ui/components/filter-combobox.tsx"],
+      "rules": {
+        "react/refs": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/interactive-supports-focus": "off",
+        "jsx-a11y/no-static-element-interactions": "off"
+      }
+    },
+    {
+      "files": ["app/ui/skins/filter-combobox.tsx"],
+      "rules": {
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/interactive-supports-focus": "off"
+      }
+    },
+    {
+      "files": ["app/components/docs-shell.tsx"],
+      "rules": {
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/no-noninteractive-element-interactions": "off"
+      }
+    },
+    {
+      "files": ["app/ui/components/field.tsx"],
+      "rules": {
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/no-static-element-interactions": "off"
+      }
+    },
+    {
+      "files": ["app/ui/components/calendar.tsx"],
+      "rules": {
+        "jsx-a11y/interactive-supports-focus": "off"
+      }
+    },
+    {
+      "files": ["app/ui/components/checkbox.tsx"],
+      "rules": {
+        "jsx-a11y/no-noninteractive-element-interactions": "off"
+      }
+    },
+    {
+      "files": ["app/ui/components/swipe-actions.tsx"],
+      "rules": {
+        "jsx-a11y/no-noninteractive-element-interactions": "off"
+      }
+    },
+    {
+      "files": ["app/ui/components/breadcrumb.tsx", "app/ui/components/tree.tsx", "app/components/mdx.tsx"],
+      "rules": {
+        "jsx-a11y/anchor-has-content": "off"
+      }
+    },
+    {
+      "files": ["app/ui/components/image.tsx", "app/ui/components/avatar.tsx"],
+      "rules": {
+        "jsx-a11y/alt-text": "off"
+      }
+    },
+    {
+      "files": ["app/ui/components/switch.tsx", "app/ui/components/slider.tsx"],
+      "rules": {
+        "jsx-a11y/label-has-associated-control": "off"
+      }
+    }
+  ],
+  "ignorePatterns": [
+    "node_modules",
+    "build",
+    "temp",
+    "app/generated",
+    "packages/cli/sources",
+    "packages/cli/dist",
+    "**/*.d.ts"
+  ]
+}

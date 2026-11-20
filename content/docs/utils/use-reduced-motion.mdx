@@ -1,0 +1,31 @@
+---
+title: use-reduced-motion
+description: Reads and subscribes to the system's reduced motion preference; it does not change user settings or control animations
+---
+
+## Installation
+
+<Installation name="use-reduced-motion" />
+
+## Usage
+
+Returns the raw system `prefers-reduced-motion` value, updating automatically on change.
+
+<ComponentPreview name="use-reduced-motion-basic" />
+
+## API Reference
+
+### useReducedMotion
+
+```ts
+function useReducedMotion(): boolean
+```
+
+- Takes no arguments, reads no in-app setting, and offers no override option.
+- `true`: the user prefers reduced motion; callers can pause non-essential animations, reduce movement, or show an explanation.
+- `false`: no reduced-motion request; it does not mean an animation is currently playing.
+- On the server and during first hydration it returns `true`; after mounting it uses the browser's actual preference, so no animation plays while the preference is unknown.
+- Subscribes to the media query's `change` event via `useSyncExternalStore` and cleans up the listener on unmount.
+- The hook touches no storage, depends on no skin, ships no hint copy, changes no system setting, and does not control animations directly.
+
+Animation components such as Banner and `useSpin` use the `reduced` value from [useMotionPreference](/en/docs/utils/use-motion-preference); this hook suits state display, diagnostics, or deciding your own pause strategy. Apps that need to override the system preference should do it through an in-app motion setting, not by treating this detection as a system setting switch.

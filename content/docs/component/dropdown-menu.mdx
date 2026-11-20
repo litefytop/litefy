@@ -1,0 +1,57 @@
+---
+title: Dropdown Menu
+description: A dropdown menu composed of Popover and Menu — supports grouping, nested submenus and keyboard navigation
+---
+
+## Installation
+
+<Installation name="dropdown-menu" />
+
+## Usage
+
+Composed from Popover + Menu; dependencies are resolved automatically at CLI install time.
+
+<ComponentPreview
+  name="dropdown-menu-basic"
+/>
+
+## API Reference
+
+### DropdownMenu
+
+| Prop            | Type                                                          | Description                                                                                                                                                                                                                      |
+| :-------------- | :------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `trigger`       | `React.ReactNode`                                             | Trigger label or node                                                                                                                                                                                                            |
+| `items`         | `MenuConfig[]`                                                | Menu items (groups, submenus, leaf items)                                                                                                                                                                                        |
+| `onSelect`      | `(item: MenuItemConfig) => void`                              | Fired when a leaf item is clicked                                                                                                                                                                                                |
+| `alignX`        | `"start" \| "end" \| "center"`                                | The panel opens below the trigger; `start`/`center`/`end` align it left, center, or right, defaults to `"center"`                                                                                                                |
+| `className`     | `string`                                                      | Custom class name for the trigger button                                                                                                                                                                                         |
+| `itemClassName` | `string`                                                      | Applied to every menu item's `role="menuitem"` button, submenu items included; an item's own `className` comes after it and wins on conflicts                                                                                    |
+| `classNames`    | `{ content? / item? / label? / sub? / menuRoot? / chevron? }` | Custom class names for the panel, menu items, labels and submenus; `menuRoot` is the menu's own root element (the `<ul role="menu">` inside the panel); `chevron` is the right arrow icon at the end of rows that open a submenu |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `ArrowDown` / `Space` | Opens the panel from the trigger and focuses the first enabled item |
+| `ArrowUp` / `ArrowDown` | Moves focus among menu items (wraps around) |
+| `ArrowRight` / `ArrowLeft` | Opens or closes a submenu |
+| `Enter` | Selects the focused item and closes the panel |
+| `Escape` | Closes the panel; focus returns to the trigger |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-anchor-name]` | On the trigger button — `--popover-trigger-{id}`, the name the panel anchors to (from [Popover](/en/docs/component/popover)) |
+| `[data-pure-icon]` | On the trigger button — present when `trigger` is a single icon with no text (from [Button](/en/docs/component/button)) |
+| `[data-float-anchor]` | On the panel — the trigger's `data-anchor-name`; on a submenu panel it is the parent item's `--menu-sub-{entryId}` |
+| `[data-float-side]` | On the panel — always `bottom` (`alignX` only sets horizontal alignment; a side opening is overridden via `placement`); a submenu panel is always `right` |
+| `[data-float-align]` | On the panel — matches `alignX`: `start`, `center`, `end`; a submenu panel is always `start` |
+| `[data-float-gap]` | On the panel — anchor offset in pixels: `4` on the root panel, `0` on a submenu panel |
+| `[data-entry]` | On each menu item `li` — the entry's id, used by arrow navigation to find entries (from [Menu](/en/docs/component/menu)) |
+| `[data-anchor-name]` | On each menu item `li` — `--menu-sub-{entryId}`, the name its submenu panel anchors to (from [Menu](/en/docs/component/menu)) |
+| `[data-active]` | On a menu item button — present while it is the arrow / hover active entry (from [Menu](/en/docs/component/menu)) |
+| `[data-has-sub]` | On a menu item button — present when it opens a submenu (from [Menu](/en/docs/component/menu)) |
+
+No `data-*` marks the panel's open state; it is exposed by the native popover (`:popover-open`).

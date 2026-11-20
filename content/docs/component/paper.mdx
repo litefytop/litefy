@@ -1,0 +1,34 @@
+---
+title: Paper
+description: A print layout sheet at real paper sizes — always white with black text on screen and in print, unaffected by dark mode
+---
+
+## Installation
+
+<Installation name="paper" />
+
+## Usage
+
+A layout sheet at real paper sizes: always white with black text on screen and in print, unaffected by dark mode. Prose typography comes from the [typography classes](/en/docs/utility/typography).
+
+<ComponentPreview name="paper-basic" />
+
+## API Reference
+
+### Paper
+
+| Prop        | Type                          | Description                                                                                                                                                                 |
+| :---------- | :---------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `format`    | `"a5" \| "a4" \| "letter"`    | Paper size — A5 `148mm × 210mm`, A4 `210mm × 297mm`, Letter `8.5in × 11in`; `min-height` grows with content, page breaks across pages stay with the app, defaults to `"a4"` |
+| `className` | `string`                      | Custom class for the root element                                                                                                                                           |
+| `...props`  | `React.ComponentProps<"div">` | Spread onto the root `div`                                                                                                                                                  |
+
+## Keyboard Interactions
+
+This component is not a control and handles no keys.
+
+## Data Attributes
+
+| Attribute | Description |
+| :--- | :--- |
+| `[data-format]` | On the root element — `"a5"`, `"a4"` or `"letter"` |

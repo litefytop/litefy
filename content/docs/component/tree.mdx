@@ -1,0 +1,91 @@
+---
+title: Tree
+description: A data-driven hierarchical disclosure tree for file explorers, category panels and sidebar navigation
+---
+
+## Installation
+
+<Installation name="tree" />
+
+## Usage
+
+A tree driven by `items` — nodes with `children` are folders; `value` marks the current row.
+
+<ComponentPreview
+  name="tree-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+#### Tree
+
+| Prop              | Type                                                                                                                                                    | Description                                                                                                                               |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`           | `TreeNodeConfig[]`                                                                                                                                      | Array of tree nodes (folders, leaves, separator labels). **Required**                                                                     |
+| `value`           | `string \| null`                                                                                                                                        | Marks the matching leaf as current (`aria-current="page"` + the scheme's selected look)                                                   |
+| `onValueChange`   | `(value: string) => void`                                                                                                                               | Called when a leaf without `href` is selected                                                                                             |
+| `navigate`        | `(href: string, event: React.MouseEvent) => void`                                                                                                       | SPA hook: plain clicks on `href` rows no longer navigate the browser; this callback is called instead                                     |
+| `openKeys`        | `string[]`                                                                                                                                              | Open folder keys (controlled)                                                                                                             |
+| `defaultOpenKeys` | `string[]`                                                                                                                                              | Initially open folder keys (uncontrolled)                                                                                                 |
+| `onOpenChange`    | `(keys: string[]) => void`                                                                                                                              | Called when the open set changes                                                                                                          |
+| `className`       | `string`                                                                                                                                                | Custom classes, applied to the root container                                                                                             |
+| `classNames`      | `{ trigger?: string; item?: string; label?: string; group?: string; node?: string; labelText?: string; icon?: string; branch?: string; clip?: string }` | Per-part overrides: the rows, the nested group, the folder `<li>`, the text run, both icon slots, the expanding branch and its clip layer |
+| `styles`          | `{ trigger?: React.CSSProperties; item?: React.CSSProperties; label?: React.CSSProperties }`                                                            | Inline styles for the rows                                                                                                                |
+| `...props`        | `React.ComponentProps<"ul">`                                                                                                                            | Supports all native ul props                                                                                                              |
+
+Keyboard: `↑` `↓` move between visible rows, `Home` `End` jump to the first / last row, `→` expands (or enters) a folder, `←` collapses it or jumps to the parent.
+
+#### TreeNodeConfig
+
+| Field         | Type                                                        | Description                                                                                |
+| ------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `label`       | `React.ReactNode`                                           | Row content. **Required**                                                                  |
+| `value`       | `string`                                                    | Stable identity used for `value` matching, selection and open keys, defaults to index path |
+| `href`        | `string`                                                    | When set, the row renders as a link                                                        |
+| `icon`        | `React.ReactNode \| ((open: boolean) => React.ReactNode)`   | Leading icon; folders accept a function receiving the open state                           |
+| `disabled`    | `boolean`                                                   | Disables the row, defaults to `false`                                                      |
+| `defaultOpen` | `boolean`                                                   | Initial open state of a folder (uncontrolled), defaults to `false`                         |
+| `children`    | `TreeItemConfig[]`                                          | When set, the node becomes a folder                                                        |
+| `type`        | `"separator"`                                               | Separator nodes render as a non-interactive group label (only `label` is read)             |
+
+---
+
+### Composable Components
+
+#### TreeRoot
+
+The outer `<ul>` with `role="tree"`.
+
+#### TreeTrigger
+
+The folder row `<button>` with `role="treeitem"`; pass `open` to drive `aria-expanded` and `data-open`.
+
+#### TreeItem
+
+The leaf row `<a>` with `role="treeitem"`; when the node has no `href`, `Tree` renders a plain `<button>` instead.
+
+#### TreeLabel
+
+The group label row — a `<div>` with no ARIA role.
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `ArrowDown` | Moves focus to the next visible row |
+| `ArrowUp` | Moves focus to the previous visible row |
+| `Home` | Moves focus to the first visible row |
+| `End` | Moves focus to the last visible row |
+| `ArrowRight` | On a closed folder, expands it; on an open folder, moves to its first child row |
+| `ArrowLeft` | On an open folder, collapses it; otherwise moves to the parent row |
+| `Enter` / `Space` | Activates the focused leaf button or link natively |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-open]` | On folder triggers, their collapse icon and the branch container — `"true"` or `"false"` |
+| `[data-active]` | On leaf rows — `"true"` on the selected row, `"false"` otherwise |
+| `[data-value]` | On triggers and leaf rows — the node's `value`, generated as `${parent}#${index}` when absent |

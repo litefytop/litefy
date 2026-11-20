@@ -1,0 +1,100 @@
+---
+title: Banner
+description: An auto-scrolling banner component with seamless looping, hover pause, and direction and speed control
+---
+
+## Installation
+
+<Installation name="banner" />
+
+## Usage
+
+A data-driven auto-scrolling announcement banner.
+
+<ComponentPreview
+  name="banner-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+#### Banner
+
+A data-driven marquee banner. When the content is not enough to fill the viewport, the difference is split evenly into trailing spacing on each item to fill the viewport width — any content length loops seamlessly; a `marginRight` in `styles.item` can take over that spacing.
+
+| Prop           | Type                                                                      | Description                                                                                                                          |
+| :------------- | :------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------- |
+| `items`        | `BannerItem[]`                                                            | The content to scroll; each entry renders inside a `BannerItem`                                                                      |
+| `speed`        | `number`                                                                  | Seconds per full loop (a `-50%` track shift), defaults to `30`                                                                       |
+| `direction`    | `"left" \| "right"`                                                       | Scroll direction, defaults to `left`                                                                                                 |
+| `pauseOnHover` | `boolean`                                                                 | Pauses the animation while the pointer is over the banner, defaults to `true`                                                        |
+| `playing`      | `boolean`                                                                 | Master switch — `false` keeps the animation from playing regardless of hover, defaults to `true`                                     |
+| `closable`     | `boolean`                                                                 | When true, renders the built-in close button at the end of the banner, defaults to `false`                                           |
+| `onClose`      | `() => void`                                                              | Fired when the built-in close button is clicked; without it, clicking does nothing                                                   |
+| `closeLabel`   | `string`                                                                  | The built-in close button's `aria-label`, defaults to `Close`                                                                        |
+| `className`    | `string`                                                                  | Custom classes on the root element                                                                                                   |
+| `style`        | `React.CSSProperties`                                                     | Inline styles on the root element                                                                                                    |
+| `classNames`   | `{ viewport?; track?; item?; close? }` — values all `string`              | Custom classes for the viewport, track, items and close button                                                                       |
+| `styles`       | `{ viewport?; track?; item?; close? }` — values all `React.CSSProperties` | Inline styles for the viewport, track, items and close button                                                                        |
+| `...props`     | `React.ComponentProps<"div">`                                             | Native div props spread onto the root element (no `children`); your own `onMouseEnter` / `onMouseLeave` compose with the hover pause |
+
+#### BannerItem
+
+A single scrolling entry.
+
+| Field     | Type                 | Description   |
+| :-------- | :------------------- | :------------ |
+| `key`     | `string \| number`   | Optional React key |
+| `content` | `React.ReactNode`    | The rendered content |
+
+---
+
+### Composable Components
+
+#### BannerViewport
+
+The clipping container.
+
+| Prop       | Type                          | Description       |
+| :--------- | :---------------------------- | :---------------- |
+| `className`| `string`                      | Custom classes    |
+| `...props` | `React.ComponentProps<"div">` | Supports all native div props |
+
+#### BannerTrack
+
+The animated track; a seamless loop requires the track to contain two identical halves (matching the `-50%` shift), with the duplicated half marked `aria-hidden` so assistive technology reads the content once. The track lays the content out as a single non-wrapping row whose width follows the content — that layout is provided by the loaded scheme.
+
+| Prop        | Type                          | Description                                              |
+| :---------- | :---------------------------- | :------------------------------------------------------- |
+| `duration`  | `number`                      | Seconds per full loop, defaults to `30`                  |
+| `direction` | `"left" \| "right"`           | Scroll direction, defaults to `left`                     |
+| `playing`   | `boolean`                     | Plays or pauses the animation, defaults to `true`        |
+| `className` | `string`                      | Custom classes                                           |
+| `...props`  | `React.ComponentProps<"div">` | Supports all native div props                            |
+
+#### BannerItem
+
+A single entry cell; entries never wrap or shrink inside the track, and the rest of the look is defined by the loaded scheme.
+
+| Prop       | Type                          | Description       |
+| :--------- | :---------------------------- | :---------------- |
+| `className`| `string`                      | Custom classes    |
+| `...props` | `React.ComponentProps<"div">` | Supports all native div props |
+
+#### BannerClose
+
+The built-in close button; `Banner` renders it automatically when `closable` is true. Its content is the skeleton's built-in X icon, and clicking does nothing when `onClose` is not bound.
+
+| Prop       | Type                            | Description           |
+| :--------- | :------------------------------ | :-------------------- |
+| `className`| `string`                        | Custom classes        |
+| `...props` | `React.ComponentProps<"button">`| Supports all native button props |
+
+## Keyboard Interactions
+
+The built-in close button is a native `<button>`: Enter / Space activate it natively, and the focus ring comes from the loaded scheme. Nothing else takes over any keys. Pausing is pointer-driven: `pauseOnHover` reacts to `onMouseEnter` / `onMouseLeave`; motion suppression reads the effective value merged by `useMotionPreference` (in-app setting + `prefers-reduced-motion`), not keys. Auto-play is also constrained by viewport visibility: the banner pauses when it scrolls out of the viewport and resumes when it comes back, still subject to `playing`, `pauseOnHover`, and motion suppression.
+
+## Data Attributes
+
+The skeleton emits no `data-*` on this component. The viewport carries `aria-roledescription="marquee"`, and each duplicated set carries `aria-hidden`.

@@ -1,0 +1,95 @@
+---
+title: Radio 单选框
+description: 零件化组装的单选按钮组件，分组由 options 驱动——方向键导航由共享 name 原生提供
+---
+
+## 安装
+
+<Installation name="radio" />
+
+## 用法
+
+基础单选框，支持单独和分组模式。未选中空心圆环，选中整环实心填充。
+
+<ComponentPreview 
+  name="radio-basic"
+/>
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Radio
+
+| Prop              | Type                             | Description                                                         |
+| ----------------- | -------------------------------- | ------------------------------------------------------------------- |
+| `children`        | `React.ReactNode`                | 单选框内容                                                               |
+| `checked`         | `boolean`                        | 受控选中状态，默认 `false`                                                   |
+| `defaultChecked`  | `boolean`                        | 非受控模式下的默认选中状态，默认 `false`                                            |
+| `onCheckedChange` | `(checked: boolean) => void`     | 选中时的回调                                                              |
+| `indicator`       | `React.ReactNode`                | 自定义指示器内容，追加在圆环内部                                                    |
+| `classNames`      | `{ input?; indicator?; label? }` | 输入、圆环与标签的自定义类名                                                      |
+| `styles`          | `{ indicator?; label? }`         | 指示器与标签的内联样式                                                         |
+| `className`       | `string`                         | 自定义类名，作用于标签                                                         |
+| `...props`        | `React.ComponentProps<"input">`  | 支持所有原生 input 属性（除 `type`、`className` 外），如 `name`、`value`、`disabled` |
+
+#### RadioOptionConfig
+
+| Field        | Type                                                               | Description                     |
+| ------------ | ------------------------------------------------------------------ | ------------------------------- |
+| `label`      | `string`                                                           | 选项显示文本                          |
+| `value`      | `string`                                                           | 唯一标识值                           |
+| `disabled`   | `boolean`                                                          | 禁用该选项，默认 `false`                |
+| `indicator`  | `React.ReactNode`                                                  | 自定义指示器，优先级高于 `common.indicator` |
+| `classNames` | `{ input?; indicator?; label? }`                                   | 每个选项的零件类名，优先级高于 `common`        |
+| `styles`     | `{ indicator?: React.CSSProperties; label?: React.CSSProperties }` | 每个选项的零件样式，优先级高于 `common`        |
+
+---
+
+### 可组合组件
+
+#### RadioRoot
+
+裸的 radio 输入框——所加载方案的皮肤把它隐藏（写在 `classNames.input` 的工具类里），指示器再通过 `:has(:checked)` 读取它的选中态。
+
+#### RadioIndicator
+
+指示器零件——状态读取契约：通过 `:has(:checked)` 读取选中态、`:has(:focus-visible)` 读取焦点态；具体呈现由所加载的方案定义。手工拼装时把 `RadioRoot` 嵌在 `RadioIndicator` 内部，并让各自拼装的 root 共享同一个 `name`——这才能把它们组成一个原生单选组。
+
+#### RadioLabel
+
+标签包装层（点击即可切换选中）。
+
+#### RadioGroup
+
+| Prop            | Type                                   | Description             |
+| --------------- | -------------------------------------- | ----------------------- |
+| `options`       | `RadioOptionConfig[]`                  | 选项数据数组                  |
+| `value`         | `string`                               | 受控选中值                   |
+| `defaultValue`  | `string`                               | 非受控模式下的默认选中值            |
+| `onValueChange` | `(value: string) => void`              | 选中值变化时的回调               |
+| `disabled`      | `boolean`                              | 禁用所有选项，默认 `false`       |
+| `name`          | `string`                               | 分组名称——同时启用选项间原生的方向键导航   |
+| `orientation`   | `"horizontal" \| "vertical"`           | 选项的排列方向，默认 `"vertical"` |
+| `className`     | `string`                               | 自定义类名，应用于容器             |
+| `aria-label`    | `string`                               | 组的无障碍标签                 |
+| `common`        | `{ classNames?, styles?, indicator? }` | 应用于所有选项的通用配置            |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Tab` | 到达同 `name` 单选组中选中的那一项，未选中时是第一项——原生单选组行为 |
+| `ArrowRight` / `ArrowDown` | 选中共享 `name` 的下一项——原生，需共享 `name` |
+| `ArrowLeft` / `ArrowUp` | 选中共享 `name` 的上一项——原生，需共享 `name` |
+| `Space` | 勾选当前聚焦的单选项——原生 |
+
+骨架自身不处理任何按键。
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-orientation]` | 位于 `RadioGroup` 根元素上——镜像 `orientation` 属性，未传该属性时不渲染 |

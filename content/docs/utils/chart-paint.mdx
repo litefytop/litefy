@@ -1,0 +1,60 @@
+---
+title: chart-paint
+description: The canvas painting layer for the chart family — plot rect, grid, axes and axis labels, line/area/bar series, crosshair and drag selection, all theme-aware
+---
+
+## Installation
+
+<Installation name="chart-paint" />
+
+## Usage
+
+The canvas painting layer under Chart, used together with chart-kit.
+
+```tsx
+import { computePlotRect, drawYAxisGrid, drawXAxisLabels, drawAxes, drawLineSeries, readThemeColor } from "@/utils/chart-paint";
+
+function draw(ctx: CanvasRenderingContext2D, width: number, height: number, ticks: number[], points: Point[]) {
+  const frame = computePlotRect(ctx, ticks, width, height);
+  const textColor = readThemeColor("--color-foreground", "#6b7280");
+  const borderColor = readThemeColor("--color-border", "#e5e7eb");
+
+  drawYAxisGrid(ctx, frame, ticks, textColor, borderColor);
+  drawXAxisLabels(ctx, frame, xLabels, textColor);
+  drawAxes(ctx, frame, borderColor);
+  drawLineSeries(ctx, frame, points, { stroke: "var(--color-primary)", width: 1.5 });
+}
+```
+
+## API Reference
+
+### Utility Functions
+
+| Member                             | Type                                                                                        | Description                                  |
+| :--------------------------------- | :------------------------------------------------------------------------------------------ | :------------------------------------------- |
+| `AXIS_FONT`                        | `string`                                                                                     | The font used by the axis label painters      |
+| `readThemeColor(name, fallback)`   | `(name: string, fallback: string) => string`                                                 | Reads a CSS custom property with a fallback   |
+| `fillWith(ctx, color, alpha)`      | `(ctx, color: string, alpha: number) => void`                                                | Sets `fillStyle` with alpha                   |
+| `strokeWith(ctx, color, alpha)`    | `(ctx, color: string, alpha: number) => void`                                                | Sets `strokeStyle` with alpha                 |
+| `resetAlpha(ctx)`                  | `(ctx) => void`                                                                              | Resets `globalAlpha` to 1                     |
+| `computePlotRect(ctx, yTicks, width, height)` | `(ctx, yTicks: number[], width: number, height: number) => { left, top, width, height }` | Measures the widest y label and reserves space for it, returning the plot rect |
+
+### Painters
+
+| Member                                          | Description                                                        |
+| :---------------------------------------------- | :----------------------------------------------------------------- |
+| `drawYAxisGrid(ctx, frame, yTicks, textColor, gridColor)` | Horizontal grid lines and y-axis labels                   |
+| `drawXAxisLabels(ctx, frame, xLabels, textColor)` | x-axis labels; `xLabels` is `{ value, text }[]`, mapped through the frame's scale |
+| `drawAxes(ctx, frame, axisColor)`                | The x bottom spine and y left spine, 1px half-pixel aligned |
+| `drawBars(ctx, frame, xs, barSpecs, band)`       | Grouped bars; `barSpecs` is `BarSeriesPaint[]` and `band` is the category width (px) |
+| `drawLineSeries(ctx, frame, points, options)`    | Line or area path; `options` is `LineSeriesPaint` (`stroke`, `width`, `fill`, `fillAlpha`) |
+| `drawCrosshair(ctx, frame, crossX, dots, background, textColor)` | The hover vertical line and one dot per series     |
+| `drawSelection(ctx, frame, startPx, endPx, color)` | The drag-zoom selection box between two x pixel positions        |
+
+### Types
+
+| Type              | Fields                                                                                                     |
+| :---------------- | :--------------------------------------------------------------------------------------------------------- |
+| `PlotFrame`       | `left`, `top`, `plotWidth`, `plotHeight`, `xMin`, `xMax`, `yMin`, `yMax`, `i0`, `i1` (the visible data window) |
+| `BarSeriesPaint`  | `values: number[]`, `fill: string`, `alpha: number`                                                         |
+| `LineSeriesPaint` | `stroke: string`, `width: number`, `fill?: string`, `fillAlpha: number`                                     |

@@ -1,0 +1,87 @@
+---
+title: Swipe Actions
+description: A physics swipe row — drag to reveal the action drawer, flick to settle by velocity, drag past the commit point to full-swipe commit, and the primary block leaps to cover the row before it folds
+---
+
+## Installation
+
+<Installation name="swipe-actions" />
+
+## Usage
+
+Swipe actions: physics swipe for all pointers — drag reveals the drawer, past the commit point the full swipe commits, the primary block leaps over the row, the body folds, remove it in `onCommit`.
+
+<ComponentPreview name="swipe-actions-basic" />
+
+Actions are declared in five semantic slots (`primary` / `info` / `success` / `warning` / `danger`), each color at most once, locked in by the props structure; the rail orders slots by intent cost, light to deep = primary → info → success → warning → danger. The full-swipe commit is fixed to the danger slot — the leap + `onCommit` belong to danger only; with no danger there is no full swipe. Secondary slots fire `onSelect` on press (a declared `dismiss` folds the row). `surface` is not a slot — neutral actions land on `info` or `primary`.
+
+The content layer's action-side endpoint carries a swipe hint arrow (a left arrow for `direction=left`, the mirrored direction a right arrow), hidden while open or dragging; a tap with no movement on the row body opens or closes the drawer (not hijacked when the tap lands on interactive children like links and buttons) — see the slide first, then learn the drag. While the actions are collapsed the action rail is `inert`; keyboard and screen readers use the toggle on the row to open and close. Colors are assigned automatically by slot semantics.
+
+Pass `enter` on a re-inserted row and it grows out of the collapsed state, with the same duration and easing as the fold (`--swipe-collapse` + `ease-frame`, answered by the scheme and reduced motion).
+
+## API Reference
+
+### SwipeActions
+
+| Prop            | Type                                                                                        | Description                                                                                                   |
+| :-------------- | :------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------ |
+| `primary`       | `SwipeActionConfig`                                                                         | The lightest slot (revealed first), usually the highest-frequency neutral action                              |
+| `info`          | `SwipeActionConfig`                                                                         | The info semantic slot                                                                                        |
+| `success`       | `SwipeActionConfig`                                                                         | The success semantic slot                                                                                     |
+| `warning`       | `SwipeActionConfig`                                                                         | The warning semantic slot                                                                                     |
+| `danger`        | `SwipeActionConfig`                                                                         | The deepest slot = the full-swipe commit block (always danger); pressing it or dragging past the commit point folds the row; with no danger there is no full swipe |
+| `direction`     | `"left" \| "right"`                                                                         | Swipe direction; mirrors all layout and keys, defaults to `"left"`                                            |
+| `height`        | `number`                                                                                    | Row height in px; the fold closes from this height, defaults to `64`                                          |
+| `actionWidth`   | `number`                                                                                    | Width of one action in px, which is the total drawer width, defaults to `80`                                  |
+| `snapBounce`    | `number`                                                                                    | Bounce of the flick settle; slow releases never bounce, defaults to `0.2`                                     |
+| `resistance`    | `number`                                                                                    | Rubber-band beyond bounds and the commit-segment resistance factor, defaults to `0.55`                        |
+| `collapseMs`    | `number`                                                                                    | Fold duration in ms, defaults to `200`                                                                        |
+| `commitAt`      | `number`                                                                                    | Commit point as a fraction of the row width (never below drawer width plus half an action), defaults to `0.6` |
+| `fullSwipe`     | `boolean`                                                                                   | Off, the drawer is the end: no leap, no full-swipe commit, defaults to `true`                                 |
+| `disabled`      | `boolean`                                                                                   | Dims the row and ignores input, defaults to `false`                                                           |
+| `enter`         | `boolean`                                                                                   | Mounts paused in the collapsed state and then grows out (the entrance animation for re-inserted rows), defaults to `false` |
+| `open`          | `boolean`                                                                                   | Controlled open state; outside changes spring the row back into place                                         |
+| `onOpenChange`  | `(open: boolean) => void`                                                                   | Called when a gesture or key opens or closes the drawer                                                       |
+| `onAction`      | `(action: SwipeActionConfig) => void`                                                       | Called the moment any action is pressed                                                                       |
+| `onCommit`      | `(action: SwipeActionConfig) => void`                                                       | Called after a full swipe or a folding action, once the row has shut; the consumer removes the row here       |
+| `closeOnAction` | `boolean`                                                                                   | Closes the drawer after a non-folding action is pressed, defaults to `true`                                   |
+| `haptic`        | `boolean`                                                                                   | Ready-state buzz on touch (`navigator.vibrate(8)`), defaults to `true`                                        |
+| `label`         | `string`                                                                                    | `aria-label` of the root, defaults to `"List item"`                                                           |
+| `toggleLabel`   | `string`                                                                                    | Keyboard pill text; generated from the action count by default                                                |
+| `children`      | `React.ReactNode`                                                                           | Row content, rendered in the draggable content layer                                                          |
+| `className`     | `string`                                                                                    | Custom class for the root                                                                                     |
+| `style`         | `React.CSSProperties`                                                                       | Inline style for the root                                                                                     |
+| `classNames`    | `{ root?, row?, rail?, action?, block?, commit?, surface?, hint?, toggle?, live?: string }` | Custom classes per slot                                                                                       |
+| `...props`      | `React.ComponentProps<"div">`                                                               | Forwarded to the root `div`                                                                                   |
+
+### SwipeActionConfig
+
+| Field      | Type              | Description                                                                                            |
+| :--------- | :---------------- | :----------------------------------------------------------------------------------------------------- |
+| `id`       | `string`          | Action identifier; falls back to the index                                                             |
+| `label`    | `string`          | Action text                                                                                            |
+| `icon`     | `React.ReactNode` | Action icon, above the text                                                                            |
+| `onSelect` | `() => void`      | Action callback; the primary and `dismiss` actions fire it after the row has shut                      |
+| `dismiss`  | `boolean`         | Pressing folds the row (the commit chain); non-primary actions can declare it too, defaults to `false` |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Tab` | Focuses the hidden toggle on the row (it surfaces as a pill on focus) |
+| `Enter` / `Space` | Opens or closes the drawer |
+| `ArrowLeft` / `ArrowRight` | Opens / closes the drawer (mirrored by `direction`) |
+| `Escape` | Closes the drawer |
+| `Delete` / `Backspace` | Commits the primary action while open, same as a full swipe |
+
+## Data Attributes
+
+| Attribute | Description |
+| :--- | :--- |
+| `[data-direction]` | On the root — `"left"` or `"right"` |
+| `[data-tone]` | On the action buttons — `"primary"` / `"info"` / `"success"` / `"warning"` / `"danger"`; the skin derives the semantic pair from it |
+| `[data-open]` | On the root — the drawer is open |
+| `[data-phase]` | On the root — `"idle"`, `"entering"` (growing out), `"committing"` (the leap) or `"collapsing"` (the fold) |
+| `[data-dragging]` | On the root — a drag is in progress |
+| `[data-disabled]` | On the root — disabled |
+| `--swipe-h` / `--swipe-a` / `--swipe-collapse` | On the root — inline geometry variables consumed by the skin; the corner radius rides the scheme token `--radius-swipe`, never inlined per instance |

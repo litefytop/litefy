@@ -1,0 +1,57 @@
+---
+title: NavBar
+description: A row of links that moves the entries no longer fitting its width into a dropdown; it never scrolls sideways
+---
+
+## Installation
+
+<Installation name="nav-bar" />
+
+## Usage
+
+A row of links plus a dropdown of the entries that do not fit the width it was given.
+
+<ComponentPreview name="nav-bar-basic" />
+
+## API Reference
+
+### NavBar
+
+A folded entry keeps its row copy mounted and hidden, so `renderItem` runs twice for it and must not emit ids or labels that have to stay unique.
+
+| Prop            | Type                                                           | Description                                                                                                                                                                               |
+| --------------- | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`         | `T[]`                                                          | The entries to lay out in the row                                                                                                                                                         |
+| `renderItem`    | `(item: T, index: number) => React.ReactNode`                  | Renders one entry — used for both the row and the panel                                                                                                                                   |
+| `getKey`        | `(item: T, index: number) => React.Key`                        | Stable key per entry. Defaults to the array index                                                                                                                                         |
+| `more`          | `React.ReactNode`                                              | Label of the button that opens the dropdown; the button carries a chevron of its own                                                                                                      |
+| `open`          | `boolean`                                                      | Controls the dropdown panel from outside; uncontrolled when omitted                                                                                                                       |
+| `onOpenChange`  | `(open: boolean) => void`                                      | Fired on every open and close, including item picks and outside clicks                                                                                                                    |
+| `closeOnSelect` | `boolean`                                                      | Closes the panel when a panel item is clicked, defaults to `true`                                                                                                                         |
+| `placement`     | `FloatingPlacement`                                            | Panel position: defaults to `{ side: "bottom", align: "end", gap: 8 }`, spread-overridable                                                                                                |
+| `className`     | `string`                                                       | Custom classes, applied to the `nav` root                                                                                                                                                 |
+| `style`         | `React.CSSProperties`                                          | Inline styles, applied to the `nav` root                                                                                                                                                  |
+| `classNames`    | `{ root?; item?; more?; panel? }` — each `string`              | Custom classes per part; `panel` is a [Popover](/en/docs/component/popover) `PopoverContent`                                                                                             |
+| `styles`        | `{ root?; item?; more?; panel? }` — each `React.CSSProperties` | Inline styles per part                                                                                                                                                                    |
+| `...props`      | `React.ComponentProps<"nav">`                                  | Remaining native `nav` attributes spread onto the root (no `children`); `ref` points at the root so you can focus it. Give it `flex-1` to let the bar take the remaining width of its row |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Tab` | Walks the row links, then the dropdown button. Opening moves focus into the first panel item, so `Tab` continues through the panel |
+| `Enter` / `Space` | On the dropdown button — toggles the panel |
+| `Escape` | Closes the panel and returns focus to the dropdown button — while focus is inside the panel; the panel is a `Popover` surface, so once you have tabbed past it, dismiss it by clicking outside |
+| pointer / `Enter` on an item | Activates your own link; `closeOnSelect` then closes the panel |
+
+There are no arrow keys: the panel is a disclosure of links, not a menu, so each item stays a normal tab stop with its own `href`.
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-open]` | On the dropdown button — present while the panel is open |
+| `[data-overflow]` | On the `nav` root — present while at least one entry is folded into the panel |
+| `[aria-expanded]` / `[aria-controls]` | On the dropdown button — the panel's accessible wiring; the button carries no `aria-haspopup`, it opens links, not a menu |
+
+The row's own gap is `var(--litefy-nav-bar-gap, 0.5rem)` — the scheme retunes that token; do not put a gap utility on the bar. The bar is a start-aligned row: the button follows the items and the bar keeps to the start of its own row — give the controls that must sit at the end `ml-auto`. Folding needs a width smaller than its content to fail against: the bar's own minimum width is zero and it must stay shrinkable, so never write `shrink-0` on it — pinned that way it measures its own content, never folds, and its items run past the row it was given.

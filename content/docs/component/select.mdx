@@ -1,0 +1,73 @@
+---
+title: Select
+description: A themeable select built on the native popover API and a listbox panel — supports option groups, keyboard navigation and validation
+---
+
+## Installation
+
+<Installation name="select" />
+
+## Usage
+
+`options` takes flat options or `{ group, options }` groups; the trigger shows the selected label.
+
+<ComponentPreview 
+  name="select-basic"
+/>
+
+## API Reference
+
+### Select
+
+A select built on the native popover API and a built-in JS positioning engine: the trigger button shows the selected label. Keyboard: `ArrowDown` / `ArrowUp` open the panel and move the highlight (wrapping), `Home` / `End` jump to the first / last option, `Enter` / `Space` select the highlighted option, `Escape` closes without selecting, `Tab` closes. Writing `tabIndex={-1}` on the trigger takes it out of tab order while its own listbox keys keep working once you focus it programmatically.
+
+| Prop            | Type                                                                    | Description                                                                                                                                                                                                                                                                                                                                                              |
+| --------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `options`       | `(SelectOption \| SelectOptionGroup)[]`                                 | Array of options or option groups to display                                                                                                                                                                                                                                                                                                                             |
+| `value`         | `string`                                                                | Controlled selected value                                                                                                                                                                                                                                                                                                                                                |
+| `defaultValue`  | `string`                                                                | Default selected value for uncontrolled state, defaults to `""`                                                                                                                                                                                                                                                                                                          |
+| `onValueChange` | `(value: string) => void`                                               | Fired when an option is selected                                                                                                                                                                                                                                                                                                                                         |
+| `open`          | `boolean`                                                               | Controls the panel from outside — for a popup you trigger somewhere else, such as a joined field's `Ctrl` + `↓`                                                                                                                                                                                                                                                          |
+| `onOpenChange`  | `(open: boolean) => void`                                               | Fired on every open and close, including pick, `Escape` and outside clicks                                                                                                                                                                                                                                                                                               |
+| `placeholder`   | `string`                                                                | Placeholder text shown when no option is selected                                                                                                                                                                                                                                                                                                                        |
+| `name`          | `string`                                                                | Renders a hidden input with this name, so the value joins native form submission                                                                                                                                                                                                                                                                                         |
+| `disabled`      | `boolean`                                                               | Disables the trigger                                                                                                                                                                                                                                                                                                                                                     |
+| `className`     | `string`                                                                | Custom classes, applied to the trigger                                                                                                                                                                                                                                                                                                                                   |
+| `style`         | `React.CSSProperties`                                                   | Inline styles, applied to the trigger                                                                                                                                                                                                                                                                                                                                    |
+| `classNames`    | `{ panel?; label?; option?; value?; chevron?; empty? }` — each `string` | Custom classes for the panel, group labels, options, value, chevron and empty state                                                                                                                                                                                                                                                                                      |
+| `styles`        | `{ panel? }` — each `React.CSSProperties`                               | Inline styles for the panel                                                                                                                                                                                                                                                                                                                                              |
+| `...props`      | `React.ComponentProps<"button">`                                        | Remaining native button props spread on the trigger, such as `id`, `aria-describedby`, `aria-required` and `tabIndex` — there is no `required` prop; your own `aria-haspopup` also replaces the trigger's `listbox` default. `ref` points at the trigger, and your `onKeyDown` runs before the listbox keys, so `preventDefault()` takes the key away from the component |
+
+### SelectOption
+
+| Prop    | Type     | Description                      |
+| ------- | -------- | -------------------------------- |
+| `label` | `string` | Display text for the option      |
+| `value` | `string` | Value associated with the option |
+
+### SelectOptionGroup
+
+| Prop      | Type             | Description                      |
+| --------- | ---------------- | -------------------------------- |
+| `group`   | `string`         | Group label text                 |
+| `options` | `SelectOption[]` | Array of options in the group    |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `ArrowDown` / `ArrowUp` | Opens the panel when closed; while open, moves the highlight (wrapping at the ends). Opening seeds the highlight to the selected option, or the first option when nothing is selected |
+| `Enter` / `Space` | On the trigger — toggles the panel; while open — commits the highlighted option and closes the panel |
+| `Escape` | Closes the panel without selecting |
+| `Home` / `End` | Highlights the first / last option |
+| `Tab` | Closes the panel and moves focus on |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-open]` | On the trigger and the chevron — present while the panel is open |
+| `[data-placeholder-shown]` | On the trigger — present when no value is selected |
+| `[data-highlighted]` | On the option under the keyboard highlight |
+| `[data-selected]` | On the currently selected option |
+| `[data-disabled]` | On every option — present when the whole select is disabled |

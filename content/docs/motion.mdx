@@ -1,0 +1,60 @@
+---
+title: Motion and System Settings
+description: Understand why animations pause, and how to view and adjust motion settings at the system and in-app level
+---
+
+## Why Animations Don't Play
+
+If animated demos such as the Banner stay still, the component is not necessarily broken. Motion can pause from two sources: the browser's `prefers-reduced-motion` system preference, or the in-app motion setting in this site's appearance panel.
+
+The Banner reads the merged result of both: scrolling pauses when the system reports `reduce` or the in-app setting is "Reduced", even with `playing` set to `true`. With the in-app setting on "Full", the system preference is ignored — for when you explicitly want to watch the animation.
+
+Reduced motion helps avoid dizziness or distraction. You can keep your current settings — the components work without turning animations on.
+
+The notice at the top of the page is a fixed overlay and can be dismissed at any time; once dismissed it will not reappear in this tab session, and it never changes your system or in-app settings.
+
+## Viewing the Current Preference
+
+The status below shows the system preference, the in-app mode, and the merged effective result; it updates automatically when you change system settings or in-app options.
+
+<MotionPreferenceStatus />
+
+- System preference `reduce`: the OS asks for reduced motion.
+- In-app "Follow system" uses the system preference; "Reduced" forces a pause; "Full" forces playback.
+- Effective result `paused` means animated components pause; `playing` means playback is allowed, still subject to each component's own play switch and hover conditions.
+
+## Adjusting In-App Motion
+
+Open the appearance button at the bottom of the sidebar and pick one under "Motion":
+
+- **Follow system**: the default; uses the system preference above.
+- **Reduced**: pauses animations in-app, ignoring the system setting.
+- **Full**: always plays animations in-app, even when the system asks for reduced motion.
+
+The setting is stored in the current browser's `localStorage` (key `motion-preference-storage`); it affects only this site and never modifies the operating system.
+
+## If You Want Animations Back
+
+Adjust this only if you are willing to watch animations. The in-app way comes first: open the appearance button at the bottom of the sidebar and pick **Full** under "Motion" — it takes precedence over the system preference and needs no OS change.
+
+### Browser DevTools
+
+When the in-app setting is "Follow system" and the system already allows animations but the detected result is still `reduce`, check whether the browser emulates media preferences. In Chrome and Edge, open the DevTools **Rendering** panel, find **Emulate CSS media feature prefers-reduced-motion**, and choose **No emulation**.
+
+### System Settings
+
+Web pages can only read the preference; they cannot change your operating system for you, and this site does not maintain per-OS setting paths. If you truly want to restore animations at the system level, search your system settings for "animations" or "reduced motion" — on Windows you turn animation effects on, on macOS you turn Reduce Motion off; the directions are opposite. For exact locations see [MDN: prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion).
+
+## Still Not Moving After Changing Settings
+
+1. Confirm the system preference above has become `no-preference`, or set the in-app motion to "Full".
+2. Turn on the demo's play switch and move the mouse away from the banner; hover-to-pause still applies.
+3. If you had manually paused the play switch before restoring the preference, it will not be turned back on for you.
+
+## For Developers
+
+To merge the in-app setting, use the public [useMotionPreference](/en/docs/utils/use-motion-preference); its `reduced` is the effective value animated components should honor. To read only the raw system value, use [useReducedMotion](/en/docs/utils/use-reduced-motion). Both hooks only detect — they never modify system settings and never drive animations directly.
+
+The Banner offers no component-level override prop. App-level override goes through `useMotionPreference().setMode("full")`, and skin CSS distinguishes `reduce` from `full` by the root element's `data-motion`. Passing `playing={true}` alone cannot override reduced motion.
+
+The top banner and the explanatory links are business UI, not part of the skeleton's job. A server cannot know the system preference; both hooks treat it conservatively as "reduced" on the server and during the first hydration, then read the browser's actual result after mounting.

@@ -1,0 +1,106 @@
+---
+title: Slider 滑块
+description: 支持水平和垂直方向的模拟滑块，支持指针拖拽与键盘操作
+---
+
+## 安装
+
+<Installation name="slider" />
+
+## 用法
+
+div 模拟的滑块，标签、轨道与值同行排布，值文本常显、可用 `hideValue` 隐藏；方向恒定，未传 `orientation` 默认横向，纵向需显式传值。
+
+<ComponentPreview
+  name="slider-basic"
+/>
+
+### 变体
+
+`data-variant="cell"` 切换单元格形态——厚轨道（surface 底 + primary 激活填充）配纯透明拇指（任何状态下都不渲染可见内容），标签与值在轨道两侧。
+
+<ComponentPreview
+  name="slider-variants"
+/>
+
+## API 参考
+
+### 高阶组件
+
+#### Slider
+
+由下方零件组合而成的模拟滑块，封装全部状态与交互逻辑。值被 `min` / `max` 结构性钳制，不存在需要校验的无效状态。
+
+| Prop           | Type                                                 | Description                                                                                               |
+| -------------- | ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `value`        | `number`                                             | 当前值（受控）                                                                                                   |
+| `defaultValue` | `number`                                             | 初始值（非受控），默认 `0`                                                                                           |
+| `onChange`     | `(val: number) => void`                              | 拖拽、点击轨道或键盘操作导致值变化时的回调                                                                                     |
+| `min`          | `number`                                             | 最小值，默认 `0`                                                                                                |
+| `max`          | `number`                                             | 最大值，默认 `100`                                                                                              |
+| `step`         | `number`                                             | 步长；根据步长精度保留小数，默认 `1`                                                                                      |
+| `orientation`  | `'horizontal' \| 'vertical'`                         | 轨道方向；默认恒为横向，不随视口或指针类型变化；窄屏或触屏需要纵向时，请显式按媒体查询或 JS 条件传 `orientation="vertical"`；垂直方向最小值在底部，默认 `'horizontal'` |
+| `disabled`     | `boolean`                                            | 禁用指针与键盘交互，默认 `false`                                                                                      |
+| `name`         | `string`                                             | 渲染 hidden input 用于表单提交                                                                                    |
+| `data-variant` | `'default' \| 'cell'`                                | 外观变体；`cell` 为整行（纵向整列）轨道、透明拇指的单元格形态，默认 `'default'`                                                         |
+| `label`        | `React.ReactNode`                                    | 可见标签，渲染于轨道始端一侧，经 `aria-labelledby` 关联滑块                                                                   |
+| `hideValue`    | `boolean`                                            | 开关属性，默认关闭（值文本显示）；开启时隐藏值文本，默认 `false`                                                                      |
+| `id`           | `string`                                             | 滑块的 id，标签 `htmlFor` 的关联目标，默认 自动生成                                                                         |
+| `aria-label`   | `string`                                             | 无可见标签时的无障碍标签；与 `label` 互斥                                                                                 |
+| `className`    | `string`                                             | 根节点自定义类                                                                                                   |
+| `style`        | `React.CSSProperties`                                | 根节点自定义内联样式                                                                                                |
+| `classNames`   | `{ track?; fill?; thumb?; label?; value?; bubble? }` | 各零件自定义类，`label` 为可见标签、`value` 为值文本、`bubble` 为拖拽增量气泡（是否启用由皮肤决定）                                            |
+| `styles`       | `{ track?; fill?; thumb?; label?; value?; bubble? }` | 各零件自定义内联样式                                                                                                |
+
+键盘操作遵循 WAI-ARIA slider：方向键、PageUp/PageDown、Home、End。
+
+---
+
+### 可组合组件
+
+纯展示零件，不内置状态与交互，供高级使用者自由拼装。
+
+#### SliderRoot
+
+最外层容器。
+
+#### SliderTrack
+
+滑动轨道；高级组件会发出 `data-orientation`（`horizontal` / `vertical`），轨道的尺寸与颜色由所加载的方案定义。
+
+#### SliderFill
+
+进度填充；定位完全由使用者的内联样式决定。
+
+#### SliderThumb
+
+滑块，渲染为 `<button>`；事件与 `role="slider"` aria 属性由使用者接入。
+
+#### SliderLabel
+
+可见标签，渲染为 `<label>`；`htmlFor` 指向滑块。
+
+#### SliderValue
+
+当前值文本，渲染为 `<span aria-hidden>`；语义值由 `aria-valuenow` 承载。
+
+### 宽度
+
+横向轨道随容器伸缩：首选长度与上限都是 112 个 spacing 单位（默认方案 28rem），余量不足时继续收缩，不挤掉标签与值；整个滑块保底 32 个单位（默认方案 8rem），容器比保底还窄时让位给容器、不撑破布局。给根一个宽度（如 `w-full`）轨道就吃满余量，标签与值保持原尺寸。纵向为 `w-1` 轨厚配 `h-64` 长度档，不参与伸缩。取值全是 `--spacing` 倍数，换方案时一起缩放。
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `ArrowRight` / `ArrowUp` | 按一步递增 |
+| `ArrowLeft` / `ArrowDown` | 按一步递减 |
+| `PageUp` / `PageDown` | 大步长——范围的十分之一 |
+| `Home` | 跳到 `min` |
+| `End` | 跳到 `max` |
+| `Escape` | 拖拽中撤回本次拖拽，恢复拖拽起始值 |
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-orientation]` | 位于根节点与轨道上——`"horizontal"` 或 `"vertical"`，与 `orientation` 属性一致 |

@@ -1,0 +1,125 @@
+---
+title: Tabs 标签页
+description: 基于 options 驱动、支持多种变体和方向设置的标签页组件
+---
+
+## 安装
+
+<Installation name="tabs" />
+
+## 用法
+
+非受控标签页，`options` 驱动（`value` / `label` / `content`）。
+
+<ComponentPreview
+  name="tabs-basic"
+/>
+
+### 变体
+
+`variant` 切换触发器样式，默认 `line`（基础 demo 即该形态）；`primary` 为选中项铺 `primary` 对。
+
+<ComponentPreview
+  name="tabs-variants"
+/>
+
+## API 参考
+
+### 高阶组件
+
+#### Tabs
+
+options 驱动的容器组件，管理活动值并以参数形式向 `TabsList`、`TabsTrigger` 和 `TabsContent` 传递全部状态，不使用 context。所有宽度同一形态：标签放不下时横向拖动，左右箭头提示可拖——适配只改大小，不改布局。
+
+| Prop             | Type                                                            | Description                                         |
+| ---------------- | --------------------------------------------------------------- | --------------------------------------------------- |
+| `options`        | `TabsOptionConfig[]`                                            | 标签定义                                                |
+| `defaultValue`   | `string`                                                        | 初始活动标签值（非受控模式），缺省时取第一个选项的值                          |
+| `value`          | `string`                                                        | 活动标签值（受控模式）                                         |
+| `onValueChange`  | `(value: string) => void`                                       | 活动标签变化时的回调                                          |
+| `orientation`    | `'horizontal' \| 'vertical'`                                    | 布局方向，默认 `'horizontal'`                              |
+| `unmountOnHide`  | `boolean`                                                       | 标签不活动时卸载面板；`false` 保活并隐藏——面板带搜索、分页、滚动状态时用，默认 `true` |
+| `panelClassName` | `string`                                                        | 本组件渲染的每个面板都加上该类名                                    |
+| `className`      | `string`                                                        | 自定义 CSS 类，作用于根元素                                    |
+| `classNames`     | `root` / `list` / `scroll` / `scroller` / `trigger` / `content` | 按部件指定类名（`content` 落在每个 tabpanel 上）                  |
+| `prevLabel`      | `string`                                                        | 本组件自带的左滚动按钮的可访问名称，默认 `'Scroll tabs left'`           |
+| `nextLabel`      | `string`                                                        | 本组件自带的右滚动按钮的可访问名称，默认 `'Scroll tabs right'`          |
+| `...props`       | `React.ComponentProps<"div">`                                   | 支持所有原生 div 属性（除 `className` 外）                      |
+
+#### TabsOptionConfig
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `value` | `string` | 标签的唯一标识符 |
+| `label` | `React.ReactNode` | 标签触发器的内容 |
+| `content` | `React.ReactNode` | 标签面板的内容 |
+| `disabled` | `boolean` | 禁用该标签 |
+
+---
+
+### 可组合组件
+
+#### TabsList
+
+标签触发按钮的容器，仅通过参数通信。
+
+水平方向的列表可滚动：滚动视口渲染左右按钮，标签超出所得盒子时（垂直方向是超出高度）在外壳上报 `data-overflow="true"`；盒子被隐藏成 0 时保留上一次读数，不会当成"放得下"。每个触发器带内联 `flex-shrink: 0`，不会被压缩。垂直方向的容器自身就是 tablist，沿自己的轴滚动。
+
+| Prop          | Type                          | Description                                       |
+| ------------- | ----------------------------- | ------------------------------------------------- |
+| `orientation` | `'horizontal' \| 'vertical'`  | 布局方向，默认 `'horizontal'`                            |
+| `activeValue` | `string`                      | 当前活动值；变化时将活动触发器滚动到可视区域                            |
+| `prevLabel`   | `string`                      | 本组件自带的左滚动按钮的可访问名称，默认 `'Scroll tabs left'`         |
+| `nextLabel`   | `string`                      | 本组件自带的右滚动按钮的可访问名称，默认 `'Scroll tabs right'`        |
+| `className`   | `string`                      | 自定义 CSS 类                                         |
+| `...props`    | `React.ComponentProps<"div">` | 支持所有原生 div 属性（除 `className` 外）；`ref` 落在真正滚动的那个元素上 |
+
+#### TabsTrigger
+
+单个标签按钮。激活状态与回调完全通过参数传入。
+
+| Prop            | Type                             | Description                                       |
+| --------------- | -------------------------------- | ------------------------------------------------- |
+| `value`         | `string`                         | 标签的唯一标识符                                          |
+| `active`        | `boolean`                        | 是否激活，驱动 `data-state` 和 `aria-selected`，默认 `false` |
+| `uid`           | `string`                         | 派生触发器 id 与其所控面板 id 的作用域名                          |
+| `onValueChange` | `(value: string) => void`        | 点击或按 Enter/Space 时以自身 `value` 调用                  |
+| `disabled`      | `boolean`                        | 禁用该标签，默认 `false`                                  |
+| `className`     | `string`                         | 自定义 CSS 类                                         |
+| `...props`      | `React.ComponentProps<"button">` | 支持所有原生 button 属性（除 `className` 外）                 |
+
+#### TabsContent
+
+`active` 为 true 时渲染的面板，否则返回 `null`。配合 `React.lazy()` 包裹内容，可在标签被激活前延迟加载。
+
+| Prop            | Type                          | Description                           |
+| --------------- | ----------------------------- | ------------------------------------- |
+| `value`         | `string`                      | 唯一标识符，用于派生面板 id 和 `aria-labelledby`   |
+| `active`        | `boolean`                     | 面板是否可见，默认 `false`                     |
+| `uid`           | `string`                      | 派生面板 id 与标注它的触发器 id 的作用域名——传与触发器相同的值  |
+| `unmountOnHide` | `boolean`                     | 不活动时返回 `null`；`false` 保活并隐藏，默认 `true` |
+| `className`     | `string`                      | 自定义 CSS 类                             |
+| `...props`      | `React.ComponentProps<"div">` | 支持所有原生 div 属性（除 `className` 外）        |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `ArrowRight` | 聚焦下一个可用标签页，越过末尾后回绕（水平方向） |
+| `ArrowLeft` | 聚焦上一个可用标签页，越过开头后回绕（水平方向） |
+| `ArrowDown` | 垂直方向下等同 `ArrowRight` |
+| `ArrowUp` | 垂直方向下等同 `ArrowLeft` |
+| `Home` | 聚焦第一个可用标签页 |
+| `End` | 聚焦最后一个可用标签页 |
+| `Enter` / `Space` | 激活当前聚焦的标签页 |
+| `Tab` | 依次到达左右滚动按钮；被隐藏（`display: none`）的按钮不进入 Tab 序 |
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-state]` | 位于每个触发器与面板上——取值 `"active"` 或 `"inactive"` |
+| `[data-orientation]` | 位于根元素与列表上——取值 `"horizontal"` 或 `"vertical"`，镜像 `orientation` 属性 |
+| `[data-overflow]` | 位于列表上——标签超出所得盒子时（垂直方向为超出高度）取值 `"true"`，驱动左右滚动按钮的显隐 |
+| `[data-direction]` | 位于水平列表的滚动按钮上——取值 `"prev"` 或 `"next"` |
+| `[data-value]` | 位于每个触发器上——取值为该触发器自身的 `value` |

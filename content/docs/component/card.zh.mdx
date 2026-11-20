@@ -1,0 +1,52 @@
+---
+title: Card 卡片
+description: 同一卡框的两种角色形态——静态卡与可点卡。
+---
+
+## 安装
+
+<Installation name="card" />
+
+## 用法
+
+静态卡——圆角、发丝描边与块级阴影，没有交互态；内容纵向排布，自带默认间距。
+
+<ComponentPreview
+  name="card-basic"
+/>
+
+### 可点卡
+
+CardButton 整卡是一个按钮——单一 outline 外观，悬停抬升、按压压平、自带焦点环。
+
+<ComponentPreview
+  name="card-button"
+/>
+
+## API 参考
+
+### Card
+
+静态卡容器：内容包裹层纵向排布并自带默认间距（`gap-4`），`classNames.inner` 可整体换串。
+
+| 属性           | 类型                            | 描述                      |
+| ------------ | ----------------------------- | ----------------------- |
+| `children`   | `React.ReactNode`             | 卡片内容                    |
+| `className`  | `string`                      | 卡片自定义类名                 |
+| `classNames` | `{ inner?: string }`          | 内容包裹层类名通道，默认串含纵向排布与默认间距 |
+| `...props`   | `React.ComponentProps<"div">` | 支持全部 div 原生属性           |
+
+### CardButton
+
+整卡为 `<button>` 的可点卡——默认占满整行、文字左对齐。
+
+| 属性           | 类型                                      | 描述                                     |
+| ------------ | --------------------------------------- | -------------------------------------- |
+| `type`       | `"button" \| "submit" \| "reset"`       | 按钮类型，默认 `"button"`                     |
+| `children`   | `React.ReactNode`                       | 卡片内容                                   |
+| `className`  | `string`                                | 按钮自定义类名                                |
+| `...props`   | `React.ComponentProps<"button">`        | 支持全部 button 原生属性                       |
+
+## 键盘交互
+
+Card 不接管任何按键、不可聚焦。CardButton 是原生 `<button>`——`Enter` / `Space` 激活，`Tab` 按 DOM 顺序到达。

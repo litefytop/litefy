@@ -1,0 +1,37 @@
+---
+title: use-motion-preference 动效偏好
+description: 合并系统减少动态效果与应用内设置，返回动画组件应遵守的有效值
+---
+
+## 安装
+
+<Installation name="use-motion-preference" />
+
+## 用法
+
+合并系统偏好与应用内设置，返回 `reduced`，变化自动更新。
+
+<ComponentPreview name="use-motion-preference-basic" />
+
+## API 参考
+
+### useMotionPreference
+
+```ts
+function useMotionPreference(): MotionState
+```
+
+返回 `MotionState`：
+
+- `mode`：`"system" | "reduce" | "full"`，应用内选择，默认 `"system"`。
+- `systemReduced`：浏览器是否报告 `prefers-reduced-motion: reduce`，即 [useReducedMotion](/zh/docs/utils/use-reduced-motion) 的值。
+- `reduced`：合并结果。`"reduce"` 恒为 `true`，`"full"` 恒为 `false`，`"system"` 时等于 `systemReduced`。Banner 与 `useSpin` 使用该值。
+- `setMode`：设置应用内模式并持久化；写入后根元素获得 `data-motion="system | reduce | full"`。
+
+**注意：**
+
+- 状态存放在 React 之外；多个组件调用 `useMotionPreference` 共享同一个 store。
+- 持久化在 `motion-preference-storage` localStorage 键下，只影响本站，不修改操作系统。
+- 服务端与首次 hydration 返回 `"system"` 且 `systemReduced = true`，保守暂停；挂载后读取存储与浏览器实际偏好。
+- 系统媒体变化只更新 `systemReduced`；皮肤 CSS 用 `data-motion` 区分应用内“减少动态”与“完整动态”，系统媒体规则排除 `data-motion="full"`。
+- hook 不读写系统设置，不控制具体动画；组件仍需自己决定播放、暂停与降级方式。

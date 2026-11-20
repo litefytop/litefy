@@ -1,0 +1,86 @@
+---
+title: Input 输入框
+description: 支持前后置插槽和验证状态的输入框组件
+---
+
+## 安装
+
+<Installation name="input" />
+
+## 用法
+
+用于不同数据类型的输入框。
+
+<ComponentPreview 
+  name="input-basic"
+/>
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Input
+
+带有插槽和验证支持的输入框组件。
+
+| Prop              | Type                                                                                            | Description                                            |
+| ----------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| `type`            | `'text' \| 'email' \| 'url' \| 'tel' \| 'search'`                                               | 输入类型                                                   |
+| `leading`         | `ReactNode`                                                                                     | 前置插槽内容（如图标）                                            |
+| `trailing`        | `ReactNode`                                                                                     | 后置插槽内容（如按钮、图标）                                         |
+| `invalid`         | `boolean`                                                                                       | 输入框是否处于无效状态                                            |
+| `label`           | `React.ReactNode`                                                                               | 字段标签，渲染于输入框上方，`htmlFor` 指向输入框                          |
+| `description`     | `React.ReactNode`                                                                               | 渲染于输入框下方的辅助文字，校验失败时被错误信息替代                             |
+| `validate`        | `(value: string) => FieldValidateResult`                                                        | 校验函数；字符串为错误文案、`false` 标红无文案、`null`/`true` 通过；传入即进入字段模式 |
+| `validateTrigger` | `'submit' \| 'change' \| 'blur'`                                                                | 校验时机；提交时全字段统一门禁，已有错误时变更即重验，默认 `'submit'`               |
+| `className`       | `string`                                                                                        | 自定义类名，作用于外壳容器                                          |
+| `style`           | `React.CSSProperties`                                                                           | 内联样式，作用于外壳容器                                           |
+| `classNames`      | `{ group?: string; leading?: string; trailing?: string; root?: string }`                        | 组合外壳（`group`）、前后置插槽与内部输入框（`root`）的自定义类名                |
+| `styles`          | `{ leading?: React.CSSProperties; trailing?: React.CSSProperties; root?: React.CSSProperties }` | 前后置插槽与内部输入框（`root`）的内联样式                               |
+| `...props`        | `React.ComponentProps<"input">`                                                                 | 支持全部 input 原生属性（除 `type`、`className`）                  |
+
+---
+
+### 可组合组件
+
+成品内部组装的三个零件，用于自己拼装输入框；每个零件都接收 `className`，并把原生属性透传到对应元素上。
+
+#### InputRoot
+
+原生输入框。没有传 `id` 时自带生成一个，方便 label 指向它。
+
+| 属性          | 类型                              | 描述                                     |
+| ----------- | ------------------------------- | -------------------------------------- |
+| `className` | `string`                        | 自定义 CSS 类                              |
+| `...props`  | `React.ComponentProps<"input">` | 支持全部原生 input 属性（除 `className` 外）       |
+
+#### InputLeading
+
+输入框前的插槽，放图标等提示内容。
+
+| 属性          | 类型                             | 描述                                |
+| ----------- | ------------------------------ | --------------------------------- |
+| `className` | `string`                       | 自定义 CSS 类                         |
+| `...props`  | `React.ComponentProps<"span">` | 支持全部原生 span 属性                    |
+
+#### InputTrailing
+
+输入框后的插槽，放按钮、图标等提示内容。
+
+| 属性          | 类型                             | 描述                                |
+| ----------- | ------------------------------ | --------------------------------- |
+| `className` | `string`                       | 自定义 CSS 类                         |
+| `...props`  | `React.ComponentProps<"span">` | 支持全部原生 span 属性                    |
+
+## 键盘交互
+
+本组件不接管任何按键。任何零件都不挂 `onKeyDown`——按键全部由原生 `<input>` 处理，`Enter` 也一样（按 HTML 的规则提交外层表单）。
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-invalid]` | 位于外壳上——字段无效时存在 |
+

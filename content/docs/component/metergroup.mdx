@@ -1,0 +1,31 @@
+---
+title: MeterGroup
+description: A read-only grouped gauge modeled on PrimeVue's MeterGroup — proportional segments on a `surface` track, segment colors from pastel tiers (400 in light mode, 300 in dark), with a color-dotted legend
+---
+
+## Installation
+
+<Installation name="metergroup" />
+
+## Usage
+
+A grouped gauge — items share one track as proportional segments; colors come from the palette hook (light 400 / dark 300) or a per-item `color`; the legend lists color dot, name and share per item.
+
+<ComponentPreview name="metergroup-basic" />
+
+## API Reference
+
+### MeterGroup
+
+| Prop        | Type                                                 | Description                                                                                                      |
+| :---------- | :--------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------- |
+| `value`     | `{ label: string; value: number; color?: string }[]` | Items rendered as connected segments in order; `color` overrides the palette for that segment                    |
+| `min`       | `number`                                             | Lower bound of the range, defaults to `0`                                                                        |
+| `max`       | `number`                                             | Upper bound of the range; pass one explicitly to size segments against a fixed scale, defaults to the sum of the items' `value` |
+| `className` | `string`                                             | Custom class for the root                                                                                        |
+
+The remaining native `<div>` attributes (`aria-label`, `id`, inline `style`, …) are accepted and land on the root; the accessible name comes from `aria-label`. The root exposes `role="meter"` with `aria-valuemin` / `aria-valuemax` / `aria-valuenow` (the clamped item sum); the track and legend are `aria-hidden`.
+
+Segments are laid out in order as `value / (max − min)`; zero-value items render no segment and widths beyond the track are clipped by it. The legend always lists every item with its rounded share; hovering a segment also reveals a chip with `label · share` — the information always matches the legend, not dependent on hover. The track color is `surface`, drawn from the same source as the library-wide track family.
+
+Vertical layout, label orientation / position and per-item icons are not in this version yet.

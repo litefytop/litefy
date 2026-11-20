@@ -1,0 +1,114 @@
+---
+title: Menu 菜单
+description: 可直接在文档流中使用的菜单组件，支持分组、二级子菜单与键盘导航
+---
+
+## 安装
+
+<Installation name="menu" />
+
+## 用法
+
+直接渲染在文档流中的菜单，菜单项由 `items` 驱动，容器样式自理。
+
+<ComponentPreview
+  name="menu-basic"
+/>
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Menu
+
+| Prop            | Type                                | Description                                                                  |
+| --------------- | ----------------------------------- | ---------------------------------------------------------------------------- |
+| `items`         | `MenuConfig[]`                      | 菜单项配置，见下方 [items](#items) **必填**                                             |
+| `autoFocus`     | `boolean`                           | 每次变为 `true` 时聚焦第一个可用菜单项；传入包装弹出面板的 `open` 即可每次打开时聚焦                           |
+| `onSelect`      | `(item: MenuItemConfig) => void`    | 点击或键盘选中菜单项时触发                                                                |
+| `onEscape`      | `() => void`                        | 菜单内按下 `Escape` 时触发                                                           |
+| `className`     | `string`                            | 根列表自定义类名；文档流中的容器样式放在这里                                                       |
+| `style`         | `React.CSSProperties`               | 根列表内联样式                                                                      |
+| `itemClassName` | `string`                            | 应用到每个菜单项按钮的类名                                                                |
+| `classNames`    | `{ item?; label?; sub?; chevron? }` | 各零件自定义类名；`chevron` 是有子菜单项行尾的右箭头图标                                            |
+| `styles`        | `{ item?; label?; sub? }`           | 各零件自定义内联样式                                                                   |
+
+#### items
+
+```ts
+type MenuItemConfig = {
+  label: React.ReactNode;
+  disabled?: boolean;
+  className?: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  children?: Omit<MenuItemConfig, "children">[];
+};
+
+type MenuGroupConfig = {
+  group: React.ReactNode;
+  items: MenuItemConfig[];
+};
+
+type MenuConfig = MenuGroupConfig | MenuItemConfig;
+```
+
+---
+
+### 可组合组件
+
+#### MenuRoot
+
+根列表（`ul`），带 `role="menu"`；它自身的 class 由 `className` 送达（复合组件供给 `classNames.root`）。
+
+| Prop        | Type                         | Description             |
+| ----------- | ---------------------------- | ----------------------- |
+| `className` | `string`                     | 自定义类名                   |
+| `...props`  | `React.ComponentProps<"ul">` | 支持全部 ul 原生属性            |
+
+#### MenuItem
+
+菜单项包装元素（`li`，`role="none"`），携带 `data-entry` 与 `data-anchor-name`；复合组件会在其中渲染一个 `role="menuitem"` 按钮（带 `data-has-sub` / `data-active` 状态属性）。包装元素的外观由 `classNames.item` 送达，内部按钮由公开属性 `itemClassName` 送达。
+
+| Prop        | Type                         | Description             |
+| ----------- | ---------------------------- | ----------------------- |
+| `className` | `string`                     | 自定义类名                   |
+| `...props`  | `React.ComponentProps<"li">` | 支持全部 li 原生属性            |
+
+#### MenuLabel
+
+分组标签行（`li` + `role="group"`）；它的视觉层级来自 `classNames.label`，由所加载方案的皮肤供给。
+
+| Prop        | Type                         | Description             |
+| ----------- | ---------------------------- | ----------------------- |
+| `className` | `string`                     | 自定义类名                   |
+| `...props`  | `React.ComponentProps<"li">` | 支持全部 li 原生属性            |
+
+#### MenuSubContent
+
+子菜单面板容器，渲染为 `popover="manual"` 的 div；通过 `anchorName` 锚定到父菜单项（每个菜单项自带 `data-anchor-name="--menu-sub-{entryId}"` 属性），由内置 JS 定位引擎定位（[浮动定位](/zh/docs/utils/use-floating-panel)）。
+
+| Prop             | Type                           | Description                        |
+| ---------------- | ------------------------------ | ---------------------------------- |
+| `anchorName`     | `string`                       | 锚定的父菜单项名称（其 `data-anchor-name` 属性） |
+| `className`      | `string`                       | 自定义类名                              |
+| `...props`       | `React.ComponentProps<"div">`  | 支持全部 div 原生属性                      |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `ArrowDown` / `ArrowUp` | 在可用菜单项之间移动焦点，到末尾后循环 |
+| `ArrowRight` | 在根层级打开当前项的子菜单，并聚焦其首个可用项 |
+| `ArrowLeft` | 关闭已打开的子菜单，焦点回到父级菜单项 |
+| `Escape` | 先关闭已打开的子菜单，再触发 `onEscape`，以便外层面板自行关闭 |
+| `Enter` / `Space` | 以原生按钮行为激活当前聚焦项 |
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-active]` | 位于菜单项按钮——它正处于悬停 / 方向键导航的活动项时存在 |
+| `[data-has-sub]` | 位于菜单项按钮——它会打开子菜单时存在 |
+

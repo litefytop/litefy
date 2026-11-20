@@ -1,0 +1,18 @@
+---
+title: Headless 骨架
+description: 组件只有结构与行为，外观来自风格包或自定义样式。
+---
+
+Litefy 组件本身**没有样式**：只交付结构（语义化 DOM）、行为（键盘与指针交互）与无障碍（aria 与焦点管理），逻辑状态经 `data-*` 属性暴露。外观来自[风格包](/zh/docs/styles)，或者你自己的自定义样式——骨架不替你做任何视觉决定。
+
+组件初始化必须的 icon 收集在单个适配器文件 `icons.tsx` 里，装组件时自动带入，默认为 [lucide](https://lucide.dev) 字形、零 npm 依赖。换图标库用 `-i` 选官方适配器（落盘仍叫 `icons.tsx`，组件 import 不变，对应图标库的 npm 包自动安装），也可以手写一个同名导出的适配文件接入任意库：
+
+```bash
+litefy add select -i tabler
+```
+
+## 适配器验证
+
+下面的演示组件经覆盖通道注入字形，用开关在默认适配器与 tabler 适配器之间切换——切换后所有槽位照常工作即为通过。
+
+<IconAdapterPlayground />

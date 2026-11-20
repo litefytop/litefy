@@ -1,0 +1,60 @@
+---
+title: use-chart-palette 图表色板
+description: 图表系列取色 hook——按明暗从固定 Tailwind 色板抽取（浅底 400 档、深底 300 档），mono 模式锁定主题色相按明度阶梯取色
+---
+
+## 安装
+
+<Installation name="use-chart-palette" />
+
+## 用法
+
+默认抽取 8 个固定颜色：亮档取 Tailwind 400 档、暗档取 300 档，通过根元素 dark 类判定明暗，主题切换自动重算；系列数超过 8 时按黄金角续接生成。档位即档色，不做对底对比校验。SSR 首帧固定亮档，挂载后按实际明暗重算。
+
+```tsx
+import { useChartPalette } from "@/ui";
+
+function Swatches() {
+  const palette = useChartPalette();
+
+  return (
+    <div className="flex gap-2">
+      {palette.map((color) => (
+        <div key={color} className="rounded-md" style={{ width: "2rem", height: "2rem", background: color }} />
+      ))}
+    </div>
+  );
+}
+```
+
+```tsx
+const palette = useChartPalette({ mode: "mono" });
+
+const series = [
+  { label: "Returning", stroke: palette[0], fill: palette[0] },
+  { label: "New", stroke: palette[1], fill: palette[1] },
+];
+```
+
+## API 参考
+
+### useChartPalette
+
+```ts
+function useChartPalette(options?: ChartPaletteOptions): string[]
+```
+
+返回长度为 `count`（默认 8）的颜色数组，元素为 `oklch(L C H)` 形式的 CSS 颜色字符串。
+
+#### ChartPaletteOptions
+
+| 属性     | 类型                  | 说明                |
+| ------ | ------------------- | ----------------- |
+| `mode` | `"fixed" \| "mono"` | 取色模式，默认 `"fixed"` |
+
+#### 取色模式
+
+| 模式 | 行为 |
+|------|------|
+| `"fixed"` | 前 8 色从固定 Tailwind 色板交错排列按序抽取（red/green/blue/orange/cyan/violet/amber/pink，相邻抽取色相差 80°+）——浅底取 400 档、深底取 300 档，明暗由根元素 dark 类判定；系列数超过 8 时，超出部分以 `--primary` 解析色相为起点按黄金角续接生成；档位即档色，不做对底对比校验 |
+| `"mono"` | 锁定 `--primary` 解析色的色相，通过明度阶梯与两档饱和度区分系列，适合与主题保持一致的柱状/面积图 |

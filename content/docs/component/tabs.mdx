@@ -1,0 +1,117 @@
+---
+title: Tabs
+description: An options-driven tabs component with multiple variants and orientation support
+---
+
+## Installation
+
+<Installation name="tabs" />
+
+## Usage
+The basic tabs implementation with uncontrolled state.
+
+<ComponentPreview
+  name="tabs-basic"
+/>
+
+Tabs is options-driven: declare each tab with `value`, `label` and `content`.
+## API Reference
+
+### High-level Components
+
+#### Tabs
+
+Options-driven container managing the active value and rendering `TabsList`, `TabsTrigger` and `TabsContent` parts with all state passed as parameters — no context. One shape at every width: once the labels overflow, the bar scrolls horizontally and the prev/next arrows mark it as draggable — adaptation never switches the layout.
+
+| Prop             | Type                                                            | Description                                                                                                                                                           |
+| ---------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `options`        | `TabsOptionConfig[]`                                            | Tab definitions                                                                                                                                                       |
+| `defaultValue`   | `string`                                                        | Initial active tab value (uncontrolled mode). Falls back to the first option's value                                                                                  |
+| `value`          | `string`                                                        | Active tab value (controlled mode)                                                                                                                                    |
+| `onValueChange`  | `(value: string) => void`                                       | Callback when active tab changes                                                                                                                                      |
+| `orientation`    | `'horizontal' \| 'vertical'`                                    | Layout orientation, defaults to `'horizontal'`                                                                                                                        |
+| `unmountOnHide`  | `boolean`                                                       | Unmount a panel while its tab is inactive; `false` keeps it mounted and hides it — use it for panels that hold search, pagination or scroll state, defaults to `true` |
+| `panelClassName` | `string`                                                        | Class applied to every panel this component renders                                                                                                                   |
+| `className`      | `string`                                                        | Custom CSS class, applied to the root                                                                                                                                 |
+| `classNames`     | `root` / `list` / `scroll` / `scroller` / `trigger` / `content` | Custom classes per part (`content` is applied to every tab panel)                                                                                                     |
+| `prevLabel`      | `string`                                                        | Accessible name of the left scroll arrow this component renders, defaults to `'Scroll tabs left'`                                                                     |
+| `nextLabel`      | `string`                                                        | Accessible name of the right scroll arrow this component renders, defaults to `'Scroll tabs right'`                                                                   |
+| `...props`       | `React.ComponentProps<"div">`                                   | Supports all native div props (except `className`)                                                                                                                    |
+
+#### TabsOptionConfig
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `value` | `string` | Unique identifier for the tab |
+| `label` | `React.ReactNode` | Content of the tab trigger |
+| `content` | `React.ReactNode` | Content of the tab panel |
+| `disabled` | `boolean` | Disable the tab |
+
+---
+
+### Composable Components
+
+#### TabsList
+
+Container for the tab trigger buttons. Communicates only through parameters.
+
+A horizontal list scrolls: its viewport renders prev/next buttons and reports `data-overflow="true"` on the shell when its triggers exceed the box it was given (a 0-sized box keeps the last reading rather than claiming it fits). Each trigger carries an inline `flex-shrink: 0`, so it is never shrunk. A vertical list is the tablist itself and scrolls on its own axis.
+
+| Prop          | Type                          | Description                                                                                         |
+| ------------- | ----------------------------- | --------------------------------------------------------------------------------------------------- |
+| `orientation` | `'horizontal' \| 'vertical'`  | Layout orientation, defaults to `'horizontal'`                                                      |
+| `activeValue` | `string`                      | Currently active value; scrolls the active trigger into view when it changes                        |
+| `prevLabel`   | `string`                      | Accessible name of the left scroll arrow this component renders, defaults to `'Scroll tabs left'`   |
+| `nextLabel`   | `string`                      | Accessible name of the right scroll arrow this component renders, defaults to `'Scroll tabs right'` |
+| `className`   | `string`                      | Custom CSS class                                                                                    |
+| `...props`    | `React.ComponentProps<"div">` | Supports all native div props (except `className`); `ref` lands on the element that scrolls         |
+
+#### TabsTrigger
+
+Individual tab button. Receives its active state and change callback purely as parameters.
+
+| Prop            | Type                             | Description                                                                             |
+| --------------- | -------------------------------- | --------------------------------------------------------------------------------------- |
+| `value`         | `string`                         | Unique identifier for the tab                                                           |
+| `active`        | `boolean`                        | Whether the tab is active, drives `data-state` and `aria-selected`, defaults to `false` |
+| `uid`           | `string`                         | Scope that derives the trigger id and the panel id it controls                          |
+| `onValueChange` | `(value: string) => void`        | Called with the tab's own `value` on click or Enter/Space                               |
+| `disabled`      | `boolean`                        | Disable the tab, defaults to `false`                                                    |
+| `className`     | `string`                         | Custom CSS class                                                                        |
+| `...props`      | `React.ComponentProps<"button">` | Supports all native button props (except `className`)                                   |
+
+#### TabsContent
+
+Panel rendered when `active` is true; returns `null` otherwise. Wrap content in `React.lazy()` to defer the import until the tab becomes active.
+
+| Prop            | Type                          | Description                                                                                               |
+| --------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `value`         | `string`                      | Unique identifier, used to derive the panel id and `aria-labelledby`                                      |
+| `active`        | `boolean`                     | Whether the panel is visible, defaults to `false`                                                         |
+| `uid`           | `string`                      | Scope that derives the panel id and the trigger id that labels it — pass the same value your triggers use |
+| `unmountOnHide` | `boolean`                     | Return `null` while inactive; `false` keeps the panel mounted and hides it, defaults to `true`            |
+| `className`     | `string`                      | Custom CSS class                                                                                          |
+| `...props`      | `React.ComponentProps<"div">` | Supports all native div props (except `className`)                                                        |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `ArrowRight` | Moves focus to the next enabled tab, wrapping past the last (horizontal lists) |
+| `ArrowLeft` | Moves focus to the previous enabled tab, wrapping past the first (horizontal lists) |
+| `ArrowDown` | Same as `ArrowRight` in vertical orientation |
+| `ArrowUp` | Same as `ArrowLeft` in vertical orientation |
+| `Home` | Moves focus to the first enabled tab |
+| `End` | Moves focus to the last enabled tab |
+| `Enter` / `Space` | Activates the focused tab |
+| `Tab` | Reaches the scroll arrows; hidden (`display: none`) arrows leave the tab order |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-state]` | On each trigger and panel — `"active"` or `"inactive"` |
+| `[data-orientation]` | On the root and the list — `"horizontal"` or `"vertical"`, mirrors the `orientation` prop |
+| `[data-overflow]` | On the list — `"true"` while its triggers are wider (vertical: taller) than the box it was given; drives the prev/next arrows' visibility |
+| `[data-direction]` | On the scroll buttons of a horizontal list — `"prev"` or `"next"` |
+| `[data-value]` | On each trigger — its own `value` |

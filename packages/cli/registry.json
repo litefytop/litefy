@@ -1,0 +1,844 @@
+{
+  "accordion": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/accordion.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/accordion.tsx",
+    "dependence": [
+      "collapse"
+    ]
+  },
+  "animated-content": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/animated-content.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/animated-content.tsx",
+    "dependence": [
+      "use-motion-preference"
+    ]
+  },
+  "avatar": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/avatar.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/avatar.tsx",
+    "dependence": [
+      "use-image-status"
+    ]
+  },
+  "banner": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/banner.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/banner.tsx",
+    "dependence": [
+      "icons",
+      "use-motion-preference",
+      "button"
+    ]
+  },
+  "breadcrumb": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/breadcrumb.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/breadcrumb.tsx",
+    "dependence": [
+      "icons"
+    ]
+  },
+  "button": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/button.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/button.tsx",
+    "dependence": [
+      "cn"
+    ]
+  },
+  "calendar": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/calendar.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/calendar.tsx",
+    "dependence": [
+      "icons",
+      "date-math",
+      "button"
+    ]
+  },
+  "cascader": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/cascader.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/cascader.tsx",
+    "dependence": [
+      "icons",
+      "list",
+      "popover"
+    ]
+  },
+  "chart-legend": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/chart-legend.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/chart-legend.tsx"
+  },
+  "chart": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/chart.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/chart.tsx",
+    "dependence": [
+      "chart-kit",
+      "chart-paint",
+      "use-chart-palette",
+      "chart-legend"
+    ]
+  },
+  "chat": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/chat.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/chat.tsx",
+    "dependence": [
+      "icons",
+      "button"
+    ]
+  },
+  "checkbox": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/checkbox.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/checkbox.tsx",
+    "dependence": [
+      "icons",
+      "form"
+    ]
+  },
+  "chip-group": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/chip-group.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/chip-group.tsx"
+  },
+  "collapse": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/collapse.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/collapse.tsx",
+    "dependence": [
+      "icons"
+    ]
+  },
+  "combobox": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/combobox.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/combobox.tsx",
+    "dependence": [
+      "list",
+      "picker",
+      "use-combobox",
+      "use-remote-pagination",
+      "popover"
+    ]
+  },
+  "command": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/command.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/command.tsx",
+    "dependence": [
+      "icons",
+      "button",
+      "dialog",
+      "input",
+      "list",
+      "use-combobox"
+    ]
+  },
+  "context-menu": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/context-menu.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/context-menu.tsx",
+    "dependence": [
+      "menu",
+      "popover"
+    ]
+  },
+  "count-up": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/count-up.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/count-up.tsx",
+    "dependence": [
+      "use-motion-preference"
+    ]
+  },
+  "date-picker": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/date-picker.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/date-picker.tsx",
+    "dependence": [
+      "icons",
+      "calendar",
+      "picker",
+      "use-panel-focus",
+      "date-math"
+    ]
+  },
+  "date-range-picker": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/date-range-picker.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/date-range-picker.tsx",
+    "dependence": [
+      "icons",
+      "calendar",
+      "picker",
+      "use-panel-focus",
+      "date-math",
+      "filter-query",
+      "button"
+    ]
+  },
+  "details": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/details.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/details.tsx",
+    "dependence": [
+      "icons",
+      "collapse"
+    ]
+  },
+  "dialog": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/dialog.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/dialog.tsx",
+    "dependence": [
+      "icons",
+      "trap-tab-key"
+    ]
+  },
+  "donut": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/donut.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/donut.tsx",
+    "dependence": [
+      "use-chart-palette",
+      "chart-kit",
+      "chart-legend"
+    ]
+  },
+  "drawer": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/drawer.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/drawer.tsx",
+    "dependence": [
+      "trap-tab-key",
+      "scheme-duration"
+    ]
+  },
+  "dropdown-menu": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/dropdown-menu.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/dropdown-menu.tsx",
+    "dependence": [
+      "menu",
+      "popover"
+    ]
+  },
+  "field": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/field.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/field.tsx",
+    "dependence": [
+      "form"
+    ]
+  },
+  "filter-combobox": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/filter-combobox.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/filter-combobox.tsx",
+    "dependence": [
+      "icons",
+      "button",
+      "filter-query",
+      "combobox-query",
+      "input"
+    ]
+  },
+  "floating-toc": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/floating-toc.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/floating-toc.tsx",
+    "dependence": [
+      "popover",
+      "floating-position"
+    ]
+  },
+  "form": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/form.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/form.tsx",
+    "dependence": [
+      "button",
+      "icons",
+      "use-spin"
+    ]
+  },
+  "group": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/group.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/group.tsx"
+  },
+  "icons": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/icons.tsx",
+    "barrel": false
+  },
+  "image": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/image.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/image.tsx",
+    "dependence": [
+      "use-image-status"
+    ]
+  },
+  "input-otp": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/input-otp.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/input-otp.tsx"
+  },
+  "input": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/input.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/input.tsx",
+    "dependence": [
+      "field"
+    ]
+  },
+  "lattice-loader": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/lattice-loader.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/lattice-loader.tsx",
+    "dependence": [
+      "icons"
+    ]
+  },
+  "list": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/list.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/list.tsx"
+  },
+  "masonry": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/masonry.tsx"
+  },
+  "menu": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/menu.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/menu.tsx",
+    "dependence": [
+      "icons",
+      "floating-position",
+      "popover"
+    ]
+  },
+  "meter": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/meter.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/meter.tsx"
+  },
+  "metergroup": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/metergroup.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/metergroup.tsx",
+    "dependence": [
+      "use-chart-palette"
+    ]
+  },
+  "multi-select": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/multi-select.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/multi-select.tsx",
+    "dependence": [
+      "icons",
+      "popover",
+      "button"
+    ]
+  },
+  "nav-bar": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/nav-bar.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/nav-bar.tsx",
+    "dependence": [
+      "button",
+      "icons",
+      "popover",
+      "floating-position",
+      "menu"
+    ]
+  },
+  "number-field": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/number-field.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/number.tsx",
+    "dependence": [
+      "icons",
+      "field",
+      "input"
+    ]
+  },
+  "number-input": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/number-input.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/number.tsx",
+    "dependence": [
+      "icons",
+      "input",
+      "number-field",
+      "field"
+    ]
+  },
+  "pager": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/pager.tsx",
+    "dependence": [
+      "scheme-duration"
+    ]
+  },
+  "pagination": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/pagination.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/pagination.tsx",
+    "dependence": [
+      "icons",
+      "button"
+    ]
+  },
+  "password": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/password.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/password.tsx",
+    "dependence": [
+      "icons",
+      "field",
+      "input"
+    ]
+  },
+  "picker": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/picker.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/picker.tsx",
+    "dependence": [
+      "use-floating-panel",
+      "floating-position"
+    ]
+  },
+  "popover": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/popover.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/popover.tsx",
+    "dependence": [
+      "button",
+      "use-floating-panel",
+      "floating-position"
+    ]
+  },
+  "preview-card": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/preview-card.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/preview-card.tsx",
+    "dependence": [
+      "image",
+      "tooltip",
+      "card"
+    ]
+  },
+  "progress": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/progress.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/progress.tsx"
+  },
+  "radar": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/radar.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/radar.tsx",
+    "dependence": [
+      "use-chart-palette",
+      "chart-kit",
+      "chart-legend"
+    ]
+  },
+  "radio": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/radio.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/radio.tsx",
+    "dependence": [
+      "form"
+    ]
+  },
+  "segment": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/segment.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/segment.tsx"
+  },
+  "select": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/select.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/select.tsx",
+    "dependence": [
+      "icons",
+      "use-floating-panel",
+      "floating-position",
+      "field",
+      "popover"
+    ]
+  },
+  "separator": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/separator.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/separator.tsx"
+  },
+  "sidebar": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/sidebar.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/sidebar.tsx"
+  },
+  "slider": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/slider.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/slider.tsx"
+  },
+  "sparkline": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/sparkline.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/sparkline.tsx",
+    "dependence": [
+      "chart-kit"
+    ]
+  },
+  "steps": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/steps.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/steps.tsx",
+    "dependence": [
+      "icons"
+    ]
+  },
+  "swipe-actions": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/swipe-actions.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/swipe-actions.tsx",
+    "dependence": [
+      "icons",
+      "use-motion-preference"
+    ]
+  },
+  "switch": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/switch.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/switch.tsx"
+  },
+  "table": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/table.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/table.tsx",
+    "dependence": [
+      "icons",
+      "checkbox"
+    ]
+  },
+  "tabs": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/tabs.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/tabs.tsx",
+    "dependence": [
+      "icons"
+    ]
+  },
+  "thought-line": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/thought-line.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/thought-line.tsx",
+    "dependence": [
+      "icons",
+      "lattice-loader"
+    ]
+  },
+  "timeline": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/timeline.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/timeline.tsx"
+  },
+  "toast": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/toast.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/toast.tsx",
+    "dependence": [
+      "icons",
+      "use-spin",
+      "scheme-duration"
+    ]
+  },
+  "toc": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/toc.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/toc.tsx",
+    "dependence": [
+      "icons",
+      "popover",
+      "use-scroll-spy"
+    ]
+  },
+  "toggle": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/toggle.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/toggle.tsx"
+  },
+  "tooltip": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/tooltip.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/tooltip.tsx",
+    "dependence": [
+      "floating-position"
+    ]
+  },
+  "transfer": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/transfer.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/transfer.tsx",
+    "dependence": [
+      "icons",
+      "checkbox",
+      "button"
+    ]
+  },
+  "tree": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/tree.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/tree.tsx",
+    "dependence": [
+      "icons"
+    ]
+  },
+  "upload": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/upload.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/upload.tsx"
+  },
+  "watermark": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/watermark.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/watermark.tsx"
+  },
+  "wizard": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/wizard.tsx",
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/wizard.tsx",
+    "dependence": [
+      "icons",
+      "button",
+      "pager",
+      "steps"
+    ]
+  },
+  "chart-kit": {
+    "type": "util",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/chart-kit.ts"
+  },
+  "chart-paint": {
+    "type": "util",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/chart-paint.ts",
+    "dependence": [
+      "chart-kit"
+    ]
+  },
+  "cn": {
+    "type": "util",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/cn.ts",
+    "dependencies": [
+      "cn"
+    ]
+  },
+  "combobox-query": {
+    "type": "util",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/combobox-query.ts",
+    "dependence": [
+      "filter-query"
+    ]
+  },
+  "date-math": {
+    "type": "util",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/date-math.ts"
+  },
+  "extract-image-files": {
+    "type": "util",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/extract-image-files.ts"
+  },
+  "filter-query": {
+    "type": "util",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/filter-query.ts"
+  },
+  "floating-position": {
+    "type": "util",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/floating-position.ts"
+  },
+  "is-icon-only": {
+    "type": "util",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/is-icon-only.ts"
+  },
+  "scheme-duration": {
+    "type": "util",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/scheme-duration.ts"
+  },
+  "trap-tab-key": {
+    "type": "util",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/trap-tab-key.ts"
+  },
+  "use-chart-palette": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-chart-palette.ts"
+  },
+  "use-combobox": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-combobox.ts"
+  },
+  "use-drag": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-drag.ts"
+  },
+  "use-floating-panel": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-floating-panel.ts",
+    "dependence": [
+      "floating-position"
+    ]
+  },
+  "use-image-status": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-image-status.ts"
+  },
+  "use-load-more": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-load-more.ts"
+  },
+  "use-motion-preference": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-motion-preference.ts"
+  },
+  "use-pagination": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-pagination.ts"
+  },
+  "use-panel-focus": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-panel-focus.ts"
+  },
+  "use-reduced-motion": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-reduced-motion.ts"
+  },
+  "use-remote-pagination": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-remote-pagination.ts"
+  },
+  "use-remote-sort": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-remote-sort.ts"
+  },
+  "use-scroll-spy": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-scroll-spy.ts"
+  },
+  "use-spin": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-spin.ts",
+    "dependence": [
+      "use-motion-preference"
+    ]
+  },
+  "use-theme": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-theme.ts"
+  },
+  "use-upload-monitor": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-upload-monitor.ts"
+  },
+  "use-virtual-scroll": {
+    "type": "hook",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/utils/use-virtual-scroll.ts"
+  },
+  "badge": {
+    "type": "skin",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/badge.tsx"
+  },
+  "callout": {
+    "type": "skin",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/callout.tsx"
+  },
+  "card": {
+    "type": "skin",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/card.tsx"
+  },
+  "paper": {
+    "type": "skin",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/paper.tsx"
+  },
+  "swatch-picker": {
+    "type": "skin",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/swatch-picker.tsx",
+    "dependence": [
+      "segment"
+    ]
+  },
+  "icons/tabler": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/packages/cli/adapters/icons-tabler.tsx",
+    "installAs": "icons.tsx",
+    "barrel": false,
+    "dependencies": [
+      "@tabler/icons-react"
+    ]
+  },
+  "style/clinical/base": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/clinical/index.css",
+    "files": [
+      "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/clinical/index.css"
+    ]
+  },
+  "style/clinical/preset": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/clinical/index.css",
+    "files": [
+      "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/clinical/index.css"
+    ]
+  },
+  "style/minimal/base": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/minimal/index.css",
+    "files": [
+      "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/minimal/index.css"
+    ]
+  },
+  "style/minimal/preset": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/minimal/index.css",
+    "files": [
+      "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/minimal/index.css"
+    ]
+  },
+  "style/neo-brutalist/base": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/neo-brutalist/index.css",
+    "files": [
+      "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/neo-brutalist/index.css"
+    ]
+  },
+  "style/neo-brutalist/preset": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/neo-brutalist/index.css",
+    "files": [
+      "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/neo-brutalist/index.css"
+    ]
+  },
+  "style/neon-gradient/base": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/neon-gradient/index.css",
+    "files": [
+      "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/neon-gradient/index.css"
+    ]
+  },
+  "style/neon-gradient/preset": {
+    "type": "css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/neon-gradient/index.css",
+    "files": [
+      "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/neon-gradient/index.css"
+    ]
+  }
+}

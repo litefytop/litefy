@@ -1,0 +1,81 @@
+---
+title: Number Field
+description: A compact number stepper with a leading Minus and a trailing Plus button — keyboard stepping and thousands separators.
+---
+
+## Installation
+
+<Installation name="number-field" />
+
+## Usage
+
+A stepper-style number input; the leading Minus / trailing Plus step by `step`.
+
+<ComponentPreview name="number-field-basic" />
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use finished components.
+
+#### NumberField
+
+| Prop              | Type                                                   | Description                                                                                                                                                      |
+| ----------------- | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `defaultValue`    | `number \| string`                                     | Initial value (uncontrolled mode)                                                                                                                                |
+| `value`           | `number \| string \| undefined`                        | Current value (controlled mode)                                                                                                                                  |
+| `onValueChange`   | `(value?: number) => void \| (value?: string) => void` | Called when the value changes. With `positiveInteger=true` it receives `number \| undefined`, otherwise `string`                                                 |
+| `invalid`         | `boolean`                                              | Marks the field invalid (validation failed)                                                                                                                      |
+| `min`             | `number`                                               | The minimum allowed value — the Minus button disables when reached; pass it explicitly when you need a negative lower bound, defaults to `0`                     |
+| `max`             | `number`                                               | The maximum allowed value — the Plus button disables when reached; the stepper defaults to a three-character width, so confirm the value area can hold it when raising the bound, defaults to `999` |
+| `step`            | `number`                                               | The step size for the stepper buttons and `ArrowUp` / `ArrowDown`, defaults to `1`                                                                               |
+| `positiveInteger` | `boolean`                                              | Only positive integers allowed. The value type becomes `number \| undefined`, defaults to `false`                                                                |
+| `thousands`       | `boolean`                                              | Groups the integer part with thousand separators while unfocused; the committed value never contains separators, defaults to `false`                             |
+| `className`       | `string`                                               | Custom class name, applied to the shell. The shell is always a nominal 3-column width, with the value area and the stepper buttons equal width (see Width below) |
+| `style`           | `React.CSSProperties`                                  | Inline styles, applied to the shell                                                                                                                              |
+| `classNames`      | `{ root?, stepper?, stepperIcon?, hint? }`             | Custom class names for the inner input / the stepper buttons / their default ± icons / the keyboard focus hint                                                   |
+| `styles`          | `{ root?, stepper?, hint? }`                           | Custom inline styles for the parts above                                                                                                                         |
+| `disabled`        | `boolean`                                              | Disables the field and both stepper buttons, defaults to `false`                                                                                                 |
+| `incrementLabel`  | `string`                                               | Accessible name for the built-in `+` stepper button, defaults to `'Increase'`                                                                                    |
+| `decrementLabel`  | `string`                                               | Accessible name for the built-in `−` stepper button, defaults to `'Decrease'`                                                                                    |
+| `...props`        | `React.ComponentProps<"input">`                        | Supports all native input props (except `type`), such as `onBlur`                                                                                                |
+
+---
+
+### Composable Components
+
+#### NumberStepper
+
+A clickable stepper button — `direction="up"` renders a Plus icon and `direction="down"` a Minus icon; `children` overrides the icon.
+
+| Prop        | Type              | Description                                                             |
+| ----------- | ----------------- | ----------------------------------------------------------------------- |
+| `direction` | `"up" \| "down"`  | Icon and accessible label (`Increase` / `Decrease`), defaults to `"up"` |
+| `className` | `string`          | Custom class name                                                       |
+| `children`  | `React.ReactNode` | Custom icon content, replacing the default icon                         |
+
+Supports all native `<button>` props (except `type`).
+
+#### NumberRoot
+
+The bare inner input. Supports all native `<input>` props (except `className`), plus its own `className`.
+
+For the form with a non-interactive hint icon at the tail, see [NumberInput](/en/docs/component/number-input).
+
+### Width
+
+The shell is always a nominal 3 columns plus 1px of inner padding and border (the two stepper buttons and the value area take one column each, scaling with the `--width-control` token — 136px in the default scheme, shrinking with the compact tier): the value area uses `w-control` and matches the stepper buttons in width, with no runtime width calculation, so the width never changes while typing or stepping; overflowing content (thousands separators, a larger `max`) scrolls horizontally inside the value area — widen it yourself via `classNames.root` (e.g. `w-22`) when you need a wider value area.
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `ArrowUp` / `ArrowDown` | Steps the value by `step`, clamped to `min` / `max` |
+| `−` / `+` | The stepper buttons respond to the pointer only — they stay out of the tab order — and auto-disable at `min` / `max` |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-invalid]` | On the root — present when `invalid` is true |

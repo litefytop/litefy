@@ -1,0 +1,67 @@
+---
+title: Toggle
+description: A toggle button component supporting controlled, uncontrolled and group multi-select modes
+---
+
+## Installation
+
+<Installation name="toggle" />
+
+## Usage
+
+A toggle button, controlled or uncontrolled; `ToggleGroup` renders the group.
+
+<ComponentPreview
+  name="toggle-basic"
+/>
+
+## API Reference
+
+### Toggle
+
+| Prop              | Type                             | Description                                                                                                        |
+| :---------------- | :------------------------------- | :----------------------------------------------------------------------------------------------------------------- |
+| `children`        | `React.ReactNode`                | The toggle content                                                                                                 |
+| `checked`         | `boolean`                        | Controlled checked state                                                                                           |
+| `defaultChecked`  | `boolean`                        | Default checked state (uncontrolled), defaults to `false`                                                          |
+| `onCheckedChange` | `(checked: boolean) => void`     | Callback when the checked state changes                                                                            |
+| `value`           | `string`                         | Value forwarded to the native button; in `ToggleGroup` it identifies each option                                   |
+| `disabled`        | `boolean`                        | Disable the toggle, defaults to `false`                                                                            |
+| `className`       | `string`                         | Custom class names                                                                                                 |
+| `...props`        | `React.ComponentProps<"button">` | Supports all native button props (except `type`, `className`, `aria-checked`), such as `name`, `form`, `autofocus` |
+
+Pressing a disabled toggle does nothing. A custom `onClick` handler runs before the internal toggle logic; call `e.preventDefault()` inside it to prevent the checked state from changing.
+
+### ToggleGroup
+
+| Prop             | Type                         | Description                                              |
+| :--------------- | :--------------------------- | :------------------------------------------------------- |
+| `options`        | `ToggleOptionConfig[]`       | Options data array                                       |
+| `value`          | `string[]`                   | Controlled selected values                               |
+| `defaultValue`   | `string[]`                   | Default selected values (uncontrolled), defaults to `[]` |
+| `onChange`       | `(values: string[]) => void` | Callback when values change                              |
+| `disabled`       | `boolean`                    | Disable all options, defaults to `false`                 |
+| `className`      | `string`                     | Custom class names, applied to the container             |
+| `itemClassName`  | `string`                     | Custom class names, applied to each toggle               |
+
+### ToggleOptionConfig
+
+| Field       | Type              | Description                                       |
+| :---------- | :---------------- | :------------------------------------------------ |
+| `label`     | `React.ReactNode` | Option content; may carry an icon fragment        |
+| `value`     | `string`          | Unique identifier value                           |
+| `disabled`  | `boolean`         | Disable the option, defaults to `false`           |
+| `className` | `string`          | Custom class names, overrides `itemClassName`     |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Enter` / `Space` | Activates the `<button type="button">`; the browser's own click is what flips the state — the skeleton attaches no key handler |
+| `Tab` | Each enabled toggle is its own button in the tab order; a `disabled` toggle leaves it |
+
+`ToggleGroup` renders plain buttons and adds no arrow-key navigation between them.
+
+## Data Attributes
+
+The skeleton emits no `data-*` on this component. The pressed state is carried by `aria-pressed` on the button.

@@ -1,0 +1,59 @@
+---
+title: MultiSelect
+description: A multi-select control built from Popover + listbox — grouped options, check marks, and a panel that stays open for continuous toggling.
+---
+
+## Installation
+
+<Installation name="multi-select" />
+
+## Usage
+
+A Popover + listbox multi-select control driven by `options`, with grouping support.
+
+<ComponentPreview name="multi-select-basic" />
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### MultiSelect
+
+| Prop           | Type                                           | Description                                                                   |
+| -------------- | ---------------------------------------------- | ----------------------------------------------------------------------------- |
+| `options`      | `MultiSelectOption[]` **required**             | The options: labels, values, groups and disabled                              |
+| `value`        | `string[]`                                     | Controlled selected values                                                    |
+| `defaultValue` | `string[]`                                     | Initial selected values (uncontrolled), defaults to `[]`                      |
+| `onChange`     | `(values: string[]) => void`                   | The full selected values after each toggle                                    |
+| `trigger`      | `React.ReactNode`                              | Custom trigger content; defaults to a placeholder-text button                 |
+| `placeholder`  | `string`                                       | Placeholder text; also the panel's `aria-label`, defaults to `Select options` |
+| `disabled`     | `boolean`                                      | Disables the trigger button, defaults to `false`                              |
+| `className`    | `string`                                       | Custom classes on the trigger button                                          |
+| `classNames`   | `{ content?; list?; group?; option?; check? }` | Custom classes for the panel, list, group headers, options and check icons    |
+| `...props`     | `React.ComponentProps<"button">`               | Supports native trigger-button props (except `children` and the like)         |
+
+### MultiSelectOption
+
+| Property | Type | Description |
+| ---- | ---- | ---- |
+| `label` | `string` | The option label |
+| `value` | `string` | The option value |
+| `group` | `string` | Group name — when provided, a group header is rendered and the group's options are indented |
+| `disabled` | `boolean` | Disables the option |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `↑` / `↓` | Move the highlight among options (wrapping) |
+| `Enter` / `Space` | Toggle the highlighted option's selected state (the panel stays open) |
+| `Escape` | Closes the panel and returns focus to the trigger button |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-selected]` | On an option — the option is selected |
+| `[data-highlighted]` | On an option — the item the keyboard highlight sits on |

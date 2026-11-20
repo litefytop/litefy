@@ -1,0 +1,58 @@
+---
+title: 日期区间
+description: 单日历面板点两次选出起止日期，选定起点后悬停即时预览区间，整条区间连续高亮
+---
+
+## 安装
+
+<Installation name="date-range-picker" />
+
+## 用法
+
+单日历面板点两次选出起止日期，选定起点后悬停即时预览区间带，两端实心、中间连续高亮连成一条带。
+
+<ComponentPreview name="date-range-picker-basic" />
+
+## API 参考
+
+### 选择流程
+
+| 阶段 | 行为 |
+| --- | --- |
+| 等待起点 | 点第一次写入起点，切到等待终点 |
+| 等待终点 | 悬停任意日期即时预览「起点 → 悬停日」的区间带，移出网格即清空预览 |
+| 完成 | 点第二次若日期不早于起点则提交并关闭；更早则把它当作新起点。允许起点等于终点 |
+
+`Esc` 关闭面板但保留已选起点，下次打开继续等待终点。打开面板时尾部日历图标换成关闭图标，点击它或按 `Backspace` 清除已选值且面板保持打开；无值时点击关闭图标无动作，`clearText` 是关闭图标的 `aria-label`。面板不放步骤提示，两步选择的引导由输入框占位文案与悬停预览承担。
+
+选中区间的连续高亮带由皮肤的 `calendarRangeClasses` 按 `data-range` 绘制，`DatePicker` 的单值外观不受影响。
+
+### DateRangePicker
+
+| 属性                              | 类型                                                    | 描述                                                             |
+| ------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------- |
+| `value` / `defaultValue`        | `DateRangeValue`                                      | 受控 / 非受控值，ISO `YYYY-MM-DD` 字符串，默认 `{ start: null, end: null }` |
+| `onValueChange`                 | `(value: DateRangeValue) => void`                     | 区间完成时回调，避免 `Date` 对象的时区歧义                                      |
+| `placeholder`                   | `string`                                              | 输入框占位文案，说明这是一次区间选择，默认 `Select a date range`                    |
+| `startLabel` / `endLabel`       | `string`                                              | 起止可访问名，默认 `Start date` / `End date`                            |
+| `separator`                     | `string`                                              | 输入框里连接起止的可替换文字，默认 `–`                                          |
+| `clearText` / `invalidText`     | `string`                                              | 关闭图标可访问名 / 错误文案，默认 `Clear` / `Start must not exceed end`       |
+| `weekdayLabels` / `monthLabels` | `string[]`                                            | 国际化时整体替换星期与月份名，默认 英文缩写 / 英文月份                                  |
+| `isDateDisabled`                | `(date: Date) => boolean`                             | 禁用日期                                                           |
+| `firstDayOfWeek`                | `0 \| 1`                                              | 周起始日，默认 `0`                                                    |
+| `disabled`                      | `boolean`                                             | 禁用态，默认 `false`                                                 |
+| `classNames` / `styles`         | `DateRangePickerClassNames` / `DateRangePickerStyles` | 槽位类串与内联样式                                                      |
+
+### 与 Calendar 的关系
+
+组件复用 `Calendar` 的网格、方向键焦点跳转与月/年视图。`Calendar` 增加可选属性 `range` / `weekdayLabels` / `monthLabels` / `onHoverDateChange`，不传时行为完全不变，`DatePicker` 无需改动。日历格按 `data-range` 发出 `start` / `end` / `between` / `single` 四种状态。
+
+浮层沿用 `popover="manual"`，渲染在 top layer，因此放在带 `overflow-hidden` 的表格表头里也不会被裁剪。面板宽度按日历自身尺寸计算（`7 × --width-control + 6 × --spacing`，随主题变化），不跟随窄字段压缩；极窄视口只加宽度上限与横向滚动。
+
+### data-* 属性
+
+| 属性 | 值 | 描述 |
+| --- | --- | --- |
+| `data-range` | `start` / `end` / `between` / `single` | 日历格在区间中的角色 |
+| `data-in-range` | `true` | 日历格位于选中区间内 |
+| `data-slot` | `date-range-panel` | 面板结构标记 |

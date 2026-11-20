@@ -1,0 +1,41 @@
+---
+title: Sidebar
+description: A finished collapsible-sidebar container — open state owned by the component, aside semantics by the skeleton, collapsed form by the skin
+---
+
+## Installation
+
+<Installation name="sidebar" />
+
+## Usage
+
+A collapsible container rendered as an `<aside>`: uncontrolled by default; pass `open` + `onOpenChange` to control it.
+
+## API Reference
+
+### Sidebar
+
+| Prop           | Type                            | Description                                                                   |
+| -------------- | ------------------------------- | ----------------------------------------------------------------------------- |
+| `ref`          | `React.Ref<SidebarHandle>`      | Imperative handle (uncontrolled mode): `toggle` / `open` / `close` / `isOpen` |
+| `open`         | `boolean`                       | Controlled open state; passing it switches to controlled mode                 |
+| `defaultOpen`  | `boolean`                       | Initial open state (uncontrolled), defaults to `true`                         |
+| `onOpenChange` | `(open: boolean) => void`       | Open-state change callback (fires in both controlled and uncontrolled modes)  |
+| `className`    | `string`                        | Custom classes; supply positioning and sizing here                            |
+| `...props`     | `React.ComponentProps<"aside">` | Native aside props spread through (except `open` / `ref` / `className`)       |
+
+### Rendered Slots
+
+| Part | Element | State attribute | Description |
+|------|---------|-----------------|-------------|
+| `sidebar` | `<aside>` | `data-open="true\|false"` | Sidebar container root; the collapsed form (`display:none` when closed) is defined by the scheme skin |
+
+## Keyboard Interactions
+
+This component handles no keys — no key opens or closes the sidebar.
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-open]` | On the root `<aside>` element — `"true"` or `"false"`, mirroring the open state |

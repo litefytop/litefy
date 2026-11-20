@@ -1,0 +1,31 @@
+---
+title: MeterGroup 分组计量
+description: 参照 PrimeVue MeterGroup 的只读分组量表——surface 轨道上的占比段，段色取粉彩档位（亮 400 / 暗 300），附色点图例
+---
+
+## 安装
+
+<Installation name="metergroup" />
+
+## 用法
+
+分组量表——多项共享一条轨道按占比相连成段；段色来自色板 hook（亮 400 / 暗 300 档），也可逐项显式指定 `color`；图例逐项列出色点、名称与占比。
+
+<ComponentPreview name="metergroup-basic" />
+
+## API 参考
+
+### MeterGroup
+
+| 属性          | 类型                                                   | 说明                                                  |
+| :---------- | :--------------------------------------------------- | :-------------------------------------------------- |
+| `value`     | `{ label: string; value: number; color?: string }[]` | 按序渲染为相连的段；`color` 覆盖该段的色板取色                         |
+| `min`       | `number`                                             | 量程下界，默认 `0`                                         |
+| `max`       | `number`                                             | 量程上界；显式传入时各段按固定刻度计宽，默认 各项 `value` 之和                |
+| `className` | `string`                                             | 根元素自定义类                                             |
+
+其余原生 `<div>` 属性（`aria-label`、`id`、内联 `style` 等）透传到根元素；可访问名由 `aria-label` 提供。根元素为 `role="meter"` 携带 `aria-valuemin` / `aria-valuemax` / `aria-valuenow`（钳后的各项和）；轨道与图例 `aria-hidden`。
+
+段按 `value / (max − min)` 依序铺开；零值项不渲染段，超宽由轨道裁剪。图例恒列出全部项及其取整占比，悬停段还会浮现 `label · 占比` 提示条——信息与图例恒同源，不依赖 hover。轨道色 `surface`，与全库轨道族同源。
+
+纵向布局、标签方向 / 位置与每项图标本版未设。

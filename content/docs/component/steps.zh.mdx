@@ -1,0 +1,88 @@
+---
+title: Steps 步骤条
+description: 受控步骤条，区分已完成、当前与未到达状态，并支持锁定前进跳跃的向导流程
+---
+
+## 安装
+
+<Installation name="steps" />
+
+## 用法
+
+完全受控的步骤组件：点步骤触发 `onChange`，`maxIndex` 锁定未来步骤；走过最后一步后，末项显示终点样式。
+
+<ComponentPreview
+  name="steps-basic"
+/>
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Steps
+
+| 属性            | 类型                                                                                    | 描述                                                                        |
+| :------------ | :------------------------------------------------------------------------------------ | :------------------------------------------------------------------------ |
+| `items`       | `StepsItemConfig[]`                                                                   | 步骤定义                                                                      |
+| `index`       | `number`                                                                              | 受控当前步骤索引                                                                  |
+| `onChange`    | `(nextIndex: number) => void`                                                         | 点击可点击步骤时触发                                                                |
+| `maxIndex`    | `number`                                                                              | 可选中的最大索引 —— 超出部分禁用，默认 `items.length - 1`                                  |
+| `orientation` | `"horizontal" \| "vertical"`                                                          | 布局方向，由 prop 固定，不探测容器宽度。`"vertical"` 渲染按轴分组的标记结构，排布由方案决定，默认 `"horizontal"` |
+| `className`   | `string`                                                                              | 自定义类名，应用于根元素                                                              |
+| `classNames`  | `item` / `marker` / `rail` / `connector` / `texts` / `title` / `description` / `body` | 按部件自定义类名                                                                  |
+| `styles`      | 同上部件，值为 `React.CSSProperties`                                                         | 按部件自定义内联样式                                                                |
+
+#### StepsItemConfig
+
+| 字段            | 类型                | 描述               |
+| :------------ | :---------------- | :--------------- |
+| `title`       | `React.ReactNode` | 步骤标题             |
+| `description` | `React.ReactNode` | 可选的次级文本          |
+
+### 可组合组件
+
+零件的内置 `className` 会与传入的合并——传入 `className` 是扩展默认值而非替换。
+
+#### StepsRoot
+
+外层 `<ol>` flex 容器（列表语义来自原生元素）。
+
+| 属性          | 类型                           | 描述         |
+| :---------- | :--------------------------- | :--------- |
+| `className` | `string`                     | 自定义类名      |
+| `...props`  | `React.ComponentProps<"ol">` | 原生 ol 属性   |
+
+#### StepsItem
+
+单个步骤：连接线、标记按钮、标题与可选描述；标记在 `clickable` 时可键盘访问。
+
+| 属性            | 类型                                                                                    | 描述                                         |
+| :------------ | :------------------------------------------------------------------------------------ | :----------------------------------------- |
+| `index`       | `number`                                                                              | 从零开始的步骤索引，通过 `onSelect` 上报                 |
+| `state`       | `"completed" \| "current" \| "upcoming"`                                              | 步骤状态；以 `data-state` 发出在步骤项、标记与标题上          |
+| `title`       | `React.ReactNode`                                                                     | 步骤标题                                       |
+| `description` | `React.ReactNode`                                                                     | 可选的次级文本                                    |
+| `clickable`   | `boolean`                                                                             | 标记按钮是否可用                                   |
+| `onSelect`    | `(index: number) => void`                                                             | 点击标记时触发                                    |
+| `className`   | `string`                                                                              | 自定义类名，应用于步骤项                               |
+| `classNames`  | `item` / `marker` / `rail` / `connector` / `texts` / `title` / `description` / `body` | 按部件自定义类名                                   |
+| `styles`      | 同上部件，值为 `React.CSSProperties`                                                         | 按部件自定义内联样式                                 |
+| `...props`    | `React.ComponentProps<"li">`                                                          | 原生 li 属性                                   |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Tab` | 依次到达可点击步骤的标记按钮与标题按钮；禁用的标记与纯文本标题不进入 Tab 序——原生行为 |
+| `Enter` / `Space` | 激活聚焦的标记或标题按钮，触发 `onSelect`——原生按钮激活，骨架自身不处理按键 |
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-state]` | 位于标记、步骤项、连接线与标题上——取值 `"completed"`、`"current"` 或 `"upcoming"` |
+| `[data-orientation]` | 位于步骤项、连接线、文本列、标题、描述与内容槽位上——取值 `"horizontal"` 或 `"vertical"` |
+| `[data-clickable]` | 位于标记与标题上——`clickable` 时存在 |
+| `[data-connector]` | 位于垂直步骤项的文本块上——`connector` 时存在 |

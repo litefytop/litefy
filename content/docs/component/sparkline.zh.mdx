@@ -1,0 +1,39 @@
+---
+title: Sparkline 迷你图
+description: 无轴的 SVG 迷你趋势线 —— 用 currentColor 着色，像普通文本元素一样跟随主题
+---
+
+属于图表家族，与 [Chart](/zh/docs/component/chart)、[Donut](/zh/docs/component/donut)、[Radar](/zh/docs/component/radar) 同层 —— 需要坐标轴或悬浮提示时选 Chart。
+
+## 安装
+
+<Installation name="sparkline" />
+
+## 用法
+
+迷你图，描边与填充跟随 `currentColor`，尺寸用 `className` 指定。
+
+<ComponentPreview
+  name="sparkline-basic"
+/>
+
+## API 参考
+
+### Sparkline
+
+| 属性           | 类型                               | 说明                             |
+| :----------- | :------------------------------- | :----------------------------- |
+| `data`       | `number[]`                       | 原始数值，从左到右映射                    |
+| `variant`    | `"line" \| "area" \| "bar"`      | 迷你图形状，默认 `"line"`              |
+| `smooth`     | `boolean`                        | line 与 area 的单调三次平滑，默认 `false` |
+| `className`  | `string`                         | 作用于根 `svg`，用于自行指定尺寸与颜色         |
+| `classNames` | `{ bar?, area?, line?: string }` | 柱子、面积与折线形状的自定义类名               |
+| `...props`   | `React.ComponentProps<"svg">`    | 透传到根 `svg` 元素                  |
+
+## 键盘交互
+
+本组件不接管任何按键。
+
+## 数据属性
+
+骨架不在本组件上发射任何 `data-*`。

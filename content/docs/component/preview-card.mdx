@@ -1,0 +1,45 @@
+---
+title: Preview Card
+description: A preview component composed of Card, Image and Tooltip — shown standalone, or popped up as a rich preview when hovering a link
+---
+
+## Installation
+
+<Installation name="preview-card" />
+
+## Usage
+
+Composed from Image + Tooltip; the CLI install resolves the dependencies automatically.
+
+<ComponentPreview
+  name="preview-card-basic"
+/>
+
+## API Reference
+
+### PreviewCard
+
+| Prop          | Type                                         | Description                                                             |
+| :------------ | :------------------------------------------- | :---------------------------------------------------------------------- |
+| `src`         | `string`                                     | The image URL                                                           |
+| `alt`         | `string`                                     | The image alt text                                                      |
+| `title`       | `React.ReactNode`                            | The card title                                                          |
+| `description` | `React.ReactNode`                            | The card description                                                    |
+| `trigger`     | `React.ReactNode`                            | When provided, the card renders as a hover Tooltip on a link            |
+| `href`        | `string`                                     | The link href (only used when `trigger` is provided), defaults to `"#"` |
+| `delay`       | `number`                                     | Tooltip show delay in ms (only used with `trigger`), defaults to `200`  |
+| `className`   | `string`                                     | Custom classes on the card                                              |
+| `classNames`  | `{ image? / body? / title? / description? }` | Custom classes for the sub-parts                                        |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Tab` | Moving focus onto the trigger link shows the card |
+| Focus out | Focus leaving the trigger link hides the card |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-floating]` | On the card — present only when rendered with a `trigger` (floating mode) |

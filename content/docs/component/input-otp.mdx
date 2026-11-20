@@ -1,0 +1,88 @@
+---
+title: Input OTP
+description: A one-time-code input with auto-advance, paste support, keyboard navigation and mask mode.
+---
+
+## Installation
+
+<Installation name="input-otp" />
+
+## Usage
+
+An OTP input with auto-advance, backspace fallback, arrow-key navigation and clipboard paste.
+
+<ComponentPreview
+  name="input-otp-basic"
+/>
+
+### Mask
+
+Renders the slots as password inputs, suited to PIN-code scenarios.
+
+<ComponentPreview
+  name="input-otp-mask"
+/>
+
+## API Reference
+
+### High-level Components
+
+#### InputOtp
+
+The OTP input composed of the parts below, encapsulating value state and interaction logic.
+
+| Prop            | Type                      | Description                                                          |
+| --------------- | ------------------------- | -------------------------------------------------------------------- |
+| `length`        | `number`                  | Number of slots, defaults to `6`                                     |
+| `value`         | `string`                  | Current value (controlled)                                           |
+| `defaultValue`  | `string`                  | Initial value (uncontrolled), defaults to `""`                       |
+| `onValueChange` | `(value: string) => void` | Called when the value changes                                        |
+| `disabled`      | `boolean`                 | Disables all slots, defaults to `false`                              |
+| `invalid`       | `boolean`                 | Sets `data-invalid` on the container and `aria-invalid` on each slot |
+| `mask`          | `boolean`                 | Renders the slots as password inputs, defaults to `false`            |
+| `name`          | `string`                  | Renders a hidden input for form submission                           |
+| `aria-label`    | `string`                  | Accessible label; each slot appends a numeric suffix                 |
+| `className`     | `string`                  | Custom class for the container                                       |
+| `style`         | `React.CSSProperties`     | Custom inline styles for the container                               |
+| `classNames`    | `{ slot? }`               | Custom classes for the slot                                          |
+| `styles`        | `{ slot? }`               | Inline styles for the slot                                           |
+
+---
+
+### Composable Components
+
+Pure display parts with no built-in state or interaction, for advanced users to assemble freely.
+
+#### InputOtpGroup
+
+The outermost container, rendered as a plain `div`; how the slots are arranged and spaced comes from `classNames.group`, filled in by the loaded scheme's skin.
+
+| Prop        | Type                          | Description                                        |
+| ----------- | ----------------------------- | -------------------------------------------------- |
+| `className` | `string`                      | Custom class name                                  |
+| `...props`  | `React.ComponentProps<"div">` | Supports all native div props (except `className`) |
+
+#### InputOtpSlot
+
+A single slot rendered as an `<input>`; value, events, focus movement and paste handling are all wired up by the consumer.
+
+| Prop        | Type                            | Description                                                    |
+| ----------- | ------------------------------- | -------------------------------------------------------------- |
+| `className` | `string`                        | Custom class name                                              |
+| `ref`       | `React.Ref<HTMLInputElement>`   | Forwarded to the native input element                          |
+| `...props`  | `React.ComponentProps<"input">` | Supports all native input props (except `className` and `ref`) |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Typing` | Writes the entered character into the current slot and auto-advances to the next slot |
+| `ArrowLeft` / `ArrowRight` | Move between slots |
+| `Backspace` | On an empty slot, clears it and moves back to the previous slot |
+| `Paste` | When text is pasted (Ctrl+V), fills the slots one by one from the current position |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-invalid]` | On the shell — present when `invalid` is true |

@@ -1,0 +1,37 @@
+---
+title: use-motion-preference
+description: Merges the system's reduced-motion preference with the in-app setting and returns the effective value animation components should honor
+---
+
+## Installation
+
+<Installation name="use-motion-preference" />
+
+## Usage
+
+Merges the system preference with the in-app setting and returns `reduced`, updating automatically on change.
+
+<ComponentPreview name="use-motion-preference-basic" />
+
+## API Reference
+
+### useMotionPreference
+
+```ts
+function useMotionPreference(): MotionState
+```
+
+Returns `MotionState`:
+
+- `mode`: `"system" | "reduce" | "full"`, the in-app choice, default `"system"`.
+- `systemReduced`: whether the browser reports `prefers-reduced-motion: reduce`, i.e. the value of [useReducedMotion](/en/docs/utils/use-reduced-motion).
+- `reduced`: the merged result. Always `true` for `"reduce"`, always `false` for `"full"`, and equal to `systemReduced` for `"system"`. The Banner and `useSpin` read this value.
+- `setMode`: sets the in-app mode and persists it; after writing, the root element carries `data-motion="system | reduce | full"`.
+
+**Notes:**
+
+- State lives outside React; multiple components calling `useMotionPreference` share one store.
+- Persisted under the `motion-preference-storage` localStorage key; it affects this site only and never modifies the operating system.
+- On the server and during the first hydration it returns `"system"` with `systemReduced = true`, pausing conservatively; after mount it reads the stored value and the browser's actual preference.
+- System media changes only update `systemReduced`; skin CSS uses `data-motion` to tell the in-app "reduce" and "full" modes apart, and system media rules exclude `data-motion="full"`.
+- The hook neither reads nor writes system settings and does not control specific animations; components still decide themselves how to play, pause and degrade.

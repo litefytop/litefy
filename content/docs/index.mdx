@@ -1,0 +1,17 @@
+---
+title: Introduction
+description: Litefy is a source-localized, modern React UI toolkit.
+---
+
+**Litefy** is a **source-localized** modern React UI toolkit: components, hooks and styles are copied straight into your project through the CLI — no black-box remote dependencies, every line that ships is yours to read and change.
+
+Unlike the assembly approach of mainstream UI libraries, Litefy **builds its own foundation with zero third-party UI dependencies**. Every component is a **TSX implementation** with complete TypeScript types — and every component is **headless**: semantic DOM, accessibility and keyboard interaction built in, logical state exposed through `data-*` attributes, zero styling attached.
+
+The look comes from a **style**: a self-contained package picked at install time that owns every color, radius, shadow, motion and typography rule — see [Styles](/en/docs/styles). Components never hardcode looks, styles never touch behavior; the two meet only at the `className` / `classNames` entry each component exposes.
+
+Components come in two forms — **encapsulated** and **atomic** — all headless, all styleable by any skin:
+
+- **Encapsulated** — `Dialog`, `Toaster`, `Select`, … arrive fully wired: focus trap, positioning, form registration and validation are built in.
+- **Atomic** — `DialogRoot`, `DialogContent`, `Picker`, `List`, … assemble your own popovers, fields and flows whenever an encapsulated component's default wiring doesn't fit.
+
+**Compatibility**: modern browsers and React 19+, following Web Baseline standards — legacy environments are not supported. Best fit for internal systems and controlled browser scenarios.

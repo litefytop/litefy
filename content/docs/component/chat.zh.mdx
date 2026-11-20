@@ -1,0 +1,54 @@
+---
+title: Chat 对话
+description: AI 会话消息流——角色头像与名字、状态、消息操作栏与提示词区，与 Prompt Bar 配套
+---
+
+## 安装
+
+<Installation name="chat" />
+
+## 用法
+
+受控的会话消息流：传入 `chats` 与各角色元数据，列表渲染头像、名字、气泡与操作栏（复制、赞 / 踩、重新生成）；等待中的消息显示打字点，失败的消息染语义红。
+
+<ComponentPreview name="chat-basic" />
+
+## API 参考
+
+### Chat
+
+| 属性                      | 类型                                                                                                                             | 描述                                                    |
+| :---------------------- | :----------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------- |
+| `chats`                 | `ChatMessage[]`                                                                                                                | 受控消息列表                                                |
+| `roleConfig`            | `Record<string, { name?, avatar? }>`                                                                                           | 角色元数据，键为消息 `role`                                     |
+| `align`                 | `"leftRight" \| "leftAlign"`                                                                                                   | `leftRight` 用户行镜像居右；`leftAlign` 全部居左，默认 `"leftRight"` |
+| `mode`                  | `"bubble" \| "noBubble" \| "userBubble"`                                                                                       | 谁带气泡，默认 `"bubble"`                                    |
+| `hints`                 | `string[]`                                                                                                                     | 列表尾部的提示词片                                             |
+| `onHintClick`           | `(hint: string) => void`                                                                                                       | 提示词片点击                                                |
+| `onMessageCopy`         | `(message) => void`                                                                                                            | 复制按钮写完剪贴板后回调                                          |
+| `onMessageGoodFeedback` | `(message) => void`                                                                                                            | 点赞                                                    |
+| `onMessageBadFeedback`  | `(message) => void`                                                                                                            | 点踩                                                    |
+| `onMessageReset`        | `(message) => void`                                                                                                            | 传入即渲染重新生成按钮并回调                                        |
+| `renderMessageContent`  | `(message) => ReactNode`                                                                                                       | 内容整体渲染覆盖                                              |
+| `className`             | `string`                                                                                                                       | 根元素自定义类                                               |
+| `classNames`            | `{ root?, list?, message?, main?, avatar?, name?, content?, contentItem?, actions?, action?, hints?, hint?, typing?: string }` | 各槽位自定义类                                               |
+| `...props`              | `React.ComponentProps<"div">`                                                                                                  | 透传到根 `div`                                            |
+
+`ChatMessage`：`{ id, role, content?: string \| ContentItem[], status? }`，六态（`queued` / `in_progress` / `incomplete` / `completed` / `failed` / `cancelled`）。内容块开箱支持 `text` / `input_text` / `output_text`、`input_image`、`input_file`、`reasoning` 与 `function_call`。
+
+## 键盘交互
+
+| 按键 | 描述 |
+| :--- | :--- |
+| `Enter` / `Space` | 激活提示词片与操作钮——全部是原生 `button` |
+
+## 数据属性
+
+| 属性 | 描述 |
+| :--- | :--- |
+| `[data-align]` | 位于根元素——布局模式 |
+| `[data-mode]` | 位于根元素——气泡模式 |
+| `[data-user]` | 位于消息行——用户角色为 `"true"` |
+| `[data-status]` | 位于消息行——消息状态 |
+| `[data-active]` | 位于赞 / 踩按钮——本地切换态 |
+| `[data-typing]` | 位于等待态圆点 |

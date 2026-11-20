@@ -1,0 +1,57 @@
+---
+title: NavBar 导航条
+description: 一行链接，放不下的条目搬进下拉；按拿到的宽度折叠，永不横向滚动
+---
+
+## 安装
+
+<Installation name="nav-bar" />
+
+## 用法
+
+一行链接，外加一个下拉，装的是放不进所给宽度的条目。
+
+<ComponentPreview name="nav-bar-basic" />
+
+## API 参考
+
+### NavBar
+
+折叠出去的条目仍留在行里、只是被隐掉，所以 `renderItem` 对它会跑两次，不要在里面发出必须唯一的 id 或标签。
+
+| Prop            | Type                                                           | 说明                                                                              |
+| --------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `items`         | `T[]`                                                          | 要排在行里的条目                                                                        |
+| `renderItem`    | `(item: T, index: number) => React.ReactNode`                  | 渲染单个条目——行内与面板都用它                                                                |
+| `getKey`        | `(item: T, index: number) => React.Key`                        | 条目稳定 key；缺省用数组下标                                                                |
+| `more`          | `React.ReactNode`                                              | 下拉按钮的文案；按钮自带一个箭头图标                                                              |
+| `open`          | `boolean`                                                      | 从外部受控面板开关；不传则组件自管                                                               |
+| `onOpenChange`  | `(open: boolean) => void`                                      | 每次开合都触发，含点击条目与点击外部关闭                                                            |
+| `closeOnSelect` | `boolean`                                                      | 点击面板条目后关闭面板，默认 `true`                                                           |
+| `placement`     | `FloatingPlacement`                                            | 面板位置：默认 `{ side: "bottom", align: "end", gap: 8 }`，可逐项覆盖                        |
+| `className`     | `string`                                                       | 自定义类名，作用于 `nav` 根元素                                                             |
+| `style`         | `React.CSSProperties`                                          | 内联样式，作用于 `nav` 根元素                                                              |
+| `classNames`    | `{ root?; item?; more?; panel? }` —— 值均为 `string`              | 各部件的自定义类名；`panel` 是 [Popover](/zh/docs/component/popover) 的 `PopoverContent`    |
+| `styles`        | `{ root?; item?; more?; panel? }` —— 值均为 `React.CSSProperties` | 各部件的内联样式                                                                        |
+| `...props`      | `React.ComponentProps<"nav">`                                  | 其余原生 `nav` 属性透传到根元素（不含 `children`）；`ref` 指向根元素，可用于聚焦。想让它吃掉所在行的剩余宽度，给它写 `flex-1` |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Tab` | 依次走过行内链接与下拉按钮；面板打开时焦点自动进入第一个条目，继续 `Tab` 就在面板里走 |
+| `Enter` / `Space` | 位于下拉按钮上——切换面板开合 |
+| `Escape` | 关闭面板并把焦点还给下拉按钮——仅在焦点还在面板内时生效；面板是 `Popover` 表面，焦点已经走出面板后请用点击外部关闭 |
+| 指针点击 / `Enter` 条目 | 激活你自己的链接；随后 `closeOnSelect` 关闭面板 |
+
+没有方向键：面板是一组链接的展开区，不是菜单，每个条目都是普通焦点停点，带着自己的 `href`。
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-open]` | 位于下拉按钮——面板打开期间存在 |
+| `[data-overflow]` | 位于 `nav` 根元素——至少有一个条目折进面板时存在 |
+| `[aria-expanded]` / `[aria-controls]` | 位于下拉按钮——面板的可访问性接线；该按钮不写 `aria-haspopup`，它展开的是链接而不是菜单 |
+
+行内间距是 `var(--litefy-nav-bar-gap, 0.5rem)`——由方案重写这个令牌，别在导航条上写 gap 工具类。导航条是一个左对齐的行：按钮紧跟在条目之后，整条导航待在自己那一行的开头；要把后面的控件推到行尾，给它们写 `ml-auto`。折叠要有一个比内容更窄的宽度去撞：导航条自身最小宽度是 0，而且必须保持可收缩，所以别在它身上写 `shrink-0`——钉住之后它量到的是自己的内容，永远不折，条目只会跑出所在的那一行。

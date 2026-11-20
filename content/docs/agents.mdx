@@ -1,0 +1,30 @@
+---
+title: For Agents AI 接入
+description: Machine-readable docs for AI coding assistants — file list, consumption rules and how to plug in.
+---
+
+import { AgentPrompt } from "@/components/agents-prompt";
+
+Litefy ships a set of machine-readable docs for AI coding assistants, split by concern: **structure docs** describe component structure, behavior and assembly rules — skin-agnostic; **design.md** describes the visual language — skin-specific. There are no parallel headless/skinned doc sets: both kinds of projects read the same structure docs, and only differ in whether design.md is attached.
+
+Hand the prompt below to your assistant to explain what each file is for and how to consume them:
+
+<AgentPrompt />
+
+## File list
+
+- **`/{lang}/llms.txt`** — navigation index: links to every page and component. Chinese `/zh/llms.txt`, English `/en/llms.txt`.
+- **`/{lang}/llms-full.txt`** — full component docs: props, behavior and examples. Chinese `/zh/llms-full.txt`, English `/en/llms-full.txt`. Applies to every project.
+- **`design.md`** — the skin-specific design language file: color, typography, spacing, interaction states. Attached by skinned projects: [minimal](https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/minimal/design.md) · [neo-brutalist](https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/neo-brutalist/design.md).
+
+## Consumption rules
+
+- **Headless project**: read the structure docs only (llms.txt / llms-full), ignore design.md; style-only components (no headless version) are unavailable.
+- **Skinned project**: structure docs + the chosen skin's design.md; visual tokens and class names follow design.md.
+
+## How to plug in
+
+- **Read online**: the URLs above serve the raw content — assistants that can fetch web pages can grab them directly.
+- **Copy the text**: open a URL, copy the content into the assistant's context.
+
+To wire the components themselves, see [Installation](/en/docs/installation); for how each skin looks, see [Styles](/en/docs/styles).

@@ -1,0 +1,148 @@
+---
+title: Command 命令面板
+description: 对话框式命令面板——点击触发器（或应用快捷键）唤起对话框，上方为搜索输入框，下方为可键盘导航的筛选列表。
+---
+
+## 安装
+
+<Installation name="command" />
+
+## 用法
+
+对话框式的命令面板：输入即筛选列表，按 Enter 执行命中的命令并关闭面板。
+
+<ComponentPreview name="command-basic" />
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的成品组件。
+
+#### Command
+
+成品命令面板：触发按钮打开一个 `<dialog>`，上方是搜索框、下方是筛选列表。对话框自身的头部行（标题与内置 ESC 按钮）被隐藏——可访问名称由 `placeholder` 提供，`Escape` 依然能关闭。
+
+| 属性                 | 类型                                                                                                       | 描述                                                                                                                                                                   |
+| ------------------ | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`            | `(CommandItemConfig \| CommandGroupConfig)[]`                                                            | 命令或分组命令                                                                                                                                                              |
+| `trigger`          | `React.ReactNode`                                                                                        | 触发器内容，渲染为一个打开对话框的 `type="button"`：它带 `aria-haspopup="dialog"`（直接写原生属性即可覆写）与 `aria-expanded`，你传入的其余原生按钮属性全部落在它身上；省略则自行控制 `open`                                       |
+| `open`             | `boolean`                                                                                                | 受控对话框状态；与 `onOpenChange` 配对就能接应用级热键（如 `⌘K`）——面板自己从不绑定全局按键                                                                                                            |
+| `defaultOpen`      | `boolean`                                                                                                | 初始状态（非受控），默认 `false`                                                                                                                                                 |
+| `onOpenChange`     | `(open: boolean) => void`                                                                                | 对话框状态回调                                                                                                                                                              |
+| `onSelect`         | `(item: CommandItemConfig) => void`                                                                      | 命令被选中时触发，随后对话框关闭                                                                                                                                                     |
+| `filter`           | `(item, keyword) => boolean`                                                                             | 对小写化后的关键词做自定义筛选；省略时按行的 `value`、字符串 `label` 和 `keywords` 拼成的小写文本做子串匹配。只要关键词非空，禁用项就会被移出列表，与筛选器的返回值无关                                                                   |
+| `onKeywordChange`  | `(keyword: string) => void`                                                                              | 关键词每次变化都触发，包含对话框打开时的重置。外部数据源（服务端或静态索引搜索）就用它：把关键词送出去、取回结果，再传入已经筛好的 `items` 并配 `filter={() => true}`，避免筛两遍                                                             |
+| `renderItem`       | `(item, { highlighted, disabled }) => React.ReactNode`                                                   | 自定义行渲染；省略时一行是图标 + label + 快捷键。自定义会整块替换默认结构，因此图标 / 标签 / 快捷键那几个槽位只在沿用内置行时存在                                                                                            |
+| `placeholder`      | `string`                                                                                                 | 搜索框占位文案，同时作为对话框的可访问名称                                                                                                                                                |
+| `empty`            | `React.ReactNode`                                                                                        | 空状态节点；显式传 `null` 且列表无行时整个列表不渲染（紧凑初始态：面板只剩输入行与键盘说明脚注），默认 `"No results"`                                                                                               |
+| `hints`            | `{ navigate?; open?; close?: React.ReactNode } \| null`                                                  | 键盘说明脚注的文字（`↑` `↓` / `↵` / `esc` 键帽旁），传 `null` 整体隐藏脚注，默认 英文键位说明                                                                                                       |
+| `trailing`         | `React.ReactNode`                                                                                        | 输入行尾部内容（如搜索加载时的 spinner），透传给内部 `Input` 的尾槽                                                                                                                           |
+| `className`        | `string`                                                                                                 | 自定义类名，作用于 `<dialog>` 元素                                                                                                                                              |
+| `classNames`       | `trigger` / `content` / `input` / `field` / `searchIcon` / `list` / `root` / `footer` / `item` / `label` | 各部分自定义类名：`input` 是搜索框的外壳，`field` 传给内部 `Input` 的各槽位，`searchIcon` 是它自带的那个搜索图标，`list` 落在列表的滚动视口，`item` 是单行、`label` 是分组头，`footer` 是键盘说明脚注；`content` 与对话框自身的 content 类名合并 |
+| `styles`           | `content` / `item` / `label`                                                                             | 各部分内联样式                                                                                                                                                              |
+| `dialogClassNames` | `Dialog` 的 `classNames`                                                                                  | 外层对话框各部分的类名；它的 `content` 会与 `classNames.content` 合并                                                                                                                  |
+| `dialogStyles`     | `Dialog` 的 `styles`                                                                                      | 外层对话框各部分的内联样式。面板把 `content` 让给 `styles.content`，并隐藏标题行与内置 ESC 按钮，这两槽因此不对外开放                                                                                          |
+| `...props`         | `React.ComponentProps<"button">`                                                                         | 其余属性全部落在触发按钮上（`children`、`className`、`style`、`type`、`onSelect` 除外）；没有 `trigger` 就没有按钮，此时它们被丢弃                                                                        |
+
+#### CommandItemConfig
+
+一条命令的结构；分组内的条目用的也是它。
+
+| 属性         | 类型                | 描述                                 |
+| ---------- | ----------------- | ---------------------------------- |
+| `label`    | `React.ReactNode` | 行标签                                |
+| `value`    | `string`          | 稳定键名与默认筛选文案                        |
+| `icon`     | `React.ReactNode` | 行首图标                               |
+| `shortcut` | `React.ReactNode` | 快捷键提示，右侧渲染为原生 `<kbd>` 键帽，外观由当前方案提供 |
+| `keywords` | `string[]`        | 仅用于筛选的补充关键词                        |
+| `disabled` | `boolean`         | 不可选中，键盘导航同样跳过；关键词非空时整行从列表移除        |
+
+#### CommandGroupConfig
+
+同一个分区头下的命令。
+
+| 属性      | 类型                    | 描述          |
+| ------- | --------------------- | ----------- |
+| `group` | `string`              | 分组标题，渲染为分区头 |
+| `items` | `CommandItemConfig[]` | 分组内的命令      |
+
+---
+
+### 可组合组件
+
+成品 `Command` 已经把这三个零件装好并接好线，绝不要把零件再写进它的 children。要在你自己的宿主里放搜索框加筛选列表——Popover、页面区块——也就是面板不做成模态、开关生命周期归你时，才用零件拼装。
+
+#### CommandRoot
+
+Context 提供者与面板容器：持有关键词、把分组摊平成行、执行筛选并记住高亮位置。
+
+| 属性                | 类型                                            | 描述                                                                   |
+| ----------------- | --------------------------------------------- | -------------------------------------------------------------------- |
+| `items`           | `(CommandItemConfig \| CommandGroupConfig)[]` | 命令或分组命令                                                              |
+| `open`            | `boolean`                                     | 这里不负责显隐——它变为 `true` 时容器清空关键词并聚焦输入框，成品面板对它就只有这一个用法                    |
+| `filter`          | `(item, keyword) => boolean`                  | 对小写化后的关键词做自定义筛选；省略时按行的 `value`、字符串 `label` 和 `keywords` 拼成的小写文本做子串匹配 |
+| `onKeywordChange` | `(keyword: string) => void`                   | 关键词每次变化都触发，包含重置                                                      |
+| `onSelect`        | `(item: CommandItemConfig) => void`           | 行被选中时触发；什么都不会自行关闭                                                    |
+| `className`       | `string`                                      | 容器自定义类名                                                              |
+| `...props`        | `React.ComponentProps<"div">`                 | 支持全部原生 div 属性（`className` 与 `onSelect` 除外）                           |
+
+#### CommandInput
+
+搜索输入框：复用 `Input`，放大镜图标走它的 `leading` 前缀槽；`↑` / `↓` / `Enter` 的按键处理挂在这个元素上。尾部 `trailing` 槽放随状态变化的附件（成品面板在搜索加载时在这里放 spinner）。
+
+| 属性                | 类型                            | 描述                            |
+| ----------------- | ----------------------------- | ----------------------------- |
+| `placeholder`     | `string`                      | 搜索框占位文案                       |
+| `autoFocus`       | `boolean`                     | 透传给内部 `Input`                 |
+| `trailing`        | `React.ReactNode`             | 输入框尾部内容（消费方自定，如加载 spinner）    |
+| `className`       | `string`                      | 输入框外壳的自定义类名                   |
+| `inputClassNames` | `Input` 的 `classNames`        | 内部 `Input` 的分槽类名              |
+| `classNames`      | `{ icon?: string }`           | 搜索框自带图标（搜索放大镜）的类名             |
+| `...props`        | `React.ComponentProps<"div">` | 支持全部原生 div 属性（`className` 除外） |
+
+#### CommandList
+
+筛选列表，内部由 `List` 实现：每行一个 `<li>`，每个分组一个分区头，外加空状态。它自身不发出任何钩子：`className` 落在列表的滚动视口上，所以自行拼装时由你给它固定高度的框（命令面板正是通过自己的 `classNames.list` 做到的）。
+
+| 属性           | 类型                                                     | 描述                                               |
+| ------------ | ------------------------------------------------------ | ------------------------------------------------ |
+| `empty`      | `React.ReactNode`                                      | 空状态节点；显式传 `null` 且列表无行时整个列表不渲染，默认 `"No results"` |
+| `renderItem` | `(item, { highlighted, disabled }) => React.ReactNode` | 自定义行渲染；省略时一行是图标 + label + 快捷键                    |
+| `className`  | `string`                                               | 自定义类名，作用于列表的滚动视口                                 |
+| `classNames` | `item` / `label`                                       | 单行与分组头                                           |
+| `styles`     | `item` / `label`                                       | 同上两个部分的内联样式                                      |
+| `...props`   | `React.ComponentProps<"div">`                          | 支持全部原生 div 属性（`children` 与 `className` 除外）       |
+
+#### CommandFooter
+
+键盘说明脚注：一行三组提示——`↑` `↓` 配导航、`↵` 配执行、`esc` 配关闭。成品 `Command` 在列表下方自动渲染它，文字经 `hints` 本地化。
+
+| 属性          | 类型                            | 描述                             |
+| ----------- | ----------------------------- | ------------------------------ |
+| `navigate`  | `React.ReactNode`             | `↑` `↓` 键帽旁的说明文字，默认 `Navigate` |
+| `open`      | `React.ReactNode`             | `↵` 键帽旁的说明文字，默认 `Open`         |
+| `close`     | `React.ReactNode`             | `esc` 键帽旁的说明文字，默认 `Close`      |
+| `className` | `string`                      | 脚注自定义类名                        |
+| `...props`  | `React.ComponentProps<"div">` | 支持全部原生 div 属性（`className` 除外）  |
+
+## 键盘交互
+
+按键在搜索输入框获得焦点时生效；列表一变就自动高亮第一条可用结果，因此直接按 `Enter` 选中的就是最上面那条。
+
+| Key | Description |
+| --- | --- |
+| `ArrowDown` / `ArrowUp` | 在可用行之间移动高亮，循环往复 |
+| `Enter` | 选中当前高亮行并关闭对话框 |
+| `Escape` | 关闭对话框 |
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-highlighted="true"]` | 位于条目行上——当前被键盘指向的那一行 |
+| `[data-disabled]` | 位于条目的 label 上——该条目被禁用时存在 |
+| `[data-command-footer]` | 位于键盘说明脚注上 |
+| `[data-command-hint]` | 位于脚注内的一组提示上 |
+| `[data-command-hint-key]` | 位于脚注的键帽上——`↑` `↓` `↵` `esc` |
+

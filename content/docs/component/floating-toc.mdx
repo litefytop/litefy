@@ -1,0 +1,87 @@
+---
+title: Floating Toc
+description: A table-of-contents indicator floating at the viewport edge — hovering or clicking the bar group expands the toc panel; the active state is passed in from outside
+---
+
+## Installation
+
+<Installation name="floating-toc" />
+
+## Usage
+
+Composable: the root only manages open state, while `active` and `level` on `Bar` / `Item` are passed in from outside; items are plain buttons with no navigation.
+
+<ComponentPreview
+  name="floating-toc-basic"
+/>
+
+## API Reference
+
+### FloatingToc
+
+The root part: manages the open state and provides context, renders no DOM.
+
+| Prop           | Type                       | Description                                                                                             |
+| -------------- | -------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `placement`    | `"left" \| "right"`        | Viewport edge the trigger attaches to; the panel expands inward from the trigger, defaults to `"right"` |
+| `triggerMode`  | `"hover" \| "press"`       | How the panel opens: hover (with a delay) or press, defaults to `"hover"`                               |
+| `open`         | `boolean`                  | Controlled open state                                                                                   |
+| `defaultOpen`  | `boolean`                  | Uncontrolled initial open state, defaults to `false`                                                    |
+| `onOpenChange` | `(open: boolean) => void`  | Called when the open state changes                                                                      |
+| `openDelay`    | `number`                   | Delay before opening in hover mode (ms), defaults to `200`                                              |
+| `closeDelay`   | `number`                   | Delay before closing in hover mode (ms), defaults to `300`                                              |
+
+### FloatingTocTrigger
+
+The `<button>` wrapping the bars, target of hover/press. Carries `data-placement` and `data-open`; supports all native `button` props, with `aria-label` defaulting to "Table of contents".
+
+### FloatingTocBar
+
+A single bar indicator (`<span aria-hidden>`).
+
+| Prop       | Type                           | Description                                                                      |
+| ---------- | ------------------------------ | -------------------------------------------------------------------------------- |
+| `active`   | `boolean`                      | Highlights as the current section (stretched + brand color), defaults to `false` |
+| `level`    | `number`                       | Depth level, 1 is top; the deeper the level the shorter the bar, defaults to `1` |
+| `...props` | `React.ComponentProps<"span">` | Supports all native `span` props                                                 |
+
+### FloatingTocContent
+
+The expanded panel (a native popover anchored beside the trigger).
+
+| Prop        | Type                          | Description                                                                          |
+| ----------- | ----------------------------- | ------------------------------------------------------------------------------------ |
+| `offset`    | `number`                      | Distance from the trigger (px), defaults to `8`                                      |
+| `placement` | `FloatingPlacement`           | Overrides the default popup direction, defaults to Derived from the root `placement` |
+| `...props`  | `React.ComponentProps<"div">` | Supports all native `div` props                                                      |
+
+### FloatingTocItem
+
+An item inside the panel (`<button type="button">`). A click fires the user's `onClick` first, then collapses the panel.
+
+| Prop       | Type                             | Description                                                             |
+| ---------- | -------------------------------- | ----------------------------------------------------------------------- |
+| `active`   | `boolean`                        | Highlights as the current section, defaults to `false`                  |
+| `level`    | `number`                         | Depth level; the deeper the level the more indentation, defaults to `1` |
+| `...props` | `React.ComponentProps<"button">` | Supports all native `button` props                                      |
+
+## Keyboard Interactions
+
+| Key              | Description                                                                                                      |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `Tab`            | Reaches the edge trigger; once the panel is open, `Tab` keeps moving through the items                            |
+| `Enter` / `Space` | On the trigger — opens or closes the panel in press mode                                                         |
+| `↓`              | On the trigger — opens the panel in press mode                                                                   |
+| `Enter` / `Space` | On an item — activates the item and collapses the panel                                                          |
+| `Escape`         | Collapses the panel and returns focus to the trigger — only while focus is still inside the panel; otherwise an outside click collapses it |
+
+In hover mode, focusing the trigger opens the panel; the panel is a disclosure container of plain buttons, not a menu, and every item is a regular tab stop.
+
+## Data Attributes
+
+| Attribute          | Description                                                                              |
+| ------------------ | ---------------------------------------------------------------------------------------- |
+| `[data-active]`    | On the bars and panel items — present while marked as the current section                |
+| `[data-depth]`     | On the bars and panel items — value is `level`                                           |
+| `[data-placement]` | On the trigger and bars — the viewport edge the trigger attaches to (`left` \| `right`)  |
+| `[data-open]`      | On the trigger — present while the panel is open                                         |

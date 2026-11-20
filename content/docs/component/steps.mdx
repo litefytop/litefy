@@ -1,0 +1,88 @@
+---
+title: Steps
+description: A controlled steps indicator that distinguishes completed, current and upcoming states, with forward-jump locking for wizard flows
+---
+
+## Installation
+
+<Installation name="steps" />
+
+## Usage
+
+A fully controlled steps component: clicking a step fires `onChange`, `maxIndex` locks future steps; after passing the last step, the final item shows the end style.
+
+<ComponentPreview
+  name="steps-basic"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Steps
+
+| Prop          | Type                                                                                  | Description                                                                                                                                                                                                                                                                                    |
+| :------------ | :------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`       | `StepsItemConfig[]`                                                                   | Step definitions                                                                                                                                                                                                                                                                               |
+| `index`       | `number`                                                                              | Controlled current step index                                                                                                                                                                                                                                                                  |
+| `onChange`    | `(nextIndex: number) => void`                                                         | Fired when a clickable step is clicked                                                                                                                                                                                                                                                         |
+| `maxIndex`    | `number`                                                                              | Highest selectable index — steps beyond it are disabled, defaults to `items.length - 1`                                                                                                                                                                                                        |
+| `orientation` | `"horizontal" \| "vertical"`                                                          | Layout direction, fixed by the prop — no width probing. `"vertical"` renders the marker structure grouped per axis; the scheme decides the layout, defaults to `"horizontal"`                                                                                                                  |
+| `className`   | `string`                                                                              | Custom class names, applied to the root element                                                                                                                                                                                                                                                |
+| `classNames`  | `item` / `marker` / `rail` / `connector` / `texts` / `title` / `description` / `body` | Custom class names per part                                                                                                                                                                                                                                                                    |
+| `styles`      | Same parts as above, values `React.CSSProperties`                                     | Custom inline styles per part                                                                                                                                                                                                                                                                  |
+
+#### StepsItemConfig
+
+| Field         | Type              | Description                      |
+| :------------ | :---------------- | :------------------------------- |
+| `title`       | `React.ReactNode` | Step title                       |
+| `description` | `React.ReactNode` | Optional secondary text          |
+
+### Composable Components
+
+Parts merge their built-in `className` with the one you pass — passing `className` extends the defaults instead of replacing them.
+
+#### StepsRoot
+
+The outer `<ol>` flex container (list semantics come from the native element).
+
+| Prop        | Type                         | Description                      |
+| :---------- | :--------------------------- | :------------------------------- |
+| `className` | `string`                     | Custom class names               |
+| `...props`  | `React.ComponentProps<"ol">` | Native ol props                  |
+
+#### StepsItem
+
+A single step: connector line, marker button, title and optional description; the marker is keyboard accessible when `clickable`.
+
+| Prop          | Type                                                                                  | Description                                                        |
+| :------------ | :------------------------------------------------------------------------------------ | :----------------------------------------------------------------- |
+| `index`       | `number`                                                                              | Zero-based step index, reported through `onSelect`                 |
+| `state`       | `"completed" \| "current" \| "upcoming"`                                              | Step state; emitted as `data-state` on the item, marker and title  |
+| `title`       | `React.ReactNode`                                                                     | Step title                                                         |
+| `description` | `React.ReactNode`                                                                     | Optional secondary text                                            |
+| `clickable`   | `boolean`                                                                             | Whether the marker button is enabled                               |
+| `onSelect`    | `(index: number) => void`                                                             | Fired on marker click                                              |
+| `className`   | `string`                                                                              | Custom class names, applied to the step item                       |
+| `classNames`  | `item` / `marker` / `rail` / `connector` / `texts` / `title` / `description` / `body` | Custom class names per part                                        |
+| `styles`      | Same parts as above, values `React.CSSProperties`                                     | Custom inline styles per part                                      |
+| `...props`    | `React.ComponentProps<"li">`                                                          | Native li props                                                    |
+
+## Keyboard Interactions
+
+| Key               | Description                                                                                                                                                             |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Tab`             | Reaches the marker and title buttons of clickable steps in turn; disabled markers and plain-text titles stay out of the tab order — native behavior                     |
+| `Enter` / `Space` | Activates the focused marker or title button, firing `onSelect` — native button activation; the skeleton handles no keys itself                                         |
+
+## Data Attributes
+
+| Attribute             | Description                                                                                              |
+| --------------------- | -------------------------------------------------------------------------------------------------------- |
+| `[data-state]`        | On the marker, item, connector and title — `"completed"`, `"current"` or `"upcoming"`                    |
+| `[data-orientation]`  | On the item, connector, text column, title, description and content slot — `"horizontal"` or `"vertical"` |
+| `[data-clickable]`    | On the marker and title — present when `clickable`                                                       |
+| `[data-connector]`    | On a vertical item's text block — present when `connector`                                               |

@@ -1,0 +1,66 @@
+---
+title: Toc 目录
+description: 内置滚动 spy 的页内目录——宽屏为粘性目录栏，窄屏切换为可点击展开的状态披露按钮。
+---
+
+## 安装
+
+<Installation name="toc" />
+
+## 用法
+
+数据驱动：传入标题元素的 `id`（与 `document.getElementById` 对应）、文案与层级。
+
+## API 参考
+
+### Toc
+
+| 属性           | 类型                                                                                                                                           | 描述                          |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| `items`      | `TocItem[]`                                                                                                                                  | **必填**。要跟踪的标题；空数组不渲染任何内容    |
+| `title`      | `React.ReactNode`                                                                                                                            | 目录栏标题；也是窄屏状态视图在尚无活跃章节时的兜底文案 |
+| `className`  | `string`                                                                                                                                     | 外层 `nav` 的自定义类名             |
+| `classNames` | `rail` / `title` / `scroll` / `list` / `item` / `thumb` / `status` / `ring` / `ringTrack` / `ringProgress` / `current` / `chevron` / `panel` | 各部分自定义类名                    |
+| `styles`     | `{ rail?, title?, scroll?, list?, item?, status?, ring?, panel? }`                                                                           | 目录栏、状态按钮与其面板的内联样式           |
+| `...props`   | `React.ComponentProps<"nav">`                                                                                                                | 支持所有原生 `nav` 属性             |
+
+### TocItem
+
+| 字段      | 类型                | 描述                    |
+| ------- | ----------------- | --------------------- |
+| `id`    | `string`          | **必填**。spy 跟踪的标题元素 id |
+| `label` | `React.ReactNode` | **必填**。条目文案           |
+| `depth` | `number`          | 层级；大于 2 的层级由皮肤缩进一级    |
+
+### 渲染插槽
+
+| Slot（`classNames` 键） | 元素 | 描述 |
+|------|------|------|
+| —（走 `className`） | `<nav>` | 外层 landmark；两种形态恒常渲染，由加载的方案的断点决定显示哪一种 |
+| `rail` | `<div>` | 两种形态中的目录栏一侧 |
+| `item` | `<a>` | 目录条目；章节在视口内时带 `data-active`，`data-depth` 镜像层级——目录栏与窄屏面板渲染同一批条目 |
+| `thumb` | `<div>` | 标记活跃区间的指示条（`aria-hidden`，位置由内联 transform 给定） |
+| `status` | `<button>` | 窄屏披露按钮：滚动进度环 + 当前章节 + 折叠箭头；面板展开时带 `aria-expanded` / `aria-controls` 与 `data-open` |
+| `panel` | `<div>` | 由 `status` 展开的面板（原生 popover，锚定在按钮下方） |
+| `chevron` | `<svg>` | `status` 内的箭头；`data-open` 与面板同步 |
+| `ringProgress` | `<circle>` | 圆形滚动进度（stroke-dashoffset 驱动） |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `Tab` | 先到达窄屏状态按钮；面板展开后焦点自动落在第一个条目，`Tab` 继续沿条目移动 |
+| `Enter` / `Space` | 位于状态按钮上——开合面板 |
+| `↓` | 位于状态按钮上——展开面板 |
+| `Enter` | 位于条目上——跳转到该标题并收起面板 |
+| `Escape` | 收起面板并把焦点交还状态按钮——前提是焦点仍在面板内；否则由面板外点击收起 |
+
+面板内没有方向键：它是链接的披露容器而非菜单，每个条目都是带自己 `href` 的普通 tab stop。
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-active]` | 位于每个条目链接上——其标题处于活跃集合期间存在 |
+| `[data-depth]` | 位于每个条目链接上——取值为条目标题的层级 |
+| `[data-open]` | 位于窄屏 `status` 按钮与其 `chevron` 上——面板展开期间存在 |

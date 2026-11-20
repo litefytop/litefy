@@ -1,0 +1,184 @@
+---
+title: Calendar 日历
+description: 基于原生 JavaScript Date 的日历面板组件，支持受控选择、禁用日期和零件化拼装
+---
+
+## 安装
+
+<Installation name="calendar" />
+
+## 用法
+
+通过 `onVisibleMonthChange` 与 `isDateDisabled` 受控月份与禁用日期。
+
+<ComponentPreview
+  name="calendar-basic"
+/>
+
+## API 参考
+
+### 高阶组件
+
+开箱即用的组合组件。
+
+#### Calendar
+
+| 属性                     | 类型                                              | 描述                                             |
+| ---------------------- | ----------------------------------------------- | ---------------------------------------------- |
+| `visibleMonth`         | `Date`                                          | 必填。当前显示的月份面板                                   |
+| `value`                | `Date \| null`                                  | 受控的选中日期                                        |
+| `defaultValue`         | `Date \| null`                                  | 非受控模式下的默认选中日期                                  |
+| `view`                 | `"days" \| "months" \| "years"`                 | 受控的当前面板                                        |
+| `defaultView`          | `"days" \| "months" \| "years"`                 | 非受控模式下的初始面板，默认 `"days"`                        |
+| `onChange`             | `(date: Date) => void`                          | 点击可见月份内的有效日期时触发                                |
+| `onVisibleMonthChange` | `(month: Date) => void`                         | 可见月份变化时触发（翻页、面板选择、键盘导航）                        |
+| `onViewChange`         | `(view: "days" \| "months" \| "years") => void` | 当前面板变化时触发                                      |
+| `isDateDisabled`       | `(date: Date) => boolean`                       | 返回 `true` 禁用该日期                                |
+| `firstDayOfWeek`       | `0 \| 1`                                        | `0` 周日开头，`1` 周一开头，默认 `0`                       |
+| `className`            | `string`                                        | 自定义类名，应用于根元素                                   |
+
+日期为原生 JavaScript `Date` 值，按纯日历日期处理。组件将其视为不可变对象 —— 永远不会修改你传入的 `Date`，`onVisibleMonthChange` / `onChange` 抛出的都是全新的 `Date` 对象（锚定本地正午以规避 DST）。跨月运算会把日期钳制到目标月的最后一天：1 月 31 日 +1 月得到 2 月 28/29 日。
+
+`Calendar.calendarMonthLabels` 为进程级全局——在应用入口设置一次（同样影响 [DatePicker](/zh/docs/component/date-picker)）；日网格星期缩写固定为英文。
+
+```tsx
+Calendar.calendarMonthLabels = ["一月", "二月", /* ... */];
+```
+
+---
+
+### 可组合组件
+
+#### CalendarRoot
+
+面板外壳，外观由所加载的方案定义。
+
+| 属性          | 类型                            | 描述            |
+| ----------- | ----------------------------- | ------------- |
+| `className` | `string`                      | 自定义类名         |
+| `...props`  | `React.ComponentProps<"div">` | 原生 div 属性     |
+
+#### CalendarHeader
+
+头部外壳（`<header>`），承载导航按钮与标题按钮。
+
+| 属性          | 类型                               | 描述               |
+| ----------- | -------------------------------- | ---------------- |
+| `className` | `string`                         | 自定义类名            |
+| `...props`  | `React.ComponentProps<"header">` | 原生 header 属性     |
+
+#### CalendarNavButton
+
+头部的人字形导航按钮。
+
+| 属性           | 类型                               | 描述                                                                          |
+| ------------ | -------------------------------- | --------------------------------------------------------------------------- |
+| `direction`  | `"previous" \| "next"`           | 渲染哪个人字形图标                                                                   |
+| `className`  | `string`                         | 自定义类名                                                                       |
+| `classNames` | `{ icon?: string }`              | 默认人字形图标的类名（用 `children` 换掉图标时忽略）                                            |
+| `...props`   | `React.ComponentProps<"button">` | 原生 button 属性（除 `type` 外）；你自己写的 `aria-label` 会取代 `"Previous"` / `"Next"` 默认值 |
+
+#### CalendarTitleButton
+
+头部标题区域的文字按钮——通常渲染两次，分别作为年份和月份。
+
+| 属性          | 类型                               | 描述                                             |
+| ----------- | -------------------------------- | ---------------------------------------------- |
+| `className` | `string`                         | 自定义类名                                          |
+| `...props`  | `React.ComponentProps<"button">` | 原生 button 属性（除 `type` 外），如 `onClick`           |
+
+#### CalendarMonthGrid
+
+3 × 4 的月面板，列出当前年份的 12 个月。
+
+| 属性                | 类型                                       | 描述                                        |
+| ----------------- | ---------------------------------------- | ----------------------------------------- |
+| `visibleMonth`    | `Date`                                   | 提供展示的年份；其月份作为兜底 Tab 停靠点                   |
+| `value`           | `Date \| null`                           | 选中日期，高亮同月份的格子                             |
+| `isMonthDisabled` | `(month: Date) => boolean`               | 接收每月第一天；返回 `true` 禁用该月                    |
+| `onSelect`        | `(month: Date) => void`                  | 携带所选月份的第一天触发                              |
+| `onNavigate`      | `(month: Date) => void`                  | 方向键越出当前年份时携带目标月份触发                        |
+| `className`       | `string`                                 | 自定义类名                                     |
+| `...props`        | `React.ComponentProps<"div">`            | 原生 div 属性                                 |
+
+#### CalendarYearGrid
+
+3 × 4 的年面板，展示以当前年份为中心的 12 年窗口。
+
+| 属性               | 类型                                      | 描述                                              |
+| ---------------- | --------------------------------------- | ----------------------------------------------- |
+| `visibleMonth`   | `Date`                                  | 决定 12 年窗口的中心；其年份作为兜底 Tab 停靠点                    |
+| `value`          | `Date \| null`                          | 选中日期，高亮同年份的格子                                   |
+| `isYearDisabled` | `(year: Date) => boolean`               | 接收每年的 1 月 1 日；返回 `true` 禁用该年                    |
+| `onSelect`       | `(year: Date) => void`                  | 携带所选年份的 1 月 1 日触发                               |
+| `onNavigate`     | `(year: Date) => void`                  | 方向键越出窗口时携带目标年份触发                                |
+| `className`      | `string`                                | 自定义类名                                           |
+| `...props`       | `React.ComponentProps<"div">`           | 原生 div 属性                                       |
+
+#### CalendarGrid
+
+星期表头行加周主体——传入包含前后月填充日期的二维 `weeks` 数组。
+
+| 属性               | 类型                                      | 描述                                       |
+| ---------------- | --------------------------------------- | ---------------------------------------- |
+| `weeks`          | `Date[][]`                              | 二维周数组，每行 7 个日期                           |
+| `visibleMonth`   | `Date`                                  | 用于检测非当月格子                                |
+| `value`          | `Date \| null`                          | 选中日期，驱动高亮格子                              |
+| `isDateDisabled` | `(date: Date) => boolean`               | 返回 `true` 禁用该日期                          |
+| `onSelect`       | `(date: Date) => void`                  | 格子点击时触发；组合组件会过滤非当月日期                     |
+| `onNavigate`     | `(date: Date) => void`                  | 方向键移动到网格中不存在的日期时触发                       |
+| `firstDayOfWeek` | `0 \| 1`                                | 星期表头顺序，默认 `0`                            |
+| `className`      | `string`                                | 自定义类名                                    |
+| `...props`       | `React.ComponentProps<"div">`           | 原生 div 属性                                |
+
+#### CalendarGridRow
+
+单周行零件，通常由 `CalendarGrid` 渲染。
+
+| 属性               | 类型                                      | 描述                                                                      |
+| ---------------- | --------------------------------------- | ----------------------------------------------------------------------- |
+| `week`           | `Date[]`                                | 本周的 7 个日期                                                               |
+| `visibleMonth`   | `Date`                                  | 用于检测非当月格子                                                               |
+| `value`          | `Date \| null`                          | 选中日期                                                                    |
+| `isDateDisabled` | `(date: Date) => boolean`               | 返回 `true` 禁用该日期                                                         |
+| `onSelect`       | `(date: Date) => void`                  | 格子点击时触发                                                                 |
+| `onNavigate`     | `(date: Date) => void`                  | 方向键移动到网格中不存在的日期时触发                                                      |
+| `tabStopDate`    | `string`                                | 网格中唯一 Tab 停靠点的 ISO 日期字符串；省略则所有格子保持原生 Tab 行为                             |
+| `className`      | `string`                                | 自定义类名                                                                   |
+| `...props`       | `React.ComponentProps<"div">`           | 原生 div 属性                                                               |
+
+#### CalendarGridCell
+
+单个日期格子，渲染为 button。
+
+| 属性             | 类型                               | 描述                                                                           |
+| -------------- | -------------------------------- | ---------------------------------------------------------------------------- |
+| `date`         | `Date`                           | 该格子渲染的日期（显示 `date.getDate()`）                                                |
+| `outsideMonth` | `boolean`                        | 置灰弱化不属于可见月份的格子，默认 `false`                                                    |
+| `selected`     | `boolean`                        | 将格子高亮为选中状态，默认 `false`                                                        |
+| `tabStop`      | `boolean`                        | Roving tabindex：`true` 使该格子成为唯一 Tab 停靠点；省略则保持原生 Tab 行为                       |
+| `rangeRole`    | `"start" \| "end" \| "between" \| "single"` | 区间角色，发射 `data-range` 并参与 `aria-selected`；省略即不在区间内                    |
+| `onNavigate`   | `(date: Date) => void`           | 方向键移动到网格中不存在的日期时触发                                                           |
+| `onSelect`     | `(date: Date) => void`           | 格子点击时触发，与原生 `onClick` 组合                                                     |
+| `onHover`      | `(date: Date) => void`           | 指针进入格子时触发                                                                     |
+| `className`    | `string`                         | 自定义类名                                                                        |
+| `...props`     | `React.ComponentProps<"button">` | 原生 button 属性（除 `type` / `onSelect` 外），如 `disabled`                             |
+
+## 键盘交互
+
+| Key | Description |
+| --- | --- |
+| `ArrowRight` / `ArrowLeft` | 日网格——移动 ±1 天；月网格——±1 月；年网格——±1 年 |
+| `ArrowDown` / `ArrowUp` | 日网格——移动 ±7 天；月 / 年网格——±3 格（一行） |
+| `Enter` / `Space` | 选中当前聚焦的格子（原生按钮激活） |
+| `ArrowDown` | 位于头部——将焦点移入网格的 Tab 停靠点 |
+
+方向键越出可见范围时会翻页并恢复焦点；每个网格只有一个 Tab 停靠点（roving tabindex）。
+
+## 数据属性
+
+| Attribute | Description |
+| --- | --- |
+| `[data-outside-month]` | 位于日期格子上——该日期属于相邻月份时存在 |
+| `[data-view]` | 位于月 / 年网格上——取值 `"month"` 或 `"year"`；日网格上不存在 |
+| `[data-active]` | 位于标题按钮上——当前视图对应的那个按钮存在 |

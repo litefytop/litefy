@@ -1,0 +1,49 @@
+---
+title: Radar
+description: Zero-dependency SVG radar chart with concentric grid, category axes and legend toggling
+---
+
+Part of the chart family with [Chart](/en/docs/component/chart), [Donut](/en/docs/component/donut) and [Sparkline](/en/docs/component/sparkline) — reach for Chart when you need axes or tooltips.
+
+## Installation
+
+<Installation name="radar" />
+
+## Usage
+
+A basic radar chart with multiple series and a clickable legend.
+
+<ComponentPreview
+  name="radar-basic"
+/>
+
+## API Reference
+
+### Radar
+
+| Prop         | Type              | Description                                                                      |
+| :----------- | :---------------- | :------------------------------------------------------------------------------- |
+| `axes`       | `string[]`        | Category labels, one per spoke                                                   |
+| `series`     | `RadarSeries[]`   | Series: `{ label, values, color? }`, `values` aligned with `axes`                |
+| `max`        | `number`          | Value scale ceiling; values are clamped to it, defaults to max of visible values |
+| `levels`     | `number`          | Number of concentric grid rings, defaults to `4`                                 |
+| `showLegend` | `boolean`         | Renders the clickable legend above the chart, defaults to `true`                 |
+| `className`  | `string`          | Extra classes appended to the root element                                       |
+| `classNames` | `RadarClassNames` | Slot overrides: `root` / `svg` / `grid` / `label` / `polygon` / `legend`         |
+| `styles`     | `RadarStyles`     | Slot inline styles, matching the `classNames` slots                              |
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `Enter` / `Space` | On a legend item — toggles the series' visibility |
+
+Polygon highlighting follows pointer hover only — it has no keyboard equivalent.
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-hovered]` | On a series polygon — present while this series is hovered |
+| `[data-dimmed]` | On a series polygon — present while a different series is hovered |
+| `[data-outer]` | On the outermost grid ring |

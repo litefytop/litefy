@@ -1,0 +1,85 @@
+---
+title: Timeline
+description: A vertical timeline — a display-only component of markers, connector lines, times, headings and descriptions
+---
+
+## Installation
+
+<Installation name="timeline" />
+
+## Usage
+
+A display-only component with no controlled state — entries are defined through `items`, and the connector line automatically ends at the last entry.
+
+<ComponentPreview
+  name="timeline-basic"
+/>
+
+### Custom Marker
+
+Pass `marker` on an entry (commonly an icon) to replace the default marker; `orientation="horizontal"` switches to a horizontal layout.
+
+<ComponentPreview
+  name="timeline-marker"
+/>
+
+## API Reference
+
+### High-level Components
+
+Ready-to-use composite components.
+
+#### Timeline
+
+| Prop         | Type                                                                                       | Description                                 |
+| :----------- | :----------------------------------------------------------------------------------------- | :------------------------------------------ |
+| `items`      | `TimelineItemConfig[]`                                                                     | Timeline entry definitions                  |
+| `className`  | `string`                                                                                   | Custom classes, applied to the root element |
+| `classNames` | `item` / `spine` / `marker` / `connector` / `content` / `time` / `heading` / `description` | Custom classes per slot                     |
+| `styles`     | Same slots as above, values `React.CSSProperties`                                          | Custom inline styles per slot               |
+
+#### TimelineItemConfig
+
+| Field         | Type              | Description                                                                                       |
+| :------------ | :---------------- | :------------------------------------------------------------------------------------------------ |
+| `marker`      | `React.ReactNode` | Optional custom marker content (e.g. an icon); when absent the scheme supplies the default marker |
+| `time`        | `React.ReactNode` | Optional time text                                                                                |
+| `heading`     | `React.ReactNode` | The heading                                                                                       |
+| `description` | `React.ReactNode` | Optional description text                                                                         |
+
+### Composable Components
+
+The parts inherit native DOM props; each slot's `classNames` override merges with the `className` you pass, so passing `className` extends the defaults rather than replacing them.
+
+#### TimelineRoot
+
+The outer `<ol>` flex container (list semantics come from the native element).
+
+| Prop        | Type                         | Description                      |
+| :---------- | :--------------------------- | :------------------------------- |
+| `className` | `string`                     | Custom classes                   |
+| `...props`  | `React.ComponentProps<"ol">` | Native ol props                  |
+
+#### TimelineItem
+
+A single entry: marker, connector line (controlled by `connector`), time, heading and optional description.
+
+| Prop          | Type                                                                                       | Description                                                                        |
+| :------------ | :----------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------- |
+| `connector`   | `boolean`                                                                                  | Whether to render the connector below the marker, defaults to `true`               |
+| `marker`      | `React.ReactNode`                                                                          | Optional custom marker content; when absent the scheme supplies the default marker |
+| `time`        | `React.ReactNode`                                                                          | Optional time text                                                                 |
+| `heading`     | `React.ReactNode`                                                                          | The heading                                                                        |
+| `description` | `React.ReactNode`                                                                          | Optional description text                                                          |
+| `className`   | `string`                                                                                   | Custom classes, applied to the item                                                |
+| `classNames`  | `item` / `spine` / `marker` / `connector` / `content` / `time` / `heading` / `description` | Custom classes per slot                                                            |
+| `styles`      | Same slots as above, values `React.CSSProperties`                                          | Custom inline styles per slot                                                      |
+| `...props`    | `React.ComponentProps<"li">`                                                               | Native li props                                                                    |
+
+## Keyboard Interactions
+
+This component takes over no keys. It attaches no key handlers and renders no focusable elements — the root `<ol>`, each entry and every slot are plain containers. Keys landing on a `marker`, `time`, `heading` or `description` node belong to the content you put there.
+
+## Data Attributes
+
+The skeleton emits no `data-*` on this component.

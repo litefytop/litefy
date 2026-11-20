@@ -1,0 +1,135 @@
+.shiki:not(.not-fumadocs-codeblock *) {
+  padding-block: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: transparent;
+  color: var(--shiki-light);
+  overflow-x: auto;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+
+  --padding-left: 1rem;
+  --padding-right: 1rem;
+
+  code span {
+    color: var(--shiki-light);
+    font-style: var(--shiki-light-font-style);
+  }
+
+  .line {
+    position: relative;
+    padding-left: var(--padding-left);
+    padding-right: var(--padding-right);
+  }
+
+  .line:empty {
+    height: 1lh;
+  }
+
+  &.has-focused .line:not(.focused) {
+    filter: blur(2px);
+    transition: filter 200ms;
+  }
+
+  &.has-focused:hover .line:not(.focused) {
+    filter: blur(0);
+  }
+
+  .diff::before {
+    position: absolute;
+    left: 0.375rem;
+  }
+
+  .diff.remove {
+    opacity: 0.7;
+    --shiki-counter-color: var(--danger-fg);
+    background-color: color-mix(in oklab, var(--danger-fg) 10%, transparent);
+  }
+
+  .diff.remove::before {
+    content: '-';
+    color: var(--danger-fg);
+  }
+
+  .diff.add {
+    --shiki-counter-color: var(--success-fg);
+    background-color: color-mix(in oklab, var(--success-fg) 10%, transparent);
+  }
+
+  .diff.add::before {
+    content: '+';
+    color: var(--success-fg);
+  }
+
+  .highlighted {
+    --shiki-counter-color: var(--primary);
+    background-color: color-mix(in oklab, var(--primary) 10%, transparent);
+  }
+
+  .highlighted::after {
+    position: absolute;
+    content: '';
+    inset-block: 0;
+    left: 0;
+    border-left: 2px solid color-mix(in oklab, var(--primary) 50%, transparent);
+  }
+
+  .highlighted-word {
+    padding: 1px;
+    margin-block: -1px;
+    border: 1px solid color-mix(in oklab, var(--primary) 30%, transparent);
+    border-radius: var(--radius-sm);
+    background-color: color-mix(in oklab, var(--primary) 10%, transparent);
+    font-weight: 500;
+  }
+
+  &[data-line-numbers] .twoslash-meta-line {
+    padding-left: calc(var(--padding-left) + 1.75rem);
+  }
+
+  &[data-line-numbers] .line {
+    counter-increment: line;
+    padding-left: calc(var(--padding-left) + 1.75rem);
+  }
+
+  &[data-line-numbers] .line::after {
+    position: absolute;
+    content: counter(line);
+    color: color-mix(
+      in oklab,
+      var(--shiki-counter-color, var(--surface-fg)) 60%,
+      transparent
+    );
+    inset-block: 0;
+    left: 0;
+    width: 1.75rem;
+    text-align: right;
+  }
+}
+
+.dark .shiki:not(.not-fumadocs-codeblock *) {
+  background-color: transparent;
+  color: var(--shiki-dark);
+
+  code span {
+    color: var(--shiki-dark);
+    font-style: var(--shiki-dark-font-style);
+  }
+}
+
+code.shiki:not(.not-fumadocs-code *) span {
+  color: var(--shiki-light);
+  font-style: var(--shiki-light-font-style);
+}
+
+.dark code.shiki:not(.not-fumadocs-code *) span {
+  color: var(--shiki-dark);
+  font-style: var(--shiki-dark-font-style);
+}
+
+/* shiki's github themes both colour comments #6A737D: 4.46:1 on the light canvas,
+   4.31:1 on the dark one — under AA for 13px code. A token mix stays AA in both modes. */
+.shiki span[style*="#6A737D"] {
+  --shiki-light: color-mix(in oklab, var(--surface-fg) 65%, var(--background)) !important;
+  --shiki-dark: color-mix(in oklab, var(--surface-fg) 65%, var(--background)) !important;
+}

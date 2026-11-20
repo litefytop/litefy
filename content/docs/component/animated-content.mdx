@@ -1,0 +1,52 @@
+---
+title: AnimatedContent
+description: Content enters on viewport intersection and swaps through an exit-then-enter transition — direction, distance and duration tier are configurable, reduced motion shows content directly
+---
+
+## Installation
+
+<Installation name="animated-content" />
+
+## Usage
+
+A content transition container: enters on viewport intersection, swaps children through exit then enter; reduced motion shows content directly.
+
+<ComponentPreview name="animated-content-basic" />
+
+### Variants
+
+Four entrance directions and three duration tiers, with Replay to play the entrance again.
+
+<ComponentPreview name="animated-content-variants" />
+
+## API Reference
+
+### AnimatedContent
+
+| Prop        | Type                            | Description                                                                 |
+| :---------- | :------------------------------ | :-------------------------------------------------------------------------- |
+| `direction` | `"up" \| "down" \| "left" \| "right"` | Entrance motion direction; `up` rises into place from below, defaults to `"up"` |
+| `distance`  | `number`                        | Entrance start offset in pixels, defaults to `24`                            |
+| `duration`  | `"sm" \| "md" \| "lg"`          | Duration tier read from the scheme's `--duration-*` tokens, defaults to `"lg"` |
+| `delay`     | `number`                        | Transition delay in milliseconds, defaults to `0`                            |
+| `threshold` | `number`                        | IntersectionObserver trigger threshold, defaults to `0.1`                    |
+| `once`      | `boolean`                       | Disconnect after the first entrance; `false` exits off-screen and re-enters on return, defaults to `true` |
+| `className` | `string`                        | Custom class for the root element                                            |
+| `style`     | `React.CSSProperties`           | Inline style for the root, merged with the mechanism variables               |
+| `...props`  | `React.ComponentProps<"div">`   | Forwarded to the root `div`                                                  |
+
+The content signature is derived from children: element children compare by `key ?? type name`, text and number children by value; prop changes on an element with the same type and key do not trigger the swap — give the element an explicit `key` to replay.
+
+The exit duration reads the root's computed transition duration, so zeroed tokens (reduced motion) swap content immediately; while hidden the root carries `inert`, keeping content out of the focus order and the accessibility tree. Swapping content can change height — pin the outer frame yourself (fixed-height card or reserved track).
+
+## Keyboard Interaction
+
+This component is not a control and handles no keys.
+
+## Data Attributes
+
+| Attribute          | Description                                                        |
+| :----------------- | :----------------------------------------------------------------- |
+| `[data-state]`     | On the root — `"in"` entered, `"out"` hidden or exiting             |
+| `[data-direction]` | On the root — entrance direction `up` / `down` / `left` / `right`   |
+| `[data-duration]`  | On the root — duration tier `sm` / `md` / `lg`                      |

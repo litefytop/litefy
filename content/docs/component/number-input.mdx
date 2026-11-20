@@ -1,0 +1,58 @@
+---
+title: Number Input
+description: A numeric input with a non-interactive up/down cue in the trailing area — stepping is keyboard-only; the form-oriented sibling of NumberField.
+---
+
+## Installation
+
+<Installation name="number-input" />
+
+## Usage
+
+A classic numeric input with optional `prefix` / `suffix` and keyboard stepping.
+
+<ComponentPreview name="number-input-basic" />
+
+## API Reference
+
+### NumberInput
+
+| Prop              | Type                                                                         | Description                                                                                                                              |
+| ----------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `defaultValue`    | `number \| string`                                                           | Initial value (uncontrolled mode)                                                                                                        |
+| `value`           | `number \| string \| undefined`                                              | Current value (controlled mode)                                                                                                          |
+| `onValueChange`   | `(value?: number) => void \| (value?: string) => void`                       | Value change callback. `number \| undefined` when `positiveInteger=true`, otherwise `string`                                             |
+| `invalid`         | `boolean`                                                                    | Whether the input is in an invalid state                                                                                                 |
+| `min`             | `number`                                                                     | The minimum allowed value; pass it explicitly when you need a negative lower bound, defaults to `0`                                      |
+| `max`             | `number`                                                                     | The maximum allowed value, defaults to `99`                                                                                              |
+| `step`            | `number`                                                                     | Step size for `ArrowUp` / `ArrowDown`, defaults to `1`                                                                                   |
+| `positiveInteger` | `boolean`                                                                    | Allow positive integers only. The value type becomes `number \| undefined`, defaults to `false`                                          |
+| `prefix`          | `React.ReactNode`                                                            | Content rendered before the number (e.g. a currency symbol)                                                                              |
+| `suffix`          | `React.ReactNode`                                                            | Content rendered after the number — replaces the stepping cue when set                                                                   |
+| `thousands`       | `boolean`                                                                    | The integer part is grouped with thousands separators while unfocused; the committed value never carries separators, defaults to `false` |
+| `indicator`       | `boolean`                                                                    | Whether to show the non-interactive up/down cue in the trailing area (hidden when `suffix` is set), defaults to `true`                   |
+| `className`       | `string`                                                                     | Custom classes, applied to the shell                                                                                                     |
+| `style`           | `React.CSSProperties`                                                        | Inline styles, applied to the shell                                                                                                      |
+| `classNames`      | `{ leading?; trailing?; root?; indicator?; indicatorIcon? }` — each `string` | Custom classes for the prefix slot, the inner input (`root`), the ↑↓ cue and its two chevron icons                                       |
+| `styles`          | `{ leading?; trailing?; root? }` — each `React.CSSProperties`                | Inline styles for the prefix/suffix slots and the inner input (`root`)                                                                   |
+| `disabled`        | `boolean`                                                                    | Disable the whole field, defaults to `false`                                                                                             |
+| `...props`        | `React.ComponentProps<"input">`                                              | Supports all native input props (except `type`, `className`), such as `onBlur`                                                           |
+
+### Composable Components
+
+#### NumberRoot
+
+The bare numeric input shared by NumberInput and NumberField — it has no shell, so the stepping cue, thousands separators and prefix/suffix are features of the finished components. For a fully custom panel, put `NumberRoot` in a plain `div` (the look comes from your own classes or the scheme skin) and drive the value yourself with `useNumberCore`.
+
+## Keyboard Interactions
+
+| Key | Description |
+| --- | --- |
+| `ArrowUp` / `ArrowDown` | Steps the value by `step`, clamped to `min` / `max` |
+| `Blur` | Normalizes the edited value on blur; with `thousands`, separators show only while unfocused |
+
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-invalid]` | On the shell — present when `invalid` is true |

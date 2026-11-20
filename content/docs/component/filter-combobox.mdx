@@ -1,0 +1,119 @@
+---
+title: Filter Combobox
+description: A one-line token input where committed rules, the in-progress draft and the caret share one continuous flow — type a column, pick an operator, enter a value
+---
+
+## Installation
+
+<Installation name="filter-combobox" />
+
+## Usage
+
+The bar is one continuous input area: chips, the draft token and the caret share one flex row — the input always follows the content.
+
+<ComponentPreview name="filter-combobox-basic" />
+
+Switch languages at runtime by swapping the `texts` object — the component ships no i18n runtime or language packs:
+
+<ComponentPreview name="filter-combobox-i18n" />
+
+## API Reference
+
+### One continuous input area
+
+The bar is one wrapping row: the search icon pins to the head, followed by the committed chips, the dashed draft chip, the input and the confirm / cancel buttons — everything wraps along with the content. The clear button is **pinned to the bar's right end** (absolute, vertically centered, never shifted by content) and shows once rules exist; the bar reserves right-side space through `data-clear` while it is visible. Every committed chip stays fully visible — no `+N` folding; when the row runs out of width the input and the buttons wrap to the next line. Clicking any blank spot focuses the input.
+
+| Piece | Behavior |
+| --- | --- |
+| Committed chip | Solid chip with label + close-icon (X) remove button, each with its own accessible name; clicking a chip reloads it as the draft for editing |
+| Draft chip | Dashed chip appearing once a column is picked, growing to `column + operator`; purely visual (`aria-hidden`) — semantics live in the input and `role="status"` |
+| Confirm / cancel | After the input (and hint): the check button shows only in the `value` stage with a non-empty draft and validates the rule into a committed chip (`Enter` is equivalent); the X button shows for the whole draft and abandons it in one click back to `field` — a visible counterpart to `Esc`'s step-back |
+| Value hint | The same field-hint form as Password: a small floating tag above the bar's right end, shown while the input is focused during the `value` stage — wired through `aria-describedby` |
+| Clear | Button pinned to the bar's right end (`RotateCcw`, `clearText` accessible name), shown once rules exist; clears every rule and returns to `field` |
+
+`Esc` steps back `value → operator → field`, which shrinks the draft token step by step; `Backspace` on an empty input in `field` stage removes the last rule. There is exactly one suggestion layer — no second panel, no nested editor.
+
+### Three stages
+
+| Stage | Suggestions | Behavior |
+| --- | --- | --- |
+| `field` | Developer-maintained fields, filtered by name, label or alias; **Space also summons the column list** (prevented from entering the draft) | Selecting a field drops its name into the flow as the draft token and moves to `operator` |
+| `operator` | Only the operators configured for that field, shown through `texts.operatorLabels` — plain words by default (`is` `is not` `greater than` `at least` `less than` `at most` `between` `not between` `before` `after` `contains` `does not contain` `is empty` `is not empty`) so every operator is self-explanatory; rename through `operatorLabels` per language | Selecting extends the draft token; `isEmpty` / `isNotEmpty` need no value and become a rule immediately |
+| `value` | `enum` fields reuse the same suggestion list for `options`, filtering as you type; `number` / `date` have no suggestions and stay inline text | Click or `Enter` on an enum option commits the rule directly; otherwise `Enter` or the check button after the input validates and commits — the chip solidifies and the flow returns to `field` |
+
+### Value hints
+
+During the `value` stage a floating hint tag appears above the bar's right end — shown as soon as the stage starts (independent of focus), resolved by `resolveValueHint(field, operator, texts)`. Hints come in two shapes: plain text (`type: "text"`) and **kbd key caps** (`type: "keys"`, rendered as `<kbd>` elements):
+
+| Field × operator | Hints |
+| --- | --- |
+| `number` + `between` / `notBetween` | separator label + key caps — `separatorLabel` (default `Separate with`) followed by `␣` `,` `/` as `<kbd>` caps (`separatorKeys`) |
+| `date` + `between` / `notBetween` | format hint `dateValueHint` (default `Format YYYY-MM-DD`) **and** key caps `␣` `,` `/` `-` (`dateSeparatorKeys`) — dates may also be split with `-` |
+| `date` + single-value operator | `dateValueHint` (default `Format YYYY-MM-DD`) only |
+| `number` / `text` / `enum` single-value, or no-value operators | No hint (enum already has its dropdown; text needs none) |
+
+Explanatory words stay (label, `Format`), example values never appear; the key caps (`␣` for space) are language-neutral. Negative numbers have no `-` separator — split them with `␣` `,` or `/` (e.g. `-10 20`).
+
+Dates are entered and stored as ISO `YYYY-MM-DD` only — the hint documents the format instead of the component parsing multiple formats.
+
+### Fields and operators
+
+`FilterComboboxField = { name, label, type, aliases?, operators, options? }`. `type` is `text` / `number` / `date` / `enum`; `operators` is maintained per column by the developer and is never auto-filled. `enum` values are checked against `options`.
+
+`FilterRule = { id, field, operator, value }` where `value` is `string`, `string[]` (range) or `null` (no-value operators). The rule array is the component's `value` / `onChange` contract; pass it to `toFilterParams(rules)` for a flat backend payload.
+
+### Value validation and separators
+
+| Operator kind | Validation |
+| --- | --- |
+| Single value | Non-empty; `number` parses to a finite number, `enum` hits `options`, `date` auto-formats — `2026-1-1` normalizes to `2026-01-01`, and three positional segments like `2003 05 19` assemble into `2003-05-19` |
+| Range `between` / `notBetween` | Must split into two values, each passing the single-value check (dates auto-format per side, six positional segments like `2003 05 19 2003 06 20` assemble into a range); start must not exceed end (`invertedRangeText` otherwise) |
+| No-value `isEmpty` / `isNotEmpty` | Always valid, `value` is `null` |
+
+`separators` defaults to `[",", "/", " ", "，", "～", "~", "–"]` and can be replaced wholesale — `-` is not a general separator, since it is both a minus sign and the ISO date hyphen. Instead `parseRangeValue` extracts two ISO dates for `date` fields first, so `2026-01-01 - 2026-02-01` works there; everything else splits on the separators. Failures are announced through `role="alert"` — `invalidRangeText` for malformed input, `invertedRangeText` when start exceeds end — and produce no rule.
+
+The component **only collects and structures values**: rules arrive as `FilterRule[]` and flatten through `toFilterParams(rules)` into structured `{ field, operator, value }` params with no SQL or DSL text. How they are bound into SQL, a DSL or an ORM is the host's job.
+
+### FilterCombobox
+
+| Prop                          | Type                                                | Description                                                                    |
+| ----------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `fields`                      | `FilterComboboxField[]`                             | Fields, aliases and the operators allowed per column                           |
+| `value` / `defaultValue`      | `FilterRule[]`                                      | Controlled / uncontrolled rules, defaults to `[]`                              |
+| `onChange`                    | `(rules: FilterRule[]) => void`                     | Fires when rules change                                                        |
+| `texts`                       | `FilterComboboxTexts`                               | Every replaceable string, defaults to English defaults                         |
+| `separators`                  | `string[]`                                          | Range value separators, defaults to see above                                  |
+| `fetcher`                     | `(params, signal) => Promise<unknown>`              | Optional; rule changes auto-query, `AbortController` cancels in-flight work    |
+| `onResult` / `onError`        | callbacks                                           | Query callbacks; aborted requests never call back                              |
+| `resultCount`                 | `number`                                            | Screen-reader-only result announcement through `role="status"`                 |
+| `renderChip` / `renderOption` | render channels                                     | Skin injects chip and suggestion row appearance, defaults to unstyled defaults |
+| `classNames` / `styles`       | `FilterComboboxClassNames` / `FilterComboboxStyles` | Slot class strings and inline styles                                           |
+
+### Localization
+
+The component ships **no i18n runtime and no language packs** — every visible string lives in `FilterComboboxTexts`, each optional with an English default: the three stage placeholders, `emptyFieldsText` / `emptyOperatorsText` / `emptyValuesText`, `invalidValueText` / `invalidRangeText` / `invertedRangeText`, the hints `dateValueHint` (default `Format YYYY-MM-DD`), `separatorLabel` (default `Separate with`), `separatorKeys` (default `["␣", ",", "/"]`) and `dateSeparatorKeys` (default `["␣", ",", "/", "-"]`), `removeLabel` / `editLabel`, `cancelDraftText` / `submitText` / `clearText`, `loadingText` / `errorText`, `resultCountText` with a `{count}` placeholder (default `{count} results`), and `operatorLabels` for renaming each operator. `separators` is part of the same replaceable contract.
+
+Switching languages at runtime is just passing another `texts` object — zero extra bytes in the component; dictionaries live in the host. The i18n demo ships a Chinese dictionary only; the English defaults are in the usage demo above. The confirm / cancel / clear buttons and the chip buttons all use the **text** button variant (`primary` is forbidden alongside text — see the `pagination` example).
+
+### FilterComboboxRef
+
+| Method | Description |
+| --- | --- |
+| `reset()` | Clears rules and returns to the `field` stage |
+| `submit()` | Runs one query manually |
+| `getRules()` | Reads the current rules |
+| `focusInput()` | Focuses the input |
+
+### Keyboard and data-* attributes
+
+| Key | Description |
+| --- | --- |
+| `↑` / `↓` | Move through suggestions, wrapping around; in `value` stage only enum fields have suggestions |
+| `Space` | In `field` stage, summons the column suggestion list (never enters the draft) |
+| `Enter` | Select the active suggestion; in `value` stage picks a suggestion when present, otherwise commits the rule |
+| `Esc` | Steps back; any stage can return to the initial state |
+| `Backspace` | In `field` stage with empty input, removes the last rule |
+
+Clicking a suggestion matches the keyboard: each option prevents input blur on `mousedown`, so the list never collapses the instant you click.
+
+`data-slot` can be `filter-combobox` / `bar` / `chip` / `draft` / `hint` / `suggestion-list`; `data-highlighted` marks the keyboard-active row, `data-loading` / `data-error` mark the status container.

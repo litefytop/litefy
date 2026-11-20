@@ -1,0 +1,73 @@
+---
+title: use-floating-panel 浮层生命周期
+description: 锚定面板的原生 popover 生命周期 —— 显隐同步、排除锚点的外点关闭、焦点保存与恢复；`data-float-*` 定位契约的正本
+---
+
+## 安装
+
+<Installation name="use-floating-panel" />
+
+## 用法
+
+`popover="manual"` 面板的完整生命周期：开关、外点关闭与焦点恢复。
+
+```tsx
+import { useRef, useState } from "react";
+import { useFloatingPanel } from "@/ui";
+
+function MyPanel() {
+  const [open, setOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useFloatingPanel({
+    open,
+    panelRef,
+    onOpenChange: setOpen,
+    restoreFocus: true,
+  });
+
+  return (
+    <div ref={panelRef} popover="manual">
+      
+    </div>
+  );
+}
+```
+
+## API 参考
+
+### 选项（`UseFloatingPanelOptions`）
+
+| Option         | Type                                    | Description                                  |
+| :------------- | :-------------------------------------- | :------------------------------------------- |
+| `open`         | `boolean`                               | 面板是否应当显示                                     |
+| `panelRef`     | `React.RefObject<HTMLElement \| null>`  | 面板元素的 ref（即 `popover="manual"` 元素）           |
+| `onOpenChange` | `(open: boolean) => void`               | 外部按下请求关闭时以 `false` 回调                        |
+| `anchorRef`    | `React.RefObject<HTMLElement \| null>`  | 该元素内的按下不算外部（例如触发器）                           |
+| `restoreFocus` | `boolean`                               | 关闭时若焦点丢失，恢复到打开前聚焦的元素，默认 `false`              |
+| `focusOnOpen`  | `boolean`                               | 打开时将焦点移入面板第一个可聚焦元素（或面板），默认 `false`           |
+
+### 浮动定位（`data-float-*`）
+
+`positionFloatingPanel`（对外导出；`useFloatingPanel` 在打开时经 `showFloatingPanel` 调用它）只读面板自己身上的属性来定位。锚点就是 `data-anchor-name` 与面板的 `data-float-anchor` 相等的那个元素——靠 DOM 里两个属性对上，不靠 prop、不靠上下文、不靠登记表。组件页只列各自发射的值，机制以本节为准。
+
+| Attribute | Default | Behaviour |
+| :-------- | :------ | :-------- |
+| `data-float-anchor` | - | 锚点元素的 `data-anchor-name`；缺失，或没有元素带这个名字 → 面板永远不定位 |
+| `data-float-x` + `data-float-y` | - | 两者都在 → 点锚定：视口上这一个零尺寸矩形，优先于 `data-float-anchor` |
+| `data-float-gap` | `4` | 锚点边缘到面板边缘的像素数 |
+| `data-float-side` | `bottom` | `top` / `bottom` / `left` / `right`；其它值回落到 `bottom` |
+| `data-float-align` | `center` | 交叉轴上的 `start` / `center` / `end`；其它值回落到 `center` |
+| `data-float-match-width` | - | `"true"` → 把锚点宽度写进面板的行内 `width` |
+
+定位按下面的顺序跑，只写面板自己的行内样式：
+
+1. 元素锚定：请求的那一边放不下、对侧放得下时翻到对侧；两边都放不下就照请求。
+2. 元素锚定：先按 `align` 定交叉轴，再把该坐标夹回视口，所以超长面板的起始边始终在屏内。
+3. 点锚定：面板贴在该点的 `bottom` / `start`，溢出时翻到点的另一侧，且不做等宽。
+4. 写入 `position: fixed` 与取整后的 `left` / `top`。
+5. `showFloatingPanel` 先把面板停在 `-9999px`，调用 `showPopover()` 之后再定位，所以面板不会有一帧画在错位置。
+
+`useFloatingPosition(panelRef, watch)` 在面板 `toggle` 到打开时重新定位，之后跟随 `scroll` 与 `resize`——这两类事件经 `requestAnimationFrame` 合帧后再定位；面板关闭期间什么都不跑。`watch` 装的是面板自己的定位取值，改了就会重新定位已打开的面板。
+
+外点关闭读的是同一对属性：按下落在面板 `data-float-anchor` 所指元素内部，不算外点。

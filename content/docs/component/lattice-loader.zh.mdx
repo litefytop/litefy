@@ -1,0 +1,52 @@
+---
+title: Lattice Loader 格阵加载
+description: 内联任务状态行——外圈亮色弧段轮转，动词与秒表同行，结束定格成对勾或叉
+---
+
+与 [Thought Line](/zh/docs/component/thought-line) 配套——波形是等待态，对勾 / 叉是结果。
+
+## 安装
+
+<Installation name="lattice-loader" />
+
+## 用法
+
+内联的 AI 任务状态行：外圈亮色弧段以颜色变化轮转，右侧动词与实时秒表同行，结束定格成对勾或叉。
+
+<ComponentPreview name="lattice-loader-basic" />
+
+本组件是库的等待指示器，与 spinner 同角色——[Thought Line](/zh/docs/component/thought-line) 的思考波即由它驱动，定格成对勾。
+
+## API 参考
+
+### LatticeLoader
+
+| 属性           | 类型                                           | 描述                                                     |
+| :----------- | :------------------------------------------- | :----------------------------------------------------- |
+| `status`     | `"working" \| "done" \| "error"`             | 驱动一切：波形运行，或定格溶解成对勾 / 叉，默认 `"working"`                  |
+| `label`      | `React.ReactNode`                            | 工作中的动词，默认 `"Thinking"`                                 |
+| `doneLabel`  | `React.ReactNode`                            | `done` 后的动词，后跟冻结的秒数，默认 `"Done in"`                     |
+| `errorLabel` | `React.ReactNode`                            | `error` 后的动词，默认 `"Failed after"`                       |
+| `pattern`    | `LatticePattern`                             | 波形几何——具名波形或自定义 `{ cells, loop?, scale? }`，默认 `"orbit"` |
+| `grid`       | `3 \| 4`                                     | 每边格数，默认 `3`                                            |
+| `shape`      | `"square" \| "round"`                        | 圆点或方格，默认 `"round"`                                     |
+| `step`       | `number`                                     | 相邻格点亮的毫秒间隔，整圈随之缩放，默认 `90`                              |
+| `showTimer`  | `boolean`                                    | 显示实时秒表，默认 `true`                                       |
+| `elapsed`    | `number`                                     | 受控秒数，传入则内部时钟不跑                                         |
+| `className`  | `string`                                     | 根元素自定义类                                                |
+| `classNames` | `{ lattice?, cell?, mark?, timer?: string }` | 各槽位自定义类                                                |
+| `...props`   | `React.ComponentProps<"div">`                | 透传到根 `div`                                             |
+
+`LatticePattern` 具名波形——`3 × 3`：`arrow`、`dots`、`orbit`、`ripple`、`snake`、`spiral`；`4 × 4`：`sweep`、`spin`、`rain`、`pulse`、`orbit`、`snake`。自定义对象按 `step` 单位给每格延迟（`null` 为洞），可选 `loop` 与 `scale`；未知名回落 `orbit`。
+
+## 键盘交互
+
+本组件不接管任何按键——它是播报状态的区域，不是控件。
+
+## 数据属性
+
+| 属性 | 描述 |
+| :--- | :--- |
+| `[data-status]` | 位于根元素——`"working"`、`"done"` 或 `"error"` |
+| `[data-shape]` | 位于根元素——`"square"` 或 `"round"` |
+| `[data-hole]` | 位于波形之外的占位格 |

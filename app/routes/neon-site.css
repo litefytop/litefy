@@ -1,0 +1,17 @@
+/* Site layer for the neon-gradient docs route — same shape as
+   app/global.css, same rules: business utilities are written in the one channel
+   both entries generate, business styles stay inside @layer utilities, and a page
+   loads exactly one scheme. Only the imported scheme stylesheet differs. */
+@import "../styles/reset.css";
+@import "../styles/shiki.css";
+
+@import "tailwindcss" source(none);
+@import "../ui/schemes/neon-gradient/index.css";
+
+@source "../components";
+@source "../demos";
+@source "../routes";
+@source "../root.tsx";
+@source "../ui";
+
+@import "../styles/site.css";
