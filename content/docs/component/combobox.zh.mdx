@@ -23,6 +23,14 @@ description: 带可过滤下拉列表的输入框 —— 本地选项客户端�
   name="combobox-async"
 />
 
+### 禁用
+
+disabled 禁用输入框，候选面板不可打开。
+
+<ComponentPreview
+  name="combobox-disabled"
+/>
+
 ## API 参考
 
 ### Combobox
@@ -35,6 +43,7 @@ description: 带可过滤下拉列表的输入框 —— 本地选项客户端�
 | `value`         | `string`                                                                  | 受控输入框文本                                 |
 | `onValueChange` | `(value: string) => void`                                                 | 键入和选中时触发                                |
 | `invalid`       | `boolean`                                                                 | 输入框无效态，默认 `false`                       |
+| `disabled`      | `boolean`                                                                 | 组级禁用：输入框原生禁用、容器挂 `inert`，候选面板不可打开，默认 `false` |
 | `empty`         | `React.ReactNode`                                                         | 列表空状态节点，默认 `"No data"` / `"Loading..."` |
 | `pageSize`      | `number`                                                                  | 异步分页大小，默认 `20`                          |
 | `debounceMs`    | `number`                                                                  | 异步搜索防抖延迟，默认 `300`                       |

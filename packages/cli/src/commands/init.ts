@@ -75,7 +75,7 @@ async function init(options: InitOptions): Promise<void> {
           { name: "minimal", value: "minimal" },
           { name: "neo-brutalist", value: "neo-brutalist" },
           { name: "neon-gradient", value: "neon-gradient" },
-          { name: "clinical", value: "clinical" },
+          { name: "flat-minimal", value: "flat-minimal" },
           { name: "None (headless — skeletons only, add styles later)", value: "" },
         ],
         default: "minimal",

@@ -76,7 +76,8 @@ export function StyleMenu({ lang }: { lang: "zh" | "en" }) {
       alignX="end"
       aria-label={LABELS[lang].trigger}
       title={LABELS[lang].trigger}
-      className="size-control justify-center px-0"
+      data-pure-icon
+      className="size-control justify-center"
       trigger={<SwatchBook className="size-4" aria-hidden />}
       items={items}
     />

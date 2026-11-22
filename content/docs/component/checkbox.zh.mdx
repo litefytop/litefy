@@ -9,17 +9,29 @@ description: 复选框组件，支持受控、非受控、分组和自定义指�
 
 ## 用法
 
-基础复选框，支持受控 / 非受控与半选；分组用 `CheckboxGroup`。
+基础复选框，支持受控 / 非受控与半选。
 
 <ComponentPreview 
   name="checkbox-basic"
 />
+
+### 多选组
+
+`CheckboxGroup` 渲染分组，`options` 逐项配置。
+
+<ComponentPreview name="checkbox-group" />
 
 ### 删除线标签
 
 `lineThrough` 开启后，选中即给标签文本加删除线，适合勾掉即完成的清单语义。
 
 <ComponentPreview name="checkbox-line-through" />
+
+### 禁用
+
+添加 disabled 属性禁用复选框。
+
+<ComponentPreview name="checkbox-disabled" />
 
 ## API 参考
 

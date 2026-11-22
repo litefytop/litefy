@@ -45,8 +45,8 @@
 
   --text-transform-label: none;
   --transition-frame-properties:
-    color, background-color, border-color, outline-color, text-decoration-color, fill, stroke,
-    filter, box-shadow;
+    translate, color, background-color, border-color, outline-color, text-decoration-color, fill,
+    stroke, filter, box-shadow;
   --shadow-frame: var(--elevation-base);
   --shadow-frame-hover: var(--elevation-base);
   --shadow-frame-focus: var(--elevation-base), 0 0 0 3px var(--ring);
@@ -77,9 +77,15 @@
   --warning-accent: oklch(94.5% 0.129 101.54);
 
   --elevation-faint: 0 1px 3px 0 oklch(0% 0 0 / 4%);
-  --elevation-subtle: 0 2px 6px -1px oklch(0% 0 0 / 5%), 0 4px 10px -2px oklch(0% 0 0 / 4%);
-  --elevation-base: 0 4px 12px -2px oklch(0% 0 0 / 6%), 0 8px 24px -4px oklch(0% 0 0 / 6%);
-  --elevation-elevated: 0 12px 32px -6px oklch(0% 0 0 / 10%), 0 24px 64px -12px oklch(0% 0 0 / 10%);
+  --elevation-subtle:
+    0 2px 6px -1px oklch(0% 0 0 / 5%), 0 4px 10px -2px oklch(0% 0 0 / 4%),
+    0 8px 20px -6px color-mix(in oklab, var(--primary) 8%, transparent);
+  --elevation-base:
+    0 4px 12px -2px oklch(0% 0 0 / 6%), 0 8px 24px -4px oklch(0% 0 0 / 6%),
+    0 16px 40px -8px color-mix(in oklab, var(--primary) 14%, transparent);
+  --elevation-elevated:
+    0 12px 32px -6px oklch(0% 0 0 / 10%), 0 24px 64px -12px oklch(0% 0 0 / 10%),
+    0 40px 96px -16px color-mix(in oklab, var(--primary) 20%, transparent);
   --elevation-pressed: inset 0 2px 6px 0 var(--accent);
 
 
@@ -88,6 +94,7 @@
   --duration-sm: 150ms;
   --duration-md: 300ms;
   --duration-lg: 500ms;
+  --press-inset-delay: 80ms;
 }
 
 @media (min-width: 48rem) {
@@ -421,6 +428,8 @@
 @custom-variant borderless (&:where([data-border="none"]));
 @custom-variant bordered (&:where([data-border="solid"]));
 
+@custom-variant inert (&[inert]);
+
 @custom-variant motion-safe {
   @media (prefers-reduced-motion: no-preference) {
     @slot;
@@ -479,17 +488,23 @@
 
   --text-h1: 1.75rem;
   --text-h2: 1.375rem;
-  --text-h3: 1.125rem;
-  --text-h4: 1rem;
-  --text-h5: 0.9375rem;
-  --text-h6: 0.875rem;
+  --text-h3: 1.25rem;
+  --text-h4: 1.125rem;
+  --text-h5: 1.0625rem;
+  --text-h6: 1rem;
 
   --text-table-code: 0.8125rem;
 
+  --text-headline: clamp(2.25rem, 1.5rem + 3vw, 3.75rem);
+  --text-kicker: 1.625rem;
+  --text-overline: 0.75rem;
+  --tracking-headline: -0.025em;
+  --tracking-overline: 0.1em;
 
   --spacing: 0.25rem;
   --leading-head: 1.35;
   --leading-body: 1.75;
+  --leading-headline: 1.1;
 
   --padding-tight: calc((var(--height-control) - 1.2rem) / 2);
   --padding-snug: calc((var(--height-control) - 1.25rem) / 2);
@@ -513,7 +528,7 @@
   --border-width-control: 0px;
   --border-width-hair: 1px;
   --border-width-frame: 1px;
-  --padding-control-x: calc(var(--spacing)*3 + min(var(--radius-md), var(--height-control)/2));
+  --padding-control-x: max(var(--spacing)*3, min(var(--radius-md), var(--height-control)/2));
   --text-label: 0.875rem;
   --leading-label: 1.25rem;
   --tracking-label: 0em;
@@ -521,7 +536,7 @@
   --font-weight-emphasis: var(--font-weight-medium);
   --font-weight-strong: var(--font-weight-semibold);
   --inset-hit: 0rem;
-  --translate-lift: 0rem;
+  --translate-lift: calc(var(--spacing) * -0.5);
   --translate-crush: 0rem;
   --transition-duration-frame: 150ms;
   --ease-frame: cubic-bezier(0.4, 0, 0.2, 1);
@@ -549,12 +564,19 @@
 }
 
 @utility lift {
-  translate: var(--translate-lift) var(--translate-lift);
+  translate: 0 var(--translate-lift);
 }
 
 @utility crush {
   translate: var(--translate-crush) var(--translate-crush);
   filter: var(--press-filter);
+  /* Press choreography "settle, then sink": the delay list mirrors
+     --transition-frame-properties order (translate first, box-shadow last) —
+     only box-shadow waits for --press-inset-delay, so the box falls back to 0
+     before the inset shadow lands. Release reads base motion-frame (no delay)
+     and snaps back immediately. */
+  transition-delay:
+    0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, var(--press-inset-delay);
 }
 
 @utility shadow-frame {
@@ -615,6 +637,12 @@
   box-shadow: var(--focus-glow-inset);
 }
 
+@utility dim {
+  opacity: 50%;
+  cursor: not-allowed;
+  color: var(--color-surface-fg);
+}
+
 @utility thumb-hit {
   &::after {
     content: "";
@@ -667,6 +695,29 @@
   font-size: var(--text-h6);
   font-weight: var(--font-weight-semibold);
   line-height: var(--leading-head);
+}
+
+@utility typo-headline {
+  font-size: var(--text-headline);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--leading-headline);
+  letter-spacing: var(--tracking-headline);
+}
+
+@utility typo-overline {
+  font-size: var(--text-overline);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-label);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+}
+
+@utility typo-kicker {
+  font-size: var(--text-kicker);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-headline);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
 }
 
 @utility typo-body {
@@ -863,14 +914,6 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
-  }
-
-  :disabled,
-  [inert] {
-    opacity: 50%;
-    cursor: not-allowed;
-    pointer-events: none;
-    color: var(--surface-fg);
   }
 
   @scope (.typography) to (.not-typography) {

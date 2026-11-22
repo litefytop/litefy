@@ -10,10 +10,13 @@ export const collapseRootClasses =
 export const collapseItemClasses =
   "flex flex-col overflow-hidden rounded-none border-0 not-last:border-b-hair not-last:border-border";
 
-const triggerClasses =
-  "flex min-h-control cursor-pointer items-center justify-between gap-x-2 px-3 py-3 text-left text-sm font-label leading-label tracking-label case-label " +
-  "aria-[expanded=false]:hover:bg-accent aria-[expanded=false]:hover:text-accent-fg " +
-  "focus-visible:focus-ring";
+const triggerBaseClasses =
+  "flex min-h-control cursor-pointer items-center justify-between gap-x-2 px-3 py-3 text-left " +
+  "text-sm font-label leading-label tracking-label case-label";
+const triggerHoverClasses =
+  "aria-[expanded=false]:hover:bg-accent aria-[expanded=false]:hover:text-accent-fg focus-visible:focus-ring";
+
+const triggerClasses = cn(triggerBaseClasses, triggerHoverClasses);
 
 const iconClasses =
   "size-4 flex-none transition-transform ease-frame duration-md " +

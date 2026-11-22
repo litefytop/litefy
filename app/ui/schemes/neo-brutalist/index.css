@@ -154,6 +154,8 @@
 @custom-variant borderless (&:where([data-border="none"]));
 @custom-variant bordered (&:where([data-border="solid"]));
 
+@custom-variant inert (&[inert]);
+
 @custom-variant motion-safe {
   @media (prefers-reduced-motion: no-preference) {
     @slot;
@@ -212,21 +214,27 @@
 
   --tracking-tight: -0.01em;
   --tracking-wide: 0.05em;
+  --tracking-headline: -0.01em;
+  --tracking-overline: 0.1em;
 
   --text-h1: 30px;
   --text-h2: 24px;
-  --text-h3: 20px;
-  --text-h4: 18px;
-  --text-h5: 16px;
-  --text-h6: 14px;
+  --text-h3: 22px;
+  --text-h4: 20px;
+  --text-h5: 18px;
+  --text-h6: 16px;
 
   --text-table-code: 14px;
+  --text-headline: clamp(36px, 24px + 3vw, 60px);
+  --text-kicker: 26px;
+  --text-overline: 12px;
 
   --font-weight-black: 900;
 
   --spacing: 0.375rem;
   --leading-head: 1.1;
   --leading-body: 1.625;
+  --leading-headline: 1;
 
 
   --shadow-*: initial;
@@ -405,6 +413,12 @@
   box-shadow: var(--focus-glow-inset);
 }
 
+@utility dim {
+  opacity: 50%;
+  cursor: not-allowed;
+  color: var(--color-surface-fg);
+}
+
 @utility thumb-hit {
   &::after {
     content: "";
@@ -465,6 +479,30 @@
   font-size: var(--text-h6);
   font-weight: var(--font-weight-bold);
   line-height: var(--leading-head);
+}
+
+@utility typo-headline {
+  font-family: var(--font-sans);
+  font-size: var(--text-headline);
+  font-weight: var(--font-weight-black);
+  line-height: var(--leading-headline);
+  letter-spacing: var(--tracking-headline);
+}
+
+@utility typo-overline {
+  font-size: var(--text-overline);
+  font-weight: var(--font-weight-strong);
+  line-height: var(--leading-label);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+}
+
+@utility typo-kicker {
+  font-size: var(--text-kicker);
+  font-weight: var(--font-weight-strong);
+  line-height: var(--leading-headline);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
 }
 
 @utility typo-body {
@@ -612,14 +650,6 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
-  }
-
-  :disabled,
-  [inert] {
-    opacity: 50%;
-    cursor: not-allowed;
-    pointer-events: none;
-    color: var(--surface-fg);
   }
 
   ::selection {

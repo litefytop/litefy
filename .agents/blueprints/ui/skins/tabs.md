@@ -5,6 +5,7 @@
 3. 触发件两变体（皮肤 wrapper `variant` prop 解析成两套类串，根上发 `data-variant`；默认 `line`）：
    - `line`：`min-h-control` 命中 + `px-4 py-2`，下缘 2px 透明底线（选中前无下划线），`text-sm` + `font-label` 档 + label 两项；未选中 `surface-fg` 文字色，hover（enabled）换 `accent` 对；激活（`data-[state=active]`）转 `primary` 文字色 + `primary` 底线。
    - `primary`：无底线、`rounded-md` 块；未选中 `surface-fg`、hover 换 `accent` 对；激活铺 `primary` 对（背景色 + 配对文字色）；列表去下缘 / 右缘分隔线。
-4. 箭头：44 方（`min-h-control min-w-control`）+ `rounded-md`，禁用压暗。
+   - 禁用观感：两变体触发件一律 `disabled:dim`（`dim` 契约见 `ui/schemes.md` 第 8 条⑥）。
+4. 箭头：44 方（`min-h-control min-w-control`）+ `rounded-md`。
 5. 内容体：`rounded-lg` + `p-4` + `text-base` + `leading-body`，落在每个 tabpanel。
 6. 专属令牌：无。

@@ -14,7 +14,7 @@ const headerClasses = "flex items-center justify-between gap-x-2";
 
 
 const navClasses =
-  cn(buttonVariants.text, "size-control px-0 md:px-0");
+  cn(buttonVariants.text, "size-control");
 
 const navIconClasses = "size-4 flex-none";
 
@@ -31,12 +31,14 @@ const weekClasses = "grid grid-cols-7 data-[cols=3]:grid-cols-3";
 const weekdayClasses =
   "flex h-8 items-center justify-center text-xs font-label tracking-label case-label text-surface-fg";
 
-const dayBaseClasses =
-  "inline-flex h-control w-full cursor-pointer items-center justify-center rounded-md bg-transparent " +
-  "text-foreground hover:bg-accent hover:text-accent-fg text-sm font-field tabular-nums select-none " +
-  "focus-visible:focus-ring-inset " +
-  "disabled:cursor-not-allowed disabled:text-surface-fg " +
-  "data-[outside-month=true]:text-foreground/50";
+const dayBaseBoxClasses =
+  "inline-flex h-control w-full cursor-pointer items-center justify-center rounded-md bg-transparent";
+const dayBaseTextClasses =
+  "text-foreground hover:bg-accent hover:text-accent-fg text-sm font-field tabular-nums select-none disabled:dim " +
+  "focus-visible:focus-ring-inset";
+const dayOutsideClasses = "data-[outside-month=true]:text-foreground/50";
+
+const dayBaseClasses = cn(dayBaseBoxClasses, dayBaseTextClasses, dayOutsideClasses);
 
 const dayClasses =
   cn(

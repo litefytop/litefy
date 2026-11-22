@@ -27,7 +27,7 @@ const partClasses = {
   actions: "flex flex-col items-center gap-x-2",
   move: cn(
     buttonVariants.outline,
-    "text-surface-fg active:crush disabled:cursor-default disabled:opacity-50",
+    "text-surface-fg active:crush",
   ),
 };
 

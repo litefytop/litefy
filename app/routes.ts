@@ -15,8 +15,8 @@ export default [
   route("neon/:lang/docs/*", "routes/neon-docs.tsx"),
   route("neon/:lang/showcase/:slug", "routes/neon-showcase.tsx"),
 
-  route("clinical/:lang/docs/*", "routes/clinical-docs.tsx"),
-  route("clinical/:lang/showcase/:slug", "routes/clinical-showcase.tsx"),
+  route("flat/:lang/docs/*", "routes/flat-docs.tsx"),
+  route("flat/:lang/showcase/:slug", "routes/flat-showcase.tsx"),
 
   route(":lang/llms.txt", "llms/index.ts"),
   route(":lang/llms-full.txt", "llms/full.ts"),

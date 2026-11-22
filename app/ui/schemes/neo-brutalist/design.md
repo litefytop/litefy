@@ -82,6 +82,12 @@ typography:
   6xl:
     fontSize: 60px
     lineHeight: 1
+  headline:
+    fontFamily: '{typography.sans.fontFamily}'
+    fontSize: 'clamp(36px, 24px + 3vw, 60px)'
+    fontWeight: 900
+    lineHeight: 1
+    letterSpacing: -0.01em
   h1:
     fontFamily: '{typography.sans.fontFamily}'
     fontSize: 30px
@@ -96,22 +102,22 @@ typography:
     letterSpacing: -0.01em
   h3:
     fontFamily: '{typography.sans.fontFamily}'
-    fontSize: 20px
+    fontSize: 22px
     fontWeight: 700
     lineHeight: 1.1
   h4:
     fontFamily: '{typography.sans.fontFamily}'
-    fontSize: 18px
+    fontSize: 20px
     fontWeight: 700
     lineHeight: 1.1
   h5:
     fontFamily: '{typography.sans.fontFamily}'
-    fontSize: 16px
+    fontSize: 18px
     fontWeight: 700
     lineHeight: 1.1
   h6:
     fontFamily: '{typography.sans.fontFamily}'
-    fontSize: 14px
+    fontSize: 16px
     fontWeight: 700
     lineHeight: 1.1
   body:
@@ -125,6 +131,20 @@ typography:
     fontWeight: 900
     lineHeight: 1.1
     letterSpacing: 0.1em
+  overline:
+    fontFamily: '{typography.mono.fontFamily}'
+    fontSize: 12px
+    fontWeight: 900
+    lineHeight: 1.1
+    letterSpacing: 0.1em
+    textTransform: uppercase
+  kicker:
+    fontFamily: '{typography.mono.fontFamily}'
+    fontSize: 26px
+    fontWeight: 900
+    lineHeight: 1
+    letterSpacing: 0.1em
+    textTransform: uppercase
   field:
     fontFamily: '{typography.mono.fontFamily}'
     fontSize: 16px
@@ -208,15 +228,18 @@ well:
 
 ## Typography
 
-1. 两族：**标题用 sans（Inter，字重 900）**，**正文与控件用 mono**——等宽正文是识别点，禁止换 Inter / Roboto / Geist 当正文。字号阶梯 **px 锁定不随断点变**，组件串禁止 `md:text-*` / `lg:text-*`；行盒锁 1.1（`5xl` / `6xl` 为 1）。
-2. 阅读档表：
+1. 两族：**标题用 sans（Inter，字重 900）**，**正文与控件用 mono**——等宽正文是识别点，禁止换 Inter / Roboto / Geist 当正文。字号阶梯 **px 锁定不随断点变**，组件串禁止 `md:text-*` / `lg:text-*`；唯一例外是 `headline` 展示档——clamp 随视口流动；行盒锁 1.1（`5xl` / `6xl` 为 1，`headline` 同为 1）。
+2. 档位表：
 
    | 档            | 工具类                                                      | 字号                     | 字重 | 用途                             |
    | ------------- | ----------------------------------------------------------- | ------------------------ | ---- | -------------------------------- |
+   | `headline`    | `typo-headline`                                             | clamp 36px → 60px（随视口） | 900  | 仅首屏 / 展示时刻，每屏至多一个  |
+   | `kicker`      | `typo-kicker`                                               | 26px / 900 / +0.1em 大写 | 900  | 首屏引导行（正文 × φ 黄金档，mono） |
    | `h1`–`h2`     | `text-h1 leading-head tracking-tight`                       | 30px / 24px              | 900  | 页面与章节标题，靠字重与描边分级 |
-   | `h3`–`h6`     | `text-h3`…`text-h6`                                         | 20 / 18 / 16 / 14px      | 700  | 子章节；**严禁跳级**             |
+   | `h3`–`h6`     | `text-h3`…`text-h6`                                         | 22 / 20 / 18 / 16px      | 700  | 子章节；**严禁跳级**             |
    | `body`        | `font-mono text-base leading-body`                          | 16px / 1.625             | 400  | 段落                             |
    | `label`       | `text-label font-black uppercase tracking-label case-label` | 16px / 900 / +0.1em 大写 | 900  | 控件与字段标签                   |
+   | `overline`    | `typo-overline`                                             | 12px / 900 / +0.1em 大写 | 900  | 首屏与分区眉标（mono）           |
    | `field`       | `text-field leading-field font-bold`                        | 16px / 1.4               | 700  | 输入框内的文字                   |
    | 行内 code     | `text-sm`（mono，长文作用域自动填充黄绿）                   | 14px                     | 500  | 标题与正文里的行内代码           |
    | 表格里的 code | `text-table-code`                                           | 14px                     | 500  | 单元格密度最高的一档             |

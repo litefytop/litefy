@@ -9,11 +9,14 @@ import { cn, mergeSlots } from "../utils/cn";
 const inputClasses =
   "absolute left-1/2 top-1/2 size-6 -translate-x-1/2 -translate-y-1/2 opacity-0 cursor-pointer";
 
-const indicatorClasses =
+const indicatorBaseClasses =
   "group relative inline-flex size-4 shrink-0 items-center justify-center rounded-pill shadow-frame " +
-  "border-hair motion-frame " +
+  "border-hair motion-frame";
+const indicatorStateClasses =
   "has-[:checked]:border-border has-[:checked]:bg-primary has-[:checked]:shadow-checked " +
   "has-[:focus-visible]:focus-ring";
+
+const indicatorClasses = cn(indicatorBaseClasses, indicatorStateClasses);
 
 
 const labelClasses =

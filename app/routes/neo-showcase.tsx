@@ -13,7 +13,9 @@ import {
   FileCode,
   Globe,
   Hash,
-  Package,
+  House,
+  Languages,
+  Letters,
   PanelLeft,
   Settings,
   Star,
@@ -43,10 +45,9 @@ const GREEN_N = "#7ccf00"; // lime-500
 const CYAN_N = "#00b8db"; // cyan-500
 const ORANGE_N = "#ff6900"; // orange-500
 const SECTION = "scroll-mt-16 border-b-4 border-border px-2 py-8 md:px-4 md:py-12";
-const HEADLINE = "text-4xl font-black uppercase leading-none tracking-tight md:text-6xl";
-const EYEBROW = "mb-2 block text-xs font-black uppercase tracking-[0.3em]";
-const LEAD = "font-mono text-base leading-relaxed md:text-lg";
-const INK = "bg-foreground text-background";
+const HEADLINE = "typo-h1 uppercase";
+const EYEBROW = "mb-2 block typo-overline";
+const LEAD = "font-mono text-base leading-body";
 type Lang = "en" | "zh";
 const COPY: Record<
   Lang,
@@ -54,7 +55,7 @@ const COPY: Record<
     brand: [string, string];
     nav: string[];
     navMore: string;
-    back: string;
+    home: string;
     docs: string;
     hero: {
       badge: string;
@@ -85,7 +86,7 @@ const COPY: Record<
       brutal: string;
       note: string;
     };
-    type: { eyebrow: string; title: string; lead: string; heading: string; scale: [string, string][]; body: string; samples: [string, string][]; labels: string; code: string };
+    type: { eyebrow: string; title: string; lead: string; ladder: string; groupDisplay: string; groupReading: string; groupMechanism: string; prose: string; essayTitle: string; p1: string; p2: string; h3: string; p3a: string; p3b: string; listA: string; listB: string; listC: string; quote: string };
     rules: { eyebrow: string; title: string; lead: string; principles: { n: string; title: string; body: string }[]; do: string[]; dont: string[]; doTitle: string; dontTitle: string };
     closing: { eyebrow: string; title: string; lead: string; cards: { title: string; body: string }[] };
     footer: { desc: string; docs: string; styles: string; install: string; rights: string };
@@ -95,14 +96,14 @@ const COPY: Record<
     brand: ["NEO", "BRUTAL"],
     nav: ["Palette", "Laws", "Type", "Rules"],
     navMore: "Navigate",
-    back: "Back",
+    home: "Home",
     docs: "Docs",
     hero: {
       badge: "Design System Showcase",
       title: ["RAW.", "BOLD.", "BRUTAL."],
       lead: "Neo-Brutalist design: thick black borders, hard-edge shadows, zero border-radius, maximum contrast. Function over form. Unapologetic.",
-      cta1: "Explore Style",
-      cta2: "View Components",
+      cta1: "View Components",
+      cta2: "Read the Docs",
       stats: [
         ["0px", "BORDER RADIUS"],
         ["4px", "BORDER WIDTH"],
@@ -181,23 +182,22 @@ const COPY: Record<
     type: {
       eyebrow: "// Typography",
       title: "TYPE SYSTEM",
-      lead: "font-black for headings. font-mono for body. No serif. No light weights. Tracking is tight for headings, wide for labels.",
-      heading: "Heading — font-black",
-      scale: [
-        ["BRUTAL", "H1 — 60px"],
-        ["DESIGN", "H2 — 36px"],
-        ["Systems", "H3 — 28px"],
-        ["Components", "H4 — 24px"],
-        ["Interactive", "H5 — 18px"],
-      ],
-      body: "Body — font-mono",
-      samples: [
-        ["Boldly built on raw function. Every pixel serves purpose.", "text-xl / leading-relaxed"],
-        ["Neo-Brutalism refuses the ornamental. The border IS the structure. The shadow IS the depth. Nothing is decorative.", "text-base / leading-relaxed"],
-        ["Inspired by Bauhaus functionalism and architectural brutalism. Form follows function absolutely.", "text-sm / surface-fg"],
-      ],
-      labels: "UPPERCASE LABEL",
-      code: "Inline code",
+      lead: "font-black for headings, font-mono for labels and code. The ladder belongs to the scheme — six heading tiers, one body, caps on labels. No light weights, no loose tracking.",
+      ladder: "Ladder",
+      groupDisplay: "Display",
+      groupReading: "Reading",
+      groupMechanism: "Mechanism",
+      prose: "Reading scope",
+      essayTitle: "Reading is a rhythm",
+      p1: "Good body copy earns its keep before anyone judges the design. Line height leaves room to breathe between lines, headings stand quietly ahead of paragraphs, quotes step behind the left rule — typesetting recedes, content arrives.",
+      p2: "A paragraph is the smallest unit of rhythm: three to five lines make one, and without that rise and fall even the right sizes read flat.",
+      h3: "Headings stay restrained",
+      p3a: "Hierarchy comes from size and whitespace, not weight or colour: a subheading one step above body is enough to hold the structure. Change one ",
+      p3b: " and the whole page breathes with it.",
+      listA: "Line height gives body copy room to breathe",
+      listB: "Headings step down tier by tier, never below body size",
+      listC: "Quotes and inline code appear in real context, not as stranded specimens",
+      quote: "“Typography is what language looks like.” — Ellen Lupton",
     },
     rules: {
       eyebrow: "// Visual traits",
@@ -259,14 +259,14 @@ const COPY: Record<
     brand: ["NEO", "BRUTAL"],
     nav: ["色板", "法则", "文字", "规则"],
     navMore: "导航",
-    back: "返回",
+    home: "主页",
     docs: "文档",
     hero: {
       badge: "设计系统示例",
       title: ["原始的。", "大胆的。", "粗暴的。"],
       lead: "新粗野主义设计：厚实的黑色边框、硬边阴影、无圆角处理，极致对比。功能重于形式，毫不掩饰。",
-      cta1: "探索风格",
-      cta2: "查看组件",
+      cta1: "查看组件",
+      cta2: "阅读文档",
       stats: [
         ["0px", "圆角半径"],
         ["4px", "描边宽度"],
@@ -345,23 +345,22 @@ const COPY: Record<
     type: {
       eyebrow: "// 排版",
       title: "文字系统",
-      lead: "标题 font-black，正文 font-mono。不用衬线，不用细字重。标题紧字距，标签宽字距。",
-      heading: "标题 — font-black",
-      scale: [
-        ["原始", "H1 — 60px"],
-        ["大胆", "H2 — 36px"],
-        ["系统", "H3 — 28px"],
-        ["组件", "H4 — 24px"],
-        ["交互", "H5 — 18px"],
-      ],
-      body: "正文 — font-mono",
-      samples: [
-        ["以原始功能为地基，每个像素都目的明确。", "text-xl / leading-relaxed"],
-        ["新野兽派拒绝装饰。描边就是结构，阴影就是纵深，没有东西是纯装饰。", "text-base / leading-relaxed"],
-        ["源自包豪斯功能主义与建筑粗野主义。形式绝对追随功能。", "text-sm / surface-fg"],
-      ],
-      labels: "大写标签",
-      code: "行内代码",
+      lead: "标题 font-black，标签与代码 font-mono。字阶由方案持有——六级标题、一档正文、大写标签。不用细字重，不用散字距。",
+      ladder: "字阶",
+      groupDisplay: "首屏展示档",
+      groupReading: "阅读档",
+      groupMechanism: "机制档",
+      prose: "长文作用域",
+      essayTitle: "阅读是一种节奏",
+      p1: "好的正文先让人读下去，再让人评价设计。行与行之间留出换气的空隙，标题安静地站在段落之前，引文退到左边线之后——排版退场，内容登场。",
+      p2: "段落是节奏的最小单位，三五行成一段，读起来才有起伏；少了这层起伏，字号再准，读起来也是平的。",
+      h3: "标题要克制",
+      p3a: "层级靠字号与留白建立，不靠加粗与颜色：小节标题只比正文大一号，就足以把结构立起来。改一处 ",
+      p3b: "，全文的呼吸跟着一起变。",
+      listA: "行高给正文留出换气的余地",
+      listB: "标题逐级递减，最深层级也不小于正文",
+      listC: "引文与行内代码在真实语境里出现，而不是孤例",
+      quote: "「排版就是语言的模样。」—— Ellen Lupton",
     },
     rules: {
       eyebrow: "// 视觉特征",
@@ -485,16 +484,27 @@ function SiteHeader({ t, lang }: { t: T; lang: Lang }) {
             type="button"
             data-variant="outline"
             onClick={switchLang}
-            aria-label={lang === "zh" ? "切换语言" : "Switch language"}
-            className={`${TOOL_CLASS} py-1.5`}
-          >
-            {otherLang === "en" ? "EN" : "中文"}
-          </Button>
+            aria-label={otherLang === "en" ? "Switch to English" : "切换到中文"}
+            title={otherLang === "en" ? "Switch to English" : "切换到中文"}
+            className="shrink-0"
+            icon={
+              otherLang === "en" ? (
+                <Letters className="size-4" aria-hidden />
+              ) : (
+                <Languages className="size-4" aria-hidden />
+              )
+            }
+          />
           <Link
-            to={`/neo/${lang}/docs`}
-            className={cn(buttonVariants.outline, `${TOOL_CLASS} py-1.5`)}
+            to={`/neo/${lang}`}
+            aria-label={t.home}
+            title={t.home}
+            className={cn(
+              buttonVariants.outline,
+              "relative aspect-square shrink-0 px-0 after:absolute after:-inset-hit after:content-['']",
+            )}
           >
-            {t.docs}
+            <House className="size-4" aria-hidden />
           </Link>
         </div>
       </div>
@@ -507,11 +517,11 @@ function Hero({ t, lang }: { t: T; lang: Lang }) {
     <section className="relative overflow-hidden border-b-4 border-border bg-surface pt-12 pb-0 md:pt-14">
       <div className="brutal-march-anim absolute left-0 right-0 top-14 h-1 md:top-16" />
       <div className="relative mx-auto max-w-288 px-2 pt-6 pb-0 md:px-4 md:pt-10">
-        <span className="mb-3 inline-flex items-center gap-1 border-2 border-foreground bg-foreground px-2 py-1 text-xs font-black uppercase tracking-[0.3em] text-background dark:text-surface">
+        <span className="mb-3 inline-flex items-center gap-1 border-2 border-foreground bg-foreground px-2 py-1 text-xs font-black uppercase tracking-overline text-background dark:text-surface">
           <SwatchBook className="size-4" />
           {t.hero.badge}
         </span>
-        <h1 className="mb-3 text-5xl leading-none font-black tracking-tighter text-foreground uppercase md:text-7xl lg:text-[96px]">
+        <h1 className="mb-3 typo-headline uppercase text-foreground">
           {t.hero.title[0]}
           <br />
           {t.hero.title[1]}
@@ -522,12 +532,11 @@ function Hero({ t, lang }: { t: T; lang: Lang }) {
         </h1>
         <p className={`mb-4 max-w-168 ${LEAD} text-foreground`}>{t.hero.lead}</p>
         <div className="mb-6 flex flex-col gap-2 sm:flex-row">
-          <a href="#palette" className={buttonVariants.primary}>
+          <Link to={`/neo/${lang}/docs/overview`} className={buttonVariants.primary}>
             {t.hero.cta1}
             <ArrowRight />
-          </a>
-          <Link to={`/neo/${lang}/docs/overview`} className={buttonVariants.outline}>
-            <Package />
+          </Link>
+          <Link to={`/neo/${lang}/docs`} className={buttonVariants.outline}>
             {t.hero.cta2}
           </Link>
         </div>
@@ -589,7 +598,7 @@ function PaletteSection({ t }: { t: T }) {
               <div className="bg-background p-1.5">
                 <div className="text-xs font-black uppercase">{s.name}</div>
                 <div className="font-mono text-xs text-foreground">{s.hex}</div>
-                <div className="mt-0.5 inline-block border-2 border-border px-0.75 py-0.25 text-[10px] font-black uppercase">
+                <div className="mt-0.5 inline-block border-2 border-border px-0.75 py-0.25 text-xs font-black uppercase">
                   {s.role}
                 </div>
               </div>
@@ -604,7 +613,7 @@ function PaletteSection({ t }: { t: T }) {
               style={{ backgroundColor: p.bg, color: p.fg }}
             >
               <div className="text-2xl leading-none font-black uppercase md:text-3xl">Aa</div>
-              <div className="font-mono text-[10px] font-bold tracking-widest uppercase">{p.label}</div>
+              <div className="font-mono text-xs font-bold tracking-widest uppercase">{p.label}</div>
             </div>
           ))}
         </div>
@@ -624,7 +633,7 @@ function LawsSection({ t }: { t: T }) {
               <div className="h-full border-4 border-background bg-foreground p-3 md:p-4">
                 <div className="mb-1.5">
                   <span
-                    className={`inline-block border-2 border-background px-1.5 py-0.75 text-[10px] font-black uppercase tracking-widest text-foreground`}
+                    className={`inline-block border-2 border-background px-1.5 py-0.75 text-xs font-black uppercase tracking-widest text-foreground`}
                     style={{ backgroundColor: rule.color }}
                   >
                     {rule.tag}
@@ -640,7 +649,7 @@ function LawsSection({ t }: { t: T }) {
                       <div className="mb-2 inline-block cursor-pointer border-4 border-background bg-primary px-4 py-2 text-base font-black uppercase tracking-wider text-primary-fg shadow-[8px_8px_0_0_var(--color-background)] hover:shadow-[12px_12px_0_0_var(--color-background)] hover:-translate-y-1 hover:-translate-x-1 active:translate-x-2 active:translate-y-2 active:shadow-none transition-[box-shadow,translate] duration-150 ease-out">
                         {rule.demo}
                       </div>
-                      <p className="font-mono text-[10px] text-background/40 uppercase">{l.crushNote}</p>
+                      <p className="font-mono text-xs text-background/40 uppercase">{l.crushNote}</p>
                     </div>
                   </div>
                 ) : i === 1 ? (
@@ -649,24 +658,24 @@ function LawsSection({ t }: { t: T }) {
                       <div className="mb-2 inline-block cursor-pointer border-4 border-background bg-background px-4 py-2 text-base font-black uppercase tracking-wider text-foreground shadow-[8px_8px_0_0_var(--color-surface)] hover:bg-accent hover:text-accent-fg hover:shadow-[12px_12px_0_0_var(--color-surface)] hover:-translate-y-1 hover:-translate-x-1 active:translate-x-2 active:translate-y-2 active:shadow-none transition-[box-shadow,translate] duration-150 ease-out">
                         {rule.demo}
                       </div>
-                      <p className="font-mono text-[10px] text-background/40 uppercase">{l.snapNote}</p>
+                      <p className="font-mono text-xs text-background/40 uppercase">{l.snapNote}</p>
                     </div>
                   </div>
                 ) : i === 2 ? (
                   <div className="border-2 border-background/20 bg-background/5 px-2 py-3">
                     <div className="mb-2.5">
-                      <span className="mb-1 block font-mono text-[10px] text-background/50 uppercase">{l.brutal}</span>
+                      <span className="mb-1 block font-mono text-xs text-background/50 uppercase">{l.brutal}</span>
                       <div className="group relative h-8 overflow-hidden border-2 border-background/20 bg-background/10">
                         <div className="absolute top-0 bottom-0 left-0 w-full -translate-x-full border-r-2 border-background bg-accent transition-transform duration-150 ease-out group-hover:translate-x-0" />
                       </div>
                     </div>
                     <div>
-                      <span className="mb-1 block font-mono text-[10px] text-background/50 uppercase">{l.spring}</span>
+                      <span className="mb-1 block font-mono text-xs text-background/50 uppercase">{l.spring}</span>
                       <div className="group relative h-8 overflow-hidden border-2 border-background/20 bg-background/10">
                         <div className="absolute top-0 bottom-0 left-0 w-full -translate-x-full border-r-2 border-background/30 bg-background/30 transition-transform duration-500 [transition-timing-function:cubic-bezier(0.34,1.56,0.64,1)] group-hover:translate-x-0" />
                       </div>
                     </div>
-                    <p className="mt-1.5 text-center font-mono text-[10px] text-background/40 uppercase">{l.note}</p>
+                    <p className="mt-1.5 text-center font-mono text-xs text-background/40 uppercase">{l.note}</p>
                   </div>
                 ) : (
                   <div className="flex items-center justify-center border-2 border-background/20 bg-background/5 py-3">
@@ -675,7 +684,7 @@ function LawsSection({ t }: { t: T }) {
                         <div className="mb-0.5 text-sm font-black uppercase">{l.cardTitle}</div>
                         <div className="font-mono text-xs text-foreground/60">{l.cardBody}</div>
                       </div>
-                      <p className="font-mono text-[10px] text-background/40 uppercase">{l.cardNote}</p>
+                      <p className="font-mono text-xs text-background/40 uppercase">{l.cardNote}</p>
                     </div>
                   </div>
                 )}
@@ -689,45 +698,81 @@ function LawsSection({ t }: { t: T }) {
 }
 function TypeSection({ t }: { t: T }) {
   const ty = t.type;
+  const labelCls = "text-label leading-label tracking-label font-label case-label";
+  const groups: {
+    caption: string;
+    rows: { sample: string; spec: string; className: string; stack?: boolean }[];
+  }[] = [
+    {
+      caption: ty.groupDisplay,
+      rows: [
+        { sample: "headline", spec: "clamp 36–60px / 900", className: "typo-headline", stack: true },
+        { sample: "kicker", spec: "26px / 900", className: "typo-kicker" },
+      ],
+    },
+    {
+      caption: ty.groupReading,
+      rows: [
+        { sample: "h1", spec: "30px / 900", className: "typo-h1" },
+        { sample: "h2", spec: "24px / 900", className: "typo-h2" },
+        { sample: "h3", spec: "22px / 700", className: "typo-h3" },
+        { sample: "h4", spec: "20px / 700", className: "typo-h4" },
+        { sample: "h5", spec: "18px / 700", className: "typo-h5" },
+        { sample: "h6", spec: "16px / 700", className: "typo-h6" },
+        { sample: "body", spec: "1rem / 1.625", className: "typo-body" },
+      ],
+    },
+    {
+      caption: ty.groupMechanism,
+      rows: [
+        { sample: "LABEL", spec: "1rem / 900 · 0.1em", className: labelCls },
+        { sample: "OVERLINE", spec: "12px / 900", className: "typo-overline" },
+        { sample: "code", spec: "0.875rem / mono", className: "font-mono text-sm" },
+      ],
+    },
+  ];
   return (
     <section id="type" className={`${SECTION} bg-background`}>
       <div className="mx-auto max-w-288">
         <SectionHead eyebrow={ty.eyebrow} title={ty.title} lead={ty.lead} accent="var(--color-warning-fg)" />
-        <div className="mb-4 grid grid-cols-1 gap-0 border-4 border-border md:grid-cols-2">
+        <div className="mb-4 grid grid-cols-1 border-4 border-border md:grid-cols-2">
           <div className="border-border p-3 md:border-r-4 md:p-5">
-            <p className="mb-3 border-b-2 border-border pb-1 text-xs font-black tracking-widest text-surface-fg uppercase">
-              {ty.heading}
-            </p>
-            <div className="space-y-3">
-              {ty.scale.map(([word, spec], i) => (
-                <div key={spec} className="flex items-baseline gap-2">
-                  <span
-                    className={`leading-none font-black tracking-tight uppercase ${["text-5xl md:text-6xl", "text-3xl md:text-4xl", "text-2xl md:text-3xl", "text-xl md:text-2xl", "text-lg"][i]}`}
-                  >
-                    {word}
-                  </span>
-                  <span className="shrink-0 font-mono text-[10px] text-surface-fg">{spec}</span>
+            <p className="mb-3 border-b-2 border-border pb-1 typo-overline">{ty.ladder}</p>
+            <div className="space-y-5">
+              {groups.map(({ caption, rows }) => (
+                <div key={caption} className="space-y-3">
+                  <p className={labelCls}>{caption}</p>
+                  {rows.map(({ sample, spec, className, stack }) => (
+                    <div
+                      key={sample}
+                      className={stack ? "flex flex-col gap-1" : "flex flex-wrap items-baseline justify-between gap-x-2"}
+                    >
+                      <span className={className}>{sample}</span>
+                      <span className="shrink-0 font-mono text-xs text-foreground">{spec}</span>
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>
           </div>
           <div className="p-3 md:p-5">
-            <p className="mb-3 border-b-2 border-border pb-1 text-xs font-black tracking-widest text-surface-fg uppercase">
-              {ty.body}
-            </p>
-            <div className="space-y-5">
-              {ty.samples.map(([text, spec], i) => (
-                <div key={spec}>
-                  <p className={`font-mono leading-relaxed ${["text-xl", "text-base", "text-sm text-foreground"][i]}`}>
-                    {text}
-                  </p>
-                  <span className="font-mono text-[10px] text-surface-fg">{spec}</span>
-                </div>
-              ))}
-              <div className="flex flex-wrap gap-1.5">
-                <span className="text-[10px] font-black tracking-[0.3em]">{ty.labels}</span>
-                <span className={`${INK} px-1 py-0.25 font-mono text-xs`}>{ty.code}</span>
-              </div>
+            <p className="mb-3 border-b-2 border-border pb-1 typo-overline">{ty.prose}</p>
+            <div className="typography max-w-[40em] [&_p]:mt-4 [&_h2]:mt-7 [&_h3]:mt-6 [&_ul]:mt-4 [&_blockquote]:mt-5 [&_li+li]:mt-2 [&>:first-child]:mt-0">
+              <h2>{ty.essayTitle}</h2>
+              <p>{ty.p1}</p>
+              <p>{ty.p2}</p>
+              <h3>{ty.h3}</h3>
+              <p>
+                {ty.p3a}
+                <code>--leading-body</code>
+                {ty.p3b}
+              </p>
+              <ul>
+                <li>{ty.listA}</li>
+                <li>{ty.listB}</li>
+                <li>{ty.listC}</li>
+              </ul>
+              <blockquote>{ty.quote}</blockquote>
             </div>
           </div>
         </div>

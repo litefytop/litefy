@@ -23,9 +23,37 @@ description: 参照 PrimeVue MeterGroup 的只读分组量表——surface 轨�
 | `min`       | `number`                                             | 量程下界，默认 `0`                                         |
 | `max`       | `number`                                             | 量程上界；显式传入时各段按固定刻度计宽，默认 各项 `value` 之和                |
 | `className` | `string`                                             | 根元素自定义类                                             |
+| `classNames` | `{ track?: string; segment?: string; legend?: string; legendItem?: string; swatch?: string; label?: string; percent?: string }` | 自有元素槽，逐槽并入对应节点（轨道 / 段 / 图例 / 图例项 / 色点 / 名称 / 占比）      |
 
 其余原生 `<div>` 属性（`aria-label`、`id`、内联 `style` 等）透传到根元素；可访问名由 `aria-label` 提供。根元素为 `role="meter"` 携带 `aria-valuemin` / `aria-valuemax` / `aria-valuenow`（钳后的各项和）；轨道与图例 `aria-hidden`。
 
 段按 `value / (max − min)` 依序铺开；零值项不渲染段，超宽由轨道裁剪。图例恒列出全部项及其取整占比，悬停段还会浮现 `label · 占比` 提示条——信息与图例恒同源，不依赖 hover。轨道色 `surface`，与全库轨道族同源。
+
+### 原子组件
+
+原子组件是组件的最小单位，用于构建更复杂的组件。三者零样式，`className` 直通，独立取用时自行补外观。
+
+#### MeterTrack
+
+轨道容器：`data-track` 与 `aria-hidden` 自带，children 即段。
+
+#### MeterSegment
+
+单段 div：`percent`（0–100 数）发布 inline `width`，`color?` 发布 inline 背景（运行期值），`tip?` 传入时发布 `data-tip`（供皮肤 hover 提示取 `attr(data-tip)`）。
+
+| 属性        | 类型        | 说明                    |
+| :-------- | :-------- | :-------------------- |
+| `percent` | `number`  | 段宽百分比，inline width 发布 |
+| `color`   | `string`  | 段色，inline 背景发布        |
+| `tip`     | `string`  | 段提示文案，发布到 `data-tip`  |
+
+#### MeterLegend
+
+图例块：`items` 逐项渲染色点 + 名称 + 取整占比；`classNames` 槽 `item` / `swatch` / `label` / `percent` 对应图例项、色点、名称、百分比四个自有节点。
+
+| 属性           | 类型                                                                | 说明                     |
+| :----------- | :---------------------------------------------------------------- | :--------------------- |
+| `items`      | `{ label: string; percent: number; color?: string }[]`            | 图例条目，percent 为未取整数值    |
+| `classNames` | `{ item?: string; swatch?: string; label?: string; percent?: string }` | 图例项 / 色点 / 名称 / 占比槽 |
 
 纵向布局、标签方向 / 位置与每项图标本版未设。

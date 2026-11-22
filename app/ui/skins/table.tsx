@@ -18,11 +18,14 @@ const baseClasses = "m-0 w-full border-collapse text-sm leading-5 tabular-nums";
 const headRowClasses =
   "border-b-hair border-border bg-surface";
 
-const headCellClasses =
-  "h-control border-0 px-3 text-left text-sm font-label tracking-label case-label leading-5 " +
-  "data-[align=right]:text-right data-[align=center]:text-center " +
-  "data-[sortable]:cursor-pointer data-[sortable]:select-none " +
-  "data-[drag-over]:bg-accent";
+const headCellBaseClasses =
+  "h-control border-0 px-3 text-left text-sm font-label tracking-label case-label leading-5";
+const headCellAlignClasses =
+  "data-[align=right]:text-right data-[align=center]:text-center";
+const headCellSortClasses =
+  "data-[sortable]:cursor-pointer data-[sortable]:select-none data-[drag-over]:bg-accent";
+
+const headCellClasses = cn(headCellBaseClasses, headCellAlignClasses, headCellSortClasses);
 
 const headLabelClasses = "inline-flex min-w-0 max-w-full items-center gap-x-1 data-[align=right]:flex-row-reverse";
 
@@ -42,9 +45,13 @@ const cellClasses =
   "h-control border-0 px-3 text-left align-middle break-words " +
   "data-[align=right]:text-right data-[align=center]:text-center";
 
-const cellCollapseClasses =
-  "block w-full truncate cursor-pointer border-0 bg-transparent p-0 font-inherit leading-[inherit] text-inherit [text-align:inherit] focus-visible:focus-ring motion-frame " +
+const cellCollapseBaseClasses =
+  "block w-full truncate cursor-pointer border-0 bg-transparent p-0 font-inherit leading-[inherit] text-inherit " +
+  "[text-align:inherit] focus-visible:focus-ring motion-frame";
+const cellCollapseExpandedClasses =
   "data-[expanded]:cursor-default data-[expanded]:whitespace-normal data-[expanded]:break-words";
+
+const cellCollapseClasses = cn(cellCollapseBaseClasses, cellCollapseExpandedClasses);
 
 const emptyClasses = "border-0 px-3 py-6 text-center text-surface-fg";
 

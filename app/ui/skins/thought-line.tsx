@@ -15,17 +15,23 @@ const glyphClasses =
 
 const bodyClasses = "grid min-w-0 items-center gap-x-2";
 
-const labelClasses =
-  "col-start-1 row-start-1 block min-w-0 whitespace-nowrap transition-[opacity,filter] duration-sm ease-frame " +
-  "motion-safe:group-data-[working=true]/thought:animate-pulse " +
+const labelBaseClasses =
+  "col-start-1 row-start-1 block min-w-0 whitespace-nowrap transition-[opacity,filter] duration-sm ease-frame";
+const labelWorkClasses = "motion-safe:group-data-[working=true]/thought:animate-pulse";
+const labelIdleClasses =
   "group-data-[working=false]/thought:pointer-events-none group-data-[working=false]/thought:opacity-0 " +
   "group-data-[working=false]/thought:blur-xs";
 
-const doneClasses =
+const labelClasses = cn(labelBaseClasses, labelWorkClasses, labelIdleClasses);
+
+const doneBaseClasses =
   "col-start-1 row-start-1 flex items-center whitespace-nowrap opacity-0 " +
-  "transition-[opacity,filter] duration-sm ease-frame " +
+  "transition-[opacity,filter] duration-sm ease-frame";
+const doneShowClasses =
   "group-data-[working=false]/thought:pointer-events-auto group-data-[working=false]/thought:opacity-100 " +
   "group-data-[working=true]/thought:blur-xs";
+
+const doneClasses = cn(doneBaseClasses, doneShowClasses);
 
 const timerClasses = "col-start-2 row-start-1 shrink-0 font-mono text-xs leading-4 text-surface-fg tabular-nums";
 

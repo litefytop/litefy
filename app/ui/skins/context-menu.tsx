@@ -6,13 +6,13 @@
 import type { ContextMenuClassNames } from "@/ui";
 import { cn, mergeSlots } from "../utils/cn";
 import { menuClasses } from "./menu";
-import { panelPadClass, popoverClasses } from "./popover";
+import { popoverClasses } from "./popover";
 
 export { ContextMenu, useContextMenuTrigger };
 
 
 const SKIN: ContextMenuClassNames = {
-  content: cn(popoverClasses.content, "w-48", panelPadClass),
+  content: cn(popoverClasses.content, "w-48 p-[var(--radius-md)]"),
   root: menuClasses.root,
   item: menuClasses.item,
   label: menuClasses.label,

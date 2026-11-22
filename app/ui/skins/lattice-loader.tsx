@@ -9,19 +9,26 @@ const latticeClasses = "relative inline-grid gap-1";
 
 export const latticeLoaderRootClasses = rootClasses;
 
-const cellClasses =
-  "size-1.5 rounded-pill bg-surface transition-[background-color] duration-sm ease-frame " +
-  "group-data-[shape=square]/lattice:rounded-none " +
-  "motion-safe:group-data-[status=working]/lattice:animate-lattice " +
-  "group-data-[status=done]/lattice:bg-background group-data-[status=error]/lattice:bg-background " +
-  "data-[hole=true]:invisible";
+const cellBaseClasses =
+  "size-1.5 rounded-pill bg-surface transition-[background-color] duration-sm ease-frame";
+const cellShapeClasses = "group-data-[shape=square]/lattice:rounded-none";
+const cellWorkClasses = "motion-safe:group-data-[status=working]/lattice:animate-lattice";
+const cellDoneClasses =
+  "group-data-[status=done]/lattice:bg-background group-data-[status=error]/lattice:bg-background";
+const cellHoleClasses = "data-[hole=true]:invisible";
 
-const markClasses =
+const cellClasses = cn(cellBaseClasses, cellShapeClasses, cellWorkClasses, cellDoneClasses, cellHoleClasses);
+
+const markBaseClasses =
   "pointer-events-none absolute inset-0 m-auto size-5 opacity-0 " +
-  "transition-[opacity,filter] duration-sm ease-frame " +
-  "group-data-[status=done]/lattice:text-success-fg group-data-[status=error]/lattice:text-danger-fg " +
+  "transition-[opacity,filter] duration-sm ease-frame";
+const markStatusColorClasses =
+  "group-data-[status=done]/lattice:text-success-fg group-data-[status=error]/lattice:text-danger-fg";
+const markStatusShowClasses =
   "group-data-[status=done]/lattice:opacity-100 group-data-[status=error]/lattice:opacity-100 " +
   "group-data-[status=working]/lattice:blur-xs";
+
+const markClasses = cn(markBaseClasses, markStatusColorClasses, markStatusShowClasses);
 
 const timerClasses = "shrink-0 font-mono text-xs leading-4 text-surface-fg tabular-nums";
 

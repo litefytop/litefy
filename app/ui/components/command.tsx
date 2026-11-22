@@ -177,20 +177,24 @@ export interface CommandFooterProps extends React.ComponentProps<"div"> {
     navigate?: React.ReactNode;
     open?: React.ReactNode;
     close?: React.ReactNode;
+    classNames?: {
+        hint?: string;
+        hintKey?: string;
+    };
 }
-export function CommandFooter({ navigate = "Navigate", open = "Open", close = "Close", ...props }: CommandFooterProps) {
+export function CommandFooter({ navigate = "Navigate", open = "Open", close = "Close", classNames, ...props }: CommandFooterProps) {
     return (<div {...props} data-command-footer="">
-      <span data-command-hint="">
-        <kbd data-command-hint-key="" aria-hidden>↑</kbd>
-        <kbd data-command-hint-key="" aria-hidden>↓</kbd>
+      <span data-command-hint="" className={classNames?.hint}>
+        <kbd data-command-hint-key="" aria-hidden className={classNames?.hintKey}>↑</kbd>
+        <kbd data-command-hint-key="" aria-hidden className={classNames?.hintKey}>↓</kbd>
         <span>{navigate}</span>
       </span>
-      <span data-command-hint="">
-        <kbd data-command-hint-key="" aria-hidden>↵</kbd>
+      <span data-command-hint="" className={classNames?.hint}>
+        <kbd data-command-hint-key="" aria-hidden className={classNames?.hintKey}>↵</kbd>
         <span>{open}</span>
       </span>
-      <span data-command-hint="">
-        <kbd data-command-hint-key="" aria-hidden>esc</kbd>
+      <span data-command-hint="" className={classNames?.hint}>
+        <kbd data-command-hint-key="" aria-hidden className={classNames?.hintKey}>esc</kbd>
         <span>{close}</span>
       </span>
     </div>);
@@ -224,13 +228,13 @@ export function CommandList({ empty, renderItem, className, classNames, styles, 
       <List id={listId} items={rows} getKey={(row, index) => row.item.value ?? index} getGroup={hasGroups ? (row) => row.group ?? "" : undefined} renderGroupHeader={hasGroups ? (group) => group : undefined} renderItem={(row, index) => render(row.item, {
             highlighted: highlightIndex === index,
             disabled: Boolean(row.item.disabled),
-        })} empty={empty ?? "No results"} highlightIndex={highlightIndex} onHighlightChange={setHighlightIndex} onSelect={selectRow} onItemMouseMove={(row, index) => {
-            if (!row.item.disabled && highlightIndex !== index)
+        })} isItemDisabled={(row) => Boolean(row.item.disabled)} empty={empty ?? "No results"} highlightIndex={highlightIndex} onHighlightChange={setHighlightIndex} onSelect={selectRow} onItemMouseMove={(_, index) => {
+            if (highlightIndex !== index)
                 setHighlightIndex(index);
         }} className={className} classNames={{ root: classNames?.rows, item: classNames?.item, groupHeader: classNames?.label, empty: classNames?.empty }} styles={{ item: styles?.item, groupHeader: styles?.label }}/>
     </div>);
 }
-export interface CommandProps extends Omit<React.ComponentProps<"button">, "children" | "className" | "style" | "type" | "onSelect"> {
+export interface CommandProps extends Omit<React.ComponentProps<"button">, "children" | "className" | "style" | "type" | "onSelect" | "disabled"> {
     items: CommandConfig[];
     trigger?: React.ReactNode;
     open?: boolean;
@@ -258,6 +262,8 @@ export interface CommandProps extends Omit<React.ComponentProps<"button">, "chil
         list?: string;
         root?: string;
         footer?: string;
+        hint?: string;
+        hintKey?: string;
         rows?: string;
         item?: string;
         label?: string;
@@ -299,7 +305,7 @@ export function Command({ items, trigger, open: controlledOpen, defaultOpen = fa
           <CommandInput placeholder={placeholder} className={classNames?.input} inputClassNames={classNames?.field} classNames={{ icon: classNames?.searchIcon }} trailing={trailing}/>
 
           <CommandList empty={empty} renderItem={renderItem} className={classNames?.list} classNames={{ rows: classNames?.rows, item: classNames?.item, label: classNames?.label, itemIcon: classNames?.itemIcon, itemLabel: classNames?.itemLabel, shortcut: classNames?.shortcut, empty: classNames?.empty }} styles={{ item: styles?.item, label: styles?.label }}/>
-          {hints !== null && <CommandFooter navigate={hints?.navigate} open={hints?.open} close={hints?.close} className={classNames?.footer}/>}
+          {hints !== null && <CommandFooter navigate={hints?.navigate} open={hints?.open} close={hints?.close} className={classNames?.footer} classNames={{ hint: classNames?.hint, hintKey: classNames?.hintKey }}/>}
         </CommandRoot>
       </Dialog>
     </>);

@@ -145,7 +145,7 @@ export function Drawer({ className, style, classNames, styles, size, placement =
             }
         }}>
       <DrawerStage placement={placement} className={classNames?.stage} style={styles?.stage}>
-        <DrawerWrapper {...props} ref={setRefs} size={size} placement={placement} className={classNames?.wrapper} style={styles?.wrapper}>
+        <DrawerWrapper {...props} ref={setRefs} size={size} placement={placement} data-static={!drag?.isDragging || undefined} className={classNames?.wrapper} style={styles?.wrapper}>
           
           {drag && <DrawerDrag orientation={orientation} className={classNames?.drag} style={styles?.drag} onPointerDown={drag.handlePointerDown}/>}
           <DrawerContent orientation={orientation} className={classNames?.content} style={styles?.content}>

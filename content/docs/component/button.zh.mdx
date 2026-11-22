@@ -9,7 +9,7 @@ description: 网格布局的按钮组件，icon 与 children 各占一格
 
 ## 用法
 
-配置 `status` 即为恒宽网格：闲置对称内边距预留图标位，`active` 时图标挤入，宽度不变；已传 `icon` 则两格恒在原位换标。
+配置 `status` 即转为网格：已传 `icon` 则两格恒在、原位换标；未传 `icon` 时 `active` 会在文字前显示状态图标。
 
 <ComponentPreview
   name="button-status"
@@ -23,6 +23,12 @@ description: 网格布局的按钮组件，icon 与 children 各占一格
 
 primary 给有优先级的动作（提交、确认）；danger 只标高风险操作；outline 与 text 用于同优先级的并排动作。
 
+## 禁用
+
+添加 disabled 属性禁用按钮。
+
+<ComponentPreview name="button-disabled" />
+
 ## API 参考
 
 ### Button
@@ -33,7 +39,7 @@ primary 给有优先级的动作（提交、确认）；danger 只标高风险�
 | --------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | `className`     | `string`                                      | 自定义 CSS 类。                                                                                                                             |
 | `icon`          | `React.ReactNode`                             | icon 格子，渲染在 children 前；图标尺寸由按钮统一强制（移动端 `size-5`、PC 端 `size-4`）                                                                         |
-| `status`        | `{ icon: React.ReactNode; active: boolean }`  | 配置即转恒宽网格。未传 `icon`：闲置 children 居中、对称内边距预留图标位，`active` 时 `status.icon` 挤入预留位；已传 `icon`：两格恒在、原位换标。纯展示格——等待期请自行传 `disabled` / `aria-busy` |
+| `status`        | `{ icon: React.ReactNode; active: boolean }`  | 配置即转网格。已传 `icon`：两格恒在、原位换标；未传 `icon`：`active` 时在 children 前显示 `status.icon`。纯展示格——等待期请自行传 `disabled` / `aria-busy` |
 | `...props`      | `React.ComponentProps<"button">`              | 支持全部 button 原生属性（除 `className`），如 `type`、`disabled`                                                                                    |
 
 ### 原子组件
@@ -57,4 +63,3 @@ primary 给有优先级的动作（提交、确认）；danger 只标高风险�
 | `[data-danger]` | 位于按钮上——危险动作用，换危险面色与危险焦点环 |
 | `[data-pure-icon]` | 位于按钮上——不传 `children` 时存在，按钮转成 44×44 的方盒 |
 | `[data-status]` | 位于按钮上——配置 `status` 时存在，布局切换为网格 |
-| `[data-status-reserve]` | 位于按钮上——配置 `status` 且未传 `icon` 时存在，对称内边距预留图标位，宽度恒定 |

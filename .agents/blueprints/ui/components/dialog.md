@@ -12,4 +12,4 @@
 - 点击 `target === currentTarget` 视为背景点击：先 `onOpenChange(false)` 再 `onBackdropClick(e)`——壳全屏后 `currentTarget` 覆盖整个视口，幕布区命中即此判定
 - `open` 时 Tab 经 `trapTabKey`（utils/trap-tab-key）在 dialog 内循环
 - 命令式 `dialog.success/error/warning/info`：向 body 追加容器并 `createRoot`，以 `open=true` 挂载；类型图标（CircleCheck / X / TriangleAlert / CircleHelp，带 `data-status`）前置到标题并套 `titleIcon` 槽位；缺省 `close="icon"`（右上角 X 关闭钮），`props.close` 可覆盖；children 包一层 div；关闭后 100ms 卸载并移除容器
-- 槽位：`classNames.root/stage/content/close/header/title/titleIcon`；`styles.stage/content/close/header/title/titleIcon`
+- 槽位：`classNames.root/stage/content/close/closeIcon/closeKey/header/title/titleIcon`（`closeIcon` / `closeKey` 落在关闭钮内骨架渲染的 X 图标与 `<kbd>ESC` 键帽上）；`styles.stage/content/close/header/title/titleIcon`

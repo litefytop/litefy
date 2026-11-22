@@ -27,7 +27,6 @@ description: 受控的页码导航——首页 / 上一页 / 页码（带省略�
 | `totalPages`   | `number`                                                  | 总页数 **必填**                              |
 | `onPageChange` | `(page: number) => void`                                  | 任意按钮点击时触发                               |
 | `siblingCount` | `number`                                                  | 当前页两侧展示的页码数量，超出部分折叠为省略号，默认 `1`          |
-| `disabled`     | `boolean`                                                 | 禁用全部按钮（例如翻页加载中），默认 `false`              |
 | `summary`      | `React.ReactNode`                                         | 位于左侧的分页统计文本插槽                           |
 | `className`    | `string`                                                  | 自定义类名，作用于根 `nav`                        |
 | `classNames`   | `{ controls?, nav?, pages?, page?, ellipsis?, summary? }` | 各部件自定义类名：按钮组、四个首尾按钮、页码组、单个页码按钮、省略号、分页文本 |
@@ -54,7 +53,7 @@ description: 受控的页码导航——首页 / 上一页 / 页码（带省略�
 
 | Key | Description |
 | --- | --- |
-| `Tab` | 按 DOM 顺序依次到达按钮：首页、上一页、页码按钮、下一页、末页。被折叠省略的页码，以及触到首尾边界或被 `disabled` 禁用的按钮，都不在 Tab 序里 |
+| `Tab` | 按 DOM 顺序依次到达按钮：首页、上一页、页码按钮、下一页、末页。被折叠省略的页码，以及触到首尾边界的按钮，都不在 Tab 序里 |
 | `Enter` / `Space` | 原生激活当前聚焦的按钮，每个按钮都会触发一次 `onPageChange` |
 
 ## 数据属性

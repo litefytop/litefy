@@ -24,7 +24,7 @@ export default {
 
     const languages = ["en", "zh"];
     const defaultLanguage = "en";
-    const lanePrefixes = ["", "neo/", "clinical/", "neon/"];
+    const lanePrefixes = ["", "neo/", "flat/", "neon/"];
 
     for (const lang of languages) {
       paths.push(`/${lang}`);

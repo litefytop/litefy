@@ -5,5 +5,6 @@
 3. 色样：24px 色块（`size-6`）+ `rounded-md` 方圆角档（方案圆角命名空间自答——固定色方案转直角，不在皮肤写死 `rounded-pill`），填充读 `--swatch-color`，发丝描边防浅色融底；间距用外边距（`m-1`），组换行流式。
 4. 选中：共享 `shadow-checked` 双层环（画布色间隙 + 环色外环），与 Checkbox / Radio 的选中光环同一角色（见 `ui/schemes.md` 第 9 条），环色经上述内联覆盖为色样同色；`aria-checked` 变体挂接——Segment 骨架发 `aria-checked` 不发 data-*。
 5. 无 hover 观感态——色样填充即状态本身，选中环是唯一强调反馈，悬停不升档阴影、不做位移（位移类 hover 会把色样移出停在边缘的指针反复抖动，位移只留给按压）；`title` 提示属信息层，不参与观感反馈；焦点环显式挂 `focus-visible:focus-ring`。
-6. 专属令牌：无——颜色全部来自运行期数据。
+6. 禁用观感：色样 `disabled:dim`（压暗 + 禁用光标，`dim` 契约见 `ui/schemes.md` 第 8 条⑥）。
+7. 专属令牌：无——颜色全部来自运行期数据。
 （neo 阴影）承载面挂 shadow-frame——可交互件必有阴影（neo design.md 阴影律），minimal 无此工具类不渲染、零回归。

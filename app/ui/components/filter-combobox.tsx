@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { Check, RotateCcw, Search, X } from "./icons";
-import { ButtonRoot } from "./button";
+import { Button } from "./button";
 import { type FilterRule, toFilterParams } from "../utils/filter-query";
 import { useFloatingPanel } from "../utils/use-floating-panel";
 import { useFloatingPosition } from "../utils/floating-position";
@@ -84,6 +84,7 @@ export type FilterComboboxRef = {
 
 export type FilterComboboxProps = Omit<React.ComponentProps<"div">, "onChange" | "children" | "defaultValue" | "ref"> & {
     fields: FilterComboboxField[];
+    disabled?: boolean;
     value?: FilterRule[];
     defaultValue?: FilterRule[];
     onChange?: (rules: FilterRule[]) => void;
@@ -106,9 +107,7 @@ const defaultRenderChip: FilterChipRender = ({ label, texts, onEdit, onRemove, c
         <button type="button" className={classNames?.chipLabel} style={styles?.chipLabel} aria-label={`${texts.editLabel}: ${label}`} onClick={onEdit}>
             {label}
         </button>
-        <button type="button" className={classNames?.chipRemove} style={styles?.chipRemove} aria-label={`${texts.removeLabel}: ${label}`} onClick={onRemove}>
-            <X />
-        </button>
+        <Button type="button" className={classNames?.chipRemove} style={styles?.chipRemove} aria-label={`${texts.removeLabel}: ${label}`} icon={<X />} onClick={onRemove}/>
     </span>
 );
 
@@ -158,6 +157,7 @@ interface Candidate extends ComboboxSuggestion {
 
 export function FilterCombobox({
     fields,
+    disabled,
     value,
     defaultValue,
     onChange,
@@ -469,7 +469,7 @@ export function FilterCombobox({
     const showCheck = stage === "value" && draft.trim() !== "";
 
     return (
-        <div {...rest} className={[classNames?.root, className].filter(Boolean).join(" ") || undefined} data-slot="filter-combobox" aria-busy={loading || undefined}>
+        <div {...rest} inert={disabled || undefined} className={[classNames?.root, className].filter(Boolean).join(" ") || undefined} data-slot="filter-combobox" aria-busy={loading || undefined} data-disabled={disabled || undefined}>
             <div
                 className={classNames?.bar}
                 style={styles?.bar}
@@ -498,6 +498,7 @@ export function FilterCombobox({
                 ) : null}
                 <input
                     ref={inputRef}
+                    disabled={disabled}
                     role="combobox"
                     aria-autocomplete="list"
                     aria-haspopup="listbox"
@@ -520,33 +521,22 @@ export function FilterCombobox({
                     onKeyDown={handleKeyDown}
                 />
                 {showCheck ? (
-                    <ButtonRoot
-                        type="button"
-                        className={classNames?.submit}
-                        style={styles?.submit}
-                        aria-label={resolvedTexts.submitText}
-                        onMouseDown={(event) => event.preventDefault()}
-                        onClick={commitValue}
-                    >
-                        <Check />
-                    </ButtonRoot>
+                    <Button type="button" data-field-trailing="" className={classNames?.submit} style={styles?.submit} aria-label={resolvedTexts.submitText} icon={<Check />} onMouseDown={(event) => event.preventDefault()} onClick={commitValue}/>
                 ) : null}
                 {showDraft ? (
-                    <ButtonRoot
+                    <Button
                         type="button"
+                        data-field-trailing=""
                         className={classNames?.cancel}
                         style={styles?.cancel}
                         aria-label={resolvedTexts.cancelDraftText}
+                        icon={<X />}
                         onMouseDown={(event) => event.preventDefault()}
                         onClick={resetStage}
-                    >
-                        <X />
-                    </ButtonRoot>
+                    />
                 ) : null}
                 {rules.length > 0 ? (
-                    <ButtonRoot type="button" className={classNames?.clear} style={styles?.clear} aria-label={resolvedTexts.clearText} onClick={reset}>
-                        <RotateCcw />
-                    </ButtonRoot>
+                    <Button type="button" data-field-trailing="" className={classNames?.clear} style={styles?.clear} aria-label={resolvedTexts.clearText} icon={<RotateCcw />} onClick={reset}/>
                 ) : null}
                 {hints.length > 0 ? (
                     <span id={hintId} className={classNames?.hint} style={styles?.hint} data-slot="hint">

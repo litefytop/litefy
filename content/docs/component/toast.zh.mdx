@@ -39,7 +39,6 @@ description: 基于 store 命令式 API 的全局轻提示组件
 | `error`   | `(options: ToastItemProps) => number`                                         | 显示错误轻提示，返回轻提示 id                                     |
 | `warning` | `(options: ToastItemProps) => number`                                         | 显示警告轻提示，返回轻提示 id                                     |
 | `info`    | `(options: ToastItemProps) => number`                                         | 显示信息轻提示，返回轻提示 id                                     |
-| `loading` | `(options: ToastItemProps) => number`                                         | 显示持久的加载轻提示（永不自动关闭）                              |
 | `dismiss` | `(id?: string \| number) => void`                                             | 按 id 关闭轻提示；不传 id 时关闭全部轻提示                        |
 | `promise` | `<T>(promise: () => Promise<T>, data: PromiseData<T>) => void`                | 加载轻提示，Promise 结束后同一条原地转为成功/错误态（始终单条）     |
 
@@ -52,9 +51,9 @@ description: 基于 store 命令式 API 的全局轻提示组件
 | `id`          | `string \| number`                                         | 轻提示 id；创建时由 store 自动分配                                                                   |
 | `title`       | `React.ReactNode`                                          | 轻提示标题                                                                                    |
 | `description` | `React.ReactNode`                                          | 标题下方的次要文本                                                                                |
-| `type`        | `"success" \| "error" \| "warning" \| "info" \| "loading"` | 图标类型；由语义化方法自动设置                                                                          |
+| `type`        | `"success" \| "error" \| "warning" \| "info"`             | 图标类型；由语义化方法自动设置                                                                          |
 | `icon`        | `React.ReactNode`                                          | 自定义图标，覆盖内置的类型图标，默认 type icon                                                             |
-| `duration`    | `number`                                                   | 自动关闭延迟（毫秒）；`Infinity` 表示不自动关闭（loading 轻提示始终持久显示），默认 `5000`                               |
+| `duration`    | `number`                                                   | 自动关闭延迟（毫秒）；`Infinity` 表示不自动关闭，默认 `5000`                                    |
 | `closable`    | `boolean`                                                  | 在轻提示右上角渲染关闭按钮，默认 `false`                                                                 |
 | `onClose`     | `(event: CloseEvent) => void`                              | 关闭开始时以 `type: "auto" \| "manual"` 触发，移除完成后以 `type: "complete"` 触发                        |
 | `classNames`  | `{ root?, icon?, content?, title?, description?, close? }` | 轻提示卡片各部分的自定义类名                                                                           |
@@ -154,5 +153,5 @@ description: 基于 store 命令式 API 的全局轻提示组件
 | `[data-expanded]` | 位于每条轻提示与视口容器——悬停视口暂停倒计时时为 `"true"` |
 | `[data-tapped]` | 位于每条轻提示——被点击展开（同时暂停倒计时）时存在 |
 | `[data-exiting]` | 位于每条轻提示——正在播放退场动画时为 `"true"` |
-| `[data-type]` | 位于图标——取值 `"success"`、`"error"`、`"warning"`、`"info"` 或 `"loading"` |
+| `[data-type]` | 位于图标——取值 `"success"`、`"error"`、`"warning"` 或 `"info"` |
 

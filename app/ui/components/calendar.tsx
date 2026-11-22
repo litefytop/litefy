@@ -1,6 +1,7 @@
 "use client";
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "./icons";
+import { Button } from "./button";
 import {
     addDays,
     addMonths,
@@ -48,9 +49,7 @@ export interface CalendarNavButtonProps extends Omit<React.ComponentProps<"butto
 }
 export function CalendarNavButton({ direction, className, classNames, children, ...props }: CalendarNavButtonProps) {
     const Chevron = direction === "previous" ? ChevronLeft : ChevronRight;
-    return (<button type="button" aria-label={direction === "previous" ? "Previous" : "Next"} {...props} className={className}>
-      {children ?? <Chevron aria-hidden className={classNames?.icon}/>}
-    </button>);
+    return (<Button type="button" aria-label={direction === "previous" ? "Previous" : "Next"} {...props} className={className} icon={children ?? <Chevron aria-hidden className={classNames?.icon}/>}/>);
 }
 export interface CalendarTitleButtonProps extends Omit<React.ComponentProps<"button">, "className" | "type"> {
     className?: string;

@@ -1,6 +1,7 @@
 "use client";
 import * as React from "react";
 import { Copy, RotateCcw, ThumbsDown, ThumbsUp } from "./icons";
+import { Button } from "./button";
 
 export type ChatMessageStatus =
     | "queued" | "in_progress" | "incomplete"
@@ -41,12 +42,17 @@ export interface ChatClassNames {
     avatar?: string;
     name?: string;
     content?: string;
+    contentBubbleUser?: string;
+    contentBubbleAssistant?: string;
+    contentPlain?: string;
+    contentError?: string;
     contentItem?: string;
     actions?: string;
     action?: string;
     hints?: string;
     hint?: string;
     typing?: string;
+    typingDot?: string;
 }
 
 export interface ChatProps extends Omit<React.ComponentProps<"div">, "className"> {
@@ -96,13 +102,14 @@ function ContentItem({ item }: { item: ChatContentItem }) {
     return <p>{typeof item.text === "string" ? item.text : ""}</p>;
 }
 
-function Typing({ className }: { className?: string }) {
+function Typing({ className, dotClassName }: { className?: string; dotClassName?: string }) {
     return (
         <span className={className} aria-label="…">
             {[0, 150, 300].map((delay) => (
                 <span
                     key={delay}
                     data-typing="true"
+                    className={dotClassName}
                     style={{ animationDelay: `${delay}ms` }}
                 />
             ))}
@@ -116,6 +123,7 @@ const EMPTY_ROLE_CONFIG: ChatRoleConfig = {};
 interface ChatRowProps {
     message: ChatMessage;
     meta: ChatRoleMeta;
+    mode: ChatProps["mode"];
     classNames?: ChatClassNames;
     feedbackKind?: "good" | "bad";
     renderMessageContent?: (message: ChatMessage) => React.ReactNode;
@@ -125,12 +133,14 @@ interface ChatRowProps {
 }
 
 const ROW_CLASS_KEYS: (keyof ChatClassNames)[] = [
-    "message", "avatar", "main", "name", "content", "contentItem", "actions", "action", "typing",
+    "message", "avatar", "main", "name", "content", "contentBubbleUser", "contentBubbleAssistant",
+    "contentPlain", "contentError", "contentItem", "actions", "action", "typing",
 ];
 
 function sameRowProps(prev: ChatRowProps, next: ChatRowProps): boolean {
     if (prev.message !== next.message ||
         prev.meta !== next.meta ||
+        prev.mode !== next.mode ||
         prev.feedbackKind !== next.feedbackKind ||
         prev.renderMessageContent !== next.renderMessageContent ||
         prev.onCopy !== next.onCopy ||
@@ -149,6 +159,7 @@ function sameRowProps(prev: ChatRowProps, next: ChatRowProps): boolean {
 const ChatRow = React.memo(function ChatRow({
     message,
     meta,
+    mode,
     classNames,
     feedbackKind,
     renderMessageContent,
@@ -161,6 +172,14 @@ const ChatRow = React.memo(function ChatRow({
         (message.content === undefined || message.content === "");
     const showActions = !isUser && (message.status ?? "completed") === "completed";
     const initial = (meta.name ?? message.role).charAt(0).toUpperCase();
+    const contentVariant = mode === "noBubble" || (mode === "userBubble" && !isUser)
+        ? classNames?.contentPlain
+        : isUser
+          ? classNames?.contentBubbleUser
+          : classNames?.contentBubbleAssistant;
+    const contentError = message.status === "failed" || message.status === "cancelled"
+        ? classNames?.contentError
+        : undefined;
     const renderContent = () => {
         if (renderMessageContent) return renderMessageContent(message);
         if (typeof message.content === "string") return message.content;
@@ -185,48 +204,44 @@ const ChatRow = React.memo(function ChatRow({
             )}
             <div className={classNames?.main}>
                 <span className={classNames?.name}>{meta.name ?? message.role}</span>
-                <div className={classNames?.content}>
-                    {waiting ? <Typing className={classNames?.typing} /> : renderContent()}
+                <div className={[classNames?.content, contentVariant, contentError].filter(Boolean).join(" ")}>
+                    {waiting ? <Typing className={classNames?.typing} dotClassName={classNames?.typingDot} /> : renderContent()}
                 </div>
                 {showActions && (
                     <div className={classNames?.actions}>
-                        <button
+                        <Button
                             type="button"
                             aria-label="Copy"
                             className={classNames?.action}
+                            icon={<Copy aria-hidden="true" />}
                             onClick={() => onCopy(message)}
-                        >
-                            <Copy aria-hidden="true" />
-                        </button>
-                        <button
+                        />
+                        <Button
                             type="button"
                             aria-label="Good response"
                             aria-pressed={feedbackKind === "good"}
                             data-active={feedbackKind === "good" ? "true" : "false"}
                             className={classNames?.action}
+                            icon={<ThumbsUp aria-hidden="true" />}
                             onClick={() => onFeedback(message, "good")}
-                        >
-                            <ThumbsUp aria-hidden="true" />
-                        </button>
-                        <button
+                        />
+                        <Button
                             type="button"
                             aria-label="Bad response"
                             aria-pressed={feedbackKind === "bad"}
                             data-active={feedbackKind === "bad" ? "true" : "false"}
                             className={classNames?.action}
+                            icon={<ThumbsDown aria-hidden="true" />}
                             onClick={() => onFeedback(message, "bad")}
-                        >
-                            <ThumbsDown aria-hidden="true" />
-                        </button>
+                        />
                         {onReset && (
-                            <button
+                            <Button
                                 type="button"
                                 aria-label="Regenerate"
                                 className={classNames?.action}
+                                icon={<RotateCcw aria-hidden="true" />}
                                 onClick={() => onReset(message)}
-                            >
-                                <RotateCcw aria-hidden="true" />
-                            </button>
+                            />
                         )}
                     </div>
                 )}
@@ -286,6 +301,7 @@ export function Chat({
                         key={message.id}
                         message={message}
                         meta={roleConfig[message.role] ?? EMPTY_META}
+                        mode={mode}
                         classNames={classNames}
                         feedbackKind={feedback.get(String(message.id))}
                         renderMessageContent={renderMessageContent}

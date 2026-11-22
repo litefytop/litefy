@@ -9,14 +9,18 @@ export const listViewportClasses =
 
 export const listFrameClasses = "rounded-md border-frame border-border shadow-frame";
 
-const rootClasses = "m-0 p-0 list-none data-[ordered]:list-decimal data-[ordered]:ps-6";
+const rootClasses =
+  "m-0 p-0 list-none cursor-not-allowed data-[ordered]:list-decimal data-[ordered]:ps-6";
 
-const itemClasses =
+const itemBaseClasses =
   "px-3 py-snug border-b-hair border-border text-sm leading-5 font-field text-foreground " +
-  "cursor-pointer last:border-b-0 " +
+  "cursor-pointer last:border-b-0";
+const itemHoverClasses =
   "hover:bg-accent hover:text-accent-fg " +
   "data-[highlighted=true]:bg-accent data-[highlighted=true]:text-accent-fg " +
-  "";
+  "data-[disabled]:dim";
+
+const itemClasses = cn(itemBaseClasses, itemHoverClasses);
 
 const emptyClasses = "px-3 py-2 text-sm leading-5 text-surface-fg";
 

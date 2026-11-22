@@ -255,10 +255,10 @@ function ShellHeader({
       <div className="flex h-14 items-center gap-3 px-4 md:px-6 lg:px-8 mx-auto w-full max-w-320">
         <Link
           to={toSchemeHref(pathname, `/${locale}`)}
-          className="flex items-center gap-2 font-medium"
+          className="flex min-w-0 items-center gap-2 font-medium"
         >
-          <span dangerouslySetInnerHTML={{ __html: logoRaw }} className="size-8 fill-foreground" />
-          <span className="max-sm:hidden">{appName}</span>
+          <span dangerouslySetInnerHTML={{ __html: logoRaw }} className="size-8 shrink-0 fill-foreground" />
+          <span className="min-w-0 truncate">{appName}</span>
         </Link>
         <div className="flex ms-auto items-center gap-3">
           {showSearch && (

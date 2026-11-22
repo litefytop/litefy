@@ -1,7 +1,6 @@
 # Toggle 皮肤（app/ui/skins/toggle.tsx）
 
-1. 按下按钮（Toggle）：outline 同款脸——44 命中方（`min-h-control min-w-control`）+ `rounded-pill` + pill 补偿 px（`--radius-pill` 同式算式，见 `ui/schemes.md` 第 14 条）+ `py-1`，`border-hair` 边宽档（minimal 1px 可见、neo 同 stroke）+ `bg-background` 底色 + `shadow-frame` 静止阴影，`text-sm` + `font-label` 档 + label 两项 + `foreground`；hover（非禁用）换 `accent` 对 + `shadow-frame-hover`，`active:crush` 压平 + `shadow-frame-active`；按下（`aria-[pressed=true]`，骨架两态都写）换 `primary` 背景色 + `primary-fg` 前景色；`motion-frame` 过渡束；禁用无 hover，指针为禁止（`disabled:cursor-not-allowed`）。
-2. 组条（ToggleGroup）：变体 prop `variant?: "outline" | "well"`，缺省 outline；变体属皮肤层，骨架不变。
-   1. outline：外壳 owns 边框与圆角——`grid w-full grid-flow-col auto-cols-fr` + `rounded-pill` + `border-hair border-border` + `overflow-hidden` + `bg-background`（方角裁切裁不出沿弧描边，边框必须由外壳自绘才沿圆角连续）；条目项透明底、随列等宽、`rounded-none`、px 退回基础档（补偿归零，第 14 条），去外框与静止阴影（外壳 owns 后条目阴影被裁无效）；hover（非禁用、未按下）换 accent 对，按下换 primary 背景色 + primary-fg 前景色，`active:crush` 保留；相邻条目间 `not-first:border-l-hair` 分隔线，避免相邻选中项的 primary 填充糊成一片。
-   2. well：segment 井道轨道同形态——外壳 `w-fit` + `min-w-control` + `rounded-lg` + `border-frame border-border` + `bg-well` + `p-1.5` + `shadow-well`；条目项透明底 + 同心圆角（外圆角 − p-1.5 − border-frame，`max(0px,…)` 钳位）、`font-strong` 档 + `text-surface-fg`；hover（非禁用、未按下）换 accent 对，按下 = `bg-background` + `shadow-subtle` + `text-primary`（多选即多块凸起，无滑动指示块）；text 变体为 segment 特有，不复制。
-3. 专属令牌：无。
+1. 按下按钮（Toggle）：outline 同款脸——44 命中方（`min-h-control min-w-control`）+ `rounded-pill` + pill 补偿 px（`--radius-pill` 同式算式，见 `ui/schemes.md` 第 14 条）+ `py-1`，`border-hair` 边宽档（minimal 1px 可见、neo 同 stroke）+ `bg-background` 底色 + `shadow-frame` 静止阴影，`text-sm` + `font-label` 档 + label 两项 + `foreground`；hover（非禁用）换 `accent` 对 + `shadow-frame-hover`，`active:crush` 压平 + `shadow-frame-active`；按下（`aria-[pressed=true]`，骨架两态都写）换 `primary` 背景色 + `primary-fg` 前景色；`motion-frame` 过渡束；禁用无 hover。
+2. 组条（ToggleGroup）皮肤住 `ui/skins/toggle-group.md`，组装本脸之外的全部形态。
+3. 禁用观感：各形态条目一律 `disabled:dim`（`dim` 契约见 `ui/schemes.md` 第 8 条⑥）。
+4. 专属令牌：无。

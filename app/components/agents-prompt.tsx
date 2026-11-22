@@ -13,12 +13,12 @@ function promptOf(zh: boolean): string {
     ? `你将通过 Litefy UI 的机器可读文档工作，消费规则如下：
 - 文档结构读 /zh/llms.txt；组件 props、行为与示例读 /zh/llms-full.txt。
 - 项目未接皮肤（纯 headless）：忽略一切 design.md；纯样式组件（无 headless 版）不可用。
-- 项目使用皮肤（minimal / neo-brutalist / neon-gradient / clinical）：附加读取 https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/<方案名>/design.md，视觉 token 与类名以它为准。
+- 项目使用皮肤（minimal / neo-brutalist / neon-gradient / flat-minimal）：附加读取 https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/<方案名>/design.md，视觉 token 与类名以它为准。
 - 生成契约：组合 Litefy 组件而非手写 HTML + Tailwind；只用语义 Token（bg-background、text-primary…）；复合成品与低层零件二选一，不得混用。`
     : `You will work with Litefy UI through its machine-readable docs. Consumption rules:
 - Read /en/llms.txt for the doc map; /en/llms-full.txt for component props, behavior and examples.
 - Headless project (no skin installed): ignore every design.md; style-only components (no headless version) are unavailable.
-- Skinned project (minimal / neo-brutalist / neon-gradient / clinical): additionally read https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/<scheme>/design.md; visual tokens and class names follow it.
+- Skinned project (minimal / neo-brutalist / neon-gradient / flat-minimal): additionally read https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/<scheme>/design.md; visual tokens and class names follow it.
 - Generation contract: compose Litefy components instead of hand-written HTML + Tailwind; use semantic tokens only; pick either composite components or low-level parts, never both.`;
 }
 

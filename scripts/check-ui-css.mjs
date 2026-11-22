@@ -10,7 +10,8 @@
 //         3b 皮肤根 className → headless 镜像根元素
 //         3c classNames/fieldClassNames 槽位常量 → headless 内同名槽位元素（多落点须全部命中才报）
 // 规则 4：无意义 cn 拆分——非导出、模块顶层的 class 字符串常量，全文件仅被另一常量的
-//         cn/拼接实参引用一次 → 报「应并入」（函数内局部变量与数值/非 class 串不参与）
+//         cn/拼接实参引用一次 → 报「应并入」（函数内局部变量与数值/非 class 串不参与）；
+//         引用方并入该常量后合并串长 >200（class-length 阈值）的拆分是长度门禁强制的，放行
 // 静态无法证明但确有语义的，用下面三个名单登记，一行一条带原因。
 
 import { readFileSync, readdirSync, statSync } from "node:fs";
@@ -21,7 +22,10 @@ import ts from "typescript";
 const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..", "app", "ui");
 
 // relative 确有语义但闭包内找不到定位消费者的文件（相对 app/ui 的 posix 路径）
-const RELATIVE_JUSTIFIED = new Map([]);
+const RELATIVE_JUSTIFIED = new Map([
+  // skins/number.tsx 壳 relative 锚定骨架渲染的聚焦提示卡——absolute 在共享 fieldHintClasses（skins/input.tsx），闭包静态扫不到
+  ["skins/number.tsx", ["relative"]],
+]);
 // 规则 3 确有语义的豁免（相对 app/ui 的 posix 路径 → 工具类 token 数组）
 const DISPLAY_JUSTIFIED = new Map([]);
 // 规则 4 确有语义的豁免（相对 app/ui 的 posix 路径 → 常量名数组）
@@ -159,6 +163,7 @@ function lineAt(sf, node) {
 
 // 声明是否位于函数体内（祖先链出现函数体即为局部）
 function isFnLocal(node) {
+
   for (let p = node.parent; p && !ts.isSourceFile(p); p = p.parent) {
     if (
       ts.isFunctionDeclaration(p) || ts.isFunctionExpression(p) || ts.isArrowFunction(p) ||
@@ -171,11 +176,31 @@ function isFnLocal(node) {
   return false;
 }
 
+// 引用点所在顶层常量（"名字" 或 "名字.成员名"），供规则 4 查引用方的合并长度
+function ownerOf(node) {
+  let member = null;
+  let top = null;
+  for (let p = node.parent; p; p = p.parent) {
+    if (member === null && ts.isPropertyAssignment(p) && (ts.isIdentifier(p.name) || ts.isStringLiteral(p.name))) {
+      member = p.name.text;
+    }
+    if (p.parent && ts.isSourceFile(p.parent)) top = p;
+  }
+  if (top && ts.isVariableStatement(top)) {
+    const d = top.declarationList.declarations[0];
+    if (d && ts.isIdentifier(d.name)) {
+      return member && member !== d.name.text ? `${d.name.text}.${member}` : d.name.text;
+    }
+  }
+  return null;
+}
+
 // 单文件静态画像：常量表、引用计数、槽位落点
 function analyze(relPath) {
   const { sf } = getParsed(relPath);
   const consts = new Map(); // name → { kind: "string"|"object"|null, tokens?: Set, props?: Map<string,Set>, exported: bool, node }
   const refs = new Map(); // name → ctx[] ("const-init"|"jsx"|"other")
+  const refParents = new Map(); // name → Set("常量名" | "常量名.成员名")——引用点所在顶层常量
   const slots = new Map(); // "classNames.image" → Set(tag)（本文件内原生标签落点）
   const functions = new Map(); // 组件名 → 声明节点（供根映射跳转）
   let stmtExported = false; // 当前 VariableStatement 是否带 export（先于其声明被访问）
@@ -233,6 +258,12 @@ function analyze(relPath) {
         const list = refs.get(node.text) ?? [];
         list.push(ctx);
         refs.set(node.text, list);
+        const owner = ownerOf(node);
+        if (owner) {
+          const parents = refParents.get(node.text) ?? new Set();
+          parents.add(owner);
+          refParents.set(node.text, parents);
+        }
       }
       if (ts.isShorthandPropertyAssignment(p) && p.name === node) {
         const list = refs.get(node.text) ?? [];
@@ -262,7 +293,69 @@ function analyze(relPath) {
   }
   visit(sf, "other");
 
-  return { sf, consts, refs, slots, functions };
+  // 常量合并长度：并入后必然超 class-length 阈值的拆分由规则 4 放行（两道门禁合成一意）
+  const computing = new Set();
+  function lenOf(expr, depth = 0) {
+    if (!expr || depth > 8) return undefined;
+    if (ts.isJsxExpression(expr)) return lenOf(expr.expression, depth + 1);
+    if (ts.isParenthesizedExpression(expr) || ts.isAsExpression(expr) || ts.isNonNullExpression(expr)) {
+      return lenOf(expr.expression, depth + 1);
+    }
+    if (ts.isStringLiteral(expr) || ts.isNoSubstitutionTemplateLiteral(expr)) return expr.text.length;
+    if (ts.isTemplateExpression(expr)) {
+      return expr.getText().replaceAll(/^`|`$/gu, "").replaceAll(/\$\{[^}]*\}/gu, " ").length;
+    }
+    if (ts.isIdentifier(expr)) {
+      const name = expr.text;
+      const e = consts.get(name);
+      if (!e || !e.node?.initializer) return Infinity; // 跨文件导入等不可解析：按超阈放行
+      if (e.len !== undefined) return e.len;
+      if (computing.has(name)) return undefined;
+      computing.add(name);
+      const l = lenOf(e.node.initializer, depth + 1);
+      computing.delete(name);
+      if (l !== undefined) e.len = l;
+      return l;
+    }
+    if (ts.isBinaryExpression(expr) && expr.operatorToken.kind === ts.SyntaxKind.PlusToken) {
+      const a = lenOf(expr.left, depth + 1);
+      const b = lenOf(expr.right, depth + 1);
+      return a !== undefined && b !== undefined ? a + b : undefined;
+    }
+    if (ts.isConditionalExpression(expr)) {
+      const a = lenOf(expr.whenTrue, depth + 1);
+      const b = lenOf(expr.whenFalse, depth + 1);
+      return a !== undefined && b !== undefined ? Math.max(a, b) : undefined;
+    }
+    if (ts.isCallExpression(expr) && ts.isIdentifier(expr.expression) && expr.expression.text === "cn") {
+      let total = 0;
+      for (const a of expr.arguments) {
+        const l = lenOf(a, depth + 1);
+        if (l === undefined) return undefined;
+        total += l;
+      }
+      return total + Math.max(0, expr.arguments.length - 1);
+    }
+    if (ts.isPropertyAccessExpression(expr)) {
+      const base = consts.get(expr.expression.getText());
+      if (!base) return Infinity; // 跨文件导入的对象：按超阈放行
+      return base.memberLens?.get(expr.name.text);
+    }
+    return undefined;
+  }
+  for (const entry of consts.values()) {
+    if (entry.kind === "string" && entry.node?.initializer) entry.len = lenOf(entry.node.initializer);
+    else if (entry.kind === "object" && entry.node?.initializer) {
+      entry.memberLens = new Map();
+      for (const p of entry.node.initializer.properties) {
+        if (ts.isPropertyAssignment(p) && (ts.isIdentifier(p.name) || ts.isStringLiteral(p.name))) {
+          entry.memberLens.set(p.name.text, lenOf(p.initializer));
+        }
+      }
+    }
+  }
+
+  return { sf, consts, refs, refParents, slots, functions };
 }
 
 function classifyInit(init) {
@@ -532,11 +625,20 @@ for (const relPath of byPath.keys()) {
   const displayAllowed = DISPLAY_JUSTIFIED.get(relPath) ?? [];
   const mergeAllowed = MERGE_JUSTIFIED.get(relPath) ?? [];
 
-  // 规则 4：无意义 cn 拆分（顶层非导出 class 串常量，单引用且引用点是另一常量的 cn/拼接实参）
+  // 规则 4：无意义 cn 拆分（顶层非导出 class 串常量，单引用且引用点是另一常量的 cn/拼接实参）；
+  // 引用方并入该常量后必然超 class-length 阈值（>200）的拆分是长度门禁强制的，放行
   for (const [name, entry] of info.consts) {
     if (entry.exported || entry.fnLocal || entry.kind !== "string" || !entry.tokens?.size) continue;
     const rs = info.refs.get(name) ?? [];
     if (rs.length === 1 && rs[0] === "cn-arg" && !mergeAllowed.includes(name)) {
+      const parent = (info.refParents.get(name) ?? []).values().next().value;
+      let parentLen;
+      if (parent) {
+        const dot = parent.indexOf(".");
+        if (dot === -1) parentLen = info.consts.get(parent)?.len;
+        else parentLen = info.consts.get(parent.slice(0, dot))?.memberLens?.get(parent.slice(dot + 1));
+      }
+      if (parentLen !== undefined && parentLen > 200) continue;
       problems.push(`${relPath}:${lineAt(info.sf, entry.node)} 规则4 常量 "${name}" 仅被另一常量的 cn/拼接实参引用一次，应并入`);
     }
   }

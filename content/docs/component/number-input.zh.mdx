@@ -1,6 +1,6 @@
 ---
 title: Number Input 数字输入
-description: 尾部为非交互的上下提示图标的数字输入框——仅键盘步进，是 NumberField 的表单形态兄弟组件。
+description: 尾部为非交互的上下提示图标的数字输入框——键盘与聚焦后滚轮步进，是 NumberField 的表单形态兄弟组件。
 ---
 
 ## 安装
@@ -9,9 +9,15 @@ description: 尾部为非交互的上下提示图标的数字输入框——仅�
 
 ## 用法
 
-经典数字输入框，可选 `prefix` / `suffix`，键盘步进。
+经典数字输入框，可选 `prefix` / `suffix`，键盘与聚焦后滚轮步进。
 
 <ComponentPreview name="number-input-basic" />
+
+### 禁用
+
+添加 disabled 属性禁用数值输入。
+
+<ComponentPreview name="number-input-disabled" />
 
 ## API 参考
 
@@ -25,16 +31,16 @@ description: 尾部为非交互的上下提示图标的数字输入框——仅�
 | `invalid`         | `boolean`                                                                    | 输入框是否处于无效状态                                                        |
 | `min`             | `number`                                                                     | 允许的最小值；需要负数下界时显式传入，默认 `0`                                          |
 | `max`             | `number`                                                                     | 允许的最大值，默认 `99`                                                     |
-| `step`            | `number`                                                                     | `ArrowUp` / `ArrowDown` 的步长，默认 `1`                                 |
+| `step`            | `number`                                                                     | `ArrowUp` / `ArrowDown` 与聚焦后滚轮的步长，默认 `1`                |
 | `positiveInteger` | `boolean`                                                                    | 仅允许正整数。值类型变为 `number \| undefined`，默认 `false`                      |
 | `prefix`          | `React.ReactNode`                                                            | 渲染在数字前的内容（如货币符号）                                                   |
 | `suffix`          | `React.ReactNode`                                                            | 渲染在数字后的内容 —— 设置时取代步进提示                                             |
 | `thousands`       | `boolean`                                                                    | 未聚焦时整数部分按千分位分组显示；提交值始终不带分隔符，默认 `false`                             |
-| `indicator`       | `boolean`                                                                    | 是否在尾部区域显示非交互的上下提示图标（设置 `suffix` 时不显示），默认 `true`                    |
+| `indicator`       | `boolean`                                                                    | 是否在尾部区域显示非交互的上下提示图标（设置 `suffix` 时不显示），默认 `true`；关闭时尾部不渲染指示。聚焦后所有实例都会在右上角显示 `↑↓` 步进提示卡 |
 | `className`       | `string`                                                                     | 自定义类名，作用于外壳                                                        |
 | `style`           | `React.CSSProperties`                                                        | 内联样式，作用于外壳                                                         |
-| `classNames`      | `{ leading?; trailing?; root?; indicator?; indicatorIcon? }` —— 值均为 `string` | 前缀插槽、内部输入框（`root`）、↑↓ 提示及其两个人字形图标的自定义类名                            |
-| `styles`          | `{ leading?; trailing?; root? }` —— 值均为 `React.CSSProperties`                | 前后缀插槽与内部输入框（`root`）的内联样式                                           |
+| `classNames`      | `{ leading?; trailing?; root?; indicator?; indicatorIcon?; hint? }` —— 值均为 `string` | 前缀插槽、内部输入框（`root`）、↑↓ 提示及其两个人字形图标、聚焦提示卡（`hint`）的自定义类名 |
+| `styles`          | `{ leading?; trailing?; root?; indicator?; indicatorIcon?; hint? }` —— 值均为 `React.CSSProperties` | 前后缀插槽、内部输入框（`root`）、↑↓ 提示与聚焦提示卡的内联样式            |
 | `disabled`        | `boolean`                                                                    | 禁用整个字段，默认 `false`                                                  |
 | `...props`        | `React.ComponentProps<"input">`                                              | 支持所有原生 input 属性（除 `type`、`className`），如 `onBlur`                   |
 
@@ -44,11 +50,12 @@ description: 尾部为非交互的上下提示图标的数字输入框——仅�
 
 NumberInput 与 NumberField 共用的裸数字输入框——它不带外壳，因此步进提示图标、千分位分隔与前后缀都是成品特性。需要完全自定义面板时，把 `NumberRoot` 放进普通 `div`（观感由你自己的类或方案皮肤提供），并用 `useNumberCore` 自管数值。
 
-## 键盘交互
+## 交互
 
 | Key | Description |
 | --- | --- |
 | `ArrowUp` / `ArrowDown` | 按 `step` 步进数值，受 `min` / `max` 钳制 |
+| `Wheel`（聚焦后） | 滚轮向上加、向下减，按 `step` 步进并阻断页面滚动，受 `min` / `max` 钳制 |
 | `Blur` | 失焦时规范化编辑后的数值；开启 `thousands` 时，千分位分隔仅在未聚焦时显示 |
 
 ## 数据属性

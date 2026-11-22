@@ -18,12 +18,13 @@ export const cardClasses =
 export const cardInnerClasses =
   "flex flex-col gap-4 p-4";
 
-export const cardButtonClasses =
-  "w-full cursor-pointer text-left p-4 [font:inherit] motion-frame " +
-  "hover:lift hover:shadow-block-hover " +
-  "focus-visible:focus-ring active:crush active:shadow-frame-active " +
-  "plain:border-transparent plain:shadow-none " +
-  "plain:hover:border-border";
+const cardButtonBaseClasses = "w-full cursor-pointer text-left p-4 [font:inherit] motion-frame";
+const cardButtonStateClasses =
+  "hover:lift hover:shadow-block-hover focus-visible:focus-ring active:crush active:shadow-frame-active";
+const cardButtonPlainClasses =
+  "plain:border-transparent plain:shadow-none plain:hover:border-border";
+
+export const cardButtonClasses = cn(cardButtonBaseClasses, cardButtonStateClasses, cardButtonPlainClasses);
 
 export function Card({ className, classNames, children, ...props }: CardProps) {
   return (

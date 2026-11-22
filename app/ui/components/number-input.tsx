@@ -25,6 +25,7 @@ export type NumberInputProps = Omit<React.ComponentProps<"input">, "className" |
         root?: string;
         indicator?: string;
         indicatorIcon?: string;
+        hint?: string;
     };
     styles?: {
         leading?: React.CSSProperties;
@@ -32,6 +33,7 @@ export type NumberInputProps = Omit<React.ComponentProps<"input">, "className" |
         root?: React.CSSProperties;
         indicator?: React.CSSProperties;
         indicatorIcon?: React.CSSProperties;
+        hint?: React.CSSProperties;
     };
     disabled?: boolean;
     label?: React.ReactNode;
@@ -56,18 +58,25 @@ export function NumberInput(props: NumberInputProps) {
         isControlled: "value" in props,
         rest: rest as Parameters<typeof useNumberCore>[0]["rest"],
     });
-    const composeBox = (field?: { id: string; name: string; describedBy: string | undefined; invalid: boolean }) => (<div data-invalid={invalid || field?.invalid || undefined} data-border={border} className={className} style={style}>
+    const hintId = React.useId();
+    const composeBox = (field?: { id: string; name: string; describedBy: string | undefined; invalid: boolean }) => {
+        const describedBy = [field?.describedBy, rest["aria-describedby"], hintId].filter(Boolean).join(" ") || undefined;
+        return (<div data-invalid={invalid || field?.invalid || undefined} data-border={border} className={className} style={style}>
       {(prefix || classNames?.leading || styles?.leading) && (<InputLeading className={classNames?.leading} style={styles?.leading}>
           {prefix}
         </InputLeading>)}
-      <NumberRoot {...inputProps} id={field?.id ?? rest.id} name={field?.name ?? rest.name} aria-describedby={field?.describedBy ?? rest["aria-describedby"]} aria-invalid={invalid || field?.invalid} data-invalid={invalid || field?.invalid || undefined} className={classNames?.root} style={styles?.root}/>
-      <InputTrailing className={classNames?.trailing} style={styles?.trailing}>
+      <NumberRoot {...inputProps} id={field?.id ?? rest.id} name={field?.name ?? rest.name} aria-describedby={describedBy} aria-invalid={invalid || field?.invalid} data-invalid={invalid || field?.invalid || undefined} className={classNames?.root} style={styles?.root}/>
+      {(suffix || indicator) && (<InputTrailing className={classNames?.trailing} style={styles?.trailing}>
         {suffix ? suffix : (indicator && (<span aria-hidden className={classNames?.indicator}>
               <ChevronUp aria-hidden className={classNames?.indicatorIcon} style={styles?.indicatorIcon}/>
               <ChevronDown aria-hidden className={classNames?.indicatorIcon} style={styles?.indicatorIcon}/>
             </span>))}
-      </InputTrailing>
+      </InputTrailing>)}
+      <span id={hintId} className={classNames?.hint} style={styles?.hint}>
+          ↑ ↓
+        </span>
     </div>);
+    };
     if (label === undefined && description === undefined && validate === undefined) {
         return composeBox();
     }

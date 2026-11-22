@@ -105,12 +105,19 @@ const COPY: Record<
       title: string;
       lead: string;
       ladder: string;
+      groupDisplay: string;
+      groupReading: string;
+      groupMechanism: string;
       prose: string;
-      proseBody: string;
+      essayTitle: string;
+      p1: string;
+      p2: string;
       h3: string;
-      bodyLine: string;
+      p3a: string;
+      p3b: string;
       listA: string;
       listB: string;
+      listC: string;
       quote: string;
     };
     rules: {
@@ -202,13 +209,20 @@ const COPY: Record<
       title: "排版系统",
       lead: "单一 Inter 字族，九档阅读角色。标题行高 1.4、正文行高 1.7——长文阅读留足行间。字阶与长文作用域由方案持有，页面不逐元素写类。",
       ladder: "字阶",
-      prose: "正文块",
-      proseBody: "一个容器之内，标题、段落、列表、引文与行内代码全由方案排版——页面一个字都不写。",
-      h3: "h3 层级",
-      bodyLine: "正文读的是容器带来的阶梯，不是这个元素上的类。",
-      listA: "标题层级自带排版节奏",
-      listB: "列表与引用继承长文作用域",
-      quote: "克制不等于空：密度靠排版与留白建立，不靠把元素调淡。",
+      groupDisplay: "首屏展示档",
+      groupReading: "阅读档",
+      groupMechanism: "机制档",
+      prose: "长文作用域",
+      essayTitle: "阅读是一种节奏",
+      p1: "好的正文先让人读下去，再让人评价设计。行与行之间留出换气的空隙，标题安静地站在段落之前，引文退到左边线之后——排版退场，内容登场。",
+      p2: "段落是节奏的最小单位，三五行成一段，读起来才有起伏；少了这层起伏，字号再准，读起来也是平的。",
+      h3: "标题要克制",
+      p3a: "层级靠字号与留白建立，不靠加粗与颜色：小节标题只比正文大一号，就足以把结构立起来。改一处 ",
+      p3b: "，全文的呼吸跟着一起变。",
+      listA: "行高给正文留出换气的余地",
+      listB: "标题逐级递减，最深层级也不小于正文",
+      listC: "引文与行内代码在真实语境里出现，而不是孤例",
+      quote: "「排版就是语言的模样。」—— Ellen Lupton",
     },
     rules: {
       eyebrow: "04 — 设计规则",
@@ -337,13 +351,20 @@ const COPY: Record<
       title: "Type system",
       lead: "One Inter family, nine reading roles. Headings at 1.4 line height, body at 1.7 — room to read for long-form pages. The ladder and the reading scope belong to the scheme; the page writes none of it.",
       ladder: "Ladder",
-      prose: "Reading block",
-      proseBody: "Inside one container the scheme typesets headings, paragraphs, lists, quotes and inline code — the page writes none of it.",
-      h3: "h3 tier",
-      bodyLine: "Body copy rides the ladder the container reads from, not a class on this element.",
-      listA: "Heading tiers carry their own rhythm",
-      listB: "Lists and quotes inherit the reading scope",
-      quote: "Restraint is not emptiness: density comes from type and whitespace, never from dimming elements.",
+      groupDisplay: "Display",
+      groupReading: "Reading",
+      groupMechanism: "Mechanism",
+      prose: "Reading scope",
+      essayTitle: "Reading is a rhythm",
+      p1: "Good body copy earns its keep before anyone judges the design. Line height leaves room to breathe between lines, headings stand quietly ahead of paragraphs, quotes step behind the left rule — typesetting recedes, content arrives.",
+      p2: "A paragraph is the smallest unit of rhythm: three to five lines make one, and without that rise and fall even the right sizes read flat.",
+      h3: "Headings stay restrained",
+      p3a: "Hierarchy comes from size and whitespace, not weight or colour: a subheading one step above body is enough to hold the structure. Change one ",
+      p3b: " and the whole page breathes with it.",
+      listA: "Line height gives body copy room to breathe",
+      listB: "Headings step down tier by tier, never below body size",
+      listC: "Quotes and inline code appear in real context, not as stranded specimens",
+      quote: "“Typography is what language looks like.” — Ellen Lupton",
     },
     rules: {
       eyebrow: "04 — Design rules",
@@ -690,19 +711,38 @@ function LawsBlock({ t }: { t: T }) {
 
 function TypeBlock({ t }: { t: T }) {
   const ty = t.type;
-  const ladder: { sample: string; spec: string; className: string }[] = [
-    { sample: "headline", spec: "clamp 2.25–3.75rem / 700", className: "typo-headline" },
-    { sample: "kicker", spec: "1.625rem / 500 · 大写", className: "typo-kicker" },
-    { sample: "h1", spec: "1.75rem / 700", className: "typo-h1" },
-    { sample: "h2", spec: "1.375rem / 700", className: "typo-h2" },
-    { sample: "h3", spec: "1.125rem / 600", className: "typo-h3" },
-    { sample: "h4", spec: "1rem / 600", className: "typo-h4" },
-    { sample: "h5", spec: "0.9375rem / 600", className: "typo-h5" },
-    { sample: "h6", spec: "0.875rem / 600", className: "typo-h6" },
-    { sample: "body", spec: "1rem / 1.7", className: "typo-body" },
-    { sample: "label", spec: "0.8125rem / 700", className: "text-label leading-label tracking-label font-label" },
-    { sample: "OVERLINE", spec: "0.75rem / 500 · 大写", className: "typo-overline" },
-    { sample: "code", spec: "0.875rem / mono", className: "font-mono text-sm" },
+  const labelCls = "text-label leading-label tracking-label font-label";
+  const groups: {
+    caption: string;
+    rows: { sample: string; spec: string; className: string; stack?: boolean }[];
+  }[] = [
+    {
+      caption: ty.groupDisplay,
+      rows: [
+        { sample: "headline", spec: "clamp 2.25–3.75rem / 700", className: "typo-headline", stack: true },
+        { sample: "kicker", spec: "1.625rem / 500", className: "typo-kicker" },
+      ],
+    },
+    {
+      caption: ty.groupReading,
+      rows: [
+        { sample: "h1", spec: "1.75rem / 700", className: "typo-h1" },
+        { sample: "h2", spec: "1.375rem / 700", className: "typo-h2" },
+        { sample: "h3", spec: "1.25rem / 600", className: "typo-h3" },
+        { sample: "h4", spec: "1.125rem / 600", className: "typo-h4" },
+        { sample: "h5", spec: "1.0625rem / 600", className: "typo-h5" },
+        { sample: "h6", spec: "1rem / 600", className: "typo-h6" },
+        { sample: "body", spec: "1rem / 1.7", className: "typo-body" },
+      ],
+    },
+    {
+      caption: ty.groupMechanism,
+      rows: [
+        { sample: "label", spec: "0.8125rem / 700", className: labelCls },
+        { sample: "OVERLINE", spec: "0.75rem / 500", className: "typo-overline" },
+        { sample: "code", spec: "0.875rem / mono", className: "font-mono text-sm" },
+      ],
+    },
   ];
   return (
     <section id="type" className={SECTION}>
@@ -711,26 +751,43 @@ function TypeBlock({ t }: { t: T }) {
         <div className="grid gap-4 lg:grid-cols-3">
           <Card>
             <h3 className="text-sm font-semibold">{ty.ladder}</h3>
-            <div className="flex flex-col gap-3">
-              {ladder.map(({ sample, spec, className }) => (
-                <div key={spec} className="flex flex-wrap items-baseline justify-between gap-x-2">
-                  <span className={className}>{sample}</span>
-                  <span className="shrink-0 font-mono text-xs text-surface-fg">{spec}</span>
+            <div className="flex flex-col gap-5">
+              {groups.map(({ caption, rows }) => (
+                <div key={caption} className="flex flex-col gap-3">
+                  <p className={cn(labelCls, "text-surface-fg")}>{caption}</p>
+                  {rows.map(({ sample, spec, className, stack }) => (
+                    <div
+                      key={sample}
+                      className={
+                        stack
+                          ? "flex flex-col gap-1"
+                          : "flex flex-wrap items-baseline justify-between gap-x-2"
+                      }
+                    >
+                      <span className={className}>{sample}</span>
+                      <span className="shrink-0 font-mono text-xs text-surface-fg">{spec}</span>
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>
           </Card>
           <Card className="lg:col-span-2">
-            <div className="typography flex flex-col gap-2">
-              <h2>{ty.prose}</h2>
-              <p>{ty.proseBody}</p>
+            <h3 className="text-sm font-semibold">{ty.prose}</h3>
+            <div className="typography max-w-[40em] [&_p]:mt-4 [&_h2]:mt-7 [&_h3]:mt-6 [&_ul]:mt-4 [&_blockquote]:mt-5 [&_li+li]:mt-2 [&>:first-child]:mt-0">
+              <h2>{ty.essayTitle}</h2>
+              <p>{ty.p1}</p>
+              <p>{ty.p2}</p>
               <h3>{ty.h3}</h3>
               <p>
-                {ty.bodyLine} <code>typography</code>
+                {ty.p3a}
+                <code>--leading-body</code>
+                {ty.p3b}
               </p>
               <ul>
                 <li>{ty.listA}</li>
                 <li>{ty.listB}</li>
+                <li>{ty.listC}</li>
               </ul>
               <blockquote>{ty.quote}</blockquote>
             </div>

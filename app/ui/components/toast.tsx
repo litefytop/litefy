@@ -3,7 +3,7 @@ import { CircleCheck, CircleHelp, Loader2, TriangleAlert, X } from "./icons";
 import React, { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import { useSpin } from "../utils/use-spin";
 import { getSchemeDurationMs } from "../utils/scheme-duration";
-export type ToastType = "success" | "error" | "warning" | "info" | "loading";
+export type ToastType = "success" | "error" | "warning" | "info";
 export type CloseEvent = {
     type: "auto" | "manual" | "complete";
     id?: string | number;
@@ -46,7 +46,7 @@ export function ToastClose({ className, children, ...props }: ToastCloseProps) {
       {children ?? <X/>}
     </button>);
 }
-export type ToastItemProps = Omit<React.ComponentProps<"div">, "className" | "style"> & {
+export type ToastItemProps = Omit<React.ComponentProps<"div">, "className" | "style" | "title"> & {
     id?: string | number;
     type?: ToastType;
     title?: React.ReactNode;
@@ -131,7 +131,6 @@ const toastIcons: Record<ToastType, React.ReactNode> = {
     error: <X/>,
     warning: <TriangleAlert/>,
     info: <CircleHelp/>,
-    loading: <ToastSpinner/>,
 };
 const EXIT_DURATION_HOOK = "--duration-lg";
 function ToastItem({ isExpanded = false, id, type, duration, closable, onClose, icon: customIcon, title, description, classNames, styles, ...restProps }: ToastItemProps) {
@@ -164,7 +163,7 @@ function ToastItem({ isExpanded = false, id, type, duration, closable, onClose, 
     }, [id, onClose]);
     useEffect(() => {
         const d = duration ?? 5000;
-        if (type === "loading" || d === Infinity || paused) {
+        if (d === Infinity || paused) {
             return;
         }
         if (remainingRef.current === undefined) {
@@ -178,7 +177,7 @@ function ToastItem({ isExpanded = false, id, type, duration, closable, onClose, 
             remainingRef.current = Math.max(0, (remainingRef.current ?? d) - (Date.now() - startedAt));
             clearTimeout(timer);
         };
-    }, [handleDismiss, paused, type, duration]);
+    }, [handleDismiss, paused, duration]);
     useEffect(() => {
         if (id === undefined)
             return;
@@ -307,7 +306,7 @@ function ToastContainer({ visibleToasts = 3, className, ...props }: ToastContain
     </section>);
 }
 type ToastMethod = (options: ToastItemProps) => string | number;
-const toastMethods = Object.fromEntries((["success", "error", "warning", "info", "loading"] as ToastType[]).map((type) => [
+const toastMethods = Object.fromEntries((["success", "error", "warning", "info"] as ToastType[]).map((type) => [
     type,
     (options: ToastItemProps) => toastObserver.addToast({ ...options, type }),
 ])) as Record<ToastType, ToastMethod>;
@@ -336,18 +335,19 @@ type PromiseData<T> = {
 function promise<T>(task: () => Promise<T>, data: PromiseData<T>) {
     const id = toastObserver.addToast({
         title: data.loading,
-        type: "loading",
+        icon: <ToastSpinner/>,
+        duration: Infinity,
         classNames: data.classNames,
-    } as ToastItemProps);
+    });
     task()
         .then((response) => {
         const message = typeof data.success === "function" ? data.success(response) : data.success;
-        toastObserver.updateToast(id, { title: message, type: "success" } as Partial<ToastItemProps>);
+        toastObserver.updateToast(id, { title: message, type: "success", icon: undefined, duration: undefined });
         return undefined;
     })
         .catch((error) => {
         const message = typeof data.error === "function" ? data.error(error) : data.error;
-        toastObserver.updateToast(id, { title: message, type: "error" } as Partial<ToastItemProps>);
+        toastObserver.updateToast(id, { title: message, type: "error", icon: undefined, duration: undefined });
     });
 }
 export { Toaster };

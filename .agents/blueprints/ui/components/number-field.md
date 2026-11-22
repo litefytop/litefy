@@ -9,7 +9,8 @@
 - 输入校验：剥掉千分位逗号后，正整数只放行 `^\d*$`，否则放行 `^-?[0-9]*\.?[0-9]*$`；不合法击键直接丢弃且不发事件
 - `onValueChange` 载荷：`positiveInteger` 输出 number，否则输出 string；空串统一为 undefined
 - 失焦归一：trim → parseFloat，非数字清空；正整数向下取整且下限 0；再 clamp 到 min/max；仅值变化时补发一次
-- 步进 `stepDelta(±step)`（`ArrowUp` / `ArrowDown` 与按钮共用）：空值或非数字按 0 起算，正整数取整，小数按 `step` 的小数位数缩放后回除，结果 clamp
+- 步进 `stepDelta(±step)`（`ArrowUp` / `ArrowDown`、按钮与聚焦后的滚轮共用）：空值或非数字按 0 起算，正整数取整，小数按 `step` 的小数位数缩放后回除，结果 clamp
+- 滚轮步进：`onFocus` 时捕获输入节点，聚焦期间挂原生 `wheel` 监听（`passive: false`），`deltaY < 0` 加、`> 0` 减、0 忽略，命中即 `preventDefault` 阻断页面滚动；`readOnly` 不响应（`disabled` 无法聚焦，自然豁免）
 - 输入属性：`type=text`、`role=spinbutton`、`inputMode` 随 `positiveInteger` 取 numeric / decimal、`aria-valuemin|max`（仅有限值时有）与 `aria-valuenow`
 - `thousands` 只在未聚焦时按千分位显示，聚焦显示原串
 - `canDecrement` / `canIncrement` 由当前值（空按 0）与 min/max 比较，`disabled` 时均为 false

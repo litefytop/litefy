@@ -2,11 +2,11 @@
 import type { CascaderProps } from "@/ui";
 import { cn, mergeSlots } from "../utils/cn";
 import { listClasses, listViewportClasses } from "./list";
-import { panelPadClass, popoverClasses } from "./popover";
+import { popoverClasses } from "./popover";
 
 
 const rootClasses =
-  "rounded-md border-frame border-border bg-background text-sm leading-5 shadow-base focus-within:focus-ring";
+  "rounded-md border-frame border-border bg-background text-sm leading-5 shadow-base focus-within:focus-ring inert:dim";
 
 const breadcrumbClasses = "w-full min-w-0 overflow-x-auto";
 
@@ -18,7 +18,7 @@ const triggerClasses =
 
 const chevronClasses = "size-3.5 shrink-0 text-surface-fg";
 
-const menuClasses = cn(popoverClasses.content, panelPadClass);
+const menuClasses = cn(popoverClasses.content, "p-[var(--radius-md)]");
 
 const optionClasses = "flex items-center justify-between gap-x-2";
 

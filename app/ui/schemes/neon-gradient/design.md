@@ -52,6 +52,12 @@ typography:
     fontFamily: '"Segoe UI", "Helvetica Neue", system-ui, sans-serif'
   mono:
     fontFamily: '"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
+  headline:
+    fontFamily: '{typography.sans.fontFamily}'
+    fontSize: 'clamp(2.25rem, 1.5rem + 3vw, 3.75rem)'
+    fontWeight: 900
+    lineHeight: 1.05
+    letterSpacing: -0.01em
   h1:
     fontFamily: '{typography.sans.fontFamily}'
     fontSize: 2.25rem
@@ -64,22 +70,22 @@ typography:
     lineHeight: 1.15
   h3:
     fontFamily: '{typography.sans.fontFamily}'
-    fontSize: 1.4rem
+    fontSize: 1.5rem
     fontWeight: 700
     lineHeight: 1.2
   h4:
     fontFamily: '{typography.sans.fontFamily}'
-    fontSize: 1.2rem
+    fontSize: 1.25rem
     fontWeight: 700
     lineHeight: 1.3
   h5:
     fontFamily: '{typography.sans.fontFamily}'
-    fontSize: 1.05rem
+    fontSize: 1.125rem
     fontWeight: 700
     lineHeight: 1.35
   h6:
     fontFamily: '{typography.sans.fontFamily}'
-    fontSize: 0.95rem
+    fontSize: 1rem
     fontWeight: 700
     lineHeight: 1.35
   body:
@@ -91,6 +97,19 @@ typography:
     fontSize: 0.875rem
     fontWeight: 700
     letterSpacing: 0.08em
+    textTransform: uppercase
+  overline:
+    fontFamily: '{typography.mono.fontFamily}'
+    fontSize: 0.75rem
+    fontWeight: 500
+    letterSpacing: 0.1em
+    textTransform: uppercase
+  kicker:
+    fontFamily: '{typography.mono.fontFamily}'
+    fontSize: 1.625rem
+    fontWeight: 500
+    lineHeight: 1.05
+    letterSpacing: 0.1em
     textTransform: uppercase
 layout:
   spacing-base: 0.25rem
@@ -171,7 +190,7 @@ well:
 5. **Contrast borders, border-4 floor**: one 4px stroke reads every border-width role; `--border` is the style's contrast wire — amber-700 (`#b45309`, 4.7:1 on the pale canvas) by day, yellow-400 by night — the signature edge against the purple-pink fills.
 6. **Family-coloured elevation, tiered**: by night, controls glow pink (`0 0 20px rgba(236,72,153,0.5)`, hover 30px/0.7), cards glow purple (`0 0 30px rgba(168,85,247,0.4)`, hover 40px/0.6), focus glows cyan (`0 0 20px rgba(34,211,238,0.3)`). By day, glows have no physical basis on a light canvas, so the same families answer as offset soft shadows (pink `0 2px 12px rgba(190,24,93,0.35)` for controls, purple `0 4px 20px rgba(126,34,206,0.28)` for cards, cyan-700 `0 2px 10px rgba(14,116,144,0.35)` for focus; values in `shadows-light`). The press is electric activation in both tiers — inset purple by day, inset white by night (`frame-active`) — never scaling or displacement.
 7. **Large rounding**: buttons md (12px ≈ rounded-xl), cards lg (16px ≈ rounded-2xl), shells xl/2xl; pills and discs fully round. `rounded-none` is a forbidden class in this style.
-8. **Labels uppercase**, tracking 0.08em; JetBrains Mono is the mono face; headings ride `--text-h1…h6` at weights 700/900.
+8. **Labels uppercase**, tracking 0.08em; JetBrains Mono is the mono face; headings ride `--text-h1…h6` at weights 700/900. The headline display tier (`typo-headline`) answers the fluid clamp(2.25rem → 3.75rem) at weight 900 for first-screen titles only — one per screen, never inside the long-form scope. The kicker tier (`typo-kicker`) is the golden display lead-in above the headline — 1.625rem (body × φ, Fibonacci 13/8) / 500 / 0.1em uppercase. The overline tier (`typo-overline`) stays 0.75rem / 500 / 0.1em uppercase for section eyebrow lines, always smaller than the heading it labels.
 9. **Motion**: duration-300 across the frame, the brand flow 500ms, `ease-frame` standard ease — no fast or linear motion. Colour transitions are legal in `motion-frame`; reduced-motion zeroes everything through the base contract.
 10. **Contrast budget, tiered — ink depth swaps with the tier**: by day, white ink passes on every jewel-depth (700/800) action and status gradient stop (5.0:1 and up), deep purple ink (`surface-fg`) passes on the pastel surface gradient, and dark ink answers the pink-300 accent solid; the amber-700 border reads 4.7:1 on the pale canvas and the cyan-700 focus ring 5.1:1 (cyan-400 would read only 1.8:1 there). By night, deep ink (`#0f0a1e`) answers every family `-fg` on the neon fills — white would read only 1.8:1 on the cyan-400 flow stop, 2.7:1 on rose-400 and 3.5-4.0:1 on the 500-depth surface stops, while deep ink reads 4.7-10.4:1 across every stop; the canvas `foreground` stays white on the deep blue canvas. Gradients, glows and borders do not change for contrast — only ink depth swaps. Link colour (`typo-link`) and the scrollbar thumb are mechanism values (same precedent as `--focus-*`, not palette slots): `--link` answers `#0e7490` by day and `#22d3ee` by night; `--scrollbar-thumb` / `--scrollbar-thumb-hover` answer 700-depth gradients by day and the neon gradients by night (YAML `link` / `scrollbar-thumb` keys). Scrollbars: webkit lane only — 10px `::-webkit-scrollbar`, transparent track/corner, hidden arrow buttons, gradient thumb — forced-classic and always visible; standard `scrollbar-*` properties live only in the Firefox lane (`@-moz-document`, `thin` + `var(--primary)`), never on Chromium, where a non-initial standard value discards the webkit styling and degrades to auto-hiding overlay scrollbars. Components never set scrollbar styles.
 11. Do / Don't stays in scheme language only: no thin borders, no neutral gray cards, no rounded-none, no gradient text, no solid family fills, no saturated neon fills on the light canvas. General bans: delivery `references/skin-rules.md`; a11y floors: the ui-rules skill.

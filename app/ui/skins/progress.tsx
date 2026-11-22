@@ -3,12 +3,12 @@ import type { ProgressProps } from "@/ui";
 import { cn, mergeSlots } from "../utils/cn";
 
 
-const rootClasses =
-  "group flex w-full items-center gap-2 " +
-  "[--litefy-arc:var(--primary)] " +
-  "data-[abort=true]:[--litefy-arc:var(--danger)] " +
-  "data-[complete=true]:[--litefy-arc:var(--success)] " +
+const progressBaseClasses = "group flex w-full items-center gap-2 [--litefy-arc:var(--primary)]";
+const progressArcClasses =
+  "data-[abort=true]:[--litefy-arc:var(--danger)] data-[complete=true]:[--litefy-arc:var(--success)] " +
   "data-[paused=true]:[--litefy-arc:var(--warning)]";
+
+const rootClasses = cn(progressBaseClasses, progressArcClasses);
 
 
 const trackClasses =

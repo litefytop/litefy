@@ -17,6 +17,12 @@ description: 一行连续的 token 输入区——已提交规则、构建中的
 
 <ComponentPreview name="filter-combobox-i18n" />
 
+### 禁用
+
+disabled 禁用输入条，规则编辑与候选面板全部停用。
+
+<ComponentPreview name="filter-combobox-disabled" />
+
 ## API 参考
 
 ### 一根连续输入区
@@ -79,6 +85,7 @@ description: 一行连续的 token 输入区——已提交规则、构建中的
 | 属性                            | 类型                                                  | 描述                                   |
 | ----------------------------- | --------------------------------------------------- | ------------------------------------ |
 | `fields`                      | `FilterComboboxField[]`                             | 字段、别名与该列允许的操作符                       |
+| `disabled`                    | `boolean`                                           | 组级禁用：输入条挂 `inert`、输入框原生禁用，规则编辑与候选面板全停，默认 `false` |
 | `value` / `defaultValue`      | `FilterRule[]`                                      | 受控 / 非受控规则数组，默认 `[]`                 |
 | `onChange`                    | `(rules: FilterRule[]) => void`                     | 规则变化回调                               |
 | `texts`                       | `FilterComboboxTexts`                               | 全部可替换文案，默认 英文默认值                     |

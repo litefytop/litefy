@@ -1,7 +1,7 @@
 # Pagination 皮肤（app/ui/skins/pagination.tsx）
 
 1. 条根：`@container` 查询容器 + 单行 `flex`（永不换行、永不超出容器宽度），簇间距 `gap-2`，带概要行放宽到 `gap-3`。双形态互斥（容器查询裁决，hidden 分支不进焦点序与朗读树）：容器 `≥ 28rem` 显完整形态、`< 28rem` 显紧凑形态。
-2. 完整形态（controls）：前后翻页钮（nav）+ 页码行 + 前后翻页钮；nav 为 text 角色按钮 + `w-control px-0`（44px 方格，宽高同为控件档命中区，图标居中）+ `text-sm`，箭头 `size-4`（icon 默认 16px）；hover 随 text 角色加下划线。
+2. 完整形态（controls）：前后翻页钮（nav）+ 页码行 + 前后翻页钮；nav 为 text 角色按钮 + `w-control`（44px 方格，宽高同为控件档命中区，图标居中——方型与内距清零由骨架 `data-pure-icon` 钩子接管）+ `text-sm`，箭头 `size-4`（icon 默认 16px）；hover 随 text 角色加下划线。
 3. 页码钮：text 角色按钮 + `w-control px-0`（44px 方格）+ 等宽数字（`tabular-nums`）+ `text-sm`，hover 加下划线；当前页由 `aria-[current=page]` 直答：文字转 `primary` + 最重字重（`font-strong`）+ 下划线，不改背景色；动效束随按钮档。
 4. 省略号：控件方格（`size-control min-w-control`）无按钮框，`surface-fg` 文字色 + `size-4` 图形——与两侧页码同盒同高。
 5. 概要行：完整形态专属（窄形态隐藏）——`grow min-w-0 truncate`，空间不足时省略号收尾、绝不允许溢出容器；骨架在 summary 为字符串时自动挂 `title` 全文，悬停可读完整内容。

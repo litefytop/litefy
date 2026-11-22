@@ -58,6 +58,7 @@ export type InputTrailingProps = Omit<React.ComponentProps<"span">, "className">
 export function InputTrailing(props: InputTrailingProps) {
   return (
     <span
+      data-field-trailing=""
       {...props}
     />
   );

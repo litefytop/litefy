@@ -31,7 +31,7 @@ description: AI 会话消息流——角色头像与名字、状态、消息操�
 | `onMessageReset`        | `(message) => void`                                                                                                            | 传入即渲染重新生成按钮并回调                                        |
 | `renderMessageContent`  | `(message) => ReactNode`                                                                                                       | 内容整体渲染覆盖                                              |
 | `className`             | `string`                                                                                                                       | 根元素自定义类                                               |
-| `classNames`            | `{ root?, list?, message?, main?, avatar?, name?, content?, contentItem?, actions?, action?, hints?, hint?, typing?: string }` | 各槽位自定义类                                               |
+| `classNames`            | `{ root?, list?, message?, main?, avatar?, name?, content?, contentBubbleUser?, contentBubbleAssistant?, contentPlain?, contentError?, contentItem?, actions?, action?, hints?, hint?, typing?, typingDot?: string }` | 各槽位自定义类；内容块由骨架按 (mode, user) 只挂选中一枚气泡变体（`contentBubbleUser` / `contentBubbleAssistant` / `contentPlain`），失败行叠 `contentError`，`typing` 为打字点容器、`typingDot` 为三枚圆点 |
 | `...props`              | `React.ComponentProps<"div">`                                                                                                  | 透传到根 `div`                                            |
 
 `ChatMessage`：`{ id, role, content?: string \| ContentItem[], status? }`，六态（`queued` / `in_progress` / `incomplete` / `completed` / `failed` / `cancelled`）。内容块开箱支持 `text` / `input_text` / `output_text`、`input_image`、`input_file`、`reasoning` 与 `function_call`。

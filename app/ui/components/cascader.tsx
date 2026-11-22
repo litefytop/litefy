@@ -25,6 +25,7 @@ export function CascaderTrigger(props: CascaderTriggerProps) {
 }
 export interface CascaderProps extends Omit<React.ComponentProps<"div">, "children" | "className"> {
     tree: CascaderNode[];
+    disabled?: boolean;
     placeholder?: string;
     width?: string | number;
     className?: string;
@@ -36,13 +37,15 @@ export interface CascaderProps extends Omit<React.ComponentProps<"div">, "childr
         menu?: React.CSSProperties;
     };
 }
-export function Cascader({ tree, placeholder = "Select your location", width = "24rem", className, classNames, chevronNode, styles, style, ...props }: CascaderProps) {
+export function Cascader({ tree, disabled, placeholder = "Select your location", width = "24rem", className, classNames, chevronNode, styles, style, ...props }: CascaderProps) {
     const uid = React.useId().replaceAll(/[^a-zA-Z0-9_-]/gu, "");
     const [openLevel, setOpenLevel] = React.useState<number | null>(null);
     const [path, setPath] = React.useState<CascaderNode[]>([]);
     const [selected, setSelected] = React.useState<CascaderNode | null>(null);
     const levels = React.useMemo(() => [{ items: tree, id: "root" }, ...path.map((node) => ({ items: node.children ?? [], id: node.value }))], [path, tree]);
     const handleTriggerClick = (index: number) => {
+        if (disabled)
+            return;
         setPath((prev) => prev.slice(0, index));
         setSelected(null);
         setOpenLevel((prev) => (prev === index ? null : index));
@@ -59,18 +62,18 @@ export function Cascader({ tree, placeholder = "Select your location", width = "
     };
     const cols = Math.max(1, path.length + (selected ? 1 : 0));
     const trigger = (<div className={classNames?.breadcrumb} data-placeholder-shown={path.length === 0 || undefined} style={{ display: "inline-grid", gridTemplateColumns: `repeat(${cols}, minmax(64px, 1fr))`, alignItems: "center" }}>
-      {path.length === 0 ? (<CascaderTrigger aria-expanded={openLevel === 0} onClick={() => handleTriggerClick(0)} style={styles?.trigger} className={classNames?.trigger}>
+      {path.length === 0 ? (<CascaderTrigger disabled={disabled} aria-expanded={openLevel === 0} onClick={() => handleTriggerClick(0)} style={styles?.trigger} className={classNames?.trigger}>
           {placeholder}
         </CascaderTrigger>) : (<>
           {path.map((node, i) => (<span key={node.value} className="flex min-w-0 items-center overflow-hidden">
               {i > 0 && (chevronNode ?? <ChevronRight className={classNames?.chevron} aria-hidden/>)}
-              <CascaderTrigger aria-expanded={openLevel === i} onClick={() => handleTriggerClick(i)} style={styles?.trigger} className={classNames?.trigger}>
+              <CascaderTrigger disabled={disabled} aria-expanded={openLevel === i} onClick={() => handleTriggerClick(i)} style={styles?.trigger} className={classNames?.trigger}>
                 {node.label}
               </CascaderTrigger>
             </span>))}
           {selected && (<span className="flex min-w-0 items-center overflow-hidden">
               {chevronNode ?? <ChevronRight className={classNames?.chevron} aria-hidden/>}
-              <CascaderTrigger aria-expanded={openLevel === path.length} aria-current="step" onClick={() => handleTriggerClick(path.length)} style={styles?.trigger} className={classNames?.trigger}>
+              <CascaderTrigger disabled={disabled} aria-expanded={openLevel === path.length} aria-current="step" onClick={() => handleTriggerClick(path.length)} style={styles?.trigger} className={classNames?.trigger}>
                 {selected.label}
               </CascaderTrigger>
             </span>)}
@@ -89,7 +92,7 @@ export function Cascader({ tree, placeholder = "Select your location", width = "
       </PopoverContent>);
     });
     return (<>
-      <div {...props} data-anchor-name={`--cascader-${uid}-root`} style={{ maxWidth: `min(100%, ${typeof width === "number" ? `${width}px` : width})`, ...styles?.root, ...style }} className={[classNames?.root, className].filter(Boolean).join(" ") || undefined}>
+      <div {...props} inert={disabled || undefined} data-anchor-name={`--cascader-${uid}-root`} style={{ maxWidth: `min(100%, ${typeof width === "number" ? `${width}px` : width})`, ...styles?.root, ...style }} className={[classNames?.root, className].filter(Boolean).join(" ") || undefined}>
         {trigger}
       </div>
       {panels}

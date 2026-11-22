@@ -36,7 +36,7 @@
 条目逐名等于 `packages/cli/registry.json`，文档不参与判定。
 
 - 组件 66：条目附 `skin` 字段，`add` 时骨架与皮肤一起落位
-- 纯样式皮肤 6：`badge` `callout` `card` `cn` `slots` `swatch-picker`（无骨架，安装即皮肤文件本体）
+- 纯样式皮肤 6：`badge` `callout` `card` `cn` `slots` `color-swatch`（无骨架，安装即皮肤文件本体）
 - 钩子 17：`use-chart-palette` `use-combobox` `use-drag` `use-floating-panel` `use-image-status` `use-load-more` `use-motion-preference` `use-pagination` `use-panel-focus` `use-reduced-motion` `use-remote-pagination` `use-remote-sort` `use-scroll-spy` `use-spin` `use-theme` `use-upload-monitor` `use-virtual-scroll`
 - 工具 8：`chart-kit` `chart-paint` `date-math` `floating-position` `is-icon-only` `lock-page-scroll` `scheme-duration` `trap-tab-key`
 - 样式表 4：`style/minimal/base` `style/minimal/preset` `style/neo-brutalist/base` `style/neo-brutalist/preset`

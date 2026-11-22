@@ -3,19 +3,20 @@ import type { ButtonProps } from "@/ui";
 import { cn } from "../utils/cn";
 
 
-const frame =
-  "inline-flex cursor-pointer h-control items-center justify-center gap-x-2 whitespace-nowrap text-center no-underline [&_svg]:size-5 sm:[&_svg]:size-4 " +
-  "rounded-pill px-[calc(var(--spacing)*3+min(var(--radius-pill),var(--height-control)/2))] " +
-  "data-[status-reserve]:px-[calc(var(--spacing)*3+min(var(--radius-pill),var(--height-control)/2)+var(--spacing)*3.5)] sm:data-[status-reserve]:px-[calc(var(--spacing)*3+min(var(--radius-pill),var(--height-control)/2)+var(--spacing)*3)] " +
-  "text-label leading-label tracking-label font-label case-label " +
-  "motion-frame disabled:border-dashed " +
-  "data-[pure-icon=true]:aspect-square " +
-  "data-[pure-icon=true]:px-0 " +
-  "data-[pure-icon=true]:after:absolute data-[pure-icon=true]:after:-inset-hit data-[pure-icon=true]:after:content-['']";
+const frameLayoutClasses =
+  "inline-flex cursor-pointer h-control items-center justify-center gap-x-2 whitespace-nowrap text-center no-underline";
+const frameIconClasses = "[&_svg]:size-5 sm:[&_svg]:size-4";
+const framePillClasses =
+  "rounded-pill px-[max(var(--spacing)*3,min(var(--radius-pill),var(--height-control)/2))]";
+const frameTextClasses = "text-label leading-label tracking-label font-label case-label";
+const frameStateClasses =
+  "motion-frame disabled:border-dashed data-[pure-icon=true]:aspect-square data-[pure-icon=true]:p-0";
+
+const frame = cn(frameLayoutClasses, frameIconClasses, framePillClasses, frameTextClasses, frameStateClasses);
 
 
 const blockMotion =
-  " hover:lift hover:shadow-frame-hover active:crush active:shadow-frame-active disabled:shadow-frame-disabled";
+  "hover:lift hover:shadow-frame-hover active:crush active:shadow-frame-active disabled:dim disabled:shadow-frame-disabled";
 
 export const buttonVariants = {
   primary: cn(
@@ -54,17 +55,12 @@ function pickVariant(props: Record<string, unknown>): ButtonVariant {
 }
 
 export function Button({ className, icon, status, children, ...props }: ButtonProps) {
-  const pureIcon = children === null || children === undefined;
   return (
     <ButtonHeadless
       {...props}
       icon={icon}
       status={status}
-      className={cn(
-        buttonVariants[pickVariant(props)],
-        pureIcon && "relative",
-        className,
-      )}
+      className={cn(buttonVariants[pickVariant(props)], className)}
     >
       {children}
     </ButtonHeadless>

@@ -22,24 +22,31 @@ const avatarClasses =
 const nameClasses = "text-xs leading-4 text-surface-fg";
 
 const contentClasses =
-  "flex max-w-full flex-col gap-y-2 text-left text-sm leading-5 " +
-  "group-data-[mode=bubble]/chat:data-[user=true]:rounded-xl group-data-[mode=bubble]/chat:data-[user=true]:rounded-br-sm group-data-[mode=bubble]/chat:data-[user=true]:bg-accent group-data-[mode=bubble]/chat:data-[user=true]:text-accent-fg group-data-[mode=bubble]/chat:data-[user=true]:px-3 group-data-[mode=bubble]/chat:data-[user=true]:py-2 " +
-  "group-data-[mode=bubble]/chat:data-[user=false]:rounded-xl group-data-[mode=bubble]/chat:data-[user=false]:rounded-bl-sm group-data-[mode=bubble]/chat:data-[user=false]:bg-surface group-data-[mode=bubble]/chat:data-[user=false]:text-surface-fg group-data-[mode=bubble]/chat:data-[user=false]:px-3 group-data-[mode=bubble]/chat:data-[user=false]:py-2 " +
-  "group-data-[mode=noBubble]/chat:text-foreground " +
-  "group-data-[mode=userBubble]/chat:data-[user=true]:rounded-xl group-data-[mode=userBubble]/chat:data-[user=true]:rounded-br-sm group-data-[mode=userBubble]/chat:data-[user=true]:bg-accent group-data-[mode=userBubble]/chat:data-[user=true]:text-accent-fg group-data-[mode=userBubble]/chat:data-[user=true]:px-3 group-data-[mode=userBubble]/chat:data-[user=true]:py-2 " +
-  "group-data-[mode=userBubble]/chat:data-[user=false]:text-foreground " +
-  "data-[status=failed]:text-danger-fg data-[status=cancelled]:text-danger-fg";
+  "flex max-w-full flex-col gap-y-2 text-left text-sm leading-5";
 
-const contentItemClasses =
-  "min-w-0 " +
-  "[&>img]:max-w-64 [&>img]:rounded-lg [&>img]:border-hair [&>img]:border-border " +
-  "[&>span]:inline-flex [&>span]:items-center [&>span]:gap-x-1 [&>span]:rounded-md [&>span]:border-hair [&>span]:border-border [&>span]:px-2 [&>span]:py-1 " +
-  "[&>p]:m-0";
+const contentBubbleUserClasses =
+  "rounded-xl rounded-br-sm bg-accent text-accent-fg px-3 py-2";
 
-const typingClasses =
-  "flex items-center gap-x-1 py-1 " +
-  "[&_[data-typing=true]]:size-1.5 [&_[data-typing=true]]:rounded-pill [&_[data-typing=true]]:bg-current " +
-  "[&_[data-typing=true]]:motion-safe:animate-pulse";
+const contentBubbleAssistantClasses =
+  "rounded-xl rounded-bl-sm bg-surface text-surface-fg px-3 py-2";
+
+const contentPlainClasses = "text-foreground";
+
+const contentErrorClasses = "text-danger-fg";
+
+const contentItemBaseClasses = "min-w-0";
+const contentItemImageClasses =
+  "[&>img]:max-w-64 [&>img]:rounded-lg [&>img]:border-hair [&>img]:border-border";
+const contentItemFileClasses =
+  "[&>span]:inline-flex [&>span]:items-center [&>span]:gap-x-1 [&>span]:rounded-md [&>span]:border-hair [&>span]:border-border " +
+  "[&>span]:px-2 [&>span]:py-1 [&>p]:m-0";
+
+const contentItemClasses = cn(contentItemBaseClasses, contentItemImageClasses, contentItemFileClasses);
+
+const typingClasses = "flex items-center gap-x-1 py-1";
+
+const typingDotClasses =
+  "size-1.5 rounded-pill bg-current motion-safe:animate-pulse";
 
 const actionsClasses =
   "flex items-center gap-x-1 opacity-0 transition-opacity duration-sm " +
@@ -47,7 +54,7 @@ const actionsClasses =
 
 const actionClasses =
   cn(buttonVariants.text,
-    "h-control min-h-0 w-control px-0 text-surface-fg " +
+    "h-control min-h-0 w-control text-surface-fg " +
     "data-[active=true]:text-primary data-[active=true]:opacity-100");
 
 const hintsClasses = "m-0 flex list-none flex-wrap gap-x-2 gap-y-1 p-0";
@@ -63,8 +70,13 @@ const skinClassNames = {
   avatar: avatarClasses,
   name: nameClasses,
   content: contentClasses,
+  contentBubbleUser: contentBubbleUserClasses,
+  contentBubbleAssistant: contentBubbleAssistantClasses,
+  contentPlain: contentPlainClasses,
+  contentError: contentErrorClasses,
   contentItem: contentItemClasses,
   typing: typingClasses,
+  typingDot: typingDotClasses,
   actions: actionsClasses,
   action: actionClasses,
   hints: hintsClasses,

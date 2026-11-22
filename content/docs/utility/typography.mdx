@@ -25,11 +25,14 @@ One class on a container typesets every heading, paragraph, list, quote, inline 
 | ------------------- | -------------------------------------------------------------------------------------------- |
 | `typography`        | Reading area — typesets descendant h1–h6, p, ul/ol, blockquote, code and a; a subtree marked `not-typography` opts out |
 | `typo-h1` … `typo-h6` | Heading characters: size, weight, line-height, each scheme answers its own voice           |
+| `typo-headline`     | Display headline: the single first-screen hero title — fluid clamp size, weight, line-height and letter spacing; single-hang only, never typeset by the reading area |
+| `typo-kicker`       | Golden lead-in above the headline: body × φ (1.625rem), uppercase, widest letter spacing; single-hang only, never typeset by the reading area |
 | `typo-body`         | Body copy: size, line-height, text color                                                     |
 | `typo-quote`        | Quote: line-height, text color, left bar and padding                                         |
 | `typo-list`         | List: line-height, indent, markers (ul disc / ol decimal)                                    |
 | `typo-code`         | Inline code: mono family, background color, border                                           |
 | `typo-link`         | Link: primary color, underline                                                               |
+| `typo-overline`     | Eyebrow: small uppercase size, medium weight, widest letter spacing; single-hang only, never typeset by the reading area |
 
 Single-hung classes and the reading area give the same look — block spacing and line width are the caller's job: rhythm via a `gap-*` column or the site's own prose margins, line width via `max-w-[40em]` (it scales with the font size, so 40 Chinese characters and 80 Latin characters per line both hold); the typography area itself carries no width.
 

@@ -147,6 +147,8 @@
 @custom-variant borderless (&:where([data-border="none"]));
 @custom-variant bordered (&:where([data-border="solid"]));
 
+@custom-variant inert (&[inert]);
+
 @custom-variant motion-safe {
   @media (prefers-reduced-motion: no-preference) {
     @slot;
@@ -353,6 +355,12 @@
   outline: var(--focus-outline);
   outline-offset: calc(-1 * var(--focus-offset));
   box-shadow: var(--focus-glow-inset);
+}
+
+@utility dim {
+  opacity: 50%;
+  cursor: not-allowed;
+  color: var(--color-surface-fg);
 }
 
 @utility thumb-hit {
@@ -628,14 +636,6 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
-  }
-
-  :disabled,
-  [inert] {
-    opacity: 50%;
-    cursor: not-allowed;
-    pointer-events: none;
-    color: var(--surface-fg);
   }
 
   @scope (.typography) to (.not-typography) {

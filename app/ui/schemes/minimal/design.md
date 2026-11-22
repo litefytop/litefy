@@ -54,9 +54,9 @@ typography:
     fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
   headline:
     fontFamily: '{typography.sans.fontFamily}'
-    fontSize: 3.75rem
+    fontSize: 'clamp(2.25rem, 1.5rem + 3vw, 3.75rem)'
     fontWeight: 700
-    lineHeight: 1
+    lineHeight: 1.1
     letterSpacing: -0.025em
   h1:
     fontFamily: '{typography.sans.fontFamily}'
@@ -70,22 +70,22 @@ typography:
     lineHeight: 1.35
   h3:
     fontFamily: '{typography.sans.fontFamily}'
-    fontSize: 1.125rem
+    fontSize: 1.25rem
     fontWeight: 600
     lineHeight: 1.35
   h4:
     fontFamily: '{typography.sans.fontFamily}'
-    fontSize: 1rem
+    fontSize: 1.125rem
     fontWeight: 600
     lineHeight: 1.35
   h5:
     fontFamily: '{typography.sans.fontFamily}'
-    fontSize: 0.9375rem
+    fontSize: 1.0625rem
     fontWeight: 600
     lineHeight: 1.35
   h6:
     fontFamily: '{typography.sans.fontFamily}'
-    fontSize: 0.875rem
+    fontSize: 1rem
     fontWeight: 600
     lineHeight: 1.35
   body:
@@ -106,6 +106,13 @@ typography:
     fontSize: 0.75rem
     fontWeight: 500
     letterSpacing: 0.1em
+  kicker:
+    fontFamily: '{typography.sans.fontFamily}'
+    fontSize: 1.625rem
+    fontWeight: 500
+    lineHeight: 1.1
+    letterSpacing: 0.1em
+    textTransform: uppercase
   code:
     fontFamily: '{typography.mono.fontFamily}'
     fontSize: 0.875rem
@@ -133,6 +140,7 @@ motion:
   duration-sm: 150ms
   duration-md: 300ms
   duration-lg: 500ms
+  press-inset-delay: 80ms
   ease-frame: 'cubic-bezier(0.4, 0, 0.2, 1)'
 components:
   avatar:
@@ -184,19 +192,20 @@ well:
 
 ## Typography
 
-1. 单一 sans 族（`typography.sans`），代码用 `typography.mono`。九档是**阅读角色**，不是尺寸；阶梯已在方案 `@theme` 命名（`--text-h1…h6`、`--leading-head`、`--leading-body`、`--text-table-code`），业务写档名（`text-h1 leading-head`），不写自造值。
-2. 九档表：
+1. 单一 sans 族（`typography.sans`），代码用 `typography.mono`。九档**阅读角色**加两档**展示角色**（`headline` / `kicker`，只单挂、不进长文作用域），不是尺寸；阶梯已在方案 `@theme` 命名（`--text-h1…h6`、`--text-headline`、`--text-kicker`、`--text-overline`、`--leading-head`、`--leading-headline`、`--leading-body`、`--tracking-headline`、`--tracking-overline`、`--text-table-code`），业务写档名（`text-h1 leading-head`），不写自造值。
+2. 档位表：
 
    | 档            | 令牌（工具类）                     | 字号                        | 字重 | 用途                       |
    | ------------- | ---------------------------------- | --------------------------- | ---- | -------------------------- |
-   | `headline`    | 展示时刻自写                       | 2.25rem → 3.75rem（随断点） | 700  | 仅首屏 / 展示时刻          |
+   | `headline`    | `typo-headline`                    | clamp 2.25rem → 3.75rem（随视口） | 700  | 仅首屏 / 展示时刻，每屏至多一个 |
+   | `kicker`      | `typo-kicker`                      | 1.625rem，大写，最宽字距    | 500  | 首屏引导行（正文 × φ 黄金档） |
    | `h1`          | `text-h1`                          | 1.75rem                     | 600  | 页面标题                   |
    | `h2`          | `text-h2`                          | 1.375rem                    | 600  | 章节标题（自带底部分隔线） |
-   | `h3`–`h6`     | `text-h3`…`text-h6`                | 1.125 → 0.875rem            | 600  | 子章节；**严禁跳级**       |
+   | `h3`–`h6`     | `text-h3`…`text-h6`                | 1.25 → 1rem                 | 600  | 子章节；**严禁跳级**       |
    | `body`        | `text-base leading-body`           | 1rem / 1.75                 | 400  | 段落                       |
    | `description` | `text-base` → `sm:text-lg`         | 1rem → 1.125rem             | 400  | `surface-fg` 辅助文字      |
    | `label`       | `text-xs font-semibold tracking-*` | 0.75rem，+0.025em 字距      | 600  | 字段标签、分组标题         |
-   | `overline`    | `text-xs uppercase tracking-*`     | 0.75rem，大写，最宽字距     | 500  | 章节眉标                   |
+   | `overline`    | `typo-overline`                    | 0.75rem，大写，最宽字距     | 500  | 章节眉标                   |
    | 行内 code     | `text-sm`（mono）                  | 0.875rem                    | 500  | 标题与正文里的行内代码     |
 
 3. 标题行高统一 `leading-head`（1.35），正文行高统一 `leading-body`（1.75）；段间距 ≥ 1.5 倍行高；禁止两端对齐；可读行宽走 `max-w-[40em]` 居中正文列（默认案 1rem 字号下即 40rem，中文 40 字 / 拉丁 80 字符同时成立，随字号缩放），页面框 80rem；**小屏可聚焦输入字号不得低于 16px**（iOS Safari 聚焦低阈值输入会整页放大），这条下限由方案保证；错误与空状态文案写清「问题 + 下一步动作」。
@@ -213,7 +222,7 @@ well:
 
 ## Elevation & Depth
 
-1. 阴影严格分级，与圆角一一配对，语义四级住 `--elevation-*`：`faint`（sm，发丝元素、极小占位）/ `subtle`（sm，小标签、紧凑行内控件、轻悬浮）/ `base`（md，按钮、输入框、标准卡片静止态）/ `elevated`（xl，弹窗、抽屉、浮层、顶级面板）；第五枚 `--elevation-pressed` 按压内阴影只归组件层。亮档只用扩散黑投影（大模糊、低不透明度，弥散不锐利）；暗档每档加淡白亮环（subtle 7% → elevated 14%）与顶部内高光，投影与亮档严格同形同尺寸、不透明度加倍加深——纯黑投影画在同深度暗画布上需约 2 倍强度才可辨（经验规则）；语义四级之外的自造档位与任意值阴影一律不出现。轻提示角色 `shadow-hint`（Tooltip / Toast 皮肤点名）答 `elevated` 同值，不另设第五档。
+1. 阴影严格分级，与圆角一一配对，语义四级住 `--elevation-*`：`faint`（sm，发丝元素、极小占位）/ `subtle`（sm，小标签、紧凑行内控件、轻悬浮）/ `base`（md，按钮、输入框、标准卡片静止态）/ `elevated`（xl，弹窗、抽屉、浮层、顶级面板）；第五枚 `--elevation-pressed` 按压内阴影只归组件层。亮档以扩散黑投影为底（大模糊、低不透明度，弥散不锐利），subtle / base / elevated 各追加一层品牌染色柔光——大模糊负扩散的 `color-mix(in oklab, var(--primary) 8% / 14% / 20%, transparent)`（示例值，faint 不加）：默认近黑品牌下柔光呈更大更软的扩散层，品牌换色柔光随主色相染色；暗档不加染色层（着色投影与加倍加深律冲突），每档维持淡白亮环（subtle 7% → elevated 14%）与顶部内高光，投影与亮档严格同形同尺寸、不透明度加倍加深——纯黑投影画在同深度暗画布上需约 2 倍强度才可辨（经验规则）；语义四级之外的自造档位与任意值阴影一律不出现。轻提示角色 `shadow-hint`（Tooltip / Toast 皮肤点名）答 `elevated` 同值，不另设第五档。
 2. 焦点（机制值，`index.css` 的 `--focus-*`）：1px `primary` outline 加 3px `primary` 50% 透明阴影；invalid / danger 转 `danger-fg` 同形阴影。零间隙网格控件（日历日期格）另有内画档 `focus-ring-inset`：outline 与光晕同形内画（offset 取 `--focus-offset` 负值、光晕读 `--focus-glow-inset`），聚焦足迹不超 44×44 控件盒。方案不设全局 `:focus-visible` 兜底——每个可聚焦件由皮肤显式挂 `focus-visible:focus-ring`（danger 挂 `focus-ring-danger`），内层件不挂即无环；环是方案层机制，皮肤只挂角色类、不自绘样式。
 3. 边界系统（发丝是唯一宽度）：全局中性组件默认边框 = `var(--border)`；品牌交互组件统一走 Brand 色板。输入类规范形态「边框 + `base` 阴影」成套，边框不裸用；裸边框只给微小指示器（Checkbox / Radio / Steps marker）、虚线占位、分隔结构线、浮层内嵌面板。
 4. 边框与阴影二选一：带边框的盒子再叠大阴影即 Ghost card，出现即改。
@@ -225,8 +234,8 @@ well:
 
 1. 动效人格：安静。允许的动作只有淡入淡出、位移与压暗（`lift` / `crush`）和折叠展开；禁止弹跳、回弹、速度感应与戏剧化登场（格子波形、摇曳类不进本方案）。动画与过渡只做变换、透明度与颜色（`--transition-frame-properties` 清单），布局属性一律禁止——唯一豁免是折叠高度（`grid-template-rows` 技法，collapse / tree 专用，时长走档）。
 2. 时长三档住 `--duration-*`（`sm` 150ms / `md` 300ms / `lg` 500ms），微交互默认档 `--transition-duration-frame` 150ms（`motion-frame` 束即读它）；缓动统一 `ease-frame`。禁止裸时长与裸缓动（`duration-150`、`ease-[ease]` 这类绕档写法不出现——它们同时绕过减动效契约）。
-3. 按压唯一入口是 `crush` 工具类（translate 归零 + `brightness(0.95)`）；禁止手写 `translate-(--translate-crush)` 丢掉压暗。
-4. 悬停阴影两车道：按钮类不升档（`shadow-frame-hover` 与静止同档，反馈靠 lift / crush）；容器类升一档（`shadow-block-hover` 即 elevated）。滑块拇指、对话框关闭钮这类小控件按按钮类处理，禁止 hover 升 elevated。
+3. 按压唯一入口是 `crush` 工具类（translate 归零 + `brightness(0.95)`，内凹阴影经 `--press-inset-delay` 80ms 延迟跟进——先落回再内凹，释放走基础 `motion-frame` 立即回弹）；禁止手写 `translate-(--translate-crush)` 丢掉压暗。
+4. 悬停阴影两车道：按钮类不升档（`shadow-frame-hover` 与静止同档，反馈靠 lift 纵向上移半步 / crush）；容器与交互卡升一档（`shadow-block-hover` 即 elevated）。滑块拇指、对话框关闭钮这类小控件按按钮类处理，禁止 hover 升 elevated。
 5. 减动效契约：`prefers-reduced-motion: reduce` 或 `data-motion="reduce"` 时全部时长令牌清零、CSS 动画压到 1ms；JS 侧动效读 `useMotionPreference`。任何绕过令牌的时长都等于绕过契约。
 6. 透明度豁免清单（全方案仅此六条，其余弱化态不在其中）：`border` 令牌自身的 50% 洗边、禁用契约的 50%、悬停显现过渡的 0↔100（tooltip、toast 关闭钮、字段提示）、遮罩渐隐（scroll-shadow 的画布色渐变）、图表数据编码的透明度（`fill-opacity` 与 donut / radar 的降权 dim——图表以透明度叠色为媒介）、日历外月日期文字的 50% 透明（`text-foreground/50` 文字色 alpha 而非元素 opacity，对画布实测约 3.7:1，用户接受取舍 2026-11-20）。其余弱化态一律 `surface-fg` 文字色或图形差异（划线、换色）表达，不用 opacity。
 

@@ -3,13 +3,18 @@ import { ArrowRight } from "@/components/icons";
 import { CardLink } from "@/components/card-link";
 import { useEffect } from "react";
 import { Link, useNavigate, useParams, useLocation } from "react-router";
-import { StyleGallery } from "@/components/style-gallery";
+import { ShowcaseCard } from "@/components/showcase-card";
 import { siteDefaultLanguage } from "@/lib/i18n";
 import { jsonLdScript } from "@/lib/seo";
 import { appName, gitConfig, siteUrl } from "@/lib/shared";
 import { SiteSkinProvider, useSiteSkin } from "@/components/site-skin";
 import { siteSkin } from "@/components/site-skin-bundle";
-import { LANGUAGES, SCHEME_PREFIXES, toSchemeHref } from "@/lib/style-templates";
+import {
+  LANGUAGES,
+  SCHEME_PREFIXES,
+  findStyleTemplateByPath,
+  toSchemeHref,
+} from "@/lib/style-templates";
 
 export type Locale = "en" | "zh";
 
@@ -28,8 +33,8 @@ export const homeContent = {
         </>
       ),
       body: "Litefy UI is a modern React component library for the web: the headless base carries behaviour and accessibility, the scheme stylesheet carries the look. Iterate fast, keep everything consistent, and swap the whole page's design language whenever you want a new one.",
+      componentsCta: "View components",
       docsCta: "Read the docs",
-      schemeCta: "Scheme stylesheets",
     },
     steps: {
       eyebrow: "how it is put together",
@@ -59,8 +64,8 @@ export const homeContent = {
         </>
       ),
       body: "Litefy UI 是面向 Web 的现代 React 组件库：无头基座交出行为与无障碍，方案样式表交出外观。助你快速迭代、保持风格一致，需要时整页换一套设计语言。",
-      docsCta: "读文档",
-      schemeCta: "方案样式表",
+      componentsCta: "查看组件",
+      docsCta: "阅读文档",
     },
     steps: {
       eyebrow: "它是怎么拼起来的",
@@ -81,30 +86,31 @@ export const homeContent = {
 function LandingHero({ locale, pathname }: { locale: Locale; pathname: string }) {
   const { buttonVariants } = useSiteSkin();
   const t = homeContent[locale].hero;
-  const stylesHref = toSchemeHref(pathname, `/${locale}/docs/styles`);
+  const docsHref = toSchemeHref(pathname, `/${locale}/docs`);
+  const componentsHref = toSchemeHref(pathname, `/${locale}/docs/overview`);
 
   return (
     <section className="px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-20 border-b bg-surface text-on-surface">
       <div className="grid gap-6 mx-auto w-full max-w-320 md:grid-cols-[1.2fr_1fr] md:items-center">
         <header className="flex flex-col gap-3">
-          <p className="m-0 scroll-mt-20 text-xs font-medium tracking-widest uppercase">
+          <p className="m-0 scroll-mt-20 typo-kicker">
             {t.eyebrow}
           </p>
-          <h1 className="m-0 scroll-mt-20 py-4 mb-4 text-36 leading-10 tracking-tight font-bold sm:text-48 sm:leading-none lg:text-60 lg:leading-none">
+          <h1 className="m-0 scroll-mt-20 py-4 mb-4 typo-headline">
             {t.title}
           </h1>
           <p className="max-w-256 text-sm text-surface-fg">{t.body}</p>
           <div className="flex flex-wrap gap-2">
-            <Link to={toSchemeHref(pathname, `/${locale}/docs`)} className={buttonVariants.primary}>
-              {t.docsCta}
+            <Link to={componentsHref} className={buttonVariants.primary}>
+              {t.componentsCta}
               <ArrowRight className="size-4" aria-hidden />
             </Link>
-            <Link to={stylesHref} className={buttonVariants.outline}>
-              {t.schemeCta}
+            <Link to={docsHref} className={buttonVariants.outline}>
+              {t.docsCta}
             </Link>
           </div>
         </header>
-        <StyleGallery />
+        <ShowcaseCard lang={locale} template={findStyleTemplateByPath(pathname)} />
       </div>
     </section>
   );
@@ -133,7 +139,7 @@ function StepsSection({ locale, pathname }: { locale: Locale; pathname: string }
     <section className="px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-20">
       <div className="flex flex-col gap-4 mx-auto w-full max-w-320">
         <div className="flex flex-col gap-2">
-          <p className="m-0 scroll-mt-20 text-xs font-medium tracking-widest uppercase">
+          <p className="m-0 scroll-mt-20 typo-overline">
             {t.eyebrow}
           </p>
           <h2 className="text-2xl font-medium">{t.title}</h2>

@@ -175,7 +175,7 @@ function DemoFitBox({ children }: { children: React.ReactNode }) {
       >
         <div
           ref={innerRef}
-          className="w-full"
+          className="flex w-full flex-col items-center"
           style={fit ? { transform: `scale(${fit.scale})`, transformOrigin: "top center" } : undefined}
         >
           {children}

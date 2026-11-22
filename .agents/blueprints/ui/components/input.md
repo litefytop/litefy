@@ -4,7 +4,7 @@
 
 ## 行为 / 状态
 
-- 导出 `Input` 与基础件 `InputLeading`（span）/ `InputRoot`（input）/ `InputTrailing`（span），基础件仅透传 props 与 `className`
+- 导出 `Input` 与基础件 `InputLeading`（span）/ `InputRoot`（input）/ `InputTrailing`（span，自带 `data-field-trailing` 组内端角判定标记），基础件仅透传 props 与 `className`
 - 结构：根 div 拼接 `classNames.group` + `className`，`style` 落根 div；input 只消费 `classNames.root` / `styles.root`
 - `leading` / `trailing` 为真值才渲染对应 span（`classNames.leading|trailing`、`styles.leading|trailing`）
 - `type` 限定 `text | email | url | tel | search`；`InputRoot` 未传 `id` 时用 `useId` 补齐；`Input` 按 `type` 缺省 `autoComplete`（email→`email`、tel→`tel`、url→`url`、search→`search`，text 不设），外部 `autoComplete` 优先

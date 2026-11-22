@@ -8,7 +8,8 @@ const itemClasses =
   "m-1 size-6 cursor-pointer rounded-md border-hair border-border bg-(--swatch-color) shadow-frame " +
   "motion-frame " +
   "aria-checked:shadow-checked " +
-  "focus-visible:focus-ring";
+  "focus-visible:focus-ring " +
+  "disabled:dim";
 
 
 export const colorSwatchItemClasses = itemClasses;

@@ -2,12 +2,12 @@ import { Meter as MeterHeadless } from "@/ui";
 import type { MeterProps } from "@/ui";
 import { cn, mergeSlots } from "../utils/cn";
 
-const rootClasses =
-  "flex w-full items-center gap-2 " +
-  "[--litefy-arc:var(--success)] " +
-  "data-[zone=success]:[--litefy-arc:var(--success)] " +
-  "data-[zone=warning]:[--litefy-arc:var(--warning)] " +
+const meterBaseClasses = "flex w-full items-center gap-2 [--litefy-arc:var(--success)]";
+const meterZoneClasses =
+  "data-[zone=success]:[--litefy-arc:var(--success)] data-[zone=warning]:[--litefy-arc:var(--warning)] " +
   "data-[zone=danger]:[--litefy-arc:var(--danger)]";
+
+const rootClasses = cn(meterBaseClasses, meterZoneClasses);
 
 const trackClasses = "grow min-w-0 h-2 overflow-hidden rounded-pill bg-surface";
 

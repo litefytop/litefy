@@ -15,6 +15,9 @@ import {
   ArrowRight,
   Check,
   CircleCheck,
+  House,
+  Languages,
+  Letters,
   Printer,
   Sparkles,
   Sun,
@@ -36,7 +39,7 @@ export const meta: MetaFunction = ({ params }) => {
 
 const SECTION = "scroll-mt-16 border-b-control border-border px-4 py-12 md:px-6 md:py-16 lg:px-8 lg:py-20";
 const CONTAINER = "mx-auto w-full max-w-320";
-const EYEBROW = "text-xs font-medium uppercase tracking-widest text-surface-fg";
+const EYEBROW = "typo-overline text-surface-fg";
 const HEADLINE = "text-h2 leading-head tracking-tight font-black";
 const LEAD = "max-w-[40em] text-base leading-body text-surface-fg";
 const textLinkClass = cn(buttonVariants.text, "px-3", "text-surface-fg");
@@ -81,7 +84,7 @@ const COPY: Record<
   Lang,
   {
     brand: string;
-    back: string;
+    home: string;
     docs: string;
     nav: { palette: string; laws: string; type: string; rules: string; more: string };
     hero: {
@@ -122,12 +125,19 @@ const COPY: Record<
       title: string;
       lead: string;
       ladder: string;
+      groupDisplay: string;
+      groupReading: string;
+      groupMechanism: string;
       prose: string;
-      proseBody: string;
+      essayTitle: string;
+      p1: string;
+      p2: string;
       h3: string;
-      bodyLine: string;
+      p3a: string;
+      p3b: string;
       listA: string;
       listB: string;
+      listC: string;
       quote: string;
     };
     rules: {
@@ -151,12 +161,12 @@ const COPY: Record<
 > = {
   zh: {
     brand: "NEON",
-    back: "返回",
+    home: "主页",
     docs: "文档",
     nav: { palette: "色盘", laws: "交互", type: "排版", rules: "规则", more: "导航" },
     hero: {
       eyebrow: "// 风格方案 · 霓虹渐变",
-      cta1: "查看色盘",
+      cta1: "查看组件",
       cta2: "阅读文档",
       stats: [
         ["4px", "描边宽度"],
@@ -223,13 +233,20 @@ const COPY: Record<
       title: "排版系统",
       lead: "Segoe UI 字族配 JetBrains Mono 标签。标题 900 黑度、行高 1.15，正文 1.7——霓虹要够黑才压得住光。字阶与长文作用域由方案持有，页面不逐元素写类。",
       ladder: "字阶",
-      prose: "正文块",
-      proseBody: "一个容器之内，标题、段落、列表、引文与行内代码全由方案排版——页面一个字都不写。",
-      h3: "h3 层级",
-      bodyLine: "正文读的是容器带来的阶梯，不是这个元素上的类。",
-      listA: "标题层级自带排版节奏",
-      listB: "列表与引用继承长文作用域",
-      quote: "光晕建层级，黑度建秩序：渐变负责身份，字重负责阅读。",
+      groupDisplay: "首屏展示档",
+      groupReading: "阅读档",
+      groupMechanism: "机制档",
+      prose: "长文作用域",
+      essayTitle: "阅读是一种节奏",
+      p1: "好的正文先让人读下去，再让人评价设计。行与行之间留出换气的空隙，标题安静地站在段落之前，引文退到左边线之后——排版退场，内容登场。",
+      p2: "段落是节奏的最小单位，三五行成一段，读起来才有起伏；少了这层起伏，字号再准，读起来也是平的。",
+      h3: "标题要克制",
+      p3a: "层级靠字号与留白建立，不靠加粗与颜色：小节标题只比正文大一号，就足以把结构立起来。改一处 ",
+      p3b: "，全文的呼吸跟着一起变。",
+      listA: "行高给正文留出换气的余地",
+      listB: "标题逐级递减，最深层级也不小于正文",
+      listC: "引文与行内代码在真实语境里出现，而不是孤例",
+      quote: "「排版就是语言的模样。」—— Ellen Lupton",
     },
     rules: {
       eyebrow: "04 — 设计规则",
@@ -241,7 +258,7 @@ const COPY: Record<
         { n: "03", title: "4px 对比边框", body: "control / hair / frame 三档线宽同答 4px：浅档 amber-700、暗档 yellow-400。边框是对比件，不是发丝。" },
         { n: "04", title: "家族光晕随档", body: "阴影角色按档回答：暗档霓虹外发光，浅档同族柔影。光晕颜色取自控件家族，不借族、不发灰。" },
         { n: "05", title: "大圆角", body: "按钮 12px、卡片 16px、外壳 24px，pill 与 disc 全圆。直角在这套方案里没有位置。" },
-        { n: "06", title: "大写标签与 mono", body: "标签档 0.875rem / 700 / 0.08em 大写，字族 JetBrains Mono——控件文字自带仪器感。" },
+        { n: "06", title: "大写标签与 mono", body: "标签档 0.875rem / 800 / 0.08em 大写，字族 JetBrains Mono——控件文字自带仪器感。" },
         { n: "07", title: "色流不位移", body: "悬停与按压只动颜色、background-position 与阴影；lift / crush 显式答 0。盒子永远不动。" },
       ],
       doTitle: "要做",
@@ -290,12 +307,12 @@ const COPY: Record<
   },
   en: {
     brand: "NEON",
-    back: "Back",
+    home: "Home",
     docs: "Docs",
     nav: { palette: "Palette", laws: "Interaction", type: "Type", rules: "Rules", more: "Navigate" },
     hero: {
       eyebrow: "// style scheme · neon gradient",
-      cta1: "See the palette",
+      cta1: "View components",
       cta2: "Read the docs",
       stats: [
         ["4px", "Stroke width"],
@@ -362,13 +379,20 @@ const COPY: Record<
       title: "Type system",
       lead: "A Segoe UI family with JetBrains Mono labels. Headings at 900 weight and 1.15 line height, body at 1.7 — neon needs enough black to hold the light down. The ladder and the reading scope belong to the scheme; the page writes none of it.",
       ladder: "Ladder",
-      prose: "Reading block",
-      proseBody: "Inside one container the scheme typesets headings, paragraphs, lists, quotes and inline code — the page writes none of it.",
-      h3: "h3 tier",
-      bodyLine: "Body copy rides the ladder the container reads from, not a class on this element.",
-      listA: "Heading tiers carry their own rhythm",
-      listB: "Lists and quotes inherit the reading scope",
-      quote: "Glows build depth, weight builds order: gradient carries identity, weight carries reading.",
+      groupDisplay: "Display",
+      groupReading: "Reading",
+      groupMechanism: "Mechanism",
+      prose: "Reading scope",
+      essayTitle: "Reading is a rhythm",
+      p1: "Good body copy earns its keep before anyone judges the design. Line height leaves room to breathe between lines, headings stand quietly ahead of paragraphs, quotes step behind the left rule — typesetting recedes, content arrives.",
+      p2: "A paragraph is the smallest unit of rhythm: three to five lines make one, and without that rise and fall even the right sizes read flat.",
+      h3: "Headings stay restrained",
+      p3a: "Hierarchy comes from size and whitespace, not weight or colour: a subheading one step above body is enough to hold the structure. Change one ",
+      p3b: " and the whole page breathes with it.",
+      listA: "Line height gives body copy room to breathe",
+      listB: "Headings step down tier by tier, never below body size",
+      listC: "Quotes and inline code appear in real context, not as stranded specimens",
+      quote: "“Typography is what language looks like.” — Ellen Lupton",
     },
     rules: {
       eyebrow: "04 — Design rules",
@@ -380,7 +404,7 @@ const COPY: Record<
         { n: "03", title: "4px contrast borders", body: "control / hair / frame all answer 4px: amber-700 on light, yellow-400 on dark. The border is a contrast piece, not a hairline." },
         { n: "04", title: "Family glows per tier", body: "Shadow roles answer per tier: neon emission on dark, soft same-family shadow on light. Glow colour comes from the control's family — never borrowed, never gray." },
         { n: "05", title: "Large rounding", body: "Buttons 12px, cards 16px, shells 24px; pills and discs fully round. Square corners have no place in this scheme." },
-        { n: "06", title: "Uppercase mono labels", body: "The label tier is 0.875rem / 700 / 0.08em uppercase in JetBrains Mono — control text with an instrument feel." },
+        { n: "06", title: "Uppercase mono labels", body: "The label tier is 0.875rem / 800 / 0.08em uppercase in JetBrains Mono — control text with an instrument feel." },
         { n: "07", title: "Flow without movement", body: "Hover and press only touch colour, background-position and shadow; lift / crush explicitly answer 0. The box never moves." },
       ],
       doTitle: "DO",
@@ -503,16 +527,27 @@ function SiteHeader({ t, lang }: { t: T; lang: Lang }) {
             type="button"
             data-variant="outline"
             onClick={switchLang}
+            aria-label={otherLang === "en" ? "Switch to English" : "切换到中文"}
             title={otherLang === "en" ? "Switch to English" : "切换到中文"}
             className="shrink-0"
-          >
-            {otherLang === "en" ? "EN" : "中文"}
-          </Button>
+            icon={
+              otherLang === "en" ? (
+                <Letters className="size-4" aria-hidden />
+              ) : (
+                <Languages className="size-4" aria-hidden />
+              )
+            }
+          />
           <Link
-            to={`/neon/${lang}/docs`}
-            className={cn(buttonVariants.outline, "shrink-0", "max-sm:hidden")}
+            to={`/${lang}`}
+            aria-label={t.home}
+            title={t.home}
+            className={cn(
+              buttonVariants.outline,
+              "relative aspect-square shrink-0 px-0 after:absolute after:-inset-hit after:content-['']",
+            )}
           >
-            {t.docs}
+            <House className="size-4" aria-hidden />
           </Link>
         </div>
       </div>
@@ -528,16 +563,14 @@ function Hero({ t, lang }: { t: T; lang: Lang }) {
       </div>
       <div className={cn(CONTAINER, "relative flex flex-col gap-8")}>
         <div className="flex flex-col gap-3">
-          <p className={EYEBROW}>{t.hero.eyebrow}</p>
-          <h1 className="text-h1 leading-head tracking-tight font-black">
-            {lang === "zh" ? tpl?.name.zh : tpl?.name.en}
-          </h1>
+          <p className="typo-kicker text-surface-fg">{t.hero.eyebrow}</p>
+          <h1 className="typo-headline">{lang === "zh" ? tpl?.name.zh : tpl?.name.en}</h1>
           <p className={LEAD}>{lang === "zh" ? tpl?.desc.zh : tpl?.desc.en}</p>
           <div className="flex flex-wrap gap-2">
-            <a href="#palette" className={buttonVariants.primary}>
+            <Link to={`/neon/${lang}/docs/overview`} className={buttonVariants.primary}>
               {t.hero.cta1}
               <ArrowRight aria-hidden />
-            </a>
+            </Link>
             <Link to={`/neon/${lang}/docs`} className={buttonVariants.outline}>
               {t.hero.cta2}
             </Link>
@@ -777,18 +810,38 @@ function LawsBlock({ t }: { t: T }) {
 
 function TypeBlock({ t }: { t: T }) {
   const ty = t.type;
-  const ladder: { sample: string; spec: string; className: string }[] = [
-    { sample: "headline", spec: "h1 · 2.25rem / 900", className: "text-h1 leading-head font-black" },
-    { sample: "h1", spec: "2.25rem / 900", className: "text-h1 leading-head font-black" },
-    { sample: "h2", spec: "1.75rem / 900", className: "text-h2 leading-head font-black" },
-    { sample: "h3", spec: "1.4rem / 700", className: "text-h3 leading-head font-bold" },
-    { sample: "h4", spec: "1.2rem / 700", className: "text-h4 leading-head font-bold" },
-    { sample: "h5", spec: "1.05rem / 700", className: "text-h5 leading-head font-bold" },
-    { sample: "h6", spec: "0.95rem / 700", className: "text-h6 leading-head font-bold" },
-    { sample: "body", spec: "1rem / 1.7", className: "text-base leading-body" },
-    { sample: "LABEL", spec: "0.875rem / 700 · 0.08em", className: "text-label leading-label tracking-label font-label case-label" },
-    { sample: "OVERLINE", spec: "0.75rem / 500", className: "text-xs font-medium uppercase tracking-widest" },
-    { sample: "code", spec: "0.875rem / mono", className: "font-mono text-sm" },
+  const labelCls = "text-label leading-label tracking-label font-label case-label";
+  const groups: {
+    caption: string;
+    rows: { sample: string; spec: string; className: string; stack?: boolean }[];
+  }[] = [
+    {
+      caption: ty.groupDisplay,
+      rows: [
+        { sample: "headline", spec: "clamp 2.25–3.75rem / 900", className: "typo-headline", stack: true },
+        { sample: "kicker", spec: "1.625rem / 500", className: "typo-kicker" },
+      ],
+    },
+    {
+      caption: ty.groupReading,
+      rows: [
+        { sample: "h1", spec: "2.25rem / 900", className: "typo-h1" },
+        { sample: "h2", spec: "1.75rem / 900", className: "typo-h2" },
+        { sample: "h3", spec: "1.5rem / 700", className: "typo-h3" },
+        { sample: "h4", spec: "1.25rem / 700", className: "typo-h4" },
+        { sample: "h5", spec: "1.125rem / 700", className: "typo-h5" },
+        { sample: "h6", spec: "1rem / 700", className: "typo-h6" },
+        { sample: "body", spec: "1rem / 1.7", className: "typo-body" },
+      ],
+    },
+    {
+      caption: ty.groupMechanism,
+      rows: [
+        { sample: "LABEL", spec: "0.875rem / 800 · 0.08em", className: labelCls },
+        { sample: "OVERLINE", spec: "0.75rem / 500", className: "typo-overline" },
+        { sample: "code", spec: "0.875rem / mono", className: "font-mono text-sm" },
+      ],
+    },
   ];
   return (
     <section id="type" className={SECTION}>
@@ -797,26 +850,43 @@ function TypeBlock({ t }: { t: T }) {
         <div className="grid gap-4 lg:grid-cols-3">
           <Card>
             <h3 className="text-sm font-bold">{ty.ladder}</h3>
-            <div className="flex flex-col gap-3">
-              {ladder.map(({ sample, spec, className }) => (
-                <div key={sample} className="flex items-baseline justify-between gap-2">
-                  <span className={className}>{sample}</span>
-                  <span className="shrink-0 font-mono text-xs text-foreground">{spec}</span>
+            <div className="flex flex-col gap-5">
+              {groups.map(({ caption, rows }) => (
+                <div key={caption} className="flex flex-col gap-3">
+                  <p className={cn(labelCls, "text-surface-fg")}>{caption}</p>
+                  {rows.map(({ sample, spec, className, stack }) => (
+                    <div
+                      key={sample}
+                      className={
+                        stack
+                          ? "flex flex-col gap-1"
+                          : "flex flex-wrap items-baseline justify-between gap-x-2"
+                      }
+                    >
+                      <span className={className}>{sample}</span>
+                      <span className="shrink-0 font-mono text-xs text-foreground">{spec}</span>
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>
           </Card>
           <Card className="lg:col-span-2">
-            <div className="typography flex flex-col gap-2">
-              <h2>{ty.prose}</h2>
-              <p>{ty.proseBody}</p>
+            <h3 className="text-sm font-bold">{ty.prose}</h3>
+            <div className="typography max-w-[40em] [&_p]:mt-4 [&_h2]:mt-7 [&_h3]:mt-6 [&_ul]:mt-4 [&_blockquote]:mt-5 [&_li+li]:mt-2 [&>:first-child]:mt-0">
+              <h2>{ty.essayTitle}</h2>
+              <p>{ty.p1}</p>
+              <p>{ty.p2}</p>
               <h3>{ty.h3}</h3>
               <p>
-                {ty.bodyLine} <code>typography</code>
+                {ty.p3a}
+                <code>--leading-body</code>
+                {ty.p3b}
               </p>
               <ul>
                 <li>{ty.listA}</li>
                 <li>{ty.listB}</li>
+                <li>{ty.listC}</li>
               </ul>
               <blockquote>{ty.quote}</blockquote>
             </div>

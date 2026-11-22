@@ -41,6 +41,8 @@ export interface DialogProps extends Omit<DialogContentProps, "className" | "sty
         stage?: string;
         content?: string;
         close?: string;
+        closeIcon?: string;
+        closeKey?: string;
         header?: string;
         title?: string;
         titleIcon?: string;
@@ -83,7 +85,7 @@ export function Dialog({ className, style, classNames, styles, title, children, 
         if (!close)
             return null;
         return (<DialogClose data-inline="true" className={classNames?.close} style={styles?.close} aria-label={closeLabel} onClick={() => onOpenChange?.(false)}>
-        {close === "icon" ? <X data-close-icon/> : <kbd data-close-key>ESC</kbd>}
+        {close === "icon" ? <X data-close-icon className={classNames?.closeIcon}/> : <kbd data-close-key className={classNames?.closeKey}>ESC</kbd>}
       </DialogClose>);
     };
     const showHeader = (title !== undefined && title !== null) || (close !== undefined && close !== null);

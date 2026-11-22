@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { SwatchPicker } from "@/ui/skins";
+import { ColorSwatch } from "@/ui/skins";
 import { applyAttr, loadStored } from "@/lib/ramp-attrs";
 import type { PaletteConfig } from "../lib/style-templates";
 
@@ -39,7 +39,7 @@ function SwatchRow({
     <div className="flex flex-col gap-1">
       <span className="text-xs font-medium text-surface-fg">{cfg.label[lang]}</span>
 
-      <SwatchPicker
+      <ColorSwatch
         aria-label={cfg.label[lang]}
         options={cfg.options.map((o) => ({
           value: o.name,

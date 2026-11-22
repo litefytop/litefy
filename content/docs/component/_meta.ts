@@ -426,10 +426,10 @@ export default {
       zh: "步骤条",
     },
   },
-  "swatch-picker": {
-    name: "Swatch Picker",
+  "color-swatch": {
+    name: "ColorSwatch",
     displayName: {
-      en: "Swatch Picker",
+      en: "Color Swatch",
       zh: "色板选择器",
     },
   },

@@ -8,7 +8,8 @@
 - 状态：`openLevel`（当前展开层级，`null` 全关）、`path`（下钻节点路径）、`selected`（末级选中节点）
 - `levels = [tree, ...path 各节点 children]`，每级渲染一个 `PopoverContent`（依赖 ./popover）内嵌 `List`（依赖 ./list）：`getKey` 用 `node.value`、`onSelect` 走 `handleSelect`、`classNames.list` 透传
 - `handleSelect`：有 `children` 则 `path` 追加该节点并 `openLevel = path.length + 1`（下一级）；叶子则置 `selected` 并关闭面板
-- `handleTriggerClick(i)`：`path` 截断到 `i`、清空 `selected`、toggle `openLevel`（再点同层关闭）；`selected` 节点也可点击（索引 `path.length`）回到该级
+- `handleTriggerClick(i)`：`disabled` 时直接返回；否则 `path` 截断到 `i`、清空 `selected`、toggle `openLevel`（再点同层关闭）；`selected` 节点也可点击（索引 `path.length`）回到该级
+- `disabled` 组级禁用：根节点挂 `inert`、全部触发钮原生禁用，面板层级无法展开
 - 面包屑：`inline-grid`，`gridTemplateColumns: repeat(cols, minmax(64px, 1fr))`，cols = max(1, path.length + (selected ? 1 : 0))——初始态 1 列全宽，选中后按路径级数动态增列，每列最小 64px；`path` 节点间插 `ChevronRight`（`aria-hidden`）分隔；每个触发钮带 `aria-expanded={openLevel === i}`，选中节点触发钮加 `aria-current="step"`；空态在面包屑根输出 `data-placeholder-shown`
 - 面板 `onOpenChange(false)` 时统一 `setOpenLevel(null)`
 - 锚点：`React.useId` 清洗为 `--cascader-{uid}-root`，根 div 输出 `data-anchor-name`，各级 `PopoverContent` 以 `anchorName` 关联

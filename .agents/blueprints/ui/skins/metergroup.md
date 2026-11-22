@@ -1,7 +1,15 @@
 # MeterGroup 皮肤（app/ui/skins/metergroup.tsx）
 
 - 定位：分组占比条（PrimeVue MeterGroup 形态参考），横向单形态。
-- 结构：根 `flex w-full flex-col gap-2`；轨道（`[data-track]`）`h-2 w-full rounded-pill flex` + `bg-surface`（与全库轨道族同源，见 schemes.md 规则 9）——**不设 overflow-hidden**（hover 提示要逃出轨道），段端圆角由皮肤按位置答：首段 `rounded-l-pill`、末段 `rounded-r-pill`（中段直角相连，末段圆角即填充收尾——Progress 填充先例）；段 `h-full` + inline 背景（色板 hook 按序答，色板即语义同款 300 / 200 档、段间色相天然错开；段色对 surface 亮档不足 3:1 是既接受项——量具类不强制 1:3，用户定则）+ 宽度过渡 `duration-md`；hover 提示：段 `relative` + `::after`（`attr(data-tip)` 内容、`bg-surface-raised` + `border-frame border-border` + `text-xs text-foreground`、轨道上方居中、`opacity-0` → 段 hover `opacity-100`）——信息与图例同源，不依赖 hover。
-- 图例：`flex flex-wrap gap-x-4 gap-y-1 text-xs text-surface-fg`，每项 `inline-flex items-center gap-1`（色点 `size-1.5 rounded-pill`，inline 背景与对应段同色 + `label` + 百分比 `font-label tracking-label`）。
-- 颜色通道：段色全部来自色板 hook（运行期色值 inline 发布，外观通道的已注明例外），消费者显式 `color` 时骨架直通 inline、皮肤不干预。
-- 专属令牌：无。
+- 构建：四层律（blueprint.md 第 8 条）——原子皮肤逐节点出类常量，组合皮肤组装并承担根容器；禁从根用后代选择器给骨架自有节点定样式。
+- 导出 `metergroupPartClasses`（原子皮肤）与封装组件 `MeterGroup`（组合皮肤，`mergeSlots` 把原子皮肤逐槽并入骨架 classNames 槽）：
+
+1. 根（组合皮肤）：`flex w-full flex-col gap-2`
+2. `track`：`flex h-2 w-full rounded-pill bg-surface`——不设 overflow-hidden（hover 提示要逃出轨道），段端圆角由段按位置答
+3. `segment`：`relative h-full transition-[width] duration-md ease-out` + 端角 `first-of-type:rounded-l-pill` / `last-of-type:rounded-r-pill`（中段直角相连，末段圆角即填充收尾——Progress 填充先例）+ hover 提示 `after:` 全套（`pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 whitespace-nowrap rounded-md border-frame border-border bg-surface-raised px-2 py-0.5 text-xs text-foreground content-[attr(data-tip)]`，`opacity-0` → `hover:after:opacity-100`，`transition-opacity duration-sm`）
+4. `legend`：`flex flex-wrap gap-x-4 gap-y-1 text-xs text-surface-fg`
+5. `legendItem`：`inline-flex items-center gap-1`
+6. `swatch`：`size-1.5 rounded-pill`
+7. `percent`：`font-label tracking-label`；`label` span 无样式，不出常量
+8. 颜色通道：段色与色点全部 inline（运行期色值，外观通道例外已注明），皮肤不干预
+9. 专属令牌：无

@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, MoreHorizontal, } from "./icons";
-import { ButtonRoot } from "./button";
+import { Button, ButtonRoot } from "./button";
 export interface PaginationRootProps extends Omit<React.ComponentProps<"nav">, "className"> {
     className?: string;
 }
@@ -23,9 +23,7 @@ export interface PaginationLastProps extends Omit<React.ComponentProps<typeof Bu
 function PaginationNavButton({ label, children, className, ...props }: PaginationFirstProps & {
     label: string;
 }) {
-    return (<ButtonRoot type="button" aria-label={label} {...props} className={className}>
-      {children}
-    </ButtonRoot>);
+    return (<Button type="button" aria-label={label} {...props} className={className} icon={children}/>);
 }
 export function PaginationFirst(props: PaginationFirstProps) {
     return (<PaginationNavButton label="First page" {...props}>
@@ -89,7 +87,6 @@ export interface PaginationPagesProps {
     totalPages: number;
     siblingCount?: number;
     onPageChange?: (page: number) => void;
-    disabled?: boolean;
     className?: string;
     style?: React.CSSProperties;
     classNames?: {
@@ -124,10 +121,10 @@ function buildPageItems(page: number, totalPages: number, siblingCount: number):
     items.push({ key: String(totalPages), page: totalPages });
     return items;
 }
-export function PaginationPages({ page, totalPages, siblingCount = 1, onPageChange, disabled, className, style, classNames, styles, }: PaginationPagesProps) {
+export function PaginationPages({ page, totalPages, siblingCount = 1, onPageChange, className, style, classNames, styles, }: PaginationPagesProps) {
     const items = React.useMemo(() => buildPageItems(page, totalPages, siblingCount), [page, totalPages, siblingCount]);
     return (<div className={className} style={style}>
-      {items.map(({ key, page: pageNumber }) => pageNumber === undefined ? (<PaginationEllipsis key={key} className={classNames?.ellipsis} style={styles?.ellipsis}/>) : (<ButtonRoot key={key} type="button" aria-current={pageNumber === page ? "page" : undefined} disabled={disabled} onClick={() => onPageChange?.(pageNumber)} className={classNames?.page} style={styles?.page}>
+      {items.map(({ key, page: pageNumber }) => pageNumber === undefined ? (<PaginationEllipsis key={key} className={classNames?.ellipsis} style={styles?.ellipsis}/>) : (<ButtonRoot key={key} type="button" aria-current={pageNumber === page ? "page" : undefined} onClick={() => onPageChange?.(pageNumber)} className={classNames?.page} style={styles?.page}>
             {pageNumber}
           </ButtonRoot>))}
     </div>);
@@ -137,7 +134,6 @@ export interface PaginationProps {
     totalPages: number;
     onPageChange?: (page: number) => void;
     siblingCount?: number;
-    disabled?: boolean;
     summary?: React.ReactNode;
     className?: string;
     classNames?: {
@@ -167,7 +163,7 @@ export interface PaginationProps {
         compactText?: React.CSSProperties;
     };
 }
-export function Pagination({ page, totalPages, onPageChange, siblingCount = 1, disabled, summary, className, classNames, styles, }: PaginationProps) {
+export function Pagination({ page, totalPages, onPageChange, siblingCount = 1, summary, className, classNames, styles, }: PaginationProps) {
     const atStart = page <= 1;
     const atEnd = page >= totalPages;
     return (<PaginationRoot className={className}>
@@ -175,25 +171,25 @@ export function Pagination({ page, totalPages, onPageChange, siblingCount = 1, d
           {summary}
         </PaginationSummary>)}
       <div className={classNames?.controls} style={styles?.controls}>
-        <PaginationFirst disabled={disabled || atStart} onClick={() => onPageChange?.(1)} className={classNames?.nav} style={styles?.nav}/>
-        <PaginationPrev disabled={disabled || atStart} onClick={() => onPageChange?.(page - 1)} className={classNames?.nav} style={styles?.nav}/>
-        <PaginationPages page={page} totalPages={totalPages} siblingCount={siblingCount} onPageChange={onPageChange} disabled={disabled} className={classNames?.pages} style={styles?.pages} classNames={{ page: classNames?.page, ellipsis: classNames?.ellipsis }} styles={{ page: styles?.page, ellipsis: styles?.ellipsis }}/>
-        <PaginationNext disabled={disabled || atEnd} onClick={() => onPageChange?.(page + 1)} className={classNames?.nav} style={styles?.nav}/>
-        <PaginationLast disabled={disabled || atEnd} onClick={() => onPageChange?.(totalPages)} className={classNames?.nav} style={styles?.nav}/>
+        <PaginationFirst disabled={atStart} onClick={() => onPageChange?.(1)} className={classNames?.nav} style={styles?.nav}/>
+        <PaginationPrev disabled={atStart} onClick={() => onPageChange?.(page - 1)} className={classNames?.nav} style={styles?.nav}/>
+        <PaginationPages page={page} totalPages={totalPages} siblingCount={siblingCount} onPageChange={onPageChange} className={classNames?.pages} style={styles?.pages} classNames={{ page: classNames?.page, ellipsis: classNames?.ellipsis }} styles={{ page: styles?.page, ellipsis: styles?.ellipsis }}/>
+        <PaginationNext disabled={atEnd} onClick={() => onPageChange?.(page + 1)} className={classNames?.nav} style={styles?.nav}/>
+        <PaginationLast disabled={atEnd} onClick={() => onPageChange?.(totalPages)} className={classNames?.nav} style={styles?.nav}/>
       </div>
       <div className={classNames?.compact} style={styles?.compact}>
         {summary !== null && summary !== undefined && (<PaginationSummary className={classNames?.compactSummary} style={styles?.compactSummary} title={typeof summary === "string" ? summary : undefined}>
           {summary}
         </PaginationSummary>)}
         <div className={classNames?.compactRow} style={styles?.compactRow}>
-          <PaginationFirst disabled={disabled || atStart} onClick={() => onPageChange?.(1)} className={classNames?.nav} style={styles?.nav}/>
-          <PaginationPrev disabled={disabled || atStart} onClick={() => onPageChange?.(page - 1)} className={classNames?.nav} style={styles?.nav}/>
+          <PaginationFirst disabled={atStart} onClick={() => onPageChange?.(1)} className={classNames?.nav} style={styles?.nav}/>
+          <PaginationPrev disabled={atStart} onClick={() => onPageChange?.(page - 1)} className={classNames?.nav} style={styles?.nav}/>
           <PaginationPageInput page={page} totalPages={totalPages} onPageChange={onPageChange} className={classNames?.compactInput} style={styles?.compactInput}/>
           <PaginationSummary className={classNames?.compactText} style={styles?.compactText}>
             {`/ ${totalPages}`}
           </PaginationSummary>
-          <PaginationNext disabled={disabled || atEnd} onClick={() => onPageChange?.(page + 1)} className={classNames?.nav} style={styles?.nav}/>
-          <PaginationLast disabled={disabled || atEnd} onClick={() => onPageChange?.(totalPages)} className={classNames?.nav} style={styles?.nav}/>
+          <PaginationNext disabled={atEnd} onClick={() => onPageChange?.(page + 1)} className={classNames?.nav} style={styles?.nav}/>
+          <PaginationLast disabled={atEnd} onClick={() => onPageChange?.(totalPages)} className={classNames?.nav} style={styles?.nav}/>
         </div>
       </div>
     </PaginationRoot>);

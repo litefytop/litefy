@@ -1,6 +1,6 @@
 import { createCn } from "cn/config";
 
-export const cn = createCn({
+const merge = createCn({
   extend: {
     theme: {
       shadow: [
@@ -74,6 +74,19 @@ export const cn = createCn({
     },
   },
 });
+
+export function cn(...inputs: Parameters<typeof merge>) {
+  let single: string | undefined;
+  for (const input of inputs) {
+    if (!input) continue;
+    if (typeof input !== "string" || single !== undefined) {
+      single = undefined;
+      break;
+    }
+    single = input;
+  }
+  return single ?? merge(...inputs);
+}
 
 type ClassMap = Record<string, string | undefined>;
 

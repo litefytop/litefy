@@ -10,9 +10,12 @@ const rootClasses =
 const stageClasses =
   "pointer-events-none grid min-h-[calc(100dvh+1px)] w-full place-items-center";
 
-const contentClasses =
-  "pointer-events-auto relative w-full my-4 max-w-[min(100%_-_--spacing(8),--spacing(112))] " +
+const contentBaseClasses =
+  "pointer-events-auto relative w-full my-4 max-w-[min(100%_-_--spacing(8),--spacing(112))]";
+const contentFaceClasses =
   "rounded-xl border-frame border-border bg-surface-raised p-4 text-foreground text-base leading-body shadow-elevated";
+
+const contentClasses = cn(contentBaseClasses, contentFaceClasses);
 
 const headerClasses = "mb-3 flex items-center justify-between gap-x-3";
 
@@ -22,15 +25,19 @@ const titleClasses =
 const closeClasses = cn(
   buttonVariants.text,
   "hover:no-underline data-[inline=true]:static data-[inline=true]:shrink-0",
-  "[&_[data-close-key]]:kbd [&_[data-close-icon]]:size-4",
 );
 
+const closeIconClasses = "size-4";
 
-const titleIconClasses =
-  "flex items-center gap-x-3 *:data-status:size-4 " +
-  "[&>[data-status=success]]:text-success-fg " +
-  "[&>[data-status=error]]:text-danger-fg [&>[data-status=warning]]:text-warning-fg " +
-  "[&>[data-status=info]]:text-info-fg";
+const closeKeyClasses = "kbd";
+
+
+const titleIconBaseClasses = "flex items-center gap-x-3 *:data-status:size-4";
+const titleIconStatusClasses =
+  "[&>[data-status=success]]:text-success-fg [&>[data-status=error]]:text-danger-fg " +
+  "[&>[data-status=warning]]:text-warning-fg [&>[data-status=info]]:text-info-fg";
+
+const titleIconClasses = cn(titleIconBaseClasses, titleIconStatusClasses);
 
 const skinClassNames = {
   root: rootClasses,
@@ -40,6 +47,8 @@ const skinClassNames = {
   title: titleClasses,
   titleIcon: titleIconClasses,
   close: closeClasses,
+  closeIcon: closeIconClasses,
+  closeKey: closeKeyClasses,
 };
 
 

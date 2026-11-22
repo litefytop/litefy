@@ -19,12 +19,15 @@ const scrollClasses =
 
 const listClasses = "flex flex-col";
 
-const itemClasses =
-  "block py-1 ps-3 pe-0 text-surface-fg " +
+const itemBaseClasses = "block py-1 ps-3 pe-0 text-surface-fg";
+const itemDepthLabelClasses =
   "data-[depth=1]:font-label data-[depth=1]:tracking-label data-[depth=1]:case-label " +
-  "data-[depth=2]:font-label data-[depth=2]:tracking-label data-[depth=2]:case-label " +
-  "hover:bg-accent hover:text-accent-fg " +
+  "data-[depth=2]:font-label data-[depth=2]:tracking-label data-[depth=2]:case-label";
+const itemHoverClasses = "hover:bg-accent hover:text-accent-fg";
+const itemIndentClasses =
   "data-[depth=3]:ps-6 data-[depth=4]:ps-9 data-[depth=5]:ps-12 data-[depth=6]:ps-15";
+
+const itemClasses = cn(itemBaseClasses, itemDepthLabelClasses, itemHoverClasses, itemIndentClasses);
 
 const itemActiveFill = "data-[active]:bg-primary data-[active]:text-primary-fg";
 
@@ -34,22 +37,28 @@ const thumbClasses =
   "absolute -left-px top-0 h-full w-0.5 rounded-sm bg-primary " +
   "origin-top transition-transform duration-sm ease-frame";
 
-const statusClasses =
-  "hidden z-40 max-xl:fixed max-xl:top-4 max-xl:right-4 max-xl:inline-flex max-xl:items-center max-xl:gap-2 " +
-  "max-xl:max-w-[min(16rem,calc(100vw-6rem))] " +
-  "px-3 py-2 rounded-xl border-frame border-border " +
+const statusFixedClasses =
+  "hidden z-40 max-xl:fixed max-xl:top-4 max-xl:right-4 max-xl:inline-flex max-xl:items-center max-xl:gap-2";
+const statusBoxClasses =
+  "max-xl:max-w-[min(16rem,calc(100vw-6rem))] px-3 py-2 rounded-xl border-frame border-border";
+const statusFaceClasses =
   "bg-surface-raised text-xs leading-4 font-field " +
   "cursor-pointer hover:bg-accent hover:text-accent-fg focus-visible:focus-ring " +
   "[&>span]:truncate [&>span]:text-surface-fg";
+
+const statusClasses = cn(statusFixedClasses, statusBoxClasses, statusFaceClasses);
 
 const chevronClasses =
   "size-4 shrink-0 text-surface-fg transition-transform duration-sm data-[open=true]:rotate-180";
 
 /* The narrow-screen disclosure: same floating-panel recipe as every other panel in
    this scheme, and it is its own scroller — the list can be longer than the viewport. */
-const panelClasses =
-  "xl:hidden min-w-32 max-w-[min(--spacing(64),calc(100vw_-_--spacing(8)))] max-h-[min(--spacing(96),60vh)] overflow-auto rounded-xl border-frame border-border p-1 " +
-  "bg-surface-raised text-foreground shadow-elevated";
+const panelBaseClasses =
+  "xl:hidden min-w-32 max-w-[min(--spacing(64),calc(100vw_-_--spacing(8)))] max-h-[min(--spacing(96),60vh)] overflow-auto";
+const panelFaceClasses =
+  "rounded-xl border-frame border-border p-1 bg-surface-raised text-foreground shadow-elevated";
+
+const panelClasses = cn(panelBaseClasses, panelFaceClasses);
 
 const ringClasses = "size-5 shrink-0";
 

@@ -26,7 +26,7 @@ export interface PasswordToggleProps extends Omit<React.ComponentProps<"button">
     };
 }
 export function PasswordToggle({ className, visible, children, classNames, ...props }: PasswordToggleProps) {
-    return (<button {...props} type="button" tabIndex={-1} aria-pressed={visible} aria-label={visible ? "Hide password" : "Show password"} className={className}>
+    return (<button data-field-trailing="" {...props} type="button" tabIndex={-1} aria-pressed={visible} aria-label={visible ? "Hide password" : "Show password"} className={className}>
       {children ?? (visible ? <EyeOff className={classNames?.icon}/> : <Eye className={classNames?.icon}/>)}
     </button>);
 }

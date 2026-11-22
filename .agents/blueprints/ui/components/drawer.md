@@ -10,6 +10,6 @@
 - `openRef` 记录最新开关，兜底定时器与 `finished` 关闭都先校验仍未打开
 - `onCancel` 一律 `preventDefault`，再 `onOpenChange(false)`、`onCancel(e)`；背景点击（`target === currentTarget`）先 `onOpenChange(false)` 再 `onBackdropClick(e)`
 - Tab 经 `trapTabKey` 在 dialog 内循环；锁滚由壳承载（同 Dialog），无 JS 锁滚
-- `drag` 传入时渲染拖拽柄（`orientation` + `onPointerDown=drag.handlePointerDown`）；`drag.isDragging` 不参与内部渲染
+- `drag` 传入时渲染拖拽柄（`orientation` + `onPointerDown=drag.handlePointerDown`）；`drag.isDragging` 取反落 wrapper 的 `data-static` 标记（未被拖拽即存在，拖拽期间缺席）——状态语义为「是否静止」，动画类只挂 static 态，拖拽期间令牌缺席即无过渡
 - `className`/`style` 落 dialog，其余 div props 与 `ref` 落 wrapper；dialog 无 `data-open` 标记
 - 槽位：`classNames.stage/wrapper/drag/content`；`styles.stage/wrapper/drag/content`

@@ -58,29 +58,15 @@ function ChoiceGroup<T extends string>({
   options: { value: T; label: string }[];
   onChange: (value: T) => void;
 }) {
-  const { Button } = useSiteSkin();
+  const { SegmentGroup } = useSiteSkin();
   return (
-    <div
-      role="group"
+    <SegmentGroup
       aria-label={label}
-      className="grid grid-flow-col auto-cols-fr gap-1 rounded-md border bg-quiet p-1"
-    >
-      {options.map((option) => {
-        const active = option.value === value;
-        return (
-          <Button
-            key={option.value}
-            type="button"
-            data-variant={active ? "primary" : "text"}
-            aria-pressed={active}
-            onClick={() => onChange(option.value)}
-            className="min-h-control min-w-0 rounded-sm px-2"
-          >
-            {option.label}
-          </Button>
-        );
-      })}
-    </div>
+      className="w-full"
+      value={value}
+      options={options}
+      onValueChange={(next) => onChange(next as T)}
+    />
   );
 }
 
@@ -115,9 +101,10 @@ export function AppearancePanel({
       onOpenChange={setOpen}
       aria-label={t.trigger}
       title={t.trigger}
+      data-pure-icon
       classNames={{
-        trigger: `${className} size-control justify-center px-0`,
-        content: "w-96 max-w-[calc(100vw_-_--spacing(8))] max-h-[min(70vh,--spacing(160))]",
+        trigger: `${className} size-control justify-center`,
+        content: "w-96 max-w-[calc(100vw-2rem)] max-h-[min(70vh,--spacing(160))]",
       }}
       trigger={<Settings className="size-4" aria-hidden />}
     >

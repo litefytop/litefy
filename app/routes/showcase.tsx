@@ -12,7 +12,7 @@ import {
 import globalHref from "../global.css?url";
 import { AnimatedContent, Button, Card, NavBar, Separator } from "@/ui/skins";
 import { buttonVariants, chipClasses, cn } from "@/ui/skins";
-import { ArrowLeft, ArrowRight, Flag, Github } from "@/components/icons";
+import { ArrowRight, Flag, Github, House, Languages, Letters } from "@/components/icons";
 import { findStyleTemplate, type StyleTemplate } from "../lib/style-templates";
 import { PaletteSection } from "../components/palette-section";
 import { AppearancePanel } from "../components/appearance-panel";
@@ -41,10 +41,23 @@ const TOKENS: { token: string; en: string; zh: string }[] = [
 const COPY: Record<
   Lang,
   {
-    back: string;
+    home: string;
     hero: { eyebrow: string; cta: string; cta2: string; ramp: string; rampDesc: string };
-    nav: { palette: string; tokens: string; type: string; rules: string; more: string };
-    navTitle: { palette: string; tokens: string; type: string; rules: string; back: string };
+    nav: {
+      palette: string;
+      tokens: string;
+      type: string;
+      interact: string;
+      rules: string;
+      more: string;
+    };
+    navTitle: {
+      palette: string;
+      tokens: string;
+      type: string;
+      interact: string;
+      rules: string;
+    };
     palette: { eyebrow: string; title: string; desc: string; semantic: string; ramp: string };
     tokens: {
       eyebrow: string;
@@ -60,12 +73,32 @@ const COPY: Record<
       title: string;
       desc: string;
       ladder: string;
+      groupDisplay: string;
+      groupReading: string;
+      groupMechanism: string;
       prose: string;
-      proseBody: string;
+      essayTitle: string;
+      p1: string;
+      p2: string;
       h3: string;
-      bodyLine: string;
+      p3a: string;
+      p3b: string;
       listA: string;
       listB: string;
+      listC: string;
+      quote: string;
+    };
+    interact: {
+      eyebrow: string;
+      title: string;
+      desc: string;
+      items: {
+        n: string;
+        demo: "lift" | "press" | "shadow" | "duration";
+        cta: string;
+        title: string;
+        body: string;
+      }[];
     };
     rules: {
       eyebrow: string;
@@ -87,22 +120,29 @@ const COPY: Record<
   }
 > = {
   en: {
-    back: "Back",
+    home: "Home",
     hero: {
       eyebrow: "// style scheme",
-      cta: "See the palette",
+      cta: "View components",
       cta2: "Read the docs",
       ramp: "Live ramps",
       rampDesc:
         "Every control below repaints as you pick a ramp — the scheme owns the values, the page owns none.",
     },
-    nav: { palette: "Palette", tokens: "Tokens", type: "Type", rules: "Rules", more: "Navigation" },
+    nav: {
+      palette: "Palette",
+      tokens: "Tokens",
+      type: "Type",
+      interact: "Interaction",
+      rules: "Rules",
+      more: "Navigation",
+    },
     navTitle: {
       palette: "01 · Palette — the colours, nothing else",
       tokens: "02 · Tokens — every variable name and its role",
       type: "03 · Type — the ladder and the reading scope",
-      rules: "04 · The design rules this scheme enforces",
-      back: "Back to the docs",
+      interact: "04 · Interaction — the laws you can feel",
+      rules: "05 · The design rules this scheme enforces",
     },
     palette: {
       eyebrow: "01 — Palette",
@@ -125,16 +165,58 @@ const COPY: Record<
       title: "Type system",
       desc: "Text is part of the design. The ladder and the reading scope belong to the scheme — the page writes none of it.",
       ladder: "Ladder",
-      prose: "Reading block",
-      proseBody:
-        "Inside one container the scheme typesets headings, paragraphs, lists, code and tables — the page writes none of it.",
-      h3: "h3 tier",
-      bodyLine: "Body copy rides the ladder the container reads from, not a class on this element.",
-      listA: "Heading tiers carry their own rhythm",
-      listB: "Lists and quotes inherit the reading scope",
+      groupDisplay: "Display",
+      groupReading: "Reading",
+      groupMechanism: "Mechanism",
+      prose: "Reading scope",
+      essayTitle: "Reading is a rhythm",
+      p1: "Good body copy earns its keep before anyone judges the design. Line height leaves room to breathe between lines, headings stand quietly ahead of paragraphs, quotes step behind the left rule — typesetting recedes, content arrives.",
+      p2: "A paragraph is the smallest unit of rhythm: three to five lines make one, and without that rise and fall even the right sizes read flat.",
+      h3: "Headings stay restrained",
+      p3a: "Hierarchy comes from size and whitespace, not weight or colour: a subheading one step above body is enough to hold the structure. Change one ",
+      p3b: " and the whole page breathes with it.",
+      listA: "Line height gives body copy room to breathe",
+      listB: "Headings step down tier by tier, never below body size",
+      listC: "Quotes and inline code appear in real context, not as stranded specimens",
+      quote: "“Typography is what language looks like.” — Ellen Lupton",
+    },
+    interact: {
+      eyebrow: "04 — Interaction",
+      title: "Interaction laws",
+      desc: "Four laws you can feel, each driven by a token the scheme owns. The bricks are teaching canvases — the raw utilities are the lesson.",
+      items: [
+        {
+          n: "01",
+          demo: "lift",
+          cta: "Hover me",
+          title: "Hover lifts half a step",
+          body: "hover:lift raises the box by half a spacing step and the fill deepens to primary-accent. Static surfaces never move.",
+        },
+        {
+          n: "02",
+          demo: "press",
+          cta: "Press and hold",
+          title: "Press settles, then sinks",
+          body: "active:crush returns the box first; the inset shadow follows --press-inset-delay (80ms) late. Release snaps back with no delay.",
+        },
+        {
+          n: "03",
+          demo: "shadow",
+          cta: "",
+          title: "Tinted soft shadows",
+          body: "faint / subtle / base / elevated, each diffusion layer carrying a brand-tinted glow — switch the brand ramp and the glow follows the hue. Dark keeps pure black plus a white rim.",
+        },
+        {
+          n: "04",
+          demo: "duration",
+          cta: "Hover for the transition",
+          title: "Quiet durations",
+          body: "Micro feedback rides motion-frame at 150ms; large transitions take 300 / 500ms. Reduced motion collapses all three to zero.",
+        },
+      ],
     },
     rules: {
-      eyebrow: "04 — Design rules",
+      eyebrow: "05 — Design rules",
       title: "Design rules of this scheme",
       desc: "Each rule is a token or an attribute the scheme enforces — not a note in a style guide. Change the scheme, change the rule.",
       anti: "Anti-patterns",
@@ -145,8 +227,8 @@ const COPY: Record<
           body: "Every pixel of the look comes from the tokens the scheme holds; the page writes none.",
         },
         {
-          title: "Near-square radius",
-          body: "Four steps plus a pill, on Tailwind's own ladder: sm 4 / md 6 / lg 8 / xl 12px, full for chips and avatars. Each step pairs with a shadow level.",
+          title: "Soft radius ladder",
+          body: "Four steps plus a pill: sm 8 / md 12 / lg 16 / xl 24px, pill by default for buttons. Each step pairs with a shadow level.",
         },
         {
           title: "Numeric whitespace",
@@ -157,8 +239,8 @@ const COPY: Record<
           body: "Section padding steps with the viewport: py-12 → md:py-16 → lg:py-20. --pad-block carries the same three numbers for the few inline styles a class cannot reach — the two must stay equal.",
         },
         {
-          title: "Four elevation levels",
-          body: "faint / subtle / base / elevated. Dark levels carry a white rim and top highlight — never a white blur glow.",
+          title: "Tinted soft shadows",
+          body: "faint / subtle / base / elevated. Light diffusion layers carry a brand-tinted soft glow — switch the brand ramp and the glow follows the hue. Dark keeps pure black plus a white rim — never a white blur glow.",
         },
         {
           title: "Surface layering",
@@ -174,11 +256,11 @@ const COPY: Record<
         },
         {
           title: "Focus is a ring plus a halo",
-          body: "--focus-outline 1px solid --primary-accent with a 3px --focus-glow. Focus is never removed, only restyled.",
+          body: "--focus-outline 1px solid --primary with a 3px --focus-glow. Focus is never removed, only restyled.",
         },
         {
-          title: "Press, don't move",
-          body: "--press-filter darkens by 5%; --translate-crush is 0. Static surfaces never lift on hover.",
+          title: "Settle, then sink",
+          body: "--press-filter darkens by 5%; --translate-crush is 0; the inset shadow follows --press-inset-delay late and release snaps back. The half-step hover lift belongs to buttons and interactive cards — static surfaces never lift.",
         },
         {
           title: "Three motion steps",
@@ -197,30 +279,35 @@ const COPY: Record<
     misc: {
       antiItems: [
         "gradient text",
-        "glassmorphism surface",
         "hover-to-reveal control",
         "raw hex in page CSS",
-        "white blur glow",
         "double border",
       ],
     },
   },
   zh: {
-    back: "返回",
+    home: "主页",
     hero: {
       eyebrow: "// 风格方案",
-      cta: "查看色盘",
+      cta: "查看组件",
       cta2: "阅读文档",
       ramp: "实时色阶",
       rampDesc: "切换色阶后本页全部重绘——色值由方案持有，页面一个都不写。",
     },
-    nav: { palette: "色盘", tokens: "令牌", type: "排版", rules: "规则", more: "导航" },
+    nav: {
+      palette: "色盘",
+      tokens: "令牌",
+      type: "排版",
+      interact: "交互",
+      rules: "规则",
+      more: "导航",
+    },
     navTitle: {
       palette: "01 · 色盘——只看颜色",
       tokens: "02 · 令牌——每个变量名与它的角色",
       type: "03 · 排版——字阶与长文作用域",
-      rules: "04 · 这套方案强制执行的设计规则",
-      back: "返回文档",
+      interact: "04 · 交互——可感知的四条法则",
+      rules: "05 · 这套方案强制执行的设计规则",
     },
     palette: {
       eyebrow: "01 — 色盘",
@@ -243,15 +330,58 @@ const COPY: Record<
       title: "排版系统",
       desc: "文字也是设计的一部分。字阶与长文作用域由方案持有，页面不逐元素写类。",
       ladder: "字阶",
-      prose: "正文块",
-      proseBody: "一个容器之内，标题、段落、列表、行内代码与表格全由方案排版——页面一个字都不写。",
-      h3: "h3 层级",
-      bodyLine: "正文读的是容器带来的阶梯，不是这个元素上的类。",
-      listA: "标题层级自带排版节奏",
-      listB: "列表与引用继承长文作用域",
+      groupDisplay: "首屏展示档",
+      groupReading: "阅读档",
+      groupMechanism: "机制档",
+      prose: "长文作用域",
+      essayTitle: "阅读是一种节奏",
+      p1: "好的正文先让人读下去，再让人评价设计。行与行之间留出换气的空隙，标题安静地站在段落之前，引文退到左边线之后——排版退场，内容登场。",
+      p2: "段落是节奏的最小单位，三五行成一段，读起来才有起伏；少了这层起伏，字号再准，读起来也是平的。",
+      h3: "标题要克制",
+      p3a: "层级靠字号与留白建立，不靠加粗与颜色：小节标题只比正文大一号，就足以把结构立起来。改一处 ",
+      p3b: "，全文的呼吸跟着一起变。",
+      listA: "行高给正文留出换气的余地",
+      listB: "标题逐级递减，最深层级也不小于正文",
+      listC: "引文与行内代码在真实语境里出现，而不是孤例",
+      quote: "「排版就是语言的模样。」—— Ellen Lupton",
+    },
+    interact: {
+      eyebrow: "04 — 交互",
+      title: "交互法则",
+      desc: "四条可感知的法则，每条都由方案持有的令牌驱动。演示砖是教学画布——裸 utility 就是教学内容。",
+      items: [
+        {
+          n: "01",
+          demo: "lift",
+          cta: "悬停我",
+          title: "悬停上移半步",
+          body: "hover:lift 把盒子上移半个间距步，填充加深到 primary-accent。静态表面永不移动。",
+        },
+        {
+          n: "02",
+          demo: "press",
+          cta: "按住我",
+          title: "按压先落回再内凹",
+          body: "active:crush 先归位；内凹阴影经 --press-inset-delay（80ms）延迟跟进。松开无延迟立即回弹。",
+        },
+        {
+          n: "03",
+          demo: "shadow",
+          cta: "",
+          title: "染色柔影",
+          body: "faint / subtle / base / elevated 四级，扩散层带品牌染色柔光——切换品牌色阶，柔光随主色相染色。暗档维持纯黑加白亮环。",
+        },
+        {
+          n: "04",
+          demo: "duration",
+          cta: "悬停看过渡",
+          title: "克制的时长",
+          body: "微反馈走 motion-frame 150ms；大过渡 300 / 500ms。减动效三档全部归零。",
+        },
+      ],
     },
     rules: {
-      eyebrow: "04 — 设计规则",
+      eyebrow: "05 — 设计规则",
       title: "本方案的设计规则",
       desc: "每条规则都是方案持有的令牌或属性，而不是风格手册里的口头约定——换方案，规则就换。",
       anti: "反模式",
@@ -259,8 +389,8 @@ const COPY: Record<
       items: [
         { title: "样式单一来源", body: "观感的每一像素都来自方案持有的令牌，页面一个都不写。" },
         {
-          title: "近直角圆角",
-          body: "四档加胶囊，走 Tailwind 自己的圆角刻度：sm 4 / md 6 / lg 8 / xl 12px，full 留给 chip 与头像。每一档与一个阴影等级一一配对。",
+          title: "大圆角阶梯",
+          body: "四档加胶囊：sm 8 / md 12 / lg 16 / xl 24px，按钮族默认胶囊。每一档与一个阴影等级一一配对。",
         },
         {
           title: "留白写数字",
@@ -271,8 +401,8 @@ const COPY: Record<
           body: "纵向留白随视口升档：py-12 → md:py-16 → lg:py-20。同一组数值另有 --pad-block（3 / 4 / 5rem）供类位置到不了的内联样式读取——两者必须同值。",
         },
         {
-          title: "四级阴影",
-          body: "faint / subtle / base / elevated。深色层带白色内圈与顶部高光——绝不用白色模糊假造高度。",
+          title: "染色柔影",
+          body: "faint / subtle / base / elevated。亮档扩散层带品牌染色柔光——换品牌色阶柔光随主色相染色；暗档维持纯黑投影加白亮环，绝不用白色模糊假造高度。",
         },
         {
           title: "表面分层",
@@ -285,11 +415,11 @@ const COPY: Record<
         },
         {
           title: "焦点是环加光晕",
-          body: "--focus-outline 取 1px 的 --primary-accent，配 3px --focus-glow。焦点不移除，只换样式。",
+          body: "--focus-outline 取 1px 的 --primary，配 3px --focus-glow。焦点不移除，只换样式。",
         },
         {
-          title: "按压不位移",
-          body: "--press-filter 变暗 5%，--translate-crush 为 0。静态表面悬停永不抬升。",
+          title: "先落回再内凹",
+          body: "--press-filter 变暗 5%，--translate-crush 为 0；内凹阴影经 --press-inset-delay 延迟跟进，松开立即回弹。悬停上移半步归按钮与交互卡，静态表面永不抬升。",
         },
         { title: "三档动效", body: "150 / 300 / 500ms，prefers-reduced-motion 下三档全部归零。" },
       ],
@@ -303,19 +433,24 @@ const COPY: Record<
       rights: "Litefy UI — 本页观感全部由方案自身令牌渲染。",
     },
     misc: {
-      antiItems: [
-        "渐变文字",
-        "玻璃拟态表面",
-        "悬停才显示的控件",
-        "页面写死色值",
-        "白色模糊假阴影",
-        "双线边框",
-      ],
+      antiItems: ["渐变文字", "悬停才显示的控件", "页面写死色值", "双线边框"],
     },
   },
 };
 
-const BLOCKS = ["palette", "tokens", "type", "rules"] as const;
+const BLOCKS = ["palette", "tokens", "type", "interact", "rules"] as const;
+
+/* Teaching bricks for the interaction laws (blueprint: 法则演示画布豁免).
+   Literal class strings so Tailwind can see every utility. */
+const SHADOW_DEMOS = {
+  faint: "shadow-faint",
+  subtle: "shadow-subtle",
+  base: "shadow-base",
+  elevated: "shadow-elevated",
+} as const;
+
+type ShadowLevel = keyof typeof SHADOW_DEMOS;
+type DemoKind = "lift" | "press" | "shadow" | "duration";
 
 function templateTitle(tpl: StyleTemplate, lang: Lang) {
   return lang === "zh" ? `${tpl.name.zh}方案` : `${tpl.name.en} Style`;
@@ -343,8 +478,8 @@ function ShowcasePage() {
   if (tpl.slug === "neo-brutalist") {
     return <Navigate to={`/neo/${lang === "zh" ? "zh" : "en"}/showcase/neo-brutalist`} replace />;
   }
-  if (tpl.slug === "clinical") {
-    return <Navigate to={`/clinical/${lang === "zh" ? "zh" : "en"}/showcase/clinical`} replace />;
+  if (tpl.slug === "flat-minimal") {
+    return <Navigate to={`/flat/${lang === "zh" ? "zh" : "en"}/showcase/flat-minimal`} replace />;
   }
   if (tpl.slug === "neon-gradient") {
     return <Navigate to={`/neon/${lang === "zh" ? "zh" : "en"}/showcase/neon-gradient`} replace />;
@@ -354,7 +489,7 @@ function ShowcasePage() {
     <TemplateScene
       tpl={tpl}
       lang={langNormalized}
-      backHref={`/${langNormalized}`}
+      homeHref={`/${langNormalized}`}
       docsHref={`/${langNormalized}/docs`}
     />
   );
@@ -363,12 +498,12 @@ function ShowcasePage() {
 function TemplateScene({
   tpl,
   lang,
-  backHref,
+  homeHref,
   docsHref,
 }: {
   tpl: StyleTemplate;
   lang: Lang;
-  backHref: string;
+  homeHref: string;
   docsHref: string;
 }) {
   const t = COPY[lang];
@@ -400,15 +535,28 @@ function TemplateScene({
           <Button
             type="button"
             onClick={switchLang}
+            aria-label={otherLang === "en" ? "Switch to English" : "切换到中文"}
             title={otherLang === "en" ? "Switch to English" : "切换到中文"}
             data-variant="outline"
             className="shrink-0"
+            icon={
+              otherLang === "en" ? (
+                <Letters className="size-4" aria-hidden />
+              ) : (
+                <Languages className="size-4" aria-hidden />
+              )
+            }
+          />
+          <Link
+            to={homeHref}
+            aria-label={t.home}
+            title={t.home}
+            className={cn(
+              outlineLinkClass,
+              "relative aspect-square shrink-0 px-0 after:absolute after:-inset-hit after:content-['']",
+            )}
           >
-            {otherLang === "en" ? "EN" : "中文"}
-          </Button>
-          <Link to={backHref} className={cn(textLinkClass, "shrink-0")} title={t.navTitle.back}>
-            <ArrowLeft className="size-4" aria-hidden />
-            {t.back}
+            <House className="size-4" aria-hidden />
           </Link>
         </div>
       </header>
@@ -417,18 +565,14 @@ function TemplateScene({
         <section className="px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-20 border-b bg-surface text-on-surface">
           <div className="grid gap-6 mx-auto w-full max-w-320 md:grid-cols-[1.2fr_1fr] md:items-center">
             <header className="flex flex-col gap-3">
-              <p className="m-0 scroll-mt-20 text-xs font-medium tracking-widest uppercase">
-                {t.hero.eyebrow}
-              </p>
-              <h1 className="m-0 scroll-mt-20 py-4 mb-4 text-36 leading-10 tracking-tight font-bold sm:text-48 sm:leading-none lg:text-60 lg:leading-none">
-                {templateTitle(tpl, lang)}
-              </h1>
+              <p className="typo-kicker">{t.hero.eyebrow}</p>
+              <h1 className="typo-headline">{templateTitle(tpl, lang)}</h1>
               <p className="max-w-256 text-sm text-surface-fg">{tpl.desc[lang]}</p>
               <div className="flex flex-wrap gap-2">
-                <a href="#palette" className={buttonVariants.primary}>
+                <Link to={`${docsHref}/overview`} className={buttonVariants.primary}>
                   {t.hero.cta}
                   <ArrowRight className="size-4" aria-hidden />
-                </a>
+                </Link>
                 <Link to={docsHref} className={outlineLinkClass}>
                   {t.hero.cta2}
                 </Link>
@@ -445,6 +589,7 @@ function TemplateScene({
         <PaletteBlock tpl={tpl} lang={lang} />
         <TokensBlock tpl={tpl} lang={lang} />
         <TypeBlock t={t} />
+        <InteractionBlock t={t} />
         <RulesBlock t={t} />
       </main>
 
@@ -482,9 +627,9 @@ function TemplateScene({
           <Separator />
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs text-surface-fg">{t.footer.rights}</span>
-            <Link to={backHref} className={cn(textLinkClass, "ms-auto")}>
-              <ArrowLeft className="size-4" aria-hidden />
-              {t.back}
+            <Link to={homeHref} className={cn(textLinkClass, "ms-auto")}>
+              <House className="size-4" aria-hidden />
+              {t.home}
             </Link>
           </div>
         </div>
@@ -496,8 +641,8 @@ function TemplateScene({
 function SectionHead({ eyebrow, title, desc }: { eyebrow: string; title: string; desc: string }) {
   return (
     <div className="flex flex-col gap-2">
-      <p className="m-0 scroll-mt-20 text-xs font-medium tracking-widest uppercase">{eyebrow}</p>
-      <h2 className="text-2xl font-medium">{title}</h2>
+      <p className="typo-overline">{eyebrow}</p>
+      <h2 className="typo-h2">{title}</h2>
       <p className="max-w-256 text-sm text-surface-fg">{desc}</p>
     </div>
   );
@@ -608,6 +753,39 @@ type Copy = (typeof COPY)["en"];
 
 function TypeBlock({ t }: { t: Copy }) {
   const ty = t.type;
+  const labelCls = "text-label leading-label tracking-label font-label";
+  const groups: {
+    caption: string;
+    rows: { sample: string; spec: string; className: string; stack?: boolean }[];
+  }[] = [
+    {
+      caption: ty.groupDisplay,
+      rows: [
+        { sample: "headline", spec: "clamp 2.25–3.75rem / 700", className: "typo-headline", stack: true },
+        { sample: "kicker", spec: "1.625rem / 500", className: "typo-kicker" },
+      ],
+    },
+    {
+      caption: ty.groupReading,
+      rows: [
+        { sample: "h1", spec: "1.75rem / 600", className: "typo-h1" },
+        { sample: "h2", spec: "1.375rem / 600", className: "typo-h2" },
+        { sample: "h3", spec: "1.25rem / 600", className: "typo-h3" },
+        { sample: "h4", spec: "1.125rem / 600", className: "typo-h4" },
+        { sample: "h5", spec: "1.0625rem / 600", className: "typo-h5" },
+        { sample: "h6", spec: "1rem / 600", className: "typo-h6" },
+        { sample: "body", spec: "1rem / 1.75", className: "typo-body" },
+      ],
+    },
+    {
+      caption: ty.groupMechanism,
+      rows: [
+        { sample: "label", spec: "0.875rem / 600", className: labelCls },
+        { sample: "OVERLINE", spec: "0.75rem / 500", className: "typo-overline" },
+        { sample: "code", spec: "0.875rem / mono", className: "font-mono text-sm" },
+      ],
+    },
+  ];
   return (
     <section
       id="type"
@@ -619,41 +797,124 @@ function TypeBlock({ t }: { t: Copy }) {
         <div className="grid gap-4 lg:grid-cols-3">
           <Card className="flex flex-col gap-3">
             <h3 className="text-sm font-medium">{ty.ladder}</h3>
-            <p className="m-0 scroll-mt-20 py-4 mb-4 text-36 leading-10 tracking-tight font-bold sm:text-48 sm:leading-none lg:text-60 lg:leading-none">
-              headline
-            </p>
-            <h4 className="m-0 scroll-mt-20 font-semibold leading-head text-h4 mt-[1.5em]">
-              h4 tier
-            </h4>
-            <p className="m-0 scroll-mt-20 text-surface-fg text-base leading-6 sm:text-lg sm:leading-7">
-              {ty.proseBody}
-            </p>
-            <span className="m-0 scroll-mt-20 text-surface-fg text-xs font-semibold tracking-wide">
-              label
-            </span>
-            <p className="m-0 scroll-mt-20 text-xs font-medium tracking-widest uppercase">
-              overline
-            </p>
-            <code className="text-xs text-primary-accent">
-              {"headline · h4 · description · label · overline"}
-            </code>
+            <div className="flex flex-col gap-5">
+              {groups.map(({ caption, rows }) => (
+                <div key={caption} className="flex flex-col gap-3">
+                  <p className={cn(labelCls, "text-surface-fg")}>{caption}</p>
+                  {rows.map(({ sample, spec, className, stack }) => (
+                    <div
+                      key={sample}
+                      className={
+                        stack
+                          ? "flex flex-col gap-1"
+                          : "flex flex-wrap items-baseline justify-between gap-x-2"
+                      }
+                    >
+                      <span className={className}>{sample}</span>
+                      <span className="shrink-0 font-mono text-xs text-surface-fg">{spec}</span>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
           </Card>
 
           <Card className="flex flex-col gap-3 lg:col-span-2">
-            <div className="typography flex flex-col gap-2">
-              <h2>{ty.prose}</h2>
-              <p>{ty.proseBody}</p>
+            <h3 className="text-sm font-medium">{ty.prose}</h3>
+            <div className="typography max-w-[40em] [&_p]:mt-4 [&_h2]:mt-7 [&_h3]:mt-6 [&_ul]:mt-4 [&_blockquote]:mt-5 [&_li+li]:mt-2 [&>:first-child]:mt-0">
+              <h2>{ty.essayTitle}</h2>
+              <p>{ty.p1}</p>
+              <p>{ty.p2}</p>
               <h3>{ty.h3}</h3>
-              <p>{ty.bodyLine}</p>
+              <p>
+                {ty.p3a}
+                <code>--leading-body</code>
+                {ty.p3b}
+              </p>
               <ul>
                 <li>{ty.listA}</li>
                 <li>{ty.listB}</li>
+                <li>{ty.listC}</li>
               </ul>
+              <blockquote>{ty.quote}</blockquote>
             </div>
-            <code className="text-xs text-primary-accent">
-              {"typography class · headings, body and list need no annotation"}
-            </code>
           </Card>
+        </div>
+      </AnimatedContent>
+    </section>
+  );
+}
+
+function DemoBrick({ demo, cta }: { demo: DemoKind; cta: string }) {
+  if (demo === "shadow") {
+    return (
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        {(Object.keys(SHADOW_DEMOS) as ShadowLevel[]).map((level) => (
+          <div
+            key={level}
+            className={cn(
+              "flex h-20 items-end justify-center rounded-lg bg-background pb-2",
+              SHADOW_DEMOS[level],
+            )}
+          >
+            <span className="font-mono text-xs text-surface-fg">{level}</span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  if (demo === "press") {
+    return (
+      <button
+        type="button"
+        className="flex h-11 w-full cursor-pointer items-center justify-center rounded-pill bg-surface text-sm text-foreground shadow-frame motion-frame hover:lift active:crush active:shadow-frame-active focus-visible:focus-ring"
+      >
+        {cta}
+      </button>
+    );
+  }
+  if (demo === "duration") {
+    return (
+      <button
+        type="button"
+        className="flex h-11 w-full cursor-pointer items-center justify-center rounded-pill bg-surface text-sm text-foreground motion-frame hover:bg-primary hover:text-primary-fg focus-visible:focus-ring"
+      >
+        {cta}
+      </button>
+    );
+  }
+  return (
+    <button
+      type="button"
+      className="flex h-11 w-full cursor-pointer items-center justify-center rounded-pill bg-primary text-sm text-primary-fg motion-frame hover:lift hover:bg-primary-accent focus-visible:focus-ring"
+    >
+      {cta}
+    </button>
+  );
+}
+
+function InteractionBlock({ t }: { t: Copy }) {
+  const it = t.interact;
+  return (
+    <section
+      id="interact"
+      className="px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-20 scroll-mt-16 border-b"
+    >
+      <AnimatedContent className="flex flex-col gap-6 mx-auto w-full max-w-320">
+        <SectionHead eyebrow={it.eyebrow} title={it.title} desc={it.desc} />
+        <div className="grid gap-4 md:grid-cols-2">
+          {it.items.map((item) => (
+            <Card key={item.n} className="flex flex-col gap-3">
+              <div className="flex items-center gap-2">
+                <span className={chipClasses} data-variant="outline">
+                  {item.n}
+                </span>
+                <h3 className="text-sm font-medium">{item.title}</h3>
+              </div>
+              <DemoBrick demo={item.demo} cta={item.cta} />
+              <p className="text-sm text-surface-fg">{item.body}</p>
+            </Card>
+          ))}
         </div>
       </AnimatedContent>
     </section>

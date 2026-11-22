@@ -1,6 +1,6 @@
 ---
 title: Number Field 数字步进器
-description: 带前导 Minus 与尾部 Plus 步进按钮的紧凑数字步进器——支持键盘步进与千分位分隔。
+description: 带前导 Minus 与尾部 Plus 步进按钮的紧凑数字步进器——支持键盘与聚焦后滚轮步进、千分位分隔。
 ---
 
 ## 安装
@@ -12,6 +12,12 @@ description: 带前导 Minus 与尾部 Plus 步进按钮的紧凑数字步进器
 步进器形态数字输入，前导 Minus / 尾部 Plus 按 `step` 步进。
 
 <ComponentPreview name="number-field-basic" />
+
+### 禁用
+
+添加 disabled 属性禁用步进输入。
+
+<ComponentPreview name="number-field-disabled" />
 
 ## API 参考
 
@@ -29,7 +35,7 @@ description: 带前导 Minus 与尾部 Plus 步进按钮的紧凑数字步进器
 | `invalid`         | `boolean`                                              | 标记字段无效（校验未通过）                                                      |
 | `min`             | `number`                                               | 允许的最小值——到达后 Minus 按钮禁用；需要负数下界时显式传入，默认 `0`                          |
 | `max`             | `number`                                               | 允许的最大值——到达后 Plus 按钮禁用；步进件三字符缺省，改大界时自行确认值区可容，默认 `999`               |
-| `step`            | `number`                                               | 步进按钮与 `ArrowUp` / `ArrowDown` 的步长，默认 `1`                           |
+| `step`            | `number`                                               | 步进按钮、`ArrowUp` / `ArrowDown` 与聚焦后滚轮的步长，默认 `1`      |
 | `positiveInteger` | `boolean`                                              | 仅允许正整数。值类型变为 `number \| undefined`，默认 `false`                      |
 | `thousands`       | `boolean`                                              | 未聚焦时整数部分按千分位分组显示；提交值始终不带分隔符，默认 `false`                             |
 | `className`       | `string`                                               | 自定义类名，作用于外壳。外壳恒为名义 3 格宽，值区与步进钮同宽（见下方宽度）                            |
@@ -67,11 +73,12 @@ description: 带前导 Minus 与尾部 Plus 步进按钮的紧凑数字步进器
 
 外壳恒为名义 3 格加 1px 内间距与描边（两侧步进钮与值区各 1 格，随 `--width-control` 令牌缩放——默认方案 136px，紧凑档同步收缩）：值区 `w-control` 与步进钮同宽，不做任何运行期宽度计算，输入与步进过程宽度不变；超宽内容（千分位、更大的 `max`）在值区内横向滚动，需要更宽值区时经 `classNames.root` 自行加宽（如 `w-22`）。
 
-## 键盘交互
+## 交互
 
 | Key | Description |
 | --- | --- |
 | `ArrowUp` / `ArrowDown` | 按 `step` 步进数值，受 `min` / `max` 钳制 |
+| `Wheel`（聚焦后） | 滚轮向上加、向下减，按 `step` 步进并阻断页面滚动，受 `min` / `max` 钳制 |
 | `−` / `+` | 步进按钮仅响应指针——不进入 Tab 序列——并在 `min` / `max` 处自动禁用 |
 
 ## 数据属性

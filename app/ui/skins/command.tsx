@@ -3,7 +3,6 @@ import type { CommandProps } from "@/ui";
 import { cn, mergeSlots } from "../utils/cn";
 import { buttonVariants } from "./button";
 import { dialogPartClasses } from "./dialog";
-import { panelPadClass } from "./popover";
 import { listClasses } from "./list";
 
 
@@ -21,24 +20,28 @@ const triggerClasses = cn(buttonVariants.outline, "rounded-md px-control-x");
 const panelClasses = cn(
   dialogPartClasses.content,
   "w-[min(--spacing(128),calc(100vw_-_--spacing(4)))] max-w-none min-w-0",
-  panelPadClass,
-  "[&_[data-command-hint]]:flex [&_[data-command-hint]]:items-center [&_[data-command-hint]]:gap-x-2 [&_[data-command-hint]]:text-xs [&_[data-command-hint]]:text-surface-fg",
-  "[&_[data-command-hint-key]]:kbd",
 );
 
 const footerClasses = "flex items-center gap-x-3 border-t border-border pt-1";
+
+const hintClasses = "flex items-center gap-x-2 text-xs text-surface-fg";
+
+const hintKeyClasses = "kbd";
 
 const viewportClasses = cn(
   listClasses.viewport,
   "max-h-72 min-h-32 rounded-none border-0 shadow-none p-1",
 );
 const rowsClasses = cn(listClasses.root, "flex flex-col");
-const itemClasses =
-  "flex min-h-control cursor-pointer select-none items-center gap-x-2 px-2 py-1.5 text-sm leading-5 font-field text-foreground " +
+const itemBaseClasses =
+  "flex min-h-control cursor-pointer select-none items-center gap-x-2 px-2 py-1.5 text-sm leading-5 font-field text-foreground";
+const itemHoverClasses =
   "hover:bg-accent hover:text-accent-fg data-[highlighted=true]:bg-accent data-[highlighted=true]:text-accent-fg";
+
+const itemClasses = cn(itemBaseClasses, itemHoverClasses);
 const itemIconClasses = "shrink-0 text-surface-fg";
 const searchIconClasses = "size-4";
-const itemLabelClasses = "min-w-0 flex-1 truncate font-field data-disabled:opacity-50";
+const itemLabelClasses = "min-w-0 flex-1 truncate font-field";
 const labelClasses = "px-2 py-1.5 text-xs font-label tracking-label case-label text-surface-fg";
 
 const emptyClasses = "flex min-h-30 items-center justify-center text-sm text-surface-fg";
@@ -64,6 +67,8 @@ export function Command({ classNames, ...props }: CommandProps) {
         shortcut: cn("kbd", classNames?.shortcut),
         empty: cn(emptyClasses, classNames?.empty),
         footer: cn(footerClasses, classNames?.footer),
+        hint: cn(hintClasses, classNames?.hint),
+        hintKey: cn(hintKeyClasses, classNames?.hintKey),
       }}
     />
   );

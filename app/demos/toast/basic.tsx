@@ -60,15 +60,6 @@ export default function Demo() {
         </Button>
         <Button
           data-variant="outline"
-          onClick={() => {
-            const id = Toaster.loading({ title: "Loading data..." });
-            setTimeout(() => Toaster.dismiss(id), 3000);
-          }}
-        >
-          Loading
-        </Button>
-        <Button
-          data-variant="outline"
           onClick={() =>
             Toaster.info({
               title: "New version available",

@@ -4,7 +4,7 @@
 
 ## 行为 / 状态
 
-- 依赖 `../utils/date-math`（addDays/addMonths/addYears/dateFromParts/daysInMonth/isSameDate/startOfMonth/toISODate）与 `./icons`（ChevronLeft/ChevronRight）；导出 `CalendarRoot`、`CalendarHeader`、`CalendarNavButton`（direction 选 Chevron，默认 `aria-label="Previous/Next"`，children 可换图标）、`CalendarTitleButton`、`CalendarGrid`/`CalendarGridRow`/`CalendarGridCell`、`CalendarMonthGrid`、`CalendarYearGrid`、`moveGridFocus`、`calendarMonthLabels`（另挂 `Calendar.calendarMonthLabels`）
+- 依赖 `../utils/date-math`（addDays/addMonths/addYears/dateFromParts/daysInMonth/isSameDate/startOfMonth/toISODate）与 `./icons`（ChevronLeft/ChevronRight）；导出 `CalendarRoot`、`CalendarHeader`、`CalendarNavButton`（direction 选 Chevron，默认 `aria-label="Previous/Next"`，复用原子 `Button`——children 可换图标，缺省时 Chevron 走 `icon` 槽发射 `data-pure-icon`）、`CalendarTitleButton`、`CalendarGrid`/`CalendarGridRow`/`CalendarGridCell`、`CalendarMonthGrid`、`CalendarYearGrid`、`moveGridFocus`、`calendarMonthLabels`（另挂 `Calendar.calendarMonthLabels`）
 - `value`/`view` 均双模（`defaultValue`/`defaultView`，view 默认 `days`）；日选择仅接受 `visibleMonth` 内日期（跨月忽略），非受控才落 `value`，始终回调 `onChange`
 - 日视图周矩阵按 `firstDayOfWeek`（0=周日 / 1=周一）算首列偏移与行数；roving tabindex 停靠日取 `value`（在当前月内）否则月初，月初被禁用则向后找首个可用日
 - 网格键盘：方向键按列数（日 7 / 月年 3）步进，经 `moveGridFocus` 在 `button[data-date|data-month|data-year]` 中跳过禁用找焦点（上限 31/24 步）；日视图越过 `data-outside-month=true` 或无路可走时回调 `onNavigate` → `Calendar.handleNavigate` 先探测 90 天内首个非禁用日再翻月

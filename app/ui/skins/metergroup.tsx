@@ -1,19 +1,47 @@
 import { MeterGroup as MeterGroupHeadless } from "@/ui";
 import type { MeterGroupProps } from "@/ui";
-import { cn } from "../utils/cn";
+import { cn, mergeSlots } from "../utils/cn";
 
-const rootClasses =
-  "flex w-full flex-col gap-2 " +
-  "[&_[data-track]]:flex [&_[data-track]]:h-2 [&_[data-track]]:w-full [&_[data-track]]:rounded-pill [&_[data-track]]:bg-surface " +
-  "[&_[data-item]:first-of-type]:rounded-l-pill [&_[data-item]:last-of-type]:rounded-r-pill " +
-  "[&_[data-item]]:relative [&_[data-item]]:h-full [&_[data-item]]:transition-[width] [&_[data-item]]:duration-md [&_[data-item]]:ease-out " +
-  "[&_[data-item]]:after:pointer-events-none [&_[data-item]]:after:absolute [&_[data-item]]:after:bottom-full [&_[data-item]]:after:left-1/2 [&_[data-item]]:after:-translate-x-1/2 [&_[data-item]]:after:mb-1.5 [&_[data-item]]:after:whitespace-nowrap [&_[data-item]]:after:rounded-md [&_[data-item]]:after:border-frame [&_[data-item]]:after:border-border [&_[data-item]]:after:bg-surface-raised [&_[data-item]]:after:px-2 [&_[data-item]]:after:py-0.5 [&_[data-item]]:after:text-xs [&_[data-item]]:after:text-foreground [&_[data-item]]:after:content-[attr(data-tip)] " +
-  "[&_[data-item]]:after:opacity-0 [&_[data-item]]:after:transition-opacity [&_[data-item]]:after:duration-sm [&_[data-item]]:hover:after:opacity-100 " +
-  "[&_[data-legend]]:flex [&_[data-legend]]:flex-wrap [&_[data-legend]]:gap-x-4 [&_[data-legend]]:gap-y-1 [&_[data-legend]]:text-xs [&_[data-legend]]:text-surface-fg " +
-  "[&_[data-legend-item]]:inline-flex [&_[data-legend-item]]:items-center [&_[data-legend-item]]:gap-1 " +
-  "[&_[data-swatch]]:size-1.5 [&_[data-swatch]]:rounded-pill " +
-  "[&_[data-percent]]:font-label [&_[data-percent]]:tracking-label";
+const rootClasses = "flex w-full flex-col gap-2";
 
-export function MeterGroup({ className, ...props }: MeterGroupProps) {
-  return <MeterGroupHeadless {...props} className={cn(rootClasses, className)} />;
+const trackClasses = "flex h-2 w-full rounded-pill bg-surface";
+
+const segmentBaseClasses =
+  "relative h-full transition-[width] duration-md ease-out first-of-type:rounded-l-pill last-of-type:rounded-r-pill";
+const segmentTipBoxClasses =
+  "after:pointer-events-none after:absolute after:bottom-full after:left-1/2 after:-translate-x-1/2 " +
+  "after:mb-1.5 after:whitespace-nowrap after:rounded-md";
+const segmentTipFaceClasses =
+  "after:border-frame after:border-border after:bg-surface-raised after:px-2 after:py-0.5 " +
+  "after:text-xs after:text-foreground after:content-[attr(data-tip)]";
+const segmentTipShowClasses =
+  "after:opacity-0 after:transition-opacity after:duration-sm hover:after:opacity-100";
+
+const segmentClasses = cn(segmentBaseClasses, segmentTipBoxClasses, segmentTipFaceClasses, segmentTipShowClasses);
+
+const legendClasses = "flex flex-wrap gap-x-4 gap-y-1 text-xs text-surface-fg";
+
+const legendItemClasses = "inline-flex items-center gap-1";
+
+const swatchClasses = "size-1.5 rounded-pill";
+
+const percentClasses = "font-label tracking-label";
+
+export const metergroupPartClasses = {
+  track: trackClasses,
+  segment: segmentClasses,
+  legend: legendClasses,
+  legendItem: legendItemClasses,
+  swatch: swatchClasses,
+  percent: percentClasses,
+};
+
+export function MeterGroup({ className, classNames, ...props }: MeterGroupProps) {
+  return (
+    <MeterGroupHeadless
+      {...props}
+      className={cn(rootClasses, className)}
+      classNames={mergeSlots({ ...metergroupPartClasses }, classNames)}
+    />
+  );
 }

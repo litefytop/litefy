@@ -3,11 +3,14 @@ import type { DetailsProps } from "@/ui";
 import { cn, mergeSlots } from "../utils/cn";
 import { collapseRootClasses } from "./collapse";
 
-const summaryClasses =
-  "flex min-h-control cursor-pointer list-none items-center justify-between gap-x-2 px-3 py-3 text-left text-sm font-label leading-label tracking-label case-label " +
-  "[&::-webkit-details-marker]:hidden " +
-  "group-not-open:hover:bg-accent group-not-open:hover:text-accent-fg " +
-  "focus-visible:focus-ring";
+const summaryBaseClasses =
+  "flex min-h-control cursor-pointer list-none items-center justify-between gap-x-2 px-3 py-3 text-left";
+const summaryTextClasses =
+  "text-sm font-label leading-label tracking-label case-label [&::-webkit-details-marker]:hidden";
+const summaryHoverClasses =
+  "group-not-open:hover:bg-accent group-not-open:hover:text-accent-fg focus-visible:focus-ring";
+
+const summaryClasses = cn(summaryBaseClasses, summaryTextClasses, summaryHoverClasses);
 
 const iconClasses =
   "size-4 flex-none transition-transform ease-frame duration-md group-open:-rotate-180";

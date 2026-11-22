@@ -123,9 +123,11 @@
     "dependence": [
       "list",
       "picker",
+      "icons",
       "use-combobox",
       "use-remote-pagination",
-      "popover"
+      "popover",
+      "input"
     ]
   },
   "command": {
@@ -138,7 +140,8 @@
       "dialog",
       "input",
       "list",
-      "use-combobox"
+      "use-combobox",
+      "popover"
     ]
   },
   "context-menu": {
@@ -199,7 +202,8 @@
     "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/dialog.tsx",
     "dependence": [
       "icons",
-      "trap-tab-key"
+      "trap-tab-key",
+      "button"
     ]
   },
   "donut": {
@@ -246,7 +250,10 @@
       "icons",
       "button",
       "filter-query",
+      "use-floating-panel",
+      "floating-position",
       "combobox-query",
+      "popover",
       "input"
     ]
   },
@@ -464,7 +471,10 @@
   "segment": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/segment.tsx",
-    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/segment.tsx"
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/segment.tsx",
+    "dependence": [
+      "button"
+    ]
   },
   "select": {
     "type": "component",
@@ -529,7 +539,8 @@
     "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/table.tsx",
     "dependence": [
       "icons",
-      "checkbox"
+      "checkbox",
+      "use-virtual-scroll"
     ]
   },
   "tabs": {
@@ -765,16 +776,16 @@
     "type": "skin",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/card.tsx"
   },
-  "paper": {
+  "color-swatch": {
     "type": "skin",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/paper.tsx"
-  },
-  "swatch-picker": {
-    "type": "skin",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/swatch-picker.tsx",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/color-swatch.tsx",
     "dependence": [
       "segment"
     ]
+  },
+  "paper": {
+    "type": "skin",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/paper.tsx"
   },
   "icons/tabler": {
     "type": "component",
@@ -785,18 +796,18 @@
       "@tabler/icons-react"
     ]
   },
-  "style/clinical/base": {
+  "style/flat-minimal/base": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/clinical/index.css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/flat-minimal/index.css",
     "files": [
-      "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/clinical/index.css"
+      "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/flat-minimal/index.css"
     ]
   },
-  "style/clinical/preset": {
+  "style/flat-minimal/preset": {
     "type": "css",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/clinical/index.css",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/flat-minimal/index.css",
     "files": [
-      "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/clinical/index.css"
+      "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/flat-minimal/index.css"
     ]
   },
   "style/minimal/base": {

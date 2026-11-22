@@ -11,18 +11,32 @@ import {
 import { cn, mergeSlots } from "../utils/cn";
 import { pickerClasses } from "./picker";
 
-const rangeDayClasses =
+const rangeSingleClasses =
   "data-[range=single]:bg-primary data-[range=single]:text-primary-fg " +
-  "data-[range=single]:hover:bg-primary data-[range=single]:hover:text-primary-fg " +
+  "data-[range=single]:hover:bg-primary data-[range=single]:hover:text-primary-fg";
+const rangeStartFillClasses =
   "data-[range=start]:bg-primary data-[range=start]:text-primary-fg " +
-  "data-[range=start]:hover:bg-primary data-[range=start]:hover:text-primary-fg " +
-  "data-[range=start]:rounded-l-md data-[range=start]:rounded-r-none " +
+  "data-[range=start]:hover:bg-primary data-[range=start]:hover:text-primary-fg";
+const rangeStartCapClasses =
+  "data-[range=start]:rounded-l-md data-[range=start]:rounded-r-none";
+const rangeEndFillClasses =
   "data-[range=end]:bg-primary data-[range=end]:text-primary-fg " +
-  "data-[range=end]:hover:bg-primary data-[range=end]:hover:text-primary-fg " +
-  "data-[range=end]:rounded-r-md data-[range=end]:rounded-l-none " +
+  "data-[range=end]:hover:bg-primary data-[range=end]:hover:text-primary-fg";
+const rangeEndCapClasses =
+  "data-[range=end]:rounded-r-md data-[range=end]:rounded-l-none";
+const rangeBetweenClasses =
   "data-[range=between]:bg-accent data-[range=between]:text-foreground " +
   "data-[range=between]:hover:bg-accent data-[range=between]:hover:text-foreground " +
   "data-[range=between]:rounded-none";
+
+const rangeDayClasses = cn(
+  rangeSingleClasses,
+  rangeStartFillClasses,
+  rangeStartCapClasses,
+  rangeEndFillClasses,
+  rangeEndCapClasses,
+  rangeBetweenClasses,
+);
 
 export const calendarRangeClasses = mergeSlots(calendarClasses, {
   day: cn(calendarDayBaseClasses, rangeDayClasses),

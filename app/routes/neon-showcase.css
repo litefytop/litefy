@@ -1,5 +1,5 @@
 /*
- * Tailwind entry for the neon showcase route — same shape as clinical-showcase.css:
+ * Tailwind entry for the neon showcase route — same shape as flat-showcase.css:
  * owns the tailwindcss import, composes the neon-gradient scheme theme layer, and
  * scans the shared skins lane plus the route's own source and the shared chrome it renders.
  */

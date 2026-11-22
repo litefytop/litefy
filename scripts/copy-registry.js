@@ -151,7 +151,7 @@ async function generateRegistry() {
   /* Which components does each skin serve? The headless parts it RENDERS as JSX —
      aliased `@/ui` imports resolved through the component export map and filtered to
      components without their own same-name skin (that filter keeps a skin like
-     swatch-picker — which composes SegmentGroup — from being read as the segment's
+     color-swatch — which composes SegmentGroup — from being read as the segment's
      look). Mere helper imports (createIcon, cn) are not renders. A skin serving
      components attaches to them via the `skin` field; one serving none is a
      standalone skin entry. */

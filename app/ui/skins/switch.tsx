@@ -4,11 +4,12 @@ import { mergeSlots } from "../utils/cn";
 
 
 const labelClasses =
-  "inline-flex items-center min-h-control gap-x-2 text-base leading-6 font-label";
+  "inline-flex items-center min-h-control gap-x-2 text-base leading-6 font-label has-[:disabled]:text-surface-fg";
 
 const trackClasses =
   "relative inline-flex shrink-0 items-center w-10 h-5 rounded-pill border-frame border-border cursor-pointer shadow-frame motion-frame " +
   "data-[checked=true]:border-primary data-[checked=true]:bg-primary " +
+  "has-[:disabled]:dim " +
   "has-[:focus-visible]:focus-ring";
 
 const thumbClasses =

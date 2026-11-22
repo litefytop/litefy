@@ -1,7 +1,6 @@
 ﻿import { Combobox as ComboboxHeadless } from "@/ui";
 import type { ComboboxProps } from "@/ui";
 import { cn } from "../utils/cn";
-import { panelPadClass } from "./popover";
 import { pickerClasses } from "./picker";
 import { fieldGroupClasses } from "./input";
 import { listClasses, listViewportClasses } from "./list";
@@ -29,7 +28,7 @@ export function Combobox({ className, classNames, ...props }: ComboboxProps) {
         leading: cn(leadingClasses, classNames?.leading),
         input: cn(inputClasses, classNames?.input),
         trailing: cn(trailingClasses, classNames?.trailing),
-        panel: cn(pickerClasses.content, panelPadClass, classNames?.panel),
+        panel: cn(pickerClasses.content, classNames?.panel),
         item: cn(listClasses.item, classNames?.item ?? classNames?.list?.item),
         list: { ...listClasses, viewport: viewportInPanel, ...classNames?.list },
       }}

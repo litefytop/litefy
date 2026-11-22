@@ -9,6 +9,13 @@ const depthStart = `ps-(--litefy-indent) ${depthEval}`;
 
 const listClasses = "[--litefy-depth:0] m-0 flex w-full min-w-0 list-none flex-col p-0";
 
+const itemMarkerClasses =
+  "before:absolute before:inset-y-2 before:w-px before:bg-transparent" +
+  " before:left-[calc(var(--spacing)_*_4_+_var(--spacing)_*_2_*_var(--litefy-depth,0)_-_var(--spacing)_*_2)]";
+const itemActiveClasses = "data-[active=true]:bg-primary data-[active=true]:text-primary-fg";
+const itemDisabledClasses =
+  "aria-[disabled=true]:pointer-events-none aria-[disabled=true]:opacity-50";
+
 const rowClasses =
   `relative flex min-h-control w-full min-w-0 items-center gap-x-2 ` +
   `text-start text-sm leading-body font-field text-surface-fg no-underline ` +
@@ -18,13 +25,7 @@ const rowClasses =
 const treeClasses = {
   trigger: `${rowClasses} cursor-pointer`,
 
-  item:
-    rowClasses +
-    " before:absolute before:inset-y-2 before:w-px before:bg-transparent" +
-    " before:left-[calc(var(--spacing)_*_4_+_var(--spacing)_*_2_*_var(--litefy-depth,0)_-_var(--spacing)_*_2)]" +
-    " " +
-    " data-[active=true]:bg-primary data-[active=true]:text-primary-fg " +
-    " aria-[disabled=true]:pointer-events-none aria-[disabled=true]:opacity-50",
+  item: cn(rowClasses, itemMarkerClasses, itemActiveClasses, itemDisabledClasses),
   label:
     "pt-4 pb-1 pe-3 text-xs leading-body font-label tracking-label case-label text-surface-fg " +
     depthStart,

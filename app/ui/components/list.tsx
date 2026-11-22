@@ -82,6 +82,7 @@ export interface ListProps<T> {
     onSelect?: (item: T, index: number) => void;
     onScrollBottom?: () => void;
     onItemMouseMove?: (item: T, index: number) => void;
+    isItemDisabled?: (item: T, index: number) => boolean;
     className?: string;
     style?: React.CSSProperties;
     classNames?: ListClassNames;
@@ -103,7 +104,7 @@ function groupItems<T>(items: T[], getGroup: (item: T, index: number) => string)
     });
     return Array.from(map.entries());
 }
-function ListView<T>({ ordered = false, id, items, getKey, getGroup, renderGroupHeader, renderItem, empty, highlightIndex, onHighlightChange, onSelect, onScrollBottom, onItemMouseMove, className, style, classNames = EMPTY_CLASS_NAMES, styles = EMPTY_STYLES, }: ListProps<T> & {
+function ListView<T>({ ordered = false, id, items, getKey, getGroup, renderGroupHeader, renderItem, empty, highlightIndex, onHighlightChange, onSelect, onScrollBottom, onItemMouseMove, isItemDisabled, className, style, classNames = EMPTY_CLASS_NAMES, styles = EMPTY_STYLES, }: ListProps<T> & {
     ordered?: boolean;
 }) {
     const controller = useListController({
@@ -121,9 +122,12 @@ function ListView<T>({ ordered = false, id, items, getKey, getGroup, renderGroup
     const viewport = (content: React.ReactNode) => (<div ref={controller.rootRef as React.Ref<HTMLDivElement>} id={listBaseId} role="listbox" aria-activedescendant={activeDescendant} tabIndex={0} onKeyDown={controller.handleKeyDown} onScroll={controller.handleScroll} className={[classNames.viewport, className].filter(Boolean).join(" ") || undefined} style={style}>
       {content}
     </div>);
-    const row = (item: T, index: number) => (<li id={`${listBaseId}-${index}`} key={getKey?.(item, index) ?? index} role="option" aria-selected={controller.highlightIndex === index} data-highlighted={controller.highlightIndex === index || undefined} onClick={() => onSelect?.(item, index)} onMouseMove={onItemMouseMove ? () => onItemMouseMove(item, index) : undefined} className={classNames.item} style={styles.item}>
+    const row = (item: T, index: number) => {
+        const disabled = isItemDisabled?.(item, index) ?? false;
+        return (<li id={`${listBaseId}-${index}`} key={getKey?.(item, index) ?? index} role="option" aria-selected={controller.highlightIndex === index} data-highlighted={controller.highlightIndex === index || undefined} data-disabled={disabled || undefined} inert={disabled || undefined} onClick={disabled ? undefined : () => onSelect?.(item, index)} onMouseMove={onItemMouseMove && !disabled ? () => onItemMouseMove(item, index) : undefined} className={classNames.item} style={styles.item}>
       {renderItem(item, index)}
     </li>);
+    };
     if (items.length === 0 && empty !== undefined) {
         return viewport(<Tag data-ordered={ordered || undefined} role="presentation" className={classNames.root}>
         <li className={classNames.empty}>{empty}</li>

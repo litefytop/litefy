@@ -5,12 +5,15 @@ import { cn, mergeSlots } from "../utils/cn";
 
 const rootClasses = "relative";
 
-const dropzoneClasses =
-  "flex flex-col items-center justify-center gap-x-1.5 py-8 px-6 text-center text-sm leading-5 cursor-pointer rounded-md border-dashed border-frame border-border bg-background shadow-frame " +
-  "not-data-[disabled=true]:hover:bg-accent " +
-  "focus-visible:focus-ring " +
-  "data-[dragging=true]:bg-accent " +
+const dropzoneBaseClasses =
+  "flex flex-col items-center justify-center gap-x-1.5 py-8 px-6 text-center text-sm leading-5";
+const dropzoneFaceClasses =
+  "cursor-pointer rounded-md border-dashed border-frame border-border bg-background shadow-frame";
+const dropzoneStateClasses =
+  "not-data-[disabled=true]:hover:bg-accent focus-visible:focus-ring data-[dragging=true]:bg-accent " +
   "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50";
+
+const dropzoneClasses = cn(dropzoneBaseClasses, dropzoneFaceClasses, dropzoneStateClasses);
 
 const hiddenInputClasses =
   "absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap [clip-path:inset(50%)]";

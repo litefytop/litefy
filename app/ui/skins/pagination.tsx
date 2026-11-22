@@ -19,7 +19,7 @@ const compactTextClasses = "whitespace-nowrap text-sm leading-5 tabular-nums tex
 
 
 const navClasses =
-  cn(buttonVariants.text, "w-control px-0 text-sm [&>svg]:size-4 [&>svg]:flex-none");
+  cn(buttonVariants.text, "w-control text-sm [&>svg]:size-4 [&>svg]:flex-none");
 
 const pagesClasses = "flex items-center gap-x-2";
 

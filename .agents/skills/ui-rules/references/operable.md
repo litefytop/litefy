@@ -11,7 +11,7 @@
 9. 行控件整行不小于 44，用 `padding-block: calc((var(--height-control) - 行高) / 2)` 反解，不写死 `height`
 10. 画到 44 会毁密度的件（拇指、图标、角标）用伪元素外扩：`content: ""; position: absolute; inset: calc(50% - var(--height-control) / 2)`；相邻目标净间距小于 12px 时外扩互压，此路失效，退回真实尺寸
 11. Checkbox / Radio / Switch 的热区由 label 行盒承担，禁止把隐藏 input 放大到 44
-12. 按钮命中即盒子（`min-h-control min-w-control`），不设外边距，命中下限照第 8 条核；档位取值走尺寸法（skins/button.md），纯图标钮的热区外扩伪元素读 `--inset-hit`（方案自答）。控件内图标随控件文字（`size-[1em]`），与方案无关，图标不许把盒子撑大
+12. 按钮命中即盒子（`min-h-control min-w-control`），不设外边距，命中下限照第 8 条核；档位取值走尺寸法（skins/button.md）。控件内图标随控件文字（`size-[1em]`），与方案无关，图标不许把盒子撑大
 13. 指针手势要有单点替代：双指缩放、长按、描摹轨迹都要给键盘或按钮等价物；`use-drag` 的拖拽必须配方向键移动或上/下移按钮
 14. 按下不触发：动作在 `pointerup` 完成；`onPointerDown` 只用于开始拖拽、滑块跟手这类连续件（`slider.tsx`、`drawer.tsx` 属此类）
 15. 指针可取消：拖拽、滑块、涂写类动作在指针滑出边界或按 Esc 后要撤回原值，不许把越界当提交

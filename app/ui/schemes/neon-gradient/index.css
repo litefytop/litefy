@@ -204,6 +204,8 @@
 @custom-variant borderless (&:where([data-border="none"]));
 @custom-variant bordered (&:where([data-border="solid"]));
 
+@custom-variant inert (&[inert]);
+
 @custom-variant motion-safe {
   @media (prefers-reduced-motion: no-preference) {
     @slot;
@@ -251,11 +253,14 @@
 
   --text-h1: 2.25rem;
   --text-h2: 1.75rem;
-  --text-h3: 1.4rem;
-  --text-h4: 1.2rem;
-  --text-h5: 1.05rem;
-  --text-h6: 0.95rem;
+  --text-h3: 1.5rem;
+  --text-h4: 1.25rem;
+  --text-h5: 1.125rem;
+  --text-h6: 1rem;
   --text-table-code: 0.875rem;
+  --text-headline: clamp(2.25rem, 1.5rem + 3vw, 3.75rem);
+  --text-kicker: 1.625rem;
+  --text-overline: 0.75rem;
 
   --font-weight-medium: 500;
   --font-weight-bold: 700;
@@ -264,10 +269,13 @@
   --spacing: 0.25rem;
   --leading-head: 1.15;
   --leading-body: 1.7;
+  --leading-headline: 1.05;
 
   --text-label: 0.875rem;
   --leading-label: 1.2;
   --tracking-label: 0.08em;
+  --tracking-headline: -0.01em;
+  --tracking-overline: 0.1em;
   --font-weight-field: 400;
   --font-weight-emphasis: 700;
   --font-weight-strong: 800;
@@ -444,6 +452,12 @@
   box-shadow: var(--focus-glow-inset);
 }
 
+@utility dim {
+  opacity: 50%;
+  cursor: not-allowed;
+  color: var(--color-surface-fg);
+}
+
 @utility thumb-hit {
   &::after {
     content: "";
@@ -503,6 +517,30 @@
   font-size: var(--text-h6);
   font-weight: var(--font-weight-bold);
   line-height: var(--leading-head);
+}
+
+@utility typo-headline {
+  font-family: var(--font-sans);
+  font-size: var(--text-headline);
+  font-weight: var(--font-weight-black);
+  line-height: var(--leading-headline);
+  letter-spacing: var(--tracking-headline);
+}
+
+@utility typo-overline {
+  font-size: var(--text-overline);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-label);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+}
+
+@utility typo-kicker {
+  font-size: var(--text-kicker);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-headline);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
 }
 
 @utility typo-body {
@@ -662,14 +700,6 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
-  }
-
-  :disabled,
-  [inert] {
-    opacity: 50%;
-    cursor: not-allowed;
-    pointer-events: none;
-    color: var(--surface-fg);
   }
 
   ::selection {

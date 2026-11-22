@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { cn } from "../utils/cn";
 
 export type ButtonStatus = {
     icon: React.ReactNode;
@@ -32,14 +31,12 @@ export interface ButtonProps extends ButtonRootProps {
 
 function Button({ icon, status, className, children, ...props }: ButtonProps) {
     const leading = status ? (status.active ? status.icon : icon) : icon;
-    const reserve = status !== undefined && !status.active && icon === undefined && children !== null && children !== undefined;
     return (
         <ButtonRoot
             {...props}
             data-pure-icon={children === null || children === undefined || undefined}
             data-status={status ? "" : undefined}
-            data-status-reserve={reserve ? "" : undefined}
-            className={cn("data-[status]:inline-grid data-[status]:auto-cols-auto data-[status]:grid-flow-col", className)}
+            className={["data-[status]:inline-grid data-[status]:auto-cols-auto data-[status]:grid-flow-col", className].filter(Boolean).join(" ")}
         >
             {leading}
             {children}

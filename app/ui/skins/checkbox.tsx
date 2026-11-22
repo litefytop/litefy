@@ -9,30 +9,44 @@ import { cn, mergeSlots } from "../utils/cn";
 const inputClasses =
   "peer absolute left-1/2 top-1/2 size-6 -translate-x-1/2 -translate-y-1/2 cursor-pointer opacity-0";
 
-const indicatorClasses =
+const indicatorBaseClasses =
   "relative inline-flex size-4 shrink-0 items-center justify-center rounded-sm border-hair shadow-frame " +
-  "text-foreground motion-frame " +
-  "has-[:checked]:border-border has-[:checked]:bg-primary has-[:checked]:text-primary-fg has-[:checked]:shadow-checked " +
-  "has-[:indeterminate]:border-border has-[:indeterminate]:bg-primary has-[:indeterminate]:text-primary-fg has-[:indeterminate]:shadow-checked " +
-  "has-[:focus-visible]:focus-ring";
+  "text-foreground motion-frame";
+const indicatorCheckedClasses =
+  "has-[:checked]:border-border has-[:checked]:bg-primary has-[:checked]:text-primary-fg has-[:checked]:shadow-checked";
+const indicatorIndeterminateClasses =
+  "has-[:indeterminate]:border-border has-[:indeterminate]:bg-primary has-[:indeterminate]:text-primary-fg has-[:indeterminate]:shadow-checked";
+const indicatorFocusClasses = "has-[:focus-visible]:focus-ring";
+
+const indicatorClasses = cn(
+  indicatorBaseClasses,
+  indicatorCheckedClasses,
+  indicatorIndeterminateClasses,
+  indicatorFocusClasses,
+);
 
 const iconClasses =
   "size-3 stroke-3 opacity-0 transition-opacity duration-sm ease-frame " +
   "peer-checked:opacity-100 peer-indeterminate:opacity-100";
 
 
-const labelClasses =
-  "flex min-h-control min-w-control cursor-pointer select-none items-center gap-x-4 " +
-  "font-field text-foreground " +
-  "has-[:checked]:not-has-[:indeterminate]:[&_[data-line]]:line-through " +
-  "has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50 " +
-  "has-[:disabled]:text-surface-fg";
+const labelBaseClasses =
+  "group/label flex min-h-control min-w-control cursor-pointer select-none items-center gap-x-4 " +
+  "font-field text-foreground";
+const labelDisabledClasses =
+  "has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50 has-[:disabled]:text-surface-fg";
+
+const labelClasses = cn(labelBaseClasses, labelDisabledClasses);
+
+const textClasses =
+  "group-has-[:checked]/label:not-group-has-[:indeterminate]/label:line-through";
 
 
 export const checkboxPartClasses = {
   input: inputClasses,
   indicator: indicatorClasses,
   icon: iconClasses,
+  text: textClasses,
   label: labelClasses,
 };
 

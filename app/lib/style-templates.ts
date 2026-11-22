@@ -113,14 +113,14 @@ export const STYLE_TEMPLATES: StyleTemplate[] = [
     palettes: [],
   },
   {
-    slug: "clinical",
+    slug: "flat-minimal",
     name: { zh: "扁平极简", en: "Flat Minimal" },
     desc: {
-      zh: "冷白画布、浅天蓝表面、深天蓝品牌色：1px 发丝边界、全直角、零阴影，层级全靠边界与留白。为企业后台与医疗应用设计——密度高、状态分明、动效克制。",
-      en: "Cool-white canvas, pale-sky surfaces, deep-sky brand: 1px hairline borders, square corners, zero shadows — hierarchy comes from boundaries and whitespace alone. Built for enterprise consoles and medical apps: dense, unambiguous, restrained.",
+      zh: "冷白画布、浅天蓝表面、深天蓝品牌色：1px 发丝边界、全直角、零阴影，层级全靠边界与留白。为企业后台与信息密集应用设计——密度高、状态分明、动效克制。",
+      en: "Cool-white canvas, pale-sky surfaces, deep-sky brand: 1px hairline borders, square corners, zero shadows — hierarchy comes from boundaries and whitespace alone. Built for enterprise consoles and information-dense apps: dense, unambiguous, restrained.",
     },
-    tags: { zh: ["固定色方案", "企业医疗"], en: ["Fixed palette", "Healthcare"] },
-    pathPrefix: "/clinical",
+    tags: { zh: ["固定色方案", "企业后台"], en: ["Fixed palette", "Enterprise"] },
+    pathPrefix: "/flat",
     palettes: [],
   },
 ];

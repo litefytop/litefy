@@ -49,6 +49,7 @@ export function useNumberCore(opts: NumberCoreOptions) {
     const { positiveInteger, min, max, step, thousands, disabled, defaultValue, onValueChange, controlledValue, isControlled, rest, } = opts;
     const [uncontrolledValue, setUncontrolledValue] = React.useState<string>(String(defaultValue ?? ""));
     const [focused, setFocused] = React.useState(false);
+    const nodeRef = React.useRef<HTMLInputElement | null>(null);
     const value = isControlled ? String(controlledValue ?? "") : uncontrolledValue;
     const valueRef = React.useRef(value);
     React.useEffect(() => {
@@ -149,6 +150,19 @@ export function useNumberCore(opts: NumberCoreOptions) {
         }
         rest.onKeyDown?.(e);
     };
+    React.useEffect(() => {
+        const el = nodeRef.current;
+        if (!focused || !el)
+            return;
+        const onWheel = (e: WheelEvent) => {
+            if (e.deltaY === 0 || el.readOnly)
+                return;
+            e.preventDefault();
+            stepDelta(e.deltaY < 0 ? step : -step);
+        };
+        el.addEventListener("wheel", onWheel, { passive: false });
+        return () => el.removeEventListener("wheel", onWheel);
+    }, [focused, step, stepDelta]);
     const safeMin = Number.isFinite(min) ? min : undefined;
     const safeMax = Number.isFinite(max) ? max : undefined;
     const numValue = value === "" ? undefined : parseFloat(value);
@@ -165,6 +179,7 @@ export function useNumberCore(opts: NumberCoreOptions) {
         value: displayValue,
         onChange: handleChange,
         onFocus: (e: React.FocusEvent<HTMLInputElement>) => {
+            nodeRef.current = e.currentTarget;
             setFocused(true);
             rest.onFocus?.(e);
         },

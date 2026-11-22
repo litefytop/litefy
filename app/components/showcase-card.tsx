@@ -6,13 +6,13 @@ import { useSiteSkin } from "./site-skin";
 import type { StyleTemplate } from "../lib/style-templates";
 import minimalThumb from "../assets/showcase/minimal.webp";
 import neoThumb from "../assets/showcase/neo-brutalist.webp";
-import clinicalThumb from "../assets/showcase/clinical.webp";
+import flatMinimalThumb from "../assets/showcase/flat-minimal.webp";
 import neonThumb from "../assets/showcase/neon-gradient.webp";
 
 const THUMBS: Record<string, string> = {
   minimal: minimalThumb,
   "neo-brutalist": neoThumb,
-  clinical: clinicalThumb,
+  "flat-minimal": flatMinimalThumb,
   "neon-gradient": neonThumb,
 };
 

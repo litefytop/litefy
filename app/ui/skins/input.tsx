@@ -9,9 +9,10 @@ export const fieldGroupClasses =
   "flex min-h-control w-55 max-w-full min-w-0 cursor-text items-center p-well rounded-md border-frame border-border bg-background text-foreground shadow-frame " +
   "motion-frame " +
   "[&>input:not(:first-child)]:rounded-ss-none [&>input:not(:first-child)]:rounded-es-none " +
-  "[&>input:not(:last-child)]:rounded-se-none [&>input:not(:last-child)]:rounded-ee-none " +
+  "[&>input:has(+[data-field-trailing])]:rounded-se-none [&>input:has(+[data-field-trailing])]:rounded-ee-none " +
   "borderless:border-0 bordered:border-frame bordered:border-border " +
   "focus-within:focus-ring " +
+  "has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50 " +
   "" +
   "data-[invalid=true]:border-danger-fg " +
   "data-[invalid=true]:focus-within:focus-ring-danger " +
