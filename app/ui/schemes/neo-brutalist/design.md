@@ -7,8 +7,8 @@ colors:
   foreground: '#000000'
   surface: 'oklch(89.7% 0.196 126.665)'
   surface-fg: '#000000'
-  disabled: '#e5e5e5'
-  disabled-fg: '#525252'
+  disabled: 'oklch(70.8% 0 none)'
+  disabled-fg: 'oklch(26.9% 0 none)'
   surface-raised: '#ffffff'
   surface-raised-fg: '#000000'
   accent: 'oklch(90.5% 0.182 98.111)'
@@ -33,8 +33,8 @@ colors:
   dark-foreground: '#ffffff'
   dark-surface: 'oklch(52.5% 0.223 3.958)'
   dark-surface-fg: '#ffffff'
-  dark-disabled: 'oklch(26.9% 0 none)'
-  dark-disabled-fg: 'oklch(70.8% 0 none)'
+  dark-disabled: 'oklch(43.9% 0 none)'
+  dark-disabled-fg: 'oklch(92.2% 0 none)'
   dark-surface-raised: 'oklch(20.5% 0 none)'
   dark-surface-raised-fg: '#ffffff'
   dark-accent: 'oklch(90.5% 0.182 98.111)'
@@ -43,18 +43,6 @@ colors:
   dark-primary: 'oklch(89.7% 0.196 126.665)'
   dark-primary-fg: '#000000'
   dark-primary-accent: 'oklch(76.8% 0.233 130.85)'
-  dark-danger-fg: 'oklch(39.6% 0.141 25.723)'
-  dark-danger: 'oklch(88.5% 0.062 18.334)'
-  dark-danger-accent: 'oklch(80.8% 0.114 19.571)'
-  dark-info-fg: 'oklch(37.9% 0.146 265.522)'
-  dark-info: 'oklch(88.2% 0.059 254.128)'
-  dark-info-accent: 'oklch(80.9% 0.105 251.813)'
-  dark-success-fg: 'oklch(39.3% 0.095 152.535)'
-  dark-success: 'oklch(92.5% 0.084 155.995)'
-  dark-success-accent: 'oklch(87.1% 0.15 154.449)'
-  dark-warning-fg: 'oklch(42.1% 0.095 57.708)'
-  dark-warning: 'oklch(94.5% 0.129 101.54)'
-  dark-warning-accent: 'oklch(90.5% 0.182 98.111)'
 typography:
   sans:
     fontFamily: 'Inter, system-ui, sans-serif'
@@ -185,12 +173,10 @@ spacing:
 components:
   avatar:
     rounded: '{rounded.disc}'
-well:
-  color: '{colors.surface}'
-  dark-color: '{colors.dark-surface}'
-  padding: 0px
+recess:
   shadow: none
   dark-shadow: none
+  radius-inner: 0px
 ---
 
 ## 总览
@@ -222,22 +208,22 @@ well:
    10. `primary` — 品牌背景：日间粉 pink-700 `oklch(52.5% 0.223 3.958)`、夜间酸橙绿 lime-300 `oklch(89.7% 0.196 126.665)`，与 `surface` 对调：CTA、选中态、选区、卡片悬停的阴影色、进度填充；不用作正文颜色。
    11. `primary-fg` — `primary` 背景上的文字色，随品牌档走：日档白（压粉 6.11）、夜档黑（压绿 16.12），实测值；两档对各自 `-accent` 也达标（9.69 / 10.69）。
    12. `primary-accent` — 品牌同族加深档：日 pink-900 `oklch(40.8% 0.153 2.432)`、夜 lime-500 `oklch(76.8% 0.233 130.85)`（道距 0.136 / 0.135，实测值）：primary 按钮悬停 / 按压；其他交互面仍读 `accent`。悬停方向与语义四族一致——静置→悬停同族换一档，配对前景不换。
-   13. `danger-fg` — `danger` 与 `danger-accent` 背景上的文字色（red-900 `oklch(39.6% 0.141 25.723)`，亮暗同档，对两档 5.28 / 6.95，实测值）；独立错误文字、图标与边框挂 `text-danger-independent` / `border-danger-independent`，亮档读 `danger-fg`、暗档读 `danger`。
-   14. `danger` — 错误块静置背景（日 red-300 `oklch(80.8% 0.114 19.571)` / 夜 red-200 `oklch(88.5% 0.062 18.334)`）。
-   15. `danger-accent` — 错误块的悬停背景（日 red-200 / 夜 red-300）：语义四族夜档方向与日档相反——静置取更亮一档、悬停加深一档，块上文字始终是那枚 900 深字。
-   16. `info-fg` — `info` 与 `info-accent` 背景上的文字色（blue-900，亮暗同档）；独立信息文字、图标与边框挂 `text-info-independent` / `border-info-independent`，亮档读 `info-fg`、暗档读 `info`；正文链接同法。
-   17. `info` — 信息块静置背景（日 blue-300 / 夜 blue-200）。
-   18. `info-accent` — 信息块的悬停背景（日 blue-200 / 夜 blue-300）。
-   19. `warning-fg` — `warning` 与 `warning-accent` 背景上的文字色（yellow-900，亮暗同档）；独立警示文字、图标与边框挂 `text-warning-independent` / `border-warning-independent`，亮档读 `warning-fg`、暗档读 `warning`。
-   20. `warning` — 警示块静置背景（日 yellow-300 / 夜 yellow-200）。
-   21. `warning-accent` — 警示块的悬停背景（日 yellow-200 / 夜 yellow-300）。
-   22. `success-fg` — `success` 与 `success-accent` 背景上的文字色（green-900，亮暗同档）；独立成功文字、图标与边框挂 `text-success-independent` / `border-success-independent`，亮档读 `success-fg`、暗档读 `success`。
-   23. `success` — 成功块静置背景（日 green-300 / 夜 green-200）。
-   24. `success-accent` — 成功块的悬停背景（日 green-200 / 夜 green-300）。
-   25. `disabled` — 禁用控件背景色；独立取值，不重映射主题背景或填充。
-   26. `disabled-fg` — 禁用控件文字、图标与边框色；与 `disabled` 保持可读对比。
+   13. `danger-fg` — `danger` 与 `danger-accent` 背景上的文字色（red-900 `oklch(39.6% 0.141 25.723)`，日夜同值，对两档 5.24 / 6.94，实测值）；独立错误文字、图标与边框挂 `text-danger-independent` / `border-danger-independent`，亮档读 `danger-fg`、暗档读 `danger-accent`。
+   14. `danger` — 错误块静置背景（red-300 `oklch(80.8% 0.114 19.571)`，日夜同值）。
+   15. `danger-accent` — 错误块的悬停背景（red-200 `oklch(88.5% 0.062 18.334)`，日夜同值）：语义四族两档共用一套值，静置→悬停同族减淡一档，块上文字始终是那枚 900 深字；暗档独立状态文字也读这一档（保持背景档冻结前的夜档文字亮度）。
+   16. `info-fg` — `info` 与 `info-accent` 背景上的文字色（blue-900，日夜同值）；独立信息文字、图标与边框挂 `text-info-independent` / `border-info-independent`，亮档读 `info-fg`、暗档读 `info-accent`；正文链接同法。
+   17. `info` — 信息块静置背景（blue-300，日夜同值）。
+   18. `info-accent` — 信息块的悬停背景（blue-200，日夜同值）。
+   19. `warning-fg` — `warning` 与 `warning-accent` 背景上的文字色（yellow-900，日夜同值）；独立警示文字、图标与边框挂 `text-warning-independent` / `border-warning-independent`，亮档读 `warning-fg`、暗档读 `warning-accent`。
+   20. `warning` — 警示块静置背景（yellow-300，日夜同值）。
+   21. `warning-accent` — 警示块的悬停背景（yellow-200，日夜同值）。
+   22. `success-fg` — `success` 与 `success-accent` 背景上的文字色（green-900，日夜同值）；独立成功文字、图标与边框挂 `text-success-independent` / `border-success-independent`，亮档读 `success-fg`、暗档读 `success-accent`。
+   23. `success` — 成功块静置背景（green-300，日夜同值）。
+   24. `success-accent` — 成功块的悬停背景（green-200，日夜同值）。
+   25. `disabled` — 禁用控件背景色；四案同答固定中性灰（亮档灰 400 档 70.8，暗档灰 600 档 43.9），不随本案身份色表面档变化，与悬停档也错开一阶（对三档的最小道距 ΔE 亮 0.252 / 暗 0.233）。
+   26. `disabled-fg` — 禁用控件文字、图标与边框色；与 `disabled` 保持可读对比（本案亮 5.83:1、暗 6.19:1）。
 
-4. 对比度：文字、图标与边框按实际背景配对，普通文字在亮、暗两档满足 WCAG AA（≥ 4.5:1）。成套与状态档配对按 `ui/schemes.md` 第 24 条：同一枚 `-fg` 对该角色的静置背景与 `-accent` 档两档都达标，皮肤换哪档背景就写那档的配对前景（`hover:bg-accent hover:text-accent-fg`），日夜同串不分叉。日档成套实测 5.28–21.00，夜档 5.28–21.00（实测值）：日 `foreground` 压画布 18.69、`surface-fg` 压 lime 16.12、`accent-fg` 压 yellow 15.91、`primary-fg` 压粉与其悬停档 6.11 / 9.69、浮层 21.00、禁用 6.20；夜 `foreground` 压黑 21.00、`surface-fg` 压粉 6.11、`primary-fg` 压绿与其悬停档 16.12 / 10.69、浮层白字 17.91、禁用 5.83，`accent-fg` 对黄面两档同为 15.91。悬停道距实测（OKLab）：日 0.177 / 0.095 / 0.205、夜 0.923 / 0.483 / 0.723（画布 / 表面 / 浮层 → `accent`），品牌同族加深 0.136 / 0.135。独立状态文字、图标与边框挂 `text-<status>-independent` / `border-<status>-independent`，亮档读 `<status>-fg`、暗档读 `<status>`；状态块及其悬停背景上的文字读对应 `<status>-fg`。两条边界（黄面专属）：夜间白描边压黄面 1.32、夜间独立状态文字（读浅色块）压黄面 1.08–1.13——凡落到 `accent` 面的描边与彩色文字，同串改读 `accent-fg` 的黑（`hover:border-accent-fg`），黄面内不并存第二种前景。
+4. 对比度：文字、图标与边框按实际背景配对，普通文字在亮、暗两档满足 WCAG AA（≥ 4.5:1）。成套与状态档配对按 `ui/schemes.md` 第 24 条：同一枚 `-fg` 对该角色的静置背景与 `-accent` 档两档都达标，皮肤换哪档背景就写那档的配对前景（`hover:bg-accent hover:text-accent-fg`），日夜同串不分叉。日档成套实测 5.24–21.00，夜档同一套值（语义四族背景日夜同值，其余角色夜档另表）。日 `foreground` 压画布 18.69、`surface-fg` 压 lime 16.12、`accent-fg` 压 yellow 15.91、`primary-fg` 压粉与其悬停档 6.11 / 9.69、浮层 21.00、禁用 6.20；夜 `foreground` 压黑 21.00、`surface-fg` 压粉 6.11、`primary-fg` 压绿与其悬停档 16.12 / 10.69、浮层白字 17.91、禁用 5.83，`accent-fg` 对黄面两档同为 15.91。悬停道距实测（OKLab）：日 0.177 / 0.095 / 0.205、夜 0.923 / 0.483 / 0.723（画布 / 表面 / 浮层 → `accent`），品牌同族加深 0.136 / 0.135。独立状态文字、图标与边框挂 `text-<status>-independent` / `border-<status>-independent`，亮档读 `<status>-fg`、暗档读 `<status>-accent`（背景档冻结后夜档文字亮度不变：danger 14.49 / info 14.76 / success 17.35 / warning 18.04 压纯黑画布，压 `accent` 黄面 1.08–1.14）；状态块及其悬停背景上的文字读对应 `<status>-fg`。语义四族背景日夜同值，同一枚 `<status>-fg` 压静置与悬停两档实测 danger 5.24 / 6.94、info 5.74 / 7.31、success 6.49 / 7.49、warning 6.57 / 7.47（实测值）。两条边界（黄面专属）：夜间白描边压黄面 1.32、夜间独立状态文字压黄面 1.08–1.14——凡落到 `accent` 面的描边与彩色文字，同串改读 `accent-fg` 的黑（`hover:border-accent-fg`），黄面内不并存第二种前景。
 
 ## Typography
 
@@ -321,11 +307,11 @@ well:
 8. 未迁移组件档位短条（随各组件重构迁入其皮肤蓝图）：
 
    1. Card：`rounded-lg` + `border-frame` + `p-panel` + `background`/`foreground` + `shadow-block`；可点卡再接 `hover:lift` / `active:crush` / `hover:shadow-block-hover`；静态卡禁一切 hover 动效。
-   2. 输入族：外壳承重（边框 + 硬阴影 + `min-h-control`），内层输入元素 `bg-well` 井底（本案 `--color-well` 答 `surface`，日酸橙绿 / 夜粉）、`border-0 outline-none`；聚焦 = 外壳背景色整壳换 `accent` 配 `accent-fg`；`invalid` 在亮档换 `danger-fg`、暗档换 `danger`，不复用默认焦点。
-   3. 行内状态标签：半档底色不承重、无阴影；基准底色 `surface` 配 `surface-fg`，primary 档底色 `--primary`，状态变体填语义背景色档，文字统一取对应 `<status>-fg`；独立状态文字、图标与边框挂 `text-<status>-independent` / `border-<status>-independent`，亮档读 `<status>-fg`、暗档读 `<status>`。
+   2. 输入族：外壳承重（边框 + 硬阴影 + `min-h-control`），内层输入元素 `bg-surface` 凹槽档（本案 `--surface` 日酸橙绿 / 夜粉，文字随档读 `surface-fg`）、`border-0 outline-none`；聚焦 = 外壳背景色整壳换 `accent` 配 `accent-fg`；`invalid` 在亮档换 `danger-fg`、暗档换 `danger`，不复用默认焦点。
+   3. 行内状态标签：半档底色不承重、无阴影；基准底色 `surface` 配 `surface-fg`，primary 档底色 `--primary`，状态变体填语义背景色档，文字统一取对应 `<status>-fg`；独立状态文字、图标与边框挂 `text-<status>-independent` / `border-<status>-independent`，亮档读 `<status>-fg`、暗档读 `<status>-accent`。
 
 9. SwipeActions 行体为方角轨道面（同 Banner），不用圆角（全直角宪法）。
-10. 组容器井（well）：`--padding-well` 0、`--color-well` 答 `surface`（日酸橙绿 / 夜粉，本案没有比画布更深的中性档，答 `background` 会让轨道与示例舞台同色而消失）、`--shadow-well` `none`——字段族井底、Segment 轨道与轨道族（Slider 槽 / Progress / Meter / MeterGroup 未填充底 / Steps 连接线）平涂同一档身份色、全直角、无拟态阴影，靠对画布的色相差自辨；选中项衬底读 `primary`，与井色分离（取值以皮肤蓝图 `ui/skins/segment.md` 为准）。
+10. 组容器凹陷（recess）：凹陷不设独立色档——第四档「井」随三档阶梯撤销（用户定 2026-11-25），旧 `--padding-well` 删除（答 0，删后无位移）、`--shadow-recess` 答 `none`——字段族内区、Segment 凹陷道与轨道族（Slider 槽 / Progress / Meter / MeterGroup 未填充底 / Steps 连接线）平涂 `surface` 同一档身份色（日酸橙绿 / 夜粉，本案没有比画布更深的中性档，答 `background` 会让轨道与示例舞台同色而消失）、全直角、无拟态阴影，靠对画布的色相差自辨；选中项衬底读 `primary`，与凹槽档分离（取值以皮肤蓝图 `ui/skins/segment-group.md` 为准）。
 
 ## Do / Don't（方案语言边界）
 

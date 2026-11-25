@@ -140,58 +140,42 @@ export interface PaginationProps {
     classNames?: {
         controls?: string;
         nav?: SlotClassName;
+        boundary?: SlotClassName;
         pages?: string;
         page?: string;
         ellipsis?: string;
         summary?: string;
-        compact?: string;
-        compactSummary?: string;
-        compactRow?: string;
-        compactInput?: string;
-        compactText?: string;
+        pageInput?: string;
+        pageTotal?: string;
     };
     styles?: {
         controls?: React.CSSProperties;
         nav?: React.CSSProperties;
+        boundary?: React.CSSProperties;
         pages?: React.CSSProperties;
         page?: React.CSSProperties;
         ellipsis?: React.CSSProperties;
         summary?: React.CSSProperties;
-        compact?: React.CSSProperties;
-        compactSummary?: React.CSSProperties;
-        compactRow?: React.CSSProperties;
-        compactInput?: React.CSSProperties;
-        compactText?: React.CSSProperties;
+        pageInput?: React.CSSProperties;
+        pageTotal?: React.CSSProperties;
     };
 }
 export function Pagination({ page, totalPages, onPageChange, siblingCount = 1, summary, className, classNames, styles, }: PaginationProps) {
     const atStart = page <= 1;
     const atEnd = page >= totalPages;
+    const hasSummary = summary !== null && summary !== undefined;
     return (<PaginationRoot className={className}>
-      {summary !== null && summary !== undefined && (<PaginationSummary className={classNames?.summary} style={styles?.summary} title={typeof summary === "string" ? summary : undefined}>
+      {hasSummary && (<PaginationSummary className={classNames?.summary} style={styles?.summary}>
           {summary}
         </PaginationSummary>)}
       <div className={classNames?.controls} style={styles?.controls}>
-        <PaginationFirst disabled={atStart} onClick={() => onPageChange?.(1)} className={classNames?.nav} style={styles?.nav}/>
+        <PaginationFirst disabled={atStart} onClick={() => onPageChange?.(1)} className={classNames?.boundary} style={styles?.boundary}/>
         <PaginationPrev disabled={atStart} onClick={() => onPageChange?.(page - 1)} className={classNames?.nav} style={styles?.nav}/>
         <PaginationPages page={page} totalPages={totalPages} siblingCount={siblingCount} onPageChange={onPageChange} className={classNames?.pages} style={styles?.pages} classNames={{ page: classNames?.page, ellipsis: classNames?.ellipsis }} styles={{ page: styles?.page, ellipsis: styles?.ellipsis }}/>
+        <PaginationPageInput page={page} totalPages={totalPages} onPageChange={onPageChange} className={classNames?.pageInput} style={styles?.pageInput}/>
+        <span className={classNames?.pageTotal} style={styles?.pageTotal}>{`/ ${totalPages}`}</span>
         <PaginationNext disabled={atEnd} onClick={() => onPageChange?.(page + 1)} className={classNames?.nav} style={styles?.nav}/>
-        <PaginationLast disabled={atEnd} onClick={() => onPageChange?.(totalPages)} className={classNames?.nav} style={styles?.nav}/>
-      </div>
-      <div className={classNames?.compact} style={styles?.compact}>
-        {summary !== null && summary !== undefined && (<PaginationSummary className={classNames?.compactSummary} style={styles?.compactSummary} title={typeof summary === "string" ? summary : undefined}>
-          {summary}
-        </PaginationSummary>)}
-        <div className={classNames?.compactRow} style={styles?.compactRow}>
-          <PaginationFirst disabled={atStart} onClick={() => onPageChange?.(1)} className={classNames?.nav} style={styles?.nav}/>
-          <PaginationPrev disabled={atStart} onClick={() => onPageChange?.(page - 1)} className={classNames?.nav} style={styles?.nav}/>
-          <PaginationPageInput page={page} totalPages={totalPages} onPageChange={onPageChange} className={classNames?.compactInput} style={styles?.compactInput}/>
-          <PaginationSummary className={classNames?.compactText} style={styles?.compactText}>
-            {`/ ${totalPages}`}
-          </PaginationSummary>
-          <PaginationNext disabled={atEnd} onClick={() => onPageChange?.(page + 1)} className={classNames?.nav} style={styles?.nav}/>
-          <PaginationLast disabled={atEnd} onClick={() => onPageChange?.(totalPages)} className={classNames?.nav} style={styles?.nav}/>
-        </div>
+        <PaginationLast disabled={atEnd} onClick={() => onPageChange?.(totalPages)} className={classNames?.boundary} style={styles?.boundary}/>
       </div>
     </PaginationRoot>);
 }

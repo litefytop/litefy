@@ -27,8 +27,8 @@
   --foreground: #000000;
   --surface: oklch(89.7% 0.196 126.665);
   --surface-fg: #000000;
-  --disabled: #e5e5e5;
-  --disabled-fg: #525252;
+  --disabled: oklch(70.8% 0 none);
+  --disabled-fg: oklch(26.9% 0 none);
   --surface-raised: #ffffff;
   --surface-raised-fg: #000000;
   --accent: oklch(90.5% 0.182 98.111);
@@ -78,9 +78,9 @@
   --shadow-block-hover: var(--shadow-accent-6);
   --shadow-checked: 0 0 0 2px var(--background), 0 0 0 4px var(--primary);
   --shadow-unchecked: var(--shadow-frame), 0 0 0 2px var(--background), 0 0 0 4px var(--surface-fg);
-  --shadow-well: none;
-  --radius-field-inner: max(0px, calc(var(--radius-md) - var(--padding-well) - var(--border-width-frame)));
-  --radius-well-inner: max(0px, calc(var(--radius-lg) - var(--spacing)*1.5 - var(--border-width-frame)));
+  --shadow-recess: none;
+  --radius-field-inner: max(0px, calc(var(--radius-md) - var(--border-width-frame)));
+  --radius-recess-inner: max(0px, calc(var(--radius-lg) - var(--spacing)*1.5 - var(--border-width-frame)));
   --stroke-cap: butt;
   --stroke-join: miter;
 
@@ -132,8 +132,8 @@
   --foreground: #ffffff;
   --surface: oklch(52.5% 0.223 3.958);
   --surface-fg: #ffffff;
-  --disabled: oklch(26.9% 0 none);
-  --disabled-fg: oklch(70.8% 0 none);
+  --disabled: oklch(43.9% 0 none);
+  --disabled-fg: oklch(92.2% 0 none);
   --surface-raised: oklch(20.5% 0 none);
   --surface-raised-fg: #ffffff;
   --accent: oklch(90.5% 0.182 98.111);
@@ -145,24 +145,10 @@
   --primary-fg: #000000;
   --accent-fg: #000000;
 
-  --danger-fg: oklch(39.6% 0.141 25.723);
-  --info-fg: oklch(37.9% 0.146 265.522);
-  --warning-fg: oklch(42.1% 0.095 57.708);
-  --success-fg: oklch(39.3% 0.095 152.535);
-
-  --danger: oklch(88.5% 0.062 18.334);
-  --danger-accent: oklch(80.8% 0.114 19.571);
-  --info: oklch(88.2% 0.059 254.128);
-  --info-accent: oklch(80.9% 0.105 251.813);
-  --warning: oklch(94.5% 0.129 101.54);
-  --warning-accent: oklch(90.5% 0.182 98.111);
-  --success: oklch(92.5% 0.084 155.995);
-  --success-accent: oklch(87.1% 0.15 154.449);
-
-  --text-danger-independent: var(--danger);
-  --text-info-independent: var(--info);
-  --text-success-independent: var(--success);
-  --text-warning-independent: var(--warning);
+  --text-danger-independent: var(--danger-accent);
+  --text-info-independent: var(--info-accent);
+  --text-success-independent: var(--success-accent);
+  --text-warning-independent: var(--warning-accent);
 }
 
 /* Compact ramp — three-scheme mechanism values (ui/schemes.md rule 11). */
@@ -203,7 +189,6 @@
   --color-disabled-fg: var(--disabled-fg);
   --color-surface-raised: var(--surface-raised);
   --color-surface-raised-fg: var(--surface-raised-fg);
-  --color-well: var(--surface);
   --color-accent: var(--accent);
   --color-accent-fg: var(--accent-fg);
   --color-primary: var(--primary);
@@ -312,7 +297,6 @@
   --padding-tight: calc((var(--height-control) - 1.2rem) / 2);
   --padding-snug: calc((var(--height-control) - 1.25rem) / 2);
   --padding-loose: calc((var(--height-control) - 1.625rem) / 2);
-  --padding-well: 0px;
 
   --height-control: 2.75rem;
   --height-field: 2.75rem;
@@ -488,8 +472,8 @@
   box-shadow: var(--shadow-unchecked);
 }
 
-@utility shadow-well {
-  box-shadow: var(--shadow-well);
+@utility shadow-recess {
+  box-shadow: var(--shadow-recess);
 }
 
 @utility focus-ring {
@@ -636,7 +620,7 @@
 @utility typo-link {
   color: var(--info-fg);
   &:where(.dark, .dark *) {
-    color: var(--info);
+    color: var(--info-accent);
   }
   text-decoration-line: underline;
   text-underline-offset: 2px;

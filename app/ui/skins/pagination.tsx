@@ -4,18 +4,18 @@ import { cn, mergeStateSlots } from "../utils/cn";
 import { buttonInlineClasses } from "./button";
 
 
-const controlsClasses = "hidden @md:flex items-center gap-x-2";
+const controlsClasses = "flex min-w-0 flex-wrap items-center gap-x-2 gap-y-2";
 
-const compactClasses = "flex @md:hidden flex-col";
+const pagesClasses = "hidden @3xl:flex min-w-0 items-center gap-x-2";
 
-const compactSummaryClasses = "block w-full min-w-0 truncate text-sm leading-5 font-field text-foreground";
+const pageInputClasses =
+  "w-11 shrink-0 rounded-sm border-hair border-border bg-surface-raised px-1 py-1 text-center text-sm leading-5 tabular-nums text-surface-raised-fg shadow-frame focus-visible:focus-ring @3xl:hidden";
 
-const compactRowClasses = "flex items-center gap-x-2";
+const pageTotalClasses =
+  "shrink-0 whitespace-nowrap text-sm leading-5 tabular-nums text-foreground @3xl:hidden";
 
-const compactInputClasses =
-  "w-11 shrink-0 rounded-sm border-hair border-border bg-surface-raised px-1 py-1 text-center text-sm leading-5 tabular-nums text-surface-raised-fg shadow-frame focus-visible:focus-ring";
-
-const compactTextClasses = "whitespace-nowrap text-sm leading-5 tabular-nums text-foreground";
+const summaryClasses =
+  "max-w-full shrink-0 text-sm leading-5 font-field text-foreground";
 
 
 const navClasses = cn(
@@ -28,8 +28,8 @@ const navDisabledClasses = cn(
   "h-control cursor-not-allowed text-disabled-fg pure-icon w-control text-sm",
   "[&_svg]:flex-none",
 );
-
-const pagesClasses = "flex items-center gap-x-2";
+const boundaryClasses = cn(navClasses, "@3xl:hidden");
+const boundaryDisabledClasses = cn(navDisabledClasses, "@3xl:hidden");
 
 
 const pageClasses =
@@ -42,30 +42,28 @@ const pageClasses =
 const ellipsisClasses =
   "inline-flex size-control min-w-control items-center justify-center text-foreground [&>svg]:size-4";
 
-
-const summaryClasses =
-  "hidden @md:inline min-w-0 grow truncate text-sm leading-5 font-field text-foreground";
-
 export function Pagination({ className, classNames, summary, ...props }: PaginationProps) {
   const hasSummary = summary !== null && summary !== undefined;
   return (
     <PaginationHeadless
       {...props}
       summary={summary}
-      className={cn("@container flex w-fit min-w-0 max-w-full items-center", hasSummary ? "gap-x-3" : "gap-x-2", className)}
+      className={cn(
+        "@container flex w-full min-w-0 flex-wrap items-center justify-between gap-y-2",
+        hasSummary ? "gap-x-3" : "gap-x-2",
+        className,
+      )}
       classNames={mergeStateSlots(
         {
           controls: controlsClasses,
           nav: ({ disabled }) => disabled ? navDisabledClasses : navClasses,
+          boundary: ({ disabled }) => disabled ? boundaryDisabledClasses : boundaryClasses,
           pages: pagesClasses,
           page: pageClasses,
           ellipsis: ellipsisClasses,
           summary: summaryClasses,
-          compact: compactClasses,
-          compactSummary: compactSummaryClasses,
-          compactRow: compactRowClasses,
-          compactInput: compactInputClasses,
-          compactText: compactTextClasses,
+          pageInput: pageInputClasses,
+          pageTotal: pageTotalClasses,
         },
         classNames,
       )}

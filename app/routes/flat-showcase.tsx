@@ -158,7 +158,7 @@ const COPY: Record<
     palette: {
       eyebrow: "01 — 色盘",
       title: "颜色总览",
-      lead: "冷白画布、浅天蓝表面、深天蓝品牌。22 枚语义令牌亮暗各一套，色块实时读取当前档位的令牌值——切换外观，整页重绘。颜色永远携带含义，说不出它标的是哪种状态或动作，它就不该出现。",
+      lead: "冷白画布、浅天蓝表面、深天蓝品牌。22 枚语义令牌：画布、表面、品牌与禁用档亮暗各一套，语义四族日夜同值——色块实时读取当前档位的令牌值，切换外观，整页重绘。颜色永远携带含义，说不出它标的是哪种状态或动作，它就不该出现。",
       pairs: "前景 / 背景对比对",
       pairLabels: [
         ["品牌文字 压 品牌色", "primary-fg / primary"],
@@ -266,7 +266,7 @@ const COPY: Record<
       lead: "企业后台与信息密集应用不需要戏剧性——需要密度、分明与不容歧义。六个理由。",
       cards: [
         { title: "高密度信息", body: "44px 命中区与紧凑字阶并存，一屏放下更多行，每一行仍然点得准、读得清。" },
-        { title: "状态一眼分明", body: "语义四族亮暗各一套，静置、悬停、文字三档成套——错误与成功绝不含糊。" },
+        { title: "状态一眼分明", body: "语义四族日夜同值，静置、悬停、文字三档成套——错误与成功绝不含糊。" },
         { title: "键盘全通路", body: "焦点环从不消失，Tab 顺序即视觉顺序，指针能做的键盘都能做。" },
         { title: "日夜两档成立", body: "亮暗两套令牌各自手工调校，暗档品牌反转为亮天蓝配深字，来回切换无破相。" },
         { title: "打印恒白底", body: "打印车道接管 color-scheme，纸面恒白底黑字——报表与单据不费碳粉。" },
@@ -300,7 +300,7 @@ const COPY: Record<
     palette: {
       eyebrow: "01 — Palette",
       title: "Colour wall",
-      lead: "Cool-white canvas, pale-sky surfaces, deep-sky brand. Twenty-two semantic tokens, one authored set per tier — every swatch reads the live token value, so switching appearance repaints the whole page. Colour always carries meaning: if you cannot name the state or action it marks, it should not be there.",
+      lead: "Cool-white canvas, pale-sky surfaces, deep-sky brand. Twenty-two semantic tokens: the canvas, surface, brand and disabled steps are authored per tier, the four status families answer the same values in both modes — every swatch reads the live token value, so switching appearance repaints the whole page. Colour always carries meaning: if you cannot name the state or action it marks, it should not be there.",
       pairs: "Foreground / background pairs",
       pairLabels: [
         ["Brand text on brand", "primary-fg / primary"],
@@ -408,7 +408,7 @@ const COPY: Record<
       lead: "Enterprise consoles and information-dense apps do not need drama — they need density, clarity and zero ambiguity. Six reasons.",
       cards: [
         { title: "Dense by design", body: "44px hit targets coexist with a compact type ladder: more rows per screen, every row still precise to click and clear to read." },
-        { title: "Unambiguous states", body: "Four status families, one authored set per tier — rest, hover and text in pairs. Error and success never blur together." },
+        { title: "Unambiguous states", body: "Four status families, one authored set for both modes — rest, hover and text in pairs. Error and success never blur together." },
         { title: "Keyboard complete", body: "The focus ring never vanishes, Tab order is visual order, and everything a pointer can do the keyboard can do." },
         { title: "Two authored tiers", body: "Light and dark are hand-tuned token sets; the dark brand inverts to bright sky with dark ink. Toggle back and forth — nothing breaks." },
         { title: "Print stays white", body: "The print lane takes over color-scheme: paper output is always white with black ink — reports and forms save toner." },

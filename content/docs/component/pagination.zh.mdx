@@ -1,6 +1,6 @@
 ---
 title: Pagination 分页器
-description: 受控的页码导航——首页 / 上一页 / 页码（带省略号）/ 下一页 / 末页。纯视图组件，状态交给 usePagination。
+description: 受控的页码导航——按分页条可用宽度自动切形态：跳页输入加翻页钮是基线档，够宽才换成页码列表；摘要永不裁剪，挤不下就整段换行。纯视图组件，状态交给 usePagination。
 ---
 
 ## 安装
@@ -27,10 +27,24 @@ description: 受控的页码导航——首页 / 上一页 / 页码（带省略�
 | `totalPages`   | `number`                                                  | 总页数 **必填**                              |
 | `onPageChange` | `(page: number) => void`                                  | 任意按钮点击时触发                               |
 | `siblingCount` | `number`                                                  | 当前页两侧展示的页码数量，超出部分折叠为省略号，默认 `1`          |
-| `summary`      | `React.ReactNode`                                         | 位于左侧的分页统计文本插槽                           |
+| `summary`      | `React.ReactNode`                                         | 分页统计文本插槽；不传即不渲染这一行                      |
 | `className`    | `string`                                                  | 自定义类名，作用于根 `nav`                        |
-| `classNames`   | `{ controls?: string; nav?: SlotClassName; pages?: string; page?: string; ellipsis?: string; summary?: string }` | `nav` 接收 `({ disabled }) => string`；四个导航按钮到达首尾边界时 `disabled` 为 `true`，其余槽为固定类名 |
-| `styles`       | `{ controls?, nav?, pages?, page?, ellipsis?, summary? }` | 同一批部件的自定义行内样式                           |
+| `classNames`   | `{ controls?, nav?, boundary?, pages?, page?, ellipsis?, summary?, pageInput?, pageTotal? }` | 逐件自定义类名：`nav` 给上一页 / 下一页，`boundary` 给首页 / 末页，`pageInput` 给跳页输入，`pageTotal` 给总页数；`nav` 与 `boundary` 接收 `({ disabled }) => string`，到达首尾边界时为 `true`，其余槽为固定类名 |
+| `styles`       | 与 `classNames` 同名的九个键                                     | 同一批部件的自定义行内样式                           |
+
+形态按分页条自身的可用宽度切两档，由容器查询裁决，没有形态 prop；单行还是两行不看档宽，由 flex 换行的真实容纳判定决定：
+
+| 可用宽度        | 出现的内容                                                                |
+| ------------- | --------------------------------------------------------------------- |
+| `< 48rem`     | 首页、上一页、跳页输入、总页数、下一页、末页（实测 283px）                                    |
+| `≥ 48rem`     | 上一页、页码（带省略号）、下一页（边缘页实测 304px、中间页实测 460px）；首页与末页由页码列首末项承担，跳页输入与总页数退出 |
+
+- 宽度以分页条容器为准，不是视口：放进 40rem 的卡片就按 40rem 取档。
+- 摘要与控件簇挤不进同一行时，摘要整段挪到首行、控件簇独占次行；摘要自身比容器还长时折行读完。两条路径都不裁剪文本，也就不挂 `title`——触屏与键盘通道都不显示 `title`，它不能当被裁文本的兜底。
+- 容器窄于控件簇（< 283px）时翻页钮在簇内换行，44px 命中区不缩水，也不横向溢出。
+- 隐藏档的按钮与输入不渲染进焦点序与朗读树，同一时刻只有一套控件可点。
+- `siblingCount` 每 +1，页码列加宽 104px（实测）：`48rem` 档只保证 `siblingCount = 1` 与摘要同行，取 `2` 要同行需 ≥ 876px 容器，否则摘要按第二条换行。
+- 文档站正文列实测 590px，恒落在跳页档；要看页码列得把分页条放进 ≥ 48rem 的容器（如全宽表格）。
 
 ### 可组合组件
 
@@ -45,16 +59,19 @@ description: 受控的页码导航——首页 / 上一页 / 页码（带省略�
 | `PaginationEllipsis` | `<span>` | - | 折叠页码标记（`MoreHorizontal`） |
 | `PaginationSummary` | `<span>` | - | 分页文本插槽 |
 
+总页数（`/ 12`）是组合件内部渲染的 `<span>`，走 `classNames.pageTotal` 槽，不是 `PaginationSummary`；跳页输入同理走 `classNames.pageInput`。
+
 当前页页码带 `aria-current="page"`。到达首尾边界的导航按钮原生 `disabled`，使用 `text-disabled-fg` 与 `cursor-not-allowed`，不再响应点击或进入 Tab 序。
 
 ## 键盘交互
 
-骨架不挂任何按键处理器。每个控件都是原生 `<button type="button">`，按键行为归 HTML 本身。
+骨架不挂任何按键处理器，跳页输入除外。每个按钮都是原生 `<button type="button">`，按键行为归 HTML 本身。
 
 | Key | Description |
 | --- | --- |
-| `Tab` | 按 DOM 顺序依次到达按钮：首页、上一页、页码按钮、下一页、末页。被折叠省略的页码，以及触到首尾边界的按钮，都不在 Tab 序里 |
+| `Tab` | 按 DOM 顺序依次到达可见控件：首页、上一页、页码按钮（`≥ 48rem`）或跳页输入（`< 48rem`）、下一页、末页。被折叠省略的页码、当前档隐藏的控件、触到首尾边界的按钮都不在 Tab 序里 |
 | `Enter` / `Space` | 原生激活当前聚焦的按钮，每个按钮都会触发一次 `onPageChange` |
+| `Enter` | 在跳页输入里提交页码；越界或非数字输入回退当前页，失焦同样提交 |
 
 ## 数据属性
 
@@ -62,4 +79,4 @@ description: 受控的页码导航——首页 / 上一页 / 页码（带省略�
 | --- | --- |
 | `[data-pure-icon]` | 位于首页、上一页、下一页、末页四个按钮上——其子内容只有一个图标、不含文字（来自 [Button](/zh/docs/component/button)） |
 
-`nav`、页码容器、省略号与分页文本都不带 `data-*`；当前页由 `aria-current="page"` 标注，而不是数据属性。
+`nav`、`boundary`、页码容器、省略号、跳页输入与分页文本都不带 `data-*`；当前页由 `aria-current="page"` 标注，而不是数据属性。

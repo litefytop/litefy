@@ -8,7 +8,7 @@ const rootClasses =
 
 
 const trackClasses =
-  "grow min-w-0 h-2 overflow-hidden rounded-pill bg-well " +
+  "grow min-w-0 h-2 overflow-hidden rounded-pill bg-surface " +
   "group-data-[variant=meter]:h-3 group-data-[variant=meter]:border-frame group-data-[variant=meter]:border-border";
 
 

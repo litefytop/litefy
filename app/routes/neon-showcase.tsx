@@ -178,7 +178,7 @@ const COPY: Record<
     palette: {
       eyebrow: "01 — 色盘",
       title: "颜色与填充",
-      lead: "浅紫画布配粉彩表面，深蓝画布配霓虹表面。22 枚语义令牌亮暗各一套，色块实时读取当前档的令牌值——切换外观，整页重绘。下方填充带直接展示八族渐变：渐变是这套方案的身份，不是装饰。",
+      lead: "背景三档分日夜：浅紫画布配深字、深蓝画布配白字，色块实时读取令牌值。品牌与语义 17 枚只答一套饱和霓虹——站内日/夜开关不重绘按钮、标签与状态块。下方填充带直接展示八族渐变：渐变是这套方案的身份，不是装饰。",
       pairs: "前景 / 背景对比对",
       pairLabels: [
         ["品牌文字 压 品牌色", "primary-fg / primary"],
@@ -191,7 +191,7 @@ const COPY: Record<
     laws: {
       eyebrow: "02 — 交互法则",
       title: "色流的手感",
-      lead: "四条法则定义这套方案的手感：色流滑过、按压内亮、焦点带晕、光晕随档。每条都有可玩的演示——悬停、按下、Tab 聚焦，用手感记住它们。",
+      lead: "四条法则定义这套方案的手感：色流滑过、按压内亮、焦点带晕、阴影随家族。每条都有可玩的演示——悬停、按下、Tab 聚焦，用手感记住它们。",
       items: [
         {
           tag: "法则 01 — 色流悬停",
@@ -201,17 +201,17 @@ const COPY: Record<
         {
           tag: "法则 02 — 按压电激活",
           code: "active:shadow-frame-active · box-shadow 0ms",
-          desc: "内阴影与外光晕的 inset 属性不同、无法插值，所以按压件的 box-shadow 时长答 0：按下即亮、松开即灭。暗档内白、浅档内紫；lift 与 crush 显式答 0，位移通道关闭。",
+          desc: "内阴影与外光晕的 inset 属性不同、无法插值，所以按压件的 box-shadow 时长答 0：按下即亮、松开即灭。内亮随画布分档（`--shadow-frame-active`：日档紫、夜档白）；lift 与 crush 显式答 0，位移通道关闭。",
         },
         {
           tag: "法则 03 — 焦点光晕环",
           code: "focus-visible:focus-ring / focus-ring-danger",
-          desc: "2px 青色实线环加同族光晕，offset 2px；危险件转 rose 同形。焦点只换形态，从不移除。",
+          desc: "2px 青色实线环加同族投影，offset 2px；危险件转 rose 同形。日档 cyan-700 柔影、夜档 cyan-400 光晕。焦点只换形态，从不移除。",
         },
         {
-          tag: "法则 04 — 家族光晕随档",
+          tag: "法则 04 — 家族色建层",
           code: "hover:shadow-frame-hover / shadow-block-hover",
-          desc: "悬停加深同族光晕：暗档霓虹外发光，浅档同族柔影。光晕颜色永远来自控件自己的家族，不借族。",
+          desc: "悬停加深同族阴影：控件粉、卡片紫。夜档是外发光光晕，日档浅底无发光物理依据、答同族偏移柔影。颜色永远来自控件自己的家族，不借族。",
         },
       ],
       hoverDemo: "悬停我",
@@ -223,7 +223,7 @@ const COPY: Record<
       focusNote: "按 Tab 键查看光晕环——青 / rose 两族",
       glowBrand: "品牌件",
       glowBlock: "表面块",
-      glowNote: "悬停两件——光晕各自加深，颜色不借族",
+      glowNote: "悬停两件——同族阴影各自加深，颜色不借族",
       calmTrack: "neon · 500ms ease-out 色流",
       bounceTrack: "linear 匀速（此处禁止）",
       trackNote: "指针划过轨道——感受缓出与匀速的差别",
@@ -253,10 +253,10 @@ const COPY: Record<
       title: "七条识别点",
       lead: "每条识别点都是方案强制执行的令牌或属性，而不是风格手册里的口头约定——换方案，规则就换。",
       principles: [
-        { n: "01", title: "双档画布", body: "浅档浅紫画布配粉彩表面与 700 深度动作渐变，暗档深蓝画布配霓虹表面。两档各自手工调校，切换整页重绘。" },
-        { n: "02", title: "渐变填充车道", body: "bg-* 同构填充：实色背景色兜底，加 var(--fill-*) 渐变图。八族各有循环渐变，悬停档答同族反向。" },
-        { n: "03", title: "4px 对比边框", body: "control / hair / frame 三档线宽同答 4px：浅档 amber-700、暗档 yellow-400。边框是对比件，不是发丝。" },
-        { n: "04", title: "家族光晕随档", body: "阴影角色按档回答：暗档霓虹外发光，浅档同族柔影。光晕颜色取自控件家族，不借族、不发灰。" },
+        { n: "01", title: "背景分档", body: "浅紫画布配深字（实测 15.30:1）、深蓝画布配白字（16.10:1）；品牌与语义一套霓虹两档同值，站内日/夜开关不重绘按钮与状态块。" },
+        { n: "02", title: "渐变填充车道", body: "bg-* 同构填充：实色背景色兜底，加 var(--fill-*) 渐变图。八族各有循环渐变，悬停档答同族反向；渐变只铺面，文字与边框一律实心令牌。" },
+        { n: "03", title: "4px 对比边框", body: "control / hair / frame 三档线宽同答 4px，描边色日 amber-700（4.65:1）、夜 yellow-400（9.65:1）。边框是对比件，不是发丝。" },
+        { n: "04", title: "家族色建层级", body: "阴影角色全答家族色：控件粉、卡片紫、焦点青。夜档是外发光光晕，日档浅底无发光物理依据，改答同族偏移柔影；颜色取自控件家族，不借族、不发灰。" },
         { n: "05", title: "大圆角", body: "按钮 12px、卡片 16px、外壳 24px，pill 与 disc 全圆。直角在这套方案里没有位置。" },
         { n: "06", title: "大写标签与 mono", body: "标签档 0.875rem / 800 / 0.08em 大写，字族 JetBrains Mono——控件文字自带仪器感。" },
         { n: "07", title: "色流不位移", body: "悬停与按压只动颜色、background-position 与阴影；lift / crush 显式答 0。盒子永远不动。" },
@@ -279,7 +279,7 @@ const COPY: Record<
         "bg-gray-* 灰卡——无家族灰面",
         "渐变文字——渐变只铺面不铺字",
         "纯色家族填充——跳过填充车道",
-        "浅档饱和霓虹——浅档只答粉彩与柔影",
+        "浅底粉彩品牌与语义色板——本方案的品牌与语义只答一套饱和霓虹",
         "hover:-translate-y-1——悬停位移",
         "linear 匀速色流——只允许 ease-out / ease-frame",
       ],
@@ -287,13 +287,13 @@ const COPY: Record<
     closing: {
       eyebrow: "// 为什么选 neon",
       title: "为夜色与舞台而生",
-      lead: "控制台、创作工具与任何想被记住的界面：霓虹渐变给身份、给反馈、给层级，同时两档都守对比下限。六个理由。",
+      lead: "控制台、创作工具与任何想被记住的界面：霓虹渐变给身份、给反馈、给层级，同时守住对比下限。六个理由。",
       cards: [
-        { title: "双档成立", body: "浅紫与深蓝两套令牌各自手工调校，切换外观整页重绘，一次呈现一档。" },
+        { title: "背景分档", body: "画布三档随站内日/夜开关换深浅，原生控件配色跟着走；品牌与语义令牌两档同值，切换不重绘。" },
         { title: "渐变即身份", body: "八族循环渐变铺满表面与控件，一眼认出这套方案——渐变是结构，不是贴纸。" },
-        { title: "光晕建层级", body: "暗档外发光、浅档同族柔影，深度靠光不靠灰；浮层光晕最强，静置最弱。" },
+        { title: "家族色建层级", body: "控件粉、卡片紫、焦点青：夜档外发光，日档同族柔影——深度靠光不靠灰，浮层最强、静置最弱。" },
         { title: "色流反馈", body: "悬停 500ms 色流滑过、按压内阴影点亮——每次操作都有光回应，盒子却始终不动。" },
-        { title: "AA 换深度", body: "浅档动作渐变取 700 深度配白字，暗档霓虹配深字——字色深度随档交换，两档都过 4.5:1 对比下限。" },
+        { title: "成对文字色", body: "霓虹各停配深字（`<status>-fg`）、画布配白字（`foreground`）——静置状态块实测 7.01–11.62:1、悬停 6.09–11.13:1，全部过 4.5:1 下限。" },
         { title: "打印恒白", body: "打印车道接管 color-scheme，纸面恒白底黑字——霓虹留在屏幕里。" },
       ],
     },
@@ -324,7 +324,7 @@ const COPY: Record<
     palette: {
       eyebrow: "01 — Palette",
       title: "Colour and fill",
-      lead: "A pale-purple canvas with pastel surfaces, a deep-blue canvas with neon surfaces. Twenty-two semantic tokens, one authored set per tier — every swatch reads the live token value, so switching appearance repaints the whole page. The fill band below shows the eight gradient families directly: gradient is this scheme's identity, not decoration.",
+      lead: "Three background tiers, split by appearance: a pale-purple canvas with deep ink, a deep-blue canvas with white — every swatch reads the live token value. The seventeen brand and semantic tokens answer one saturated neon set in both tiers, so the day/night toggle never repaints a button, a chip or a status block. The fill band below shows the eight gradient families directly: gradient is this scheme's identity, not decoration.",
       pairs: "Foreground / background pairs",
       pairLabels: [
         ["Brand text on brand", "primary-fg / primary"],
@@ -337,7 +337,7 @@ const COPY: Record<
     laws: {
       eyebrow: "02 — Interaction laws",
       title: "The feel of the flow",
-      lead: "Four laws define how this scheme feels: colour flows, press lights inward, focus carries a halo, glows ride their family per tier. Each has a playable demo — hover, press, Tab through them.",
+      lead: "Four laws define how this scheme feels: colour flows, press lights inward, focus carries a halo, elevation rides its own family. Each has a playable demo — hover, press, Tab through them.",
       items: [
         {
           tag: "Law 01 — Hover flows colour",
@@ -347,17 +347,17 @@ const COPY: Record<
         {
           tag: "Law 02 — Press lights inward",
           code: "active:shadow-frame-active · box-shadow 0ms",
-          desc: "Inset press light and outer glow differ in inset-ness and cannot interpolate, so the press piece answers box-shadow 0ms: lit on press, out on release. Inner white on dark, inner purple on light; lift and crush explicitly answer 0 — the displacement channel stays closed.",
+          desc: "Inset press light and outer glow differ in inset-ness and cannot interpolate, so the press piece answers box-shadow 0ms: lit on press, out on release. The inset light rides the canvas tier (`--shadow-frame-active`: purple by day, white by night); lift and crush explicitly answer 0 — the displacement channel stays closed.",
         },
         {
           tag: "Law 03 — The haloed focus ring",
           code: "focus-visible:focus-ring / focus-ring-danger",
-          desc: "A 2px solid cyan outline plus a same-family glow, offset 2px; danger controls switch to rose in the same shape. Focus is restyled, never removed.",
+          desc: "A 2px solid cyan outline plus a same-family shadow, offset 2px; danger controls switch to rose in the same shape. cyan-700 soft shadow by day, cyan-400 glow by night. Focus is restyled, never removed.",
         },
         {
-          tag: "Law 04 — Family glows per tier",
+          tag: "Law 04 — Family elevation by family",
           code: "hover:shadow-frame-hover / shadow-block-hover",
-          desc: "Hover deepens the same-family glow: neon emission on dark, soft same-family shadow on light. The glow colour always comes from the control's own family — never borrowed.",
+          desc: "Hover deepens the same-family shadow: pink on controls, purple on cards. Night answers family-coloured glow; day has no physical basis for glow on a light canvas and answers the same family as an offset soft shadow. The colour always comes from the control's own family — never borrowed.",
         },
       ],
       hoverDemo: "Hover me",
@@ -369,7 +369,7 @@ const COPY: Record<
       focusNote: "Press Tab to see the halo ring — cyan / rose families",
       glowBrand: "Brand piece",
       glowBlock: "Surface block",
-      glowNote: "Hover both — each glow deepens in its own family",
+      glowNote: "Hover both — each shadow deepens in its own family",
       calmTrack: "neon · 500ms ease-out flow",
       bounceTrack: "linear constant speed (forbidden here)",
       trackNote: "Hover a track — ease-out against constant speed",
@@ -399,10 +399,10 @@ const COPY: Record<
       title: "Seven identity marks",
       lead: "Every mark is a token or attribute the scheme enforces — not a note in a style guide. Change the scheme, change the rule.",
       principles: [
-        { n: "01", title: "Two authored canvases", body: "Light answers a pale-purple canvas with pastel surfaces and 700-depth action gradients; dark answers a deep-blue canvas with neon surfaces. Both tiers hand-tuned, the whole page repaints on switch." },
-        { n: "02", title: "Gradient fill lane", body: "Isomorphic bg-* fills: a solid background-color fallback plus a var(--fill-*) gradient image. Eight families each carry a cyclic gradient; hover steps answer the same family reversed." },
-        { n: "03", title: "4px contrast borders", body: "control / hair / frame all answer 4px: amber-700 on light, yellow-400 on dark. The border is a contrast piece, not a hairline." },
-        { n: "04", title: "Family glows per tier", body: "Shadow roles answer per tier: neon emission on dark, soft same-family shadow on light. Glow colour comes from the control's family — never borrowed, never gray." },
+        { n: "01", title: "Tiered canvas", body: "Pale-purple canvas with deep ink (15.30:1 measured), deep-blue canvas with white ink (16.10:1); the brand and semantic set is one neon tier, identical in both — the day/night toggle never repaints a button or a status block." },
+        { n: "02", title: "Gradient fill lane", body: "Isomorphic bg-* fills: a solid background-color fallback plus a var(--fill-*) gradient image. Eight families each carry a cyclic gradient; hover steps answer the same family reversed. Gradient paints surfaces only — text, borders and icons stay solid tokens." },
+        { n: "03", title: "4px contrast borders", body: "control / hair / frame all answer 4px: the amber-700 wire reads 4.65:1 by day, yellow-400 reads 9.65:1 by night. The border is a contrast piece, not a hairline." },
+        { n: "04", title: "Family shadows build depth", body: "Every shadow role answers a family colour: pink on controls, purple on cards, cyan on focus — glow by night, offset soft shadow by day. Colour comes from the control's family — never borrowed, never gray." },
         { n: "05", title: "Large rounding", body: "Buttons 12px, cards 16px, shells 24px; pills and discs fully round. Square corners have no place in this scheme." },
         { n: "06", title: "Uppercase mono labels", body: "The label tier is 0.875rem / 800 / 0.08em uppercase in JetBrains Mono — control text with an instrument feel." },
         { n: "07", title: "Flow without movement", body: "Hover and press only touch colour, background-position and shadow; lift / crush explicitly answer 0. The box never moves." },
@@ -425,7 +425,7 @@ const COPY: Record<
         "bg-gray-* gray cards — family-less gray surfaces",
         "gradient text — gradients fill surfaces, never glyphs",
         "solid family fills — skipping the fill lane",
-        "saturated neon on light — light answers pastels and soft shadows",
+        "pastel brand and semantic palettes — the brand and status families answer one saturated neon set in both tiers",
         "hover:-translate-y-1 — hover displacement",
         "linear constant-speed flow — ease-out / ease-frame or nothing",
       ],
@@ -433,13 +433,13 @@ const COPY: Record<
     closing: {
       eyebrow: "// Why neon",
       title: "Built for night and stage",
-      lead: "Consoles, creative tools and any interface that wants to be remembered: neon gradient gives identity, feedback and depth while both tiers hold the contrast floor. Six reasons.",
+      lead: "Consoles, creative tools and any interface that wants to be remembered: neon gradient gives identity, feedback and depth while holding the contrast floor. Six reasons.",
       cards: [
-        { title: "Two tiers stand", body: "Pale purple and deep blue are hand-tuned token sets; toggling appearance repaints the whole page, one tier at a time." },
+        { title: "Tiered canvas", body: "The three background tiers shift with the site's day/night toggle and carry the native control colours with them; the brand and semantic tokens answer the same values in both tiers." },
         { title: "Gradient is identity", body: "Eight cyclic gradient families fill surfaces and controls — one glance recognises the scheme. Gradient is structure, not a sticker." },
-        { title: "Glows build depth", body: "Emission on dark, soft same-family shadow on light: depth rides light, not gray. Overlays glow strongest, rest glows least." },
+        { title: "Family shadows build depth", body: "Family colour does the lifting: glow by night, offset soft shadow by day. Depth rides light, not gray — overlays read strongest, rest reads least." },
         { title: "Flow as feedback", body: "Hover slides colour over 500ms, press lights an inset shadow — every action gets light in response while the box never moves." },
-        { title: "AA by depth swap", body: "Light action gradients take 700 depth with white ink; dark neon takes deep ink — ink depth swaps with the tier and both tiers clear the 4.5:1 floor." },
+        { title: "AA by ink pairing", body: "Neon stops take deep ink, the canvas takes white — measured 7.01–11.62:1 on resting status blocks and 6.09–11.13:1 on hover, all over the 4.5:1 floor." },
         { title: "Print stays white", body: "The print lane takes over color-scheme: paper output is always white with black ink — the neon stays on screen." },
       ],
     },

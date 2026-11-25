@@ -248,7 +248,7 @@ const COPY: Record<
         },
         {
           title: "Hand-tuned contrast",
-          body: "Light and dark are two authored token sets; status hues are re-picked per mode to stay AA.",
+          body: "Light and dark are two authored token sets; the status hues are authored once and answer both modes — resting and hover pairs each clear AA.",
         },
         {
           title: "Dividers are hairlines",
@@ -408,7 +408,7 @@ const COPY: Record<
           title: "表面分层",
           body: "顶栏、色带与 hero 用 surface，画布用 background，浮动层用 surface-raised。primary 永不做表面。",
         },
-        { title: "手工调校对比度", body: "浅深两套令牌各自成立，状态色按模式重新取色以保持 AA。" },
+        { title: "手工调校对比度", body: "浅深两套令牌各自成立；状态色日夜同值，静置与悬停两档配对都过 AA。" },
         {
           title: "分隔只用细线",
           body: "1px 的 --border（accent 50%）。不加双线，也不用阴影当边框。",

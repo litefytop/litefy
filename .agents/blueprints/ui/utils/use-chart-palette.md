@@ -7,5 +7,10 @@
 5. 令牌探测：临时 span 探针读 `--primary`（mono 色相 / 续接起点 / 同族阶梯基色，可指 `probeParentRef` 父元素，缺省 documentElement）；明暗档由根元素 dark 类判定；`MutationObserver` 监听根元素 class / style 变化重算，色值逐项相同则保留原引用不触发重渲染。
 6. SSR 首帧：`useState` 初值为固定亮档色板，渲染期不读 document；暗档、mono 模式与 `--primary` 探针解析均在 effect 内完成，解析后色值逐项不同则替换引用触发一次重渲染，首帧与客户端解析结果一致无 hydration 偏差。
 7. `useSameFamilyShades(count)`：同族明暗阶梯（`--primary` 色相，pale→strong 插值），供需要同色系分档的场景。
-8. 语义填充（Meter 分档、Progress 状态、Callout 底、Toast 内条）不走本 hook——它们读语义令牌（`<status>` 背景色档 300 / 200，规则 3），令牌即档位、无需 JS 计算；本 hook 只服务 canvas 场景（Chart / Donut / Radar 的像素取色）与多系列 DOM 场景（MeterGroup 段色）。
+8. 语义填充（Meter 分档、Progress 状态、Callout 底、Toast 内条）不走本 hook——它们读语义令牌（静置背景 `<status>` 300 档、悬停背景 `<status>-accent` 200 档，日夜同值，见 `ui/schemes.md` 第 3 条），令牌即档位、无需 JS 计算；本 hook 只服务 canvas 场景（Chart / Donut / Radar 的像素取色）与多系列 DOM 场景（MeterGroup 段色）。
+
 9. 消费方：Chart、Donut、Radar（canvas 像素）、MeterGroup 段色；安装与 API 正本为 `content/docs/utils/use-chart-palette.zh.mdx`。
+
+## 待定项
+
+1. neon-gradient 恢复背景分档（`ui/schemes.md` 第 16 条）后，第 3 / 5 条「模式读根元素 dark 类」的判定对本方案重新成立：根元素有 `.dark` 即深蓝画布、无则浅紫画布，hook 取档与背景一致。品牌与语义单档霓虹意味着两档取到的色板值相同，判定只影响背景侧配色，原待定项解除。

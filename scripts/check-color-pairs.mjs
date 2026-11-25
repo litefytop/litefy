@@ -6,6 +6,8 @@
 //         实测 ≥4.5:1 为 AA 硬下限，-accent 悬停档与静置档共用主体 -fg，两档都核
 // 规则 3 车道可辨：悬停档必须看得见——accent 对每枚静止背景 OKLab 距离 ≥0.08；
 //         同族深化 <role> → <role>-accent ≥0.06；彩色方案 accent 彩度 C ≥0.08，中性方案改核明度步 ≥8 个 L 点
+// 规则 4 禁用档：disabled 始终保持中性灰（彩度 C ≤0.02，不随表面档走），且对每枚静止背景按规则 3 的同阈值可辨；
+//         禁用与悬停的错开一阶由各案 design.md 与蓝图 ui/schemes/elevation.md 约束，不设门禁阈值
 // 机制值（focus、elevation、shadow、text-<status>-independent 别名）不参与本门禁。
 // 未迁移方案的违规按 EXEMPT 名单逐条登记并带原因。
 
@@ -51,7 +53,7 @@ const PARTNER = new Map([
   ["disabled", "disabled-fg"],
 ]);
 
-// 悬停/强调面可能压上的静止背景（跨车道核可见性）
+// 悬停/强调面可能压上的静止背景（跨车道核可见性）；禁用档按规则 4 另核，与悬停共用同一组底档
 const LANE_BASES = ["background", "surface", RAISED];
 // 同族深化档：静置背景 → 悬停背景
 const ROLES = ["primary", "danger", "info", "success", "warning"];
@@ -72,7 +74,7 @@ const EXEMPT = new Map([
   }],
   ["neon-gradient", {
     literal: [], pair: [], lane: ["danger×danger-accent"],
-    reason: "未迁移（本轮只落 neo-brutalist）：夜档危险块 #f87171 → 悬停 #fb7185 的深化步仅 0.027（同为浅红，靠彩度而非明度区分），该案整体尚在实验轨，迁移时按新阈值复核",
+    reason: "语义单档（两档画布同值）：危险块静置 #f87171 → 悬停 #fb7185 的深化步仅 0.027（同为浅红，靠彩度而非明度区分），本案渐变轨尚在实验，迁移时按新阈值复核",
   }],
 ]);
 
@@ -81,6 +83,7 @@ const LANE_DE = 0.08;
 const FAMILY_DE = 0.06;
 const NEUTRAL_L_POINTS = 8;
 const CHROMA_FLOOR = 0.08;
+const DISABLED_CHROMA = 0.02;
 
 function srgbToLinear(c) {
   return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
@@ -237,36 +240,49 @@ for (const scheme of schemes) {
         problems.push(`${scheme}/index.css [${tier[0]}] 规则2 成套对 ${fg}×${bg} 实测 ${ratio}:1，低于 AA ${FLOOR}:1`);
       }
     }
-    // 规则 3：车道可辨
+    // 规则 3 / 规则 4：车道可辨——悬停档与禁用档各自对三档静止背景核可见性
     const kind = KIND.get(scheme);
-    if (vars.has("accent")) {
-      const accent = rgbOf(vars, "accent");
-      if (!accent) {
-        problems.push(`${scheme}/index.css [${tier[0]}] 规则3 --accent 取值不可解析，无法核车道`);
-      } else {
-        for (const base of LANE_BASES) {
-          if (!vars.has(base)) continue;
-          const key = `accent×${base}`;
-          if (exempt.lane.includes(key)) continue;
-          const rgb = rgbOf(vars, base);
-          if (!rgb) continue;
-          const de = deltaE(accent, rgb);
-          const lGap = +Math.abs(lightness(accent) - lightness(rgb)).toFixed(1);
-          if (kind === "neutral") {
-            if (lGap < NEUTRAL_L_POINTS) {
-              problems.push(`${scheme}/index.css [${tier[0]}] 规则3 悬停车道 ${key} 明度步仅 ${lGap} 点（中性方案需 ≥${NEUTRAL_L_POINTS}），悬停看不见`);
-            }
-          } else if (de < LANE_DE) {
-            problems.push(`${scheme}/index.css [${tier[0]}] 规则3 悬停车道 ${key} OKLab 距离 ${de}，低于 ${LANE_DE}`);
+    const checkLanes = (subject) => {
+      const rgb = rgbOf(vars, subject);
+      if (!rgb) {
+        problems.push(`${scheme}/index.css [${tier[0]}] --${subject} 取值不可解析，无法核车道`);
+        return;
+      }
+      for (const base of LANE_BASES) {
+        if (!vars.has(base)) continue;
+        const key = `${subject}×${base}`;
+        if (exempt.lane.includes(key)) continue;
+        const other = rgbOf(vars, base);
+        if (!other) continue;
+        const de = deltaE(rgb, other);
+        const lGap = +Math.abs(lightness(rgb) - lightness(other)).toFixed(1);
+        if (kind === "neutral") {
+          if (lGap < NEUTRAL_L_POINTS) {
+            problems.push(`${scheme}/index.css [${tier[0]}] 规则3 车道可辨 ${key} 明度步仅 ${lGap} 点（中性方案需 ≥${NEUTRAL_L_POINTS}）`);
           }
-        }
-        if (kind === "chromatic") {
-          const c = chroma(accent);
-          if (c < CHROMA_FLOOR && !exempt.lane.includes("accent-chroma")) {
-            problems.push(`${scheme}/index.css [${tier[0]}] 规则3 彩色方案 --accent 彩度 C ${c}，低于 ${CHROMA_FLOOR}（悬停档不许答成近中性深色）`);
-          }
+        } else if (de < LANE_DE) {
+          problems.push(`${scheme}/index.css [${tier[0]}] 规则3 车道可辨 ${key} OKLab 距离 ${de}，低于 ${LANE_DE}`);
         }
       }
+    };
+    if (vars.has("accent")) {
+      checkLanes("accent");
+      if (kind === "chromatic") {
+        const c = chroma(rgbOf(vars, "accent"));
+        if (c < CHROMA_FLOOR && !exempt.lane.includes("accent-chroma")) {
+          problems.push(`${scheme}/index.css [${tier[0]}] 规则3 彩色方案 --accent 彩度 C ${c}，低于 ${CHROMA_FLOOR}（悬停档不许答成近中性深色）`);
+        }
+      }
+    }
+    if (vars.has("disabled")) {
+      const disabled = rgbOf(vars, "disabled");
+      if (disabled) {
+        const c = chroma(disabled);
+        if (c > DISABLED_CHROMA && !(exempt.neutral ?? []).includes("disabled")) {
+          problems.push(`${scheme}/index.css [${tier[0]}] 规则4 禁用档 --disabled 彩度 C ${c}，高于 ${DISABLED_CHROMA}（禁用档须答中性灰，不随表面档走）`);
+        }
+      }
+      checkLanes("disabled");
     }
     for (const role of ROLES) {
       if (!vars.has(role) || !vars.has(`${role}-accent`)) continue;
@@ -286,7 +302,7 @@ for (const scheme of schemes) {
 if (problems.length) {
   console.error(`✗ 色板成对门禁：${problems.length} 处`);
   for (const p of problems) console.error(`  ${p}`);
-  console.error("  成套律、补全律、禁衍生、车道可辨见 .agents/blueprints/ui/schemes.md 第 24 条；未迁移方案登记进 EXEMPT 名单并带原因");
+  console.error("  成套律、补全律、禁衍生、车道可辨见 .agents/blueprints/ui/schemes.md 第 24 条；禁用档中性与可辨见 .agents/blueprints/ui/schemes/elevation.md 禁用档；未迁移方案登记进 EXEMPT 名单并带原因");
   process.exit(1);
 }
-console.log(`✓ 色板成对门禁：${schemes.length} 套方案色板字面、成对达标、悬停车道可辨（AA ${FLOOR}:1 硬下限，含 ${EXEMPT.size} 案带原因豁免）`);
+console.log(`✓ 色板成对门禁：${schemes.length} 套方案色板字面、成对达标、悬停与禁用车道可辨（AA ${FLOOR}:1 硬下限，含 ${EXEMPT.size} 案带原因豁免）`);

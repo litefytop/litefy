@@ -9,7 +9,7 @@ export const fieldGroupBaseClasses =
   "flex min-h-control w-full min-w-0 max-w-[20rem] items-center rounded-md border-frame motion-frame field-seam borderless:border-0";
 
 export const fieldGroupFaceClasses =
-  "border-border bg-surface-raised p-well text-surface-raised-fg shadow-frame focus-within:focus-ring field-invalid";
+  "border-border bg-surface-raised text-surface-raised-fg shadow-frame focus-within:focus-ring field-invalid";
 
 export const fieldGroupClasses = cn(
   fieldGroupBaseClasses,
@@ -19,7 +19,7 @@ export const fieldGroupClasses = cn(
 
 export const fieldGroupDisabledClasses = cn(
   fieldGroupBaseClasses,
-  "cursor-not-allowed select-none border-border bg-disabled p-well text-disabled-fg shadow-frame",
+  "cursor-not-allowed select-none border-border bg-disabled text-disabled-fg shadow-frame",
 );
 
 const fieldGroupClassesByState = (disabled: boolean | undefined) =>
@@ -28,11 +28,11 @@ const fieldGroupClassesByState = (disabled: boolean | undefined) =>
 
 const fieldInputLayoutClasses =
   "min-w-0 grow basis-0 self-stretch border-0 px-3 focus:outline-hidden " +
-  "rounded-(--radius-field-inner) shadow-well font-field placeholder:font-field";
+  "rounded-(--radius-field-inner) shadow-recess font-field placeholder:font-field";
 
 export const fieldInputClasses = cn(
   fieldInputLayoutClasses,
-  "bg-well text-inherit placeholder:text-foreground",
+  "bg-surface text-surface-fg placeholder:text-surface-fg",
 );
 
 export const fieldInputDisabledClasses = cn(
@@ -60,7 +60,7 @@ const fieldTextareaBaseClasses =
 
 export const fieldTextareaClasses = cn(
   fieldTextareaBaseClasses,
-  "field-invalid bg-well text-foreground shadow-frame placeholder:text-foreground focus:outline-none focus:focus-ring",
+  "field-invalid bg-surface text-surface-fg shadow-frame placeholder:text-surface-fg focus:outline-none focus:focus-ring",
 );
 
 export const fieldTextareaDisabledClasses = cn(

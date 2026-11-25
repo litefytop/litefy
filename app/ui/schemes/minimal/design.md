@@ -1,14 +1,13 @@
 ---
 version: alpha
 name: Litefy UI — Minimal
-description: Design language of the Litefy UI soft-minimal style template (slug minimal) — a minimal skeleton over quiet soft surfaces: monochrome-first with a single brand colour, diffuse paired shadows, sunken same-tone wells in field groups, and a 4px numeric spacing grid. The YAML block is the sole numeric authority for tokens; the prose states rules and destinations.
+description: Design language of the Litefy UI soft-minimal style template (slug minimal) — a minimal skeleton over quiet soft surfaces: monochrome-first with a single brand colour, diffuse paired shadows, recessed field interiors on the `surface` tier, and a 4px numeric spacing grid. The YAML block is the sole numeric authority for tokens; the prose states rules and destinations.
 colors:
   background: 'oklch(98.5% 0 0)'
   foreground: 'oklch(14.5% 0 0)'
   surface: 'oklch(97% 0 0)'
   surface-fg: 'oklch(26.9% 0 0)'
-  well: 'oklch(92.2% 0 0)'
-  disabled: 'oklch(97% 0 0)'
+  disabled: 'oklch(70.8% 0 none)'
   disabled-fg: 'oklch(26.9% 0 0)'
   accent: 'oklch(87% 0 0)'
   accent-fg: 'oklch(37.1% 0 0)'
@@ -33,8 +32,7 @@ colors:
   dark-foreground: 'oklch(97% 0 0)'
   dark-surface: 'oklch(14.5% 0 0)'
   dark-surface-fg: 'oklch(92.2% 0 0)'
-  dark-well: 'oklch(14.5% 0 0)'
-  dark-disabled: 'oklch(14.5% 0 0)'
+  dark-disabled: 'oklch(43.9% 0 none)'
   dark-disabled-fg: 'oklch(92.2% 0 0)'
   dark-accent: 'oklch(37.1% 0 0)'
   dark-accent-fg: 'oklch(87% 0 0)'
@@ -43,18 +41,6 @@ colors:
   dark-primary: 'oklch(98.5% 0 0)'
   dark-primary-fg: 'oklch(14.5% 0 0)'
   dark-primary-accent: 'oklch(87% 0 0)'
-  dark-danger-fg: 'oklch(39.6% 0.141 25.723)'
-  dark-danger: 'oklch(88.5% 0.062 18.334)'
-  dark-danger-accent: 'oklch(80.8% 0.114 19.571)'
-  dark-info-fg: 'oklch(37.9% 0.146 265.522)'
-  dark-info: 'oklch(88.2% 0.059 254.128)'
-  dark-info-accent: 'oklch(80.9% 0.105 251.813)'
-  dark-success-fg: 'oklch(39.3% 0.095 152.535)'
-  dark-success: 'oklch(92.5% 0.084 155.995)'
-  dark-success-accent: 'oklch(87.1% 0.15 154.449)'
-  dark-warning-fg: 'oklch(42.1% 0.095 57.708)'
-  dark-warning: 'oklch(94.5% 0.129 101.54)'
-  dark-warning-accent: 'oklch(90.5% 0.182 98.111)'
 typography:
   sans:
     fontFamily: '"Gill Sans", "Gill Sans MT", Calibri, sans-serif'
@@ -153,24 +139,23 @@ motion:
 components:
   avatar:
     rounded: '{rounded.disc}'
-well:
-  color: '{colors.surface}'
-  padding: 0px
+recess:
   shadow: 'inset 2px 2px 4px oklch(0% 0 0 / 10%), inset -2px -2px 4px oklch(100% 0 0 / 65%)'
   dark-shadow: 'inset 2px 2px 4px oklch(0% 0 0 / 40%), inset -2px -2px 4px oklch(100% 0 0 / 7%)'
+  radius-inner: 'max(0px, calc(var(--radius-lg) - var(--spacing)*1.5 - var(--border-width-frame)))'
 ---
 
 ## 总览
 
-1. 整体观感：扁平的浅灰中性面、发丝软边界、扩散柔影、8–24px 大圆角、亮档近黑（暗档近白）的一支品牌色、充裕留白、零多余颜色；字段族以同色井承凹——壳与附件同色、井面下沉。识别点七条：**单色优先、发丝软边界、扩散柔影、同色井、大圆角阶梯、一处品牌色、留白分层**。
-2. 设计意图：柔和极简是「极简骨架 × 软表面」的混合语言——骨架层无色即品牌，颜色永远携带含义，说不出某块颜色标的是哪种状态或动作，它就不该出现；表面层借轻新拟态的思路表达凹凸（同色井 + 单一光源内阴影），不做高对比立体。层级由字号、留白、边界线与井的沉浮建立，禁止靠降低透明度或调淡文字表达；服务信息密度高的产品界面（工具、控制台、文档、表单）。
+1. 整体观感：扁平的浅灰中性面、发丝软边界、扩散柔影、8–24px 大圆角、亮档近黑（暗档近白）的一支品牌色、充裕留白、零多余颜色；字段族以内层凹槽承凹——壳与附件同色、输入元素沉到凹槽档。识别点七条：**单色优先、发丝软边界、扩散柔影、同色凹槽、大圆角阶梯、一处品牌色、留白分层**。
+2. 设计意图：柔和极简是「极简骨架 × 软表面」的混合语言——骨架层无色即品牌，颜色永远携带含义，说不出某块颜色标的是哪种状态或动作，它就不该出现；表面层借轻新拟态的思路表达凹凸（凹槽底色 + 单一光源内阴影），不做高对比立体。层级由字号、留白、边界线与凹凸沉浮建立，禁止靠降低透明度或调淡文字表达；服务信息密度高的产品界面（工具、控制台、文档、表单）。
 3. 权威分工：文件头 YAML 块是 token **数值的唯一权威**；本方案 `index.css` 的 `@theme` 是其实现，两边逐档对齐，不一致以 YAML 为准并报告冲突。组件槽位与角色档位归 `.agents/blueprints/ui/skins/<name>.md`；通用外观律归 delivery 技能；无障碍下限归 ui-rules 技能——本文件只答方案数值与方案语言边界。
 4. 冲突裁决：用户明确要求 > 本规范 > 模型自己的品味；用户要求违反硬性禁令时，先说明并给出合规替代，再按用户最终决定执行。代码审计只记录问题、不自动修复，等待指令处理。
 
 ## Colors
 
 1. 面积预算 **60 / 30 / 10**：约 60% 画布（`background` / `foreground`——方案常量，亮暗各一套定值，不随表面色板移动）；约 30% 次要面与内容容器（`surface` / `accent` 的 bar 容器与悬停填充，加机制值 `surface-raised` 的控件面、卡面与浮层——亮档恒纯白、暗档比画布抬亮一阶，不随表面色板移动，明度分层律见 `ui/schemes.md` 第 21 条）；≤10% `primary` 与状态色。表面色板只改写 `surface` / `surface-fg` / `accent` 三件，画布与卡面不随它移动。骨架屏与无内容占位背景色归 `accent`，空态提示文字归 `foreground`。
-2. 色板只有 24 枚，亮暗各一套（构成与数值见 YAML）。后缀语法全系统一致：背景色不带后缀，文字色加 `-fg`；`-accent` 是强调 / 悬停背景档，没有 `-bg` 档；例外皆显式：画布用全写 `background` / `foreground`。`@theme` 的色彩映射与这 24 枚一一对应，此外没有任何颜色槽位；浮层背景 `--color-surface-raised`（配 `--color-surface-raised-fg`）与井底 `--color-well` 是成对 / 单枚机制值，焦点环、内阴影与投影也是机制值，由 `index.css` 派生，不是色板令牌。
+2. 色板只有 24 枚，亮暗各一套（构成与数值见 YAML）。后缀语法全系统一致：背景色不带后缀，文字色加 `-fg`；`-accent` 是强调 / 悬停背景档，没有 `-bg` 档；例外皆显式：画布用全写 `background` / `foreground`。`@theme` 的色彩映射与这 24 枚一一对应，此外没有任何颜色槽位；浮层背景 `--color-surface-raised`（配 `--color-surface-raised-fg`）是成对机制值，焦点环、凹陷内阴影 `--shadow-recess` 与投影也是机制值，由 `index.css` 派生，不是色板令牌。
 3. 逐 token 去处：
 
    1. `background` — 画布：页面底层、主内容区、站点外框的默认背景色（亮档灰 50 档 98.5，暗档灰 900 档 20.5）；不再兼任最亮位——控件面、卡面与浮层读机制值 `surface-raised`（亮档纯白，暗档灰 800 档 26.9）。实测：`foreground` 对亮画布 18.96:1、对暗画布 16.42:1（AAA）。bar 类容器（顶栏 / 侧栏 / 底栏）不用它，用 `surface`。
@@ -183,22 +168,22 @@ well:
    8. `primary` — 品牌色：主按钮、选中 / 激活态、焦点环、状态标记、链接。保持稀缺（一屏一个主操作），禁止大面积铺满卡片或页面背景。
    9. `primary-fg` — `primary` 背景上的文字色。
    10. `primary-accent` — 品牌深化档：激活 / 按压态、焦点高亮；焦点环由它派生。不用作常态背景色。
-   11. `danger-fg` — `danger` 与 `danger-accent` 背景上的文字色；独立错误文字、图标与边框挂 `text-danger-independent` / `border-danger-independent`，亮档读 `danger-fg`、暗档读 `danger`。
-   12. `danger` — 错误提示静置背景色。
-   13. `danger-accent` — 错误提示悬停背景色。
-   14. `info-fg` — `info` 与 `info-accent` 背景上的文字色；独立信息文字、图标与边框挂 `text-info-independent` / `border-info-independent`，亮档读 `info-fg`、暗档读 `info`。
-   15. `info` — 信息提示静置背景色。
-   16. `info-accent` — 信息提示悬停背景色。
-   17. `success-fg` — `success` 与 `success-accent` 背景上的文字色；独立成功文字、图标与边框挂 `text-success-independent` / `border-success-independent`，亮档读 `success-fg`、暗档读 `success`。
-   18. `success` — 成功提示静置背景色。
-   19. `success-accent` — 成功提示悬停背景色。
-   20. `warning-fg` — `warning` 与 `warning-accent` 背景上的文字色；独立警示文字、图标与边框挂 `text-warning-independent` / `border-warning-independent`，亮档读 `warning-fg`、暗档读 `warning`。
-   21. `warning` — 警示提示静置背景色。
-   22. `warning-accent` — 警示提示悬停背景色。
-   23. `disabled` — 禁用控件背景色；独立取值，不重映射主题背景或填充。
-   24. `disabled-fg` — 禁用控件文字、图标与边框色；与 `disabled` 保持可读对比。
+   11. `danger-fg` — `danger` 与 `danger-accent` 背景上的文字色；独立错误文字、图标与边框挂 `text-danger-independent` / `border-danger-independent`，亮档读 `danger-fg`、暗档读 `danger-accent`。
+   12. `danger` — 错误提示静置背景色，日夜同值。
+   13. `danger-accent` — 错误提示悬停背景色，日夜同值；暗档独立状态文字、图标与边框也读它。
+   14. `info-fg` — `info` 与 `info-accent` 背景上的文字色；独立信息文字、图标与边框挂 `text-info-independent` / `border-info-independent`，亮档读 `info-fg`、暗档读 `info-accent`。
+   15. `info` — 信息提示静置背景色，日夜同值。
+   16. `info-accent` — 信息提示悬停背景色，日夜同值；暗档独立状态文字、图标与边框也读它。
+   17. `success-fg` — `success` 与 `success-accent` 背景上的文字色；独立成功文字、图标与边框挂 `text-success-independent` / `border-success-independent`，亮档读 `success-fg`、暗档读 `success-accent`。
+   18. `success` — 成功提示静置背景色，日夜同值。
+   19. `success-accent` — 成功提示悬停背景色，日夜同值；暗档独立状态文字、图标与边框也读它。
+   20. `warning-fg` — `warning` 与 `warning-accent` 背景上的文字色；独立警示文字、图标与边框挂 `text-warning-independent` / `border-warning-independent`，亮档读 `warning-fg`、暗档读 `warning-accent`。
+   21. `warning` — 警示提示静置背景色，日夜同值。
+   22. `warning-accent` — 警示提示悬停背景色，日夜同值；暗档独立状态文字、图标与边框也读它。
+   23. `disabled` — 禁用控件背景色；四案同答固定中性灰（亮档灰 400 档 70.8，暗档灰 600 档 43.9），不随表面档变化，也不与悬停档 `accent` 同值。
+   24. `disabled-fg` — 禁用控件文字、图标与边框色；与 `disabled` 保持可读对比（本案亮 5.83:1、暗 6.19:1）。
 
-4. 对比度：文字、图标与边框按实际背景配对，普通文字在亮、暗两档都满足 WCAG AA（≥ 4.5:1）。独立状态文字、图标与边框挂 `text-<status>-independent` / `border-<status>-independent`，亮档读 `<status>-fg`、暗档读 `<status>`；填充及其悬停背景读对应 `<status>-fg`。层级不靠压暗文字或发光表达。
+4. 对比度：文字、图标与边框按实际背景配对，普通文字在亮、暗两档都满足 WCAG AA（≥ 4.5:1）。独立状态文字、图标与边框挂 `text-<status>-independent` / `border-<status>-independent`，亮档读 `<status>-fg`、暗档读 `<status>-accent`；语义四族背景日夜同值，同一枚 `<status>-fg` 压静置与悬停两档实测 danger 5.24 / 6.94、info 5.74 / 7.31、success 6.49 / 7.49、warning 6.57 / 7.47（实测值，`ui/schemes.md` 第 3 条）。填充及其悬停背景读对应 `<status>-fg`。层级不靠压暗文字或发光表达。
 
 ## Typography
 
@@ -239,7 +224,7 @@ well:
 5. 控件边框与宿主互补：无边框宿主上的操作控件必须自带边框；已有边界线的宿主内行内控件只用文字 / 填充形态。
 6. 容器自带边界，宿主负责复位：可独立承载内容的容器（列表视口、折叠根、卡片、浮层面板）边框写在方案里，消费方不补；嵌进别的组件时宿主复位（去边框 + 去圆角）。业务侧出口 `data-border="none | solid"`。
 7. 滚动条：全方案统一 6px 常显经典滚动条——`::-webkit-scrollbar` 定宽、thumb 答 `var(--border)`、track 与 corner 透明、箭头按钮隐藏；Firefox 车道（`@-moz-document`）标准属性答 `thin` + `var(--border)`。标准属性不得出现在 Chromium——非初始值会丢弃 webkit 定档、退化为覆盖式滚动条自动隐藏；组件层一律不设 scrollbar 样式。
-8. 明度阶梯（用户定 2026-11-25，方向律与角色归属的正本在 `ui/schemes/elevation.md`）：静态中性档沿 Tailwind 灰族具名阶一阶一阶排布，亮档由低到高为井底 `well` 灰 200 档 92.2 → 凹槽 `surface` 灰 100 档 97 → 画布 `background` 灰 50 档 98.5 → 凸起 `surface-raised` 纯白（画布与纯白只差一阶）；暗档同向不反相：`surface` 与 `well` 同答灰 950 档 14.5（暗档关井）→ 画布灰 900 档 20.5 → 凸起灰 800 档 26.9。相邻档实测 ΔL 亮 4.8 / 1.5 / 1.5 点、暗 0 / 6.0 / 6.4 点，三档静态互不相等、一眼能分即达标；`accent` 悬停档另在阶梯之外（亮灰 300 档 87、暗灰 700 档 37.1），对三档的最小道距亮 10.0 / 暗 10.2 点。凸起层由皮肤显式挂 `bg-surface-raised` 配 `text-surface-raised-fg` 才吃到明度阶；轨道族与输入井面读 `--color-well`，壳层 bar / rail / 表头读 `--color-surface`。
+8. 明度阶梯（用户定 2026-11-25，方向律与角色归属的正本在 `ui/schemes/elevation.md`）：静态中性档三档沿 Tailwind 灰族具名阶一阶一阶排布，亮档由低到高为凹槽 `surface` 灰 100 档 97 → 画布 `background` 灰 50 档 98.5 → 凸起 `surface-raised` 纯白（画布与纯白只差一阶）；暗档同向不反相：凹槽灰 950 档 14.5 → 画布灰 900 档 20.5 → 凸起灰 800 档 26.9。相邻档实测 ΔL 亮 1.5 / 1.5 点、暗 6.0 / 6.4 点，三档静态互不相等、一眼能分即达标；`accent` 悬停档另在阶梯之外（亮灰 300 档 87、暗灰 700 档 37.1），对三档的最小道距亮 10.0 / 暗 10.2 点。`disabled` 不入阶梯，四案同答固定中性灰（亮灰 400 档 70.8、暗灰 600 档 43.9），与悬停档错开一阶：对三档的最小道距亮 26.2 / 暗 17.0 点。凸起层由皮肤显式挂 `bg-surface-raised` 配 `text-surface-raised-fg` 才吃到明度阶；轨道族与输入凹面、值区、多行域、Segment 凹陷道读 `--color-surface` 配 `surface-fg`，壳层 bar / rail / 表头同读 `--color-surface`。
 
 ## Motion
 
@@ -255,7 +240,7 @@ well:
 1. 圆角四档加胶囊，永远与阴影档一致：`sm` 8px 行内标签 / `md` 12px 输入与字段族触发件 / `lg` 16px 独立区块卡 / `xl` 24px 大卡与浮层外壳 / `full` 装饰圆（时间线节点、徽标圆点）/ `disc` 头像（答 `pill`，全圆）/ `pill` 胶囊（按钮、按下钮、特性胶囊、进度条、开关轨道、单选框——按钮族默认成圆）。
 2. 本方案重映射为柔和阶梯（`sm`/`md`/`lg`/`xl` = 8/12/16/24px，`@theme` 显式声明，不再依赖核心默认刻度）；只用这几档，`xs` / `2xl` / `3xl` / `4xl` 属别的风格语言，本方案不出现。静态的 `rounded-full` 谁也答不成 0，所以胶囊与头像圆写 `rounded-pill` / `rounded-disc`，由各方案回答。
 3. 连体控制组（拼接输入 + 按钮）内角压平为 0，只保留首尾端帽。
-4. 轨道族（滑块 / 进度条 / 开关轨）：半径一律胶囊 `pill`、无描边、纯色块，未填充底挂井底 `bg-well`（机制值 `--color-well`，见 Elevation 第 8 条）、填充 `primary`；轨道一律连续条，格子形态不进本方案——输入滑块的反馈靠值气泡与按压，不靠格子与速度波。
+4. 轨道族（滑块 / 进度条 / 开关轨）：半径一律胶囊 `pill`、无描边、纯色块，未填充底挂凹槽档 `bg-surface`（读 `--color-surface`，见 Elevation 第 8 条）、填充 `primary`；轨道一律连续条，格子形态不进本方案——输入滑块的反馈靠值气泡与按压，不靠格子与速度波。
 
 ## Components
 
@@ -269,7 +254,7 @@ well:
    4. bar 形态容器（顶栏 / 侧栏 / 底栏 / hero）：`surface` 背景色 + `surface-fg` 前景色，靠边界线分区，不叠阴影。
    5. 状态块与状态标签：静态背景取 `<status>` 静置背景色，文字取对应 `<status>-fg`；状态色只用于状态，不作装饰、不当大面积背景色。
    6. Toc：长文栏 80rem 分界线归它自己，不占 Layout 三档断点。
-4. 组容器井（well）：字段壳不挂框距（`--padding-well` 答 0——关井只去框距，与扁平极简同法），井（输入元素 / 值区 / 多行域）挂 `bg-well`（`--color-well` 读自答的 `--well` 档——亮档灰 200 档 92.2，比凹槽 `surface` 再沉一阶；暗档与 `surface` 同值灰 950 档 14.5，即暗档关井）+ `shadow-well`（`--shadow-well` 双向内阴影，单一光源左上——暗影落在井口上缘、亮光补在对缘；亮暗各答，数值见 YAML `well` 块，经验规则）+ 同心内圆角读 `--radius-field-inner` / `--radius-well-inner` 派生令牌（式见 delivery `references/skin-rules.md` 第 17 条）。Segment 分段壳自成井道：井底 / 井内阴影同读 well 令牌，框距取 `p-1.5`、外壳 `rounded-lg`，选中项衬底为 `background` 浮起药丸、选中文字转 `primary`（取值以皮肤蓝图 `ui/skins/segment.md` 为准）。完全关井 = 框距 0 + 井底读 `background`，读法退回纯容器形态。
+4. 组容器凹陷（recess）：凹陷不设独立色档——第四档「井」随三档阶梯撤销（用户定 2026-11-25），输入元素、值区、多行域挂 `bg-surface` 凹槽档配 `text-surface-fg`；凹感由 `--shadow-recess` 双向内阴影作第二道线（单一光源左上——暗影落在凹口上缘、亮光补在对缘；亮暗各答，数值见 YAML `recess` 块）+ 同心内圆角读 `--radius-field-inner` / `--radius-recess-inner` 派生令牌（式见 delivery `references/skin-rules.md` 第 17 条）。字段壳不挂框距（旧 `--padding-well` 随井档删除，四案同答 0，删后无位移）。Segment 分段壳自成凹陷道：底色同挂 `bg-surface`、内阴影读 `--shadow-recess`，框距取 `p-1.5`、外壳 `rounded-lg`，选中项凸起为 `primary` 对（`bg-primary` + `text-primary-fg` + `shadow-subtle`），取值以皮肤蓝图 `ui/skins/segment-group.md` 为准。
 
 ## Do / Don't（方案语言边界）
 

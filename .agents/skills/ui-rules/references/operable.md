@@ -25,3 +25,4 @@
 23. 行内车道豁免：正文链接、Tooltip 触发词、目录 / 面包屑链接不撑高（2.5.8 行内例外）——撑高会把行距撕裂
 24. 连体组 / 连体壳内层让位给壳：`min-height: 0` + `align-self: stretch`，内层重复下限会把整条顶高
 25. 输入类热区即自身：`min-height: var(--height-field)` 写在带边框的壳上，内容更高自然长高；字段下方状态提示同取该下限，替换描述文字时行节奏不跳
+26. `title` 不是信息通道：触屏（iOS Safari / Android Chrome）不显示 `title`，键盘端也不触发，样式与对比全部不可控——只许当桌面鼠标端的冗余提示。文本被裁（`truncate` / `line-clamp`）时必须有可见替代：折行（`max-w-full` 自然换行）或点击展开（`table.tsx` 的 CollapseCell），不许用 `title` 代替；要真提示才上 Tooltip，且先补第 16 条的 Esc 与外部点击关闭（`ui/components/tooltip.md` 现缺）。纯图标件的名字走 `aria-label`，不走 `title`

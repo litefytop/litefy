@@ -8,7 +8,7 @@ const rootClasses =
   "data-collapsed:h-0! data-collapsed:mb-0! data-collapsed:opacity-0";
 
 const rowClasses =
-  "relative h-full overflow-hidden border-hair bg-well text-foreground shadow-frame";
+  "relative h-full overflow-hidden border-hair bg-surface text-surface-fg shadow-frame";
 const rowDisabledClasses =
   "relative h-full overflow-hidden border-hair bg-disabled text-disabled-fg shadow-frame";
 
@@ -64,11 +64,11 @@ const surfaceLayoutClasses =
   "relative z-10 flex h-full touch-pan-y items-center gap-x-3 px-4 " +
   "group-data-[dragging]/swipe:**:select-none " +
   "group-data-[dragging]/swipe:select-none";
-const surfaceClasses = cn(surfaceLayoutClasses, "bg-well text-foreground");
+const surfaceClasses = cn(surfaceLayoutClasses, "bg-surface text-surface-fg");
 const surfaceDisabledClasses = cn(surfaceLayoutClasses, "bg-disabled text-disabled-fg");
 
 const hintClasses =
-  "flex size-4 shrink-0 items-center text-foreground [&_svg]:size-full " +
+  "flex size-4 shrink-0 items-center text-surface-fg [&_svg]:size-full " +
   "motion-safe:animate-swipe-hint [--hint-nudge-x:-4px] group-data-[direction=right]/swipe:[--hint-nudge-x:4px] " +
   "group-data-[direction=right]/swipe:order-first group-data-[dragging]/swipe:hidden data-hidden:hidden";
 

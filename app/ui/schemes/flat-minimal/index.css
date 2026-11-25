@@ -27,8 +27,7 @@
   --foreground: oklch(17.5% 0.032 243);
   --surface: oklch(95.1% 0.018 236);
   --surface-fg: oklch(29.4% 0.066 243.157);
-  --well: oklch(90.1% 0.058 230.902);
-  --disabled: oklch(95.1% 0.018 236);
+  --disabled: oklch(70.8% 0 none); /* 禁用档固定中性灰，不随 surface 走 */
   --disabled-fg: oklch(29.4% 0.066 243.157);
   --surface-raised: oklch(100% 0 0);
   --surface-raised-fg: var(--foreground);
@@ -64,9 +63,9 @@
   --shadow-surface: none;
   --shadow-checked: 0 0 0 2px var(--background), 0 0 0 4px var(--primary);
   --shadow-unchecked: 0 0 0 2px var(--background), 0 0 0 4px var(--surface-fg);
-  --shadow-well: none;
-  --radius-field-inner: max(0px, calc(var(--radius-md) - var(--padding-well) - var(--border-width-frame)));
-  --radius-well-inner: max(0px, calc(var(--radius-lg) - var(--spacing)*1.5 - var(--border-width-frame)));
+  --shadow-recess: none;
+  --radius-field-inner: max(0px, calc(var(--radius-md) - var(--border-width-frame)));
+  --radius-recess-inner: max(0px, calc(var(--radius-lg) - var(--spacing)*1.5 - var(--border-width-frame)));
   --stroke-cap: butt;
   --stroke-join: miter;
 
@@ -114,8 +113,7 @@
   --foreground: oklch(96% 0.012 236);
   --surface: oklch(16.5% 0.03 243);
   --surface-fg: oklch(90.1% 0.058 230.902);
-  --well: oklch(16.5% 0.03 243);
-  --disabled: oklch(16.5% 0.03 243);
+  --disabled: oklch(43.9% 0 none);
   --disabled-fg: oklch(90.1% 0.058 230.902);
   --surface-raised: oklch(29.4% 0.066 243.157);
   --surface-raised-fg: var(--foreground);
@@ -130,25 +128,10 @@
   --primary-accent: oklch(74.6% 0.16 232.661);
   --focus-outline-danger: 2px solid var(--danger);
 
-  --danger-fg: oklch(39.6% 0.141 25.723);
-  --info-fg: oklch(37.9% 0.146 265.522);
-  --success-fg: oklch(39.3% 0.095 152.535);
-  --warning-fg: oklch(42.1% 0.095 57.708);
-
-  --danger-accent: oklch(80.8% 0.114 19.571);
-  --info-accent: oklch(80.9% 0.105 251.813);
-  --success-accent: oklch(87.1% 0.15 154.449);
-  --warning-accent: oklch(90.5% 0.182 98.111);
-
-  --danger: oklch(88.5% 0.062 18.334);
-  --info: oklch(88.2% 0.059 254.128);
-  --success: oklch(92.5% 0.084 155.995);
-  --warning: oklch(94.5% 0.129 101.54);
-
-  --text-danger-independent: var(--danger);
-  --text-info-independent: var(--info);
-  --text-success-independent: var(--success);
-  --text-warning-independent: var(--warning);
+  --text-danger-independent: var(--danger-accent);
+  --text-info-independent: var(--info-accent);
+  --text-success-independent: var(--success-accent);
+  --text-warning-independent: var(--warning-accent);
 }
 
 /* Compact ramp — three-scheme mechanism values (ui/schemes.md rule 11). */
@@ -188,7 +171,6 @@
   --color-disabled-fg: var(--disabled-fg);
   --color-surface-raised: var(--surface-raised);
   --color-surface-raised-fg: var(--surface-raised-fg);
-  --color-well: var(--well);
   --color-accent: var(--accent);
   --color-accent-fg: var(--accent-fg);
   --color-border: var(--border);
@@ -262,7 +244,6 @@
   --padding-snug: calc((var(--height-control) - 1.25rem) / 2);
   --padding-loose: calc((var(--height-control) - 1.625rem) / 2);
   --padding-panel: 1.5rem;
-  --padding-well: 0px;
 
   --height-control: 2.75rem;
   --height-field: 2.75rem;
@@ -425,8 +406,8 @@
   box-shadow: var(--shadow-unchecked);
 }
 
-@utility shadow-well {
-  box-shadow: var(--shadow-well);
+@utility shadow-recess {
+  box-shadow: var(--shadow-recess);
 }
 
 @utility focus-ring {

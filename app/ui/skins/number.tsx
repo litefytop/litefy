@@ -12,12 +12,12 @@ export type { NumberFieldProps, NumberInputProps } from "@/ui";
 
 
 const valueLayoutClasses =
-  "peer min-w-0 flex-1 self-stretch border-0 bg-well px-3 text-left";
+  "peer min-w-0 flex-1 self-stretch border-0 bg-surface px-3 text-left text-surface-fg";
 const valueFaceClasses =
-  "rounded-(--radius-field-inner) shadow-well " +
+  "rounded-(--radius-field-inner) shadow-recess " +
   "text-sm leading-5 font-field text-inherit outline-none";
 const valueStateClasses =
-  "placeholder:text-foreground selection:bg-primary selection:text-primary-fg " +
+  "placeholder:text-surface-fg selection:bg-primary selection:text-primary-fg " +
   "aria-invalid:text-danger-independent";
 
 const valueClasses = cn(valueLayoutClasses, valueFaceClasses, valueStateClasses);
@@ -59,7 +59,7 @@ const numberInputShellClassesByState = (disabled: boolean | undefined) =>
   disabled ? numberInputShellDisabledClasses : numberInputShellClasses;
 
 const shellLayoutClasses =
-  "relative inline-flex min-h-[calc(var(--height-field)+2px)] w-fit max-w-full items-stretch p-well";
+  "relative inline-flex min-h-[calc(var(--height-field)+2px)] w-fit max-w-full items-stretch";
 const shellFaceClasses =
   "rounded-md border-frame border-border bg-surface-raised text-surface-raised-fg shadow-base focus-within:focus-ring";
 const shellInvalidClasses = "field-invalid";
@@ -91,11 +91,11 @@ const stepperDisabledClasses = cn(
 const stepperIconClasses = "size-4";
 
 const fieldValueBaseClasses =
-  "w-control border-0 bg-well text-center rounded-none shadow-well";
+  "w-control border-0 bg-surface text-center text-surface-fg rounded-none shadow-recess";
 const fieldValueTextClasses =
   "text-sm leading-5 font-field tabular-nums outline-none peer";
 const fieldValueStateClasses =
-  "placeholder:text-foreground selection:bg-primary selection:text-primary-fg " +
+  "placeholder:text-surface-fg selection:bg-primary selection:text-primary-fg " +
   "aria-invalid:text-danger-independent focus:text-inherit dark:focus:text-inherit";
 
 const fieldInputValueClasses = cn(fieldValueBaseClasses, fieldValueTextClasses, fieldValueStateClasses);

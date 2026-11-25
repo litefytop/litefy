@@ -2,16 +2,15 @@
  * Neon Gradient — the scheme stylesheet.
  *
  * Purple brand, gradient family fills, contrast borders, family-coloured
- * elevation and JetBrains Mono as the terminal face. Two authored tiers
- * (blueprint `ui/schemes.md` 第 16 条): the day tier is a pale purple canvas
- * with pastel surface gradients and jewel-depth (700) action gradients under
- * white ink, glows demoted to same-family soft shadows; the night tier is a
- * deep blue canvas with the saturated cyan-pink neon, yellow-400 wire and
- * family glows. The gradient language and hue families survive both tiers;
- * only depth and canvas shift. Everything here is what a utility string
- * cannot express, in six blocks (blueprint `ui/schemes.md` 第 8 条).
+ * elevation and JetBrains Mono as the terminal face. Two tiers, but only the
+ * canvas moves (blueprint `ui/schemes.md` 第 16 条): the day tier is a pale
+ * purple canvas with the amber-700 wire and same-family soft shadows, the night
+ * tier is a deep blue canvas with the yellow-400 wire and family glows. Brand
+ * and semantic families answer one saturated neon set in both tiers, so the
+ * day/night toggle never repaints a button, a chip or a status block.
+ * Everything here is what a utility string cannot express, in six blocks
+ * (blueprint `ui/schemes.md` 第 8 条).
  *
- *   - dark follows the site's `.dark` class; the day/night toggle is live.
  *   - --radius-* is answered big (rounded-2xl/3xl territory); `rounded-none` is a
  *     forbidden class in this style. Family fills are ALL gradients, painted by
  *     re-declared `bg-*` utilities (blueprint rule 4 lane); the solid tokens stay
@@ -28,71 +27,77 @@
   --paper-surface: oklch(100% 0 0);
   --paper-ink: oklch(0% 0 0);
 
+  /* Canvas ladder — the only palette slots the day/night toggle moves. */
   --background: oklch(97.5% 0.015 325); /* pale purple canvas */
   --foreground: oklch(25% 0.09 325); /* deep purple ink */
   --surface: #e9d5ff; /* purple-200 — the pastel surface gradient's solid fallback */
-  --well: #e9d5ff; /* 井底 = 凹槽档（本案无更深中性档） */
   --surface-fg: oklch(38% 0.1 325);
-  --disabled: #e9d5ff;
-  --disabled-fg: oklch(38% 0.1 325);
   --surface-raised: oklch(99% 0.008 325);
   --surface-raised-fg: var(--foreground);
-  --accent: #f9a8d4; /* pink-300 */
+  --disabled: oklch(70.8% 0 none); /* 禁用档固定中性灰，不随 surface 走 */
+  --disabled-fg: #0f0a1e;
+  --border: #b45309; /* amber-700 — the contrast wire on a light canvas (4.65:1) */
+
+  /* Brand and semantic families — one saturated neon set for both tiers
+     (blueprint `ui/schemes.md` 第 16 条); `.dark` does not restate them. */
+  --accent: #f472b6; /* pink-400 */
   --accent-fg: #0f0a1e;
-  --border: #b45309; /* amber-700 — the contrast wire on a light canvas (4.7:1) */
+  --primary: #c084fc; /* purple-500 */
+  --primary-accent: #ec4899; /* pink-500 — the hover paint */
+  --primary-fg: #0f0a1e; /* deep ink: white reads only 1.8:1 on the cyan-400 flow stop */
 
-  --primary: #7e22ce; /* purple-700 */
-  --primary-accent: #be185d; /* pink-700 — the hover paint */
-  --primary-fg: #ffffff; /* white ink on the jewel-depth gradient fills */
+  /* Semantic four — the hover step is the same family one shade deeper, and the
+     block ink stays the deep `#0f0a1e`. */
+  --danger: #f87171;
+  --danger-fg: #0f0a1e;
+  --danger-accent: #fb7185;
+  --info: #38bdf8;
+  --info-fg: #0f0a1e;
+  --info-accent: #0ea5e9;
+  --success: #22c55e;
+  --success-fg: #0f0a1e;
+  --success-accent: #4ade80;
+  --warning: #fbbf24;
+  --warning-fg: #0f0a1e;
+  --warning-accent: #d97706;
 
-  /* Semantic four at 700/800 depth — white ink passes on every stop. */
-  --danger: #b91c1c;
-  --danger-fg: #ffffff;
-  --danger-accent: #991b1b;
-  --info: #0369a1;
-  --info-fg: #ffffff;
-  --info-accent: #075985;
-  --success: #15803d;
-  --success-fg: #ffffff;
-  --success-accent: #166534;
-  --warning: #b45309;
-  --warning-fg: #ffffff;
-  --warning-accent: #92400e;
+  /* Independent status text answers the canvas it sits on: the neon stops read
+     1.55–2.68 on the pale canvas, so the day tier answers the same hue families
+     at 800 depth (5.21–8.05 across the three canvas tiers). */
+  --text-danger-independent: #991b1b;
+  --text-info-independent: #075985;
+  --text-success-independent: #166534;
+  --text-warning-independent: #92400e;
 
-  --text-danger-independent: var(--danger);
-  --text-info-independent: var(--info);
-  --text-success-independent: var(--success);
-  --text-warning-independent: var(--warning);
-
-  /* Focus deepens with the canvas — cyan-400 would read 1.8:1 on pale purple. */
+  /* Focus, link and scrollbar follow the canvas — cyan-400 would read 1.72:1
+     on pale purple. */
   --focus-outline: 2px solid #0e7490;
   --focus-offset: 2px;
   --focus-outline-danger: 2px solid #be123c;
   --focus-glow: 0 2px 10px rgba(14, 116, 144, 0.35);
   --focus-glow-inset: inset 0 2px 10px rgba(14, 116, 144, 0.35);
 
-  /* Link and scrollbar are mechanism values (same precedent as --focus-*). */
   --link: #0e7490;
   --scrollbar-thumb: linear-gradient(180deg, #0e7490, #be185d);
   --scrollbar-thumb-hover: linear-gradient(180deg, #be185d, #0e7490);
 
-  /* Fill lane (blueprint rule 4) — values come from design.md `gradients-light`
-     YAML. Same hue families as the night tier, re-depthed for the light canvas:
-     surfaces pastel under dark ink, actions jewel-depth under white ink. The
-     brand fill keeps the cyclic to-r flow at 200% size; hover slides position.
-     --fill-background stays undeclared: the canvas is solid by definition. */
-  --fill-primary: linear-gradient(90deg, #0e7490, #be185d, #0e7490);
+  /* Fill lane (blueprint rule 4) — values come from design.md `gradients` YAML.
+     Brand, accent and the semantic families answer the neon set in both tiers;
+     only the surface fill re-depths with the canvas. The brand fill keeps the
+     cyclic to-r flow at 200% size; hover slides position. --fill-background
+     stays undeclared: the canvas is solid. */
+  --fill-primary: linear-gradient(90deg, #22d3ee, #ec4899, #22d3ee);
   --fill-primary-accent: var(--fill-primary);
   --fill-surface: linear-gradient(135deg, #e9d5ff, #fbcfe8, #fecdd3);
-  --fill-accent: linear-gradient(135deg, #f9a8d4, #d8b4fe);
-  --fill-danger: linear-gradient(135deg, #be185d, #be123c, #b91c1c);
-  --fill-danger-accent: linear-gradient(135deg, #b91c1c, #be123c, #be185d);
-  --fill-success: linear-gradient(135deg, #0e7490, #0f766e, #15803d);
-  --fill-success-accent: linear-gradient(135deg, #15803d, #0f766e, #0e7490);
-  --fill-warning: linear-gradient(135deg, #b45309, #15803d, #0e7490);
-  --fill-warning-accent: linear-gradient(135deg, #0e7490, #15803d, #b45309);
-  --fill-info: linear-gradient(135deg, #0e7490, #1d4ed8);
-  --fill-info-accent: linear-gradient(135deg, #1d4ed8, #0e7490);
+  --fill-accent: linear-gradient(135deg, #f472b6, #a855f7);
+  --fill-danger: linear-gradient(135deg, #ec4899, #fb7185, #ef4444);
+  --fill-danger-accent: linear-gradient(135deg, #ef4444, #fb7185, #ec4899);
+  --fill-success: linear-gradient(135deg, #22d3ee, #14b8a6, #22c55e);
+  --fill-success-accent: linear-gradient(135deg, #22c55e, #14b8a6, #22d3ee);
+  --fill-warning: linear-gradient(135deg, #facc15, #4ade80, #22d3ee);
+  --fill-warning-accent: linear-gradient(135deg, #22d3ee, #4ade80, #facc15);
+  --fill-info: linear-gradient(135deg, #22d3ee, #3b82f6);
+  --fill-info-accent: linear-gradient(135deg, #3b82f6, #22d3ee);
 
   /* Glows have no physical basis on a light canvas — same-family coloured soft
      shadows instead: pink for controls, purple for cards, both deepen on hover.
@@ -114,9 +119,9 @@
   --shadow-elevated: 0 6px 26px rgba(126, 34, 206, 0.38);
   --shadow-hint: 0 2px 10px rgba(126, 34, 206, 0.25);
   --shadow-surface: var(--shadow-block);
-  --shadow-well: none;
-  --radius-field-inner: max(0px, calc(var(--radius-md) - var(--padding-well) - var(--border-width-frame)));
-  --radius-well-inner: max(0px, calc(var(--radius-lg) - var(--spacing)*1.5 - var(--border-width-frame)));
+  --shadow-recess: none;
+  --radius-field-inner: max(0px, calc(var(--radius-md) - var(--border-width-frame)));
+  --radius-recess-inner: max(0px, calc(var(--radius-lg) - var(--spacing)*1.5 - var(--border-width-frame)));
   --stroke-cap: round;
   --stroke-join: round;
 
@@ -131,39 +136,25 @@
   --duration-lg: 300ms;
 }
 
-/* Night tier: deep blue canvas, saturated neon unchanged. */
+/* Night tier: deep blue canvas, yellow-400 wire, family glows. Brand and the
+   semantic four are not restated — they answer the same neon values here. */
 .dark {
   color-scheme: dark;
 
   --background: oklch(25% 0.07 262); /* deep blue canvas */
   --foreground: #ffffff;
   --surface: #a855f7; /* purple-500 — the surface gradient's solid fallback */
-  --well: #3b2457; /* 井底自答深紫：比画布沉一阶，井上白字实测 13.33:1（读 surface 的饱和紫只有 4.17:1） */
   --surface-fg: #0f0a1e; /* deep ink: white reads only 3.5-4.0:1 on the 500-depth stops */
-  --disabled: #3b2457;
-  --disabled-fg: #d8b4fe;
   --surface-raised: oklch(29% 0.075 262);
   --surface-raised-fg: var(--foreground);
-  --accent: #f472b6; /* pink-400 */
-  --accent-fg: #0f0a1e;
-  --border: #fbbf24; /* yellow-400 — the contrast wire */
+  --disabled: oklch(43.9% 0 none);
+  --disabled-fg: #e9d5ff;
+  --border: #fbbf24; /* yellow-400 — the contrast wire (9.65:1) */
 
-  --primary: #c084fc; /* purple-500 */
-  --primary-accent: #ec4899; /* pink-500 — the hover paint */
-  --primary-fg: #0f0a1e; /* deep ink: white reads only 1.8:1 on the cyan-400 flow stop */
-
-  --danger: #f87171;
-  --danger-fg: #0f0a1e;
-  --danger-accent: #fb7185;
-  --info: #38bdf8;
-  --info-fg: #0f0a1e;
-  --info-accent: #0ea5e9;
-  --success: #22c55e;
-  --success-fg: #0f0a1e;
-  --success-accent: #4ade80;
-  --warning: #fbbf24;
-  --warning-fg: #0f0a1e;
-  --warning-accent: #d97706;
+  --text-danger-independent: var(--danger);
+  --text-info-independent: var(--info);
+  --text-success-independent: var(--success);
+  --text-warning-independent: var(--warning);
 
   --focus-outline: 2px solid #22d3ee;
   --focus-outline-danger: 2px solid #fb7185;
@@ -174,19 +165,10 @@
   --scrollbar-thumb: linear-gradient(180deg, #22d3ee, #ec4899);
   --scrollbar-thumb-hover: linear-gradient(180deg, #ec4899, #22d3ee);
 
-  --fill-primary: linear-gradient(90deg, #22d3ee, #ec4899, #22d3ee);
-  --fill-primary-accent: var(--fill-primary);
   --fill-surface: linear-gradient(135deg, #a855f7, #ec4899, #f43f5e);
-  --fill-accent: linear-gradient(135deg, #f472b6, #a855f7);
-  --fill-danger: linear-gradient(135deg, #ec4899, #fb7185, #ef4444);
-  --fill-danger-accent: linear-gradient(135deg, #ef4444, #fb7185, #ec4899);
-  --fill-success: linear-gradient(135deg, #22d3ee, #14b8a6, #22c55e);
-  --fill-success-accent: linear-gradient(135deg, #22c55e, #14b8a6, #22d3ee);
-  --fill-warning: linear-gradient(135deg, #facc15, #4ade80, #22d3ee);
-  --fill-warning-accent: linear-gradient(135deg, #22d3ee, #4ade80, #facc15);
-  --fill-info: linear-gradient(135deg, #22d3ee, #3b82f6);
-  --fill-info-accent: linear-gradient(135deg, #3b82f6, #22d3ee);
 
+  /* Family-coloured elevation: pink for controls, purple for cards, cyan for
+     focus; the press is electric activation — inset white. */
   --shadow-frame: 0 0 20px rgba(236, 72, 153, 0.5);
   --shadow-frame-hover: 0 0 30px rgba(236, 72, 153, 0.7);
   --shadow-frame-focus: 0 0 20px rgba(34, 211, 238, 0.3);
@@ -196,12 +178,12 @@
   --shadow-block-hover: 0 0 40px rgba(168, 85, 247, 0.6);
   --shadow-checked:
     0 0 0 2px var(--background), 0 0 0 4px var(--primary), 0 0 20px rgba(168, 85, 247, 0.5);
-  --shadow-unchecked: var(--shadow-frame), 0 0 0 2px var(--background), 0 0 0 4px var(--surface-fg);
   --shadow-elevated: 0 0 40px rgba(168, 85, 247, 0.6);
   --shadow-hint: 0 0 15px rgba(168, 85, 247, 0.3);
 }
 
-/* ② Runtime palette ramps — none. Fixed neon palette (design.md rule 2). */
+/* ② Runtime palette ramps — none. Fixed neon palette for brand and semantics,
+   fixed canvas ramps per tier (design.md rule 2). */
 
 /* Compact ramp — three-scheme mechanism values (ui/schemes.md rule 11). */
 @media (pointer: coarse), (width < 48rem) {
@@ -243,7 +225,6 @@
   --color-disabled-fg: var(--disabled-fg);
   --color-surface-raised: var(--surface-raised);
   --color-surface-raised-fg: var(--surface-raised-fg);
-  --color-well: var(--well);
   --color-accent: var(--accent);
   --color-accent-fg: var(--accent-fg);
   --color-primary: var(--primary);
@@ -341,7 +322,6 @@
   --padding-snug: calc((var(--height-control) - 1.25rem) / 2);
   --padding-loose: calc((var(--height-control) - 1.625rem) / 2);
   --padding-panel: 1.5rem;
-  --padding-well: 0rem;
   --padding-control-x: 0.75rem;
   --padding-pill-x: max(var(--spacing)*3, min(var(--radius-pill), var(--height-control)/2));
 
@@ -515,8 +495,8 @@
   box-shadow: var(--shadow-unchecked);
 }
 
-@utility shadow-well {
-  box-shadow: var(--shadow-well);
+@utility shadow-recess {
+  box-shadow: var(--shadow-recess);
 }
 
 @utility focus-ring {

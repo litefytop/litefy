@@ -52,13 +52,13 @@ const borderlessGroupClasses =
   "grid w-fit min-w-control grid-flow-col auto-cols-fr select-none";
 
 const wellGroupClasses =
-  "grid w-fit min-w-control grid-flow-col auto-cols-fr *:min-w-0 items-center rounded-lg border-frame border-border bg-well p-1.5 shadow-well " +
-  "control-text text-nowrap text-foreground";
+  "grid w-fit min-w-control grid-flow-col auto-cols-fr *:min-w-0 items-center rounded-lg border-frame border-border bg-surface p-1.5 shadow-recess " +
+  "control-text text-nowrap text-surface-fg";
 
 const wellItemLayoutClasses =
   "inline-flex min-h-control select-none items-center justify-center px-3";
 const wellItemCornerClasses =
-  "rounded-(--radius-well-inner) motion-frame";
+  "rounded-(--radius-recess-inner) motion-frame";
 const wellItemHoverClasses =
   "hover:bg-accent hover:text-accent-fg";
 const wellItemCheckedClasses =

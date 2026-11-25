@@ -35,9 +35,9 @@ const railClasses = "flex shrink-0 flex-col items-center";
 
 const connectorHorizontalClasses =
   "absolute top-3 right-[calc(50%+var(--spacing)*3)] left-[calc(-50%+var(--spacing)*3)] " +
-  "h-px bg-primary data-[state=upcoming]:bg-well";
+  "h-px bg-primary data-[state=upcoming]:bg-surface";
 const connectorVerticalClasses =
-  "w-px flex-1 bg-primary data-[state=upcoming]:bg-well";
+  "w-px flex-1 bg-primary data-[state=upcoming]:bg-surface";
 
 const titleBaseClasses =
   "control-label data-[state=upcoming]:text-foreground data-[clickable=true]:cursor-pointer";

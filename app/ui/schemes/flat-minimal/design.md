@@ -7,8 +7,7 @@ colors:
   foreground: 'oklch(17.5% 0.032 243)'
   surface: 'oklch(95.1% 0.018 236)'
   surface-fg: 'oklch(29.4% 0.066 243.157)'
-  well: 'oklch(90.1% 0.058 230.902)'
-  disabled: 'oklch(95.1% 0.018 236)'
+  disabled: 'oklch(70.8% 0 none)'
   disabled-fg: 'oklch(29.4% 0.066 243.157)'
   accent: 'oklch(82.8% 0.09 224)'
   accent-fg: 'oklch(29.4% 0.066 243.157)'
@@ -33,8 +32,7 @@ colors:
   dark-foreground: 'oklch(96% 0.012 236)'
   dark-surface: 'oklch(16.5% 0.03 243)'
   dark-surface-fg: 'oklch(90.1% 0.058 230.902)'
-  dark-well: 'oklch(16.5% 0.03 243)'
-  dark-disabled: 'oklch(16.5% 0.03 243)'
+  dark-disabled: 'oklch(43.9% 0 none)'
   dark-disabled-fg: 'oklch(90.1% 0.058 230.902)'
   dark-accent: 'oklch(37.9% 0.078 243.435)'
   dark-accent-fg: 'oklch(90.1% 0.058 230.902)'
@@ -43,18 +41,6 @@ colors:
   dark-primary: 'oklch(68.5% 0.169 237.323)'
   dark-primary-fg: 'oklch(16.5% 0.03 243)'
   dark-primary-accent: 'oklch(74.6% 0.16 232.661)'
-  dark-danger-fg: 'oklch(39.6% 0.141 25.723)'
-  dark-danger: 'oklch(88.5% 0.062 18.334)'
-  dark-danger-accent: 'oklch(80.8% 0.114 19.571)'
-  dark-info-fg: 'oklch(37.9% 0.146 265.522)'
-  dark-info: 'oklch(88.2% 0.059 254.128)'
-  dark-info-accent: 'oklch(80.9% 0.105 251.813)'
-  dark-success-fg: 'oklch(39.3% 0.095 152.535)'
-  dark-success: 'oklch(92.5% 0.084 155.995)'
-  dark-success-accent: 'oklch(87.1% 0.15 154.449)'
-  dark-warning-fg: 'oklch(42.1% 0.095 57.708)'
-  dark-warning: 'oklch(94.5% 0.129 101.54)'
-  dark-warning-accent: 'oklch(90.5% 0.182 98.111)'
 typography:
   sans:
     fontFamily: 'Inter, system-ui, sans-serif'
@@ -162,11 +148,10 @@ motion:
 components:
   avatar:
     rounded: '{rounded.disc}'
-well:
-  color: '{colors.surface}'
-  padding: 0px
+recess:
   shadow: none
   dark-shadow: none
+  radius-inner: 'max(0px, calc(var(--radius-lg) - var(--spacing)*1.5 - var(--border-width-frame)))'
 ---
 
 ## 总览
@@ -180,12 +165,12 @@ well:
 ## Colors
 
 1. 面积预算 **60 / 30 / 10**：约 60% 画布（`background` / `foreground`）；约 30% 次要容器背景（`surface` bar 类容器与轻量区块、`accent` 悬停与占位）；≤10% `primary` 与状态色。骨架屏与无内容占位背景色归 `accent`，空态提示文字归 `foreground`。
-2. 色板只有 24 枚，亮暗各一套（构成与数值见 YAML）。sky 家族取 Tailwind v4 色板具名阶，静态中性档一阶一阶：井底 `well` sky-200（暗档与 `surface` 同值即关井）、表面 `surface` sky-100（暗档 sky-950）、画布 `background` sky-50（暗档 sky-900）、凸起 `surface-raised` 纯白（暗档 sky-800）、悬停档 `accent` sky-300（暗档 sky-700）；品牌 `primary` sky-800（暗档反转为 sky-500 配深字）。语义四族与 minimal、neo 同构同值（schemes.md 规则 3 共享实测值）。后缀语法全系统一致：背景色不带后缀，文字色加 `-fg`，`-accent` 是强调 / 悬停背景档；例外皆显式：画布用全写 `background` / `foreground`。`@theme` 的色彩映射与这 24 枚一一对应，此外没有任何颜色槽位；浮层背景 `--color-surface-raised`（配 `--color-surface-raised-fg`）与井底 `--color-well`、焦点环同是方案机制值，由 `index.css` 派生。
+2. 色板只有 24 枚，亮暗各一套（构成与数值见 YAML）。sky 家族取 Tailwind v4 色板具名阶，静态中性档一阶一阶：表面 `surface` sky-100（暗档 sky-950）、画布 `background` sky-50（暗档 sky-900）、凸起 `surface-raised` 纯白（暗档 sky-800）、悬停档 `accent` sky-300（暗档 sky-700）、禁用档 `disabled` 固定中性灰 400 / 600（不随 sky 家族走）；品牌 `primary` sky-800（暗档反转为 sky-500 配深字）。语义四族与 minimal、neo 同构同值（schemes.md 规则 3 共享实测值）。后缀语法全系统一致：背景色不带后缀，文字色加 `-fg`，`-accent` 是强调 / 悬停背景档；例外皆显式：画布用全写 `background` / `foreground`。`@theme` 的色彩映射与这 24 枚一一对应，此外没有任何颜色槽位；浮层背景 `--color-surface-raised`（配 `--color-surface-raised-fg`）与井底 `--color-well`、焦点环同是方案机制值，由 `index.css` 派生。
 3. 逐 token 去处：
 
    1. `background` — 画布：页面底层与主内容区背景色，亮档 sky-50（`foreground` 对其 17.75:1，AAA）、暗档 sky-900（15.59:1）。控件静置面、卡面与浮层不读它，读机制值 `surface-raised`（亮档纯白、暗档 sky-800）。bar 类容器（顶栏 / 侧栏 / 底栏）用 `surface`。
    2. `foreground` — 正文、标题、说明、占位符与核心图标的文字色，也是 `border` 的派生源；画布、透明背景与 `surface-raised` 凸起面统一使用它（`surface-raised-fg` 即映射到它）。
-   3. `surface` — 凹槽档背景色：bar 类容器、轻量区块、hero、表头、斑马行、rail；亮档 sky-100 比画布沉一阶（ΔL 2.6 点）、暗档 sky-950 比画布沉一阶（ΔL 5.0 点）。不用作主内容区背景，也不给控件静置面——那归 `surface-raised`；轨道与输入井再往下一档，读 `--color-well`。
+   3. `surface` — 凹槽档背景色：bar 类容器、轻量区块、hero、表头、斑马行、rail；亮档 sky-100 比画布沉一阶（ΔL 2.6 点）、暗档 sky-950 比画布沉一阶（ΔL 5.0 点）。不用作主内容区背景，也不给控件静置面——那归 `surface-raised`；轨道、输入凹面、值区、多行域与 Segment 凹陷道同读它，配 `surface-fg`。
    4. `surface-fg` — `surface` 背景上的表面文字、说明与图标；禁用态文字统一读 `disabled-fg`。
    5. `accent` — 中性强调背景色：悬停高亮 sky-300（暗档 sky-700）、静态区块强调、骨架屏与无内容占位。道距实测：亮档对凸起面 17.2 点 / 对画布 14.9 点 / 对凹槽 12.3 点，暗档 8.5 / 16.4 / 21.4 点（中性方案以明度步判车道，≥8 点即达标）。没有品牌含义，不能替代 `primary` 表示动作，也不用作文字色。
    6. `accent-fg` — `accent` 背景上的文字色。
@@ -193,22 +178,22 @@ well:
    8. `primary` — 品牌色：主按钮、选中 / 激活态、焦点环、状态标记、链接。保持稀缺（一屏一个主操作），禁止大面积铺满卡片或页面背景。
    9. `primary-fg` — `primary` 背景上的文字色；亮档白字（压 sky-800 实测 9.26:1、压深化档 sky-900 9.76:1），暗档深字（压 sky-500 实测 7.09:1、压提亮档 sky-400 8.81:1）。
    10. `primary-accent` — 品牌深化档（亮档 sky-900）/ 提亮档（暗档 sky-400）：激活 / 按压态；焦点环由 `primary` 派生。不用作常态背景色。
-   11. `danger-fg` — `danger` 与 `danger-accent` 背景上的文字色；独立错误文字、图标与边框挂 `text-danger-independent` / `border-danger-independent`，亮档读 `danger-fg`、暗档读 `danger`。
-   12. `danger` — 错误提示静置背景色。
-   13. `danger-accent` — 错误提示悬停背景色。
-   14. `info-fg` — `info` 与 `info-accent` 背景上的文字色；独立信息文字、图标与边框挂 `text-info-independent` / `border-info-independent`，亮档读 `info-fg`、暗档读 `info`。
-   15. `info` — 信息提示静置背景色。
-   16. `info-accent` — 信息提示悬停背景色。
-   17. `success-fg` — `success` 与 `success-accent` 背景上的文字色；独立成功文字、图标与边框挂 `text-success-independent` / `border-success-independent`，亮档读 `success-fg`、暗档读 `success`。
-   18. `success` — 成功提示静置背景色。
-   19. `success-accent` — 成功提示悬停背景色。
-   20. `warning-fg` — `warning` 与 `warning-accent` 背景上的文字色；独立警示文字、图标与边框挂 `text-warning-independent` / `border-warning-independent`，亮档读 `warning-fg`、暗档读 `warning`。
-   21. `warning` — 警示提示静置背景色。
-   22. `warning-accent` — 警示提示悬停背景色。
-   23. `disabled` — 禁用控件背景色；独立取值，不重映射主题背景或填充。
-   24. `disabled-fg` — 禁用控件文字、图标与边框色；与 `disabled` 保持可读对比。
+   11. `danger-fg` — `danger` 与 `danger-accent` 背景上的文字色；独立错误文字、图标与边框挂 `text-danger-independent` / `border-danger-independent`，亮档读 `danger-fg`、暗档读 `danger-accent`。
+   12. `danger` — 错误提示静置背景色，日夜同值。
+   13. `danger-accent` — 错误提示悬停背景色，日夜同值；暗档独立状态文字、图标与边框也读它。
+   14. `info-fg` — `info` 与 `info-accent` 背景上的文字色；独立信息文字、图标与边框挂 `text-info-independent` / `border-info-independent`，亮档读 `info-fg`、暗档读 `info-accent`。
+   15. `info` — 信息提示静置背景色，日夜同值。
+   16. `info-accent` — 信息提示悬停背景色，日夜同值；暗档独立状态文字、图标与边框也读它。
+   17. `success-fg` — `success` 与 `success-accent` 背景上的文字色；独立成功文字、图标与边框挂 `text-success-independent` / `border-success-independent`，亮档读 `success-fg`、暗档读 `success-accent`。
+   18. `success` — 成功提示静置背景色，日夜同值。
+   19. `success-accent` — 成功提示悬停背景色，日夜同值；暗档独立状态文字、图标与边框也读它。
+   20. `warning-fg` — `warning` 与 `warning-accent` 背景上的文字色；独立警示文字、图标与边框挂 `text-warning-independent` / `border-warning-independent`，亮档读 `warning-fg`、暗档读 `warning-accent`。
+   21. `warning` — 警示提示静置背景色，日夜同值。
+   22. `warning-accent` — 警示提示悬停背景色，日夜同值；暗档独立状态文字、图标与边框也读它。
+   23. `disabled` — 禁用控件背景色；四案同答固定中性灰（亮档灰 400 档 70.8，暗档灰 600 档 43.9），不随 sky 家族的表面档变化，与凹槽 `surface`、悬停 `accent` 都拉开一眼可辨的差（对三档的最小道距亮 24.3 / 暗 14.5 点）。
+   24. `disabled-fg` — 禁用控件文字、图标与边框色；与 `disabled` 保持可读对比（本案亮 5.34:1、暗 5.87:1）。
 
-4. 对比度：文字、图标与边框按实际背景配对，普通文字在亮、暗两档都满足 WCAG AA（≥ 4.5:1）。独立状态文字、图标与边框挂 `text-<status>-independent` / `border-<status>-independent`，亮档读 `<status>-fg`、暗档读 `<status>`；填充及其悬停背景读对应 `<status>-fg`。层级不靠压暗文字或发光表达。
+4. 对比度：文字、图标与边框按实际背景配对，普通文字在亮、暗两档都满足 WCAG AA（≥ 4.5:1）。独立状态文字、图标与边框挂 `text-<status>-independent` / `border-<status>-independent`，亮档读 `<status>-fg`、暗档读 `<status>-accent`；语义四族背景日夜同值，同一枚 `<status>-fg` 压静置与悬停两档实测 danger 5.24 / 6.94、info 5.74 / 7.31、success 6.49 / 7.49、warning 6.57 / 7.47（实测值，`ui/schemes.md` 第 3 条）。填充及其悬停背景读对应 `<status>-fg`。层级不靠压暗文字或发光表达。
 
 ## Typography
 
@@ -244,7 +229,7 @@ well:
 ## Elevation & Depth
 
 1. **零阴影是本方案的身份**：`--shadow-frame` / `--shadow-block` / `--shadow-surface` / `--shadow-elevated` / `--shadow-hint` 与按压内阴影全部答 `none`，`--elevation-*` 不设档。皮肤串照常写 `shadow-frame` 系角色类，本车道得到「无阴影」而不是缺失——切换方案时改变的是观感而不是丢失。唯一豁免是 `shadow-checked` / `shadow-unchecked` 扁平双环（画布色间隙 + 主色/`surface-fg` 外环，blur 为 0）：它们是选中与未选中环不是阴影，几何同构、足迹同档。
-2. 层级三车道，只靠它们建立：**边界线**（1px `border`，control / hair / frame 同值 1px）、**表面阶梯**（`--color-well` 井底 → `surface` 凹槽 → `background` 画布 → `surface-raised` 凸起，亮档 sky-200 → sky-100 → sky-50 → 纯白，暗档 sky-950（与凹槽同值即关井）→ sky-900 → sky-800；画布与纯白只差一阶，相邻档 ΔL 亮 5.0 / 2.6 / 2.3 点、暗 0 / 5.0 / 7.9 点，阶梯律见 `ui/schemes/elevation.md`）、**留白**。禁止用阴影或透明度补深度。
+2. 层级三车道，只靠它们建立：**边界线**（1px `border`，control / hair / frame 同值 1px）、**表面阶梯**（`surface` 凹槽 → `background` 画布 → `surface-raised` 凸起，亮档 sky-100 → sky-50 → 纯白，暗档 sky-950 → sky-900 → sky-800；画布与纯白只差一阶，相邻档 ΔL 亮 2.6 / 2.3 点、暗 5.0 / 7.9 点，阶梯律见 `ui/schemes/elevation.md`）、**留白**。禁止用阴影或透明度补深度。
 3. 浮层（Dialog / Drawer / Menu / Popover / Tooltip / 命令面板）一律带框：`border-frame` 描边 + `surface-raised` 背景，无阴影派不出现；轻提示（Tooltip / Toast）同样只有描边（`shadow-hint` 答 `none`），Toast 卡面为语义浅底（状态块规则）。
 4. 无边框宿主上的操作控件必须自带边界：控件默认形态「填充或文字 + 1px 边框」，承重面不裸放。容器自带边界宿主复位；业务侧出口 `data-border="none | solid"`。
 5. 焦点（机制值，`index.css` 的 `--focus-*`）：2px `primary` 实线 outline、offset 2px、无阴影 glow；invalid / danger 在亮档转 `danger-fg`、暗档转 `danger`，保持同形。方案不设全局 `:focus-visible` 兜底——每个可聚焦件由皮肤显式挂 `focus-visible:focus-ring`（danger 挂 `focus-ring-danger`），内层件不挂即无环；环是方案层机制，皮肤只挂角色类、不自绘样式。焦点环禁止消失，允许换形态，不得只去掉 outline 而不给替代。
@@ -262,7 +247,7 @@ well:
 ## Shapes
 
 1. **全直角是唯一形状答案**：`@theme` 用 0px 回答半径阶梯每一档（含 `pill` / `disc` / `swipe`），共享代码写来的 `rounded-lg` 在这里得到直角而不是不生成——切换方案时改变的是观感而不是丢失。皮肤禁止写 `rounded-full`（静态圆不读令牌，谁也答不成 0）——圆点、胶囊、圆钮一律 `rounded-pill` / `rounded-disc`（本方案答 0px，得直角），本方案无圆形。
-2. 轨道族（滑块 / 进度条 / 开关轨）：矩形直角、无描边、纯色块，未填充底挂井底 `bg-well`（机制值 `--color-well`，见 Elevation 第 2 条）、填充 `primary`；轨道一律连续条，格子形态不进本方案——输入滑块的反馈靠值气泡与按压，不靠格子与速度波。
+2. 轨道族（滑块 / 进度条 / 开关轨）：矩形直角、无描边、纯色块，未填充底挂凹槽档 `bg-surface`（读 `--color-surface`，见 Elevation 第 2 条）、填充 `primary`；轨道一律连续条，格子形态不进本方案——输入滑块的反馈靠值气泡与按压，不靠格子与速度波。
 3. 连体控制组（拼接输入 + 按钮）内角自然为 0，端帽无需处理。
 
 ## Components
@@ -277,7 +262,7 @@ well:
    4. bar 形态容器（顶栏 / 侧栏 / 底栏 / hero）：`surface` 背景色 + `surface-fg` 前景色，靠边界线分区，不叠阴影。
    5. 状态块与状态标签：静态背景取 `<status>` 静置背景色，文字取对应 `<status>-fg`；状态色只用于状态，不作装饰、不当大面积背景色。
    6. Toc：长文栏 80rem 分界线归它自己，不占 Layout 三档断点。
-7. 组容器井（well）：`--padding-well` 答 0（无框距）、`--color-well` 读自答的 `--well` 档（亮档 sky-200，比凹槽 `surface` sky-100 再沉一阶；暗档与 `surface` 同值 sky-950，即暗档关井）、`--shadow-well` 答 `none`——字段内区平铺更深的浅天蓝、全直角、无拟态阴影，井只靠发丝边与一阶明度差表达。
+7. 组容器凹陷（recess）：凹陷不设独立色档——第四档「井」随三档阶梯撤销（用户定 2026-11-25），字段内区、值区、多行域、Segment 凹陷道与轨道族一律挂 `bg-surface` 配 `text-surface-fg`；本案 `--shadow-recess` 答 `none`、零投影，凹感只由 sky-100 比 sky-50 沉一阶的明度差加发丝边承担（ΔL 2.6 点亮档，是否补 1px 发丝内描边作第二道线见 `ui/schemes/elevation.md` 待定项）；旧 `--padding-well` 随井档删除（答 0，删后无位移），同心内圆角读 `--radius-recess-inner`（全直角方案自然归零）。
 
 ## Do / Don't（方案语言边界）
 

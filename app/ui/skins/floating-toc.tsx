@@ -20,7 +20,7 @@ const triggerRightClasses = "data-[placement=right]:right-4 data-[placement=righ
 const triggerLeftClasses = "data-[placement=left]:left-4 data-[placement=left]:items-start";
 
 const barBaseClasses =
-  "block h-3.5 w-4 py-1.5 rounded-full bg-well bg-clip-content origin-right " +
+  "block h-3.5 w-4 py-1.5 rounded-full bg-surface bg-clip-content origin-right " +
   "transition-[transform,background-color] duration-sm";
 const barOriginClasses = "data-[placement=left]:origin-left";
 const barDepthClasses =
