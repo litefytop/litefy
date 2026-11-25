@@ -17,7 +17,7 @@ description: 可直接在文档流中使用的菜单组件，支持分组、二�
 
 ### 禁用
 
-菜单项支持 disabled 禁用。
+每个菜单项的 `disabled` 独立生效：按钮原生禁用，不触发选择或打开子菜单，键盘导航跳过；外观使用 `text-disabled-fg` 与 `cursor-not-allowed`。
 
 <ComponentPreview name="menu-disabled" />
 
@@ -35,11 +35,11 @@ description: 可直接在文档流中使用的菜单组件，支持分组、二�
 | `autoFocus`     | `boolean`                           | 每次变为 `true` 时聚焦第一个可用菜单项；传入包装弹出面板的 `open` 即可每次打开时聚焦                           |
 | `onSelect`      | `(item: MenuItemConfig) => void`    | 点击或键盘选中菜单项时触发                                                                |
 | `onEscape`      | `() => void`                        | 菜单内按下 `Escape` 时触发                                                           |
-| `className`     | `string`                            | 根列表自定义类名；文档流中的容器样式放在这里                                                       |
+| `className`     | `string`                            | 根列表自定义类名，与 `classNames.root` 合并；文档流根列表不预设宽度或最大宽度                       |
 | `style`         | `React.CSSProperties`               | 根列表内联样式                                                                      |
-| `itemClassName` | `string`                            | 应用到每个菜单项按钮的类名                                                                |
-| `classNames`    | `{ item?; label?; sub?; chevron? }` | 各零件自定义类名；`chevron` 是有子菜单项行尾的右箭头图标                                            |
-| `styles`        | `{ item?; label?; sub? }`           | 各零件自定义内联样式                                                                   |
+| `itemClassName` | `SlotClassName`                     | 应用到每个菜单项按钮，接收 `({ disabled }) => string`                                          |
+| `classNames`    | `{ root?; item?; label?; itemButton?: SlotClassName; sub?; chevron? }` | `sub` 控制二级子菜单面板；`itemButton` 接收 `({ disabled }) => string`；`chevron` 是子菜单行尾箭头 |
+| `styles`        | `{ item?; label?; sub? }`           | `sub` 控制二级子菜单内联样式；子菜单默认 `w-fit min-w-0`，最大宽度为 20rem 与视口宽度减 1rem 的较小值 |
 
 #### items
 

@@ -2,7 +2,8 @@
 
 import { Details } from "@/ui/skins";
 
-const itemClasses = "w-full rounded-none border-0 not-last:border-b-hair not-last:border-border";
+const itemClasses =
+  "rounded-none border-0 shadow-none not-last:border-b-hair not-last:border-border";
 
 export default function Demo() {
   return (

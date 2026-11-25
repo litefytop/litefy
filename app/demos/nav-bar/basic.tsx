@@ -13,9 +13,8 @@ const docs = [
 
 export default function NavBarBasicDemo() {
   return (
-    <div className="mx-auto" style={{ width: "28rem", flex: "none" }}>
+    <div className="mx-auto w-full max-w-[28rem]">
       <NavBar
-        className="w-full"
         items={docs}
         getKey={(doc) => doc.id}
         renderItem={(doc) => (

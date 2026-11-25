@@ -25,7 +25,7 @@ description: 带可过滤下拉列表的输入框 —— 本地选项客户端�
 
 ### 禁用
 
-disabled 禁用输入框，候选面板不可打开。
+`disabled` 原生禁用输入框，根元素标记 `aria-disabled`，打开、输入与选择处理停止；禁用外观使用 `bg-disabled`、`text-disabled-fg` 与 `cursor-not-allowed`。
 
 <ComponentPreview
   name="combobox-disabled"
@@ -43,13 +43,15 @@ disabled 禁用输入框，候选面板不可打开。
 | `value`         | `string`                                                                  | 受控输入框文本                                 |
 | `onValueChange` | `(value: string) => void`                                                 | 键入和选中时触发                                |
 | `invalid`       | `boolean`                                                                 | 输入框无效态，默认 `false`                       |
-| `disabled`      | `boolean`                                                                 | 组级禁用：输入框原生禁用、容器挂 `inert`，候选面板不可打开，默认 `false` |
+| `disabled`      | `boolean`                                                                 | 组级禁用：输入框原生禁用、根元素标记 `aria-disabled`，候选面板不可打开，默认 `false` |
 | `empty`         | `React.ReactNode`                                                         | 列表空状态节点，默认 `"No data"` / `"Loading..."` |
 | `pageSize`      | `number`                                                                  | 异步分页大小，默认 `20`                          |
 | `debounceMs`    | `number`                                                                  | 异步搜索防抖延迟，默认 `300`                       |
 | `leading`       | `React.ReactNode`                                                         | 字段组内前缀节点，默认搜索图标；传 `null` 移除         |
-| `className`     | `string`                                                                  | 自定义类名，应用于输入框容器                          |
-| `classNames`    | `{ panel? / item? }`                                                      | 面板与列表项的自定义类名                            |
+| `className`     | `string`                                                                  | 字段根容器自定义类名；默认 `w-full min-w-0 max-w-[20rem]`（最大 20rem） |
+| `style`         | `React.CSSProperties`                                                    | 字段根容器内联样式                                                       |
+| `classNames`    | `{ panel?; item?; input?; leading?; trailing?; list?: ListClassNames }`   | `input` 控制内部输入框，`panel` 控制候选面板，`list` 控制内部列表及其槽位 |
+| `styles`       | `{ panel?: React.CSSProperties; item?: React.CSSProperties; leading?: React.CSSProperties }` | 面板、列表项与前缀内联样式；没有根或输入框样式槽位。面板默认最大宽度 20rem，并受视口宽度减 1rem 限制 |
 
 ### 原子组件
 
@@ -64,6 +66,7 @@ Combobox 的底座：通用 input + popover 容器，用于拼装自定义拾取
 | `open` / `defaultOpen`   | `boolean`                           | 面板打开状态（受控 / 非受控），默认 `false`                                  |
 | `onOpenChange`           | `(open: boolean) => void`           | 面板开合时触发（点击、点击外部、Escape）                                      |
 | `trailing`               | `React.ReactNode`                   | 输入框尾部图标                                                      |
+| `disabled`               | `boolean`                          | 原生禁用输入框并关闭面板，默认 `false`                             |
 | `children`               | `React.ReactNode`                   | 弹出面板内容                                                       |
 | `panelRef`               | `React.Ref<HTMLDivElement>`         | 接收面板元素，配合 [usePanelFocus](/zh/docs/utils/use-panel-focus) 使用 |
 | `className` / `style`    | -                                   | 作用于根容器                                                       |
@@ -87,4 +90,5 @@ Combobox 的底座：通用 input + popover 容器，用于拼装自定义拾取
 | Attribute | Description |
 | --- | --- |
 | `[data-open]` | 位于根元素——面板打开期间存在（来自底层 Picker） |
+| `[data-disabled]` | 位于根元素——整个组合框禁用时存在 |
 

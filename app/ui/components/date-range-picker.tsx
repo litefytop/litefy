@@ -104,6 +104,7 @@ export function DateRangePicker({
     }
 
     const commit = (next: DateRangeValue) => {
+        if (disabled) return;
         if (controlledValue === undefined) setInternal(next);
         onValueChange?.(next);
     };
@@ -117,6 +118,7 @@ export function DateRangePicker({
                 : "";
 
     const handleSelect = (date: Date) => {
+        if (disabled) return;
         if (picking === "start" || selected.end) {
             setSelected({ start: date, end: null });
             setHoveredDate(null);
@@ -138,7 +140,7 @@ export function DateRangePicker({
     };
 
     const clearValue = () => {
-        if (!value.start && !value.end) return;
+        if (disabled || (!value.start && !value.end)) return;
         setSelected({ start: null, end: null });
         setHoveredDate(null);
         setPicking("start");
@@ -146,11 +148,13 @@ export function DateRangePicker({
     };
 
     const handleOpenChange = (next: boolean) => {
+        if (disabled && next) return;
         setOpen(next);
         if (!next) setHoveredDate(null);
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (disabled) return;
         if (e.key === "Backspace") {
             if (value.start || value.end) {
                 e.preventDefault();
@@ -179,7 +183,7 @@ export function DateRangePicker({
             disabled={disabled}
             aria-label={`${startLabel} ${separator} ${endLabel}`}
             trailing={open ? (
-                <button type="button" aria-label={clearText} className={classNames?.trailingClose} onClick={clearValue}>
+                <button type="button" disabled={disabled} aria-label={clearText} className={classNames?.trailingClose} onClick={clearValue}>
                     <CloseIcon aria-hidden />
                 </button>
             ) : (
@@ -188,11 +192,13 @@ export function DateRangePicker({
             onKeyDown={handleKeyDown}
             matchPanelWidth={false}
             className={[classNames?.root, className].filter(Boolean).join(" ") || undefined}
+            style={styles?.root}
             classNames={{ input: classNames?.input, trailing: classNames?.trailing, popover: classNames?.popover }}
             styles={{ input: styles?.input, trailing: styles?.trailing, popover: styles?.popover }}
         >
             <div className={classNames?.panel} style={styles?.panel} data-slot="date-range-panel">
                 <Calendar
+                    disabled={disabled}
                     className={classNames?.panel}
                     value={selected.start}
                     range={previewRange}

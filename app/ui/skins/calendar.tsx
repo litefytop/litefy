@@ -1,11 +1,11 @@
 ﻿import { Calendar as CalendarHeadless } from "@/ui";
 import type { CalendarProps } from "@/ui";
-import { cn, mergeSlots } from "../utils/cn";
+import { cn, mergeStateSlots, type SlotState } from "../utils/cn";
 import { buttonVariants } from "./button";
 
 
 const rootClasses =
-  "flex w-full max-w-[calc(7*var(--width-control)+6*var(--spacing))] flex-col rounded-lg border-frame border-border p-3 text-foreground shadow-surface";
+  "flex w-full min-w-0 max-w-[calc(7*var(--width-control)+6*var(--spacing))] flex-col rounded-lg border-frame p-3 text-foreground shadow-surface";
 
 
 const rootInPanelClasses = "flex flex-col";
@@ -13,13 +13,13 @@ const rootInPanelClasses = "flex flex-col";
 const headerClasses = "flex items-center justify-between gap-x-2";
 
 
-const navClasses =
-  cn(buttonVariants.text, "size-control");
+const navClasses = cn(buttonVariants.text, "pure-icon", "size-control");
+const navDisabledClasses = cn(buttonVariants.disabledText, "pure-icon", "size-control");
 
 const navIconClasses = "size-4 flex-none";
 
-const titleClasses =
-  cn(buttonVariants.text, "px-2 text-sm font-strong");
+const titleClasses = cn(buttonVariants.text, "text-sm font-strong");
+const titleDisabledClasses = cn(buttonVariants.disabledText, "text-sm font-strong");
 
 const titleRowClasses = "flex flex-1 items-center justify-center gap-x-2";
 
@@ -28,23 +28,15 @@ const gridClasses = "grid grid-cols-1";
 
 const weekClasses = "grid grid-cols-7 data-[cols=3]:grid-cols-3";
 
-const weekdayClasses =
-  "flex h-8 items-center justify-center text-xs font-label tracking-label case-label text-surface-fg";
+const weekdayClasses = ({ disabled }: SlotState) =>
+  "flex h-8 items-center justify-center text-xs control-label " +
+  (disabled ? "text-disabled-fg" : "text-foreground");
 
-const dayBaseBoxClasses =
-  "inline-flex h-control w-full cursor-pointer items-center justify-center rounded-md bg-transparent";
-const dayBaseTextClasses =
-  "text-foreground hover:bg-accent hover:text-accent-fg text-sm font-field tabular-nums select-none disabled:dim " +
-  "focus-visible:focus-ring-inset";
-const dayOutsideClasses = "data-[outside-month=true]:text-foreground/50";
+const dayBaseClasses =
+  "flex h-control cursor-pointer items-center justify-center rounded-none text-sm font-field tabular-nums select-none focus-visible:focus-ring-inset";
 
-const dayBaseClasses = cn(dayBaseBoxClasses, dayBaseTextClasses, dayOutsideClasses);
-
-const dayClasses =
-  cn(
-    dayBaseClasses,
-    "aria-selected:bg-primary aria-selected:text-primary-fg aria-selected:hover:bg-primary aria-selected:hover:text-primary-fg",
-  );
+const dayDisabledClasses =
+  "flex h-control cursor-not-allowed items-center justify-center rounded-none bg-disabled text-sm font-field tabular-nums select-none text-disabled-fg";
 
 
 export const calendarRootClasses = rootClasses;
@@ -60,31 +52,45 @@ export const calendarInPanelClasses = rootInPanelClasses;
    width; the viewport cap only kicks in on very small screens, and scrolling
    is preferred over compressing the grid. */
 export const calendarPopoverWidthClasses =
-  "w-[calc(7*var(--width-control)+6*var(--spacing))] max-w-[calc(100vw-1rem)] overflow-x-auto";
+  "w-[calc(7*var(--width-control)+6*var(--spacing))] max-w-[min(20rem,calc(100vw_-_1rem))] overflow-x-auto";
 
 export const calendarPanelWidthClasses =
   "w-max min-w-[calc(7*var(--width-control))]";
 
 export const calendarClasses = {
   header: headerClasses,
-  nav: navClasses,
+  nav: ({ disabled }: SlotState) => disabled ? navDisabledClasses : navClasses,
   navIcon: navIconClasses,
-  title: titleClasses,
+  title: ({ disabled }: SlotState) => disabled ? titleDisabledClasses : titleClasses,
   titleRow: titleRowClasses,
   grid: gridClasses,
   week: weekClasses,
   weekday: weekdayClasses,
-  day: dayClasses,
+  day: ({ disabled, active, outsideMonth }: SlotState) =>
+    disabled
+      ? dayDisabledClasses
+      : active
+        ? cn(dayBaseClasses, "bg-primary text-primary-fg")
+        : outsideMonth
+          ? cn(dayBaseClasses, "bg-surface text-surface-fg")
+          : cn(dayBaseClasses, "hover:bg-accent hover:text-accent-fg"),
 };
 
 export const calendarPartClasses = calendarClasses;
 
-export function Calendar({ className, classNames, ...props }: CalendarProps) {
+const rootDisabledClasses =
+  "flex w-full min-w-0 max-w-[calc(7*var(--width-control)+6*var(--spacing))] flex-col rounded-lg border-frame bg-disabled p-3 text-disabled-fg shadow-surface";
+
+const rootClassesByState = (disabled: boolean | undefined) =>
+  disabled ? rootDisabledClasses : rootClasses;
+
+export function Calendar({ className, classNames, disabled, ...props }: CalendarProps) {
   return (
     <CalendarHeadless
       {...props}
-      className={cn(rootClasses, className)}
-      classNames={mergeSlots(calendarClasses, classNames)}
+      disabled={disabled}
+      className={cn(rootClassesByState(disabled), className)}
+      classNames={mergeStateSlots(calendarClasses, classNames)}
     />
   );
 }

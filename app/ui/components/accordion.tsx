@@ -7,6 +7,7 @@ export interface CollapseItemConfig extends Omit<CollapseProps, "children" | "op
 }
 export interface AccordionRootProps extends CollapseRootProps {
     items: CollapseItemConfig[];
+    disabled?: boolean;
     common?: {
         className?: string;
         classNames?: {
@@ -37,7 +38,7 @@ export interface SingleAccordionProps extends AccordionRootProps {
     onKeyChange?: (value: string | undefined) => void;
 }
 export type AccordionProps = MultipleAccordionProps | SingleAccordionProps;
-export function Accordion({ items, multiple = false, activeKeys, defaultActiveKeys, onKeyChange, common, ...props }: AccordionProps) {
+export function Accordion({ items, multiple = false, activeKeys, defaultActiveKeys, onKeyChange, common, disabled, ...props }: AccordionProps) {
     const [_activeKeys, setActiveKeys] = React.useState<string[]>(() => {
         if (multiple) {
             return (defaultActiveKeys as string[] | undefined) ?? [];
@@ -80,9 +81,9 @@ export function Accordion({ items, multiple = false, activeKeys, defaultActiveKe
             (onKeyChange as SingleAccordionProps["onKeyChange"])?.(nextKeys[0] || "");
         }
     };
-    return (<CollapseRoot {...props}>
+    return (<CollapseRoot {...props} aria-disabled={disabled || props["aria-disabled"]} data-disabled={disabled || undefined}>
       {items.map(({ panel, ...cfg }) => {
-            return (<Collapse key={cfg.itemKey} {...cfg} className={cfg.className ?? common?.className} classNames={{
+            return (<Collapse key={cfg.itemKey} {...cfg} disabled={disabled || cfg.disabled} className={cfg.className ?? common?.className} classNames={{
                     trigger: cfg.classNames?.trigger ?? common?.classNames?.trigger,
                     icon: cfg.classNames?.icon ?? common?.classNames?.icon,
                     panel: cfg.classNames?.panel ?? common?.classNames?.panel,

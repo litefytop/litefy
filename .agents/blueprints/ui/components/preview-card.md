@@ -5,7 +5,7 @@
 ## 行为 / 状态
 
 - `src` 与 `title` 必传，`alt`、`description` 可选；`href = "#"`、`delay = 200`；其余 div 属性落在卡片根
-- 卡片结构：`Image`（`classNames.image` 直通）→ body → `h3` 标题 → `p` 描述（有才渲染）；`className` 与 `classNames.root` 合并
+- 卡片结构：`Image`（`classNames.image` 直通）→ body → `h3` 标题 → `p` 描述（有才渲染）；皮肤将 `className` 与 `classNames.root` 合并后，骨架只透传根类
 - 无 `trigger`：直接返回卡片；有 `trigger`：返回 `<a href>`（`classNames.trigger` + `data-anchor-name`）包裹 trigger，卡片移入 `TooltipContent` 浮层，卡片根加 `data-floating="true"`
 - 交互经 `useTooltipWiring`（见 `./tooltip`）：pointerenter / focus 显示，pointerleave / blur 按 `delay` 延迟隐藏
 - 浮层 id 与锚点由 `useId` 去符号生成（`preview-<uid>`、`--preview-<uid>`）

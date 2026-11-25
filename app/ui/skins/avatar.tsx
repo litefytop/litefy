@@ -8,7 +8,7 @@ const rootClasses =
 const imageClasses = "size-full object-cover";
 
 const fallbackClasses =
-  "flex size-full items-center justify-center p-3 text-base tracking-label font-label case-label text-surface-fg";
+  "flex size-full items-center justify-center bg-accent p-3 text-base control-label text-accent-fg";
 
 const skeletonDefaultClasses = "block size-full bg-accent motion-safe:animate-pulse";
 

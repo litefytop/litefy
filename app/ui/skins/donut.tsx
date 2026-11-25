@@ -4,7 +4,7 @@ import { cn, mergeSlots } from "../utils/cn";
 import { chartLegendClasses, chartLegendPartClasses } from "./chart-legend";
 
 
-const rootClasses = "w-full";
+const rootClasses = "w-full min-w-0";
 
 const svgClasses = "relative mt-2 w-full max-w-64 mx-auto";
 
@@ -19,7 +19,7 @@ const centerClasses =
   "data-[variant=pie]:h-12";
 
 const centerLabelClasses =
-  "max-w-20 truncate text-xs leading-4 font-label tracking-label case-label text-surface-fg";
+  "max-w-20 truncate text-xs leading-4 control-label text-foreground";
 
 const centerValueClasses = "text-h3 leading-head font-strong text-foreground";
 
@@ -29,10 +29,11 @@ const legendClasses = {
 };
 
 export function Donut({ className, classNames, ...props }: DonutProps) {
+  const { root: rootOverride, ...slots } = classNames ?? {};
   return (
     <DonutHeadless
       {...props}
-      className={cn(rootClasses, className)}
+      className={cn(rootClasses, rootOverride, className)}
       classNames={{
         ...mergeSlots(
           {
@@ -43,7 +44,7 @@ export function Donut({ className, classNames, ...props }: DonutProps) {
             centerLabel: centerLabelClasses,
             centerValue: centerValueClasses,
           },
-          classNames,
+          slots,
         ),
         legend: mergeSlots(legendClasses, classNames?.legend),
       }}

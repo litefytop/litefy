@@ -1,15 +1,31 @@
 import { Accordion as AccordionHeadless } from "@/ui";
 import type { AccordionProps } from "@/ui";
 import { cn, mergeSlots } from "../utils/cn";
-import { collapseItemClasses, collapsePartClasses, collapseRootClasses } from "./collapse";
+import { collapseDisabledItemClasses, collapseDisabledPartClasses, collapseFrameClasses, collapseItemClasses, collapsePartClasses, collapseRootClasses } from "./collapse";
 
-export function Accordion({ className, common, items, ...props }: AccordionProps) {
+export function Accordion({ className, common, items, disabled, ...props }: AccordionProps) {
   return (
     <AccordionHeadless
       {...props}
+      disabled={disabled}
       className={cn(collapseRootClasses, className)}
-      items={items.map((item) => ({ ...item, className: cn(collapseRootClasses, collapseItemClasses, common?.className, item.className) }))}
-      common={{ ...common, classNames: mergeSlots(collapsePartClasses, common?.classNames) }}
+      items={items.map((item) => {
+        const itemDisabled = Boolean(disabled || item.disabled);
+        const overrides = mergeSlots(common?.classNames ?? {}, item.classNames);
+        return {
+          ...item,
+          disabled: itemDisabled,
+          className: cn(
+            collapseFrameClasses,
+            collapseItemClasses,
+            itemDisabled ? collapseDisabledItemClasses : undefined,
+            common?.className,
+            item.className,
+          ),
+          classNames: mergeSlots(itemDisabled ? collapseDisabledPartClasses : collapsePartClasses, overrides),
+        };
+      })}
+      common={{ ...common, classNames: undefined }}
     />
   );
 }

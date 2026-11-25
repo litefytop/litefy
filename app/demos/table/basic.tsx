@@ -32,10 +32,10 @@ function renderPriority(row: Task) {
     <span
       className={
         row.priority === "high"
-          ? "font-medium text-danger-fg"
+          ? "font-medium text-danger-independent group-hover/table:text-inherit"
           : row.priority === "medium"
-            ? "text-warning-fg"
-            : "text-surface-fg"
+            ? "text-warning-independent"
+            : "text-foreground"
       }
     >
       {row.priority}

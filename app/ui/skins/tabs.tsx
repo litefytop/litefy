@@ -1,78 +1,111 @@
 ﻿import { Tabs as TabsHeadless } from "@/ui";
-import type { TabsProps } from "@/ui";
-import { cn, mergeSlots } from "../utils/cn";
+import type { TabsOrientation, TabsProps } from "@/ui";
+import { cn, mergeStateSlots, type SlotState } from "../utils/cn";
 
+const rootHorizontalClasses = "flex w-full min-w-0 flex-col";
+const rootVerticalClasses = "flex w-full min-w-0 flex-row";
 
-const rootClasses =
-  "flex w-full data-[orientation=horizontal]:flex-col data-[orientation=vertical]:flex-row";
-
-const listBaseClasses = "group flex min-w-0 items-center gap-x-2 border-b-frame border-b-border";
-const listVerticalLayoutClasses =
-  "data-[orientation=vertical]:flex-col data-[orientation=vertical]:items-stretch data-[orientation=vertical]:border-b-0";
-const listVerticalBorderClasses =
-  "data-[orientation=vertical]:border-r-frame data-[orientation=vertical]:border-r-border";
-
-const listClasses = cn(listBaseClasses, listVerticalLayoutClasses, listVerticalBorderClasses);
-
+const listLineHorizontalClasses =
+  "group flex min-w-0 items-center gap-x-2 border-b-frame border-b-border";
+const listLineVerticalClasses =
+  "group flex min-w-0 flex-col items-stretch gap-x-2 border-r-frame border-r-border";
+const listPrimaryHorizontalClasses = cn(listLineHorizontalClasses, "border-b-0 gap-x-1");
+const listPrimaryVerticalClasses = cn(listLineVerticalClasses, "border-r-0 gap-x-1");
 
 const scrollerClasses =
   "flex min-w-0 flex-1 items-center gap-x-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden";
 
-const scrollClasses =
-  "hidden min-h-control min-w-control shrink-0 cursor-pointer items-center justify-center rounded-md " +
-  "text-surface-fg group-data-[overflow=true]:flex [&>svg]:shrink-0";
+const scrollLayoutClasses =
+  "hidden min-h-control min-w-control shrink-0 items-center justify-center rounded-md " +
+  "group-data-[overflow=true]:flex [&>svg]:shrink-0";
+const scrollClasses = cn(
+  scrollLayoutClasses,
+  "cursor-pointer text-foreground",
+);
+const scrollDisabledClasses = cn(
+  scrollLayoutClasses,
+  "cursor-not-allowed text-disabled-fg",
+);
+const scrollClassesByState = ({ disabled }: SlotState) =>
+  disabled ? scrollDisabledClasses : scrollClasses;
 
-const triggerBaseClasses =
-  "flex min-h-control cursor-pointer items-center border-b-hair border-b-transparent px-4 py-2";
+const triggerLayoutClasses =
+  "flex min-h-control items-center border-b-hair border-b-transparent px-4 py-2";
 const triggerTextClasses =
-  "text-sm leading-5 font-label tracking-label case-label whitespace-nowrap text-surface-fg";
+  "text-sm/5 control-label text-nowrap text-foreground";
 const triggerStateClasses =
-  "hover:not-disabled:bg-accent hover:not-disabled:text-accent-fg disabled:dim " +
+  "data-[state=inactive]:hover:bg-accent data-[state=inactive]:hover:text-accent-fg " +
   "data-[state=active]:text-primary data-[state=active]:border-b-primary";
 
-const triggerClasses = cn(triggerBaseClasses, triggerTextClasses, triggerStateClasses);
+const triggerClasses = cn(
+  triggerLayoutClasses,
+  "cursor-pointer",
+  triggerTextClasses,
+  triggerStateClasses,
+);
 
+const triggerDisabledClasses = cn(
+  triggerLayoutClasses,
+  "cursor-not-allowed text-disabled-fg",
+);
 
 const contentClasses = "w-full rounded-lg p-4 text-base leading-body";
 
-const triggerPrimaryBaseClasses =
-  "flex min-h-control cursor-pointer items-center rounded-md px-4 py-2";
+const triggerPrimaryLayoutClasses =
+  "flex min-h-control items-center rounded-md px-4 py-2";
 const triggerPrimaryTextClasses =
-  "text-sm leading-5 font-label tracking-label case-label whitespace-nowrap";
+  "text-sm leading-5 control-label text-nowrap";
 const triggerPrimaryInactiveClasses =
-  "data-[state=inactive]:text-surface-fg disabled:dim " +
-  "data-[state=inactive]:hover:not-disabled:bg-accent data-[state=inactive]:hover:not-disabled:text-accent-fg";
+  "data-[state=inactive]:text-foreground data-[state=inactive]:hover:bg-accent " +
+  "data-[state=inactive]:hover:text-accent-fg";
 const triggerPrimaryActiveClasses =
   "data-[state=active]:bg-primary data-[state=active]:text-primary-fg";
 
 const triggerPrimaryClasses = cn(
-  triggerPrimaryBaseClasses,
+  triggerPrimaryLayoutClasses,
+  "cursor-pointer",
   triggerPrimaryTextClasses,
   triggerPrimaryInactiveClasses,
   triggerPrimaryActiveClasses,
 );
 
-const listPrimaryClasses = cn(listClasses, "border-b-0 border-r-0 gap-x-1");
+const triggerPrimaryDisabledClasses = cn(
+  triggerPrimaryLayoutClasses,
+  "cursor-not-allowed bg-disabled text-disabled-fg",
+);
+
+const tabsClassesByState = (
+  variant: "line" | "primary",
+  { disabled }: SlotState,
+) => disabled
+  ? variant === "primary" ? triggerPrimaryDisabledClasses : triggerDisabledClasses
+  : variant === "primary" ? triggerPrimaryClasses : triggerClasses;
 
 export interface TabsSkinProps extends TabsProps {
   variant?: "line" | "primary";
 }
 
-const tabsSlots = (variant: "line" | "primary") => ({
-  root: rootClasses,
-  list: variant === "primary" ? listPrimaryClasses : listClasses,
-  scroller: scrollerClasses,
-  scroll: scrollClasses,
-  trigger: variant === "primary" ? triggerPrimaryClasses : triggerClasses,
-  content: contentClasses,
-});
+const tabsSlots = (variant: "line" | "primary", orientation: TabsOrientation) => {
+  const vertical = orientation === "vertical";
+  const listClasses = vertical ? listLineVerticalClasses : listLineHorizontalClasses;
+  const listPrimaryClasses = vertical ? listPrimaryVerticalClasses : listPrimaryHorizontalClasses;
+  return {
+    root: vertical ? rootVerticalClasses : rootHorizontalClasses,
+    list: variant === "primary" ? listPrimaryClasses : listClasses,
+    scroller: scrollerClasses,
+    scroll: scrollClassesByState,
+    trigger: (state: SlotState) => tabsClassesByState(variant, state),
+    content: contentClasses,
+  };
+};
 
-export function Tabs({ variant = "line", classNames, ...props }: TabsSkinProps) {
+export function Tabs({ variant = "line", orientation = "horizontal", className, classNames, ...props }: TabsSkinProps) {
   return (
     <TabsHeadless
       {...props}
+      orientation={orientation}
       data-variant={variant}
-      classNames={mergeSlots(tabsSlots(variant), classNames)}
+      classNames={mergeStateSlots(tabsSlots(variant, orientation), { ...classNames, root: cn(className, classNames?.root) })}
     />
   );
 }

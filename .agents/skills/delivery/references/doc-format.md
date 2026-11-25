@@ -32,7 +32,7 @@
 #### {ComponentName}
 
 {表格：属性描述}
-{表格：data-* 属性,如`data-orientation`、`data-state` 等。}
+{表格：data-* 属性,如`data-state`、`data-placement` 等。}
 
 ### 原子组件
 

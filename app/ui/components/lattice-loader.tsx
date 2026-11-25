@@ -166,8 +166,8 @@ export function LatticeLoader({
                         }
                     />
                 ))}
-                {status === "done" && <Check className={classNames?.mark} aria-hidden="true" />}
-                {status === "error" && <X className={classNames?.mark} aria-hidden="true" />}
+                {status === "done" && <Check data-status={status} className={classNames?.mark} aria-hidden="true" />}
+                {status === "error" && <X data-status={status} className={classNames?.mark} aria-hidden="true" />}
             </span>
             {verb}
             {showTimer && <span className={classNames?.timer}>{live.toFixed(1)}s</span>}

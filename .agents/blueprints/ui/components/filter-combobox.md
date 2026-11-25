@@ -20,7 +20,7 @@
 - 无值操作符（`isEmpty` / `isNotEmpty`）跳过值输入直接成规则
 - `Esc` 逐级回退 `value → operator → field`，任何阶段都能退到初始；`Backspace` 在空输入时删末尾规则
 - 已提交规则以行内实线 chip 显示，各有独立移除钮（close 图标，取 `X`）与可访问名；点 chip 重新编辑该条（回填为草稿 chip 继续输入）
-- 已提交 chip 全部直接展示，不做折叠与 `+N` 计数：chip 永远完整可见，宽度不足时输入框与清空钮跟随换行；点击输入区任意空白处聚焦输入框
+- 已提交 chip 全部直接展示，不做折叠与 `+N` 计数：chip 宽度不超过输入条可用宽度，超长标签在 chip 内截断并保留移除钮；宽度不足时整个 chip、输入框与清空钮跟随换行；点击输入区任意空白处聚焦输入框
 - 输入条单行 `flex-wrap`：搜索图标固定头部（`shrink-0`，不随内容与容器变化）→ 已提交 chips（实线）→ 草稿 chip（虚线）→ 输入框 → 确认钮 / 放弃钮（跟随内容换行）；清空钮（`clear` 槽，取 `RotateCcw` 图标，`texts.clearText` 作可访问名，点击清空全部规则回到 `field`）**钉在 bar 右端**（absolute 右侧垂直居中，不随内容换行流动），有已提交规则时显示、bar 经 `data-clear` 预留右侧空间防重叠；hint 触发器固定 bar 右上角；结果数不在输入条内显示，`resultCount` 仅供状态区 `role="status"` 的 sr-only 播报
 
 ## 行为 / 状态
@@ -31,7 +31,8 @@
 - 提交链路：`toFilterParams` 风格的扁平规则数组 + 新 `AbortController` + `onResult` / `onError`，`AbortError` 不写状态不回调
 - 无障碍：输入框 `role="combobox"` + `aria-expanded` / `aria-controls` / `aria-activedescendant` / `aria-autocomplete="list"`；候选 `role="listbox"` / `role="option"`；`role="status"` 常驻播报阶段与结果数，`role="alert"` 播报校验错误；Tab 顺序 = DOM 顺序
 - `FilterComboboxRef`：`reset`、`submit`、`getRules`、`focusInput`
-- `disabled` 组级禁用：根节点挂 `inert`、输入框原生禁用——指针、键盘、chip 编辑链路与候选面板全不达，`listOpen` 恒为 `false`
+- `disabled` 组级禁用：根输出 `data-disabled` / `aria-disabled`，输入、submit、cancel、clear 原生禁用；候选列表不展示，commit、submit、reset、聚焦输入、field/operator 选择、规则编辑、删除与键盘处理均由 JS 阻断；自定义 `renderChip` 的上下文包含 `disabled`，默认 chip 的编辑/移除按钮同步禁用
+- 禁用遵循 `ui/schemes.md` 第 8 条：根不挂 inert；皮肤用 `mergeSlots` 完整替换 bar/chip/draft/input/hint/status/error 禁用类串，保留布局与结构、移除 hover/focus/active 类并显式禁用色与 `cursor-not-allowed`
 - 槽位：`{ root; bar; chip; chipLabel; chipRemove; input; draft; hint; hintKeys; hintKey; list; option; optionLabel; optionDetail; submit; cancel; clear; status; error }`；骨架零样式
 - 全部用户可见文案走 `texts` 契约（见 `combobox-query` 蓝图），组件不内置 i18n 运行时与语言包；动态切换语言 = 宿主替换 `texts` 对象
 - 不做：溢出折叠与 `+N` 计数、括号分组、AND/OR 切换、保存视图、异步字段搜索、多日期格式解析、SQL/DSL 拼接——组件只收集并结构化值（`FilterRule[]` / `toFilterParams`），如何拼进 SQL、DSL 或 ORM 由消费方二次封装

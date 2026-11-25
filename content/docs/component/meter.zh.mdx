@@ -1,6 +1,6 @@
 ---
 title: Meter 计量器
-description: 模仿原生 meter 的只读量具——surface 连续轨道 + 单指示条，按 low / high / optimum 分档，末端竖线标记进度位置
+description: 模仿原生 meter 的只读量具——well 井底连续轨道 + 单指示条，按 low / high / optimum 分档，末端竖线标记进度位置
 ---
 
 ## 安装
@@ -26,8 +26,8 @@ description: 模仿原生 meter 的只读量具——surface 连续轨道 + 单�
 | `high`      | `number` | 默认分档的警戒上界，默认 `60`                                                                                 |
 | `optimum`   | `number` | 最优值位置：低于 `low` 时低区为优、高于 `high` 时高区为优、落在区间内时区间为优，默认 `80`                                           |
 | `hideValue` | `boolean` | 隐藏尾随读数；读数 `aria-hidden`（显示量程内的原始值），值恒由 `aria-valuenow` 表达，默认 `false`                                    |
-| `className` | `string` | 根元素自定义类                                                                                           |
+| `className` | `string` | 根元素自定义类；默认 `w-full min-w-0`                                                                                           |
 
 其余原生 `<div>` 属性（`aria-label`、`id`、内联 `style` 等）透传到根元素；可访问名由 `aria-label` 提供。
 
-分档判定沿用 HTML `<meter>` 规则：`optimum` 低于 `low` 时低区为优、高于 `high` 时高区为优、落在区间内时区间为优；读数落在含最优的区间为 success，相邻区间为 warning，最远区间为 danger。填充色取对应语义背景色档（亮档 300、暗档 200）；粉彩填充对 `surface` 轨道亮档不足 3:1 是既接受项——尾随读数已提供文本替身，1.4.11 不适用于非必需图形。
+分档判定沿用 HTML `<meter>` 规则：`optimum` 低于 `low` 时低区为优、高于 `high` 时高区为优、落在区间内时区间为优；读数落在含最优的区间为 success，相邻区间为 warning，最远区间为 danger。填充色取对应语义背景色档（亮档 300、暗档 200）；粉彩填充对 `well` 井底轨道亮档不足 3:1 是既接受项——尾随读数已提供文本替身，1.4.11 不适用于非必需图形。

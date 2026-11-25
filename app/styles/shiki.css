@@ -41,24 +41,23 @@
   }
 
   .diff.remove {
-    opacity: 0.7;
-    --shiki-counter-color: var(--danger-fg);
-    background-color: color-mix(in oklab, var(--danger-fg) 10%, transparent);
+    --shiki-counter-color: var(--text-danger-independent);
+    background-color: color-mix(in oklab, var(--danger) 10%, transparent);
   }
 
   .diff.remove::before {
     content: '-';
-    color: var(--danger-fg);
+    color: var(--text-danger-independent);
   }
 
   .diff.add {
-    --shiki-counter-color: var(--success-fg);
-    background-color: color-mix(in oklab, var(--success-fg) 10%, transparent);
+    --shiki-counter-color: var(--text-success-independent);
+    background-color: color-mix(in oklab, var(--success) 10%, transparent);
   }
 
   .diff.add::before {
     content: '+';
-    color: var(--success-fg);
+    color: var(--text-success-independent);
   }
 
   .highlighted {
@@ -97,7 +96,7 @@
     content: counter(line);
     color: color-mix(
       in oklab,
-      var(--shiki-counter-color, var(--surface-fg)) 60%,
+      var(--shiki-counter-color, var(--foreground)) 60%,
       transparent
     );
     inset-block: 0;
@@ -130,6 +129,6 @@ code.shiki:not(.not-fumadocs-code *) span {
 /* shiki's github themes both colour comments #6A737D: 4.46:1 on the light canvas,
    4.31:1 on the dark one — under AA for 13px code. A token mix stays AA in both modes. */
 .shiki span[style*="#6A737D"] {
-  --shiki-light: color-mix(in oklab, var(--surface-fg) 65%, var(--background)) !important;
-  --shiki-dark: color-mix(in oklab, var(--surface-fg) 65%, var(--background)) !important;
+  --shiki-light: color-mix(in oklab, var(--foreground) 65%, var(--background)) !important;
+  --shiki-dark: color-mix(in oklab, var(--foreground) 65%, var(--background)) !important;
 }

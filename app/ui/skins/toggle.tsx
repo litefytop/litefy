@@ -1,85 +1,74 @@
-﻿import { Toggle as ToggleHeadless, ToggleGroup as ToggleGroupHeadless } from "@/ui";
+import { Toggle as ToggleHeadless, ToggleGroup as ToggleGroupHeadless } from "@/ui";
 import type { ToggleProps, ToggleGroupProps } from "@/ui";
 import { cn } from "../utils/cn";
 
-export type ToggleGroupVariant = "outline" | "well";
-
-export interface ToggleGroupSkinProps extends ToggleGroupProps {
-  variant?: ToggleGroupVariant;
-}
-
-const toggleBaseClasses =
-  "inline-flex min-h-control min-w-control cursor-pointer select-none items-center justify-center gap-x-2 whitespace-nowrap disabled:dim";
-const toggleFaceClasses =
-  "border-hair border-border bg-background px-[max(var(--spacing)*3,min(var(--radius-pill),var(--height-control)/2))] py-1";
-const toggleTextClasses =
-  "text-sm font-label case-label tracking-label text-foreground shadow-frame motion-frame";
-const toggleHoverClasses =
-  "hover:not-disabled:bg-accent hover:not-disabled:text-accent-fg hover:not-disabled:shadow-frame-hover";
-const togglePressClasses = "active:crush active:shadow-frame-active";
+const toggleLayoutClasses =
+  "inline-flex min-h-control min-w-0 select-none items-center justify-center gap-x-2 " +
+  "text-nowrap rounded-sm px-3";
+const toggleTextClasses = "text-sm control-label text-foreground motion-frame";
 const togglePressedClasses =
-  "aria-[pressed=true]:bg-primary aria-[pressed=true]:text-primary-fg";
+  "aria-pressed:bg-primary aria-pressed:text-primary-fg";
 
-const toggleFrameClasses = cn(
-  toggleBaseClasses,
-  toggleFaceClasses,
+const toggleClasses = cn(
+  toggleLayoutClasses,
+  "cursor-pointer",
   toggleTextClasses,
-  toggleHoverClasses,
-  togglePressClasses,
   togglePressedClasses,
 );
 
-const toggleClasses = cn(toggleFrameClasses, "rounded-pill");
+const toggleDisabledClasses = cn(
+  toggleLayoutClasses,
+  "cursor-not-allowed text-disabled-fg",
+);
 
-const outlineGroupClasses =
-  "grid w-full grid-flow-col auto-cols-fr overflow-hidden rounded-pill border-hair border-border bg-background";
+const toggleClassesByState = (disabled: boolean | undefined) =>
+  disabled ? toggleDisabledClasses : toggleClasses;
 
-const outlineItemBaseClasses =
-  "inline-flex min-h-control min-w-control cursor-pointer select-none items-center justify-center gap-x-2 " +
-  "whitespace-nowrap rounded-none px-3 py-1 disabled:dim";
-const outlineItemTextClasses =
-  "text-sm font-label case-label tracking-label text-foreground motion-frame " +
-  "not-first:border-l-hair not-first:border-border";
-const outlineItemStateClasses =
-  "hover:not-disabled:not-aria-[pressed=true]:bg-accent hover:not-disabled:not-aria-[pressed=true]:text-accent-fg " +
-  "active:crush aria-[pressed=true]:bg-primary aria-[pressed=true]:text-primary-fg";
+const groupClasses =
+  "grid w-full grid-flow-col auto-cols-fr overflow-hidden rounded-pill border-hair border-border bg-surface-raised text-surface-raised-fg select-none text-nowrap";
 
-const outlineItemClasses = cn(outlineItemBaseClasses, outlineItemTextClasses, outlineItemStateClasses);
+const itemLayoutClasses =
+  "flex min-h-control min-w-control items-center justify-center gap-x-2 " +
+  "rounded-none px-3 motion-frame " +
+  "not-first:border-l-hair";
 
-const wellGroupClasses =
-  "grid w-fit min-w-control grid-flow-col auto-cols-fr *:min-w-0 items-center rounded-lg border-frame border-border bg-well p-1.5 shadow-well";
+const groupItemClasses = cn(
+  itemLayoutClasses,
+  "cursor-pointer text-foreground hover:bg-accent hover:text-accent-fg " +
+    "active:crush aria-pressed:bg-primary aria-pressed:text-primary-fg aria-pressed:hover:bg-primary-accent",
+);
+const groupItemDisabledClasses = cn(
+  itemLayoutClasses,
+  "cursor-not-allowed bg-disabled text-disabled-fg",
+);
+const groupItemClassesByState = (disabled: boolean) =>
+  disabled ? groupItemDisabledClasses : groupItemClasses;
 
-const wellItemBaseClasses =
-  "inline-flex min-h-control cursor-pointer select-none items-center justify-center px-3 " +
-  "whitespace-nowrap text-sm font-strong tracking-label case-label text-surface-fg disabled:dim";
-const wellItemCornerClasses =
-  "rounded-[max(0px,calc(var(--radius-lg)-var(--spacing(1.5))-var(--border-width-frame)))] motion-frame";
-const wellItemHoverClasses =
-  "hover:not-disabled:not-aria-[pressed=true]:bg-accent hover:not-disabled:not-aria-[pressed=true]:text-accent-fg";
-const wellItemPressedClasses =
-  "aria-[pressed=true]:bg-background aria-[pressed=true]:text-primary aria-[pressed=true]:shadow-subtle";
-
-const wellItemClasses = cn(wellItemBaseClasses, wellItemCornerClasses, wellItemHoverClasses, wellItemPressedClasses);
-
-export function Toggle({ className, ...props }: ToggleProps) {
-  return <ToggleHeadless {...props} className={cn(toggleClasses, className)} />;
+function withDisabledOptions(
+  options: ToggleGroupProps["options"],
+  disabled: boolean | undefined,
+  itemClassName: string | undefined,
+) {
+  return options.map((option) => ({
+    ...option,
+    className: cn(
+      groupItemClassesByState(Boolean(disabled || option.disabled)),
+      itemClassName,
+      option.className,
+    ),
+  }));
 }
 
-export function ToggleGroup({ variant = "outline", className, itemClassName, ...props }: ToggleGroupSkinProps) {
-  if (variant === "well") {
-    return (
-      <ToggleGroupHeadless
-        {...props}
-        className={cn(wellGroupClasses, className)}
-        itemClassName={cn(wellItemClasses, itemClassName)}
-      />
-    );
-  }
+export function Toggle({ className, disabled, ...props }: ToggleProps) {
+  return <ToggleHeadless {...props} disabled={disabled} className={cn(toggleClassesByState(disabled), className)} />;
+}
+
+export function ToggleGroup({ className, itemClassName, options, disabled, ...props }: ToggleGroupProps) {
   return (
     <ToggleGroupHeadless
       {...props}
-      className={cn(outlineGroupClasses, className)}
-      itemClassName={cn(outlineItemClasses, itemClassName)}
+      className={cn(groupClasses, className)}
+      options={withDisabledOptions(options, disabled, itemClassName)}
     />
   );
 }

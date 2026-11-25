@@ -25,7 +25,7 @@ description: 一次性验证码输入框，支持自动跳格、粘贴填充、�
 
 ### 禁用
 
-添加 disabled 属性禁用验证码输入。
+`disabled` 原生禁用全部格子，根元素标记 `aria-disabled`，输入、粘贴、焦点移动与指针处理停止；格子使用 `bg-disabled`、`text-disabled-fg` 与 `cursor-not-allowed`。
 
 <ComponentPreview name="input-otp-disabled" />
 
@@ -48,7 +48,7 @@ description: 一次性验证码输入框，支持自动跳格、粘贴填充、�
 | `mask`          | `boolean`                 | 将格子渲染为密码输入，默认 `false`                      |
 | `name`          | `string`                  | 渲染 hidden input 用于表单提交                     |
 | `aria-label`    | `string`                  | 无障碍标签，每个格子会附加序号后缀                          |
-| `className`     | `string`                  | 容器自定义类                                     |
+| `className`     | `string`                  | 容器自定义类；默认 `w-full min-w-0 max-w-[20rem]`（最大 20rem） |
 | `style`         | `React.CSSProperties`     | 容器自定义内联样式                                  |
 | `classNames`    | `{ slot? }`               | 单元格的自定义类                                   |
 | `styles`        | `{ slot? }`               | 单元格的内联样式                                   |
@@ -92,3 +92,4 @@ description: 一次性验证码输入框，支持自动跳格、粘贴填充、�
 | Attribute | Description |
 | --- | --- |
 | `[data-invalid]` | 位于外壳上——`invalid` 为 true 时存在 |
+| `[data-disabled]` | 位于外壳上——所有格子禁用时存在 |

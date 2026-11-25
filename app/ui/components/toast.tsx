@@ -59,6 +59,7 @@ export type ToastItemProps = Omit<React.ComponentProps<"div">, "className" | "st
     isExpanded?: boolean;
     classNames?: {
         root?: string;
+        surface?: string;
         icon?: string;
         content?: string;
         title?: string;
@@ -66,6 +67,7 @@ export type ToastItemProps = Omit<React.ComponentProps<"div">, "className" | "st
         close?: string;
     };
     styles?: {
+        surface?: React.CSSProperties;
         icon?: React.CSSProperties;
         content?: React.CSSProperties;
         title?: React.CSSProperties;
@@ -188,6 +190,7 @@ function ToastItem({ isExpanded = false, id, type, duration, closable, onClose, 
     }, [handleDismiss, id]);
     const icon = customIcon ?? toastIcons[type || "success"];
     return (<ToastRoot {...restProps} ref={rootRef} role="status" data-type={type} data-expanded={isExpanded} data-tapped={tapped || undefined} data-exiting={isExiting} onClick={() => setTapped((current) => !current)} className={classNames?.root}>
+      <span aria-hidden data-surface="" data-type={type} className={classNames?.surface} style={styles?.surface}/>
       {icon && (<ToastIcon data-type={type} className={classNames?.icon} style={styles?.icon}>
           {icon}
         </ToastIcon>)}

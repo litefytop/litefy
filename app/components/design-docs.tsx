@@ -15,9 +15,9 @@ export function DesignDocs() {
         const href = `https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/${tpl.slug}/design.md`;
         return (
           <li key={tpl.slug} className="flex flex-wrap items-center gap-2 text-sm">
-            <FileText className="size-4 shrink-0 text-surface-fg" aria-hidden />
+            <FileText className="size-4 shrink-0 text-foreground" aria-hidden />
             <span className="font-medium">{zh ? tpl.name.zh : tpl.name.en}</span>
-            <span className="text-surface-fg">{zh ? tpl.desc.zh : tpl.desc.en}</span>
+            <span className="text-foreground">{zh ? tpl.desc.zh : tpl.desc.en}</span>
             <span className="flex items-center gap-3">
               <a
                 href={href}

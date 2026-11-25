@@ -4,6 +4,7 @@ import { ChevronDown, ChevronUp } from "./icons";
 import { InputLeading, InputTrailing } from "./input";
 import { NumberRoot, useNumberCore } from "./number-field";
 import { Field, type FieldClassNames, type FieldValidateResult } from "./field";
+import { resolveSlotClassName, type SlotClassName } from "../utils/cn";
 export type NumberInputProps = Omit<React.ComponentProps<"input">, "className" | "value" | "defaultValue" | "type" | "onChange" | "size" | "prefix"> & {
     value?: number | string;
     defaultValue?: number | string;
@@ -22,10 +23,10 @@ export type NumberInputProps = Omit<React.ComponentProps<"input">, "className" |
     classNames?: {
         leading?: string;
         trailing?: string;
-        root?: string;
-        indicator?: string;
+        root?: SlotClassName;
+        indicator?: SlotClassName;
         indicatorIcon?: string;
-        hint?: string;
+        hint?: SlotClassName;
     };
     styles?: {
         leading?: React.CSSProperties;
@@ -59,20 +60,21 @@ export function NumberInput(props: NumberInputProps) {
         rest: rest as Parameters<typeof useNumberCore>[0]["rest"],
     });
     const hintId = React.useId();
+    const state = { disabled: disabled ?? false };
     const composeBox = (field?: { id: string; name: string; describedBy: string | undefined; invalid: boolean }) => {
         const describedBy = [field?.describedBy, rest["aria-describedby"], hintId].filter(Boolean).join(" ") || undefined;
         return (<div data-invalid={invalid || field?.invalid || undefined} data-border={border} className={className} style={style}>
       {(prefix || classNames?.leading || styles?.leading) && (<InputLeading className={classNames?.leading} style={styles?.leading}>
           {prefix}
         </InputLeading>)}
-      <NumberRoot {...inputProps} id={field?.id ?? rest.id} name={field?.name ?? rest.name} aria-describedby={describedBy} aria-invalid={invalid || field?.invalid} data-invalid={invalid || field?.invalid || undefined} className={classNames?.root} style={styles?.root}/>
+      <NumberRoot {...inputProps} id={field?.id ?? rest.id} name={field?.name ?? rest.name} aria-describedby={describedBy} aria-invalid={invalid || field?.invalid} data-invalid={invalid || field?.invalid || undefined} className={resolveSlotClassName(classNames?.root, state)} style={styles?.root}/>
       {(suffix || indicator) && (<InputTrailing className={classNames?.trailing} style={styles?.trailing}>
-        {suffix ? suffix : (indicator && (<span aria-hidden className={classNames?.indicator}>
+        {suffix ? suffix : (indicator && (<span aria-hidden className={resolveSlotClassName(classNames?.indicator, state)}>
               <ChevronUp aria-hidden className={classNames?.indicatorIcon} style={styles?.indicatorIcon}/>
               <ChevronDown aria-hidden className={classNames?.indicatorIcon} style={styles?.indicatorIcon}/>
             </span>))}
       </InputTrailing>)}
-      <span id={hintId} className={classNames?.hint} style={styles?.hint}>
+      <span id={hintId} className={resolveSlotClassName(classNames?.hint, state)} style={styles?.hint}>
           ↑ ↓
         </span>
     </div>);

@@ -8,26 +8,28 @@ const ROWS = [
 
 export default function Demo() {
   return (
-    <div inert className="flex w-full max-w-112 flex-col items-center">
-      {ROWS.map((row) => (
-        <SwipeActions
-          key={row.id}
-          danger={{ label: "Delete" }}
-          primary={{ label: "Archive", dismiss: true }}
-          label={row.title}
-          height={64}
-          disabled={row.disabled}
-          className="mb-2 w-full"
-        >
-          <div className="flex min-w-0 flex-1 items-center gap-x-3">
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm leading-5 font-field text-foreground">{row.title}</p>
-              <p className="truncate text-sm leading-5 text-surface-fg">{row.subtitle}</p>
+    <div className="flex flex-col items-center">
+      <div className="mx-auto flex w-full flex-col items-center">
+        {ROWS.map((row) => (
+          <SwipeActions
+            key={row.id}
+            danger={{ label: "Delete" }}
+            primary={{ label: "Archive", dismiss: true }}
+            label={row.title}
+            height={64}
+            disabled={row.disabled}
+            className="mb-2"
+          >
+            <div className="flex min-w-0 flex-1 items-center gap-x-3">
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm leading-5 font-field text-foreground">{row.title}</p>
+                <p className="truncate text-sm leading-5 text-foreground">{row.subtitle}</p>
+              </div>
+              <span className="shrink-0 text-sm leading-5 text-foreground">{row.meta}</span>
             </div>
-            <span className="shrink-0 text-sm leading-5 text-surface-fg">{row.meta}</span>
-          </div>
-        </SwipeActions>
-      ))}
+          </SwipeActions>
+        ))}
+      </div>
     </div>
   );
 }

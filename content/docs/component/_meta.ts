@@ -531,11 +531,4 @@ export default {
       zh: "水印",
     },
   },
-  wizard: {
-    name: "Wizard",
-    displayName: {
-      en: "Wizard",
-      zh: "向导",
-    },
-  },
 } as const;

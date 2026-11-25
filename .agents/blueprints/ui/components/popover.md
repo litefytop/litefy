@@ -13,3 +13,5 @@
 - 外部点击由 `useFloatingPanel` 关闭，`useFloatingPosition` 在滚动/尺寸变化时重排；无焦点陷阱，Tab 可离开面板
 - 定位由 `floating-position` 全权负责：写内联 `position/left/top/width` 并置 `margin: 0`——原生 popover 的 UA `inset: 0` 叠上祖先的 margin 策略（如预览舞台 `[&>*]:m-auto`）会过约束自动居中，`margin: 0` 把面板与页面层的盒模型策略隔离
 - 槽位：`classNames.trigger/content`；`styles.trigger/content`
+- 禁用遵循 `ui/schemes.md` 第 8 条：触发钮原生 disabled；`innerOpen = !disabled && openState`，受控 open 为真也强制关闭，`handleOpenChange(true)` 由 JS 拒绝，内容浮层不可达
+- 皮肤用 `mergeSlots` 选择触发钮禁用类串，以完整禁用串替换 outline 正常串，保留纯图标几何并显式禁用色与 `cursor-not-allowed`

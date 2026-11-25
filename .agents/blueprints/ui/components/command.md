@@ -14,7 +14,9 @@
 - `CommandList`：内部 `List`；存在分组项时启用分组头渲染；`getKey` 取 `item.value ?? index`；鼠标移入非 disabled 项更新高亮；`empty` 缺省 "No results"，显式传 `null` 且无行时整个列表不渲染（紧凑初始态）；空态由 `classNames.empty` 着装（骨架只透传槽位、不自带样式）
 - 行渲染 `renderItem(item, { highlighted, disabled })` 可覆盖；缺省渲染 icon（`aria-hidden`）+ label（`data-disabled` 标记）+ shortcut（`kbd`）
 - `selectRow` 对 disabled 项不触发 `onSelect`
-- 禁用行整行不可交互：`CommandList` 把 `row.item.disabled` 经 `isItemDisabled` 传 `List`，行容器由 List 落 `data-disabled` 与 `inert`（指针、hover、焦点全不达），键盘导航与选择的跳过由 `useCombobox` 承担
-- 组合 `Command`：`trigger` 渲染为 Button（`aria-haspopup="dialog"` + `aria-expanded`，点击开面板），`Dialog` 承载 Root/Input/List（不传 `title` 与 `close`，Dialog 不渲染 header 与关闭钮），`aria-label` 取 `placeholder`；选择后自动关闭；`open` / `defaultOpen` / `onOpenChange` 控制开关；输入行 `trailing` 透传（如搜索加载 spinner），列表后渲染 `CommandFooter` 脚注（键盘说明，含 esc 关闭），`hints` 传本地化文字、传 `null` 整体关闭
+- 禁用行整行不可交互：`CommandList` 把 `row.item.disabled` 经 `isItemDisabled` 传 `List`，行容器由 List 落 `data-disabled` / `aria-disabled` 并移除交互，键盘导航与选择的跳过由 `useCombobox` 承担
+- `classNames.item` 为 `SlotClassName`（string 或 `(state: SlotState) => string | undefined`）；皮肤先以 `resolveSlotClassName(classNames.item, state)` 求值调用方覆盖，再与默认状态类经 `cn` 合并，不能把函数原样交给 `cn`
+- 禁用遵循 `ui/schemes.md` 第 8 条：禁用行不挂 inert；皮肤按状态完整替换行类串，使用禁用色与 `cursor-not-allowed` 并移除 hover/active 类
+- 组合 `Command`：`trigger` 渲染为 Button（`aria-haspopup="dialog"` + `aria-expanded`，点击开面板），原生 `disabled` 透传，仅阻止触发按钮打开面板；`Dialog` 承载 Root/Input/List（不传 `title` 与 `close`，Dialog 不渲染 header 与关闭钮），`aria-label` 取 `placeholder`；选择后自动关闭；`open` / `defaultOpen` / `onOpenChange` 控制开关；输入行 `trailing` 透传（如搜索加载 spinner），列表后渲染 `CommandFooter` 脚注（键盘说明，含 esc 关闭），`hints` 传本地化文字、传 `null` 整体关闭
 - `dialogClassNames` / `dialogStyles` 直通 Dialog；`classNames.content` 拼接到 Dialog content
 - 槽位：`classNames: trigger / content / input / field / searchIcon / list / root / footer / hint / hintKey / rows / item / label / itemIcon / itemLabel / shortcut / empty`；`styles: content / list / item / label`

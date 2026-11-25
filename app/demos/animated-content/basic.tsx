@@ -14,11 +14,11 @@ export default function Demo() {
   const panel = PANELS[step];
   return (
     <div className="flex flex-col items-center gap-2">
-      <Card className="h-36 w-80">
+      <Card className="h-36">
         <AnimatedContent direction="up" distance={20}>
           <div key={panel.title} className="flex flex-col gap-2">
             <h3 className="text-sm font-medium">{panel.title}</h3>
-            <p className="text-sm text-surface-fg">{panel.body}</p>
+            <p className="text-sm text-foreground">{panel.body}</p>
           </div>
         </AnimatedContent>
       </Card>

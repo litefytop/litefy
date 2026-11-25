@@ -2,7 +2,7 @@ import type { LinksFunction, MetaFunction } from "react-router";
 import { Link, useLocation, useNavigate, useParams } from "react-router";
 import flatShowcaseHref from "./flat-showcase.css?url";
 import { AnimatedContent, Button, Card, NavBar } from "@/ui/skins";
-import { buttonVariants, chipClasses, cn } from "@/ui/skins";
+import { buttonVariants, chipBase, chipVariants, cn } from "@/ui/skins";
 import { AppearancePanel } from "../components/appearance-panel";
 import { StyleMenu } from "../components/style-select";
 import { BareNotFound } from "../components/bare-not-found";
@@ -39,16 +39,16 @@ export const meta: MetaFunction = ({ params }) => {
 
 const SECTION = "scroll-mt-16 border-b border-border px-4 py-12 md:px-6 md:py-16 lg:px-8 lg:py-20";
 const CONTAINER = "mx-auto w-full max-w-320";
-const EYEBROW = "typo-overline text-surface-fg";
+const EYEBROW = "typo-overline";
 const HEADLINE = "text-h2 leading-head tracking-tight font-bold";
-const LEAD = "max-w-[40em] text-base leading-body text-surface-fg";
-const textLinkClass = cn(buttonVariants.text, "px-3");
+const LEAD = "max-w-[40em] text-base leading-body";
+const textLinkClass = cn(buttonVariants.text, "px-3", "text-inherit");
 
 const TOKENS: { token: string; zh: string; en: string }[] = [
   { token: "--background", zh: "页面画布", en: "Page canvas" },
   { token: "--foreground", zh: "正文文字", en: "Body text" },
   { token: "--surface", zh: "次要容器", en: "Secondary surface" },
-  { token: "--surface-fg", zh: "次级文字", en: "Secondary text" },
+  { token: "--surface-fg", zh: "表面文字", en: "Surface text" },
   { token: "--accent", zh: "强调背景", en: "Accent fill" },
   { token: "--accent-fg", zh: "强调文字", en: "Accent text" },
   { token: "--border", zh: "边框描边", en: "Border stroke" },
@@ -175,7 +175,7 @@ const COPY: Record<
         {
           tag: "法则 01 — 悬停只换色",
           code: "hover:bg-accent hover:text-accent-fg motion-frame",
-          desc: "可点条目悬停吃 accent 对，品牌件吃 primary-accent 深化档。不位移、不升阴影——没有阴影可升。",
+          desc: "可点条目悬停吃 accent 背景档并写它的配对前景，品牌件吃 primary-accent 深化档。不位移、不升阴影——没有阴影可升。",
         },
         {
           tag: "法则 02 — 按压只压暗",
@@ -242,7 +242,7 @@ const COPY: Record<
       do: [
         "border-hair border-border——1px 发丝描边",
         "rounded-none——全直角",
-        "hover:bg-accent hover:text-accent-fg——悬停只换色",
+        "hover:bg-accent hover:text-accent-fg——悬停写 accent 对",
         "active:crush——按压位移 0 + 压暗 5%",
         "focus-visible:focus-ring——2px 实线焦点环",
         "motion-frame duration-sm——120ms 令牌时长",
@@ -317,7 +317,7 @@ const COPY: Record<
         {
           tag: "Law 01 — Hover shifts colour",
           code: "hover:bg-accent hover:text-accent-fg motion-frame",
-          desc: "Clickable rows take the accent pair on hover; brand controls take the primary-accent step. No movement, no shadow lift — there is no shadow to lift.",
+          desc: "Clickable rows take the accent background tier on hover with the text colour unchanged; brand controls take the primary-accent step. No movement, no shadow lift — there is no shadow to lift.",
         },
         {
           tag: "Law 02 — Press darkens only",
@@ -384,7 +384,7 @@ const COPY: Record<
       do: [
         "border-hair border-border — 1px hairline strokes",
         "rounded-none — square corners always",
-        "hover:bg-accent hover:text-accent-fg — hover shifts colour only",
+        "hover:bg-accent hover:text-accent-fg — hover writes the accent pair",
         "active:crush — press at translate 0 + 5% darker",
         "focus-visible:focus-ring — 2px solid focus outline",
         "motion-frame duration-sm — 120ms token timing",
@@ -468,7 +468,7 @@ function SiteHeader({ t, lang }: { t: T; lang: Lang }) {
     );
   };
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-surface">
+    <header className="sticky top-0 z-40 border-b border-border bg-surface text-surface-fg">
       <div className="flex h-14 items-center gap-2 px-4 md:px-6 lg:px-8">
         <Link
           to={`/flat/${lang}/docs`}
@@ -512,10 +512,8 @@ function SiteHeader({ t, lang }: { t: T; lang: Lang }) {
             to={`/${lang}`}
             aria-label={t.home}
             title={t.home}
-            className={cn(
-              buttonVariants.outline,
-              "relative aspect-square shrink-0 px-0 after:absolute after:-inset-hit after:content-['']",
-            )}
+            data-pure-icon="true"
+            className={cn(buttonVariants.outline, "pure-icon", "shrink-0")}
           >
             <House className="size-4" aria-hidden />
           </Link>
@@ -527,10 +525,10 @@ function SiteHeader({ t, lang }: { t: T; lang: Lang }) {
 
 function Hero({ t, lang }: { t: T; lang: Lang }) {
   return (
-    <section className="border-b border-border bg-surface px-4 py-12 md:px-6 md:py-16 lg:px-8 lg:py-20">
+    <section className="border-b border-border bg-surface px-4 py-12 md:px-6 md:py-16 lg:px-8 lg:py-20 text-surface-fg">
       <div className={cn(CONTAINER, "flex flex-col gap-6")}>
         <div className="flex flex-col gap-3">
-          <p className="typo-kicker text-surface-fg">{t.hero.eyebrow}</p>
+          <p className="typo-kicker">{t.hero.eyebrow}</p>
           <h1 className="typo-headline">
             {lang === "zh" ? tpl?.name.zh : tpl?.name.en}
           </h1>
@@ -566,12 +564,23 @@ function Hero({ t, lang }: { t: T; lang: Lang }) {
   );
 }
 
-function SectionHead({ eyebrow, title, lead }: { eyebrow: string; title: string; lead: string }) {
+function SectionHead({
+  eyebrow,
+  title,
+  lead,
+  onSurface,
+}: {
+  eyebrow: string;
+  title: string;
+  lead: string;
+  onSurface?: boolean;
+}) {
+  const sub = onSurface ? "text-surface-fg" : "text-foreground";
   return (
     <div className="flex flex-col gap-2">
-      <p className={EYEBROW}>{eyebrow}</p>
-      <h2 className={HEADLINE}>{title}</h2>
-      <p className={LEAD}>{lead}</p>
+      <p className={cn(EYEBROW, sub)}>{eyebrow}</p>
+      <h2 className={cn(HEADLINE, sub)}>{title}</h2>
+      <p className={cn(LEAD, sub)}>{lead}</p>
     </div>
   );
 }
@@ -597,7 +606,7 @@ function PaletteBlock({ t, lang }: { t: T; lang: Lang }) {
               />
               <div className="flex flex-col gap-0.5 p-2">
                 <code className="truncate font-mono text-xs">{token}</code>
-                <span className="text-xs text-surface-fg">{roles[lang]}</span>
+                <span className="text-xs text-foreground">{roles[lang]}</span>
               </div>
             </div>
           ))}
@@ -622,21 +631,21 @@ function PaletteBlock({ t, lang }: { t: T; lang: Lang }) {
 function LawsBlock({ t }: { t: T }) {
   const l = t.laws;
   return (
-    <section id="laws" className={cn(SECTION, "bg-surface")}>
+    <section id="laws" className={cn(SECTION, "bg-surface text-surface-fg")}>
       <AnimatedContent distance={0} className={cn(CONTAINER, "flex flex-col gap-6")}>
-        <SectionHead eyebrow={l.eyebrow} title={l.title} lead={l.lead} />
+        <SectionHead eyebrow={l.eyebrow} title={l.title} lead={l.lead} onSurface />
         <div className="grid gap-4 md:grid-cols-2">
           {l.items.map((item, i) => (
             <Card key={item.tag} className="h-full">
               <div className="flex items-center gap-2">
-                <span className={chipClasses} data-variant="outline">
+                <span className={cn(chipBase, "bg-transparent text-surface-fg")}>
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="text-sm font-semibold">{item.tag}</h3>
               </div>
-              <p className="font-mono text-xs break-all text-surface-fg">{item.code}</p>
-              <p className="text-sm text-surface-fg">{item.desc}</p>
-              <div className="flex flex-col items-center gap-2 border border-border bg-background p-4">
+              <p className="font-mono text-xs break-all">{item.code}</p>
+              <p className="text-sm">{item.desc}</p>
+              <div className="flex flex-col items-center gap-2 border border-border bg-background p-4 text-foreground">
                 {i === 0 && (
                   <>
                     <button
@@ -645,7 +654,7 @@ function LawsBlock({ t }: { t: T }) {
                     >
                       {l.hoverDemo}
                     </button>
-                    <p className="text-xs text-surface-fg">{l.hoverNote}</p>
+                    <p className="text-xs text-foreground">{l.hoverNote}</p>
                   </>
                 )}
                 {i === 1 && (
@@ -656,7 +665,7 @@ function LawsBlock({ t }: { t: T }) {
                     >
                       {l.pressDemo}
                     </button>
-                    <p className="text-xs text-surface-fg">{l.pressNote}</p>
+                    <p className="text-xs text-foreground">{l.pressNote}</p>
                   </>
                 )}
                 {i === 2 && (
@@ -671,18 +680,18 @@ function LawsBlock({ t }: { t: T }) {
                       <button
                         type="button"
                         data-danger
-                        className="cursor-pointer border border-border bg-background px-4 py-2 text-sm font-semibold text-danger-fg focus-visible:focus-ring-danger"
+                        className="cursor-pointer border border-border bg-background px-4 py-2 text-sm font-semibold text-danger-independent focus-visible:focus-ring-danger"
                       >
                         {l.focusDangerDemo}
                       </button>
                     </div>
-                    <p className="text-xs text-surface-fg">{l.focusNote}</p>
+                    <p className="text-xs text-foreground">{l.focusNote}</p>
                   </>
                 )}
                 {i === 3 && (
                   <div className="flex w-full flex-col gap-3">
                     <div>
-                      <span className="mb-1 block font-mono text-xs text-surface-fg">
+                      <span className="mb-1 block font-mono text-xs text-foreground">
                         {l.calmTrack}
                       </span>
                       <div className="group relative h-8 overflow-hidden border border-border bg-background">
@@ -690,14 +699,14 @@ function LawsBlock({ t }: { t: T }) {
                       </div>
                     </div>
                     <div>
-                      <span className="mb-1 block font-mono text-xs text-surface-fg">
+                      <span className="mb-1 block font-mono text-xs text-foreground">
                         {l.bounceTrack}
                       </span>
                       <div className="group relative h-8 overflow-hidden border border-border bg-background">
                         <div className="absolute inset-y-0 left-0 w-full origin-left scale-x-0 bg-accent transition-transform duration-500 [transition-timing-function:cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-x-100" />
                       </div>
                     </div>
-                    <p className="text-center text-xs text-surface-fg">{l.trackNote}</p>
+                    <p className="text-center text-xs text-foreground">{l.trackNote}</p>
                   </div>
                 )}
               </div>
@@ -754,7 +763,7 @@ function TypeBlock({ t }: { t: T }) {
             <div className="flex flex-col gap-5">
               {groups.map(({ caption, rows }) => (
                 <div key={caption} className="flex flex-col gap-3">
-                  <p className={cn(labelCls, "text-surface-fg")}>{caption}</p>
+                  <p className={cn(labelCls, "text-foreground")}>{caption}</p>
                   {rows.map(({ sample, spec, className, stack }) => (
                     <div
                       key={sample}
@@ -765,7 +774,7 @@ function TypeBlock({ t }: { t: T }) {
                       }
                     >
                       <span className={className}>{sample}</span>
-                      <span className="shrink-0 font-mono text-xs text-surface-fg">{spec}</span>
+                      <span className="shrink-0 font-mono text-xs text-foreground">{spec}</span>
                     </div>
                   ))}
                 </div>
@@ -808,12 +817,12 @@ function RulesBlock({ t }: { t: T }) {
           {r.principles.map((p) => (
             <Card key={p.n} className="h-full">
               <div className="flex items-center gap-2">
-                <span className={chipClasses} data-variant="outline">
+                <span className={cn(chipBase, chipVariants.outline)}>
                   {p.n}
                 </span>
                 <h3 className="text-sm font-semibold">{p.title}</h3>
               </div>
-              <p className="text-sm text-surface-fg">{p.body}</p>
+              <p className="text-sm text-foreground">{p.body}</p>
             </Card>
           ))}
         </div>
@@ -856,10 +865,10 @@ function ClosingBlock({ t }: { t: T }) {
   const c = t.closing;
   const icons = [Users, CircleCheck, Keyboard, Sun, Printer, PanelLeft];
   return (
-    <section className={cn(SECTION, "bg-surface")}>
+    <section className={cn(SECTION, "bg-surface text-surface-fg")}>
       <AnimatedContent distance={0} className={cn(CONTAINER, "flex flex-col gap-6")}>
-        <SectionHead eyebrow={c.eyebrow} title={c.title} lead={c.lead} />
-        <div className="grid grid-cols-1 border border-border bg-background sm:grid-cols-2 lg:grid-cols-3">
+        <SectionHead eyebrow={c.eyebrow} title={c.title} lead={c.lead} onSurface />
+        <div className="grid grid-cols-1 border border-border bg-background text-foreground sm:grid-cols-2 lg:grid-cols-3">
           {c.cards.map((card, i) => {
             const Icon = icons[i];
             return (
@@ -874,11 +883,11 @@ function ClosingBlock({ t }: { t: T }) {
                   i < 3 ? "lg:border-b" : "lg:border-b-0",
                 )}
               >
-                <div className="mb-3 flex size-10 items-center justify-center border border-border bg-surface">
+                <div className="mb-3 flex size-10 items-center justify-center border border-border bg-surface text-surface-fg">
                   <Icon className="size-5" aria-hidden />
                 </div>
                 <h3 className="mb-1 text-sm font-semibold">{card.title}</h3>
-                <p className="text-sm text-surface-fg">{card.body}</p>
+                <p className="text-sm text-foreground">{card.body}</p>
               </div>
             );
           })}
@@ -891,7 +900,7 @@ function ClosingBlock({ t }: { t: T }) {
 function SiteFooter({ t, lang }: { t: T; lang: Lang }) {
   const otherLang = lang === "zh" ? "en" : "zh";
   return (
-    <footer className="border-t border-border bg-surface px-4 py-8 md:px-6 lg:px-8">
+    <footer className="border-t border-border bg-surface px-4 py-8 md:px-6 lg:px-8 text-surface-fg">
       <div className={cn(CONTAINER, "flex flex-col gap-4")}>
         <div className="flex flex-wrap items-center gap-4">
           <span className="flex items-center gap-2 text-sm font-bold">
@@ -899,7 +908,7 @@ function SiteFooter({ t, lang }: { t: T; lang: Lang }) {
               C
             </span>
             Litefy
-            <span className="text-xs font-normal text-surface-fg">{t.footer.tagline}</span>
+            <span className="text-xs font-normal">{t.footer.tagline}</span>
           </span>
           <nav className="ms-auto flex flex-wrap gap-3">
             <Link className="text-sm hover:underline" to={`/flat/${lang}/docs`}>
@@ -914,7 +923,7 @@ function SiteFooter({ t, lang }: { t: T; lang: Lang }) {
           </nav>
         </div>
         <div className="flex flex-wrap items-center gap-2 border-t border-border pt-4">
-          <span className="text-xs text-surface-fg">{t.footer.rights}</span>
+          <span className="text-xs">{t.footer.rights}</span>
           <Link
             to={`/flat/${otherLang}/showcase/flat-minimal`}
             className={cn(textLinkClass, "ms-auto")}

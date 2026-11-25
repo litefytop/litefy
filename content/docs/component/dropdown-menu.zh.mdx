@@ -25,9 +25,12 @@ description: 由 Popover 和 Menu 组合而成的下拉菜单 —— 支持分�
 | `items`         | `MenuConfig[]`                                                | 菜单项（分组、子菜单、叶子项）                                                                             |
 | `onSelect`      | `(item: MenuItemConfig) => void`                              | 点击叶子项时触发                                                                                    |
 | `alignX`        | `"start" \| "end" \| "center"`                                | 面板在触发器下方展开，`start`/`center`/`end` 分别左对齐、居中、右对齐，默认 `"center"`                                |
+| `disabled`      | `boolean`                                                    | 原生禁用触发钮，面板不可打开，默认 `false`                                                                        |
 | `className`     | `string`                                                      | 触发器按钮的自定义类名                                                                                 |
-| `itemClassName` | `string`                                                      | 落在每个菜单项的 `role="menuitem"` 按钮上，子菜单项同样命中；单项自己的 `className` 排在它之后，冲突时以单项为准                    |
-| `classNames`    | `{ content? / item? / label? / sub? / menuRoot? / chevron? }` | 面板、菜单项、标签、子菜单的自定义类名；`menuRoot` 是菜单自己的根元素（面板内那个 `<ul role="menu">`）；`chevron` 是有子菜单项行尾的右箭头图标 |
+| `itemClassName` | `SlotClassName`                                               | 落在每个菜单项的 `role="menuitem"` 按钮上，接收 `({ disabled }) => string`；子菜单项同样命中，单项自己的 `className` 优先 |
+| `classNames`    | `{ content?; item?; label?; itemButton?: SlotClassName; sub?; menuRoot?; chevron? }` | `content` 控制根面板，默认 `w-48 min-w-0`（12rem），最大宽度为 20rem 与视口宽度减 1rem 的较小值；`menuRoot` 是面板内的 `<ul role="menu">`；`itemButton` 接收 `({ disabled }) => string`；没有 `styles` 槽位 |
+
+每个菜单项的 `disabled` 独立生效：按钮原生禁用，不触发选择或打开子菜单，键盘导航跳过；禁用外观使用 `text-disabled-fg` 与 `cursor-not-allowed`。
 
 ## 键盘交互
 

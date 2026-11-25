@@ -160,6 +160,8 @@ export function Upload({ accept, multiple = false, maxCount, maxSize, disabled =
     }, []);
     React.useImperativeHandle(actionsRef, () => ({ remove, clear }));
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (disabled)
+            return;
         validate(Array.from(e.target.files ?? []));
         e.target.value = "";
     };
@@ -205,7 +207,7 @@ export function Upload({ accept, multiple = false, maxCount, maxSize, disabled =
     };
     return (<UploadRoot className={className} style={style}>
       <UploadHiddenInput ref={inputRef} accept={accept} multiple={multiple} disabled={disabled} onChange={handleInputChange} tabIndex={-1} aria-hidden className={classNames?.hiddenInput} style={styles?.hiddenInput}/>
-      <UploadDropzone role="button" tabIndex={disabled ? -1 : 0} aria-disabled={disabled || undefined} data-dragging={dragging || undefined} data-disabled={disabled || undefined} onClick={() => inputRef.current?.click()} onKeyDown={handleKeyDown} onDragEnter={handleDragEnter} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop} className={classNames?.dropzone} style={styles?.dropzone}>
+      <UploadDropzone role="button" tabIndex={disabled ? -1 : 0} aria-disabled={disabled || undefined} data-dragging={dragging || undefined} data-disabled={disabled || undefined} onClick={() => !disabled && inputRef.current?.click()} onKeyDown={handleKeyDown} onDragEnter={handleDragEnter} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop} className={classNames?.dropzone} style={styles?.dropzone}>
         {children ?? (<>
             <span className={classNames?.label}>Click to upload or drag and drop</span>
             <span className={classNames?.hint}>

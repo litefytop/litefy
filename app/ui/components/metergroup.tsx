@@ -16,10 +16,13 @@ export interface MeterSegmentProps extends React.ComponentProps<"div"> {
     percent: number;
     color?: string;
     tip?: string;
+    tipClassName?: string;
 }
 
-export function MeterSegment({ percent, color, tip, style, ...props }: MeterSegmentProps) {
-    return (<div {...props} data-item="" data-tip={tip} style={{ width: `${percent}%`, backgroundColor: color, ...style }}/>);
+export function MeterSegment({ percent, color, tip, tipClassName, style, ...props }: MeterSegmentProps) {
+    return (<div {...props} data-item="" data-tip={tip} style={{ width: `${percent}%`, backgroundColor: color, ...style }}>
+      {tip ? <span aria-hidden data-tip-content="" className={tipClassName}>{tip}</span> : null}
+    </div>);
 }
 
 export interface MeterLegendEntry {
@@ -53,6 +56,7 @@ export function MeterLegend({ items, classNames, ...props }: MeterLegendProps) {
 export interface MeterGroupClassNames {
     track?: string;
     segment?: string;
+    tip?: string;
     legend?: string;
     legendItem?: string;
     swatch?: string;
@@ -80,9 +84,9 @@ export function MeterGroup({ value: items, min = 0, max: rawMax, classNames, sty
         .map((item, index) => ({ item, index, pct: percent(item) }))
         .filter(({ item }) => item.value > min);
     const valueText = items.map((item) => `${item.label} ${Math.round(percent(item))}%`).join(", ");
-    return (<div {...props} role="meter" aria-valuemin={min} aria-valuemax={max} aria-valuenow={now} aria-valuetext={props["aria-valuetext"] ?? valueText} data-orientation="horizontal" style={style}>
+    return (<div {...props} role="meter" aria-valuemin={min} aria-valuemax={max} aria-valuenow={now} aria-valuetext={props["aria-valuetext"] ?? valueText} style={style}>
       <MeterTrack className={classNames?.track}>
-        {segments.map(({ item, index, pct }) => (<MeterSegment key={item.label} percent={pct} color={item.color ?? palette[index % palette.length]} tip={`${item.label} · ${Math.round(pct)}%`} className={classNames?.segment}/>))}
+        {segments.map(({ item, index, pct }) => (<MeterSegment key={item.label} percent={pct} color={item.color ?? palette[index % palette.length]} tip={`${item.label} · ${Math.round(pct)}%`} className={classNames?.segment} tipClassName={classNames?.tip}/>))}
       </MeterTrack>
       <MeterLegend
         items={items.map((item, index) => ({ label: item.label, percent: percent(item), color: item.color ?? palette[index % palette.length] }))}

@@ -13,12 +13,12 @@ export default function SparklineBasicDemo() {
     <div className="flex flex-wrap items-center justify-center gap-6">
       {stats.map((stat) => (
         <div key={stat.label} className="flex min-w-32 flex-col gap-1">
-          <span className="text-xs leading-4 font-strong tracking-label case-label text-surface-fg">
+          <span className="text-xs leading-4 font-strong tracking-label case-label text-foreground">
             {stat.label}
           </span>
           <span className="flex items-baseline gap-x-2">
             <span className="text-base leading-6 font-strong tabular-nums">{stat.value}</span>
-            <span className="text-xs leading-4 font-field text-surface-fg tabular-nums">{stat.delta}</span>
+            <span className="text-xs leading-4 font-field text-foreground tabular-nums">{stat.delta}</span>
           </span>
           <Sparkline data={stat.data} variant={stat.variant} smooth={stat.smooth} aria-label={`${stat.label} trend`} className="w-32" />
         </div>

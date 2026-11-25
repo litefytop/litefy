@@ -16,5 +16,5 @@ const countries = [
 ];
 
 export default function Demo() {
-  return <Combobox options={countries} placeholder="Select a country" className="w-77 min-w-33" />;
+  return <Combobox options={countries} placeholder="Select a country" />;
 }

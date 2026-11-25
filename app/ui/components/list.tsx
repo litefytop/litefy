@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { resolveSlotClassName, type SlotClassName } from "../utils/cn";
 export type ListControllerProps<T> = {
     items: T[];
     highlightIndex?: number | null;
@@ -7,9 +8,10 @@ export type ListControllerProps<T> = {
     onSelect?: (item: T, index: number) => void;
     onScrollBottom?: () => void;
     onItemMouseMove?: (item: T, index: number) => void;
+    isItemDisabled?: (item: T, index: number) => boolean;
 };
 function useListController<T>(props: ListControllerProps<T>) {
-    const { items, highlightIndex: controlledHighlight, onHighlightChange, onSelect, onScrollBottom, } = props;
+    const { items, highlightIndex: controlledHighlight, onHighlightChange, onSelect, onScrollBottom, isItemDisabled } = props;
     const rootRef = React.useRef<HTMLUListElement | HTMLDivElement>(null);
     const [uncontrolledHighlight, setUncontrolledHighlight] = React.useState<number | null>(null);
     const isControlled = controlledHighlight !== undefined;
@@ -25,22 +27,34 @@ function useListController<T>(props: ListControllerProps<T>) {
         const el = rootRef.current?.querySelector<HTMLElement>("[data-highlighted='true']");
         el?.scrollIntoView({ block: "nearest", behavior: "instant" });
     }, [highlightIndex]);
+    const moveHighlight = (delta: 1 | -1) => {
+        if (items.length === 0)
+            return;
+        for (let step = 1; step <= items.length; step++) {
+            const index = highlightIndex === null
+                ? delta === 1 ? step - 1 : items.length - step
+                : (highlightIndex + delta * step + items.length * 2) % items.length;
+            if (!isItemDisabled?.(items[index], index)) {
+                setHighlightIndex(index);
+                return;
+            }
+        }
+    };
     const handleKeyDown = (e: React.KeyboardEvent<HTMLUListElement | HTMLDivElement>) => {
         if (items.length === 0)
             return;
         if (e.key === "ArrowDown") {
             e.preventDefault();
-            const next = highlightIndex === null ? 0 : Math.min(highlightIndex + 1, items.length - 1);
-            setHighlightIndex(next);
+            moveHighlight(1);
         }
         else if (e.key === "ArrowUp") {
             e.preventDefault();
-            const next = highlightIndex === null ? items.length - 1 : Math.max(highlightIndex - 1, 0);
-            setHighlightIndex(next);
+            moveHighlight(-1);
         }
         else if ((e.key === "Enter" || e.key === " ") && highlightIndex !== null) {
             e.preventDefault();
-            onSelect?.(items[highlightIndex], highlightIndex);
+            if (!isItemDisabled?.(items[highlightIndex], highlightIndex))
+                onSelect?.(items[highlightIndex], highlightIndex);
         }
     };
     const handleScroll = (e: React.UIEvent<HTMLElement>) => {
@@ -56,7 +70,7 @@ function useListController<T>(props: ListControllerProps<T>) {
 }
 export interface ListClassNames {
     viewport?: string;
-    item?: string;
+    item?: SlotClassName;
     groupHeader?: string;
     root?: string;
     empty?: string;
@@ -70,6 +84,7 @@ export interface ListStyles {
     groups?: React.CSSProperties;
 }
 export interface ListProps<T> {
+    size?: "sm" | "md" | "lg" | "xl";
     id?: string;
     items: T[];
     getKey?: (item: T, index: number) => React.Key;
@@ -104,7 +119,7 @@ function groupItems<T>(items: T[], getGroup: (item: T, index: number) => string)
     });
     return Array.from(map.entries());
 }
-function ListView<T>({ ordered = false, id, items, getKey, getGroup, renderGroupHeader, renderItem, empty, highlightIndex, onHighlightChange, onSelect, onScrollBottom, onItemMouseMove, isItemDisabled, className, style, classNames = EMPTY_CLASS_NAMES, styles = EMPTY_STYLES, }: ListProps<T> & {
+function ListView<T>({ ordered = false, size = "lg", id, items, getKey, getGroup, renderGroupHeader, renderItem, empty, highlightIndex, onHighlightChange, onSelect, onScrollBottom, onItemMouseMove, isItemDisabled, className, style, classNames = EMPTY_CLASS_NAMES, styles = EMPTY_STYLES, }: ListProps<T> & {
     ordered?: boolean;
 }) {
     const controller = useListController({
@@ -113,18 +128,21 @@ function ListView<T>({ ordered = false, id, items, getKey, getGroup, renderGroup
         onHighlightChange,
         onSelect,
         onScrollBottom,
+        isItemDisabled,
     });
     const hasGroup = !ordered && typeof getGroup === "function" && typeof renderGroupHeader === "function";
     const Tag = ordered ? "ol" : "ul";
     const generatedId = React.useId();
     const listBaseId = id ?? generatedId;
-    const activeDescendant = controller.highlightIndex === null ? undefined : `${listBaseId}-${controller.highlightIndex}`;
-    const viewport = (content: React.ReactNode) => (<div ref={controller.rootRef as React.Ref<HTMLDivElement>} id={listBaseId} role="listbox" aria-activedescendant={activeDescendant} tabIndex={0} onKeyDown={controller.handleKeyDown} onScroll={controller.handleScroll} className={[classNames.viewport, className].filter(Boolean).join(" ") || undefined} style={style}>
+    const activeDescendant = controller.highlightIndex === null || isItemDisabled?.(items[controller.highlightIndex], controller.highlightIndex)
+        ? undefined
+        : `${listBaseId}-${controller.highlightIndex}`;
+    const viewport = (content: React.ReactNode) => (<div ref={controller.rootRef as React.Ref<HTMLDivElement>} id={listBaseId} data-size={size} role="listbox" aria-activedescendant={activeDescendant} tabIndex={0} onKeyDown={controller.handleKeyDown} onScroll={controller.handleScroll} className={[classNames.viewport, className].filter(Boolean).join(" ") || undefined} style={style}>
       {content}
     </div>);
     const row = (item: T, index: number) => {
         const disabled = isItemDisabled?.(item, index) ?? false;
-        return (<li id={`${listBaseId}-${index}`} key={getKey?.(item, index) ?? index} role="option" aria-selected={controller.highlightIndex === index} data-highlighted={controller.highlightIndex === index || undefined} data-disabled={disabled || undefined} inert={disabled || undefined} onClick={disabled ? undefined : () => onSelect?.(item, index)} onMouseMove={onItemMouseMove && !disabled ? () => onItemMouseMove(item, index) : undefined} className={classNames.item} style={styles.item}>
+        return (<li id={`${listBaseId}-${index}`} key={getKey?.(item, index) ?? index} role="option" aria-selected={controller.highlightIndex === index} data-highlighted={controller.highlightIndex === index || undefined} data-disabled={disabled || undefined} aria-disabled={disabled || undefined} onClick={disabled ? undefined : () => onSelect?.(item, index)} onMouseMove={onItemMouseMove && !disabled ? () => onItemMouseMove(item, index) : undefined} className={resolveSlotClassName(classNames.item, { disabled })} style={styles.item}>
       {renderItem(item, index)}
     </li>);
     };

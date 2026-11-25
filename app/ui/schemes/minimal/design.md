@@ -5,10 +5,14 @@ description: Design language of the Litefy UI soft-minimal style template (slug 
 colors:
   background: 'oklch(98.5% 0 0)'
   foreground: 'oklch(14.5% 0 0)'
-  surface: 'oklch(92.2% 0 0)'
+  surface: 'oklch(97% 0 0)'
   surface-fg: 'oklch(26.9% 0 0)'
+  well: 'oklch(92.2% 0 0)'
+  disabled: 'oklch(97% 0 0)'
+  disabled-fg: 'oklch(26.9% 0 0)'
   accent: 'oklch(87% 0 0)'
   accent-fg: 'oklch(37.1% 0 0)'
+  surface-raised: 'oklch(100% 0 0)'
   border: 'color-mix(in oklab, oklch(87% 0 0) 50%, transparent)'
   primary: 'oklch(14.5% 0 0)'
   primary-fg: 'oklch(98.5% 0 0)'
@@ -25,12 +29,16 @@ colors:
   warning-fg: 'oklch(42.1% 0.095 57.708)'
   warning: 'oklch(90.5% 0.182 98.111)'
   warning-accent: 'oklch(94.5% 0.129 101.54)'
-  dark-background: 'oklch(14.5% 0 0)'
+  dark-background: 'oklch(20.5% 0 0)'
   dark-foreground: 'oklch(97% 0 0)'
-  dark-surface: 'oklch(26.9% 0 0)'
+  dark-surface: 'oklch(14.5% 0 0)'
   dark-surface-fg: 'oklch(92.2% 0 0)'
+  dark-well: 'oklch(14.5% 0 0)'
+  dark-disabled: 'oklch(14.5% 0 0)'
+  dark-disabled-fg: 'oklch(92.2% 0 0)'
   dark-accent: 'oklch(37.1% 0 0)'
   dark-accent-fg: 'oklch(87% 0 0)'
+  dark-surface-raised: 'oklch(26.9% 0 0)'
   dark-border: 'color-mix(in oklab, oklch(37.1% 0 0) 50%, transparent)'
   dark-primary: 'oklch(98.5% 0 0)'
   dark-primary-fg: 'oklch(14.5% 0 0)'
@@ -161,34 +169,36 @@ well:
 
 ## Colors
 
-1. 面积预算 **60 / 30 / 10**：约 60% 画布（`background` / `foreground`——方案常量，亮暗各一套定值，不随表面色板移动）；约 30% 次要容器背景（`surface` / `accent`，表面色板只改写这两个与 `surface-fg`）；≤10% `primary` 与状态色。骨架屏与无内容占位背景色归 `accent`，空态提示文字归 `surface-fg`。
-2. 色板只有 22 枚，亮暗各一套（构成与数值见 YAML）。后缀语法全系统一致：背景色不带后缀，文字色加 `-fg`；`-accent` 是强调 / 悬停背景档，没有 `-bg` 档；例外皆显式：画布用全写 `background` / `foreground`。`@theme` 的色彩映射与这 22 枚一一对应，此外没有任何颜色槽位；浮层背景与焦点环是方案机制值，由 `index.css` 派生，不是色板令牌。
+1. 面积预算 **60 / 30 / 10**：约 60% 画布（`background` / `foreground`——方案常量，亮暗各一套定值，不随表面色板移动）；约 30% 次要面与内容容器（`surface` / `accent` 的 bar 容器与悬停填充，加机制值 `surface-raised` 的控件面、卡面与浮层——亮档恒纯白、暗档比画布抬亮一阶，不随表面色板移动，明度分层律见 `ui/schemes.md` 第 21 条）；≤10% `primary` 与状态色。表面色板只改写 `surface` / `surface-fg` / `accent` 三件，画布与卡面不随它移动。骨架屏与无内容占位背景色归 `accent`，空态提示文字归 `foreground`。
+2. 色板只有 24 枚，亮暗各一套（构成与数值见 YAML）。后缀语法全系统一致：背景色不带后缀，文字色加 `-fg`；`-accent` 是强调 / 悬停背景档，没有 `-bg` 档；例外皆显式：画布用全写 `background` / `foreground`。`@theme` 的色彩映射与这 24 枚一一对应，此外没有任何颜色槽位；浮层背景 `--color-surface-raised`（配 `--color-surface-raised-fg`）与井底 `--color-well` 是成对 / 单枚机制值，焦点环、内阴影与投影也是机制值，由 `index.css` 派生，不是色板令牌。
 3. 逐 token 去处：
 
-   1. `background` — 页面底层、主内容区、控件的默认背景色；浮层背景亮档也是它。bar 类容器（顶栏 / 侧栏 / 底栏）不用它，用 `surface`。
-   2. `foreground` — 正文、标题、核心图标的文字色；次要说明文字用 `surface-fg`。
-   3. `surface` — 次要容器背景色：bar 类容器、轻量区块、hero、小标签、表头、rail；不用作主内容区背景。
-   4. `surface-fg` — 次要文字色：辅助文本、说明、占位符、次要图标，也是 `surface` 容器、引用块与禁用态上的文字色。
+   1. `background` — 画布：页面底层、主内容区、站点外框的默认背景色（亮档灰 50 档 98.5，暗档灰 900 档 20.5）；不再兼任最亮位——控件面、卡面与浮层读机制值 `surface-raised`（亮档纯白，暗档灰 800 档 26.9）。实测：`foreground` 对亮画布 18.96:1、对暗画布 16.42:1（AAA）。bar 类容器（顶栏 / 侧栏 / 底栏）不用它，用 `surface`。
+   2. `foreground` — 正文、标题、说明、占位符与核心图标的文字色；画布、透明背景与 `surface-raised` 浮层统一使用它。
+   3. `surface` — 凹槽档背景色：bar 类容器（顶栏 / 侧栏 / 底栏）、轻量区块、hero、表头、斑马行、rail；亮档灰 100 档 97、暗档灰 950 档 14.5，都比画布沉一阶（ΔL 亮 1.5 / 暗 6.0 点）；不用作主内容区背景，也不给控件静置面——那归 `surface-raised`。
+   4. `surface-fg` — `surface` 背景上的表面文字、说明与图标；禁用态文字统一读 `disabled-fg`。
    5. `accent` — 中性强调背景色：悬停高亮、静态区块强调、骨架屏与无内容占位，也是 `border` 的派生源。没有品牌含义，不能替代 `primary` 表示动作，也不用作文字色。
    6. `accent-fg` — `accent` 背景上的文字色。
    7. `border` — 全局唯一边框色（`accent` 的 50% 透明）；所有默认边框、分隔线、表格网格、行内 code 描边由它派生。
    8. `primary` — 品牌色：主按钮、选中 / 激活态、焦点环、状态标记、链接。保持稀缺（一屏一个主操作），禁止大面积铺满卡片或页面背景。
    9. `primary-fg` — `primary` 背景上的文字色。
    10. `primary-accent` — 品牌深化档：激活 / 按压态、焦点高亮；焦点环由它派生。不用作常态背景色。
-   11. `danger-fg` — 错误文字色：错误边框与错误焦点环、危险按钮前景色、状态提示文字。状态色只用于状态，不作装饰。
+   11. `danger-fg` — `danger` 与 `danger-accent` 背景上的文字色；独立错误文字、图标与边框挂 `text-danger-independent` / `border-danger-independent`，亮档读 `danger-fg`、暗档读 `danger`。
    12. `danger` — 错误提示静置背景色。
    13. `danger-accent` — 错误提示悬停背景色。
-   14. `info-fg` — 信息文字色：信息提示与状态提示的文字、链接的语义变体。
+   14. `info-fg` — `info` 与 `info-accent` 背景上的文字色；独立信息文字、图标与边框挂 `text-info-independent` / `border-info-independent`，亮档读 `info-fg`、暗档读 `info`。
    15. `info` — 信息提示静置背景色。
    16. `info-accent` — 信息提示悬停背景色。
-   17. `success-fg` — 成功文字色。
+   17. `success-fg` — `success` 与 `success-accent` 背景上的文字色；独立成功文字、图标与边框挂 `text-success-independent` / `border-success-independent`，亮档读 `success-fg`、暗档读 `success`。
    18. `success` — 成功提示静置背景色。
    19. `success-accent` — 成功提示悬停背景色。
-   20. `warning-fg` — 警示文字色。
+   20. `warning-fg` — `warning` 与 `warning-accent` 背景上的文字色；独立警示文字、图标与边框挂 `text-warning-independent` / `border-warning-independent`，亮档读 `warning-fg`、暗档读 `warning`。
    21. `warning` — 警示提示静置背景色。
    22. `warning-accent` — 警示提示悬停背景色。
+   23. `disabled` — 禁用控件背景色；独立取值，不重映射主题背景或填充。
+   24. `disabled-fg` — 禁用控件文字、图标与边框色；与 `disabled` 保持可读对比。
 
-4. 对比度：全部令牌在亮、暗两档都满足 WCAG AA（≥ 4.5:1）。语义四色当文字色用，暗档一律提亮到文字可读档；层级不靠压暗文字或发光表达。
+4. 对比度：文字、图标与边框按实际背景配对，普通文字在亮、暗两档都满足 WCAG AA（≥ 4.5:1）。独立状态文字、图标与边框挂 `text-<status>-independent` / `border-<status>-independent`，亮档读 `<status>-fg`、暗档读 `<status>`；填充及其悬停背景读对应 `<status>-fg`。层级不靠压暗文字或发光表达。
 
 ## Typography
 
@@ -203,7 +213,7 @@ well:
    | `h2`          | `text-h2`                          | 1.375rem                    | 600  | 章节标题（自带底部分隔线） |
    | `h3`–`h6`     | `text-h3`…`text-h6`                | 1.25 → 1rem                 | 600  | 子章节；**严禁跳级**       |
    | `body`        | `text-base leading-body`           | 1rem / 1.75                 | 400  | 段落                       |
-   | `description` | `text-base` → `sm:text-lg`         | 1rem → 1.125rem             | 400  | `surface-fg` 辅助文字      |
+   | `description` | `text-base` → `sm:text-lg`         | 1rem → 1.125rem             | 400  | `foreground` 说明文字      |
    | `label`       | `text-xs font-semibold tracking-*` | 0.75rem，+0.025em 字距      | 600  | 字段标签、分组标题         |
    | `overline`    | `typo-overline`                    | 0.75rem，大写，最宽字距     | 500  | 章节眉标                   |
    | 行内 code     | `text-sm`（mono）                  | 0.875rem                    | 500  | 标题与正文里的行内代码     |
@@ -222,13 +232,14 @@ well:
 
 ## Elevation & Depth
 
-1. 阴影严格分级，与圆角一一配对，语义四级住 `--elevation-*`：`faint`（sm，发丝元素、极小占位）/ `subtle`（sm，小标签、紧凑行内控件、轻悬浮）/ `base`（md，按钮、输入框、标准卡片静止态）/ `elevated`（xl，弹窗、抽屉、浮层、顶级面板）；第五枚 `--elevation-pressed` 按压内阴影只归组件层。亮档以扩散黑投影为底（大模糊、低不透明度，弥散不锐利），subtle / base / elevated 各追加一层品牌染色柔光——大模糊负扩散的 `color-mix(in oklab, var(--primary) 8% / 14% / 20%, transparent)`（示例值，faint 不加）：默认近黑品牌下柔光呈更大更软的扩散层，品牌换色柔光随主色相染色；暗档不加染色层（着色投影与加倍加深律冲突），每档维持淡白亮环（subtle 7% → elevated 14%）与顶部内高光，投影与亮档严格同形同尺寸、不透明度加倍加深——纯黑投影画在同深度暗画布上需约 2 倍强度才可辨（经验规则）；语义四级之外的自造档位与任意值阴影一律不出现。轻提示角色 `shadow-hint`（Tooltip / Toast 皮肤点名）答 `elevated` 同值，不另设第五档。
-2. 焦点（机制值，`index.css` 的 `--focus-*`）：1px `primary` outline 加 3px `primary` 50% 透明阴影；invalid / danger 转 `danger-fg` 同形阴影。零间隙网格控件（日历日期格）另有内画档 `focus-ring-inset`：outline 与光晕同形内画（offset 取 `--focus-offset` 负值、光晕读 `--focus-glow-inset`），聚焦足迹不超 44×44 控件盒。方案不设全局 `:focus-visible` 兜底——每个可聚焦件由皮肤显式挂 `focus-visible:focus-ring`（danger 挂 `focus-ring-danger`），内层件不挂即无环；环是方案层机制，皮肤只挂角色类、不自绘样式。
+1. 阴影严格分级，与圆角一一配对，语义四级住 `--elevation-*`：`faint`（sm，发丝元素、极小占位）/ `subtle`（sm，小标签、紧凑行内控件、轻悬浮）/ `base`（md，按钮、输入框、标准卡片静止态）/ `elevated`（xl，弹窗、抽屉、浮层、顶级面板）；第五枚 `--elevation-pressed` 按压内阴影只归组件层。亮档以扩散黑投影为底（大模糊、低不透明度，弥散不锐利），subtle / base / elevated 各追加一层品牌染色柔光——大模糊负扩散的 `color-mix(in oklab, var(--primary) 8% / 14% / 20%, transparent)`（示例值，faint 不加）：默认近黑品牌下柔光呈更大更软的扩散层，品牌换色柔光随主色相染色；暗档不加染色层（着色投影与加倍加深律冲突），每档维持淡白亮环（subtle 7% → elevated 14%）与顶部内高光，投影与亮档严格同形同尺寸、不透明度加倍加深——纯黑投影画在同深度暗画布上需约 2 倍强度才可辨（经验规则）；语义四级之外的自造档位与任意值阴影一律不出现。轻提示角色 `shadow-hint`（Tooltip / Toast 皮肤点名）答 `elevated` 同值，不另设第五档。选中/未选中环 `shadow-checked` / `shadow-unchecked`（Radio / Checkbox / ColorSwatch）是 blur 0 双环不是阴影，几何四案同构、足迹同档，不占阴影档位。
+2. 焦点（机制值，`index.css` 的 `--focus-*`）：1px `primary` outline 加 3px `primary` 50% 透明阴影；invalid / danger 在亮档转 `danger-fg`、暗档转 `danger`，轮廓与光晕同形。零间隙网格控件（日历日期格）另有内画档 `focus-ring-inset`：outline 与光晕同形内画（offset 取 `--focus-offset` 负值、光晕读 `--focus-glow-inset`），聚焦足迹不超 44×44 控件盒。方案不设全局 `:focus-visible` 兜底——每个可聚焦件由皮肤显式挂 `focus-visible:focus-ring`（danger 挂 `focus-ring-danger`），内层件不挂即无环；环是方案层机制，皮肤只挂角色类、不自绘样式。
 3. 边界系统（发丝是唯一宽度）：全局中性组件默认边框 = `var(--border)`；品牌交互组件统一走 Brand 色板。输入类规范形态「边框 + `base` 阴影」成套，边框不裸用；裸边框只给微小指示器（Checkbox / Radio / Steps marker）、虚线占位、分隔结构线、浮层内嵌面板。
 4. 边框与阴影二选一：带边框的盒子再叠大阴影即 Ghost card，出现即改。
 5. 控件边框与宿主互补：无边框宿主上的操作控件必须自带边框；已有边界线的宿主内行内控件只用文字 / 填充形态。
 6. 容器自带边界，宿主负责复位：可独立承载内容的容器（列表视口、折叠根、卡片、浮层面板）边框写在方案里，消费方不补；嵌进别的组件时宿主复位（去边框 + 去圆角）。业务侧出口 `data-border="none | solid"`。
 7. 滚动条：全方案统一 6px 常显经典滚动条——`::-webkit-scrollbar` 定宽、thumb 答 `var(--border)`、track 与 corner 透明、箭头按钮隐藏；Firefox 车道（`@-moz-document`）标准属性答 `thin` + `var(--border)`。标准属性不得出现在 Chromium——非初始值会丢弃 webkit 定档、退化为覆盖式滚动条自动隐藏；组件层一律不设 scrollbar 样式。
+8. 明度阶梯（用户定 2026-11-25，方向律与角色归属的正本在 `ui/schemes/elevation.md`）：静态中性档沿 Tailwind 灰族具名阶一阶一阶排布，亮档由低到高为井底 `well` 灰 200 档 92.2 → 凹槽 `surface` 灰 100 档 97 → 画布 `background` 灰 50 档 98.5 → 凸起 `surface-raised` 纯白（画布与纯白只差一阶）；暗档同向不反相：`surface` 与 `well` 同答灰 950 档 14.5（暗档关井）→ 画布灰 900 档 20.5 → 凸起灰 800 档 26.9。相邻档实测 ΔL 亮 4.8 / 1.5 / 1.5 点、暗 0 / 6.0 / 6.4 点，三档静态互不相等、一眼能分即达标；`accent` 悬停档另在阶梯之外（亮灰 300 档 87、暗灰 700 档 37.1），对三档的最小道距亮 10.0 / 暗 10.2 点。凸起层由皮肤显式挂 `bg-surface-raised` 配 `text-surface-raised-fg` 才吃到明度阶；轨道族与输入井面读 `--color-well`，壳层 bar / rail / 表头读 `--color-surface`。
 
 ## Motion
 
@@ -237,14 +248,14 @@ well:
 3. 按压唯一入口是 `crush` 工具类（translate 归零 + `brightness(0.95)`，内凹阴影经 `--press-inset-delay` 80ms 延迟跟进——先落回再内凹，释放走基础 `motion-frame` 立即回弹）；禁止手写 `translate-(--translate-crush)` 丢掉压暗。
 4. 悬停阴影两车道：按钮类不升档（`shadow-frame-hover` 与静止同档，反馈靠 lift 纵向上移半步 / crush）；容器与交互卡升一档（`shadow-block-hover` 即 elevated）。滑块拇指、对话框关闭钮这类小控件按按钮类处理，禁止 hover 升 elevated。
 5. 减动效契约：`prefers-reduced-motion: reduce` 或 `data-motion="reduce"` 时全部时长令牌清零、CSS 动画压到 1ms；JS 侧动效读 `useMotionPreference`。任何绕过令牌的时长都等于绕过契约。
-6. 透明度豁免清单（全方案仅此六条，其余弱化态不在其中）：`border` 令牌自身的 50% 洗边、禁用契约的 50%、悬停显现过渡的 0↔100（tooltip、toast 关闭钮、字段提示）、遮罩渐隐（scroll-shadow 的画布色渐变）、图表数据编码的透明度（`fill-opacity` 与 donut / radar 的降权 dim——图表以透明度叠色为媒介）、日历外月日期文字的 50% 透明（`text-foreground/50` 文字色 alpha 而非元素 opacity，对画布实测约 3.7:1，用户接受取舍 2026-11-20）。其余弱化态一律 `surface-fg` 文字色或图形差异（划线、换色）表达，不用 opacity。
+6. 透明度豁免清单（全方案仅此五条，其余弱化态不在其中）：`border` 令牌自身的 50% 洗边、悬停显现过渡的 0↔100（tooltip、toast 关闭钮、字段提示）、遮罩渐隐（scroll-shadow 的画布色渐变）、图表数据编码的透明度（`fill-opacity` 与 donut / radar 的降权 dim——图表以透明度叠色为媒介）、日历外月日期文字的 50% 透明（`text-foreground/50` 文字色 alpha 而非元素 opacity，对画布实测约 3.7:1，用户接受取舍 2026-11-20）。其余弱化态按背景配对选择 `foreground` / `surface-fg`，或用图形差异（划线、换色）表达，不用 opacity。
 
 ## Shapes
 
 1. 圆角四档加胶囊，永远与阴影档一致：`sm` 8px 行内标签 / `md` 12px 输入与字段族触发件 / `lg` 16px 独立区块卡 / `xl` 24px 大卡与浮层外壳 / `full` 装饰圆（时间线节点、徽标圆点）/ `disc` 头像（答 `pill`，全圆）/ `pill` 胶囊（按钮、按下钮、特性胶囊、进度条、开关轨道、单选框——按钮族默认成圆）。
 2. 本方案重映射为柔和阶梯（`sm`/`md`/`lg`/`xl` = 8/12/16/24px，`@theme` 显式声明，不再依赖核心默认刻度）；只用这几档，`xs` / `2xl` / `3xl` / `4xl` 属别的风格语言，本方案不出现。静态的 `rounded-full` 谁也答不成 0，所以胶囊与头像圆写 `rounded-pill` / `rounded-disc`，由各方案回答。
 3. 连体控制组（拼接输入 + 按钮）内角压平为 0，只保留首尾端帽。
-4. 轨道族（滑块 / 进度条 / 开关轨）：半径一律胶囊 `pill`、无描边、纯色块，未填充底 `surface`、填充 `primary`；轨道一律连续条，格子形态不进本方案——输入滑块的反馈靠值气泡与按压，不靠格子与速度波。
+4. 轨道族（滑块 / 进度条 / 开关轨）：半径一律胶囊 `pill`、无描边、纯色块，未填充底挂井底 `bg-well`（机制值 `--color-well`，见 Elevation 第 8 条）、填充 `primary`；轨道一律连续条，格子形态不进本方案——输入滑块的反馈靠值气泡与按压，不靠格子与速度波。
 
 ## Components
 
@@ -254,11 +265,11 @@ well:
 
    1. Input / Select 触发器 / 字段壳：`background` 背景色 + `foreground` 前景色，`md` 圆角 + `base` 阴影，`--height-field` 下限。
    2. Card：`background` 背景色 + `foreground` 前景色，`lg` 圆角，盒内 `p-4`（固定档，体量差异由圆角档承担），流体尺寸。
-   3. 浮层（Dialog / Drawer / Menu / Popover / Tooltip / 命令面板）：浮层背景（机制值：亮档即 `background`，暗档自动提亮一档）+ `foreground` 文字色，`xl` 圆角 + `border-frame` 描边 + `elevated` 阴影——浮层一律带框，无框派不出现。
+   3. 浮层（Dialog / Drawer / Menu / Popover / Tooltip / 命令面板）：浮层背景（机制值 `surface-raised`：亮档纯白、暗档比画布提亮一档）+ `foreground` 文字色，`xl` 圆角 + `border-frame` 描边 + `elevated` 阴影——浮层一律带框，无框派不出现。
    4. bar 形态容器（顶栏 / 侧栏 / 底栏 / hero）：`surface` 背景色 + `surface-fg` 前景色，靠边界线分区，不叠阴影。
    5. 状态块与状态标签：静态背景取 `<status>` 静置背景色，文字取对应 `<status>-fg`；状态色只用于状态，不作装饰、不当大面积背景色。
    6. Toc：长文栏 80rem 分界线归它自己，不占 Layout 三档断点。
-4. 组容器井（well）：字段壳不挂框距（`--padding-well` 答 0——关井只去框距，与扁平极简同法），井（输入元素 / 值区 / 多行域）挂 `bg-well`（`--color-well` 读 `surface`）+ `shadow-well`（`--shadow-well` 双向内阴影，单一光源左上——暗影落在井口上缘、亮光补在对缘；亮暗各答，数值见 YAML `well` 块，经验规则）+ 同心式圆角（`radius-md − frame 边宽`，式见 delivery `references/skin-rules.md` 第 17 条）。Segment 分段壳自成井道：井底 / 井内阴影同读 well 令牌，框距取 `p-1.5`、外壳 `rounded-lg`，选中项衬底为 `background` 浮起药丸、选中文字转 `primary`（取值以皮肤蓝图 `ui/skins/segment.md` 为准）。完全关井 = 框距 0 + 井底读 `background`，读法退回纯容器形态。
+4. 组容器井（well）：字段壳不挂框距（`--padding-well` 答 0——关井只去框距，与扁平极简同法），井（输入元素 / 值区 / 多行域）挂 `bg-well`（`--color-well` 读自答的 `--well` 档——亮档灰 200 档 92.2，比凹槽 `surface` 再沉一阶；暗档与 `surface` 同值灰 950 档 14.5，即暗档关井）+ `shadow-well`（`--shadow-well` 双向内阴影，单一光源左上——暗影落在井口上缘、亮光补在对缘；亮暗各答，数值见 YAML `well` 块，经验规则）+ 同心内圆角读 `--radius-field-inner` / `--radius-well-inner` 派生令牌（式见 delivery `references/skin-rules.md` 第 17 条）。Segment 分段壳自成井道：井底 / 井内阴影同读 well 令牌，框距取 `p-1.5`、外壳 `rounded-lg`，选中项衬底为 `background` 浮起药丸、选中文字转 `primary`（取值以皮肤蓝图 `ui/skins/segment.md` 为准）。完全关井 = 框距 0 + 井底读 `background`，读法退回纯容器形态。
 
 ## Do / Don't（方案语言边界）
 
@@ -266,7 +277,7 @@ well:
 2. 阴影档与圆角档成对出现；边框与阴影二选一——「边框 + 大阴影」叠用即 Ghost card，出现即改；静态 Card 加 hover 动效同禁。
 3. 焦点环原样保留——它是无障碍的下限。
 4. 亮 / 暗两档镜像同一套语义，暗档靠提亮浮层表面与白亮环表达深度；禁止白色模糊外发光。
-5. 层级禁止表达成透明度调深浅 / 灰字弱化；非当前态的弱化（图例隐藏、降权图标）用 `surface-fg` 文字色或图形差异表达，不用 opacity——透明度只出现在 Motion §6 的豁免清单里（日历外月见其第六条）。
+5. 层级禁止表达成透明度调深浅 / 灰字弱化；非当前态的弱化（图例隐藏、降权图标）按背景配对选择 `foreground` / `surface-fg`，或用图形差异表达，不用 opacity——透明度只出现在 Motion §6 的豁免清单里（日历外月见其第六条）。
 6. 禁止手写焦点 / 禁用 / hover / 按压样式：交互态归方案层。
 7. 通用外观禁令见 delivery 技能，无障碍下限见 ui-rules 技能，此处不重述。
 8. 交付自检：替换示例内容后页面仍一眼识别为极简——**灰阶 + 一处品牌色 + 发丝边界 + 扩散柔影 + 大圆角**；没有任一元素跳出五档间距或四级阴影；亮 / 暗两档来回切无破相。克制不等于空：密度靠排版与留白建立，不靠把元素调淡——宁可少一种颜色，不可少一个状态。

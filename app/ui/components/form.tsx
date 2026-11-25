@@ -65,12 +65,13 @@ export type FormRef = {
     submit: () => void;
 };
 type FormProps = Omit<React.ComponentProps<"form">, "action" | "onSubmit" | "ref"> & {
+    size?: "sm" | "md" | "lg" | "xl";
     onSubmit: (values: FormValues) => Promise<boolean>;
     autoReset?: boolean;
     onReset?: () => void;
     ref?: React.Ref<FormRef>;
 };
-export function Form({ children, onSubmit, className, ref: externalRef, autoReset = true, onReset, ...props }: FormProps) {
+export function Form({ children, onSubmit, size = "lg", className, ref: externalRef, autoReset = true, onReset, ...props }: FormProps) {
     const internalRef = React.useRef<HTMLFormElement>(null);
     const elementsRef = React.useRef<Map<string, Entry>>(new Map());
     const fieldsRef = React.useRef<Map<string, FieldApi>>(new Map());
@@ -228,7 +229,7 @@ export function Form({ children, onSubmit, className, ref: externalRef, autoRese
     }, [runAction]);
     const contextValue = React.useMemo(() => ({ isPending, register, unregister, registerField, unregisterField, formValues, setFormValues }), [isPending, register, unregister, registerField, unregisterField, formValues]);
     return (<FormContext.Provider value={contextValue}>
-      <form ref={internalRef} onSubmit={handleSubmit} noValidate className={className} {...props}>
+      <form ref={internalRef} onSubmit={handleSubmit} noValidate data-size={size} className={className} {...props}>
         {children}
       </form>
     </FormContext.Provider>);

@@ -25,10 +25,10 @@ function renderPriority(row: Task) {
     <span
       className={
         row.priority === "high"
-          ? "font-medium text-danger-fg"
+          ? "font-medium text-danger-independent group-hover/table:text-inherit"
           : row.priority === "medium"
-            ? "text-warning-fg"
-            : "text-surface-fg"
+            ? "text-warning-independent"
+            : "text-foreground"
       }
     >
       {row.priority}
@@ -47,7 +47,6 @@ export default function Demo() {
     <div className="flex w-full flex-col justify-center gap-y-2">
       <Table
         selectable
-        className="w-full"
         data={tasks.slice(0, PAGE_SIZE)}
         rowKey={(row) => row.id}
         selected={selected}

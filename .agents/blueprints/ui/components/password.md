@@ -12,4 +12,5 @@
 - 提示 span（文本 `⇧ Shift`）用 `useId` 取 id，始终拼进 input 的 `aria-describedby`（保留外部值，trim 去空）
 - 字段 props：`label` / `description` / `validate` / `validateTrigger` 任一传入即组装内部 Field 机制（render-prop，input 上接线 `id` / `name` / `aria-describedby` / `aria-invalid` / `data-invalid`，外部值与 Shift 提示 id 并存），控件单独使用即具备完整字段行为；全部未传保持纯密码框 DOM
 - `invalid` 同步到组 `data-invalid` 与 input `aria-invalid`；`disabled` 透传 input 与按钮
-- 槽位：`classNames: root / toggle / toggleIcon / hint`；`styles: root / toggle / hint`
+- 槽位：`classNames: root / toggle / toggleIcon / hint`；`styles: root / toggle / hint`；classNames 全为 string
+- 禁用遵循 `ui/schemes.md` 第 8 条：input 与 toggle 原生 disabled，Shift 手势由 JS 阻断；皮肤完整替换 shell/root/toggle 正常类串后用 `mergeSlots` 合并覆盖，保留布局并显式禁用色与 `cursor-not-allowed`

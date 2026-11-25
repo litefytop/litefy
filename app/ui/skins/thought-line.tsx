@@ -4,7 +4,7 @@ import { cn, mergeSlots } from "../utils/cn";
 import { latticeLoaderClasses, latticeLoaderRootClasses } from "./lattice-loader";
 
 const rootClasses =
-  "group/thought flex flex-col items-start gap-y-1 text-sm leading-5 font-field text-foreground";
+  "group/thought flex w-full min-w-0 flex-col items-start gap-y-1 text-sm leading-5 font-field text-foreground";
 
 const lineClasses =
   "flex w-fit items-center gap-x-2 text-left " +
@@ -16,7 +16,7 @@ const glyphClasses =
 const bodyClasses = "grid min-w-0 items-center gap-x-2";
 
 const labelBaseClasses =
-  "col-start-1 row-start-1 block min-w-0 whitespace-nowrap transition-[opacity,filter] duration-sm ease-frame";
+  "col-start-1 row-start-1 block min-w-0 whitespace-nowrap transition-[opacity,filter] duration-sm";
 const labelWorkClasses = "motion-safe:group-data-[working=true]/thought:animate-pulse";
 const labelIdleClasses =
   "group-data-[working=false]/thought:pointer-events-none group-data-[working=false]/thought:opacity-0 " +
@@ -33,10 +33,10 @@ const doneShowClasses =
 
 const doneClasses = cn(doneBaseClasses, doneShowClasses);
 
-const timerClasses = "col-start-2 row-start-1 shrink-0 font-mono text-xs leading-4 text-surface-fg tabular-nums";
+const timerClasses = "col-start-2 row-start-1 shrink-0 font-mono text-xs leading-4 text-foreground tabular-nums";
 
 const chevronClasses =
-  "size-4 shrink-0 text-surface-fg transition-transform duration-sm ease-frame " +
+  "size-4 shrink-0 text-foreground transition-transform duration-sm ease-frame " +
   "group-data-[open=true]/thought:rotate-180";
 
 const stepsClasses =
@@ -46,7 +46,7 @@ const stepsClasses =
 const stepsShellClasses = "min-h-0 overflow-hidden";
 
 const stepClasses =
-  "flex items-center gap-x-2 py-0.5 text-sm leading-5 text-surface-fg " +
+  "flex items-center gap-x-2 py-0.5 text-sm leading-5 text-foreground " +
   "data-[current=true]:text-foreground";
 
 const stepMarkerClasses =

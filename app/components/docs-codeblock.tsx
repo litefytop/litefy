@@ -77,7 +77,7 @@ export function CodeCopyButton({ code }: { code: string }) {
         aria-label={locale === "zh" ? "复制代码" : "Copy code"}
         icon={
           copied ? (
-            <Check className="size-4 text-success-fg" aria-hidden />
+            <Check className="size-4 text-success-independent" aria-hidden />
           ) : (
             <Copy className="size-4" aria-hidden />
           )

@@ -73,7 +73,7 @@ export const Checkbox = ({ className, style, children, checked, defaultChecked, 
         onCheckedChange?.(next);
     };
     return (<CheckboxLabel className={[classNames?.label, className].filter(Boolean).join(" ")} style={style}>
-      <CheckboxIndicator className={classNames?.indicator} style={styles?.indicator}>
+      <CheckboxIndicator data-selected={checked$ || indeterminate || undefined} className={classNames?.indicator} style={styles?.indicator}>
         <CheckboxRoot {...props} indeterminate={indeterminate} disabled={disabled} checked={checked$} onChange={handleChange} className={classNames?.input}/>
         {indicator ?? (indeterminate ? <Minus className={classNames?.icon}/> : checked$ ? <Check className={classNames?.icon}/> : null)}
       </CheckboxIndicator>

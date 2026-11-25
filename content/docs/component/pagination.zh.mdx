@@ -29,7 +29,7 @@ description: 受控的页码导航——首页 / 上一页 / 页码（带省略�
 | `siblingCount` | `number`                                                  | 当前页两侧展示的页码数量，超出部分折叠为省略号，默认 `1`          |
 | `summary`      | `React.ReactNode`                                         | 位于左侧的分页统计文本插槽                           |
 | `className`    | `string`                                                  | 自定义类名，作用于根 `nav`                        |
-| `classNames`   | `{ controls?, nav?, pages?, page?, ellipsis?, summary? }` | 各部件自定义类名：按钮组、四个首尾按钮、页码组、单个页码按钮、省略号、分页文本 |
+| `classNames`   | `{ controls?: string; nav?: SlotClassName; pages?: string; page?: string; ellipsis?: string; summary?: string }` | `nav` 接收 `({ disabled }) => string`；四个导航按钮到达首尾边界时 `disabled` 为 `true`，其余槽为固定类名 |
 | `styles`       | `{ controls?, nav?, pages?, page?, ellipsis?, summary? }` | 同一批部件的自定义行内样式                           |
 
 ### 可组合组件
@@ -45,7 +45,7 @@ description: 受控的页码导航——首页 / 上一页 / 页码（带省略�
 | `PaginationEllipsis` | `<span>` | - | 折叠页码标记（`MoreHorizontal`） |
 | `PaginationSummary` | `<span>` | - | 分页文本插槽 |
 
-当前页页码带 `aria-current="page"`。
+当前页页码带 `aria-current="page"`。到达首尾边界的导航按钮原生 `disabled`，使用 `text-disabled-fg` 与 `cursor-not-allowed`，不再响应点击或进入 Tab 序。
 
 ## 键盘交互
 

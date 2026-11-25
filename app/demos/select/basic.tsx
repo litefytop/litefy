@@ -30,7 +30,6 @@ export default function SelectBasicDemo() {
       onValueChange={setSelectedValue}
       options={options}
       placeholder="Select a technology..."
-      className="w-77 min-w-33"
     />
   );
 }

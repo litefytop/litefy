@@ -1,6 +1,6 @@
 ---
 title: 日期区间
-description: 单日历面板点两次选出起止日期，选定起点后悬停即时预览区间，整条区间连续高亮
+description: 单日历面板点两次选出起止日期，选定起点后悬停即时预览区间，起点、终点与中间日期统一高亮
 ---
 
 ## 安装
@@ -9,13 +9,13 @@ description: 单日历面板点两次选出起止日期，选定起点后悬停�
 
 ## 用法
 
-单日历面板点两次选出起止日期，选定起点后悬停即时预览区间带，两端实心、中间连续高亮连成一条带。
+单日历面板点两次选出起止日期，起点、终点与中间日期统一使用 `bg-primary` 与 `text-primary-fg` 激活，所有日期格均无圆角。
 
 <ComponentPreview name="date-range-picker-basic" />
 
 ### 禁用
 
-添加 disabled 属性禁用日期范围选择。
+`disabled` 同时原生禁用输入框、关闭按钮与日历控件，打开、清空、区间选择和键盘处理由 JavaScript 阻断；禁用日期独占 `rounded-none`、`bg-disabled`、`text-disabled-fg` 与 `cursor-not-allowed`，不叠加悬停、激活或月外样式。
 
 <ComponentPreview name="date-range-picker-disabled" />
 
@@ -26,12 +26,12 @@ description: 单日历面板点两次选出起止日期，选定起点后悬停�
 | 阶段 | 行为 |
 | --- | --- |
 | 等待起点 | 点第一次写入起点，切到等待终点 |
-| 等待终点 | 悬停任意日期即时预览「起点 → 悬停日」的区间带，移出网格即清空预览 |
+| 等待终点 | 悬停可用日期即时预览「起点 → 悬停日」的区间带，移出网格即清空预览 |
 | 完成 | 点第二次若日期不早于起点则提交并关闭；更早则把它当作新起点。允许起点等于终点 |
 
 `Esc` 关闭面板但保留已选起点，下次打开继续等待终点。打开面板时尾部日历图标换成关闭图标，点击它或按 `Backspace` 清除已选值且面板保持打开；无值时点击关闭图标无动作，`clearText` 是关闭图标的 `aria-label`。面板不放步骤提示，两步选择的引导由输入框占位文案与悬停预览承担。
 
-选中区间的连续高亮带由皮肤的 `calendarRangeClasses` 按 `data-range` 绘制，`DatePicker` 的单值外观不受影响。
+选中区间与悬停预览统一使用 Calendar 的激活外观，`start`、`end` 与 `between` 的角色只由 `data-range` 保留；`DatePicker` 的单值外观不受影响。
 
 ### DateRangePicker
 
@@ -46,12 +46,14 @@ description: 单日历面板点两次选出起止日期，选定起点后悬停�
 | `weekdayLabels` / `monthLabels` | `string[]`                                            | 国际化时整体替换星期与月份名，默认 英文缩写 / 英文月份                                  |
 | `isDateDisabled`                | `(date: Date) => boolean`                             | 禁用日期                                                           |
 | `firstDayOfWeek`                | `0 \| 1`                                              | 周起始日，默认 `0`                                                    |
-| `disabled`                      | `boolean`                                             | 禁用态，默认 `false`                                                 |
-| `classNames` / `styles`         | `DateRangePickerClassNames` / `DateRangePickerStyles` | 槽位类串与内联样式                                                      |
+| `disabled`                      | `boolean`                                             | 原生禁用输入框、关闭按钮与日历，并关闭面板，默认 `false`             |
+| `className`                    | `string`                                              | 字段根节点自定义类名，与 `classNames.root` 合并；默认最大宽度 20rem             |
+| `classNames`                   | `{ root?: string; input?: string; trailing?: string; trailingClose?: string; popover?: string; panel?: string; invalid?: string; calendar?: CalendarClassNames }` | `root` 控制字段根节点，`input` 控制内部输入框，`popover` 控制浮层，`panel` 控制日历面板；浮层默认最大宽度 20rem，并受视口宽度减 1rem 限制 |
+| `styles`                      | `{ root?: React.CSSProperties; input?: React.CSSProperties; trailing?: React.CSSProperties; popover?: React.CSSProperties; panel?: React.CSSProperties; invalid?: React.CSSProperties }` | 根节点、输入框、尾部、浮层、日历面板与错误提示内联样式；`styles.root` 已生效，没有 `trailingClose` 或 `calendar` 样式槽位 |
 
 ### 与 Calendar 的关系
 
-组件复用 `Calendar` 的网格、方向键焦点跳转与月/年视图。`Calendar` 增加可选属性 `range` / `weekdayLabels` / `monthLabels` / `onHoverDateChange`，不传时行为完全不变，`DatePicker` 无需改动。日历格按 `data-range` 发出 `start` / `end` / `between` / `single` 四种状态。
+组件复用 `Calendar` 的网格、方向键焦点跳转与月/年视图。`Calendar` 增加可选属性 `range` / `weekdayLabels` / `monthLabels` / `onHoverDateChange`，不传时行为完全不变，`DatePicker` 无需改动。日历格按 `data-range` 发出 `start` / `end` / `between`，三种角色都使用相同的 `bg-primary` 与 `text-primary-fg` 激活外观，均无圆角。
 
 浮层沿用 `popover="manual"`，渲染在 top layer，因此放在带 `overflow-hidden` 的表格表头里也不会被裁剪。面板宽度按日历自身尺寸计算（`7 × --width-control + 6 × --spacing`，随主题变化），不跟随窄字段压缩；极窄视口只加宽度上限与横向滚动。
 
@@ -59,6 +61,7 @@ description: 单日历面板点两次选出起止日期，选定起点后悬停�
 
 | 属性 | 值 | 描述 |
 | --- | --- | --- |
-| `data-range` | `start` / `end` / `between` / `single` | 日历格在区间中的角色 |
-| `data-in-range` | `true` | 日历格位于选中区间内 |
+| `data-range` | `start` / `end` / `between` | 日历格在区间中的角色 |
+| `data-in-range` | `true` | 日历格位于选中或悬停预览区间内 |
 | `data-slot` | `date-range-panel` | 面板结构标记 |
+| `data-disabled` | `true` | 根元素上的整组件禁用标记 |

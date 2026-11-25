@@ -23,12 +23,16 @@
 
   --swipe-action-w: 4rem;
 
-  --background: oklch(99.2% 0.005 236);
+  --background: oklch(97.7% 0.009 236);
   --foreground: oklch(17.5% 0.032 243);
-  --surface: oklch(95% 0.026 236.824);
+  --surface: oklch(95.1% 0.018 236);
   --surface-fg: oklch(29.4% 0.066 243.157);
-  --surface-raised: var(--background);
-  --accent: oklch(90.1% 0.058 230.902);
+  --well: oklch(90.1% 0.058 230.902);
+  --disabled: oklch(95.1% 0.018 236);
+  --disabled-fg: oklch(29.4% 0.066 243.157);
+  --surface-raised: oklch(100% 0 0);
+  --surface-raised-fg: var(--foreground);
+  --accent: oklch(82.8% 0.09 224);
   --accent-fg: oklch(29.4% 0.066 243.157);
   --border: color-mix(in oklab, var(--foreground) 14%, transparent);
 
@@ -58,9 +62,11 @@
   --shadow-block: none;
   --shadow-block-hover: none;
   --shadow-surface: none;
-  --shadow-focus: none;
   --shadow-checked: 0 0 0 2px var(--background), 0 0 0 4px var(--primary);
+  --shadow-unchecked: 0 0 0 2px var(--background), 0 0 0 4px var(--surface-fg);
   --shadow-well: none;
+  --radius-field-inner: max(0px, calc(var(--radius-md) - var(--padding-well) - var(--border-width-frame)));
+  --radius-well-inner: max(0px, calc(var(--radius-lg) - var(--spacing)*1.5 - var(--border-width-frame)));
   --stroke-cap: butt;
   --stroke-join: miter;
 
@@ -76,6 +82,11 @@
   --warning-fg: oklch(42.1% 0.095 57.708);
   --warning: oklch(90.5% 0.182 98.111);
   --warning-accent: oklch(94.5% 0.129 101.54);
+
+  --text-danger-independent: var(--danger-fg);
+  --text-info-independent: var(--info-fg);
+  --text-success-independent: var(--success-fg);
+  --text-warning-independent: var(--warning-fg);
 
   --pad-block: 3rem;
 
@@ -99,11 +110,15 @@
 .dark {
   color-scheme: dark;
 
-  --background: oklch(16.5% 0.03 243);
+  --background: oklch(21.5% 0.04 243);
   --foreground: oklch(96% 0.012 236);
-  --surface: oklch(29.4% 0.066 243.157);
+  --surface: oklch(16.5% 0.03 243);
   --surface-fg: oklch(90.1% 0.058 230.902);
-  --surface-raised: var(--surface);
+  --well: oklch(16.5% 0.03 243);
+  --disabled: oklch(16.5% 0.03 243);
+  --disabled-fg: oklch(90.1% 0.058 230.902);
+  --surface-raised: oklch(29.4% 0.066 243.157);
+  --surface-raised-fg: var(--foreground);
   --accent: oklch(37.9% 0.078 243.435);
   --accent-fg: oklch(90.1% 0.058 230.902);
   --border: color-mix(in oklab, var(--foreground) 14%, transparent);
@@ -113,6 +128,7 @@
   --primary: oklch(68.5% 0.169 237.323);
   --primary-fg: oklch(16.5% 0.03 243);
   --primary-accent: oklch(74.6% 0.16 232.661);
+  --focus-outline-danger: 2px solid var(--danger);
 
   --danger-fg: oklch(39.6% 0.141 25.723);
   --info-fg: oklch(37.9% 0.146 265.522);
@@ -128,6 +144,11 @@
   --info: oklch(88.2% 0.059 254.128);
   --success: oklch(92.5% 0.084 155.995);
   --warning: oklch(94.5% 0.129 101.54);
+
+  --text-danger-independent: var(--danger);
+  --text-info-independent: var(--info);
+  --text-success-independent: var(--success);
+  --text-warning-independent: var(--warning);
 }
 
 /* Compact ramp — three-scheme mechanism values (ui/schemes.md rule 11). */
@@ -147,8 +168,6 @@
 @custom-variant borderless (&:where([data-border="none"]));
 @custom-variant bordered (&:where([data-border="solid"]));
 
-@custom-variant inert (&[inert]);
-
 @custom-variant motion-safe {
   @media (prefers-reduced-motion: no-preference) {
     @slot;
@@ -165,8 +184,11 @@
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
   --color-surface-fg: var(--surface-fg);
+  --color-disabled: var(--disabled);
+  --color-disabled-fg: var(--disabled-fg);
   --color-surface-raised: var(--surface-raised);
-  --color-well: var(--surface);
+  --color-surface-raised-fg: var(--surface-raised-fg);
+  --color-well: var(--well);
   --color-accent: var(--accent);
   --color-accent-fg: var(--accent-fg);
   --color-border: var(--border);
@@ -185,6 +207,10 @@
   --color-warning: var(--warning);
   --color-warning-fg: var(--warning-fg);
   --color-warning-accent: var(--warning-accent);
+  --color-danger-independent: var(--text-danger-independent);
+  --color-info-independent: var(--text-info-independent);
+  --color-success-independent: var(--text-success-independent);
+  --color-warning-independent: var(--text-warning-independent);
 
   --shadow-*: initial;
   --shadow-faint: none;
@@ -256,6 +282,7 @@
   --border-width-hair: 1px;
   --border-width-frame: 1px;
   --padding-control-x: 0.75rem;
+  --padding-pill-x: max(var(--spacing)*3, min(var(--radius-pill), var(--height-control)/2));
   --text-label: 0.8125rem;
   --leading-label: 1.25rem;
   --tracking-label: 0.01em;
@@ -284,6 +311,65 @@
   font-weight: var(--font-weight-strong);
 }
 
+@utility control-label {
+  font-family: var(--font-mono);
+  font-weight: var(--font-weight-strong);
+  letter-spacing: var(--tracking-label);
+  text-transform: var(--text-transform-label);
+}
+
+@utility control-text {
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+  font-family: var(--font-mono);
+  font-weight: var(--font-weight-strong);
+  letter-spacing: var(--tracking-label);
+  text-transform: var(--text-transform-label);
+}
+
+@utility group-seam {
+  & > *:not(:first-child):not(:last-child) {
+    border-radius: 0;
+  }
+  & > *:first-child:not(:last-child) {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+  & > *:last-child:not(:first-child) {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
+}
+
+@utility field-seam {
+  & > input:not(:first-child) {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
+  & > input:has(+ [data-field-trailing]) {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+}
+
+@utility field-invalid {
+  &:is([data-invalid="true"], [aria-invalid="true"]) {
+    border-color: var(--color-danger-independent);
+  }
+  &:is([data-invalid="true"], [aria-invalid="true"]):focus-within {
+    outline: var(--focus-outline-danger);
+    outline-offset: var(--focus-offset);
+    box-shadow: var(--shadow-frame-focus-danger);
+  }
+}
+
+@utility pure-icon {
+  &[data-pure-icon="true"] {
+    aspect-ratio: 1 / 1;
+    padding: 0;
+  }
+}
+
 @utility motion-frame {
   transition-property: var(--transition-frame-properties);
   transition-duration: var(--transition-duration-frame);
@@ -297,6 +383,10 @@
 @utility crush {
   translate: var(--translate-crush) var(--translate-crush);
   filter: var(--press-filter);
+}
+
+@utility press-frame {
+  @apply hover:lift hover:shadow-frame-hover active:crush active:shadow-frame-active;
 }
 
 @utility shadow-frame {
@@ -327,12 +417,12 @@
   box-shadow: var(--shadow-surface);
 }
 
-@utility shadow-focus {
-  box-shadow: var(--shadow-focus);
-}
-
 @utility shadow-checked {
   box-shadow: var(--shadow-checked);
+}
+
+@utility shadow-unchecked {
+  box-shadow: var(--shadow-unchecked);
 }
 
 @utility shadow-well {
@@ -355,12 +445,6 @@
   outline: var(--focus-outline);
   outline-offset: calc(-1 * var(--focus-offset));
   box-shadow: var(--focus-glow-inset);
-}
-
-@utility dim {
-  opacity: 50%;
-  cursor: not-allowed;
-  color: var(--color-surface-fg);
 }
 
 @utility thumb-hit {
@@ -445,12 +529,12 @@
 @utility typo-body {
   font-size: var(--text-base);
   line-height: var(--leading-body);
-  color: color-mix(in oklab, var(--foreground) 92%, var(--surface-fg));
+  color: var(--foreground);
 }
 
 @utility typo-quote {
   line-height: var(--leading-body);
-  color: var(--surface-fg);
+  color: var(--foreground);
   border-inline-start: 2px solid var(--border);
   padding-inline-start: 1rem;
 }
@@ -473,6 +557,7 @@
   border: 1px solid var(--border);
   border-radius: 0px;
   background-color: var(--surface);
+  color: var(--surface-fg);
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
@@ -524,6 +609,11 @@
   background-image: var(--fill-background, none);
 }
 
+@utility bg-disabled {
+  background-color: var(--color-disabled);
+  background-image: none;
+}
+
 @utility bg-surface {
   background-color: var(--color-surface);
   background-image: var(--fill-surface, none);
@@ -537,6 +627,11 @@
 @utility bg-primary-accent {
   background-color: var(--color-primary-accent);
   background-image: var(--fill-primary-accent, none);
+}
+
+@utility bg-primary-solid {
+  background-color: var(--color-primary);
+  background-image: none;
 }
 
 @utility bg-accent {

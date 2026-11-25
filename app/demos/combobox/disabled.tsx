@@ -14,5 +14,9 @@ const countries = [
 ];
 
 export default function Demo() {
-  return <Combobox options={countries} defaultValue="China" disabled placeholder="Select a country" className="w-77 min-w-33" />;
+  return (
+    <div className="flex flex-col items-center">
+      <Combobox options={countries} defaultValue="China" disabled placeholder="Select a country" />
+    </div>
+  );
 }

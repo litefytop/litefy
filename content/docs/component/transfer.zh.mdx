@@ -17,9 +17,15 @@ description: 双面板穿梭框，通过复选框勾选在来源与目标列表�
 
 ### 禁用
 
-穿梭项支持 disabled 禁用。
+每个条目的 `disabled` 独立禁用复选框，使用 `bg-disabled`、`text-disabled-fg` 与 `cursor-not-allowed`；两个移动按钮按本侧有无勾选项分别禁用。
 
 <ComponentPreview name="transfer-disabled" />
+
+### 移动按钮文字
+
+`showMoveLabels` 开启后移动按钮渲染图标加可见文字，纯图标方盒形态自动退出。
+
+<ComponentPreview name="transfer-showMoveLabels" />
 
 ## API 参考
 
@@ -37,8 +43,12 @@ description: 双面板穿梭框，通过复选框勾选在来源与目标列表�
 | `renderItem`     | `(item: TransferItemConfig) => React.ReactNode`                               | 自定义条目渲染，两个面板同时生效                              |
 | `moveRightLabel` | `string`                                                                      | 本组件自带的右移按钮的可访问名称，默认 `'Move right'`            |
 | `moveLeftLabel`  | `string`                                                                      | 本组件自带的左移按钮的可访问名称，默认 `'Move left'`             |
+| `showMoveLabels` | `boolean`                                                                     | 移动按钮渲染可见文字（图标 + 文字），默认 `false`——label 仅作可访问名称、按钮为纯图标 |
+| `size`           | `"sm" \| "md" \| "lg" \| "xl" \| "2xl"`                                                                    | 最大宽度依次为 20、24、28、32、40rem，默认 `"2xl"`                               |
+| `style`          | `React.CSSProperties`                                                                          | 根元素内联样式                                                        |
 | `className`      | `string`                                                                      | 自定义类名，应用于根元素                                  |
-| `classNames`     | `panel` / `header` / `count` / `body` / `empty` / `item` / `actions` / `move` | 按部件自定义类名                                      |
+| `classNames`     | `{ panel?: string; header?: string; count?: string; body?: string; empty?: string; item?: CheckboxClassNames \| ((state: SlotState) => CheckboxClassNames); actions?: string; move?: SlotClassName }` | `item` 按条目的 `{ disabled }` 返回 Checkbox 槽位；`move` 按按钮的 `{ disabled }` 返回类串；其余槽为固定类名 |
+| `styles`        | `{ panel?: React.CSSProperties; header?: React.CSSProperties; body?: React.CSSProperties; item?: React.CSSProperties; actions?: React.CSSProperties }` | 各面板与操作按钮内联样式；没有 `root` 槽位 |
 
 ### TransferItemConfig
 
@@ -48,7 +58,7 @@ description: 双面板穿梭框，通过复选框勾选在来源与目标列表�
 | :--------- | :---------------- | :------------------------------------------------------ |
 | `label`    | `React.ReactNode` | 条目显示内容                                                  |
 | `value`    | `string`          | 唯一标识值                                                   |
-| `disabled` | `boolean`         | 禁用条目 —— 留在来源面板，无法勾选或移动，默认 `false`                       |
+| `disabled` | `boolean`         | 禁用该条目的复选框，默认 `false`；所在面板由 `value` 决定                         |
 
 ## 键盘交互
 

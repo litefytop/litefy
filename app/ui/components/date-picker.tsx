@@ -121,6 +121,7 @@ export function DatePicker({ value, defaultValue, onValueChange, placeholder = "
         committedRef.current = value ? toISODate(value) : null;
     }, [value]);
     const commit = (date: Date) => {
+        if (disabled) return;
         setSelected(date);
         setVisibleMonth(startOfMonth(date));
         setText(toISODate(date));
@@ -130,6 +131,7 @@ export function DatePicker({ value, defaultValue, onValueChange, placeholder = "
         onValueChange?.(date);
     };
     const handleTextChange = (next: string) => {
+        if (disabled) return;
         setText(next);
         setHasError(false);
         const parsed = parseInput(next);
@@ -139,6 +141,7 @@ export function DatePicker({ value, defaultValue, onValueChange, placeholder = "
         }
     };
     const applyParsed = (parsed: ParsedInput) => {
+        if (disabled) return;
         switch (parsed.kind) {
             case "empty":
                 setHasError(false);
@@ -173,11 +176,13 @@ export function DatePicker({ value, defaultValue, onValueChange, placeholder = "
         applyParsed(parseInput(text));
     };
     const handleOpenChange = (next: boolean) => {
+        if (disabled && next) return;
         setOpen(next);
         if (!next)
             applyParsed(parseInput(text));
     };
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (disabled) return;
         onKeyDown?.(e);
         if (e.defaultPrevented)
             return;
@@ -190,14 +195,16 @@ export function DatePicker({ value, defaultValue, onValueChange, placeholder = "
         }
     };
     const handleMonthSelect = (month: Date) => {
+        if (disabled) return;
         setHasError(false);
         setText(`${month.getFullYear()}-${String(month.getMonth() + 1).padStart(2, "0")}`);
     };
     const handleYearSelect = (year: Date) => {
+        if (disabled) return;
         setHasError(false);
         setText(String(year.getFullYear()));
     };
     return (<Picker open={open} onOpenChange={handleOpenChange} panelRef={panelRef} value={text} onValueChange={handleTextChange} placeholder={placeholder} disabled={disabled} aria-invalid={(hasError || invalid) || undefined} trailing={trailing} onKeyDown={handleKeyDown} matchPanelWidth={false} className={classNames?.root} classNames={{ input: classNames?.input, trailing: classNames?.trailing, popover: classNames?.popover }} styles={{ input: styles?.input, trailing: styles?.trailing }}>
-      <Calendar value={selected} visibleMonth={visibleMonth} onVisibleMonthChange={setVisibleMonth} onChange={commit} view={view} onViewChange={setView} onMonthSelect={handleMonthSelect} onYearSelect={handleYearSelect} isDateDisabled={isDateDisabled} firstDayOfWeek={firstDayOfWeek} className={classNames?.panel} classNames={classNames?.calendar}/>
+      <Calendar disabled={disabled} value={selected} visibleMonth={visibleMonth} onVisibleMonthChange={setVisibleMonth} onChange={commit} view={view} onViewChange={setView} onMonthSelect={handleMonthSelect} onYearSelect={handleYearSelect} isDateDisabled={isDateDisabled} firstDayOfWeek={firstDayOfWeek} className={classNames?.panel} classNames={classNames?.calendar}/>
     </Picker>);
 }

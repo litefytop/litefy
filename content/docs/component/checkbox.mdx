@@ -124,4 +124,4 @@ A label wrapper that associates the input with the indicator and the text.
 
 ## Data Attributes
 
-The skeleton emits no `data-*` on this component. Checked and disabled states are read from the native `<input type="checkbox">` (`:checked`, `disabled`); the `CheckboxGroup` root element carries `role="group"`, linked to the group label via `aria-labelledby` when `label` is passed, otherwise using the optional `aria-label`.
+The indicator carries `data-selected` while checked or indeterminate so the skin can apply its filled state. Checked and disabled states are still read from the native `<input type="checkbox">` (`:checked`, `disabled`); the `CheckboxGroup` root element carries `role="group"`, linked to the group label via `aria-labelledby` when `label` is passed, otherwise using the optional `aria-label`.

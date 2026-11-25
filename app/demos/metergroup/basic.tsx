@@ -7,7 +7,7 @@ export default function Demo() {
     { label: "Video", value: 21 },
   ];
   return (
-    <div className="flex w-full max-w-96 flex-col items-center gap-6">
+    <div className="mx-auto flex w-full flex-col items-center gap-6">
       <MeterGroup aria-label="Storage usage" value={storage} max={100} />
     </div>
   );

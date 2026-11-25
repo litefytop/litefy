@@ -11,7 +11,7 @@ import {
 } from "react-router";
 import globalHref from "../global.css?url";
 import { AnimatedContent, Button, Card, NavBar, Separator } from "@/ui/skins";
-import { buttonVariants, chipClasses, cn } from "@/ui/skins";
+import { buttonVariants, chipBase, chipVariants, cn } from "@/ui/skins";
 import { ArrowRight, Flag, Github, House, Languages, Letters } from "@/components/icons";
 import { findStyleTemplate, type StyleTemplate } from "../lib/style-templates";
 import { PaletteSection } from "../components/palette-section";
@@ -23,7 +23,7 @@ import { siteSkin } from "@/components/site-skin-bundle";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: globalHref }];
 
-const textLinkClass = cn(buttonVariants.text, "px-3");
+const textLinkClass = cn(buttonVariants.text, "px-3", "text-inherit");
 const outlineLinkClass = buttonVariants.outline;
 
 type Lang = "zh" | "en";
@@ -31,7 +31,7 @@ type Lang = "zh" | "en";
 const TOKENS: { token: string; en: string; zh: string }[] = [
   { token: "--background", en: "Page canvas", zh: "页面画布" },
   { token: "--foreground", en: "Body text", zh: "正文" },
-  { token: "--surface-fg", en: "Secondary text", zh: "次级文字" },
+  { token: "--surface-fg", en: "Surface text", zh: "表面文字" },
   { token: "--success-fg", en: "Success", zh: "成功" },
   { token: "--info-fg", en: "Info", zh: "信息" },
   { token: "--warning-fg", en: "Warning", zh: "警告" },
@@ -518,7 +518,7 @@ function TemplateScene({
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <header className="flex h-14 items-center gap-2 px-4 md:px-6 lg:px-8 sticky top-0 z-40 border-b bg-surface">
+      <header className="flex h-14 items-center gap-2 px-4 md:px-6 lg:px-8 sticky top-0 z-40 border-b bg-surface text-surface-fg">
         <NavBar
           items={[...BLOCKS]}
           getKey={(id) => id}
@@ -551,10 +551,8 @@ function TemplateScene({
             to={homeHref}
             aria-label={t.home}
             title={t.home}
-            className={cn(
-              outlineLinkClass,
-              "relative aspect-square shrink-0 px-0 after:absolute after:-inset-hit after:content-['']",
-            )}
+            data-pure-icon="true"
+            className={cn(outlineLinkClass, "pure-icon", "shrink-0")}
           >
             <House className="size-4" aria-hidden />
           </Link>
@@ -562,7 +560,7 @@ function TemplateScene({
       </header>
 
       <main className="flex flex-col flex-1 w-full">
-        <section className="px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-20 border-b bg-surface text-on-surface">
+        <section className="px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-20 border-b bg-surface text-surface-fg">
           <div className="grid gap-6 mx-auto w-full max-w-320 md:grid-cols-[1.2fr_1fr] md:items-center">
             <header className="flex flex-col gap-3">
               <p className="typo-kicker">{t.hero.eyebrow}</p>
@@ -593,7 +591,7 @@ function TemplateScene({
         <RulesBlock t={t} />
       </main>
 
-      <footer className="px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-20 border-t bg-surface text-on-surface">
+      <footer className="px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-20 border-t bg-surface text-surface-fg">
         <div className="flex flex-col gap-4 mx-auto w-full max-w-320">
           <div className="flex flex-wrap items-center gap-4">
             <span className="flex items-center gap-2 font-medium">
@@ -643,7 +641,7 @@ function SectionHead({ eyebrow, title, desc }: { eyebrow: string; title: string;
     <div className="flex flex-col gap-2">
       <p className="typo-overline">{eyebrow}</p>
       <h2 className="typo-h2">{title}</h2>
-      <p className="max-w-256 text-sm text-surface-fg">{desc}</p>
+      <p className="max-w-256 text-sm text-foreground">{desc}</p>
     </div>
   );
 }
@@ -710,7 +708,7 @@ function TokensBlock({ tpl, lang }: { tpl: StyleTemplate; lang: Lang }) {
         <Card className="flex flex-col gap-3">
           <h3 className="text-sm font-medium">{t.semantic}</h3>
           <div className="flex flex-col divide-y">
-            <div className="flex gap-2 py-2 text-xs uppercase text-surface-fg">
+            <div className="flex gap-2 py-2 text-xs uppercase text-foreground">
               <span className="flex-1">{t.colToken}</span>
               <span className="shrink-0">{t.colRole}</span>
             </div>
@@ -722,7 +720,7 @@ function TokensBlock({ tpl, lang }: { tpl: StyleTemplate; lang: Lang }) {
                   aria-hidden="true"
                 />
                 <code className="flex-1 truncate text-xs">{row.token}</code>
-                <span className="shrink-0 text-xs text-surface-fg">{row.role}</span>
+                <span className="shrink-0 text-xs text-foreground">{row.role}</span>
               </div>
             ))}
           </div>
@@ -735,12 +733,12 @@ function TokensBlock({ tpl, lang }: { tpl: StyleTemplate; lang: Lang }) {
               <code className="text-xs text-primary-accent">{cfg.attr}</code>
               <div className="flex flex-wrap gap-1">
                 {cfg.options.map((o) => (
-                  <code key={o.name} className="text-xs text-surface-fg">
+                  <code key={o.name} className="text-xs text-foreground">
                     {o.name}
                   </code>
                 ))}
               </div>
-              <span className="text-xs text-surface-fg">{cfg.label[lang]}</span>
+              <span className="text-xs text-foreground">{cfg.label[lang]}</span>
             </Card>
           ))}
         </div>
@@ -800,7 +798,7 @@ function TypeBlock({ t }: { t: Copy }) {
             <div className="flex flex-col gap-5">
               {groups.map(({ caption, rows }) => (
                 <div key={caption} className="flex flex-col gap-3">
-                  <p className={cn(labelCls, "text-surface-fg")}>{caption}</p>
+                  <p className={cn(labelCls, "text-foreground")}>{caption}</p>
                   {rows.map(({ sample, spec, className, stack }) => (
                     <div
                       key={sample}
@@ -811,7 +809,7 @@ function TypeBlock({ t }: { t: Copy }) {
                       }
                     >
                       <span className={className}>{sample}</span>
-                      <span className="shrink-0 font-mono text-xs text-surface-fg">{spec}</span>
+                      <span className="shrink-0 font-mono text-xs text-foreground">{spec}</span>
                     </div>
                   ))}
                 </div>
@@ -857,7 +855,7 @@ function DemoBrick({ demo, cta }: { demo: DemoKind; cta: string }) {
               SHADOW_DEMOS[level],
             )}
           >
-            <span className="font-mono text-xs text-surface-fg">{level}</span>
+            <span className="font-mono text-xs text-foreground">{level}</span>
           </div>
         ))}
       </div>
@@ -867,7 +865,7 @@ function DemoBrick({ demo, cta }: { demo: DemoKind; cta: string }) {
     return (
       <button
         type="button"
-        className="flex h-11 w-full cursor-pointer items-center justify-center rounded-pill bg-surface text-sm text-foreground shadow-frame motion-frame hover:lift active:crush active:shadow-frame-active focus-visible:focus-ring"
+        className="flex h-11 w-full cursor-pointer items-center justify-center rounded-pill bg-surface text-sm text-surface-fg shadow-frame motion-frame hover:lift active:crush active:shadow-frame-active focus-visible:focus-ring"
       >
         {cta}
       </button>
@@ -877,7 +875,7 @@ function DemoBrick({ demo, cta }: { demo: DemoKind; cta: string }) {
     return (
       <button
         type="button"
-        className="flex h-11 w-full cursor-pointer items-center justify-center rounded-pill bg-surface text-sm text-foreground motion-frame hover:bg-primary hover:text-primary-fg focus-visible:focus-ring"
+        className="flex h-11 w-full cursor-pointer items-center justify-center rounded-pill bg-surface text-sm text-surface-fg motion-frame hover:bg-primary hover:text-primary-fg focus-visible:focus-ring"
       >
         {cta}
       </button>
@@ -906,13 +904,13 @@ function InteractionBlock({ t }: { t: Copy }) {
           {it.items.map((item) => (
             <Card key={item.n} className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
-                <span className={chipClasses} data-variant="outline">
+                <span className={cn(chipBase, chipVariants.outline)}>
                   {item.n}
                 </span>
                 <h3 className="text-sm font-medium">{item.title}</h3>
               </div>
               <DemoBrick demo={item.demo} cta={item.cta} />
-              <p className="text-sm text-surface-fg">{item.body}</p>
+              <p className="text-sm text-foreground">{item.body}</p>
             </Card>
           ))}
         </div>
@@ -935,25 +933,25 @@ function RulesBlock({ t }: { t: Copy }) {
           {r.items.map((item, i) => (
             <Card key={item.title} className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
-                <span className={chipClasses} data-variant="outline">
+                <span className={cn(chipBase, chipVariants.outline)}>
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="text-sm font-medium">{item.title}</h3>
               </div>
-              <p className="text-sm text-surface-fg">{item.body}</p>
+              <p className="text-sm text-foreground">{item.body}</p>
             </Card>
           ))}
         </div>
         <Card className="flex flex-col gap-3 lg:col-span-2">
           <div className="flex items-center gap-2">
-            <span className={chipClasses} data-variant="danger">
+            <span className={cn(chipBase, chipVariants.danger)}>
               {r.anti}
             </span>
-            <span className="text-xs text-surface-fg">{r.antiDesc}</span>
+            <span className="text-xs text-foreground">{r.antiDesc}</span>
           </div>
           <div className="flex flex-wrap gap-1">
             {m.antiItems.map((bad) => (
-              <span key={bad} className={chipClasses} data-variant="outline">
+              <span key={bad} className={cn(chipBase, chipVariants.outline)}>
                 {bad}
               </span>
             ))}

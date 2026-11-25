@@ -14,10 +14,12 @@ const fields: FilterComboboxField[] = [
 
 export default function Demo() {
   return (
-    <FilterCombobox
-      fields={fields}
-      defaultValue={[{ id: "seed", field: "quote", operator: "between", value: ["1000", "5000"] }]}
-      disabled
-    />
+    <div className="flex w-full flex-col items-center">
+      <FilterCombobox
+        fields={fields}
+        defaultValue={[{ id: "seed", field: "quote", operator: "between", value: ["1000", "5000"] }]}
+        disabled
+      />
+    </div>
   );
 }

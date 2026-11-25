@@ -30,9 +30,7 @@ export const meta: MetaFunction = () => [
   { name: "robots", content: "noindex" },
 ];
 // Display hexes of the scheme palette — the tokens live in ../ui/schemes/neo-brutalist/index.css;
-// keep the two in sync. Three fill hues shown at their DAY tier (700 stops), the four
-// semantic stops at their day tier (800 stops); the *_N constants are the NIGHT tier
-// (500 stops) for the showcase's fixed-black islands (the four laws cards).
+// keep them in sync. PRIMARY_N is the night primary sample; the other *_N constants are fixed law-card colors.
 const PINK = "#e60076"; // pink-600 — nearest to the founding #ff006e
 const GREEN = "#bbf451"; // lime-300 — nearest to the founding #ccff00
 const YELLOW = "#ffdf20"; // yellow-300 — nearest to the founding #ffff00
@@ -41,6 +39,7 @@ const INFO = "#005f78"; // cyan-800
 const WARNING = "#973c00"; // amber-800
 const SUCCESS = "#3c6300"; // lime-800
 const PINK_N = "#f6339a"; // pink-500
+const PRIMARY_N = GREEN;
 const GREEN_N = "#7ccf00"; // lime-500
 const CYAN_N = "#00b8db"; // cyan-500
 const ORANGE_N = "#ff6900"; // orange-500
@@ -127,7 +126,7 @@ const COPY: Record<
       ],
       pairs: [
         { label: "WHITE ON PINK · DAY", fg: "#ffffff", bg: PINK },
-        { label: "BLACK ON PINK · NIGHT", fg: "#000000", bg: PINK_N },
+        { label: "BLACK ON GREEN · NIGHT", fg: "#1a1a1a", bg: PRIMARY_N },
         { label: "BLACK ON GREEN", fg: "#000000", bg: GREEN },
         { label: "BLACK ON YELLOW", fg: "#000000", bg: YELLOW },
       ],
@@ -218,9 +217,9 @@ const COPY: Record<
         "shadow-brutal-8 md:shadow-brutal-12 — hard offset shadow, zero blur",
         "rounded-none — zero border radius always",
         "font-black for headings, font-mono for body",
-        "hover:bg-accent — hard instant colour snap",
+        "hover:bg-accent hover:text-accent-fg — hard instant colour snap",
         "active:translate-x-2 active:translate-y-2 active:shadow-none — crushing press",
-        "hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[12px_12px_0_0_var(--color-background)] — lift before crush",
+        "hover:shadow-[12px_12px_0_0_var(--color-background)] — hover only deepens the shadow, without displacement",
         "transition-[box-shadow,translate] duration-150 ease-out — fast, brutal timing",
       ],
       dont: [
@@ -290,7 +289,7 @@ const COPY: Record<
       ],
       pairs: [
         { label: "白压粉 · 日", fg: "#ffffff", bg: PINK },
-        { label: "黑压粉 · 夜", fg: "#000000", bg: PINK_N },
+        { label: "黑压绿 · 夜", fg: "#1a1a1a", bg: PRIMARY_N },
         { label: "黑压绿", fg: "#000000", bg: GREEN },
         { label: "黑压黄", fg: "#000000", bg: YELLOW },
       ],
@@ -381,9 +380,9 @@ const COPY: Record<
         "shadow-brutal-8 md:shadow-brutal-12——硬边位移阴影，模糊半径 0",
         "rounded-none——永远零圆角",
         "标题 font-black，正文 font-mono",
-        "hover:bg-accent——背景色瞬间硬切",
+        "hover:bg-accent hover:text-accent-fg——背景色瞬间硬切",
         "active:translate-x-2 active:translate-y-2 active:shadow-none——碾压按压",
-        "hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[12px_12px_0_0_var(--color-background)]——压平前先起跳",
+        "hover:shadow-[12px_12px_0_0_var(--color-background)]——悬停只增重，不位移",
         "transition-[box-shadow,translate] duration-150 ease-out——快、狠、准",
       ],
       dont: [
@@ -499,10 +498,8 @@ function SiteHeader({ t, lang }: { t: T; lang: Lang }) {
             to={`/neo/${lang}`}
             aria-label={t.home}
             title={t.home}
-            className={cn(
-              buttonVariants.outline,
-              "relative aspect-square shrink-0 px-0 after:absolute after:-inset-hit after:content-['']",
-            )}
+            data-pure-icon="true"
+            className={cn(buttonVariants.outline, "pure-icon", "shrink-0")}
           >
             <House className="size-4" aria-hidden />
           </Link>
@@ -514,14 +511,14 @@ function SiteHeader({ t, lang }: { t: T; lang: Lang }) {
 function Hero({ t, lang }: { t: T; lang: Lang }) {
   const { buttonVariants } = useSiteSkin();
   return (
-    <section className="relative overflow-hidden border-b-4 border-border bg-surface pt-12 pb-0 md:pt-14">
+    <section className="relative overflow-hidden border-b-4 border-border bg-surface pt-12 pb-0 text-surface-fg md:pt-14">
       <div className="brutal-march-anim absolute left-0 right-0 top-14 h-1 md:top-16" />
       <div className="relative mx-auto max-w-288 px-2 pt-6 pb-0 md:px-4 md:pt-10">
         <span className="mb-3 inline-flex items-center gap-1 border-2 border-foreground bg-foreground px-2 py-1 text-xs font-black uppercase tracking-overline text-background dark:text-surface">
           <SwatchBook className="size-4" />
           {t.hero.badge}
         </span>
-        <h1 className="mb-3 typo-headline uppercase text-foreground">
+        <h1 className="mb-3 typo-headline uppercase text-surface-fg">
           {t.hero.title[0]}
           <br />
           {t.hero.title[1]}
@@ -530,7 +527,7 @@ function Hero({ t, lang }: { t: T; lang: Lang }) {
             {t.hero.title[2]}
           </span>
         </h1>
-        <p className={`mb-4 max-w-168 ${LEAD} text-foreground`}>{t.hero.lead}</p>
+        <p className={`mb-4 max-w-168 ${LEAD} text-surface-fg`}>{t.hero.lead}</p>
         <div className="mb-6 flex flex-col gap-2 sm:flex-row">
           <Link to={`/neo/${lang}/docs/overview`} className={buttonVariants.primary}>
             {t.hero.cta1}
@@ -546,10 +543,10 @@ function Hero({ t, lang }: { t: T; lang: Lang }) {
               key={label}
               className={`border-foreground p-2.5 md:p-4 ${i < 3 ? "border-r-4" : ""} ${i === 2 ? "max-md:border-r-0" : ""} ${i < 2 ? "max-md:border-b-4" : ""}`}
             >
-              <div className="mb-0.5 text-3xl font-black text-foreground md:text-4xl">
+              <div className="mb-0.5 text-3xl font-black text-surface-fg md:text-4xl">
                 {value}
               </div>
-              <div className="text-xs font-black tracking-widest text-foreground uppercase">
+              <div className="text-xs font-black tracking-widest text-surface-fg uppercase">
                 {label}
               </div>
             </div>
@@ -633,58 +630,58 @@ function LawsSection({ t }: { t: T }) {
               <div className="h-full border-4 border-background bg-foreground p-3 md:p-4">
                 <div className="mb-1.5">
                   <span
-                    className={`inline-block border-2 border-background px-1.5 py-0.75 text-xs font-black uppercase tracking-widest text-foreground`}
+                    className={`inline-block border-2 border-background px-1.5 py-0.75 text-xs font-black uppercase tracking-widest text-foreground dark:text-background`}
                     style={{ backgroundColor: rule.color }}
                   >
                     {rule.tag}
                   </span>
                 </div>
                 <p className="mb-0.5 font-mono text-xs leading-relaxed text-background/60">{rule.code}</p>
-                <p className="mb-3 font-mono text-xs leading-relaxed" style={{ color: rule.color }}>
+                <p className="mb-3 font-mono text-xs leading-relaxed">
                   {rule.desc}
                 </p>
                 {i === 0 ? (
                   <div className="flex items-center justify-center border-2 border-background/20 bg-background/5 py-3">
                     <div className="text-center">
-                      <div className="mb-2 inline-block cursor-pointer border-4 border-background bg-primary px-4 py-2 text-base font-black uppercase tracking-wider text-primary-fg shadow-[8px_8px_0_0_var(--color-background)] hover:shadow-[12px_12px_0_0_var(--color-background)] hover:-translate-y-1 hover:-translate-x-1 active:translate-x-2 active:translate-y-2 active:shadow-none transition-[box-shadow,translate] duration-150 ease-out">
+                      <div className="mb-2 inline-block cursor-pointer border-4 border-background bg-primary px-4 py-2 text-base font-black uppercase tracking-wider text-primary-fg shadow-[8px_8px_0_0_var(--color-background)] hover:shadow-[12px_12px_0_0_var(--color-background)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-[box-shadow,translate] duration-150 ease-out">
                         {rule.demo}
                       </div>
-                      <p className="font-mono text-xs text-background/40 uppercase">{l.crushNote}</p>
+                      <p className="font-mono text-xs text-background/60 uppercase">{l.crushNote}</p>
                     </div>
                   </div>
                 ) : i === 1 ? (
                   <div className="flex items-center justify-center border-2 border-background/20 bg-background/5 py-3">
                     <div className="text-center">
-                      <div className="mb-2 inline-block cursor-pointer border-4 border-background bg-background px-4 py-2 text-base font-black uppercase tracking-wider text-foreground shadow-[8px_8px_0_0_var(--color-surface)] hover:bg-accent hover:text-accent-fg hover:shadow-[12px_12px_0_0_var(--color-surface)] hover:-translate-y-1 hover:-translate-x-1 active:translate-x-2 active:translate-y-2 active:shadow-none transition-[box-shadow,translate] duration-150 ease-out">
+                      <div className="mb-2 inline-block cursor-pointer border-4 border-background bg-background px-4 py-2 text-base font-black uppercase tracking-wider text-foreground shadow-[8px_8px_0_0_var(--color-surface)] hover:bg-accent hover:text-accent-fg hover:shadow-[12px_12px_0_0_var(--color-surface)] active:translate-x-2 active:translate-y-2 active:shadow-none transition-[box-shadow,translate] duration-150 ease-out">
                         {rule.demo}
                       </div>
-                      <p className="font-mono text-xs text-background/40 uppercase">{l.snapNote}</p>
+                      <p className="font-mono text-xs text-background/60 uppercase">{l.snapNote}</p>
                     </div>
                   </div>
                 ) : i === 2 ? (
                   <div className="border-2 border-background/20 bg-background/5 px-2 py-3">
                     <div className="mb-2.5">
-                      <span className="mb-1 block font-mono text-xs text-background/50 uppercase">{l.brutal}</span>
+                      <span className="mb-1 block font-mono text-xs text-background/70 uppercase">{l.brutal}</span>
                       <div className="group relative h-8 overflow-hidden border-2 border-background/20 bg-background/10">
                         <div className="absolute top-0 bottom-0 left-0 w-full -translate-x-full border-r-2 border-background bg-accent transition-transform duration-150 ease-out group-hover:translate-x-0" />
                       </div>
                     </div>
                     <div>
-                      <span className="mb-1 block font-mono text-xs text-background/50 uppercase">{l.spring}</span>
+                      <span className="mb-1 block font-mono text-xs text-background/70 uppercase">{l.spring}</span>
                       <div className="group relative h-8 overflow-hidden border-2 border-background/20 bg-background/10">
                         <div className="absolute top-0 bottom-0 left-0 w-full -translate-x-full border-r-2 border-background/30 bg-background/30 transition-transform duration-500 [transition-timing-function:cubic-bezier(0.34,1.56,0.64,1)] group-hover:translate-x-0" />
                       </div>
                     </div>
-                    <p className="mt-1.5 text-center font-mono text-xs text-background/40 uppercase">{l.note}</p>
+                    <p className="mt-1.5 text-center font-mono text-xs text-background/60 uppercase">{l.note}</p>
                   </div>
                 ) : (
                   <div className="flex items-center justify-center border-2 border-background/20 bg-background/5 py-3">
                     <div className="w-full px-2 text-center">
-                      <div className="mb-2 cursor-pointer border-4 border-background bg-background p-2.5 text-left text-foreground shadow-[8px_8px_0_0_var(--color-background)] transition-[box-shadow,translate] duration-150 ease-out hover:-translate-y-1 hover:-translate-x-1 hover:bg-accent hover:text-accent-fg hover:shadow-[12px_12px_0_0_var(--color-primary)]">
+                      <div className="mb-2 cursor-pointer border-4 border-background bg-background p-2.5 text-left text-foreground shadow-[8px_8px_0_0_var(--color-background)] transition-[box-shadow,translate] duration-150 ease-out hover:bg-accent hover:text-accent-fg hover:shadow-[12px_12px_0_0_var(--color-primary)]">
                         <div className="mb-0.5 text-sm font-black uppercase">{l.cardTitle}</div>
-                        <div className="font-mono text-xs text-foreground/60">{l.cardBody}</div>
+                        <div className="font-mono text-xs opacity-60">{l.cardBody}</div>
                       </div>
-                      <p className="font-mono text-xs text-background/40 uppercase">{l.cardNote}</p>
+                      <p className="font-mono text-xs text-background/60 uppercase">{l.cardNote}</p>
                     </div>
                   </div>
                 )}
@@ -698,7 +695,7 @@ function LawsSection({ t }: { t: T }) {
 }
 function TypeSection({ t }: { t: T }) {
   const ty = t.type;
-  const labelCls = "text-label leading-label tracking-label font-label case-label";
+  const labelCls = "control-text";
   const groups: {
     caption: string;
     rows: { sample: string; spec: string; className: string; stack?: boolean }[];
@@ -734,7 +731,7 @@ function TypeSection({ t }: { t: T }) {
   return (
     <section id="type" className={`${SECTION} bg-background`}>
       <div className="mx-auto max-w-288">
-        <SectionHead eyebrow={ty.eyebrow} title={ty.title} lead={ty.lead} accent="var(--color-warning-fg)" />
+        <SectionHead eyebrow={ty.eyebrow} title={ty.title} lead={ty.lead} accent="var(--color-primary)" />
         <div className="mb-4 grid grid-cols-1 border-4 border-border md:grid-cols-2">
           <div className="border-border p-3 md:border-r-4 md:p-5">
             <p className="mb-3 border-b-2 border-border pb-1 typo-overline">{ty.ladder}</p>
@@ -807,7 +804,7 @@ function RulesSection({ t }: { t: T }) {
         <div className="grid grid-cols-1 gap-0 border-4 border-border md:grid-cols-2">
           <div className="border-border p-3 md:border-r-4 md:p-5">
             <div className="mb-3 flex items-center gap-1.5 border-b-4 border-border pb-2">
-              <div className="flex size-8 items-center justify-center border-4 border-border bg-surface">
+              <div className="flex size-8 items-center justify-center border-4 border-border bg-surface text-surface-fg">
                 <Check className="size-4" />
               </div>
               <h3 className="text-lg font-black tracking-widest uppercase">{r.doTitle}</h3>
@@ -823,7 +820,7 @@ function RulesSection({ t }: { t: T }) {
           </div>
           <div className="p-3 md:p-5 max-md:border-t-4 max-md:border-border">
             <div className="mb-3 flex items-center gap-1.5 border-b-4 border-border pb-2">
-              <div className="flex size-8 items-center justify-center border-4 border-border bg-primary text-background">
+              <div className="flex size-8 items-center justify-center border-4 border-border bg-primary text-primary-fg">
                 <X className="size-4" />
               </div>
               <h3 className="text-lg font-black tracking-widest uppercase">{r.dontTitle}</h3>
@@ -849,11 +846,11 @@ function ClosingSection({ t }: { t: T }) {
     <section className={`border-b-4 border-border bg-primary ${SECTION}`}>
       <div className="mx-auto max-w-288">
         <div className="mb-1">
-          <span className={`${EYEBROW} text-background`}>{c.eyebrow}</span>
-          <h2 className={`${HEADLINE} mb-1 text-background`}>{c.title}</h2>
+          <span className={`${EYEBROW} text-primary-fg`}>{c.eyebrow}</span>
+          <h2 className={`${HEADLINE} mb-1 text-primary-fg`}>{c.title}</h2>
         </div>
         <div className="mb-6">
-          <p className={`max-w-168 ${LEAD} text-background/80`}>{c.lead}</p>
+          <p className={`max-w-168 ${LEAD} text-primary-fg`}>{c.lead}</p>
         </div>
         <div className="grid grid-cols-1 gap-0 border-4 border-border sm:grid-cols-2 md:grid-cols-3">
           {c.cards.map((card, i) => {
@@ -948,7 +945,7 @@ function SiteFooter({ t, lang }: { t: T; lang: Lang }) {
           </nav>
         </div>
         <div className="flex flex-col items-start justify-between gap-2 md:flex-row md:items-center">
-          <p className="font-mono text-xs text-background/40">{t.footer.rights}</p>
+          <p className="font-mono text-xs text-background/60">{t.footer.rights}</p>
           <Link
             to={`/neo/${lang === "zh" ? "en" : "zh"}/showcase/neo-brutalist`}
             className={cn(buttonVariants.outline, `${TOOL_CLASS} py-1.5`)}

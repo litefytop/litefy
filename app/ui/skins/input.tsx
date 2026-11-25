@@ -1,30 +1,44 @@
 ﻿import { Input as InputHeadless, type InputProps } from "@/ui";
-import { mergeSlots } from "../utils/cn";
+import { cn, mergeSlots } from "../utils/cn";
 import { fieldChromeClasses } from "./field";
 
 export type { InputProps } from "@/ui";
 
 
-export const fieldGroupClasses =
-  "flex min-h-control w-55 max-w-full min-w-0 cursor-text items-center p-well rounded-md border-frame border-border bg-background text-foreground shadow-frame " +
-  "motion-frame " +
-  "[&>input:not(:first-child)]:rounded-ss-none [&>input:not(:first-child)]:rounded-es-none " +
-  "[&>input:has(+[data-field-trailing])]:rounded-se-none [&>input:has(+[data-field-trailing])]:rounded-ee-none " +
-  "borderless:border-0 bordered:border-frame bordered:border-border " +
-  "focus-within:focus-ring " +
-  "has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50 " +
-  "" +
-  "data-[invalid=true]:border-danger-fg " +
-  "data-[invalid=true]:focus-within:focus-ring-danger " +
-  "";
+export const fieldGroupBaseClasses =
+  "flex min-h-control w-full min-w-0 max-w-[20rem] items-center rounded-md border-frame motion-frame field-seam borderless:border-0";
+
+export const fieldGroupFaceClasses =
+  "border-border bg-surface-raised p-well text-surface-raised-fg shadow-frame focus-within:focus-ring field-invalid";
+
+export const fieldGroupClasses = cn(
+  fieldGroupBaseClasses,
+  "cursor-text",
+  fieldGroupFaceClasses,
+);
+
+export const fieldGroupDisabledClasses = cn(
+  fieldGroupBaseClasses,
+  "cursor-not-allowed select-none border-border bg-disabled p-well text-disabled-fg shadow-frame",
+);
+
+const fieldGroupClassesByState = (disabled: boolean | undefined) =>
+  disabled ? fieldGroupDisabledClasses : fieldGroupClasses;
 
 
-export const fieldInputClasses =
-  "min-w-0 grow basis-0 self-stretch border-0 bg-well px-3 outline-none " +
-  "rounded-[max(0px,calc(var(--radius-md)-var(--border-width-frame)))] shadow-well " +
-  "font-field text-inherit " +
-  "placeholder:font-field placeholder:text-surface-fg " +
-  "";
+const fieldInputLayoutClasses =
+  "min-w-0 grow basis-0 self-stretch border-0 px-3 focus:outline-hidden " +
+  "rounded-(--radius-field-inner) shadow-well font-field placeholder:font-field";
+
+export const fieldInputClasses = cn(
+  fieldInputLayoutClasses,
+  "bg-well text-inherit placeholder:text-foreground",
+);
+
+export const fieldInputDisabledClasses = cn(
+  fieldInputLayoutClasses,
+  "pointer-events-none cursor-not-allowed select-none bg-disabled text-disabled-fg placeholder:text-disabled-fg",
+);
 
 
 export const fieldAddonClasses = "inline-flex shrink-0 items-center px-3 ";
@@ -36,20 +50,23 @@ export const fieldTrailingClasses = "inline-flex min-w-0 items-center overflow-h
 
 
 export const fieldHintClasses =
-  "pointer-events-none absolute -top-7 right-0 z-10 inline-flex items-center gap-x-1 whitespace-nowrap " +
-  "rounded-sm border-frame border-border bg-surface-raised px-2 py-1 text-xs leading-4 tracking-label case-label opacity-0 shadow-subtle " +
+  "pointer-events-none absolute -top-7 right-0 z-10 flex items-center gap-x-1 text-nowrap " +
+  "rounded-sm border-frame border-border bg-surface-raised text-surface-raised-fg px-2 py-1 text-xs/4 tracking-label case-label opacity-0 shadow-subtle " +
   "peer-focus-visible:opacity-100";
 
 
-export const fieldTextareaClasses =
-  "block w-full min-h-20 resize-y rounded-md border-frame border-border bg-well shadow-frame " +
-  "py-3 motion-frame " +
-  "font-field " +
-  "placeholder:text-surface-fg " +
-  "focus:outline-none focus:focus-ring " +
-  "" +
-  "aria-invalid:border-danger-fg aria-invalid:focus:focus-ring-danger " +
-  "";
+const fieldTextareaBaseClasses =
+  "block w-full min-w-0 max-w-[20rem] min-h-20 resize-y rounded-md border-frame border-border py-3 motion-frame font-field";
+
+export const fieldTextareaClasses = cn(
+  fieldTextareaBaseClasses,
+  "field-invalid bg-well text-foreground shadow-frame placeholder:text-foreground focus:outline-none focus:focus-ring",
+);
+
+export const fieldTextareaDisabledClasses = cn(
+  fieldTextareaBaseClasses,
+  "cursor-not-allowed bg-disabled text-disabled-fg shadow-frame placeholder:text-disabled-fg",
+);
 
 
 export const inputPartClasses = {
@@ -59,12 +76,23 @@ export const inputPartClasses = {
   trailing: fieldTrailingClasses,
 };
 
-export function Input({ classNames, ...props }: InputProps) {
+export function Input({ className, classNames, disabled, ...props }: InputProps) {
   return (
     <InputHeadless
       {...props}
+      disabled={disabled}
       fieldClassNames={fieldChromeClasses}
-      classNames={mergeSlots(inputPartClasses, classNames)}
+      classNames={mergeSlots(
+        {
+          ...inputPartClasses,
+          group: disabled ? fieldGroupDisabledClasses : fieldGroupClasses,
+          root: disabled ? fieldInputDisabledClasses : fieldInputClasses,
+        },
+        {
+          ...classNames,
+          group: cn(fieldGroupClassesByState(disabled), classNames?.group, className),
+        },
+      )}
     />
   );
 }

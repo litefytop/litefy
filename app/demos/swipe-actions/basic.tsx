@@ -36,7 +36,7 @@ export default function Demo() {
   };
 
   return (
-    <div className="flex w-full max-w-112 flex-col items-center">
+    <div className="mx-auto flex w-full flex-col items-center">
       {rows.map((row) => (
         <SwipeActions
           key={row.id}
@@ -46,14 +46,14 @@ export default function Demo() {
           label={row.title}
           height={ROW_HEIGHT}
           onCommit={() => remove(row.id)}
-          className="mb-2 w-full"
+          className="mb-2"
         >
           <div className="flex min-w-0 flex-1 items-center gap-x-3">
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm leading-5 font-field text-foreground">{row.title}</p>
-              <p className="truncate text-sm leading-5 text-surface-fg">{row.subtitle}</p>
+              <p className="truncate text-sm leading-5 text-foreground">{row.subtitle}</p>
             </div>
-            <span className="shrink-0 text-sm leading-5 text-surface-fg">{row.meta}</span>
+            <span className="shrink-0 text-sm leading-5 text-foreground">{row.meta}</span>
           </div>
         </SwipeActions>
       ))}

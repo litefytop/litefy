@@ -1,6 +1,6 @@
 ---
 title: Masonry 瀑布流
-description: 按实测高度把条目均衡分配到等宽列的瀑布流布局，支持响应式列数
+description: 支持逐列高度均衡与静态 CSS 多列的瀑布流布局，提供响应式列数
 ---
 
 ## 安装
@@ -9,7 +9,7 @@ description: 按实测高度把条目均衡分配到等宽列的瀑布流布局�
 
 ## 用法
 
-条目均衡分配到等宽列；列数默认随容器宽度响应（`1 / sm:2 / lg:3 / xl:4`）。
+默认按实测高度均衡分配到等宽列；`layout="static"` 改用 CSS 多列，避免条目高度测量。
 
 <ComponentPreview
   name="masonry-basic"
@@ -21,15 +21,16 @@ description: 按实测高度把条目均衡分配到等宽列的瀑布流布局�
 
 #### Masonry
 
-数据驱动的瀑布流布局；挂载后增高的异步内容不会自动重新测量——请为其设置接近最终尺寸的 min-height。
+数据驱动的瀑布流布局；balanced 模式挂载后增高的异步内容不会自动重新测量，请为其设置接近最终尺寸的 min-height；static 模式由浏览器排版，不测量条目高度。
 
 | Prop         | Type                                              | Description                                                                                                                      |
 | :----------- | :------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------- |
 | `items`      | `T[]`                                             | 数据列表                                                                                                                             |
 | `renderItem` | `(item: T, index: number) => React.ReactNode`     | 渲染单个单元格                                                                                                                          |
-| `getKey`     | `(item: T, index: number) => React.Key`           | 每项的稳定 key，同时驱动内部测量缓存，默认 index                                                                                                    |
-| `columns`    | `number \| { base?; sm?; md?; lg?; xl?; 2xl? }`   | 固定列数，或按容器宽度解析的断点列数（JS 解析，sm 640 / md 768 / lg 1024 / xl 1280 / 2xl 1536）——均衡车道与嵌套车道读同一张断点表，默认 `{ base: 1, sm: 2, lg: 3, xl: 4 }` |
-| `className`  | `string`                                          | 根元素自定义类名。间距不是类名：骨架按 `--litefy-masonry-gap` 写内联间距，该令牌由当前方案定义；单实例改间距走 `styles.column` / `styles.item`                              |
+| `getKey`     | `(item: T, index: number) => React.Key`           | 每项的稳定 key，默认 index                                                                                                                            |
+| `columns`    | `number \| { base?; sm?; md?; lg?; xl?; 2xl? }`   | 固定列数，或按容器宽度解析的断点列数（sm 640 / md 768 / lg 1024 / xl 1280 / 2xl 1536），默认 `{ base: 1, sm: 2, lg: 3, xl: 4 }` |
+| `layout`     | `"balanced" \| "static"`                          | `balanced` 按实测高度逐列均衡；`static` 使用 CSS 多列且不测量高度，默认 `balanced`                                                                      |
+| `className`  | `string`                                          | 根元素自定义类名；单实例改间距走 `styles.column` / `styles.item`                                                                                       |
 | `classNames` | `{ column?; item? }` —— 值均为 `string`              | 各零件的自定义类名                                                                                                                        |
 | `styles`     | `{ column?; item? }` —— 值均为 `React.CSSProperties` | 各零件的内联样式                                                                                                                         |
 
@@ -48,7 +49,7 @@ description: 按实测高度把条目均衡分配到等宽列的瀑布流布局�
 
 #### MasonryItem
 
-每个条目渲染进的单元格包装器；骨架给它内联 `min-width: 0`，静态（嵌套）车道再补 `margin-bottom: var(--litefy-masonry-gap, 1rem)` 与 `break-inside: avoid`。
+每个条目渲染进的单元格包装器；骨架给它内联 `min-width: 0`，static 与嵌套车道再补 `margin-bottom: 1rem` 与 `break-inside: avoid`。
 
 | Prop       | Type                          | Description       |
 | :--------- | :---------------------------- | :---------------- |
@@ -63,7 +64,7 @@ description: 按实测高度把条目均衡分配到等宽列的瀑布流布局�
 
 | Attribute | Description |
 | --- | --- |
-| `[data-masonry-key]` | 位于测量车道的每个条目包装器上——条目的键，即 `getKey(item, index)` 的字符串结果或索引本身；分配高度的那一轮按它取条目 |
-| `[data-masonry-index]` | 位于同一个包装器上——条目在 `items` 中的下标，其 `offsetHeight` 被记录进该下标对应的高度槽 |
+| `[data-masonry-key]` | 位于 balanced 车道的每个条目包装器上——条目的键，即 `getKey(item, index)` 的字符串结果或索引本身 |
+| `[data-masonry-index]` | 位于 balanced 车道的同一个包装器上——条目在 `items` 中的下标，其 `offsetHeight` 被记录进该下标对应的高度槽 |
 
-静态车道（嵌在另一个 `Masonry` 内部的那一层）两个属性都不发射，因为它不做高度配平。
+static 与嵌套车道不发射这两个属性，因为它们不做高度配平；static 按文档顺序先填满一列再进入下一列。

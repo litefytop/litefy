@@ -3,9 +3,11 @@ import { Toggle } from "@/ui/skins";
 
 export default function Demo() {
   return (
-    <Toggle defaultChecked disabled inert>
-      <Bold />
-      Bold
-    </Toggle>
+    <div className="flex flex-col items-center">
+      <Toggle defaultChecked disabled>
+        <Bold />
+        Bold
+      </Toggle>
+    </div>
   );
 }

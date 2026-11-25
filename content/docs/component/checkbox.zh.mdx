@@ -11,7 +11,7 @@ description: 复选框组件，支持受控、非受控、分组和自定义指�
 
 基础复选框，支持受控 / 非受控与半选。
 
-<ComponentPreview 
+<ComponentPreview
   name="checkbox-basic"
 />
 
@@ -23,13 +23,13 @@ description: 复选框组件，支持受控、非受控、分组和自定义指�
 
 ### 删除线标签
 
-`lineThrough` 开启后，选中即给标签文本加删除线，适合勾掉即完成的清单语义。
+`lineThrough` 开启后选中即给标签文本加删除线，勾掉即完成的清单经 `CheckboxGroup` 的 `common.lineThrough` 统一开启。
 
 <ComponentPreview name="checkbox-line-through" />
 
 ### 禁用
 
-添加 disabled 属性禁用复选框。
+组级 `disabled` 与每个选项的 `disabled` 独立配置，最终按“任一为真”禁用该复选框；input 原生禁用，方框使用 `bg-disabled` / `text-disabled-fg`，标签使用 `text-disabled-fg` 与 `cursor-not-allowed`。
 
 <ComponentPreview name="checkbox-disabled" />
 
@@ -136,4 +136,4 @@ label 包装器，将 input 与指示器和文本关联起来。
 
 ## 数据属性
 
-骨架不在本组件上发射任何 `data-*`。选中与禁用状态由原生 `<input type="checkbox">` 读取（`:checked`、`disabled`）；`CheckboxGroup` 根元素携带 `role="group"`，传 `label` 时经 `aria-labelledby` 关联组标签，否则用可选 `aria-label`。
+指示框在选中或半选时携带 `data-selected`，供皮肤应用实心态；选中与禁用状态仍由原生 `<input type="checkbox">` 读取（`:checked`、`disabled`）。`CheckboxGroup` 根元素携带 `role="group"`，传 `label` 时经 `aria-labelledby` 关联组标签，否则用可选 `aria-label`。

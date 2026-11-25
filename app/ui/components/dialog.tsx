@@ -138,9 +138,9 @@ function renderCommandDialog(options: DialogCommandOptions) {
                 return () => clearTimeout(timer);
             }
         }, [open]);
-        const titleNode = options.title ? (options.type ? (<span className={options.props?.classNames?.titleIcon} style={options.props?.styles?.titleIcon}>
+        const titleNode = options.title ? (options.type ? (<span data-status={options.type} className={options.props?.classNames?.titleIcon} style={options.props?.styles?.titleIcon}>
           {commandIcons[options.type]}
-          {options.title}
+          {" "}{options.title}
         </span>) : (options.title)) : undefined;
         return (<Dialog open={open} onOpenChange={setOpen} close="icon" {...options.props} title={titleNode}>
         <div>{options.children}</div>

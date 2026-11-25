@@ -1,6 +1,7 @@
 "use client";
 import * as React from "react";
-import { Menu, type MenuConfig, type MenuItemConfig } from "./menu";
+import { Menu, type MenuClassNames, type MenuConfig, type MenuItemConfig } from "./menu";
+import type { SlotClassName } from "../utils/cn";
 import { Popover } from "./popover";
 export interface DropdownMenuProps extends Omit<React.ComponentProps<"button">, "children" | "className" | "style" | "type" | "onSelect"> {
     trigger: React.ReactNode;
@@ -8,14 +9,10 @@ export interface DropdownMenuProps extends Omit<React.ComponentProps<"button">, 
     onSelect?: (item: MenuItemConfig) => void;
     alignX?: "start" | "end" | "center";
     className?: string;
-    itemClassName?: string;
-    classNames?: {
+    itemClassName?: SlotClassName;
+    classNames?: Pick<MenuClassNames, "root" | "item" | "label" | "itemButton" | "sub" | "chevron"> & {
         content?: string;
-        item?: string;
-        label?: string;
-        sub?: string;
         menuRoot?: string;
-        chevron?: string;
     };
 }
 export function DropdownMenu({ trigger, items, onSelect, alignX = "center", className, itemClassName, classNames, ...props }: DropdownMenuProps) {
@@ -27,6 +24,6 @@ export function DropdownMenu({ trigger, items, onSelect, alignX = "center", clas
       <Menu autoFocus={open} items={items} itemClassName={itemClassName} onSelect={(item) => {
             onSelect?.(item);
             setOpen(false);
-        }} onEscape={() => setOpen(false)} classNames={{ root: classNames?.menuRoot, item: classNames?.item, label: classNames?.label, sub: classNames?.sub, chevron: classNames?.chevron }}/>
+        }} onEscape={() => setOpen(false)} classNames={{ root: classNames?.menuRoot, item: classNames?.item, label: classNames?.label, itemButton: classNames?.itemButton, sub: classNames?.sub, chevron: classNames?.chevron }}/>
     </Popover>);
 }

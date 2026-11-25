@@ -40,7 +40,6 @@ export default function Demo() {
 
   return (
     <Table
-      className="w-full"
       data={sorted}
       sort={remote.sort}
       onSortChange={remote.setSort}

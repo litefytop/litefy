@@ -6,22 +6,22 @@ import type { CheckboxProps, CheckboxGroupProps } from "@/ui";
 import { cn, mergeSlots } from "../utils/cn";
 
 
-const inputClasses =
-  "peer absolute left-1/2 top-1/2 size-6 -translate-x-1/2 -translate-y-1/2 cursor-pointer opacity-0";
+const inputLayoutClasses =
+  "peer absolute left-1/2 top-1/2 size-6 -translate-x-1/2 -translate-y-1/2 opacity-0";
+
+const inputClasses = cn(inputLayoutClasses, "cursor-pointer");
+const inputDisabledClasses = cn(inputLayoutClasses, "cursor-not-allowed");
 
 const indicatorBaseClasses =
-  "relative inline-flex size-4 shrink-0 items-center justify-center rounded-sm border-hair shadow-frame " +
+  "relative inline-flex size-4 shrink-0 items-center justify-center rounded-xs border-hair bg-surface-raised shadow-unchecked " +
   "text-foreground motion-frame";
-const indicatorCheckedClasses =
-  "has-[:checked]:border-border has-[:checked]:bg-primary has-[:checked]:text-primary-fg has-[:checked]:shadow-checked";
-const indicatorIndeterminateClasses =
-  "has-[:indeterminate]:border-border has-[:indeterminate]:bg-primary has-[:indeterminate]:text-primary-fg has-[:indeterminate]:shadow-checked";
+const indicatorSelectedClasses =
+  "data-selected:border-0 data-selected:bg-primary-solid data-selected:text-primary-fg data-selected:shadow-checked";
 const indicatorFocusClasses = "has-[:focus-visible]:focus-ring";
 
 const indicatorClasses = cn(
   indicatorBaseClasses,
-  indicatorCheckedClasses,
-  indicatorIndeterminateClasses,
+  indicatorSelectedClasses,
   indicatorFocusClasses,
 );
 
@@ -33,10 +33,12 @@ const iconClasses =
 const labelBaseClasses =
   "group/label flex min-h-control min-w-control cursor-pointer select-none items-center gap-x-4 " +
   "font-field text-foreground";
-const labelDisabledClasses =
-  "has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50 has-[:disabled]:text-surface-fg";
 
-const labelClasses = cn(labelBaseClasses, labelDisabledClasses);
+const labelClasses = labelBaseClasses;
+const labelDisabledClasses = cn(
+  "group/label flex min-h-control min-w-control cursor-not-allowed select-none items-center gap-x-4 " +
+    "font-field text-disabled-fg",
+);
 
 const textClasses =
   "group-has-[:checked]/label:not-group-has-[:indeterminate]/label:line-through";
@@ -50,28 +52,41 @@ export const checkboxPartClasses = {
   label: labelClasses,
 };
 
+const checkboxDisabledPartClasses = {
+  input: inputDisabledClasses,
+  indicator:
+    "relative inline-flex size-4 shrink-0 items-center justify-center rounded-xs border-hair border-border bg-disabled text-disabled-fg shadow-unchecked motion-frame",
+  icon: iconClasses,
+  text: textClasses,
+  label: labelDisabledClasses,
+};
+
+export function checkboxClasses(disabled: boolean | undefined, overrides?: CheckboxProps["classNames"]) {
+  return mergeSlots(disabled ? checkboxDisabledPartClasses : checkboxPartClasses, overrides);
+}
+
 
 const groupClasses = {
   root: "flex flex-col",
   groupLabel:
-    "block w-full ps-2 mb-1 select-none text-sm font-label tracking-label case-label",
+    "block w-full ps-2 mb-1 select-none text-sm control-label",
   section:
-    "flex flex-col text-sm font-label case-label tracking-label text-foreground",
+    "flex flex-col text-sm control-label text-foreground",
   label:
-    "px-2 text-sm leading-5 font-label case-label tracking-label text-surface-fg",
+    "px-2 text-sm leading-5 control-label text-foreground",
 };
 
 export const checkboxGroupClasses = groupClasses;
 
-export function Checkbox({ className, classNames, ...props }: CheckboxProps) {
+export function Checkbox({ className, classNames, disabled, ...props }: CheckboxProps) {
   return (
     <CheckboxHeadless
       {...props}
-
-      classNames={mergeSlots(
-        { ...checkboxPartClasses, label: cn(labelClasses, className) },
-        classNames,
-      )}
+      disabled={disabled}
+      classNames={checkboxClasses(disabled, {
+        ...classNames,
+        label: cn(disabled ? labelDisabledClasses : labelClasses, classNames?.label, className),
+      })}
     />
   );
 }
@@ -81,11 +96,13 @@ export function CheckboxGroup({
   common,
   options,
   classNames,
+  disabled,
   ...props
 }: CheckboxGroupProps) {
   return (
     <CheckboxGroupHeadless
       {...props}
+      disabled={disabled}
 
       classNames={mergeSlots(
         { ...groupClasses, root: cn(groupClasses.root, className) },
@@ -98,18 +115,18 @@ export function CheckboxGroup({
               ...option,
               options: option.options.map((child) => ({
                 ...child,
-                classNames: mergeSlots(
-                  { ...checkboxPartClasses, ...common?.classNames },
-                  child.classNames,
-                ),
+                classNames: checkboxClasses(disabled || child.disabled, {
+                  ...common?.classNames,
+                  ...child.classNames,
+                }),
               })),
             }
           : {
               ...option,
-              classNames: mergeSlots(
-                { ...checkboxPartClasses, ...common?.classNames },
-                option.classNames,
-              ),
+              classNames: checkboxClasses(disabled || option.disabled, {
+                ...common?.classNames,
+                ...option.classNames,
+              }),
             },
       )}
       common={{

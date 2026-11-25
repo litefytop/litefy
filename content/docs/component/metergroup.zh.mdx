@@ -1,6 +1,6 @@
 ---
 title: MeterGroup 分组计量
-description: 参照 PrimeVue MeterGroup 的只读分组量表——surface 轨道上的占比段，段色取粉彩档位（亮 400 / 暗 300），附色点图例
+description: 参照 PrimeVue MeterGroup 的只读分组量表——well 井底轨道上的占比段，段色取粉彩档位（亮 400 / 暗 300），附色点图例
 ---
 
 ## 安装
@@ -22,12 +22,12 @@ description: 参照 PrimeVue MeterGroup 的只读分组量表——surface 轨�
 | `value`     | `{ label: string; value: number; color?: string }[]` | 按序渲染为相连的段；`color` 覆盖该段的色板取色                         |
 | `min`       | `number`                                             | 量程下界，默认 `0`                                         |
 | `max`       | `number`                                             | 量程上界；显式传入时各段按固定刻度计宽，默认 各项 `value` 之和                |
-| `className` | `string`                                             | 根元素自定义类                                             |
-| `classNames` | `{ track?: string; segment?: string; legend?: string; legendItem?: string; swatch?: string; label?: string; percent?: string }` | 自有元素槽，逐槽并入对应节点（轨道 / 段 / 图例 / 图例项 / 色点 / 名称 / 占比）      |
+| `className` | `string`                                             | 根元素自定义类；默认 `w-full min-w-0`                                             |
+| `classNames` | `{ track?: string; segment?: string; tip?: string; legend?: string; legendItem?: string; swatch?: string; label?: string; percent?: string }` | 自有元素槽，逐槽并入对应节点（轨道 / 段 / 提示 / 图例 / 图例项 / 色点 / 名称 / 占比）      |
 
 其余原生 `<div>` 属性（`aria-label`、`id`、内联 `style` 等）透传到根元素；可访问名由 `aria-label` 提供。根元素为 `role="meter"` 携带 `aria-valuemin` / `aria-valuemax` / `aria-valuenow`（钳后的各项和）；轨道与图例 `aria-hidden`。
 
-段按 `value / (max − min)` 依序铺开；零值项不渲染段，超宽由轨道裁剪。图例恒列出全部项及其取整占比，悬停段还会浮现 `label · 占比` 提示条——信息与图例恒同源，不依赖 hover。轨道色 `surface`，与全库轨道族同源。
+段按 `value / (max − min)` 依序铺开；零值项不渲染段，超宽由轨道裁剪。图例恒列出全部项及其取整占比，悬停段还会浮现 `label · 占比` 提示条——信息与图例恒同源，不依赖 hover。轨道色 `well`（井底档），与全库轨道族同源。
 
 ### 原子组件
 
@@ -39,13 +39,14 @@ description: 参照 PrimeVue MeterGroup 的只读分组量表——surface 轨�
 
 #### MeterSegment
 
-单段 div：`percent`（0–100 数）发布 inline `width`，`color?` 发布 inline 背景（运行期值），`tip?` 传入时发布 `data-tip`（供皮肤 hover 提示取 `attr(data-tip)`）。
+单段 div：`percent`（0–100 数）发布 inline `width`，`color?` 发布 inline 背景（运行期值），`tip?` 传入时保留 `data-tip`，并渲染 `aria-hidden` 提示 span（`data-tip-content`）；提示类名走 `tipClassName`。
 
 | 属性        | 类型        | 说明                    |
 | :-------- | :-------- | :-------------------- |
 | `percent` | `number`  | 段宽百分比，inline width 发布 |
 | `color`   | `string`  | 段色，inline 背景发布        |
-| `tip`     | `string`  | 段提示文案，发布到 `data-tip`  |
+| `tip`     | `string`  | 段提示文案，发布到 `data-tip` 与提示 span |
+| `tipClassName` | `string` | 提示 span 的自定义类名 |
 
 #### MeterLegend
 

@@ -1,68 +1,52 @@
 ﻿import { DateRangePicker as DateRangePickerHeadless } from "@/ui";
 import type { DateRangePickerProps } from "@/ui";
-import { buttonVariants } from "./button";
+import { buttonInlineClasses } from "./button";
 import {
   calendarClasses,
-  calendarDayBaseClasses,
   calendarInPanelClasses,
   calendarPanelWidthClasses,
   calendarPopoverWidthClasses,
 } from "./calendar";
-import { cn, mergeSlots } from "../utils/cn";
-import { pickerClasses } from "./picker";
-
-const rangeSingleClasses =
-  "data-[range=single]:bg-primary data-[range=single]:text-primary-fg " +
-  "data-[range=single]:hover:bg-primary data-[range=single]:hover:text-primary-fg";
-const rangeStartFillClasses =
-  "data-[range=start]:bg-primary data-[range=start]:text-primary-fg " +
-  "data-[range=start]:hover:bg-primary data-[range=start]:hover:text-primary-fg";
-const rangeStartCapClasses =
-  "data-[range=start]:rounded-l-md data-[range=start]:rounded-r-none";
-const rangeEndFillClasses =
-  "data-[range=end]:bg-primary data-[range=end]:text-primary-fg " +
-  "data-[range=end]:hover:bg-primary data-[range=end]:hover:text-primary-fg";
-const rangeEndCapClasses =
-  "data-[range=end]:rounded-r-md data-[range=end]:rounded-l-none";
-const rangeBetweenClasses =
-  "data-[range=between]:bg-accent data-[range=between]:text-foreground " +
-  "data-[range=between]:hover:bg-accent data-[range=between]:hover:text-foreground " +
-  "data-[range=between]:rounded-none";
-
-const rangeDayClasses = cn(
-  rangeSingleClasses,
-  rangeStartFillClasses,
-  rangeStartCapClasses,
-  rangeEndFillClasses,
-  rangeEndCapClasses,
-  rangeBetweenClasses,
-);
-
-export const calendarRangeClasses = mergeSlots(calendarClasses, {
-  day: cn(calendarDayBaseClasses, rangeDayClasses),
-});
+import { cn, mergeSlots, mergeStateSlots } from "../utils/cn";
+import { pickerClasses, pickerContentLayoutClasses, pickerInputDisabledClasses, pickerRootDisabledClasses } from "./picker";
 
 export const dateRangePickerClasses = {
   root: pickerClasses.root,
   input: pickerClasses.input,
   trailing: pickerClasses.trailing,
   trailingClose: cn(
-    buttonVariants.text,
-    "pointer-events-auto size-7 min-h-0 min-w-0 p-0 [&_svg]:size-4",
+    buttonInlineClasses,
+    "cursor-pointer text-foreground p-0 focus-visible:focus-ring",
+    "pointer-events-auto size-7 min-h-0 min-w-0",
   ),
-  popover: cn(pickerClasses.content, calendarPopoverWidthClasses, "p-3"),
+  popover: cn(pickerContentLayoutClasses, calendarPopoverWidthClasses, "p-3"),
   panel: cn(calendarInPanelClasses, calendarPanelWidthClasses, "gap-y-1"),
-  invalid: "text-xs text-danger-fg",
+  invalid: "text-xs text-danger-independent",
 };
 
-export function DateRangePicker({ classNames, ...props }: DateRangePickerProps) {
-  const { calendar: calendarOverride, ...field } = classNames ?? {};
+const trailingCloseDisabledClasses = cn(
+  buttonInlineClasses,
+  "cursor-not-allowed text-disabled-fg p-0",
+  "pointer-events-auto size-7 min-h-0 min-w-0",
+);
+
+export function DateRangePicker({ className, classNames, disabled, ...props }: DateRangePickerProps) {
+  const { calendar: calendarOverride, root: rootOverride, ...field } = classNames ?? {};
+  const fieldSkin = disabled
+    ? {
+        ...dateRangePickerClasses,
+        root: pickerRootDisabledClasses,
+        input: pickerInputDisabledClasses,
+        trailingClose: trailingCloseDisabledClasses,
+      }
+    : dateRangePickerClasses;
   return (
     <DateRangePickerHeadless
       {...props}
+      disabled={disabled}
       classNames={{
-        ...mergeSlots(dateRangePickerClasses, field),
-        calendar: mergeSlots(calendarRangeClasses, calendarOverride),
+        ...mergeSlots(fieldSkin, { ...field, root: cn(fieldSkin.root, rootOverride, className) }),
+        calendar: mergeStateSlots(calendarClasses, calendarOverride),
       }}
     />
   );

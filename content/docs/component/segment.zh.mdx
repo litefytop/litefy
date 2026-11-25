@@ -17,7 +17,7 @@ description: 支持受控、非受控和 options 驱动模式的单选分段控�
 
 ### 变体
 
-`variant` 切换整体外观，默认 `primary`（未选中为文字钮、选中为主题色块，外观与动效面板同款），另有 `text`。
+`variant` 切换整体外观——缺省 `bordered` 描边壳（未选中为文字钮、选中转主题色块，外观与动效面板同款），`borderless` 无壳无边框、选中填主题色块，`well` 井容器、选中项凸起为主题色块。
 
 <ComponentPreview
   name="segment-variants"
@@ -25,7 +25,7 @@ description: 支持受控、非受控和 options 驱动模式的单选分段控�
 
 ### 禁用
 
-disabled 属性禁用整组。
+组级 `disabled` 与每个选项的 `disabled` 独立配置，最终按“任一为真”原生禁用该按钮；独立禁用类串使用 `text-disabled-fg` 与 `cursor-not-allowed`，`well` 变体另用 `bg-disabled`。
 
 <ComponentPreview name="segment-disabled" />
 
@@ -43,7 +43,7 @@ disabled 属性禁用整组。
 | `value`          | `string`                      | 受控的选中值                                                    |
 | `defaultValue`   | `string`                      | 非受控模式下的默认选中值                                              |
 | `onValueChange`  | `(value: string) => void`     | 选中值变化时触发的回调函数                                             |
-| `variant`        | `"primary" \| "text"`         | 选中态外观，默认 `primary`：描边容器内未选中项为文字钮、选中项转主题色块；`text` 无壳，选中项为主题色加粗下划线文字，无 hover |
+| `variant`        | `"borderless" \| "bordered" \| "well"` | 选中态外观，默认 `bordered`：描边容器内未选中项为文字钮、选中项转主题色块；`borderless` 无壳无边框，选中项填主题色块，无 hover；`well` 井容器，选中项凸起为主题色块 |
 | `disabled`       | `boolean`                     | 禁用所有选项，默认 `false`                                         |
 | `className`      | `string`                      | 自定义类名，应用于容器                                               |
 | `itemClassName`  | `string`                      | 自定义类名，应用于每个分段按钮                                           |

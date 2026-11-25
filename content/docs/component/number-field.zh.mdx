@@ -15,7 +15,7 @@ description: 带前导 Minus 与尾部 Plus 步进按钮的紧凑数字步进器
 
 ### 禁用
 
-添加 disabled 属性禁用步进输入。
+`disabled` 原生禁用输入框与两个步进按钮，使用 `bg-disabled`、`text-disabled-fg` 与 `cursor-not-allowed`；到达 `min` / `max` 时对应按钮单独禁用。
 
 <ComponentPreview name="number-field-disabled" />
 
@@ -40,7 +40,7 @@ description: 带前导 Minus 与尾部 Plus 步进按钮的紧凑数字步进器
 | `thousands`       | `boolean`                                              | 未聚焦时整数部分按千分位分组显示；提交值始终不带分隔符，默认 `false`                             |
 | `className`       | `string`                                               | 自定义类名，作用于外壳。外壳恒为名义 3 格宽，值区与步进钮同宽（见下方宽度）                            |
 | `style`           | `React.CSSProperties`                                  | 内联样式，作用于外壳                                                         |
-| `classNames`      | `{ root?, stepper?, stepperIcon?, hint? }`             | 内部输入框 / 步进按钮 / 按钮默认 ± 图标 / 键盘焦点提示的自定义类名                            |
+| `classNames`      | `{ root?: SlotClassName; stepper?: SlotClassName; stepperIcon?: string; hint?: SlotClassName }` | `root`、`stepper`、`hint` 接收 `({ disabled }) => string`；`stepper.disabled` 同时包含字段禁用与 `min` / `max` 导致的单按钮禁用 |
 | `styles`          | `{ root?, stepper?, hint? }`                           | 上述各部分的自定义内联样式                                                      |
 | `disabled`        | `boolean`                                              | 禁用字段与两个步进按钮，默认 `false`                                             |
 | `incrementLabel`  | `string`                                               | 本组件自带的 `+` 步进按钮的可访问名称，默认 `'Increase'`                              |

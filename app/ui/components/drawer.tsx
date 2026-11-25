@@ -34,17 +34,15 @@ export function DrawerWrapper({ size = "md", placement, className, ...props }: D
 }
 export type DrawerDragProps = Omit<React.ComponentProps<"div">, "className"> & {
     className?: string;
-    orientation?: DrawerOrientation;
 };
-export function DrawerDrag({ orientation = "horizontal", className, ...props }: DrawerDragProps) {
-    return (<div {...props} data-orientation={orientation} className={className}/>);
+export function DrawerDrag({ className, ...props }: DrawerDragProps) {
+    return (<div {...props} className={className}/>);
 }
 export type DrawerContentProps = Omit<React.ComponentProps<"div">, "className"> & {
     className?: string;
-    orientation?: DrawerOrientation;
 };
-export function DrawerContent({ orientation, children, ...props }: DrawerContentProps) {
-    return (<div {...props} data-orientation={orientation}>
+export function DrawerContent({ children, ...props }: DrawerContentProps) {
+    return (<div {...props}>
       {children}
     </div>);
 }
@@ -73,9 +71,8 @@ export interface DrawerProps extends Omit<DrawerWrapperProps, "classNames" | "st
     onBackdropClick?: (e: React.MouseEvent<HTMLDialogElement>) => void;
 }
 export function Drawer({ className, style, classNames, styles, size, placement = "right", open, onOpenChange, onCancel, children, drag, ref, onBackdropClick, ...props }: DrawerProps) {
-    const isHorizontal = placement === "left" || placement === "right";
-    const orientation: DrawerOrientation = isHorizontal ? "horizontal" : "vertical";
     const dialogRef = React.useRef<HTMLDialogElement>(null);
+    const stageRef = React.useRef<HTMLDivElement>(null);
     const wrapperRef = React.useRef<HTMLDivElement>(null);
     const openRef = React.useRef(open);
     const animRef = React.useRef<Animation | null>(null);
@@ -139,16 +136,15 @@ export function Drawer({ className, style, classNames, styles, size, placement =
         }
     };
     return (<DrawerRoot ref={dialogRef} className={className} style={style} onKeyDown={handleKeyDown} onCancel={handleCancel} onClick={(e) => {
-            if (e.target === e.currentTarget) {
+            if (e.target === e.currentTarget || e.target === stageRef.current) {
                 onOpenChange(false);
                 onBackdropClick?.(e);
             }
         }}>
-      <DrawerStage placement={placement} className={classNames?.stage} style={styles?.stage}>
+      <DrawerStage ref={stageRef} placement={placement} className={classNames?.stage} style={styles?.stage}>
         <DrawerWrapper {...props} ref={setRefs} size={size} placement={placement} data-static={!drag?.isDragging || undefined} className={classNames?.wrapper} style={styles?.wrapper}>
-          
-          {drag && <DrawerDrag orientation={orientation} className={classNames?.drag} style={styles?.drag} onPointerDown={drag.handlePointerDown}/>}
-          <DrawerContent orientation={orientation} className={classNames?.content} style={styles?.content}>
+          {drag && <DrawerDrag className={classNames?.drag} style={styles?.drag} onPointerDown={drag.handlePointerDown}/>}
+          <DrawerContent className={classNames?.content} style={styles?.content}>
             {children}
           </DrawerContent>
         </DrawerWrapper>

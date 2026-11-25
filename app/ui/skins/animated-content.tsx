@@ -15,11 +15,19 @@ const outLeftClasses =
 const outRightClasses =
   "data-[direction=right]:data-[state=out]:-translate-x-(--animated-content-distance)";
 
-export function AnimatedContent({ className, ...props }: AnimatedContentProps) {
+const directionClasses: Record<NonNullable<AnimatedContentProps["direction"]>, string> = {
+  up: outUpClasses,
+  down: outDownClasses,
+  left: outLeftClasses,
+  right: outRightClasses,
+};
+
+export function AnimatedContent({ direction = "up", className, ...props }: AnimatedContentProps) {
   return (
     <AnimatedContentHeadless
       {...props}
-      className={cn(outBaseClasses, outUpClasses, outDownClasses, outLeftClasses, outRightClasses, className)}
+      direction={direction}
+      className={cn(outBaseClasses, directionClasses[direction], className)}
     />
   );
 }

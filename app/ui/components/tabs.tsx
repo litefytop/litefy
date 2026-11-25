@@ -1,6 +1,7 @@
 "use client";
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "./icons";
+import { resolveSlotClassName, type SlotClassName } from "../utils/cn";
 export type TabsOrientation = "horizontal" | "vertical";
 const EDGE = 3;
 const TRIGGER_STYLE: React.CSSProperties = { flexShrink: 0 };
@@ -12,7 +13,7 @@ export interface TabsListProps extends Omit<React.ComponentProps<"div">, "classN
     nextLabel?: string;
     classNames?: {
         scroller?: string;
-        scroll?: string;
+        scroll?: SlotClassName;
     };
 }
 export function TabsList({ className, children, orientation = "horizontal", activeValue, prevLabel = "Scroll tabs left", nextLabel = "Scroll tabs right", classNames, ref, ...props }: TabsListProps) {
@@ -75,8 +76,8 @@ export function TabsList({ className, children, orientation = "horizontal", acti
     };
     const overflow = edges.overflow ? { "data-overflow": "true" } : undefined;
     if (isHorizontal) {
-        return (<div {...props} {...overflow} data-orientation={orientation} className={className}>
-        <button type="button" data-direction="prev" className={classNames?.scroll} onClick={() => scrollByEdge(-1)} disabled={!edges.start} aria-label={prevLabel}>
+        return (<div {...props} {...overflow} className={className}>
+        <button type="button" data-direction="prev" className={resolveSlotClassName(classNames?.scroll, { disabled: !edges.start })} onClick={() => scrollByEdge(-1)} disabled={!edges.start} aria-label={prevLabel}>
           <ChevronLeft aria-hidden/>
         </button>
 
@@ -84,12 +85,12 @@ export function TabsList({ className, children, orientation = "horizontal", acti
           {children}
         </div>
 
-        <button type="button" data-direction="next" className={classNames?.scroll} onClick={() => scrollByEdge(1)} disabled={!edges.end} aria-label={nextLabel}>
+        <button type="button" data-direction="next" className={resolveSlotClassName(classNames?.scroll, { disabled: !edges.end })} onClick={() => scrollByEdge(1)} disabled={!edges.end} aria-label={nextLabel}>
           <ChevronRight aria-hidden/>
         </button>
       </div>);
     }
-    return (<div {...props} {...overflow} ref={setScrollRef} role="tablist" aria-orientation={orientation} data-orientation={orientation} className={className}>
+    return (<div {...props} {...overflow} ref={setScrollRef} role="tablist" aria-orientation={orientation} className={className}>
       {children}
     </div>);
 }
@@ -179,9 +180,9 @@ export interface TabsProps extends Omit<React.ComponentProps<"div">, "className"
     classNames?: {
         root?: string;
         list?: string;
-        scroll?: string;
+        scroll?: SlotClassName;
         scroller?: string;
-        trigger?: string;
+        trigger?: SlotClassName;
         content?: string;
     };
 }
@@ -195,9 +196,9 @@ export function Tabs({ options, value, defaultValue, onValueChange, orientation 
             setUncontrolledValue(val);
         onValueChange?.(val);
     };
-    return (<div {...props} data-orientation={orientation} className={[classNames?.root, className].filter(Boolean).join(" ")}>
+    return (<div {...props} className={[classNames?.root, className].filter(Boolean).join(" ")}>
       <TabsList orientation={orientation} activeValue={selectedValue} prevLabel={prevLabel} nextLabel={nextLabel} className={classNames?.list} classNames={{ scroller: classNames?.scroller, scroll: classNames?.scroll }}>
-        {options.map((option) => (<TabsTrigger key={option.value} value={option.value} uid={uid} active={selectedValue === option.value} disabled={option.disabled} onValueChange={handleValueChange} className={classNames?.trigger}>
+        {options.map((option) => (<TabsTrigger key={option.value} value={option.value} uid={uid} active={selectedValue === option.value} disabled={option.disabled} onValueChange={handleValueChange} className={resolveSlotClassName(classNames?.trigger, { disabled: Boolean(option.disabled) })}>
             {option.label}
           </TabsTrigger>))}
       </TabsList>

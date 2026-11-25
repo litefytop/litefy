@@ -10,3 +10,5 @@
 - `Menu.onSelect` 先回调外部 `onSelect` 再收起；`Menu.onEscape` 收起
 - `className` 落触发钮；`classNames.content` 落 Popover 内容；`classNames.menuRoot/item/label/sub/chevron` 分别映射 Menu 的 `root/item/label/sub/chevron`
 - 槽位：`classNames.content/item/label/sub/menuRoot/chevron`（触发钮用 `className`，项可另加 `itemClassName`）
+- `itemClassName` 与 `classNames.itemButton` 为 `SlotClassName`（string 或 `(state: SlotState) => string | undefined`），由 Menu 按项 disabled 用 `resolveSlotClassName` 解析；`mergeStateSlots` 对 string/string 静态 `cn`，含 function 时返回状态函数，双方按同一状态求值后 `cn`
+- 禁用遵循 `ui/schemes.md` 第 8 条：disabled 透传 Popover，触发钮原生禁用且浮层强制关闭，JS 拒绝再次打开；皮肤完整替换触发钮与禁用菜单项类串，使用禁用色与 `cursor-not-allowed`

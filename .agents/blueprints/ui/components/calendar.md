@@ -15,5 +15,9 @@
 - 渲染隔离：`CalendarGridCell` 按日期与选中 / 区间状态 memo，悬停预览与选中更新只重渲状态变化的单元格，不重渲整月网格
 - 槽位：`classNames.header/nav/navIcon/title/titleRow/grid/week/weekday/day`（无 styles）
 - 区间扩展（供 `DateRangePicker` 复用，不传时行为不变）：`CalendarRange { start: Date | null; end: Date | null }` 经 `CalendarGridProps` / `CalendarGridRowProps` / `CalendarProps` 的 `range?: CalendarRange` 下传；`weekdayLabels` / `monthLabels` 可替换表头与月份文案；`onHoverDateChange?: (date: Date | null) => void` 经 `CalendarGrid` / `Calendar` 下传，悬停非禁用日回调该日、移出网格回调 `null`
-- `rangeRoleFor` 按日历日比较（`compareDates`），不用毫秒相等：网格日期由 `dateFromParts` 构造在中午 12 点，外部传入零点的 `Date` 也必须正确识别端点；起止反序时归一化，只有起点时标 `single`
-- 区间角色写入单元格 `data-range="start|end|between|single"`、`data-in-range` 与 `aria-selected`；连续区间带的外观由皮肤按 `data-[range=*]` 绘制（见 `ui/skins/date-range-picker.md`）
+- `rangeRoleFor` 按日历日比较（`compareDates`），不用毫秒相等：网格日期由 `dateFromParts` 构造在中午 12 点，外部传入零点的 `Date` 也必须正确识别端点；起止反序时归一化；**无 `single` 态**（用户定 2026-11-23）——只有起点时该格标 `start`，起止同天的一天区间仍只标 `start`
+- 区间角色写入单元格 `data-range="start|end|between"`、`data-in-range`，与 `aria-selected`；三种角色与单值选中统一为槽位的 `active` 状态，不再为区间单独生成外观类
+- `classNames.nav/title/weekday/day` 接受 `SlotClassName = string | ((state: SlotState) => string | undefined)`，骨架用 `resolveSlotClassName` 按 `{ disabled }` 解析；日期格额外传 `outsideMonth` 与 `active`（单值选中或处于区间内），供皮肤区分非当月与激活外观；`mergeStateSlots` 对 string/string 静态 `cn`，含 function 时返回状态函数，双方按同一状态求值后 `cn`
+- 禁用遵循 `ui/schemes.md` 第 8 条：根输出 `data-disabled` / `aria-disabled`；日期禁用为整组件禁用与 `isDateDisabled` 的或，月/年网格由整组件禁用转为逐格禁用，导航、标题、星期与日期槽同步收到状态；选择、翻页、跨格导航和 header 焦点下移均有 JS 阻断
+- 已聚焦的导航、标题或网格单元在渲染后变为禁用时立即失去焦点；禁用单元不进入 Tab 顺序，也无法获得程序焦点或触发选择
+- 皮肤按整组件禁用完整替换根、导航、标题、星期与日期类串；日期格按 `disabled` 优先返回独立禁用类串，再按 `active` / `outsideMonth` 选择激活、月外或正常外观；禁用态不挂载正常、激活、月外与 hover 类，仅保留共用布局

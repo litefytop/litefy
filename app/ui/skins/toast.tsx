@@ -8,29 +8,31 @@ const viewportClasses =
   "flex-col items-center gap-1 overflow-visible bg-transparent border-0 px-4";
 
 const toastBaseClasses =
-  "group/toast pointer-events-auto relative isolate flex w-fit max-w-full cursor-pointer items-center gap-x-3 overflow-hidden";
-const toastFaceClasses =
-  "rounded-xl border-frame border-border bg-info py-2 px-3 text-info-fg shadow-hint";
-const toastLayerClasses =
-  "before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:rounded-[inherit] " +
-  "before:content-[''] before:bg-background";
-const toastTypeClasses =
-  "data-[type=success]:bg-success data-[type=success]:text-success-fg " +
-  "data-[type=error]:bg-danger data-[type=error]:text-danger-fg " +
-  "data-[type=warning]:bg-warning data-[type=warning]:text-warning-fg";
+  "group/toast pointer-events-auto relative isolate flex w-fit min-w-0 items-center overflow-hidden";
+const toastWidthClasses = "max-w-[min(20rem,calc(100vw_-_1rem))]";
+const toastFaceClasses = "rounded-xl border-frame border-border py-2 px-3 shadow-hint";
+const toastTextTypeClasses =
+  "data-[type=success]:text-success-fg data-[type=error]:text-danger-fg data-[type=warning]:text-warning-fg";
 
-const rootClasses = cn(toastBaseClasses, toastFaceClasses, toastLayerClasses, toastTypeClasses);
+const rootClasses = cn(toastBaseClasses, toastWidthClasses, toastFaceClasses, toastTextTypeClasses);
 
-const iconClasses = "shrink-0 self-center";
+const surfaceClasses =
+  "pointer-events-none absolute inset-0 -z-10 isolate bg-info " +
+  "data-[type=success]:bg-success data-[type=error]:bg-danger data-[type=warning]:bg-warning";
 
-const contentClasses = "flex min-w-0 flex-col group-has-[button]/toast:pr-5";
+const iconClasses = "shrink-0 self-center me-3 cursor-pointer text-info-fg";
+
+const contentClasses = cn(
+  "flex min-w-0 cursor-pointer flex-col text-info-fg group-has-[button]/toast:pr-5",
+  toastTextTypeClasses,
+);
 const titleClasses = "max-w-full truncate font-medium";
 const descriptionClasses = "mt-1 hidden max-w-full truncate text-sm leading-5 group-data-[tapped]/toast:block";
 
 const closeBaseClasses =
-  "absolute top-1/2 right-2 shrink-0 -translate-y-1/2 cursor-pointer rounded-sm p-1 opacity-0";
+  "absolute top-1/2 end-2 -translate-y-1/2 cursor-pointer rounded-sm p-1 text-info-fg opacity-0";
 const closeRevealClasses =
-  "transition-opacity duration-sm group-hover/toast:opacity-100 group-data-[tapped]/toast:opacity-100";
+  "transition-opacity duration-sm group-hover/toast:opacity-100 group-data-[tapped]/toast:opacity-100 focus-visible:opacity-100";
 const closeFaceClasses =
   "after:absolute after:inset-[calc(50%-var(--height-control)/2)] after:content-['']";
 
@@ -38,6 +40,7 @@ const closeClasses = cn(closeBaseClasses, closeRevealClasses, closeFaceClasses);
 
 const skinClassNames = {
   root: rootClasses,
+  surface: surfaceClasses,
   icon: iconClasses,
   content: contentClasses,
   title: titleClasses,

@@ -17,4 +17,4 @@
 - 队列更新：`updateToast(id, patch)` 合并更新指定项并发布（id 匹配按字符串化比较）；`Toaster.promise(fn, { loading, success, error, classNames })` 始终单条——pending 期无 `type`（`data-type` 缺省），以 `icon` 挂内置 spinner、`duration: Infinity` 不计时入队，settle 后经 `updateToast` 把同一条原地转为 success（`success` 可为 `(data) => ReactNode`）或 error（`error` 可为 `(error) => ReactNode`）并换标题，同时清 `icon`、把 `duration` 还原为缺省；`ToastItem` 自动关闭 effect 以 `duration` 为依赖，settle 把 `duration` 从 `Infinity` 改回缺省后才起算默认时长倒计时
 - 无倒计时进度条：卡内不渲染任何剩余量图形，计时只在骨架内部（剩余毫秒 ref + 暂停续算）
 - `ToastTitle` 恒渲染，`ToastDescription` 仅在 description 为真时渲染；单条 toast 的 `style` 不开放，只有槽位 styles
-- 槽位：`classNames: root / icon / content / title / description / close`；`styles: icon / content / title / description / close`
+- 槽位：`classNames: root / surface / icon / content / title / description / close`；`styles: surface / icon / content / title / description / close`；`surface` 是根内首个 `aria-hidden` 背景层 span，带 `data-surface`

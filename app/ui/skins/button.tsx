@@ -3,50 +3,73 @@ import type { ButtonProps } from "@/ui";
 import { cn } from "../utils/cn";
 
 
-const frameLayoutClasses =
-  "inline-flex cursor-pointer h-control items-center justify-center gap-x-2 whitespace-nowrap text-center no-underline";
-const frameIconClasses = "[&_svg]:size-5 sm:[&_svg]:size-4";
-const framePillClasses =
-  "rounded-pill px-[max(var(--spacing)*3,min(var(--radius-pill),var(--height-control)/2))]";
-const frameTextClasses = "text-label leading-label tracking-label font-label case-label";
-const frameStateClasses =
-  "motion-frame disabled:border-dashed data-[pure-icon=true]:aspect-square data-[pure-icon=true]:p-0";
+export const buttonLayoutClasses = "inline-flex items-center justify-center";
 
-const frame = cn(frameLayoutClasses, frameIconClasses, framePillClasses, frameTextClasses, frameStateClasses);
+const buttonInlineFaceClasses = "[&_svg]:size-4 control-text motion-frame";
+const buttonTextLayoutClasses = "h-control gap-x-2 text-nowrap";
 
+export const buttonInlineClasses = cn(
+  buttonLayoutClasses,
+  "rounded-pill",
+  buttonInlineFaceClasses,
+);
 
-const blockMotion =
-  "hover:lift hover:shadow-frame-hover active:crush active:shadow-frame-active disabled:dim disabled:shadow-frame-disabled";
+const blockMotion = "press-frame";
+
+export const buttonTextFieldClasses = cn(
+  buttonInlineClasses,
+  buttonTextLayoutClasses,
+);
+
+export const buttonTextFaceClasses =
+  "cursor-pointer text-foreground px-2 " +
+  "hover:underline underline-offset-4 focus-visible:focus-ring";
+
+export const buttonDisabledTextFaceClasses =
+  "text-disabled-fg px-2 cursor-not-allowed";
+
+const frame = cn(buttonTextFieldClasses, "px-pill-x");
+const outlineFaceClasses =
+  "cursor-pointer border-hair bg-surface-raised text-surface-raised-fg shadow-frame " +
+  blockMotion + " hover:bg-accent hover:text-accent-fg focus-visible:focus-ring";
+
+export const buttonSquareFieldClasses = cn(
+  buttonLayoutClasses,
+  buttonInlineFaceClasses,
+  "rounded-md",
+  buttonTextLayoutClasses,
+  outlineFaceClasses,
+);
+
 
 export const buttonVariants = {
   primary: cn(
     frame,
-    "border-control border-border bg-primary text-primary-fg shadow-frame",
+    "cursor-pointer border-control bg-primary text-primary-fg shadow-frame",
     blockMotion,
-    "hover:bg-primary-accent hover:text-primary-fg focus-visible:focus-ring",
+    "hover:bg-primary-accent focus-visible:focus-ring",
   ),
-  outline: cn(
-    frame,
-    "border-hair border-border bg-background text-foreground shadow-frame",
-    blockMotion,
-    "hover:bg-accent hover:text-accent-fg focus-visible:focus-ring",
-  ),
-  text: cn(
-    frame,
-    "border-transparent bg-transparent text-foreground shadow-none px-2",
-    "hover:underline underline-offset-4 focus-visible:focus-ring",
-  ),
+  outline: cn(frame, outlineFaceClasses),
+  text: cn(frame, buttonTextFaceClasses),
   danger: cn(
     frame,
-    "border-hair border-border bg-danger text-danger-fg shadow-frame",
+    "cursor-pointer border-hair bg-danger text-danger-fg shadow-frame",
     blockMotion,
     "hover:bg-danger-accent focus-visible:focus-ring-danger",
   ),
+  disabled: cn(
+    frame,
+    "border-control bg-disabled text-disabled-fg shadow-frame-disabled cursor-not-allowed",
+  ),
+  disabledText: cn(frame, buttonDisabledTextFaceClasses),
 };
 
 export type ButtonVariant = keyof typeof buttonVariants;
 
 function pickVariant(props: Record<string, unknown>): ButtonVariant {
+  if (props["disabled"] === true || props["aria-disabled"] === true || props["aria-disabled"] === "true") {
+    return props["data-variant"] === "text" ? "disabledText" : "disabled";
+  }
   if (props["data-danger"]) return "danger";
   const variant = props["data-variant"];
   return typeof variant === "string" && variant in buttonVariants
@@ -60,7 +83,7 @@ export function Button({ className, icon, status, children, ...props }: ButtonPr
       {...props}
       icon={icon}
       status={status}
-      className={cn(buttonVariants[pickVariant(props)], className)}
+      className={cn(buttonVariants[pickVariant(props)], children === null || children === undefined ? "pure-icon" : undefined, className)}
     >
       {children}
     </ButtonHeadless>

@@ -2,6 +2,7 @@
 import * as React from "react";
 import { ChevronRight } from "./icons";
 import { showFloatingPanel, useFloatingPosition, useMergedPanelRef } from "../utils/floating-position";
+import { resolveSlotClassName, type SlotClassName } from "../utils/cn";
 type HTMLAttrs<T> = Omit<T, "className"> & {
     [key: `data-${string}`]: string | number | null | undefined | true;
     className?: string;
@@ -49,7 +50,7 @@ export interface MenuClassNames {
     root?: string;
     item?: string;
     label?: string;
-    itemButton?: string;
+    itemButton?: SlotClassName;
     sub?: string;
     chevron?: string;
 }
@@ -60,7 +61,7 @@ export interface MenuProps extends Omit<HTMLAttrs<React.ComponentProps<"ul">>, "
     onEscape?: () => void;
     className?: string;
     style?: React.CSSProperties;
-    itemClassName?: string;
+    itemClassName?: SlotClassName;
 
     classNames?: MenuClassNames;
     styles?: {
@@ -76,7 +77,7 @@ interface MenuListProps extends Omit<HTMLAttrs<React.ComponentProps<"ul">>, "ref
     autoFocus?: boolean;
     className?: string;
     style?: React.CSSProperties;
-    itemClassName?: string;
+    itemClassName?: SlotClassName;
     classNames?: Pick<MenuClassNames, "root" | "item" | "label" | "itemButton" | "chevron">;
     styles?: {
         item?: React.CSSProperties;
@@ -141,9 +142,13 @@ function MenuList({ ref, items, uid, autoFocus, className, style, itemClassName,
     const renderItem = (mi: MenuItemConfig, entryId: string) => {
         const hasSub = !!(mi.children && mi.children.length > 0);
         const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+            if (mi.disabled) return;
             mi.onClick?.(e);
             onSelect?.(mi);
         };
+        const state = { disabled: mi.disabled ?? false };
+        const buttonClassName = resolveSlotClassName(classNames?.itemButton, state);
+        const itemOverrideClassName = resolveSlotClassName(itemClassName, state);
         return (<MenuItem key={entryId} data-entry={entryId} data-anchor-name={`--menu-sub-${entryId}`} className={classNames?.item} style={styles?.item} onKeyDown={(e) => {
                 const enabled = entries.filter((en) => !en.item.disabled);
                 const idx = enabled.findIndex((en) => en.entryId === activeEntry);
@@ -187,10 +192,11 @@ function MenuList({ ref, items, uid, autoFocus, className, style, itemClassName,
                         break;
                 }
             }} onMouseEnter={() => {
+                if (mi.disabled) return;
                 setActiveEntry(entryId);
                 onItemMouseEnter?.(entryId, mi);
             }} onMouseLeave={onItemMouseLeave}>
-        <button type="button" role="menuitem" disabled={mi.disabled} aria-haspopup={hasSub ? "menu" : undefined} data-has-sub={hasSub || undefined} data-active={activeEntry === entryId || undefined} className={[classNames?.itemButton, itemClassName, mi.className].filter(Boolean).join(" ")} onClick={hasSub ? () => onArrowRight?.(entryId, mi) : handleClick}>
+        <button type="button" role="menuitem" disabled={mi.disabled} aria-haspopup={hasSub ? "menu" : undefined} data-has-sub={hasSub || undefined} data-active={activeEntry === entryId || undefined} className={[buttonClassName, itemOverrideClassName, mi.className].filter(Boolean).join(" ")} onClick={hasSub ? () => onArrowRight?.(entryId, mi) : handleClick}>
           {mi.label}
           {hasSub && <ChevronRight aria-hidden className={classNames?.chevron}/>}
         </button>
@@ -261,6 +267,7 @@ export function Menu({ items, autoFocus, onSelect, onEscape, className, style, i
     }, [closeSub]);
     React.useEffect(() => () => clearTimer(), [clearTimer]);
     const openSub = (entryId: string, item: MenuItemConfig, focus: boolean) => {
+        if (item.disabled) return;
         clearTimer();
         setHoverAnchor(`--menu-sub-${entryId}`);
         setHoverSubItem(item);
@@ -268,6 +275,10 @@ export function Menu({ items, autoFocus, onSelect, onEscape, className, style, i
     };
     const handleItemMouseEnter = (entryId: string, item: MenuItemConfig) => {
         clearTimer();
+        if (item.disabled) {
+            closeSub();
+            return;
+        }
         if (!item.children?.length) {
             timerRef.current = window.setTimeout(closeSub, 150);
             return;

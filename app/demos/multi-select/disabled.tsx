@@ -7,5 +7,9 @@ const options = [
 ];
 
 export default function Demo() {
-  return <MultiSelect options={options} placeholder="Unavailable" disabled inert className="w-77 min-w-33" />;
+  return (
+    <div className="flex flex-col items-center">
+      <MultiSelect options={options} placeholder="Unavailable" disabled />
+    </div>
+  );
 }

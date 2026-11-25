@@ -15,7 +15,7 @@ description: 尾部为非交互的上下提示图标的数字输入框——键�
 
 ### 禁用
 
-添加 disabled 属性禁用数值输入。
+`disabled` 原生禁用输入框，输入外壳使用 `bg-disabled`、`text-disabled-fg` 与 `cursor-not-allowed`，键盘和滚轮输入随之阻断。
 
 <ComponentPreview name="number-input-disabled" />
 
@@ -37,9 +37,9 @@ description: 尾部为非交互的上下提示图标的数字输入框——键�
 | `suffix`          | `React.ReactNode`                                                            | 渲染在数字后的内容 —— 设置时取代步进提示                                             |
 | `thousands`       | `boolean`                                                                    | 未聚焦时整数部分按千分位分组显示；提交值始终不带分隔符，默认 `false`                             |
 | `indicator`       | `boolean`                                                                    | 是否在尾部区域显示非交互的上下提示图标（设置 `suffix` 时不显示），默认 `true`；关闭时尾部不渲染指示。聚焦后所有实例都会在右上角显示 `↑↓` 步进提示卡 |
-| `className`       | `string`                                                                     | 自定义类名，作用于外壳                                                        |
-| `style`           | `React.CSSProperties`                                                        | 内联样式，作用于外壳                                                         |
-| `classNames`      | `{ leading?; trailing?; root?; indicator?; indicatorIcon?; hint? }` —— 值均为 `string` | 前缀插槽、内部输入框（`root`）、↑↓ 提示及其两个人字形图标、聚焦提示卡（`hint`）的自定义类名 |
+| `className`       | `string`                                                                     | 字段外壳自定义类名；默认 `w-full min-w-0 max-w-[20rem]`（最大 20rem） |
+| `style`           | `React.CSSProperties`                                                        | 字段外壳内联样式                                                  |
+| `classNames`      | `{ leading?: string; trailing?: string; root?: SlotClassName; indicator?: SlotClassName; indicatorIcon?: string; hint?: SlotClassName }` | `root`、`indicator`、`hint` 接收 `({ disabled }) => string` 状态函数；其余槽为固定类名 |
 | `styles`          | `{ leading?; trailing?; root?; indicator?; indicatorIcon?; hint? }` —— 值均为 `React.CSSProperties` | 前后缀插槽、内部输入框（`root`）、↑↓ 提示与聚焦提示卡的内联样式            |
 | `disabled`        | `boolean`                                                                    | 禁用整个字段，默认 `false`                                                  |
 | `...props`        | `React.ComponentProps<"input">`                                              | 支持所有原生 input 属性（除 `type`、`className`），如 `onBlur`                   |

@@ -29,7 +29,7 @@ description: 支持水平和垂直方向、带文本标签和可自由拼装的�
 | ------------- | --------------------------------------- | ----------------------- |
 | `children`    | `React.ReactNode`                       | 渲染在两条线之间的文本标签           |
 | `orientation` | `'horizontal' \| 'vertical'`            | 分隔符方向，默认 `'horizontal'` |
-| `className`   | `string`                                | 自定义类名，应用于分割线或包装容器       |
+| `className`   | `string`                                | 自定义类名；水平分割线默认全宽，垂直分割线随 flex 行高拉伸       |
 | `classNames`  | `{ line?, text?: string }`              | 定制分割线和文本标签的自定义类名        |
 | `styles`      | `{ line?, text?: React.CSSProperties }` | 定制分割线和文本标签的内联样式         |
 
@@ -39,7 +39,7 @@ description: 支持水平和垂直方向、带文本标签和可自由拼装的�
 
 #### SeparatorLine
 
-自带 `data-orientation` 尺寸的分割线零件。垂直线随 flex 行高自动拉伸，也可用固定高度钉住。
+分割线零件。垂直线随 flex 行高自动拉伸，也可用固定高度钉住。
 
 | 属性            | 类型                            | 描述                      |
 | ------------- | ----------------------------- | ----------------------- |
@@ -59,9 +59,3 @@ description: 支持水平和垂直方向、带文本标签和可自由拼装的�
 ## 键盘交互
 
 本组件不接管任何按键。
-
-## 数据属性
-
-| Attribute | Description |
-| --- | --- |
-| `[data-orientation]` | 位于分割线与组合根节点上——取 `"horizontal"` 或 `"vertical"`，与 `orientation` 属性一致 |

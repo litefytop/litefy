@@ -14,4 +14,6 @@
 - 子菜单惰性：仅 `hoverSubItem` 存在且 `hoverAnchor` 非空时渲染 `MenuSubContent`，effect 内 `showFloatingPanel` / `hidePopover` 同步，`useFloatingPosition` 负责锚定；文档 mousedown 落在根列表与子面板外时关闭
 - 子菜单键盘：ArrowRight 打开时 `subAutoFocus=true` 聚焦首项；ArrowLeft 关闭子面板并按父 entry 把焦点还给根项；Escape 关闭子面板再 `onEscape`
 - `onSelect` 经包装先 `closeSub` 再回调；`classNames.root` 与 `className` 合并，`itemButton` 与 `itemClassName`、`mi.className` 合并
+- `itemClassName` 与 `classNames.itemButton` 为 `SlotClassName`（string 或 `(state: SlotState) => string | undefined`），按当前项 disabled 用 `resolveSlotClassName` 解析；`mergeStateSlots` 对 string/string 静态 `cn`，含 function 时返回状态函数，双方按同一状态求值后 `cn`
+- 禁用遵循 `ui/schemes.md` 第 8 条：项按钮原生 disabled，鼠标进入、点击与打开子菜单由 JS 守卫阻断，方向键只遍历 enabled entries；皮肤逐项完整替换正常按钮类串，使用禁用色与 `cursor-not-allowed` 并移除 hover/active 类
 - 槽位：`classNames.root/item/label/itemButton/sub/chevron`；`styles.item/label/sub`（根 `className`/`style` 直通）

@@ -9,8 +9,9 @@ const options = [
 export default function Demo() {
   return (
     <div className="flex flex-col items-center justify-center gap-3">
-      <SegmentGroup variant="primary" defaultValue="grid" options={options} />
-      <SegmentGroup variant="text" defaultValue="table" options={options} />
+      <SegmentGroup variant="bordered" defaultValue="grid" options={options} />
+      <SegmentGroup variant="borderless" defaultValue="table" options={options} />
+      <SegmentGroup variant="well" defaultValue="list" options={options} />
     </div>
   );
 }

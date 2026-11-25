@@ -12,37 +12,38 @@ const measureClasses =
 
 const moreClasses = "inline-flex shrink-0";
 
-const chipLayoutClasses =
-  "inline-flex min-h-5 items-center gap-1 rounded-sm border-control border-border px-2";
-const chipTextClasses =
-  "text-xs leading-4 tracking-label case-label whitespace-nowrap no-underline";
-const chipSurfaceClasses =
-  "bg-surface text-surface-fg [&:is(a,button)]:min-h-control";
-const chipVariantClasses =
-  "[&:is(a,button)]:data-[variant=primary]:bg-primary data-[variant=primary]:text-primary-fg " +
-  "data-[variant=outline]:bg-transparent data-[variant=outline]:text-foreground";
-const chipSuccessClasses =
-  "data-[variant=success]:bg-success data-[variant=success]:text-success-fg";
-const chipWarningClasses =
-  "data-[variant=warning]:bg-warning data-[variant=warning]:text-warning-fg";
-const chipDangerClasses =
-  "data-[variant=danger]:bg-danger data-[variant=danger]:text-danger-fg";
-const chipInfoClasses = "data-[variant=info]:bg-info data-[variant=info]:text-info-fg";
-
-export const chipClasses = cn(
-  chipLayoutClasses,
-  chipTextClasses,
-  chipSurfaceClasses,
-  chipVariantClasses,
-  chipSuccessClasses,
-  chipWarningClasses,
-  chipDangerClasses,
-  chipInfoClasses,
+export const chipBase = cn(
+  "inline-flex min-h-5 items-center gap-1 rounded-sm border-control border-border px-2",
+  "text-xs leading-4 tracking-label case-label whitespace-nowrap no-underline",
+  "[&:is(a,button)]:min-h-control",
 );
 
-const chipPartClasses = "max-w-40 shrink-0 overflow-hidden text-ellipsis " + chipClasses;
+export const chipVariants = {
+  surface: "bg-surface-raised text-surface-raised-fg",
+  primary: "bg-primary text-primary-fg",
+  outline: "bg-transparent text-foreground",
+  success: "bg-success text-success-fg",
+  warning: "bg-warning text-warning-fg",
+  danger: "bg-danger text-danger-fg",
+  info: "bg-info text-info-fg",
+};
+
+export type ChipVariant = keyof typeof chipVariants;
+
+export const chipClasses = cn(chipBase, chipVariants.surface);
+
+function pickVariant(value: unknown): ChipVariant {
+  return typeof value === "string" && value in chipVariants
+    ? (value as ChipVariant)
+    : "surface";
+}
 
 export function ChipGroup({ className, classNames, ...props }: ChipGroupProps) {
+  const chipClass = cn(
+    chipBase,
+    chipVariants[pickVariant((props as Record<string, unknown>)["data-variant"])],
+    "max-w-40 shrink-0 overflow-hidden text-ellipsis",
+  );
   return (
     <ChipGroupHeadless
       {...props}
@@ -50,7 +51,7 @@ export function ChipGroup({ className, classNames, ...props }: ChipGroupProps) {
       classNames={mergeSlots(
         {
           row: rowClasses,
-          chip: chipPartClasses,
+          chip: chipClass,
           more: moreClasses,
           measure: measureClasses,
         },

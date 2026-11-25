@@ -90,7 +90,7 @@ function LandingHero({ locale, pathname }: { locale: Locale; pathname: string })
   const componentsHref = toSchemeHref(pathname, `/${locale}/docs/overview`);
 
   return (
-    <section className="px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-20 border-b bg-surface text-on-surface">
+    <section className="px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-20 border-b bg-surface text-surface-fg">
       <div className="grid gap-6 mx-auto w-full max-w-320 md:grid-cols-[1.2fr_1fr] md:items-center">
         <header className="flex flex-col gap-3">
           <p className="m-0 scroll-mt-20 typo-kicker">
@@ -143,7 +143,7 @@ function StepsSection({ locale, pathname }: { locale: Locale; pathname: string }
             {t.eyebrow}
           </p>
           <h2 className="text-2xl font-medium">{t.title}</h2>
-          <p className="max-w-256 text-sm text-surface-fg">{t.body}</p>
+          <p className="max-w-256 text-sm text-foreground">{t.body}</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           {steps.map((step) => (
@@ -152,11 +152,11 @@ function StepsSection({ locale, pathname }: { locale: Locale; pathname: string }
               to={toSchemeHref(pathname, step.to)}
               className="flex flex-col gap-2"
             >
-              <p className="m-0 scroll-mt-20 text-surface-fg text-xs font-semibold tracking-wide">
+              <p className="m-0 scroll-mt-20 text-foreground text-xs font-semibold tracking-wide">
                 {step.label}
               </p>
               <h3 className="text-base font-medium">{step.title}</h3>
-              <p className="text-sm text-surface-fg">{step.body}</p>
+              <p className="text-sm text-foreground">{step.body}</p>
               <span
                 className="flex items-center gap-1 text-sm font-medium text-primary"
               >

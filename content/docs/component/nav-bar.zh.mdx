@@ -31,8 +31,8 @@ description: 一行链接，放不下的条目搬进下拉；按拿到的宽度�
 | `placement`     | `FloatingPlacement`                                            | 面板位置：默认 `{ side: "bottom", align: "end", gap: 8 }`，可逐项覆盖                        |
 | `className`     | `string`                                                       | 自定义类名，作用于 `nav` 根元素                                                             |
 | `style`         | `React.CSSProperties`                                          | 内联样式，作用于 `nav` 根元素                                                              |
-| `classNames`    | `{ root?; item?; more?; panel? }` —— 值均为 `string`              | 各部件的自定义类名；`panel` 是 [Popover](/zh/docs/component/popover) 的 `PopoverContent`    |
-| `styles`        | `{ root?; item?; more?; panel? }` —— 值均为 `React.CSSProperties` | 各部件的内联样式                                                                        |
+| `classNames`    | `{ root?; item?; more?; chevron?; panel? }` —— 值均为 `string`              | `panel` 控制 [Popover](/zh/docs/component/popover) 面板，默认 `w-48 min-w-0`（12rem），最大宽度为 20rem 与视口宽度减 1rem 的较小值；`chevron` 是内置箭头容器 |
+| `styles`        | `{ root?; item?; more?; panel? }` —— 值均为 `React.CSSProperties` | 各部件的内联样式；`styles.panel` 可覆盖面板宽度                                                                        |
 | `...props`      | `React.ComponentProps<"nav">`                                  | 其余原生 `nav` 属性透传到根元素（不含 `children`）；`ref` 指向根元素，可用于聚焦。想让它吃掉所在行的剩余宽度，给它写 `flex-1` |
 
 ## 键盘交互

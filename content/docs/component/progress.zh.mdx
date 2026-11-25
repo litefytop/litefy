@@ -26,7 +26,7 @@ description: 纯 UI 进度条组件，只渲染你交给它的那一次读数—
 | `isComplete` | `boolean`           | 完成：强制宽度 100%；优先级高于 `paused`，默认 `false`                       |
 | `paused`     | `boolean`           | 暂停：读数冻结，填充条改 warning 语义色；三个状态中优先级最低，默认 `false`              |
 | `hideValue`  | `boolean`           | 隐藏尾随百分比读数；读数 `aria-hidden`，进度值恒由 `aria-valuenow` 表达，默认 `false`    |
-| `className`  | `string`            | 自定义类名，应用于根元素                                                 |
+| `className`  | `string`            | 自定义类名，应用于根元素；默认 `w-full min-w-0`                                                 |
 | `classNames` | `{ track?: string; fill?: string; value?: string }` | 自定义类名，分别应用于轨道、填充条与读数                        |
 
 其余原生 `<div>` 属性（`aria-label`、`data-*`、`id`、内联 `style`……）同样接受，并落在根元素上；根元素内联样式里的 `--litefy-percent` 由组件保留。

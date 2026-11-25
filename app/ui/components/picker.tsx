@@ -85,7 +85,7 @@ export function Picker({ className, value: controlledValue, defaultValue = "", o
         onValueChange?.(e.target.value);
     };
     return (<>
-      <PickerRoot anchorName={anchorName} style={style} className={className} data-open={open || undefined} data-invalid={ariaInvalid || undefined} inert={disabled || undefined}>
+      <PickerRoot anchorName={anchorName} style={style} className={className} data-open={open || undefined} data-invalid={ariaInvalid || undefined} data-disabled={disabled || undefined} aria-disabled={disabled || undefined}>
         {leading ? (<span className={classNames?.leading} style={styles?.leading}>{leading}</span>) : null}
         <PickerInput {...props} disabled={disabled} aria-invalid={ariaInvalid} style={styles?.input} value={value} aria-expanded={open} aria-controls={panelId} onClick={(e) => {
             onClickProp?.(e);

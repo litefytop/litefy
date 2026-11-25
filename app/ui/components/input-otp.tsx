@@ -42,11 +42,13 @@ export function InputOtp({ length = 6, value, defaultValue = "", onValueChange, 
     const chars = Array.from({ length }, (_, i) => currentValue[i] ?? "");
     const slots = chars.map((char, id) => ({ id, char }));
     const setValue = (next: string) => {
+        if (disabled) return;
         if (!isControlled)
             setUncontrolledValue(next);
         onValueChange?.(next);
     };
     const focusInput = (index: number) => {
+        if (disabled) return;
         const input = inputsRef.current[Math.min(length - 1, Math.max(0, index))];
         if (input) {
             input.focus();
@@ -91,13 +93,14 @@ export function InputOtp({ length = 6, value, defaultValue = "", onValueChange, 
         focusInput(index + text.length);
     };
     const handleGroupPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+        if (disabled) return;
         if ((e.target as HTMLElement).tagName === "INPUT")
             return;
         e.preventDefault();
         const firstEmpty = chars.findIndex((c) => !c);
         focusInput(firstEmpty === -1 ? length - 1 : firstEmpty);
     };
-    return (<InputOtpGroup onPointerDown={handleGroupPointerDown} data-invalid={invalid || undefined} className={className} style={style}>
+    return (<InputOtpGroup onPointerDown={handleGroupPointerDown} data-invalid={invalid || undefined} data-disabled={disabled || undefined} aria-disabled={disabled || undefined} className={className} style={style}>
       {slots.map(({ id, char }) => (<InputOtpSlot key={id} ref={(el) => {
                 inputsRef.current[id] = el;
             }} value={char} type={mask ? "password" : "text"} inputMode="numeric" disabled={disabled} aria-invalid={invalid} aria-label={ariaLabel ? `${ariaLabel} ${id + 1}` : undefined} autoComplete={id === 0 ? "one-time-code" : "off"} onChange={(e) => handleChange(id, e.target.value)} onKeyDown={(e) => handleKeyDown(id, e)} onPaste={(e) => handlePaste(id, e)} onFocus={(e) => e.target.select()} className={classNames?.slot} style={styles?.slot}/>))}

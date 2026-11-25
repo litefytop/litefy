@@ -25,8 +25,10 @@ export default function Demo() {
   const [current, setCurrent] = React.useState("src/button");
 
   return (
-    <div inert className="p-2 w-full items-center">
-      <Tree items={items} value={current} onValueChange={setCurrent} />
+    <div className="flex flex-col items-center">
+      <div className="p-2 w-full items-center">
+        <Tree items={items} value={current} onValueChange={setCurrent} />
+      </div>
     </div>
   );
 }

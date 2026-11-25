@@ -41,7 +41,7 @@ function Section({
 }) {
   return (
     <section className="flex flex-col gap-2 border-t pt-4 first:border-t-0 first:pt-0">
-      <h2 className="m-0 text-label font-label tracking-label case-label text-surface-fg">{label}</h2>
+      <h2 className="m-0 text-label control-label text-foreground">{label}</h2>
       {children}
     </section>
   );

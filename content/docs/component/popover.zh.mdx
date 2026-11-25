@@ -33,8 +33,9 @@ description: 基于原生 Popover API 与内置 JS 定位引擎的按钮触发�
 | `alignX`       | `"start" \| "end" \| "center"`                                                    | 面板相对触发器的水平对齐，默认 `center`                                                   |
 | `placement`    | `{ side?; align?; gap?; matchWidth? }`                                            | 覆盖 `alignX` 推导出的吸附方位（内置 JS 定位）                                             |
 | `mode`         | `"click" \| "hover"`                                                              | 触发交互模式；`hover` 在指针移入 / trigger 聚焦时打开，指针移出后延迟关闭，默认 `click`                  |
-| `classNames`   | `{ trigger?: string; content?: string }`                                          | 按插槽自定义类名——它会合并到所加载方案皮肤自带的触发器/面板类名之上（皮肤以 `popoverClasses` 导出），同类属性以你写入的为准   |
-| `styles`       | `{ trigger?: React.CSSProperties; content?: React.CSSProperties }`                | 按插槽内联样式（定位本身由组件内部管理）                                                       |
+| `disabled`     | `boolean`                                                                         | 原生禁用触发钮，面板不可打开；触发器使用 `text-disabled-fg` 与 `cursor-not-allowed`，非 text 变体另有 `bg-disabled`，默认 `false` |
+| `classNames`   | `{ trigger?: string; content?: string }`                                          | 按插槽自定义类名；`content` 控制面板，默认 `w-fit min-w-0`，最大宽度为 20rem 与视口宽度减 1rem 的较小值                              |
+| `styles`       | `{ trigger?: React.CSSProperties; content?: React.CSSProperties }`                | 按插槽内联样式；`content` 可覆盖面板宽度，定位本身由组件内部管理                                                       |
 
 ---
 
@@ -81,8 +82,8 @@ description: 基于原生 Popover API 与内置 JS 定位引擎的按钮触发�
 | `anchorName`   | `string`                               | 定位所锚定元素的名称（对应其 `data-anchor-name` 属性）                                       |
 | `anchorPoint`  | `{ x: number; y: number }`             | 按视口坐标锚定（如鼠标位置），优先于 `anchorName`                                             |
 | `placement`    | `{ side?; align?; gap?; matchWidth? }` | 覆盖 `alignX` 推导出的吸附方位                                                        |
-| `className`    | `string`                               | 自定义类名                                                                       |
-| `style`        | `React.CSSProperties`                  | 自定义内联样式；定位本身由内置 JS 引擎管理（[浮动定位](/zh/docs/utils/use-floating-panel)）          |
+| `className`    | `string`                               | 面板自定义类名；单独使用时宽度由调用方提供                     |
+| `style`        | `React.CSSProperties`                  | 面板自定义内联样式；定位本身由内置 JS 引擎管理（[浮动定位](/zh/docs/utils/use-floating-panel)）          |
 | `ref`          | `React.Ref<HTMLDivElement>`            | 转发到面板 div                                                                   |
 | `...props`     | `React.ComponentProps<"div">`          | 支持所有原生 div 属性（`className` 除外），如 `role`、`id`、`onKeyDown`                     |
 

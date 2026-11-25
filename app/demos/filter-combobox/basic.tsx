@@ -26,6 +26,12 @@ const fields: FilterComboboxField[] = [
 export default function Demo() {
   const [rules, setRules] = useState<FilterRule[]>([
     { id: "seed", field: "quote", operator: "between", value: ["1000", "5000"] },
+    {
+      id: "long-summary",
+      field: "summary",
+      operator: "contains",
+      value: "A very long service summary that must truncate inside the chip on narrow screens",
+    },
   ]);
   return (
     <div className="flex w-full flex-col items-center">

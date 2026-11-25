@@ -11,8 +11,8 @@ const triggerClasses =
   "inline-flex items-center justify-center px-2 rounded-md text-sm leading-5 font-emphasis";
 
 const contentClasses =
-  "w-max max-w-96 px-4 py-2 border-frame border-border rounded-xl bg-surface-raised " +
-  "text-foreground text-sm font-field leading-5 shadow-hint";
+  "w-max min-w-0 max-w-[min(20rem,calc(100vw_-_1rem))] px-4 py-2 border-frame border-border rounded-xl bg-surface-raised " +
+  "text-surface-raised-fg text-sm font-field leading-5 shadow-hint";
 
 export function Tooltip(props: TooltipProps) {
   return <TooltipHeadless {...props} />;

@@ -71,4 +71,3 @@ export * from "./transfer";
 export * from "./tree";
 export * from "./upload";
 export * from "./watermark";
-export * from "./wizard";

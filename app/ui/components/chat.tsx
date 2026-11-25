@@ -56,6 +56,7 @@ export interface ChatClassNames {
 }
 
 export interface ChatProps extends Omit<React.ComponentProps<"div">, "className"> {
+    size?: "sm" | "md" | "lg" | "xl";
     chats: ChatMessage[];
     roleConfig?: ChatRoleConfig;
     align?: "leftRight" | "leftAlign";
@@ -251,6 +252,7 @@ const ChatRow = React.memo(function ChatRow({
 }, sameRowProps);
 
 export function Chat({
+    size = "xl",
     chats,
     roleConfig = EMPTY_ROLE_CONFIG,
     align = "leftRight",
@@ -294,7 +296,7 @@ export function Chat({
     }, []);
 
     return (
-        <div {...props} data-align={align} data-mode={mode} className={className}>
+        <div {...props} data-size={size} data-align={align} data-mode={mode} className={className}>
             <ul role="log" aria-live="polite" className={classNames?.list}>
                 {chats.map((message) => (
                     <ChatRow

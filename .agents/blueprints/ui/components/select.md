@@ -12,8 +12,9 @@
 - 键盘（disabled 时整体失效）：ArrowDown/ArrowUp 关闭时开面板，开启时在 `flat` 内循环移高亮；Enter/Space 有高亮则提交否则开关；Escape 关闭；Home/End 到首/尾；Tab 关闭但不拦截
 - `commit`：非受控写值、`onValueChange`、焦点回触发钮、关闭面板；高亮变化时把 `[data-highlighted="true"]` 滚入视野（block: nearest）
 - 面板：`popover="manual"`、`tabIndex=-1`、`role="listbox"`、`aria-label=placeholder`，锚定属性 `data-float-*`（bottom/center/gap 4/match-width）；空列表渲染 `classNames.empty` 的 "No options available"
-- 选项：`role="option"` + 稳定 id（`--select-{uid}-{index}`）、`aria-selected`、`data-highlighted`/`data-selected`，整组 disabled 时 `data-disabled`；分组包裹层 `role="presentation"`，组标题取 `classNames.label`
+- 选项：`role="option"` + 稳定 id（`--select-{uid}-{index}`）、`aria-selected`、`data-highlighted`/`data-selected`；整组 disabled 时输出 `aria-disabled` / `data-disabled` 且不绑定点击；分组包裹层 `role="presentation"`，组标题取 `classNames.label`
 - 开关与外部点击：`useFloatingPanel`（anchorRef 为触发钮）在面板外 mousedown 时关闭；`useFloatingPosition` 随滚动/尺寸重定位
 - 打开时高亮停在当前选中项，否则首项；无选项时为 null
 - 槽位：`classNames.panel/label/option/value/chevron/empty`；`styles.panel`；`label` 指面板组眉
 - 图标通道：`chevronNode` 覆盖触发钮尾部 chevron（缺省 `ChevronDown`，契约见 ui/components.md）
+- 禁用遵循 `ui/schemes.md` 第 8 条：`open = !disabled && openState`，trigger 原生 disabled，setOpen、commit 与键盘处理均由 JS 阻断；皮肤按 default/cell 外观完整替换 trigger 正常类串并显式禁用色与 `cursor-not-allowed`

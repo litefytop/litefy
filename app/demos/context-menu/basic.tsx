@@ -21,7 +21,7 @@ export default function ContextMenuBasicDemo() {
       <ContextMenuHost />
       <Card
         {...trigger}
-        className="flex flex-col items-center justify-center text-surface-fg"
+        className="flex flex-col items-center justify-center text-foreground"
         style={{ ...trigger.style, height: "75%" }}
       >
         Right-click or long-press anywhere in this area

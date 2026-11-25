@@ -37,7 +37,7 @@ function SwatchRow({
   const [active, setActive] = useRamp(cfg);
   return (
     <div className="flex flex-col gap-1">
-      <span className="text-xs font-medium text-surface-fg">{cfg.label[lang]}</span>
+      <span className="text-xs font-medium text-inherit">{cfg.label[lang]}</span>
 
       <ColorSwatch
         aria-label={cfg.label[lang]}
@@ -79,7 +79,7 @@ function LiveSwatches({ lang }: { lang: "en" | "zh" }) {
   }, []);
   return (
     <div className="flex flex-col gap-1">
-      <span className="text-xs font-medium text-surface-fg">
+      <span className="text-xs font-medium text-inherit">
         {t.colors} · {t.fixed}
       </span>
       <div className="flex gap-1" aria-hidden="true">

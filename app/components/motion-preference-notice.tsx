@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useParams } from "react-router";
 import { pageTrees } from "@/generated/page-trees";
 import { stripSchemePrefix, toSchemeHref } from "@/lib/style-templates";
@@ -8,7 +8,6 @@ import { useMotionPreference } from "@/ui/utils/use-motion-preference";
 import { X } from "@/components/icons";
 import { useSiteSkin } from "./site-skin";
 
-const BANNER_HEIGHT_VAR = "--motion-banner-h";
 const DISMISS_KEY = "litefy.motion-notice.dismissed";
 
 function readDismissed() {
@@ -33,17 +32,20 @@ function NoticeBar({
   translated,
   href,
   onDismiss,
+  onVisibilityChange,
 }: {
   locale: "zh" | "en";
   fromApp: boolean;
   translated: boolean;
   href: string;
   onDismiss: () => void;
+  onVisibilityChange?: (visible: boolean) => void;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
   const { Button } = useSiteSkin();
-  // 模态（任意原生 <dialog>）打开期间整条隐藏：横幅不与模态同屏争层，
-  // 也绝不透出其后的文字；高度变量保持，模态关闭即恢复，正文不跳。
+  const reportVisibility = useCallback((node: HTMLDivElement | null) => {
+    onVisibilityChange?.(node !== null);
+  }, [onVisibilityChange]);
+  // 模态期间整条隐藏但保留盒子，正文不跳。
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
@@ -59,24 +61,10 @@ function NoticeBar({
     return () => observer.disconnect();
   }, []);
 
-  useLayoutEffect(() => {
-    const bar = ref.current;
-    const root = document.documentElement;
-    if (!bar) return;
-    const sync = () => root.style.setProperty(BANNER_HEIGHT_VAR, `${bar.offsetHeight}px`);
-    sync();
-    const observer = new ResizeObserver(sync);
-    observer.observe(bar);
-    return () => {
-      observer.disconnect();
-      root.style.removeProperty(BANNER_HEIGHT_VAR);
-    };
-  }, []);
-
   return (
     <div
-      ref={ref}
-      className="[grid-area:banner] border-b bg-surface data-[modal-open=true]:invisible"
+      ref={reportVisibility}
+      className="[grid-area:topbar] border-b bg-surface text-surface-fg data-[modal-open=true]:invisible"
       data-modal-open={modalOpen || undefined}
     >
       <div className="relative flex min-h-control flex-wrap items-center justify-center gap-x-2 gap-y-1 ps-4 pe-14 py-2 text-center text-sm md:ps-6 lg:ps-8 lg:pe-14">
@@ -104,14 +92,14 @@ function NoticeBar({
           onClick={onDismiss}
           aria-label={locale === "zh" ? "关闭提示" : "Dismiss notice"}
           title={locale === "zh" ? "关闭提示" : "Dismiss notice"}
-          className="absolute end-1 top-1/2 -translate-y-1/2 md:end-3 lg:end-5"
+          className="absolute end-1 top-1/2 -translate-y-1/2 text-surface-fg md:end-3 lg:end-5"
         />
       </div>
     </div>
   );
 }
 
-export function MotionPreferenceNotice() {
+export function MotionPreferenceNotice({ onVisibilityChange }: { onVisibilityChange?: (visible: boolean) => void }) {
   const motion = useMotionPreference();
   const [mounted, setMounted] = useState(false);
   const [dismissed, setDismissed] = useState(false);
@@ -146,6 +134,7 @@ export function MotionPreferenceNotice() {
       translated={translated}
       href={toSchemeHref(pathname, `/${targetLocale}/docs/motion`)}
       onDismiss={dismiss}
+      onVisibilityChange={onVisibilityChange}
     />
   );
 }

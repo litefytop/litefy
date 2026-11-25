@@ -27,7 +27,6 @@ export default function Demo() {
     <Table
       virtual
       zebra
-      className="w-full"
       data={tasks}
       getKey={(row) => row.title}
       columns={[

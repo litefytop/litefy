@@ -49,12 +49,12 @@ export function AgentPrompt() {
           {zh ? "复制 prompt" : "Copy prompt"}
         </Button>
         {status === "copied" && (
-          <p role="status" className="m-0 text-surface-fg text-base leading-6">
+          <p role="status" className="m-0 text-foreground text-base leading-6">
             {zh ? "已复制。" : "Copied."}
           </p>
         )}
         {status === "error" && (
-          <p role="alert" className="m-0 text-surface-fg text-base leading-6">
+          <p role="alert" className="m-0 text-foreground text-base leading-6">
             {zh ? "复制失败，请手动选择文本复制。" : "Copy failed. Select the text manually."}
           </p>
         )}

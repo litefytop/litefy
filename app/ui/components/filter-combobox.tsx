@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { Check, RotateCcw, Search, X } from "./icons";
-import { Button } from "./button";
+import { Button, ButtonRoot } from "./button";
 import { type FilterRule, toFilterParams } from "../utils/filter-query";
 import { useFloatingPanel } from "../utils/use-floating-panel";
 import { useFloatingPosition } from "../utils/floating-position";
@@ -56,6 +56,7 @@ export interface FilterChipRenderArgs {
     texts: Required<FilterComboboxTexts>;
     onEdit: () => void;
     onRemove: () => void;
+    disabled?: boolean;
     classNames?: FilterComboboxClassNames;
     styles?: FilterComboboxStyles;
 }
@@ -104,10 +105,10 @@ export type FilterComboboxProps = Omit<React.ComponentProps<"div">, "onChange" |
 
 const defaultRenderChip: FilterChipRender = ({ label, texts, onEdit, onRemove, classNames, styles }) => (
     <span className={classNames?.chip} style={styles?.chip} data-slot="chip">
-        <button type="button" className={classNames?.chipLabel} style={styles?.chipLabel} aria-label={`${texts.editLabel}: ${label}`} onClick={onEdit}>
+        <ButtonRoot type="button" className={classNames?.chipLabel} style={styles?.chipLabel} aria-label={`${texts.editLabel}: ${label}`} onClick={onEdit}>
             {label}
-        </button>
-        <Button type="button" className={classNames?.chipRemove} style={styles?.chipRemove} aria-label={`${texts.removeLabel}: ${label}`} icon={<X />} onClick={onRemove}/>
+        </ButtonRoot>
+        <Button type="button" data-variant="text" className={classNames?.chipRemove} style={styles?.chipRemove} aria-label={`${texts.removeLabel}: ${label}`} icon={<X />} onClick={onRemove}/>
     </span>
 );
 
@@ -170,6 +171,7 @@ export function FilterCombobox({
     renderChip,
     renderOption,
     className,
+    style,
     classNames,
     styles,
     ref,
@@ -206,11 +208,13 @@ export function FilterCombobox({
     const queryKey = JSON.stringify(toFilterParams(rules));
 
     const commitRules = React.useCallback((next: FilterRule[]) => {
+        if (disabled) return;
         if (value === undefined) setInternal(next);
         onChange?.(next);
-    }, [value, onChange]);
+    }, [value, onChange, disabled]);
 
     const submit = React.useCallback(async () => {
+        if (disabled) return;
         const active = fetcherRef.current;
         if (!active) return;
         controllerRef.current?.abort();
@@ -236,7 +240,7 @@ export function FilterCombobox({
                 setLoading(false);
             }
         }
-    }, []);
+    }, [disabled]);
 
     React.useEffect(() => {
         if (!fetcherRef.current) return;
@@ -261,6 +265,7 @@ export function FilterCombobox({
     }, []);
 
     const reset = React.useCallback(() => {
+        if (disabled) return;
         commitRules([]);
         setStage("field");
         setFieldName(null);
@@ -269,27 +274,29 @@ export function FilterCombobox({
         setEditingId(null);
         setValidationError(null);
         setListOpen(false);
-    }, [commitRules]);
+    }, [commitRules, disabled]);
 
     React.useImperativeHandle(ref, () => ({
         reset,
         submit,
         getRules: () => rulesRef.current,
-        focusInput: () => inputRef.current?.focus(),
-    }), [reset, submit]);
+        focusInput: () => { if (!disabled) inputRef.current?.focus(); },
+    }), [reset, submit, disabled]);
 
     const activeField = fields.find((item) => item.name === fieldName) ?? null;
 
     const selectField = React.useCallback((field: FilterComboboxField) => {
+        if (disabled) return;
         setFieldName(field.name);
         setStage("operator");
         setDraft("");
         setActiveIndex(0);
         setListOpen(true);
         inputRef.current?.focus();
-    }, []);
+    }, [disabled]);
 
     const selectOperator = React.useCallback((next: FilterRule["operator"]) => {
+        if (disabled) return;
         setOperator(next);
         setDraft("");
         setActiveIndex(0);
@@ -306,7 +313,7 @@ export function FilterCombobox({
         const valueField = fields.find((item) => item.name === fieldName);
         setListOpen((valueField?.options?.length ?? 0) > 0);
         inputRef.current?.focus();
-    }, [fieldName, editingId, commitRules, fields, resetStage]);
+    }, [fieldName, editingId, commitRules, fields, resetStage, disabled]);
 
     const commitValueText = React.useCallback((text: string) => {
         if (!activeField || !operator) return;
@@ -325,6 +332,7 @@ export function FilterCombobox({
     const commitValue = () => commitValueText(draft);
 
     const editRule = (rule: FilterRule) => {
+        if (disabled) return;
         const field = fields.find((item) => item.name === rule.field);
         if (!field) return;
         setFieldName(rule.field);
@@ -366,11 +374,12 @@ export function FilterCombobox({
         return [];
     }, [stage, fields, draft, activeField, resolvedTexts, selectField, selectOperator, commitValueText]);
 
-    const showList = listOpen && candidates.length > 0;
+    const showList = !disabled && listOpen && candidates.length > 0;
     useFloatingPanel({ open: showList, panelRef: listRef, onOpenChange: setListOpen });
     useFloatingPosition(listRef, `${stage}:${candidates.length}:${showList}`);
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (disabled) return;
         if (event.key === "Escape") {
             event.preventDefault();
             if (stage === "value") {
@@ -462,6 +471,7 @@ export function FilterCombobox({
         texts: resolvedTexts,
         onEdit: () => editRule(rule),
         onRemove: () => removeRuleAt(rule),
+        disabled,
         classNames,
         styles,
     });
@@ -469,7 +479,7 @@ export function FilterCombobox({
     const showCheck = stage === "value" && draft.trim() !== "";
 
     return (
-        <div {...rest} inert={disabled || undefined} className={[classNames?.root, className].filter(Boolean).join(" ") || undefined} data-slot="filter-combobox" aria-busy={loading || undefined} data-disabled={disabled || undefined}>
+        <div {...rest} style={styles?.root ? { ...style, ...styles.root } : style} className={[classNames?.root, className].filter(Boolean).join(" ") || undefined} data-slot="filter-combobox" aria-busy={loading || undefined} data-disabled={disabled || undefined} aria-disabled={disabled || undefined}>
             <div
                 className={classNames?.bar}
                 style={styles?.bar}
@@ -477,6 +487,7 @@ export function FilterCombobox({
                 data-anchor-name={anchorName}
                 data-clear={rules.length > 0 || undefined}
                 onMouseDown={(event) => {
+                    if (disabled) return;
                     const target = event.target as HTMLElement;
                     if (target.closest("button, input, [data-slot='chip']")) return;
                     event.preventDefault();
@@ -521,11 +532,13 @@ export function FilterCombobox({
                     onKeyDown={handleKeyDown}
                 />
                 {showCheck ? (
-                    <Button type="button" data-field-trailing="" className={classNames?.submit} style={styles?.submit} aria-label={resolvedTexts.submitText} icon={<Check />} onMouseDown={(event) => event.preventDefault()} onClick={commitValue}/>
+                    <Button type="button" data-variant="text" disabled={disabled} data-field-trailing="" className={classNames?.submit} style={styles?.submit} aria-label={resolvedTexts.submitText} icon={<Check />} onMouseDown={(event) => event.preventDefault()} onClick={commitValue}/>
                 ) : null}
                 {showDraft ? (
                     <Button
                         type="button"
+                        data-variant="text"
+                        disabled={disabled}
                         data-field-trailing=""
                         className={classNames?.cancel}
                         style={styles?.cancel}
@@ -536,7 +549,7 @@ export function FilterCombobox({
                     />
                 ) : null}
                 {rules.length > 0 ? (
-                    <Button type="button" data-field-trailing="" className={classNames?.clear} style={styles?.clear} aria-label={resolvedTexts.clearText} icon={<RotateCcw />} onClick={reset}/>
+                    <Button type="button" data-variant="text" disabled={disabled} data-field-trailing="" className={classNames?.clear} style={styles?.clear} aria-label={resolvedTexts.clearText} icon={<RotateCcw />} onClick={reset}/>
                 ) : null}
                 {hints.length > 0 ? (
                     <span id={hintId} className={classNames?.hint} style={styles?.hint} data-slot="hint">

@@ -5,8 +5,8 @@ import { checkboxPartClasses } from "./checkbox";
 
 
 const rootClasses =
-  "@container overflow-x-auto overflow-y-hidden " +
-  "border-frame border-border bg-background shadow-surface";
+  "@container w-full min-w-0 overflow-x-auto overflow-y-hidden " +
+  "border-frame border-border bg-surface-raised text-surface-raised-fg shadow-surface";
 
 const headClasses = "overflow-hidden";
 
@@ -16,30 +16,33 @@ const bodyClasses =
 const baseClasses = "m-0 w-full border-collapse text-sm leading-5 tabular-nums";
 
 const headRowClasses =
-  "border-b-hair border-border bg-surface";
+  "border-b-hair border-border bg-surface text-surface-fg";
 
 const headCellBaseClasses =
-  "h-control border-0 px-3 text-left text-sm font-label tracking-label case-label leading-5";
+  "h-control border-0 px-3 text-left text-sm/5 control-label";
 const headCellAlignClasses =
   "data-[align=right]:text-right data-[align=center]:text-center";
 const headCellSortClasses =
-  "data-[sortable]:cursor-pointer data-[sortable]:select-none data-[drag-over]:bg-accent";
+  "data-sortable:cursor-pointer data-sortable:select-none " +
+  "data-sortable:hover:bg-accent data-sortable:hover:text-accent-fg " +
+  "data-drag-over:bg-accent data-drag-over:text-accent-fg";
 
 const headCellClasses = cn(headCellBaseClasses, headCellAlignClasses, headCellSortClasses);
 
 const headLabelClasses = "inline-flex min-w-0 max-w-full items-center gap-x-1 data-[align=right]:flex-row-reverse";
 
-const sortIconClasses = "shrink-0 size-3.5 text-surface-fg data-[active=true]:text-foreground";
+const sortIconClasses = "shrink-0 size-3.5 text-inherit";
 
 const dragHandleClasses =
-  "shrink-0 cursor-pointer border-0 bg-transparent p-0 text-surface-fg " +
-  "motion-frame hover:text-foreground data-[grabbed]:text-foreground " +
+  "shrink-0 cursor-pointer border-0 bg-transparent p-0 text-inherit opacity-60 " +
+  "motion-frame hover:opacity-100 data-[grabbed]:opacity-100 " +
   "focus-visible:focus-ring [&_svg]:size-3.5";
 
 const rowClasses =
-  "border-b-hair border-border last:border-b-0 hover:bg-accent " +
+  "group/table border-b-hair border-border last:border-b-0 text-foreground hover:bg-accent hover:text-accent-fg " +
   "data-[selectable]:cursor-pointer " +
-  "data-[zebra=odd]:bg-surface hover:data-[zebra=odd]:bg-accent";
+  "data-[zebra=odd]:bg-surface data-[zebra=odd]:text-surface-fg " +
+  "hover:data-[zebra=odd]:bg-accent hover:data-[zebra=odd]:text-accent-fg";
 
 const cellClasses =
   "h-control border-0 px-3 text-left align-middle break-words " +
@@ -53,7 +56,7 @@ const cellCollapseExpandedClasses =
 
 const cellCollapseClasses = cn(cellCollapseBaseClasses, cellCollapseExpandedClasses);
 
-const emptyClasses = "border-0 px-3 py-6 text-center text-surface-fg";
+const emptyClasses = "border-0 px-3 py-6 text-center text-foreground";
 
 export const tableRootClasses = rootClasses;
 

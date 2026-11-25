@@ -27,5 +27,9 @@ const items: MenuConfig[] = [
 ];
 
 export default function Demo() {
-  return <Menu items={items} inert />;
+  return (
+    <div className="flex flex-col items-center">
+      <Menu items={items} />
+    </div>
+  );
 }

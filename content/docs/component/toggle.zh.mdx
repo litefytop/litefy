@@ -21,15 +21,9 @@ description: 支持受控、非受控以及分组多选模式的切换按钮组�
 
 <ComponentPreview name="toggle-group" />
 
-### 变体
-
-`variant` 属性切换组条外观——缺省 `outline` 为描边按钮组，`well` 为井道轨道形态，选中项凸起为背景色块。
-
-<ComponentPreview name="toggle-variants" />
-
 ### 禁用
 
-添加 disabled 属性禁用切换按钮。
+组级 `disabled` 与每个选项的 `disabled` 独立配置，最终按“任一为真”原生禁用该按钮；使用 `text-disabled-fg` 与 `cursor-not-allowed`，组内禁用项另用 `bg-disabled`。
 
 <ComponentPreview name="toggle-disabled" />
 
@@ -48,7 +42,7 @@ description: 支持受控、非受控以及分组多选模式的切换按钮组�
 | `className`       | `string`                         | 自定义类名                                                                               |
 | `...props`        | `React.ComponentProps<"button">` | 支持所有原生 button 属性（除 `type`、`className`、`aria-checked` 外），如 `name`、`form`、`autofocus` |
 
-禁用状态下点击切换按钮不会有任何效果。自定义的 `onClick` 会在内部切换逻辑之前执行；在其中调用 `e.preventDefault()` 可以阻止选中状态变化。
+可用状态下自定义的 `onClick` 会在内部切换逻辑之前执行；在其中调用 `e.preventDefault()` 可以阻止选中状态变化。原生 `disabled` 按钮不会触发点击。
 
 ### ToggleGroup
 
@@ -58,7 +52,6 @@ description: 支持受控、非受控以及分组多选模式的切换按钮组�
 | `value`          | `string[]`                   | 受控的选中值                                     |
 | `defaultValue`   | `string[]`                   | 非受控模式下的默认选中值，默认 `[]`                       |
 | `onChange`       | `(values: string[]) => void` | 选中值变化时触发的回调函数                              |
-| `variant`        | `"outline" \| "well"`        | 组条外观，默认 `outline`；`outline` 外壳承担边框与圆角、选中项填充主色，`well` 为井道轨道、选中项凸起为背景色块 |
 | `disabled`       | `boolean`                    | 禁用所有选项，默认 `false`                          |
 | `className`      | `string`                     | 自定义类名，应用于容器                                |
 | `itemClassName`  | `string`                     | 自定义类名，应用于每个切换按钮                            |

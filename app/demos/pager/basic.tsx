@@ -16,7 +16,7 @@ export default function PagerBasicDemo() {
         {pages.map((page) => (
           <div
             key={page}
-            className="flex items-center justify-center border border-border bg-surface rounded-md"
+            className="flex items-center justify-center border border-border bg-surface text-surface-fg rounded-md"
             style={{ height: "100%" }}
           >
             {page}

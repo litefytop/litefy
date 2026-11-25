@@ -9,15 +9,15 @@ description: 基于原生 JavaScript Date 的日历面板组件，支持受控�
 
 ## 用法
 
-通过 `onVisibleMonthChange` 与 `isDateDisabled` 受控月份与禁用日期。
+通过 `isDateDisabled` 限制可选日期；限制之外的日期保留显示并禁用，格子大小与正常日期一致。
 
 <ComponentPreview
   name="calendar-basic"
 />
 
-### 禁用
+### 限制日期
 
-isDateDisabled 回调指定不可选日期。
+非当月日期使用 `bg-surface` 背景色与 `text-surface-fg` 文字色；选中或处于日期区间时统一使用 `bg-primary` 与 `text-primary-fg` 激活。所有日期格均无圆角，圆角只由日历外容器承担。禁用日期独占 `rounded-none`、`bg-disabled`、`text-disabled-fg` 与 `cursor-not-allowed`，不叠加悬停、激活或月外样式，也不可聚焦、不可选择。
 
 <ComponentPreview name="calendar-disabled" />
 
@@ -40,8 +40,11 @@ isDateDisabled 回调指定不可选日期。
 | `onVisibleMonthChange` | `(month: Date) => void`                         | 可见月份变化时触发（翻页、面板选择、键盘导航）                        |
 | `onViewChange`         | `(view: "days" \| "months" \| "years") => void` | 当前面板变化时触发                                      |
 | `isDateDisabled`       | `(date: Date) => boolean`                       | 返回 `true` 禁用该日期                                |
+| `disabled`             | `boolean`                                       | 禁用整个日历的交互，默认 `false`                     |
 | `firstDayOfWeek`       | `0 \| 1`                                        | `0` 周日开头，`1` 周一开头，默认 `0`                       |
-| `className`            | `string`                                        | 自定义类名，应用于根元素                                   |
+| `className`            | `string`                                        | 根元素自定义类名；默认 `w-full min-w-0`，最大宽度为 `7 × --width-control + 6 × --spacing`，随主题变化 |
+| `style`                | `React.CSSProperties`                           | 根元素内联样式，可覆盖宽度                                                                                |
+| `classNames`           | `CalendarClassNames`                            | 日历头部、导航、网格、星期与日期格类名；不提供根节点槽位                                                      |
 
 日期为原生 JavaScript `Date` 值，按纯日历日期处理。组件将其视为不可变对象 —— 永远不会修改你传入的 `Date`，`onVisibleMonthChange` / `onChange` 抛出的都是全新的 `Date` 对象（锚定本地正午以规避 DST）。跨月运算会把日期钳制到目标月的最后一天：1 月 31 日 +1 月得到 2 月 28/29 日。
 
@@ -131,6 +134,7 @@ Calendar.calendarMonthLabels = ["一月", "二月", /* ... */];
 | `visibleMonth`   | `Date`                                  | 用于检测非当月格子                                |
 | `value`          | `Date \| null`                          | 选中日期，驱动高亮格子                              |
 | `isDateDisabled` | `(date: Date) => boolean`               | 返回 `true` 禁用该日期                          |
+| `disabled`       | `boolean`                               | 禁用整周的日期格子，默认 `false`              |
 | `onSelect`       | `(date: Date) => void`                  | 格子点击时触发；组合组件会过滤非当月日期                     |
 | `onNavigate`     | `(date: Date) => void`                  | 方向键移动到网格中不存在的日期时触发                       |
 | `firstDayOfWeek` | `0 \| 1`                                | 星期表头顺序，默认 `0`                            |
@@ -147,6 +151,7 @@ Calendar.calendarMonthLabels = ["一月", "二月", /* ... */];
 | `visibleMonth`   | `Date`                                  | 用于检测非当月格子                                                               |
 | `value`          | `Date \| null`                          | 选中日期                                                                    |
 | `isDateDisabled` | `(date: Date) => boolean`               | 返回 `true` 禁用该日期                                                         |
+| `disabled`       | `boolean`                               | 禁用整行日期格子，默认 `false`                                                 |
 | `onSelect`       | `(date: Date) => void`                  | 格子点击时触发                                                                 |
 | `onNavigate`     | `(date: Date) => void`                  | 方向键移动到网格中不存在的日期时触发                                                      |
 | `tabStopDate`    | `string`                                | 网格中唯一 Tab 停靠点的 ISO 日期字符串；省略则所有格子保持原生 Tab 行为                             |
@@ -160,10 +165,10 @@ Calendar.calendarMonthLabels = ["一月", "二月", /* ... */];
 | 属性             | 类型                               | 描述                                                                           |
 | -------------- | -------------------------------- | ---------------------------------------------------------------------------- |
 | `date`         | `Date`                           | 该格子渲染的日期（显示 `date.getDate()`）                                                |
-| `outsideMonth` | `boolean`                        | 置灰弱化不属于可见月份的格子，默认 `false`                                                    |
-| `selected`     | `boolean`                        | 将格子高亮为选中状态，默认 `false`                                                        |
+| `outsideMonth` | `boolean`                        | 使用 `bg-surface` 背景色与 `text-surface-fg` 文字色弱化非当月格子，默认 `false`               |
+| `selected`     | `boolean`                        | 将格子高亮为激活状态，默认 `false`                                             |
 | `tabStop`      | `boolean`                        | Roving tabindex：`true` 使该格子成为唯一 Tab 停靠点；省略则保持原生 Tab 行为                       |
-| `rangeRole`    | `"start" \| "end" \| "between" \| "single"` | 区间角色，发射 `data-range` 并参与 `aria-selected`；省略即不在区间内                    |
+| `rangeRole`    | `"start" \| "end" \| "between"` | 区间角色，发射 `data-range` 并参与 `aria-selected`；省略即不在区间内                    |
 | `onNavigate`   | `(date: Date) => void`           | 方向键移动到网格中不存在的日期时触发                                                           |
 | `onSelect`     | `(date: Date) => void`           | 格子点击时触发，与原生 `onClick` 组合                                                     |
 | `onHover`      | `(date: Date) => void`           | 指针进入格子时触发                                                                     |
@@ -185,6 +190,7 @@ Calendar.calendarMonthLabels = ["一月", "二月", /* ... */];
 
 | Attribute | Description |
 | --- | --- |
-| `[data-outside-month]` | 位于日期格子上——该日期属于相邻月份时存在 |
+| `[data-outside-month]` | 位于日期格子上——该日期属于相邻月份时存在，使用 `bg-surface` 与 `text-surface-fg`，无圆角，保留选择与焦点行为 |
+| `[data-disabled]` | 位于根元素上——整个日历禁用时存在 |
 | `[data-view]` | 位于月 / 年网格上——取值 `"month"` 或 `"year"`；日网格上不存在 |
 | `[data-active]` | 位于标题按钮上——当前视图对应的那个按钮存在 |

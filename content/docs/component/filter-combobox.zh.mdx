@@ -19,7 +19,7 @@ description: 一行连续的 token 输入区——已提交规则、构建中的
 
 ### 禁用
 
-disabled 禁用输入条，规则编辑与候选面板全部停用。
+`disabled` 原生禁用输入框与所有操作按钮，根元素标记 `aria-disabled`，规则编辑、候选面板和输入处理均停止；禁用外观使用 `bg-disabled`、`text-disabled-fg` 与 `cursor-not-allowed`。
 
 <ComponentPreview name="filter-combobox-disabled" />
 
@@ -27,11 +27,11 @@ disabled 禁用输入条，规则编辑与候选面板全部停用。
 
 ### 一根连续输入区
 
-输入条是一根可换行的单行流：搜索图标固定头部，其后依次是已提交 chip、虚线草稿 chip、输入框与确认钮 / 放弃钮——全部跟随内容换行。清空钮**钉在 bar 右端**（absolute 右侧垂直居中，不随内容移动），有已提交规则时显示，显示期间 bar 经 `data-clear` 预留右侧空间防重叠。每条已提交 chip 都完整可见，不做 `+N` 折叠。点击输入区任意空白处即聚焦输入框。
+输入条是一根可换行的单行流：搜索图标固定头部，其后依次是已提交 chip、虚线草稿 chip、输入框与确认钮 / 放弃钮——全部跟随内容换行。清空钮**钉在 bar 右端**（absolute 右侧垂直居中，不随内容移动），有已提交规则时显示，显示期间 bar 经 `data-clear` 预留右侧空间防重叠。chip 宽度不超过输入条可用宽度，超长标签在 chip 内截断并保留移除钮，不做 `+N` 折叠。点击输入区任意空白处即聚焦输入框。
 
 | 组成 | 行为 |
 | --- | --- |
-| 已提交 chip | 实线 chip，标签 + close 图标（`X`）移除钮，各有独立可访问名；点 chip 把该条回填为草稿继续编辑 |
+| 已提交 chip | 实线 chip，text 变体标签 + close 图标（`X`）移除钮，各有独立可访问名；超长标签截断，点 chip 把该条回填为草稿继续编辑 |
 | 草稿 chip | 虚线 chip，选中列后出现、选定操作符后长成「列名 + 操作符」；纯视觉件（`aria-hidden`），语义由输入框与 `role="status"` 承担 |
 | 确认 / 放弃 | 在输入框（与 hint）后方：check 钮仅在值阶段且草稿非空时出现，点击校验并固化为实线 chip（`Enter` 等效）；X 钮在整段草稿态出现，一次放弃整条草稿回到 `field`，是 `Esc` 逐级回退的可见对照 |
 | 值提示 | 与 Password 同款的字段提示形态：小浮签悬浮在 bar 上方右端，`value` 阶段输入框聚焦时浮现，经 `aria-describedby` 关联 |
@@ -85,7 +85,7 @@ disabled 禁用输入条，规则编辑与候选面板全部停用。
 | 属性                            | 类型                                                  | 描述                                   |
 | ----------------------------- | --------------------------------------------------- | ------------------------------------ |
 | `fields`                      | `FilterComboboxField[]`                             | 字段、别名与该列允许的操作符                       |
-| `disabled`                    | `boolean`                                           | 组级禁用：输入条挂 `inert`、输入框原生禁用，规则编辑与候选面板全停，默认 `false` |
+| `disabled`                    | `boolean`                                           | 组级禁用：输入框与操作按钮原生禁用，根元素标记 `aria-disabled`，规则编辑、候选面板与输入处理全停，默认 `false` |
 | `value` / `defaultValue`      | `FilterRule[]`                                      | 受控 / 非受控规则数组，默认 `[]`                 |
 | `onChange`                    | `(rules: FilterRule[]) => void`                     | 规则变化回调                               |
 | `texts`                       | `FilterComboboxTexts`                               | 全部可替换文案，默认 英文默认值                     |
@@ -94,7 +94,10 @@ disabled 禁用输入条，规则编辑与候选面板全部停用。
 | `onResult` / `onError`        | 回调                                                  | 查询回调；取消的请求不回调                        |
 | `resultCount`                 | `number`                                            | 结果数，仅供屏幕阅读器经 `role="status"` 播报      |
 | `renderChip` / `renderOption` | 渲染通道                                                | 皮肤用它注入 chip 与候选行外观，默认 无样式默认实现        |
-| `classNames` / `styles`       | `FilterComboboxClassNames` / `FilterComboboxStyles` | 槽位类串与内联样式                            |
+| `className`                 | `string`                                            | 字段根节点自定义类名，与 `classNames.root` 合并；默认 `w-full min-w-0 max-w-[20rem]`（最大 20rem） |
+| `style`                     | `React.CSSProperties`                               | 字段根节点内联样式，与 `styles.root` 合并                                        |
+| `classNames`                | `FilterComboboxClassNames`                          | `root` 控制字段根节点，`list` 控制候选列表，其余为输入区与候选行槽位               |
+| `styles`                   | `FilterComboboxStyles`                              | 与 `classNames` 同名的内联样式槽位；候选列表默认最大宽度 20rem，并受视口宽度减 1rem 限制 |
 
 ### 国际化
 
@@ -106,10 +109,10 @@ disabled 禁用输入条，规则编辑与候选面板全部停用。
 
 | 方法 | 描述 |
 | --- | --- |
-| `reset()` | 清空规则并回到 `field` 阶段 |
-| `submit()` | 手动触发一次查询 |
+| `reset()` | 清空规则并回到 `field` 阶段；`disabled` 时无效 |
+| `submit()` | 手动触发一次查询；`disabled` 时无效 |
 | `getRules()` | 读取当前规则 |
-| `focusInput()` | 聚焦输入框 |
+| `focusInput()` | 聚焦输入框；`disabled` 时不聚焦 |
 
 ### 键盘与 data-* 属性
 

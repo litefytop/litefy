@@ -157,7 +157,7 @@ A single date cell rendered as a button.
 | `outsideMonth` | `boolean`                        | Grays out cells not belonging to the visible month, defaults to `false`                    |
 | `selected`     | `boolean`                        | Highlights the cell as selected, defaults to `false`                                       |
 | `tabStop`      | `boolean`                        | Roving tabindex: `true` makes the cell the only tab stop; omit to keep native tab behavior |
-| `rangeRole`    | `"start" \| "end" \| "between" \| "single"` | Range role, emits `data-range` and joins `aria-selected`; omit to be outside any range |
+| `rangeRole`    | `"start" \| "end" \| "between"` | Range role, emits `data-range` and joins `aria-selected`; omit to be outside any range |
 | `onNavigate`   | `(date: Date) => void`           | Fired when arrowing to a date not present in the grid                                      |
 | `onSelect`     | `(date: Date) => void`           | Fired on cell click, composed with native `onClick`                                        |
 | `onHover`      | `(date: Date) => void`           | Fired when the pointer enters the cell                                                     |

@@ -23,7 +23,7 @@ const tone = {
 };
 
 const boxClasses =
-  "flex items-start gap-x-2 px-3 py-snug rounded-md text-label leading-6 font-label";
+  "flex w-full min-w-0 items-start gap-x-2 px-3 py-snug rounded-md text-label leading-6 font-label";
 
 const iconClasses = "size-4 shrink-0 mt-1";
 

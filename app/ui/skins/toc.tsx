@@ -17,46 +17,45 @@ const titleClasses = "mb-3 font-strong";
 const scrollClasses =
   "relative max-h-[calc(100vh-8rem)] overflow-y-auto border-l-frame border-l-border";
 
-const listClasses = "flex flex-col";
+const listClasses = "flex flex-col text-inherit";
 
-const itemBaseClasses = "block py-1 ps-3 pe-0 text-surface-fg";
-const itemDepthLabelClasses =
-  "data-[depth=1]:font-label data-[depth=1]:tracking-label data-[depth=1]:case-label " +
-  "data-[depth=2]:font-label data-[depth=2]:tracking-label data-[depth=2]:case-label";
-const itemHoverClasses = "hover:bg-accent hover:text-accent-fg";
-const itemIndentClasses =
+const itemClasses =
+  "block py-1 ps-3 data-[depth=1]:control-label data-[depth=2]:control-label hover:bg-accent hover:text-accent-fg " +
   "data-[depth=3]:ps-6 data-[depth=4]:ps-9 data-[depth=5]:ps-12 data-[depth=6]:ps-15";
 
-const itemClasses = cn(itemBaseClasses, itemDepthLabelClasses, itemHoverClasses, itemIndentClasses);
+const itemActiveFill =
+  "data-active:bg-primary data-active:text-primary-fg data-active:hover:bg-primary-accent";
 
-const itemActiveFill = "data-[active]:bg-primary data-[active]:text-primary-fg";
+const itemActiveLine = "data-active:text-foreground";
 
-const itemActiveLine = "data-[active]:text-foreground";
+const itemClassesByVariant = {
+  fill: cn(itemClasses, itemActiveFill),
+  line: cn(itemClasses, itemActiveLine),
+};
 
 const thumbClasses =
   "absolute -left-px top-0 h-full w-0.5 rounded-sm bg-primary " +
   "origin-top transition-transform duration-sm ease-frame";
 
 const statusFixedClasses =
-  "hidden z-40 max-xl:fixed max-xl:top-4 max-xl:right-4 max-xl:inline-flex max-xl:items-center max-xl:gap-2";
-const statusBoxClasses =
-  "max-xl:max-w-[min(16rem,calc(100vw-6rem))] px-3 py-2 rounded-xl border-frame border-border";
+  "hidden z-40 top-4 right-4 max-xl:fixed max-xl:flex items-center " +
+  "max-w-[min(16rem,100vw-6rem)]";
+const statusBoxClasses = "p-2 px-3 rounded-xl border-frame border-border";
 const statusFaceClasses =
-  "bg-surface-raised text-xs leading-4 font-field " +
-  "cursor-pointer hover:bg-accent hover:text-accent-fg focus-visible:focus-ring " +
-  "[&>span]:truncate [&>span]:text-surface-fg";
+  "bg-surface-raised text-surface-raised-fg text-xs/4 font-field " +
+  "cursor-pointer hover:bg-accent hover:text-accent-fg focus-visible:focus-ring";
 
 const statusClasses = cn(statusFixedClasses, statusBoxClasses, statusFaceClasses);
 
 const chevronClasses =
-  "size-4 shrink-0 text-surface-fg transition-transform duration-sm data-[open=true]:rotate-180";
+  "size-4 shrink-0 text-inherit transition-transform duration-sm data-[open=true]:rotate-180";
 
 /* The narrow-screen disclosure: same floating-panel recipe as every other panel in
    this scheme, and it is its own scroller — the list can be longer than the viewport. */
 const panelBaseClasses =
   "xl:hidden min-w-32 max-w-[min(--spacing(64),calc(100vw_-_--spacing(8)))] max-h-[min(--spacing(96),60vh)] overflow-auto";
 const panelFaceClasses =
-  "rounded-xl border-frame border-border p-1 bg-surface-raised text-foreground shadow-elevated";
+  "rounded-xl border-frame border-border p-1 bg-surface-raised text-surface-raised-fg shadow-elevated";
 
 const panelClasses = cn(panelBaseClasses, panelFaceClasses);
 
@@ -70,7 +69,7 @@ const ringProgressClasses =
   "fill-none stroke-primary stroke-1.5 " +
   "-rotate-90 origin-center transition-[stroke-dashoffset] duration-sm ease-frame";
 
-const currentClasses = "truncate text-surface-fg";
+const currentClasses = "truncate text-inherit";
 
 const skinClassNames = {
   rail: railClasses,
@@ -106,7 +105,7 @@ export function Toc({ variant = "fill", classNames, styles, ...props }: TocSkinP
       {...props}
       styles={overridableStyles}
       classNames={mergeSlots(
-        { ...skinClassNames, item: cn(skinClassNames.item, variant === "line" ? itemActiveLine : itemActiveFill) },
+        { ...skinClassNames, item: itemClassesByVariant[variant] },
         overridableClasses,
       )}
     />

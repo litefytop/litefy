@@ -44,7 +44,7 @@ function NotFoundView() {
       >
         <h1 className="m-0 scroll-mt-20 py-4 mb-4 text-36 leading-10 tracking-tight font-bold sm:text-48 sm:leading-none lg:text-60 lg:leading-none">Not Found</h1>
         <p
-          className="m-0 scroll-mt-20 text-surface-fg text-base leading-6 sm:text-lg sm:leading-7"
+          className="m-0 scroll-mt-20 text-foreground text-base leading-6 sm:text-lg sm:leading-7"
           style={{ marginBlockEnd: "calc(var(--spacing) * 4)" }}
         >
           This page could not be found.

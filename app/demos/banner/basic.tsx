@@ -7,7 +7,7 @@ import { Switch } from "@/ui/skins";
 const messages = [
   {
     key: "release",
-    content: "🎉 Litefy v2.0 is out — new Context Menu, Wizard and Banner components",
+    content: "🎉 Litefy v2.0 is out — new Context Menu and Banner components",
   },
   {
     key: "docs",

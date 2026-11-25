@@ -6,32 +6,37 @@ import type { RadioProps, RadioGroupProps } from "@/ui";
 import { cn, mergeSlots } from "../utils/cn";
 
 
-const inputClasses =
-  "absolute left-1/2 top-1/2 size-6 -translate-x-1/2 -translate-y-1/2 opacity-0 cursor-pointer";
+const inputLayoutClasses =
+  "absolute left-1/2 top-1/2 size-6 -translate-x-1/2 -translate-y-1/2 opacity-0";
+
+const inputClasses = cn(inputLayoutClasses, "cursor-pointer");
+const inputDisabledClasses = cn(inputLayoutClasses, "cursor-not-allowed");
 
 const indicatorBaseClasses =
-  "group relative inline-flex size-4 shrink-0 items-center justify-center rounded-pill shadow-frame " +
+  "group relative inline-flex size-4 shrink-0 items-center justify-center rounded-pill bg-surface-raised shadow-unchecked " +
   "border-hair motion-frame";
 const indicatorStateClasses =
-  "has-[:checked]:border-border has-[:checked]:bg-primary has-[:checked]:shadow-checked " +
+  "has-[:checked]:border-0 has-[:checked]:bg-primary-solid has-[:checked]:shadow-checked " +
   "has-[:focus-visible]:focus-ring";
 
 const indicatorClasses = cn(indicatorBaseClasses, indicatorStateClasses);
 
 
 const labelClasses =
-  "flex min-h-control cursor-pointer select-none items-center gap-x-4 " +
-  "font-field " +
-  "has-[:disabled]:pointer-events-none has-[:disabled]:opacity-50 " +
-  "has-[:disabled]:text-surface-fg";
+  "flex min-h-control cursor-pointer select-none items-center gap-x-4 font-field text-foreground";
+
+const labelDisabledClasses =
+  "flex min-h-control cursor-not-allowed select-none items-center gap-x-4 font-field text-disabled-fg";
+
+const indicatorDisabledClasses =
+  "group relative inline-flex size-4 shrink-0 items-center justify-center rounded-pill border-hair border-border bg-disabled shadow-unchecked motion-frame";
 
 
-const groupRootClasses =
-  "flex flex-col " +
-  "data-[orientation=horizontal]:flex-row data-[orientation=horizontal]:flex-wrap data-[orientation=horizontal]:gap-x-4";
+const groupVerticalClasses = "flex flex-col";
+const groupHorizontalClasses = "flex flex-row flex-wrap gap-x-4";
 
 const groupLabelClasses =
-  "block w-full ps-2 mb-1 select-none text-sm font-label tracking-label case-label";
+  "block w-full ps-2 mb-1 select-none text-sm control-label";
 
 const partClasses = {
   input: inputClasses,
@@ -39,30 +44,48 @@ const partClasses = {
   label: labelClasses,
 };
 
-export function Radio({ className, classNames, ...props }: RadioProps) {
+const disabledPartClasses = {
+  input: inputDisabledClasses,
+  indicator: indicatorDisabledClasses,
+  label: labelDisabledClasses,
+};
+
+function radioClasses(disabled: boolean | undefined, overrides?: RadioProps["classNames"]) {
+  return mergeSlots(disabled ? disabledPartClasses : partClasses, overrides);
+}
+
+export function Radio({ className, classNames, disabled, ...props }: RadioProps) {
   return (
     <RadioHeadless
       {...props}
-
-      classNames={mergeSlots({ ...partClasses, label: cn(labelClasses, className) }, classNames)}
+      disabled={disabled}
+      classNames={radioClasses(disabled, {
+        ...classNames,
+        label: cn(disabled ? labelDisabledClasses : labelClasses, classNames?.label, className),
+      })}
     />
   );
 }
 
-export function RadioGroup({ className, common, options, classNames, ...props }: RadioGroupProps) {
+export interface RadioGroupSkinProps extends RadioGroupProps {
+  orientation?: "horizontal" | "vertical";
+}
+
+export function RadioGroup({ orientation, className, common, options, classNames, disabled, ...props }: RadioGroupSkinProps) {
   return (
     <RadioGroupHeadless
       {...props}
+      disabled={disabled}
 
       options={options.map((option) => ({
         ...option,
-        classNames: mergeSlots(
-          { ...partClasses, ...common?.classNames },
-          option.classNames,
-        ),
+        classNames: radioClasses(disabled || option.disabled, {
+          ...common?.classNames,
+          ...option.classNames,
+        }),
       }))}
       common={{ ...common, classNames: mergeSlots(partClasses, common?.classNames) }}
-      classNames={mergeSlots({ root: cn(groupRootClasses, className), groupLabel: groupLabelClasses }, classNames)}
+      classNames={mergeSlots({ root: cn(orientation === "horizontal" ? groupHorizontalClasses : groupVerticalClasses, className), groupLabel: groupLabelClasses }, classNames)}
     />
   );
 }

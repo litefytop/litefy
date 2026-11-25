@@ -25,7 +25,7 @@ primary 给有优先级的动作（提交、确认）；danger 只标高风险�
 
 ## 禁用
 
-添加 disabled 属性禁用按钮。
+原生 `disabled` 或 `aria-disabled` 切换为独立禁用类串：`bg-disabled`、`text-disabled-fg`、`shadow-frame-disabled` 与 `cursor-not-allowed`；text 变体保留透明背景，不叠加灰度滤镜。
 
 <ComponentPreview name="button-disabled" />
 
@@ -38,7 +38,7 @@ primary 给有优先级的动作（提交、确认）；danger 只标高风险�
 | Prop            | Type                                          | Description                                                                                                                            |
 | --------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | `className`     | `string`                                      | 自定义 CSS 类。                                                                                                                             |
-| `icon`          | `React.ReactNode`                             | icon 格子，渲染在 children 前；图标尺寸由按钮统一强制（移动端 `size-5`、PC 端 `size-4`）                                                                         |
+| `icon`          | `React.ReactNode`                             | icon 格子，渲染在 children 前；图标尺寸由按钮统一强制（`size-4`，随 spacing 刻度逐案与紧凑档缩放）                                                                         |
 | `status`        | `{ icon: React.ReactNode; active: boolean }`  | 配置即转网格。已传 `icon`：两格恒在、原位换标；未传 `icon`：`active` 时在 children 前显示 `status.icon`。纯展示格——等待期请自行传 `disabled` / `aria-busy` |
 | `...props`      | `React.ComponentProps<"button">`              | 支持全部 button 原生属性（除 `className`），如 `type`、`disabled`                                                                                    |
 
@@ -46,7 +46,7 @@ primary 给有优先级的动作（提交、确认）；danger 只标高风险�
 
 #### ButtonRoot
 
-`<button>` 本体：children 承担内容，children 为空时发射 `data-pure-icon`；自身零样式零布局，自带类组合成自定义触发件。
+`<button>` 本体：children 承担内容，children 为空时发射 `data-pure-icon`；自身零样式零布局，自带类组合成自定义触发件。方型与零内距的样式作答是四案同构的 `pure-icon` utility：`Button` 无 children 时自动补挂该类；其余穿戴者（裸 `a` / `Link` / `ButtonRoot`）须挂该类并挂属性，方型才生效。
 
 ## 键盘交互
 
@@ -61,5 +61,5 @@ primary 给有优先级的动作（提交、确认）；danger 只标高风险�
 | --- | --- |
 | `[data-variant]` | 位于按钮上——`outline` 取描边外观，`text` 取无背景色无框的行内外观；不写就是 primary |
 | `[data-danger]` | 位于按钮上——危险动作用，换危险面色与危险焦点环 |
-| `[data-pure-icon]` | 位于按钮上——不传 `children` 时存在，按钮转成 44×44 的方盒 |
+| `[data-pure-icon]` | 位于按钮上——不传 `children` 时存在；方盒（44×44、零内距）由 `pure-icon` utility 作答，`Button` 自动补挂该类，其余穿戴者直写该类 |
 | `[data-status]` | 位于按钮上——配置 `status` 时存在，布局切换为网格 |

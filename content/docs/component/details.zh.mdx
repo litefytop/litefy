@@ -23,6 +23,14 @@ description: 原生 details 披露件薄壳，开合与互斥全由浏览器接�
   name="details-group"
 />
 
+### 禁用
+
+`disabled` 取消触发行激活并保持当前状态，内容区仍可交互。
+
+<ComponentPreview
+  name="details-disabled"
+/>
+
 ## API 参考
 
 ### 高阶组件
@@ -31,14 +39,15 @@ description: 原生 details 披露件薄壳，开合与互斥全由浏览器接�
 
 #### Details
 
-原生 `<details>` 披露件薄壳：无状态、无 JS 行为，键盘与无障碍语义由原生元素自答；是折叠面板/手风琴之外的可选轻量扩展。
+原生 `<details>` 披露件薄壳：开合状态、互斥与键盘激活由浏览器管理；`disabled` 仅取消触发行激活并保持当前状态，不接管 `open` / `onToggle`，内容区仍可交互。
 
 | 属性           | 类型                                                                                          | 描述                                         |
 | ------------ | ------------------------------------------------------------------------------------------- | ------------------------------------------ |
 | `label`      | `React.ReactNode`                                                                           | 触发行显示内容                                    |
 | `icon`       | `React.ReactNode`                                                                           | 展开收起图标，传 `null` 不渲染图标，默认 `ChevronDown`     |
 | `name`       | `string`                                                                                    | 互斥分组名，原生透传给 `<details>` 元素                 |
-| `className`  | `string`                                                                                    | 自定义类名，作用于根 `<details>` 元素                  |
+| `disabled`   | `boolean`                                                                                   | 禁止触发行切换并保持当前展开状态，默认 `false`          |
+| `className`  | `string`                                                                                    | 自定义类名，作用于根 `<details>` 元素；默认 `w-full min-w-0`                  |
 | `classNames` | `{ summary?: string; icon?: string; body?: string }`                                        | 触发行、图标盒、内容容器三个插槽的自定义类名                     |
 | `styles`     | `{ summary?: React.CSSProperties; icon?: React.CSSProperties; body?: React.CSSProperties }` | 同上三个插槽的内联样式                                |
 | `children`   | `React.ReactNode`                                                                           | 面板内容                                       |
@@ -48,11 +57,12 @@ description: 原生 details 披露件薄壳，开合与互斥全由浏览器接�
 
 | Key | Description |
 | --- | --- |
-| `Enter` / `Space` | 由原生 `<summary>` 激活，展开或收起当前披露件；骨架不接管任何按键 |
-| `Tab` | 到达触发行。收起的披露件内容仍挂载在 DOM 中，其内可聚焦元素保持在 Tab 序中 |
+| `Enter` / `Space` | 由原生 `<summary>` 激活并展开或收起当前披露件；禁用时取消激活 |
+| `Tab` | 到达触发行，包括禁用项；禁用项保持可聚焦并播报 `aria-disabled`。收起的披露件内容仍挂载在 DOM 中，其内可聚焦元素保持在 Tab 序中 |
 
 ## 数据属性
 
 | Attribute | Description |
 | --- | --- |
 | `[open]` | 位于根 `<details>` 元素上，展开时存在——皮肤据此驱动图标翻转与悬停染色 |
+| `[data-disabled]` | 位于根 `<details>` 元素上——`disabled` 为 `true` 时携带 |

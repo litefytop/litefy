@@ -11,13 +11,13 @@ description: 零件化组装的单选按钮组件，分组由 options 驱动—�
 
 基础单选框，支持单独和分组模式。未选中空心圆环，选中整环实心填充。
 
-<ComponentPreview 
+<ComponentPreview
   name="radio-basic"
 />
 
 ### 禁用
 
-disabled 属性禁用整组。
+组级 `disabled` 与每个选项的 `disabled` 独立配置，最终按“任一为真”禁用该单选项；radio 原生禁用，圆环使用 `bg-disabled`，标签使用 `text-disabled-fg` 与 `cursor-not-allowed`。
 
 <ComponentPreview name="radio-disabled" />
 
@@ -95,9 +95,3 @@ disabled 属性禁用整组。
 | `Space` | 勾选当前聚焦的单选项——原生 |
 
 骨架自身不处理任何按键。
-
-## 数据属性
-
-| Attribute | Description |
-| --- | --- |
-| `[data-orientation]` | 位于 `RadioGroup` 根元素上——镜像 `orientation` 属性，未传该属性时不渲染 |

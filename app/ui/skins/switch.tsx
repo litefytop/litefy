@@ -1,30 +1,46 @@
 ﻿import { Switch as SwitchHeadless } from "@/ui";
 import type { SwitchProps } from "@/ui";
-import { mergeSlots } from "../utils/cn";
+import { cn, mergeSlots } from "../utils/cn";
 
 
-const labelClasses =
-  "inline-flex items-center min-h-control gap-x-2 text-base leading-6 font-label has-[:disabled]:text-surface-fg";
+const labelClasses = "inline-flex items-center min-h-control cursor-pointer gap-x-2 text-base leading-6 font-label";
+
+const labelDisabledClasses =
+  "inline-flex items-center min-h-control cursor-not-allowed gap-x-2 text-base leading-6 font-label text-disabled-fg";
 
 const trackClasses =
   "relative inline-flex shrink-0 items-center w-10 h-5 rounded-pill border-frame border-border cursor-pointer shadow-frame motion-frame " +
-  "data-[checked=true]:border-primary data-[checked=true]:bg-primary " +
-  "has-[:disabled]:dim " +
-  "has-[:focus-visible]:focus-ring";
+  "data-[checked=true]:border-primary data-[checked=true]:bg-primary has-[:focus-visible]:focus-ring";
+
+const trackDisabledClasses =
+  "relative inline-flex shrink-0 items-center w-10 h-5 cursor-not-allowed rounded-pill border-frame border-border bg-disabled shadow-frame motion-frame";
 
 const thumbClasses =
-  "pointer-events-none inline-block size-5 translate-x-0 rounded-pill border-frame border-border bg-background shadow-faint " +
+  "pointer-events-none inline-block size-5 translate-x-0 rounded-pill border-frame border-border bg-surface-raised shadow-faint " +
   "transition-transform duration-frame ease-frame data-[checked=true]:translate-x-5";
 
-const inputClasses =
-  "absolute left-1/2 top-1/2 size-6 -translate-x-1/2 -translate-y-1/2 opacity-0 cursor-pointer";
+const thumbDisabledClasses =
+  "pointer-events-none inline-block size-5 translate-x-0 rounded-pill border-frame border-border bg-disabled shadow-faint " +
+  "transition-transform duration-frame ease-frame data-[checked=true]:translate-x-5";
 
-export function Switch({ classNames, ...props }: SwitchProps) {
+const inputLayoutClasses =
+  "absolute left-1/2 top-1/2 size-6 -translate-x-1/2 -translate-y-1/2 opacity-0";
+
+const inputClasses = cn(inputLayoutClasses, "cursor-pointer");
+const inputDisabledClasses = cn(inputLayoutClasses, "cursor-not-allowed");
+
+export function Switch({ classNames, disabled, ...props }: SwitchProps) {
   return (
     <SwitchHeadless
       {...props}
+      disabled={disabled}
       classNames={mergeSlots(
-        { label: labelClasses, track: trackClasses, thumb: thumbClasses, input: inputClasses },
+        {
+          label: disabled ? labelDisabledClasses : labelClasses,
+          track: disabled ? trackDisabledClasses : trackClasses,
+          thumb: disabled ? thumbDisabledClasses : thumbClasses,
+          input: disabled ? inputDisabledClasses : inputClasses,
+        },
         classNames,
       )}
     />

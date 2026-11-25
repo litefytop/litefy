@@ -1,6 +1,6 @@
 ﻿import { Tree as TreeHeadless } from "@/ui";
 import type { TreeProps } from "@/ui";
-import { cn, mergeSlots } from "../utils/cn";
+import { cn, mergeStateSlots, type SlotState } from "../utils/cn";
 
 
 const depthEval =
@@ -12,22 +12,46 @@ const listClasses = "[--litefy-depth:0] m-0 flex w-full min-w-0 list-none flex-c
 const itemMarkerClasses =
   "before:absolute before:inset-y-2 before:w-px before:bg-transparent" +
   " before:left-[calc(var(--spacing)_*_4_+_var(--spacing)_*_2_*_var(--litefy-depth,0)_-_var(--spacing)_*_2)]";
-const itemActiveClasses = "data-[active=true]:bg-primary data-[active=true]:text-primary-fg";
-const itemDisabledClasses =
-  "aria-[disabled=true]:pointer-events-none aria-[disabled=true]:opacity-50";
+const itemActiveClasses =
+  "data-[active=true]:bg-primary data-[active=true]:text-primary-fg data-[active=true]:hover:bg-primary-accent";
+const rowHoverClasses = "hover:bg-accent hover:text-accent-fg";
 
 const rowClasses =
   `relative flex min-h-control w-full min-w-0 items-center gap-x-2 ` +
-  `text-start text-sm leading-body font-field text-surface-fg no-underline ` +
+  `text-start text-sm leading-body font-field no-underline ` +
   `focus-visible:focus-ring ` +
   `pe-3 py-2 ${depthStart}`;
 
-const treeClasses = {
-  trigger: `${rowClasses} cursor-pointer`,
+const triggerClasses = cn(
+  rowClasses,
+  "cursor-pointer text-foreground",
+  rowHoverClasses,
+);
+const triggerDisabledClasses = cn(
+  rowClasses,
+  "cursor-not-allowed bg-disabled text-disabled-fg",
+);
+const itemClasses = cn(
+  rowClasses,
+  itemMarkerClasses,
+  "cursor-pointer text-foreground",
+  rowHoverClasses,
+  itemActiveClasses,
+);
+const itemDisabledClasses = cn(
+  rowClasses,
+  itemMarkerClasses,
+  "cursor-not-allowed bg-disabled text-disabled-fg",
+);
+const rowClassesByState = (normal: string, disabled: string) =>
+  ({ disabled: isDisabled }: SlotState) => isDisabled ? disabled : normal;
 
-  item: cn(rowClasses, itemMarkerClasses, itemActiveClasses, itemDisabledClasses),
+const treeClasses = {
+  trigger: rowClassesByState(triggerClasses, triggerDisabledClasses),
+
+  item: rowClassesByState(itemClasses, itemDisabledClasses),
   label:
-    "pt-4 pb-1 pe-3 text-xs leading-body font-label tracking-label case-label text-surface-fg " +
+    "pt-4 pb-1 pe-3 text-xs leading-body control-label text-foreground " +
     depthStart,
   group:
     `${listClasses} transition-[visibility] duration-md ease-frame ` +
@@ -52,7 +76,7 @@ export function Tree({ className, classNames, ...props }: TreeProps) {
     <TreeHeadless
       {...props}
       className={cn(listClasses, className)}
-      classNames={mergeSlots(treeClasses, classNames)}
+      classNames={mergeStateSlots(treeClasses, classNames)}
     />
   );
 }

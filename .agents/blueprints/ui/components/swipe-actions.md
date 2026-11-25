@@ -18,3 +18,7 @@
 - 减动效：`useMotionPreference().reduced` 时吸附走 0.2s 缓动直达、跃迁与铺满直接置位
 - 位移动画为骨架自有 rAF 弹簧积分器（零依赖，x 通道独立），每帧经 ref 直写 transform，不进 React state；`height`/`actionWidth`/`collapseMs` 为内联几何变量（行为几何例外，蓝图注明）；圆角走方案令牌
 - 外观交给皮肤：语义配色、折叠过渡、胶囊样式、提示箭头样式全走 class，按 `data-tone` / `data-open` / `data-dragging` / `data-direction` 键控；骨架零样式 class，只发 `data-*`、内联几何变量与逐帧 transform
+- 槽位 API：导出 `SwipeActionTone = "primary" | "info" | "success" | "warning"`（danger 是独立提交块，不传 action 函数）；`classNames.action` 为 string 或 `(tone: SwipeActionTone) => string | undefined`，皮肤先选 tone/disabled 默认类，再 resolve 函数覆盖并 `cn`；`actionContent` 为 string 且同时用于次级动作与 danger 提交钮
+- 根在 `entering` / `collapsing` 相位输出 `data-collapsed`；提示箭头在开态或禁用时输出 `data-hidden`，拖拽中另由 `data-dragging` 隐藏
+- 禁用遵循 `ui/schemes.md` 第 8 条：根输出 `data-disabled` / `aria-disabled`，受控 open 强制为假；动作钮与切换钮原生 disabled，切换钮 `tabIndex=-1`，拖拽、动作提交、开合与键盘通路均由 JS 阻断
+- 皮肤按 disabled 完整替换 row/action/block/commit/surface/toggle 类串，使用禁用色与 `cursor-not-allowed`，移除正常颜色及 hover/active 类；禁用不禁用指针事件，不使用 `pointer-events-none`

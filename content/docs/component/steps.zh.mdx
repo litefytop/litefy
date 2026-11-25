@@ -1,6 +1,6 @@
 ---
 title: Steps 步骤条
-description: 受控步骤条，区分已完成、当前与未到达状态，并支持锁定前进跳跃的向导流程
+description: 受控步骤条，区分已完成、当前与未到达状态，已走过的步可回点，未来的步锁定不可跳过
 ---
 
 ## 安装
@@ -9,11 +9,21 @@ description: 受控步骤条，区分已完成、当前与未到达状态，并�
 
 ## 用法
 
-完全受控的步骤组件：点步骤触发 `onChange`，`maxIndex` 锁定未来步骤；走过最后一步后，末项显示终点样式。
+完全受控的步骤组件：点步骤触发 `onChange`，`maxIndex` 锁定未来步骤。
 
 <ComponentPreview
   name="steps-basic"
 />
+
+### 纵向
+
+纵向步骤内联承载每步内容：`content` 只在当前步渲染，页脚导航按钮由使用方自行组合。
+
+<ComponentPreview name="steps-vertical" />
+
+### 与 Pager 组合
+
+横向分页的向导场景用 Steps + Pager 组合：Steps 做步骤指示，Pager 承载每步页面的滑动切换，已访步锁定与页脚按钮由使用方的状态串起。
 
 ## API 参考
 
@@ -30,8 +40,8 @@ description: 受控步骤条，区分已完成、当前与未到达状态，并�
 | `onChange`    | `(nextIndex: number) => void`                                                         | 点击可点击步骤时触发                                                                |
 | `maxIndex`    | `number`                                                                              | 可选中的最大索引 —— 超出部分禁用，默认 `items.length - 1`                                  |
 | `orientation` | `"horizontal" \| "vertical"`                                                          | 布局方向，由 prop 固定，不探测容器宽度。`"vertical"` 渲染按轴分组的标记结构，排布由方案决定，默认 `"horizontal"` |
-| `className`   | `string`                                                                              | 自定义类名，应用于根元素                                                              |
-| `classNames`  | `item` / `marker` / `rail` / `connector` / `texts` / `title` / `description` / `body` | 按部件自定义类名                                                                  |
+| `className`   | `string`                                                                              | 自定义类名，应用于根元素；默认 `w-full min-w-0`                                                              |
+| `classNames`  | `{ item?; marker?: SlotClassName; rail?; connector?; texts?; title?: SlotClassName; description?; body? }` | `marker` / `title` 接收 `({ disabled }) => string`；其余槽为固定类名 |
 | `styles`      | 同上部件，值为 `React.CSSProperties`                                                         | 按部件自定义内联样式                                                                |
 
 #### StepsItemConfig
@@ -40,6 +50,9 @@ description: 受控步骤条，区分已完成、当前与未到达状态，并�
 | :------------ | :---------------- | :--------------- |
 | `title`       | `React.ReactNode` | 步骤标题             |
 | `description` | `React.ReactNode` | 可选的次级文本          |
+| `content`     | `React.ReactNode` | 步骤内容，仅在当前步渲染     |
+
+每个步骤独立判断是否可点击：`maxIndex` 之外的未来步骤禁用，禁用标记原生 `disabled`、标题改为纯文本；禁用外观使用 `bg-disabled`、`text-disabled-fg` 与 `cursor-not-allowed`。
 
 ### 可组合组件
 
@@ -64,10 +77,11 @@ description: 受控步骤条，区分已完成、当前与未到达状态，并�
 | `state`       | `"completed" \| "current" \| "upcoming"`                                              | 步骤状态；以 `data-state` 发出在步骤项、标记与标题上          |
 | `title`       | `React.ReactNode`                                                                     | 步骤标题                                       |
 | `description` | `React.ReactNode`                                                                     | 可选的次级文本                                    |
+| `children`    | `React.ReactNode`                                                                     | 步骤体内容，渲染在 body 槽位                          |
 | `clickable`   | `boolean`                                                                             | 标记按钮是否可用                                   |
 | `onSelect`    | `(index: number) => void`                                                             | 点击标记时触发                                    |
 | `className`   | `string`                                                                              | 自定义类名，应用于步骤项                               |
-| `classNames`  | `item` / `marker` / `rail` / `connector` / `texts` / `title` / `description` / `body` | 按部件自定义类名                                   |
+| `classNames`  | `{ item?; marker?: SlotClassName; rail?; connector?; texts?; title?: SlotClassName; description?; body? }` | `marker` / `title` 接收 `({ disabled }) => string`；其余槽为固定类名 |
 | `styles`      | 同上部件，值为 `React.CSSProperties`                                                         | 按部件自定义内联样式                                 |
 | `...props`    | `React.ComponentProps<"li">`                                                          | 原生 li 属性                                   |
 
@@ -83,6 +97,6 @@ description: 受控步骤条，区分已完成、当前与未到达状态，并�
 | Attribute | Description |
 | --- | --- |
 | `[data-state]` | 位于标记、步骤项、连接线与标题上——取值 `"completed"`、`"current"` 或 `"upcoming"` |
-| `[data-orientation]` | 位于步骤项、连接线、文本列、标题、描述与内容槽位上——取值 `"horizontal"` 或 `"vertical"` |
 | `[data-clickable]` | 位于标记与标题上——`clickable` 时存在 |
+| `[data-disabled]` | 位于不可点击步骤的标记与标题上——该步骤禁用时存在 |
 | `[data-connector]` | 位于垂直步骤项的文本块上——`connector` 时存在 |

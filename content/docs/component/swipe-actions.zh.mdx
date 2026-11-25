@@ -21,7 +21,7 @@ description: 物理滑动行——拖动行露出动作抽屉，快滑按速度�
 
 ### 禁用
 
-添加 disabled 属性禁用滑动操作。
+`disabled` 使用 `bg-disabled`、`text-disabled-fg` 与 `cursor-not-allowed`，动作钮与切换钮原生禁用，滑动、键盘、动作和提交输入均被阻断。
 
 <ComponentPreview name="swipe-actions-disabled" />
 
@@ -44,7 +44,7 @@ description: 物理滑动行——拖动行露出动作抽屉，快滑按速度�
 | `collapseMs`    | `number`                                                                                    | 折叠时长 ms，默认 `200`                           |
 | `commitAt`      | `number`                                                                                    | 提交点占行宽比例（不小于抽屉宽加半动作宽），默认 `0.6`             |
 | `fullSwipe`     | `boolean`                                                                                   | 关闭后抽屉即尽头：无跃迁、无全滑提交，默认 `true`               |
-| `disabled`      | `boolean`                                                                                   | 压暗并忽略输入，默认 `false`                         |
+| `disabled`      | `boolean`                                                                                   | 使用禁用颜色与光标并阻断输入，默认 `false`           |
 | `enter`         | `boolean`                                                                                   | 挂载首帧停在折叠态再长出（重新插入行的进场动画），默认 `false`        |
 | `open`          | `boolean`                                                                                   | 受控开合，外部变更回弹归位                              |
 | `onOpenChange`  | `(open: boolean) => void`                                                                   | 手势或键盘开合抽屉时回调                               |
@@ -55,9 +55,9 @@ description: 物理滑动行——拖动行露出动作抽屉，快滑按速度�
 | `label`         | `string`                                                                                    | 根元素 `aria-label`，默认 `"List item"`          |
 | `toggleLabel`   | `string`                                                                                    | 键盘胶囊文案，缺省按动作数生成                            |
 | `children`      | `React.ReactNode`                                                                           | 行内容，渲染在可拖内容层                               |
-| `className`     | `string`                                                                                    | 根元素自定义类                                    |
+| `className`     | `string`                                                                                    | 根元素自定义类；默认 `w-full min-w-0`                                    |
 | `style`         | `React.CSSProperties`                                                                       | 根元素内联样式                                    |
-| `classNames`    | `{ root?, row?, rail?, action?, block?, commit?, surface?, hint?, toggle?, live?: string }` | 各槽位自定义类                                    |
+| `classNames`    | `{ root?, row?, rail?, action?: string \| ((tone: SwipeActionTone) => string \| undefined), actionContent?, block?, commit?, surface?, hint?, toggle?, live? }` | 除 `action` 外均为固定类名；`action` 按动作色调返回类串，`actionContent` 作用于动作内容层 |
 | `...props`      | `React.ComponentProps<"div">`                                                               | 透传到根 `div`                                 |
 
 ### SwipeActionConfig
@@ -87,6 +87,8 @@ description: 物理滑动行——拖动行露出动作抽屉，快滑按速度�
 | `[data-direction]` | 位于根元素——`"left"` 或 `"right"` |
 | `[data-tone]` | 位于动作钮——`"primary"` / `"info"` / `"success"` / `"warning"` / `"danger"`，皮肤据此派语义对 |
 | `[data-open]` | 位于根元素——抽屉展开 |
+| `[data-collapsed]` | 位于根元素——`entering` 长出与 `collapsing` 折叠阶段存在 |
+| `[data-hidden]` | 位于滑动提示箭头上——抽屉展开或组件禁用时存在 |
 | `[data-phase]` | 位于根元素——`"idle"`、`"entering"`（长出中）、`"committing"`（跃迁中）或 `"collapsing"`（折叠中） |
 | `[data-dragging]` | 位于根元素——拖拽进行中 |
 | `[data-disabled]` | 位于根元素——禁用 |

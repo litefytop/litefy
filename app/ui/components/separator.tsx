@@ -14,7 +14,7 @@ export interface SeparatorLineProps extends Omit<React.ComponentProps<"div">, "c
     style?: React.CSSProperties;
 }
 export function SeparatorLine({ className, orientation = "horizontal", style, ...props }: SeparatorLineProps) {
-    return (<div {...props} data-orientation={orientation} style={{ ...lineStyle(orientation), ...style }} className={className}/>);
+    return (<div {...props} style={{ ...lineStyle(orientation), ...style }} className={className}/>);
 }
 export interface SeparatorTextProps extends Omit<React.ComponentProps<"span">, "className" | "style"> {
     className?: string;
@@ -26,7 +26,7 @@ export function SeparatorText({ className, style, ...props }: SeparatorTextProps
 export interface SeparatorProps {
     orientation?: "horizontal" | "vertical";
     children?: React.ReactNode;
-    className?: string;
+    className?: string;
     classNames?: {
         line?: string;
         text?: string;
@@ -45,7 +45,7 @@ export function Separator({ orientation = "horizontal", children, className, cla
     if (!children) {
         return (<SeparatorLine role="separator" orientation={orientation} className={className} style={{ flex: "none" }}/>);
     }
-    return (<div role="separator" data-orientation={orientation} style={containerStyle} className={className}>
+    return (<div role="separator" style={containerStyle} className={className}>
       <SeparatorLine orientation={orientation} className={classNames?.line} style={styles?.line}/>
       <SeparatorText className={classNames?.text} style={styles?.text}>
         {children}

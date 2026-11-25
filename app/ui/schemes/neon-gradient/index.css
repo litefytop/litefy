@@ -31,8 +31,12 @@
   --background: oklch(97.5% 0.015 325); /* pale purple canvas */
   --foreground: oklch(25% 0.09 325); /* deep purple ink */
   --surface: #e9d5ff; /* purple-200 — the pastel surface gradient's solid fallback */
+  --well: #e9d5ff; /* 井底 = 凹槽档（本案无更深中性档） */
   --surface-fg: oklch(38% 0.1 325);
+  --disabled: #e9d5ff;
+  --disabled-fg: oklch(38% 0.1 325);
   --surface-raised: oklch(99% 0.008 325);
+  --surface-raised-fg: var(--foreground);
   --accent: #f9a8d4; /* pink-300 */
   --accent-fg: #0f0a1e;
   --border: #b45309; /* amber-700 — the contrast wire on a light canvas (4.7:1) */
@@ -54,6 +58,11 @@
   --warning: #b45309;
   --warning-fg: #ffffff;
   --warning-accent: #92400e;
+
+  --text-danger-independent: var(--danger);
+  --text-info-independent: var(--info);
+  --text-success-independent: var(--success);
+  --text-warning-independent: var(--warning);
 
   /* Focus deepens with the canvas — cyan-400 would read 1.8:1 on pale purple. */
   --focus-outline: 2px solid #0e7490;
@@ -99,13 +108,15 @@
   --shadow-frame-disabled: none;
   --shadow-block: 0 4px 20px rgba(126, 34, 206, 0.28);
   --shadow-block-hover: 0 6px 26px rgba(126, 34, 206, 0.38);
-  --shadow-focus: var(--focus-glow);
   --shadow-checked:
     0 0 0 2px var(--background), 0 0 0 4px var(--primary), 0 2px 12px rgba(126, 34, 206, 0.35);
+  --shadow-unchecked: var(--shadow-frame), 0 0 0 2px var(--background), 0 0 0 4px var(--surface-fg);
   --shadow-elevated: 0 6px 26px rgba(126, 34, 206, 0.38);
   --shadow-hint: 0 2px 10px rgba(126, 34, 206, 0.25);
   --shadow-surface: var(--shadow-block);
   --shadow-well: none;
+  --radius-field-inner: max(0px, calc(var(--radius-md) - var(--padding-well) - var(--border-width-frame)));
+  --radius-well-inner: max(0px, calc(var(--radius-lg) - var(--spacing)*1.5 - var(--border-width-frame)));
   --stroke-cap: round;
   --stroke-join: round;
 
@@ -127,25 +138,29 @@
   --background: oklch(25% 0.07 262); /* deep blue canvas */
   --foreground: #ffffff;
   --surface: #a855f7; /* purple-500 — the surface gradient's solid fallback */
+  --well: #3b2457; /* 井底自答深紫：比画布沉一阶，井上白字实测 13.33:1（读 surface 的饱和紫只有 4.17:1） */
   --surface-fg: #0f0a1e; /* deep ink: white reads only 3.5-4.0:1 on the 500-depth stops */
+  --disabled: #3b2457;
+  --disabled-fg: #d8b4fe;
   --surface-raised: oklch(29% 0.075 262);
+  --surface-raised-fg: var(--foreground);
   --accent: #f472b6; /* pink-400 */
   --accent-fg: #0f0a1e;
   --border: #fbbf24; /* yellow-400 — the contrast wire */
 
-  --primary: #a855f7; /* purple-500 */
+  --primary: #c084fc; /* purple-500 */
   --primary-accent: #ec4899; /* pink-500 — the hover paint */
   --primary-fg: #0f0a1e; /* deep ink: white reads only 1.8:1 on the cyan-400 flow stop */
 
-  --danger: #dc2626;
+  --danger: #f87171;
   --danger-fg: #0f0a1e;
-  --danger-accent: #b91c1c;
-  --info: #0284c7;
+  --danger-accent: #fb7185;
+  --info: #38bdf8;
   --info-fg: #0f0a1e;
-  --info-accent: #0369a1;
-  --success: #16a34a;
+  --info-accent: #0ea5e9;
+  --success: #22c55e;
   --success-fg: #0f0a1e;
-  --success-accent: #15803d;
+  --success-accent: #4ade80;
   --warning: #fbbf24;
   --warning-fg: #0f0a1e;
   --warning-accent: #d97706;
@@ -181,6 +196,7 @@
   --shadow-block-hover: 0 0 40px rgba(168, 85, 247, 0.6);
   --shadow-checked:
     0 0 0 2px var(--background), 0 0 0 4px var(--primary), 0 0 20px rgba(168, 85, 247, 0.5);
+  --shadow-unchecked: var(--shadow-frame), 0 0 0 2px var(--background), 0 0 0 4px var(--surface-fg);
   --shadow-elevated: 0 0 40px rgba(168, 85, 247, 0.6);
   --shadow-hint: 0 0 15px rgba(168, 85, 247, 0.3);
 }
@@ -204,8 +220,6 @@
 @custom-variant borderless (&:where([data-border="none"]));
 @custom-variant bordered (&:where([data-border="solid"]));
 
-@custom-variant inert (&[inert]);
-
 @custom-variant motion-safe {
   @media (prefers-reduced-motion: no-preference) {
     @slot;
@@ -215,7 +229,7 @@
   }
 }
 
-/* ④ Theme mapping. Tailwind's default palette is deleted; the 22-token mapping is
+/* ④ Theme mapping. Tailwind's default palette is deleted; the 24-token mapping is
    one-to-one with the YAML in design.md. */
 @theme {
   --color-*: initial;
@@ -225,8 +239,11 @@
   --color-border: var(--border);
   --color-surface: var(--surface);
   --color-surface-fg: var(--surface-fg);
+  --color-disabled: var(--disabled);
+  --color-disabled-fg: var(--disabled-fg);
   --color-surface-raised: var(--surface-raised);
-  --color-well: var(--surface);
+  --color-surface-raised-fg: var(--surface-raised-fg);
+  --color-well: var(--well);
   --color-accent: var(--accent);
   --color-accent-fg: var(--accent-fg);
   --color-primary: var(--primary);
@@ -244,6 +261,10 @@
   --color-success-accent: var(--success-accent);
   --color-warning: var(--warning);
   --color-warning-accent: var(--warning-accent);
+  --color-danger-independent: var(--text-danger-independent);
+  --color-info-independent: var(--text-info-independent);
+  --color-success-independent: var(--text-success-independent);
+  --color-warning-independent: var(--text-warning-independent);
 
   --font-sans: "Segoe UI", "Helvetica Neue", system-ui, sans-serif;
   /* JetBrains Mono — the terminal face. */
@@ -322,6 +343,7 @@
   --padding-panel: 1.5rem;
   --padding-well: 0rem;
   --padding-control-x: 0.75rem;
+  --padding-pill-x: max(var(--spacing)*3, min(var(--radius-pill), var(--height-control)/2));
 
   --height-control: 2.75rem;
   --height-field: 2.75rem;
@@ -366,6 +388,65 @@
   font-weight: var(--font-weight-strong);
 }
 
+@utility control-label {
+  font-family: var(--font-mono);
+  font-weight: var(--font-weight-strong);
+  letter-spacing: var(--tracking-label);
+  text-transform: var(--text-transform-label);
+}
+
+@utility control-text {
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+  font-family: var(--font-mono);
+  font-weight: var(--font-weight-strong);
+  letter-spacing: var(--tracking-label);
+  text-transform: var(--text-transform-label);
+}
+
+@utility group-seam {
+  & > *:not(:first-child):not(:last-child) {
+    border-radius: 0;
+  }
+  & > *:first-child:not(:last-child) {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+  & > *:last-child:not(:first-child) {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
+}
+
+@utility field-seam {
+  & > input:not(:first-child) {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
+  & > input:has(+ [data-field-trailing]) {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+}
+
+@utility field-invalid {
+  &:is([data-invalid="true"], [aria-invalid="true"]) {
+    border-color: var(--color-danger-independent);
+  }
+  &:is([data-invalid="true"], [aria-invalid="true"]):focus-within {
+    outline: var(--focus-outline-danger);
+    outline-offset: var(--focus-offset);
+    box-shadow: var(--shadow-frame-focus-danger);
+  }
+}
+
+@utility pure-icon {
+  &[data-pure-icon="true"] {
+    aspect-ratio: 1 / 1;
+    padding: 0;
+  }
+}
+
 @utility motion-frame {
   transition-property: var(--transition-frame-properties);
   /* Per-property durations: the brand colour flow slides over 500ms (Fluid
@@ -384,6 +465,10 @@
 
 @utility crush {
   translate: 0rem 0rem;
+}
+
+@utility press-frame {
+  @apply hover:lift hover:shadow-frame-hover active:crush active:shadow-frame-active;
 }
 
 @utility shadow-frame {
@@ -422,12 +507,12 @@
   box-shadow: var(--shadow-surface);
 }
 
-@utility shadow-focus {
-  box-shadow: var(--shadow-focus);
-}
-
 @utility shadow-checked {
   box-shadow: var(--shadow-checked);
+}
+
+@utility shadow-unchecked {
+  box-shadow: var(--shadow-unchecked);
 }
 
 @utility shadow-well {
@@ -450,12 +535,6 @@
   outline: var(--focus-outline);
   outline-offset: calc(-1 * var(--focus-offset));
   box-shadow: var(--focus-glow-inset);
-}
-
-@utility dim {
-  opacity: 50%;
-  cursor: not-allowed;
-  color: var(--color-surface-fg);
 }
 
 @utility thumb-hit {
@@ -551,7 +630,7 @@
 
 @utility typo-quote {
   line-height: var(--leading-body);
-  color: var(--surface-fg);
+  color: var(--foreground);
   border-inline-start: 4px solid var(--primary);
   padding-inline: 1rem;
 }
@@ -634,6 +713,19 @@
   background-image: var(--fill-primary-accent, none);
   background-size: 200% auto;
   background-position: right center;
+}
+
+/* Icon-grade indicator exemption (schemes.md rule 4): a gradient needs room
+   the 16px box does not have — the 200% fill compresses into a hard two-colour
+   split on checkbox / radio boxes and timeline dots, so those paint solid. */
+@utility bg-primary-solid {
+  background-color: var(--color-primary);
+  background-image: none;
+}
+
+@utility bg-disabled {
+  background-color: var(--color-disabled);
+  background-image: none;
 }
 
 @utility bg-surface {

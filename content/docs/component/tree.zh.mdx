@@ -17,7 +17,7 @@ description: 数据驱动的层级折叠树，适用于文件浏览器、分类�
 
 ### 禁用
 
-节点支持 disabled 禁用。
+每个节点的 `disabled` 独立生效：文件夹和普通叶子按钮原生禁用；链接叶子移除 `href`、标记 `aria-disabled` 并阻断点击与键盘。禁用行使用 `bg-disabled`、`text-disabled-fg` 与 `cursor-not-allowed`。
 
 <ComponentPreview name="tree-disabled" />
 
@@ -36,8 +36,8 @@ description: 数据驱动的层级折叠树，适用于文件浏览器、分类�
 | `openKeys`        | `string[]`                                                                                                                                              | 展开的文件夹 key（受控）                                                       |
 | `defaultOpenKeys` | `string[]`                                                                                                                                              | 初始展开的文件夹 key（非受控）                                                    |
 | `onOpenChange`    | `(keys: string[]) => void`                                                                                                                              | 展开集合变化回调                                                             |
-| `className`       | `string`                                                                                                                                                | 自定义类名，作用于根容器                                                         |
-| `classNames`      | `{ trigger?: string; item?: string; label?: string; group?: string; node?: string; labelText?: string; icon?: string; branch?: string; clip?: string }` | 按部件覆盖：行、嵌套组、文件夹 `<li>`、文字段、两处图标、展开分支与其裁剪层                            |
+| `className`       | `string`                                                                                                                                                | 自定义类名，作用于根容器；默认 `w-full min-w-0`                                                         |
+| `classNames`      | `{ trigger?: SlotClassName; item?: SlotClassName; label?: string; group?: string; node?: string; labelText?: string; icon?: string; branch?: string; clip?: string }` | `trigger` / `item` 接收 `({ disabled }) => string`；其余槽覆盖嵌套组、文件夹 `<li>`、文字、图标与展开分支 |
 | `styles`          | `{ trigger?: React.CSSProperties; item?: React.CSSProperties; label?: React.CSSProperties }`                                                            | 行的内联样式                                                               |
 | `...props`        | `React.ComponentProps<"ul">`                                                                                                                            | 支持全部 ul 原生属性                                                         |
 

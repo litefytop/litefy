@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { resolveSlotClassName, type SlotClassName } from "../utils/cn";
 export interface SliderRootProps extends Omit<React.ComponentProps<"div">, "className"> {
     className?: string;
 }
@@ -39,11 +40,11 @@ export function SliderThumb({ className, ref, ...props }: SliderThumbProps) {
     return (<button {...props} ref={ref} type="button" className={className}/>);
 }
 export interface SliderClassNames {
-    track?: string;
-    fill?: string;
-    thumb?: string;
-    label?: string;
-    value?: string;
+    track?: SlotClassName;
+    fill?: SlotClassName;
+    thumb?: SlotClassName;
+    label?: SlotClassName;
+    value?: SlotClassName;
     bubble?: string;
 }
 export interface SliderStyles {
@@ -214,15 +215,16 @@ export function Slider({ min = 0, max = 100, step = 1, value: controlledValue, d
         : { left: percentStr, top: "50%", transform: "translate(-50%, -50%)" };
     const delta = dragging ? Number((currentValue - dragStartValue).toFixed(stepDecimals)) : 0;
     const deltaText = delta === 0 ? "" : delta > 0 ? `+${delta}` : `${delta}`;
-    return (<SliderRoot data-variant={dataVariant} data-orientation={orientation} className={className} inert={disabled} style={style}>
-      {label !== null && label !== undefined && (<SliderLabel id={labelId} htmlFor={thumbId} data-orientation={orientation} className={classNames?.label} style={styles?.label}>{label}</SliderLabel>)}
-      <SliderTrack ref={trackRef} onPointerDown={handleTrackPointerDown} data-orientation={orientation} className={classNames?.track} style={styles?.track}>
-        <SliderFill className={classNames?.fill} style={{ ...fillStyle, ...styles?.fill }}/>
-        <SliderThumb ref={thumbRef} id={thumbId} disabled={disabled} tabIndex={disabled ? -1 : 0} role="slider" aria-labelledby={labelId} aria-label={labelId ? undefined : ariaLabel} aria-valuemin={min} aria-valuemax={max} aria-valuenow={currentValue} aria-orientation={orientation} aria-disabled={disabled || undefined} onPointerDown={handleThumbPointerDown} onKeyDown={handleThumbKeyDown} data-orientation={orientation} className={classNames?.thumb} style={{ ...thumbStyle, ...styles?.thumb }}>
-          <span aria-hidden data-orientation={orientation} data-show={deltaText || undefined} className={classNames?.bubble} style={styles?.bubble}>{deltaText}</span>
+    const state = { disabled };
+    return (<SliderRoot data-variant={dataVariant} className={className} data-disabled={disabled || undefined} aria-disabled={disabled || undefined} style={style}>
+      {label !== null && label !== undefined && (<SliderLabel id={labelId} htmlFor={thumbId} className={resolveSlotClassName(classNames?.label, state)} style={styles?.label}>{label}</SliderLabel>)}
+      <SliderTrack ref={trackRef} onPointerDown={handleTrackPointerDown} className={resolveSlotClassName(classNames?.track, state)} style={styles?.track}>
+        <SliderFill className={resolveSlotClassName(classNames?.fill, state)} style={{ ...fillStyle, ...styles?.fill }}/>
+        <SliderThumb ref={thumbRef} id={thumbId} disabled={disabled} tabIndex={disabled ? -1 : 0} role="slider" aria-labelledby={labelId} aria-label={labelId ? undefined : ariaLabel} aria-valuemin={min} aria-valuemax={max} aria-valuenow={currentValue} aria-orientation={orientation} aria-disabled={disabled || undefined} onPointerDown={handleThumbPointerDown} onKeyDown={handleThumbKeyDown} className={resolveSlotClassName(classNames?.thumb, state)} style={{ ...thumbStyle, ...styles?.thumb }}>
+          <span aria-hidden data-show={deltaText || undefined} className={classNames?.bubble} style={styles?.bubble}>{deltaText}</span>
         </SliderThumb>
       </SliderTrack>
-      {!hideValue && (<SliderValue aria-hidden data-orientation={orientation} className={classNames?.value} style={styles?.value}>{currentValue}</SliderValue>)}
+      {!hideValue && (<SliderValue aria-hidden className={resolveSlotClassName(classNames?.value, state)} style={styles?.value}>{currentValue}</SliderValue>)}
       {name && <input type="hidden" name={name} value={currentValue}/>}
     </SliderRoot>);
 }

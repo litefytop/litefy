@@ -108,7 +108,7 @@ export function FileSource({ paths, className }: FileSourceProps) {
 
   if (paths.length === 0) {
     return (
-      <div className={cn("not-typography p-4 text-sm text-surface-fg", className)}>
+      <div className={cn("not-typography p-4 text-sm text-foreground", className)}>
         {zh ? "没有可展示的源码" : "No source to show"}
       </div>
     );
@@ -118,7 +118,7 @@ export function FileSource({ paths, className }: FileSourceProps) {
     return (
       <div className={cn("not-typography flex flex-col", className)}>
         <div className="flex items-center gap-2 border-b border-border p-3">
-          <p className="flex items-center gap-2 font-mono text-xs text-surface-fg">
+          <p className="flex items-center gap-2 font-mono text-xs text-foreground">
             <Folder className="size-4" aria-hidden />
             {UI_ROOT}
           </p>
@@ -126,7 +126,7 @@ export function FileSource({ paths, className }: FileSourceProps) {
         <ul className="flex flex-col gap-3 p-3">
           {groups.map((group) => (
             <li key={group.label} className="flex flex-col gap-1">
-              <p className="text-xs font-medium uppercase tracking-widest text-surface-fg">{group.label}</p>
+              <p className="text-xs font-medium uppercase tracking-widest text-foreground">{group.label}</p>
               <ul className="flex flex-col gap-1">
                 {group.files.map((path) => (
                   <li key={path}>
@@ -153,9 +153,9 @@ export function FileSource({ paths, className }: FileSourceProps) {
   }
 
   return (
-    <div className={cn("not-typography flex flex-col", className)}>
+    <div className={cn("not-typography flex h-128 flex-col", className)}>
       <div className="flex items-center justify-between gap-2 border-b border-border p-3">
-        <p className="flex min-w-0 items-center gap-2 font-mono text-xs text-surface-fg">
+        <p className="flex min-w-0 items-center gap-2 font-mono text-xs text-foreground">
           <FileCode className="size-4 shrink-0" aria-hidden />
           <span className="truncate">{active.slice(UI_ROOT.length)}</span>
         </p>
@@ -170,11 +170,11 @@ export function FileSource({ paths, className }: FileSourceProps) {
           {zh ? "返回" : "Back"}
         </Button>
       </div>
-      <div className="max-h-128 min-w-0 overflow-y-auto p-3">
+      <div className="min-h-0 min-w-0 flex-1 overflow-hidden p-3">
         {code ? (
-          <CodeStage lang={langOf(active)} code={code} />
+          <CodeStage lang={langOf(active)} code={code} className="h-full! aspect-auto!" />
         ) : (
-          <div className="p-4 text-sm text-surface-fg">{hint}</div>
+          <div className="p-4 text-sm text-foreground">{hint}</div>
         )}
       </div>
     </div>

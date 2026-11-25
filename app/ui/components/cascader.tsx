@@ -37,7 +37,7 @@ export interface CascaderProps extends Omit<React.ComponentProps<"div">, "childr
         menu?: React.CSSProperties;
     };
 }
-export function Cascader({ tree, disabled, placeholder = "Select your location", width = "24rem", className, classNames, chevronNode, styles, style, ...props }: CascaderProps) {
+export function Cascader({ tree, disabled, placeholder = "Select your location", width, className, classNames, chevronNode, styles, style, ...props }: CascaderProps) {
     const uid = React.useId().replaceAll(/[^a-zA-Z0-9_-]/gu, "");
     const [openLevel, setOpenLevel] = React.useState<number | null>(null);
     const [path, setPath] = React.useState<CascaderNode[]>([]);
@@ -51,6 +51,7 @@ export function Cascader({ tree, disabled, placeholder = "Select your location",
         setOpenLevel((prev) => (prev === index ? null : index));
     };
     const handleSelect = (node: CascaderNode) => {
+        if (disabled) return;
         if (node.children) {
             setPath((prev) => [...prev.slice(0, path.length), node]);
             setOpenLevel(path.length + 1);
@@ -80,7 +81,7 @@ export function Cascader({ tree, disabled, placeholder = "Select your location",
         </>)}
     </div>);
     const panels = levels.map(({ items, id }, level) => {
-        const isOpen = openLevel === level;
+        const isOpen = !disabled && openLevel === level;
         return (<PopoverContent key={id} open={isOpen} onOpenChange={(v) => {
                 if (!v)
                     setOpenLevel(null);
@@ -92,7 +93,7 @@ export function Cascader({ tree, disabled, placeholder = "Select your location",
       </PopoverContent>);
     });
     return (<>
-      <div {...props} inert={disabled || undefined} data-anchor-name={`--cascader-${uid}-root`} style={{ maxWidth: `min(100%, ${typeof width === "number" ? `${width}px` : width})`, ...styles?.root, ...style }} className={[classNames?.root, className].filter(Boolean).join(" ") || undefined}>
+      <div {...props} data-disabled={disabled || undefined} aria-disabled={disabled || undefined} data-anchor-name={`--cascader-${uid}-root`} style={{ ...(width === undefined ? {} : { maxWidth: `min(100%, ${typeof width === "number" ? `${width}px` : width})` }), ...styles?.root, ...style }} className={[classNames?.root, className].filter(Boolean).join(" ") || undefined}>
         {trigger}
       </div>
       {panels}

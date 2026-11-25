@@ -1,13 +1,16 @@
 "use client";
 import * as React from "react";
 import { ArrowLeft, ArrowRight } from "./icons";
+import { Button } from "./button";
 import { Checkbox, type CheckboxClassNames } from "./checkbox";
+import { resolveSlotClassName, type SlotClassName, type SlotState } from "../utils/cn";
 export type TransferItemConfig = {
     label: React.ReactNode;
     value: string;
     disabled?: boolean;
 };
 export interface TransferProps extends Omit<React.ComponentProps<"div">, "className" | "onChange"> {
+    size?: "sm" | "md" | "lg" | "xl" | "2xl";
     dataSource: TransferItemConfig[];
     value?: string[];
     defaultValue?: string[];
@@ -18,6 +21,7 @@ export interface TransferProps extends Omit<React.ComponentProps<"div">, "classN
     ];
     moveRightLabel?: string;
     moveLeftLabel?: string;
+    showMoveLabels?: boolean;
     renderItem?: (item: TransferItemConfig) => React.ReactNode;
     className?: string;
     classNames?: {
@@ -26,9 +30,9 @@ export interface TransferProps extends Omit<React.ComponentProps<"div">, "classN
         count?: string;
         body?: string;
         empty?: string;
-        item?: CheckboxClassNames;
+        item?: CheckboxClassNames | ((state: SlotState) => CheckboxClassNames);
         actions?: string;
-        move?: string;
+        move?: SlotClassName;
     };
     styles?: {
         panel?: React.CSSProperties;
@@ -38,7 +42,7 @@ export interface TransferProps extends Omit<React.ComponentProps<"div">, "classN
         actions?: React.CSSProperties;
     };
 }
-export function Transfer({ dataSource, value: controlledValue, defaultValue, onChange, titles, moveRightLabel = "Move right", moveLeftLabel = "Move left", renderItem, className, classNames, styles, ...props }: TransferProps) {
+export function Transfer({ size = "2xl", dataSource, value: controlledValue, defaultValue, onChange, titles, moveRightLabel = "Move right", moveLeftLabel = "Move left", showMoveLabels = false, renderItem, className, classNames, styles, ...props }: TransferProps) {
     const [uncontrolledValue, setValue] = React.useState<string[]>(defaultValue ?? []);
     const isControlled = controlledValue !== undefined;
     const value = isControlled ? controlledValue : uncontrolledValue;
@@ -78,7 +82,7 @@ export function Transfer({ dataSource, value: controlledValue, defaultValue, onC
         if (items.length === 0) {
             return <p className={classNames?.empty}>No data</p>;
         }
-        return items.map((item) => (<Checkbox key={item.value} checked={checked.has(item.value)} disabled={item.disabled} onCheckedChange={(next) => toggle(checked, setChecked, item.value, next)} classNames={classNames?.item} styles={{ label: styles?.item }}>
+        return items.map((item) => (<Checkbox key={item.value} checked={checked.has(item.value)} disabled={item.disabled} onCheckedChange={(next) => toggle(checked, setChecked, item.value, next)} classNames={typeof classNames?.item === "function" ? classNames.item({ disabled: Boolean(item.disabled) }) : classNames?.item} styles={{ label: styles?.item }}>
         {renderItemContent(item)}
       </Checkbox>));
     };
@@ -93,15 +97,13 @@ export function Transfer({ dataSource, value: controlledValue, defaultValue, onC
         {renderItems(items, checked, setChecked)}
       </div>
     </div>);
-    return (<div {...props} className={className}>
+    const moveRightDisabled = sourceChecked.size === 0;
+    const moveLeftDisabled = targetChecked.size === 0;
+    return (<div {...props} data-size={size} className={className}>
       {renderPanel(sourceItems, sourceChecked, setSourceChecked, titles?.[0])}
       <div className={classNames?.actions} style={styles?.actions}>
-        <button type="button" aria-label={moveRightLabel} disabled={sourceChecked.size === 0} onClick={moveRight} className={classNames?.move}>
-          <ArrowRight aria-hidden/>
-        </button>
-        <button type="button" aria-label={moveLeftLabel} disabled={targetChecked.size === 0} onClick={moveLeft} className={classNames?.move}>
-          <ArrowLeft aria-hidden/>
-        </button>
+        <Button type="button" aria-label={moveRightLabel} disabled={moveRightDisabled} onClick={moveRight} className={resolveSlotClassName(classNames?.move, { disabled: moveRightDisabled })} icon={<ArrowRight aria-hidden/>}>{showMoveLabels ? moveRightLabel : null}</Button>
+        <Button type="button" aria-label={moveLeftLabel} disabled={moveLeftDisabled} onClick={moveLeft} className={resolveSlotClassName(classNames?.move, { disabled: moveLeftDisabled })} icon={<ArrowLeft aria-hidden/>}>{showMoveLabels ? moveLeftLabel : null}</Button>
       </div>
       {renderPanel(targetItems, targetChecked, setTargetChecked, titles?.[1])}
     </div>);

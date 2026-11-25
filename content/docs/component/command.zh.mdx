@@ -15,7 +15,7 @@ description: 对话框式命令面板——点击触发器（或应用快捷键�
 
 ### 禁用
 
-条目支持 disabled 禁用，禁用行不可选中。
+传入 `disabled` 禁用触发按钮，仅阻止按钮打开面板，不改变面板内条目的行为；按钮使用禁用背景色、文字色与禁止鼠标光标。
 
 <ComponentPreview name="command-disabled" />
 
@@ -33,6 +33,7 @@ description: 对话框式命令面板——点击触发器（或应用快捷键�
 | ------------------ | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `items`            | `(CommandItemConfig \| CommandGroupConfig)[]`                                                            | 命令或分组命令                                                                                                                                                              |
 | `trigger`          | `React.ReactNode`                                                                                        | 触发器内容，渲染为一个打开对话框的 `type="button"`：它带 `aria-haspopup="dialog"`（直接写原生属性即可覆写）与 `aria-expanded`，你传入的其余原生按钮属性全部落在它身上；省略则自行控制 `open`                                       |
+| `disabled`         | `boolean`                                                                                                | 禁用触发按钮，仅阻止按钮打开面板，不改变面板内条目的行为；使用 `bg-disabled`、`text-disabled-fg` 与 `cursor-not-allowed`                                                                                                                                                |
 | `open`             | `boolean`                                                                                                | 受控对话框状态；与 `onOpenChange` 配对就能接应用级热键（如 `⌘K`）——面板自己从不绑定全局按键                                                                                                            |
 | `defaultOpen`      | `boolean`                                                                                                | 初始状态（非受控），默认 `false`                                                                                                                                                 |
 | `onOpenChange`     | `(open: boolean) => void`                                                                                | 对话框状态回调                                                                                                                                                              |
@@ -44,11 +45,11 @@ description: 对话框式命令面板——点击触发器（或应用快捷键�
 | `empty`            | `React.ReactNode`                                                                                        | 空状态节点；显式传 `null` 且列表无行时整个列表不渲染（紧凑初始态：面板只剩输入行与键盘说明脚注），默认 `"No results"`                                                                                               |
 | `hints`            | `{ navigate?; open?; close?: React.ReactNode } \| null`                                                  | 键盘说明脚注的文字（`↑` `↓` / `↵` / `esc` 键帽旁），传 `null` 整体隐藏脚注，默认 英文键位说明                                                                                                       |
 | `trailing`         | `React.ReactNode`                                                                                        | 输入行尾部内容（如搜索加载时的 spinner），透传给内部 `Input` 的尾槽                                                                                                                           |
-| `className`        | `string`                                                                                                 | 自定义类名，作用于 `<dialog>` 元素                                                                                                                                              |
-| `classNames`       | `trigger` / `content` / `input` / `field` / `searchIcon` / `list` / `root` / `footer` / `hint` / `hintKey` / `rows` / `item` / `label` / `itemIcon` / `itemLabel` / `shortcut` / `empty` | 各部分自定义类名：`input` 是搜索框的外壳，`field` 传给内部 `Input` 的各槽位，`searchIcon` 是它自带的那个搜索图标，`list` 落在列表的滚动视口，`item` 是单行、`label` 是分组头，`footer` 是键盘说明脚注，`hint` / `hintKey` 是脚注里的提示行与键帽；`content` 与对话框自身的 content 类名合并 |
-| `styles`           | `content` / `item` / `label`                                                                             | 各部分内联样式                                                                                                                                                              |
-| `dialogClassNames` | `Dialog` 的 `classNames`                                                                                  | 外层对话框各部分的类名；它的 `content` 会与 `classNames.content` 合并                                                                                                                  |
-| `dialogStyles`     | `Dialog` 的 `styles`                                                                                      | 外层对话框各部分的内联样式。面板把 `content` 让给 `styles.content`，并隐藏标题行与内置 ESC 按钮，这两槽因此不对外开放                                                                                          |
+| `className`        | `string`                                                                                                 | 自定义类名，作用于 `<dialog>` 壳；不控制命令内容区宽度                                                                                                                              |
+| `classNames`       | `trigger` / `content` / `input` / `field` / `searchIcon` / `list` / `root` / `footer` / `hint` / `hintKey` / `rows` / `item` / `label` / `itemIcon` / `itemLabel` / `shortcut` / `empty` | `content` 控制命令内容区，默认最大宽度为 20rem 与视口宽度减 1rem 的较小值；`input` 是搜索框外壳，`field` 是内部 Input 槽位，`list` 是滚动视口；其余为对应区域类名 |
+| `styles`           | `content` / `item` / `label`                                                                             | 内容区、列表项与分组头内联样式；内容区宽度由 `styles.content` 控制                                                                                                                                                              |
+| `dialogClassNames` | `Dialog` 的 `classNames`                                                                                  | 外层对话框各部分的类名；它的 `content` 会与 `classNames.content` 合并                                                                                                                                                                                                 |
+| `dialogStyles`     | `Dialog` 的 `styles`                                                                                      | 外层对话框各部分的内联样式；`content` 会被 `styles.content` 接管，内容区请使用 `styles.content`                                                                                                                                                                             |
 | `...props`         | `React.ComponentProps<"button">`                                                                         | 其余属性全部落在触发按钮上（`children`、`className`、`style`、`type`、`onSelect` 除外）；没有 `trigger` 就没有按钮，此时它们被丢弃                                                                        |
 
 #### CommandItemConfig
@@ -62,7 +63,7 @@ description: 对话框式命令面板——点击触发器（或应用快捷键�
 | `icon`     | `React.ReactNode` | 行首图标                               |
 | `shortcut` | `React.ReactNode` | 快捷键提示，右侧渲染为原生 `<kbd>` 键帽，外观由当前方案提供 |
 | `keywords` | `string[]`        | 仅用于筛选的补充关键词                        |
-| `disabled` | `boolean`         | 不可选中，键盘导航同样跳过；禁用行整体 inert，指针、悬停、焦点全不达，光标为禁用样式；关键词非空时整行从列表移除 |
+| `disabled` | `boolean`         | 逐项禁用：使用 `bg-disabled`、`text-disabled-fg` 与 `cursor-not-allowed`，不可选中且键盘导航跳过；关键词非空时整行从列表移除 |
 
 #### CommandGroupConfig
 
@@ -147,7 +148,7 @@ Context 提供者与面板容器：持有关键词、把分组摊平成行、执
 | Attribute | Description |
 | --- | --- |
 | `[data-highlighted="true"]` | 位于条目行上——当前被键盘指向的那一行 |
-| `[data-disabled]` | 位于条目行与条目 label 上——该条目被禁用时存在；条目行同时为 inert |
+| `[data-disabled]` | 位于条目行与条目 label 上——该条目被禁用时存在；条目行同时带 `aria-disabled="true"` |
 | `[data-command-footer]` | 位于键盘说明脚注上 |
 | `[data-command-hint]` | 位于脚注内的一组提示上 |
 | `[data-command-hint-key]` | 位于脚注的键帽上——`↑` `↓` `↵` `esc` |

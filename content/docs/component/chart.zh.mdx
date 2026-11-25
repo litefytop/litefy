@@ -34,7 +34,7 @@ Chart 依赖 `chart-legend`、`useChartPalette` hook 与 `chart-kit` / `chart-pa
 | label           | string                                 | 图表的无障碍名称，落到 canvas 的 `role="img"` + `aria-label`；缺省取各系列 `label` 以 `, ` 连接，全空回退 `"Chart"` |
 | zoomHint        | React.ReactNode                        | 画布下方交互提示的内容，传空串隐藏，默认 "Drag to zoom · double-click to reset" |
 | legendPlacement | "top" \| "bottom"                      | 图例位置：画布下方（默认）或上方，默认 "bottom"                                |
-| className       | string                                 | 追加到根元素的类名                                                   |
+| className       | string                                 | 追加到根元素的类名；默认 `w-full min-w-0`                                                   |
 | onReady         | () => void                             | 首次渲染完成后回调一次                                                 |
 
 ### ChartSeriesConfig

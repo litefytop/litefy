@@ -10,8 +10,10 @@
 - 收起分支时连带剔除其后代分支键（`descendantFolderKeys`），避免子树残开
 - 激活值仅由 `value` + `onValueChange` 外部维护，组件不存内部选中态；非链接叶子按钮点击回调 `onValueChange(value)`，激活行输出 `data-active` 与 `aria-current="page"`
 - 链接叶子传 `href` 渲染 `a`；`navigate(href, event)` 仅接管无修饰键的左键点击（`preventDefault` 后调用）
-- 键盘在根 `ul` 上委托，只对 `role="treeitem"` 生效；`visibleRows` 取根内未落在 `section[data-open="false"]` 的行：ArrowDown / ArrowUp 相邻、Home / End 首末
+- 键盘在根 `ul` 上委托，只对 `role="treeitem"` 生效；`visibleRows` 取未折叠且未禁用的行，ArrowDown / ArrowUp、Home / End 与首子项、父分支查找都跳过 disabled 节点
 - ArrowRight：未开分支则展开，已开则聚焦首个子行；ArrowLeft：已开分支则收起，否则聚焦父分支 trigger
 - 分支折叠用 `section data-open` + `grid-template-rows: 1fr / 0fr` + 内层 `overflow: hidden; minHeight: 0`；子层 `ul role="group"`
 - `depth` 以 `--litefy-depth` 变量下发（分隔行、trigger、item、branch 各输出）；`aria-level = depth + 1`；`icon` 可传函数按 `open` 渲染，分支固定尾部 `ChevronRight`（`data-open`）
 - 槽位：`classNames: trigger / item / label / group / node / labelText / icon / branch / clip`；`styles: trigger / item / label`
+- `classNames.trigger/item` 为 `SlotClassName`（string 或 `(state: SlotState) => string | undefined`），用 `resolveSlotClassName` 按节点 disabled 解析；`mergeStateSlots` 对 string/string 静态 `cn`，含 function 时返回状态函数，双方按同一状态求值后 `cn`
+- 禁用遵循 `ui/schemes.md` 第 8 条：branch 原生 disabled；link 去掉 href、`tabIndex=-1` 并输出 `aria-disabled`，点击 `preventDefault`；皮肤逐节点完整替换 trigger/item 正常类串，保留布局并使用禁用色与 `cursor-not-allowed`

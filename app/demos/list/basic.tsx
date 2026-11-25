@@ -19,7 +19,7 @@ const tasks: Task[] = [
 
 export default function ListBasicDemo() {
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div className="flex w-full flex-col items-center gap-3">
       <List
         items={tasks}
         getKey={(task) => task.id}

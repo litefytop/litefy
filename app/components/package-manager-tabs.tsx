@@ -34,21 +34,21 @@ export function PackageManagerTabs({ command }: PackageManagerTabsProps) {
         {list.map((item) => (
           <li
             key={item.key}
-            className="flex min-w-0 items-center gap-2 rounded-sm px-2 py-1.5 hover:bg-accent"
+            className="group flex min-w-0 items-center gap-2 rounded-sm px-2 py-1.5 hover:bg-accent hover:text-accent-fg"
           >
-            <span className="shrink-0 text-success-fg">$</span>
+            <span className="shrink-0">$</span>
             <span className="min-w-0 flex-1 break-all">{item.cmd}</span>
             <Button
               type="button"
               data-variant="text"
-              className="shrink-0"
+              className="shrink-0 group-hover:text-accent-fg"
               onClick={() => handleCopy(item.cmd, item.key)}
               aria-label={locale === "zh" ? "复制命令" : "Copy command"}
               icon={
                 copied === item.key ? (
-                  <Check className="size-4 text-success-fg" />
+                  <Check className="size-4" />
                 ) : (
-                  <Copy className="size-4 text-surface-fg" />
+                  <Copy className="size-4 text-foreground group-hover:text-accent-fg" />
                 )
               }
             />

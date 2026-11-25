@@ -12,5 +12,7 @@
 - `TabsList` 横向：外层 div 内为 prev / next 滚动按钮（`data-direction`、`aria-label` 取 `prevLabel` / `nextLabel`，缺省 "Scroll tabs left" / "Scroll tabs right"）与 `role="tablist"` 的滚动容器；按钮禁用态由 3px 阈值的 `scrollLeft` / `scrollWidth` 边界推导，点击滚动 `0.8 × clientWidth`
 - 溢出探测：`ResizeObserver` + scroll 监听更新 `{ overflow, start, end }`，overflow 时根加 `data-overflow="true"`；`activeValue` 变化时把 `[data-state="active"]` 以 `inline: "nearest"` 语义滚入视野——实现上直接调滚动容器自身的 `scrollLeft`（rect 相对差值，不用 `scrollIntoView`），滚动只落在标签滚动容器内，纵向祖先（页面滚动容器/window）不动；纵向不渲染滚动按钮，根自身即 `role="tablist"`
 - `TabsContent`：非激活且 `unmountOnHide`（默认 true）返回 null；否则 `role="tabpanel"` + `aria-labelledby` + `hidden`，非激活时再叠内联 `display: none`
-- 根带 `data-orientation`
-- 槽位：`classNames: root / list / scroll / scroller / trigger / content`；`className` 拼到根，`panelClassName` 与 `classNames.content` 拼到每个 tabpanel
+- 方向只由 prop 决定：`role="tablist"` 发 `aria-orientation`（键盘读它判定纵向追加方向键）；方向外观由皮肤按 orientation prop 选串解析，骨架不发方向标记
+- 槽位：`classNames: root / list / scroll / scroller / trigger / content`；皮肤将 `className` 与 `classNames.root` 合并后，骨架只透传根类；`panelClassName` 与 `classNames.content` 拼到每个 tabpanel
+- `classNames.trigger/scroll` 为 `SlotClassName`（string 或 `(state: SlotState) => string | undefined`），trigger 按 option disabled、scroll 按左右边界 disabled 解析；`mergeStateSlots` 对 string/string 静态 `cn`，含 function 时返回状态函数，双方按同一状态求值后 `cn`
+- 禁用遵循 `ui/schemes.md` 第 8 条：tab 与滚动按钮原生 disabled；皮肤按 line/primary 外观与 disabled 完整替换 trigger/scroll 正常类串，移除 hover/active 类并显式禁用色与 `cursor-not-allowed`

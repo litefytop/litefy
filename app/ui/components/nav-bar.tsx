@@ -32,6 +32,7 @@ export interface NavBarProps<T> extends Omit<React.ComponentProps<"nav">, "child
         root?: string;
         item?: string;
         more?: string;
+        chevron?: string;
         panel?: string;
     };
     styles?: {
@@ -109,7 +110,7 @@ export function NavBar<T>({ items, renderItem, getKey, more = "more", open, onOp
         observer.observe(root);
         return () => observer.disconnect();
     }, [measure]);
-    const moreContent = (<>{more}<ChevronDown aria-hidden /></>);
+    const moreContent = (<>{more}<span className={classNames?.chevron}><ChevronDown aria-hidden /></span></>);
     const overflow = shown < items.length ? { "data-overflow": "true" } : undefined;
     const renderRow = (item: T, index: number) => (<div key={String(getKey?.(item, index) ?? index)} data-nav-index={index} className={classNames?.item} style={{ ...ITEM_STYLE, ...styles?.item, display: index >= shown ? "none" : undefined }}>
       {renderItem(item, index)}

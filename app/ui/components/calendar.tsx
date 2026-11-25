@@ -2,6 +2,7 @@
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "./icons";
 import { Button } from "./button";
+import { resolveSlotClassName, type SlotClassName } from "../utils/cn";
 import {
     addDays,
     addMonths,
@@ -19,14 +20,14 @@ export interface CalendarRange {
 }
 export interface CalendarClassNames {
     header?: string;
-    nav?: string;
+    nav?: SlotClassName;
     navIcon?: string;
-    title?: string;
+    title?: SlotClassName;
     titleRow?: string;
     grid?: string;
     week?: string;
-    weekday?: string;
-    day?: string;
+    weekday?: SlotClassName;
+    day?: SlotClassName;
 }
 export interface CalendarRootProps extends Omit<React.ComponentProps<"div">, "className"> {
     className?: string;
@@ -115,6 +116,7 @@ export interface CalendarGridProps extends Omit<React.ComponentProps<"div">, "cl
     range?: CalendarRange;
     weekdayLabels?: string[];
     isDateDisabled?: (date: Date) => boolean;
+    disabled?: boolean;
     onSelect?: (date: Date) => void;
     onNavigate?: (date: Date) => void;
     onHoverDateChange?: (date: Date | null) => void;
@@ -122,7 +124,7 @@ export interface CalendarGridProps extends Omit<React.ComponentProps<"div">, "cl
     className?: string;
     classNames?: Pick<CalendarClassNames, "grid" | "week" | "weekday" | "day">;
 }
-export function CalendarGrid({ weeks, visibleMonth, value, range, weekdayLabels, isDateDisabled, onSelect, onNavigate, onHoverDateChange, firstDayOfWeek = 0, className, classNames, ...props }: CalendarGridProps) {
+export function CalendarGrid({ weeks, visibleMonth, value, range, weekdayLabels, isDateDisabled, disabled = false, onSelect, onNavigate, onHoverDateChange, firstDayOfWeek = 0, className, classNames, ...props }: CalendarGridProps) {
     const defaults = firstDayOfWeek === 1
         ? ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
         : ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
@@ -143,21 +145,21 @@ export function CalendarGrid({ weeks, visibleMonth, value, range, weekdayLabels,
     }
     return (<div role="grid" {...props} onMouseLeave={onHoverDateChange ? () => onHoverDateChange(null) : undefined} className={[classNames?.grid, className].filter(Boolean).join(" ")}>
       <div role="row" data-heading="true" className={classNames?.week}>
-        {labels.map((label) => (<div key={label} role="columnheader" className={classNames?.weekday}>
+        {labels.map((label) => (<div key={label} role="columnheader" className={resolveSlotClassName(classNames?.weekday, { disabled })}>
             {label}
           </div>))}
       </div>
-      {weeks.map((week) => (<CalendarGridRow key={toISODate(week[0])} week={week} visibleMonth={visibleMonth} value={value} range={range} isDateDisabled={isDateDisabled} onSelect={onSelect} onNavigate={onNavigate} onHoverDateChange={onHoverDateChange} tabStopDate={tabStopDate} classNames={{ week: classNames?.week, day: classNames?.day }} data-heading="false"/>))}
+      {weeks.map((week) => (<CalendarGridRow key={toISODate(week[0])} week={week} visibleMonth={visibleMonth} value={value} range={range} isDateDisabled={isDateDisabled} disabled={disabled} onSelect={onSelect} onNavigate={onNavigate} onHoverDateChange={onHoverDateChange} tabStopDate={tabStopDate} classNames={{ week: classNames?.week, day: classNames?.day }} data-heading="false"/>))}
     </div>);
 }
-function rangeRoleFor(date: Date, range?: CalendarRange): "start" | "end" | "between" | "single" | undefined {
+function rangeRoleFor(date: Date, range?: CalendarRange): "start" | "end" | "between" | undefined {
     if (!range?.start) return undefined;
-    if (!range.end) return isSameDate(date, range.start) ? "single" : undefined;
+    if (!range.end) return isSameDate(date, range.start) ? "start" : undefined;
     const order = compareDates(range.start, range.end);
     const low = order <= 0 ? range.start : range.end;
     const high = order <= 0 ? range.end : range.start;
     if (compareDates(date, low) < 0 || compareDates(date, high) > 0) return undefined;
-    if (order === 0) return "single";
+    if (order === 0) return "start";
     if (compareDates(date, low) === 0) return "start";
     if (compareDates(date, high) === 0) return "end";
     return "between";
@@ -168,6 +170,7 @@ export interface CalendarGridRowProps extends Omit<React.ComponentProps<"div">, 
     value?: Date | null;
     range?: CalendarRange;
     isDateDisabled?: (date: Date) => boolean;
+    disabled?: boolean;
     onSelect?: (date: Date) => void;
     onNavigate?: (date: Date) => void;
     onHoverDateChange?: (date: Date | null) => void;
@@ -175,23 +178,24 @@ export interface CalendarGridRowProps extends Omit<React.ComponentProps<"div">, 
     className?: string;
     classNames?: Pick<CalendarClassNames, "week" | "day">;
 }
-export function CalendarGridRow({ week, visibleMonth, value, range, isDateDisabled, onSelect, onNavigate, onHoverDateChange, tabStopDate, className, classNames, ...props }: CalendarGridRowProps) {
+export function CalendarGridRow({ week, visibleMonth, value, range, isDateDisabled, disabled = false, onSelect, onNavigate, onHoverDateChange, tabStopDate, className, classNames, ...props }: CalendarGridRowProps) {
     return (<div role="row" {...props} className={[classNames?.week, className].filter(Boolean).join(" ")}>
-      {week.map((date) => (<CalendarGridCell key={toISODate(date)} date={date} outsideMonth={date.getFullYear() !== visibleMonth.getFullYear() || date.getMonth() !== visibleMonth.getMonth()} selected={value ? isSameDate(value, date) : false} rangeRole={rangeRoleFor(date, range)} disabled={isDateDisabled?.(date) ?? false} tabStop={tabStopDate === undefined ? undefined : toISODate(date) === tabStopDate} onSelect={onSelect} onHover={onHoverDateChange ?? undefined} onNavigate={onNavigate} className={classNames?.day}/>))}
+      {week.map((date) => (<CalendarGridCell key={toISODate(date)} date={date} outsideMonth={date.getFullYear() !== visibleMonth.getFullYear() || date.getMonth() !== visibleMonth.getMonth()} selected={value ? isSameDate(value, date) : false} rangeRole={rangeRoleFor(date, range)} disabled={disabled || (isDateDisabled?.(date) ?? false)} tabStop={tabStopDate === undefined ? undefined : toISODate(date) === tabStopDate} onSelect={onSelect} onHover={onHoverDateChange ?? undefined} onNavigate={onNavigate} className={classNames?.day}/>))}
     </div>);
 }
 export interface CalendarGridCellProps extends Omit<React.ComponentProps<"button">, "className" | "type" | "onSelect"> {
     date: Date;
     outsideMonth?: boolean;
     selected?: boolean;
-    rangeRole?: "start" | "end" | "between" | "single";
+    rangeRole?: "start" | "end" | "between";
     tabStop?: boolean;
     onNavigate?: (date: Date) => void;
     onSelect?: (date: Date) => void;
     onHover?: (date: Date) => void;
-    className?: string;
+    className?: SlotClassName;
 }
-export const CalendarGridCell = React.memo(function CalendarGridCell({ date, outsideMonth, selected, rangeRole, tabStop, onNavigate, onSelect, onHover, className, onKeyDown: onKeyDownProp, onClick: onClickProp, ...props }: CalendarGridCellProps) {
+export const CalendarGridCell = React.memo(function CalendarGridCell({ date, outsideMonth, selected, rangeRole, tabStop, disabled, onNavigate, onSelect, onHover, className, onKeyDown: onKeyDownProp, onClick: onClickProp, ...props }: CalendarGridCellProps) {
+    const active = !!(selected || rangeRole);
     const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
         onKeyDownProp?.(e);
         if (e.defaultPrevented)
@@ -205,10 +209,10 @@ export const CalendarGridCell = React.memo(function CalendarGridCell({ date, out
             return;
         moveGridFocus(grid, date, offset, "days", "data-date", toISODate, 31, onNavigate);
     };
-    return (<button type="button" role="gridcell" aria-selected={selected || rangeRole !== undefined} data-outside-month={outsideMonth || undefined} data-date={toISODate(date)} data-range={rangeRole} data-in-range={rangeRole !== undefined || undefined} tabIndex={tabStop === undefined ? undefined : tabStop ? 0 : -1} {...props} onClick={(e) => {
+    return (<button type="button" role="gridcell" disabled={disabled} aria-selected={active} data-outside-month={outsideMonth || undefined} data-date={toISODate(date)} data-range={rangeRole} data-in-range={rangeRole !== undefined || undefined} tabIndex={disabled ? -1 : tabStop === undefined ? undefined : tabStop ? 0 : -1} {...props} onClick={(e) => {
         onClickProp?.(e);
         onSelect?.(date);
-    }} onMouseEnter={onHover ? () => onHover(date) : undefined} onKeyDown={handleKeyDown} className={className}>
+    }} onMouseEnter={!disabled && onHover ? () => onHover(date) : undefined} onKeyDown={handleKeyDown} className={resolveSlotClassName(className, { disabled: disabled ?? false, active, outsideMonth: outsideMonth ?? false })}>
       {date.getDate()}
     </button>);
 });
@@ -241,9 +245,13 @@ export function CalendarMonthGrid({ visibleMonth, value, isMonthDisabled, onSele
     };
     return (<div role="grid" {...props} data-view="month" className={[classNames?.grid, className].filter(Boolean).join(" ")}>
       {rows.map((row) => (<div role="row" key={toISODate(row[0])} data-cols="3" className={classNames?.week}>
-          {row.map((month) => (<button key={toISODate(month)} type="button" role="gridcell" aria-selected={value?.getFullYear() === month.getFullYear() && value?.getMonth() === month.getMonth()} data-month={toISODate(month)} tabIndex={toISODate(month) === tabStopDate ? 0 : -1} disabled={isMonthDisabled?.(month)} onClick={onSelect ? () => onSelect(month) : undefined} onKeyDown={handleKeyDown(month)} className={classNames?.day}>
-              {Calendar.calendarMonthLabels[month.getMonth()]}
-            </button>))}
+          {row.map((month) => {
+              const monthDisabled = isMonthDisabled?.(month) ?? false;
+              const active = value?.getFullYear() === month.getFullYear() && value?.getMonth() === month.getMonth();
+              return (<button key={toISODate(month)} type="button" role="gridcell" aria-selected={active} data-month={toISODate(month)} tabIndex={monthDisabled ? -1 : toISODate(month) === tabStopDate ? 0 : -1} disabled={monthDisabled} onClick={onSelect ? () => onSelect(month) : undefined} onKeyDown={handleKeyDown(month)} className={resolveSlotClassName(classNames?.day, { disabled: monthDisabled, active })}>
+                  {Calendar.calendarMonthLabels[month.getMonth()]}
+                </button>);
+          })}
         </div>))}
     </div>);
 }
@@ -275,9 +283,13 @@ export function CalendarYearGrid({ visibleMonth, value, isYearDisabled, onSelect
     };
     return (<div role="grid" {...props} data-view="year" className={[classNames?.grid, className].filter(Boolean).join(" ")}>
       {rows.map((row) => (<div role="row" key={toISODate(row[0])} data-cols="3" className={classNames?.week}>
-          {row.map((year) => (<button key={year.getFullYear()} type="button" role="gridcell" aria-selected={value?.getFullYear() === year.getFullYear()} data-year={year.getFullYear()} tabIndex={year.getFullYear() === tabStopYear ? 0 : -1} disabled={isYearDisabled?.(year)} onClick={onSelect ? () => onSelect(year) : undefined} onKeyDown={handleKeyDown(year)} className={classNames?.day}>
-              {year.getFullYear()}
-            </button>))}
+          {row.map((year) => {
+              const yearDisabled = isYearDisabled?.(year) ?? false;
+              const active = value?.getFullYear() === year.getFullYear();
+              return (<button key={year.getFullYear()} type="button" role="gridcell" aria-selected={active} data-year={year.getFullYear()} tabIndex={yearDisabled ? -1 : year.getFullYear() === tabStopYear ? 0 : -1} disabled={yearDisabled} onClick={onSelect ? () => onSelect(year) : undefined} onKeyDown={handleKeyDown(year)} className={resolveSlotClassName(classNames?.day, { disabled: yearDisabled, active })}>
+                  {year.getFullYear()}
+                </button>);
+          })}
         </div>))}
     </div>);
 }
@@ -298,11 +310,12 @@ export interface CalendarProps extends Omit<React.ComponentProps<"div">, "classN
     onYearSelect?: (year: Date) => void;
     onHoverDateChange?: (date: Date | null) => void;
     isDateDisabled?: (date: Date) => boolean;
+    disabled?: boolean;
     firstDayOfWeek?: 0 | 1;
     className?: string;
     classNames?: CalendarClassNames;
 }
-export function Calendar({ value: controlledValue, defaultValue, range, weekdayLabels, monthLabels, visibleMonth, view: controlledView, defaultView, onChange, onVisibleMonthChange, onViewChange, onMonthSelect, onYearSelect, onHoverDateChange, isDateDisabled, firstDayOfWeek = 0, className, classNames, ...props }: CalendarProps) {
+export function Calendar({ value: controlledValue, defaultValue, range, weekdayLabels, monthLabels, visibleMonth, view: controlledView, defaultView, onChange, onVisibleMonthChange, onViewChange, onMonthSelect, onYearSelect, onHoverDateChange, isDateDisabled, disabled = false, firstDayOfWeek = 0, className, classNames, ...props }: CalendarProps) {
     const rootRef = React.useRef<HTMLDivElement>(null);
     const pendingFocusRef = React.useRef<{
         attribute: string;
@@ -312,6 +325,9 @@ export function Calendar({ value: controlledValue, defaultValue, range, weekdayL
     } | null>(null);
     const [uncontrolledValue, setValue] = React.useState<Date | null>(defaultValue ?? null);
     const [uncontrolledView, setView] = React.useState<CalendarView>(defaultView ?? "days");
+    React.useLayoutEffect(() => {
+        rootRef.current?.querySelector<HTMLElement>("button:disabled:focus")?.blur();
+    });
     const isControlled = controlledValue !== undefined;
     const value = isControlled ? controlledValue : uncontrolledValue;
     const isViewControlled = controlledView !== undefined;
@@ -328,12 +344,13 @@ export function Calendar({ value: controlledValue, defaultValue, range, weekdayL
             setView(next);
         onViewChange?.(next);
     };
-    const selectStateRef = React.useRef({ visibleMonth, isControlled, isDateDisabled, onChange, onVisibleMonthChange });
+    const selectStateRef = React.useRef({ visibleMonth, isControlled, isDateDisabled, disabled, onChange, onVisibleMonthChange });
     React.useEffect(() => {
-        selectStateRef.current = { visibleMonth, isControlled, isDateDisabled, onChange, onVisibleMonthChange };
+        selectStateRef.current = { visibleMonth, isControlled, isDateDisabled, disabled, onChange, onVisibleMonthChange };
     });
     const handleSelect = React.useCallback((date: Date) => {
         const state = selectStateRef.current;
+        if (state.disabled || state.isDateDisabled?.(date)) return;
         const outside = date.getFullYear() !== state.visibleMonth.getFullYear() || date.getMonth() !== state.visibleMonth.getMonth();
         if (outside)
             state.onVisibleMonthChange?.(startOfMonth(date));
@@ -343,6 +360,7 @@ export function Calendar({ value: controlledValue, defaultValue, range, weekdayL
     }, []);
     const handleNavigate = React.useCallback((date: Date) => {
         const state = selectStateRef.current;
+        if (state.disabled) return;
         const dir: 1 | -1 = date.getTime() >= state.visibleMonth.getTime() ? 1 : -1;
         if (state.isDateDisabled) {
             let probe = date;
@@ -398,7 +416,7 @@ export function Calendar({ value: controlledValue, defaultValue, range, weekdayL
     };
     React.useEffect(() => {
         const target = pendingFocusRef.current;
-        if (!target)
+        if (disabled || !target)
             return;
         pendingFocusRef.current = null;
         const grid = rootRef.current?.querySelector<HTMLElement>('[role="grid"]');
@@ -425,18 +443,20 @@ export function Calendar({ value: controlledValue, defaultValue, range, weekdayL
         }
     });
     const handlePrevious = () => {
+        if (disabled) return;
         const target = view === "days" ? addMonths(visibleMonth, -1) : view === "months" ? addYears(visibleMonth, -1) : addYears(visibleMonth, -12);
         queueGridFocusAfterPageTurn(target);
         onVisibleMonthChange?.(target);
     };
     const handleNext = () => {
+        if (disabled) return;
         const target = view === "days" ? addMonths(visibleMonth, 1) : view === "months" ? addYears(visibleMonth, 1) : addYears(visibleMonth, 12);
         queueGridFocusAfterPageTurn(target);
         onVisibleMonthChange?.(target);
     };
     const navUnit = view === "days" ? "month" : view === "months" ? "year" : "years";
     const handleHeaderKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        if (e.defaultPrevented || e.key !== "ArrowDown")
+        if (disabled || e.defaultPrevented || e.key !== "ArrowDown")
             return;
         const grid = rootRef.current?.querySelector<HTMLElement>('[role="grid"]');
         if (!grid)
@@ -445,22 +465,24 @@ export function Calendar({ value: controlledValue, defaultValue, range, weekdayL
         const tabStop = grid.querySelector<HTMLElement>('button[tabindex="0"]');
         (tabStop ?? grid).focus();
     };
-    return (<CalendarRoot ref={rootRef} {...props} className={className}>
+    const navClassName = resolveSlotClassName(classNames?.nav, { disabled });
+    const titleClassName = resolveSlotClassName(classNames?.title, { disabled });
+    return (<CalendarRoot ref={rootRef} {...props} className={className} data-disabled={disabled || undefined} aria-disabled={disabled || undefined}>
       <CalendarHeader className={classNames?.header} onKeyDown={handleHeaderKeyDown}>
-        <CalendarNavButton className={classNames?.nav} classNames={{ icon: classNames?.navIcon }} direction="previous" aria-label={`Previous ${navUnit}`} onClick={handlePrevious}/>
+        <CalendarNavButton className={navClassName} classNames={{ icon: classNames?.navIcon }} direction="previous" aria-label={`Previous ${navUnit}`} disabled={disabled} onClick={handlePrevious}/>
         <div className={classNames?.titleRow}>
-          <CalendarTitleButton className={classNames?.title} data-active={view === "years" || undefined} onClick={() => handleViewChange("years")}>
+          <CalendarTitleButton className={titleClassName} data-active={view === "years" || undefined} disabled={disabled} onClick={() => handleViewChange("years")}>
             {visibleMonth.getFullYear()}
           </CalendarTitleButton>
-          <CalendarTitleButton className={classNames?.title} data-active={view === "months" || undefined} onClick={() => handleViewChange("months")}>
+          <CalendarTitleButton className={titleClassName} data-active={view === "months" || undefined} disabled={disabled} onClick={() => handleViewChange("months")}>
             {monthLabels?.[visibleMonth.getMonth()] ?? Calendar.calendarMonthLabels[visibleMonth.getMonth()]}
           </CalendarTitleButton>
         </div>
-        <CalendarNavButton className={classNames?.nav} classNames={{ icon: classNames?.navIcon }} direction="next" aria-label={`Next ${navUnit}`} onClick={handleNext}/>
+        <CalendarNavButton className={navClassName} classNames={{ icon: classNames?.navIcon }} direction="next" aria-label={`Next ${navUnit}`} disabled={disabled} onClick={handleNext}/>
       </CalendarHeader>
-      {view === "days" && (<CalendarGrid weeks={weeks} visibleMonth={visibleMonth} value={value} range={range} weekdayLabels={weekdayLabels} isDateDisabled={isDateDisabled} onSelect={handleSelect} onNavigate={handleNavigate} onHoverDateChange={onHoverDateChange ? emitHover : undefined} firstDayOfWeek={firstDayOfWeek} classNames={{ grid: classNames?.grid, week: classNames?.week, weekday: classNames?.weekday, day: classNames?.day }}/>)}
-      {view === "months" && (<CalendarMonthGrid visibleMonth={visibleMonth} value={value} onSelect={handleMonthSelect} onNavigate={handleMonthNavigate} classNames={{ grid: classNames?.grid, week: classNames?.week, day: classNames?.day }}/>)}
-      {view === "years" && (<CalendarYearGrid visibleMonth={visibleMonth} value={value} onSelect={handleYearSelect} onNavigate={handleYearNavigate} classNames={{ grid: classNames?.grid, week: classNames?.week, day: classNames?.day }}/>)}
+      {view === "days" && (<CalendarGrid weeks={weeks} visibleMonth={visibleMonth} value={value} range={range} weekdayLabels={weekdayLabels} disabled={disabled} isDateDisabled={(date) => disabled || (isDateDisabled?.(date) ?? false)} onSelect={handleSelect} onNavigate={handleNavigate} onHoverDateChange={onHoverDateChange ? emitHover : undefined} firstDayOfWeek={firstDayOfWeek} classNames={{ grid: classNames?.grid, week: classNames?.week, weekday: classNames?.weekday, day: classNames?.day }}/>)}
+      {view === "months" && (<CalendarMonthGrid visibleMonth={visibleMonth} value={value} isMonthDisabled={disabled ? () => true : undefined} onSelect={handleMonthSelect} onNavigate={handleMonthNavigate} classNames={{ grid: classNames?.grid, week: classNames?.week, day: classNames?.day }}/>)}
+      {view === "years" && (<CalendarYearGrid visibleMonth={visibleMonth} value={value} isYearDisabled={disabled ? () => true : undefined} onSelect={handleYearSelect} onNavigate={handleYearNavigate} classNames={{ grid: classNames?.grid, week: classNames?.week, day: classNames?.day }}/>)}
     </CalendarRoot>);
 }
 Calendar.calendarMonthLabels = calendarMonthLabels;

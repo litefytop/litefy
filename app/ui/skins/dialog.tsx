@@ -1,7 +1,7 @@
 ﻿import type { DialogCommandOptions, DialogProps } from "@/ui";
 import { Dialog as DialogHeadless, dialog as dialogHeadless } from "@/ui";
 import { cn, mergeSlots } from "../utils/cn";
-import { buttonVariants } from "./button";
+import { buttonInlineClasses } from "./button";
 
 
 const rootClasses =
@@ -10,12 +10,10 @@ const rootClasses =
 const stageClasses =
   "pointer-events-none grid min-h-[calc(100dvh+1px)] w-full place-items-center";
 
-const contentBaseClasses =
-  "pointer-events-auto relative w-full my-4 max-w-[min(100%_-_--spacing(8),--spacing(112))]";
-const contentFaceClasses =
-  "rounded-xl border-frame border-border bg-surface-raised p-4 text-foreground text-base leading-body shadow-elevated";
-
-const contentClasses = cn(contentBaseClasses, contentFaceClasses);
+const contentClasses = cn(
+  "pointer-events-auto relative w-full my-4 max-w-[min(28rem,calc(100%_-_--spacing(8)))]",
+  "rounded-xl border-frame border-border bg-surface-raised p-4 text-surface-raised-fg text-base leading-body shadow-elevated",
+);
 
 const headerClasses = "mb-3 flex items-center justify-between gap-x-3";
 
@@ -23,8 +21,9 @@ const titleClasses =
   "m-0 mr-auto min-w-0 truncate text-h3 leading-head font-strong tracking-normal case-label";
 
 const closeClasses = cn(
-  buttonVariants.text,
-  "hover:no-underline data-[inline=true]:static data-[inline=true]:shrink-0",
+  buttonInlineClasses,
+  "h-control gap-x-2 text-nowrap cursor-pointer text-foreground px-2 hover:no-underline focus-visible:focus-ring",
+  "data-[inline=true]:static data-[inline=true]:shrink-0",
 );
 
 const closeIconClasses = "size-4";
@@ -32,12 +31,13 @@ const closeIconClasses = "size-4";
 const closeKeyClasses = "kbd";
 
 
-const titleIconBaseClasses = "flex items-center gap-x-3 *:data-status:size-4";
-const titleIconStatusClasses =
-  "[&>[data-status=success]]:text-success-fg [&>[data-status=error]]:text-danger-fg " +
-  "[&>[data-status=warning]]:text-warning-fg [&>[data-status=info]]:text-info-fg";
-
-const titleIconClasses = cn(titleIconBaseClasses, titleIconStatusClasses);
+const titleIconClasses = cn(
+  "[&_svg]:size-4",
+  "data-[status^=s]:text-success-independent " +
+  "data-[status^=e]:text-danger-independent " +
+  "data-[status^=w]:text-warning-independent " +
+  "data-[status^=i]:text-info-independent",
+);
 
 const skinClassNames = {
   root: rootClasses,
@@ -55,7 +55,8 @@ const skinClassNames = {
 export const dialogPartClasses = skinClassNames;
 
 export function Dialog({ className, classNames, ...props }: DialogProps) {
-  return <DialogHeadless {...props} className={cn(rootClasses, className)} classNames={mergeSlots(skinClassNames, classNames)} />;
+  const { root: rootOverride, ...slots } = classNames ?? {};
+  return <DialogHeadless {...props} className={cn(rootClasses, rootOverride, className)} classNames={mergeSlots(skinClassNames, slots)} />;
 }
 
 type CommandOptions = Omit<DialogCommandOptions, "type">;

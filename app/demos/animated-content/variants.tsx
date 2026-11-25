@@ -16,7 +16,7 @@ export default function Demo() {
             key={`${direction}-${round}`}
             direction={direction}
             distance={32}
-            className="flex h-16 w-32 items-center justify-center rounded-lg border bg-surface text-sm font-medium"
+            className="flex h-16 w-32 items-center justify-center rounded-lg border bg-surface text-surface-fg text-sm font-medium"
           >
             {direction}
           </AnimatedContent>
@@ -28,7 +28,7 @@ export default function Demo() {
             key={`${duration}-${round}`}
             duration={duration}
             distance={32}
-            className="flex h-12 w-24 items-center justify-center rounded-md border bg-surface text-xs font-medium"
+            className="flex h-12 w-24 items-center justify-center rounded-md border bg-surface text-surface-fg text-xs font-medium"
           >
             {duration}
           </AnimatedContent>

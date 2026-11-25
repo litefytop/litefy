@@ -2,6 +2,7 @@
 import * as React from "react";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, MoreHorizontal, } from "./icons";
 import { Button, ButtonRoot } from "./button";
+import { resolveSlotClassName, type SlotClassName } from "../utils/cn";
 export interface PaginationRootProps extends Omit<React.ComponentProps<"nav">, "className"> {
     className?: string;
 }
@@ -9,21 +10,21 @@ export function PaginationRoot(props: PaginationRootProps) {
     return <nav aria-label="pagination" {...props}/>;
 }
 export interface PaginationFirstProps extends Omit<React.ComponentProps<typeof ButtonRoot>, "className"> {
-    className?: string;
+    className?: SlotClassName;
 }
 export interface PaginationPrevProps extends Omit<React.ComponentProps<typeof ButtonRoot>, "className"> {
-    className?: string;
+    className?: SlotClassName;
 }
 export interface PaginationNextProps extends Omit<React.ComponentProps<typeof ButtonRoot>, "className"> {
-    className?: string;
+    className?: SlotClassName;
 }
 export interface PaginationLastProps extends Omit<React.ComponentProps<typeof ButtonRoot>, "className"> {
-    className?: string;
+    className?: SlotClassName;
 }
 function PaginationNavButton({ label, children, className, ...props }: PaginationFirstProps & {
     label: string;
 }) {
-    return (<Button type="button" aria-label={label} {...props} className={className} icon={children}/>);
+    return (<Button type="button" aria-label={label} {...props} className={resolveSlotClassName(className, { disabled: Boolean(props.disabled) })} icon={children}/>);
 }
 export function PaginationFirst(props: PaginationFirstProps) {
     return (<PaginationNavButton label="First page" {...props}>
@@ -138,7 +139,7 @@ export interface PaginationProps {
     className?: string;
     classNames?: {
         controls?: string;
-        nav?: string;
+        nav?: SlotClassName;
         pages?: string;
         page?: string;
         ellipsis?: string;

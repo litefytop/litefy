@@ -1,14 +1,9 @@
 "use client";
 
 import { findNeighbour, type Item, type Root } from "fumadocs-core/page-tree";
-import {
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  ChevronUp,
-} from "@/components/icons";
+import { ChevronDown, ChevronUp } from "@/components/icons";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { Link, useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { stripSchemePrefix, toSchemeHref } from "@/lib/style-templates";
 import { useSiteSkin } from "./site-skin";
 
@@ -17,27 +12,19 @@ const labels = {
   en: {
     top: "Back to top",
     bottom: "To bottom",
-    prev: "Previous page",
-    next: "Next page",
   },
   zh: {
     top: "回到顶部",
     bottom: "到达底部",
-    prev: "上一页",
-    next: "下一页",
   },
 } as const;
 
-function hint(action: string, item?: Item, shortcut?: string) {
-  const name = typeof item?.name === "string" ? item.name : undefined;
-  return [name ? `${action} · ${name}` : action, shortcut]
-    .filter(Boolean)
-    .join(" ");
+function hint(action: string, shortcut: string) {
+  return `${action} ${shortcut}`;
 }
 
 export function FloatingNav({ tree }: { tree: Root }) {
-  const { Button, buttonVariants, cn } = useSiteSkin();
-  const arrowButtonClass = cn(buttonVariants.outline, "px-0 md:px-0 aspect-square rounded-none");
+  const { Button } = useSiteSkin();
   const rootRef = useRef<HTMLDivElement>(null);
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -113,53 +100,15 @@ export function FloatingNav({ tree }: { tree: Root }) {
         data-variant="outline"
         className="rounded-none"
         aria-label={t.top}
-        title={hint(t.top, undefined, "Ctrl+↑")}
+        title={hint(t.top, "Ctrl+↑")}
         onClick={() => scroll("top")}
         icon={<ChevronUp {...iconProps} />}
       />
-      {previous ? (
-        <Link
-          to={toSchemeHref(pathname, previous.url)}
-          className={arrowButtonClass}
-          aria-label={t.prev}
-          title={hint(t.prev, previous, "Ctrl+←")}
-        >
-          <ChevronLeft {...iconProps} />
-        </Link>
-      ) : (
-        <Button
-          data-variant="outline"
-          className="rounded-none"
-          aria-label={t.prev}
-          title={hint(t.prev, undefined, "Ctrl+←")}
-          disabled
-          icon={<ChevronLeft {...iconProps} />}
-        />
-      )}
-      {next ? (
-        <Link
-          to={toSchemeHref(pathname, next.url)}
-          className={arrowButtonClass}
-          aria-label={t.next}
-          title={hint(t.next, next, "Ctrl+→")}
-        >
-          <ChevronRight {...iconProps} />
-        </Link>
-      ) : (
-        <Button
-          data-variant="outline"
-          className="rounded-none"
-          aria-label={t.next}
-          title={hint(t.next, undefined, "Ctrl+→")}
-          disabled
-          icon={<ChevronRight {...iconProps} />}
-        />
-      )}
       <Button
         data-variant="outline"
         className="rounded-none"
         aria-label={t.bottom}
-        title={hint(t.bottom, undefined, "Ctrl+↓")}
+        title={hint(t.bottom, "Ctrl+↓")}
         onClick={() => scroll("bottom")}
         icon={<ChevronDown {...iconProps} />}
       />

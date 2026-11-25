@@ -10,3 +10,5 @@
 - 组合 `Pagination`：摘要（`summary != null` 才渲染；为字符串时自动挂 `title` 全文——摘要省略后悬停可读全文）→ controls 内依次 First、Prev、Pages、Next、Last → compact 块（窄形态纵向两行：compactSummary 摘要 + compactRow 内依次 First、Prev、**页码输入**（数字键盘、Enter / 失焦提交并钳制 1..N、非法回退）、`/ totalPages`、Next、Last——与 controls 同源状态与禁用逻辑，显隐由皮肤容器查询裁决）；`page ≤ 1` 时 First / Prev 禁用，`page ≥ totalPages` 时 Next / Last 禁用；First / Last 跳 1 / `totalPages`，Prev / Next 各 ±1
 - 无键盘与焦点逻辑，全部落在 Button 与页码输入
 - 槽位：`PaginationPages` 为 `classNames.page/ellipsis` 与同名 `styles`；`Pagination` 为 `classNames.controls/nav/pages/page/ellipsis/summary/compact/compactSummary/compactRow/compactInput/compactText` 与同名 `styles`（`nav` 同时用于两形态的八个翻页钮）
+- 四个导航原子件的 `className` 与组合件 `classNames.nav` 为 `SlotClassName`，原子件用 `resolveSlotClassName` 按 `Boolean(disabled)` 解析；`mergeStateSlots` 对 string/string 静态 `cn`，含 function 时返回状态函数，双方按同一状态求值后 `cn`
+- 禁用遵循 `ui/schemes.md` 第 8 条：首/上钮在 `page <= 1` 时禁用，下/末钮在 `page >= totalPages` 时禁用，desktop 与 compact 的八个按钮同源；皮肤按各钮状态完整替换导航类串，保留纯图标几何并移除 hover/active 类

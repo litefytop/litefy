@@ -95,7 +95,6 @@ export interface RadioGroupProps {
   onValueChange?: (value: string) => void;
   name?: string;
   disabled?: boolean;
-  orientation?: "horizontal" | "vertical";
   label?: React.ReactNode;
   className?: string;
   classNames?: {
@@ -123,7 +122,6 @@ export function RadioGroup({
   onValueChange,
   name,
   disabled,
-  orientation,
   label,
   className,
   classNames,
@@ -163,7 +161,6 @@ export function RadioGroup({
       role="radiogroup"
       aria-label={label === undefined ? ariaLabel : undefined}
       aria-labelledby={label === undefined ? undefined : labelId}
-      data-orientation={orientation}
       className={[classNames?.root, className].filter(Boolean).join(" ")}
     >
       {label !== undefined && (

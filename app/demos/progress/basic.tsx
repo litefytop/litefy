@@ -8,7 +8,7 @@ const POLL_MS = 1000;
 
 type Phase = "idle" | "running" | "paused" | "complete" | "aborted";
 
-export default function ProgressBasicDemo() {
+export default function Demo() {
   const [phase, setPhase] = useState<Phase>("idle");
   const [shown, setShown] = useState(0);
   const doneRef = useRef(0);
@@ -54,7 +54,7 @@ export default function ProgressBasicDemo() {
   };
 
   return (
-    <div className="flex flex-col flex-1 items-center justify-center gap-3 text-center">
+    <div className="flex w-full flex-col flex-1 items-center justify-center gap-3 text-center">
       <Progress
         aria-label="Task progress"
         current={shown}
@@ -62,9 +62,9 @@ export default function ProgressBasicDemo() {
         isComplete={phase === "complete"}
         paused={phase === "paused"}
         data-variant="meter"
-        className="w-full max-w-112"
+        className="w-full"
       />
-      <p className="text-surface-fg">
+      <p className="text-foreground">
         {phase === "idle" && "Idle"}
         {phase === "running" && `Running — ${shown}% polled once a second`}
         {phase === "complete" && "Complete"}
@@ -84,12 +84,8 @@ export default function ProgressBasicDemo() {
             <Button onClick={abort}>Abort</Button>
           </>
         )}
-        {phase !== "running" && phase !== "paused" && (
-          <Button disabled={phase === "complete"} onClick={start}>
-            Start
-          </Button>
-        )}
-        <Button data-variant="outline" onClick={reset}>Reset</Button>
+        {phase === "idle" && <Button onClick={start}>Start</Button>}
+        {phase !== "idle" && <Button data-variant="outline" onClick={reset}>Reset</Button>}
       </div>
     </div>
   );

@@ -37,8 +37,10 @@ ContextMenu.open(options: ContextMenuOpenOptions): void
 | `y`            | `number`                               | 视口 y 坐标（通常是 `e.clientY`）**必填**                                       |
 | `items`        | `MenuConfig[]`                         | 菜单项，扁平或分组 —— 与 [Menu](/zh/docs/component/menu) 组件的形状一致 **必填**       |
 | `onSelect`     | `(item: MenuItemConfig) => void`       | 菜单项激活时触发，随后菜单关闭                                                      |
-| `classNames`   | `{ content?: string }`                 | 面板的自定义类名                                                             |
-| `styles`       | `{ content?: React.CSSProperties }`    | 面板的内联样式；定位属性由组件内部管理                                                  |
+| `classNames`   | `{ content?: string }`                 | 根面板自定义类名；默认 `w-48 min-w-0`（12rem），最大宽度为 20rem 与视口宽度减 1rem 的较小值         |
+| `styles`       | `{ content?: React.CSSProperties }`    | 根面板内联样式，可覆盖宽度；定位属性由组件内部管理                                                  |
+
+每个菜单项的 `disabled` 独立生效：按钮原生禁用，不触发选择或打开子菜单，键盘导航跳过；外观使用 `text-disabled-fg` 与 `cursor-not-allowed`。
 
 #### ContextMenu.dismiss
 

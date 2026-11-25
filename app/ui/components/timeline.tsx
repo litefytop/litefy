@@ -2,11 +2,10 @@
 import * as React from "react";
 export type TimelineOrientation = "vertical" | "horizontal";
 export interface TimelineRootProps extends Omit<React.ComponentProps<"ol">, "className"> {
-    orientation?: TimelineOrientation;
     className?: string;
 }
-export function TimelineRoot({ orientation = "vertical", className, ...props }: TimelineRootProps) {
-    return <ol {...props} data-orientation={orientation} className={className}/>;
+export function TimelineRoot({ className, ...props }: TimelineRootProps) {
+    return <ol {...props} className={className}/>;
 }
 export interface TimelineItemProps extends Omit<React.ComponentProps<"li">, "className"> {
     connector?: boolean;
@@ -65,7 +64,6 @@ export interface TimelineItemConfig {
 }
 export interface TimelineProps extends Omit<React.ComponentProps<"ol">, "className"> {
     items: TimelineItemConfig[];
-    orientation?: TimelineOrientation;
     className?: string;
     classNames?: {
         item?: string;
@@ -88,8 +86,8 @@ export interface TimelineProps extends Omit<React.ComponentProps<"ol">, "classNa
         description?: React.CSSProperties;
     };
 }
-export function Timeline({ items, orientation, className, classNames, styles, ...props }: TimelineProps) {
-    return (<TimelineRoot {...props} orientation={orientation} className={className}>
+export function Timeline({ items, className, classNames, styles, ...props }: TimelineProps) {
+    return (<TimelineRoot {...props} className={className}>
       {items.map((item, i) => (<TimelineItem key={String(item.heading)} connector={i < items.length - 1} marker={item.marker} time={item.time} heading={item.heading} description={item.description} classNames={classNames} styles={styles}/>))}
     </TimelineRoot>);
 }

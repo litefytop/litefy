@@ -57,7 +57,7 @@ export function ShowcaseCard({
           </span>
         ))}
       </span>
-      <span className="flex items-center gap-1 text-sm font-medium text-primary">
+      <span className="flex items-center gap-1 text-sm font-medium text-surface-fg">
         {t.open}
         <ArrowUpRight className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
       </span>

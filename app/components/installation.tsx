@@ -30,7 +30,7 @@ export function Installation({ name }: InstallationProps) {
     {
       value: "manual",
       label: zh ? "手动" : "Manual",
-      content: <Source name={name} />,
+      content: <Source name={name} className="min-h-0 flex-1 h-auto max-h-none" />,
     },
   ];
 
@@ -39,8 +39,8 @@ export function Installation({ name }: InstallationProps) {
       {...tabsScrollLabels(zh)}
       options={items}
       className="flex flex-col aspect-square md:aspect-video overflow-hidden rounded-xl border"
-      panelClassName="min-h-0 flex-1 overflow-y-auto"
-      classNames={{ scroller: "justify-center" }}
+      panelClassName="flex min-h-0 flex-1 flex-col overflow-hidden"
+      classNames={{ scroller: "justify-center", content: "p-0 rounded-none" }}
     />
   );
 }

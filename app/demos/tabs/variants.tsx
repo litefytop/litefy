@@ -12,7 +12,7 @@ const options = [
 export default function TabsVariantsDemo() {
   return (
     <div className="flex w-full flex-col items-center gap-6">
-      <Tabs variant="primary" options={options} defaultValue="overview" className="w-full" />
+      <Tabs variant="primary" options={options} defaultValue="overview" />
     </div>
   );
 }

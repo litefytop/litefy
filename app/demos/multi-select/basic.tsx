@@ -16,7 +16,6 @@ export default function MultiSelectBasicDemo() {
     <MultiSelect
       options={options}
       placeholder="Categories"
-      className="w-77 min-w-33"
     />
   );
 }

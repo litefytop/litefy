@@ -56,8 +56,8 @@ description: 基于原生 Popover API 与内置 JS 定位引擎构建的提示�
 | `id`         | `string`                      | 供触发元素 `popoverId` 引用的元素 id；缺省回退到 `Tooltip` context                     |
 | `anchorName` | `string`                      | 触发元素的锚点名称（其 `data-anchor-name` 属性），供内置 JS 定位匹配；缺省回退到 `Tooltip` context |
 | `delay`      | `number`                      | 指针交互的隐藏延迟时间（毫秒）；缺省回退到 `Tooltip` context，默认 `100`                       |
-| `className`  | `string`                      | 自定义 CSS 类                                                              |
-| `style`      | `React.CSSProperties`         | 自定义内联样式；定位本身由内置 JS 引擎管理                                                |
+| `className`  | `string`                      | 提示气泡自定义类名；默认 `w-max min-w-0`，最大宽度为 20rem 与视口宽度减 1rem 的较小值 |
+| `style`      | `React.CSSProperties`         | 提示气泡自定义内联样式，可覆盖宽度；定位本身由内置 JS 引擎管理                                                |
 | `ref`        | `React.Ref<HTMLDivElement>`   | 指向弹出层元素的 ref，用于命令式 `showPopover()` 和 `hidePopover()` 调用                |
 | `...props`   | `React.ComponentProps<"div">` | 支持所有原生 div 属性（除 `className`、`style`、`id` 外）                            |
 

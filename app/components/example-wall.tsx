@@ -4,21 +4,30 @@ import { ArrowUpRight } from "@/components/icons";
 import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
 import { toSchemeHref } from "@/lib/style-templates";
-import componentMeta from "../../content/docs/component/_meta";
-import { Masonry, useLoadMore } from "@/ui";
+import { useLoadMore } from "@/ui";
 import { useSiteSkin } from "./site-skin";
 
 type MetaEntry = { name?: string; displayName?: { en: string; zh: string } };
 type DemoLoaders = ReturnType<typeof useSiteSkin>["demoModules"];
 type DemoLoader = DemoLoaders[string];
 
-const docSlugs = Object.keys(import.meta.glob("../../content/docs/component/*.mdx"))
-  .map((path) => path.slice(path.lastIndexOf("/") + 1, -".mdx".length))
-  .filter((slug) => !slug.endsWith(".zh"));
+const docByLooseName = new Map<string, { section: string; slug: string }>();
+for (const path of Object.keys(import.meta.glob("../../content/docs/**/*.mdx"))) {
+  const parts = path.slice(path.indexOf("/docs/") + "/docs/".length).split("/");
+  if (parts.length !== 2 || parts[1].endsWith(".zh.mdx")) continue;
+  const slug = parts[1].slice(0, -".mdx".length);
+  docByLooseName.set(slug.replaceAll("-", ""), { section: parts[0], slug });
+}
 
-const docSlugByLooseName = new Map(
-  docSlugs.map((slug) => [slug.replaceAll('-', ""), slug] as const)
-);
+const metaBySection = new Map<string, Record<string, MetaEntry>>();
+for (const [path, mod] of Object.entries(
+  import.meta.glob("../../content/docs/*/_meta.ts", { eager: true }) as Record<
+    string,
+    { default: Record<string, MetaEntry> }
+  >,
+)) {
+  metaBySection.set(path.split("/").at(-2)!, mod.default);
+}
 
 const EXCLUDED_FOLDERS = new Set([
   "virtual-scroll",
@@ -48,34 +57,27 @@ function folderOf(path: string) {
   return parts.at(-2)!;
 }
 
-function fileOf(path: string) {
-  const parts = path.split("/");
-  return parts.at(-1)!.replace(/\.tsx$/u, "");
-}
-
 function buildWallItems(demoModules: DemoLoaders): WallItem[] {
   return Object.entries(demoModules)
     .filter(([path]) => {
       const folder = folderOf(path);
-      return !EXCLUDED_FOLDERS.has(folder) && !folder.startsWith("use-");
+      return path.endsWith("/basic.tsx") && !EXCLUDED_FOLDERS.has(folder) && !folder.startsWith("use-");
     })
     .toSorted(([a], [b]) => a.localeCompare(b))
     .map(([path, loader]) => {
       const folder = folderOf(path);
-      const file = fileOf(path);
-      const slug = docSlugByLooseName.get(folder.replaceAll('-', "")) ?? folder;
-      const meta = (componentMeta as Record<string, MetaEntry>)[slug];
+      const doc = docByLooseName.get(folder.replaceAll("-", ""));
+      const section = doc?.section ?? "component";
+      const slug = doc?.slug ?? folder;
+      const meta = metaBySection.get(section)?.[slug];
       return {
         path,
         folder,
         loader,
         title: (locale: "en" | "zh") => {
-          const componentName =
-            meta?.displayName?.[locale] ?? meta?.name ?? titleize(folder);
-          const variant = file === "basic" ? "" : ` · ${titleize(file)}`;
-          return `${componentName}${variant}`;
+          return meta?.displayName?.[locale] ?? meta?.name ?? titleize(folder);
         },
-        href: (locale: "en" | "zh") => `/${locale}/docs/component/${slug}`,
+        href: (locale: "en" | "zh") => `/${locale}/docs/${section}/${slug}`,
       };
     });
 }
@@ -125,12 +127,34 @@ function DemoSkeleton() {
   );
 }
 
-function SkeletonCentered() {
-  return (
-    <div className="flex h-full items-center justify-center">
-      <DemoSkeleton />
-    </div>
-  );
+function LazyDemo({ Demo }: { Demo: React.ComponentType | React.LazyExoticComponent<React.ComponentType> }) {
+  return <Demo />;
+}
+
+class DemoErrorBoundary extends React.Component<
+  { locale: "en" | "zh"; children: React.ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false };
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  componentDidCatch(error: Error) {
+    console.error("[example-wall]", error);
+  }
+
+  render() {
+    if (this.state.failed) {
+      return (
+        <div className="py-6 text-xs text-foreground">
+          {this.props.locale === "zh" ? "该示例加载失败" : "Failed to load this example"}
+        </div>
+      );
+    }
+    return this.props.children;
+  }
 }
 
 function DemoFitBox({ children }: { children: React.ReactNode }) {
@@ -147,14 +171,14 @@ function DemoFitBox({ children }: { children: React.ReactNode }) {
       if (frame) return;
       frame = requestAnimationFrame(() => {
         frame = 0;
-        const availH = box.clientHeight;
-        const availW = box.clientWidth;
-        const naturalH = inner.offsetHeight;
-        const naturalW = inner.scrollWidth;
-        if (!availH || !availW || !naturalH) return;
-        const scale = Math.min(1, availH / naturalH, availW / naturalW);
-        const height = naturalH * scale;
-        setFit({ scale, height, top: Math.max(0, (availH - height) / 2) });
+        const availableHeight = box.clientHeight;
+        const availableWidth = box.clientWidth;
+        const naturalHeight = inner.offsetHeight;
+        const naturalWidth = inner.scrollWidth;
+        if (!availableHeight || !availableWidth || !naturalHeight) return;
+        const scale = Math.min(1, availableHeight / naturalHeight, availableWidth / naturalWidth);
+        const height = naturalHeight * scale;
+        setFit({ scale, height, top: Math.max(0, (availableHeight - height) / 2) });
       });
     };
     measure();
@@ -185,36 +209,6 @@ function DemoFitBox({ children }: { children: React.ReactNode }) {
   );
 }
 
-function LazyDemo({ Demo }: { Demo: React.ComponentType | React.LazyExoticComponent<React.ComponentType> }) {
-  return <Demo />;
-}
-
-class DemoErrorBoundary extends React.Component<
-  { locale: "en" | "zh"; children: React.ReactNode },
-  { failed: boolean }
-> {
-  state = { failed: false };
-
-  static getDerivedStateFromError() {
-    return { failed: true };
-  }
-
-  componentDidCatch(error: Error) {
-    console.error("[example-wall]", error);
-  }
-
-  render() {
-    if (this.state.failed) {
-      return (
-        <div className="py-6 text-xs text-surface-fg">
-          {this.props.locale === "zh" ? "该示例加载失败" : "Failed to load this example"}
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
-
 function WallCard({
   item,
   locale,
@@ -239,19 +233,19 @@ function WallCard({
         className="group flex items-center justify-between rounded-t-[inherit] px-4 py-2 border-b text-sm font-medium transition-colors hover:bg-accent hover:text-accent-fg"
       >
         <span>{item.title(locale)}</span>
-        <ArrowUpRight className="opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 size-3.5 text-surface-fg" />
+        <ArrowUpRight className="opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 size-3.5 text-foreground group-hover:text-accent-fg" />
       </Link>
-      <div className="h-48 overflow-hidden rounded-b-[inherit] p-6">
+      <div className="relative h-64 overflow-hidden rounded-b-[inherit] p-6">
         <DemoErrorBoundary locale={locale}>
-          {near ? (
-            <Suspense fallback={<SkeletonCentered />}>
-              <DemoFitBox>
+          <DemoFitBox>
+            {near ? (
+              <Suspense fallback={<DemoSkeleton />}>
                 <LazyDemo Demo={getLazyDemo(item)} />
-              </DemoFitBox>
-            </Suspense>
-          ) : (
-            <SkeletonCentered />
-          )}
+              </Suspense>
+            ) : (
+              <DemoSkeleton />
+            )}
+          </DemoFitBox>
         </DemoErrorBoundary>
       </div>
     </div>
@@ -262,11 +256,11 @@ const wallContent = {
   en: {
     title: "Overview",
     description:
-      "Live examples rendered from the same demos used in the docs. Click a title to open its documentation.",
+      "Default examples rendered from the same demos used in the docs. Click a title to open its documentation.",
   },
   zh: {
     title: "总览",
-    description: "与文档同源的示例实时渲染，点击标题查看对应文档。",
+    description: "与文档同源的默认示例实时渲染，点击标题查看完整文档。",
   },
 } as const;
 
@@ -293,22 +287,22 @@ export function ExampleWall({ locale }: { locale: "en" | "zh" }) {
     >
       <header className="flex flex-col gap-1">
         <h1 className="typo-h1">{t.title}</h1>
-        <p className="text-sm text-surface-fg">
+        <p className="text-sm text-foreground">
           {t.description}
         </p>
       </header>
       {near && (
-        <Masonry
-          items={wallItems.slice(0, visibleCount)}
-          getKey={(item) => item.path}
-          renderItem={(item) => <WallCard key={item.path} item={item} locale={locale} />}
-        />
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {wallItems.slice(0, visibleCount).map((item) => (
+            <WallCard key={item.path} item={item} locale={locale} />
+          ))}
+        </div>
       )}
       {near && hasMore && (
         <div ref={sentinelRef} aria-hidden className="w-full" style={{ height: 1 }} />
       )}
       {near && !hasMore && (
-        <p className="text-center text-xs text-surface-fg">
+        <p className="text-center text-xs text-foreground">
           {locale === "zh"
             ? `已展示全部 ${wallItems.length} 个示例`
             : `All ${wallItems.length} examples shown`}

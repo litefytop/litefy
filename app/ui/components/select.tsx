@@ -55,10 +55,11 @@ export function Select({ options, value: controlledValue, defaultValue = "", onV
     const [uncontrolledValue, setValue] = React.useState(defaultValue);
     const [highlightIndex, setHighlightIndex] = React.useState<number | null>(null);
     const value = isControlled ? controlledValue : uncontrolledValue;
-    const open = isOpenControlled ? controlledOpen : uncontrolledOpen;
+    const open = !disabled && (isOpenControlled ? controlledOpen : uncontrolledOpen);
     const flat = React.useMemo(() => options.flatMap((item) => ("options" in item ? item.options : [item])), [options]);
     const selectedLabel = flat.find((option) => option.value === value)?.label ?? null;
     const setOpenState = (next: boolean) => {
+        if (disabled && next) return;
         if (!isOpenControlled)
             setUncontrolledOpen(next);
         onOpenChange?.(next);
@@ -93,6 +94,7 @@ export function Select({ options, value: controlledValue, defaultValue = "", onV
         }
     };
     const commit = (option: SelectOption) => {
+        if (disabled) return;
         if (!isControlled)
             setValue(option.value);
         onValueChange?.(option.value);
@@ -169,7 +171,7 @@ export function Select({ options, value: controlledValue, defaultValue = "", onV
             ?.querySelector('[data-highlighted="true"]')
             ?.scrollIntoView({ block: "nearest" });
     }, [open, highlightIndex]);
-    const renderOption = (option: SelectOption, index: number) => (<div key={option.value} id={`${anchorName}-${index}`} role="option" aria-selected={option.value === value} data-highlighted={highlightIndex === index || undefined} data-selected={option.value === value || undefined} data-disabled={disabled || undefined} onClick={disabled ? undefined : () => commit(option)} className={classNames?.option}>
+    const renderOption = (option: SelectOption, index: number) => (<div key={option.value} id={`${anchorName}-${index}`} role="option" aria-selected={option.value === value} data-highlighted={highlightIndex === index || undefined} data-selected={option.value === value || undefined} data-disabled={disabled || undefined} aria-disabled={disabled || undefined} onClick={disabled ? undefined : () => commit(option)} className={classNames?.option}>
       {option.label}
     </div>);
     const composeBody = (field?: { id: string; describedBy: string | undefined; invalid: boolean }) => (<>

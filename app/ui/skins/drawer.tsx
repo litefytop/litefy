@@ -1,5 +1,5 @@
 ﻿import { Drawer as DrawerHeadless } from "@/ui";
-import type { DrawerProps } from "@/ui";
+import type { DrawerProps, DrawerPlacement, DrawerSize, DrawerOrientation } from "@/ui";
 import { cn, mergeSlots } from "../utils/cn";
 
 
@@ -7,81 +7,64 @@ const rootClasses =
   "group/drawer h-dvh w-full max-w-none max-h-none m-0 border-0 bg-transparent p-0 text-inherit outline-none " +
   "overflow-y-auto overflow-x-hidden overscroll-contain [scrollbar-width:none]";
 
-const stageBaseClasses = "pointer-events-none grid h-[calc(100dvh+1px)] w-full";
+const stageSlots: Record<DrawerPlacement, string> = {
+  left: "items-stretch justify-items-start",
+  right: "items-stretch justify-items-end",
+  top: "items-start justify-items-stretch",
+  bottom: "items-end justify-items-stretch",
+};
 
-const stageLeftClasses =
-  "data-[placement=left]:items-stretch data-[placement=left]:justify-items-start";
-const stageRightClasses =
-  "data-[placement=right]:items-stretch data-[placement=right]:justify-items-end";
-const stageTopClasses =
-  "data-[placement=top]:items-start data-[placement=top]:justify-items-stretch";
-const stageBottomClasses =
-  "data-[placement=bottom]:items-end data-[placement=bottom]:justify-items-stretch";
-
-const stageClasses = cn(stageBaseClasses, stageLeftClasses, stageRightClasses, stageTopClasses, stageBottomClasses);
-
-const panelBaseClasses =
-  "pointer-events-auto group-focus-visible/drawer:focus-ring @container flex overflow-hidden rounded-xl";
-const panelFaceClasses =
-  "border-frame border-border bg-surface-raised text-foreground shadow-elevated";
-const panelSizeClasses =
-  "[--litefy-pane-size:--spacing(96)] data-[size=sm]:[--litefy-pane-size:--spacing(80)] data-[size=lg]:[--litefy-pane-size:--spacing(128)]";
 const panelDurationClasses =
-  "data-[static]:duration-md data-[static]:ease-frame";
-const panelDurationOverrideClasses =
+  "data-[static]:duration-md data-[static]:ease-frame " +
   "group-data-[duration=sm]:data-[static]:duration-sm! group-data-[duration=lg]:data-[static]:duration-lg!";
-const panelLeftClasses =
-  "data-[placement=left]:h-full data-[placement=left]:w-(--litefy-pane-size) data-[placement=left]:max-w-full " +
-  "data-[placement=left]:min-w-[min(100%,--spacing(64))] data-[placement=left]:flex-row-reverse";
-const panelRightClasses =
-  "data-[placement=right]:h-full data-[placement=right]:w-(--litefy-pane-size) data-[placement=right]:max-w-full " +
-  "data-[placement=right]:min-w-[min(100%,--spacing(64))] data-[placement=right]:flex-row";
-const panelTopClasses =
-  "data-[placement=top]:w-full data-[placement=top]:h-(--litefy-pane-size) " +
-  "data-[placement=top]:min-h-[min(100%,--spacing(48))] data-[placement=top]:flex-col-reverse";
-const panelBottomClasses =
-  "data-[placement=bottom]:w-full data-[placement=bottom]:h-(--litefy-pane-size) " +
-  "data-[placement=bottom]:min-h-[min(100%,--spacing(48))] data-[placement=bottom]:flex-col";
 
-const panelClasses = cn(
-  panelBaseClasses,
-  panelFaceClasses,
-  panelSizeClasses,
-  panelDurationClasses,
-  panelDurationOverrideClasses,
-  panelLeftClasses,
-  panelRightClasses,
-  panelTopClasses,
-  panelBottomClasses,
-);
+const panelPlacementSlots: Record<DrawerPlacement, string> = {
+  left: "h-full flex-row-reverse",
+  right: "h-full flex-row",
+  top: "w-full flex-col-reverse",
+  bottom: "w-full flex-col",
+};
 
-const dragBaseClasses = "flex shrink-0 items-center justify-center before:content-[''] before:rounded-sm";
-const dragHorizontalBoxClasses =
-  "data-[orientation=horizontal]:h-full data-[orientation=horizontal]:w-4 " +
-  "data-[orientation=horizontal]:border-x-frame data-[orientation=horizontal]:border-x-border";
-const dragHorizontalHandleClasses =
-  "data-[orientation=horizontal]:before:h-12 data-[orientation=horizontal]:before:w-1";
-const dragVerticalBoxClasses =
-  "data-[orientation=vertical]:h-4 data-[orientation=vertical]:w-full " +
-  "data-[orientation=vertical]:border-y-frame data-[orientation=vertical]:border-y-border";
-const dragVerticalHandleClasses =
-  "data-[orientation=vertical]:before:h-1 data-[orientation=vertical]:before:w-12";
+const widthSlots: Record<DrawerSize, string> = {
+  sm: "w-full max-w-[20rem]",
+  md: "w-full max-w-[24rem]",
+  lg: "w-full max-w-[32rem]",
+};
+const heightSlots: Record<DrawerSize, string> = {
+  sm: "h-full max-h-[20rem]",
+  md: "h-full max-h-[24rem]",
+  lg: "h-full max-h-[32rem]",
+};
 
-const dragClasses = cn(
-  dragBaseClasses,
-  dragHorizontalBoxClasses,
-  dragHorizontalHandleClasses,
-  dragVerticalBoxClasses,
-  dragVerticalHandleClasses,
-);
+const dragSlots: Record<DrawerOrientation, string> = {
+  horizontal: "h-full w-4 border-x-frame border-x-border before:h-12 before:w-1",
+  vertical: "h-4 w-full border-y-frame border-y-border before:h-1 before:w-12",
+};
 
-const contentClasses =
-  "flex min-h-0 min-w-0 flex-1 flex-col overflow-auto text-base leading-body data-[orientation=vertical]:items-center";
-
-export function Drawer({ classNames, className, ...props }: DrawerProps) {
+export function Drawer({ classNames, className, placement = "right", size = "md", ...props }: DrawerProps) {
+  const orientation: DrawerOrientation =
+    placement === "left" || placement === "right" ? "horizontal" : "vertical";
+  const stageClasses = cn("grid h-[calc(100dvh+1px)] w-full", stageSlots[placement]);
+  const panelClasses = cn(
+    "@container flex min-w-0 min-h-0 overflow-hidden rounded-xl",
+    "border-frame border-border bg-surface-raised text-surface-raised-fg shadow-elevated",
+    panelDurationClasses,
+    panelPlacementSlots[placement],
+    orientation === "horizontal" ? widthSlots[size] : heightSlots[size],
+  );
+  const dragClasses = cn(
+    "flex shrink-0 items-center justify-center before:content-[''] before:rounded-sm",
+    dragSlots[orientation],
+  );
+  const contentClasses = cn(
+    "flex min-h-0 min-w-0 flex-1 flex-col overflow-auto text-base leading-body",
+    orientation === "vertical" && "items-center",
+  );
   return (
     <DrawerHeadless
       {...props}
+      placement={placement}
+      size={size}
       className={cn(rootClasses, className)}
       classNames={mergeSlots({ stage: stageClasses, wrapper: panelClasses, drag: dragClasses, content: contentClasses }, classNames)}
     />

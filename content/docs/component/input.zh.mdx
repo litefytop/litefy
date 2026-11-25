@@ -11,13 +11,13 @@ description: 支持前后置插槽和验证状态的输入框组件
 
 用于不同数据类型的输入框。
 
-<ComponentPreview 
+<ComponentPreview
   name="input-basic"
 />
 
 ### 禁用
 
-添加 disabled 属性禁用输入框。
+`disabled` 原生禁用输入框，点击字段壳不会将焦点传给输入框；外壳使用 `bg-disabled`、`text-disabled-fg`、`cursor-not-allowed` 与 `select-none`，输入区使用 `pointer-events-none` 阻止选中文本。
 
 <ComponentPreview name="input-disabled" />
 
@@ -41,8 +41,8 @@ description: 支持前后置插槽和验证状态的输入框组件
 | `description`     | `React.ReactNode`                                                                               | 渲染于输入框下方的辅助文字，校验失败时被错误信息替代                             |
 | `validate`        | `(value: string) => FieldValidateResult`                                                        | 校验函数；字符串为错误文案、`false` 标红无文案、`null`/`true` 通过；传入即进入字段模式 |
 | `validateTrigger` | `'submit' \| 'change' \| 'blur'`                                                                | 校验时机；提交时全字段统一门禁，已有错误时变更即重验，默认 `'submit'`               |
-| `className`       | `string`                                                                                        | 自定义类名，作用于外壳容器                                          |
-| `style`           | `React.CSSProperties`                                                                           | 内联样式，作用于外壳容器                                           |
+| `className`       | `string`                                                                                        | 字段外壳自定义类名；默认 `w-full min-w-0 max-w-[20rem]`（最大 20rem）        |
+| `style`           | `React.CSSProperties`                                                                           | 字段外壳内联样式                                                           |
 | `classNames`      | `{ group?: string; leading?: string; trailing?: string; root?: string }`                        | 组合外壳（`group`）、前后置插槽与内部输入框（`root`）的自定义类名                |
 | `styles`          | `{ leading?: React.CSSProperties; trailing?: React.CSSProperties; root?: React.CSSProperties }` | 前后置插槽与内部输入框（`root`）的内联样式                               |
 | `...props`        | `React.ComponentProps<"input">`                                                                 | 支持全部 input 原生属性（除 `type`、`className`）                  |

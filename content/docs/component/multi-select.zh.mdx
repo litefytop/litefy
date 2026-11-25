@@ -15,7 +15,7 @@ Popover + listbox 多选控件，选项由 `options` 驱动，支持分组。
 
 ### 禁用
 
-支持 disabled 属性整体禁用，选项可逐项 disabled。
+组级 `disabled` 原生禁用触发器并阻止面板打开；每个选项的 `disabled` 独立标记 `aria-disabled`，点击与键盘切换由 JavaScript 阻断。触发器与候选项使用 `bg-disabled`、`text-disabled-fg` 与 `cursor-not-allowed`。
 
 <ComponentPreview name="multi-select-disabled" />
 
@@ -36,8 +36,9 @@ Popover + listbox 多选控件，选项由 `options` 驱动，支持分组。
 | `trigger`      | `React.ReactNode`                              | 自定义触发内容，缺省为占位文本钮                             |
 | `placeholder`  | `string`                                       | 占位文本，同时作面板的 `aria-label`，默认 `Select options` |
 | `disabled`     | `boolean`                                      | 禁用触发钮，默认 `false`                             |
-| `className`    | `string`                                       | 触发钮自定义类名                                     |
-| `classNames`   | `{ content?; list?; group?; option?; check? }` | 面板、列表、分组头、选项与勾选图标的自定义类名                      |
+| `className`    | `string`                                       | 触发钮自定义类名；默认 `w-full min-w-0 max-w-[20rem]`（最大 20rem） |
+| `classNames`   | `{ content?: string; list?: string; group?: string; option?: SlotClassName; check?: SlotClassName }` | `content` 控制候选面板；`list` 控制内部列表；`option` / `check` 接收 `({ disabled }) => string`；其余槽为固定类名 |
+| `styles`       | `{ list?: React.CSSProperties; option?: React.CSSProperties }` | 内部列表与选项内联样式；没有 `content` 样式槽位。面板默认最大宽度 20rem，并受视口宽度减 1rem 限制 |
 | `...props`     | `React.ComponentProps<"button">`               | 支持触发钮原生属性（不含 `children` 等）                   |
 
 ### MultiSelectOption
@@ -63,3 +64,4 @@ Popover + listbox 多选控件，选项由 `options` 驱动，支持分组。
 | --- | --- |
 | `[data-selected]` | 位于选项上——该候选已选中 |
 | `[data-highlighted]` | 位于选项上——键盘高亮所在项 |
+| `[data-disabled]` | 位于选项上——组级或该选项禁用时存在，同时带 `aria-disabled="true"` |

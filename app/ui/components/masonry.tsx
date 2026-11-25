@@ -47,7 +47,7 @@ function sameAssignment(a: MasonryColumnAssignment[], b: MasonryColumnAssignment
 const MasonryDepthContext = React.createContext(0);
 let warnedNested = false;
 const GAP = "1rem";
-const ROOT_STYLE: React.CSSProperties = { display: "flex", width: "100%", gap: GAP };
+const ROOT_STYLE: React.CSSProperties = { display: "flex", width: "100%", minWidth: 0, gap: GAP };
 const COLUMN_STYLE: React.CSSProperties = {
     display: "flex",
     flex: "1 1 0%",
@@ -56,7 +56,7 @@ const COLUMN_STYLE: React.CSSProperties = {
     gap: GAP,
 };
 const ITEM_STYLE: React.CSSProperties = { minWidth: 0 };
-const STATIC_ROOT_STYLE: React.CSSProperties = { width: "100%" };
+const STATIC_ROOT_STYLE: React.CSSProperties = { width: "100%", minWidth: 0 };
 export interface MasonryColumnProps extends Omit<React.ComponentProps<"div">, "className"> {
     className?: string;
 }
@@ -74,7 +74,9 @@ export interface MasonryProps<T> {
     renderItem: (item: T, index: number) => React.ReactNode;
     getKey?: (item: T, index: number) => React.Key;
     columns?: MasonryColumns;
+    layout?: "balanced" | "static";
     className?: string;
+    style?: React.CSSProperties;
     classNames?: {
         column?: string;
         item?: string;
@@ -88,12 +90,12 @@ export function Masonry<T>(props: MasonryProps<T>) {
     const depth = React.useContext(MasonryDepthContext);
     const nested = depth > 0;
     React.useEffect(() => {
-        if (process.env.NODE_ENV !== "production" && nested && !warnedNested) {
+        if (process.env.NODE_ENV !== "production" && nested && props.layout !== "static" && !warnedNested) {
             warnedNested = true;
             console.warn("[masonry] Nested Masonry detected — rendering a static CSS columns layout (no height balancing). Only the outermost Masonry measures item heights.");
         }
-    }, [nested]);
-    if (nested) {
+    }, [nested, props.layout]);
+    if (nested || props.layout === "static") {
         return <StaticMasonry {...props}/>;
     }
     return <MeasuredMasonry {...props}/>;
@@ -117,18 +119,21 @@ function useResolvedColumnCount(columns: MasonryColumns, ref: React.RefObject<HT
     }, [parsed, ref]);
     return count;
 }
-function StaticMasonry<T>({ items, renderItem, getKey, columns = DEFAULT_COLUMNS, className, classNames, styles, }: MasonryProps<T>) {
+function StaticMasonry<T>({ items, renderItem, getKey, columns = DEFAULT_COLUMNS, className, style, classNames, styles, }: MasonryProps<T>) {
     const rootRef = React.useRef<HTMLDivElement>(null);
+    const depth = React.useContext(MasonryDepthContext);
     const count = useResolvedColumnCount(typeof columns === "number" ? { base: columns } : columns, rootRef);
-    return (<div ref={rootRef} className={className} style={STATIC_ROOT_STYLE}>
+    return (<MasonryDepthContext.Provider value={depth + 1}>
+      <div ref={rootRef} className={className} style={{ ...STATIC_ROOT_STYLE, ...style }}>
       <div className={classNames?.column} style={{ columnCount: count, columnGap: GAP, ...styles?.column }}>
         {items.map((item, index) => (<div key={String(getKey?.(item, index) ?? index)} className={classNames?.item} style={{ breakInside: "avoid", marginBottom: GAP, ...ITEM_STYLE, ...styles?.item }}>
             {renderItem(item, index)}
           </div>))}
       </div>
-    </div>);
+      </div>
+    </MasonryDepthContext.Provider>);
 }
-function MeasuredMasonry<T>({ items, renderItem, getKey, columns = DEFAULT_COLUMNS, className, classNames, styles, }: MasonryProps<T>) {
+function MeasuredMasonry<T>({ items, renderItem, getKey, columns = DEFAULT_COLUMNS, className, style, classNames, styles, }: MasonryProps<T>) {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const depth = React.useContext(MasonryDepthContext);
     const [columnCount, setColumnCount] = React.useState(() => resolveColumnCount(columns, 0));
@@ -167,7 +172,7 @@ function MeasuredMasonry<T>({ items, renderItem, getKey, columns = DEFAULT_COLUM
     }, []);
     const cols = assignment.length === columnCount ? assignment : distribute(items.length, columnCount, []);
     return (<MasonryDepthContext.Provider value={depth + 1}>
-      <div ref={containerRef} className={className} style={ROOT_STYLE}>
+      <div ref={containerRef} className={className} style={{ ...ROOT_STYLE, ...style }}>
         {cols.map(({ key: columnKey, items: columnItems }) => (<MasonryColumn key={columnKey} className={classNames?.column} style={styles?.column}>
             {columnItems.map((itemIndex) => {
                 const key = keys[itemIndex];

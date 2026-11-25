@@ -3,18 +3,26 @@ import type { CollapseProps } from "@/ui";
 import { cn, mergeSlots } from "../utils/cn";
 
 
-export const collapseRootClasses =
-  "group flex flex-col overflow-hidden rounded-md border-frame border-border shadow-surface";
+export const collapseFrameClasses =
+  "group flex w-full min-w-0 flex-col overflow-hidden rounded-md border-frame border-border";
+
+export const collapseRootClasses = cn(
+  collapseFrameClasses,
+  "bg-surface-raised text-surface-raised-fg shadow-surface " +
+    "data-[disabled=true]:bg-disabled data-[disabled=true]:text-disabled-fg",
+);
 
 
 export const collapseItemClasses =
   "flex flex-col overflow-hidden rounded-none border-0 not-last:border-b-hair not-last:border-border";
 
+export const collapseDisabledItemClasses = "bg-disabled";
+
 const triggerBaseClasses =
-  "flex min-h-control cursor-pointer items-center justify-between gap-x-2 px-3 py-3 text-left " +
+  "flex min-h-control items-center justify-between gap-x-2 px-3 py-3 text-left " +
   "text-sm font-label leading-label tracking-label case-label";
 const triggerHoverClasses =
-  "aria-[expanded=false]:hover:bg-accent aria-[expanded=false]:hover:text-accent-fg focus-visible:focus-ring";
+  "cursor-pointer aria-[expanded=false]:hover:bg-accent aria-[expanded=false]:hover:text-accent-fg focus-visible:focus-ring";
 
 const triggerClasses = cn(triggerBaseClasses, triggerHoverClasses);
 
@@ -32,12 +40,20 @@ const bodyClasses =
 
 export const collapsePartClasses = { trigger: triggerClasses, icon: iconClasses, panel: panelClasses, body: bodyClasses };
 
-export function Collapse({ className, classNames, ...props }: CollapseProps) {
+export const collapseDisabledPartClasses = {
+  trigger: cn(triggerBaseClasses, "cursor-not-allowed text-disabled-fg"),
+  icon: iconClasses,
+  panel: panelClasses,
+  body: cn(bodyClasses, "text-disabled-fg"),
+};
+
+export function Collapse({ className, classNames, disabled, ...props }: CollapseProps) {
   return (
     <CollapseHeadless
       {...props}
+      disabled={disabled}
       className={cn(collapseRootClasses, className)}
-      classNames={mergeSlots(collapsePartClasses, classNames)}
+      classNames={mergeSlots(disabled ? collapseDisabledPartClasses : collapsePartClasses, classNames)}
     />
   );
 }

@@ -9,3 +9,5 @@
 - 受控 `activeKeys`（multiple 为 `string[]`，单开为 `string | undefined`）；非受控 `defaultActiveKeys`（类型随模式）
 - `common` 提供缺省 `className / classNames / styles / icon`，item 级配置优先
 - 容器为 `CollapseRoot`，每项渲染 `Collapse`，激活键经 `open` 注入
+- `disabled` 禁用整组，item 级 `disabled` 禁用单项；任一禁用均保持当前展开状态、禁止切换且不触发 `onKeyChange`
+- 整组禁用时根节点输出 `aria-disabled="true"` 与 `data-disabled`；单项禁用只落在对应 `Collapse`，整组根不标记禁用

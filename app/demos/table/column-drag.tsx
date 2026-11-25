@@ -28,7 +28,6 @@ export default function Demo() {
   return (
     <Table
       columnDrag
-      className="w-full"
       columnOrder={order}
       onColumnsChange={setOrder}
       data={tasks}

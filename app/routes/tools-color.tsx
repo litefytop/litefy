@@ -140,7 +140,7 @@ function ColorField({
   const pickerHex = parsed ? toHex({ ...parsed, a: 1 }) : "#000000";
   return (
     <label className="flex flex-col flex-1 gap-1" style={{ minWidth: 0 }}>
-      <span className="text-xs font-medium text-surface-fg">{label}</span>
+      <span className="text-xs font-medium text-foreground">{label}</span>
       <span className="flex items-center gap-2">
         <input
           type="color"
@@ -287,21 +287,21 @@ function ColorTools() {
       <section className="flex flex-col gap-6 px-4 md:px-6 lg:px-8 mx-auto w-full max-w-288 py-8">
         <header className="flex flex-col gap-1">
           <h1 className="text-2xl font-bold">{t.heading}</h1>
-          <p className="text-sm text-surface-fg">{t.sub}</p>
+          <p className="text-sm text-foreground">{t.sub}</p>
         </header>
 
         <div className="grid gap-6 lg:grid-cols-2 items-start">
           <Card classNames={{ inner: "flex flex-col gap-6 p-4" }}>
             <div className="flex items-baseline justify-between gap-2">
               <h2 className="text-lg font-semibold">{t.effective}</h2>
-              <span className="text-xs text-surface-fg">{t.effNote}</span>
+              <span className="text-xs text-foreground">{t.effNote}</span>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <ColorField label={t.foreground} value={fg} onChange={setFg} />
               <ColorField label={t.base} value={base} onChange={setBase} />
             </div>
             <div className="flex flex-col gap-1">
-              <span className="text-xs font-medium text-surface-fg">{t.alpha} %</span>
+              <span className="text-xs font-medium text-foreground">{t.alpha} %</span>
               <div className="flex items-center gap-3">
                 <NumberInput
                   value={alphaPct}
@@ -324,7 +324,7 @@ function ColorTools() {
                 />
               </div>
             </div>
-            <div className="flex items-center gap-4 p-4 rounded-lg border bg-surface">
+            <div className="flex items-center gap-4 p-4 rounded-lg border bg-surface text-surface-fg">
               <Swatch color={computed?.composite ?? null} className="size-14" />
               <div className="flex flex-col gap-1" style={{ minWidth: 0 }}>
                 <span className="font-mono text-sm font-medium truncate">
@@ -378,7 +378,7 @@ function ColorTools() {
               <span className="text-3xl font-bold leading-none">Aa</span>
               <span className="text-sm truncate">{t.preview}</span>
               <div className="flex flex-col ms-auto text-end">
-                <span className="text-xs opacity-70">{t.ratio}</span>
+                <span className="text-xs">{t.ratio}</span>
                 <span className="font-mono text-2xl font-semibold">
                   {ratio === null ? "—" : ratio.toFixed(2)}
                 </span>
@@ -397,7 +397,7 @@ function ColorTools() {
         <Card classNames={{ inner: "flex flex-col gap-6 p-4" }}>
           <div className="flex items-baseline justify-between gap-2">
             <h2 className="text-lg font-semibold">{t.tokens}</h2>
-            <span className="text-xs text-surface-fg">{t.tokensNote}</span>
+            <span className="text-xs text-foreground">{t.tokensNote}</span>
           </div>
           <div className="flex flex-wrap gap-2">
             {tokenChips.map(({ name, raw }) => (

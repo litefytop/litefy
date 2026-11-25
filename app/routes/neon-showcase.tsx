@@ -2,7 +2,7 @@ import type { LinksFunction, MetaFunction } from "react-router";
 import { Link, useLocation, useNavigate, useParams } from "react-router";
 import neonShowcaseHref from "./neon-showcase.css?url";
 import { AnimatedContent, Button, Card, NavBar } from "@/ui/skins";
-import { buttonVariants, chipClasses, cn } from "@/ui/skins";
+import { buttonVariants, chipBase, chipVariants, cn } from "@/ui/skins";
 import { ShaderBackground } from "../components/shader-background";
 import { AppearancePanel } from "../components/appearance-panel";
 import { StyleMenu } from "../components/style-select";
@@ -39,16 +39,16 @@ export const meta: MetaFunction = ({ params }) => {
 
 const SECTION = "scroll-mt-16 border-b-control border-border px-4 py-12 md:px-6 md:py-16 lg:px-8 lg:py-20";
 const CONTAINER = "mx-auto w-full max-w-320";
-const EYEBROW = "typo-overline text-surface-fg";
+const EYEBROW = "typo-overline";
 const HEADLINE = "text-h2 leading-head tracking-tight font-black";
-const LEAD = "max-w-[40em] text-base leading-body text-surface-fg";
-const textLinkClass = cn(buttonVariants.text, "px-3", "text-surface-fg");
+const LEAD = "max-w-[40em] text-base leading-body";
+const textLinkClass = cn(buttonVariants.text, "px-3", "text-inherit");
 
 const TOKENS: { token: string; zh: string; en: string }[] = [
   { token: "--background", zh: "页面画布", en: "Page canvas" },
   { token: "--foreground", zh: "正文文字", en: "Body text" },
   { token: "--surface", zh: "次要容器", en: "Secondary surface" },
-  { token: "--surface-fg", zh: "次级文字", en: "Secondary text" },
+  { token: "--surface-fg", zh: "表面文字", en: "Surface text" },
   { token: "--accent", zh: "强调背景", en: "Accent fill" },
   { token: "--accent-fg", zh: "强调文字", en: "Accent text" },
   { token: "--border", zh: "边框描边", en: "Border stroke" },
@@ -496,7 +496,7 @@ function SiteHeader({ t, lang }: { t: T; lang: Lang }) {
     );
   };
   return (
-    <header className="sticky top-0 z-40 border-b-control border-border bg-surface">
+    <header className="sticky top-0 z-40 border-b-control border-border bg-surface text-surface-fg">
       <div className="flex h-14 items-center gap-2 px-4 md:px-6 lg:px-8">
         <Link
           to={`/neon/${lang}/docs`}
@@ -506,7 +506,7 @@ function SiteHeader({ t, lang }: { t: T; lang: Lang }) {
           <span className="flex size-8 items-center justify-center bg-primary text-sm font-black text-primary-fg">
             N
           </span>
-          <span className="font-label case-label tracking-label text-sm text-surface-fg max-sm:hidden">
+          <span className="control-label text-sm text-surface-fg max-sm:hidden">
             {t.brand}
           </span>
         </Link>
@@ -542,10 +542,8 @@ function SiteHeader({ t, lang }: { t: T; lang: Lang }) {
             to={`/${lang}`}
             aria-label={t.home}
             title={t.home}
-            className={cn(
-              buttonVariants.outline,
-              "relative aspect-square shrink-0 px-0 after:absolute after:-inset-hit after:content-['']",
-            )}
+            data-pure-icon="true"
+            className={cn(buttonVariants.outline, "pure-icon", "shrink-0")}
           >
             <House className="size-4" aria-hidden />
           </Link>
@@ -557,13 +555,13 @@ function SiteHeader({ t, lang }: { t: T; lang: Lang }) {
 
 function Hero({ t, lang }: { t: T; lang: Lang }) {
   return (
-    <section className="relative overflow-hidden border-b-control border-border bg-surface px-4 py-12 md:px-6 md:py-16 lg:px-8 lg:py-20">
+    <section className="relative overflow-hidden border-b-control border-border bg-surface px-4 py-12 md:px-6 md:py-16 lg:px-8 lg:py-20 text-surface-fg">
       <div className="absolute inset-0" aria-hidden="true">
         <ShaderBackground />
       </div>
       <div className={cn(CONTAINER, "relative flex flex-col gap-8")}>
         <div className="flex flex-col gap-3">
-          <p className="typo-kicker text-surface-fg">{t.hero.eyebrow}</p>
+          <p className="typo-kicker">{t.hero.eyebrow}</p>
           <h1 className="typo-headline">{lang === "zh" ? tpl?.name.zh : tpl?.name.en}</h1>
           <p className={LEAD}>{lang === "zh" ? tpl?.desc.zh : tpl?.desc.en}</p>
           <div className="flex flex-wrap gap-2">
@@ -612,7 +610,7 @@ function SectionHead({
   return (
     <div className="flex flex-col gap-2">
       <p className={cn(EYEBROW, sub)}>{eyebrow}</p>
-      <h2 className={HEADLINE}>{title}</h2>
+      <h2 className={cn(HEADLINE, sub)}>{title}</h2>
       <p className={cn(LEAD, sub)}>{lead}</p>
     </div>
   );
@@ -692,7 +690,7 @@ function PaletteBlock({ t, lang }: { t: T; lang: Lang }) {
 
 const DEMO_BRAND =
   "inline-flex h-11 cursor-pointer items-center justify-center rounded-pill border-control border-border bg-primary px-6 " +
-  "text-label leading-label tracking-label font-label case-label text-primary-fg shadow-frame motion-frame " +
+  "control-text text-primary-fg shadow-frame motion-frame " +
   "hover:bg-primary-accent hover:shadow-frame-hover focus-visible:focus-ring";
 
 /* Inset press light cannot interpolate against the outer glow, so the press
@@ -700,7 +698,7 @@ const DEMO_BRAND =
    out on release, with no half-duration discrete flip in between. */
 const DEMO_PRESS =
   "inline-flex h-11 cursor-pointer items-center justify-center rounded-pill border-control border-border bg-primary px-6 " +
-  "text-label leading-label tracking-label font-label case-label text-primary-fg shadow-frame " +
+  "control-text text-primary-fg shadow-frame " +
   "[transition-property:color,background-color,border-color,background-position,box-shadow] " +
   "[transition-duration:300ms,300ms,300ms,500ms,0ms] ease-frame " +
   "hover:bg-primary-accent hover:shadow-frame-hover active:shadow-frame-active focus-visible:focus-ring";
@@ -725,21 +723,21 @@ function FlowTrack({ linear, label }: { linear?: boolean; label: string }) {
 function LawsBlock({ t }: { t: T }) {
   const l = t.laws;
   return (
-    <section id="laws" className={cn(SECTION, "bg-surface")}>
+    <section id="laws" className={cn(SECTION, "bg-surface text-surface-fg")}>
       <AnimatedContent className={cn(CONTAINER, "flex flex-col gap-6")}>
         <SectionHead eyebrow={l.eyebrow} title={l.title} lead={l.lead} onSurface />
         <div className="grid gap-4 md:grid-cols-2">
           {l.items.map((item, i) => (
             <Card key={item.tag} className="h-full">
               <div className="flex items-center gap-2">
-                <span className={cn(chipClasses, "bg-primary text-primary-fg")}>
+                <span className={cn(chipBase, chipVariants.primary)}>
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="text-sm font-bold text-surface-fg">{item.tag}</h3>
               </div>
               <p className="font-mono text-xs break-all text-surface-fg">{item.code}</p>
               <p className="text-sm text-surface-fg">{item.desc}</p>
-              <div className="flex flex-col items-center gap-2 rounded-lg border-control border-border bg-background p-4">
+              <div className="flex flex-col items-center gap-2 rounded-lg border-control border-border bg-background p-4 text-foreground">
                 {i === 0 && (
                   <>
                     <button type="button" className={DEMO_BRAND}>
@@ -810,7 +808,7 @@ function LawsBlock({ t }: { t: T }) {
 
 function TypeBlock({ t }: { t: T }) {
   const ty = t.type;
-  const labelCls = "text-label leading-label tracking-label font-label case-label";
+  const labelCls = "control-text";
   const groups: {
     caption: string;
     rows: { sample: string; spec: string; className: string; stack?: boolean }[];
@@ -853,7 +851,7 @@ function TypeBlock({ t }: { t: T }) {
             <div className="flex flex-col gap-5">
               {groups.map(({ caption, rows }) => (
                 <div key={caption} className="flex flex-col gap-3">
-                  <p className={cn(labelCls, "text-surface-fg")}>{caption}</p>
+                  <p className={cn(labelCls, "text-foreground")}>{caption}</p>
                   {rows.map(({ sample, spec, className, stack }) => (
                     <div
                       key={sample}
@@ -907,7 +905,7 @@ function RulesBlock({ t }: { t: T }) {
           {r.principles.map((p) => (
             <Card key={p.n} className="h-full">
               <div className="flex items-center gap-2">
-                <span className={chipClasses} data-variant="outline">
+                <span className={cn(chipBase, chipVariants.outline)}>
                   {p.n}
                 </span>
                 <h3 className="text-sm font-bold">{p.title}</h3>
@@ -955,10 +953,10 @@ function ClosingBlock({ t }: { t: T }) {
   const c = t.closing;
   const icons = [Sun, SwatchBook, Sparkles, ArrowRight, CircleCheck, Printer];
   return (
-    <section className={cn(SECTION, "bg-surface")}>
+    <section className={cn(SECTION, "bg-surface text-surface-fg")}>
       <AnimatedContent className={cn(CONTAINER, "flex flex-col gap-6")}>
         <SectionHead eyebrow={c.eyebrow} title={c.title} lead={c.lead} onSurface />
-        <div className="grid grid-cols-1 overflow-hidden rounded-lg border-control border-border bg-background sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 overflow-hidden rounded-lg border-control border-border bg-background text-foreground sm:grid-cols-2 lg:grid-cols-3">
           {c.cards.map((card, i) => {
             const Icon = icons[i];
             return (
@@ -973,7 +971,7 @@ function ClosingBlock({ t }: { t: T }) {
                   i < 3 ? "lg:border-b-control" : "lg:border-b-0",
                 )}
               >
-                <div className="mb-3 flex size-10 items-center justify-center rounded-md border-control border-border bg-surface">
+                <div className="mb-3 flex size-10 items-center justify-center rounded-md border-control border-border bg-surface text-surface-fg">
                   <Icon className="size-5" aria-hidden />
                 </div>
                 <h3 className="mb-1 text-sm font-bold">{card.title}</h3>
@@ -990,7 +988,7 @@ function ClosingBlock({ t }: { t: T }) {
 function SiteFooter({ t, lang }: { t: T; lang: Lang }) {
   const otherLang = lang === "zh" ? "en" : "zh";
   return (
-    <footer className="border-t-control border-border bg-surface px-4 py-8 md:px-6 lg:px-8">
+    <footer className="border-t-control border-border bg-surface px-4 py-8 md:px-6 lg:px-8 text-surface-fg">
       <div className={cn(CONTAINER, "flex flex-col gap-4")}>
         <div className="flex flex-wrap items-center gap-4">
           <span className="flex items-center gap-2 text-sm font-bold text-surface-fg">

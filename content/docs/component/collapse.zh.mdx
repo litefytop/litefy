@@ -15,6 +15,14 @@ description: 单体折叠面板组件，支持受控与非受控的展开收起
   name="collapse-basic"
 />
 
+### 禁用
+
+`disabled` 保持当前展开状态，只禁止触发器切换，面板内容仍可交互。
+
+<ComponentPreview
+  name="collapse-disabled"
+/>
+
 ## API 参考
 
 ### 高阶组件
@@ -23,7 +31,7 @@ description: 单体折叠面板组件，支持受控与非受控的展开收起
 
 #### Collapse
 
-单体折叠面板，内置触发器与折叠动画面板。
+单体折叠面板，内置触发器与折叠动画面板。`disabled` 保持当前展开状态，只禁止触发器切换，面板内容仍可交互。
 
 | 属性             | 类型                                                                                                                       | 描述                                         |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------ |
@@ -32,8 +40,9 @@ description: 单体折叠面板组件，支持受控与非受控的展开收起
 | `open`         | `boolean`                                                                                                                | 受控展开状态                                     |
 | `defaultOpen`  | `boolean`                                                                                                                | 初始展开状态（非受控），默认 `false`                     |
 | `onOpenChange` | `(open: boolean) => void`                                                                                                | 展开状态变化回调                                   |
+| `disabled`     | `boolean`                                                                                                                | 禁止触发器切换并保持当前展开状态，默认 `false`       |
 | `itemKey`      | `string`                                                                                                                 | 触发器与面板 id 的后缀，用于无障碍关联                      |
-| `className`    | `string`                                                                                                                 | 自定义类名，作用于根容器                               |
+| `className`    | `string`                                                                                                                 | 自定义类名，作用于根容器；默认 `w-full min-w-0`                               |
 | `style`        | `React.CSSProperties`                                                                                                    | 内联样式，作用于根容器                                |
 | `classNames`   | `{ trigger?: string; icon?: string; panel?: string; body?: string }`                                                     | 触发器、箭头、动画外壳、面板内容四个插槽的自定义类名                 |
 | `styles`       | `{ trigger?: React.CSSProperties; icon?: React.CSSProperties; panel?: React.CSSProperties; body?: React.CSSProperties }` | 同上四个插槽的内联样式                                |
@@ -79,11 +88,12 @@ description: 单体折叠面板组件，支持受控与非受控的展开收起
 
 | Key | Description |
 | --- | --- |
-| `Enter` / `Space` | 由原生 `<button>` 激活当前聚焦的触发器；骨架不接管任何按键 |
-| `Tab` | 按 DOM 顺序依次到达各触发器。收起的面板仍然挂载——`<section>` 只裁切高度——其内可聚焦元素保持在 Tab 序中；是否移出由加载的方案决定 |
+| `Enter` / `Space` | 由原生 `<button>` 激活当前聚焦的可用触发器；禁用触发器不响应 |
+| `Tab` | 按 DOM 顺序依次到达可用触发器与面板内容；禁用触发器跳过 Tab 序。收起的面板仍然挂载——`<section>` 只裁切高度——其内可聚焦元素保持在 Tab 序中；是否移出由加载的方案决定 |
 
 ## 数据属性
 
 | Attribute | Description |
 | --- | --- |
 | `[data-open]` | 位于面板上——取值 `"true"` 或 `"false"`，驱动展开/收起动画；默认折叠图标上同样携带 |
+| `[data-disabled]` | 位于根节点上——`disabled` 为 `true` 时携带 |

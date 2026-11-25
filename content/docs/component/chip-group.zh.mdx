@@ -15,6 +15,10 @@ description: 自动折叠溢出标签的原生组件，隐藏集合通过 render
   name="chip-group-basic"
 />
 
+### 变体
+
+变体是纯皮肤态，由皮肤层 JS 选择，不进骨架接口：`ChipGroup` 读组级 `data-variant`（`surface` / `primary` / `outline` / `success` / `warning` / `danger` / `info`，默认 `surface`）选一条配色发给所有标签。直接在任意元素上组合时，用皮肤导出的 `chipBase`（布局排版）配 `chipVariants.<变体>`（配色）经 `cn` 合并，如 `cn(chipBase, chipVariants.outline)`；默认标签串 `chipClasses` 等价 `cn(chipBase, chipVariants.surface)`。
+
 ## API 参考
 
 ### ChipGroup
@@ -41,4 +45,4 @@ description: 自动折叠溢出标签的原生组件，隐藏集合通过 render
 
 ## 数据属性
 
-骨架不在本组件上发射任何 `data-*`。离屏的测量行携带 `aria-hidden`。
+骨架不在本组件上发射任何 `data-*`。离屏的测量行携带 `aria-hidden`。皮肤层读组级 `data-variant` 作 JS 选键，不做 data 属性样式门控。

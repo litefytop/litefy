@@ -9,7 +9,7 @@ description: 拖拽上传区域组件，支持本地校验、拖拽上传，并�
 
 ## 用法
 
-拖拽上传区：只做选择与本地校验，不发起网络请求。
+拖拽上传区使用实线边框，只做选择与本地校验，不发起网络请求。
 
 <ComponentPreview
   name="upload-basic"
@@ -17,7 +17,7 @@ description: 拖拽上传区域组件，支持本地校验、拖拽上传，并�
 
 ### 禁用
 
-添加 disabled 属性禁用投放区。
+`disabled` 原生禁用隐藏 file input；投放区标记 `aria-disabled` 并移出 Tab 序，点击、键盘、拖拽与文件选择由 JavaScript 阻断。外观使用 `bg-disabled`、`text-disabled-fg` 与 `cursor-not-allowed`。
 
 <ComponentPreview name="upload-disabled" />
 
@@ -43,10 +43,10 @@ description: 拖拽上传区域组件，支持本地校验、拖拽上传，并�
 | `onDragEnter`     | `(e: React.DragEvent) => void`      | 文件拖入 dropzone 时触发                                                                |
 | `onDragLeave`     | `(e: React.DragEvent) => void`      | 文件拖出 dropzone 时触发                                                                |
 | `actionsRef`      | `React.Ref<UploadActions>`          | 命令式句柄，暴露 `remove(uid)` 与 `clear()`；`remove` 会先中止对应 controller 再触发 `onFileRemove` |
-| `className`       | `string`                            | 根节点自定义类                                                                          |
+| `className`       | `string`                            | 根节点自定义类；默认 `w-full min-w-0 max-w-[20rem]`（最大 20rem）          |
 | `style`           | `React.CSSProperties`               | 根节点自定义内联样式                                                                       |
-| `classNames`      | `{ dropzone?; hiddenInput? }`       | 各零件自定义类                                                                          |
-| `styles`          | `{ dropzone?; hiddenInput? }`       | 各零件自定义内联样式                                                                       |
+| `classNames`      | `{ dropzone?; hiddenInput?; label?; hint? }` | `dropzone` 控制拖拽区域，其余为隐藏 input、标签与提示文字；没有 `root` 槽位 |
+| `styles`          | `{ dropzone?; hiddenInput? }`       | 拖拽区域与隐藏 input 内联样式；没有 `root` 槽位                                 |
 
 ---
 

@@ -1,6 +1,5 @@
 # Toggle 皮肤（app/ui/skins/toggle.tsx）
 
-1. 按下按钮（Toggle）：outline 同款脸——44 命中方（`min-h-control min-w-control`）+ `rounded-pill` + pill 补偿 px（`--radius-pill` 同式算式，见 `ui/schemes.md` 第 14 条）+ `py-1`，`border-hair` 边宽档（minimal 1px 可见、neo 同 stroke）+ `bg-background` 底色 + `shadow-frame` 静止阴影，`text-sm` + `font-label` 档 + label 两项 + `foreground`；hover（非禁用）换 `accent` 对 + `shadow-frame-hover`，`active:crush` 压平 + `shadow-frame-active`；按下（`aria-[pressed=true]`，骨架两态都写）换 `primary` 背景色 + `primary-fg` 前景色；`motion-frame` 过渡束；禁用无 hover。
-2. 组条（ToggleGroup）皮肤住 `ui/skins/toggle-group.md`，组装本脸之外的全部形态。
-3. 禁用观感：各形态条目一律 `disabled:dim`（`dim` 契约见 `ui/schemes.md` 第 8 条⑥）。
-4. 专属令牌：无。
+1. 按下按钮（Toggle）：文字钮形态——`min-h-control min-w-0` + px 基础档 + `gap-x-2` + `text-sm` + `control-label` + `text-foreground` + `cursor-pointer select-none` + `rounded-sm`；按下（`aria-[pressed=true]`，骨架两态都写）换 primary 背景色 + primary-fg 前景色（无加粗、无下划线，选中标记即色块）；无 hover（2026-11-20 文字钮形态用户裁定）；选中态切换为颜色瞬时对调，过渡走 `motion-frame`；禁用选择独立禁用类串，使用禁用色与 `cursor-not-allowed`，不挂 hover / active。
+2. 用法分工：互不绑定的独立开关（粗体 / 倾斜一类）逐个使用本件；一组相关选项用组条 ToggleGroup，见 `ui/skins/toggle-group.md`。
+3. 专属令牌：无。

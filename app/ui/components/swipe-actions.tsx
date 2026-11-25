@@ -31,11 +31,14 @@ export interface SwipeActionConfig {
     onSelect?: () => void;
     dismiss?: boolean;
 }
+export type SwipeActionTone = "primary" | "info" | "success" | "warning";
+
 export interface SwipeActionsClassNames {
     root?: string;
     row?: string;
     rail?: string;
-    action?: string;
+    action?: string | ((tone: SwipeActionTone) => string | undefined);
+    actionContent?: string;
     block?: string;
     commit?: string;
     surface?: string;
@@ -89,14 +92,14 @@ export function SwipeActions({ primary, info, success, warning, danger, directio
         { tone: "info", action: info },
         { tone: "success", action: success },
         { tone: "warning", action: warning },
-    ].filter((slot): slot is { tone: string; action: SwipeActionConfig } => !!slot.action);
+    ].filter((slot): slot is { tone: SwipeActionTone; action: SwipeActionConfig } => !!slot.action);
     const n = secondarySlots.length + (danger ? 1 : 0);
     const D = n * A;
     const c = clamp(resistance, 0.05, 1);
     const [openState, setOpenState] = React.useState(false);
     const [phase, setPhase] = React.useState<"idle" | "entering" | "committing" | "collapsing">(() => (enter ? "entering" : "idle"));
     const [say, setSay] = React.useState("");
-    const open = openProp ?? openState;
+    const open = !disabled && (openProp ?? openState);
     const railId = `${React.useId()}-rail`;
 
     const rootRef = React.useRef<HTMLDivElement>(null);
@@ -228,12 +231,14 @@ export function SwipeActions({ primary, info, success, warning, danger, directio
         }
     };
     const setOpenAndNotify = (next: boolean) => {
+        if (disabled && next) return;
         if (next === open)
             return;
         setOpenState(next);
         onOpenChange?.(next);
     };
     const commit = (action: SwipeActionConfig, viaKey: boolean, v = 0) => {
+        if (disabled) return;
         const leap = action === danger;
         const fold = () => {
             setPhase("collapsing");
@@ -436,7 +441,7 @@ export function SwipeActions({ primary, info, success, warning, danger, directio
     });
 
     const act = (action: SwipeActionConfig, e: React.MouseEvent<HTMLButtonElement>) => {
-        if (phase !== "idle")
+        if (disabled || phase !== "idle")
             return;
         onAction?.(action);
         if (action === danger || action.dismiss) {
@@ -500,26 +505,33 @@ export function SwipeActions({ primary, info, success, warning, danger, directio
         "--swipe-a": `${actionWidth}px`,
         "--swipe-collapse": `${collapseMs}ms`,
     } as React.CSSProperties;
-    return (<div {...props} ref={setRefs} role="group" aria-label={label} data-direction={direction} data-open={open || undefined} data-phase={phase} data-disabled={disabled || undefined} onKeyDown={onKeyDown} className={[classNames?.root, className].filter(Boolean).join(" ") || undefined} style={{ ...geometryVars, ...style }}>
+    const collapsed = phase === "collapsing" || phase === "entering";
+    const actionClassName = (tone: SwipeActionTone) =>
+        typeof classNames?.action === "function" ? classNames.action(tone) : classNames?.action;
+    return (<div {...props} ref={setRefs} role="group" aria-label={label} data-direction={direction} data-open={open || undefined} data-phase={phase} data-collapsed={collapsed || undefined} data-disabled={disabled || undefined} aria-disabled={disabled || undefined} onKeyDown={onKeyDown} className={[classNames?.root, className].filter(Boolean).join(" ") || undefined} style={{ ...geometryVars, ...style }}>
       <div className={classNames?.row}>
         <div id={railId} ref={railRef} className={classNames?.rail} inert={!open || undefined} aria-hidden={!open || undefined}>
-          {secondarySlots.map(({ tone, action }, i) => (<button key={action.id ?? tone} type="button" data-tone={tone} className={classNames?.action} onClick={(e) => act(action, e)} style={s < 0 ? { right: (i + 1) * A } : { left: (i + 1) * A }}>
-              {action.icon ? <span aria-hidden="true">{action.icon}</span> : null}
-              <span>{action.label}</span>
+          {secondarySlots.map(({ tone, action }, i) => (<button key={action.id ?? tone} type="button" disabled={disabled} data-tone={tone} className={actionClassName(tone)} onClick={(e) => act(action, e)} style={s < 0 ? { right: (i + 1) * A } : { left: (i + 1) * A }}>
+              <span className={classNames?.actionContent}>
+                {action.icon ? <span aria-hidden="true">{action.icon}</span> : null}
+                <span>{action.label}</span>
+              </span>
             </button>))}
           {danger ? (<div ref={blockRef} className={classNames?.block}>
-              <button ref={glyphRef} type="button" data-tone="danger" className={classNames?.commit} onClick={(e) => act(danger, e)}>
-                {danger.icon ? <span aria-hidden="true">{danger.icon}</span> : null}
-                <span>{danger.label}</span>
+              <button ref={glyphRef} type="button" disabled={disabled} data-tone="danger" className={classNames?.commit} onClick={(e) => act(danger, e)}>
+                <span className={classNames?.actionContent}>
+                  {danger.icon ? <span aria-hidden="true">{danger.icon}</span> : null}
+                  <span>{danger.label}</span>
+                </span>
               </button>
             </div>) : null}
         </div>
         <div ref={surfaceRef} className={classNames?.surface} onPointerDown={down}>
           {children}
-          <span aria-hidden="true" className={classNames?.hint}>
+          <span aria-hidden="true" className={classNames?.hint} data-hidden={open || disabled || undefined}>
             {s < 0 ? <ArrowLeft /> : <ArrowRight />}
           </span>
-          <button type="button" className={classNames?.toggle} tabIndex={disabled ? -1 : 0} aria-expanded={open} aria-controls={railId} aria-keyshortcuts={s < 0 ? "ArrowLeft" : "ArrowRight"} onKeyDown={onToggleKey} onClick={onToggleClick}>
+          <button type="button" disabled={disabled} className={classNames?.toggle} tabIndex={disabled ? -1 : 0} aria-expanded={open} aria-controls={railId} aria-keyshortcuts={s < 0 ? "ArrowLeft" : "ArrowRight"} onKeyDown={onToggleKey} onClick={onToggleClick}>
             {toggleLabel ?? `${n} ${n === 1 ? "action" : "actions"}`}
           </button>
         </div>

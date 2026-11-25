@@ -27,7 +27,8 @@ export type { CountUpProps } from "@/ui";
 export { Paper, type PaperFormat, type PaperProps } from "./paper";
 export { Checkbox, CheckboxGroup } from "./checkbox";
 export type { CheckboxProps, CheckboxGroupProps, CheckboxOptionConfig, CheckboxOptionGroup } from "@/ui";
-export { ChipGroup, chipClasses } from "./chip-group";
+export { ChipGroup, chipBase, chipClasses, chipVariants } from "./chip-group";
+export type { ChipVariant } from "./chip-group";
 export type { ChipGroupProps } from "@/ui";
 export type { SliderVariant } from "./slider";
 export { Collapse, collapseRootClasses, collapseItemClasses, collapsePartClasses } from "./collapse";
@@ -56,7 +57,7 @@ export { Group } from "./group";
 export type { GroupProps } from "@/ui";
 export { Form, FormSubmit } from "./form";
 export type { FormRef, FormValues } from "@/ui";
-export { DateRangePicker, calendarRangeClasses, dateRangePickerClasses } from "./date-range-picker";
+export { DateRangePicker, dateRangePickerClasses } from "./date-range-picker";
 export type {
   DateRangePickerProps, DateRangePickerClassNames, DateRangePickerStyles,
   FilterRule, FilterParam, FilterOperator, SortParam,
@@ -150,7 +151,6 @@ export type { TocProps } from "@/ui";
 export type { TocSkinProps } from "./toc";
 export { Toggle, ToggleGroup } from "./toggle";
 export type { ToggleProps, ToggleGroupProps } from "@/ui";
-export type { ToggleGroupVariant, ToggleGroupSkinProps } from "./toggle";
 export { Tooltip, TooltipTrigger, TooltipContent } from "./tooltip";
 export type { TooltipProps } from "@/ui";
 export { Transfer } from "./transfer";
@@ -161,8 +161,6 @@ export { Upload } from "./upload";
 export type { UploadProps } from "@/ui";
 export { Watermark } from "./watermark";
 export type { WatermarkProps } from "@/ui";
-export { Wizard, InlineWizard } from "./wizard";
-export type { WizardProps, InlineWizardProps } from "@/ui";
 export { useTheme } from "@/ui/utils";
 export type { ThemeMode } from "@/ui/utils";
 export { Switch } from "./switch";

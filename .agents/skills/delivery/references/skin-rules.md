@@ -20,15 +20,17 @@
    5. 宽度走第 16 条的车道与公式，不在此重复
 14. 下拉面板宽度两车道：y 轴锚定（面板随触发器上下开合、x 不移）——精确同宽，经 `data-float-match-width` 锁触发器宽（Select / Combobox / Picker 一族）；x 轴自由（可横移定位）——不锁宽、固定档（下拉菜单一族：DropdownMenu / ContextMenu / Menu 子面板 `w-48`）。
 15. 分组标签（菜单 / 列表的组眉）统一声：`font-mono font-strong`（字重比交互正文大——交互条目一律常规字重）+ `tracking-label` + `case-label` + `text-surface-fg`，`py-snug` 与行同高、`text-sm leading-5` 与行同节奏；字族与字重双轴区分，不靠字号差。
-16. 宽度先选车道再取值：按下列顺序判定，命中即停，同一元素不混写两条车道。除行宽车道外全部只写 `--spacing` 倍数（数字乘道 `w-32`，或任意值里的 `--spacing(32)` / `calc(var(--spacing)*…)`），禁 rem / px 定值与自造刻度；任意值里禁空格，calc 的空位写 `_`（类名扫描按空白切分，带空格的串静默不生成 CSS）。
-   1. 行宽车道——连续阅读的正文（段落、列表、引文）：`max-w-[40em]`。唯一用 em 的车道，因为它要随字号走而不是随栅格走；40em 同时满足中文 40 字与拉丁 80 字符上限（下限见 ui-rules `perceivable.md`）。排版域自身不带宽度，由消费处显式挂一次
-   2. 宿主车道——宽度由父格决定的字段与组根（Input / Password / Textarea / NumberInput 根）：缺省内在宽 `w-55`（220px：按前后缀各占一格 `w-11` 推得，最坏情形值区仍余 3 格）+ `min-w-0 max-w-full`，消费方 `w-full` 接管即纯宿主形态；demo 可读宽度惯例 `w-55`
-   3. 数字件车道——定长可数的数值显示区（NumberField 值区）：静态 11 的倍数、零运行期计算——NumberField 值区恒 `w-control`（与步进钮同宽，输入框不随内容生长，超宽在框内滚动；改大 max 自行经 `classNames.root` 加宽）；其它定长件照取 11 的倍数，不立公式、不设容量变量
-   4. 区间车道——要在同轴上和兄弟争余量的伸缩件（滑块轨道、进度、量具、图表画布）：本体 `w-112 grow min-w-0 max-w-112`，控件根 `min-w-[min(100%,--spacing(32))] max-w-full`（多方向件按方向条件写；`max-w-full` 让根随窄容器收缩，窄容器里根不撑破）。保底只能挂根：挂本体时百分比按整个容器算，兄弟占掉的空间它看不见，窄容器里必撑破
-   5. 浮层车道——脱离文档流的浮层，宽度对视口负责而不是对父格负责：居中件（Dialog）`w-full max-w-[min(100%_-_--spacing(8),--spacing(<档>))]`，视口两侧留 8 单位边沟，窄视口自动让位，不写死下限；贴边件（Drawer）主轴长度取定档写进 `--litefy-pane-size`，`max-w-full` / `max-h-full` 封顶，交叉轴保底 `min(100%,--spacing(<保底档>))`
-   6. 定档车道——以上都不是、自己有内在语义宽度的件：按两基取档。**控件级小容器一律 11 的倍数**（16.3 数字件、页码输入、内联小钮——`w-11` 即 44 触控基准，紧凑档随乘道 33）；**容器级一律 16n 单位**（默认案 16 单位 = 4rem，要 W rem 就取 `w-{4W}`，W 取 4 的倍数即落在档上），换方案基础值时整档同步缩放，不重算：32 区间保底根；48 下拉菜单一族面板（见第 14 条）与上下抽屉保底；64 左右抽屉保底；80 行内窄选择件与 `data-size="sm"` 抽屉；96 抽屉默认档；112 Dialog 默认档与区间上限；128 宽 Dialog（表单、双列内容）与 `data-size="lg"` 抽屉。Select / MultiSelect / Combobox 触发件与字段 demo 可读宽度已移交宿主车道 `w-55`
-   7. 同一元素只写一枚 `max-w-*`（两枚按源序互相覆盖），要多个上限就合成一个 `min()`
+16. 宽度先选车道再取值，同一元素只写一条车道、一枚 `max-w-*`；多个上限合成 `min()`。任意值内禁空格，calc 的空位写 `_`（类名扫描按空白切分，带空格的串静默不生成 CSS）：
+   1. 行宽车道——连续阅读的正文：`max-w-[40em]`，随字号而不是随栅格缩放。
+   2. 字段车道——Input / Password / Textarea / NumberInput / Select / MultiSelect / Combobox / Cascader / Picker / DatePicker / DateRangePicker / FilterCombobox / Upload 等字段控件：`w-full min-w-0 max-w-[20rem]`，320px 是设备适配常量，不随 `--spacing` 缩放，不设固定最小宽；父容器更窄时自动收缩。
+   3. 内容容器车道——有层级的独立内容块使用 `w-full min-w-0` 加固定 rem 语义上限：`sm` 20rem、`md` 24rem、`lg` 28rem、`xl` 32rem，Transfer 另加 `2xl` 40rem。默认值为 Card 24rem、Form / List 28rem、Chat 32rem、Transfer 40rem；消费者可用组件尺寸 prop、`className`、`classNames.root` 或 `style` 覆盖。
+   4. 结构车道——Banner / Callout / Accordion / Collapse / Details，以及图表、量具、表格、树、页签、步骤、时间线等需要占满宿主的结构组件：`w-full min-w-0`；内部滚动或换行负责窄容器，不给根组件加固定最小宽。
+   5. 浮层车道——popover 类内容按内容取宽，统一 `max-w-[min(20rem,calc(100vw_-_1rem))]`，不设固定最小宽；锚定字段的浮层可精确同宽。Dialog 默认 `max-w-[28rem]` 并受 stage 宽度让位；Drawer 主轴使用 `w-full` / `h-full` 加 20 / 24 / 32rem 固定上限与 `min-w-0` / `min-h-0`，窄视口自动收缩。
+   6. 定档车道——固定形态控件、Toc 固定栏、纸张与内部结构尺寸使用 `--spacing` 数字乘道；控件级小容器取 11 的倍数，容器级取 16 的倍数。`min-w-control`、`min-w-11` 与 `size-*` 属于内部稳定尺寸，不作通用根最小宽。
+   7. 消费方只在需要改变语义默认值时覆盖，不重复添加默认档位；宽度 prop 提供运行期值时可用内联样式，组件必须允许后写的 `style` 覆盖。
 17. 光学修正写成可计算式，不靠目测：几何对齐不等于视觉对齐，嵌套圆角是最常见的一处。
-   1. 同心圆角：内圆角 = 外圆角 − 外件内边距 − 外件边框宽，`rounded-[max(0px,calc(var(--radius-xl)-var(--spacing(2))-var(--border-width-frame)))]` 一类；`max(0px,…)` 是钳位不是设计取值，它让无圆角方案（neo-brutalist 全档 `--radius-*: 0px`）该式自然归零，不为补偿另立令牌
+   1. 同心圆角：内圆角 = 外圆角 − 外件内边距 − 外件边框宽，由方案派生令牌作答——各案 `:root` 静态派生（`--radius-field-inner` / `--radius-well-inner`，契约见蓝图 `ui/schemes.md` 第 9 条），皮肤只经 `rounded-(--令牌)` 引用（角位用 `rounded-s-(--令牌)` 一类侧变体），类串内不写 calc 任意值；`max(0px,…)` 钳位写在令牌定义内，无圆角方案（neo-brutalist 全档 `--radius-*: 0px`）自然归零，不为补偿另立令牌；方案 CSS 内间距写 `var(--spacing)*N` 乘法，新容器壳按同式补对应派生令牌
    2. 只有确实嵌套的两层写这条式子（面板里的卡片、输入区里的附件块）；同层并列件各取自己的圆角档，不做补偿
    3. 图标与文字同排时按视觉重心对齐（`items-center` 是几何居中，字形基线与图标外框不等高时由皮肤给图标盒定档补差），不靠消费方塞 margin
+18. 相连堆叠的条目不各自带阴影：整组投影只归外根容器，条目间用分隔线分界；要每件独立投影就断开相连（留白或间距），不让阴影投进相邻件（手风琴先例，2026-11-22）。
+19. 状态档成对书写：换背景档就在同串写上新档的配对前景——`hover:bg-accent` 必带 `hover:text-accent-fg`，`data-[active]:bg-primary` 必带 `data-[active]:text-primary-fg`，`data-[highlighted=true]:bg-accent` 同理；同一枚 `-fg` 对静置背景与 `-accent` 悬停档都过 AA，所以日/夜两档不必再切文字色。填充态留在同族 `-accent` 档、跨角色换底与继承文字的两条边界皆见蓝图 `ui/schemes.md` 第 24 条，门禁 `scripts/check-color-pairs.mjs` 逐案核。

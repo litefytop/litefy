@@ -19,7 +19,6 @@ const merge = createCn({
         "surface",
         "pressed",
         "well",
-        "focus",
         "focus-danger",
         "field-focus",
         "field-focus-danger",
@@ -43,6 +42,7 @@ const merge = createCn({
         "loose",
         "control",
         "control-x",
+        "pill-x",
         "plain-x",
         "panel",
         "well",
@@ -55,9 +55,22 @@ const merge = createCn({
         "crush",
       ],
       "font-weight": ["label", "field", "emphasis", "strong"],
-      leading: ["label", "head", "body", "field"],
-      tracking: ["label"],
-      text: ["label", "field", "h1", "h2", "h3", "h4", "h5", "h6", "table-code"],
+      leading: ["label", "head", "body", "field", "headline"],
+      tracking: ["label", "headline", "overline"],
+      text: [
+        "label",
+        "field",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "table-code",
+        "headline",
+        "kicker",
+        "overline",
+      ],
     },
     classGroups: {
       "border-w": [{ border: ["control", "hair", "frame"] }],
@@ -88,6 +101,24 @@ export function cn(...inputs: Parameters<typeof merge>) {
   return single ?? merge(...inputs);
 }
 
+export interface SlotState {
+  disabled: boolean;
+  highlighted?: boolean;
+  active?: boolean;
+  outsideMonth?: boolean;
+}
+
+export type SlotClassName<S extends SlotState = SlotState> =
+  | string
+  | ((state: S) => string | undefined);
+
+export function resolveSlotClassName<S extends SlotState>(
+  className: SlotClassName<S> | undefined,
+  state: S,
+): string | undefined {
+  return typeof className === "function" ? className(state) : className;
+}
+
 type ClassMap = Record<string, string | undefined>;
 
 export function mergeSlots<T extends object, O extends object = T>(
@@ -102,4 +133,44 @@ export function mergeSlots<T extends object, O extends object = T>(
     if (merged) out[key] = merged;
   }
   return out as Record<keyof T | keyof O, string>;
+}
+
+type Defined<T> = Exclude<T, undefined>;
+
+type MergedStateSlot<B, O> = [Defined<B>] extends [never]
+  ? Defined<O>
+  : [Defined<O>] extends [never]
+    ? Defined<B>
+    : Defined<B> extends string
+      ? Defined<O> extends string
+        ? string
+        : Defined<O>
+      : Defined<B>;
+
+type MergedStateSlots<T extends object, O extends object> = {
+  [K in keyof T | keyof O]: MergedStateSlot<K extends keyof T ? T[K] : never, K extends keyof O ? O[K] : never>;
+};
+
+export function mergeStateSlots<T extends object, O extends object = T>(
+  base: T,
+  override?: O,
+): MergedStateSlots<T, O> {
+  const out: Record<string, SlotClassName> = {};
+  const b = base as Record<string, SlotClassName | undefined>;
+  const o = override as Record<string, SlotClassName | undefined> | undefined;
+  for (const key of new Set([...Object.keys(b), ...Object.keys(o ?? {})])) {
+    const baseClass = b[key];
+    const overrideClass = o?.[key];
+    if (typeof baseClass === "function" || typeof overrideClass === "function") {
+      out[key] = (state) =>
+        cn(
+          typeof baseClass === "function" ? baseClass(state) : baseClass,
+          typeof overrideClass === "function" ? overrideClass(state) : overrideClass,
+        );
+    } else {
+      const merged = cn(baseClass, overrideClass);
+      if (merged) out[key] = merged;
+    }
+  }
+  return out as MergedStateSlots<T, O>;
 }

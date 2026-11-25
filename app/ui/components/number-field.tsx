@@ -1,6 +1,7 @@
 "use client";
 import * as React from "react";
 import { Minus, Plus } from "./icons";
+import { resolveSlotClassName, type SlotClassName } from "../utils/cn";
 export interface NumberStepperProps extends Omit<React.ComponentProps<"button">, "className" | "type"> {
     className?: string;
     direction?: "up" | "down";
@@ -74,6 +75,8 @@ export function useNumberCore(opts: NumberCoreOptions) {
         return String(num);
     }, [min, max, positiveInteger]);
     const emitChange = React.useCallback((newRawValue: string) => {
+        if (disabled)
+            return;
         valueRef.current = newRawValue;
         if (!isControlled) {
             setUncontrolledValue(newRawValue);
@@ -86,7 +89,7 @@ export function useNumberCore(opts: NumberCoreOptions) {
             const val = newRawValue === "" ? undefined : newRawValue;
             (onValueChange as (value?: string) => void)?.(val);
         }
-    }, [isControlled, positiveInteger, onValueChange]);
+    }, [disabled, isControlled, positiveInteger, onValueChange]);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const raw = e.target.value.replaceAll(',', "");
         if (positiveInteger) {
@@ -140,6 +143,8 @@ export function useNumberCore(opts: NumberCoreOptions) {
         emitChange(String(newNum));
     }, [min, max, positiveInteger, step, emitChange]);
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (disabled)
+            return;
         if (e.key === "ArrowUp") {
             e.preventDefault();
             stepDelta(step);
@@ -155,14 +160,14 @@ export function useNumberCore(opts: NumberCoreOptions) {
         if (!focused || !el)
             return;
         const onWheel = (e: WheelEvent) => {
-            if (e.deltaY === 0 || el.readOnly)
+            if (disabled || e.deltaY === 0 || el.readOnly)
                 return;
             e.preventDefault();
             stepDelta(e.deltaY < 0 ? step : -step);
         };
         el.addEventListener("wheel", onWheel, { passive: false });
         return () => el.removeEventListener("wheel", onWheel);
-    }, [focused, step, stepDelta]);
+    }, [disabled, focused, step, stepDelta]);
     const safeMin = Number.isFinite(min) ? min : undefined;
     const safeMax = Number.isFinite(max) ? max : undefined;
     const numValue = value === "" ? undefined : parseFloat(value);
@@ -203,10 +208,10 @@ export type NumberFieldProps = Omit<React.ComponentProps<"input">, "className" |
     className?: string;
     style?: React.CSSProperties;
     classNames?: {
-        root?: string;
-        stepper?: string;
+        root?: SlotClassName;
+        stepper?: SlotClassName;
         stepperIcon?: string;
-        hint?: string;
+        hint?: SlotClassName;
     };
     styles?: {
         root?: React.CSSProperties;
@@ -235,10 +240,13 @@ export function NumberField(props: NumberFieldProps) {
     });
     const hintId = React.useId();
     const describedBy = [hintId, rest["aria-describedby"]].filter(Boolean).join(" ");
+    const state = { disabled: disabled ?? false };
+    const decrementDisabled = disabled || !canDecrement;
+    const incrementDisabled = disabled || !canIncrement;
     return (<div data-invalid={invalid || undefined} className={className} style={style}>
-      <NumberStepper direction="down" aria-label={decrementLabel} disabled={disabled || !canDecrement} onClick={() => stepDelta(-step)} className={classNames?.stepper} classNames={{ icon: classNames?.stepperIcon }} style={styles?.stepper}/>
-      <NumberRoot {...inputProps} aria-invalid={invalid} aria-describedby={describedBy} className={classNames?.root} style={styles?.root}/>
-      <NumberStepper direction="up" aria-label={incrementLabel} disabled={disabled || !canIncrement} onClick={() => stepDelta(step)} className={classNames?.stepper} classNames={{ icon: classNames?.stepperIcon }} style={styles?.stepper}/>
-      <span id={hintId} className={classNames?.hint} style={styles?.hint}>↑ ↓</span>
+      <NumberStepper direction="down" aria-label={decrementLabel} disabled={decrementDisabled} onClick={() => !decrementDisabled && stepDelta(-step)} className={resolveSlotClassName(classNames?.stepper, { disabled: decrementDisabled })} classNames={{ icon: classNames?.stepperIcon }} style={styles?.stepper}/>
+      <NumberRoot {...inputProps} aria-invalid={invalid} aria-describedby={describedBy} className={resolveSlotClassName(classNames?.root, state)} style={styles?.root}/>
+      <NumberStepper direction="up" aria-label={incrementLabel} disabled={incrementDisabled} onClick={() => !incrementDisabled && stepDelta(step)} className={resolveSlotClassName(classNames?.stepper, { disabled: incrementDisabled })} classNames={{ icon: classNames?.stepperIcon }} style={styles?.stepper}/>
+      <span id={hintId} className={resolveSlotClassName(classNames?.hint, state)} style={styles?.hint}>↑ ↓</span>
     </div>);
 }

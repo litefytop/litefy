@@ -4,7 +4,7 @@ import { cn, mergeSlots } from "../utils/cn";
 import { chartLegendClasses, chartLegendPartClasses } from "./chart-legend";
 
 
-const rootClasses = "w-full";
+const rootClasses = "w-full min-w-0";
 
 const svgClasses = "mt-2 w-full max-w-72 mx-auto overflow-visible";
 
@@ -16,7 +16,7 @@ const ringClasses =
 const spokeClasses = "stroke-0.5";
 
 const labelClasses =
-  "fill-surface-fg text-xs font-label tracking-label case-label";
+  "fill-foreground text-xs control-label";
 
 const polygonClasses =
   "cursor-pointer [fill-opacity:0.14] stroke-1.5 [stroke-linejoin:round] " +
@@ -29,10 +29,11 @@ const legendClasses = {
 };
 
 export function Radar({ className, classNames, ...props }: RadarProps) {
+  const { root: rootOverride, ...slots } = classNames ?? {};
   return (
     <RadarHeadless
       {...props}
-      className={cn(rootClasses, className)}
+      className={cn(rootClasses, rootOverride, className)}
       classNames={{
         ...mergeSlots(
           {
@@ -43,7 +44,7 @@ export function Radar({ className, classNames, ...props }: RadarProps) {
             label: labelClasses,
             polygon: polygonClasses,
           },
-          classNames,
+          slots,
         ),
         legend: mergeSlots(legendClasses, classNames?.legend),
       }}

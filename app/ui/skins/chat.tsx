@@ -1,9 +1,16 @@
 ﻿import { Chat as ChatHeadless } from "@/ui";
 import type { ChatProps } from "@/ui";
 import { cn, mergeSlots } from "../utils/cn";
-import { buttonVariants } from "./button";
+import { buttonInlineClasses, buttonVariants } from "./button";
 
-const rootClasses = "group/chat flex flex-col gap-y-4";
+const chatSizeClasses = {
+  sm: "max-w-[20rem]",
+  md: "max-w-[24rem]",
+  lg: "max-w-[28rem]",
+  xl: "max-w-[32rem]",
+};
+
+const rootClasses = "group/chat flex w-full min-w-0 flex-col gap-y-4";
 
 const listClasses = "m-0 flex list-none flex-col gap-y-4 p-0";
 
@@ -19,7 +26,7 @@ const avatarClasses =
   "mt-0.5 block size-8 shrink-0 overflow-hidden rounded-pill border-hair border-border bg-surface " +
   "object-cover text-center text-sm leading-8 text-surface-fg";
 
-const nameClasses = "text-xs leading-4 text-surface-fg";
+const nameClasses = "text-xs leading-4 text-foreground";
 
 const contentClasses =
   "flex max-w-full flex-col gap-y-2 text-left text-sm leading-5";
@@ -32,7 +39,7 @@ const contentBubbleAssistantClasses =
 
 const contentPlainClasses = "text-foreground";
 
-const contentErrorClasses = "text-danger-fg";
+const contentErrorClasses = "text-danger-independent";
 
 const contentItemBaseClasses = "min-w-0";
 const contentItemImageClasses =
@@ -52,15 +59,16 @@ const actionsClasses =
   "flex items-center gap-x-1 opacity-0 transition-opacity duration-sm " +
   "group-hover/message:opacity-100 focus-within:opacity-100";
 
-const actionClasses =
-  cn(buttonVariants.text,
-    "h-control min-h-0 w-control text-surface-fg " +
-    "data-[active=true]:text-primary data-[active=true]:opacity-100");
+const actionClasses = cn(
+  buttonInlineClasses,
+  "h-control cursor-pointer text-foreground p-0 focus-visible:focus-ring pure-icon w-control",
+  "data-[active=true]:text-primary data-[active=true]:opacity-100",
+);
 
 const hintsClasses = "m-0 flex list-none flex-wrap gap-x-2 gap-y-1 p-0";
 
 const hintClasses =
-  cn(buttonVariants.outline, "h-control text-sm");
+  cn(buttonVariants.outline, "text-sm");
 
 const skinClassNames = {
   root: rootClasses,
@@ -83,12 +91,14 @@ const skinClassNames = {
   hint: hintClasses,
 };
 
-export function Chat({ className, classNames, ...props }: ChatProps) {
+export function Chat({ size = "xl", className, classNames, ...props }: ChatProps) {
+  const { root: rootOverride, ...slots } = classNames ?? {};
   return (
     <ChatHeadless
       {...props}
-      className={cn(rootClasses, className)}
-      classNames={mergeSlots(skinClassNames, classNames)}
+      size={size}
+      className={cn(rootClasses, chatSizeClasses[size], rootOverride, className)}
+      classNames={mergeSlots(skinClassNames, slots)}
     />
   );
 }

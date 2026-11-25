@@ -4,7 +4,7 @@ import { cn, mergeSlots } from "../utils/cn";
 import { chartLegendClasses, chartLegendPartClasses } from "./chart-legend";
 
 
-const rootClasses = "group/chart w-full";
+const rootClasses = "group/chart w-full min-w-0";
 
 const bodyClasses = "relative mt-2 mb-2";
 
@@ -14,7 +14,7 @@ const canvasClasses = "w-full cursor-crosshair touch-none select-none";
 
 const tooltipClasses =
   "pointer-events-none absolute top-0 left-0 hidden rounded-xl border-frame border-border bg-surface-raised " +
-  "px-2 py-1.5 text-xs leading-4 text-foreground shadow-elevated";
+  "px-2 py-1.5 text-xs leading-4 text-surface-raised-fg shadow-elevated";
 
 const tooltipHeaderClasses = "mb-1 text-xs font-semibold tracking-label case-label";
 

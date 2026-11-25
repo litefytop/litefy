@@ -11,7 +11,7 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 
 用 `Form` + `FormSubmit` 组合表单，字段控件以 `name` / `label` / `validate` 直接接入，校验在提交时统一门禁。
 
-<ComponentPreview 
+<ComponentPreview
   name="form-basic"
 />
 
@@ -27,6 +27,9 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 
 | 属性          | 类型                                         | 描述                                                                                         |
 | ----------- | ------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `size`       | `"sm" \| "md" \| "lg" \| "xl"`                 | 表单最大宽度依次为 20、24、28、32rem，默认 `"lg"`                                                       |
+| `className`  | `string`                                         | 根表单自定义类名；默认 `w-full min-w-0`                                                                   |
+| `style`      | `React.CSSProperties`                             | 根表单内联样式                                                                                             |
 | `onSubmit`  | `(values: FormValues) => Promise<boolean>` | 异步提交处理器。接收已预处理的对象，多值字段为数组。返回 `true` 表示成功并触发 `autoReset`；返回 `false` 或抛错时保留当前输入值             |
 | `autoReset` | `boolean`                                  | 当 `onSubmit` 解析为 `true` 时自动重置表单，默认 `true`                                                  |
 | `onReset`   | `() => void`                               | 表单重置时触发 —— 包括 `autoReset` 在提交成功后的重置，以及通过 `ref.reset()` 触发的重置                               |
@@ -50,7 +53,7 @@ description: 由字段、提交、校验和命令式 ref 控制组成的完整�
 
 #### FormSubmit
 
-自动反映表单提交状态的提交按钮。在表单提交过程中会被禁用，并可渲染自定义加载图标。
+自动反映表单提交状态的提交按钮。提交中或显式 `disabled` 时使用 Button 禁用变体，呈现 `bg-disabled`、`text-disabled-fg` 与 `cursor-not-allowed`；提交中默认原生禁用按钮并标记 `aria-busy`。
 
 | 属性            | 类型                | 描述                                                 |
 | ------------- | ----------------- | -------------------------------------------------- |

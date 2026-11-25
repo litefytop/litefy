@@ -100,15 +100,6 @@ export function Field({ name, label, description, required, validate, validateTr
         registerField(name, api);
         return () => unregisterField(name);
     }, [name, registerField, unregisterField]);
-    const focusControl = () => {
-        const el = document.getElementById(id);
-        if (el && el.tabIndex !== -1) {
-            el.focus();
-            return;
-        }
-        const focusable = shellRef.current?.querySelector<HTMLElement>("button, [tabindex]:not([tabindex='-1'])");
-        focusable?.focus();
-    };
     const handleValueEvent = () => {
         if (validateTrigger === "change" || errorRef.current !== null) {
             runValidate(readValue());
@@ -143,7 +134,7 @@ export function Field({ name, label, description, required, validate, validateTr
           {label}
           {required && <span className={fieldClassNames?.required} aria-hidden> *</span>}
         </label>)}
-      <div ref={setShellRef} className="relative" onFocusCapture={() => setFocused(true)} onBlurCapture={handleBlurCapture} onClick={focusControl}>
+      <div ref={setShellRef} className="relative" onFocusCapture={() => setFocused(true)} onBlurCapture={handleBlurCapture}>
         {children(info)}
         {error && error.text && (<div role="alert" id={alertId} aria-hidden={!showError || undefined} data-error={showError || undefined} className={fieldClassNames?.error} style={fieldStyles?.error}>
             <span data-error={showError || undefined} className="inline-block transition-transform duration-sm ease-frame -translate-y-full data-[error=true]:translate-y-0">{error.text}</span>

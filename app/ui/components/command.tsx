@@ -6,6 +6,7 @@ import { Dialog, type DialogProps } from "./dialog";
 import { Input } from "./input";
 import { List } from "./list";
 import { useCombobox } from "../utils/use-combobox";
+import type { SlotClassName } from "../utils/cn";
 export type CommandItemConfig = {
     label: React.ReactNode;
     value?: string;
@@ -201,7 +202,7 @@ export function CommandFooter({ navigate = "Navigate", open = "Open", close = "C
 }
 export interface CommandListClassNames {
     rows?: string;
-    item?: string;
+    item?: SlotClassName;
     label?: string;
     itemIcon?: string;
     itemLabel?: string;
@@ -234,7 +235,7 @@ export function CommandList({ empty, renderItem, className, classNames, styles, 
         }} className={className} classNames={{ root: classNames?.rows, item: classNames?.item, groupHeader: classNames?.label, empty: classNames?.empty }} styles={{ item: styles?.item, groupHeader: styles?.label }}/>
     </div>);
 }
-export interface CommandProps extends Omit<React.ComponentProps<"button">, "children" | "className" | "style" | "type" | "onSelect" | "disabled"> {
+export interface CommandProps extends Omit<React.ComponentProps<"button">, "children" | "className" | "style" | "type" | "onSelect"> {
     items: CommandConfig[];
     trigger?: React.ReactNode;
     open?: boolean;
@@ -265,7 +266,7 @@ export interface CommandProps extends Omit<React.ComponentProps<"button">, "chil
         hint?: string;
         hintKey?: string;
         rows?: string;
-        item?: string;
+        item?: SlotClassName;
         label?: string;
         itemIcon?: string;
         itemLabel?: string;

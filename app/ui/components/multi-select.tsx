@@ -2,6 +2,7 @@
 import * as React from "react";
 import { Check } from "./icons";
 import { Popover } from "./popover";
+import { resolveSlotClassName, type SlotClassName } from "../utils/cn";
 export interface MultiSelectOption {
     label: string;
     value: string;
@@ -20,8 +21,8 @@ export interface MultiSelectProps extends Omit<React.ComponentProps<"button">, "
         content?: string;
         list?: string;
         group?: string;
-        option?: string;
-        check?: string;
+        option?: SlotClassName;
+        check?: SlotClassName;
     };
     checkNode?: React.ReactNode;
     styles?: {
@@ -50,17 +51,20 @@ export function MultiSelect({ options, value, defaultValue = NO_VALUES, onChange
     }, [options]);
     const flat = React.useMemo(() => groups.flatMap(([, items]) => items), [groups]);
     const setOpenState = (next: boolean) => {
+        if (disabled && next)
+            return;
         setOpen(next);
         if (!next) {
             setHighlight(null);
             triggerRef.current?.focus();
             return;
         }
-        const selectedIdx = flat.findIndex((option) => innerValue.includes(option.value));
-        setHighlight(selectedIdx === -1 ? (flat.length ? 0 : null) : selectedIdx);
+        const selectedIdx = flat.findIndex((option) => !option.disabled && innerValue.includes(option.value));
+        const firstEnabled = flat.findIndex((option) => !option.disabled);
+        setHighlight(selectedIdx === -1 ? (firstEnabled === -1 ? null : firstEnabled) : selectedIdx);
     };
     const toggle = (option: MultiSelectOption) => {
-        if (option.disabled)
+        if (disabled || option.disabled)
             return;
         const next = innerValue.includes(option.value)
             ? innerValue.filter((v) => v !== option.value)
@@ -73,9 +77,14 @@ export function MultiSelect({ options, value, defaultValue = NO_VALUES, onChange
         if (flat.length === 0)
             return;
         setHighlight((prev) => {
-            if (prev === null)
-                return delta === 1 ? 0 : flat.length - 1;
-            return (prev + delta + flat.length) % flat.length;
+            for (let step = 1; step <= flat.length; step++) {
+                const index = prev === null
+                    ? delta === 1 ? step - 1 : flat.length - step
+                    : (prev + delta * step + flat.length * 2) % flat.length;
+                if (!flat[index].disabled)
+                    return index;
+            }
+            return null;
         });
     };
     const handleListKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -112,9 +121,10 @@ export function MultiSelect({ options, value, defaultValue = NO_VALUES, onChange
             {items.map((option) => {
                 const idx = flat.indexOf(option);
                 const selected = innerValue.includes(option.value);
-                return (<li key={option.value} role="option" aria-selected={selected} aria-disabled={option.disabled || undefined} data-selected={selected || undefined} data-highlighted={idx === highlight || undefined} data-grouped={option.group ? "true" : undefined} tabIndex={idx === highlight ? 0 : -1} onClick={() => toggle(option)} onMouseMove={() => setHighlight(idx)} className={classNames?.option} style={styles?.option}>
+                const itemDisabled = disabled || Boolean(option.disabled);
+                return (<li key={option.value} role="option" aria-selected={selected} aria-disabled={itemDisabled || undefined} data-disabled={itemDisabled || undefined} data-selected={selected || undefined} data-highlighted={!itemDisabled && idx === highlight || undefined} data-grouped={option.group ? "true" : undefined} tabIndex={!itemDisabled && idx === highlight ? 0 : -1} onClick={() => toggle(option)} onMouseMove={() => { if (!itemDisabled) setHighlight(idx); }} className={resolveSlotClassName(classNames?.option, { disabled: itemDisabled })} style={styles?.option}>
                     <span className="min-w-0 flex-1 truncate">{option.label}</span>
-                    {selected && (checkNode ?? (<Check aria-hidden data-selected="true" className={classNames?.check}/>))}
+                    {selected && (checkNode ?? (<Check aria-hidden data-selected="true" className={resolveSlotClassName(classNames?.check, { disabled: itemDisabled })}/>))}
                   </li>);
             })}
           </React.Fragment>))}

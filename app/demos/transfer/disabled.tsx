@@ -16,7 +16,7 @@ export default function Demo() {
   const [value, setValue] = React.useState<string[]>(["ts"]);
 
   return (
-    <div inert className="flex flex-col items-center gap-3">
+    <div className="flex w-full flex-col items-center gap-3">
       <Transfer
         dataSource={dataSource}
         value={value}

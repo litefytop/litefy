@@ -1,6 +1,7 @@
 "use client";
 import { ChevronRight } from "./icons";
 import * as React from "react";
+import { resolveSlotClassName, type SlotClassName } from "../utils/cn";
 
 export interface TreeItemConfig {
     label: React.ReactNode;
@@ -50,7 +51,8 @@ const depthStyle = (depth: number): React.CSSProperties => ({
     ["--litefy-depth" as string]: depth,
 });
 function visibleRows(root: HTMLElement): HTMLElement[] {
-    return Array.from(root.querySelectorAll<HTMLElement>('[role="treeitem"]')).filter((el) => !el.closest('section[data-open="false"]'));
+    return Array.from(root.querySelectorAll<HTMLElement>('[role="treeitem"]')).filter((el) =>
+        !el.closest('section[data-open="false"]') && el.getAttribute("aria-disabled") !== "true");
 }
 function nodeValue(node: TreeItemConfig, parentKey: string, index: number): string {
     return node.value ?? `${parentKey}#${index}`;
@@ -108,8 +110,8 @@ export interface TreeProps extends Omit<TreeRootProps, "className" | "children">
     onOpenChange?: (keys: string[]) => void;
     className?: string;
     classNames?: {
-        trigger?: string;
-        item?: string;
+        trigger?: SlotClassName;
+        item?: SlotClassName;
         label?: string;
         group?: string;
         node?: string;
@@ -152,6 +154,8 @@ export function Tree({ items, value, onValueChange, navigate, openKeys, defaultO
         const isItem = target.getAttribute("role") === "treeitem" && !isTrigger;
         if (!isTrigger && !isItem)
             return;
+        if (target.getAttribute("aria-disabled") === "true" && ["Enter", " ", "ArrowRight", "ArrowLeft"].includes(event.key))
+            return;
         const rows = visibleRows(root);
         const index = rows.indexOf(target);
         const move = (row: HTMLElement | null | undefined) => {
@@ -160,8 +164,12 @@ export function Tree({ items, value, onValueChange, navigate, openKeys, defaultO
                 row.focus();
             }
         };
-        const parentTrigger = () => target.closest("li")?.parentElement?.closest("li")?.querySelector<HTMLElement>('[role="treeitem"][aria-expanded]');
-        const firstChildRow = () => target.closest("li")?.querySelector<HTMLElement>('section [role="treeitem"]');
+        const parentTrigger = () => {
+            const row = target.closest("li")?.parentElement?.closest("li")?.querySelector<HTMLElement>('[role="treeitem"][aria-expanded]');
+            return row?.getAttribute("aria-disabled") === "true" ? undefined : row;
+        };
+        const firstChildRow = () => Array.from(target.closest("li")?.querySelectorAll<HTMLElement>('section [role="treeitem"]') ?? [])
+            .find((row) => row.getAttribute("aria-disabled") !== "true");
         const targetValue = target.dataset.value;
         switch (event.key) {
             case "ArrowDown":
@@ -212,7 +220,7 @@ export function Tree({ items, value, onValueChange, navigate, openKeys, defaultO
             const open = isOpen(nodeKey);
             const iconNode = typeof node.icon === "function" ? node.icon(open) : node.icon;
             return (<li role="none" key={nodeKey} className={classNames?.node}>
-          <TreeTrigger open={open} aria-level={depth + 1} data-value={nodeKey} disabled={node.disabled} onClick={() => toggleOpen(nodeKey)} style={{ ...depthStyle(depth), ...styles?.trigger }} className={classNames?.trigger}>
+          <TreeTrigger open={open} aria-level={depth + 1} data-value={nodeKey} disabled={node.disabled} onClick={() => toggleOpen(nodeKey)} style={{ ...depthStyle(depth), ...styles?.trigger }} className={resolveSlotClassName(classNames?.trigger, { disabled: Boolean(node.disabled) })}>
             {iconNode ? <span className={classNames?.icon} aria-hidden>{iconNode}</span> : null}
             <span className={classNames?.labelText}>{node.label}</span>
             <ChevronRight className={classNames?.icon} data-open={open} aria-hidden/>
@@ -239,12 +247,17 @@ export function Tree({ items, value, onValueChange, navigate, openKeys, defaultO
             "data-value": itemValue,
             "data-active": active,
             "aria-disabled": node.disabled || undefined,
+            tabIndex: node.disabled ? -1 : undefined,
             style: { ...depthStyle(depth), ...styles?.item },
-            className: classNames?.item,
+            className: resolveSlotClassName(classNames?.item, { disabled: Boolean(node.disabled) }),
         };
         return (<li role="none" key={itemValue}>
-        {href !== undefined ? (<TreeItem href={href} aria-current={active ? "page" : undefined} {...rowProps} onClick={navigate
+        {href !== undefined ? (<TreeItem href={node.disabled ? undefined : href} aria-current={active ? "page" : undefined} {...rowProps} onClick={navigate
                 ? (event) => {
+                    if (node.disabled) {
+                        event.preventDefault();
+                        return;
+                    }
                     if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
                         event.preventDefault();
                         navigate(href, event);

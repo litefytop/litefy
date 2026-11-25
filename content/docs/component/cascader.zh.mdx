@@ -17,7 +17,7 @@ description: 由树形数据驱动的多级级联选择器，由面包屑样式�
 
 ### 禁用
 
-disabled 禁用触发钮，面板不可展开。
+`disabled` 原生禁用所有面包屑触发器，根元素标记 `aria-disabled`，选择、展开与键盘处理停止；外观使用 `bg-disabled`、`text-disabled-fg` 与 `cursor-not-allowed`。
 
 <ComponentPreview
   name="cascader-disabled"
@@ -36,12 +36,13 @@ disabled 禁用触发钮，面板不可展开。
 | 属性            | 类型                                                                                          | 描述                                                                                             |
 | :------------ | :------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------- |
 | `tree`        | `CascaderNode[]`                                                                            | 驱动级联选择的树形数据                                                                                    |
-| `disabled`    | `boolean`                                                                                   | 组级禁用：触发钮原生禁用、根容器挂 `inert`，面板不可展开，默认 `false`                                                    |
+| `disabled`    | `boolean`                                                                                   | 组级禁用：所有触发器原生禁用、根容器标记 `aria-disabled`，面板不可展开，默认 `false`                                        |
 | `placeholder` | `string`                                                                                    | 未选择任何项时触发器显示的占位文本，默认 `"Select your location"`                                                  |
-| `width`       | `string \| number`                                                                          | 整体宽度（CSS 值），面板与字段框等宽，各列自动均分，默认 `24rem`                                                         |
-| `className`   | `string`                                                                                    | 根容器的自定义类名                                                                                      |
+| `width`       | `string \| number`                                                                          | 可选的显式最大宽度（CSS 值，数字按 px）；省略时字段根节点默认最大宽度 20rem，面板与字段等宽                                  |
+| `className`   | `string`                                                                                    | 根容器自定义类名，与 `classNames.root` 合并；默认 `w-full min-w-0 max-w-[20rem]`                                               |
+| `style`       | `React.CSSProperties`                                                                       | 根容器内联样式，与 `styles.root` 合并                                                                                          |
 | `classNames`  | `{ root?; breadcrumb?; trigger?; chevron?; menu?; option?; list?: ListClassNames }`         | 各部分自定义类名：根容器、面包屑行、各级触发器、箭头图标、级别面板、选项行，以及面板内的 `List`                                            |
-| `styles`      | `{ root?: React.CSSProperties; trigger?: React.CSSProperties; menu?: React.CSSProperties }` | 根容器、面包屑与级别面板的内联样式                                                                              |
+| `styles`      | `{ root?: React.CSSProperties; trigger?: React.CSSProperties; menu?: React.CSSProperties }` | 根容器、触发器与级别面板内联样式；面板默认最大宽度 20rem，并受视口宽度减 1rem 限制                                      |
 | `...props`    | `React.ComponentProps<"div">`                                                               | 支持全部 div 原生属性（除 `children`、`className` 外），展开到根容器                                               |
 
 #### CascaderNode
@@ -81,3 +82,4 @@ disabled 禁用触发钮，面板不可展开。
 | --- | --- |
 | `[aria-expanded]` | 位于触发器按钮上——该层面板打开期间为 `true` |
 | `[aria-current="step"]` | 位于显示已选叶子节点的触发器按钮上 |
+| `[data-disabled]` | 位于根元素上——整个级联选择器禁用时存在 |

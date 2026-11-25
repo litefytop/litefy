@@ -48,7 +48,7 @@ export function IconAdapterPlayground() {
 
   return (
     <div className="not-typography mt-6 flex flex-col gap-4">
-      <p className="m-0 text-sm text-surface-fg">{t.desc}</p>
+      <p className="m-0 text-sm text-foreground">{t.desc}</p>
       <div className="flex items-center gap-2" role="group" aria-label={t.title}>
         {(["lucide", "tabler"] as const).map((key) => (
           <Button
@@ -75,7 +75,7 @@ export function IconAdapterPlayground() {
             className="flex flex-col items-center gap-1 rounded-sm border border-border bg-background p-2"
           >
             <Icon className="size-5" aria-hidden />
-            <span className="font-mono text-2.5 text-surface-fg">
+            <span className="font-mono text-2.5 text-foreground">
               {(g.sourceNames as Record<string, string>)[name] ?? name}
             </span>
           </div>

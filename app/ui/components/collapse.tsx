@@ -45,6 +45,7 @@ export function CollapsePanel({ children, className, style, open, classNames, st
 export interface CollapseProps extends Omit<CollapseRootProps, "className" | "style"> {
     className?: string;
     style?: React.CSSProperties;
+    disabled?: boolean;
     label?: React.ReactNode | ((open: boolean) => React.ReactNode);
     icon?: React.ReactNode | ((open: boolean) => React.ReactNode);
     open?: boolean;
@@ -64,7 +65,7 @@ export interface CollapseProps extends Omit<CollapseRootProps, "className" | "st
         body?: React.CSSProperties;
     };
 }
-export function Collapse({ label, icon, open, defaultOpen = false, children, itemKey, onOpenChange, className, style, styles, classNames, ...props }: CollapseProps) {
+export function Collapse({ label, icon, open, defaultOpen = false, children, itemKey, onOpenChange, className, style, styles, classNames, disabled, ...props }: CollapseProps) {
     const id = React.useId();
     const [_open, setOpen] = React.useState(defaultOpen);
     const isControlled = open !== undefined;
@@ -80,8 +81,8 @@ export function Collapse({ label, icon, open, defaultOpen = false, children, ite
     const triggerId = `acc-trigger-${itemKey ?? id}`;
     const labelNode = typeof label === "function" ? label(open$) : label;
     const iconNode = typeof icon === "function" ? icon(open$) : icon;
-    return (<CollapseRoot {...props} className={className} style={style}>
-      <CollapseTrigger open={open$} id={triggerId} aria-controls={panelId} onClick={handleToggle} className={classNames?.trigger} style={styles?.trigger}>
+    return (<CollapseRoot {...props} className={className} style={style} aria-disabled={disabled || props["aria-disabled"]} data-disabled={disabled || undefined}>
+      <CollapseTrigger open={open$} id={triggerId} aria-controls={panelId} onClick={handleToggle} disabled={disabled} className={classNames?.trigger} style={styles?.trigger}>
         {labelNode}
         {iconNode ?? (<ChevronDown data-open={open$} aria-hidden className={classNames?.icon} style={styles?.icon}/>)}
       </CollapseTrigger>

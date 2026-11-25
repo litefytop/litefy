@@ -8,4 +8,4 @@
 
 ## 待定项
 
-- 其余骨架图标位的通道补齐（banner X、chat 动作组、dialog / toast 状态字形映射、calendar 翻页、command 搜索、lattice-loader 标记、nav-bar、number-input、pagination、steps、table 排序、tabs 导航、thought-line、toc、transfer、tree、wizard）——通道模式与命名照本契约，逐组件补齐时同步各自组件蓝图。
+- 其余骨架图标位的通道补齐（banner X、chat 动作组、dialog / toast 状态字形映射、calendar 翻页、command 搜索、lattice-loader 标记、nav-bar、number-input、pagination、steps、table 排序、tabs 导航、thought-line、toc、transfer、tree）——通道模式与命名照本契约，逐组件补齐时同步各自组件蓝图。

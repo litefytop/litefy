@@ -9,7 +9,7 @@ const dataSource: TransferItemConfig[] = [
   { label: "TypeScript", value: "ts" },
   { label: "Rust", value: "rust" },
   { label: "Go", value: "go" },
-  { label: "Python", value: "python", disabled: true },
+  { label: "Python", value: "python" },
   { label: "Java", value: "java" },
 ];
 
@@ -17,7 +17,7 @@ export default function TransferBasicDemo() {
   const [value, setValue] = React.useState<string[]>(["ts", "go"]);
 
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div className="flex w-full flex-col items-center gap-3">
       <Transfer
         dataSource={dataSource}
         value={value}

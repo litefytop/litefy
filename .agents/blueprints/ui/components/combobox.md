@@ -7,7 +7,7 @@
 
 - 数据源二选一：`options`（本地）或 `fetcher`（远程）；未传 fetcher 时使用返回空的 noopFetcher
 - 本地过滤：option 与 keyword 均做去空白 + 小写归一化后 `includes` 匹配，空关键字返回全部
-- `disabled` 经 props 透传 Picker（Picker 契约：输入框原生禁用、根节点 inert、浮层不可达）
+- `disabled` 经 props 透传 Picker（输入框原生禁用、根输出 `data-disabled` / `aria-disabled`、open 强制关闭且 JS 拒绝打开；不挂 inert）；皮肤完整替换字段组与输入框正常类串，保留布局并显式禁用色与 `cursor-not-allowed`
 - 远程：`useRemotePagination`（utils/use-remote-pagination）按 `{ page, size, keyword }` 拉取 `{ list, total }`；挂载且有 fetcher 时先 `search("")` 拉首屏；List 滚动到底且 `hasMore && !loading` 时 `loadMore()`
 - 默认 `pageSize=20`、`debounceMs=300`
 - 值受控（`value` + `onValueChange`）或 `defaultValue`（默认 ""）；`commit` 统一写值、触发 `onValueChange` + `onCommit`、关闭面板并 `reset()`

@@ -109,6 +109,7 @@ const clientLoader = browserCollections.docs.createClientLoader({
           locale={locale}
           markdownUrl={markdownUrl}
           githubPath={`content/docs/${path}`}
+          tree={pageTrees[locale].data as unknown as Root}
         >
           <Mdx components={useMDXComponents()} />
         </DocsArticle>

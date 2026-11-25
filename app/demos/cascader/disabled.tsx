@@ -21,5 +21,9 @@ const tree: CascaderNode[] = [
 ];
 
 export default function Demo() {
-  return <Cascader tree={tree} disabled />;
+  return (
+    <div className="flex flex-col items-center">
+      <Cascader tree={tree} disabled />
+    </div>
+  );
 }

@@ -44,10 +44,7 @@
   "button": {
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/button.tsx",
-    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/button.tsx",
-    "dependence": [
-      "cn"
-    ]
+    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/button.tsx"
   },
   "calendar": {
     "type": "component",
@@ -55,8 +52,8 @@
     "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/calendar.tsx",
     "dependence": [
       "icons",
-      "date-math",
-      "button"
+      "button",
+      "date-math"
     ]
   },
   "cascader": {
@@ -126,7 +123,6 @@
       "icons",
       "use-combobox",
       "use-remote-pagination",
-      "popover",
       "input"
     ]
   },
@@ -140,8 +136,7 @@
       "dialog",
       "input",
       "list",
-      "use-combobox",
-      "popover"
+      "use-combobox"
     ]
   },
   "context-menu": {
@@ -253,7 +248,6 @@
       "use-floating-panel",
       "floating-position",
       "combobox-query",
-      "popover",
       "input"
     ]
   },
@@ -330,8 +324,7 @@
     "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/menu.tsx",
     "dependence": [
       "icons",
-      "floating-position",
-      "popover"
+      "floating-position"
     ]
   },
   "meter": {
@@ -484,8 +477,7 @@
       "icons",
       "use-floating-panel",
       "floating-position",
-      "field",
-      "popover"
+      "field"
     ]
   },
   "separator": {
@@ -604,8 +596,8 @@
     "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/transfer.tsx",
     "dependence": [
       "icons",
-      "checkbox",
-      "button"
+      "button",
+      "checkbox"
     ]
   },
   "tree": {
@@ -625,17 +617,6 @@
     "type": "component",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/watermark.tsx",
     "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/watermark.tsx"
-  },
-  "wizard": {
-    "type": "component",
-    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/components/wizard.tsx",
-    "skin": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/wizard.tsx",
-    "dependence": [
-      "icons",
-      "button",
-      "pager",
-      "steps"
-    ]
   },
   "chart-kit": {
     "type": "util",

@@ -12,7 +12,7 @@ import { useSiteSkin } from "./site-skin";
 
 function SearchSpinner() {
   const ref = useSpin<SVGSVGElement>();
-  return <Loader2 ref={ref} className="size-4 shrink-0 text-surface-fg" aria-hidden />;
+  return <Loader2 ref={ref} className="size-4 shrink-0 text-foreground" aria-hidden />;
 }
 
 function initOrama(locale?: string) {
@@ -79,7 +79,7 @@ export function DocsSearchDialog({
           <span className="block">
             <span className="block truncate text-sm text-foreground">{title}</span>
             {breadcrumb && (
-              <span className="block truncate text-xs text-surface-fg">{breadcrumb}</span>
+              <span className="block truncate text-xs text-foreground">{breadcrumb}</span>
             )}
           </span>
         ),

@@ -1,30 +1,47 @@
 ﻿import { Menu as MenuHeadless } from "@/ui";
 import type { MenuProps } from "@/ui";
-import { cn, mergeSlots } from "../utils/cn";
+import { cn, mergeStateSlots, type SlotState } from "../utils/cn";
+import { popoverWidthClasses } from "./popover";
 
 
-const rootClasses = "m-0 p-0 list-none inert:dim";
+const rootClasses = "m-0 p-0 list-none text-foreground";
 
 const itemClasses =
   "m-0 not-last:border-b-hair not-last:border-border";
 
 const labelClasses =
   "m-0 not-last:border-b-hair not-last:border-border " +
-  "px-3 py-snug text-sm leading-5 font-label tracking-label case-label text-surface-fg";
+  "px-3 py-snug text-sm leading-5 control-label text-foreground";
 
 const itemButtonBaseClasses =
-  "block w-full text-left px-3 py-snug text-sm leading-5 text-foreground cursor-pointer disabled:dim not-data-[has-sub]:truncate";
+  "block w-full text-left px-3 py-snug text-sm/5 not-data-has-sub:truncate";
 const itemButtonPressClasses = "active:crush";
 const itemButtonSubClasses =
-  "data-[has-sub]:flex data-[has-sub]:items-center data-[has-sub]:justify-between data-[has-sub]:cursor-default";
+  "data-has-sub:flex data-has-sub:items-center data-has-sub:justify-between";
 
-const itemButtonClasses = cn(itemButtonBaseClasses, itemButtonPressClasses, itemButtonSubClasses);
+const itemButtonClasses = cn(
+  itemButtonBaseClasses,
+  itemButtonPressClasses,
+  itemButtonSubClasses,
+  "cursor-pointer data-has-sub:cursor-default " +
+    "hover:bg-accent hover:text-accent-fg data-active:bg-accent data-active:text-accent-fg",
+);
 
-const subClasses =
-  "w-48 rounded-md border-frame border-border " +
-  "bg-surface-raised text-foreground shadow-elevated p-[var(--radius-md)]";
+const itemButtonDisabledClasses = cn(
+  itemButtonBaseClasses,
+  itemButtonSubClasses,
+  "cursor-not-allowed text-disabled-fg",
+);
 
-const chevronClasses = "size-4 shrink-0 text-surface-fg";
+export const menuItemButtonClasses = ({ disabled }: SlotState) =>
+  disabled ? itemButtonDisabledClasses : itemButtonClasses;
+
+const subClasses = cn(
+  popoverWidthClasses,
+  "rounded-md border-frame border-border bg-surface-raised text-surface-raised-fg shadow-elevated p-[var(--radius-md)]",
+);
+
+const chevronClasses = "size-4 shrink-0 text-foreground";
 
 
 export const menuClasses = {
@@ -45,12 +62,11 @@ export function Menu({
   return (
     <MenuHeadless
       {...props}
-      className={cn(rootClasses, className)}
-      classNames={mergeSlots(
-        { item: itemClasses, label: labelClasses, sub: subClasses, chevron: chevronClasses },
-        classNames,
+      classNames={mergeStateSlots(
+        { item: itemClasses, label: labelClasses, sub: subClasses, chevron: chevronClasses, itemButton: menuItemButtonClasses },
+        { ...classNames, root: cn(rootClasses, classNames?.root, className) },
       )}
-      itemClassName={cn(itemButtonClasses, itemClassName) || undefined}
+      itemClassName={itemClassName || undefined}
     />
   );
 }

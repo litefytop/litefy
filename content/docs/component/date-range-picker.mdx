@@ -45,7 +45,7 @@ The continuous highlight band of the selected range is drawn by the skin's `cale
 
 ### Relationship with Calendar
 
-The component reuses `Calendar`'s grid, arrow-key focus movement and month/year views. `Calendar` gains the optional props `range` / `weekdayLabels` / `monthLabels` / `onHoverDateChange`; without them its behavior is unchanged and `DatePicker` needs no edits. Day cells emit the four states `start` / `end` / `between` / `single` through `data-range`.
+The component reuses `Calendar`'s grid, arrow-key focus movement and month/year views. `Calendar` gains the optional props `range` / `weekdayLabels` / `monthLabels` / `onHoverDateChange`; without them its behavior is unchanged and `DatePicker` needs no edits. Day cells emit `start` / `end` / `between` through `data-range`: the first click lands on `start` (an open left cap awaiting the end), and a one-day range adds `data-range-one-day` to round both corners.
 
 The panel keeps `popover="manual"` and renders in the top layer, so it is not clipped even inside a table header with `overflow-hidden`. Panel width is computed from the calendar's own size (`7 × --width-control + 6 × --spacing`, theme-aware) and does not compress with a narrow field; very narrow viewports only add a width cap and horizontal scrolling.
 
@@ -53,6 +53,6 @@ The panel keeps `popover="manual"` and renders in the top layer, so it is not cl
 
 | Attribute | Value | Description |
 | --- | --- | --- |
-| `data-range` | `start` / `end` / `between` / `single` | Role of a day cell within the range |
+| `data-range` | `start` / `end` / `between` | Role of a day cell within the range |
 | `data-in-range` | `true` | The day cell lies inside the selected range |
 | `data-slot` | `date-range-panel` | Panel structure marker |

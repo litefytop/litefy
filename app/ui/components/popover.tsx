@@ -181,22 +181,23 @@ export interface PopoverProps extends Omit<React.ComponentProps<"button">, "clas
     mode?: "click" | "hover";
     contentKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
 }
-export function Popover({ trigger, open, defaultOpen = false, onOpenChange, alignX = "center", placement, contentKeyDown, "aria-haspopup": ariaHasPopup, classNames, styles, children, mode = "click", ...props }: PopoverProps) {
+export function Popover({ trigger, open, defaultOpen = false, onOpenChange, alignX = "center", placement, contentKeyDown, "aria-haspopup": ariaHasPopup, classNames, styles, children, mode = "click", disabled, ...props }: PopoverProps) {
     const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen);
     const isControlled = open !== undefined;
-    const innerOpen = isControlled ? open : uncontrolledOpen;
+    const innerOpen = !disabled && (isControlled ? open : uncontrolledOpen);
     const handleOpenChange = React.useCallback((next: boolean) => {
+        if (disabled && next) return;
         if (!isControlled)
             setUncontrolledOpen(next);
         onOpenChange?.(next);
-    }, [isControlled, onOpenChange]);
+    }, [disabled, isControlled, onOpenChange]);
     const { triggerProps, contentProps, anchorName } = usePopoverTrigger({
         open: innerOpen,
         onOpenChange: handleOpenChange,
         mode,
     });
     return (<>
-      <ButtonRoot {...props} {...triggerProps} aria-haspopup={ariaHasPopup ?? "menu"} type="button" className={classNames?.trigger} style={styles?.trigger}>
+      <ButtonRoot {...props} {...triggerProps} disabled={disabled} aria-haspopup={ariaHasPopup ?? "menu"} type="button" className={classNames?.trigger} style={styles?.trigger}>
         {trigger}
       </ButtonRoot>
       <PopoverContent {...contentProps} open={innerOpen} onOpenChange={handleOpenChange} alignX={alignX} placement={placement} anchorName={anchorName} autofocus={mode !== "hover"} onKeyDown={contentKeyDown} className={classNames?.content} style={styles?.content}>

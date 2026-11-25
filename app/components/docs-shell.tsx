@@ -12,6 +12,7 @@ import { AppearancePanel } from "./appearance-panel";
 import { StyleMenu, StyleSelect } from "./style-select";
 import { DocsSearchDialog, DocsSearchTrigger, useSearchHotkey } from "./docs-search";
 import { MotionPreferenceNotice } from "./motion-preference-notice";
+import { DocsPageNav } from "./docs-page-nav";
 import { type TocItem, type TreeNodeConfig } from "@/ui";
 import { useSiteSkin } from "./site-skin";
 
@@ -65,7 +66,6 @@ function toTreeItems(nodes: TreeNode[], pathname: string, locale: string): TreeN
 
 function SidebarFooter({ locale }: { locale: string }) {
   const { buttonVariants, cn } = useSiteSkin();
-  const githubButtonClass = cn(buttonVariants.outline, "px-0 md:px-0 aspect-square");
   return (
     <div className="flex flex-col gap-2 px-3 py-3 border-t">
       <StyleSelect lang={locale === "zh" ? "zh" : "en"} className="w-full" />
@@ -76,7 +76,8 @@ function SidebarFooter({ locale }: { locale: string }) {
           href={`https://github.com/${gitConfig.user}/${gitConfig.repo}`}
           target="_blank"
           rel="noreferrer"
-          className={githubButtonClass}
+          data-pure-icon="true"
+          className={cn(buttonVariants.outline, "pure-icon")}
           aria-label="GitHub"
           title="GitHub"
         >
@@ -114,7 +115,7 @@ function SidebarPanel({
           to={toSchemeHref(pathname, `/${locale}`)}
           className="flex items-center gap-2 font-medium"
         >
-          <span dangerouslySetInnerHTML={{ __html: logoRaw }} className="size-8 fill-foreground" />
+          <span dangerouslySetInnerHTML={{ __html: logoRaw }} className="size-8 fill-surface-fg" />
           {appName}
         </Link>
         {onCollapse && (
@@ -124,7 +125,7 @@ function SidebarPanel({
             aria-label={locale === "zh" ? "收起侧栏" : "Collapse sidebar"}
             title={locale === "zh" ? "收起侧栏" : "Collapse sidebar"}
             onClick={onCollapse}
-            className="ms-auto"
+            className="ms-auto text-surface-fg"
             icon={<PanelLeft className="size-4" aria-hidden />}
           />
         )}
@@ -135,7 +136,7 @@ function SidebarPanel({
             aria-label={LABELS[locale as "zh"]?.menu ?? LABELS.en.menu}
             title={LABELS[locale as "zh"]?.menu ?? LABELS.en.menu}
             onClick={onClose}
-            className="ms-auto"
+            className="ms-auto text-surface-fg"
             icon={<X className="size-4" aria-hidden />}
           />
         )}
@@ -152,7 +153,16 @@ function SidebarPanel({
             if (onClose && (e.target as HTMLElement).closest("a")) onClose();
           }}
         >
-          <Tree items={treeItems} value={pathname} navigate={(href) => navigate(href)} />
+          <Tree
+            items={treeItems}
+            value={pathname}
+            navigate={(href) => navigate(href)}
+            classNames={{
+              trigger: "text-surface-fg",
+              item: "text-surface-fg data-[active=true]:text-primary-fg",
+              label: "text-surface-fg",
+            }}
+          />
         </nav>
       </div>
       <SidebarFooter locale={locale} />
@@ -175,10 +185,9 @@ function ShellFloatingBar({
   return (
     <div
       className={
-        "flex items-center gap-1 p-1 fixed left-4 z-50 rounded-md border bg-surface shadow-base " +
+        "mx-4 my-2 flex items-center gap-1 p-1 justify-self-start rounded-md border bg-surface text-surface-fg shadow-base [grid-area:topbar] " +
         (className ?? "")
       }
-      style={{ top: "calc(calc(var(--spacing) * 4) + var(--motion-banner-h, 0px))" }}
     >
       <Button
         type="button"
@@ -186,6 +195,7 @@ function ShellFloatingBar({
         aria-label={LABELS[locale as "zh"]?.menu ?? LABELS.en.menu}
         title={LABELS[locale as "zh"]?.menu ?? LABELS.en.menu}
         onClick={onOpenSidebar}
+        className="text-surface-fg"
         icon={<PanelLeft className="size-4" aria-hidden />}
       />
       <Button
@@ -194,6 +204,7 @@ function ShellFloatingBar({
         aria-label={locale === "zh" ? "搜索文档" : "Search docs"}
         title={locale === "zh" ? "搜索文档" : "Search docs"}
         onClick={onOpenSearch}
+        className="text-surface-fg"
         icon={<Search className="size-4" aria-hidden />}
       />
     </div>
@@ -251,13 +262,13 @@ function ShellHeader({
 }) {
   const { pathname } = useLocation();
   return (
-    <header className="sticky top-0 z-40 border-b bg-surface">
+    <header className="sticky top-0 z-40 border-b bg-surface text-surface-fg">
       <div className="flex h-14 items-center gap-3 px-4 md:px-6 lg:px-8 mx-auto w-full max-w-320">
         <Link
           to={toSchemeHref(pathname, `/${locale}`)}
           className="flex min-w-0 items-center gap-2 font-medium"
         >
-          <span dangerouslySetInnerHTML={{ __html: logoRaw }} className="size-8 shrink-0 fill-foreground" />
+          <span dangerouslySetInnerHTML={{ __html: logoRaw }} className="size-8 shrink-0 fill-surface-fg" />
           <span className="min-w-0 truncate">{appName}</span>
         </Link>
         <div className="flex ms-auto items-center gap-3">
@@ -293,6 +304,7 @@ export function DocsShell({
   const { Drawer, Sidebar, Toc, cn } = useSiteSkin();
   const [searchOpen, setSearchOpen] = React.useState(false);
   const [sidebarOpen, setSidebarOpen] = React.useState(true);
+  const [motionNoticeVisible, setMotionNoticeVisible] = React.useState(false);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const toggleSearch = React.useCallback(() => {
     if (searchOpen) {
@@ -365,19 +377,19 @@ export function DocsShell({
   }, [location.pathname]);
 
   return (
-    <div className="grid h-dvh overflow-hidden grid-rows-[auto_1fr] grid-cols-1 lg:grid-cols-[auto_1fr] [grid-template-areas:'banner_banner'_'sidebar_main'] max-lg:[grid-template-areas:'banner'_'main'] bg-background text-foreground">
+    <div className="grid h-dvh overflow-hidden grid-rows-[auto_1fr] grid-cols-1 lg:grid-cols-[auto_1fr] [grid-template-areas:'topbar_topbar'_'sidebar_main'] max-lg:[grid-template-areas:'topbar'_'main'] bg-background text-foreground">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100 focus:rounded-md focus:border focus:bg-surface focus:px-4 focus:py-2 focus:text-foreground focus:shadow-base"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100 focus:rounded-md focus:border focus:bg-surface focus:px-4 focus:py-2 focus:text-surface-fg focus:shadow-base"
       >
         {locale === "zh" ? "跳到主要内容" : "Skip to content"}
       </a>
-      <MotionPreferenceNotice />
+      <MotionPreferenceNotice onVisibilityChange={setMotionNoticeVisible} />
 
       <Sidebar
         open={sidebarOpen}
         onOpenChange={setSidebarOpen}
-        className={cn("hidden w-64 border-r [grid-area:sidebar]", sidebarOpen && "lg:flex")}
+        className={cn("hidden w-64 border-r text-surface-fg [grid-area:sidebar]", sidebarOpen && "lg:flex")}
       >
         <SidebarPanel
           tree={navTree}
@@ -387,12 +399,14 @@ export function DocsShell({
         />
       </Sidebar>
 
-      <ShellFloatingBar
-        locale={locale}
-        onOpenSidebar={openSidebar}
-        onOpenSearch={toggleSearch}
-        className={sidebarOpen ? "lg:hidden" : ""}
-      />
+      {!motionNoticeVisible && (
+        <ShellFloatingBar
+          locale={locale}
+          onOpenSidebar={openSidebar}
+          onOpenSearch={toggleSearch}
+          className={sidebarOpen ? "lg:hidden" : ""}
+        />
+      )}
 
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen} placement="left">
         {tree && (
@@ -412,20 +426,22 @@ export function DocsShell({
         id="main-content"
         tabIndex={-1}
         data-scroll-root=""
-        className="flex min-w-0 gap-6 overflow-y-auto scroll-pt-6 px-4 pt-20 pb-6 md:px-6 xl:pt-6 lg:px-8 [grid-area:main]"
+        className="flex min-w-0 items-start gap-6 overflow-y-auto scroll-pt-6 px-4 pt-6 pb-6 md:px-6 lg:px-8 [grid-area:main]"
       >
         {children}
         {toc.length > 0 && (
-          <Toc
-            variant="line"
-            items={toTocItems(toc)}
-            title={LABELS[locale as "zh"]?.toc ?? LABELS.en.toc}
-            styles={{
-              rail: { top: "2rem" },
-              scroll: { maxHeight: "calc(100dvh - 8rem)" },
-              status: { top: "1rem" },
-            }}
-          />
+          <div className="sticky top-8 self-start shrink-0">
+            <Toc
+              variant="line"
+              items={toTocItems(toc)}
+              title={LABELS[locale as "zh"]?.toc ?? LABELS.en.toc}
+              styles={{
+                rail: { top: "2rem" },
+                scroll: { maxHeight: "calc(100dvh - 8rem)" },
+                status: { top: "1rem" },
+              }}
+            />
+          </div>
         )}
       </main>
       <DocsSearchDialog open={searchOpen} onOpenChange={setSearchOpen} locale={locale} />
@@ -439,6 +455,7 @@ export function DocsArticle({
   locale,
   markdownUrl,
   githubPath,
+  tree,
   children,
 }: {
   title: string;
@@ -446,6 +463,7 @@ export function DocsArticle({
   locale: string;
   markdownUrl?: string;
   githubPath?: string;
+  tree?: Root;
   children: React.ReactNode;
 }) {
   const { Button, DropdownMenu } = useSiteSkin();
@@ -458,7 +476,7 @@ export function DocsArticle({
     }
   };
   return (
-    <article className="typography min-w-0 mx-auto w-full max-w-160 [&>*:first-child]:mt-0 [&>blockquote]:mt-5 [&>blockquote]:max-w-[40em] [&>blockquote]:mx-auto [&>div>table]:w-full [&>div>table]:border-collapse [&>div>table]:text-sm [&>div>table_td]:border [&>div>table_td]:p-2 [&>div>table_td]:wrap-anywhere [&>div>table_th]:border [&>div>table_th]:bg-surface/50 [&>div>table_th]:p-2 [&>div>table_th]:text-start [&>div>table_th]:wrap-anywhere [&>div:has(>table)]:mt-5 [&>h2]:mt-14 [&>h3]:mt-11 [&>h4]:mt-8 [&>h5]:mt-8 [&>h6]:mt-8 [&>h2]:mb-5 [&>h3]:mb-5 [&>h4]:mb-5 [&>h5]:mb-5 [&>h6]:mb-5 [&>hr]:mb-8 [&>hr]:mt-8 [&>ol]:mt-5 [&>ol]:max-w-[40em] [&>ol]:mx-auto [&>p]:mt-5 [&>p]:max-w-[40em] [&>p]:mx-auto [&>ul]:mt-5 [&>ul]:max-w-[40em] [&>ul]:mx-auto [&>ol>li+li]:mt-1.5 [&>ul>li+li]:mt-1.5">
+    <article className="typography min-w-0 mx-auto w-full max-w-160 [&>*:first-child]:mt-0 [&>blockquote]:mt-5 [&>blockquote]:max-w-[40em] [&>div>table]:w-full [&>div>table]:border-collapse [&>div>table]:text-sm [&>div>table_td]:border [&>div>table_td]:p-2 [&>div>table_td]:wrap-anywhere [&>div>table_th]:border [&>div>table_th]:bg-surface [&>div>table_th]:text-surface-fg [&>div>table_th]:p-2 [&>div>table_th]:text-start [&>div>table_th]:wrap-anywhere [&>div:has(>table)]:mt-5 [&>h2]:mt-14 [&>h3]:mt-11 [&>h4]:mt-8 [&>h5]:mt-8 [&>h6]:mt-8 [&>h2]:mb-5 [&>h3]:mb-5 [&>h4]:mb-5 [&>h5]:mb-5 [&>h6]:mb-5 [&>hr]:mb-8 [&>hr]:mt-8 [&>ol]:mt-5 [&>ol]:max-w-[40em] [&>p]:mt-5 [&>p]:max-w-[40em] [&>ul]:mt-5 [&>ul]:max-w-[40em] [&>ol>li+li]:mt-1.5 [&>ul>li+li]:mt-1.5">
       <h1
         style={{ marginBlockEnd: "calc(var(--spacing) * 2)" }}
       >
@@ -466,7 +484,7 @@ export function DocsArticle({
       </h1>
       {description && (
         <p
-          className="m-0 scroll-mt-20 text-surface-fg text-base leading-6 sm:text-lg sm:leading-7"
+          className="m-0 scroll-mt-20 text-foreground text-base leading-6 sm:text-lg sm:leading-7"
           style={{ marginBlockEnd: "calc(var(--spacing) * 4)" }}
         >
           {description}
@@ -537,6 +555,7 @@ export function DocsArticle({
         )}
       </div>
       {children}
+      {tree && <DocsPageNav tree={tree} />}
     </article>
   );
 }
@@ -551,14 +570,14 @@ export function HomeShell({ locale, children }: { locale: string; children: Reac
       <ShellHeader locale={locale} showSearch onOpenSearch={toggleSearch} />
       <DocsSearchDialog open={searchOpen} onOpenChange={setSearchOpen} locale={locale} />
       <main className="flex flex-col flex-1">{children}</main>
-      <footer className="py-6 border-t bg-surface">
-        <div className="flex items-center justify-between px-4 md:px-6 lg:px-8 mx-auto w-full max-w-320 text-sm text-on-surface">
+      <footer className="py-6 border-t bg-surface text-surface-fg">
+        <div className="flex items-center justify-between px-4 md:px-6 lg:px-8 mx-auto w-full max-w-320 text-sm">
           <span>
             © {new Date().getFullYear()} {appName}
           </span>
           <Link
             to={toSchemeHref(pathname, `/${locale}/docs`)}
-            className="transition-colors hover:text-foreground"
+            className="hover:underline underline-offset-4"
           >
             {LABELS[locale as "zh"]?.docs ?? LABELS.en.docs}
           </Link>

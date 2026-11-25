@@ -8,7 +8,7 @@
     "dev": "react-router dev",
     "lint": "oxlint app packages/cli/src scripts",
     "lint:fix": "oxlint --fix app packages/cli/src scripts",
-    "types:check": "react-router typegen && fumadocs-mdx && tsc --noEmit && node scripts/check-blueprint-sync.mjs && node scripts/check-doc-format.mjs && node scripts/check-ui-css.mjs && oxlint app packages/cli/src scripts",
+    "types:check": "react-router typegen && fumadocs-mdx && tsc --noEmit && node scripts/check-blueprint-sync.mjs && node scripts/check-doc-format.mjs && node scripts/check-ui-css.mjs && node scripts/check-color-pairs.mjs && oxlint app packages/cli/src scripts",
     "audit:check": "node scripts/security-audit.mjs",
     "postinstall": "fumadocs-mdx",
     "cli:build": "pnpm --filter=litefy run build",

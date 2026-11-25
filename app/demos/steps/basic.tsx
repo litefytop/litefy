@@ -10,7 +10,7 @@ const items = [
   { title: "Confirm", description: "Review" },
 ];
 
-export default function StepsBasicDemo() {
+export default function Demo() {
   const [index, setIndex] = React.useState(0);
   const [maxIndex, setMaxIndex] = React.useState(0);
 
@@ -18,6 +18,8 @@ export default function StepsBasicDemo() {
     setIndex(next);
     setMaxIndex((m) => Math.max(m, next));
   };
+
+  const finished = index === items.length;
 
   return (
     <div className="flex w-full flex-col gap-4 items-center">
@@ -30,15 +32,11 @@ export default function StepsBasicDemo() {
         >
           Back
         </Button>
-        <span>
-          Step {index + 1} of {items.length}
-        </span>
-        <Button
-          onClick={() => go(Math.min(items.length - 1, index + 1))}
-          disabled={index === items.length - 1}
-        >
-          Next
-        </Button>
+        {finished ? null : (
+          <Button onClick={() => go(index + 1)}>
+            {index === items.length - 1 ? "Finish" : "Next"}
+          </Button>
+        )}
       </div>
     </div>
   );

@@ -43,7 +43,7 @@ function DemoCode({ load, hint }: { load: () => Promise<string>; hint: string })
   }, [load]);
 
   if (!code) {
-    return <div className="p-4 text-sm text-surface-fg">{hint}</div>;
+    return <div className="p-4 text-sm text-foreground">{hint}</div>;
   }
   return <CodeStage code={code} lang="tsx" />;
 }
@@ -95,7 +95,7 @@ export function ComponentPreview({
   }
 
   const stage = (
-    <div className="flex w-full min-h-64 overflow-auto bg-background p-2 *:m-auto *:max-w-full *:min-w-0 md:h-[round(up,calc(100cqw*9/16),1px)] md:min-h-0">
+    <div className="flex w-full min-h-64 overflow-auto bg-background p-2 *:m-auto *:min-w-0 md:h-[round(up,calc(100cqw*9/16),1px)] md:min-h-0">
       <Suspense fallback={<PreviewSkeleton />}>
         <LazyDemo Demo={getLazyDemo(demo.load)} />
       </Suspense>
@@ -108,7 +108,7 @@ export function ComponentPreview({
       data-name={name}
       {...props}
     >
-      {description && <p className="mb-2 text-sm text-surface-fg">{description}</p>}
+      {description && <p className="mb-2 text-sm text-foreground">{description}</p>}
 
       <figure className="relative w-full overflow-hidden rounded-xl border">
         {hideCode ? (

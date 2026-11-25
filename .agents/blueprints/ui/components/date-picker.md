@@ -14,4 +14,5 @@
 - 输入框键盘：先走外部 `onKeyDown`，再经 `usePanelFocus`（utils/use-panel-focus）在面板打开时用 ArrowDown/ArrowUp 聚焦首/尾可聚焦项，最后 Enter 应用解析
 - `Picker` 承载输入：`value=text`、`onValueChange=handleTextChange`，`placeholder` 缺省 "Select or type a date"，`aria-invalid` 由内部错误或 `invalid` 合成，`trailing` 缺省日历图标；传 `matchPanelWidth={false}`，日历面板不被字段宽度压缩
 - `Calendar`（components/calendar.tsx）接 `value=selected`、受控 `visibleMonth`、`onChange=commit`、受控 `view`；月选择写 `YYYY-MM`、年选择写年份文本并清错误；`firstDayOfWeek` 默认 0，`isDateDisabled` 透传
-- 槽位：`classNames.root/input/trailing/popover/panel/calendar`；`styles.input/trailing`
+- 槽位：`classNames.root/input/trailing/popover/panel/calendar`；`styles.input/trailing`；字段类槽为 string，calendar 子槽沿用 Calendar 的 `SlotClassName` 合并规则
+- 禁用遵循 `ui/schemes.md` 第 8 条：disabled 同时传 Picker 与 Calendar，commit、文本变更、解析应用、open 与键盘处理均由 JS 阻断；皮肤完整替换字段 root/input 正常类串，Calendar 按日期/月/年/导航/标题禁用态逐项替换，保留布局并显式禁用色与 `cursor-not-allowed`

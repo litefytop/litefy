@@ -1,15 +1,16 @@
-"use client";
-
-import { Checkbox } from "@/ui/skins";
+import { CheckboxGroup } from "@/ui/skins";
 
 export default function Demo() {
   return (
-    <div className="flex flex-col items-center gap-4">
-      <Checkbox defaultChecked lineThrough>
-        Finish the design review
-      </Checkbox>
-      <Checkbox lineThrough>Ship the release notes</Checkbox>
-      <Checkbox lineThrough>Review pull requests</Checkbox>
-    </div>
+    <CheckboxGroup
+      label="Tasks"
+      common={{ lineThrough: true }}
+      defaultValue={["design-review"]}
+      options={[
+        { label: "Finish the design review", value: "design-review" },
+        { label: "Ship the release notes", value: "release-notes" },
+        { label: "Review pull requests", value: "pull-requests" },
+      ]}
+    />
   );
 }

@@ -4,7 +4,7 @@ import { ThoughtLine } from "@/ui/skins";
 
 export default function Demo() {
   return (
-    <div className="flex w-full max-w-112 flex-col gap-10 mx-auto">
+    <div className="mx-auto flex w-full flex-col items-center gap-10">
       <ThoughtLine
         steps={["Reading the question", "Searching your notes", "Comparing sources"]}
         aria-label="Assistant is thinking"

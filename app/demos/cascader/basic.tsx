@@ -72,5 +72,5 @@ const tree: CascaderNode[] = [
 ];
 
 export default function CascaderBasicDemo() {
-  return <Cascader className="w-77 min-w-33" tree={tree} />;
+  return <Cascader tree={tree} />;
 }

@@ -6,7 +6,7 @@ import { Card } from "@/ui/skins";
 export default function Demo() {
   return (
     <Watermark className="w-full" text="litefy">
-      <Card className="w-full">
+      <Card>
         <h3>Quarterly Report</h3>
         <p>
           A tiled text watermark is drawn over the content and follows the

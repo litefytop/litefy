@@ -25,7 +25,7 @@ description: 基于 options 驱动、支持多种变体和方向设置的标签�
 
 ### 禁用
 
-选项卡支持 disabled 禁用。
+每个选项卡的 `disabled` 独立原生禁用触发器，方向键跳过；`trigger` 使用 `text-disabled-fg` 与 `cursor-not-allowed`，`primary` 变体使用 `bg-disabled`。
 
 <ComponentPreview name="tabs-disabled" />
 
@@ -46,8 +46,8 @@ options 驱动的容器组件，管理活动值并以参数形式向 `TabsList`�
 | `orientation`    | `'horizontal' \| 'vertical'`                                    | 布局方向，默认 `'horizontal'`                              |
 | `unmountOnHide`  | `boolean`                                                       | 标签不活动时卸载面板；`false` 保活并隐藏——面板带搜索、分页、滚动状态时用，默认 `true` |
 | `panelClassName` | `string`                                                        | 本组件渲染的每个面板都加上该类名                                    |
-| `className`      | `string`                                                        | 自定义 CSS 类，作用于根元素                                    |
-| `classNames`     | `root` / `list` / `scroll` / `scroller` / `trigger` / `content` | 按部件指定类名（`content` 落在每个 tabpanel 上）                  |
+| `className`      | `string`                                                        | 自定义 CSS 类，作用于根元素；默认 `w-full min-w-0`                                    |
+| `classNames`     | `{ root?: string; list?: string; scroll?: SlotClassName; scroller?: string; trigger?: SlotClassName; content?: string }` | `trigger` / `scroll` 接收 `({ disabled }) => string`；`scroll.disabled` 表示滚动方向已到边界，`content` 落在每个 tabpanel 上 |
 | `prevLabel`      | `string`                                                        | 本组件自带的左滚动按钮的可访问名称，默认 `'Scroll tabs left'`           |
 | `nextLabel`      | `string`                                                        | 本组件自带的右滚动按钮的可访问名称，默认 `'Scroll tabs right'`          |
 | `...props`       | `React.ComponentProps<"div">`                                   | 支持所有原生 div 属性（除 `className` 外）                      |
@@ -125,7 +125,6 @@ options 驱动的容器组件，管理活动值并以参数形式向 `TabsList`�
 | Attribute | Description |
 | --- | --- |
 | `[data-state]` | 位于每个触发器与面板上——取值 `"active"` 或 `"inactive"` |
-| `[data-orientation]` | 位于根元素与列表上——取值 `"horizontal"` 或 `"vertical"`，镜像 `orientation` 属性 |
 | `[data-overflow]` | 位于列表上——标签超出所得盒子时（垂直方向为超出高度）取值 `"true"`，驱动左右滚动按钮的显隐 |
 | `[data-direction]` | 位于水平列表的滚动按钮上——取值 `"prev"` 或 `"next"` |
 | `[data-value]` | 位于每个触发器上——取值为该触发器自身的 `value` |

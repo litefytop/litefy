@@ -6,17 +6,27 @@ import { popoverClasses } from "./popover";
 
 
 const rootClasses =
-  "rounded-md border-frame border-border bg-background text-sm leading-5 shadow-base focus-within:focus-ring inert:dim";
+  "w-full min-w-0 max-w-[20rem] rounded-md border-frame border-border bg-surface-raised text-surface-raised-fg text-sm leading-5 shadow-base focus-within:focus-ring";
+
+const rootDisabledClasses =
+  "w-full min-w-0 max-w-[20rem] rounded-md border-frame border-border bg-disabled text-sm leading-5 text-disabled-fg shadow-base";
 
 const breadcrumbClasses = "w-full min-w-0 overflow-x-auto";
 
-const triggerClasses =
-  "w-full min-w-0 min-h-control px-3 py-2 text-left truncate " +
-  "cursor-pointer text-surface-fg tracking-normal " +
-  "hover:text-accent-fg " +
-  "aria-[current=step]:font-strong aria-[current=step]:text-foreground";
+const triggerBaseClasses =
+  "w-full min-w-0 min-h-control px-3 py-2 text-left truncate tracking-normal";
+const triggerClasses = cn(
+  triggerBaseClasses,
+  "aria-[current=step]:font-strong aria-[current=step]:text-foreground",
+  "cursor-pointer text-foreground",
+);
 
-const chevronClasses = "size-3.5 shrink-0 text-surface-fg";
+const triggerDisabledClasses = cn(
+  triggerBaseClasses,
+  "cursor-not-allowed text-disabled-fg",
+);
+
+const chevronClasses = "size-3.5 shrink-0 text-foreground";
 
 const menuClasses = cn(popoverClasses.content, "p-[var(--radius-md)]");
 
@@ -27,22 +37,24 @@ const listClassesInPanel = {
   viewport: cn(listViewportClasses, "w-full max-h-56"),
 };
 
-export function Cascader({ className, classNames, ...props }: CascaderProps) {
+export function Cascader({ className, classNames, disabled, ...props }: CascaderProps) {
+  const { root: rootOverride, ...slots } = classNames ?? {};
+  const root = disabled ? rootDisabledClasses : rootClasses;
   return (
     <CascaderHeadless
       {...props}
-      className={cn(rootClasses, className)}
+      disabled={disabled}
       classNames={{
         ...mergeSlots(
           {
-            root: rootClasses,
+            root: cn(root, rootOverride, className),
             breadcrumb: breadcrumbClasses,
-            trigger: triggerClasses,
+            trigger: disabled ? triggerDisabledClasses : triggerClasses,
             chevron: chevronClasses,
             menu: menuClasses,
             option: optionClasses,
           },
-          classNames,
+          slots,
         ),
         list: mergeSlots(listClassesInPanel, classNames?.list),
       }}
