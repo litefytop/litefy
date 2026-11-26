@@ -14,7 +14,12 @@ An editable input plus a month panel popover, on plain JavaScript `Date` values.
   name="date-picker-basic"
 />
 
-An editable input plus a month panel — works with plain JavaScript `Date` values (treated as calendar dates); no date library or polyfill required, runs on every Baseline browser.
+### Disabled
+
+`disabled` natively disables both the input and the calendar controls; JavaScript blocks opening, input submission, date selection, and keyboard navigation. The disabled appearance uses `bg-disabled`, `text-disabled-fg`, and `cursor-not-allowed`.
+
+<ComponentPreview name="date-picker-disabled" />
+
 ## API Reference
 
 ### DatePicker
@@ -33,8 +38,8 @@ A controlled-or-uncontrolled date field; the visible month and panel open state 
 | `isDateDisabled`  | `(date: Date) => boolean`                            | Predicate disabling calendar dates                                                                   |
 | `trailing`        | `React.ReactNode`                                    | Trailing decoration inside the input, defaults to `CalendarIcon`                                     |
 | `onKeyDown`       | `React.KeyboardEventHandler<HTMLInputElement>`       | Runs before the built-in `Enter` commit; `preventDefault()` cancels it                               |
-| `classNames`      | `{ input?; trailing?; panel? }` — each `string`      | Custom classes for the input, its trailing decoration and the calendar panel                         |
-| `styles`          | `{ input?; trailing? }` — each `React.CSSProperties` | Inline styles for the input and trailing decoration                                                  |
+| `classNames`      | `{ root?: string; input?: string; trailing?: string; popover?: string; panel?: string; calendar?: CalendarClassNames }` | `root` controls the field root (20rem maximum by default), `input` the inner input, `popover` the floating layer (20rem maximum width by default, constrained by the viewport width minus 1rem), and `panel` the calendar panel |
+| `styles`          | `{ input?; trailing? }` — each `React.CSSProperties` | Inline styles for the input and trailing decoration only; there are no root or popover style slots      |
 
 While the panel is open, `ArrowDown` / `ArrowUp` move focus into the calendar's first / last control; `Escape` closes it and returns focus to the input.
 
@@ -53,3 +58,4 @@ Typing a full valid date live-syncs the calendar selection without closing the p
 | Attribute | Description |
 | --- | --- |
 | `[data-open]` | On the root — present while the panel is open |
+| `[data-disabled]` | On the root — present when the entire date picker is disabled |

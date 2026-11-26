@@ -40,15 +40,15 @@ A slide-in panel with focus management and keyboard navigation.
 | `open`            | `boolean`                                                                                      | Controls whether the drawer is open                                                                                                                                                                                                 |
 | `onOpenChange`    | `(open: boolean) => void`                                                                      | Called when the drawer state changes **Required**                                                                                                                                                                                   |
 | `onBackdropClick` | `(e: React.MouseEvent<HTMLDialogElement>) => void`                                             | Clicking the backdrop closes the drawer by default; this callback is for extra side effects                                                                                                                                         |
-| `size`            | `'sm' \| 'md' \| 'lg'`                                                                         | Size tier, rendered as `data-size`; the actual size and the min/max clamping live in the loaded scheme skin's `classNames.wrapper` utility string, overridable with inline `style` width/height (still clamped), defaults to `"md"` |
+| `size`            | `'sm' \| 'md' \| 'lg'`                                                                         | Main-axis maximum size tiers: left/right drawers are 20, 24 and 32rem wide, and top/bottom drawers are 20, 24 and 32rem high, defaults to `"md"`; narrow viewports shrink automatically, controlled and overridable through `classNames.wrapper` / `styles.wrapper` |
 | `onCancel`        | `(e: React.SyntheticEvent<HTMLDialogElement>) => void`                                         | Extra callback for when the dialog is canceled (Esc); the default close behavior always runs first                                                                                                                                  |
 | `drag`            | `DrawerDragApi`                                                                                | Drag gesture object (provided by the external `useDrag`); the drag handle bar renders only when passed, otherwise it is a plain drawer                                                                                              |
-| `className`       | `string`                                                                                       | Custom class name, applied to the native `<dialog>` element                                                                                                                                                                         |
-| `style`           | `React.CSSProperties`                                                                          | Inline styles, applied to the native `<dialog>` element                                                                                                                                                                             |
-| `classNames`      | `{ wrapper?: string; drag?: string; content?: string }`                                        | Custom class names for the inner elements                                                                                                                                                                                           |
-| `styles`          | `{ wrapper?: React.CSSProperties; drag?: React.CSSProperties; content?: React.CSSProperties }` | Inline styles for the inner elements                                                                                                                                                                                                |
+| `className`       | `string`                                                                                       | Custom class name, applied to the native `<dialog>` shell; does not control the panel's main-axis size                                                                                                                               |
+| `style`           | `React.CSSProperties`                                                                          | Inline styles, applied to the native `<dialog>` shell; does not control the panel's main-axis size                                                                                                                                  |
+| `classNames`      | `{ stage?: string; wrapper?: string; drag?: string; content?: string }`                       | `wrapper` controls the sliding panel body and main-axis size, `drag` controls the handle, and `content` controls the inner scrolling content                                                                                         |
+| `styles`          | `{ stage?: React.CSSProperties; wrapper?: React.CSSProperties; drag?: React.CSSProperties; content?: React.CSSProperties }` | Inline styles for each inner element; override the main-axis size with `styles.wrapper.width` for left/right drawers or `styles.wrapper.height` for top/bottom drawers                                  |
 | `children`        | `React.ReactNode`                                                                              | Drawer panel content                                                                                                                                                                                                                |
-| `...props`        | `React.ComponentProps<"div">`                                                                  | Forwarded to `DrawerWrapper`; supports all native div props                                                                                                                                                                         |
+| `...props`        | `React.ComponentProps<"div">`                                                                  | Remaining native div props pass through to `DrawerWrapper`; `style` applies to the dialog shell, so use `styles.wrapper` for panel body styles                                                                                       |
 
 ---
 
@@ -78,22 +78,20 @@ The sliding panel body, carrying the `data-placement` / `data-size` state attrib
 
 The drag handle bar (a thin bar with a grip indicator); drag logic comes from the external `useDrag`. The finished Drawer renders it only when a `drag` gesture is passed.
 
-| Prop          | Type                          | Description                                                                  |
-| ------------- | ----------------------------- | ---------------------------------------------------------------------------- |
-| `orientation` | `'horizontal' \| 'vertical'`  | Handle bar orientation, derived from `placement`, defaults to `"horizontal"` |
-| `className`   | `string`                      | Custom class name                                                            |
-| `...props`    | `React.ComponentProps<"div">` | Supports all native div props (except `className`)                           |
+| Prop          | Type                          | Description                                        |
+| ------------- | ----------------------------- | -------------------------------------------------- |
+| `className`   | `string`                      | Custom class name                                  |
+| `...props`    | `React.ComponentProps<"div">` | Supports all native div props (except `className`) |
 
 #### DrawerContent
 
 The content panel container: a built-in scrolling column (`overflow-auto`) with no padding; spacing is managed by the content itself.
 
-| Prop          | Type                          | Description                                            |
-| ------------- | ----------------------------- | ------------------------------------------------------ |
-| `orientation` | `'horizontal' \| 'vertical'`  | Content orientation; content is centered when vertical |
-| `className`   | `string`                      | Custom class name                                      |
-| `children`    | `React.ReactNode`             | Panel content                                          |
-| `...props`    | `React.ComponentProps<"div">` | Supports all native div props (except `className`)     |
+| Prop          | Type                          | Description                                        |
+| ------------- | ----------------------------- | -------------------------------------------------- |
+| `className`   | `string`                      | Custom class name                                  |
+| `children`    | `React.ReactNode`             | Panel content                                        |
+| `...props`    | `React.ComponentProps<"div">` | Supports all native div props (except `className`) |
 
 ## Keyboard Interactions
 
@@ -109,4 +107,3 @@ The content panel container: a built-in scrolling column (`overflow-auto`) with 
 | `[data-placement]` | On the drawer panel — `"left"`, `"right"`, `"top"` or `"bottom"`, matching the `placement` prop                          |
 | `[data-size]`      | On the drawer panel — `"sm"`, `"md"` or `"lg"`, matching the `size` prop                                                 |
 | `[data-static]` | On the drawer panel — present while the drawer is at rest (not being resized); absent during drag, so the duration tokens drop and resizing applies instantly |
-| `[data-orientation]` | On the drag handle bar — `"horizontal"` or `"vertical"`; present only when drag-to-resize is enabled                    |

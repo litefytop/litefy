@@ -19,7 +19,7 @@ A scroll container driven by `items`, with row content rendered through `renderI
 
 #### List
 
-A list with scrolling and keyboard navigation; the container's size is supplied by the consumer.
+A list with scrolling and keyboard navigation; the maximum width defaults to 28rem.
 
 | Prop                | Type                                                                | Description                                                                                                          |
 | ------------------- | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
@@ -34,17 +34,19 @@ A list with scrolling and keyboard navigation; the container's size is supplied 
 | `onSelect`          | `(item: T, index: number) => void`                                  | Fired when a row is clicked or confirmed with `Enter` during keyboard navigation                                     |
 | `onScrollBottom`    | `() => void`                                                        | Fired when the list scrolls to within 16px of the bottom, for load-more scenarios                                    |
 | `onItemMouseMove`   | `(item: T, index: number) => void`                                  | Fired as the pointer moves over a row — wire it to `setHighlightIndex` to let hover and keyboard share one highlight |
-| `ref`               | `React.Ref<HTMLUListElement \| HTMLDivElement>`                     | Ref to the root element — a `ul` in flat mode, a `div` in grouped mode, e.g. to move focus into the list             |
-| `className`         | `string`                                                            | Custom class for the root                                                                                            |
-| `style`             | `React.CSSProperties`                                               | Custom inline style for the root                                                                                     |
-| `classNames`        | `{ item?: string; groupHeader?: string }`                           | Custom classes for rows and group headers                                                                            |
-| `styles`            | `{ item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | Inline styles for rows and group headers                                                                             |
+| `isItemDisabled`    | `(item: T, index: number) => boolean`                               | Per-item disable check; disabled rows ignore clicks and hover and are skipped by keyboard highlight and selection; all items are enabled by default |
+| `size`              | `"sm" \| "md" \| "lg" \| "xl"`                                    | Outer scroll viewport maximum widths of 20, 24, 28 and 32rem respectively, defaults to `"lg"`                     |
+| `ref`               | `React.Ref<HTMLDivElement>`                                         | Ref to the outer scroll viewport, e.g. to move focus into the list                                                  |
+| `className`         | `string`                                                            | Custom class for the outer scroll viewport; defaults to `w-full min-w-0`                                            |
+| `style`             | `React.CSSProperties`                                               | Inline styles for the outer scroll viewport                                                                         |
+| `classNames`        | `{ root?: string; viewport?: string; empty?: string; groups?: string; item?: SlotClassName; groupHeader?: string }` | `root` controls the inner `ul` or grouped `div`; `viewport` controls the outer scroll viewport; `item` accepts `({ disabled }) => string` |
+| `styles`            | `{ root?: React.CSSProperties; empty?: React.CSSProperties; groups?: React.CSSProperties; item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | `root` controls the inner list, `empty` the empty state and `groups` the group container; `item` and `groupHeader` control rows and group headers |
 
-Row separation is decided by the scheme (the component never forces it); pair it with [ScrollShadow](/en/docs/component/scroll-shadow) yourself when you want scroll-edge shadows.
+Disabled rows use `bg-disabled`, `text-disabled-fg` and `cursor-not-allowed`, with no opacity or grayscale filter. Row separation is decided by the scheme (the component never forces it); pair it with [ScrollShadow](/en/docs/component/scroll-shadow) yourself when you want scroll-edge shadows.
 
 #### Order
 
-The ordered-list variant: the list element renders as an `<ol>` and emits `data-ordered`, with decimal numbering supplied by the loaded scheme. It accepts every `List` prop except the grouping API (`getGroup` / `renderGroupHeader`), and its `ref` is `React.Ref<HTMLOListElement>`. Numbers render through `::marker`, which requires rows to keep `display: list-item` — changing a row's display (to flex, for example) makes the numbers disappear, so lay out row content inside `renderItem`.
+The ordered-list variant: the list element renders as an `<ol>` and emits `data-ordered`, with decimal numbering supplied by the loaded scheme. It accepts every `List` prop except the grouping API (`getGroup` / `renderGroupHeader`), and its `ref` is `React.Ref<HTMLDivElement>`, pointing to the outer scroll viewport. Numbers render through `::marker`, which requires rows to keep `display: list-item` — changing a row's display (to flex, for example) makes the numbers disappear, so lay out row content inside `renderItem`.
 
 | Prop                | Type                                                                | Description                                                                       |
 | ------------------- | ------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
@@ -57,11 +59,13 @@ The ordered-list variant: the list element renders as an `<ol>` and emits `data-
 | `onSelect`          | `(item: T, index: number) => void`                                  | Fired when a row is clicked or confirmed with `Enter` during keyboard navigation  |
 | `onScrollBottom`    | `() => void`                                                        | Fired when the list scrolls to within 16px of the bottom, for load-more scenarios |
 | `onItemMouseMove`   | `(item: T, index: number) => void`                                  | Fired as the pointer moves over a row                                             |
-| `ref`               | `React.Ref<HTMLOListElement>`                                       | Ref to the root `<ol>` element                                                    |
-| `className`         | `string`                                                            | Custom class for the root                                                         |
-| `style`             | `React.CSSProperties`                                               | Custom inline style for the root                                                  |
-| `classNames`        | `{ item?: string; groupHeader?: string }`                           | Custom classes for each part (`groupHeader` is unused in `Order`)                 |
-| `styles`            | `{ item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | Custom inline styles for each part (`groupHeader` is unused in `Order`)           |
+| `isItemDisabled`    | `(item: T, index: number) => boolean`                               | Per-item disable check, identical to `List`                                       |
+| `size`              | `"sm" \| "md" \| "lg" \| "xl"`                                    | Outer scroll viewport maximum widths of 20, 24, 28 and 32rem respectively, defaults to `"lg"` |
+| `ref`               | `React.Ref<HTMLDivElement>`                                         | Ref to the outer scroll viewport                                                   |
+| `className`         | `string`                                                            | Custom class for the outer scroll viewport; defaults to `w-full min-w-0`           |
+| `style`             | `React.CSSProperties`                                               | Inline styles for the outer scroll viewport                                        |
+| `classNames`        | `{ root?: string; viewport?: string; empty?: string; item?: SlotClassName; groupHeader?: string }` | `root` controls the inner `ol`; `viewport` controls the outer scroll viewport; `item` accepts `({ disabled }) => string`; `Order` does not use `groupHeader` |
+| `styles`            | `{ root?: React.CSSProperties; empty?: React.CSSProperties; item?: React.CSSProperties; groupHeader?: React.CSSProperties }` | `root` controls the inner `ol` and `empty` the empty state; `Order` does not use `groups` or `groupHeader` |
 
 ## Keyboard Interactions
 
@@ -76,4 +80,5 @@ The ordered-list variant: the list element renders as an `<ol>` and emits `data-
 | Attribute | Description |
 | --- | --- |
 | `[data-highlighted]` | On each item — present while the keyboard highlight rests on it |
+| `[data-disabled]` | On a disabled item — the row also carries `aria-disabled="true"` |
 | `[data-ordered]` | On the root element — present when the list is ordered |

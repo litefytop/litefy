@@ -15,6 +15,12 @@ Input fields for different data types.
   name="input-basic"
 />
 
+### Disabled
+
+`disabled` natively disables the input, and clicking the field shell does not focus it. The shell uses `bg-disabled`, `text-disabled-fg`, `cursor-not-allowed` and `select-none`; the input area uses `pointer-events-none` to prevent text selection.
+
+<ComponentPreview name="input-disabled" />
+
 ## API Reference
 
 ### High-level Components
@@ -35,7 +41,7 @@ The input component with slots and validation support.
 | `description`     | `React.ReactNode`                                                                               | Helper text rendered below the input; replaced by the error message when validation fails                                                                      |
 | `validate`        | `(value: string) => FieldValidateResult`                                                        | Validation function; a string is the error message, `false` marks invalid with no message, `null`/`true` passes; passing it switches the input into field mode |
 | `validateTrigger` | `'submit' \| 'change' \| 'blur'`                                                                | When validation runs; on submit all fields gate together, and a field with an existing error revalidates on change, defaults to `'submit'`                     |
-| `className`       | `string`                                                                                        | Custom class names, applied to the shell container                                                                                                             |
+| `className`       | `string`                                                                                        | Custom class for the field shell; defaults to `w-full min-w-0 max-w-[20rem]` (20rem maximum)                                                              |
 | `style`           | `React.CSSProperties`                                                                           | Inline styles, applied to the shell container                                                                                                                  |
 | `classNames`      | `{ group?: string; leading?: string; trailing?: string; root?: string }`                        | Custom class names for the group shell (`group`), the leading/trailing slots and the inner input (`root`)                                                      |
 | `styles`          | `{ leading?: React.CSSProperties; trailing?: React.CSSProperties; root?: React.CSSProperties }` | Inline styles for the leading/trailing slots and the inner input (`root`)                                                                                      |

@@ -11,12 +11,13 @@ Litefy is not a project scaffold — use it inside an existing React app. The on
 
 - **React 19+** (components rely on React 19 features; older versions are incompatible)
 - **TypeScript** enabled
+- **Tailwind CSS 4** configured; Litefy stylesheets are theme layers and need your Tailwind entry to generate utilities
 
 ## CLI
 
 ### init
 
-Initialize your project: generate the `litefy.json` config file, create the `ui/litefy` directory structure with its aggregate barrel files, and install the dependencies. Running `add` before initialization triggers the initialization flow automatically.
+Initialize your project: generate the `litefy.json` config file, create the `ui/litefy` directory structure with its aggregate barrel files, and install the dependencies. `init` prepares headless skeletons only; select and install a skin with `add <component> -s <scheme>` or `add style <scheme>`. Running `add` before initialization triggers the initialization flow automatically.
 
 > ⚠️ Do not manually modify the path fields in `litefy.json`. If you relocate these directories yourself, update your import paths to match; the CLI will not rewrite them for you.
 
@@ -49,7 +50,7 @@ Initialize your project: generate the `litefy.json` config file, create the `ui/
 
 ### add
 
-Download component skeletons and their hooks and utils in batch, automatically resolve each entry's `dependence` (detected by scanning every template's relative imports at build time), install the resolved npm dependencies, and update the aggregate exports. Once a style scheme is picked (`-s`, or a previous `add style`), every `add` also re-syncs that scheme's complete stylesheet.
+Download component skeletons, their matching skins, hooks and utils in batch, automatically resolve each entry's `dependence` (detected by scanning every template's relative imports at build time), install the resolved npm dependencies, and update the aggregate exports. Once a style scheme is picked (`-s`, or a previous `add style`), every `add` also re-syncs that scheme's complete stylesheet.
 
 <Tabs items={["npm", "yarn", "pnpm", "bun"]}>
   <Tab value="npm">
@@ -82,9 +83,9 @@ Download component skeletons and their hooks and utils in batch, automatically r
 
 ### style
 
-Install (or switch) a style scheme. `init` sets up the headless skeleton only — styles are always an `add`-time choice: `add style <scheme>` installs or switches the stylesheet, and the last-installed scheme is the only one wired into `styles/index.css`.
+Install (or switch) a style scheme. `init` prepares skeletons only; `add style <scheme>` installs or switches the stylesheet, and the last-installed scheme is the only one wired into `styles/index.css`.
 
-The installer writes the scheme's **single stylesheet** — `index.css`: tokens, the `@layer base` block, the `@theme` mapping (a namespace per dimension solved back out of a constant, which is what gives `h-control` / `py-snug` / `duration-sm` their names; whitespace carries no names and is written on the numeric spacing scale), its `@custom-variant` roles and `@utility` primitives — into the styles directory. That file is a pure theme layer, not a standalone entry: import it into your own Tailwind CSS entry after `@import "tailwindcss"` (Tailwind first, so it declares the cascade layer order); your entry's scan generates the utilities, and no import list is regenerated. A scheme installs as a whole: there are no per-component style entries, because the scheme is the unit of coherence. The component looks are utility strings in the shared skin layer `app/ui/skin/*.tsx`, which the registry cannot place yet — `add style` ships the stylesheet only, so you write each control's utilities the way that style's `design.md` prescribes.
+The installer writes the scheme's **single stylesheet** — `index.css`: tokens, the `@layer base` block, the `@theme` mapping, `@custom-variant` roles and `@utility` primitives — into the styles directory. That file is a pure theme layer, not a standalone entry: import it into your own Tailwind CSS entry after `@import "tailwindcss"`; your entry's scan generates the utilities. A scheme installs as a whole, with no per-component style entries. `add` installs each component's utility classes into `ui/litefy/skins/` alongside its skeleton, so you do not write them by hand.
 
 <Tabs items={["npm", "yarn", "pnpm", "bun"]}>
   <Tab value="npm">
@@ -256,7 +257,7 @@ Completely uninstall: delete all Litefy local files and `litefy.json`. Hand-writ
 
 ## Manual installation
 
-The library has two modes — headless skeletons and skins. When installing by hand, download the init resources you need:
+The library has two modes — headless skeletons and skins. When installing by hand, download the resources you need:
 
-- **Skeleton**: component source ships without styles — structure and behavior only; the icons every component needs to initialize live in a single file. Download the icon collection from the [Headless](/en/docs/headless) page into `ui/litefy/components/`, then install the imported dependencies yourself.
-- **Skin**: each style is one `index.css` (tokens, the base block and the `@theme` mapping). Review and copy it from the [Styles](/en/docs/styles) page and import it into your Tailwind CSS entry after `@import "tailwindcss"`.
+- **Skeleton**: component source ships without styles — structure and behavior only. Put the source and the `icons.tsx` adapter into `ui/litefy/components/`, then install the imported dependencies yourself. See [Headless](/en/docs/headless).
+- **Skin**: put each component's matching skin source into `ui/litefy/skins/`. Each style also has one `index.css` (tokens, the base block and the `@theme` mapping). Review and copy it from the [Styles](/en/docs/styles) page and import it into your Tailwind CSS entry after `@import "tailwindcss"`.

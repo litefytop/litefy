@@ -11,12 +11,13 @@ Litefy 不提供完整项目脚手架，请在已有 React 项目中使用。硬
 
 - **React 19+**（依赖 React 19 新特性，低版本不兼容）
 - 已开启 **TypeScript**
+- 已接入 **Tailwind CSS 4**；Litefy 样式表是主题层，需要由你的 Tailwind 入口扫描生成工具类
 
 ## 安装 CLI
 
 ### init
 
-初始化项目：生成 `litefy.json` 配置文件，创建 `ui/litefy` 目录结构与聚合 barrel，并安装所需依赖。未初始化直接执行 add，会自动触发初始化流程。
+初始化项目：生成 `litefy.json` 配置文件，创建 `ui/litefy` 目录结构与聚合 barrel，并安装所需依赖。`init` 只准备无样式骨架；用 `add <组件> -s <方案>` 或 `add style <方案>` 选择并安装皮肤。未初始化直接执行 add，会自动触发初始化流程。
 
 > ⚠️ 不要手动修改 `litefy.json` 中的路径字段。若你自行挪动这些目录，需同步更新导入路径以保持一致，CLI 不会替你改写。
 
@@ -49,7 +50,7 @@ Litefy 不提供完整项目脚手架，请在已有 React 项目中使用。硬
 
 ### add
 
-批量下载组件骨架及其关联的 hooks 与 utils，自动解析每个条目的 `dependence`（构建时扫描模板的相对导入得出），安装解析出的 npm 依赖，并更新聚合导出文件。风格方案一经选定（`-s`，或此前执行过 `add style`），每次 `add` 还会整包重同步该方案的完整样式表。
+批量下载组件骨架、对应皮肤及其关联的 hooks 与 utils，自动解析每个条目的 `dependence`（构建时扫描模板的相对导入得出），安装解析出的 npm 依赖，并更新聚合导出文件。风格方案一经选定（`-s`，或此前执行过 `add style`），每次 `add` 还会整包重同步该方案的完整样式表。
 
 <Tabs items={["npm", "yarn", "pnpm", "bun"]}>
   <Tab value="npm">
@@ -82,9 +83,9 @@ Litefy 不提供完整项目脚手架，请在已有 React 项目中使用。硬
 
 ### style
 
-安装（或切换）一个风格方案。`init` 只装无样式骨架——风格永远是 `add` 时的选择：`add style <方案>` 安装或切换样式表，最后安装的方案是 `styles/index.css` 唯一接线的方案。
+安装（或切换）一个风格方案。`init` 只准备骨架；`add style <方案>` 安装或切换样式表，最后安装的方案是 `styles/index.css` 唯一接线的方案。
 
-安装器把该方案的**唯一样式表**——`index.css`：令牌、`@layer base` 区块、`@theme` 映射（从常量反解出来的维度各占一个命名空间，`h-control` / `py-snug` / `duration-sm` 这些名字就由它生成；留白不带名字，写数字间距刻度）、本方案的 `@custom-variant` 档位与 `@utility` 原语——写入 styles 目录。这个文件是纯主题层，不是独立入口：把它接进你自己的 Tailwind CSS 入口，先 `@import "tailwindcss"` 再 `@import` 它（tailwind 在前，先声明级联层序）；工具类由你的入口扫描生成，不再重建任何导入清单。方案以整体为单位安装：不存在按组件拆分的样式条目，因为自洽的单位是方案。组件的外观是共用皮肤层 `app/ui/skin/*.tsx` 里的 utility 串，注册表目前还没有能安置它们的条目类型——`add style` 只交付样式表，控件上的工具类由你按该方案 `design.md` 的规定书写。
+安装器把该方案的**唯一样式表**——`index.css`：令牌、`@layer base` 区块、`@theme` 映射、`@custom-variant` 档位与 `@utility` 原语——写入 styles 目录。这个文件是纯主题层，不是独立入口：把它接进你自己的 Tailwind CSS 入口，先 `@import "tailwindcss"` 再 `@import` 它；工具类由你的入口扫描生成。方案以整体为单位安装，不存在按组件拆分的样式条目。组件的工具类由 `add` 随骨架安装到 `ui/litefy/skins/`，无需手写。
 
 <Tabs items={["npm", "yarn", "pnpm", "bun"]}>
   <Tab value="npm">
@@ -258,5 +259,5 @@ Litefy 不提供完整项目脚手架，请在已有 React 项目中使用。硬
 
 组件库分为骨架和皮肤两种模式。手动安装时按需下载初始化资源：
 
-- **骨架**：组件源码零样式，只发结构与行为；组件初始化必须的 icon 收集在单个文件里。从[骨架](/zh/docs/headless)页打包下载 icon 收集文件，放入 `ui/litefy/components/`，再自行安装源码里 import 的依赖。
-- **皮肤**：每种风格只有一份 `index.css`（令牌、基础区块与 `@theme` 映射）。在[皮肤](/zh/docs/styles)页查看并复制，接进你的 Tailwind CSS 入口（先 `@import "tailwindcss"` 再 `@import` 它）。
+- **骨架**：组件源码零样式，只发结构与行为；把源码与图标适配器 `icons.tsx` 放入 `ui/litefy/components/`，再自行安装源码里 import 的依赖。入口见[骨架](/zh/docs/headless)。
+- **皮肤**：把组件对应的皮肤源码放入 `ui/litefy/skins/`；每种风格只有一份 `index.css`（令牌、基础区块与 `@theme` 映射）。在[皮肤](/zh/docs/styles)页查看并复制样式表，接进你的 Tailwind CSS 入口（先 `@import "tailwindcss"` 再 `@import` 它）。

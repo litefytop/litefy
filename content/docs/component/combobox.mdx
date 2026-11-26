@@ -23,6 +23,14 @@ Pass `fetcher` instead of `options` for large datasets or remote APIs; when both
   name="combobox-async"
 />
 
+### Disabled
+
+`disabled` natively disables the input and marks the root with `aria-disabled`; opening, typing, and selection handling stop. The disabled appearance uses `bg-disabled`, `text-disabled-fg`, and `cursor-not-allowed`.
+
+<ComponentPreview
+  name="combobox-disabled"
+/>
+
 ## API Reference
 
 ### Combobox
@@ -35,12 +43,15 @@ Pass `fetcher` instead of `options` for large datasets or remote APIs; when both
 | `value`          | `string`                                                                  | Controlled input text                                                     |
 | `onValueChange`  | `(value: string) => void`                                                 | Fires on typing and on selection                                          |
 | `invalid`        | `boolean`                                                                 | Invalid state of the input, defaults to `false`                           |
+| `disabled`       | `boolean`                                                                 | Disables the group: the input is natively disabled, the root is marked `aria-disabled`, and the candidate panel cannot open; defaults to `false` |
 | `empty`          | `React.ReactNode`                                                         | Node for the list's empty state, defaults to `"No data"` / `"Loading..."` |
 | `pageSize`       | `number`                                                                  | Page size for async pagination, defaults to `20`                          |
 | `debounceMs`     | `number`                                                                  | Debounce delay for async search, defaults to `300`                        |
 | `leading`        | `React.ReactNode`                                                         | Leading node inside the field group, defaults to a search icon; pass `null` to remove |
-| `className`      | `string`                                                                  | Custom class name applied to the input container                          |
-| `classNames`     | `{ panel? / item? }`                                                      | Custom class names for the panel and list items                           |
+| `className`      | `string`                                                                  | Custom class name on the field root container; defaults to `w-full min-w-0 max-w-[20rem]` (maximum width 20rem) |
+| `style`          | `React.CSSProperties`                                                    | Inline styles on the field root container                                 |
+| `classNames`     | `{ panel?; item?; input?; leading?; trailing?; list?: ListClassNames }` | `input` controls the inner input, `panel` the candidate panel, and `list` the internal list and its slots |
+| `styles`         | `{ panel?: React.CSSProperties; item?: React.CSSProperties; leading?: React.CSSProperties }` | Inline styles for the panel, list items, and leading slot; there are no root or input style slots. The panel defaults to a maximum width of 20rem and is constrained by the viewport width minus 1rem |
 
 ### Atoms
 
@@ -55,6 +66,7 @@ The foundation of Combobox: a generic input + popover container for assembling c
 | `open` / `defaultOpen`   | `boolean`                           | Panel open state (controlled / uncontrolled), defaults to `false`                              |
 | `onOpenChange`           | `(open: boolean) => void`           | Fires when the panel opens or closes (click, outside click, Escape)                            |
 | `trailing`               | `React.ReactNode`                   | Trailing icon of the input                                                                     |
+| `disabled`               | `boolean`                          | Natively disables the input and closes the panel, defaults to `false`                         |
 | `children`               | `React.ReactNode`                   | Popover panel content                                                                          |
 | `panelRef`               | `React.Ref<HTMLDivElement>`         | Receives the panel element; use together with [usePanelFocus](/en/docs/utils/use-panel-focus) |
 | `className` / `style`    | -                                   | Applied to the root container                                                                  |
@@ -78,3 +90,4 @@ During IME composition, `onValueChange` and the remote search are suspended and 
 | Attribute    | Description                                                                          |
 | ------------ | ------------------------------------------------------------------------------------ |
 | `[data-open]` | On the root element — present while the panel is open (from the underlying Picker)  |
+| `[data-disabled]` | On the root element — present when the entire combobox is disabled |

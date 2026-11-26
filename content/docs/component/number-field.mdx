@@ -1,6 +1,6 @@
 ---
 title: Number Field
-description: A compact number stepper with a leading Minus and a trailing Plus button — keyboard stepping and thousands separators.
+description: A compact number stepper with a leading Minus and a trailing Plus button — keyboard and focused-wheel stepping, with thousands separators.
 ---
 
 ## Installation
@@ -12,6 +12,12 @@ description: A compact number stepper with a leading Minus and a trailing Plus b
 A stepper-style number input; the leading Minus / trailing Plus step by `step`.
 
 <ComponentPreview name="number-field-basic" />
+
+### Disabled
+
+`disabled` natively disables the input and both stepper buttons, using `bg-disabled`, `text-disabled-fg` and `cursor-not-allowed`; the corresponding button is disabled independently when `min` / `max` is reached.
+
+<ComponentPreview name="number-field-disabled" />
 
 ## API Reference
 
@@ -29,12 +35,12 @@ Ready-to-use finished components.
 | `invalid`         | `boolean`                                              | Marks the field invalid (validation failed)                                                                                                                      |
 | `min`             | `number`                                               | The minimum allowed value — the Minus button disables when reached; pass it explicitly when you need a negative lower bound, defaults to `0`                     |
 | `max`             | `number`                                               | The maximum allowed value — the Plus button disables when reached; the stepper defaults to a three-character width, so confirm the value area can hold it when raising the bound, defaults to `999` |
-| `step`            | `number`                                               | The step size for the stepper buttons and `ArrowUp` / `ArrowDown`, defaults to `1`                                                                               |
+| `step`            | `number`                                               | Step size for the stepper buttons, `ArrowUp` / `ArrowDown` and the wheel while focused, defaults to `1`                                                          |
 | `positiveInteger` | `boolean`                                              | Only positive integers allowed. The value type becomes `number \| undefined`, defaults to `false`                                                                |
 | `thousands`       | `boolean`                                              | Groups the integer part with thousand separators while unfocused; the committed value never contains separators, defaults to `false`                             |
 | `className`       | `string`                                               | Custom class name, applied to the shell. The shell is always a nominal 3-column width, with the value area and the stepper buttons equal width (see Width below) |
 | `style`           | `React.CSSProperties`                                  | Inline styles, applied to the shell                                                                                                                              |
-| `classNames`      | `{ root?, stepper?, stepperIcon?, hint? }`             | Custom class names for the inner input / the stepper buttons / their default ± icons / the keyboard focus hint                                                   |
+| `classNames`      | `{ root?: SlotClassName; stepper?: SlotClassName; stepperIcon?: string; hint?: SlotClassName }` | `root`, `stepper` and `hint` receive `({ disabled }) => string`; `stepper.disabled` covers both field-level disabling and individual button disabling caused by `min` / `max` |
 | `styles`          | `{ root?, stepper?, hint? }`                           | Custom inline styles for the parts above                                                                                                                         |
 | `disabled`        | `boolean`                                              | Disables the field and both stepper buttons, defaults to `false`                                                                                                 |
 | `incrementLabel`  | `string`                                               | Accessible name for the built-in `+` stepper button, defaults to `'Increase'`                                                                                    |
@@ -72,6 +78,7 @@ The shell is always a nominal 3 columns plus 1px of inner padding and border (th
 | Key | Description |
 | --- | --- |
 | `ArrowUp` / `ArrowDown` | Steps the value by `step`, clamped to `min` / `max` |
+| `Wheel` (while focused) | Scroll up to increase or down to decrease by `step`, blocks page scrolling, and is clamped to `min` / `max` |
 | `−` / `+` | The stepper buttons respond to the pointer only — they stay out of the tab order — and auto-disable at `min` / `max` |
 
 ## Data Attributes

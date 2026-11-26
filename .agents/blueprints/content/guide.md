@@ -80,7 +80,8 @@
 页面内容：
 
 - 可复制 prompt：说明各文件用途与消费规则——headless 项目只读结构文档（llms.txt/llms-full），忽略 design.md；皮肤项目 = 结构文档 + 所选皮肤 design.md；纯样式组件（无 headless 版）对 headless 项目不可用
-- 文件清单表：名称、URL、语言、用途、适用范围（headless/皮肤）
+- 新项目流程：使用 `litefy@latest`，明确 React 19+、TypeScript、Tailwind CSS 4 前提，给出 `init` / `add`、样式表导入和皮肤组件导入示例；固定版本仅用于临时冒烟测试
+- 文件清单表：名称、URL、语言、用途、适用范围（headless/皮肤）；URL 固定到提交 `40515e8a9b66bd56f09ae263e970df1033067dfb`
 - 接入方式：在线读取 URL / 复制全文
 
 ## 交付状态

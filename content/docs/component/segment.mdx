@@ -17,11 +17,17 @@ A data-driven segmented control for single-select, with controlled and uncontrol
 
 ### Variants
 
-The `variant` prop switches the overall look — neutral by default, plus `primary` and `text`.
+The `variant` prop switches the overall look — the default `bordered` is an outlined shell (unchecked items are text buttons and checked items become theme-colored blocks, with the same appearance and motion as the panel); `borderless` has no shell or border and fills the checked item with a theme-colored block; `well` is a recessed container where the checked item rises as a theme-colored block.
 
 <ComponentPreview
   name="segment-variants"
 />
+
+### Disabled
+
+Group-level `disabled` and each option's `disabled` are configured independently; the button is natively disabled when either is true. The standalone disabled classes use `text-disabled-fg` and `cursor-not-allowed`; the `well` variant also uses `bg-disabled`.
+
+<ComponentPreview name="segment-disabled" />
 
 ## API Reference
 
@@ -37,7 +43,7 @@ Ready-to-use composite components.
 | `value`          | `string`                      | Controlled selected value                                                                                                                                                                       |
 | `defaultValue`   | `string`                      | Default selected value in uncontrolled mode                                                                                                                                                     |
 | `onValueChange`  | `(value: string) => void`     | Called when the selected value changes                                                                                                                                                          |
-| `variant`        | `"primary" \| "text"`         | Checked look: by default a sliding indicator block; `primary` fills the checked item with the primary background color; `text` renders the checked item as primary-colored bold underlined text |
+| `variant`        | `"borderless" \| "bordered" \| "well"` | Checked look, defaulting to `bordered`: unchecked items are text buttons and checked items become theme-colored blocks inside an outlined container; `borderless` has no shell or border, fills the checked item with a theme-colored block, and has no hover; `well` is a recessed container where the checked item rises as a theme-colored block |
 | `disabled`       | `boolean`                     | Disables all options, defaults to `false`                                                                                                                                                       |
 | `className`      | `string`                      | Custom class name, applied to the container                                                                                                                                                     |
 | `itemClassName`  | `string`                      | Custom class name, applied to each segment button                                                                                                                                               |

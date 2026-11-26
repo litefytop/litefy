@@ -9,11 +9,17 @@ description: A drag-and-drop upload area with local validation and drag-and-drop
 
 ## Usage
 
-A drag-and-drop upload area: it only selects and validates locally, never sending network requests.
+A drag-and-drop upload area with a solid border: it only selects and validates locally, never sending network requests.
 
 <ComponentPreview
   name="upload-basic"
 />
+
+### Disabled
+
+`disabled` natively disables the hidden file input; the dropzone is marked `aria-disabled` and removed from the tab order, with clicks, keyboard input, dragging and file selection blocked by JavaScript. Its appearance uses `bg-disabled`, `text-disabled-fg` and `cursor-not-allowed`.
+
+<ComponentPreview name="upload-disabled" />
 
 ## API Reference
 
@@ -37,10 +43,10 @@ A drag-and-drop upload area composed of the parts below, encapsulating validatio
 | `onDragEnter`     | `(e: React.DragEvent) => void`      | Fired when files are dragged into the dropzone                                                                               |
 | `onDragLeave`     | `(e: React.DragEvent) => void`      | Fired when files are dragged out of the dropzone                                                                             |
 | `actionsRef`      | `React.Ref<UploadActions>`          | Imperative handle exposing `remove(uid)` and `clear()`; `remove` aborts the matching controller before firing `onFileRemove` |
-| `className`       | `string`                            | Custom class for the root                                                                                                    |
+| `className`       | `string`                            | Custom class for the root; defaults to `w-full min-w-0 max-w-[20rem]` (maximum `20rem`)          |
 | `style`           | `React.CSSProperties`               | Custom inline style for the root                                                                                             |
-| `classNames`      | `{ dropzone?; hiddenInput? }`       | Custom classes for each part                                                                                                 |
-| `styles`          | `{ dropzone?; hiddenInput? }`       | Custom inline styles for each part                                                                                           |
+| `classNames`      | `{ dropzone?; hiddenInput?; label?; hint? }` | `dropzone` controls the drag area; the others target the hidden input, label and hint text; there is no `root` slot |
+| `styles`          | `{ dropzone?; hiddenInput? }`       | Inline styles for the drag area and hidden input; there is no `root` slot                                                                  |
 
 ---
 

@@ -15,6 +15,14 @@ A single collapsible panel; click the header row to expand or collapse the conte
   name="collapse-basic"
 />
 
+### Disabled
+
+`disabled` preserves the current open state and only prevents the trigger from toggling; the panel content remains interactive.
+
+<ComponentPreview
+  name="collapse-disabled"
+/>
+
 ## API Reference
 
 ### High-level Components
@@ -23,7 +31,7 @@ Ready-to-use composite components.
 
 #### Collapse
 
-A single collapsible panel with a built-in trigger and an animated collapsible panel.
+A single collapsible panel with a built-in trigger and an animated collapsible panel. `disabled` preserves the current open state and only prevents the trigger from toggling; the panel content remains interactive.
 
 | Prop           | Type                                                                                                                     | Description                                                                                  |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
@@ -32,8 +40,9 @@ A single collapsible panel with a built-in trigger and an animated collapsible p
 | `open`         | `boolean`                                                                                                                | Controlled open state                                                                        |
 | `defaultOpen`  | `boolean`                                                                                                                | Initial open state (uncontrolled), defaults to `false`                                       |
 | `onOpenChange` | `(open: boolean) => void`                                                                                                | Called when the open state changes                                                           |
+| `disabled`     | `boolean`                                                                                                                | Prevents the trigger from toggling and preserves the current open state, defaults to `false` |
 | `itemKey`      | `string`                                                                                                                 | Suffix for the trigger and panel ids, used for accessibility association                     |
-| `className`    | `string`                                                                                                                 | Custom classes, applied to the root container                                                |
+| `className`    | `string`                                                                                                                 | Custom classes, applied to the root container; defaults to `w-full min-w-0`                  |
 | `style`        | `React.CSSProperties`                                                                                                    | Inline styles, applied to the root container                                                 |
 | `classNames`   | `{ trigger?: string; icon?: string; panel?: string; body?: string }`                                                     | Custom classes for the four slots: trigger, chevron, animated shell, panel body              |
 | `styles`       | `{ trigger?: React.CSSProperties; icon?: React.CSSProperties; panel?: React.CSSProperties; body?: React.CSSProperties }` | Inline styles for the same four slots                                                        |
@@ -79,11 +88,12 @@ The collapsible panel: the outer `<section>` is the animated grid clip layer, `c
 
 | Key | Description |
 | --- | --- |
-| `Enter` / `Space` | Activates the currently focused trigger through the native `<button>`; the skeleton handles no keys |
-| `Tab` | Reaches each trigger in DOM order. A collapsed panel stays mounted — the `<section>` only clips height — so its focusable elements remain in the tab order; whether to drop them is decided by the loaded scheme |
+| `Enter` / `Space` | Activates the currently focused enabled trigger through the native `<button>`; disabled triggers do not respond |
+| `Tab` | Reaches enabled triggers and panel content in DOM order; disabled triggers are skipped. A collapsed panel stays mounted — the `<section>` only clips height — so its focusable elements remain in the tab order; whether to drop them is decided by the loaded scheme |
 
 ## Data Attributes
 
 | Attribute | Description |
 | --- | --- |
 | `[data-open]` | On the panel — `"true"` or `"false"`, drives the open/close animation; also carried by the default collapse icon |
+| `[data-disabled]` | On the root node — present when `disabled` is `true` |

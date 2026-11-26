@@ -23,6 +23,14 @@ Give several Details the same `name` to form an exclusive group: opening one clo
   name="details-group"
 />
 
+### Disabled
+
+`disabled` cancels trigger-row activation and preserves the current state; the content area remains interactive.
+
+<ComponentPreview
+  name="details-disabled"
+/>
+
 ## API Reference
 
 ### High-level Components
@@ -31,14 +39,15 @@ Ready-to-use composite components.
 
 #### Details
 
-A native `<details>` disclosure shell: no state, no JS behavior — keyboard and accessibility semantics come from the native element; a lightweight alternative alongside Collapse/Accordion.
+A native `<details>` disclosure shell: open state, exclusivity, and keyboard activation are managed by the browser; `disabled` only cancels trigger-row activation and preserves the current state, does not take over `open` / `onToggle`, and leaves the content area interactive.
 
 | Prop         | Type                                                                                        | Description                                                                       |
 | ------------ | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
 | `label`      | `React.ReactNode`                                                                           | Content shown on the header trigger                                               |
 | `icon`       | `React.ReactNode`                                                                           | Expand/collapse icon; pass `null` to render no icon, defaults to `ChevronDown`    |
 | `name`       | `string`                                                                                    | Exclusive group name, passed through natively to the `<details>` element          |
-| `className`  | `string`                                                                                    | Custom classes, applied to the root `<details>` element                           |
+| `disabled`   | `boolean`                                                                                   | Prevents the trigger row from toggling and preserves the current open state, defaults to `false` |
+| `className`  | `string`                                                                                    | Custom classes, applied to the root `<details>` element; defaults to `w-full min-w-0` |
 | `classNames` | `{ summary?: string; icon?: string; body?: string }`                                        | Custom classes for the three slots: trigger row, icon box, content container      |
 | `styles`     | `{ summary?: React.CSSProperties; icon?: React.CSSProperties; body?: React.CSSProperties }` | Inline styles for the same three slots                                            |
 | `children`   | `React.ReactNode`                                                                           | Panel content                                                                     |
@@ -48,11 +57,12 @@ A native `<details>` disclosure shell: no state, no JS behavior — keyboard and
 
 | Key | Description |
 | --- | --- |
-| `Enter` / `Space` | Activates the native `<summary>`, expanding or collapsing the disclosure; the skeleton handles no keys |
-| `Tab` | Reaches the trigger row. A collapsed disclosure keeps its content mounted, so focusable elements inside remain in the tab order |
+| `Enter` / `Space` | Activates the native `<summary>` to expand or collapse the current disclosure; activation is cancelled when disabled |
+| `Tab` | Reaches the trigger row, including disabled items; disabled items remain focusable and announce `aria-disabled`. A collapsed disclosure keeps its content mounted in the DOM, so its focusable elements remain in the tab order |
 
 ## Data Attributes
 
 | Attribute | Description |
 | --- | --- |
 | `[open]` | On the root `<details>` element, present while expanded — the skin uses it to drive icon rotation and hover tinting |
+| `[data-disabled]` | On the root `<details>` element — present when `disabled` is `true` |

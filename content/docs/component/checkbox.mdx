@@ -15,11 +15,23 @@ A basic checkbox with controlled / uncontrolled and indeterminate support; use `
   name="checkbox-basic"
 />
 
+### Multi-select group
+
+`CheckboxGroup` renders a group and configures each item through `options`.
+
+<ComponentPreview name="checkbox-group" />
+
 ### Line-through label
 
 With `lineThrough` on, checking an item draws a line through its label text — a natural fit for check-off-to-complete lists.
 
 <ComponentPreview name="checkbox-line-through" />
+
+### Disabled
+
+Group-level `disabled` and each option's `disabled` are configured independently; the checkbox is disabled when either is true. The native input is disabled, the box uses `bg-disabled` / `text-disabled-fg`, and the label uses `text-disabled-fg` with `cursor-not-allowed`.
+
+<ComponentPreview name="checkbox-disabled" />
 
 ## API Reference
 

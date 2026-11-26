@@ -41,10 +41,12 @@ A modal dialog component built on the native HTML `dialog` element, with built-i
 | `onBackdropClick` | `(e: React.MouseEvent<HTMLDialogElement>) => void` | Backdrop clicks close the dialog by default; this callback is for extra side effects                              |
 | `close`           | `"icon" \| "kbd" \| null`                          | Top-right close button variant. `"icon"` renders an X icon button, `"kbd"` renders an ESC key-cap button; omitted or `null` renders no close button. Esc close stays built-in either way |
 | `closeLabel`      | `string`                                           | Accessible name of the inline close button built into this component, defaults to `'Close'`                       |
-| `classNames`      | `{ root?, content?, close? }`                      | Custom class names per part, applied to the dialog element, the content area and the close button                 |
-| `styles`          | `{ root?, content?, close? }`                      | Inline styles per part                                                                                            |
+| `className`      | `string`                                           | Custom class for the native dialog shell, merged with `classNames.root`; does not control the content width        |
+| `style`          | `React.CSSProperties`                              | Inline styles for the native dialog shell; does not control the content width                                    |
+| `classNames`      | `{ root?, stage?, content?, close?, closeIcon?, closeKey?, header?, title?, titleIcon? }` | `content` controls the content area; defaults to `w-full`, with a maximum width of the lesser of 28rem and the available width minus the gap on both sides; the rest are class names for each part |
+| `styles`          | `{ stage?, content?, close?, header?, title?, titleIcon? }` | Inline styles per part; `content` can override the content area width                                      |
 | `children`        | `React.ReactNode`                                  | Dialog content, rendered inside the content area `DialogContent`                                                  |
-| `...props`        | `React.ComponentProps<"div">`                      | Remaining props pass through to the content area `DialogContent` (except `className` / `styles` / `title`)        |
+| `...props`        | `React.ComponentProps<"div">`                      | Remaining props pass through to the content area `DialogContent` (except `className` / `style` / `styles` / `title`) |
 
 ---
 

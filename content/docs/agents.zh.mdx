@@ -1,26 +1,53 @@
 ---
-title: AI 接入 For Agents
-description: 面向 AI 编码助手的双语文档集——文件清单、消费规则与接入方式。
+title: AI 接入
+description: 面向 AI 编码助手的双语文档集——文件清单、新项目流程与消费规则。
 ---
 
 import { AgentPrompt } from "@/components/agents-prompt";
 
 Litefy 为 AI 编码助手准备了一组机器可读文档，按关注点拆分：**结构文档**描述组件的结构、行为与装配规则，皮肤无关；**design.md** 描述视觉语言，皮肤专属。不做两套平行文档——headless 项目与皮肤项目读同一份结构文档，差异只在是否附加 design.md。
 
-把下面这段 prompt 交给助手，即可说明各文件的用途与消费规则：
+把下面这段 prompt 交给助手，即可说明文件用途、安装方式与消费规则：
 
 <AgentPrompt />
+
+## 新项目最短流程
+
+Litefy 不是项目脚手架，不会创建页面或路由。先在现有项目中准备 **React 19+、TypeScript、Tailwind CSS 4**，再执行以下命令：
+
+```bash
+npx litefy@latest init -y
+npx litefy@latest add button input card -s minimal
+```
+
+第一条命令生成 `litefy.json`、`ui/litefy` 目录与聚合导出；第二条安装按钮、输入框、卡片及依赖，并选定 `minimal` 方案。方案是项目级选择，后续用 `-s` 切换，不混用。
+
+在你的 Tailwind CSS 入口中先导入 Tailwind，再导入 Litefy 样式表：
+
+```css
+@import "tailwindcss";
+@import "@/ui/litefy/styles/index.css";
+```
+
+皮肤项目从皮肤目录导入成品组件：
+
+```tsx
+import { Button, Input, Card } from "@/ui/litefy/skins";
+```
+
+纯 headless 项目从 `@/ui/litefy/components` 导入骨架并自行编写样式；没有 headless 版本的纯样式组件不可用。页面文件和路由继续使用宿主框架的约定。
 
 ## 文件清单
 
 - **`/{lang}/llms.txt`**——文档导航索引：全部页面与组件的链接。中文 `/zh/llms.txt`，英文 `/en/llms.txt`。
 - **`/{lang}/llms-full.txt`**——组件全文文档：props、行为说明与示例。中文 `/zh/llms-full.txt`，英文 `/en/llms-full.txt`。适用所有项目。
-- **`design.md`**——皮肤专属的设计语言文件：颜色、排版、间距、交互状态。皮肤项目附加：[minimal](https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/minimal/design.md) · [neo-brutalist](https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/neo-brutalist/design.md)。
+- **`design.md`**——皮肤专属的设计语言文件：颜色、排版、间距、交互状态。皮肤项目附加：[minimal](https://cdn.jsdelivr.net/gh/litefytop/litefy@40515e8a9b66bd56f09ae263e970df1033067dfb/app/ui/schemes/minimal/design.md) · [neo-brutalist](https://cdn.jsdelivr.net/gh/litefytop/litefy@40515e8a9b66bd56f09ae263e970df1033067dfb/app/ui/schemes/neo-brutalist/design.md) · [flat-minimal](https://cdn.jsdelivr.net/gh/litefytop/litefy@40515e8a9b66bd56f09ae263e970df1033067dfb/app/ui/schemes/flat-minimal/design.md) · [neon-gradient](https://cdn.jsdelivr.net/gh/litefytop/litefy@40515e8a9b66bd56f09ae263e970df1033067dfb/app/ui/schemes/neon-gradient/design.md)。
 
 ## 消费规则
 
 - **headless 项目**：只读结构文档（llms.txt / llms-full），忽略 design.md；纯样式组件（无 headless 版）不可用。
 - **皮肤项目**：结构文档 + 所选皮肤的 design.md；视觉 token 与类名以 design.md 为准。
+- **组件选择**：复合成品与低层零件二选一，不混用；只用 `bg-background`、`text-primary` 等语义 token，不写死颜色值。
 
 ## 接入方式
 

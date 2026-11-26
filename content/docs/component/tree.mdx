@@ -15,6 +15,12 @@ A tree driven by `items` — nodes with `children` are folders; `value` marks th
   name="tree-basic"
 />
 
+### Disabled
+
+Each node's `disabled` takes effect independently: folder and ordinary leaf buttons are natively disabled; link leaves have `href` removed, are marked `aria-disabled`, and block clicks and keyboard input. Disabled rows use `bg-disabled`, `text-disabled-fg` and `cursor-not-allowed`.
+
+<ComponentPreview name="tree-disabled" />
+
 ## API Reference
 
 ### High-level Components
@@ -30,8 +36,8 @@ A tree driven by `items` — nodes with `children` are folders; `value` marks th
 | `openKeys`        | `string[]`                                                                                                                                              | Open folder keys (controlled)                                                                                                             |
 | `defaultOpenKeys` | `string[]`                                                                                                                                              | Initially open folder keys (uncontrolled)                                                                                                 |
 | `onOpenChange`    | `(keys: string[]) => void`                                                                                                                              | Called when the open set changes                                                                                                          |
-| `className`       | `string`                                                                                                                                                | Custom classes, applied to the root container                                                                                             |
-| `classNames`      | `{ trigger?: string; item?: string; label?: string; group?: string; node?: string; labelText?: string; icon?: string; branch?: string; clip?: string }` | Per-part overrides: the rows, the nested group, the folder `<li>`, the text run, both icon slots, the expanding branch and its clip layer |
+| `className`       | `string`                                                                                                                                                | Custom classes, applied to the root container; defaults to `w-full min-w-0`                                                                  |
+| `classNames`      | `{ trigger?: SlotClassName; item?: SlotClassName; label?: string; group?: string; node?: string; labelText?: string; icon?: string; branch?: string; clip?: string }` | `trigger` / `item` accept `({ disabled }) => string`; the remaining slots cover the nested group, folder `<li>`, text, icons and expanding branch |
 | `styles`          | `{ trigger?: React.CSSProperties; item?: React.CSSProperties; label?: React.CSSProperties }`                                                            | Inline styles for the rows                                                                                                                |
 | `...props`        | `React.ComponentProps<"ul">`                                                                                                                            | Supports all native ul props                                                                                                              |
 

@@ -9,7 +9,7 @@ description: AI conversation stream — role avatars and names, status, message 
 
 ## Usage
 
-A controlled conversation stream: pass `chats` and per-role metadata, and the list renders avatars, names, bubbles and an action row.
+A controlled conversation stream with role metadata, avatars, bubbles, message actions, typing dots and failed states.
 
 <ComponentPreview name="chat-basic" />
 
@@ -28,10 +28,11 @@ A controlled conversation stream: pass `chats` and per-role metadata, and the li
 | `onMessageCopy`         | `(message) => void`                                                                                                            | Fired after the copy button writes the clipboard                                                   |
 | `onMessageGoodFeedback` | `(message) => void`                                                                                                            | Like toggled on                                                                                    |
 | `onMessageBadFeedback`  | `(message) => void`                                                                                                            | Dislike toggled on                                                                                 |
-| `onMessageReset`        | `(message) => void`                                                                                                            | Renders the regenerate button and fires on click                                                   |
+| `onMessageReset`        | `(message) => void`                                                                                                            | Passing it renders the regenerate button and fires on click                                                   |
 | `renderMessageContent`  | `(message) => ReactNode`                                                                                                       | Full-content render override                                                                       |
-| `className`             | `string`                                                                                                                       | Applied to the root `div`                                                                          |
-| `classNames`            | `{ root?, list?, message?, main?, avatar?, name?, content?, contentItem?, actions?, action?, hints?, hint?, typing?: string }` | Custom classes on the slots                                                                        |
+| `size`                   | `"sm" \| "md" \| "lg" \| "xl"`                                                                                                                       | Maximum widths of 20, 24, 28, and 32rem respectively, defaults to `"xl"`                                                |
+| `className`             | `string`                                                                                                                       | Custom classes applied to the root `div` and merged with `classNames.root`; defaults to `w-full min-w-0`                                                                          |
+| `classNames`            | `{ root?, list?, message?, main?, avatar?, name?, content?, contentBubbleUser?, contentBubbleAssistant?, contentPlain?, contentError?, contentItem?, actions?, action?, hints?, hint?, typing?, typingDot?: string }` | Custom classes on the slots; the skeleton applies only the selected content bubble variant based on `(mode, user)` (`contentBubbleUser` / `contentBubbleAssistant` / `contentPlain`), adds `contentError` to failed rows, and uses `typing` for the typing-dot container and `typingDot` for the three dots                                                                        |
 | `...props`              | `React.ComponentProps<"div">`                                                                                                  | Spread onto the root `div`                                                                         |
 
 `ChatMessage`: `{ id, role, content?: string \| ContentItem[], status? }` with six statuses (`queued`, `in_progress`, `incomplete`, `completed`, `failed`, `cancelled`). `content` blocks support `text` / `input_text` / `output_text`, `input_image`, `input_file`, `reasoning` and `function_call` shapes out of the box.

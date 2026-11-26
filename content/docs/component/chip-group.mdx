@@ -15,6 +15,10 @@ Renders chips, collapses the overflow, and hands the hidden items to `renderMore
   name="chip-group-basic"
 />
 
+### Variants
+
+Variants are pure skin states selected by skin-layer JavaScript, not part of the skeleton API: `ChipGroup` reads the group-level `data-variant` (`surface` / `primary` / `outline` / `success` / `warning` / `danger` / `info`, defaulting to `surface`) to choose one color treatment for all chips. When composing on any element directly, merge the skin's `chipBase` (layout and typography) with `chipVariants.<variant>` (colors) through `cn`, as in `cn(chipBase, chipVariants.outline)`; the default `chipClasses` string is equivalent to `cn(chipBase, chipVariants.surface)`.
+
 ## API Reference
 
 ### ChipGroup
@@ -41,4 +45,4 @@ The skeleton handles no keys. Each chip is a non-focusable `<span>`, so only the
 
 ## Data Attributes
 
-The skeleton emits no `data-*` on this component. The off-screen measurement row carries `aria-hidden`.
+The skeleton emits no `data-*` on this component. The off-screen measurement row carries `aria-hidden`. The skin layer reads the group-level `data-variant` as a JavaScript lookup key; it does not gate styles on data attributes.

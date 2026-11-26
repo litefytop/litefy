@@ -9,11 +9,17 @@ description: A calendar panel component built on native JavaScript Date, with co
 
 ## Usage
 
-Control the visible month with `onVisibleMonthChange` and disable dates with `isDateDisabled`.
+Restrict selectable dates with `isDateDisabled`; dates outside the allowed range remain visible and disabled at the same cell size as normal dates.
 
 <ComponentPreview
   name="calendar-basic"
 />
+
+### Restricted Dates
+
+Dates outside the visible month use the `bg-surface` background and `text-surface-fg` text color; selected dates and dates in a range consistently use `bg-primary` and `text-primary-fg` when active. All date cells have no rounded corners; only the outer calendar container has rounded corners. Disabled dates exclusively use `rounded-none`, `bg-disabled`, `text-disabled-fg`, and `cursor-not-allowed`, without hover, active, or outside-month styles, and cannot be focused or selected.
+
+<ComponentPreview name="calendar-disabled" />
 
 ## API Reference
 
@@ -34,15 +40,18 @@ Ready-to-use composite component.
 | `onVisibleMonthChange` | `(month: Date) => void`                         | Fired when the visible month changes (previous / next, panel pick, keyboard navigation) |
 | `onViewChange`         | `(view: "days" \| "months" \| "years") => void` | Fired when the active panel changes                                                     |
 | `isDateDisabled`       | `(date: Date) => boolean`                       | Return `true` to disable the date                                                       |
+| `disabled`             | `boolean`                                       | Disables interaction for the entire calendar, defaults to `false`                     |
 | `firstDayOfWeek`       | `0 \| 1`                                        | `0` starts the week on Sunday, `1` starts it on Monday, defaults to `0`                 |
-| `className`            | `string`                                        | Custom class names, applied to the root                                                 |
+| `className`            | `string`                                        | Custom class names applied to the root; defaults to `w-full min-w-0`, with a maximum width of `7 × --width-control + 6 × --spacing` that follows the theme |
+| `style`                | `React.CSSProperties`                           | Inline styles on the root element; can override the width                               |
+| `classNames`           | `CalendarClassNames`                            | Class names for the calendar header, navigation, grids, weekdays, and date cells; no root slot is provided |
 
 Dates are plain JavaScript `Date` values treated as calendar dates. The component treats them as immutable — it never mutates the `Date` you pass in, and `onVisibleMonthChange` / `onChange` always emit fresh `Date` objects (anchored at local noon to stay DST-safe). Month arithmetic clamps the day to the last day of the target month: Jan 31 + 1 month becomes Feb 28/29.
 
 `Calendar.calendarMonthLabels` is process-global — set it once at your app entry (it also affects [DatePicker](/en/docs/component/date-picker)); day-grid weekday abbreviations are fixed English.
 
 ```tsx
-Calendar.calendarMonthLabels = ["一月", "二月", /* ... */];
+Calendar.calendarMonthLabels = ["January", "February", /* ... */];
 ```
 
 ---
@@ -125,6 +134,7 @@ Weekday header row plus the weeks body — pass a two-dimensional `weeks` array 
 | `visibleMonth`   | `Date`                                  | Used to detect out-of-month cells                             |
 | `value`          | `Date \| null`                          | Selected date, drives the highlighted cell                    |
 | `isDateDisabled` | `(date: Date) => boolean`               | Return `true` to disable the date                             |
+| `disabled`       | `boolean`                               | Disables date cells for the entire week, defaults to `false`              |
 | `onSelect`       | `(date: Date) => void`                  | Fired on cell click; the composite filters out-of-month dates |
 | `onNavigate`     | `(date: Date) => void`                  | Fired when arrowing to a date not present in the grid         |
 | `firstDayOfWeek` | `0 \| 1`                                | Weekday header order, defaults to `0`                         |
@@ -141,6 +151,7 @@ A single week row part, usually rendered by `CalendarGrid`.
 | `visibleMonth`   | `Date`                                  | Used to detect out-of-month cells                                                            |
 | `value`          | `Date \| null`                          | Selected date                                                                                |
 | `isDateDisabled` | `(date: Date) => boolean`               | Return `true` to disable the date                                                            |
+| `disabled`       | `boolean`                               | Disables date cells for the entire row, defaults to `false`                                                 |
 | `onSelect`       | `(date: Date) => void`                  | Fired on cell click                                                                          |
 | `onNavigate`     | `(date: Date) => void`                  | Fired when arrowing to a date not present in the grid                                        |
 | `tabStopDate`    | `string`                                | ISO date string of the single tab stop in the grid; omit to keep all cells natively tabbable |
@@ -154,7 +165,7 @@ A single date cell rendered as a button.
 | Prop           | Type                             | Description                                                                                |
 | -------------- | -------------------------------- | ------------------------------------------------------------------------------------------ |
 | `date`         | `Date`                           | The date this cell renders (shows `date.getDate()`)                                        |
-| `outsideMonth` | `boolean`                        | Grays out cells not belonging to the visible month, defaults to `false`                    |
+| `outsideMonth` | `boolean`                        | Mutes cells outside the visible month with the `bg-surface` background and `text-surface-fg` text color, defaults to `false`                    |
 | `selected`     | `boolean`                        | Highlights the cell as selected, defaults to `false`                                       |
 | `tabStop`      | `boolean`                        | Roving tabindex: `true` makes the cell the only tab stop; omit to keep native tab behavior |
 | `rangeRole`    | `"start" \| "end" \| "between"` | Range role, emits `data-range` and joins `aria-selected`; omit to be outside any range |
@@ -179,6 +190,7 @@ Crossing the visible range pages the view and restores focus; each grid is a sin
 
 | Attribute | Description |
 | --- | --- |
-| `[data-outside-month]` | On a day cell — present when the day belongs to the adjacent month |
+| `[data-outside-month]` | On a day cell — present when the day belongs to the adjacent month; uses `bg-surface` and `text-surface-fg`, has no rounded corners, and retains selection and focus behavior |
+| `[data-disabled]` | On the root element — present when the entire calendar is disabled |
 | `[data-view]` | On the month / year grids — `"month"` or `"year"`; absent on the day grid |
 | `[data-active]` | On the title buttons — present on the one whose view is current |

@@ -1,26 +1,53 @@
 ---
-title: For Agents AI 接入
-description: Machine-readable docs for AI coding assistants — file list, consumption rules and how to plug in.
+title: For Agents
+description: Machine-readable docs for AI coding assistants — file list, new-project setup and consumption rules.
 ---
 
 import { AgentPrompt } from "@/components/agents-prompt";
 
 Litefy ships a set of machine-readable docs for AI coding assistants, split by concern: **structure docs** describe component structure, behavior and assembly rules — skin-agnostic; **design.md** describes the visual language — skin-specific. There are no parallel headless/skinned doc sets: both kinds of projects read the same structure docs, and only differ in whether design.md is attached.
 
-Hand the prompt below to your assistant to explain what each file is for and how to consume them:
+Hand the prompt below to your assistant to explain what each file is for, how to install Litefy and how to consume the docs:
 
 <AgentPrompt />
+
+## Shortest new-project setup
+
+Litefy is not a project scaffold and does not create pages or routes. Start with an existing project using **React 19+, TypeScript and Tailwind CSS 4**, then run these commands:
+
+```bash
+npx litefy@latest init -y
+npx litefy@latest add button input card -s minimal
+```
+
+The first command creates `litefy.json`, the `ui/litefy` directories and aggregate exports. The second installs Button, Input, Card and their dependencies, and selects the `minimal` scheme. A scheme is a project-wide choice; switch it later with `-s` rather than mixing schemes.
+
+In your Tailwind CSS entry, import Tailwind before the Litefy stylesheet:
+
+```css
+@import "tailwindcss";
+@import "@/ui/litefy/styles/index.css";
+```
+
+Skinned projects import finished components from the skins directory:
+
+```tsx
+import { Button, Input, Card } from "@/ui/litefy/skins";
+```
+
+Pure headless projects import skeletons from `@/ui/litefy/components` and write their own styles; style-only components without a headless version are unavailable. Keep using your host framework's conventions for page files and routes.
 
 ## File list
 
 - **`/{lang}/llms.txt`** — navigation index: links to every page and component. Chinese `/zh/llms.txt`, English `/en/llms.txt`.
 - **`/{lang}/llms-full.txt`** — full component docs: props, behavior and examples. Chinese `/zh/llms-full.txt`, English `/en/llms-full.txt`. Applies to every project.
-- **`design.md`** — the skin-specific design language file: color, typography, spacing, interaction states. Attached by skinned projects: [minimal](https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/minimal/design.md) · [neo-brutalist](https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/schemes/neo-brutalist/design.md).
+- **`design.md`** — the skin-specific design language file: color, typography, spacing and interaction states. Attached by skinned projects: [minimal](https://cdn.jsdelivr.net/gh/litefytop/litefy@40515e8a9b66bd56f09ae263e970df1033067dfb/app/ui/schemes/minimal/design.md) · [neo-brutalist](https://cdn.jsdelivr.net/gh/litefytop/litefy@40515e8a9b66bd56f09ae263e970df1033067dfb/app/ui/schemes/neo-brutalist/design.md) · [flat-minimal](https://cdn.jsdelivr.net/gh/litefytop/litefy@40515e8a9b66bd56f09ae263e970df1033067dfb/app/ui/schemes/flat-minimal/design.md) · [neon-gradient](https://cdn.jsdelivr.net/gh/litefytop/litefy@40515e8a9b66bd56f09ae263e970df1033067dfb/app/ui/schemes/neon-gradient/design.md).
 
 ## Consumption rules
 
-- **Headless project**: read the structure docs only (llms.txt / llms-full), ignore design.md; style-only components (no headless version) are unavailable.
+- **Headless project**: read the structure docs only (llms.txt / llms-full), ignore design.md; style-only components without a headless version are unavailable.
 - **Skinned project**: structure docs + the chosen skin's design.md; visual tokens and class names follow design.md.
+- **Component choice**: pick either composite components or low-level parts, never both; use semantic tokens such as `bg-background` and `text-primary` instead of hard-coded colors.
 
 ## How to plug in
 

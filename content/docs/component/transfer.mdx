@@ -15,6 +15,18 @@ Dual-panel transfer: `dataSource` holds all items, `value` holds the ones in the
   name="transfer-basic"
 />
 
+### Disabled
+
+Each item's `disabled` independently disables its checkbox, using `bg-disabled`, `text-disabled-fg` and `cursor-not-allowed`; each move button is disabled when its own side has no checked items.
+
+<ComponentPreview name="transfer-disabled" />
+
+### Move Button Labels
+
+When `showMoveLabels` is enabled, the move buttons render an icon with visible text and automatically leave the pure-icon square form.
+
+<ComponentPreview name="transfer-showMoveLabels" />
+
 ## API Reference
 
 ### Transfer
@@ -31,8 +43,12 @@ A dual-panel transfer component that manages controlled/uncontrolled value state
 | `renderItem`     | `(item: TransferItemConfig) => React.ReactNode`                               | Custom item renderer, applied to both panels                                                |
 | `moveRightLabel` | `string`                                                                      | Accessible name of the move-right button this component renders, defaults to `'Move right'` |
 | `moveLeftLabel`  | `string`                                                                      | Accessible name of the move-left button this component renders, defaults to `'Move left'`   |
+| `showMoveLabels` | `boolean`                                                                     | Renders visible move-button labels (icon + text), defaults to `false`; labels are accessible names only and the buttons are pure icons |
+| `size`           | `"sm" \| "md" \| "lg" \| "xl" \| "2xl"`                                                                    | Maximum widths of 20rem, 24rem, 28rem, 32rem and 40rem respectively, defaults to `"2xl"`               |
+| `style`          | `React.CSSProperties`                                                                          | Inline styles for the root element                                                        |
 | `className`      | `string`                                                                      | Custom class names, applied to the root element                                             |
-| `classNames`     | `panel` / `header` / `count` / `body` / `empty` / `item` / `actions` / `move` | Custom class names per part                                                                 |
+| `classNames`     | `{ panel?: string; header?: string; count?: string; body?: string; empty?: string; item?: CheckboxClassNames \| ((state: SlotState) => CheckboxClassNames); actions?: string; move?: SlotClassName }` | `item` returns Checkbox slots based on the item's `{ disabled }`; `move` returns a class string based on the button's `{ disabled }`; the remaining slots use fixed class names |
+| `styles`        | `{ panel?: React.CSSProperties; header?: React.CSSProperties; body?: React.CSSProperties; item?: React.CSSProperties; actions?: React.CSSProperties }` | Inline styles for each panel and the action buttons; there is no `root` slot |
 
 ### TransferItemConfig
 
@@ -42,7 +58,7 @@ Data structure for the transfer's source items.
 | :--------- | :---------------- | :--------------------------------------------------------------------------------------------------- |
 | `label`    | `React.ReactNode` | Item display content                                                                                 |
 | `value`    | `string`          | Unique identifier value                                                                              |
-| `disabled` | `boolean`         | Disables the item — it stays in the source panel and cannot be checked or moved, defaults to `false` |
+| `disabled` | `boolean`         | Disables the item's checkbox, defaults to `false`; its panel is determined by `value` |
 
 ## Keyboard Interactions
 

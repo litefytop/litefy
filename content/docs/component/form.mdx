@@ -27,6 +27,9 @@ The root form component built on top of the native `<form>` element.
 
 | Prop        | Type                                       | Description                                                                                                                                                                                              |
 | ----------- | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `size`       | `"sm" \| "md" \| "lg" \| "xl"`                 | Form maximum widths of 20, 24, 28 and 32rem respectively, defaults to `"lg"`                                                    |
+| `className`  | `string`                                         | Custom class for the root form; defaults to `w-full min-w-0`                                                                   |
+| `style`      | `React.CSSProperties`                             | Inline styles for the root form                                                                                             |
 | `onSubmit`  | `(values: FormValues) => Promise<boolean>` | Async submit handler. Receives the preprocessed values, multi-value fields as arrays. Return `true` for success and to trigger `autoReset`; returning `false` or throwing keeps the current input values |
 | `autoReset` | `boolean`                                  | Resets the form automatically when `onSubmit` resolves to `true`, defaults to `true`                                                                                                                     |
 | `onReset`   | `() => void`                               | Fired when the form resets — including the `autoReset` after a successful submit and a reset via `ref.reset()`                                                                                           |
@@ -50,7 +53,7 @@ The imperative handle obtained through the `ref` prop, where `FormValue = string
 
 #### FormSubmit
 
-A submit button that automatically reflects the form's submit state. It is disabled while the form is submitting and can render a custom loading icon.
+A submit button that automatically reflects the form's submit state. While submitting or explicitly `disabled`, it uses the Button disabled variant with `bg-disabled`, `text-disabled-fg` and `cursor-not-allowed`; while submitting, it is natively disabled by default and marked `aria-busy`.
 
 | Prop          | Type              | Description                                                                      |
 | ------------- | ----------------- | -------------------------------------------------------------------------------- |

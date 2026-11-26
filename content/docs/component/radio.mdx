@@ -15,6 +15,12 @@ A basic radio in standalone and group modes; unchecked shows a hollow ring, chec
   name="radio-basic"
 />
 
+### Disabled
+
+Group-level `disabled` and each option's `disabled` are configured independently; the radio is disabled when either is true. The native radio is disabled, the ring uses `bg-disabled`, and the label uses `text-disabled-fg` and `cursor-not-allowed`.
+
+<ComponentPreview name="radio-disabled" />
+
 ## API Reference
 
 ### High-level Components
@@ -89,9 +95,3 @@ The label wrapper (clicking it toggles the selection).
 | `Space` | Checks the focused radio — native |
 
 The skeleton itself handles no keys.
-
-## Data Attributes
-
-| Attribute | Description |
-| --- | --- |
-| `[data-orientation]` | On the `RadioGroup` root — mirrors the `orientation` prop; not rendered when the prop is not passed |

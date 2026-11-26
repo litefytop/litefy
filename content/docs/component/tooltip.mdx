@@ -56,8 +56,8 @@ The tooltip bubble rendered inline with `popover="manual"` (the top layer escape
 | `id`         | `string`                      | Element id referenced by the trigger's `popoverId`; falls back to the `Tooltip` context                                     |
 | `anchorName` | `string`                      | Trigger's anchor name (its `data-anchor-name`), matched by the built-in JS positioning; falls back to the `Tooltip` context |
 | `delay`      | `number`                      | Hide delay in milliseconds for pointer interactions; falls back to the `Tooltip` context, defaults to `100`                 |
-| `className`  | `string`                      | Custom CSS class                                                                                                            |
-| `style`      | `React.CSSProperties`         | Custom inline styles; positioning itself is managed by the built-in JS engine                                               |
+| `className`  | `string`                      | Custom class for the tooltip bubble; defaults to `w-max min-w-0`, with a maximum width of the smaller of `20rem` and the viewport width minus `1rem` |
+| `style`      | `React.CSSProperties`         | Custom inline styles for the tooltip bubble; can override width, while positioning itself is managed by the built-in JS engine |
 | `ref`        | `React.Ref<HTMLDivElement>`   | Ref to the popover element for imperative `showPopover()` and `hidePopover()` calls                                         |
 | `...props`   | `React.ComponentProps<"div">` | Supports all native div props (except `className`, `style`, `id`)                                                           |
 

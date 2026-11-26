@@ -1,6 +1,6 @@
 ---
 title: Pagination
-description: A controlled page navigator — first / previous / numbered pages (with ellipsis) / next / last. A pure view component; page state lives in usePagination.
+description: "A controlled page navigator that switches forms automatically based on available width: a page input and navigation buttons form the baseline, replaced by a page-number list when wide enough. The summary is never clipped and wraps as a block when space runs out. A pure view component; state belongs to usePagination."
 ---
 
 ## Installation
@@ -26,17 +26,30 @@ Ready-to-use composite components.
 | `page`         | `number`                                                  | Current page (1-based). **Required**                                                                                                          |
 | `totalPages`   | `number`                                                  | Total number of pages. **Required**                                                                                                           |
 | `onPageChange` | `(page: number) => void`                                  | Fired when any button is clicked                                                                                                              |
-| `siblingCount` | `number`                                                  | Page numbers shown on each side of the current page; the rest collapse into ellipsis, defaults to `1`                                         |
-| `disabled`     | `boolean`                                                 | Disables every button (e.g. while a page is loading), defaults to `false`                                                                     |
-| `summary`      | `React.ReactNode`                                         | Summary text slot on the left                                                                                                                 |
-| `className`    | `string`                                                  | Custom classes, applied to the root `nav`                                                                                                     |
-| `classNames`   | `{ controls?, nav?, pages?, page?, ellipsis?, summary? }` | Custom classes per part: the button group, the four edge buttons, the page-number group, a single page button, the ellipsis, the summary text |
-| `styles`       | `{ controls?, nav?, pages?, page?, ellipsis?, summary? }` | Custom inline styles for the same parts                                                                                                       |
+| `siblingCount` | `number`                                                  | Number of page numbers shown on each side of the current page; the rest collapse into ellipsis, defaults to `1`                                 |
+| `summary`      | `React.ReactNode`                                         | Pagination summary text slot; omit it to leave this row unrendered                                                                            |
+| `className`    | `string`                                                  | Custom class name, applied to the root `nav`                                                                                                 |
+| `classNames`   | `{ controls?, nav?, boundary?, pages?, page?, ellipsis?, summary?, pageInput?, pageTotal? }` | Custom class name per part: `nav` applies to previous / next, `boundary` to first / last, `pageInput` to the page input and `pageTotal` to the total page count; `nav` and `boundary` receive `({ disabled }) => string`, which is `true` at the first/last boundaries, while the remaining slots take fixed class names |
+| `styles`       | The same nine keys as `classNames`                        | Custom inline styles for the same parts                                                                                                       |
+
+The form switches between two variants based on the pagination bar's own available width, decided by a container query with no form prop; whether it stays on one line or wraps to two depends on actual flex-wrap fit, not the variant width:
+
+| Available width | Content shown |
+| ------------- | --------------------------------------------------------------------- |
+| `< 48rem`     | First, previous, page input, total page count, next, last (measured at 283px) |
+| `≥ 48rem`     | Previous, page numbers (with ellipsis), next (measured at 304px at the edges and 460px in the middle); first and last are covered by the page list's endpoints, while the page input and total page count leave |
+
+- Width is based on the pagination bar's container, not the viewport: place it in a 40rem card and it selects that variant.
+- When the summary and controls cannot fit on one line, the summary moves as a whole block to the first line and the controls occupy the second; a summary longer than its container wraps so it can be read in full. Neither path clips text, so neither uses `title` — `title` is unavailable to touch and keyboard channels and cannot be a fallback for clipped text.
+- When the container is narrower than the controls (< 283px), navigation buttons wrap inside the cluster without shrinking their 44px hit areas or overflowing horizontally.
+- Controls in the hidden variant are absent from the focus order and accessibility tree, so only one set of controls is interactive at a time.
+- Each +1 to `siblingCount` widens the page-number list by 104px (measured): the `48rem` variant only guarantees that `siblingCount = 1` shares a line with the summary; using `2` on the same line needs a container of at least 876px, otherwise the summary follows the second wrapping path.
+- The documentation site's content column measures 590px and always selects the page-input variant; to see page numbers, place the pagination bar in a container at least 48rem wide (such as a full-width table).
 
 ### Composable Components
 
 | Part | Element | Emitted attributes | Description |
-|------|---------|--------------------|-------------|
+|------|------|--------|------|
 | `PaginationRoot` | `<nav>` | `aria-label="pagination"` | Row container |
 | `PaginationFirst` | `Button` | `aria-label="First page"` | Jump to the first page (`ChevronsLeft`) |
 | `PaginationPrev` | `Button` | `aria-label="Previous page"` | Previous page (`ChevronLeft`) |
@@ -46,16 +59,19 @@ Ready-to-use composite components.
 | `PaginationEllipsis` | `<span>` | - | Collapsed pages marker (`MoreHorizontal`) |
 | `PaginationSummary` | `<span>` | - | Summary text slot |
 
-The current page number carries `aria-current="page"`.
+The total page count (`/ 12`) is a `<span>` rendered internally by the composite through the `classNames.pageTotal` slot, not `PaginationSummary`; the page input likewise uses `classNames.pageInput`.
+
+The current page number carries `aria-current="page"`. Navigation buttons at the first/last boundaries are natively `disabled`, use `text-disabled-fg` and `cursor-not-allowed`, and no longer respond to clicks or enter the tab order.
 
 ## Keyboard Interactions
 
-The skeleton attaches no key handlers. Every control is a native `<button type="button">`; key behavior belongs to HTML itself.
+The skeleton attaches no key handlers except on the page input. Every button is a native `<button type="button">`; key behavior belongs to HTML itself.
 
 | Key | Description |
 | --- | --- |
-| `Tab` | Reaches the buttons in DOM order: first, previous, the page numbers, next, last. Pages collapsed into ellipsis, and buttons disabled at the first/last boundary or by `disabled`, are not in the tab order |
+| `Tab` | Reaches visible controls in DOM order: first, previous, page-number buttons (`≥ 48rem`) or the page input (`< 48rem`), next, last. Pages collapsed into ellipsis, controls hidden by the active variant, and buttons at the first/last boundaries are not in the tab order |
 | `Enter` / `Space` | Natively activates the focused button; every button fires `onPageChange` once |
+| `Enter` | Submits the page in the page input; out-of-range or non-numeric input falls back to the current page, and blur also submits |
 
 ## Data Attributes
 
@@ -63,4 +79,4 @@ The skeleton attaches no key handlers. Every control is a native `<button type="
 | --- | --- |
 | `[data-pure-icon]` | On the first, previous, next and last buttons — their content is a single icon without text (from [Button](/en/docs/component/button)) |
 
-The `nav`, the pages container, the ellipsis and the summary text carry no `data-*`; the current page is marked by `aria-current="page"`, not by a data attribute.
+The `nav`, `boundary`, pages container, ellipsis, page input and pagination text carry no `data-*`; the current page is marked by `aria-current="page"`, not by a data attribute.

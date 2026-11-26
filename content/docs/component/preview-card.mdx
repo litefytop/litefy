@@ -28,8 +28,9 @@ Composed from Image + Tooltip; the CLI install resolves the dependencies automat
 | `trigger`     | `React.ReactNode`                            | When provided, the card renders as a hover Tooltip on a link            |
 | `href`        | `string`                                     | The link href (only used when `trigger` is provided), defaults to `"#"` |
 | `delay`       | `number`                                     | Tooltip show delay in ms (only used with `trigger`), defaults to `200`  |
-| `className`   | `string`                                     | Custom classes on the card                                              |
-| `classNames`  | `{ image? / body? / title? / description? }` | Custom classes for the sub-parts                                        |
+| `size`        | `"sm" \| "md" \| "lg" \| "xl"`         | Inline card maximum widths are 20, 24, 28 and 32rem respectively, defaulting to `"md"`; the floating card maximum width is the smaller of 20rem and the viewport width minus 1rem |
+| `className`   | `string`                                     | Custom class name on the card root; `data-[floating=true]:max-w-*` can override the floating card's default maximum |
+| `classNames`  | `{ root? / image? / body? / title? / description? }` | `root` controls the card root and is merged with `className`; the others customize the sub-parts |
 
 ## Keyboard Interactions
 

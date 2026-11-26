@@ -9,11 +9,17 @@ description: A single-select swatch group — 24px color dots in a wrapping row,
 
 ## Usage
 
-A single-select swatch group; `color` takes a CSS color value, and the selected swatch wears a ring in its own color.
+A single-select swatch group; `color` takes a CSS color value, the selected swatch wears a ring in its own color, and hovering shows the color name through `title`.
 
 <ComponentPreview
   name="color-swatch-basic"
 />
+
+### Disabled
+
+Group-level `disabled` and each swatch's `disabled` are configured independently; the button is natively disabled when either is true. Disabled swatches use `bg-disabled`, `--color-disabled`, and `cursor-not-allowed`, and arrow keys skip them.
+
+<ComponentPreview name="color-swatch-disabled" />
 
 ## API Reference
 
@@ -21,21 +27,21 @@ A single-select swatch group; `color` takes a CSS color value, and the selected 
 
 | Prop            | Type                                                        | Description                                                                         |
 | --------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `options`       | `{ value; label; color; disabled?; attrs? }[]` **required** | Swatch config: value, accessible name, color literal and per-item data attributes   |
+| `options`       | `{ value; label; color; disabled?; attrs? }[]` **required** | Swatch config: value, accessible name (also used as the hover `title`), color literal and per-item data attributes   |
 | `value`         | `string`                                                    | Current selected value (controlled)                                                 |
 | `defaultValue`  | `string`                                                    | Initial selected value (uncontrolled)                                               |
 | `onValueChange` | `(value: string) => void`                                   | Selection change callback; clicking the already-selected swatch does not fire again |
 | `disabled`      | `boolean`                                                   | Disables the whole group                                                            |
 | `className`     | `string`                                                    | Custom class name of the container                                                  |
 
-`options.attrs` is the per-item data-* attribute channel — anchor an option to a fixed ramp stop (e.g. `data-brand="default"`) so its preview does not drift with the current selection.
+`options.attrs` is the per-item data-* attribute channel — anchor an option to a fixed ramp stop (e.g. `data-brand="default"`) so its preview does not drift with the current selection; `title` can override the default hover name per item.
 
 ## Keyboard Interactions
 
 | Key | Description |
 | --- | --- |
-| `ArrowRight` / `ArrowDown` | Move focus and selection forward one swatch, wrapping |
-| `ArrowLeft` / `ArrowUp` | Move focus and selection back one swatch, wrapping |
+| `ArrowRight` / `ArrowDown` | Move focus and selection forward one enabled swatch, wrapping |
+| `ArrowLeft` / `ArrowUp` | Move focus and selection back one enabled swatch, wrapping |
 | `Home` / `End` | Jump to the first / last enabled swatch |
 
 ## Data Attributes

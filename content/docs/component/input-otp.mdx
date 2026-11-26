@@ -23,6 +23,12 @@ Renders the slots as password inputs, suited to PIN-code scenarios.
   name="input-otp-mask"
 />
 
+### Disabled
+
+`disabled` natively disables every slot and marks the root with `aria-disabled`; typing, paste, focus movement and pointer handling stop. Slots use `bg-disabled`, `text-disabled-fg` and `cursor-not-allowed`.
+
+<ComponentPreview name="input-otp-disabled" />
+
 ## API Reference
 
 ### High-level Components
@@ -42,7 +48,7 @@ The OTP input composed of the parts below, encapsulating value state and interac
 | `mask`          | `boolean`                 | Renders the slots as password inputs, defaults to `false`            |
 | `name`          | `string`                  | Renders a hidden input for form submission                           |
 | `aria-label`    | `string`                  | Accessible label; each slot appends a numeric suffix                 |
-| `className`     | `string`                  | Custom class for the container                                       |
+| `className`     | `string`                  | Custom class for the container; defaults to `w-full min-w-0 max-w-[20rem]` (20rem maximum) |
 | `style`         | `React.CSSProperties`     | Custom inline styles for the container                               |
 | `classNames`    | `{ slot? }`               | Custom classes for the slot                                          |
 | `styles`        | `{ slot? }`               | Inline styles for the slot                                           |
@@ -86,3 +92,4 @@ A single slot rendered as an `<input>`; value, events, focus movement and paste 
 | Attribute | Description |
 | --- | --- |
 | `[data-invalid]` | On the shell — present when `invalid` is true |
+| `[data-disabled]` | On the shell — present when every slot is disabled |

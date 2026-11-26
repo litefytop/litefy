@@ -9,7 +9,7 @@ description: A one-line token input where committed rules, the in-progress draft
 
 ## Usage
 
-The bar is one continuous input area: chips, the draft token and the caret share one flex row — the input always follows the content.
+The bar is one continuous input area: chips, the draft token and the caret share one flow — the input always follows the content.
 
 <ComponentPreview name="filter-combobox-basic" />
 
@@ -17,15 +17,21 @@ Switch languages at runtime by swapping the `texts` object — the component shi
 
 <ComponentPreview name="filter-combobox-i18n" />
 
+### Disabled
+
+`disabled` natively disables the input and every action button, marks the root with `aria-disabled`, and stops rule editing, the suggestion panel and input handling. Disabled appearance uses `bg-disabled`, `text-disabled-fg` and `cursor-not-allowed`.
+
+<ComponentPreview name="filter-combobox-disabled" />
+
 ## API Reference
 
 ### One continuous input area
 
-The bar is one wrapping row: the search icon pins to the head, followed by the committed chips, the dashed draft chip, the input and the confirm / cancel buttons — everything wraps along with the content. The clear button is **pinned to the bar's right end** (absolute, vertically centered, never shifted by content) and shows once rules exist; the bar reserves right-side space through `data-clear` while it is visible. Every committed chip stays fully visible — no `+N` folding; when the row runs out of width the input and the buttons wrap to the next line. Clicking any blank spot focuses the input.
+The bar is one wrapping, single-line flow: the search icon pins to the head, followed by the committed chips, the dashed draft chip, the input and the confirm / cancel buttons — everything wraps along with the content. The clear button is **pinned to the bar's right end** (absolute, vertically centered on the right, never shifted by content) and shows once rules exist; the bar reserves right-side space through `data-clear` while it is visible. A chip never exceeds the input bar's available width; overlong labels truncate inside the chip and keep the remove button, with no `+N` folding. Clicking any blank spot focuses the input.
 
 | Piece | Behavior |
 | --- | --- |
-| Committed chip | Solid chip with label + close-icon (X) remove button, each with its own accessible name; clicking a chip reloads it as the draft for editing |
+| Committed chip | Solid chip with a text-variant label and a close-icon (`X`) remove button, each with its own accessible name; overlong labels truncate, and clicking a chip reloads it as the draft for editing |
 | Draft chip | Dashed chip appearing once a column is picked, growing to `column + operator`; purely visual (`aria-hidden`) — semantics live in the input and `role="status"` |
 | Confirm / cancel | After the input (and hint): the check button shows only in the `value` stage with a non-empty draft and validates the rule into a committed chip (`Enter` is equivalent); the X button shows for the whole draft and abandons it in one click back to `field` — a visible counterpart to `Esc`'s step-back |
 | Value hint | The same field-hint form as Password: a small floating tag above the bar's right end, shown while the input is focused during the `value` stage — wired through `aria-describedby` |
@@ -79,6 +85,7 @@ The component **only collects and structures values**: rules arrive as `FilterRu
 | Prop                          | Type                                                | Description                                                                    |
 | ----------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------ |
 | `fields`                      | `FilterComboboxField[]`                             | Fields, aliases and the operators allowed per column                           |
+| `disabled`                    | `boolean`                                           | Group-level disable: natively disables the input and action buttons, marks the root with `aria-disabled`, and stops rule editing, suggestions and input handling, defaults to `false` |
 | `value` / `defaultValue`      | `FilterRule[]`                                      | Controlled / uncontrolled rules, defaults to `[]`                              |
 | `onChange`                    | `(rules: FilterRule[]) => void`                     | Fires when rules change                                                        |
 | `texts`                       | `FilterComboboxTexts`                               | Every replaceable string, defaults to English defaults                         |
@@ -87,7 +94,10 @@ The component **only collects and structures values**: rules arrive as `FilterRu
 | `onResult` / `onError`        | callbacks                                           | Query callbacks; aborted requests never call back                              |
 | `resultCount`                 | `number`                                            | Screen-reader-only result announcement through `role="status"`                 |
 | `renderChip` / `renderOption` | render channels                                     | Skin injects chip and suggestion row appearance, defaults to unstyled defaults |
-| `classNames` / `styles`       | `FilterComboboxClassNames` / `FilterComboboxStyles` | Slot class strings and inline styles                                           |
+| `className`                   | `string`                                            | Custom class for the field root, merged with `classNames.root`; defaults to `w-full min-w-0 max-w-[20rem]` (20rem maximum) |
+| `style`                       | `React.CSSProperties`                               | Inline styles for the field root, merged with `styles.root`                   |
+| `classNames`                  | `FilterComboboxClassNames`                          | `root` controls the field root and `list` controls the suggestion list; the rest cover the input bar and suggestion row slots |
+| `styles`                     | `FilterComboboxStyles`                              | Inline style slots matching `classNames`; the suggestion list defaults to a 20rem maximum width and is limited to the viewport width minus 1rem |
 
 ### Localization
 
@@ -99,10 +109,10 @@ Switching languages at runtime is just passing another `texts` object — zero e
 
 | Method | Description |
 | --- | --- |
-| `reset()` | Clears rules and returns to the `field` stage |
-| `submit()` | Runs one query manually |
+| `reset()` | Clears rules and returns to the `field` stage; has no effect while `disabled` |
+| `submit()` | Runs one query manually; has no effect while `disabled` |
 | `getRules()` | Reads the current rules |
-| `focusInput()` | Focuses the input |
+| `focusInput()` | Focuses the input; does not focus while `disabled` |
 
 ### Keyboard and data-* attributes
 

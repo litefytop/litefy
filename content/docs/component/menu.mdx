@@ -15,6 +15,12 @@ A menu rendered directly in the document flow; menu items are driven by `items`,
   name="menu-basic"
 />
 
+### Disabled
+
+Each menu item's `disabled` works independently: the button is natively disabled, cannot trigger selection or open a submenu, and is skipped by keyboard navigation. The appearance uses `text-disabled-fg` and `cursor-not-allowed`.
+
+<ComponentPreview name="menu-disabled" />
+
 ## API Reference
 
 ### High-level Components
@@ -29,11 +35,11 @@ Ready-to-use composite components.
 | `autoFocus`     | `boolean`                           | Focuses the first enabled item each time it turns `true`; pass the `open` of a wrapping popover to focus on every open |
 | `onSelect`      | `(item: MenuItemConfig) => void`    | Fired when a menu item is selected via click or keyboard                                                               |
 | `onEscape`      | `() => void`                        | Fired when `Escape` is pressed inside the menu                                                                         |
-| `className`     | `string`                            | Custom class for the root list; container styling in the document flow goes here                                       |
+| `className`     | `string`                            | Custom class for the root list, merged with `classNames.root`; the document-flow root list has no preset width or maximum width |
 | `style`         | `React.CSSProperties`               | Inline style for the root list                                                                                         |
-| `itemClassName` | `string`                            | Class applied to each menu item button                                                                                 |
-| `classNames`    | `{ item?; label?; sub?; chevron? }` | Custom classes for each part; `chevron` is the right-arrow icon at the end of a row that opens a submenu               |
-| `styles`        | `{ item?; label?; sub? }`           | Custom inline styles for each part                                                                                     |
+| `itemClassName` | `SlotClassName`                     | Class applied to each menu item button, receiving `({ disabled }) => string`                                           |
+| `classNames`    | `{ root?; item?; label?; itemButton?: SlotClassName; sub?; chevron? }` | `sub` controls the second-level submenu panel; `itemButton` receives `({ disabled }) => string`; `chevron` is the arrow at the end of a submenu row |
+| `styles`        | `{ item?; label?; sub? }`           | `sub` controls the second-level submenu's inline styles; submenus default to `w-fit min-w-0`, with a maximum width of the smaller of 20rem and the viewport width minus 1rem |
 
 #### items
 

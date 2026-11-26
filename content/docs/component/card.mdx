@@ -31,20 +31,22 @@ A static card container: the content wrapper stacks vertically with a built-in d
 
 | Prop         | Type                          | Description                                                                                             |
 | ------------ | ----------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `size`       | `"sm" \| "md" \| "lg" \| "xl"` | Maximum content widths of 20, 24, 28, and 32rem respectively, defaults to `"md"`                    |
 | `children`   | `React.ReactNode`             | Card content                                                                                            |
-| `className`  | `string`                      | Custom class names of the card                                                                          |
+| `className`  | `string`                      | Custom class names of the card; defaults to `w-full min-w-0`                                            |
 | `classNames` | `{ inner?: string }`          | Class channel for the content wrapper; the default string stacks vertically and carries the default gap |
 | `...props`   | `React.ComponentProps<"div">` | Supports all native div props                                                                           |
 
 ### CardButton
 
-A clickable card rendered as a `<button>` — full width by default, text left-aligned.
+A clickable card rendered as a `<button>` — full available width by default, capped at 24rem, with left-aligned text.
 
 | Prop         | Type                                    | Description                                   |
 | ------------ | --------------------------------------- | --------------------------------------------- |
 | `type`       | `"button" \| "submit" \| "reset"`       | Button type, defaults to `"button"`           |
+| `size`       | `"sm" \| "md" \| "lg" \| "xl"`       | Maximum content widths of 20, 24, 28, and 32rem respectively, defaults to `"md"` |
 | `children`   | `React.ReactNode`                       | Card content                                  |
-| `className`  | `string`                                | Custom class names of the button              |
+| `className`  | `string`                                | Custom class names of the button; defaults to `w-full min-w-0` |
 | `...props`   | `React.ComponentProps<"button">`        | Supports all native button props              |
 
 ## Keyboard Interactions

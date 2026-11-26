@@ -9,7 +9,7 @@ description: A simulated slider with horizontal and vertical orientations, point
 
 ## Usage
 
-A div-simulated slider: label, track and value on one row, value text always visible and hideable via `hideValue`; orientation is fixed: horizontal without `orientation`, vertical must be explicit.
+A simulated slider with a label, track and value; hide the value with `hideValue` and choose horizontal or vertical orientation.
 
 <ComponentPreview
   name="slider-basic"
@@ -17,11 +17,17 @@ A div-simulated slider: label, track and value on one row, value text always vis
 
 ### Variants
 
-`data-variant="cell"` switches to the cell form — a thick track (well base + primary active fill) with a fully transparent thumb (no visible content rendered in any state); the label and value sit outside the track on both sides.
+`data-variant="cell"` switches to the cell form — a thick track (a `surface` groove base + primary active fill) with a fully transparent thumb (no visible content rendered in any state); the label and value sit on opposite sides of the track.
 
 <ComponentPreview
   name="slider-variants"
 />
+
+### Disabled
+
+`disabled` sets `aria-disabled` on the root element and natively disables the slider button, blocking both pointer and keyboard handling; the appearance uses `bg-disabled`, `text-disabled-fg` and `cursor-not-allowed`.
+
+<ComponentPreview name="slider-disabled" />
 
 ## API Reference
 
@@ -49,7 +55,7 @@ A simulated slider built from the parts below, encapsulating all state and inter
 | `aria-label`   | `string`                                             | Accessible label when there is no visible label; mutually exclusive with `label`                                                                                                                                                |
 | `className`    | `string`                                             | Custom class for the root                                                                                                                                                                                                       |
 | `style`        | `React.CSSProperties`                                | Custom inline style for the root                                                                                                                                                                                                |
-| `classNames`   | `{ track?; fill?; thumb?; label?; value?; bubble? }` | Custom classes per part; `label` is the visible label, `value` the value text, `bubble` the drag-increment bubble (whether it is enabled is up to the skin)                                                                     |
+| `classNames`   | `{ track?: SlotClassName; fill?: SlotClassName; thumb?: SlotClassName; label?: SlotClassName; value?: SlotClassName; bubble?: string }` | The first five slots receive `({ disabled }) => string`; `bubble` is a fixed class name for the drag-increment bubble (whether it is enabled is up to the skin) |
 | `styles`       | `{ track?; fill?; thumb?; label?; value?; bubble? }` | Custom inline styles per part                                                                                                                                                                                                   |
 
 Keyboard support follows the WAI-ARIA slider pattern: arrow keys, PageUp/PageDown, Home and End.
@@ -66,7 +72,7 @@ The outermost container.
 
 #### SliderTrack
 
-The sliding track; the high-level component emits `data-orientation` (`horizontal` / `vertical`), and the track's size and colors are defined by the loaded scheme.
+The sliding track; the track's size and colors are defined by the loaded scheme.
 
 #### SliderFill
 
@@ -88,6 +94,12 @@ The current value text, rendered as a `<span aria-hidden>`; the semantic value i
 
 The horizontal track flexes with its container: both the preferred length and the cap are 112 spacing units (28rem in the default scheme), and it keeps shrinking when the space runs short, without squeezing out the label and value; the whole slider floors at 32 units (8rem in the default scheme) — when the container is narrower than the floor the slider yields to it and never breaks the layout. Give the root a width (e.g. `w-full`) and the track takes all the remaining space while the label and value keep their size. Vertical uses a `w-1` track thickness with the `h-64` length tier and does not flex. All values are multiples of `--spacing` and scale together when you switch schemes.
 
+## Data Attributes
+
+| Attribute | Description |
+| --- | --- |
+| `[data-disabled]` | On the root element — present when the slider is disabled |
+
 ## Keyboard Interactions
 
 | Key | Description |
@@ -98,9 +110,3 @@ The horizontal track flexes with its container: both the preferred length and th
 | `Home` | Jump to `min` |
 | `End` | Jump to `max` |
 | `Escape` | While dragging, cancels the drag and restores the value at drag start |
-
-## Data Attributes
-
-| Attribute | Description |
-| --- | --- |
-| `[data-orientation]` | On the root and the track — `"horizontal"` or `"vertical"`, matching the `orientation` prop |

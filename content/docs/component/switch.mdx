@@ -1,6 +1,6 @@
 ---
 title: Switch
-description: A toggle switch component with controlled state and composable assembly
+description: A toggle switch component with controlled state and freely composable assembly
 ---
 
 ## Installation
@@ -14,6 +14,12 @@ A simple toggle switch with default checked state.
 <ComponentPreview
   name="switch-basic"
 />
+
+### Disabled
+
+`disabled` natively disables the underlying checkbox. The label, track, thumb and input area each switch to their own disabled class strings, using `bg-disabled`, `text-disabled-fg` and `cursor-not-allowed`.
+
+<ComponentPreview name="switch-disabled" />
 
 ## API Reference
 

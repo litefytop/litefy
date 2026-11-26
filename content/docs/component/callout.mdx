@@ -25,7 +25,7 @@ A pure-style component — no skeleton, no interactive states; content renders d
 | ----------- | ----------------------------- | ------------------------------------------------------------------------------------------------------ |
 | `role`      | `string`                      | ARIA role of the block; switch to `alert` / `status` etc. to match the semantics, defaults to `"note"` |
 | `children`  | `React.ReactNode`             | Callout content                                                                                        |
-| `className` | `string`                      | Custom class names of the block                                                                        |
+| `className` | `string`                      | Custom class names of the block; defaults to `w-full min-w-0`                                                                        |
 | `...props`  | `React.ComponentProps<"div">` | Supports all native div props                                                                          |
 
 ## Keyboard Interactions
@@ -36,4 +36,4 @@ The component handles no keys and is not focusable — a pure display block; int
 
 | Attribute        | Description                                                            |
 | ---------------- | ---------------------------------------------------------------------- |
-| `[data-variant]` | Semantic variant: `success` / `warning` / `danger`, unset `info`; lays the matching semantic resting background tier (the same value in light and dark) as the background, a dark vertical line on the start side, and the icon and title take the paired `*-fg` |
+| `[data-variant]` | Semantic variant: `success` / `warning` / `danger`; unset means `info`; lays the matching semantic resting background tier (the same value in light and dark) as the background, a dark vertical line on the start side, and the icon and title take the paired `*-fg` |

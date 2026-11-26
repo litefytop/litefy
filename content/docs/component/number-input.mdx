@@ -1,6 +1,6 @@
 ---
 title: Number Input
-description: A numeric input with a non-interactive up/down cue in the trailing area — stepping is keyboard-only; the form-oriented sibling of NumberField.
+description: A numeric input with a non-interactive up/down cue in the trailing area — keyboard and focused-wheel stepping; the form-oriented sibling of NumberField.
 ---
 
 ## Installation
@@ -9,9 +9,15 @@ description: A numeric input with a non-interactive up/down cue in the trailing 
 
 ## Usage
 
-A classic numeric input with optional `prefix` / `suffix` and keyboard stepping.
+A classic numeric input with optional `prefix` / `suffix`, keyboard stepping and wheel stepping while focused.
 
 <ComponentPreview name="number-input-basic" />
+
+### Disabled
+
+`disabled` natively disables the input. The input shell uses `bg-disabled`, `text-disabled-fg` and `cursor-not-allowed`, and keyboard and wheel input are blocked.
+
+<ComponentPreview name="number-input-disabled" />
 
 ## API Reference
 
@@ -25,16 +31,16 @@ A classic numeric input with optional `prefix` / `suffix` and keyboard stepping.
 | `invalid`         | `boolean`                                                                    | Whether the input is in an invalid state                                                                                                 |
 | `min`             | `number`                                                                     | The minimum allowed value; pass it explicitly when you need a negative lower bound, defaults to `0`                                      |
 | `max`             | `number`                                                                     | The maximum allowed value, defaults to `99`                                                                                              |
-| `step`            | `number`                                                                     | Step size for `ArrowUp` / `ArrowDown`, defaults to `1`                                                                                   |
+| `step`            | `number`                                                                     | Step size for `ArrowUp` / `ArrowDown` and the wheel while focused, defaults to `1`                                                        |
 | `positiveInteger` | `boolean`                                                                    | Allow positive integers only. The value type becomes `number \| undefined`, defaults to `false`                                          |
 | `prefix`          | `React.ReactNode`                                                            | Content rendered before the number (e.g. a currency symbol)                                                                              |
 | `suffix`          | `React.ReactNode`                                                            | Content rendered after the number — replaces the stepping cue when set                                                                   |
 | `thousands`       | `boolean`                                                                    | The integer part is grouped with thousands separators while unfocused; the committed value never carries separators, defaults to `false` |
-| `indicator`       | `boolean`                                                                    | Whether to show the non-interactive up/down cue in the trailing area (hidden when `suffix` is set), defaults to `true`                   |
-| `className`       | `string`                                                                     | Custom classes, applied to the shell                                                                                                     |
-| `style`           | `React.CSSProperties`                                                        | Inline styles, applied to the shell                                                                                                      |
-| `classNames`      | `{ leading?; trailing?; root?; indicator?; indicatorIcon? }` — each `string` | Custom classes for the prefix slot, the inner input (`root`), the ↑↓ cue and its two chevron icons                                       |
-| `styles`          | `{ leading?; trailing?; root? }` — each `React.CSSProperties`                | Inline styles for the prefix/suffix slots and the inner input (`root`)                                                                   |
+| `indicator`       | `boolean`                                                                    | Whether to show the non-interactive up/down cue in the trailing area (hidden when `suffix` is set), defaults to `true`; turning it off omits the trailing indicator. Every instance shows an `↑↓` stepping hint card in the top-right while focused |
+| `className`       | `string`                                                                     | Custom class name for the field shell; defaults to `w-full min-w-0 max-w-[20rem]` (maximum 20rem)                                        |
+| `style`           | `React.CSSProperties`                                                        | Inline styles for the field shell                                                                                                        |
+| `classNames`      | `{ leading?: string; trailing?: string; root?: SlotClassName; indicator?: SlotClassName; indicatorIcon?: string; hint?: SlotClassName }` | `root`, `indicator` and `hint` receive `({ disabled }) => string` state functions; the remaining slots take fixed class names |
+| `styles`          | `{ leading?; trailing?; root?; indicator?; indicatorIcon?; hint? }` — each `React.CSSProperties` | Inline styles for the prefix/suffix slots, the inner input (`root`), the ↑↓ cue and the focus hint card |
 | `disabled`        | `boolean`                                                                    | Disable the whole field, defaults to `false`                                                                                             |
 | `...props`        | `React.ComponentProps<"input">`                                              | Supports all native input props (except `type`, `className`), such as `onBlur`                                                           |
 
@@ -49,6 +55,7 @@ The bare numeric input shared by NumberInput and NumberField — it has no shell
 | Key | Description |
 | --- | --- |
 | `ArrowUp` / `ArrowDown` | Steps the value by `step`, clamped to `min` / `max` |
+| `Wheel` (while focused) | Scroll up to increase or down to decrease by `step`, blocks page scrolling, and is clamped to `min` / `max` |
 | `Blur` | Normalizes the edited value on blur; with `thousands`, separators show only while unfocused |
 
 ## Data Attributes

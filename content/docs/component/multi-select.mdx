@@ -13,6 +13,12 @@ A Popover + listbox multi-select control driven by `options`, with grouping supp
 
 <ComponentPreview name="multi-select-basic" />
 
+### Disabled
+
+Group-level `disabled` natively disables the trigger and prevents the panel from opening; each option's `disabled` independently sets `aria-disabled`, and click and keyboard toggling are blocked by JavaScript. The trigger and options use `bg-disabled`, `text-disabled-fg` and `cursor-not-allowed`.
+
+<ComponentPreview name="multi-select-disabled" />
+
 ## API Reference
 
 ### High-level Components
@@ -21,18 +27,19 @@ Ready-to-use composite components.
 
 #### MultiSelect
 
-| Prop           | Type                                           | Description                                                                   |
-| -------------- | ---------------------------------------------- | ----------------------------------------------------------------------------- |
-| `options`      | `MultiSelectOption[]` **required**             | The options: labels, values, groups and disabled                              |
-| `value`        | `string[]`                                     | Controlled selected values                                                    |
-| `defaultValue` | `string[]`                                     | Initial selected values (uncontrolled), defaults to `[]`                      |
-| `onChange`     | `(values: string[]) => void`                   | The full selected values after each toggle                                    |
-| `trigger`      | `React.ReactNode`                              | Custom trigger content; defaults to a placeholder-text button                 |
+| Prop           | Type                                           | Description                                  |
+| -------------- | ---------------------------------------------- | -------------------------------------------- |
+| `options`      | `MultiSelectOption[]` **required**             | Options: label, value, group and disabled     |
+| `value`        | `string[]`                                     | Controlled selected values                   |
+| `defaultValue` | `string[]`                                     | Initial selected values (uncontrolled), defaults to `[]` |
+| `onChange`     | `(values: string[]) => void`                   | The full selected values after each toggle   |
+| `trigger`      | `React.ReactNode`                              | Custom trigger content; defaults to a placeholder-text button |
 | `placeholder`  | `string`                                       | Placeholder text; also the panel's `aria-label`, defaults to `Select options` |
-| `disabled`     | `boolean`                                      | Disables the trigger button, defaults to `false`                              |
-| `className`    | `string`                                       | Custom classes on the trigger button                                          |
-| `classNames`   | `{ content?; list?; group?; option?; check? }` | Custom classes for the panel, list, group headers, options and check icons    |
-| `...props`     | `React.ComponentProps<"button">`               | Supports native trigger-button props (except `children` and the like)         |
+| `disabled`     | `boolean`                                      | Disables the trigger button, defaults to `false` |
+| `className`    | `string`                                       | Custom class name for the trigger button; defaults to `w-full min-w-0 max-w-[20rem]` (maximum 20rem) |
+| `classNames`   | `{ content?: string; list?: string; group?: string; option?: SlotClassName; check?: SlotClassName }` | `content` controls the options panel; `list` controls the inner list; `option` / `check` receive `({ disabled }) => string`; the remaining slots take fixed class names |
+| `styles`       | `{ list?: React.CSSProperties; option?: React.CSSProperties }` | Inline styles for the inner list and options; there is no `content` style slot. The panel defaults to a maximum width of 20rem, limited by the viewport width minus 1rem |
+| `...props`     | `React.ComponentProps<"button">`               | Supports native trigger-button props (except `children` and the like) |
 
 ### MultiSelectOption
 
@@ -57,3 +64,4 @@ Ready-to-use composite components.
 | --- | --- |
 | `[data-selected]` | On an option — the option is selected |
 | `[data-highlighted]` | On an option — the item the keyboard highlight sits on |
+| `[data-disabled]` | On an option — present when the group or the option is disabled, together with `aria-disabled="true"` |

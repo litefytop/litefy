@@ -1,6 +1,6 @@
 ---
 title: Masonry
-description: A masonry layout that balances items across equal-width columns by measured height, with responsive column counts
+description: A masonry layout with measured-height column balancing and static CSS multi-column layouts, with responsive column counts
 ---
 
 ## Installation
@@ -9,7 +9,7 @@ description: A masonry layout that balances items across equal-width columns by 
 
 ## Usage
 
-Items are balanced across equal-width columns; the column count responds to container width by default (`1 / sm:2 / lg:3 / xl:4`).
+By default, items are balanced across equal-width columns by measured height; `layout="static"` switches to CSS multi-column layout and avoids item height measurement.
 
 <ComponentPreview
   name="masonry-basic"
@@ -21,15 +21,16 @@ Items are balanced across equal-width columns; the column count responds to cont
 
 #### Masonry
 
-A data-driven masonry layout; async content that grows taller after mount is not re-measured automatically — give it a min-height close to its final size.
+A data-driven masonry layout. In balanced mode, async content that grows taller after mount is not re-measured automatically, so give it a min-height close to its final size; static mode is laid out by the browser and does not measure item heights.
 
 | Prop         | Type                                                    | Description                                                                                                                                                                                                                                               |
 | :----------- | :------------------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `items`      | `T[]`                                                   | The data list                                                                                                                                                                                                                                             |
 | `renderItem` | `(item: T, index: number) => React.ReactNode`           | Renders a single cell                                                                                                                                                                                                                                     |
-| `getKey`     | `(item: T, index: number) => React.Key`                 | Stable key per item; also drives the internal measurement cache, defaults to index                                                                                                                                                                        |
-| `columns`    | `number \| { base?; sm?; md?; lg?; xl?; 2xl? }`         | Fixed column count, or breakpoint columns resolved from container width (resolved in JS, sm 640 / md 768 / lg 1024 / xl 1280 / 2xl 1536) — balanced lanes and nested lanes read the same breakpoint table, defaults to `{ base: 1, sm: 2, lg: 3, xl: 4 }` |
-| `className`  | `string`                                                | Custom class name for the root element. Gap is not a class: the skeleton writes inline spacing from `--litefy-masonry-gap`, a token defined by the current scheme; change the gap per instance via `styles.column` / `styles.item`                        |
+| `getKey`     | `(item: T, index: number) => React.Key`                 | Stable key per item, defaults to index                                                                                                                                                                                                                   |
+| `columns`    | `number \| { base?; sm?; md?; lg?; xl?; 2xl? }`         | Fixed column count, or breakpoint columns resolved from container width (sm 640 / md 768 / lg 1024 / xl 1280 / 2xl 1536), defaults to `{ base: 1, sm: 2, lg: 3, xl: 4 }`                                  |
+| `layout`     | `"balanced" \| "static"`                               | `balanced` balances columns by measured height; `static` uses CSS multi-column layout without measuring heights, defaults to `balanced`                                                                                                                     |
+| `className`  | `string`                                                | Custom class name for the root element; change spacing for a single instance via `styles.column` / `styles.item`                                                                                                                                           |
 | `classNames` | `{ column?; item? }` — all values `string`              | Custom class names for each part                                                                                                                                                                                                                          |
 | `styles`     | `{ column?; item? }` — all values `React.CSSProperties` | Inline styles for each part                                                                                                                                                                                                                               |
 
@@ -48,7 +49,7 @@ The equal-width column container — the skeleton gives it inline `display: flex
 
 #### MasonryItem
 
-The cell wrapper each item renders into; the skeleton gives it inline `min-width: 0`, and the static (nested) lane adds `margin-bottom: var(--litefy-masonry-gap, 1rem)` and `break-inside: avoid`.
+The cell wrapper each item renders into; the skeleton gives it inline `min-width: 0`, and static and nested lanes also add `margin-bottom: 1rem` and `break-inside: avoid`.
 
 | Prop       | Type                          | Description             |
 | :--------- | :---------------------------- | :---------------------- |
@@ -63,7 +64,7 @@ This component takes over no keys — no part attaches key handlers; focus and k
 
 | Attribute             | Description                                                                                                                                                         |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `[data-masonry-key]`  | On each item wrapper in the measured lane — the item's key, i.e. the string result of `getKey(item, index)` or the index itself; the round that assigns heights looks items up by it |
-| `[data-masonry-index]` | On the same wrapper — the item's index in `items`; its `offsetHeight` is recorded into the height slot for that index                                               |
+| `[data-masonry-key]`  | On each item wrapper in the balanced lane — the item's key, i.e. the string result of `getKey(item, index)` or the index itself |
+| `[data-masonry-index]` | On the same wrapper — the item's index in `items`; its `offsetHeight` is recorded into the height slot for that index             |
 
-The static lane (the layer nested inside another `Masonry`) emits neither attribute, because it does no height balancing.
+Static and nested lanes emit neither attribute because they do no height balancing; static fills one column in document order before moving to the next.

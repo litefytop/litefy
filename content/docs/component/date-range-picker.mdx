@@ -1,6 +1,6 @@
 ---
 title: Date Range Picker
-description: A single calendar panel where two clicks pick a start and end date; once the start is chosen, hovering previews the range instantly, and the whole range highlights as one continuous band
+description: A single calendar panel where two clicks pick a start and end date; once the start is chosen, hovering previews the range instantly, and the start, end, and intervening dates share one highlight
 ---
 
 ## Installation
@@ -9,9 +9,15 @@ description: A single calendar panel where two clicks pick a start and end date;
 
 ## Usage
 
-Two clicks in one calendar panel pick a start and end date; after the start is chosen, hovering previews the range band — solid endpoints, the middle highlighted as one band.
+Pick a start and end date in one calendar panel; the selected range uses one continuous active treatment with square day cells.
 
 <ComponentPreview name="date-range-picker-basic" />
+
+### Disabled
+
+`disabled` natively disables the input, close button, and calendar controls; JavaScript blocks opening, clearing, range selection, and keyboard handling. Disabled dates use `rounded-none`, `bg-disabled`, `text-disabled-fg`, and `cursor-not-allowed` exclusively, without hover, active, or outside-month styles.
+
+<ComponentPreview name="date-range-picker-disabled" />
 
 ## API Reference
 
@@ -20,12 +26,12 @@ Two clicks in one calendar panel pick a start and end date; after the start is c
 | Stage | Behavior |
 | --- | --- |
 | Waiting for start | The first click writes the start and switches to waiting for the end |
-| Waiting for end | Hovering any date instantly previews the range band from the start to the hovered day; moving out of the grid clears the preview |
+| Waiting for end | Hovering any enabled date instantly previews the range band from the start to the hovered day; moving out of the grid clears the preview |
 | Done | The second click commits and closes if the date is not earlier than the start; an earlier date becomes the new start. Start may equal end |
 
 `Esc` closes the panel but keeps the chosen start, so the next open continues waiting for the end. While the panel is open, the trailing calendar icon becomes a close icon — clicking it or pressing `Backspace` clears the selected value and keeps the panel open; with no value, clicking the close icon does nothing, and `clearText` is the close icon's `aria-label`. The panel carries no step hints; the input placeholder and the hover preview provide the two-step guidance.
 
-The continuous highlight band of the selected range is drawn by the skin's `calendarRangeClasses` keyed on `data-range`; the single-value `DatePicker` appearance is unaffected.
+The selected range and hover preview both use Calendar's active appearance; the `start`, `end`, and `between` roles are retained only through `data-range`. The single-value `DatePicker` appearance is unaffected.
 
 ### DateRangePicker
 
@@ -40,12 +46,14 @@ The continuous highlight band of the selected range is drawn by the skin's `cale
 | `weekdayLabels` / `monthLabels` | `string[]`                                            | Replace weekday and month names wholesale for localization, defaults to English abbreviations / English month names |
 | `isDateDisabled`                | `(date: Date) => boolean`                             | Disabled dates                                                                                                      |
 | `firstDayOfWeek`                | `0 \| 1`                                              | First day of week, defaults to `0`                                                                                  |
-| `disabled`                      | `boolean`                                             | Disabled state, defaults to `false`                                                                                 |
-| `classNames` / `styles`         | `DateRangePickerClassNames` / `DateRangePickerStyles` | Slot class strings and inline styles                                                                                |
+| `disabled`                      | `boolean`                                             | Natively disables the input, close button, and calendar, and closes the panel; defaults to `false`                    |
+| `className`                    | `string`                                              | Custom class name on the field root, merged with `classNames.root`; maximum width defaults to 20rem                  |
+| `classNames`                   | `{ root?: string; input?: string; trailing?: string; trailingClose?: string; popover?: string; panel?: string; invalid?: string; calendar?: CalendarClassNames }` | `root` controls the field root, `input` the inner input, `popover` the floating layer, and `panel` the calendar panel; the floating layer defaults to a maximum width of 20rem and is constrained by the viewport width minus 1rem |
+| `styles`                      | `{ root?: React.CSSProperties; input?: React.CSSProperties; trailing?: React.CSSProperties; popover?: React.CSSProperties; panel?: React.CSSProperties; invalid?: React.CSSProperties }` | Inline styles for the root, input, trailing area, floating layer, calendar panel, and error message; `styles.root` is active, and there are no `trailingClose` or `calendar` style slots |
 
 ### Relationship with Calendar
 
-The component reuses `Calendar`'s grid, arrow-key focus movement and month/year views. `Calendar` gains the optional props `range` / `weekdayLabels` / `monthLabels` / `onHoverDateChange`; without them its behavior is unchanged and `DatePicker` needs no edits. Day cells emit `start` / `end` / `between` through `data-range`: the first click lands on `start` (an open left cap awaiting the end), and a one-day range adds `data-range-one-day` to round both corners.
+The component reuses `Calendar`'s grid, arrow-key focus movement, and month/year views. `Calendar` gains the optional props `range` / `weekdayLabels` / `monthLabels` / `onHoverDateChange`; without them its behavior is completely unchanged, and `DatePicker` needs no edits. Day cells emit `start` / `end` / `between` through `data-range`; all three roles use the same `bg-primary` and `text-primary-fg` active appearance with no rounded corners.
 
 The panel keeps `popover="manual"` and renders in the top layer, so it is not clipped even inside a table header with `overflow-hidden`. Panel width is computed from the calendar's own size (`7 × --width-control + 6 × --spacing`, theme-aware) and does not compress with a narrow field; very narrow viewports only add a width cap and horizontal scrolling.
 
@@ -54,5 +62,6 @@ The panel keeps `popover="manual"` and renders in the top layer, so it is not cl
 | Attribute | Value | Description |
 | --- | --- | --- |
 | `data-range` | `start` / `end` / `between` | Role of a day cell within the range |
-| `data-in-range` | `true` | The day cell lies inside the selected range |
+| `data-in-range` | `true` | The day cell lies inside the selected range or hover preview |
 | `data-slot` | `date-range-panel` | Panel structure marker |
+| `data-disabled` | `true` | Whole-component disabled marker on the root element |

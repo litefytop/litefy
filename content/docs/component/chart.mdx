@@ -34,7 +34,7 @@ A basic line chart over a time axis.
 | label           | string                                  | The chart's accessible name, applied to the canvas's `role="img"` + `aria-label`; unset it joins each series `label` with `, `, falling back to `"Chart"` when all are empty |
 | zoomHint        | React.ReactNode                         | Content of the interaction hint below the canvas; pass an empty string to hide it, defaults to "Drag to zoom · double-click to reset" |
 | legendPlacement | "top" \| "bottom"                       | Legend position: below the canvas (default) or above, defaults to "bottom"                                                            |
-| className       | string                                  | Classes appended to the root element                                                                                                  |
+| className       | string                                  | Classes appended to the root element; defaults to `w-full min-w-0`                                                                                                  |
 | onReady         | () => void                              | Called once after the first render completes                                                                                          |
 
 ### ChartSeriesConfig

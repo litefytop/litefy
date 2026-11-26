@@ -1,6 +1,6 @@
 ---
 title: MeterGroup
-description: A read-only grouped gauge modeled on PrimeVue's MeterGroup — proportional segments on a `well` track, segment colors from pastel tiers (400 in light mode, 300 in dark), with a color-dotted legend
+description: A read-only grouped gauge modeled on PrimeVue's MeterGroup — proportional segments on a `surface` groove track, segment colors from pastel tiers (400 in light mode, 300 in dark), with a color-dot legend
 ---
 
 ## Installation
@@ -9,7 +9,7 @@ description: A read-only grouped gauge modeled on PrimeVue's MeterGroup — prop
 
 ## Usage
 
-A grouped gauge — items share one track as proportional segments; colors come from the palette hook (light 400 / dark 300) or a per-item `color`; the legend lists color dot, name and share per item.
+A grouped gauge with proportional segments on one track, palette or per-item colors, and a color-dot legend.
 
 <ComponentPreview name="metergroup-basic" />
 
@@ -19,16 +19,42 @@ A grouped gauge — items share one track as proportional segments; colors come 
 
 | Prop        | Type                                                 | Description                                                                                                      |
 | :---------- | :--------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------- |
-| `value`     | `{ label: string; value: number; color?: string }[]` | Items rendered as connected segments in order; `color` overrides the palette for that segment                    |
+| `value`     | `{ label: string; value: number; color?: string }[]` | Items rendered as connected segments in order; `color` overrides the palette color for that segment              |
 | `min`       | `number`                                             | Lower bound of the range, defaults to `0`                                                                        |
-| `max`       | `number`                                             | Upper bound of the range; pass one explicitly to size segments against a fixed scale, defaults to the sum of the items' `value` |
-| `className` | `string`                                             | Custom class for the root                                                                                        |
-| `classNames` | `{ track?: string; segment?: string; tip?: string; legend?: string; legendItem?: string; swatch?: string; label?: string; percent?: string }` | Custom classes for the track, segment, tooltip, legend, legend item, swatch, label and percentage |
+| `max`       | `number`                                             | Upper bound of the range; when provided explicitly, segments are sized against a fixed scale, defaults to the sum of all items' `value` |
+| `className` | `string`                                             | Custom class for the root; defaults to `w-full min-w-0`                                                          |
+| `classNames` | `{ track?: string; segment?: string; tip?: string; legend?: string; legendItem?: string; swatch?: string; label?: string; percent?: string }` | Classes for owned element slots, merged into the corresponding nodes (track / segment / tip / legend / legend item / swatch / label / share) |
 
-The remaining native `<div>` attributes (`aria-label`, `id`, inline `style`, …) are accepted and land on the root; the accessible name comes from `aria-label`. The root exposes `role="meter"` with `aria-valuemin` / `aria-valuemax` / `aria-valuenow` (the clamped item sum); the track and legend are `aria-hidden`.
+The remaining native `<div>` attributes (`aria-label`, `id`, inline `style`, …) are accepted and land on the root; the accessible name comes from `aria-label`. The root has `role="meter"` with `aria-valuemin` / `aria-valuemax` / `aria-valuenow` (the clamped item sum); the track and legend are `aria-hidden`.
 
-Segments are laid out in order as `value / (max − min)`; zero-value items render no segment and widths beyond the track are clipped by it. The legend always lists every item with its rounded share; hovering a segment also reveals a chip with `label · share` — the information always matches the legend, not dependent on hover. The track color is `well`, drawn from the same source as the library-wide track family.
+Segments are laid out in order as `value / (max − min)`; zero-value items render no segment, and excess width is clipped by the track. The legend always lists every item with its rounded share; hovering a segment also reveals a `label · share` tip — the information always matches the legend and does not depend on hover. The track color is `surface` (groove tier), from the same source as the library-wide track family.
 
-`MeterSegment` accepts `tipClassName` for its `aria-hidden` tooltip span. The span keeps `data-tip-content`, while the segment retains `data-tip`.
+### Atomic Components
 
-Vertical layout, label orientation / position and per-item icons are not in this version yet.
+Atomic components are the smallest units used to build more complex components. All three are unstyled, pass `className` through, and need their own appearance when used independently.
+
+#### MeterTrack
+
+The track container: `data-track` and `aria-hidden` are built in, and children are the segments.
+
+#### MeterSegment
+
+A single segment div: `percent` (a number from 0–100) publishes inline `width`, `color?` publishes an inline background (a runtime value), and `tip?` retains `data-tip` and renders an `aria-hidden` tip span (`data-tip-content`); the tip's class name goes through `tipClassName`.
+
+| Prop        | Type        | Description                                                  |
+| :-------- | :-------- | :----------------------------------------------------------- |
+| `percent` | `number`  | Segment width percentage, published as inline width          |
+| `color`   | `string`  | Segment color, published as an inline background             |
+| `tip`     | `string`  | Segment tip text, published to `data-tip` and the tip span     |
+| `tipClassName` | `string` | Custom class name for the tip span                      |
+
+#### MeterLegend
+
+The legend block: `items` renders a color dot, name and rounded share for each item; the `classNames` slots `item` / `swatch` / `label` / `percent` correspond to the legend item, swatch, name and percentage nodes.
+
+| Prop           | Type                                                                | Description                                             |
+| :----------- | :---------------------------------------------------------------- | :------------------------------------------------------ |
+| `items`      | `{ label: string; percent: number; color?: string }[]`            | Legend items; `percent` is the unrounded value           |
+| `classNames` | `{ item?: string; swatch?: string; label?: string; percent?: string }` | Class slots for legend items / swatches / names / shares |
+
+Vertical layout, label orientation / position and per-item icons are not included in this version.

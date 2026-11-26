@@ -37,8 +37,10 @@ Opens the menu at the given viewport coordinates.
 | `y`            | `number`                               | Viewport y coordinate (usually `e.clientY`). **Required**                                                |
 | `items`        | `MenuConfig[]`                         | Menu items, flat or grouped — same shape as the [Menu](/en/docs/component/menu) component. **Required** |
 | `onSelect`     | `(item: MenuItemConfig) => void`       | Fired when a menu item is activated; the menu closes afterwards                                          |
-| `classNames`   | `{ content?: string }`                 | Custom classes for the panel                                                                             |
+| `classNames`   | `{ content?: string }`                 | Custom classes for the root panel; defaults to `w-48 min-w-0` (12rem), with a maximum width of the smaller of 20rem and the viewport width minus 1rem |
 | `styles`       | `{ content?: React.CSSProperties }`    | Inline styles for the panel; positioning properties are managed internally                               |
+
+Each menu item's `disabled` works independently: the button is natively disabled, does not trigger selection or open a submenu, and is skipped by keyboard navigation; its appearance uses `text-disabled-fg` and `cursor-not-allowed`.
 
 #### ContextMenu.dismiss
 

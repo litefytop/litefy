@@ -33,8 +33,9 @@ Renders a native trigger button (`type="button"`, `aria-expanded`, `aria-haspopu
 | `alignX`       | `"start" \| "end" \| "center"`                                                    | Horizontal alignment of the panel relative to the trigger, defaults to `center`                                                                                |
 | `placement`    | `{ side?; align?; gap?; matchWidth? }`                                            | Overrides the docking derived from `alignX` (built-in JS positioning)                                                                                          |
 | `mode`         | `"click" \| "hover"`                                                              | Trigger interaction mode; `hover` opens on pointer enter / trigger focus and closes after a delayed pointer leave, defaults to `click`                         |
-| `classNames`   | `{ trigger?: string; content?: string }`                                          | Custom class names per slot — merged over the loaded scheme skin's own trigger/panel classes (the skin exports `popoverClasses`); on conflicts your values win |
-| `styles`       | `{ trigger?: React.CSSProperties; content?: React.CSSProperties }`                | Inline styles per slot (positioning itself is managed internally)                                                                                              |
+| `disabled`     | `boolean`                                                                         | Disables the native trigger button and prevents the panel from opening; the trigger uses `text-disabled-fg` and `cursor-not-allowed`, with `bg-disabled` additionally on non-text variants, defaults to `false` |
+| `classNames`   | `{ trigger?: string; content?: string }`                                          | Custom class names per slot; `content` controls the panel, defaulting to `w-fit min-w-0`, with a maximum width of the smaller of 20rem and the viewport width minus 1rem |
+| `styles`       | `{ trigger?: React.CSSProperties; content?: React.CSSProperties }`                | Inline styles per slot; `content` can override the panel width, while positioning itself is managed internally                                                       |
 
 ---
 
@@ -81,7 +82,7 @@ The floating panel: a `popover="manual"` div that writes the positioning result 
 | `anchorName`   | `string`                               | Name of the element to anchor positioning to (its `data-anchor-name` attribute)                                                            |
 | `anchorPoint`  | `{ x: number; y: number }`             | Anchor by viewport coordinates (e.g. mouse position); takes precedence over `anchorName`                                                   |
 | `placement`    | `{ side?; align?; gap?; matchWidth? }` | Overrides the docking derived from `alignX`                                                                                                |
-| `className`    | `string`                               | Custom class names                                                                                                                         |
+| `className`    | `string`                               | Custom class names for the panel; when used standalone, the caller provides the width                                                |
 | `style`        | `React.CSSProperties`                  | Custom inline styles; positioning itself is managed by the built-in JS engine ([Float positioning](/en/docs/utils/use-floating-panel))    |
 | `ref`          | `React.Ref<HTMLDivElement>`            | Forwards to the panel div                                                                                                                  |
 | `...props`     | `React.ComponentProps<"div">`          | Supports all native div props (except `className`), such as `role`, `id`, `onKeyDown`                                                      |
