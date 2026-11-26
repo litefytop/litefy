@@ -46,11 +46,13 @@ export interface PasswordProps extends Omit<PasswordRootProps, "className" | "vi
         toggle?: string;
         toggleIcon?: string;
         hint?: string;
+        hintKey?: string;
     };
     styles?: {
         root?: React.CSSProperties;
         toggle?: React.CSSProperties;
         hint?: React.CSSProperties;
+        hintKey?: React.CSSProperties;
     };
 }
 export const Password = ({ className, style, visible: controlledVisible, defaultVisible = false, onVisibleChange, invalid, disabled, label, description, validate, validateTrigger, fieldClassNames, classNames, styles, ...props }: PasswordProps) => {
@@ -63,22 +65,22 @@ export const Password = ({ className, style, visible: controlledVisible, default
             setVisible(next);
         onVisibleChange?.(next);
     };
-    const shiftOnlyRef = React.useRef(false);
+    const controlOnlyRef = React.useRef(false);
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         props.onKeyDown?.(e);
         if (e.defaultPrevented)
             return;
-        if (e.key === "Shift")
-            shiftOnlyRef.current = true;
+        if (e.key === "Control")
+            controlOnlyRef.current = true;
         else
-            shiftOnlyRef.current = false;
+            controlOnlyRef.current = false;
     };
     const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
         props.onKeyUp?.(e);
         if (e.defaultPrevented)
             return;
-        if (e.key === "Shift" && shiftOnlyRef.current) {
-            shiftOnlyRef.current = false;
+        if (e.key === "Control" && controlOnlyRef.current) {
+            controlOnlyRef.current = false;
             if (!disabled)
                 handleToggle();
         }
@@ -90,7 +92,9 @@ export const Password = ({ className, style, visible: controlledVisible, default
           <PasswordRoot {...props} disabled={disabled} visible={visible} id={field?.id ?? props.id} name={field?.name ?? props.name} autoComplete={props.autoComplete ?? "current-password"} aria-invalid={invalid || field?.invalid || undefined} aria-describedby={describedBy} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} className={classNames?.root} style={styles?.root}/>
           <PasswordToggle visible={visible} disabled={disabled} onClick={handleToggle} className={classNames?.toggle} style={styles?.toggle} classNames={{ icon: classNames?.toggleIcon }}/>
           <span id={hintId} className={classNames?.hint} style={styles?.hint}>
-            ⇧ Shift
+            <kbd className={classNames?.hintKey} style={styles?.hintKey}>
+              Ctrl
+            </kbd>
           </span>
         </PasswordGroup>);
     };

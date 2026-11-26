@@ -95,7 +95,8 @@ const clientLoader = browserCollections.docs.createClientLoader({
       ],
     };
 
-    const toc: TocHeading[] = (pageToc as TocHeading[] | undefined) ?? [];
+    const toc: TocHeading[] =
+      frontmatter.toc === false ? [] : ((pageToc as TocHeading[] | undefined) ?? []);
     setToc(new URL(url).pathname, toc);
     return (
       <>

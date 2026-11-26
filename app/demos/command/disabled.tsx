@@ -13,7 +13,7 @@ export default function Demo() {
   return (
     <div className="flex flex-col items-center">
       <Command
-        trigger={<>Commands…<kbd className="kbd">⌘K</kbd></>}
+        trigger={<>Commands…<kbd className="kbd pointer-coarse:hidden max-sm:hidden">⌘K</kbd></>}
         items={items}
         placeholder="Type a command or search…"
         disabled

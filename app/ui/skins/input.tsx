@@ -41,12 +41,12 @@ export const fieldInputDisabledClasses = cn(
 );
 
 
-export const fieldAddonClasses = "inline-flex shrink-0 items-center px-3 ";
+export const fieldAddonClasses = "inline-flex min-h-11 min-w-11 -my-px shrink-0 items-center justify-center px-3";
 
 /* The trailing addon yields FIRST when the row runs out of width (suffix, then
    content, never the leading icon) — shrinkable and clipping, while the input
    area holds the leftover space via grow basis-0. */
-export const fieldTrailingClasses = "inline-flex min-w-0 items-center overflow-hidden px-3";
+export const fieldTrailingClasses = "inline-flex min-h-11 min-w-11 -my-px items-center justify-center overflow-hidden px-3";
 
 
 export const fieldHintClasses =

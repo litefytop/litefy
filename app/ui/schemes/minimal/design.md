@@ -7,8 +7,8 @@ colors:
   foreground: 'oklch(14.5% 0 0)'
   surface: 'oklch(97% 0 0)'
   surface-fg: 'oklch(26.9% 0 0)'
-  disabled: 'oklch(70.8% 0 none)'
-  disabled-fg: 'oklch(26.9% 0 0)'
+  disabled: 'oklch(92.2% 0 none)'
+  disabled-fg: 'oklch(43.9% 0 0)'
   accent: 'oklch(87% 0 0)'
   accent-fg: 'oklch(37.1% 0 0)'
   surface-raised: 'oklch(100% 0 0)'
@@ -32,8 +32,8 @@ colors:
   dark-foreground: 'oklch(97% 0 0)'
   dark-surface: 'oklch(14.5% 0 0)'
   dark-surface-fg: 'oklch(92.2% 0 0)'
-  dark-disabled: 'oklch(43.9% 0 none)'
-  dark-disabled-fg: 'oklch(92.2% 0 0)'
+  dark-disabled: 'oklch(26.9% 0 none)'
+  dark-disabled-fg: 'oklch(70.8% 0 0)'
   dark-accent: 'oklch(37.1% 0 0)'
   dark-accent-fg: 'oklch(87% 0 0)'
   dark-surface-raised: 'oklch(26.9% 0 0)'
@@ -180,8 +180,8 @@ recess:
    20. `warning-fg` — `warning` 与 `warning-accent` 背景上的文字色；独立警示文字、图标与边框挂 `text-warning-independent` / `border-warning-independent`，亮档读 `warning-fg`、暗档读 `warning-accent`。
    21. `warning` — 警示提示静置背景色，日夜同值。
    22. `warning-accent` — 警示提示悬停背景色，日夜同值；暗档独立状态文字、图标与边框也读它。
-   23. `disabled` — 禁用控件背景色；四案同答固定中性灰（亮档灰 400 档 70.8，暗档灰 600 档 43.9），不随表面档变化，也不与悬停档 `accent` 同值。
-   24. `disabled-fg` — 禁用控件文字、图标与边框色；与 `disabled` 保持可读对比（本案亮 5.83:1、暗 6.19:1）。
+   23. `disabled` — 禁用控件背景色；四案同答固定中性灰（亮档灰 200 档 92.2，暗档灰 800 档 26.9，用户定 2026-11-26 下沉改档），不随表面档变化，也不与悬停档 `accent` 同值（亮 92.2 对 87、暗 26.9 对 37.1，各错开一阶）。
+   24. `disabled-fg` — 禁用控件文字、图标与边框色；与 `disabled` 保持可读对比（本案亮 6.19:1、暗 5.83:1）。
 
 4. 对比度：文字、图标与边框按实际背景配对，普通文字在亮、暗两档都满足 WCAG AA（≥ 4.5:1）。独立状态文字、图标与边框挂 `text-<status>-independent` / `border-<status>-independent`，亮档读 `<status>-fg`、暗档读 `<status>-accent`；语义四族背景日夜同值，同一枚 `<status>-fg` 压静置与悬停两档实测 danger 5.24 / 6.94、info 5.74 / 7.31、success 6.49 / 7.49、warning 6.57 / 7.47（实测值，`ui/schemes.md` 第 3 条）。填充及其悬停背景读对应 `<status>-fg`。层级不靠压暗文字或发光表达。
 
@@ -217,14 +217,14 @@ recess:
 
 ## Elevation & Depth
 
-1. 阴影严格分级，与圆角一一配对，语义四级住 `--elevation-*`：`faint`（sm，发丝元素、极小占位）/ `subtle`（sm，小标签、紧凑行内控件、轻悬浮）/ `base`（md，按钮、输入框、标准卡片静止态）/ `elevated`（xl，弹窗、抽屉、浮层、顶级面板）；第五枚 `--elevation-pressed` 按压内阴影只归组件层。亮档以扩散黑投影为底（大模糊、低不透明度，弥散不锐利），subtle / base / elevated 各追加一层品牌染色柔光——大模糊负扩散的 `color-mix(in oklab, var(--primary) 8% / 14% / 20%, transparent)`（示例值，faint 不加）：默认近黑品牌下柔光呈更大更软的扩散层，品牌换色柔光随主色相染色；暗档不加染色层（着色投影与加倍加深律冲突），每档维持淡白亮环（subtle 7% → elevated 14%）与顶部内高光，投影与亮档严格同形同尺寸、不透明度加倍加深——纯黑投影画在同深度暗画布上需约 2 倍强度才可辨（经验规则）；语义四级之外的自造档位与任意值阴影一律不出现。轻提示角色 `shadow-hint`（Tooltip / Toast 皮肤点名）答 `elevated` 同值，不另设第五档。选中/未选中环 `shadow-checked` / `shadow-unchecked`（Radio / Checkbox / ColorSwatch）是 blur 0 双环不是阴影，几何四案同构、足迹同档，不占阴影档位。
+1. 阴影严格分级，与圆角一一配对，语义四级住 `--elevation-*`：`faint`（sm，发丝元素、极小占位）/ `subtle`（sm，小标签、紧凑行内控件、轻悬浮）/ `base`（md，按钮、输入框、标准卡片静止态）/ `elevated`（xl，弹窗、抽屉、浮层、顶级面板）；第五枚 `--elevation-pressed` 按压内阴影只归组件层。亮档以扩散黑投影为底（柔和扩散、低不透明度，弥散不锐利；可见足迹上限 24px、全端一套值，见蓝图 `ui/schemes.md` 第 27 条），subtle / base / elevated 各追加一层品牌染色柔光——负扩散的 `color-mix(in oklab, var(--primary) 8% / 14% / 20%, transparent)`（示例值，faint 不加）：默认近黑品牌下柔光呈更大更软的扩散层，品牌换色柔光随主色相染色；暗档不加染色层（着色投影与加倍加深律冲突），每档维持淡白亮环（subtle 7% → elevated 14%）与顶部内高光，投影与亮档严格同形同尺寸、不透明度加倍加深——纯黑投影画在同深度暗画布上需约 2 倍强度才可辨（经验规则）；语义四级之外的自造档位与任意值阴影一律不出现。轻提示角色 `shadow-hint`（Tooltip / Toast 皮肤点名）答 `elevated` 同值，不另设第五档。选中/未选中环 `shadow-checked` / `shadow-unchecked`（Radio / Checkbox / ColorSwatch）是 blur 0 双环不是阴影，几何四案同构、足迹同档，不占阴影档位。
 2. 焦点（机制值，`index.css` 的 `--focus-*`）：1px `primary` outline 加 3px `primary` 50% 透明阴影；invalid / danger 在亮档转 `danger-fg`、暗档转 `danger`，轮廓与光晕同形。零间隙网格控件（日历日期格）另有内画档 `focus-ring-inset`：outline 与光晕同形内画（offset 取 `--focus-offset` 负值、光晕读 `--focus-glow-inset`），聚焦足迹不超 44×44 控件盒。方案不设全局 `:focus-visible` 兜底——每个可聚焦件由皮肤显式挂 `focus-visible:focus-ring`（danger 挂 `focus-ring-danger`），内层件不挂即无环；环是方案层机制，皮肤只挂角色类、不自绘样式。
 3. 边界系统（发丝是唯一宽度）：全局中性组件默认边框 = `var(--border)`；品牌交互组件统一走 Brand 色板。输入类规范形态「边框 + `base` 阴影」成套，边框不裸用；裸边框只给微小指示器（Checkbox / Radio / Steps marker）、虚线占位、分隔结构线、浮层内嵌面板。
 4. 边框与阴影二选一：带边框的盒子再叠大阴影即 Ghost card，出现即改。
 5. 控件边框与宿主互补：无边框宿主上的操作控件必须自带边框；已有边界线的宿主内行内控件只用文字 / 填充形态。
 6. 容器自带边界，宿主负责复位：可独立承载内容的容器（列表视口、折叠根、卡片、浮层面板）边框写在方案里，消费方不补；嵌进别的组件时宿主复位（去边框 + 去圆角）。业务侧出口 `data-border="none | solid"`。
 7. 滚动条：全方案统一 6px 常显经典滚动条——`::-webkit-scrollbar` 定宽、thumb 答 `var(--border)`、track 与 corner 透明、箭头按钮隐藏；Firefox 车道（`@-moz-document`）标准属性答 `thin` + `var(--border)`。标准属性不得出现在 Chromium——非初始值会丢弃 webkit 定档、退化为覆盖式滚动条自动隐藏；组件层一律不设 scrollbar 样式。
-8. 明度阶梯（用户定 2026-11-25，方向律与角色归属的正本在 `ui/schemes/elevation.md`）：静态中性档三档沿 Tailwind 灰族具名阶一阶一阶排布，亮档由低到高为凹槽 `surface` 灰 100 档 97 → 画布 `background` 灰 50 档 98.5 → 凸起 `surface-raised` 纯白（画布与纯白只差一阶）；暗档同向不反相：凹槽灰 950 档 14.5 → 画布灰 900 档 20.5 → 凸起灰 800 档 26.9。相邻档实测 ΔL 亮 1.5 / 1.5 点、暗 6.0 / 6.4 点，三档静态互不相等、一眼能分即达标；`accent` 悬停档另在阶梯之外（亮灰 300 档 87、暗灰 700 档 37.1），对三档的最小道距亮 10.0 / 暗 10.2 点。`disabled` 不入阶梯，四案同答固定中性灰（亮灰 400 档 70.8、暗灰 600 档 43.9），与悬停档错开一阶：对三档的最小道距亮 26.2 / 暗 17.0 点。凸起层由皮肤显式挂 `bg-surface-raised` 配 `text-surface-raised-fg` 才吃到明度阶；轨道族与输入凹面、值区、多行域、Segment 凹陷道读 `--color-surface` 配 `surface-fg`，壳层 bar / rail / 表头同读 `--color-surface`。
+8. 明度阶梯（用户定 2026-11-25，方向律与角色归属的正本在 `ui/schemes/elevation.md`）：静态中性档三档沿 Tailwind 灰族具名阶一阶一阶排布，亮档由低到高为凹槽 `surface` 灰 100 档 97 → 画布 `background` 灰 50 档 98.5 → 凸起 `surface-raised` 纯白（画布与纯白只差一阶）；暗档同向不反相：凹槽灰 950 档 14.5 → 画布灰 900 档 20.5 → 凸起灰 800 档 26.9。相邻档实测 ΔL 亮 1.5 / 1.5 点、暗 6.0 / 6.4 点，三档静态互不相等、一眼能分即达标；`accent` 悬停档另在阶梯之外（亮灰 300 档 87、暗灰 700 档 37.1），对三档的最小道距亮 10.0 / 暗 10.2 点。`disabled` 不入阶梯，四案同答固定中性灰（亮灰 200 档 92.2、暗灰 800 档 26.9，用户定 2026-11-26 下沉改档；与静态三档不再设道距要求），与悬停档错开一阶：对 `accent` 的道距亮 5.2 / 暗 10.2 点。凸起层由皮肤显式挂 `bg-surface-raised` 配 `text-surface-raised-fg` 才吃到明度阶；输入凹面、值区、多行域、Segment 凹陷道读 `--color-surface` 配 `surface-fg`，壳层 bar / rail / 表头同读 `--color-surface`；轨道族改读 `border` 对比线（用户定 2026-11-26：凹槽与画布只差一档，细轨看不清）。
 
 ## Motion
 
@@ -240,7 +240,7 @@ recess:
 1. 圆角四档加胶囊，永远与阴影档一致：`sm` 8px 行内标签 / `md` 12px 输入与字段族触发件 / `lg` 16px 独立区块卡 / `xl` 24px 大卡与浮层外壳 / `full` 装饰圆（时间线节点、徽标圆点）/ `disc` 头像（答 `pill`，全圆）/ `pill` 胶囊（按钮、按下钮、特性胶囊、进度条、开关轨道、单选框——按钮族默认成圆）。
 2. 本方案重映射为柔和阶梯（`sm`/`md`/`lg`/`xl` = 8/12/16/24px，`@theme` 显式声明，不再依赖核心默认刻度）；只用这几档，`xs` / `2xl` / `3xl` / `4xl` 属别的风格语言，本方案不出现。静态的 `rounded-full` 谁也答不成 0，所以胶囊与头像圆写 `rounded-pill` / `rounded-disc`，由各方案回答。
 3. 连体控制组（拼接输入 + 按钮）内角压平为 0，只保留首尾端帽。
-4. 轨道族（滑块 / 进度条 / 开关轨）：半径一律胶囊 `pill`、无描边、纯色块，未填充底挂凹槽档 `bg-surface`（读 `--color-surface`，见 Elevation 第 8 条）、填充 `primary`；轨道一律连续条，格子形态不进本方案——输入滑块的反馈靠值气泡与按压，不靠格子与速度波。
+4. 轨道族（滑块 / 进度条 / 开关轨）：半径一律胶囊 `pill`、无额外描边、纯色块，未填充底挂 `bg-border` 对比线（读 `--color-border`，用户定 2026-11-26，见 Elevation 第 8 条）、填充 `primary`；轨道一律连续条，格子形态不进本方案——输入滑块的反馈靠值气泡与按压，不靠格子与速度波。
 
 ## Components
 

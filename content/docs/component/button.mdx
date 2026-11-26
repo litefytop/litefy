@@ -1,6 +1,6 @@
 ---
 title: Button
-description: A grid-layout button with an icon cell and a status cell
+description: A grid-layout button with an icon cell and a children cell
 ---
 
 ## Installation
@@ -38,7 +38,7 @@ The button renders `icon` and `children` as the two cells of a grid; while `stat
 | Prop        | Type                                          | Description                                                                                                                                                                                                                                                                                                                                               |
 | ----------- | --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `className` | `string`                                      | Custom CSS class.                                                                                                                                                                                                                                                                                                                                         |
-| `icon`      | `React.ReactNode`                             | The icon cell, rendered before `children`; icons are sized by the button (`size-4`, scaling with the spacing scale across schemes and compact mode)                                                                                                                                                                                                                                              |
+| `icon`      | `React.ReactNode`                             | The icon cell, rendered before `children`; the icon size is enforced uniformly by the button (`size-4`, a fixed value per scheme on the spacing scale, never scaled on any platform)                                                                                                                                                                                                                                              |
 | `status`    | `{ icon: React.ReactNode; active: boolean }`  | Configuring it turns the button into a grid. With `icon`: both cells stay in place and the icon swaps in place; without `icon`: `active` shows `status.icon` before `children`. Display only — pass `disabled` / `aria-busy` yourself while waiting |
 | `...props`  | `React.ComponentProps<"button">`              | Supports all native button props (except `className`), such as `type`, `disabled`                                                                                                                                                                                                                                                                         |
 
@@ -46,7 +46,7 @@ The button renders `icon` and `children` as the two cells of a grid; while `stat
 
 #### ButtonRoot
 
-The `<button>` itself: children carry the content, and empty children emit `data-pure-icon`. It carries no styles and no layout — compose it into your own trigger with your own classes. Across all four schemes, the square shape and zero padding come from the `pure-icon` utility: `Button` adds it automatically when there are no children; other consumers (a bare `a`, `Link`, or `ButtonRoot`) must add both the class and the attribute for the square shape to apply.
+The `<button>` itself: children carry the content, and empty children emit `data-pure-icon`. It carries no styles and no layout — compose it into your own trigger with your own classes. The square shape and zero padding are answered by the `pure-icon` utility shared across all four schemes: `Button` adds it automatically when there are no children; other wearers (a bare `a`, `Link`, or `ButtonRoot`) must add both the class and the attribute for the square shape to apply.
 
 ## Keyboard Interactions
 

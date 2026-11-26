@@ -1,6 +1,6 @@
 ---
 title: Filter Combobox
-description: A one-line token input where committed rules, the in-progress draft and the caret share one continuous flow — type a column, pick an operator, enter a value
+description: A collapsible filter combobox — the trigger shows only the rule count; open the panel and type a column, pick an operator and enter a value in one continuous token flow
 ---
 
 ## Installation
@@ -9,7 +9,7 @@ description: A one-line token input where committed rules, the in-progress draft
 
 ## Usage
 
-The bar is one continuous input area: chips, the draft token and the caret share one flow — the input always follows the content.
+Collapsed it is just a trigger button: placeholder text with no rules, "N filters" once rules exist; the details for editing live in the panel, no longer bounded by inline width.
 
 <ComponentPreview name="filter-combobox-basic" />
 
@@ -19,91 +19,97 @@ Switch languages at runtime by swapping the `texts` object — the component shi
 
 ### Disabled
 
-`disabled` natively disables the input and every action button, marks the root with `aria-disabled`, and stops rule editing, the suggestion panel and input handling. Disabled appearance uses `bg-disabled`, `text-disabled-fg` and `cursor-not-allowed`.
+`disabled` natively disables the trigger and all action buttons, marks the root with `aria-disabled`, keeps the panel from opening, and stops rule editing, the suggestion list and input handling; the disabled appearance uses `bg-disabled`, `text-disabled-fg` and `cursor-not-allowed`.
 
 <ComponentPreview name="filter-combobox-disabled" />
 
 ## API Reference
 
-### One continuous input area
+### Trigger and panel
 
-The bar is one wrapping, single-line flow: the search icon pins to the head, followed by the committed chips, the dashed draft chip, the input and the confirm / cancel buttons — everything wraps along with the content. The clear button is **pinned to the bar's right end** (absolute, vertically centered on the right, never shifted by content) and shows once rules exist; the bar reserves right-side space through `data-clear` while it is visible. A chip never exceeds the input bar's available width; overlong labels truncate inside the chip and keep the remove button, with no `+N` folding. Clicking any blank spot focuses the input.
+Collapsed it is a trigger button (search icon + text): with no rules it shows `triggerText` (default `Filter`), with rules it shows `triggerCountText` (default `{count} filters`). Clicking opens a Dialog popup panel — the same mechanism as `command`: presented centered via showModal, as wide as the Dialog content area; clicking the backdrop or pressing `Esc` closes it (in the `field` stage `Esc` closes the panel directly), and closing discards the current draft back to the `field` stage while committed rules are kept.
+
+Top to bottom inside the panel: the token input flow, the list area (dual-state rule list / suggestion list, embedded in the document flow, no second floating layer), the status area and the **hint row**. The input area and list area match `command`'s **background-less** styling, transparent and blended into the panel. **The panel height is fixed** (flex column + fixed height, capped at 24rem), so hints and lists appearing or disappearing never change the panel height — zero jumping while typing; the list area takes `flex-1` of the remaining space and is **always rendered** — it keeps its height even when empty, so the hint row stays pinned to the panel's bottom and never jumps below the input; rules or suggestions scroll inside the list area when they overflow. **The list area serves double duty**: with no input (`field` stage with an empty input) it shows the committed rule list — committed rules stacked vertically as plain list rows (no chip look, no hover underline); once typing starts (or the `operator` / `value` stage begins), suggestions replace the rule list; clearing the input returns to the rule list; in the `field` stage with empty input, pressing Space or `→` switches to the field-name suggestion list (`Backspace` goes back to the rule list). The input flow is one wrappable single-line flow: a search icon prefix (a 44px touch target, a negative-margin bleed box the full height of the panel), followed by the dashed draft chip, the input and the confirm / discard buttons — all wrapping along with the content; committed rules are not part of the input flow. The clear button is the **suffix segment** of the input group container (a 44px touch target): a negative-margin bleed hugging the bar's right end and corner radius, with a background matching the panel (`bg-surface-raised`), shown once committed rules exist. Clicking any blank spot in the input area focuses the input.
+
+**The hint row** matches `command`'s footer: a separate row at the panel's bottom (`border-t` separator, hidden as a whole row on touch and narrow screens), with fixed ↑↓ key caps on the left and a dynamic hint on the right that changes by stage — the rule-list state hints "↵ edit / Del delete / Space → filter columns", the `field` / `operator` stages hint "↵ select / esc cancel", and the `value` stage shows date-format and separator key caps (text fields have no dynamic hint). The dynamic hint may span several items: the hint row wraps, the right hint group can shrink and wrap, and the key-cap group is never compressed — a taller hint row only compresses the list area and never overflows the panel horizontally.
 
 | Piece | Behavior |
 | --- | --- |
-| Committed chip | Solid chip with a text-variant label and a close-icon (`X`) remove button, each with its own accessible name; overlong labels truncate, and clicking a chip reloads it as the draft for editing |
-| Draft chip | Dashed chip appearing once a column is picked, growing to `column + operator`; purely visual (`aria-hidden`) — semantics live in the input and `role="status"` |
-| Confirm / cancel | After the input (and hint): the check button shows only in the `value` stage with a non-empty draft and validates the rule into a committed chip (`Enter` is equivalent); the X button shows for the whole draft and abandons it in one click back to `field` — a visible counterpart to `Esc`'s step-back |
-| Value hint | The same field-hint form as Password: a small floating tag above the bar's right end, shown while the input is focused during the `value` stage — wired through `aria-describedby` |
-| Clear | Button pinned to the bar's right end (`RotateCcw`, `clearText` accessible name), shown once rules exist; clears every rule and returns to `field` |
+| Trigger | A search-icon + text button with `aria-expanded` / `aria-haspopup="dialog"`; clicking opens the Dialog panel |
+| Rule list | Shown in the list area when there is no input: committed rules stacked vertically as **plain list rows** (`role="listbox"` / `role="option"`) — a plain text label plus a close-icon (`X`) remove button, no chip border or background, no hover underline; **selectable like suggestions**: ↑ / ↓ move the highlight (`aria-selected`), `Enter` edits the highlighted rule, `Del` deletes, clicking a row edits it; the panel height is fixed and overflowing rules scroll inside the list area |
+| Draft chip | A dashed chip that appears once a column is picked and grows to "column + operator" once the operator is chosen; purely visual (`aria-hidden`) — semantics live in the input and `role="status"` |
+| Confirm / discard | After the input (and the hint): the check button appears only in the value stage with a non-empty draft, validates the draft into a rule and enters the rule list (`Enter` is equivalent); the X button appears for the whole draft state and abandons the entire draft in one click back to `field` — a visible counterpart to `Esc`'s step-by-step retreat |
+| Hint row | A separate row at the panel's bottom (the same form as the `command` footer, hidden on touch and narrow screens): fixed ↑↓ key caps on the left, dynamic hints on the right — rule-list state ↵ edit / Del delete / Space → filter columns, `field` / `operator` stages ↵ select / esc cancel, `value` stage date-format and separator key caps — wired through `aria-describedby`; hints wrap within the row when there are too many and never overflow horizontally |
+| Clear | The suffix-segment button of the input group container (`RotateCcw`, the `clearText` accessible name), a 44px touch target, background matching the panel and hugging the bar's right end and corner radius, shown once committed rules exist; clears every rule at once and returns to `field` |
 
-`Esc` steps back `value → operator → field`, which shrinks the draft token step by step; `Backspace` on an empty input in `field` stage removes the last rule. There is exactly one suggestion layer — no second panel, no nested editor.
+`Esc` steps back one level at a time through `value → operator → field`, shrinking the draft token step by step; in the `field` stage `Esc` closes the panel directly. `Backspace` in the `field` stage with an empty input removes the last rule, and the rule list updates in step.
 
 ### Three stages
 
 | Stage | Suggestions | Behavior |
 | --- | --- | --- |
-| `field` | Developer-maintained fields, filtered by name, label or alias; **Space also summons the column list** (prevented from entering the draft) | Selecting a field drops its name into the flow as the draft token and moves to `operator` |
-| `operator` | Only the operators configured for that field, shown through `texts.operatorLabels` — plain words by default (`is` `is not` `greater than` `at least` `less than` `at most` `between` `not between` `before` `after` `contains` `does not contain` `is empty` `is not empty`) so every operator is self-explanatory; rename through `operatorLabels` per language | Selecting extends the draft token; `isEmpty` / `isNotEmpty` need no value and become a rule immediately |
-| `value` | `enum` fields reuse the same suggestion list for `options`, filtering as you type; `number` / `date` have no suggestions and stay inline text | Click or `Enter` on an enum option commits the rule directly; otherwise `Enter` or the check button after the input validates and commits — the chip solidifies and the flow returns to `field` |
+| `field` | Developer-maintained fields (filtered by name, label or alias); with empty input the list area shows the rule list, and Space or `→` switches to the field suggestions (`Backspace` goes back) | Selecting a field drops its name into the input flow as a draft token and moves to `operator` |
+| `operator` | Only the items in that field's `operators` config, displayed through `texts.operatorLabels` — full words by default (`is` `is not` `greater than` `at least` `less than` `at most` `between` `not between` `before` `after` `contains` `does not contain` `is empty` `is not empty`), so every operator costs zero interpretation; replaced wholesale per language via `operatorLabels` (such as 等于 / 介于 in Chinese) | Selecting grows the draft token by one level; `isEmpty` / `isNotEmpty` need no value and become a rule immediately |
+| `value` | `enum` fields reuse the same suggestion display for `options`, filtering as you type; `number` / `date` have no suggestions and stay inline text input | Clicking or `Enter` on an enum option commits the rule directly; otherwise `Enter` or the check button behind the input validates and commits — the chip solidifies and the flow returns to `field` |
 
 ### Value hints
 
-During the `value` stage a floating hint tag appears above the bar's right end — shown as soon as the stage starts (independent of focus), resolved by `resolveValueHint(field, operator, texts)`. Hints come in two shapes: plain text (`type: "text"`) and **kbd key caps** (`type: "keys"`, rendered as `<kbd>` elements):
+During the `value` stage a dynamic hint appears on the right side of the hint row — driven by the array returned from `resolveValueHint(field, operator, texts)`. Hints come in two shapes: plain text (`type: "text"`) and **kbd key caps** (`type: "keys"`, rendered as `<kbd>` elements). The key-cap group is hidden entirely on mobile (touch or narrow screens); plain-text hints are unaffected:
 
 | Field × operator | Hints |
 | --- | --- |
-| `number` + `between` / `notBetween` | separator label + key caps — `separatorLabel` (default `Separate with`) followed by `␣` `,` `/` as `<kbd>` caps (`separatorKeys`) |
-| `date` + `between` / `notBetween` | format hint `dateValueHint` (default `Format YYYY-MM-DD`) **and** key caps `␣` `,` `/` `-` (`dateSeparatorKeys`) — dates may also be split with `-` |
+| `number` + `between` / `notBetween` | Explanatory text + key caps — `separatorLabel` (default `Separate with`) followed by `␣` `,` `/` as three `<kbd>` caps (`separatorKeys`) |
+| `date` + `between` / `notBetween` | The format hint `dateValueHint` (default `Format YYYY-MM-DD`) **and** key caps `␣` `,` `/` `-` side by side (`dateSeparatorKeys`) — dates may also be split with `-` |
 | `date` + single-value operator | `dateValueHint` (default `Format YYYY-MM-DD`) only |
 | `number` / `text` / `enum` single-value, or no-value operators | No hint (enum already has its dropdown; text needs none) |
 
-Explanatory words stay (label, `Format`), example values never appear; the key caps (`␣` for space) are language-neutral. Negative numbers have no `-` separator — split them with `␣` `,` or `/` (e.g. `-10 20`).
+Explanatory words stay (label, `Format`), example values never appear; the key caps (`␣` for space) are language-neutral. Numbers have no `-` separator — negative ranges are split with `␣` `,` or `/` (e.g. `-10 20`).
 
-Dates are entered and stored as ISO `YYYY-MM-DD` only — the hint documents the format instead of the component parsing multiple formats.
+Dates are entered and stored as ISO `YYYY-MM-DD` only — the component does not parse multiple date formats; the hint documents the format instead.
 
 ### Fields and operators
 
 `FilterComboboxField = { name, label, type, aliases?, operators, options? }`. `type` is `text` / `number` / `date` / `enum`; `operators` is maintained per column by the developer and is never auto-filled. `enum` values are checked against `options`.
 
-`FilterRule = { id, field, operator, value }` where `value` is `string`, `string[]` (range) or `null` (no-value operators). The rule array is the component's `value` / `onChange` contract; pass it to `toFilterParams(rules)` for a flat backend payload.
+`FilterRule = { id, field, operator, value }` where `value` is `string`, `string[]` (a range) or `null` (no-value operators). The rule array is the component's `value` / `onChange` contract; pass it to `toFilterParams(rules)` to flatten it before requesting the backend.
 
 ### Value validation and separators
 
 | Operator kind | Validation |
 | --- | --- |
 | Single value | Non-empty; `number` parses to a finite number, `enum` hits `options`, `date` auto-formats — `2026-1-1` normalizes to `2026-01-01`, and three positional segments like `2003 05 19` assemble into `2003-05-19` |
-| Range `between` / `notBetween` | Must split into two values, each passing the single-value check (dates auto-format per side, six positional segments like `2003 05 19 2003 06 20` assemble into a range); start must not exceed end (`invertedRangeText` otherwise) |
+| Range `between` / `notBetween` | Must split into two values, each passing the single-value check above (dates auto-format per side, and six positional segments like `2003 05 19 2003 06 20` assemble into a range); start must not exceed end (`invertedRangeText` otherwise) |
 | No-value `isEmpty` / `isNotEmpty` | Always valid, `value` is `null` |
 
-`separators` defaults to `[",", "/", " ", "，", "～", "~", "–"]` and can be replaced wholesale — `-` is not a general separator, since it is both a minus sign and the ISO date hyphen. Instead `parseRangeValue` extracts two ISO dates for `date` fields first, so `2026-01-01 - 2026-02-01` works there; everything else splits on the separators. Failures are announced through `role="alert"` — `invalidRangeText` for malformed input, `invertedRangeText` when start exceeds end — and produce no rule.
+`separators` defaults to `[",", "/", " ", "，", "～", "~", "–"]` and can be replaced wholesale — `-` is not a general separator, since it is both a minus sign and the ISO date hyphen. `parseRangeValue` extracts two ISO dates first for `date`, so `2026-01-01 - 2026-02-01` works there; everything else splits on the separators. Failures are announced through `role="alert"` — malformed input reports `invalidRangeText`, start exceeding end reports `invertedRangeText` — and neither produces a rule.
 
-The component **only collects and structures values**: rules arrive as `FilterRule[]` and flatten through `toFilterParams(rules)` into structured `{ field, operator, value }` params with no SQL or DSL text. How they are bound into SQL, a DSL or an ORM is the host's job.
+The component **only collects and structures values**: rules are handed to the consumer as `FilterRule[]`, and `toFilterParams(rules)` flattens them into structured `{ field, operator, value }` params with no SQL or DSL text. How they are bound into SQL, a DSL or an ORM is the developer's second-layer job.
 
 ### FilterCombobox
 
-| Prop                          | Type                                                | Description                                                                    |
-| ----------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------ |
-| `fields`                      | `FilterComboboxField[]`                             | Fields, aliases and the operators allowed per column                           |
-| `disabled`                    | `boolean`                                           | Group-level disable: natively disables the input and action buttons, marks the root with `aria-disabled`, and stops rule editing, suggestions and input handling, defaults to `false` |
-| `value` / `defaultValue`      | `FilterRule[]`                                      | Controlled / uncontrolled rules, defaults to `[]`                              |
-| `onChange`                    | `(rules: FilterRule[]) => void`                     | Fires when rules change                                                        |
-| `texts`                       | `FilterComboboxTexts`                               | Every replaceable string, defaults to English defaults                         |
-| `separators`                  | `string[]`                                          | Range value separators, defaults to see above                                  |
-| `fetcher`                     | `(params, signal) => Promise<unknown>`              | Optional; rule changes auto-query, `AbortController` cancels in-flight work    |
-| `onResult` / `onError`        | callbacks                                           | Query callbacks; aborted requests never call back                              |
-| `resultCount`                 | `number`                                            | Screen-reader-only result announcement through `role="status"`                 |
-| `renderChip` / `renderOption` | render channels                                     | Skin injects chip and suggestion row appearance, defaults to unstyled defaults |
-| `className`                   | `string`                                            | Custom class for the field root, merged with `classNames.root`; defaults to `w-full min-w-0 max-w-[20rem]` (20rem maximum) |
-| `style`                       | `React.CSSProperties`                               | Inline styles for the field root, merged with `styles.root`                   |
-| `classNames`                  | `FilterComboboxClassNames`                          | `root` controls the field root and `list` controls the suggestion list; the rest cover the input bar and suggestion row slots |
-| `styles`                     | `FilterComboboxStyles`                              | Inline style slots matching `classNames`; the suggestion list defaults to a 20rem maximum width and is limited to the viewport width minus 1rem |
+| Prop | Type | Description |
+| --- | --- | --- |
+| `fields` | `FilterComboboxField[]` | Fields, aliases and the operators allowed per column |
+| `disabled` | `boolean` | Group-level disable: the trigger and action buttons are natively disabled, the panel does not open, the root is marked `aria-disabled`, and rule editing, the suggestion list and input handling all stop; defaults to `false` |
+| `value` / `defaultValue` | `FilterRule[]` | Controlled / uncontrolled rules, defaults to `[]` |
+| `onChange` | `(rules: FilterRule[]) => void` | Fires when rules change |
+| `texts` | `FilterComboboxTexts` | Every replaceable string, defaults to the English defaults |
+| `separators` | `string[]` | Range value separators, defaults to see above |
+| `fetcher` | `(params, signal) => Promise<unknown>` | Optional; rule changes auto-query, `AbortController` cancels in-flight requests |
+| `onResult` / `onError` | callbacks | Query callbacks; cancelled requests never call back |
+| `resultCount` | `number` | Result count, announced by screen readers only through `role="status"` |
+| `renderOption` | render channel | Skins inject suggestion-row appearance through it; defaults to the unstyled default implementation |
+| `dialogClassNames` / `dialogStyles` | Dialog slots | Pass through to the internal Dialog (the same one as `command`); `content` is concatenated with `classNames.panel` |
+| `className` | `string` | Custom class for the field root, merged with `classNames.root`; defaults to `w-full min-w-0 max-w-[20rem]`; the trigger width follows the root |
+| `style` | `React.CSSProperties` | Inline styles for the field root, merged with `styles.root` |
+| `classNames` | `FilterComboboxClassNames` | `root` controls the field root, `trigger` / `triggerLabel` control the trigger button, `panel` controls the panel (concatenated onto the Dialog content), `list` controls the suggestion list, and the rest are input-area and suggestion-row slots |
+| `styles` | `FilterComboboxStyles` | Inline style slots matching `classNames`; the panel by default inherits the Dialog content wholesale — width and appearance match the Dialog |
 
 ### Localization
 
-The component ships **no i18n runtime and no language packs** — every visible string lives in `FilterComboboxTexts`, each optional with an English default: the three stage placeholders, `emptyFieldsText` / `emptyOperatorsText` / `emptyValuesText`, `invalidValueText` / `invalidRangeText` / `invertedRangeText`, the hints `dateValueHint` (default `Format YYYY-MM-DD`), `separatorLabel` (default `Separate with`), `separatorKeys` (default `["␣", ",", "/"]`) and `dateSeparatorKeys` (default `["␣", ",", "/", "-"]`), `removeLabel` / `editLabel`, `cancelDraftText` / `submitText` / `clearText`, `loadingText` / `errorText`, `resultCountText` with a `{count}` placeholder (default `{count} results`), and `operatorLabels` for renaming each operator. `separators` is part of the same replaceable contract.
+The component ships **no i18n runtime and no language packs** — every user-visible string lives in `FilterComboboxTexts`, each optional with an English default: the trigger strings `triggerText` (default `Filter`) and `triggerCountText` (default `{count} filters`, with a `{count}` placeholder), the three stage placeholders, `emptyFieldsText` / `emptyOperatorsText` / `emptyValuesText`, `invalidValueText` / `invalidRangeText` / `invertedRangeText`, the hint row's `enterSelectText` (default `Select`) / `escHintText` (default `Cancel`) / `enterEditText` (default `Edit`) / `deleteHintText` (default `Delete`) / `spaceSearchText` (default `Search fields`), the hints `dateValueHint` (default `Format YYYY-MM-DD`), `separatorLabel` (default `Separate with`), `separatorKeys` (default `["␣", ",", "/"]`) and `dateSeparatorKeys` (default `["␣", ",", "/", "-"]`), `removeLabel`, `cancelDraftText` / `submitText` / `clearText`, `loadingText` / `errorText`, `resultCountText` with a `{count}` placeholder (default `{count} results`), and `operatorLabels` (renaming each operator one by one). `separators` is part of the same replaceable contract.
 
-Switching languages at runtime is just passing another `texts` object — zero extra bytes in the component; dictionaries live in the host. The i18n demo ships a Chinese dictionary only; the English defaults are in the usage demo above. The confirm / cancel / clear buttons and the chip buttons all use the **text** button variant (`primary` is forbidden alongside text — see the `pagination` example).
+Switching languages at runtime is just passing another `texts` object — zero extra bytes in the component; dictionaries live in the host. The i18n demo ships one Chinese dictionary only; the English defaults are in the usage demo above. The confirm / discard / clear buttons and the rule-row remove button are all `text`-variant icon buttons (`primary` is disabled alongside text — see the `pagination` example).
 
 ### FilterComboboxRef
 
@@ -112,18 +118,19 @@ Switching languages at runtime is just passing another `texts` object — zero e
 | `reset()` | Clears rules and returns to the `field` stage; has no effect while `disabled` |
 | `submit()` | Runs one query manually; has no effect while `disabled` |
 | `getRules()` | Reads the current rules |
-| `focusInput()` | Focuses the input; does not focus while `disabled` |
+| `focusInput()` | When the panel is closed, opens the panel first and focuses the input; does not focus while `disabled` |
 
 ### Keyboard and data-* attributes
 
 | Key | Description |
 | --- | --- |
-| `↑` / `↓` | Move through suggestions, wrapping around; in `value` stage only enum fields have suggestions |
-| `Space` | In `field` stage, summons the column suggestion list (never enters the draft) |
-| `Enter` | Select the active suggestion; in `value` stage picks a suggestion when present, otherwise commits the rule |
-| `Esc` | Steps back; any stage can return to the initial state |
-| `Backspace` | In `field` stage with empty input, removes the last rule |
+| `↑` / `↓` | Move within the suggestion list with wrap-around; in the rule-list state, moves the highlighted rule (the list area shows the rule list when input is empty in the `field` stage) |
+| `Space` / `→` | In the `field` stage with empty input, switches from the rule list to the field-name suggestion list (Space never enters the draft) |
+| `Enter` | In the suggestion state, selects the active suggestion (in the `value` stage picks a suggestion when present, otherwise commits the rule); in the rule-list state, edits the highlighted rule |
+| `Del` | In the rule-list state, deletes the highlighted rule |
+| `Esc` | Steps back one level at a time through `value → operator → field`; in the `field` stage closes the panel directly |
+| `Backspace` | In the `field` stage with empty input, removes the last rule; in the field-suggestion state, returns to the rule list (without deleting rules) |
 
 Clicking a suggestion matches the keyboard: each option prevents input blur on `mousedown`, so the list never collapses the instant you click.
 
-`data-slot` can be `filter-combobox` / `bar` / `chip` / `draft` / `hint` / `suggestion-list`; `data-highlighted` marks the keyboard-active row, `data-loading` / `data-error` mark the status container.
+`data-slot` can be `filter-combobox` / `trigger` / `panel` / `bar` / `prefix` / `draft` / `rules-list` / `rule-row` / `list` / `suggestion-list` / `footer` / `hint-arrows` / `hint` / `hint-keys`; `data-open` marks the trigger whose panel is open, `data-highlighted` marks the keyboard-active item (suggestion rows and rule rows), and `data-loading` / `data-error` mark the status container.

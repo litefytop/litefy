@@ -7,6 +7,7 @@ import { Loader2, Search } from "@/components/icons";
 import * as React from "react";
 import { useLocation, useNavigate } from "react-router";
 import { toSchemeHref } from "@/lib/style-templates";
+import { cn } from "@/ui/skins";
 import { type CommandItemConfig, useSpin } from "@/ui";
 import { useSiteSkin } from "./site-skin";
 
@@ -125,10 +126,12 @@ export function DocsSearchTrigger({
   locale,
   onOpen,
   className,
+  compactOnMobile = false,
 }: {
   locale: string;
   onOpen: () => void;
   className?: string;
+  compactOnMobile?: boolean;
 }) {
   const { Button } = useSiteSkin();
   const label = locale === "zh" ? "搜索文档" : "Search docs";
@@ -142,8 +145,14 @@ export function DocsSearchTrigger({
       title={label}
     >
       <Search className="shrink-0 size-4" aria-hidden />
-      <span className="max-sm:hidden flex-1 truncate text-left">{label}</span>
-      <kbd className="kbd max-md:hidden">
+      <span
+        className={cn("flex-1 truncate text-left", compactOnMobile && "max-sm:hidden")}
+      >
+        {label}
+      </span>
+      <kbd
+        className={cn("kbd pointer-coarse:hidden", compactOnMobile && "max-sm:hidden")}
+      >
         Ctrl K
       </kbd>
     </Button>

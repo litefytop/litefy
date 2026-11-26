@@ -69,7 +69,7 @@ export {
 export { FilterCombobox, filterComboboxClasses } from "./filter-combobox";
 export type {
   FilterComboboxProps, FilterComboboxClassNames, FilterComboboxStyles, FilterComboboxStatusProps,
-  FilterComboboxRef, FilterComboboxFetcher, FilterChipRender, FilterChipRenderArgs,
+  FilterComboboxRef, FilterComboboxFetcher,
   FilterOptionRender, FilterOptionRenderArgs,
   FilterComboboxField, FilterComboboxFieldType, FilterComboboxState, FilterComboboxTexts,
   ComboboxSuggestion, ValueValidation,

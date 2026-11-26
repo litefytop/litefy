@@ -1,6 +1,6 @@
 ---
 title: 组合筛选器
-description: 一行连续的 token 输入区——已提交规则、构建中的草稿与光标同处一条流，输入列名、选操作符、填值一气呵成
+description: 收合式组合筛选器——trigger 只显示条件数，点开面板后在同一根 token 输入流里输入列名、选操作符、填值，一气呵成
 ---
 
 ## 安装
@@ -9,7 +9,7 @@ description: 一行连续的 token 输入区——已提交规则、构建中的
 
 ## 用法
 
-输入条是一根连续输入区：chips、草稿 token 与光标同处一条流，输入框始终跟在内容之后。
+收起时只有一个 trigger 按钮：没有条件时显示占位文案，已有条件时显示「N 个条件」；点开面板才看到明细并编辑，不再受行内宽度限制。
 
 <ComponentPreview name="filter-combobox-basic" />
 
@@ -19,37 +19,42 @@ description: 一行连续的 token 输入区——已提交规则、构建中的
 
 ### 禁用
 
-`disabled` 原生禁用输入框与所有操作按钮，根元素标记 `aria-disabled`，规则编辑、候选面板和输入处理均停止；禁用外观使用 `bg-disabled`、`text-disabled-fg` 与 `cursor-not-allowed`。
+`disabled` 原生禁用 trigger 与所有操作按钮，根元素标记 `aria-disabled`，面板不再打开，规则编辑、候选列表和输入处理均停止；禁用外观使用 `bg-disabled`、`text-disabled-fg` 与 `cursor-not-allowed`。
 
 <ComponentPreview name="filter-combobox-disabled" />
 
 ## API 参考
 
-### 一根连续输入区
+### Trigger 与面板
 
-输入条是一根可换行的单行流：搜索图标固定头部，其后依次是已提交 chip、虚线草稿 chip、输入框与确认钮 / 放弃钮——全部跟随内容换行。清空钮**钉在 bar 右端**（absolute 右侧垂直居中，不随内容移动），有已提交规则时显示，显示期间 bar 经 `data-clear` 预留右侧空间防重叠。chip 宽度不超过输入条可用宽度，超长标签在 chip 内截断并保留移除钮，不做 `+N` 折叠。点击输入区任意空白处即聚焦输入框。
+收起时是 trigger 按钮（search 图标 + 文案）：无规则显示 `triggerText`（默认 `Filter`），有规则显示 `triggerCountText`（默认 `{count} filters`）。点击打开 Dialog 弹窗面板——与 `command` 同一套机制：showModal 居中呈现，宽度与 Dialog 内容区一致；点背景或按 `Esc` 关闭（`field` 阶段按 `Esc` 直接关闭面板），关闭即放弃当前草稿回到 `field` 阶段，已提交规则保留。
+
+面板内自上而下是：token 输入流、列表区（条件列表 / 候选列表双态，文档流内嵌，不弹第二个浮层）、状态区与**提示行**。输入区与列表区与 `command` 同款**不带背景色**，透明融进面板。**面板高度固定**（flex 列 + 固定高，上限 24rem），提示与列表的出现 / 消失不改变面板高度，输入过程中零跳变；列表区 `flex-1` 占满剩余空间且**常驻渲染**——即使为空也保有高度，提示行因此恒钉在面板底部、不会跳到输入框下方；条件或候选超出即在列表区内滚动。**列表区一物两用**：无输入（`field` 阶段且输入框为空）时显示已写好的条件列表——已提交规则以普通列表行逐条竖排（无 chip 外观、无 hover 下划线）；一旦开始输入（或进入 `operator` / `value` 阶段），候选替换条件列表；清空输入又回到条件列表；`field` 阶段空输入下按空格或 `→` 可切换到字段名候选列表（`Backspace` 退回条件列表）。输入流是一根可换行的单行流：搜索图标前缀（44px 触控目标，与面板同高的负边距出血盒），其后依次是虚线草稿 chip、输入框与确认钮 / 放弃钮——全部跟随内容换行，已提交条件不在输入流里。清空钮是输入组容器的**后缀段**（44px 触控目标）：负边距出血贴住 bar 右端与圆角，背景与面板同色（`bg-surface-raised`），有已提交规则时显示。点击输入区任意空白处即聚焦输入框。
+
+**提示行**与 `command` 的 footer 同款：面板最下方单独一行（`border-t` 分隔，触屏与窄屏整行隐藏），左侧固定 ↑↓ 键帽，右侧动态提示随阶段变化——条件列表态提示「↵ 编辑 / Del 删除 / Space → 筛选列名」，`field` / `operator` 阶段提示「↵ 选择 / esc 取消」，`value` 阶段显示日期格式与分隔符键帽（文本字段无动态提示）。动态提示可能多条：提示行允许换行、右侧提示组可收缩换行，键帽组不被压缩——提示行增高只压缩列表区，横向不会溢出面板。
 
 | 组成 | 行为 |
 | --- | --- |
-| 已提交 chip | 实线 chip，text 变体标签 + close 图标（`X`）移除钮，各有独立可访问名；超长标签截断，点 chip 把该条回填为草稿继续编辑 |
+| Trigger | search 图标 + 文案按钮，`aria-expanded` / `aria-haspopup="dialog"`；点击打开 Dialog 面板 |
+| 条件列表 | 无输入时显示在列表区：已提交规则以**普通列表行**逐条竖排（`role="listbox"` / `role="option"`）——纯文本标签 + close 图标（`X`）移除钮，无 chip 边框背景、无 hover 下划线；**可像候选一样选择**：↑ / ↓ 移动高亮（`aria-selected`）、`Enter` 编辑高亮条件、`Del` 删除、点击行编辑；面板高度固定，条件超出即在列表区内滚动 |
 | 草稿 chip | 虚线 chip，选中列后出现、选定操作符后长成「列名 + 操作符」；纯视觉件（`aria-hidden`），语义由输入框与 `role="status"` 承担 |
-| 确认 / 放弃 | 在输入框（与 hint）后方：check 钮仅在值阶段且草稿非空时出现，点击校验并固化为实线 chip（`Enter` 等效）；X 钮在整段草稿态出现，一次放弃整条草稿回到 `field`，是 `Esc` 逐级回退的可见对照 |
-| 值提示 | 与 Password 同款的字段提示形态：小浮签悬浮在 bar 上方右端，`value` 阶段输入框聚焦时浮现，经 `aria-describedby` 关联 |
-| 清空 | 钉在 bar 右端的按钮（`RotateCcw`，`clearText` 可访问名），有已提交规则时出现；一次清空全部规则回到 `field` |
+| 确认 / 放弃 | 在输入框（与 hint）后方：check 钮仅在值阶段且草稿非空时出现，点击校验并固化为一条规则、进入条件列表（`Enter` 等效）；X 钮在整段草稿态出现，一次放弃整条草稿回到 `field`，是 `Esc` 逐级回退的可见对照 |
+| 提示行 | 面板最下方单独一行（与 `command` footer 同款，触屏与窄屏隐藏）：左侧固定 ↑↓ 键帽，右侧动态提示——条件列表态 ↵ 编辑 / Del 删除 / Space → 筛选列名、`field` / `operator` 阶段 ↵ 选择 / esc 取消、`value` 阶段日期格式与分隔符键帽，经 `aria-describedby` 关联；提示过多时在行内换行，不横向溢出 |
+| 清空 | 输入组容器的后缀段按钮（`RotateCcw`，`clearText` 可访问名），44px 触控目标，背景与面板同色、贴 bar 右端与圆角，有已提交规则时出现；一次清空全部规则回到 `field` |
 
-`Esc` 逐级回退 `value → operator → field`，草稿 token 逐级收缩；`Backspace` 在 `field` 阶段且输入为空时删除末尾规则。整个组件只有一个候选列表浮层，不弹第二个面板、不嵌套编辑器。
+`Esc` 逐级回退 `value → operator → field`，草稿 token 逐级收缩；`field` 阶段按 `Esc` 直接关闭面板。`Backspace` 在 `field` 阶段且输入为空时删除末尾规则，条件列表同步更新。
 
 ### 三个阶段
 
 | 阶段 | 候选内容 | 行为 |
 | --- | --- | --- |
-| `field` | 开发者维护的字段（按名称、标签、别名过滤）；**按空格同样呼出列名候选**（空格不进草稿） | 选中字段后列名以草稿 token 落入输入流，进入 `operator` |
+| `field` | 开发者维护的字段（按名称、标签、别名过滤）；输入为空时列表区显示条件列表，按空格或 `→` 切换到字段候选（`Backspace` 退回） | 选中字段后列名以草稿 token 落入输入流，进入 `operator` |
 | `operator` | 只取该字段 `operators` 配置里的项，经 `texts.operatorLabels` 显示——默认全文字（`is` `is not` `greater than` `at least` `less than` `at most` `between` `not between` `before` `after` `contains` `does not contain` `is empty` `is not empty`），每个操作符零理解成本；各语言经 `operatorLabels` 整体替换（如中文「等于」「介于」） | 选中后草稿 token 长一级；`isEmpty` / `isNotEmpty` 无需值，直接成规则 |
-| `value` | `enum` 字段复用同一候选列表展示 `options`，输入即过滤；`number` / `date` 无候选，行内文本输入 | 点击或 `Enter` 选中枚举选项直接成规则；其余 `Enter` 或点输入框后方的 check 校验通过后成规则，chip 固化并回到 `field` |
+| `value` | `enum` 字段复用同一份候选展示 `options`，输入即过滤；`number` / `date` 无候选，行内文本输入 | 点击或 `Enter` 选中枚举选项直接成规则；其余 `Enter` 或点输入框后方的 check 校验通过后成规则，chip 固化并回到 `field` |
 
 ### 值阶段提示
 
-`value` 阶段 bar 上方右端浮现提示浮签——进入值阶段即显示（不依赖聚焦），由 `resolveValueHint(field, operator, texts)` 返回数组驱动。提示分两种形态：纯文本（`type: "text"`）与 **kbd 键帽**（`type: "keys"`，渲染为 `<kbd>` 元素）：
+`value` 阶段提示行右侧出现动态提示——由 `resolveValueHint(field, operator, texts)` 返回数组驱动。提示分两种形态：纯文本（`type: "text"`）与 **kbd 键帽**（`type: "keys"`，渲染为 `<kbd>` 元素）。键帽组在移动端（触屏或窄屏）整组不显示，纯文本提示不受影响：
 
 | 字段 × 操作符 | 提示 |
 | --- | --- |
@@ -85,7 +90,7 @@ description: 一行连续的 token 输入区——已提交规则、构建中的
 | 属性                            | 类型                                                  | 描述                                   |
 | ----------------------------- | --------------------------------------------------- | ------------------------------------ |
 | `fields`                      | `FilterComboboxField[]`                             | 字段、别名与该列允许的操作符                       |
-| `disabled`                    | `boolean`                                           | 组级禁用：输入框与操作按钮原生禁用，根元素标记 `aria-disabled`，规则编辑、候选面板与输入处理全停，默认 `false` |
+| `disabled`                    | `boolean`                                           | 组级禁用：trigger 与操作按钮原生禁用，面板不打开，根元素标记 `aria-disabled`，规则编辑、候选列表与输入处理全停，默认 `false` |
 | `value` / `defaultValue`      | `FilterRule[]`                                      | 受控 / 非受控规则数组，默认 `[]`                 |
 | `onChange`                    | `(rules: FilterRule[]) => void`                     | 规则变化回调                               |
 | `texts`                       | `FilterComboboxTexts`                               | 全部可替换文案，默认 英文默认值                     |
@@ -93,17 +98,18 @@ description: 一行连续的 token 输入区——已提交规则、构建中的
 | `fetcher`                     | `(params, signal) => Promise<unknown>`              | 可选；规则变化自动查询，`AbortController` 取消在途请求 |
 | `onResult` / `onError`        | 回调                                                  | 查询回调；取消的请求不回调                        |
 | `resultCount`                 | `number`                                            | 结果数，仅供屏幕阅读器经 `role="status"` 播报      |
-| `renderChip` / `renderOption` | 渲染通道                                                | 皮肤用它注入 chip 与候选行外观，默认 无样式默认实现        |
-| `className`                 | `string`                                            | 字段根节点自定义类名，与 `classNames.root` 合并；默认 `w-full min-w-0 max-w-[20rem]`（最大 20rem） |
+| `renderOption` | 渲染通道 | 皮肤用它注入候选行外观，默认 无样式默认实现        |
+| `dialogClassNames` / `dialogStyles` | Dialog 槽位                                          | 直通内部 Dialog（与 `command` 同款）；`content` 与 `classNames.panel` 拼接 |
+| `className`                 | `string`                                            | 字段根节点自定义类名，与 `classNames.root` 合并；默认 `w-full min-w-0 max-w-[20rem]`；trigger 宽度随 root |
 | `style`                     | `React.CSSProperties`                               | 字段根节点内联样式，与 `styles.root` 合并                                        |
-| `classNames`                | `FilterComboboxClassNames`                          | `root` 控制字段根节点，`list` 控制候选列表，其余为输入区与候选行槽位               |
-| `styles`                   | `FilterComboboxStyles`                              | 与 `classNames` 同名的内联样式槽位；候选列表默认最大宽度 20rem，并受视口宽度减 1rem 限制 |
+| `classNames`                | `FilterComboboxClassNames`                          | `root` 控制字段根节点，`trigger` / `triggerLabel` 控制 trigger 按钮，`panel` 控制面板（拼在 Dialog content 上），`list` 控制候选列表，其余为输入区与候选行槽位               |
+| `styles`                   | `FilterComboboxStyles`                              | 与 `classNames` 同名的内联样式槽位；面板默认整体沿用 Dialog content——宽度与外观和 Dialog 一致 |
 
 ### 国际化
 
-组件**不内置 i18n 运行时与语言包**——所有用户可见文案集中在 `FilterComboboxTexts`，每项可选、有英文默认值：三阶段占位、`emptyFieldsText` / `emptyOperatorsText` / `emptyValuesText`、`invalidValueText` / `invalidRangeText` / `invertedRangeText`、提示 `dateValueHint`（默认 `Format YYYY-MM-DD`）、`separatorLabel`（默认 `Separate with`）、`separatorKeys`（默认 `["␣", ",", "/"]`）与 `dateSeparatorKeys`（默认 `["␣", ",", "/", "-"]`）、`removeLabel` / `editLabel`、`cancelDraftText` / `submitText` / `clearText`、`loadingText` / `errorText`、带 `{count}` 占位符的 `resultCountText`（默认 `{count} results`），以及 `operatorLabels`（按操作符逐个替换名称）。`separators` 也属可替换契约。
+组件**不内置 i18n 运行时与语言包**——所有用户可见文案集中在 `FilterComboboxTexts`，每项可选、有英文默认值：trigger 文案 `triggerText`（默认 `Filter`）与 `triggerCountText`（默认 `{count} filters`，带 `{count}` 占位符）、三阶段占位、`emptyFieldsText` / `emptyOperatorsText` / `emptyValuesText`、`invalidValueText` / `invalidRangeText` / `invertedRangeText`、提示行 `enterSelectText`（默认 `Select`）/ `escHintText`（默认 `Cancel`）/ `enterEditText`（默认 `Edit`）/ `deleteHintText`（默认 `Delete`）/ `spaceSearchText`（默认 `Search fields`）、提示 `dateValueHint`（默认 `Format YYYY-MM-DD`）、`separatorLabel`（默认 `Separate with`）、`separatorKeys`（默认 `["␣", ",", "/"]`）与 `dateSeparatorKeys`（默认 `["␣", ",", "/", "-"]`）、`removeLabel`、`cancelDraftText` / `submitText` / `clearText`、`loadingText` / `errorText`、带 `{count}` 占位符的 `resultCountText`（默认 `{count} results`），以及 `operatorLabels`（按操作符逐个替换名称）。`separators` 也属可替换契约。
 
-运行时切换语言就是换一个 `texts` 对象——组件体积零增量，字典放在宿主侧。i18n demo 只内置一套中文字典，英文默认文案见上方用法 demo。确认钮 / 放弃钮 / 清空钮与 chip 按钮均为 `text` 变体图标钮（与文本并排禁用 `primary`，见 `pagination` 范例）。
+运行时切换语言就是换一个 `texts` 对象——组件体积零增量，字典放在宿主侧。i18n demo 只内置一套中文字典，英文默认文案见上方用法 demo。确认钮 / 放弃钮 / 清空钮与条件行移除钮均为 `text` 变体图标钮（与文本并排禁用 `primary`，见 `pagination` 范例）。
 
 ### FilterComboboxRef
 
@@ -112,18 +118,19 @@ description: 一行连续的 token 输入区——已提交规则、构建中的
 | `reset()` | 清空规则并回到 `field` 阶段；`disabled` 时无效 |
 | `submit()` | 手动触发一次查询；`disabled` 时无效 |
 | `getRules()` | 读取当前规则 |
-| `focusInput()` | 聚焦输入框；`disabled` 时不聚焦 |
+| `focusInput()` | 面板未开时先开面板并聚焦输入框；`disabled` 时不聚焦 |
 
 ### 键盘与 data-* 属性
 
 | 按键 | 描述 |
 | --- | --- |
-| `↑` / `↓` | 在候选列表移动并循环回绕；`value` 阶段仅枚举字段有候选 |
-| `Space` | `field` 阶段呼出列名候选（空格不进草稿） |
-| `Enter` | 选中当前候选；`value` 阶段有候选时选候选，否则提交规则 |
-| `Esc` | 逐级回退，任何阶段都能回到初始 |
-| `Backspace` | `field` 阶段且输入为空时删除末尾规则 |
+| `↑` / `↓` | 候选列表内移动并循环回绕；条件列表态移动高亮条件（`field` 阶段输入为空时列表区显示条件列表） |
+| `Space` / `→` | `field` 阶段空输入下从条件列表切换到字段名候选列表（空格不进草稿） |
+| `Enter` | 候选态选中当前候选（`value` 阶段有候选时选候选，否则提交规则）；条件列表态编辑高亮条件 |
+| `Del` | 条件列表态删除高亮条件 |
+| `Esc` | 逐级回退 `value → operator → field`；`field` 阶段直接关闭面板 |
+| `Backspace` | `field` 阶段且输入为空时删除末尾规则；字段候选态退回条件列表（不删规则） |
 
 鼠标点击候选与键盘等效：候选项在 `mousedown` 阻止输入框失焦，列表不会在点击瞬间收起。
 
-`data-slot` 可取 `filter-combobox` / `bar` / `chip` / `draft` / `hint` / `suggestion-list`；`data-highlighted` 标记键盘当前项，`data-loading` / `data-error` 标记状态容器。
+`data-slot` 可取 `filter-combobox` / `trigger` / `panel` / `bar` / `prefix` / `draft` / `rules-list` / `rule-row` / `list` / `suggestion-list` / `footer` / `hint-arrows` / `hint` / `hint-keys`；`data-open` 标记面板打开的 trigger，`data-highlighted` 标记键盘当前项（候选行与条件行），`data-loading` / `data-error` 标记状态容器。

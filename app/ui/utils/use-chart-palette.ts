@@ -9,7 +9,7 @@ const PRIMARY_VAR = "--primary";
 const COLOR_COUNT = 8;
 const ACHROMATIC_HUE = 250;
 const GOLDEN_ANGLE = 137.508;
-const TAILWIND_LIGHT = [
+const TAILWIND = [
     "oklch(70.4% 0.191 22.216)",
     "oklch(79.2% 0.209 151.711)",
     "oklch(70.7% 0.165 254.624)",
@@ -18,16 +18,6 @@ const TAILWIND_LIGHT = [
     "oklch(70.2% 0.183 293.541)",
     "oklch(82.8% 0.189 84.429)",
     "oklch(71.8% 0.202 349.761)",
-];
-const TAILWIND_DARK = [
-    "oklch(80.8% 0.114 19.571)",
-    "oklch(87.1% 0.15 154.449)",
-    "oklch(80.9% 0.105 251.813)",
-    "oklch(83.7% 0.128 66.29)",
-    "oklch(86.5% 0.127 207.078)",
-    "oklch(81.1% 0.111 293.571)",
-    "oklch(87.9% 0.169 91.605)",
-    "oklch(82.3% 0.12 346.018)",
 ];
 export type ChartPaletteMode = "fixed" | "mono";
 export interface ChartPaletteOptions {
@@ -150,7 +140,7 @@ function readVarColor(name: string, parent?: HTMLElement | null): Oklch {
     probe.remove();
     return parseColor(computed.replaceAll(/\bnone\b/gu, "0")) ?? BLACK;
 }
-function buildPalette(primary: Oklch, mode: ChartPaletteMode, count: number, isDark: boolean): string[] {
+function buildPalette(primary: Oklch, mode: ChartPaletteMode, count: number): string[] {
     if (mode === "mono") {
         const hueBase = primary.c > 1e-4 ? primary.h : ACHROMATIC_HUE;
         const chroma = Math.min(Math.max(primary.c, 0.14), 0.28);
@@ -167,10 +157,10 @@ function buildPalette(primary: Oklch, mode: ChartPaletteMode, count: number, isD
         }
         return colors;
     }
-    const colors = (isDark ? TAILWIND_DARK : TAILWIND_LIGHT).slice(0, count);
+    const colors = TAILWIND.slice(0, count);
     const hueBase = primary.c > 1e-4 ? primary.h : ACHROMATIC_HUE;
-    const chroma = Math.min(Math.max(primary.c, 0.14), isDark ? 0.22 : 0.28);
-    const lMid = isDark ? 0.72 : 0.52;
+    const chroma = Math.min(Math.max(primary.c, 0.14), 0.28);
+    const lMid = 0.52;
     const lAlt = 0.09;
     for (let i = colors.length; i < count; i++) {
         const h = (hueBase + (i - colors.length) * GOLDEN_ANGLE) % 360;
@@ -179,14 +169,9 @@ function buildPalette(primary: Oklch, mode: ChartPaletteMode, count: number, isD
     }
     return colors;
 }
-function readIsDark(): boolean {
-    if (typeof document === "undefined")
-        return false;
-    return document.documentElement.classList.contains("dark");
-}
 function computePalette(mode: ChartPaletteMode, count: number, parent?: HTMLElement | null): string[] {
     const primary = readVarColor(PRIMARY_VAR, parent);
-    return buildPalette(primary, mode, count, readIsDark());
+    return buildPalette(primary, mode, count);
 }
 function sameColors(a: string[], b: string[]): boolean {
     return a.length === b.length && a.every((color, i) => color === b[i]);
@@ -200,7 +185,7 @@ export function useChartPalette(options?: ChartPaletteOptions): string[] {
     const mode = options?.mode;
     const count = Math.max(1, options?.count ?? COLOR_COUNT);
     const probeParentRef = options?.probeParentRef;
-    const [palette, setPalette] = useState<string[]>(() => buildPalette(BLACK, mode ?? "fixed", count, false));
+    const [palette, setPalette] = useState<string[]>(() => buildPalette(BLACK, mode ?? "fixed", count));
     useEffect(() => {
         const resolved = mode ?? readPaletteMode(probeParentRef?.current ?? null);
         const next = computePalette(resolved, count, probeParentRef?.current ?? null);
@@ -217,13 +202,13 @@ export function useChartPalette(options?: ChartPaletteOptions): string[] {
     }, [mode, count, probeParentRef]);
     return palette;
 }
-function buildSameFamilyShades(count: number, primary: Oklch, dark: boolean): string[] {
+function buildSameFamilyShades(count: number, primary: Oklch): string[] {
     const hue = primary.c > 1e-4 ? primary.h : ACHROMATIC_HUE;
     const chroma = Math.min(Math.max(primary.c, 0.12), 0.24);
-    const paleL = dark ? 0.62 : 0.72;
-    const strongL = dark ? 0.78 : 0.55;
+    const paleL = 0.72;
+    const strongL = 0.55;
     const paleC = chroma * 0.55;
-    const strongC = dark ? chroma * 0.9 : chroma;
+    const strongC = chroma;
     const shades: string[] = [];
     for (let i = 0; i < count; i++) {
         const t = count === 1 ? 1 : i / (count - 1);
@@ -234,13 +219,13 @@ function buildSameFamilyShades(count: number, primary: Oklch, dark: boolean): st
     return shades;
 }
 export function useSameFamilyShades(count: number): string[] {
-    const [shades, setShades] = useState<string[]>(() => buildSameFamilyShades(count, BLACK, false));
+    const [shades, setShades] = useState<string[]>(() => buildSameFamilyShades(count, BLACK));
     const shadesRef = useRef(shades);
     useEffect(() => {
         shadesRef.current = shades;
     });
     useEffect(() => {
-        const resolve = () => buildSameFamilyShades(count, readVarColor(PRIMARY_VAR), readIsDark());
+        const resolve = () => buildSameFamilyShades(count, readVarColor(PRIMARY_VAR));
         const next = resolve();
         if (!sameColors(shadesRef.current, next)) {
             shadesRef.current = next;

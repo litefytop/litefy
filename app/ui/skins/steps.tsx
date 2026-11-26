@@ -10,7 +10,7 @@ export function stepsRootClasses(orientation: StepsOrientation = "horizontal") {
 }
 
 const markerLayoutClasses =
-  "relative z-1 grid size-6 shrink-0 place-center rounded-pill " +
+  "relative z-1 grid size-6 shrink-0 place-items-center rounded-pill " +
   "border-frame text-xs/4 font-strong [&>svg]:size-3.5";
 const markerUpcomingClasses =
   "data-[state=upcoming]:bg-transparent data-[state=upcoming]:text-inherit " +
@@ -35,9 +35,9 @@ const railClasses = "flex shrink-0 flex-col items-center";
 
 const connectorHorizontalClasses =
   "absolute top-3 right-[calc(50%+var(--spacing)*3)] left-[calc(-50%+var(--spacing)*3)] " +
-  "h-px bg-primary data-[state=upcoming]:bg-surface";
+  "h-px bg-primary data-[state=upcoming]:bg-border";
 const connectorVerticalClasses =
-  "w-px flex-1 bg-primary data-[state=upcoming]:bg-surface";
+  "w-px flex-1 bg-primary data-[state=upcoming]:bg-border";
 
 const titleBaseClasses =
   "control-label data-[state=upcoming]:text-foreground data-[clickable=true]:cursor-pointer";

@@ -6,8 +6,9 @@
 //         实测 ≥4.5:1 为 AA 硬下限，-accent 悬停档与静置档共用主体 -fg，两档都核
 // 规则 3 车道可辨：悬停档必须看得见——accent 对每枚静止背景 OKLab 距离 ≥0.08；
 //         同族深化 <role> → <role>-accent ≥0.06；彩色方案 accent 彩度 C ≥0.08，中性方案改核明度步 ≥8 个 L 点
-// 规则 4 禁用档：disabled 始终保持中性灰（彩度 C ≤0.02，不随表面档走），且对每枚静止背景按规则 3 的同阈值可辨；
-//         禁用与悬停的错开一阶由各案 design.md 与蓝图 ui/schemes/elevation.md 约束，不设门禁阈值
+// 规则 4 禁用档：disabled 始终保持中性灰（彩度 C ≤0.02，不随表面档走）；禁用填充沉向静态背景是
+//         预期语义，对三档静态背景与悬停档都不设门禁阈值（用户定 2026-11-26），错开一阶由
+//         elevation.md 禁用档判据与各案 design.md 实测记录约束；
 // 机制值（focus、elevation、shadow、text-<status>-independent 别名）不参与本门禁。
 // 未迁移方案的违规按 EXEMPT 名单逐条登记并带原因。
 
@@ -53,7 +54,7 @@ const PARTNER = new Map([
   ["disabled", "disabled-fg"],
 ]);
 
-// 悬停/强调面可能压上的静止背景（跨车道核可见性）；禁用档按规则 4 另核，与悬停共用同一组底档
+// 悬停/强调面可能压上的静止背景（跨车道核可见性）
 const LANE_BASES = ["background", "surface", RAISED];
 // 同族深化档：静置背景 → 悬停背景
 const ROLES = ["primary", "danger", "info", "success", "warning"];
@@ -240,7 +241,7 @@ for (const scheme of schemes) {
         problems.push(`${scheme}/index.css [${tier[0]}] 规则2 成套对 ${fg}×${bg} 实测 ${ratio}:1，低于 AA ${FLOOR}:1`);
       }
     }
-    // 规则 3 / 规则 4：车道可辨——悬停档与禁用档各自对三档静止背景核可见性
+    // 规则 3：车道可辨——悬停档对三档静止背景核可见性
     const kind = KIND.get(scheme);
     const checkLanes = (subject) => {
       const rgb = rgbOf(vars, subject);
@@ -274,6 +275,7 @@ for (const scheme of schemes) {
         }
       }
     }
+    // 规则 4：禁用档只核中性彩度；车道可辨已撤销（用户定 2026-11-26，禁用填充沉向静态背景是预期语义）
     if (vars.has("disabled")) {
       const disabled = rgbOf(vars, "disabled");
       if (disabled) {
@@ -282,7 +284,6 @@ for (const scheme of schemes) {
           problems.push(`${scheme}/index.css [${tier[0]}] 规则4 禁用档 --disabled 彩度 C ${c}，高于 ${DISABLED_CHROMA}（禁用档须答中性灰，不随表面档走）`);
         }
       }
-      checkLanes("disabled");
     }
     for (const role of ROLES) {
       if (!vars.has(role) || !vars.has(`${role}-accent`)) continue;
@@ -305,4 +306,4 @@ if (problems.length) {
   console.error("  成套律、补全律、禁衍生、车道可辨见 .agents/blueprints/ui/schemes.md 第 24 条；禁用档中性与可辨见 .agents/blueprints/ui/schemes/elevation.md 禁用档；未迁移方案登记进 EXEMPT 名单并带原因");
   process.exit(1);
 }
-console.log(`✓ 色板成对门禁：${schemes.length} 套方案色板字面、成对达标、悬停与禁用车道可辨（AA ${FLOOR}:1 硬下限，含 ${EXEMPT.size} 案带原因豁免）`);
+console.log(`✓ 色板成对门禁：${schemes.length} 套方案色板字面、成对达标、悬停车道可辨（AA ${FLOOR}:1 硬下限，禁用档核中性彩度，含 ${EXEMPT.size} 案带原因豁免）`);

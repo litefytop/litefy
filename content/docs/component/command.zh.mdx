@@ -43,10 +43,10 @@ description: 对话框式命令面板——点击触发器（或应用快捷键�
 | `renderItem`       | `(item, { highlighted, disabled }) => React.ReactNode`                                                   | 自定义行渲染；省略时一行是图标 + label + 快捷键。自定义会整块替换默认结构，因此图标 / 标签 / 快捷键那几个槽位只在沿用内置行时存在                                                                                            |
 | `placeholder`      | `string`                                                                                                 | 搜索框占位文案，同时作为对话框的可访问名称                                                                                                                                                |
 | `empty`            | `React.ReactNode`                                                                                        | 空状态节点；显式传 `null` 且列表无行时整个列表不渲染（紧凑初始态：面板只剩输入行与键盘说明脚注），默认 `"No results"`                                                                                               |
-| `hints`            | `{ navigate?; open?; close?: React.ReactNode } \| null`                                                  | 键盘说明脚注的文字（`↑` `↓` / `↵` / `esc` 键帽旁），传 `null` 整体隐藏脚注，默认 英文键位说明                                                                                                       |
+| `hints`            | `{ navigate?; open?; close?: React.ReactNode } \| null`                                                  | 键盘说明脚注的文字（`↑` `↓` / `↵` / `esc` 键帽旁），传 `null` 整体隐藏脚注，默认 英文键位说明；移动端（触屏或窄屏）整条脚注不显示                                                                                                       |
 | `trailing`         | `React.ReactNode`                                                                                        | 输入行尾部内容（如搜索加载时的 spinner），透传给内部 `Input` 的尾槽                                                                                                                           |
 | `className`        | `string`                                                                                                 | 自定义类名，作用于 `<dialog>` 壳；不控制命令内容区宽度                                                                                                                              |
-| `classNames`       | `trigger` / `content` / `input` / `field` / `searchIcon` / `list` / `root` / `footer` / `hint` / `hintKey` / `rows` / `item` / `label` / `itemIcon` / `itemLabel` / `shortcut` / `empty` | `content` 控制命令内容区，默认最大宽度为 20rem 与视口宽度减 1rem 的较小值；`input` 是搜索框外壳，`field` 是内部 Input 槽位，`list` 是滚动视口；其余为对应区域类名 |
+| `classNames`       | `trigger` / `content` / `input` / `field` / `searchIcon` / `list` / `root` / `footer` / `hint` / `hintKey` / `rows` / `item` / `label` / `itemIcon` / `itemLabel` / `shortcut` / `empty` | `content` 控制命令内容区，宽度与 Dialog 内容区一致（`min(28rem, calc(100% - 2rem))`）；`input` 是搜索框外壳，`field` 是内部 Input 槽位，`list` 是滚动视口；其余为对应区域类名 |
 | `styles`           | `content` / `item` / `label`                                                                             | 内容区、列表项与分组头内联样式；内容区宽度由 `styles.content` 控制                                                                                                                                                              |
 | `dialogClassNames` | `Dialog` 的 `classNames`                                                                                  | 外层对话框各部分的类名；它的 `content` 会与 `classNames.content` 合并                                                                                                                                                                                                 |
 | `dialogStyles`     | `Dialog` 的 `styles`                                                                                      | 外层对话框各部分的内联样式；`content` 会被 `styles.content` 接管，内容区请使用 `styles.content`                                                                                                                                                                             |
@@ -61,7 +61,7 @@ description: 对话框式命令面板——点击触发器（或应用快捷键�
 | `label`    | `React.ReactNode` | 行标签                                |
 | `value`    | `string`          | 稳定键名与默认筛选文案                        |
 | `icon`     | `React.ReactNode` | 行首图标                               |
-| `shortcut` | `React.ReactNode` | 快捷键提示，右侧渲染为原生 `<kbd>` 键帽，外观由当前方案提供 |
+| `shortcut` | `React.ReactNode` | 快捷键提示，右侧渲染为原生 `<kbd>` 键帽，外观由当前方案提供；移动端（触屏或窄屏）不显示 |
 | `keywords` | `string[]`        | 仅用于筛选的补充关键词                        |
 | `disabled` | `boolean`         | 逐项禁用：使用 `bg-disabled`、`text-disabled-fg` 与 `cursor-not-allowed`，不可选中且键盘导航跳过；关键词非空时整行从列表移除 |
 
@@ -123,7 +123,7 @@ Context 提供者与面板容器：持有关键词、把分组摊平成行、执
 
 #### CommandFooter
 
-键盘说明脚注：一行三组提示——`↑` `↓` 配导航、`↵` 配执行、`esc` 配关闭。成品 `Command` 在列表下方自动渲染它，文字经 `hints` 本地化。
+键盘说明脚注：一行三组提示——`↑` `↓` 配导航、`↵` 配执行、`esc` 配关闭。成品 `Command` 在列表下方自动渲染它，文字经 `hints` 本地化；移动端（触屏或窄屏）整条脚注不显示。
 
 | 属性          | 类型                            | 描述                             |
 | ----------- | ----------------------------- | ------------------------------ |

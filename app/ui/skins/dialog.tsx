@@ -32,7 +32,7 @@ const closeKeyClasses = "kbd";
 
 
 const titleIconClasses = cn(
-  "[&_svg]:size-4",
+  "inline-flex items-center gap-x-2 [&_svg]:size-4 [&_svg]:shrink-0",
   "data-[status^=s]:text-success-independent " +
   "data-[status^=e]:text-danger-independent " +
   "data-[status^=w]:text-warning-independent " +

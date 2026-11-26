@@ -51,6 +51,23 @@ const BRAND_OPTIONS: PaletteOption[] = [
   { name: "violet", label: "Violet", swatch: "oklch(60.6% 0.25 292.717)" },
 ];
 
+/* Neo accent ramp (blueprint rule 23): vivid 300-class stops under black ink;
+   indigo (C < 0.08) and lime (identical to the day identity surface) excluded. */
+const ACCENT_OPTIONS: PaletteOption[] = [
+  { name: "default", label: "Default" },
+  { name: "amber", label: "Amber", swatch: "oklch(82.8% 0.189 84.429)" },
+  { name: "cyan", label: "Cyan", swatch: "oklch(78.9% 0.154 211.53)" },
+  { name: "emerald", label: "Emerald", swatch: "oklch(84.5% 0.143 164.978)" },
+  { name: "fuchsia", label: "Fuchsia", swatch: "oklch(83.3% 0.145 321.434)" },
+  { name: "orange", label: "Orange", swatch: "oklch(75% 0.183 55.934)" },
+  { name: "pink", label: "Pink", swatch: "oklch(82.3% 0.12 346.018)" },
+  { name: "purple", label: "Purple", swatch: "oklch(82.7% 0.119 306.383)" },
+  { name: "rose", label: "Rose", swatch: "oklch(81% 0.117 11.638)" },
+  { name: "sky", label: "Sky", swatch: "oklch(82.8% 0.111 230.318)" },
+  { name: "teal", label: "Teal", swatch: "oklch(77.7% 0.152 181.912)" },
+  { name: "violet", label: "Violet", swatch: "oklch(81.1% 0.111 293.571)" },
+];
+
 const SURFACE_OPTIONS: PaletteOption[] = [
   { name: "default", label: "Default" },
   { name: "gray", label: "Gray", swatch: "oklch(55.1% 0.027 264.364)" },
@@ -94,12 +111,27 @@ export const STYLE_TEMPLATES: StyleTemplate[] = [
     slug: "neo-brutalist",
     name: { zh: "新野兽派", en: "Neo-brutalist" },
     desc: {
-      zh: "纯白画布、纯黑 4px 粗描边、硬边位移阴影、零圆角：粉作 CTA，酸性绿扛 Hero，青与橙分管信息与标签，亮黄作悬停洪泛。固定色方案——悬停硬切、按下压平。",
-      en: "White canvas, 4px black strokes, hard offset shadows, zero radius: hot pink drives the CTA, acid green carries the hero, cyan and orange cover info and tags, bright yellow floods on hover. A fixed-palette scheme — hover snaps, press crushes.",
+      zh: "纯白画布、纯黑 2px 粗描边、硬边位移阴影、零圆角：粉作 CTA，酸性绿扛 Hero，亮黄作悬停洪泛。品牌色与悬停色档均可切换——悬停硬切、按下压平。",
+      en: "White canvas, 2px black strokes, hard offset shadows, zero radius: hot pink drives the CTA, acid green carries the hero, bright yellow floods on hover. Brand and accent tiers are switchable — hover snaps, press crushes.",
     },
-    tags: { zh: ["固定色方案", "创意站点"], en: ["Fixed palette", "Creative"] },
+    tags: { zh: ["多色方案", "创意站点"], en: ["Multi-color", "Creative"] },
     pathPrefix: "/neo",
-    palettes: [],
+    palettes: [
+      {
+        storageKey: "brand-storage",
+        attr: "data-brand",
+        label: { zh: "品牌色档", en: "Brand color" },
+        dotVar: "--primary",
+        options: BRAND_OPTIONS,
+      },
+      {
+        storageKey: "accent-storage",
+        attr: "data-accent",
+        label: { zh: "悬停色档", en: "Accent color" },
+        dotVar: "--accent",
+        options: ACCENT_OPTIONS,
+      },
+    ],
   },
   {
     slug: "neon-gradient",
@@ -119,9 +151,17 @@ export const STYLE_TEMPLATES: StyleTemplate[] = [
       zh: "冷白画布、浅天蓝表面、深天蓝品牌色：1px 发丝边界、全直角、零阴影，层级全靠边界与留白。为企业后台与信息密集应用设计——密度高、状态分明、动效克制。",
       en: "Cool-white canvas, pale-sky surfaces, deep-sky brand: 1px hairline borders, square corners, zero shadows — hierarchy comes from boundaries and whitespace alone. Built for enterprise consoles and information-dense apps: dense, unambiguous, restrained.",
     },
-    tags: { zh: ["固定色方案", "企业后台"], en: ["Fixed palette", "Enterprise"] },
+    tags: { zh: ["多色方案", "企业后台"], en: ["Multi-color", "Enterprise"] },
     pathPrefix: "/flat",
-    palettes: [],
+    palettes: [
+      {
+        storageKey: "brand-storage",
+        attr: "data-brand",
+        label: { zh: "品牌色档", en: "Brand color" },
+        dotVar: "--primary",
+        options: BRAND_OPTIONS,
+      },
+    ],
   },
 ];
 

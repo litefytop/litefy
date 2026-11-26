@@ -27,8 +27,8 @@
   --foreground: #000000;
   --surface: oklch(89.7% 0.196 126.665);
   --surface-fg: #000000;
-  --disabled: oklch(70.8% 0 none);
-  --disabled-fg: oklch(26.9% 0 none);
+  --disabled: oklch(92.2% 0 none); /* 禁用档固定中性灰 200 档，不随身份色 surface 走 */
+  --disabled-fg: oklch(43.9% 0 none);
   --surface-raised: #ffffff;
   --surface-raised-fg: #000000;
   --accent: oklch(90.5% 0.182 98.111);
@@ -66,7 +66,7 @@
   --focus-glow: none;
   --focus-glow-inset: none;
 
-  --text-transform-label: uppercase;
+  --text-transform-label: none;
   --transition-frame-properties: box-shadow, translate;
   --shadow-frame: var(--shadow-brutal-4);
   --shadow-frame-hover: var(--shadow-brutal-6);
@@ -102,25 +102,13 @@
 
 @media (width >= 48rem) {
   :root {
-    --stroke: 4px;
-    --pad-block: 6rem;
-    --padding-control-x: 2rem;
-
-    --translate-crush: 0.5rem;
-    --shadow-frame: var(--shadow-brutal-8);
-    --shadow-frame-hover: var(--shadow-brutal-12);
-    --shadow-frame-focus: var(--shadow-brutal-12);
-    --shadow-frame-focus-danger: var(--shadow-brutal-12);
-    --shadow-block: var(--shadow-brutal-8);
-    --shadow-block-hover: var(--shadow-accent-12);
-    --shadow-elevated: var(--shadow-brutal-12);
-    --shadow-surface: var(--shadow-brutal-8);
+    --pad-block: 4rem;
   }
 }
 
 @media (width >= 64rem) {
   :root {
-    --pad-block: 8rem;
+    --pad-block: 5rem;
   }
 }
 
@@ -132,8 +120,8 @@
   --foreground: #ffffff;
   --surface: oklch(52.5% 0.223 3.958);
   --surface-fg: #ffffff;
-  --disabled: oklch(43.9% 0 none);
-  --disabled-fg: oklch(92.2% 0 none);
+  --disabled: oklch(26.9% 0 none); /* 禁用档固定中性灰 800 档 */
+  --disabled-fg: oklch(70.8% 0 none);
   --surface-raised: oklch(20.5% 0 none);
   --surface-raised-fg: #ffffff;
   --accent: oklch(90.5% 0.182 98.111);
@@ -151,14 +139,299 @@
   --text-warning-independent: var(--warning-accent);
 }
 
-/* Compact ramp — three-scheme mechanism values (ui/schemes.md rule 11). */
-@media (pointer: coarse), (width < 48rem) {
-  :root {
-    --height-control: calc(var(--spacing) * 11);
-    --height-field: calc(var(--spacing) * 11);
-    --padding-control-x: 0.625rem;
-    --spacing: 0.25rem;
-  }
+/* Runtime brand + accent ramps (blueprint rule 23). Brand tiers answer
+   --primary / --primary-accent only; --primary-fg stays single-sourced above.
+   Day: primary reuses the minimal day stop, accent deepens by oklch L×0.82
+   (the 800 stops fall short of the ≥0.06 deepening lane). Night: 300 → 500
+   deepening pair. Accent tiers: vivid 300-class stops under black ink, both
+   tiers identical; indigo (C < 0.08) and lime (identical to the day identity
+   surface) are excluded. Every tier measured ≥4.5:1 with a ≥0.06 / ≥0.08 lane
+   distance — see design.md for the registered figures. */
+
+[data-brand="default"] {
+  --primary: oklch(52.5% 0.223 3.958);
+  --primary-accent: oklch(40.8% 0.153 2.432);
+}
+
+.dark [data-brand="default"],
+.dark[data-brand="default"] {
+  --primary: oklch(89.7% 0.196 126.665);
+  --primary-accent: oklch(76.8% 0.233 130.85);
+}
+
+[data-brand="amber"] {
+  --primary: oklch(55.5% 0.163 48.998);
+  --primary-accent: oklch(45.5% 0.163 48.998);
+}
+
+.dark [data-brand="amber"],
+.dark[data-brand="amber"] {
+  --primary: oklch(82.8% 0.189 84.429);
+  --primary-accent: oklch(76.9% 0.188 70.08);
+}
+
+[data-brand="cyan"] {
+  --primary: oklch(49.7% 0.105 223.128);
+  --primary-accent: oklch(40.8% 0.105 223.128);
+}
+
+.dark [data-brand="cyan"],
+.dark[data-brand="cyan"] {
+  --primary: oklch(78.9% 0.154 211.53);
+  --primary-accent: oklch(71.5% 0.143 215.221);
+}
+
+[data-brand="emerald"] {
+  --primary: oklch(50.8% 0.118 165.612);
+  --primary-accent: oklch(41.7% 0.118 165.612);
+}
+
+.dark [data-brand="emerald"],
+.dark[data-brand="emerald"] {
+  --primary: oklch(84.5% 0.143 164.978);
+  --primary-accent: oklch(69.6% 0.17 162.48);
+}
+
+[data-brand="fuchsia"] {
+  --primary: oklch(50.6% 0.253 323.949);
+  --primary-accent: oklch(41.5% 0.253 323.949);
+}
+
+.dark [data-brand="fuchsia"],
+.dark[data-brand="fuchsia"] {
+  --primary: oklch(83.3% 0.145 321.434);
+  --primary-accent: oklch(66.7% 0.295 322.15);
+}
+
+[data-brand="indigo"] {
+  --primary: oklch(45.8% 0.262 276.966);
+  --primary-accent: oklch(37.6% 0.262 276.966);
+}
+
+.dark [data-brand="indigo"],
+.dark[data-brand="indigo"] {
+  --primary: oklch(87% 0.065 274.039);
+  --primary-accent: oklch(58.5% 0.233 277.117);
+}
+
+[data-brand="lime"] {
+  --primary: oklch(53.2% 0.157 131.589);
+  --primary-accent: oklch(43.6% 0.157 131.589);
+}
+
+.dark [data-brand="lime"],
+.dark[data-brand="lime"] {
+  --primary: oklch(89.7% 0.196 126.665);
+  --primary-accent: oklch(76.8% 0.233 130.85);
+}
+
+[data-brand="orange"] {
+  --primary: oklch(52% 0.222 41.116);
+  --primary-accent: oklch(42.6% 0.222 41.116);
+}
+
+.dark [data-brand="orange"],
+.dark[data-brand="orange"] {
+  --primary: oklch(75% 0.183 55.934);
+  --primary-accent: oklch(70.5% 0.213 47.604);
+}
+
+[data-brand="pink"] {
+  --primary: oklch(52.5% 0.223 3.958);
+  --primary-accent: oklch(43.1% 0.223 3.958);
+}
+
+.dark [data-brand="pink"],
+.dark[data-brand="pink"] {
+  --primary: oklch(82.3% 0.12 346.018);
+  --primary-accent: oklch(65.6% 0.241 354.308);
+}
+
+[data-brand="purple"] {
+  --primary: oklch(47.5% 0.288 302.321);
+  --primary-accent: oklch(39% 0.288 302.321);
+}
+
+.dark [data-brand="purple"],
+.dark[data-brand="purple"] {
+  --primary: oklch(82.7% 0.119 306.383);
+  --primary-accent: oklch(62.7% 0.265 303.9);
+}
+
+[data-brand="rose"] {
+  --primary: oklch(51.4% 0.222 16.935);
+  --primary-accent: oklch(42.2% 0.222 16.935);
+}
+
+.dark [data-brand="rose"],
+.dark[data-brand="rose"] {
+  --primary: oklch(81% 0.117 11.638);
+  --primary-accent: oklch(64.5% 0.246 16.439);
+}
+
+[data-brand="sky"] {
+  --primary: oklch(48.8% 0.134 242.749);
+  --primary-accent: oklch(40% 0.134 242.749);
+}
+
+.dark [data-brand="sky"],
+.dark[data-brand="sky"] {
+  --primary: oklch(82.8% 0.111 230.318);
+  --primary-accent: oklch(68.5% 0.169 237.323);
+}
+
+[data-brand="teal"] {
+  --primary: oklch(51.1% 0.096 186.391);
+  --primary-accent: oklch(41.9% 0.096 186.391);
+}
+
+.dark [data-brand="teal"],
+.dark[data-brand="teal"] {
+  --primary: oklch(77.7% 0.152 181.912);
+  --primary-accent: oklch(70.4% 0.14 182.503);
+}
+
+[data-brand="violet"] {
+  --primary: oklch(54.1% 0.281 293.009);
+  --primary-accent: oklch(44.4% 0.281 293.009);
+}
+
+.dark [data-brand="violet"],
+.dark[data-brand="violet"] {
+  --primary: oklch(81.1% 0.111 293.571);
+  --primary-accent: oklch(60.6% 0.25 292.717);
+}
+
+[data-accent="default"] {
+  --accent: oklch(90.5% 0.182 98.111);
+  --accent-fg: #000000;
+}
+
+.dark [data-accent="default"],
+.dark[data-accent="default"] {
+  --accent: oklch(90.5% 0.182 98.111);
+  --accent-fg: #000000;
+}
+
+[data-accent="amber"] {
+  --accent: oklch(82.8% 0.189 84.429);
+  --accent-fg: #000000;
+}
+
+.dark [data-accent="amber"],
+.dark[data-accent="amber"] {
+  --accent: oklch(82.8% 0.189 84.429);
+  --accent-fg: #000000;
+}
+
+[data-accent="cyan"] {
+  --accent: oklch(78.9% 0.154 211.53);
+  --accent-fg: #000000;
+}
+
+.dark [data-accent="cyan"],
+.dark[data-accent="cyan"] {
+  --accent: oklch(78.9% 0.154 211.53);
+  --accent-fg: #000000;
+}
+
+[data-accent="emerald"] {
+  --accent: oklch(84.5% 0.143 164.978);
+  --accent-fg: #000000;
+}
+
+.dark [data-accent="emerald"],
+.dark[data-accent="emerald"] {
+  --accent: oklch(84.5% 0.143 164.978);
+  --accent-fg: #000000;
+}
+
+[data-accent="fuchsia"] {
+  --accent: oklch(83.3% 0.145 321.434);
+  --accent-fg: #000000;
+}
+
+.dark [data-accent="fuchsia"],
+.dark[data-accent="fuchsia"] {
+  --accent: oklch(83.3% 0.145 321.434);
+  --accent-fg: #000000;
+}
+
+[data-accent="orange"] {
+  --accent: oklch(75% 0.183 55.934);
+  --accent-fg: #000000;
+}
+
+.dark [data-accent="orange"],
+.dark[data-accent="orange"] {
+  --accent: oklch(75% 0.183 55.934);
+  --accent-fg: #000000;
+}
+
+[data-accent="pink"] {
+  --accent: oklch(82.3% 0.12 346.018);
+  --accent-fg: #000000;
+}
+
+.dark [data-accent="pink"],
+.dark[data-accent="pink"] {
+  --accent: oklch(82.3% 0.12 346.018);
+  --accent-fg: #000000;
+}
+
+[data-accent="purple"] {
+  --accent: oklch(82.7% 0.119 306.383);
+  --accent-fg: #000000;
+}
+
+.dark [data-accent="purple"],
+.dark[data-accent="purple"] {
+  --accent: oklch(82.7% 0.119 306.383);
+  --accent-fg: #000000;
+}
+
+[data-accent="rose"] {
+  --accent: oklch(81% 0.117 11.638);
+  --accent-fg: #000000;
+}
+
+.dark [data-accent="rose"],
+.dark[data-accent="rose"] {
+  --accent: oklch(81% 0.117 11.638);
+  --accent-fg: #000000;
+}
+
+[data-accent="sky"] {
+  --accent: oklch(82.8% 0.111 230.318);
+  --accent-fg: #000000;
+}
+
+.dark [data-accent="sky"],
+.dark[data-accent="sky"] {
+  --accent: oklch(82.8% 0.111 230.318);
+  --accent-fg: #000000;
+}
+
+[data-accent="teal"] {
+  --accent: oklch(77.7% 0.152 181.912);
+  --accent-fg: #000000;
+}
+
+.dark [data-accent="teal"],
+.dark[data-accent="teal"] {
+  --accent: oklch(77.7% 0.152 181.912);
+  --accent-fg: #000000;
+}
+
+[data-accent="violet"] {
+  --accent: oklch(81.1% 0.111 293.571);
+  --accent-fg: #000000;
+}
+
+.dark [data-accent="violet"],
+.dark[data-accent="violet"] {
+  --accent: oklch(81.1% 0.111 293.571);
+  --accent-fg: #000000;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -249,7 +522,7 @@
 
   --font-weight-black: 900;
 
-  --spacing: 0.3125rem;
+  --spacing: 0.25rem;
   --leading-head: 1.1;
   --leading-body: 1.625;
   --leading-headline: 1;
@@ -311,7 +584,6 @@
 
   --default-transition-duration: 150ms;
   --default-transition-timing-function: ease-out;
-  --default-font-family: var(--font-mono);
 
   --border-width-control: var(--stroke);
   --border-width-hair: var(--stroke);
@@ -735,6 +1007,14 @@
 }
 
 @layer base {
+  *,
+  ::before,
+  ::after,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--border);
+  }
+
   body {
     background-color: var(--background);
     color: var(--foreground);

@@ -1,6 +1,6 @@
 ---
 title: MeterGroup
-description: A read-only grouped gauge modeled on PrimeVue's MeterGroup — proportional segments on a `surface` groove track, segment colors from pastel tiers (400 in light mode, 300 in dark), with a color-dot legend
+description: A read-only grouped gauge modeled on PrimeVue's MeterGroup — proportional segments on a `border` contrast-line track, segment colors from pastel tiers (400 in light mode, 300 in dark), with a color-dot legend
 ---
 
 ## Installation
@@ -9,7 +9,7 @@ description: A read-only grouped gauge modeled on PrimeVue's MeterGroup — prop
 
 ## Usage
 
-A grouped gauge with proportional segments on one track, palette or per-item colors, and a color-dot legend.
+A grouped gauge — items form proportional connected segments on one track; segment colors come from the palette hook (400 light / 300 dark) or per-item `color`; the legend lists dot, name and share.
 
 <ComponentPreview name="metergroup-basic" />
 
@@ -27,7 +27,7 @@ A grouped gauge with proportional segments on one track, palette or per-item col
 
 The remaining native `<div>` attributes (`aria-label`, `id`, inline `style`, …) are accepted and land on the root; the accessible name comes from `aria-label`. The root has `role="meter"` with `aria-valuemin` / `aria-valuemax` / `aria-valuenow` (the clamped item sum); the track and legend are `aria-hidden`.
 
-Segments are laid out in order as `value / (max − min)`; zero-value items render no segment, and excess width is clipped by the track. The legend always lists every item with its rounded share; hovering a segment also reveals a `label · share` tip — the information always matches the legend and does not depend on hover. The track color is `surface` (groove tier), from the same source as the library-wide track family.
+Segments are laid out in order as `value / (max − min)`; zero-value items render no segment, and excess width is clipped by the track. The legend always lists every item with its rounded share; hovering a segment also reveals a `label · share` tip — the information always matches the legend and does not depend on hover. The track color is `border` (the contrast-line tier), from the same source as the library-wide track family.
 
 ### Atomic Components
 

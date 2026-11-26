@@ -6,6 +6,6 @@
 3. 区间与悬停预览的 `start` / `end` / `between` 全部映射为 Calendar 的 `active` 状态，统一使用 `bg-primary` + `text-primary-fg`，所有日期格均保持 `rounded-none`，不区分端点、中间格或一天区间，也不挂 hover 类。非当月日期未被激活时使用 `surface` 对，激活后使用主色；禁用日期优先使用独立禁用外观，不挂载激活、月外或 hover 类。`data-range` 仅保留区间角色语义。
 4. 尾部图标：面板关闭时显示日历图标，打开时换成关闭（X）图标；X 是可点击按钮（复用 `buttonVariants.text` 图标形态改小档），样式走 `trailingClose` 槽位（`pointer-events-auto size-7 min-h-0 min-w-0 p-0`，图标尺寸由按钮帧自带；日历图标槽保持 `pointer-events-none`），点击清除已选值、面板保持打开，`aria-label` 用 `clearText`。
 5. 无效提示 `text-xs text-danger-independent`；面板不放步骤提示行。
-6. 输入框随字段族同高（`min-h-field`，紧凑档随令牌收缩），不再压第三档小高；表头筛选行与数字区间同高（同为字段族高度）。
+6. 输入框随字段族同高（`min-h-field`，令牌全端恒定），不再压第三档小高；表头筛选行与数字区间同高（同为字段族高度）。
 7. 组合导出 `dateRangePickerClasses`。
 8. 专属令牌：无。

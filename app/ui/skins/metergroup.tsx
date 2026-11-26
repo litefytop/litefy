@@ -4,7 +4,7 @@ import { cn, mergeSlots } from "../utils/cn";
 
 const rootClasses = "flex w-full min-w-0 flex-col gap-2";
 
-const trackClasses = "flex h-2 w-full rounded-pill bg-surface";
+const trackClasses = "flex h-2 w-full rounded-pill bg-border";
 
 const segmentClasses =
   "group/meter relative h-full transition-[width] duration-md ease-out first-of-type:rounded-l-pill last-of-type:rounded-r-pill";

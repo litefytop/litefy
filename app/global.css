@@ -6,7 +6,6 @@
    unlayered — an unlayered declaration outranks the utilities layer and silences
    every `quiet:` / `hover:` a skin makes. Routes link THIS file only — never the
    scheme stylesheet as a second link. */
-@import "./styles/reset.css";
 @import "./styles/shiki.css";
 
 @import "tailwindcss" source(none);
@@ -17,5 +16,3 @@
 @source "./routes";
 @source "./root.tsx";
 @source "./ui";
-
-@import "./styles/site.css";

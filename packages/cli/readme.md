@@ -23,7 +23,7 @@
 | `litefy clean` | 修剪配置里本地已不存在的记录 | 否 |
 | `litefy uninstall` | 删除全部本地 Litefy 目录与 `litefy.json`；业务代码里手写的 import 要你自己清 | 否 |
 
-**选项**：`-y, --yes` 跳过交互并自动装 npm 依赖；`-o, --overwrite` 覆盖已存在文件；`-s, --style <scheme>` 切换方案——写入配置并重装该方案样式表；方案在 init 选定后 `add` 无需再带，混用方案不被支持（方案是项目级决定）；`-a, --all` 只为兼容保留，样式一律整套装；`-i, --icon-library <lib>`（`add` / `install`）换图标适配器——组件的图标 import 永远指向 `icons.tsx`，适配器落盘同名文件、该图标库的 npm 包自动安装（默认 lucide 零依赖；换库后建议跑一次类型检查：全部图标槽位的命名导入都要在适配器上有对应导出）。
+**选项**：`-y, --yes` 跳过交互并自动装 npm 依赖；`-o, --overwrite` 覆盖已存在文件；`-s, --style <scheme>` 切换方案——写入配置并重装该方案样式表；方案在 init 选定后 `add` 无需再带，混用方案不被支持（方案是项目级决定）；`-a, --all` 只为兼容保留，样式一律整套装；`-i, --icon-library <lib>`（`add` / `install`）换图标适配器——组件的图标 import 永远指向 `icons.tsx`，适配器落盘同名文件、该图标库的 npm 包自动安装；官方适配器每库一份适配表（默认 lucide 零依赖，备选 tabler、phosphor），适配表里没有对应字形的项回退 lucide 默认字形；`-i` 显式指定图标库时 `icons.tsx` 直接覆盖，不要求 `-o`；换库后建议跑一次类型检查：全部图标槽位的命名导入都要在适配器上有对应导出。
 
 未 `init` 直接 `add` 会自动走初始化。`litefy.json` 的路径字段不要手改；自行挪目录要同步改导入路径，CLI 不替你改写。
 

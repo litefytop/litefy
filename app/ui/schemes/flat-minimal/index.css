@@ -27,11 +27,11 @@
   --foreground: oklch(17.5% 0.032 243);
   --surface: oklch(95.1% 0.018 236);
   --surface-fg: oklch(29.4% 0.066 243.157);
-  --disabled: oklch(70.8% 0 none); /* 禁用档固定中性灰，不随 surface 走 */
-  --disabled-fg: oklch(29.4% 0.066 243.157);
+  --disabled: oklch(92.2% 0 none); /* 禁用档固定中性灰 200 档，不随 surface 走 */
+  --disabled-fg: oklch(43.9% 0.066 243.157);
   --surface-raised: oklch(100% 0 0);
   --surface-raised-fg: var(--foreground);
-  --accent: oklch(82.8% 0.09 224);
+  --accent: oklch(82.8% 0.09 240.876); /* derived: brand default day hue */
   --accent-fg: oklch(29.4% 0.066 243.157);
   --border: color-mix(in oklab, var(--foreground) 14%, transparent);
 
@@ -113,11 +113,11 @@
   --foreground: oklch(96% 0.012 236);
   --surface: oklch(16.5% 0.03 243);
   --surface-fg: oklch(90.1% 0.058 230.902);
-  --disabled: oklch(43.9% 0 none);
-  --disabled-fg: oklch(90.1% 0.058 230.902);
+  --disabled: oklch(26.9% 0 none); /* 禁用档固定中性灰 800 档 */
+  --disabled-fg: oklch(70.8% 0.058 230.902);
   --surface-raised: oklch(29.4% 0.066 243.157);
   --surface-raised-fg: var(--foreground);
-  --accent: oklch(37.9% 0.078 243.435);
+  --accent: oklch(37.9% 0.078 237.323); /* derived: brand default night hue */
   --accent-fg: oklch(90.1% 0.058 230.902);
   --border: color-mix(in oklab, var(--foreground) 14%, transparent);
 
@@ -134,14 +134,194 @@
   --text-warning-independent: var(--warning-accent);
 }
 
-/* Compact ramp — three-scheme mechanism values (ui/schemes.md rule 11). */
-@media (pointer: coarse), (width < 48rem) {
-  :root {
-    --height-control: calc(var(--spacing) * 11);
-    --height-field: calc(var(--spacing) * 11);
-    --padding-control-x: 0.625rem;
-    --spacing: 0.1875rem;
-  }
+/* Runtime brand ramp (blueprint rule 5). Tiers answer --primary /
+   --primary-accent only; --primary-fg stays single-sourced above. Day: primary
+   reuses the minimal day stop, accent deepens by oklch L×0.82 (the 800 stops
+   fall short of the ≥0.06 deepening lane). Night: the minimal dark pair
+   verbatim — a lightening hover, same direction as this scheme's own default.
+   Every tier measured ≥4.5:1 with a ≥0.06 lane distance — see design.md for
+   the registered figures. */
+
+[data-brand="default"] {
+  --primary: oklch(39.1% 0.09 240.876);
+  --primary-accent: oklch(37.9% 0.078 243.435);
+  --accent: oklch(82.8% 0.09 240.876);
+}
+
+.dark [data-brand="default"],
+.dark[data-brand="default"] {
+  --primary: oklch(68.5% 0.169 237.323);
+  --primary-accent: oklch(74.6% 0.16 232.661);
+  --accent: oklch(37.9% 0.078 237.323);
+}
+
+[data-brand="amber"] {
+  --primary: oklch(55.5% 0.163 48.998);
+  --primary-accent: oklch(45.5% 0.163 48.998);
+  --accent: oklch(82.8% 0.09 48.998);
+}
+
+.dark [data-brand="amber"],
+.dark[data-brand="amber"] {
+  --primary: oklch(76.9% 0.188 70.08);
+  --primary-accent: oklch(82.8% 0.189 84.429);
+  --accent: oklch(37.9% 0.078 70.08);
+}
+
+[data-brand="cyan"] {
+  --primary: oklch(49.7% 0.105 223.128);
+  --primary-accent: oklch(40.8% 0.105 223.128);
+  --accent: oklch(82.8% 0.09 223.128);
+}
+
+.dark [data-brand="cyan"],
+.dark[data-brand="cyan"] {
+  --primary: oklch(71.5% 0.143 215.221);
+  --primary-accent: oklch(78.9% 0.154 211.53);
+  --accent: oklch(37.9% 0.078 215.221);
+}
+
+[data-brand="emerald"] {
+  --primary: oklch(50.8% 0.118 165.612);
+  --primary-accent: oklch(41.7% 0.118 165.612);
+  --accent: oklch(82.8% 0.09 165.612);
+}
+
+.dark [data-brand="emerald"],
+.dark[data-brand="emerald"] {
+  --primary: oklch(76.5% 0.177 163.223);
+  --primary-accent: oklch(84.5% 0.143 164.978);
+  --accent: oklch(37.9% 0.078 163.223);
+}
+
+[data-brand="fuchsia"] {
+  --primary: oklch(50.6% 0.253 323.949);
+  --primary-accent: oklch(41.5% 0.253 323.949);
+  --accent: oklch(82.8% 0.09 323.949);
+}
+
+.dark [data-brand="fuchsia"],
+.dark[data-brand="fuchsia"] {
+  --primary: oklch(74% 0.238 322.16);
+  --primary-accent: oklch(83.3% 0.145 321.434);
+  --accent: oklch(37.9% 0.078 322.16);
+}
+
+[data-brand="indigo"] {
+  --primary: oklch(45.8% 0.262 276.966);
+  --primary-accent: oklch(37.6% 0.262 276.966);
+  --accent: oklch(82.8% 0.09 276.966);
+}
+
+.dark [data-brand="indigo"],
+.dark[data-brand="indigo"] {
+  --primary: oklch(78.5% 0.115 274.713);
+  --primary-accent: oklch(87% 0.065 274.039);
+  --accent: oklch(37.9% 0.078 274.713);
+}
+
+[data-brand="lime"] {
+  --primary: oklch(53.2% 0.157 131.589);
+  --primary-accent: oklch(43.6% 0.157 131.589);
+  --accent: oklch(82.8% 0.09 131.589);
+}
+
+.dark [data-brand="lime"],
+.dark[data-brand="lime"] {
+  --primary: oklch(76.8% 0.233 130.85);
+  --primary-accent: oklch(84.1% 0.238 128.85);
+  --accent: oklch(37.9% 0.078 130.85);
+}
+
+[data-brand="orange"] {
+  --primary: oklch(52% 0.222 41.116);
+  --primary-accent: oklch(42.6% 0.222 41.116);
+  --accent: oklch(82.8% 0.09 41.116);
+}
+
+.dark [data-brand="orange"],
+.dark[data-brand="orange"] {
+  --primary: oklch(70.5% 0.213 47.604);
+  --primary-accent: oklch(75% 0.183 55.934);
+  --accent: oklch(37.9% 0.078 47.604);
+}
+
+[data-brand="pink"] {
+  --primary: oklch(52.5% 0.223 3.958);
+  --primary-accent: oklch(43.1% 0.223 3.958);
+  --accent: oklch(82.8% 0.09 3.958);
+}
+
+.dark [data-brand="pink"],
+.dark[data-brand="pink"] {
+  --primary: oklch(71.8% 0.202 349.761);
+  --primary-accent: oklch(82.3% 0.12 346.018);
+  --accent: oklch(37.9% 0.078 349.761);
+}
+
+[data-brand="purple"] {
+  --primary: oklch(47.5% 0.288 302.321);
+  --primary-accent: oklch(39% 0.288 302.321);
+  --accent: oklch(82.8% 0.09 302.321);
+}
+
+.dark [data-brand="purple"],
+.dark[data-brand="purple"] {
+  --primary: oklch(71.4% 0.203 305.504);
+  --primary-accent: oklch(82.7% 0.119 306.383);
+  --accent: oklch(37.9% 0.078 305.504);
+}
+
+[data-brand="rose"] {
+  --primary: oklch(51.4% 0.222 16.935);
+  --primary-accent: oklch(42.2% 0.222 16.935);
+  --accent: oklch(82.8% 0.09 16.935);
+}
+
+.dark [data-brand="rose"],
+.dark[data-brand="rose"] {
+  --primary: oklch(71.2% 0.194 13.428);
+  --primary-accent: oklch(81% 0.117 11.638);
+  --accent: oklch(37.9% 0.078 13.428);
+}
+
+[data-brand="sky"] {
+  --primary: oklch(48.8% 0.134 242.749);
+  --primary-accent: oklch(40% 0.134 242.749);
+  --accent: oklch(82.8% 0.09 242.749);
+}
+
+.dark [data-brand="sky"],
+.dark[data-brand="sky"] {
+  --primary: oklch(74.6% 0.16 232.661);
+  --primary-accent: oklch(82.8% 0.111 230.318);
+  --accent: oklch(37.9% 0.078 232.661);
+}
+
+[data-brand="teal"] {
+  --primary: oklch(51.1% 0.096 186.391);
+  --primary-accent: oklch(41.9% 0.096 186.391);
+  --accent: oklch(82.8% 0.09 186.391);
+}
+
+.dark [data-brand="teal"],
+.dark[data-brand="teal"] {
+  --primary: oklch(70.4% 0.14 182.503);
+  --primary-accent: oklch(77.7% 0.152 181.912);
+  --accent: oklch(37.9% 0.078 182.503);
+}
+
+[data-brand="violet"] {
+  --primary: oklch(54.1% 0.281 293.009);
+  --primary-accent: oklch(44.4% 0.281 293.009);
+  --accent: oklch(82.8% 0.09 293.009);
+}
+
+.dark [data-brand="violet"],
+.dark[data-brand="violet"] {
+  --primary: oklch(70.2% 0.183 293.541);
+  --primary-accent: oklch(81.1% 0.111 293.571);
+  --accent: oklch(37.9% 0.078 293.541);
 }
 
 @custom-variant dark (&:where(.dark, .dark *));

@@ -7,9 +7,9 @@ colors:
   foreground: 'oklch(17.5% 0.032 243)'
   surface: 'oklch(95.1% 0.018 236)'
   surface-fg: 'oklch(29.4% 0.066 243.157)'
-  disabled: 'oklch(70.8% 0 none)'
-  disabled-fg: 'oklch(29.4% 0.066 243.157)'
-  accent: 'oklch(82.8% 0.09 224)'
+  disabled: 'oklch(92.2% 0 none)'
+  disabled-fg: 'oklch(43.9% 0.066 243.157)'
+  accent: 'oklch(82.8% 0.09 240.876)'
   accent-fg: 'oklch(29.4% 0.066 243.157)'
   surface-raised: 'oklch(100% 0 0)'
   border: 'color-mix(in oklab, oklch(17.5% 0.032 243) 14%, transparent)'
@@ -32,9 +32,9 @@ colors:
   dark-foreground: 'oklch(96% 0.012 236)'
   dark-surface: 'oklch(16.5% 0.03 243)'
   dark-surface-fg: 'oklch(90.1% 0.058 230.902)'
-  dark-disabled: 'oklch(43.9% 0 none)'
-  dark-disabled-fg: 'oklch(90.1% 0.058 230.902)'
-  dark-accent: 'oklch(37.9% 0.078 243.435)'
+  dark-disabled: 'oklch(26.9% 0 none)'
+  dark-disabled-fg: 'oklch(70.8% 0.058 230.902)'
+  dark-accent: 'oklch(37.9% 0.078 237.323)'
   dark-accent-fg: 'oklch(90.1% 0.058 230.902)'
   dark-surface-raised: 'oklch(29.4% 0.066 243.157)'
   dark-border: 'color-mix(in oklab, oklch(96% 0.012 236) 14%, transparent)'
@@ -158,21 +158,21 @@ recess:
 
 1. 整体观感：冷白画布、浅天蓝表面、深天蓝品牌色、1px 发丝边界、全直角、零阴影、充裕留白。识别点七条：**冷调蓝系、发丝边界、全直角、零阴影、边界建层级、颜色带语义、克制**。
 2. 设计意图：为企业后台与信息密集应用设计——信息密度高、状态必须一眼分明、操作不容歧义。层级由边界线、表面阶梯与留白建立，禁止靠阴影、透明度或调淡文字表达；颜色永远携带含义，说不出某块颜色标的是哪种状态或动作，它就不该出现。
-3. 固定色方案：不设 `[data-brand]` / `[data-surface]` 运行期换色 ramp，色板即产品身份；亮暗两档镜像同一套语义。
+3. 运行期换色：开 `[data-brand]` 梯（用户定 2026-11-26，原「固定色不设梯」作废；蓝图 `ui/schemes.md` 第 5 条）——品牌三件里 ramp 只重答 `--primary` / `--primary-accent`，`--primary-fg` 由 `:root` / `.dark` 单源作答；画布与表面保持冷灰蓝身份色，不设 `[data-surface]`，亮暗两档镜像同一套语义。梯档 14 档（default + 13 色相），值住 `index.css` 的 ramp 块：日档 `--primary` 复用 minimal 日档同名值（深色阶，白字），`--primary-accent` 按 oklch L×0.82 深化派生；夜档复用 minimal 夜档同名值原对（提亮方向与本案默认 sky-500 → sky-400 一致），default 档与 `:root` / `.dark` 同值。悬停车道随品牌同色相派生（用户定 2026-11-26）：每档加答 `--accent`，日档 `oklch(82.8% 0.09 <该档日 primary 色相>)`、夜档 `oklch(37.9% 0.078 <该档夜 primary 色相>)`——L/C 锚定原固定字面只换色相，default 档字面 224 / 243.435 随之退役（归入 240.876 / 237.323）；`--accent-fg` 同 `--primary-fg` 单源由 `:root` / `.dark` 作答不随档变。成套实测（临时脚本逐档核算，实测值）：日档白字对静置与 `-accent` 两档最低 4.85 / 7.29，夜档深字最低 6.65 / 8.09，同族道距最低 0.061；派生 accent 对 `accent-fg` 日档 7.84–8.46、夜档 7.27–7.89，全档 PASS（temp/flat-accent-derive.mjs）。
 4. 权威分工：文件头 YAML 块是 token **数值的唯一权威**；本方案 `index.css` 的 `@theme` 是其实现，两边逐档对齐，不一致以 YAML 为准并报告冲突。组件槽位与角色档位归 `.agents/blueprints/ui/skins/<name>.md`；通用外观律归 delivery 技能；无障碍下限归 ui-rules 技能——本文件只答方案数值与方案语言边界。
 5. 冲突裁决：用户明确要求 > 本规范 > 模型自己的品味；用户要求违反硬性禁令时，先说明并给出合规替代，再按用户最终决定执行。代码审计只记录问题、不自动修复，等待指令处理。
 
 ## Colors
 
 1. 面积预算 **60 / 30 / 10**：约 60% 画布（`background` / `foreground`）；约 30% 次要容器背景（`surface` bar 类容器与轻量区块、`accent` 悬停与占位）；≤10% `primary` 与状态色。骨架屏与无内容占位背景色归 `accent`，空态提示文字归 `foreground`。
-2. 色板只有 24 枚，亮暗各一套（构成与数值见 YAML）。sky 家族取 Tailwind v4 色板具名阶，静态中性档一阶一阶：表面 `surface` sky-100（暗档 sky-950）、画布 `background` sky-50（暗档 sky-900）、凸起 `surface-raised` 纯白（暗档 sky-800）、悬停档 `accent` sky-300（暗档 sky-700）、禁用档 `disabled` 固定中性灰 400 / 600（不随 sky 家族走）；品牌 `primary` sky-800（暗档反转为 sky-500 配深字）。语义四族与 minimal、neo 同构同值（schemes.md 规则 3 共享实测值）。后缀语法全系统一致：背景色不带后缀，文字色加 `-fg`，`-accent` 是强调 / 悬停背景档；例外皆显式：画布用全写 `background` / `foreground`。`@theme` 的色彩映射与这 24 枚一一对应，此外没有任何颜色槽位；浮层背景 `--color-surface-raised`（配 `--color-surface-raised-fg`）与井底 `--color-well`、焦点环同是方案机制值，由 `index.css` 派生。
+2. 色板只有 24 枚，亮暗各一套（构成与数值见 YAML）。sky 家族取 Tailwind v4 色板具名阶，静态中性档一阶一阶：表面 `surface` sky-100（暗档 sky-950）、画布 `background` sky-50（暗档 sky-900）、凸起 `surface-raised` 纯白（暗档 sky-800）、悬停档 `accent` 随品牌同色相派生（明度锚定 sky-300 / 暗档 sky-700 同明度带，无属性时默认档色相归 sky 家族，见运行期换色条）、禁用档 `disabled` 固定中性灰 200 / 800（不随 sky 家族走，用户定 2026-11-26 下沉改档）；品牌 `primary` sky-800（暗档反转为 sky-500 配深字）。语义四族与 minimal、neo 同构同值（schemes.md 规则 3 共享实测值）。后缀语法全系统一致：背景色不带后缀，文字色加 `-fg`，`-accent` 是强调 / 悬停背景档；例外皆显式：画布用全写 `background` / `foreground`。`@theme` 的色彩映射与这 24 枚一一对应，此外没有任何颜色槽位；浮层背景 `--color-surface-raised`（配 `--color-surface-raised-fg`）与井底 `--color-well`、焦点环同是方案机制值，由 `index.css` 派生。
 3. 逐 token 去处：
 
    1. `background` — 画布：页面底层与主内容区背景色，亮档 sky-50（`foreground` 对其 17.75:1，AAA）、暗档 sky-900（15.59:1）。控件静置面、卡面与浮层不读它，读机制值 `surface-raised`（亮档纯白、暗档 sky-800）。bar 类容器（顶栏 / 侧栏 / 底栏）用 `surface`。
    2. `foreground` — 正文、标题、说明、占位符与核心图标的文字色，也是 `border` 的派生源；画布、透明背景与 `surface-raised` 凸起面统一使用它（`surface-raised-fg` 即映射到它）。
-   3. `surface` — 凹槽档背景色：bar 类容器、轻量区块、hero、表头、斑马行、rail；亮档 sky-100 比画布沉一阶（ΔL 2.6 点）、暗档 sky-950 比画布沉一阶（ΔL 5.0 点）。不用作主内容区背景，也不给控件静置面——那归 `surface-raised`；轨道、输入凹面、值区、多行域与 Segment 凹陷道同读它，配 `surface-fg`。
+   3. `surface` — 凹槽档背景色：bar 类容器、轻量区块、hero、表头、斑马行、rail；亮档 sky-100 比画布沉一阶（ΔL 2.6 点）、暗档 sky-950 比画布沉一阶（ΔL 5.0 点）。不用作主内容区背景，也不给控件静置面——那归 `surface-raised`；输入凹面、值区、多行域与 Segment 凹陷道读它，配 `surface-fg`；轨道改读 `border` 对比线（用户定 2026-11-26，见 Elevation 第 2 条）。
    4. `surface-fg` — `surface` 背景上的表面文字、说明与图标；禁用态文字统一读 `disabled-fg`。
-   5. `accent` — 中性强调背景色：悬停高亮 sky-300（暗档 sky-700）、静态区块强调、骨架屏与无内容占位。道距实测：亮档对凸起面 17.2 点 / 对画布 14.9 点 / 对凹槽 12.3 点，暗档 8.5 / 16.4 / 21.4 点（中性方案以明度步判车道，≥8 点即达标）。没有品牌含义，不能替代 `primary` 表示动作，也不用作文字色。
+   5. `accent` — 悬停背景档：悬停高亮、静态区块强调、骨架屏与无内容占位。色相随品牌档同相派生（运行期换色条），无属性时默认档色相归 sky 家族；低彩亮档 / 暗档的明度带不变。道距实测（默认档）：亮档对凸起面 17.2 点 / 对画布 14.9 点 / 对凹槽 12.3 点，暗档 8.5 / 16.4 / 21.4 点（以明度步判车道，≥8 点即达标；换品牌色相后色相距只增不减）。不能替代 `primary` 表示动作，也不用作文字色。
    6. `accent-fg` — `accent` 背景上的文字色。
    7. `border` — 全局唯一边框色（前景色 14% 透明，随底色自适应亮暗与表面）；所有默认边框、分隔线、表格网格、行内 code 描边由它派生。
    8. `primary` — 品牌色：主按钮、选中 / 激活态、焦点环、状态标记、链接。保持稀缺（一屏一个主操作），禁止大面积铺满卡片或页面背景。
@@ -190,8 +190,8 @@ recess:
    20. `warning-fg` — `warning` 与 `warning-accent` 背景上的文字色；独立警示文字、图标与边框挂 `text-warning-independent` / `border-warning-independent`，亮档读 `warning-fg`、暗档读 `warning-accent`。
    21. `warning` — 警示提示静置背景色，日夜同值。
    22. `warning-accent` — 警示提示悬停背景色，日夜同值；暗档独立状态文字、图标与边框也读它。
-   23. `disabled` — 禁用控件背景色；四案同答固定中性灰（亮档灰 400 档 70.8，暗档灰 600 档 43.9），不随 sky 家族的表面档变化，与凹槽 `surface`、悬停 `accent` 都拉开一眼可辨的差（对三档的最小道距亮 24.3 / 暗 14.5 点）。
-   24. `disabled-fg` — 禁用控件文字、图标与边框色；与 `disabled` 保持可读对比（本案亮 5.34:1、暗 5.87:1）。
+   23. `disabled` — 禁用控件背景色；四案同答固定中性灰（亮档灰 200 档 92.2，暗档灰 800 档 26.9，用户定 2026-11-26 下沉改档），不随 sky 家族的表面档变化；与静态三档不再设道距要求，沉向背景是禁用的预期语义；与悬停 `accent` 错开一阶（亮 92.2 对 82.8–87.2、暗 26.9 对 37.9）。
+   24. `disabled-fg` — 禁用控件文字、图标与边框色；与 `disabled` 保持可读对比（本案亮 6.14:1、暗 5.91:1）。
 
 4. 对比度：文字、图标与边框按实际背景配对，普通文字在亮、暗两档都满足 WCAG AA（≥ 4.5:1）。独立状态文字、图标与边框挂 `text-<status>-independent` / `border-<status>-independent`，亮档读 `<status>-fg`、暗档读 `<status>-accent`；语义四族背景日夜同值，同一枚 `<status>-fg` 压静置与悬停两档实测 danger 5.24 / 6.94、info 5.74 / 7.31、success 6.49 / 7.49、warning 6.57 / 7.47（实测值，`ui/schemes.md` 第 3 条）。填充及其悬停背景读对应 `<status>-fg`。层级不靠压暗文字或发光表达。
 
@@ -247,7 +247,7 @@ recess:
 ## Shapes
 
 1. **全直角是唯一形状答案**：`@theme` 用 0px 回答半径阶梯每一档（含 `pill` / `disc` / `swipe`），共享代码写来的 `rounded-lg` 在这里得到直角而不是不生成——切换方案时改变的是观感而不是丢失。皮肤禁止写 `rounded-full`（静态圆不读令牌，谁也答不成 0）——圆点、胶囊、圆钮一律 `rounded-pill` / `rounded-disc`（本方案答 0px，得直角），本方案无圆形。
-2. 轨道族（滑块 / 进度条 / 开关轨）：矩形直角、无描边、纯色块，未填充底挂凹槽档 `bg-surface`（读 `--color-surface`，见 Elevation 第 2 条）、填充 `primary`；轨道一律连续条，格子形态不进本方案——输入滑块的反馈靠值气泡与按压，不靠格子与速度波。
+2. 轨道族（滑块 / 进度条 / 开关轨）：矩形直角、无额外描边、纯色块，未填充底挂 `bg-border` 对比线（读 `--color-border`，用户定 2026-11-26，见 Elevation 第 2 条）、填充 `primary`；轨道一律连续条，格子形态不进本方案——输入滑块的反馈靠值气泡与按压，不靠格子与速度波。
 3. 连体控制组（拼接输入 + 按钮）内角自然为 0，端帽无需处理。
 
 ## Components

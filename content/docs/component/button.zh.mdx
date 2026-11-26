@@ -38,7 +38,7 @@ primary 给有优先级的动作（提交、确认）；danger 只标高风险�
 | Prop            | Type                                          | Description                                                                                                                            |
 | --------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | `className`     | `string`                                      | 自定义 CSS 类。                                                                                                                             |
-| `icon`          | `React.ReactNode`                             | icon 格子，渲染在 children 前；图标尺寸由按钮统一强制（`size-4`，随 spacing 刻度逐案与紧凑档缩放）                                                                         |
+| `icon`          | `React.ReactNode`                             | icon 格子，渲染在 children 前；图标尺寸由按钮统一强制（`size-4`，随 spacing 刻度逐案定值、全端不缩放）                                                                         |
 | `status`        | `{ icon: React.ReactNode; active: boolean }`  | 配置即转网格。已传 `icon`：两格恒在、原位换标；未传 `icon`：`active` 时在 children 前显示 `status.icon`。纯展示格——等待期请自行传 `disabled` / `aria-busy` |
 | `...props`      | `React.ComponentProps<"button">`              | 支持全部 button 原生属性（除 `className`），如 `type`、`disabled`                                                                                    |
 

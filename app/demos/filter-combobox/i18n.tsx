@@ -7,6 +7,8 @@ const statusValues = ["Scheduled", "Overdue", "On hold", "In progress", "Complet
 const statusLabels = ["已排期", "已逾期", "挂起", "进行中", "已完成"];
 
 const texts: FilterComboboxTexts = {
+  triggerText: "筛选",
+  triggerCountText: "{count} 个条件",
   placeholder: "输入列名添加筛选条件",
   fieldPlaceholder: "列名",
   operatorPlaceholder: "操作符",
@@ -18,9 +20,13 @@ const texts: FilterComboboxTexts = {
   invalidRangeText: "请输入两个值，以逗号、斜杠、空格或波浪号分隔",
   invertedRangeText: "起始值不能大于结束值",
   removeLabel: "删除条件",
-  editLabel: "编辑条件",
   cancelDraftText: "放弃条件",
   clearText: "清空",
+  enterSelectText: "选择",
+  escHintText: "取消",
+  enterEditText: "编辑",
+  deleteHintText: "删除",
+  spaceSearchText: "筛选列名",
   separatorLabel: "可用以下键分隔",
   submitText: "应用",
   loadingText: "加载中",

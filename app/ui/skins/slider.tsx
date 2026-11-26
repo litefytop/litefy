@@ -37,10 +37,10 @@ const textClassesByState = (normal: string, disabledClasses: string) =>
     ({ disabled }: SlotState) => disabled ? disabledClasses : normal;
 
 const trackBaseClasses = "relative touch-none select-none";
-const trackDefaultHorizontalClasses = cn(trackBaseClasses, "rounded-pill bg-surface h-1 w-112 grow min-w-0 max-w-112");
-const trackDefaultVerticalClasses = cn(trackBaseClasses, "rounded-pill bg-surface w-1 h-64 shrink-0");
-const trackCellHorizontalClasses = cn(trackBaseClasses, "rounded-sm bg-surface h-control w-112 grow min-w-0 max-w-112");
-const trackCellVerticalClasses = cn(trackBaseClasses, "rounded-sm bg-surface w-control h-64 shrink-0");
+const trackDefaultHorizontalClasses = cn(trackBaseClasses, "rounded-pill bg-border h-1 w-112 grow min-w-0 max-w-112");
+const trackDefaultVerticalClasses = cn(trackBaseClasses, "rounded-pill bg-border w-1 h-64 shrink-0");
+const trackCellHorizontalClasses = cn(trackBaseClasses, "rounded-sm bg-border h-control w-112 grow min-w-0 max-w-112");
+const trackCellVerticalClasses = cn(trackBaseClasses, "rounded-sm bg-border w-control h-64 shrink-0");
 
 const defaultThumbLayoutClasses =
     "absolute block size-6 rounded-pill touch-none " +

@@ -4,7 +4,7 @@ import { cn, mergeSlots } from "../utils/cn";
 
 const rootClasses = "group/meter flex w-full min-w-0 items-center gap-2";
 
-const trackClasses = "grow min-w-0 h-2 overflow-hidden rounded-pill bg-surface";
+const trackClasses = "grow min-w-0 h-2 overflow-hidden rounded-pill bg-border";
 
 const fillClasses =
   "h-full rounded-pill bg-success " +

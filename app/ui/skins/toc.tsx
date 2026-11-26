@@ -38,7 +38,7 @@ const thumbClasses =
   "origin-top transition-transform duration-sm ease-frame";
 
 const statusFixedClasses =
-  "hidden z-40 top-4 right-4 max-xl:fixed max-xl:flex items-center " +
+  "hidden z-40 top-4 right-4 max-xl:fixed max-xl:flex items-center gap-x-2 " +
   "max-w-[min(16rem,100vw-6rem)]";
 const statusBoxClasses = "p-2 px-3 rounded-xl border-frame border-border";
 const statusFaceClasses =
@@ -63,7 +63,7 @@ const ringClasses = "size-5 shrink-0";
 
 /* The ring's contract: the track is the quiet surface, the arc is the brand — the
    lightness step between them is the reading, in both schemes. */
-const ringTrackClasses = "fill-none stroke-surface stroke-1.5";
+const ringTrackClasses = "fill-none stroke-border stroke-1.5";
 
 const ringProgressClasses =
   "fill-none stroke-primary stroke-1.5 " +

@@ -73,7 +73,7 @@ function LiveSwatches({ lang }: { lang: "en" | "zh" }) {
     const mo = new MutationObserver(read);
     mo.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ["class", "data-brand", "data-surface"],
+      attributeFilter: ["class", "data-brand", "data-surface", "data-accent"],
     });
     return () => mo.disconnect();
   }, []);

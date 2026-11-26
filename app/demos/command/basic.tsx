@@ -61,7 +61,7 @@ export default function Demo() {
           <>
             <Search />
             Search commands…
-            <kbd className="kbd">⌘K</kbd>
+            <kbd className="kbd pointer-coarse:hidden max-sm:hidden">⌘K</kbd>
           </>
         }
         items={items}

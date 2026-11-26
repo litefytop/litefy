@@ -9,8 +9,8 @@ colors:
   surface-fg: 'oklch(38% 0.1 325)'
   surface-raised: 'oklch(99% 0.008 325)'
   surface-raised-fg: '{colors.foreground}'
-  disabled: 'oklch(70.8% 0 none)'
-  disabled-fg: '#0f0a1e'
+  disabled: 'oklch(92.2% 0 none)'
+  disabled-fg: 'oklch(43.9% 0 none)'
   border: '#b45309'
   accent: '#f472b6'
   accent-fg: '#0f0a1e'
@@ -123,30 +123,30 @@ motion:
   translate-lift: 0rem
   translate-crush: 0rem
 shadows:
-  frame: '0 0 20px rgba(236, 72, 153, 0.5)'
-  frame-hover: '0 0 30px rgba(236, 72, 153, 0.7)'
-  frame-focus: '0 0 20px rgba(34, 211, 238, 0.3)'
-  frame-focus-danger: '0 0 20px rgba(244, 63, 94, 0.4)'
-  frame-active: 'inset 0 0 20px rgba(255, 255, 255, 0.8)'
-  block: '0 0 30px rgba(168, 85, 247, 0.4)'
-  block-hover: '0 0 40px rgba(168, 85, 247, 0.6)'
-  checked: '0 0 0 2px var(--background), 0 0 0 4px var(--primary), 0 0 20px rgba(168, 85, 247, 0.5)'
-  elevated: '0 0 40px rgba(168, 85, 247, 0.6)'
-  hint: '0 0 15px rgba(168, 85, 247, 0.3)'
-  focus-glow: '0 0 20px rgba(34, 211, 238, 0.3)'
+  frame: '0 0 10px rgba(236, 72, 153, 0.5)'
+  frame-hover: '0 0 14px rgba(236, 72, 153, 0.7)'
+  frame-focus: '0 0 10px rgba(34, 211, 238, 0.3)'
+  frame-focus-danger: '0 0 10px rgba(244, 63, 94, 0.4)'
+  frame-active: 'inset 0 0 10px rgba(255, 255, 255, 0.8)'
+  block: '0 0 14px rgba(168, 85, 247, 0.4)'
+  block-hover: '0 0 20px rgba(168, 85, 247, 0.6)'
+  checked: '0 0 0 2px var(--background), 0 0 0 4px var(--primary), 0 0 10px rgba(168, 85, 247, 0.5)'
+  elevated: '0 0 20px rgba(168, 85, 247, 0.6)'
+  hint: '0 0 8px rgba(168, 85, 247, 0.3)'
+  focus-glow: '0 0 10px rgba(34, 211, 238, 0.3)'
   unchecked: 'var(--shadow-frame), 0 0 0 2px var(--background), 0 0 0 4px var(--surface-fg)'
 shadows-light:
-  frame: '0 2px 12px rgba(190, 24, 93, 0.35)'
-  frame-hover: '0 4px 18px rgba(190, 24, 93, 0.45)'
-  frame-focus: '0 2px 10px rgba(14, 116, 144, 0.35)'
-  frame-focus-danger: '0 2px 10px rgba(190, 18, 60, 0.4)'
-  frame-active: 'inset 0 0 16px rgba(126, 34, 206, 0.35)'
-  block: '0 4px 20px rgba(126, 34, 206, 0.28)'
-  block-hover: '0 6px 26px rgba(126, 34, 206, 0.38)'
-  checked: '0 0 0 2px var(--background), 0 0 0 4px var(--primary), 0 2px 12px rgba(126, 34, 206, 0.35)'
-  elevated: '0 6px 26px rgba(126, 34, 206, 0.38)'
-  hint: '0 2px 10px rgba(126, 34, 206, 0.25)'
-  focus-glow: '0 2px 10px rgba(14, 116, 144, 0.35)'
+  frame: '0 1px 6px rgba(190, 24, 93, 0.35)'
+  frame-hover: '0 2px 10px rgba(190, 24, 93, 0.45)'
+  frame-focus: '0 1px 6px rgba(14, 116, 144, 0.35)'
+  frame-focus-danger: '0 1px 6px rgba(190, 18, 60, 0.4)'
+  frame-active: 'inset 0 0 8px rgba(126, 34, 206, 0.35)'
+  block: '0 2px 10px rgba(126, 34, 206, 0.28)'
+  block-hover: '0 3px 14px rgba(126, 34, 206, 0.38)'
+  checked: '0 0 0 2px var(--background), 0 0 0 4px var(--primary), 0 1px 6px rgba(126, 34, 206, 0.35)'
+  elevated: '0 3px 14px rgba(126, 34, 206, 0.38)'
+  hint: '0 1px 6px rgba(126, 34, 206, 0.25)'
+  focus-glow: '0 1px 6px rgba(14, 116, 144, 0.35)'
   unchecked: 'var(--shadow-frame), 0 0 0 2px var(--background), 0 0 0 4px var(--surface-fg)'
 gradients:
   brand: 'linear-gradient(90deg, #22d3ee, #ec4899, #22d3ee)'
@@ -199,10 +199,10 @@ recess:
 3. **Full-gradient paint — fill lane, not the token**: colour tokens stay solid (purple brand, pink accent, red danger, cyan-blue info, green success, yellow warning) because text, borders, focus rings, shadows and derivations read them. The paint happens at the fill lane (blueprint rule 4): every isomorphic `bg-*` utility emits its solid token as `background-color` plus the scheme's fill variable as `background-image` — `--fill-primary` / `--fill-primary-accent` / `--fill-surface` / `--fill-accent` / `--fill-danger` / `--fill-danger-accent` / `--fill-success` / `--fill-success-accent` / `--fill-warning` / `--fill-warning-accent` / `--fill-info` / `--fill-info-accent`, answered from the YAML `gradients` block in both tiers except `--fill-surface`, which re-depths from `gradients-light` by day — buttons flow to-r, cards paint to-br. Variants compose the same utility body, so every state paints the same gradient. `--fill-background` stays undeclared — the canvas colour is solid by definition, the utility's fallback answers `none`, and variants stacking `bg-background` over a family fill (the lattice loader's done/error cells) clear the gradient image with the colour. The lattice wave itself animates OPACITY over the cells' gradient fill — lit cells show the active tier's surface gradient, dim cells let the canvas through. The lone exemption is `bg-primary-solid` (solid `--color-primary` + `background-image: none`), reserved for icon-grade indicators — checkbox / radio boxes and timeline dots — where a gradient needs room the 16px box does not have and the 200% fill compresses into a hard two-colour split (user ruling 2026-11-22).
 4. **Fluid Luminescence**: the brand fill (`bg-primary`) is the brand button — a cyclic cyan→pink→cyan gradient at cyan-400 / pink-500 neon depth in both tiers, 200% size parked left; `--fill-primary-accent` answers `var(--fill-primary)` (same image, same size), so the brand hover (`hover:bg-primary-accent`) just slides `background-position` to the right over 500ms ease-out (YAML `motion.duration-flow`). Hover and press never move or scale the button — `lift` / `crush` answer as explicit no-ops (Litefy ruling), the feedback is the glow or soft shadow and the colour flow under the text.
 5. **Contrast borders, border-4 floor**: one 4px stroke reads every border-width role; `--border` is the style's contrast wire — amber-700 (`#b45309`, 4.65:1 on the pale canvas) by day, yellow-400 (`#fbbf24`, 9.65:1 on the deep blue canvas) by night — the signature edge against the purple-pink fills, and the only thing that separates a frozen neon block from the light canvas (WCAG 1.4.11). Filled icon-grade indicators (checkbox / radio boxes, timeline dots) drop the border outright: a 4px stroke inside a 16px box leaves only an 8px paint area and drowns the check glyph (user ruling 2026-11-22) — the empty frame keeps the wire, the filled state paints edge to edge under the glow ring.
-6. **Family-coloured elevation, tiered**: by night, controls glow pink (`0 0 20px rgba(236,72,153,0.5)`, hover 30px/0.7), cards glow purple (`0 0 30px rgba(168,85,247,0.4)`, hover 40px/0.6), focus glows cyan (`0 0 20px rgba(34,211,238,0.3)`). By day, glows have no physical basis on a light canvas, so the same families answer as offset soft shadows (pink `0 2px 12px rgba(190,24,93,0.35)` for controls, purple `0 4px 20px rgba(126,34,206,0.28)` for cards, cyan-700 `0 2px 10px rgba(14,116,144,0.35)` for focus; values in YAML `shadows-light`). The press is electric activation in both tiers — inset purple by day, inset white by night (`frame-active`) — never scaling or displacement.
+6. **Family-coloured elevation, tiered**: by night, controls glow pink (`0 0 10px rgba(236,72,153,0.5)`, hover 14px/0.7), cards glow purple (`0 0 14px rgba(168,85,247,0.4)`, hover 20px/0.6), focus glows cyan (`0 0 10px rgba(34,211,238,0.3)`). By day, glows have no physical basis on a light canvas, so the same families answer as offset soft shadows (pink `0 1px 6px rgba(190,24,93,0.35)` for controls, purple `0 2px 10px rgba(126,34,206,0.28)` for cards, cyan-700 `0 1px 6px rgba(14,116,144,0.35)` for focus; values in YAML `shadows-light`). All shadows share one value set across viewports with a 24px visible-footprint ceiling (blueprint `ui/schemes.md` rule 27). The press is electric activation in both tiers — inset purple by day, inset white by night (`frame-active`) — never scaling or displacement.
 7. **Large rounding**: buttons md (12px ≈ rounded-xl), cards lg (16px ≈ rounded-2xl), shells xl/2xl; pills and discs fully round. `rounded-none` is a forbidden class in this style.
 8. **Labels uppercase**, tracking 0.08em; JetBrains Mono is the mono face; headings ride `--text-h1…h6` at weights 700/900. The headline display tier (`typo-headline`) answers the fluid clamp(2.25rem → 3.75rem) at weight 900 for first-screen titles only — one per screen, never inside the long-form scope. The kicker tier (`typo-kicker`) is the golden display lead-in above the headline — 1.625rem (body × φ, Fibonacci 13/8) / 500 / 0.1em uppercase. The overline tier (`typo-overline`) stays 0.75rem / 500 / 0.1em uppercase for section eyebrow lines, always smaller than the heading it labels.
 9. **Motion**: duration-300 across the frame, the brand flow 500ms, `ease-frame` standard ease — no fast or linear motion. Colour transitions are legal in `motion-frame`; reduced-motion zeroes everything through the base contract.
 10. **Contrast budget — the canvas is measured twice, the brand and the semantic four once**: deep ink (`#0f0a1e`) answers every family `-fg` on the neon fills in both tiers — white would read only 1.8:1 on the cyan-400 flow stop, 2.7:1 on rose-400 and 3.5-4.0:1 on the 500-depth surface stops, while deep ink reads 4.7-10.4:1 across every stop; measured on the solids, `primary-fg` × `primary` 7.34, `accent-fg` × `accent` 7.32, and the semantic block pairs 7.01 / 9.06 / 8.51 / 11.62 resting and 7.21 / 7.00 / 11.13 / 6.09 on hover (danger / info / success / warning) — the same numbers by day and by night. The canvas ladder is what moves: by day `foreground` reads 15.30:1 on `background` and 16.02:1 on `surface-raised`, `surface-fg` × `surface` 7.74, the amber-700 wire 4.65, the disabled pair 7.48, and the cyan-700 focus and link 4.96 (danger ring `#be123c` 5.82); by night `foreground` reads 16.10:1 on the deep blue canvas and 14.22:1 on `surface-raised`, `surface-fg` × `surface` 4.90, the yellow-400 wire 9.65, the disabled pair 5.73, and the cyan-400 focus and link 8.91 (danger ring `#fb7185` 5.98). The one place a neon solid cannot sit is bare day canvas text: the frozen `primary` / `accent` / semantic solids read only 1.23-2.68 against the three day tiers, so `text-<status>-independent` / `border-<status>-independent` answer 800-depth literals by day — danger 7.69 / 6.10 / 8.05, info 7.00 / 5.56 / 7.33, success 6.60 / 5.24 / 6.91, warning 6.56 / 5.21 / 6.87 across `background` / `surface` / `surface-raised` — and the frozen `<status>` token itself by night (5.82 / 7.52 / 7.07 / 9.65 on the canvas, 5.14 / 6.64 / 6.24 / 8.52 on the raised panel). `surface-fg` is surface text only: canvas, transparent and raised-panel secondary text must use `foreground`, and every surface container must explicitly establish the surface pair. The fills, glows and borders never change to chase contrast — the brand and semantic set is one saturated tier, and the wire plus the canvas-side mechanism values carry the separation. Link colour (`typo-link`) and the scrollbar thumb are mechanism values (same precedent as `--focus-*`, not palette slots) and therefore ride the canvas: `--link` answers `#0e7490` by day and `#22d3ee` by night, `--scrollbar-thumb` / `--scrollbar-thumb-hover` the 700-depth gradient by day and the neon gradient by night (YAML `link` / `dark-link` / `scrollbar-thumb` / `dark-scrollbar-thumb` keys). Scrollbars: webkit lane only — 10px `::-webkit-scrollbar`, transparent track/corner, hidden arrow buttons, gradient thumb — forced-classic and always visible; standard `scrollbar-*` properties live only in the Firefox lane (`@-moz-document`, `thin` + `var(--primary)`), never on Chromium, where a non-initial standard value discards the webkit styling and degrades to auto-hiding overlay scrollbars. Components never set scrollbar styles.
 11. Do / Don't stays in scheme language only: no thin borders, no neutral gray cards, no rounded-none, no gradient text, no solid family fills (icon-grade indicator exemption: `bg-primary-solid`, see rule 3), no tier-swapping brand or semantic colour — the toggle moves the canvas ladder only, so a button, a chip or a status block never repaints, and no light-canvas pastel palette is ever authored for them. Disabled controls read the dedicated `disabled` / `disabled-fg` pair; `bg-disabled` clears gradients, and no wrapper remaps theme colours or fills. General bans: delivery `references/skin-rules.md`; a11y floors: the ui-rules skill.
-12. **Recessed faces read the `surface` tier**: the fourth "well" tier is retired (user call, 2026-11-25) — `--color-well` and `--padding-well` are deleted, `--shadow-well` became `--shadow-recess` (answered `none` in both tiers, this scheme carries depth with gradients and coloured shadows instead) and `--radius-well-inner` became `--radius-recess-inner`. Field interiors, value areas, textareas, the Segment track and every meter lane therefore hang `bg-surface`, the isomorphic gradient fill — by day the pastel lilac → pink → rose (`gradients-light.surface`), by night the saturated purple → pink → rose (`gradients.surface`). Ink follows: `surface-fg` on every `surface` stop, the pairs rule 10 measures (7.74 by day, 4.90 by night), placeholders included; answering `background` would put the track lanes on the demo-stage colour and lose them. Neumorphic recesses still belong to other styles. Disabled controls take the fixed neutral gray — `oklch(70.8% 0 none)` with `#0f0a1e` (7.48) by day, `oklch(43.9% 0 none)` with `#e9d5ff` (5.73) by night — so a dead chip never reads as a selected one.
+12. **Recessed faces read the `surface` tier**: the fourth "well" tier is retired (user call, 2026-11-25) — `--color-well` and `--padding-well` are deleted, `--shadow-well` became `--shadow-recess` (answered `none` in both tiers, this scheme carries depth with gradients and coloured shadows instead) and `--radius-well-inner` became `--radius-recess-inner`. Field interiors, value areas, textareas and the Segment track therefore hang `bg-surface`, the isomorphic gradient fill — by day the pastel lilac → pink → rose (`gradients-light.surface`), by night the saturated purple → pink → rose (`gradients.surface`). The meter and progress lanes read the `border` wire instead (user call, 2026-11-26): a thin track on the gradient solid disappears, the contrast wire does not. Ink follows: `surface-fg` on every `surface` stop, the pairs rule 10 measures (7.74 by day, 4.90 by night), placeholders included. Neumorphic recesses still belong to other styles. Disabled controls take the fixed neutral gray — `oklch(92.2% 0 none)` with `oklch(43.9% 0 none)` (6.19) by day, `oklch(43.9% 0 none)` with `#e9d5ff` (5.73) by night — so a dead chip never reads as a selected one.

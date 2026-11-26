@@ -2,9 +2,9 @@
 
 import { findNeighbour, type Root } from "fumadocs-core/page-tree";
 import { ArrowLeft, ArrowRight } from "@/components/icons";
-import { useLocation } from "react-router";
+import { Link, useLocation } from "react-router";
 import { stripSchemePrefix, toSchemeHref } from "@/lib/style-templates";
-import { CardLink } from "./card-link";
+import { useSiteSkin } from "./site-skin";
 
 const labels = {
   en: { nav: "Page navigation", prev: "Previous", next: "Next" },
@@ -16,6 +16,7 @@ function pageName(name: unknown) {
 }
 
 export function DocsPageNav({ tree }: { tree: Root }) {
+  const { chipClasses, cn } = useSiteSkin();
   const { pathname } = useLocation();
   const current = stripSchemePrefix(pathname);
   const t = current.startsWith("/zh") ? labels.zh : labels.en;
@@ -23,30 +24,32 @@ export function DocsPageNav({ tree }: { tree: Root }) {
   const { previous, next } = findNeighbour(tree, url);
   if (!previous && !next) return null;
 
+  const chipClass = cn(chipClasses, "bg-background");
+
   return (
-    <nav aria-label={t.nav} className="not-typography mt-12 grid gap-4 sm:grid-cols-2">
+    <nav
+      aria-label={t.nav}
+      className="not-typography mt-8 flex flex-wrap items-center justify-between gap-2 sm:mt-12"
+    >
       {previous && (
-        <CardLink to={toSchemeHref(pathname, previous.url)} className="flex flex-col gap-1">
-          <span className="flex items-center gap-2 text-xs font-semibold tracking-wide text-foreground">
-            <ArrowLeft className="size-3.5 shrink-0" aria-hidden />
-            {t.prev}
-            <kbd aria-hidden className="kbd ms-auto">Ctrl ←</kbd>
-          </span>
-          <span className="text-base font-medium">{pageName(previous.name)}</span>
-        </CardLink>
+        <Link
+          to={toSchemeHref(pathname, previous.url)}
+          aria-label={`${t.prev}：${pageName(previous.name)}`}
+          className={chipClass}
+        >
+          <ArrowLeft className="size-3.5 shrink-0" aria-hidden />
+          <span className="max-w-40 truncate">{pageName(previous.name)}</span>
+        </Link>
       )}
       {next && (
-        <CardLink
+        <Link
           to={toSchemeHref(pathname, next.url)}
-          className="flex flex-col items-end gap-1 text-end sm:col-start-2"
+          aria-label={`${t.next}：${pageName(next.name)}`}
+          className={cn(chipClass, "ms-auto")}
         >
-          <span className="flex w-full items-center gap-2 text-xs font-semibold tracking-wide text-foreground">
-            <kbd aria-hidden className="kbd me-auto">Ctrl →</kbd>
-            {t.next}
-            <ArrowRight className="size-3.5 shrink-0" aria-hidden />
-          </span>
-          <span className="text-base font-medium">{pageName(next.name)}</span>
-        </CardLink>
+          <span className="max-w-40 truncate">{pageName(next.name)}</span>
+          <ArrowRight className="size-3.5 shrink-0" aria-hidden />
+        </Link>
       )}
     </nav>
   );

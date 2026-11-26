@@ -70,7 +70,7 @@ export function CodeCopyButton({ code }: { code: string }) {
   };
 
   return (
-    <span className="absolute top-1 right-1 bg-background">
+    <span className="absolute top-1 right-1">
       <Button
         data-variant="text"
         onClick={copy}

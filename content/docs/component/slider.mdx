@@ -9,7 +9,7 @@ description: A simulated slider with horizontal and vertical orientations, point
 
 ## Usage
 
-A simulated slider with a label, track and value; hide the value with `hideValue` and choose horizontal or vertical orientation.
+A slider simulated with divs: label, track and value on one row, value text always shown and hideable with `hideValue`; orientation is fixed — horizontal by default, vertical passed explicitly.
 
 <ComponentPreview
   name="slider-basic"
@@ -17,7 +17,7 @@ A simulated slider with a label, track and value; hide the value with `hideValue
 
 ### Variants
 
-`data-variant="cell"` switches to the cell form — a thick track (a `surface` groove base + primary active fill) with a fully transparent thumb (no visible content rendered in any state); the label and value sit on opposite sides of the track.
+`data-variant="cell"` switches to the cell form — a thick track (a `border` contrast line + a primary active fill) with a fully transparent thumb (no visible content rendered in any state); the label and value sit on opposite sides of the track.
 
 <ComponentPreview
   name="slider-variants"

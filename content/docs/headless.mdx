@@ -1,18 +1,20 @@
 ---
 title: Headless
 description: Components ship structure and behavior only; looks come from a style package or your own CSS.
+toc: false
 ---
 
 Litefy components ship **without styles**: structure (semantic DOM), behavior (keyboard and pointer interaction) and accessibility (aria and focus management) only, with logical state exposed through `data-*` attributes. Looks come from a [style package](/en/docs/styles) or your own CSS — the skeleton makes no visual decisions for you.
 
-The icons every component needs to initialize live in a single adapter file, `icons.tsx`, brought in automatically with any component install — the default draws [lucide](https://lucide.dev) glyphs with zero npm dependencies. Switch icon libraries with `-i` (the file still lands as `icons.tsx`, component imports untouched; the library's npm package installs itself), or hand-write an adapter with the same named exports for any library:
+The icons every component needs to initialize live in a single adapter file, `icons.tsx`, brought in automatically with any component install — the default draws [lucide](https://lucide.dev) glyphs with zero npm dependencies. Each official adapter ships one adapter table per icon library (tabler, phosphor); switch icon libraries by picking one with `-i` — the file still lands as `icons.tsx`, component imports untouched, and the library's npm package installs itself; entries whose glyph is missing from the adapter table fall back to the lucide default glyph. You can also hand-write an adapter file with the same named exports for any library:
 
 ```bash
 litefy add select -i tabler
+litefy add select -i phosphor
 ```
 
 ## Adapter check
 
-The demo parts below inject glyphs through override channels — flip the toggle between the default adapter and the tabler adapter; passing means every slot still works after the swap.
+The demo component below injects glyphs through override channels — flip the toggle between the default adapter and the official adapter; passing means every slot still works after the swap.
 
 <IconAdapterPlayground />

@@ -15,8 +15,8 @@
 - `thousands` 只在未聚焦时按千分位显示，聚焦显示原串
 - `canDecrement` / `canIncrement` 由当前值（空按 0）与 min/max 比较，`disabled` 时均为 false
 - `NumberStepper`：`type=button`、`tabIndex=-1`，`aria-label` 缺省 `Increase` / `Decrease`，图标 `Plus` / `Minus`（`aria-hidden`）
-- `NumberField` 顺序：decrement 按钮 → input → increment 按钮 → 提示 span（`↑ ↓`，id 拼入 `aria-describedby`）；`incrementLabel` / `decrementLabel` 覆盖按钮标签，`invalid` 输出组 `data-invalid` 与 input `aria-invalid`；外壳零内联几何——宽度全由皮肤静态档承担（数字件车道值区与步进钮同宽 `w-control`），值区宽度不随 min / max / step / thousands 运行期计算，开发者改大 max 自行经 `classNames.root` 加宽值区
-- 槽位：`classNames: root / stepper / stepperIcon / hint`；`styles: root / stepper / hint`
+- `NumberField` 顺序：decrement 按钮 → input → increment 按钮 → 提示壳（内层两枚原生 `<kbd>` 元素 `↑` `↓`，`hintKey` 槽接皮肤键帽类，id 拼入 `aria-describedby`）；`incrementLabel` / `decrementLabel` 覆盖按钮标签，`invalid` 输出组 `data-invalid` 与 input `aria-invalid`；外壳零内联几何——宽度全由皮肤静态档承担（数字件车道值区与步进钮同宽 `w-control`），值区宽度不随 min / max / step / thousands 运行期计算，开发者改大 max 自行经 `classNames.root` 加宽值区
+- 槽位：`classNames: root / stepper / stepperIcon / hint / hintKey`；`styles: root / stepper / hint / hintKey`
 - `classNames.root/stepper/hint` 为 `SlotClassName`（string 或 `(state: SlotState) => string | undefined`），经 `resolveSlotClassName` 按 `{ disabled }` 解析；`stepperIcon` 为 string
 - 禁用遵循 `ui/schemes.md` 第 8 条：输入原生禁用，编辑、方向键、滚轮与值变更由内核 JS 阻断；减钮禁用为 `disabled || !canDecrement`，加钮禁用为 `disabled || !canIncrement`，边界值分别停在 min/max，按钮点击也有 JS 守卫
 - 两个步进钮按各自边界禁用态选完整类串，移除正常 hover/active 类并显式使用禁用色与 `cursor-not-allowed`；`disabled` 不同时表示两个钮都禁用

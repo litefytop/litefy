@@ -22,6 +22,8 @@ export interface FilterComboboxState {
 }
 
 export interface FilterComboboxTexts {
+    triggerText?: string;
+    triggerCountText?: string;
     placeholder?: string;
     fieldPlaceholder?: string;
     operatorPlaceholder?: string;
@@ -38,8 +40,12 @@ export interface FilterComboboxTexts {
     dateValueHint?: string;
     cancelDraftText?: string;
     clearText?: string;
+    enterSelectText?: string;
+    escHintText?: string;
+    enterEditText?: string;
+    deleteHintText?: string;
+    spaceSearchText?: string;
     removeLabel?: string;
-    editLabel?: string;
     submitText?: string;
     loadingText?: string;
     errorText?: string;
@@ -50,6 +56,8 @@ export interface FilterComboboxTexts {
 export const defaultSeparators = [",", "/", " ", "，", "～", "~", "–"];
 
 export const defaultComboboxTexts: Required<FilterComboboxTexts> = {
+    triggerText: "Filter",
+    triggerCountText: "{count} filters",
     placeholder: "Add a filter",
     fieldPlaceholder: "Column name",
     operatorPlaceholder: "Operator",
@@ -66,8 +74,12 @@ export const defaultComboboxTexts: Required<FilterComboboxTexts> = {
     dateValueHint: "Format YYYY-MM-DD",
     cancelDraftText: "Cancel draft",
     clearText: "Clear all",
+    enterSelectText: "Select",
+    escHintText: "Cancel",
+    enterEditText: "Edit",
+    deleteHintText: "Delete",
+    spaceSearchText: "Search fields",
     removeLabel: "Remove filter",
-    editLabel: "Edit filter",
     submitText: "Apply",
     loadingText: "Loading",
     errorText: "",

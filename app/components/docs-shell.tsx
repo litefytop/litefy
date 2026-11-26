@@ -276,6 +276,7 @@ function ShellHeader({
             <DocsSearchTrigger
               locale={locale}
               onOpen={onOpenSearch}
+              compactOnMobile
               className="min-w-0 max-sm:aspect-square max-sm:justify-center max-sm:px-0 sm:w-64"
             />
           )}

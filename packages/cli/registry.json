@@ -247,11 +247,10 @@
     "dependence": [
       "icons",
       "button",
+      "dialog",
       "filter-query",
-      "use-floating-panel",
-      "floating-position",
       "combobox-query",
-      "tooltip",
+      "list",
       "input"
     ]
   },
@@ -789,6 +788,15 @@
   "paper": {
     "type": "skin",
     "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/app/ui/skins/paper.tsx"
+  },
+  "icons/phosphor": {
+    "type": "component",
+    "url": "https://cdn.jsdelivr.net/gh/litefytop/litefy@main/packages/cli/adapters/icons-phosphor.tsx",
+    "installAs": "icons.tsx",
+    "barrel": false,
+    "dependencies": [
+      "@phosphor-icons/react"
+    ]
   },
   "icons/tabler": {
     "type": "component",

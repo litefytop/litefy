@@ -6,7 +6,7 @@
 } from "@/ui";
 import { cn, mergeStateSlots } from "../utils/cn";
 import { fieldChromeClasses } from "./field";
-import { fieldAddonClasses, fieldGroupClasses, fieldGroupDisabledClasses, fieldHintClasses } from "./input";
+import { fieldAddonClasses, fieldGroupClasses, fieldGroupDisabledClasses } from "./input";
 
 export type { NumberFieldProps, NumberInputProps } from "@/ui";
 
@@ -30,7 +30,8 @@ const valueDisabledClasses = cn(
 const suffixClasses = "text-sm leading-5 font-field text-foreground";
 const suffixDisabledClasses = "text-sm leading-5 font-field text-disabled-fg";
 
-const hintDisabledClasses = cn(fieldHintClasses, "bg-disabled text-disabled-fg");
+const hintShellClasses =
+  "pointer-events-none absolute -top-7 right-0 z-10 hidden pointer-fine:min-sm:flex items-center gap-x-1 opacity-0 peer-focus-visible:opacity-100";
 
 const indicatorClasses =
   "pointer-events-none flex shrink-0 flex-col items-center justify-center " +
@@ -47,7 +48,8 @@ export const numberInputPartClasses: NonNullable<NumberInputProps["classNames"]>
   indicator: ({ disabled }) => cn(indicatorClasses, disabled ? suffixDisabledClasses : suffixClasses),
   indicatorIcon: indicatorIconClasses,
   trailing: fieldAddonClasses,
-  hint: ({ disabled }) => disabled ? hintDisabledClasses : fieldHintClasses,
+  hint: hintShellClasses,
+  hintKey: "kbd",
 };
 
 const numberInputShellLayoutClasses = "relative [&>*]:m-0";
@@ -115,7 +117,8 @@ export const numberFieldPartClasses: NonNullable<NumberFieldProps["classNames"]>
   root: ({ disabled }) => disabled ? fieldInputValueDisabledClasses : fieldInputValueClasses,
   stepper: ({ disabled }) => disabled ? stepperDisabledClasses : stepperClasses,
   stepperIcon: stepperIconClasses,
-  hint: ({ disabled }) => disabled ? hintDisabledClasses : fieldHintClasses,
+  hint: hintShellClasses,
+  hintKey: "kbd",
 };
 
 export function NumberInput({

@@ -212,11 +212,13 @@ export type NumberFieldProps = Omit<React.ComponentProps<"input">, "className" |
         stepper?: SlotClassName;
         stepperIcon?: string;
         hint?: SlotClassName;
+        hintKey?: string;
     };
     styles?: {
         root?: React.CSSProperties;
         stepper?: React.CSSProperties;
         hint?: React.CSSProperties;
+        hintKey?: React.CSSProperties;
     };
     disabled?: boolean;
     incrementLabel?: string;
@@ -247,6 +249,9 @@ export function NumberField(props: NumberFieldProps) {
       <NumberStepper direction="down" aria-label={decrementLabel} disabled={decrementDisabled} onClick={() => !decrementDisabled && stepDelta(-step)} className={resolveSlotClassName(classNames?.stepper, { disabled: decrementDisabled })} classNames={{ icon: classNames?.stepperIcon }} style={styles?.stepper}/>
       <NumberRoot {...inputProps} aria-invalid={invalid} aria-describedby={describedBy} className={resolveSlotClassName(classNames?.root, state)} style={styles?.root}/>
       <NumberStepper direction="up" aria-label={incrementLabel} disabled={incrementDisabled} onClick={() => !incrementDisabled && stepDelta(step)} className={resolveSlotClassName(classNames?.stepper, { disabled: incrementDisabled })} classNames={{ icon: classNames?.stepperIcon }} style={styles?.stepper}/>
-      <span id={hintId} className={resolveSlotClassName(classNames?.hint, state)} style={styles?.hint}>↑ ↓</span>
+      <span id={hintId} className={resolveSlotClassName(classNames?.hint, state)} style={styles?.hint}>
+        <kbd className={classNames?.hintKey} style={styles?.hintKey}>↑</kbd>
+        <kbd className={classNames?.hintKey} style={styles?.hintKey}>↓</kbd>
+      </span>
     </div>);
 }

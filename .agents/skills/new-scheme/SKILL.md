@@ -6,7 +6,7 @@ description: 新增 Litefy UI 风格（app/ui/schemes/ 下第三套及以后的 
 # 新增风格
 
 1. 触发：新增第三套及以后的风格；minimal 与 neo-brutalist 是参照实现
-2. 步骤序：① 先写 `design.md`——文件头 YAML 块是数值唯一权威，正文只讲规则与去处；② 跨方案新约定先落蓝图 `ui/schemes.md` 再动源码（蓝图先行）；③ `index.css` 按蓝图第 8 条六块实现，`@theme` 逐档对齐 YAML，不一致以 YAML 为准并报告冲突；④ 门禁 `pnpm types:check` + dev 冒烟核产物
+2. 步骤序：① 先列签名特征清单（形态类 2~5 项）写进 design.md prose 签名清单节——排版节奏类参数（间距基数、行高阶梯、全局默认字体、标签大小写）不承载风格、回归基础档（蓝图 `ui/schemes.md` 第 26 条收敛律）；② 再写 `design.md`——文件头 YAML 块是数值唯一权威，正文只讲规则与去处；③ 跨方案新约定先落蓝图 `ui/schemes.md` 再动源码（蓝图先行）；④ `index.css` 按蓝图第 8 条六块实现，`@theme` 逐档对齐 YAML，不一致以 YAML 为准并报告冲突；⑤ 门禁 `pnpm types:check` + dev 冒烟核产物
 3. 令牌与结构不变量看蓝图 `ui/schemes.md`——22 枚色板、六块定序、角色完备律、机制值单源，此处不重复
 4. `@theme` 声明判定：核心不存在的名字 → 方案声明（先例：`--text-h1…h6`、`--height-control`）；核心存在但取值不同 → 重答（先例：`--font-sans`、neo 的 `--tracking-tight`）；核心存在且同值 → 不声明，核心即答案（先例：minimal 的 `tracking-*` / `font-weight-*` 已删）。例外：字体族必在 `@theme` 声明、值即 YAML（蓝图第 10 条），与核心同值也声明
 5. 共享角色一条不许缺席：`shadow-frame` / `shadow-block` / `shadow-surface` / `shadow-elevated` / `focus-ring` 系 / `--stroke-cap` / `--stroke-join` / 控件标签声 / `--animate-pulse`——缺答的角色在共享皮肤串里是静默缺失，编译不报错、观感直接丢

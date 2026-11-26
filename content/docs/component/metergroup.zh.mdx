@@ -1,6 +1,6 @@
 ---
 title: MeterGroup 分组计量
-description: 参照 PrimeVue MeterGroup 的只读分组量表——`surface` 凹槽轨道上的占比段，段色取粉彩档位（亮 400 / 暗 300），附色点图例
+description: 参照 PrimeVue MeterGroup 的只读分组量表——`border` 对比线轨道上的占比段，段色取粉彩档位（亮 400 / 暗 300），附色点图例
 ---
 
 ## 安装
@@ -27,7 +27,7 @@ description: 参照 PrimeVue MeterGroup 的只读分组量表——`surface` 凹
 
 其余原生 `<div>` 属性（`aria-label`、`id`、内联 `style` 等）透传到根元素；可访问名由 `aria-label` 提供。根元素为 `role="meter"` 携带 `aria-valuemin` / `aria-valuemax` / `aria-valuenow`（钳后的各项和）；轨道与图例 `aria-hidden`。
 
-段按 `value / (max − min)` 依序铺开；零值项不渲染段，超宽由轨道裁剪。图例恒列出全部项及其取整占比，悬停段还会浮现 `label · 占比` 提示条——信息与图例恒同源，不依赖 hover。轨道色 `surface`（凹槽档），与全库轨道族同源。
+段按 `value / (max − min)` 依序铺开；零值项不渲染段，超宽由轨道裁剪。图例恒列出全部项及其取整占比，悬停段还会浮现 `label · 占比` 提示条——信息与图例恒同源，不依赖 hover。轨道色 `border`（对比线档），与全库轨道族同源。
 
 ### 原子组件
 

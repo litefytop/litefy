@@ -1,6 +1,6 @@
 ---
 title: Meter
-description: A read-only gauge styled after the native meter element — a continuous `surface` groove track with a single indicator bar, banding via low / high / optimum, and an end vertical line marking the value position
+description: A read-only gauge styled after the native meter element — a continuous `border` contrast-line track with a single indicator bar, banding via low / high / optimum, and an end vertical line marking the value position
 ---
 
 ## Installation
@@ -30,4 +30,4 @@ A read-only gauge — the indicator bar's width on a continuous track carries th
 
 The remaining native `<div>` attributes (`aria-label`, `id`, inline `style`, …) are accepted and land on the root; the accessible name comes from `aria-label`.
 
-Banding follows the HTML `<meter>` rules: an `optimum` below `low` favours the low band, above `high` favours the high band, and one inside the range favours the middle; a reading in the band containing the optimum is success, an adjacent band is warning, and the farthest band is danger. The fill takes the matching semantic resting background tier (the same value in light and dark); a pale fill under 3:1 against the light-mode `surface` groove track is an accepted item — the trailing readout already provides a text alternative, and 1.4.11 does not apply to non-essential graphics.
+Banding follows the HTML `<meter>` rules: an `optimum` below `low` favours the low band, above `high` favours the high band, and one inside the range favours the middle; a reading in the band containing the optimum is success, an adjacent band is warning, and the farthest band is danger. The fill takes the matching semantic resting background tier (the same value in light and dark); a pale fill under 3:1 against the light tier of the `border` track is an accepted item — the trailing readout already provides a text alternative, and 1.4.11 does not apply to non-essential graphics.

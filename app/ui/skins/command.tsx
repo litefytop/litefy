@@ -22,10 +22,13 @@ const triggerClassesByState = (disabled: boolean) =>
 
 const panelClasses = cn(
   dialogPartClasses.content,
-  "w-full min-w-0 max-w-[min(20rem,calc(100vw_-_1rem))]",
+  "w-full min-w-0",
 );
 
-const footerClasses = "flex items-center gap-x-3 border-t border-border pt-1";
+const footerClasses = cn(
+  "flex items-center gap-x-3 border-t border-border pt-1",
+  "pointer-coarse:hidden max-sm:hidden",
+);
 
 const hintClasses = "flex items-center gap-x-2 text-xs text-foreground";
 
@@ -77,7 +80,7 @@ export function Command({ classNames, ...props }: CommandProps) {
         label: cn(labelClasses, classNames?.label),
         itemIcon: cn(itemIconClasses, classNames?.itemIcon),
         itemLabel: cn(itemLabelClasses, classNames?.itemLabel),
-        shortcut: cn("kbd", classNames?.shortcut),
+        shortcut: cn("kbd", "pointer-coarse:hidden max-sm:hidden", classNames?.shortcut),
         empty: cn(emptyClasses, classNames?.empty),
         footer: cn(footerClasses, classNames?.footer),
         hint: cn(hintClasses, classNames?.hint),

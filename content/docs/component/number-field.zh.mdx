@@ -40,8 +40,8 @@ description: 带前导 Minus 与尾部 Plus 步进按钮的紧凑数字步进器
 | `thousands`       | `boolean`                                              | 未聚焦时整数部分按千分位分组显示；提交值始终不带分隔符，默认 `false`                             |
 | `className`       | `string`                                               | 自定义类名，作用于外壳。外壳恒为名义 3 格宽，值区与步进钮同宽（见下方宽度）                            |
 | `style`           | `React.CSSProperties`                                  | 内联样式，作用于外壳                                                         |
-| `classNames`      | `{ root?: SlotClassName; stepper?: SlotClassName; stepperIcon?: string; hint?: SlotClassName }` | `root`、`stepper`、`hint` 接收 `({ disabled }) => string`；`stepper.disabled` 同时包含字段禁用与 `min` / `max` 导致的单按钮禁用 |
-| `styles`          | `{ root?, stepper?, hint? }`                           | 上述各部分的自定义内联样式                                                      |
+| `classNames`      | `{ root?: SlotClassName; stepper?: SlotClassName; stepperIcon?: string; hint?: SlotClassName; hintKey?: string }` | `root`、`stepper`、`hint` 接收 `({ disabled }) => string`；`stepper.disabled` 同时包含字段禁用与 `min` / `max` 导致的单按钮禁用；`hintKey` 是 `↑` `↓` 键帽的类名 |
+| `styles`          | `{ root?, stepper?, hint?, hintKey? }`                           | 上述各部分的自定义内联样式                                                      |
 | `disabled`        | `boolean`                                              | 禁用字段与两个步进按钮，默认 `false`                                             |
 | `incrementLabel`  | `string`                                               | 本组件自带的 `+` 步进按钮的可访问名称，默认 `'Increase'`                              |
 | `decrementLabel`  | `string`                                               | 本组件自带的 `−` 步进按钮的可访问名称，默认 `'Decrease'`                              |
@@ -71,7 +71,7 @@ description: 带前导 Minus 与尾部 Plus 步进按钮的紧凑数字步进器
 
 ### 宽度
 
-外壳恒为名义 3 格加 1px 内间距与描边（两侧步进钮与值区各 1 格，随 `--width-control` 令牌缩放——默认方案 136px，紧凑档同步收缩）：值区 `w-control` 与步进钮同宽，不做任何运行期宽度计算，输入与步进过程宽度不变；超宽内容（千分位、更大的 `max`）在值区内横向滚动，需要更宽值区时经 `classNames.root` 自行加宽（如 `w-22`）。
+外壳恒为名义 3 格加 1px 内间距与描边（两侧步进钮与值区各 1 格，随各方案 `--width-control` 令牌定值——默认方案 136px，全端恒定）：值区 `w-control` 与步进钮同宽，不做任何运行期宽度计算，输入与步进过程宽度不变；超宽内容（千分位、更大的 `max`）在值区内横向滚动，需要更宽值区时经 `classNames.root` 自行加宽（如 `w-22`）。
 
 ## 交互
 

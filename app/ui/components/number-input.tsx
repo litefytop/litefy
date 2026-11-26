@@ -27,6 +27,7 @@ export type NumberInputProps = Omit<React.ComponentProps<"input">, "className" |
         indicator?: SlotClassName;
         indicatorIcon?: string;
         hint?: SlotClassName;
+        hintKey?: string;
     };
     styles?: {
         leading?: React.CSSProperties;
@@ -35,6 +36,7 @@ export type NumberInputProps = Omit<React.ComponentProps<"input">, "className" |
         indicator?: React.CSSProperties;
         indicatorIcon?: React.CSSProperties;
         hint?: React.CSSProperties;
+        hintKey?: React.CSSProperties;
     };
     disabled?: boolean;
     label?: React.ReactNode;
@@ -75,7 +77,8 @@ export function NumberInput(props: NumberInputProps) {
             </span>))}
       </InputTrailing>)}
       <span id={hintId} className={resolveSlotClassName(classNames?.hint, state)} style={styles?.hint}>
-          ↑ ↓
+          <kbd className={classNames?.hintKey} style={styles?.hintKey}>↑</kbd>
+          <kbd className={classNames?.hintKey} style={styles?.hintKey}>↓</kbd>
         </span>
     </div>);
     };

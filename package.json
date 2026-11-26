@@ -8,7 +8,7 @@
     "dev": "react-router dev",
     "lint": "oxlint app packages/cli/src scripts",
     "lint:fix": "oxlint --fix app packages/cli/src scripts",
-    "types:check": "react-router typegen && fumadocs-mdx && tsc --noEmit && node scripts/check-blueprint-sync.mjs && node scripts/check-doc-format.mjs && node scripts/check-ui-css.mjs && node scripts/check-color-pairs.mjs && oxlint app packages/cli/src scripts",
+    "types:check": "react-router typegen && fumadocs-mdx && tsc --noEmit && node scripts/check-blueprint-sync.mjs && node scripts/check-doc-format.mjs && node scripts/check-icon-adapters.mjs && node scripts/check-ui-css.mjs && node scripts/check-color-pairs.mjs && oxlint app packages/cli/src scripts",
     "audit:check": "node scripts/security-audit.mjs",
     "postinstall": "fumadocs-mdx",
     "cli:build": "pnpm --filter=litefy run build",
@@ -21,6 +21,7 @@
   "dependencies": {
     "@orama/orama": "^3.1.18",
     "@orama/tokenizers": "^3.1.18",
+    "@phosphor-icons/react": "^2.1.10",
     "@react-router/node": "^7.18.3",
     "@tabler/icons-react": "^3.50.0",
     "cn": "^0.4.0",
@@ -31,7 +32,8 @@
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router": "^7.18.3",
-    "shiki": "^4.4.3"
+    "shiki": "^4.4.3",
+    "zod": "^4.5.4"
   },
   "devDependencies": {
     "@react-router/dev": "^7.18.3",

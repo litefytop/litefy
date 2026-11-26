@@ -20,20 +20,15 @@ import {
   IconDots,
   IconEye,
   IconEyeOff,
+  IconGripVertical,
   IconHelp,
   IconInfoCircle,
-  IconKeyboard,
   IconLoader2,
-  IconMicrophone,
   IconMinus,
-  IconPaperclip,
-  IconPhotoPlus,
   IconPlus,
   IconRotate2,
   IconSearch,
-  IconSend,
   IconSparkles,
-  IconSquare,
   IconThumbDown,
   IconThumbUp,
   IconX,
@@ -41,13 +36,85 @@ import {
 
 /*
  * Icon adapter: @tabler/icons-react implementation of the canonical export
- * list. Install with `litefy add <component> -i tabler` — the file lands as
- * `icons.tsx`, so skeleton imports (`./icons`) stay untouched. Canonical names
- * that differ in tabler are renamed here; every other glyph maps 1:1.
+ * list (contract defined in app/ui/components/icons.tsx). Install with
+ * `litefy add <component> -i tabler` — the file lands as `icons.tsx`, so
+ * skeleton imports (`./icons`) stay untouched.
+ *
+ * Structure: the shared part below exports the full contract (factories,
+ * types, `icons`, `sourceNames`); the glyph section is this library's
+ * adapter table — each of the 32 contract glyphs is aliased to its tabler
+ * export. Glyphs a library does not have would fall back to inline lucide
+ * definitions (same shape as icons-phosphor); tabler covers all 32.
  *
  * Tabler icons default to 24px (stroke 2) instead of the lucide adapter's
  * 16px — size skeleton slots through classNames as needed.
  */
+
+// ——— shared contract: factories & types (identical to the default face) ———
+
+export type IconNode = [tag: string, attrs: Record<string, string | number>];
+
+export type IconProps = React.ComponentProps<"svg">;
+
+export function createIcon(displayName: string, iconNode: IconNode[]) {
+  function Icon({
+    className,
+    children,
+    ...rest
+  }: IconProps) {
+    const a11y = "aria-label" in rest || "aria-labelledby" in rest;
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        width="16"
+        height="16"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden={!children && !a11y ? "true" : undefined}
+        className={className}
+        {...rest}
+      >
+        {iconNode.map(([tag, attrs], i) => {
+          const { key, ...svgAttrs } = attrs;
+          return React.createElement(tag, { key: (key as string) ?? i, ...svgAttrs });
+        })}
+        {children}
+      </svg>
+    );
+  }
+  Icon.displayName = displayName;
+  return Icon;
+}
+
+export function createFilledIcon(displayName: string, d: string) {
+  function Icon({ className, children, ...rest }: IconProps) {
+    const a11y = "aria-label" in rest || "aria-labelledby" in rest;
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        width="16"
+        height="16"
+        fill="currentColor"
+        stroke="none"
+        aria-hidden={!children && !a11y ? "true" : undefined}
+        className={className}
+        {...rest}
+      >
+        <path d={d} />
+        {children}
+      </svg>
+    );
+  }
+  Icon.displayName = displayName;
+  return Icon;
+}
+
+// ——— adapter table: 32 glyphs, source = @tabler/icons-react ———
 
 export const ArrowDown = IconArrowDown;
 export const ArrowLeft = IconArrowLeft;
@@ -69,25 +136,18 @@ export const CircleInfo = IconInfoCircle;
 export const Copy = IconCopy;
 export const Eye = IconEye;
 export const EyeOff = IconEyeOff;
-export const ImagePlus = IconPhotoPlus;
-export const Keyboard = IconKeyboard;
+export const GripVertical = IconGripVertical;
 export const Loader2 = IconLoader2;
-export const Mic = IconMicrophone;
 export const Minus = IconMinus;
 export const MoreHorizontal = IconDots;
-export const Paperclip = IconPaperclip;
 export const Plus = IconPlus;
 export const RotateCcw = IconRotate2;
 export const Search = IconSearch;
-export const Send = IconSend;
 export const Sparkle = IconSparkles;
-export const Square = IconSquare;
 export const ThumbsDown = IconThumbDown;
 export const ThumbsUp = IconThumbUp;
 export const TriangleAlert = IconAlertTriangle;
 export const X = IconX;
-
-export type IconProps = React.ComponentProps<"svg">;
 
 export type IconName =
   | "arrowDown"
@@ -111,19 +171,14 @@ export type IconName =
   | "copy"
   | "eye"
   | "eyeOff"
-  | "imagePlus"
-  | "keyboard"
+  | "gripVertical"
   | "loader"
-  | "mic"
   | "minus"
   | "moreHorizontal"
-  | "paperclip"
   | "plus"
   | "rotateCcw"
   | "search"
-  | "send"
   | "sparkle"
-  | "square"
   | "thumbsDown"
   | "thumbsUp"
   | "triangleAlert";
@@ -148,21 +203,16 @@ export const icons = {
   circleHelp: CircleHelp,
   eye: Eye,
   eyeOff: EyeOff,
-  imagePlus: ImagePlus,
-  keyboard: Keyboard,
+  gripVertical: GripVertical,
   loader: Loader2,
   minus: Minus,
   moreHorizontal: MoreHorizontal,
   plus: Plus,
   search: Search,
-  send: Send,
   sparkle: Sparkle,
-  square: Square,
   triangleAlert: TriangleAlert,
   close: X,
   copy: Copy,
-  mic: Mic,
-  paperclip: Paperclip,
   rotateCcw: RotateCcw,
   thumbsDown: ThumbsDown,
   thumbsUp: ThumbsUp,
@@ -188,21 +238,16 @@ export const sourceNames: Record<keyof typeof icons, string> = {
   circleHelp: "Help",
   eye: "Eye",
   eyeOff: "EyeOff",
-  imagePlus: "PhotoPlus",
-  keyboard: "Keyboard",
+  gripVertical: "GripVertical",
   loader: "Loader2",
   minus: "Minus",
   moreHorizontal: "Dots",
   plus: "Plus",
   search: "Search",
-  send: "Send",
   sparkle: "Sparkles",
-  square: "Square",
   triangleAlert: "AlertTriangle",
   close: "X",
   copy: "Copy",
-  mic: "Microphone",
-  paperclip: "Paperclip",
   rotateCcw: "Rotate2",
   thumbsDown: "ThumbDown",
   thumbsUp: "ThumbUp",

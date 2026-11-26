@@ -11,13 +11,15 @@
 - 侧栏断点 lg 起固定列，窄档抽屉（`openSidebar` 媒体查询与断点同值 1024）；浮动条 `lg:hidden`。
 - 侧栏面板分三区：header 工具区（标识、收起/关闭、搜索入口）与 footer 工具区（风格、外观、语言、GitHub）定位固定，只有中列导航区（目录树）随内容伸缩并独立滚动；树展开不位移 header 与 footer，面板高度恒等视口，桌面列与抽屉同构。
 - 页脚工具区只放外观、语言、GitHub 三个控件，右对齐，`gap-1`；外观按钮打开单一外观面板，不再分别放主题、风格、调色板按钮。GitHub 为链接型纯图标：直挂 `data-pure-icon="true"` 并挂 `pure-icon` 类 复用纯图标契约（禁手写 `px-0` / `aspect-square`）。
-- 浮导航（FloatingNav，文档页右缘）只留回顶 / 回底两枚纯图标钮：同挂 `data-pure-icon="true"` 并挂 `pure-icon` 类复用纯图标契约；方角观感经 `rounded-none` 覆盖帧圆角（注册刻度内同组消解），不手写零内距 / 方型类。
-- 快捷键单点绑定：`Ctrl+↑↓←→` 四键只在浮导航一处监听（↑↓ 滚动到边、←→ 走 `findNeighbour` 前后页），输入件聚焦时不拦截；上一页 / 下一页的可点入口是正文末尾跳转块 `site/widgets/docs-page-nav.md`，键帽提示由该块承载，浮导航不挂方向箭头钮。跳转块只随正文页存在，总览页（`site/pages/overview.md`）无正文列、前后页只走快捷键与侧栏。
+- 浮导航（FloatingNav，文档页右缘）四枚纯图标钮，自上而下为回顶 / 上一页 / 下一页 / 回底：前后页有目标时渲染 `Link`（复用 `buttonVariants.outline` + `pure-icon` + `aspect-square rounded-none`，不嵌 `Button`），无目标时渲染同外观的 disabled `Button`；所有纯图标钮同挂 `data-pure-icon="true"` 与 `pure-icon` 类复用纯图标契约；方角观感经 `rounded-none` 覆盖帧圆角（注册刻度内同组消解），不手写零内距 / 方型类。
+- 浮导航仅桌面呈现：主指针为细指针且视口不窄于 48rem 才挂载整件（`(pointer: fine) and (width >= 48rem)`），粗指针或窄视口整件不渲染——移动端右下角不留浮动按钮；订阅 matchMedia 的 `change` 事件随主指针 / 视口切换挂载状态，服务端快照答 false（SSR 不输出，避免水合闪烁）；浮导航不靠 CSS 显隐占位。三处路由调用点不各自判环境，桌面门控只在组件内一处作答。
+- 快捷键单点绑定且随浮导航同挂载：`Ctrl+↑↓←→` 四键只在浮导航一处监听（↑↓ 滚动到边、←→ 走 `findNeighbour` 前后页），输入件聚焦时不拦截；移动端浮导航不挂载即四键不监听，不另设桌面专用监听层。前后页同时有浮导航方向按钮与正文末尾 chip 跳转块（`site/widgets/docs-page-nav.md`）两个可点入口，快捷键提示只写在浮导航按钮的 `title`，跳转块不渲染键帽。跳转块只随正文页存在，总览页（`site/pages/overview.md`）无正文列，前后页走浮导航按钮、快捷键与侧栏。
 - 三控件保持 44×44 命中区，不缩控件、不加宽侧栏。侧栏宽读 `w-64`（默认 16rem，随 `--spacing` 逐案缩放，neo 24rem）；页脚 `px-3` 下默认案可用 232px，三控件加两处间距共 140px；不套零间距外容器，避免焦点环与 hover 边界相撞。
 - 顶栏复用同一外观按钮，保留语言，不放 GitHub（GitHub 由文档页侧栏页脚承载）；移动端从抽屉页脚进入，不新增独立入口；首页与 showcase 顶栏同构。
 - 首页顶栏控件：搜索 <sm 收成 44×44 图标按钮（sm 起展开为定宽搜索框，md 起带 Ctrl K 角标，角标用 `kbd` 工具类键帽（schemes/kbd.md 同源））；风格切换为 44×44 图标按钮，点开下拉菜单列出全部方案、当前方案打勾；外观与语言为 44×44 图标按钮；站点名恒显 logo 图标与文字；空间不足时站名文字收缩截断兜底，logo 不缩、控件命中区不动。验收下限 320px 视口。
 - 壳层容器不设最大宽度：文档壳的正文区与横幅全宽随视口，`max-w-320` 只属首页/展示页等页面域容器（其顶栏与页脚随页面域）；目录列随 main 右缘排布，正文列自身仍走宽度车道（spacing 数字乘道）。
 - 目录与侧栏随网格行自答位置；桌面目录由 `main` 直接子级的 `sticky top-8 self-start shrink-0` 包装列吸顶，包装列高度按目录内容收缩，内层 `nav` 不再受 flex 拉伸成一屏高；浮动条与横幅进入共享 topbar 正常文档流，不使用 `fixed`、`sticky` 或高度变量；桌面端正文顶部留白由 main 自身 padding 常量承担。
+- 目录按页开关：目录数据来自文档页的结构化标题（docs-view 收页后经 store 传 `toc` prop 给壳），`toc` 为空整列不渲染；正文 frontmatter `toc: false` 显式关闭单页目录（docs 集合 schema 扩展该布尔位，headless 页为现例）——单页开关不引入壳层按路径的特殊待遇。
 - 导航数据只读 `pageTrees` 与 `_meta.ts`，不在壳层复制正文或标题；界面入口（如颜色工具）由壳层追加，其页面本身归 `site/pages/`。
 - 界面入口的 href 留在当前车道：`toSchemeHref` 的车道内路径白名单覆盖文档路径与 `/[:lang]/tools/color`，四道侧栏点「颜色工具」进本道 `/[前缀/]:lang/tools/color`，不回落到默认方案；正文链接（mdx）、搜索结果与浮动导航走同一白名单，不加单案特殊处理。
 - 正文列（`article.typography`）宽走 `max-w-160` 居中（40rem 基准，随 `--spacing` 逐案缩放，neo 60rem）：列宽随方案栅格缩放，demo 等演示件随列同宽、neo 占据更大空间，手机端 `w-full` 不超屏宽；段落、列表、引文守 40em 阅读行宽（`[&>p]:max-w-[40em]` 子代类收窄、随列左对齐不居中——基准案行宽与列宽同值无差异，neo 行宽窄于列宽、右侧留白属预期；a11y 下限见 ui-rules `perceivable.md` 19，车道见 delivery `references/skin-rules.md` 16.1）。正文间距只走令牌乘道（`mt-*` / `mb-*` 即 `--spacing` 倍数），壳层不为任何单案额外加第二处间距处理（用户定 2026-11-22）。

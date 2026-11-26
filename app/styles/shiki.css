@@ -1,3 +1,10 @@
+/* Shiki rendering layer — the single home for every rule a shiki code block
+   needs: theming first (fumadocs light/dark token colours, diff / highlighted /
+   line numbers, comment contrast fix), then container layout rules. Layout comes
+   later so equal-specificity selectors beat the theming block's default padding
+   and border. Business styles never live here — components carry their own
+   Tailwind utilities; only what a single element cannot express goes in this
+   file. */
 .shiki:not(.not-fumadocs-codeblock *) {
   padding-block: 0.75rem;
   border: 1px solid var(--border);
@@ -131,4 +138,43 @@ code.shiki:not(.not-fumadocs-code *) span {
 .shiki span[style*="#6A737D"] {
   --shiki-light: color-mix(in oklab, var(--foreground) 65%, var(--background)) !important;
   --shiki-dark: color-mix(in oklab, var(--foreground) 65%, var(--background)) !important;
+}
+
+/* Container layout rules — later in the file so they win the cascade. Bare
+   <code>/<pre> would otherwise fall to the browser's default monospace, which
+   on Windows is serif Courier; the site asks the loaded scheme's token. */
+code,
+pre {
+  font-family: var(--font-mono);
+}
+
+/* Code stage: a fixed 4:3 window that scrolls internally, so a whole source
+   file can never balloon the page. The surrounding box belongs to the container
+   (figure / bordered Tabs), so the embedded shiki block melts into it. */
+.code-stage {
+  aspect-ratio: 4 / 3;
+  height: auto;
+}
+
+.code-stage .shiki {
+  height: 100%;
+  padding-block: calc(var(--spacing) * 4);
+  border: 0;
+  border-radius: 0;
+}
+
+.code-stage-scroll {
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* One-line command strips (agents prompt): control-height window, and each
+   shiki line keeps clear of the copy button at the top-right corner. */
+.skill-command .shiki {
+  min-height: calc(var(--height-control) + calc(var(--spacing) * 1) * 2);
+  padding-block: calc(var(--spacing) * 3);
+}
+
+.skill-command .shiki .line {
+  padding-inline-end: calc(var(--height-control) + calc(var(--spacing) * 3));
 }

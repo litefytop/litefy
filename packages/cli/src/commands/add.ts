@@ -135,7 +135,15 @@ async function add(selectNames: string[], options: AddOptions): Promise<void> {
     processed.add(name);
 
     const entry = registry[name];
-    const ok = await addSingle(name, entry, targetDirFor(entry), cwd, options);
+    // `-i` installs an icon adapter explicitly: its landing file `icons.tsx` is
+    // overwritable without --overwrite (ui/components.md contract). Bare `icons`
+    // installs (dependence resolution without -i) keep skip-if-exists so a
+    // hand-written adapter is never clobbered.
+    const entryOptions =
+      options.iconLibrary && (name === "icons" || name.startsWith("icons/"))
+        ? { ...options, overwrite: true }
+        : options;
+    const ok = await addSingle(name, entry, targetDirFor(entry), cwd, entryOptions);
     if (!ok) continue;
 
     const installedList = installedListFor(entry);
