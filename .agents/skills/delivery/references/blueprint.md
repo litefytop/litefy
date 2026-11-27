@@ -5,7 +5,8 @@
    2. `site/` — 界面域：`app/components/`、`app/routes/`、`app/styles/` 与站点路由构建配置 `react-router.config.ts`（长什么样、怎么运作）
    3. `ui/` — 库域：`app/ui/` 产品本体，与代码子目录同名（`components/` 骨架、`utils/` hooks、`skin/` 皮肤）
    4. `distribution/` — 分发域：`packages/cli/**` 与生成注册表的 `scripts/copy-registry.js`（发什么、怎么取）
-   5. `demo/` — demo 域：`app/demos/**`（组件 demo 正本，供文档页 ComponentPreview 与示例墙消费）
+   5. `automation/` — 自动化域：`.github/workflows/**`（持续集成与安全检查如何运行）
+   6. `demo/` — demo 域：`app/demos/**`（组件 demo 正本，供文档页 ComponentPreview 与示例墙消费）
 2. `app/ui/skins/` 与骨架同规则按组件镜像：`ui/skins/<name>.md` ↔ `app/ui/skins/<name>.tsx`，只写外观——角色名、槽位与条件态；不写方案取值，不写骨架的结构、状态与行为；各方案 `design.md` 的 Components 只保留该组件的专属令牌
 3. 界面域按门禁分三层，不看侧栏层级：`site/shell/` 跨页常驻壳层（改动影响所有路由）、`site/widgets/` 嵌在正文里的交互件（随内容页一起双语验收）、`site/pages/` 独立路由功能页（不进 `_meta.ts`，不进 llms 集合）
 4. 文件名取它约束的正本路径：`ui/components/button.md` ↔ `app/ui/components/button.tsx`；界面域功能页按路由命名（`site/pages/tools-color.md` ↔ `/tools/color`、`site/pages/overview.md` ↔ `/docs/overview`）；内容域一篇目一蓝图（`content/guide.md`）

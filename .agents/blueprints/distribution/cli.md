@@ -7,6 +7,7 @@
 - 纯样式组件（无骨架：callout / card / badge 等）注册表收编为 `type: "skin"` 条目，`add callout` 直接安装皮肤文件——安装不存在失败分支；皮肤间相对依赖（`./cn` / `./button` 等）经条目 `dependence` 一并解析。
 - 皮肤间相对导入跨到骨架的（如 skins/number 引 components/input），由骨架条目的 `dependence` 兜底——骨架带入，其皮肤随组件条目同行。
 - `litefy.json` 三目录：`components` / `utils` / `skins`（`skins.path` 缺省为 components 同级的 `skins`，兼容旧配置）+ 各自 installed 清单；三个目录的 barrel 由 CLI 回写。根 `ui/index.ts` 桶只含 components + utils——成品名（Button 等）在骨架与皮肤两层同源，`export *` 合桶会互相遮蔽，皮肤经 `@/ui/skins` 独立消费。
+- `litefy.json` 根 `version` 记录项目共享的 Litefy 版本，取值与 npm 包 `packages/cli/package.json` 的 `version` 一致；`init` 创建配置时写入，`add` 成功安装或覆盖资源、`add style` 成功安装样式、`repair` 成功恢复文件时更新。旧配置缺少该字段时继续可用，后续写入配置时补齐；`rm` 与 `clean` 不改变资源版本。
 - 方案是项目级一次性决定：`init` 交互选定（发品位清单 = minimal / neo-brutalist / flat-minimal / 暂不选=纯 headless），写入 `config.scheme` 并装该方案 `index.css`；已定方案后每次 `add` 末尾自动整包同步样式，无需重复携带；`-s` 语义收敛为「切换方案」（改写 `config.scheme` 并重装样式表）。混用方案不支持，注册表不提供按组件选方案的形态。
 - 发品位是一份显式清单，不是目录扫描结果：`scripts/copy-registry.js` 的 `style/*` 条目与 `init` 的方案选项同读该清单（`minimal` / `neo-brutalist` / `flat-minimal`），`neon-gradient` 属渐变风格实验轨——目录、`index.css`、`/neon` 路由照常存在且可读，只是不进注册表、不进 `init` 选项（口径见 `ui/schemes.md` 待定项）。实验轨转正式发布 = 名字加进清单，不改其它分发代码。
 - 方案内换色属运行期，不属安装期：`config.scheme` 只答「哪套方案」，颜色档经根元素属性（`data-brand` / `data-accent` / `data-surface`，梯的存在与数量由方案 `index.css` 的 ramp 决定）选择，安装流程不选颜色。`litefy style <scheme> --preset <组合>`（如 `--preset lime/amber`）只做两件事——把属性组合写进 `config.preset`、打印 `<html>` 上的接法与当前档说明；不生成第二份 CSS 文件、不改写 `styles/index.css`。ramp 正本该在方案样式表里，CLI 复制一份值就会与它漂移。

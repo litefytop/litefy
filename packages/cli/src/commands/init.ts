@@ -4,12 +4,14 @@ import inquirer from "inquirer";
 import logger from "../utils/logger";
 import { detectPackageManager, installDependencies, type PackageManager } from "../utils/pm";
 import { UI_BARREL_INDEX_SOURCE } from "../utils/barrel";
+import packageJson from "../../package.json";
 
 interface InitOptions {
   yes?: boolean;
 }
 
 interface LitefyConfig {
+  version?: string;
   scheme?: string;
   components: {
     path: string;
@@ -92,6 +94,7 @@ async function init(options: InitOptions): Promise<void> {
   const stylesPath = path.join(uiRoot, "styles");
 
   const config: LitefyConfig = {
+    version: packageJson.version,
     scheme,
     components: {
       path: componentsPath,

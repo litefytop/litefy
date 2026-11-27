@@ -11,6 +11,7 @@ import { writeBarrelIndex, writeSkinBarrelIndex } from "../utils/barrel";
 import { addSingle, styleInstall } from "./style";
 import { detectPackageManager, installDependencies } from "../utils/pm";
 import init from "../commands/init";
+import packageJson from "../../package.json";
 
 export interface AddOptions {
   overwrite?: boolean;
@@ -21,6 +22,7 @@ export interface AddOptions {
 }
 
 interface LitefyConfig {
+  version?: string;
   sourceRoot?: string;
   scheme?: string;
   components: {
@@ -106,6 +108,7 @@ async function add(selectNames: string[], options: AddOptions): Promise<void> {
 
   const processed = new Set<string>();
   const queue = [...selectNames];
+  let changed = false;
 
   while (queue.length) {
     const raw = queue.shift()!;
@@ -143,8 +146,9 @@ async function add(selectNames: string[], options: AddOptions): Promise<void> {
       options.iconLibrary && (name === "icons" || name.startsWith("icons/"))
         ? { ...options, overwrite: true }
         : options;
-    const ok = await addSingle(name, entry, targetDirFor(entry), cwd, entryOptions);
-    if (!ok) continue;
+    const result = await addSingle(name, entry, targetDirFor(entry), cwd, entryOptions);
+    if (!result.ok) continue;
+    changed ||= result.changed;
 
     const installedList = installedListFor(entry);
     if (!installedList.includes(name)) installedList.push(name);
@@ -153,8 +157,9 @@ async function add(selectNames: string[], options: AddOptions): Promise<void> {
     // skins dir and record its base for the skins barrel.
     if (entry.skin) {
       const skinEntry: RegistryEntry = { type: "skin", url: entry.skin };
-      const skinOk = await addSingle(`${name} skin`, skinEntry, config.skins.path, cwd, options);
-      if (skinOk) {
+      const skinResult = await addSingle(`${name} skin`, skinEntry, config.skins.path, cwd, options);
+      if (skinResult.ok) {
+        changed ||= skinResult.changed;
         const skinBase = path.basename(getFileNameFromUrl(entry.skin), path.extname(entry.skin));
         if (!config.skins.installed.includes(skinBase)) config.skins.installed.push(skinBase);
       }
@@ -197,6 +202,7 @@ async function add(selectNames: string[], options: AddOptions): Promise<void> {
   await writeSkinBarrelIndex(skinsIndex, config.skins.installed);
 
   if (options.style) config.scheme = options.style;
+  if (changed) config.version = packageJson.version;
   await fs.writeJson(configPath, config, { spaces: 2 });
 
   await installNpmDependencies(registry, processed, cwd, options);

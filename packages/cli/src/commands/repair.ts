@@ -4,8 +4,10 @@ import logger from "../utils/logger";
 import { getFileNameFromUrl, loadRegistry } from "../utils/registry";
 import { writeBarrelIndex } from "../utils/barrel";
 import { addSingle, entryFileUrls, type Registry, type RegistryEntry } from "./style";
+import packageJson from "../../package.json";
 
 interface LitefyConfig {
+  version?: string;
   components: {
     path: string;
     installed: string[];
@@ -57,6 +59,7 @@ export async function repair() {
     processList.push({ name, entry, targetDir: config.utils.path });
   }
 
+  let changed = false;
   for (const item of processList) {
     const { name, entry, targetDir } = item;
     let missing = false;
@@ -68,7 +71,8 @@ export async function repair() {
     }
     if (!missing) continue;
     logger.info(`[repair] missing file, restoring ${name}`);
-    await addSingle(name, entry, targetDir, cwd, { overwrite: true });
+    const result = await addSingle(name, entry, targetDir, cwd, { overwrite: true });
+    changed ||= result.changed;
   }
 
   const compIndex = path.resolve(cwd, config.components.path, "index.ts");
@@ -77,6 +81,7 @@ export async function repair() {
   const hookIndex = path.resolve(cwd, config.utils.path, "index.ts");
   await writeBarrelIndex(hookIndex, config.utils.installed);
 
+  if (changed) config.version = packageJson.version;
   await fs.writeJson(configPath, config, { spaces: 2 });
   logger.success("Repair finished");
 }

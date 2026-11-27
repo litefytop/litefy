@@ -12,8 +12,10 @@ import {
 
 export { entryFileUrls, type Registry, type RegistryEntry };
 import init from "./init";
+import packageJson from "../../package.json";
 
 interface LitefyConfig {
+  version?: string;
   scheme?: string;
   components: {
     path: string;
@@ -33,17 +35,23 @@ interface LitefyConfig {
   };
 }
 
+export interface InstallResult {
+  ok: boolean;
+  changed: boolean;
+}
+
 export async function addSingle(
   itemName: string,
   entry: RegistryEntry,
   relTargetDir: string,
   cwd: string,
   options: AddOptions,
-): Promise<boolean> {
+): Promise<InstallResult> {
   const targetDir = path.resolve(cwd, relTargetDir);
   await fs.ensureDir(targetDir);
 
   let ok = true;
+  let changed = false;
   for (const url of entryFileUrls(entry)) {
     const fileName = entry.installAs ?? getFileNameFromUrl(url);
     const outFile = path.join(targetDir, fileName);
@@ -58,11 +66,13 @@ export async function addSingle(
     try {
       const res = await axios.get<string>(url, { timeout: 10000 });
       await fs.writeFile(outFile, res.data, "utf-8");
+      changed = true;
       logger.success(`Saved ${fileName}`);
     } catch {
       const pkgSource = await readPkgSource(url);
       if (pkgSource !== null) {
         await fs.writeFile(outFile, pkgSource, "utf-8");
+        changed = true;
         logger.success(`Saved ${fileName} (from package sources)`);
         continue;
       }
@@ -71,7 +81,7 @@ export async function addSingle(
     }
   }
 
-  return ok;
+  return { ok, changed };
 }
 
 export async function styleInstall(scheme: string, options: AddOptions): Promise<void> {
@@ -101,11 +111,12 @@ export async function styleInstall(scheme: string, options: AddOptions): Promise
   logger.step(`Installing scheme "${scheme}": complete stylesheet (${fileNames.length} file(s))`);
 
   // 方案排他：index.css 永远等于当前方案的最新内容，切换与自动同步都强制覆盖。
-  const ok = await addSingle(presetKey, entry, config.styles.path, cwd, { ...options, overwrite: true });
-  if (!ok) return;
+  const result = await addSingle(presetKey, entry, config.styles.path, cwd, { ...options, overwrite: true });
+  if (!result.ok) return;
 
   // 唯一出口：最后 add 的方案就是 styles/index.css 的全部来源——替换之前所有方案记录，杜绝混用。
   config.styles.installed = [presetKey];
+  if (result.changed) config.version = packageJson.version;
 
   // 方案是纯主题层，不是入口：用户须在自己的 Tailwind 入口先 @import "tailwindcss" 再
   // @import 这份 index.css（tailwind 在前），扫描归用户入口，CLI 不改写任何路径。

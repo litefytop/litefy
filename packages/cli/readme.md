@@ -31,6 +31,8 @@
 
 四层各自记 `path` 与 `installed`，导出文件由 CLI 整份重写。默认父目录 `./src`，即 `./src/ui/litefy/components`、`…/skins`、`…/utils`、`…/styles`；样式表按别名 `@/ui/litefy/styles/index.css` 接进你的 Tailwind 入口，皮肤从 `@/ui/litefy/skins` 引用（与骨架分桶，避免成品名互相遮蔽）。
 
+根 `version` 是项目共享的 Litefy 版本，与 npm 包版本一致。`init` 创建配置时写入；`add` 成功安装或覆盖资源、`add style` 成功安装样式、`repair` 成功恢复文件时更新。`rm` 与 `clean` 不改变该版本，旧配置缺少 `version` 时仍可继续使用。
+
 ## 可装资源
 
 条目逐名等于 `packages/cli/registry.json`，文档不参与判定。
